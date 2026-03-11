@@ -1,0 +1,84 @@
+wrk_id: WRK-1053
+stage: 2
+assessed_at: 2026-03-10T00:00:00Z
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue
+    - verify:skill-eval
+    - workspace-hub:comprehensive-learning
+  supporting:
+    - resource-intelligence
+    - workflow-gatepass
+    - session-start
+
+scripts:
+  existing:
+    - path: scripts/session/detect-drift.sh
+      exists: true
+      wired_in_skill: false
+      skill_ref: workspace-hub:session-start
+      notes: >
+        Script exists and scans session logs for rule violation patterns.
+        session-start SKILL.md emits a drift_rules_loaded signal at line 55
+        but never calls detect-drift.sh — the drift scan is LLM-prose only.
+
+    - path: scripts/work-queue/queue-status.sh
+      exists: true
+      wired_in_skill: false
+      skill_ref: workspace-hub:work-queue-workflow
+      notes: >
+        Script exists and reports counts per queue state. Not explicitly called
+        in work-queue-workflow SKILL.md.
+
+    - path: scripts/work-queue/verify-gate-evidence.py
+      exists: true
+      wired_in_skill: true
+      skill_ref: workspace-hub:workflow-gatepass
+      notes: "Fully wired. No gap."
+
+    - path: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+      exists: true
+      wired_in_skill: true
+      skill_ref: workspace-hub:resource-intelligence
+      notes: "Wired correctly. Hub-root alias broken — minor path inconsistency."
+
+    - path: scripts/skills/validate-skills.sh
+      exists: true
+      wired_in_skill: false
+      skill_ref: verify:skill-eval
+      notes: "Script exists but skill-eval never calls it."
+
+    - path: scripts/skills/identify-script-candidates.sh
+      exists: true
+      wired_in_skill: false
+      skill_ref: workspace-hub:comprehensive-learning
+      notes: "Neither .sh nor .py referenced in comprehensive-learning SKILL.md."
+
+  to_create:
+    - path: scripts/skills/audit-skill-violations.sh
+      purpose: "Audit SKILL.md files for violations — README presence, word count, description length, XML tags"
+    - path: scripts/skills/skill-coverage-audit.sh
+      purpose: "Measure skill script wiring coverage; feed comprehensive-learning Phase 9"
+
+skills_to_update:
+  - skill: verify:skill-eval
+    gap: "No call to audit-skill-violations.sh; validate-skills.sh not wired"
+  - skill: workspace-hub:resource-intelligence
+    gap: "Hub-root validate-resource-pack.sh alias broken"
+  - skill: workspace-hub:comprehensive-learning
+    gap: "Phase 9 absent; identify-script-candidates.sh + skill-coverage-audit.sh not referenced"
+
+effort_estimate: medium
+dependencies:
+  - audit-skill-violations.sh must exist before skill-eval wiring
+  - skill-coverage-audit.sh must exist before comprehensive-learning Phase 9 wiring
+risks:
+  - detect-drift.sh wiring may duplicate CL Phase 1b
+  - queue-status.sh wiring low-value (already documented)
+notes: >
+  scripts/skills/ directory has 14 items including strong candidates. Two new
+  scripts needed. Four skills need updating. verify-gate-evidence.py and
+  validate-resource-pack.sh already fully wired — no changes needed there.

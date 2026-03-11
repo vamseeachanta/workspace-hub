@@ -235,6 +235,10 @@ def route_stage(
     """
     Route stage based on invocation type. Prints to stdout.
     """
+    from checkpoint_writer import print_stage_banner  # same package dir
+    stage_name = contract.get("name", f"Stage {stage}")
+    print_stage_banner(stage, stage_name, "START")
+
     invocation = contract.get("invocation", "task_agent")
 
     if invocation == "task_agent":
@@ -244,7 +248,6 @@ def route_stage(
         print("Run: scripts/agents/work.sh with the prompt package above.")
 
     elif invocation == "human_interactive":
-        print(f"\n=== Stage {stage}: {contract.get('name')} ===")
         # Auto-load checkpoint if present and stage matches
         _print_checkpoint_resume(wrk_id, stage, output_dir)
         print("Checklist:")
@@ -283,6 +286,56 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
         print(f"✔ Lifecycle HTML updated ({wrk_id})")
     else:
         print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+
+
+# ── Stage 1 guard helpers ─────────────────────────────────────────────────────
+
+def _maybe_purge_stale_lock(lock_path: Path) -> None:
+    """Auto-purge session-lock.yaml when PID is dead and age > 2h."""
+    import datetime
+    if not lock_path.exists():
+        return
+    try:
+        if _HAS_YAML:
+            import yaml as _yaml
+            data = _yaml.safe_load(lock_path.read_text()) or {}
+        else:
+            data = _load_yaml(str(lock_path))
+    except Exception:
+        return
+    pid = data.get("session_pid")
+    locked_at_str = data.get("locked_at", "")
+    try:
+        locked_at = datetime.datetime.fromisoformat(str(locked_at_str).rstrip("Z"))
+        age = (datetime.datetime.utcnow() - locked_at).total_seconds()
+    except Exception:
+        return
+    if age <= 7200:
+        return
+    try:
+        os.kill(int(pid), 0)
+        return  # process still alive (same user)
+    except PermissionError:
+        return  # process alive, different owner — do not purge
+    except (ProcessLookupError, TypeError, ValueError):
+        pass  # process dead or invalid PID
+    lock_path.unlink(missing_ok=True)
+    print(
+        f"  Auto-purged stale session-lock for PID {pid} (age {age / 3600:.1f}h).",
+        file=sys.stderr,
+    )
+
+
+def _stage1_working_guard(wrk_id: str, queue_dir: str) -> None:
+    """Exit 1 if wrk_id is not in working/ — prevents orphaned locks on pending items."""
+    working_path = Path(queue_dir) / "working" / f"{wrk_id}.md"
+    if not working_path.exists():
+        print(
+            f"✖ {wrk_id} is not in working/ — claim it before starting stage 1:\n"
+            f"  bash scripts/work-queue/claim-item.sh {wrk_id}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
@@ -335,6 +388,13 @@ def _main() -> None:
                 os.remove(stale_cp)
                 print(f"  Removed stale checkpoint for {wrk_id}.", file=sys.stderr)
             sys.exit(0)
+
+    # Stage guard: stage 1 and stages ≥9 require item to be in working/ (claimed)
+    if stage == 1:
+        _maybe_purge_stale_lock(Path(output_dir) / "evidence" / "session-lock.yaml")
+        _stage1_working_guard(wrk_id, queue_dir)
+    elif stage >= 9:
+        _stage1_working_guard(wrk_id, queue_dir)
 
     # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:

@@ -1,0 +1,12 @@
+wrk_id: WRK-658
+current_stage: 6
+stage_name: Cross-Review
+completed_stage: 5
+next_action: Execute stage 6: Cross-Review
+context_summary: Stage 5 complete. Next: stage 6 (Cross-Review).
+entry_reads:
+  - .claude/work-queue/assets/WRK-658/checkpoint.yaml
+  - assets/WRK-658/WRK-658-lifecycle.html#s1-s5
+  - assets/WRK-658/evidence/user-review-plan-draft.yaml
+checkpointed_at: 2026-03-10T01:13:12Z
+human_gate: false

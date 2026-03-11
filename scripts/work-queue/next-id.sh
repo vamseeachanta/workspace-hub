@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 # next-id.sh - Return the next sequential WRK-NNN ID
+#
+# Machine-partitioned ID ranges (config/work-queue/machine-ranges.yaml):
+#   ace-linux-1        1 – 4999   (default; current IDs ~1114)
+#   acma-ansys05    5000 – 9999   (Windows / orcaflex machine)
+#   ace-linux-2    10000 – 14999  (reserved)
+#   gali-linux-compute-1  15000 – 19999  (heavy-compute / HPC)
+#
+# Allocation policy: each machine reads its floor from the config table.
+# If MAX_ID < floor (e.g. first ID on a new machine), NEXT_ID is set to
+# floor. Otherwise NEXT_ID = MAX_ID + 1 as usual.
+#
+# Re-allocation policy: when MAX_ID is within 50 of the ceiling, request
+# a new range block from the workspace-hub maintainer and update the config.
+#
 # Validates state.yaml last_id against actual files and auto-corrects drift.
 set -euo pipefail
 
@@ -18,7 +32,7 @@ MAX_FILE_ID=0
 for dir in pending working blocked; do
   for file in "${QUEUE_DIR}/${dir}"/WRK-*.md; do
     [[ -f "$file" ]] || continue
-    ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+')
+    ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+' || true)
     [[ -n "$ID_NUM" ]] && (( 10#$ID_NUM > MAX_FILE_ID )) && MAX_FILE_ID=$((10#$ID_NUM))
   done
 done
@@ -26,7 +40,7 @@ done
 # Also scan archive subdirectories (archive/*/)
 for file in "${QUEUE_DIR}"/archive/*/WRK-*.md; do
   [[ -f "$file" ]] || continue
-  ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+')
+  ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+' || true)
   [[ -n "$ID_NUM" ]] && (( 10#$ID_NUM > MAX_FILE_ID )) && MAX_FILE_ID=$((10#$ID_NUM))
 done
 
@@ -56,6 +70,44 @@ if (( MAX_FILE_ID > STATE_LAST_ID )); then
   fi
 fi
 
-# ── Step 5: Return the next ID ──
+# ── Step 5: Apply machine-range floor ──
+RANGES_FILE="${WORKSPACE_ROOT}/config/work-queue/machine-ranges.yaml"
+MACHINE_FLOOR=0
+if [[ -f "$RANGES_FILE" ]]; then
+  # Parse the floor for the current hostname (simple grep; no yq dependency)
+  THIS_HOST="${HOSTNAME:-$(hostname)}"
+  MACHINE_FLOOR=$(awk -v host="$THIS_HOST" '
+    /hostname:/ { in_host = ($NF == host) }
+    in_host && /floor:/ { print $NF; exit }
+  ' "$RANGES_FILE")
+  MACHINE_FLOOR=${MACHINE_FLOOR:-0}
+fi
+
+if (( MACHINE_FLOOR > 0 && MAX_ID < MACHINE_FLOOR )); then
+  >&2 echo "next-id: applying machine floor ${MACHINE_FLOOR} for ${HOSTNAME:-$(hostname)} (MAX_ID=${MAX_ID})"
+  MAX_ID=$((MACHINE_FLOOR - 1))
+fi
+
+# ── Step 6: Atomically reserve the next ID via noclobber sentinel ──
+# noclobber (set -C) makes the redirect fail if the file already exists,
+# giving us atomic "create-or-fail" semantics without needing a lock file.
+# Callers overwrite the sentinel with full YAML content — no caller changes needed.
 NEXT_ID=$((MAX_ID + 1))
-printf "%03d" "$NEXT_ID"
+MAX_RETRIES=5
+ATTEMPT=0
+set -C  # enable noclobber
+while (( ATTEMPT < MAX_RETRIES )); do
+  SENTINEL="${QUEUE_DIR}/pending/WRK-${NEXT_ID}.md"
+  if { > "$SENTINEL"; } 2>/dev/null; then
+    # Successfully created sentinel — ID is ours
+    set +C
+    printf "%d" "$NEXT_ID"
+    exit 0
+  fi
+  # File already exists (collision); try the next integer
+  NEXT_ID=$((NEXT_ID + 1))
+  ATTEMPT=$((ATTEMPT + 1))
+done
+set +C
+>&2 echo "next-id: failed to reserve an ID after ${MAX_RETRIES} attempts (collision storm?)"
+exit 1

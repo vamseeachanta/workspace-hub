@@ -20,12 +20,12 @@ collect_files() {
     if [[ "$HOOK_NAME" == "pre-commit" ]]; then
         git diff --cached --name-only -z --diff-filter=ACM
     else
-        # Exclude specs/repos/ — machine-generated engineering tool outputs
-        # (OrcaFlex writes UTF-8 BOM YAML; fatigue docs contain Latin-1 notation)
-        # These are reference artifacts, not hand-authored text files.
-        git ls-files -z -- \
+        # Non-pre-commit (post-merge/post-checkout): only scan files changed in
+        # the last commit to avoid full-repo scan overhead (was 7s+ for full scan).
+        # Exclude specs/repos/ — machine-generated engineering tool outputs.
+        git diff --name-only -z HEAD~1..HEAD --diff-filter=ACM -- \
             '.claude/work-queue' '.claude/skills' 'specs' 'config' \
-            ':!specs/repos/'
+            2>/dev/null || true
     fi
 }
 

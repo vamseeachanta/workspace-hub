@@ -1,0 +1,27 @@
+wrk_id: WRK-1099
+completion_status: continue_to_planning
+surveyed_at: 2026-03-10T06:22:00Z
+
+files:
+  primary:
+    - path: scripts/work-queue/whats-next.sh
+      lines: 204
+      notes: >
+        Single file to modify. Arg parser at lines 10-19; process_file() at lines
+        68-110; render/print_section() at lines 113-130; section output at 132-175.
+        FILTER_CATEGORY variable pattern established — FILTER_SUBCATEGORY mirrors it.
+        Arrays per section: WORKING_ITEMS, HIGH_UNBLOCKED, MED_UNBLOCKED, etc.
+        Workstation partition: add _LOCAL/_REMOTE suffix arrays, render with sub-headers.
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:ecosystem-terminology
+
+dependencies:
+  none: true
+
+risks:
+  - Array partitioning adds modest complexity but stays within Route A scope.
+  - Other-machine items: brief format only (user-specified — WRK-1099 Stage 1 note).

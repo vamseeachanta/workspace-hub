@@ -21,6 +21,11 @@ assert_orchestrator_or_fail "$provider"
 case "$subcmd" in
     run|"" )
         active_wrk="$(session_get active_wrk 2>/dev/null || true)"
+        # Fallback: read from state file written by set-active-wrk.sh
+        if [[ -z "$active_wrk" ]]; then
+            _state_file="${WS_HUB}/.claude/state/active-wrk"
+            [[ -f "$_state_file" ]] && active_wrk="$(cat "$_state_file" | tr -d '[:space:]')"
+        fi
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_start" "$provider" "/work routing invoked"
         log_gate_event_if_available "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"
         echo "Workflow orchestrator '$provider' acknowledged /work run contract."
@@ -31,6 +36,40 @@ case "$subcmd" in
                 echo ""
                 echo "$(grep -E '^(wrk_id|stage|stage_name|next_action)' "$_cp" | head -4)"
                 echo "  → Checkpoint found. context loaded via start_stage.py"
+            fi
+        fi
+        # Task classifier routing recommendation (WRK-118 Phase 3)
+        _classifier="${WS_HUB}/scripts/coordination/routing/lib/task_classifier.sh"
+        if [[ -n "$active_wrk" && -f "$_classifier" ]] && command -v jq &>/dev/null; then
+            _wrk_file="$(find "${WS_HUB}/.claude/work-queue" -maxdepth 2 \
+                -name "${active_wrk}.md" 2>/dev/null | head -1)"
+            if [[ -n "$_wrk_file" ]]; then
+                _title="$(wrk_get_frontmatter_value "$_wrk_file" "title" 2>/dev/null || true)"
+                _complexity="$(wrk_get_frontmatter_value "$_wrk_file" "complexity" 2>/dev/null || true)"
+                if [[ -n "$_title" ]]; then
+                    _classification="$(bash --noprofile --norc -c \
+                        ". \"\$1\"; classify_task \"\$2\"" -- "$_classifier" "$_title" \
+                        2>/dev/null || true)"
+                    if [[ -n "$_classification" ]]; then
+                        _tier="$(echo "$_classification" | jq -r '.tier' 2>/dev/null || true)"
+                        _primary="$(echo "$_classification" | jq -r '.primary_provider' 2>/dev/null || true)"
+                        _conf="$(echo "$_classification" | jq -r '.confidence' 2>/dev/null || true)"
+                        _scores="$(echo "$_classification" | jq -r \
+                            '"claude=\(.all_scores.claude) codex=\(.all_scores.codex) gemini=\(.all_scores.gemini)"' \
+                            2>/dev/null || true)"
+                        echo ""
+                        echo "  ┌─ Routing Recommendation ─────────────────────────────────┐"
+                        printf  "  │  WRK: %-52s │\n" "$active_wrk"
+                        printf  "  │  Complexity: %-43s │\n" "${_complexity:-unknown}"
+                        printf  "  │  Classifier tier: %-36s │\n" "${_tier:-?} (confidence: ${_conf:-?})"
+                        printf  "  │  Recommended primary: %-33s │\n" "${_primary:-?}"
+                        printf  "  │  Scores: %-46s │\n" "${_scores:-?}"
+                        echo    "  └───────────────────────────────────────────────────────────┘"
+                        log_gate_event_if_available "$active_wrk" "routing" \
+                            "task_classifier" "$provider" \
+                            "tier=${_tier} primary=${_primary} confidence=${_conf}"
+                    fi
+                fi
             fi
         fi
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_complete" "$provider" "/work routing acknowledged"

@@ -1,0 +1,6 @@
+stage: 5
+wrk_id: "WRK-1091"
+reviewer: "vamsee"
+confirmed_at: "2026-03-10T09:20:00Z"
+approval_decision: approve_as_is
+notes: "Plan draft approved by user."

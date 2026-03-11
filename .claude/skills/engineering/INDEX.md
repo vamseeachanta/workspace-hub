@@ -1,10 +1,11 @@
 # Engineering Skills
 
-> 8 subcategories in this domain.
+> 9 subcategories in this domain.
 
 ## Subcategories
 
 - [Cad](cad/INDEX.md) — 3 skills
+- [Maritime Legal](maritime-legal/INDEX.md) — 1 skills
 - [Drilling](drilling/INDEX.md) — 1 skills
 - [Financial Analysis](financial-analysis/INDEX.md) — 1 skills
 - [Gis](gis/INDEX.md) — 4 skills

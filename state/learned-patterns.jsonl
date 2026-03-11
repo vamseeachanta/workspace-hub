@@ -1,0 +1,408 @@
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 19
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 6
+}

@@ -1,0 +1,47 @@
+wrk_id: WRK-1115
+stage: 2
+completion_status: continue_to_planning
+surveyed_at: "2026-03-10"
+
+domain:
+  problem: >
+    Two HTML files (plan.html, lifecycle.html) per WRK item — plan.html is new,
+    lifecycle.html currently has gaps in stage coverage and missing quality nuggets.
+
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - workflow-html
+    - work-queue-workflow
+    - workflow-gatepass
+
+key_files:
+  - path: scripts/work-queue/generate-html-review.py
+    lines: 2125
+    notes: >
+      Main generator. Currently has no --plan flag; --lifecycle is the only mode.
+      Stage 12/13 have no dedicated renderers (fall to generic).
+      Stage 10 renders only 4 fields from execute.yaml (drops integrated_repo_tests, changes[]).
+      Stage 14 drops gate details column.
+      _regenerate_lifecycle_html() in exit_stage.py calls only --lifecycle.
+  - path: scripts/work-queue/exit_stage.py
+    notes: >
+      _regenerate_lifecycle_html() at line 226 only calls --lifecycle.
+      Needs second call: generate-html-review.py WRK-NNN --plan (new flag).
+  - path: .claude/skills/workspace-hub/workflow-html/SKILL.md
+    lines: 399
+    notes: >
+      Documents single-file model. Needs update to two-file contract (plan.html + lifecycle.html).
+  - path: tests/unit/test_generate_html_review.py
+    notes: >
+      Existing test suite: 6 lifecycle tests found. New tests needed for --plan flag,
+      stage 12/13/14 renderers, integrated_repo_tests table, changes[] bullets, duration headers.
+
+quality_signals:
+  confidence: high
+  missing_artifact_rate: 0
+  plan_edits_required: 0
+  notes: >
+    All target files identified. No external deps. Pure Python HTML generation.
+    The --plan flag is a new code path; rest are incremental additions to existing renderers.

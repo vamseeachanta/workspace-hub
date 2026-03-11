@@ -1,0 +1,5 @@
+wrk_id: WRK-1018
+scanned_at: "2026-03-10T23:30:00Z"
+result: PASS
+violations: []
+command: bash scripts/legal/legal-sanity-scan.sh

@@ -1,0 +1,116 @@
+wrk_id: WRK-118
+stage: 10
+stage_name: Work Execution
+executed_at: "2026-03-10T00:00:00Z"
+provider: claude
+
+phases_completed:
+  - phase: 1
+    description: "Audit & role matrix — behavior-contract.yaml extended with task_type_matrix"
+    status: done
+    artifacts:
+      - config/agents/behavior-contract.yaml
+    completed_at: "2026-02-24"
+
+  - phase: 2
+    description: "task_agents delegation templates — agent-delegation-templates.md authored"
+    status: done
+    artifacts:
+      - docs/modules/ai/agent-delegation-templates.md
+    completed_at: "2026-03-10"
+    notes: "File re-created (was missing despite implementation notes claiming done 2026-02-24)"
+
+  - phase: 3
+    description: "Wire task_classifier into /work run pre-plan gate"
+    status: done
+    artifacts:
+      - scripts/agents/work.sh
+    completed_at: "2026-03-10"
+    notes: >
+      Added routing recommendation block to work.sh run subcommand.
+      Sources task_classifier.sh, displays tier/primary_provider/scores.
+      Fallback added: reads .claude/state/active-wrk when session store is empty.
+
+  - phase: 4
+    description: "Provider assessment scaffolding"
+    status: done
+    artifacts:
+      - .claude/state/provider-assessments/README.md
+      - .claude/state/provider-assessments/assessment-template.yaml
+    completed_at: "2026-02-24"
+    notes: "Directory and template existed; wiring post-cross-review step deferred to FW"
+
+  - phase: 5
+    description: "Validate on 3 real work items"
+    status: done
+    items_validated:
+      - wrk: WRK-199
+        frontmatter_complexity: medium
+        classifier_tier: SIMPLE
+        classifier_primary: gemini
+        confidence: 0.1080
+        match: partial
+      - wrk: WRK-1053
+        frontmatter_complexity: medium
+        classifier_tier: STANDARD
+        classifier_primary: codex
+        confidence: 0.1560
+        match: good
+      - wrk: WRK-1018
+        frontmatter_complexity: simple
+        classifier_tier: STANDARD
+        classifier_primary: codex
+        confidence: 0.1800
+        match: good
+
+validation_findings:
+  - Low confidence because only WRK title is passed; full description would yield higher signal
+  - Primary provider recommendations are sensible (codex for code, gemini for research)
+  - Tier detection lags frontmatter complexity; frontmatter governs lifecycle routing
+  - Routing recommendation is advisory not prescriptive
+
+integrated_repo_tests:
+  - name: "work.sh routing recommendation block"
+    scope: integrated
+    command: "bash scripts/agents/work.sh --provider claude run"
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-118/evidence/execute.yaml"
+    notes: "Routing recommendation box displayed with tier/primary_provider/scores for WRK-118"
+
+  - name: "task_classifier validation on WRK-199"
+    scope: repo
+    command: "bash -c \"source scripts/coordination/routing/lib/task_classifier.sh && classify_task 'AI agent usage optimizer skill'\""
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-118/evidence/execute.yaml"
+    notes: "Returns tier=SIMPLE primary=gemini confidence=0.1080 — gemini reasonable for AI optimization"
+
+  - name: "task_classifier validation on WRK-1053"
+    scope: repo
+    command: "bash -c \"source scripts/coordination/routing/lib/task_classifier.sh && classify_task 'convert deterministic skill loops to scripts'\""
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-118/evidence/execute.yaml"
+    notes: "Returns tier=STANDARD primary=codex confidence=0.1560 — codex for script conversion"
+
+  - name: "agent-delegation-templates.md created and accessible"
+    scope: repo
+    command: "test -f docs/modules/ai/agent-delegation-templates.md && wc -l docs/modules/ai/agent-delegation-templates.md"
+    result: pass
+    artifact_ref: "docs/modules/ai/agent-delegation-templates.md"
+    notes: "File exists with task_agents maps for 11 task types × routes A/B/C"
+
+  - name: "work.sh active-wrk state fallback"
+    scope: integrated
+    command: "bash scripts/work-queue/set-active-wrk.sh WRK-118 && bash scripts/agents/work.sh --provider claude run"
+    result: pass
+    artifact_ref: ".claude/state/active-wrk"
+    notes: "set-active-wrk.sh writes to .claude/state/active-wrk; work.sh now reads this as fallback"
+
+acceptance_criteria_final:
+  audit_capabilities: true
+  role_matrix: true
+  invocation_patterns: true
+  delegation_templates: true
+  quality_gates_2of3: partial
+  work_queue_routing: true
+  validated_3_items: true
+  lessons_learned: true

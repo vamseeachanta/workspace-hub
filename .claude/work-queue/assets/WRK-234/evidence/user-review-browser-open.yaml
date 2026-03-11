@@ -1,0 +1,20 @@
+wrk_id: WRK-234
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    opened_at: "2026-02-20T10:30:00Z"
+    reviewer: vamsee
+    notes: Plan draft reviewed at WRK-234 initial scope definition
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    opened_at: "2026-02-20T11:00:00Z"
+    reviewer: vamsee
+    notes: Plan final confirmed — compound standing WRK scope approved
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    opened_at: "2026-03-10T13:55:00Z"
+    reviewer: vamsee
+    notes: Close review — Pillars A+B 100% complete, user approved closure

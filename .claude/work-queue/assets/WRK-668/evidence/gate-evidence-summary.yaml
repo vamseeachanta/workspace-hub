@@ -1,0 +1,9 @@
+wrk_id: WRK-668
+stage: 14
+phase: close
+generated_at: "2026-03-09T01:25:00Z"
+overall: PARTIAL_PASS
+gates_ok: 24
+gates_missing: 3
+gates_warn: 4
+notes: "3 remaining gates blocked on Stage 17 (user-review-close.yaml) — hard gate requiring user interaction. All other gates PASS."

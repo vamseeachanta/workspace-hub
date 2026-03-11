@@ -1,0 +1,15 @@
+wrk_id: "WRK-1106"
+generated_at: "2026-03-10T17:17:27Z"
+recommendations:
+  - id: "FW-1"
+    title: "claim-item.sh pct_remaining null sentinel for max-tier providers"
+    description: "When quota status=available but pct_remaining=null (max tier), set status=unknown instead of available to avoid sentinel gate failure."
+    disposition: existing-updated
+    status: captured
+    captured: true
+  - id: "FW-2"
+    title: "Queue state validation — pre-existing errors in other WRKs should not block WRK-1106 claim"
+    description: "claim-item.sh runs queue validation and exits 1 if other unrelated WRKs have errors. This is overly strict — should WARN only, not block."
+    disposition: spun-off-new
+    status: captured
+    captured: true

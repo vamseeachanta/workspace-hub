@@ -1,0 +1,17 @@
+wrk_id: WRK-1022
+stage: 10
+next_action: >
+  Use across sessions on Linux + Windows. Keyboard shortcuts (Ctrl+C, copy/paste)
+  don't appear in shell history — friction is user-observed only.
+  What IS measurable: bash_history for cls/clear confusion, resume flag usage,
+  startup flag patterns. Close gate: user explicitly says "commands feel consistent,
+  ready to close" after using on both platforms.
+context_summary: >
+  Terminal Keyboard Shortcuts Reference section added to workstations/SKILL.md.
+  Covers copy/paste, new-line, tab navigation, AI agent CLI commands, and
+  productivity shortcuts for Linux and Windows Git Bash. Monitoring gate:
+  10 sessions on Linux + Windows before close.
+updated_at: "2026-03-10T00:00:00Z"
+entry_reads:
+  - .claude/work-queue/working/WRK-1022.md
+  - .claude/skills/workspace-hub/workstations/SKILL.md

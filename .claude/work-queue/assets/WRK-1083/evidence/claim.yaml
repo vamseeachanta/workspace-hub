@@ -1,0 +1,16 @@
+wrk_id: WRK-1083
+stage: claim
+claimed_at: "2026-03-10T15:09:41Z"
+claimed_by: claude
+session_owner: claude
+session_id: session-20260310T150941Z
+best_fit_provider: claude
+claim_expires_at: "2026-03-11T15:09:41Z"
+active_wrk_set: true
+routing: B
+quota_snapshot:
+  timestamp: "2026-03-10T15:09:41Z"
+  provider: claude
+  status: available
+  pct_remaining: 85
+notes: WRK-1083 claimed and activated — plan-mode integration (skills/YAML-only)

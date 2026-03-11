@@ -1,0 +1,9 @@
+wrk_id: WRK-668
+stage: 8
+claimed_at: "2026-03-09T00:26:00Z"
+claimed_by: claude
+session_id: "20260309-002600"
+orchestrator_agent: claude
+best_fit_provider: claude
+session_owner: vamsee
+route: B

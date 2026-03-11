@@ -1,0 +1,8 @@
+wrk_id: WRK-1123
+stage: 16
+additions:
+  - "_stage1_working_guard(wrk_id, queue_dir): exits 1 if item not in working/ — Stage 1 guard"
+  - "_maybe_purge_stale_lock(lock_path): auto-purges session-lock.yaml when PID dead AND age>2h"
+  - "Pattern: os.kill(pid, 0) PermissionError = live process (different owner); handle separately from ProcessLookupError"
+  - "test_start_stage_guards.py: 7 unit tests for both helpers, importable in isolation"
+completed_at: "2026-03-11T12:10:00Z"

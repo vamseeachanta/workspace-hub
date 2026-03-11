@@ -1,0 +1,7 @@
+wrk_id: WRK-1041
+stage: 16
+updated_at: 2026-03-10T00:17:00Z
+additions: []
+no_additions_rationale: >
+  Two-line edit to add a static HTML meta tag. No new patterns, skills,
+  or architectural decisions to record.

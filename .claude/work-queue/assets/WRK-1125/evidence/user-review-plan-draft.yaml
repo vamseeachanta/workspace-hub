@@ -1,0 +1,13 @@
+wrk_id: WRK-1125
+stage: 5
+confirmed_by: vamsee
+reviewed_at: "2026-03-11T13:00:00Z"
+approval_decision: approve_as_is
+decision: approved
+scope_approved: true
+plan_approved: true
+review_bypass_reason: "Route A inline review — no separate browser review session required"
+notes: >
+  Route A inline plan approved. Extend whats-next.sh: assoc arrays for note/not_before,
+  WORKING_PARKED array for working items with note, annotation lines in print_section,
+  PARKED render section, updated summary. Codex APPROVE on v3.

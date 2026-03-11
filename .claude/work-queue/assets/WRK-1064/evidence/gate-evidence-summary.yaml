@@ -1,0 +1,10 @@
+wrk_id: WRK-1064
+phase: close
+pass: false
+pending_gates:
+  - User-review close gate (Stage 17 — awaiting user review)
+warn:
+  - Reclaim gate (n/a — no continuity break)
+  - Reclaim n/a gate (expected — Stage 18 not triggered)
+generated_at: "2026-03-09T23:30:00Z"
+notes: All gates PASS except Stage 17 user-review-close which is a hard gate awaiting user approval.

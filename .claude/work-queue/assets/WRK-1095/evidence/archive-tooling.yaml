@@ -1,0 +1,9 @@
+wrk_id: WRK-1095
+
+merge_status: "no-branch-created"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1095/legal-scan.md"
+archive_readiness: "pass"
+document_index_exemption: "hub-only item — complexity ratchet scripts added to hub; no document-index entries affected"
+spin_off_wrks: []

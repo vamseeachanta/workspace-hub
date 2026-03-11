@@ -1,0 +1,16 @@
+wrk_id: WRK-234
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:work
+  supplementary_used: []
+context_summary: >
+  Compound standing WRK covering the full self-healing ecosystem loop.
+  Resource intelligence performed at initial scope definition (2026-02-20).
+  Existing infrastructure: check-all.sh, coverage ratchet, secrets scan.
+  Gap identified: ecosystem-wide health pillar (WRK-1090..1095) and
+  agent/session layer (WRK-225..233).
+completed_at: "2026-02-20T09:00:00Z"

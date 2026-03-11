@@ -1,0 +1,29 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: "40b4f0d7"
+    documents:
+      - ".claude/work-queue/assets/WRK-1067/WRK-1067-lifecycle.html"
+    published_at: "2026-03-09T22:16:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: "40b4f0d7"
+    documents:
+      - ".claude/work-queue/assets/WRK-1067/WRK-1067-lifecycle.html"
+    published_at: "2026-03-09T22:29:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: pending
+    documents:
+      - ".claude/work-queue/assets/WRK-1067/WRK-1067-lifecycle.html"
+      - ".claude/work-queue/assets/WRK-1067/evidence/test-results.md"
+    published_at: "2026-03-09T23:16:00Z"
+    reviewer: vamsee

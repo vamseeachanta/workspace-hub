@@ -2,6 +2,7 @@
 name: production-forecaster
 description: Forecast oil & gas well production using decline curve analysis. Use when estimating EUR, generating type curves, fitting Arps models (exponential, hyperbolic, harmonic), or running reserve calculations. Supports conventional and unconventional wells, P10/P50/P90 probabilistic outputs, and multi-field type curve comparison.
 version: 2.1.0
+category: data/energy
 last_updated: 2026-03-08
 capabilities: []
 requires: []

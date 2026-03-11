@@ -1,0 +1,9 @@
+wrk_id: WRK-1115
+stage: 5
+review_cycle_id: rc-1115-v1
+approval_decision: approve_as_is
+confirmed_by: user
+reviewed_at: "2026-03-10T00:00:00Z"
+notes: >
+  Route B plan approved as-is. Four phases: renderer expansions (S10/12/13/14),
+  new plan.html + --plan flag, exit_stage dual call, SKILL update. 15 ACs. No changes requested.

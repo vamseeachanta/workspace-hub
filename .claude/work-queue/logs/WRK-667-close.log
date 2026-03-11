@@ -1,0 +1,40 @@
+timestamp: 2026-03-10T03:01:54Z
+wrk_id: WRK-667
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-10T03:01:55Z
+wrk_id: WRK-667
+stage: close
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-10T03:01:55Z
+wrk_id: WRK-667
+stage: close
+action: verify_gate_evidence
+signal: verify_gate_evidence
+provider: orchestrator
+notes: close gate verified
+
+timestamp: 2026-03-10T03:01:55Z
+wrk_id: WRK-667
+stage: close
+action: close_item
+signal: close_item
+provider: orchestrator
+notes: work item moved to done
+
+timestamp: 2026-03-10T03:01:55Z
+wrk_id: WRK-667
+stage: close
+action: close_or_archive
+signal: close_or_archive
+provider: orchestrator
+notes: terminal close signal
+

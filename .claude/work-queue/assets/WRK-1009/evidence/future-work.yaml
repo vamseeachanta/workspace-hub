@@ -1,0 +1,51 @@
+wrk_id: WRK-1009
+stage: 15
+generated_at: "2026-03-10T15:00:00Z"
+recommendations:
+  - id: FW-1
+    title: External skill discovery — openai/skills + anthropics/skills weekly scan
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      Weekly diff of local skill names vs upstream catalog; surfaces import candidates.
+      Deferred from WRK-1009 to keep this WRK at medium complexity.
+
+  - id: FW-2
+    title: Live A/B model runs — with/without skill behavior comparison
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      Phase 1 of WRK-1009 covers static schema validation only. Live A/B runs
+      (comparing model behavior with vs without skill) require session telemetry
+      and are a separate WRK.
+
+  - id: FW-3
+    title: Auto-remediation — agent self-heals broken skills from eval failures
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      Measurement layer (WRK-1009) must be stable before auto-remediation is
+      attempted. Park as follow-on once eval data accumulates.
+
+  - id: FW-4
+    title: Duplicate skill resolution — convert 8 identified duplicates to single source
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      detect_duplicate_skills.py found 8 duplicates: competitive-analysis,
+      context-management, orcaflex-jumper-analysis, orcaflex-model-sanitization,
+      orcaflex-spec-audit, pyproject-toml, repo-sync, uv-package-manager.
+      Each needs a separate WRK to resolve (keep canonical, archive duplicate).
+
+  - id: FW-5
+    title: Script conversion — convert identified skill candidates to scripts
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      identify_script_candidates.py output feeds individual conversion WRKs per skill.
+      No auto-conversion in this WRK per scope boundary.

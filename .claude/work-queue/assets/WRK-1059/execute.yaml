@@ -1,0 +1,12 @@
+wrk_id: WRK-1059
+stage: 10
+files_changed:
+  - scripts/quality/api-audit.py (new + bug-fixed: ast.walk→tree.body, added UnicodeDecodeError+OSError)
+  - scripts/quality/check-all.sh (check_docs_structure, detect_build_system, run_api_audit, --api flag)
+  - tests/quality/test_check_all.sh (T15–T20, 35 total)
+  - tests/quality/test_api_audit.py (new, 12 unit tests)
+  - .claude/rules/patterns.md (Create Scripts to Avoid LLM Overheads rule)
+summary: >
+  API docstring coverage scanner + docs/ structure validator. 35 bash + 12 pytest tests pass.
+  Codex cross-review APPROVE after one fix iteration (scope bug + error handling).
+executed_at: "2026-03-11T11:00:00Z"

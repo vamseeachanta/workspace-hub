@@ -1,0 +1,8 @@
+wrk_id: WRK-1099
+updated_at: "2026-03-10T15:15:00Z"
+additions:
+  - type: pattern
+    description: >
+      whats-next.sh partition pattern: THIS_HOST=$(hostname -s) cached once;
+      _CATEGORY_EXPLICIT flag clears default harness filter when --subcategory
+      used alone; brief remote one-liner format: [other machines: WRK-X WRK-Y …]

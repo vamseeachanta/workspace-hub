@@ -1,0 +1,23 @@
+wrk_id: WRK-1087
+updated_at: 2026-03-09T22:00:00Z
+additions:
+  - type: script
+    path: scripts/audit/log-action.sh
+    description: >
+      Core audit trail writer — append-only SHA256-chained JSONL entries with
+      flock locking and cross-file chain continuity via audit-chain-state.json.
+  - type: script
+    path: scripts/audit/audit-query.sh
+    description: >
+      jq-based query tool for audit log — filter by --wrk, --session, --date
+      with tabular human-readable output.
+  - type: script
+    path: scripts/audit/verify-chain.sh
+    description: >
+      SHA256 chain integrity verifier — validates each entry's prev_hash matches
+      SHA256 of previous line; exits 0 if clean, 1 with error if broken.
+  - type: test
+    path: tests/quality/test_audit_trail.sh
+    description: >
+      20-assertion TDD test suite for audit trail using env-override isolation
+      (AUDIT_LOG_DIR, SESSION_STATE_FILE, ACTIVE_WRK_FILE).

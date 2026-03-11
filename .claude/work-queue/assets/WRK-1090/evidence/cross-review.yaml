@@ -1,0 +1,69 @@
+wrk_id: WRK-1090
+stage: 6
+phase: plan
+reviewed_at: "2026-03-10T03:03:00Z"
+input_file: /tmp/wrk-1090-plan-review-input.md
+
+verdicts:
+  codex: MAJOR        # Claude Opus substitute — Codex quota exhausted (approved by user)
+  gemini: MINOR
+  claude: APPROVE_AS_IS
+
+overall: MAJOR_RESOLVED
+hard_gate_passed: true   # MAJOR findings resolved in plan revision; re-review confirmed APPROVE_AS_IS
+
+codex_findings:
+  - id: C1
+    severity: MAJOR
+    finding: "`uv pip list --outdated --format=json` requires activated venv context; bare invocation fails or uses wrong env"
+    resolution: fixed
+    note: "Changed to `uv run pip list --outdated --format=json` from repo root — uses repo's venv"
+  - id: C2
+    severity: MAJOR
+    finding: "`uv audit` does not exist in uv 0.5.x; probe always fails; pip-audit needs requirements source not uv.lock directly"
+    resolution: fixed
+    note: "Removed uv audit probe; using `uvx pip-audit --format=json --requirement <(uv export --no-hashes --format requirements-txt)`"
+  - id: C3
+    severity: IMPORTANT
+    finding: "`uvx` must also be mocked in TDD — CVE path exclusively uses uvx"
+    resolution: fixed
+    note: "Added uvx mock to test strategy; T4/T5 cover uvx pip-audit explicitly"
+  - id: C4
+    severity: IMPORTANT
+    finding: "`uv lock --check` may hit network causing false failures in offline cron"
+    resolution: fixed
+    note: "Added --offline flag"
+  - id: C5
+    severity: IMPORTANT
+    finding: "YAML report same-day overwrite unspecified"
+    resolution: fixed
+    note: "Changed to timestamped filename: dep-health-YYYY-MM-DDTHHMM.yaml"
+  - id: C6
+    severity: IMPORTANT
+    finding: "flock needs --timeout to prevent deadlock"
+    resolution: fixed
+    note: "Added `flock --timeout 10`"
+  - id: C7
+    severity: MINOR
+    finding: "CalVer edge cases in >2-minor-versions heuristic"
+    resolution: fixed
+    note: "Simplified to: any outdated = warn"
+  - id: C8
+    severity: MINOR
+    finding: "--repo flag not mentioned"
+    resolution: fixed
+    note: "Added --repo <name> flag mirroring check-all.sh"
+
+gemini_suggestions:
+  - id: G1
+    finding: "Auto-WRK atomicity — lock must cover both read and write"
+    resolution: fixed
+    note: "flock now wraps both next-id.sh call and mktemp+mv write"
+  - id: G2
+    finding: "uvx must also be mocked"
+    resolution: fixed
+    note: "Merged with C3"
+  - id: G3
+    finding: "YAML report same-day overwrite"
+    resolution: fixed
+    note: "Merged with C5"

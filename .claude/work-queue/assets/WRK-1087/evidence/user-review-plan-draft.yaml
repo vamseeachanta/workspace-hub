@@ -1,0 +1,7 @@
+wrk_id: WRK-1087
+stage: 5
+approval_decision: approve_as_is
+decision: approved
+reviewer: vamsee
+approved_at: 2026-03-09
+notes: Plan approved — 8 tasks, SHA256-chained JSONL audit trail, bash assert tests, 6 integration points

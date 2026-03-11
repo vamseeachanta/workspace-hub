@@ -1,0 +1,4 @@
+wrk_id: WRK-1010
+stage: 18
+status: n/a
+reason: "No reclaim triggered — WRK-1010 ran continuously without interruption; no session break requiring reclaim."

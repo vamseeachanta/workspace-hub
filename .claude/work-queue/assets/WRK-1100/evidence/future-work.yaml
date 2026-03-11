@@ -1,0 +1,20 @@
+wrk_id: WRK-1100
+generated_at: 2026-03-10T15:35:00Z
+recommendations:
+  - id: FW-1
+    title: "Add bats regression tests for standing+cadence guard in whats-next.sh"
+    rationale: >
+      Codex and Gemini both flagged missing test coverage. A future change to get_field
+      semantics or YAML field names could silently break this guard without tests.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Test matrix: pending+standing+cadence hidden; working+standing+cadence shown; standing-no-cadence shown"
+  - id: FW-2
+    title: "Document get_field missing-key behavior in whats-next.sh header comment"
+    rationale: >
+      Claude review raised question about get_field return value when key absent.
+      Empty string is the actual behavior but not documented.
+    disposition: spun-off-new
+    status: captured
+    captured: true

@@ -1,0 +1,54 @@
+wrk_id: WRK-1069
+recorded_at: "2026-03-11T11:00:00Z"
+recorded_by: vamsee
+session: "pre-stage-2 assessment session"
+
+summary: >
+  In-session preparatory work on rules/skills that motivated WRK-1069 scope and
+  establishes coding standards for its implementation. Changes made before Stage 2
+  Resource Intelligence begins.
+
+changes:
+  - file: .claude/rules/patterns.md
+    section: "Scripts Over LLM Judgment / Create Scripts to Avoid LLM Overheads"
+    change: >
+      Added 25% Repetition Rule (Hard Rule): if ≥25% chance an operation recurs,
+      write a script instead of reasoning inline. Also added "any doubt → assume
+      it will recur; write the script" signal bullet.
+    rationale: >
+      WRK-1069 will produce wrk-cost-report.py and session-logger extensions —
+      both repeatable operations. The 25% rule canonicalises the threshold used
+      to justify creating these scripts rather than ad-hoc LLM analysis of token
+      logs each session.
+
+  - file: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    section: "Work Execution Principle: Scripts Over LLM Overhead"
+    change: >
+      Replaced 5-line restatement with 2-line cross-reference to patterns.md.
+      Deduplication: principle was in 3 places (patterns.md, work-queue SKILL,
+      work-queue-workflow SKILL); now canonical in patterns.md only.
+    rationale: Skill prose duplicated across 3 files causes rule drift.
+
+  - file: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    section: "Practical Lessons (WRK-690)"
+    change: >
+      Collapsed "Create scripts to avoid LLM overhead" bullet to a cross-ref
+      pointing to patterns.md and including the 25% threshold.
+    rationale: Same dedup as above.
+
+assessment_findings:
+  gaps_identified:
+    - id: GAP-1
+      description: "No close-phase wrapper script (stages 14-20). plan.sh/execute.sh exist but no close.sh."
+      priority: medium
+      action: capture as new WRK item
+    - id: GAP-2
+      description: "Post-stage sequence (verify-gate → HTML regen → checkpoint → push) is prose-driven. exit_stage.py validates but does not automate the full post-stage loop."
+      priority: medium
+      action: extend exit_stage.py or add post-stage.sh
+    - id: GAP-3
+      description: "capture-item.sh missing (stage 1 script parity with close-item.sh)."
+      priority: low
+      action: capture as new WRK item
+
+disposition: recorded_for_traceability

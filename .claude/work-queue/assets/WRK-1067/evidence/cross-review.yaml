@@ -1,0 +1,21 @@
+wrk_id: WRK-1067
+stage: 6
+completed_at: "2026-03-09"
+providers:
+  codex:
+    verdict: REQUEST_CHANGES
+    findings:
+      - "Use --cov-report=json instead of terminal grep/awk"
+      - "Ratchet threshold -2% too permissive; use max(80, baseline-2)"
+      - "Dynamic pyproject.toml detection is fragile"
+      - "SKIP_COVERAGE=1 has no audit trail"
+    resolution: "All addressed in revised plan"
+  gemini:
+    verdict: REQUEST_CHANGES
+    findings:
+      - "Hard 80% floor missing; ratchet-only doesn't meet WRK objective"
+      - "--cov=src assumption fails; use repo-owned coverage.run source"
+      - "Terminal output parsing brittle; use JSON"
+      - "SKIP_COVERAGE needs reason logging"
+    resolution: "All addressed in revised plan"
+plan_updated: true

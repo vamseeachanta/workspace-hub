@@ -1,0 +1,161 @@
+wrk_id: WRK-1105
+generated_at: "2026-03-10T00:00:00Z"
+generated_by: claude
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+    - workspace-hub/comprehensive-learning
+    - workspace-hub/session-start
+  related:
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/knowledge
+
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+domain:
+  problem: >
+    No structured queryable knowledge store exists. WRK completion summaries accumulate
+    directly in MEMORY.md (146/200 lines, ~25 archived WRK entries written manually by
+    the orchestrator during sessions), engineering domain expertise exists nowhere in
+    the system, and each session rediscovers patterns already learned.
+  architecture_decision: >
+    Create scripts/knowledge/ with capture, index, and query scripts backed by a persistent
+    knowledge-base/ store; route WRK completions there at archive time via a hook in
+    archive-item.sh; enrich resource-intelligence Stage 2 and session-start with
+    knowledge-base lookups; slim MEMORY.md to <=150 lines of active pointers only.
+
+existing_files:
+  - path: scripts/analysis/knowledge-capture.sh
+    status: existing
+    notes: >
+      Phase 3 of comprehensive-learning pipeline. Reads session-signals/*.jsonl and appends
+      skill_invoked/stage_exit facts to state/learned-patterns.jsonl. Narrow scope only —
+      operational signals, not WRK domain summaries or engineering expertise. Model for
+      scripts/knowledge/capture-wrk-summary.sh.
+
+  - path: scripts/memory/compact-memory.py
+    status: existing
+    notes: >
+      5-rule eviction pipeline. Manages MEMORY.md line budget but evicts WRK summaries
+      without routing to a knowledge store — learnings are lost on eviction. Must be
+      updated to migrate done-WRK entries to knowledge-base/ before removal.
+
+  - path: scripts/memory/curate-memory.py
+    status: existing
+    notes: >
+      Read-only classifier producing memory-promotion-candidates.md. Potential integration:
+      promoted entries routed to knowledge-base/ instead of remaining in MEMORY.md.
+
+  - path: scripts/memory/eval-memory-quality.py
+    status: existing
+    notes: >
+      6-metric evaluator confirming MEMORY.md congestion. Useful regression guard after
+      migration to verify MEMORY.md stays <=150 lines.
+
+  - path: scripts/learning/comprehensive-learning.sh
+    status: existing
+    notes: >
+      10-phase nightly pipeline. Phases 3b/3c handle compaction/curation. No phase
+      extracts WRK completion summaries to a knowledge store. Natural integration point
+      for a new Phase 3d invoking scripts/knowledge/capture-wrk-summary.sh.
+
+  - path: scripts/work-queue/archive-item.sh
+    status: existing
+    notes: >
+      Moves items to archive/ with gate checks. No knowledge extraction today. Key
+      insertion point for a best-effort call to scripts/knowledge/capture-wrk-summary.sh
+      immediately after gate pass.
+
+  - path: .claude/state/learned-patterns.json
+    status: existing
+    notes: >
+      Session-tool-usage patterns (delegation_score, tool_patterns, error_patterns).
+      Not domain knowledge. Should remain a separate session-signals artifact from
+      knowledge-base/.
+
+  - path: .claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+    status: reference
+    notes: >
+      10 pipeline phases. A Phase 3d Knowledge Extraction could be added. Update requires
+      Codex cross-review gate.
+
+  - path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    status: reference
+    notes: >
+      Resource Mining Checklist with 9 categories. Adding category 10 (knowledge-base query)
+      enriches Stage 2 planning. Update requires Codex gate.
+
+  - path: .claude/skills/workspace-hub/session-start/SKILL.md
+    status: reference
+    notes: >
+      Steps 1-6 surface readiness/snapshot/quota/items. No knowledge-base query step.
+      Step 2 (Session Snapshot) and Step 5b (Repo-Map Context) are extension points.
+
+  - path: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
+    status: existing
+    notes: >
+      146/200 lines. ~25 WRK-NNN ARCHIVED summary lines are the primary driver of growth,
+      written by the orchestrator during sessions, not by any script. These must be migrated
+      to knowledge-base/.
+
+  - path: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/engineering-modules.md
+    status: existing
+    notes: >
+      ~120 lines of engineering module completion details (wall thickness, fatigue, cost,
+      metocean). Not queryable. Ideal seed content for career learnings ingestion.
+      Legal scan required before commit.
+
+constraints:
+  - >
+    MEMORY.md lives outside workspace-hub repo at
+    /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md.
+    Scripts must use this absolute path, not a repo-relative path.
+  - >
+    knowledge-base/ content must not contain client identifiers. Run legal-sanity-scan.sh
+    against all seeded content before commit (especially engineering-modules.md migration).
+  - >
+    archive-item.sh runs on ace-linux-1 only. Knowledge extraction hook must be
+    best-effort (non-blocking) to avoid stalling the archive gate on failure.
+  - >
+    TDD mandatory: >=5 tests required. scripts/knowledge/ needs tests/ structure following
+    the pattern at scripts/work-queue/tests/.
+  - >
+    WRK-1018 and WRK-1009 touch adjacent infrastructure. Coordinate to avoid conflicting
+    edits to comprehensive-learning/SKILL.md and the nightly cron pipeline.
+
+top_p2_gaps:
+  - >
+    The exact mechanism writing WRK-NNN ARCHIVED summaries to MEMORY.md is presumed
+    orchestrator-manual (not scripted) but unconfirmed. Part 1 diagnosis document must
+    trace this call site before the routing table can be finalized.
+  - >
+    No knowledge-base entry schema defined yet (JSONL vs YAML, required fields, domain
+    taxonomy). Planner must design this — it determines the storage format for all scripts.
+  - >
+    Updates to resource-intelligence/SKILL.md (category 10) and
+    comprehensive-learning/SKILL.md (Phase 3d) each require Codex cross-review gates.
+    Plan must account for these process steps.
+
+top_p3_gaps:
+  - >
+    knowledge-capture.sh has no tests. Any expansion should include tests in the same PR.
+  - >
+    learned-patterns.jsonl and planned knowledge-base/ may overlap in purpose. Plan
+    should clarify whether learned-patterns.jsonl is deprecated, extended, or kept separate.
+  - >
+    Career learnings ingestion would benefit from a structured schema (domain, subdomain,
+    fact, source, confidence, date) modelled on engineering-modules.md. Enhancement-only
+    for the initial implementation.
+
+quality_signals:
+  missing_artifact_rate: 0.0
+  plan_edits_required: 0
+  confidence: high

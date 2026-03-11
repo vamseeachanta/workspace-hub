@@ -576,5 +576,102 @@ pushd nested/work >/dev/null
 python3 "$SYNC" --yaml ../../data/document-index/resource-intelligence-maturity.yaml --markdown ../../data/document-index/resource-intelligence-maturity.md --check
 popd >/dev/null
 
+
+# ── WRK-667 Phase 3: validate-resource-pack.sh RI evidence checks ────────────
+# Run inside tmpdir (before second popd). Tests for evidence/resource-intelligence.yaml.
+
+RI_WRK="WRK-6670"
+ri_asset=".claude/work-queue/assets/${RI_WRK}"
+mkdir -p "${ri_asset}/evidence"
+
+bash "$INIT" "$RI_WRK"
+
+# Use registry source format (AGENTS is in mounted-source-registry.yaml)
+cat > "${ri_asset}/sources.md" <<'EOF'
+# Sources
+- AGENTS
+EOF
+
+cat > "${ri_asset}/resources.yaml" <<'EOF'
+wrk_id: WRK-6670
+no_external_sources: false
+sources:
+  - id: AGENTS
+    source_type: registry
+    origin: AGENTS.md
+    license_access: repo-native
+    retrieval_date: 2026-03-01
+    canonical_storage_path: AGENTS.md
+    duplicate_status: canonical
+    status: available
+EOF
+
+cat > "${ri_asset}/resource-intelligence-summary.md" <<'EOF'
+- `wrk_id`: WRK-6670
+- `summary`: test RI checks
+- `top_p1_gaps`:
+  - none
+- `top_p2_gaps`:
+  - none
+- `top_p3_gaps`:
+  - none
+- `user_decision`: continue_to_planning
+- `reviewed_at`: 2026-03-09T08:00:00Z
+- `reviewer`: claude
+- `legal_scan_ref`: not_applicable
+- `indexing_ref`: not_applicable
+EOF
+
+# T1: PASS (warn-only) when evidence/resource-intelligence.yaml is missing
+bash "$VALIDATE" "$RI_WRK" 2>&1 | grep -q "WARN: evidence/resource-intelligence.yaml absent" \
+  || { echo "T1 FAIL: expected WARN message for missing RI evidence" >&2; exit 1; }
+
+# T2: FAIL when completion_status field is missing
+cat > "${ri_asset}/evidence/resource-intelligence.yaml" <<'EOF'
+wrk_id: WRK-6670
+generated_at: "2026-03-09T08:00:00Z"
+generated_by: claude
+stage: 2
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+top_p1_gaps: []
+EOF
+assert_fail bash "$VALIDATE" "$RI_WRK"
+
+# T3: FAIL when skills.core_used has fewer than 3 entries
+cat > "${ri_asset}/evidence/resource-intelligence.yaml" <<'EOF'
+wrk_id: WRK-6670
+generated_at: "2026-03-09T08:00:00Z"
+generated_by: claude
+stage: 2
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+top_p1_gaps: []
+EOF
+assert_fail bash "$VALIDATE" "$RI_WRK"
+
+# T4: PASS when evidence/resource-intelligence.yaml is complete and valid
+cat > "${ri_asset}/evidence/resource-intelligence.yaml" <<'EOF'
+wrk_id: WRK-6670
+generated_at: "2026-03-09T08:00:00Z"
+generated_by: claude
+stage: 2
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+top_p1_gaps: []
+EOF
+bash "$VALIDATE" "$RI_WRK"
+
 popd >/dev/null
+
 echo "Resource Intelligence script tests passed"

@@ -76,9 +76,10 @@ LOG="${WORKSPACE_HUB}/.claude/state/learning-reports/cron.log"
 
 if [[ "$CRON_VARIANT" == "full" ]]; then
   # ace-linux-1: full 10-phase pipeline + all maintenance crons
+  # NOTE: session-analysis-nightly.sh removed (WRK-1102 Fix 3/FW-3) — analysis is now
+  #       invoked inside comprehensive-learning-nightly.sh; no separate 3AM entry needed.
   ENTRIES+=(
     "0  2  * * *  cd ${HUB_Q} && bash scripts/cron/comprehensive-learning-nightly.sh >> \"${LOG}\" 2>&1"
-    "0  3  * * *  cd ${HUB_Q} && bash scripts/cron/session-analysis-nightly.sh >> \"${LOG}\" 2>&1"
     "15 3  * * 0  cd ${HUB_Q} && timeout 60 bash scripts/maintenance/ai-tools-status.sh >> \"${LOG}\" 2>&1"
     "30 3  * * 0  cd ${HUB_Q} && bash scripts/cron/update-model-ids.sh >> \"${LOG}\" 2>&1"
     "0  4  * * 1  cd ${HUB_Q} && bash scripts/cron/skills-curation.sh >> \"${LOG}\" 2>&1"

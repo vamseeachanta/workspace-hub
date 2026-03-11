@@ -1,0 +1,12 @@
+wrk_id: WRK-637
+stage: 9
+routed_at: "2026-03-09T00:30:00Z"
+route: B
+complexity: medium
+workstation: ace-linux-1
+orchestrator: claude
+execution_provider: claude
+rationale: >
+  Route B (medium): new scripts/memory/ module with 2 Python scripts + tests/memory/
+  test suite. Single repo (workspace-hub). ace-linux-1: hub scripts + memory files.
+  Claude as orchestrator: standard route B, no heavy compute needed.

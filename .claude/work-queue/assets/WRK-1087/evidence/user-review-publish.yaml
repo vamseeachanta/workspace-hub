@@ -1,0 +1,29 @@
+wrk_id: WRK-1087
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 7521d113
+    published_at: 2026-03-09T21:30:00Z
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1087/WRK-1087-plan-draft.html
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 7521d113
+    published_at: 2026-03-09T21:48:00Z
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1087/WRK-1087-plan-final.html
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 6c17b329cc1292c197425e3a40412cdcc4630770
+    published_at: 2026-03-09T22:05:00Z
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1087/WRK-1087-lifecycle.html

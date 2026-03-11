@@ -1,0 +1,9 @@
+wrk_id: WRK-1102
+stage: 16
+updated_at: 2026-03-10T16:49:18Z
+additions:
+  - "classify.sh now routes by event type (pure shell); no Anthropic API calls in nightly pipeline"
+  - "exit_stage.py emits stage_exit signal to state/session-signals/YYYY-MM-DD.jsonl"
+  - "ingest-codex-sessions.sh: --date/--codex-dir/--signals-dir flags; idempotent"
+  - "daily-reflect.sh: --workspace/--date/--dry-run; writes state/reflect-history/YYYY-MM-DD.md"
+  - "knowledge-capture.sh: --workspace/--date/--dry-run; writes state/learned-patterns.jsonl"

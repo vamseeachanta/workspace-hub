@@ -1,0 +1,21 @@
+wrk_id: WRK-1094
+generated_at: "2026-03-10T12:20:00Z"
+recommendations:
+  - id: FW-1
+    title: "Fix 5 overlimit CLAUDE.md files in submodules"
+    detail: "assetutilities/digitalmodel/worldenergydata/assethold/OGManufacturing CLAUDE.md all >20 lines; migrate to skills/docs"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Add CODEX.md/GEMINI.md adapter stubs to all 5 submodules"
+    detail: "Upgrade WARN to FAIL once stub files exist"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Refactor check_config_drift.py to stay well below 400-line limit"
+    detail: "Extract baseline and reporting modules; Gemini MINOR finding from Phase 2 review"
+    disposition: existing-updated
+    status: captured
+    captured: true

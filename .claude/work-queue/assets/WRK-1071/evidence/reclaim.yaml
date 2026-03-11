@@ -1,0 +1,4 @@
+wrk_id: WRK-1071
+status: n/a
+reason: No checkpoint.yaml found — WRK completed in a single session without interruption.
+completed_at: "2026-03-10T16:46:00Z"

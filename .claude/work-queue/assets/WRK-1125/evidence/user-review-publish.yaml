@@ -1,0 +1,29 @@
+wrk_id: WRK-1125
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "20a2d3e64ec1fe62afce4ba41b918e2e42cc4a3a"
+    documents:
+      - .claude/work-queue/assets/WRK-1125/WRK-1125-lifecycle.html
+    published_at: "2026-03-11T13:30:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "20a2d3e64ec1fe62afce4ba41b918e2e42cc4a3a"
+    documents:
+      - .claude/work-queue/assets/WRK-1125/WRK-1125-lifecycle.html
+    published_at: "2026-03-11T13:30:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "20a2d3e64ec1fe62afce4ba41b918e2e42cc4a3a"
+    documents:
+      - .claude/work-queue/assets/WRK-1125/WRK-1125-lifecycle.html
+    published_at: "2026-03-11T13:30:00Z"
+    reviewer: vamsee

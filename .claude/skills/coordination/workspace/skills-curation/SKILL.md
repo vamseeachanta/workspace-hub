@@ -154,17 +154,29 @@ gap_score    = demand_score - depth_score   # positive = high demand, low data
 - Stale skills flagged in Phase 1
 - Active domain areas with no existing coverage
 
+**Primary external source — check skills.sh first:**
+
+Before running any WebSearch queries, check https://skills.sh/ for proven implementations
+in the target domain:
+
+- Browse the leaderboard for high-install skills relevant to the domain
+- Read the raw SKILL.md on GitHub to inspect content passively
+- Key GitHub sources: obra/superpowers, anthropics/skills, wshobson/agents
+- Prefer adoption + adaptation over invention: if skills.sh has a proven skill, adopt it
+  rather than creating a net-new skill from scratch (subject to license gate — see Adoption Workflow below)
+
 **For each research target:**
 
-1. Run `WebSearch` with a focused query:
+1. Check https://skills.sh/ for existing proven implementations (see above)
+2. Run `WebSearch` with a focused query if skills.sh has no match:
    - `"<skill domain> best practices 2026 python"`
    - `"<tool name> new features changelog 2026"`
    - `"alternatives to <tool> 2026"`
-2. Assess findings:
+3. Assess findings:
    - New tool/pattern with no existing skill → shallow or deep gap?
    - Existing skill content outdated → queue enhancement
    - Deprecation found → flag in skill frontmatter
-3. Collect research yield (findings per query)
+4. Collect research yield (findings per query)
 
 **Yield tracking:**
 
@@ -276,6 +288,48 @@ After creating the stub:
 
 1. Update `skill-registry.yaml` if it exists
 2. Update the category `INDEX.md` if it exists
+
+---
+
+## skills.sh Adoption Workflow
+
+Use this workflow whenever a skills.sh skill is a candidate for adoption into the
+workspace-hub skill library.
+
+### Steps
+
+1. **Browse** — visit https://skills.sh/ and identify candidate skills relevant to the
+   domain under review (sort by install count for proven picks)
+2. **License gate** — before any reuse, inspect the upstream repo's LICENSE file:
+   - Permissive (MIT, Apache-2, CC-BY): direct adaptation allowed with attribution
+   - Restrictive or unclear: summarize/paraphrase only; do not copy verbatim
+   - No license: treat as all-rights-reserved; summarize only
+3. **Inspect** — prefer passive review first: read the skills.sh page and raw SKILL.md
+   on GitHub. Only use `npx skillsadd <owner/repo>` if runtime inspection is needed,
+   and only in a disposable environment (not the live workspace)
+4. **Diff against existing** — compare the skills.sh skill with the nearest equivalent
+   in `.claude/skills/`:
+   - Identify novel patterns (review rubrics, severity matrices, checklists, prompts)
+   - Identify overlapping patterns already covered
+5. **Route to action**:
+
+| Finding | Action |
+|---------|--------|
+| Novel patterns + no equivalent skill | Create new skill stub incorporating the patterns |
+| Novel patterns + equivalent skill exists | Enhance existing SKILL.md with the novel sections |
+| Fully covered by existing skill | Skip — log `skipped: already covered` in curation-log.yaml |
+| Partial overlap + gaps | Enhance existing skill; add `see_also` cross-link to upstream source |
+
+6. **Attribute** — add `adopted_from: skills.sh/<owner/repo>` to the skill frontmatter
+   (separate field; does not replace the existing `source:` field which tracks creation origin)
+7. **Log** — record adoption decision in `curation-log.yaml` under the current run's
+   `skills_created` or `skills_updated` count
+
+### Key GitHub Sources
+
+- `obra/superpowers` — general-purpose superpowers skills
+- `anthropics/skills` — Anthropic-curated reference implementations
+- `wshobson/agents` — agent patterns (code-review-excellence, etc.)
 
 ---
 

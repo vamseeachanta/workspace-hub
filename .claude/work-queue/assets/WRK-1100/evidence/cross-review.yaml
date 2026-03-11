@@ -1,0 +1,15 @@
+wrk_id: WRK-1100
+stage: 6
+phase: 1
+claude_verdict: APPROVE
+codex_verdict: APPROVE
+gemini_verdict: APPROVE
+findings_deferred:
+  - id: test-coverage
+    severity: medium
+    description: "No bats regression test for standing+cadence guard"
+    disposition: captured-as-follow-on
+notes: >
+  Phase 1 Codex returned REQUEST_CHANGES (guard fired before working/blocked routing).
+  Fix applied: guard moved to after working/blocked early-returns, scoped to pending only.
+  Phase 2: all three providers APPROVE.

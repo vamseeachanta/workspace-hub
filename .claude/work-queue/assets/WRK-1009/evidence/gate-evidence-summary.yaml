@@ -1,0 +1,85 @@
+wrk_id: WRK-1009
+phase: close
+generated_at: "2026-03-10T19:55:00Z"
+result: PASS
+hard_fails: 0
+warns: 3
+gates:
+  - name: Plan gate
+    ok: true
+    details: "reviewed=True, approved=True, artifact=workflow-final-review.html, confirmation=confirmed_by=present"
+  - name: Workstation contract gate
+    ok: true
+    details: "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
+  - name: Stage evidence gate
+    ok: true
+    details: "stage-evidence.yaml: stages=20, contract=20-stage"
+  - name: Resource-intelligence gate
+    ok: true
+    details: "completion_status=continue_to_planning, p1_count=0, core_skills=5"
+  - name: Activation gate
+    ok: true
+    details: "activation.yaml: activation evidence OK"
+  - name: Agent log gate
+    ok: true
+    details: "pre-cutoff backfill — log gate skipped"
+  - name: User-review HTML-open gate
+    ok: true
+    details: "stages=[close_review, plan_draft, plan_final]"
+  - name: User-review publish gate
+    ok: true
+    details: "stages=[close_review, plan_draft, plan_final]"
+  - name: Cross-review gate
+    ok: true
+    details: "artifact=review.md"
+  - name: TDD gate
+    ok: true
+    details: "test files=[ac-test-matrix.md]"
+  - name: Integrated test gate
+    ok: true
+    details: "execute.yaml: integrated_repo_tests=3 (all passing)"
+  - name: Legal gate
+    ok: true
+    details: "artifact=legal-scan.md, result=PASS"
+  - name: Claim gate
+    ok: true
+    details: "claim-evidence.yaml: version=1"
+  - name: Future-work gate
+    ok: true
+    details: "future-work.yaml: recommendations=5"
+  - name: Resource-intelligence update gate
+    ok: true
+    details: "resource-intelligence-update.yaml: additions=9"
+  - name: User-review close gate
+    ok: true
+    details: "user-review-close.yaml: decision=approved"
+  - name: Approval ordering gate
+    ok: true
+    details: "approval ordering OK"
+  - name: Midnight UTC sentinel gate
+    ok: true
+    details: "no midnight UTC sentinel found"
+  - name: Browser open elapsed time gate
+    ok: true
+    details: "browser open elapsed time OK"
+  - name: Sentinel values gate
+    ok: true
+    details: "no sentinel values found"
+  - name: Stage evidence paths gate
+    ok: true
+    details: "all stage evidence paths verified"
+  - name: Done/pending contradiction gate
+    ok: true
+    details: "no done/pending contradictions found"
+  - name: Reclaim gate
+    ok: true
+    warn: true
+    details: "reclaim.yaml absent (no reclaim triggered — WARN)"
+  - name: Publish commit uniqueness gate
+    ok: true
+    warn: true
+    details: "plan_draft and plan_final share commit — WARN only"
+  - name: Reclaim n/a gate
+    ok: true
+    warn: true
+    details: "Stage 18 is n/a and no reclaim log exists — WARN only"

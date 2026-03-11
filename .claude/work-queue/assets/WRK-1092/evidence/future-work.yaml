@@ -1,0 +1,25 @@
+wrk_id: WRK-1092
+generated_at: 2026-03-10T04:40:00Z
+
+recommendations:
+  - id: FW-1
+    title: Atomic write for baseline auto-update (temp + rename)
+    description: When error count decreases and baseline is auto-updated, write to temp file then rename to prevent corrupt YAML on Ctrl-C
+    priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: Per-repo mypy config flags stored in baseline YAML
+    description: Capture exact mypy invocation flags per repo in baseline so error counts are reproducible regardless of config drift
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: Machine-readable mypy output format (--junit-xml)
+    description: Replace stdout parsing with --junit-xml for robustness against mypy output format changes
+    priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true

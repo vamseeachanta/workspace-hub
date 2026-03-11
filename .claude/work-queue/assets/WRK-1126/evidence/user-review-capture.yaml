@@ -1,0 +1,6 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-11"
+wrk_id: WRK-1126
+stage: 1
+notes: "User approved scope for maritime law domain: skill, cases YAML, liabilities YAML, knowledge indexing, TDD."

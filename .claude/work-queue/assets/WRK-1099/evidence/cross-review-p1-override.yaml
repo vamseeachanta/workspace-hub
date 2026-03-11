@@ -1,0 +1,7 @@
+wrk_id: WRK-1099
+reviewer: vamsee
+overridden_at: 2026-03-10T06:32:00Z
+override_reason: >
+  P1 TDD finding addressed: plan reordered so tests are step 1.
+  The finding was against the plan ordering, not implementation — no code was written.
+  Plan now correctly reflects TDD-first approach.

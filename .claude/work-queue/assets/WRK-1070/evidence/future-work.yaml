@@ -1,0 +1,63 @@
+wrk_id: WRK-1070
+stage: 15
+generated_at: "2026-03-09T22:12:00Z"
+
+recommendations:
+  - id: FW-1
+    title: "Install gitleaks system-wide or via pre-commit auto-install"
+    description: >
+      gitleaks is declared in pre-commit configs but not installed system-wide.
+      pre-commit will auto-install it on first commit per repo. For the secrets-scan.sh
+      full-history scanner, gitleaks must be installed manually or via CI.
+    priority: high
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    suggested_wrk: null
+
+  - id: FW-2
+    title: "Run gitleaks generate-baseline to populate actual findings"
+    description: >
+      Current baselines are empty stubs. Need to run gitleaks detect on each
+      repo to capture actual pre-existing findings (if any). Safe to do once
+      gitleaks is installed.
+    priority: medium
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    suggested_wrk: null
+
+  - id: FW-3
+    title: "WRK-1064: Wire pre-push.sh with full test suite gate"
+    description: >
+      pre-push.sh currently only calls secrets-scan.sh. WRK-1064 should add test
+      suite execution and other quality gates. The hook is live and calls secrets-scan.sh
+      when gitleaks is available.
+    priority: medium
+    disposition: existing-updated
+    status: pending
+    captured: true
+    suggested_wrk: WRK-1064
+
+  - id: FW-4
+    title: "WRK-1057: Repo-health dashboard secrets-clean status"
+    description: >
+      Dashboard integration was explicitly deferred from WRK-1070 to WRK-1057 per
+      Codex cross-review recommendation. secrets-scan.sh exit code is the signal.
+    priority: low
+    disposition: existing-updated
+    status: pending
+    captured: true
+    suggested_wrk: WRK-1057
+
+  - id: FW-5
+    title: "Audit git history for pre-existing secrets"
+    description: >
+      The current implementation scans working tree; a one-time full git history audit
+      of all 5 tier-1 repos should be done once gitleaks is installed to confirm
+      no historical secrets exist. Update baselines accordingly.
+    priority: high
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    suggested_wrk: null

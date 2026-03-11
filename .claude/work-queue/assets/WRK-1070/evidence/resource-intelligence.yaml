@@ -1,0 +1,44 @@
+wrk_id: WRK-1070
+stage: 2
+generated_at: "2026-03-09T20:05:00Z"
+completion_status: continue_to_planning
+
+tool_availability:
+  gitleaks: "not installed — declared in worldenergydata/.pre-commit-config.yaml v8.21.2; installable via pre-commit auto-install"
+  trufflehog: "not installed"
+  detect_secrets: "v1.4.0 — installed via pre-commit; used in digitalmodel/.pre-commit-config.yaml"
+
+existing_patterns:
+  - scripts/legal/legal-sanity-scan.sh — hook script template (multi-repo, exit codes, --repo flag)
+  - scripts/quality/check-all.sh — multi-repo orchestration pattern with flags
+  - config/quality/bandit-baseline-*.json — baseline storage pattern (5 repos)
+  - digitalmodel/.pre-commit-config.yaml — detect-secrets with .secrets.baseline example
+  - worldenergydata/.pre-commit-config.yaml — gitleaks v8.21.2 hook declaration
+
+repos_with_precommit:
+  - workspace-hub (hub root)
+  - assethold
+  - assetutilities
+  - digitalmodel (most comprehensive — has detect-secrets)
+  - OGManufacturing
+  - worldenergydata (has gitleaks declared)
+
+tier1_repos: [assethold, assetutilities, digitalmodel, OGManufacturing, worldenergydata]
+
+recommendation: >
+  Use gitleaks via pre-commit hook (language: golang, auto-installed by pre-commit framework).
+  worldenergydata already declares v8.21.2. Extend pattern to all repos.
+  Store baseline in scripts/security/secrets-baseline.json following bandit pattern.
+  Use legal-sanity-scan.sh as hook script template for secrets-scan.sh.
+
+risks:
+  - gitleaks must be installed (pre-commit handles auto-install when `language: golang` declared)
+  - WRK-1064 (pre-push gate) is still pending — integration will be a stub
+
+skills:
+  core_used:
+    - legal-sanity-scan (hook script pattern)
+    - check-all.sh (multi-repo orchestration)
+    - bandit-baseline (security scanning baseline pattern)
+    - pre-commit hook ecosystem (8 repos studied)
+    - detect-secrets (existing secrets tool in digitalmodel)

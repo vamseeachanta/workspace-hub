@@ -1,0 +1,14 @@
+wrk_id: "WRK-1106"
+completion_status: continue_to_planning
+generated_at: "2026-03-10T16:54:23Z"
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  related: []
+key_files:
+  - scripts/work-queue/claim-item.sh
+  - .claude/skills/coordination/workspace/work-queue/actions/process.md
+  - scripts/work-queue/tests/test-claim-collision.sh
+notes: "Route A simple fix — guard logic in claim-item.sh and process.md Step 4 documentation."

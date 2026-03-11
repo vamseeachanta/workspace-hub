@@ -124,13 +124,7 @@ rendered_file="$(mktemp)"
 trap 'rm -rf "$run_dir" "$raw_file" "$err_file" "$rendered_file"' EXIT
 
 run_renderer() {
-  if command -v uv >/dev/null 2>&1; then
-    uv run --no-project python "$RENDERER" --provider gemini --input "$raw_file"
-  elif command -v python3 >/dev/null 2>&1; then
-    python3 "$RENDERER" --provider gemini --input "$raw_file"
-  else
-    return 127
-  fi
+  uv run --no-project python "$RENDERER" --provider gemini --input "$raw_file"
 }
 
 run_gemini_once() {

@@ -329,4 +329,32 @@ else
   echo "Proposing commit: git add . && git commit -m 'chore(work-queue): close $WRK_ID'"
 fi
 
+LOG_ACTION="${WORKSPACE_ROOT}/scripts/audit/log-action.sh"
+if [[ -x "$LOG_ACTION" ]]; then
+  bash "$LOG_ACTION" wrk_close "$WRK_ID" --wrk "$WRK_ID" 2>/dev/null || true
+fi
+
+# Cost summary at close — non-blocking; suppress only exit 1 (no data)
+_COST_REPORT="${WORKSPACE_ROOT}/scripts/ai/wrk_cost_report.py"
+if command -v uv &>/dev/null && [[ -f "${_COST_REPORT}" ]]; then
+    echo ""
+    echo "=== AI Cost Summary: ${WRK_ID} ==="
+    cost_output=""
+    cost_rc=0
+    cost_output=$(uv run --no-project python "${_COST_REPORT}" "${WRK_ID}" 2>&1) || cost_rc=$?
+    if [[ $cost_rc -eq 0 ]]; then
+        echo "$cost_output"
+        # Persist evidence artifact
+        assets_dir="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}/evidence"
+        mkdir -p "$assets_dir"
+        printf "wrk_id: %s\ncost_report: |\n" "${WRK_ID}" > "${assets_dir}/cost-summary.yaml"
+        echo "$cost_output" | sed 's/^/  /' >> "${assets_dir}/cost-summary.yaml"
+        printf "generated_at: \"%s\"\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${assets_dir}/cost-summary.yaml"
+    elif [[ $cost_rc -eq 1 ]]; then
+        echo "(no cost records for ${WRK_ID})"
+    else
+        echo "[WARN] wrk_cost_report failed (exit ${cost_rc}): ${cost_output}" >&2
+    fi
+fi
+
 echo "✔ $WRK_ID closed successfully."

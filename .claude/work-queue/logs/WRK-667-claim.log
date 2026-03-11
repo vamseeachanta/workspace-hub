@@ -1,0 +1,80 @@
+timestamp: 2026-03-10T01:19:13Z
+wrk_id: WRK-667
+stage: claim
+action: set_active_wrk
+signal: set_active_wrk
+provider: claude
+notes: activation evidence captured
+
+timestamp: 2026-03-10T01:19:13Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:19:13Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:22:36Z
+wrk_id: WRK-667
+stage: claim
+action: set_active_wrk
+signal: set_active_wrk
+provider: claude
+notes: activation evidence captured
+
+timestamp: 2026-03-10T01:22:36Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:22:37Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:23:55Z
+wrk_id: WRK-667
+stage: claim
+action: set_active_wrk
+signal: set_active_wrk
+provider: claude
+notes: activation evidence captured
+
+timestamp: 2026-03-10T01:23:55Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:23:55Z
+wrk_id: WRK-667
+stage: claim
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: claude
+notes: phase=claim
+
+timestamp: 2026-03-10T01:23:55Z
+wrk_id: WRK-667
+stage: claim
+action: claim_evidence
+signal: claim_evidence
+provider: claude
+notes: claim gate verified
+

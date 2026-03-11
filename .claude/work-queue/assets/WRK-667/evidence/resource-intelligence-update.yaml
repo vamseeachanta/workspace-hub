@@ -1,0 +1,17 @@
+wrk_id: WRK-667
+stage: 16
+updated_at: "2026-03-10T02:55:00Z"
+updated_by: claude
+
+additions:
+  - type: finding
+    description: >
+      (( var++ )) arithmetic under set -euo pipefail exits when var starts at 0.
+      Affects any RI validator using arithmetic counters. Pattern: always use
+      var=$(( var + 1 )) in pipefail scripts.
+    path: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+  - type: skill
+    description: >
+      quality_signals.confidence derivation rule added to resource-intelligence-template.yaml
+      and SKILL.md Canonical Usage Path section. Future WRKs should populate this block.
+    path: .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml

@@ -1,0 +1,40 @@
+wrk_id: WRK-1102
+stage: 15
+generated_at: 2026-03-10T16:49:18Z
+recommendations:
+  - id: FW-1
+    title: Split pipeline.py into per-phase modules (Fix 5)
+    description: "comprehensive_learning_pipeline.py is 637L — extract phase5-9 + pipeline_utils.py; keep pipeline.py as shim"
+    priority: medium
+    effort: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: pending-WRK
+  - id: FW-2
+    title: Add test coverage for daily-reflect.sh and knowledge-capture.sh output validation
+    description: "Current tests check existence/execution. Add bats tests that verify output file format."
+    priority: low
+    effort: small
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: pending-WRK
+  - id: FW-3
+    title: Restore comprehensive-learning.sh call to reinstall crontab after Fix 2
+    description: "setup-cron.sh still has the 3AM entry. Remove it to prevent re-introduction on next cron reinstall."
+    priority: medium
+    effort: small
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: pending-WRK
+  - id: FW-4
+    title: route_to_skill_scores python3 dependency — add fallback when python3 unavailable
+    description: "classify.sh route_to_skill_scores uses python3 for YAML read-modify-write. Add yq fallback."
+    priority: low
+    effort: small
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: pending-WRK

@@ -1,0 +1,34 @@
+wrk_id: WRK-1018
+stage: 10
+executed_at: "2026-03-10T23:32:00Z"
+executor: claude
+artifacts:
+  - path: scripts/work-queue/scan-future-work.py
+    description: >
+      Standalone scanner — reads assets/*/evidence/future-work.yaml files modified
+      in the last N days, surfaces unqueued recommendations (captured:false or
+      captured:true with missing WRK ref), writes to candidates file for Phase 7.
+  - path: .claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md
+    description: >
+      Phase 6 enhanced with future-work surfacing step. Calls scan-future-work.py
+      --days 30 and appends output to script-candidates.md for Phase 7 pickup.
+notes: >
+  Route A execution. Title-matching abandoned in favour of explicit captured:false
+  + capture_ref WRK-ID existence check — avoids false positives.
+
+integrated_repo_tests:
+  - name: scan --days 30 returns 6 unqueued items
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md
+  - name: candidates-file appends well-formed block
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30 --candidates-file /tmp/t.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md
+  - name: malformed YAML handled gracefully
+    scope: repo
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md

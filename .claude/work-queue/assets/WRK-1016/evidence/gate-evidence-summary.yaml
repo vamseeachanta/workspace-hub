@@ -1,0 +1,45 @@
+wrk_id: WRK-1016
+stage: 14
+verified_at: "2026-03-10T12:20:00Z"
+verifier: claude
+overall_status: PARTIAL_PASS
+
+gates_ok:
+  - Plan gate
+  - Workstation contract gate
+  - Stage evidence gate
+  - Resource-intelligence gate
+  - Activation gate
+  - Agent log gate
+  - Cross-review gate
+  - TDD gate
+  - Integrated test gate
+  - Legal gate
+  - Claim gate
+  - Approval ordering gate
+  - Midnight UTC sentinel gate
+  - Browser open elapsed time gate
+  - Sentinel values gate
+  - Claim artifact path gate
+  - ISO datetime format gate
+  - Codex keyword in review gate
+  - Plan publish predates approval gate
+  - Workstation contract (strict) gate
+  - Done/pending contradiction gate
+
+gates_warn:
+  - Reclaim gate (no reclaim triggered)
+  - Publish commit uniqueness gate (shared commit — placeholder)
+  - Reclaim n/a gate
+
+gates_pending_next_stages:
+  - User-review HTML-open gate (close_review — Stage 17)
+  - User-review publish gate (close_review — Stage 17)
+  - Future-work gate (Stage 15)
+  - Resource-intelligence update gate (Stage 16)
+  - User-review close gate (Stage 17)
+  - Stage evidence paths gate (future-work.yaml — Stage 15)
+
+notes: >
+  All current-stage gates pass. Remaining MISSING gates depend on artifacts to be
+  created in Stages 15-17. No pre-existing issues remain.

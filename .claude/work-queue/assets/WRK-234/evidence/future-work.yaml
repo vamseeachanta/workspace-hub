@@ -1,0 +1,38 @@
+wrk_id: WRK-234
+recommendations:
+  - title: "WRK-226: Agent performance audit + preflight"
+    disposition: existing-updated
+    status: pending-delegated
+    captured: true
+    wrk_id: WRK-226
+    notes: Delegated to agent; ongoing
+  - title: "WRK-228: Cross-machine terminal UX consistency"
+    disposition: existing-updated
+    status: blocked
+    captured: true
+    wrk_id: WRK-228
+    notes: Blocked on multi-machine coordination
+  - title: "WRK-229: AI agent QA closure loop"
+    disposition: existing-updated
+    status: blocked
+    captured: true
+    wrk_id: WRK-229
+    notes: Blocked on WRK-228
+  - title: "WRK-230: Session handoff / submodule sync"
+    disposition: existing-updated
+    status: pending
+    captured: true
+    wrk_id: WRK-230
+    notes: Likely stale — verify if session 127 changes committed
+  - title: "WRK-225: Plugins vs skills evaluation"
+    disposition: existing-updated
+    status: parked
+    captured: true
+    wrk_id: WRK-225
+    notes: Parked until May 2026
+  - title: "WRK-227: Cowork evaluation"
+    disposition: existing-updated
+    status: parked
+    captured: true
+    wrk_id: WRK-227
+    notes: Parked until April 2026

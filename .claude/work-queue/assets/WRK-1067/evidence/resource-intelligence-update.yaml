@@ -1,0 +1,16 @@
+wrk_id: WRK-1067
+stage: 16
+updated_at: "2026-03-09T23:15:00Z"
+additions:
+  - type: tool
+    name: check_coverage_ratchet.py
+    location: scripts/testing/check_coverage_ratchet.py
+    description: "Coverage ratchet enforcement script with floor+ratchet logic"
+  - type: config
+    name: coverage-baseline.yaml
+    location: config/testing/coverage-baseline.yaml
+    description: "Per-repo coverage baselines for ratchet gate (4 repos, all below 80%)"
+  - type: test
+    name: test_coverage_gate.py
+    location: scripts/testing/tests/test_coverage_gate.py
+    description: "27 TDD tests: direct unit tests + subprocess integration tests"

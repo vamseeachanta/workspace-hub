@@ -111,6 +111,11 @@ else
   SOURCE_NAME="inline-content"
 fi
 
+# Auto-extract WRK_ID from file path or source name when not supplied via --wrk-id
+if [[ -z "$WRK_ID" && "$FILE_OR_DIFF" =~ [Ww][Rr][Kk]-([0-9]+) ]]; then
+  WRK_ID="WRK-${BASH_REMATCH[1]}"
+fi
+
 # WRK-307: Run Stop hook count guard when reviewing settings.json changes
 # Best-effort — warns but does not block the cross-review itself
 if [[ -f "${SCRIPT_DIR}/check-stop-hooks.sh" ]]; then
@@ -133,10 +138,45 @@ CODEX_PASSED=false
 CODEX_NO_OUTPUT=false
 CODEX_FALLBACK_ALLOWED=false
 CODEX_CLI_MISSING=false
+CODEX_QUOTA_EXHAUSTED=false
+CODEX_OPUS_FALLBACK=false
+# Max Codex reviews per WRK before auto-switching to Opus (saves quota)
+CODEX_MAX_REVIEWS_PER_WRK="${CODEX_MAX_REVIEWS_PER_WRK:-2}"
+# Opus model used as Codex substitute when quota exhausted or limit reached
+CODEX_OPUS_MODEL="${CODEX_OPUS_MODEL:-claude-opus-4-6}"
 
 classify_review_result() {
   local result_file="$1"
   "${SCRIPT_DIR}/validate-review-output.sh" "$result_file" 2>/dev/null || echo "ERROR"
+}
+
+# Count existing Codex review files for a given WRK (looks at RESULTS_DIR)
+count_wrk_codex_reviews() {
+  local wrk_id_lower
+  wrk_id_lower="$(echo "${WRK_ID:-}" | tr '[:upper:]' '[:lower:]' | tr '-' '-')"
+  if [[ -z "$wrk_id_lower" ]]; then
+    echo 0; return
+  fi
+  ls "$RESULTS_DIR"/*"${wrk_id_lower}"*-codex.md 2>/dev/null | grep -v "opus-fallback" | wc -l | tr -d ' '
+}
+
+# Run Claude Opus as a substitute for Codex; writes verdict to result_file
+run_opus_as_codex_sub() {
+  local result_file="$1"
+  local opus_exit=0
+  local header="# Codex-slot: Claude Opus fallback (${CODEX_OPUS_MODEL})\n"
+  if [[ -n "$COMMIT_SHA" ]]; then
+    CLAUDE_MODEL="$CODEX_OPUS_MODEL" "${SCRIPT_DIR}/submit-to-claude.sh" \
+      --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || opus_exit=$?
+  else
+    CLAUDE_MODEL="$CODEX_OPUS_MODEL" "${SCRIPT_DIR}/submit-to-claude.sh" \
+      --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || opus_exit=$?
+  fi
+  # Prepend fallback header without overwriting the verdict body
+  local tmp_body
+  tmp_body="$(cat "$result_file")"
+  printf '%b\n%s\n' "$header" "$tmp_body" > "$result_file"
+  return "$opus_exit"
 }
 
 preserve_raw_result() {
@@ -194,14 +234,45 @@ submit_review() {
       esac
       ;;
     codex)
+      # Check if WRK has already reached the Codex review limit → use Opus automatically
+      local existing_codex_count
+      existing_codex_count="$(count_wrk_codex_reviews)"
+      if [[ "$existing_codex_count" -ge "$CODEX_MAX_REVIEWS_PER_WRK" ]]; then
+        echo "    INFO: Codex review limit reached (${existing_codex_count}/${CODEX_MAX_REVIEWS_PER_WRK} for ${WRK_ID:-this WRK}) — using Claude Opus (${CODEX_OPUS_MODEL})" >&2
+        CODEX_OPUS_FALLBACK=true
+        local opus_exit=0
+        run_opus_as_codex_sub "$result_file" || opus_exit=$?
+        local opus_status
+        opus_status="$(classify_review_result "$result_file")"
+        if [[ "$opus_status" == "VALID" ]]; then
+          CODEX_PASSED=true
+        fi
+        echo "    Result (Opus sub): ${result_file}"
+        return
+      fi
+
       local codex_exit=0
       if [[ -n "$COMMIT_SHA" ]]; then
         "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       else
         "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       fi
+      # Quota exhaustion (exit 3) → automatic Opus fallback
+      if [[ $codex_exit -eq 3 ]] || grep -q "^# CODEX_QUOTA_EXHAUSTED" "$result_file" 2>/dev/null; then
+        echo "    INFO: Codex quota exhausted — falling back to Claude Opus (${CODEX_OPUS_MODEL})" >&2
+        CODEX_QUOTA_EXHAUSTED=true
+        CODEX_OPUS_FALLBACK=true
+        local opus_exit=0
+        run_opus_as_codex_sub "$result_file" || opus_exit=$?
+        local opus_status
+        opus_status="$(classify_review_result "$result_file")"
+        if [[ "$opus_status" == "VALID" ]]; then
+          CODEX_PASSED=true
+        fi
+        echo "    Result (Opus fallback): ${result_file}"
+        return
+      fi
       # Check if Codex produced a real verdict (not just a failure stub)
-      # A real Codex review contains "codex" output lines (the model's response)
       local codex_size=0
       [[ -f "$result_file" ]] && codex_size="$(wc -c < "$result_file" | tr -d ' ')"
       local codex_status
@@ -210,8 +281,6 @@ submit_review() {
         CODEX_PASSED=true
       elif [[ "$codex_status" == "NO_OUTPUT" ]] && grep -q '^# Codex returned NO_OUTPUT' "$result_file" 2>/dev/null \
           && [[ $codex_exit -eq 0 || $codex_exit -eq 5 ]]; then
-        # Fallback only for genuine NO_OUTPUT (empty response from model, exits 0 or 5).
-        # Non-zero exits from CLI failures, transport errors, or setup issues are hard gates.
         CODEX_NO_OUTPUT=true
         CODEX_FALLBACK_ALLOWED=true
         echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes, exit $codex_exit) — fallback consensus will be attempted" >&2

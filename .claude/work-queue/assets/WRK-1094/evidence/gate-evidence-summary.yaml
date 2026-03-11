@@ -1,0 +1,8 @@
+wrk_id: WRK-1094
+verified_at: "2026-03-10T12:40:00Z"
+phase: close
+result: PASS
+gates_ok: 29
+gates_warn: 2
+gates_missing: 0
+notes: "All gates pass. Reclaim n/a (no continuity break). Reclaim n/a gate WARN (expected)."

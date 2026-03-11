@@ -1,0 +1,38 @@
+wrk_id: WRK-667
+stage: 15
+generated_at: "2026-03-10T02:55:00Z"
+generated_by: claude
+
+recommendations:
+  - id: FW-1
+    title: "Gate quality_signals.confidence as FAIL when missing"
+    description: >
+      After 3 production WRKs use quality_signals block, promote confidence from
+      warn-only to hard gate in verify-gate-evidence.py.
+    priority: P2
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: "future-work capture: gate quality_signals confidence"
+
+  - id: FW-2
+    title: "Auto-update ri-comparison-examples.md from archive"
+    description: >
+      Script to regenerate comparison examples from real WRK archive data rather
+      than hand-written estimates.
+    priority: P3
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: "future-work capture: auto-generate comparison examples"
+
+  - id: FW-3
+    title: "Add quality_signals to verify-gate-evidence.py warn check"
+    description: >
+      Emit WARN in verify-gate-evidence.py when quality_signals block is absent
+      from resource-intelligence.yaml (currently not checked at all).
+    priority: P2
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_ref: "future-work capture: quality_signals warn gate"

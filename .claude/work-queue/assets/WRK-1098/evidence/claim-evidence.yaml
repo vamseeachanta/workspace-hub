@@ -1,0 +1,15 @@
+wrk_id: WRK-1098
+stage: 8
+claimed_at: "2026-03-10T10:15:00Z"
+claimed_by: claude-sonnet-4-6
+session_id: "session-20260310"
+computer: ace-linux-1
+set_active_wrk: true
+orchestrator_agent: claude-sonnet-4-6
+best_fit_provider: claude
+session_owner: vamsee
+route: A
+quota_snapshot:
+  status: available
+  pct_remaining: 80
+notes: "Route A simple WRK — ecosystem terminology skill. Plan approved inline by user."

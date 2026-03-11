@@ -1,0 +1,29 @@
+wrk_id: WRK-1115
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 678ebcdc6e2a3f4a8b1c9d5e7f2a3b4c5d6e7f8a
+    documents:
+      - .claude/work-queue/assets/WRK-1115/WRK-1115-lifecycle.html
+    published_at: "2026-03-10T11:00:00Z"
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f1f3cb17a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7
+    documents:
+      - .claude/work-queue/assets/WRK-1115/WRK-1115-lifecycle.html
+    published_at: "2026-03-10T12:00:00Z"
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 5045f110b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6
+    documents:
+      - .claude/work-queue/assets/WRK-1115/WRK-1115-lifecycle.html
+    published_at: "2026-03-10T14:31:00Z"
+    reviewer: user

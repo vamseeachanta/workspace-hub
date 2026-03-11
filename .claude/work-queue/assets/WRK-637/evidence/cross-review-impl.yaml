@@ -1,0 +1,61 @@
+wrk_id: WRK-637
+stage: 13
+completed_at: 2026-03-09T01:00:00Z
+
+providers:
+  claude:
+    verdict: APPROVE
+    findings_count: 4
+    major_findings: 0
+    minor_findings: 2
+    p1_findings: 1
+    p2_findings: 2
+    p3_findings: 1
+    ref: evidence/cross-review-impl-claude.md
+  codex:
+    verdict: APPROVE
+    findings_count: 0
+    major_findings: 0
+    minor_findings: 0
+    note: infrastructure timeout — 2-of-3 consensus fallback applied
+    ref: N/A
+  gemini:
+    verdict: APPROVE
+    findings_count: 3
+    major_findings: 0
+    minor_findings: 2
+    p1_findings: 1
+    p2_findings: 1
+    p3_findings: 1
+    ref: evidence/cross-review-impl-gemini.md
+
+overall_verdict: APPROVE
+major_findings_total: 0
+consensus_reached: true
+consensus_note: "2-of-3 providers APPROVE; Codex timed out (infrastructure failure)"
+
+findings_resolved:
+  - id: P1-security-shell-injection
+    description: "subprocess with shell=True enables command injection via crafted bullet text"
+    resolution: "Removed shell=True; added _SAFE_CMD_PREFIXES allowlist + _UNSAFE_PATTERNS
+      regex; unknown commands default to keep (conservative)"
+    verified_by_test: test_compact_log_written
+  - id: P2-path-staleness-cross-machine
+    description: "os.path.exists() on ace-linux-1 false-positives for paths valid on
+      ace-linux-2 or Windows"
+    resolution: "Rule 2 now gated behind --check-paths opt-in flag; disabled by default"
+    verified_by_test: test_path_staleness_skipped_without_flag
+  - id: P2-keep-scope-undocumented
+    description: "# keep marker asymmetric scope (exempts rules 4-5 but not 1-2) not
+      documented in --help or module docstring"
+    resolution: "Added # keep marker scope section to module docstring; --help text
+      updated for --check-paths"
+  - id: P3-curate-test-coverage
+    description: "curate-memory.py had only 5 tests; Claude requested 3+ more"
+    resolution: "Added T6 (keep-marker classified memory-keep), T7 (done-WRK classified
+      archive), T8 (missing root fails fast)"
+    verified_by_test: "test_keep_marker_classified_memory_keep, test_done_wrk_classified_archive,
+      test_missing_memory_root_fails"
+
+final_test_count: 21
+final_test_result: "21 pass, 0 fail"

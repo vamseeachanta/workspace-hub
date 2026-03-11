@@ -1,0 +1,11 @@
+wrk_id: WRK-1071
+
+merge_status: no-branch-created
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1071/WRK-1071-lifecycle.html
+legal_scan_ref: .claude/work-queue/assets/WRK-1071/legal-scan.md
+archive_readiness: pass
+
+document_index_ref: ""
+document_index_exemption: "benchmark harness scripts — no document-index entries affected"
+spin_off_wrks: []

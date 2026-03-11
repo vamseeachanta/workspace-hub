@@ -1,0 +1,7 @@
+wrk_id: WRK-118
+claimed_at: "2026-02-18T09:00:00Z"
+claimed_by: claude
+session_id: "legacy-2026-02-18"
+route: B
+commit: "37f07a19df89de9be91527cb4779dcd370436ad0"
+notes: "Legacy claim — moved to working/ on 2026-02-18 when plan was approved"

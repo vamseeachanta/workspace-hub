@@ -1,0 +1,20 @@
+wrk_id: WRK-1125
+assessed_at: "2026-03-11T13:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used: [work-queue, work-queue-workflow, workflow-gatepass]
+files_affected:
+  - scripts/work-queue/whats-next.sh
+key_findings:
+  - "Row format: 8 pipe-delimited fields; extends safely via associative arrays"
+  - "WRK-1022 has note: 'needs multi-workstation coordination'; in working/"
+  - "WRK-1109 has not_before: 2026-04-10; in pending/, goes to MED section"
+  - "No existing WORKING_PARKED array; get_field() helper reads any frontmatter field"
+risks:
+  - risk: note field containing pipe char could corrupt row; resolved by using assoc arrays
+    mitigation: associative arrays WRK_NOTES / WRK_NOT_BEFORE keyed by id
+dependencies_resolved: true
+notes: >
+  Single file change. Associative arrays avoid row format extension.
+  not_before is display-only annotation in this WRK; suppression = FW.

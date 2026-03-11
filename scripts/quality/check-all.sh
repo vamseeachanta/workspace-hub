@@ -27,6 +27,15 @@ OPT_REPO=""
 OPT_RUFF_ONLY=false
 OPT_MYPY_ONLY=false
 OPT_DOCS=false
+OPT_API=false
+OPT_BANDIT=false
+OPT_RADON=false
+OPT_VULTURE=false
+OPT_STATIC=false
+OPT_MYPY_RATCHET=false
+OPT_DRIFT=false
+OPT_CONFIG_DRIFT=false
+OPT_COMPLEXITY_RATCHET=false
 
 usage() {
   cat <<'EOF'
@@ -40,7 +49,16 @@ Options:
                      worldenergydata, assethold, ogmanufacturing)
   --ruff-only        Skip mypy
   --mypy-only        Skip ruff
+  --bandit           Run bandit security scan (MEDIUM+ new findings block)
+  --radon            Run radon cyclomatic complexity (warn-only)
+  --complexity-ratchet  Run radon complexity ratchet gate (WRK-1095)
+  --vulture          Run vulture dead-code detection (warn-only)
+  --static           Run all three: bandit + radon + vulture
   --docs             Run ruff D (pydocstyle) rules + README + docs/ checks
+  --api              Run public-symbol docstring coverage audit (warn-only)
+  --mypy-ratchet     Run mypy error count ratchet gate (WRK-1092)
+  --drift            Run documentation drift detector (warn-only, WRK-1093)
+  --config-drift     Run agent harness config drift detector (WRK-1094)
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -53,11 +71,25 @@ while [[ $# -gt 0 ]]; do
     --repo)      OPT_REPO="${2:?--repo requires a value}"; shift 2 ;;
     --ruff-only) OPT_RUFF_ONLY=true;  shift ;;
     --mypy-only) OPT_MYPY_ONLY=true;  shift ;;
-    --docs)       OPT_DOCS=true;         shift ;;
-    --help|-h)   usage; exit 0 ;;
+    --docs)      OPT_DOCS=true;       shift ;;
+    --api)       OPT_API=true;        shift ;;
+    --bandit)    OPT_BANDIT=true;     shift ;;
+    --radon)     OPT_RADON=true;      shift ;;
+    --vulture)   OPT_VULTURE=true;    shift ;;
+    --static)        OPT_STATIC=true;        shift ;;
+    --mypy-ratchet)  OPT_MYPY_RATCHET=true;  shift ;;
+    --drift)         OPT_DRIFT=true;          shift ;;
+    --config-drift)       OPT_CONFIG_DRIFT=true;        shift ;;
+    --complexity-ratchet) OPT_COMPLEXITY_RATCHET=true;  shift ;;
+    --help|-h)            usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
 done
+
+# Expand --static into individual flags
+if $OPT_STATIC; then
+  OPT_BANDIT=true; OPT_RADON=true; OPT_VULTURE=true
+fi
 
 # Validate --repo
 if [[ -n "$OPT_REPO" ]]; then
@@ -103,8 +135,129 @@ FAIL_COUNT=0
 declare -A RUFF_RESULTS=()
 declare -A MYPY_RESULTS=()
 declare -A DOCS_RESULTS=()
+declare -A BANDIT_RESULTS=()
+declare -A RADON_RESULTS=()
+declare -A VULTURE_RESULTS=()
 
 pad_label() { printf '%-19s' "$1"; }
+
+# ---------------------------------------------------------------------------
+# Static analysis helpers — bandit / radon / vulture (WRK-1081)
+# ---------------------------------------------------------------------------
+
+_bandit_baseline() {
+  local repo_path="$1"
+  local b="${REPO_ROOT}/config/quality/bandit-baseline-$(basename "$repo_path").json"
+  [[ -f "$b" ]] && echo "$b" || echo ""
+}
+
+run_bandit() {
+  local repo_name="$1" repo_path="$2"
+
+  if [[ ! -d "${repo_path}/src" ]]; then
+    BANDIT_RESULTS[$repo_name]="SKIP (no src/)"
+    return 0
+  fi
+
+  local bandit_cfg="${repo_path}/pyproject.toml"
+  local -a cfg_args=()
+  [[ -f "$bandit_cfg" ]] && cfg_args=(-c pyproject.toml)
+
+  local baseline; baseline="$(_bandit_baseline "$repo_path")"
+  local -a baseline_args=()
+  [[ -n "$baseline" ]] && baseline_args=(-b "$baseline")
+
+  local all_json stderr_tmp; stderr_tmp="$(mktemp)"
+  all_json="$(cd "$repo_path" && uvx "bandit[toml]==1.9.4" -r src/ -f json \
+    "${cfg_args[@]}" 2>"$stderr_tmp")" || true
+
+  if ! printf '%s' "$all_json" \
+      | uv run --no-project python -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+    echo "  WARN [bandit-low] scan failed or produced no JSON:" >&2
+    cat "$stderr_tmp" >&2
+    rm -f "$stderr_tmp"
+    BANDIT_RESULTS[$repo_name]="WARN (scan error)"
+    return 0
+  fi
+  rm -f "$stderr_tmp"
+
+  # Print LOW warnings directly to stdout (non-blocking, informational)
+  printf '%s' "$all_json" \
+    | uv run --no-project python -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    if r.get('issue_severity','').upper() == 'LOW':
+        print(f\"  WARN [bandit-LOW] {r.get('filename','')}:{r.get('line_number','')}: {r.get('test_id','')}: {r.get('issue_text','')}\")
+" 2>/dev/null || true
+
+  local low_count=0
+  low_count="$(printf '%s' "$all_json" \
+    | uv run --no-project python -c "
+import sys, json
+data = json.load(sys.stdin)
+print(sum(1 for r in data.get('results', []) if r.get('issue_severity','').upper() == 'LOW'))
+" 2>/dev/null)" || low_count=0
+
+  local gate_exit=0
+  cd "$repo_path" && uvx "bandit[toml]==1.9.4" -r src/ -f json -ll \
+    "${cfg_args[@]}" "${baseline_args[@]}" > /dev/null 2>&1 || gate_exit=$?
+
+  if [[ $gate_exit -ne 0 ]]; then
+    BANDIT_RESULTS[$repo_name]="FAIL (new MEDIUM/HIGH findings)"
+    return 1
+  fi
+
+  BANDIT_RESULTS[$repo_name]="PASS (LOW warns: ${low_count:-0})"
+  return 0
+}
+
+run_radon() {
+  local repo_name="$1" repo_path="$2"
+
+  if [[ ! -d "${repo_path}/src" ]]; then
+    RADON_RESULTS[$repo_name]="SKIP (no src/)"
+    return 0
+  fi
+
+  local output
+  output="$(cd "$repo_path" && uvx radon==6.0.1 cc src/ -n C 2>&1)" || true
+
+  if [[ -n "$output" ]]; then
+    echo "  WARN [radon] complexity C+ functions:"
+    printf '%s\n' "$output" | sed 's/^/    /'
+    RADON_RESULTS[$repo_name]="WARN (complexity C+ found)"
+  else
+    RADON_RESULTS[$repo_name]="PASS (no C+ complexity)"
+  fi
+  return 0
+}
+
+run_vulture() {
+  local repo_name="$1" repo_path="$2"
+
+  if [[ ! -d "${repo_path}/src" ]]; then
+    VULTURE_RESULTS[$repo_name]="SKIP (no src/)"
+    return 0
+  fi
+
+  local whitelist="${repo_path}/vulture_whitelist.py"
+  local -a wl_args=()
+  [[ -f "$whitelist" ]] && wl_args=("$whitelist")
+
+  local output
+  output="$(cd "$repo_path" && uvx vulture==2.15 src/ "${wl_args[@]}" \
+    --min-confidence 80 2>&1)" || true
+
+  if [[ -n "$output" ]]; then
+    echo "  WARN [vulture] dead code:"
+    printf '%s\n' "$output" | sed 's/^/    /'
+    VULTURE_RESULTS[$repo_name]="WARN (dead code found)"
+  else
+    VULTURE_RESULTS[$repo_name]="PASS (no dead code)"
+  fi
+  return 0
+}
 
 run_ruff() {
   local repo_name="$1" repo_path="$2"
@@ -137,7 +290,6 @@ run_mypy() {
     return 0
   fi
 
-  # Skip gracefully when mypy is not installed in this repo's venv
   if ! (cd "$repo_path" && uv run mypy --version &>/dev/null); then
     MYPY_RESULTS[$repo_name]="SKIP (mypy not in project venv)"
     return 0
@@ -181,7 +333,7 @@ run_ruff_docs() {
         "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null \
     || echo '?')"
   DOCS_RESULTS[$repo_name]+="docstrings: WARN (${count} issues)  "
-  return 0  # docs check is warn-only, never fails the build
+  return 0
 }
 
 REQUIRED_README_SECTIONS=(installation usage examples)
@@ -208,10 +360,65 @@ check_readme_sections() {
 check_docs_dir() {
   local repo_name="$1" repo_path="$2"
   if [[ -d "${repo_path}/docs" ]]; then
-    DOCS_RESULTS[$repo_name]+="docs-dir: PASS"
+    DOCS_RESULTS[$repo_name]+="docs-dir: PASS  "
   else
-    DOCS_RESULTS[$repo_name]+="docs-dir: WARN (no docs/ directory)"
+    DOCS_RESULTS[$repo_name]+="docs-dir: WARN (no docs/ directory)  "
   fi
+  return 0
+}
+
+check_docs_structure() {
+  local repo_name="$1" repo_path="$2"
+  if [[ -f "${repo_path}/docs/index.md" || -f "${repo_path}/docs/index.rst" ]]; then
+    DOCS_RESULTS[$repo_name]+="docs-index: PASS  "
+  else
+    DOCS_RESULTS[$repo_name]+="docs-index: WARN (missing)  "
+  fi
+  if [[ -f "${repo_path}/CHANGELOG.md" || -f "${repo_path}/CHANGELOG.rst" \
+      || -f "${repo_path}/docs/changelog.md" ]]; then
+    DOCS_RESULTS[$repo_name]+="changelog: PASS  "
+  else
+    DOCS_RESULTS[$repo_name]+="changelog: WARN (missing)  "
+  fi
+  return 0
+}
+
+detect_build_system() {
+  local repo_name="$1" repo_path="$2"
+  if [[ -f "${repo_path}/docs/conf.py" ]]; then
+    DOCS_RESULTS[$repo_name]+="build: sphinx"
+  elif [[ -f "${repo_path}/mkdocs.yml" ]]; then
+    DOCS_RESULTS[$repo_name]+="build: mkdocs"
+  else
+    DOCS_RESULTS[$repo_name]+="build: none"
+  fi
+  return 0
+}
+
+run_api_audit() {
+  local repo_name="$1" repo_path="$2"
+  local src_path="${repo_path}/src"
+  local label; label="$(pad_label "[${repo_name}]")"
+  if [[ ! -d "$src_path" ]]; then
+    echo "${label} api: SKIP (no src/ directory)"
+    return 0
+  fi
+  local output exit_code=0
+  output="$(uv run --no-project python \
+    "${REPO_ROOT}/scripts/quality/api-audit.py" "$repo_name" "$src_path" 2>&1)" \
+    || exit_code=$?
+  if [[ $exit_code -ne 0 ]]; then
+    echo "${label} api: WARN (audit failed)"
+    return 0
+  fi
+  local pct total_n with_n
+  pct="$(printf '%s\n' "$output" \
+         | grep -oE '"coverage_pct": *[0-9.]+' | grep -oE '[0-9.]+' || echo '?')"
+  total_n="$(printf '%s\n' "$output" \
+             | grep -oE '"total": *[0-9.]+' | grep -oE '[0-9]+' || echo '?')"
+  with_n="$(printf '%s\n' "$output" \
+            | grep -oE '"with_docstring": *[0-9.]+' | grep -oE '[0-9]+' || echo '?')"
+  echo "${label} api: coverage ${pct}% (${with_n}/${total_n} symbols have docstrings)"
   return 0
 }
 
@@ -249,7 +456,30 @@ for repo_name in "${REPO_ORDER[@]}"; do
     run_ruff_docs "$repo_name" "$repo_path"
     check_readme_sections "$repo_name" "$repo_path"
     check_docs_dir "$repo_name" "$repo_path"
+    check_docs_structure "$repo_name" "$repo_path"
+    detect_build_system "$repo_name" "$repo_path"
     echo "${label} docs: ${DOCS_RESULTS[$repo_name]}"
+  fi
+
+  if $OPT_API; then
+    run_api_audit "$repo_name" "$repo_path"
+  fi
+
+  if $OPT_BANDIT; then
+    bandit_exit=0
+    run_bandit "$repo_name" "$repo_path" || bandit_exit=$?
+    echo "${label} bandit: ${BANDIT_RESULTS[$repo_name]}"
+    [[ $bandit_exit -ne 0 ]] && repo_failed=true
+  fi
+
+  if $OPT_RADON; then
+    run_radon "$repo_name" "$repo_path"
+    echo "${label} radon: ${RADON_RESULTS[$repo_name]}"
+  fi
+
+  if $OPT_VULTURE; then
+    run_vulture "$repo_name" "$repo_path"
+    echo "${label} vulture: ${VULTURE_RESULTS[$repo_name]}"
   fi
 
   if $repo_failed; then
@@ -258,6 +488,89 @@ for repo_name in "${REPO_ORDER[@]}"; do
     PASS_COUNT=$((PASS_COUNT + 1))
   fi
 done
+
+# ---------------------------------------------------------------------------
+# Doc drift gate (WRK-1093) — runs once; warn-only (never increments FAIL_COUNT)
+# ---------------------------------------------------------------------------
+run_doc_drift() {
+  local drift_script="${REPO_ROOT}/scripts/quality/check_doc_drift.py"
+  echo ""
+  echo "=== Doc Drift Check (warn-only) ==="
+  if [[ ! -f "$drift_script" ]]; then
+    echo "WARNING: check_doc_drift.py not found — skipping" >&2
+    return 0
+  fi
+  uv run --no-project python "$drift_script" 2>&1 || true
+  return 0
+}
+
+# ---------------------------------------------------------------------------
+# Mypy ratchet gate (WRK-1092) — runs once across all repos
+# ---------------------------------------------------------------------------
+if $OPT_MYPY_RATCHET; then
+  MYPY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_mypy_ratchet.py"
+  MYPY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/mypy-baseline.yaml"
+  echo ""
+  echo "=== Mypy Ratchet Gate ==="
+  mypy_ratchet_exit=0
+  if [[ -f "$MYPY_RATCHET_SCRIPT" && -f "$MYPY_RATCHET_BASELINE" ]]; then
+    uv run --no-project python "$MYPY_RATCHET_SCRIPT" \
+      --baseline "$MYPY_RATCHET_BASELINE" \
+      --repo-root "$REPO_ROOT" || mypy_ratchet_exit=$?
+  else
+    echo "WARNING: mypy ratchet script or baseline not found — skipping" >&2
+  fi
+  if [[ $mypy_ratchet_exit -ne 0 ]]; then
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+  else
+    PASS_COUNT=$((PASS_COUNT + 1))
+  fi
+fi
+
+if $OPT_DRIFT; then
+  run_doc_drift
+fi
+
+# ---------------------------------------------------------------------------
+# Config drift gate (WRK-1094) — FAIL on new regressions, WARN on known debt
+# ---------------------------------------------------------------------------
+run_config_drift() {
+  local drift_script="${REPO_ROOT}/scripts/quality/check_config_drift.py"
+  echo ""
+  echo "=== Config Drift Check (harness files) ==="
+  if [[ ! -f "$drift_script" ]]; then
+    echo "WARNING: check_config_drift.py not found — skipping" >&2
+    return 0
+  fi
+  uv run --no-project python "$drift_script" 2>&1
+}
+
+if $OPT_CONFIG_DRIFT; then
+  run_config_drift || FAIL_COUNT=$((FAIL_COUNT + 1))
+fi
+
+# ---------------------------------------------------------------------------
+# Complexity ratchet gate (WRK-1095) — runs once across all repos
+# ---------------------------------------------------------------------------
+if $OPT_COMPLEXITY_RATCHET; then
+  COMPLEXITY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_complexity_ratchet.py"
+  COMPLEXITY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/complexity-baseline.yaml"
+  echo ""
+  echo "=== Complexity Ratchet Gate ==="
+  complexity_ratchet_exit=0
+  if [[ -f "$COMPLEXITY_RATCHET_SCRIPT" && -f "$COMPLEXITY_RATCHET_BASELINE" ]]; then
+    uv run --no-project python "$COMPLEXITY_RATCHET_SCRIPT" \
+      --baseline "$COMPLEXITY_RATCHET_BASELINE" \
+      --repo-root "$REPO_ROOT" || complexity_ratchet_exit=$?
+  else
+    echo "WARNING: complexity ratchet script or baseline not found — skipping" >&2
+  fi
+  if [[ $complexity_ratchet_exit -ne 0 ]]; then
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+  else
+    PASS_COUNT=$((PASS_COUNT + 1))
+  fi
+fi
 
 # ---------------------------------------------------------------------------
 # Summary

@@ -1,0 +1,5 @@
+wrk_id: WRK-693
+activated_at: "2026-03-10T09:00:00Z"
+set_active_wrk: true
+session_id: session-20260310
+orchestrator_agent: claude

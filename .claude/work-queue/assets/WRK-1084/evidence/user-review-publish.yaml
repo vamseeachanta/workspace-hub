@@ -1,0 +1,29 @@
+wrk_id: WRK-1084
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "86ab3e39"
+    published_at: "2026-03-11T10:45:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1084/WRK-1084-lifecycle.html
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "7db418fc"
+    published_at: "2026-03-11T10:50:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1084/WRK-1084-lifecycle.html
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "0a0f66f32e87148ab61778f6bc85928da0ca1242"
+    published_at: "2026-03-11T13:05:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1084/WRK-1084-lifecycle.html

@@ -1,126 +1,79 @@
 #!/usr/bin/env bash
-# classify.sh — Phase 2: Route signals to improvement targets via Anthropic API
-# 10% shell, 90% API
+# classify.sh — Phase 2: Route signals to improvement targets via deterministic event routing
+# Replaces LLM classification (call_anthropic_api) with pure shell routing by event type.
+# See WRK-1102 Fix 7: signals have structured `event` field — no LLM needed.
 
-# --- Anthropic API helper ---
-call_anthropic_api() {
-    local prompt="$1"
-    local max_tokens="${2:-2000}"
+# --- Route helper stubs ---
 
-    # Get model from registry
-    local model
-    model=$(yq -r '.latest_models.claude_balanced // empty' \
-        "${WORKSPACE_HUB}/config/agents/model-registry.yaml" 2>/dev/null)
-    model="${model:-claude-sonnet-4-5-20250929}"
-
-    # Get OAuth token
-    local token
-    token=$(jq -r '.claudeAiOauth.accessToken // empty' \
-        ~/.claude/.credentials.json 2>/dev/null)
-
-    # Build auth header
-    local auth_header auth_value
-    if [[ -n "$token" ]]; then
-        auth_header="Authorization"
-        auth_value="Bearer $token"
-    elif [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then
-        auth_header="x-api-key"
-        auth_value="$ANTHROPIC_API_KEY"
-    else
-        echo "improve/classify: no API credentials, skipping" >&2
-        return 1
-    fi
-
-    local response
-    local attempt=0
-    while [[ $attempt -lt 2 ]]; do
-        response=$(curl -s --max-time 45 "https://api.anthropic.com/v1/messages" \
-            -H "Content-Type: application/json" \
-            -H "${auth_header}: ${auth_value}" \
-            -H "anthropic-version: 2023-06-01" \
-            -d "$(jq -n \
-                --arg model "$model" \
-                --arg prompt "$prompt" \
-                --argjson max_tokens "$max_tokens" \
-                '{model: $model, max_tokens: $max_tokens,
-                  messages: [{role: "user", content: $prompt}]}')" 2>/dev/null)
-        # Check for valid content response
-        if echo "$response" | jq -e '.content[0].text' >/dev/null 2>&1; then
-            break
-        fi
-        # Log error and retry
-        local err_type
-        err_type=$(echo "$response" | jq -r '.error.type // "unknown"' 2>/dev/null)
-        echo "improve/classify: API attempt $((attempt+1)) failed (${err_type}) — retrying in 5s" >&2
-        attempt=$((attempt + 1))
-        [[ $attempt -lt 2 ]] && sleep 5
-    done
-
-    # Extract text content
-    echo "$response" | jq -r '.content[0].text // empty' 2>/dev/null
+route_to_memory() {
+    local line="$1"
+    [[ -z "${MEMORY_FILE:-}" || ! -f "${MEMORY_FILE}" ]] && return 0
+    local wrk event
+    wrk=$(echo "$line" | jq -r '.wrk // empty' 2>/dev/null || true)
+    event=$(echo "$line" | jq -r '.event // empty' 2>/dev/null || true)
+    [[ -z "$event" ]] && return 0
+    printf '\n<!-- improve: %s -->\n- [%s] %s\n' \
+        "$(date +%Y-%m-%d)" "$event" "${wrk:-session}" >> "$MEMORY_FILE" 2>/dev/null || true
 }
 
+route_to_skill_scores() {
+    local line="$1"
+    [[ -z "${SKILL_SCORES_FILE:-}" || ! -f "${SKILL_SCORES_FILE}" ]] && return 0
+    local skill count
+    skill=$(echo "$line" | jq -r '.skill // empty' 2>/dev/null || true)
+    [[ -z "$skill" ]] && return 0
+    count=$(echo "$line" | jq -r '.count // 1' 2>/dev/null || echo 1)
+    # Read-modify-write: increment usage count in YAML via Python (safe structured update)
+    if command -v uv &>/dev/null; then
+        uv run --no-project python - <<PYEOF 2>/dev/null || true
+import yaml, sys, os
+path = os.environ.get('SKILL_SCORES_FILE', '')
+if not path or not os.path.exists(path):
+    sys.exit(0)
+with open(path) as f:
+    data = yaml.safe_load(f) or {}
+skills = data.setdefault('skills', {})
+entry = skills.setdefault('${skill}', {'usage_count': 0})
+entry['usage_count'] = entry.get('usage_count', 0) + ${count}
+with open(path, 'w') as f:
+    yaml.dump(data, f, default_flow_style=False)
+PYEOF
+    fi
+}
+
+route_to_rules() {
+    local line="$1"
+    [[ -z "${RULES_FILE:-}" || ! -f "${RULES_FILE}" ]] && return 0
+    local summary
+    summary=$(echo "$line" | jq -r '.summary // .violation // empty' 2>/dev/null || true)
+    [[ -z "$summary" ]] && return 0
+    printf '\n<!-- improve: %s -->\n- %s\n' "$(date +%Y-%m-%d)" "$summary" >> "$RULES_FILE" 2>/dev/null || true
+}
+
+# --- Main classifier (pure shell event router) ---
+
 phase_classify() {
-    local merged="${IMPROVE_WORKDIR}/merged_signals.jsonl"
-    local classified="${IMPROVE_WORKDIR}/classified.json"
+    local merged="${1:-${IMPROVE_WORKDIR:-}/merged_signals.jsonl}"
+    local classified="${IMPROVE_WORKDIR:-/tmp}/classified.json"
 
-    [[ ! -f "$merged" || ! -s "$merged" ]] && return 1
+    [[ ! -f "$merged" || ! -s "$merged" ]] && { echo "[]" > "$classified"; return 0; }
 
-    # Build prompt with signal summary
-    local signal_summary
-    signal_summary=$(head -50 "$merged" | jq -sc '.')
+    local count=0
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        local event
+        event=$(echo "$line" | jq -r '.event // empty' 2>/dev/null || true)
+        case "$event" in
+            session_tool_summary) route_to_memory "$line" ; count=$((count + 1)) ;;
+            skill_invoked)        route_to_skill_scores "$line" ; count=$((count + 1)) ;;
+            drift_counts)         route_to_rules "$line" ; count=$((count + 1)) ;;
+            stage_exit)           route_to_memory "$line" ; count=$((count + 1)) ;;
+            context_reset)        route_to_memory "$line" ; count=$((count + 1)) ;;
+            *)                    true ;;  # unknown events: drop (no LLM fallback)
+        esac
+    done < "$merged"
 
-    local prompt
-    prompt=$(cat <<'PROMPT_TEMPLATE'
-You are an ecosystem improvement classifier. Given these session signals (JSONL entries), classify each into an improvement action.
-
-SIGNALS:
-SIGNAL_DATA
-
-For each actionable signal, output a JSON array of objects with these fields:
-- "target": one of "memory", "rules", "skills", "docs", "claude_md"
-- "target_file": specific file path relative to .claude/ (e.g., "memory/MEMORY.md", "rules/patterns.md")
-- "action": one of "append", "create", "enhance"
-- "content": the actual content to add/write (1-3 sentences, actionable)
-- "reason": why this improvement is needed (1 sentence)
-- "score": confidence 0.0-1.0
-
-Rules:
-- Only output improvements with score >= 0.6
-- Prefer appending to existing files over creating new ones
-- Memory entries should be concise (1-2 lines)
-- Rules should be specific and actionable
-- Skip vague or already-known patterns
-- Output ONLY the JSON array, no markdown wrapping
-
-If no actionable improvements, output: []
-PROMPT_TEMPLATE
-    )
-
-    # Replace placeholder with actual data
-    prompt="${prompt/SIGNAL_DATA/$signal_summary}"
-
-    echo "improve/classify: calling Anthropic API..."
-    local result
-    result=$(call_anthropic_api "$prompt" 3000)
-
-    if [[ -z "$result" ]]; then
-        echo "improve/classify: API returned empty, skipping" >&2
-        echo "[]" > "$classified"
-        return 1
-    fi
-
-    # Validate JSON array
-    if echo "$result" | jq 'type == "array"' 2>/dev/null | grep -q true; then
-        echo "$result" | jq '.' > "$classified"
-        local count
-        count=$(jq 'length' "$classified")
-        echo "improve/classify: ${count} improvements classified"
-    else
-        echo "improve/classify: invalid API response, skipping" >&2
-        echo "[]" > "$classified"
-        return 1
-    fi
-
+    echo "[]" > "$classified"  # no structured output needed; writes happened inline
+    echo "improve/classify: ${count} signal(s) routed deterministically (no API)"
     return 0
 }

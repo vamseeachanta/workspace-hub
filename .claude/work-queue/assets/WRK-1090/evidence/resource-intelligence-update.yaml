@@ -1,0 +1,20 @@
+wrk_id: WRK-1090
+generated_at: "2026-03-10T04:30:00Z"
+additions:
+  - resource: "scripts/quality/dep-health.sh"
+    type: pattern
+    notes: >
+      Dep health checker pattern: uv lock --check --offline for freshness,
+      uv run pip list --outdated for version drift, uvx pip-audit -r /dev/stdin
+      for CVE scanning. QUALITY_REPO_ROOT env var allows test isolation.
+  - resource: "tests/quality/test_dep_health.sh"
+    type: pattern
+    notes: >
+      Mock pattern for uv/uvx: PATH override with mock binaries in temp dir;
+      mock uv run --no-project python delegates to real python3 for JSON parsing;
+      MOCK_UV_LOCK_EXIT/MOCK_UVX_PIPAUDIT env vars control mock behaviour.
+  - resource: "logs/quality/dep-health-*.yaml"
+    type: runtime_output
+    notes: >
+      Timestamped YAML reports (YYYY-MM-DDTHHMM.yaml). Not committed;
+      rotate manually or via logrotate.

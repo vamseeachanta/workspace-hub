@@ -1,0 +1,78 @@
+wrk_id: WRK-1081
+stage: 10
+scope: integrated
+executed_at: "2026-03-09T20:30:00Z"
+provider: claude
+outcome: pass
+changes:
+  - file: scripts/quality/check-all.sh
+    description: >
+      Added --bandit/--radon/--vulture/--static flags with two-pass bandit
+      architecture (Pass 1 warn-only LOW, Pass 2 MEDIUM+ gate with native
+      baseline), radon cc C+ warn, vulture 80% dead-code warn.
+  - file: tests/quality/test_check_all_static.sh
+    description: >
+      12 TDD tests (T1-T12) covering all static analysis behaviors.
+      All 23 assertions GREEN.
+  - file: config/quality/bandit-baseline-assetutilities.json
+    description: Empty bandit baseline for assetutilities
+  - file: config/quality/bandit-baseline-digitalmodel.json
+    description: Empty bandit baseline for digitalmodel
+  - file: config/quality/bandit-baseline-worldenergydata.json
+    description: Empty bandit baseline for worldenergydata
+  - file: config/quality/bandit-baseline-assethold.json
+    description: Empty bandit baseline for assethold
+  - file: config/quality/bandit-baseline-OGManufacturing.json
+    description: Empty bandit baseline for OGManufacturing
+  - file: assetutilities/pyproject.toml
+    description: Added [tool.bandit] config section
+  - file: digitalmodel/pyproject.toml
+    description: Added [tool.bandit] config section
+  - file: worldenergydata/pyproject.toml
+    description: Added [tool.bandit] config section
+  - file: assethold/pyproject.toml
+    description: Added [tool.bandit] config section
+  - file: OGManufacturing/pyproject.toml
+    description: Added [tool.bandit] config section
+  - file: assetutilities/.radon.cfg
+    description: Radon config stub (cc_min = C)
+  - file: assetutilities/vulture_whitelist.py
+    description: Vulture whitelist stub
+  - file: digitalmodel/.radon.cfg
+    description: Radon config stub
+  - file: digitalmodel/vulture_whitelist.py
+    description: Vulture whitelist stub
+  - file: worldenergydata/.radon.cfg
+    description: Radon config stub
+  - file: worldenergydata/vulture_whitelist.py
+    description: Vulture whitelist stub
+  - file: assethold/.radon.cfg
+    description: Radon config stub
+  - file: assethold/vulture_whitelist.py
+    description: Vulture whitelist stub
+  - file: OGManufacturing/.radon.cfg
+    description: Radon config stub
+  - file: OGManufacturing/vulture_whitelist.py
+    description: Vulture whitelist stub
+  - file: assetutilities/.pre-commit-config.yaml
+    description: Added local bandit-staged pre-commit hook
+  - file: assethold/.pre-commit-config.yaml
+    description: Added local bandit-staged pre-commit hook
+  - file: OGManufacturing/.pre-commit-config.yaml
+    description: Added local bandit-staged pre-commit hook
+integrated_repo_tests:
+  - name: test_check_all_static
+    scope: integrated
+    command: bash tests/quality/test_check_all_static.sh
+    result: pass
+    artifact_ref: tests/quality/test_check_all_static.sh
+  - name: test_check_all
+    scope: integrated
+    command: bash tests/quality/test_check_all.sh
+    result: pass
+    artifact_ref: tests/quality/test_check_all.sh
+  - name: precommit_yaml_validity
+    scope: repo
+    command: "uv run --no-project python -c \"import yaml; [yaml.safe_load(open(f)) for f in ['assetutilities/.pre-commit-config.yaml','assethold/.pre-commit-config.yaml','OGManufacturing/.pre-commit-config.yaml']]; print('all valid')\""
+    result: pass
+    artifact_ref: assetutilities/.pre-commit-config.yaml

@@ -1,0 +1,9 @@
+wrk_id: WRK-234
+set_active_wrk: true
+session_id: session-wrk-234-2026-02-20
+orchestrator_agent: claude
+activated_at: "2026-02-20T10:00:00Z"
+notes: >
+  Compound standing WRK activated as parent mission tracker.
+  Manages child WRKs across Pillar A (code quality), Pillar B (ecosystem health),
+  and Pillar C (agent/session layer).

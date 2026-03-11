@@ -16,3 +16,9 @@ repos:
         entry: bash scripts/work-queue/validate-queue-state.sh
         language: system
         files: '^\.claude/work-queue/.*|^scripts/work-queue/.*|^docs/work-queue-workflow\.md$'
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+        args: [--config, .gitleaks.toml]

@@ -1,0 +1,11 @@
+wrk_id: WRK-1009
+stage: 9
+routed_at: "2026-03-10T14:40:00Z"
+route: B
+orchestrator: claude
+execution_workstations:
+  - ace-linux-1
+routing_decision: >
+  Route B (medium complexity). Single orchestrator (Claude) on ace-linux-1.
+  No parallel agents needed. Execution phases: Phase 0 (scan), Phase 1 (eval
+  framework + TDD), Phase 2 (curation tooling), Phase 3 (daily report).

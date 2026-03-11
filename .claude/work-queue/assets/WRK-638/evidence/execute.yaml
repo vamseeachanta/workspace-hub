@@ -1,0 +1,23 @@
+wrk_id: WRK-638
+started_at: "2026-03-09T10:15:00Z"
+completed_at: "2026-03-09T10:30:00Z"
+scope: integrated
+artifacts_created:
+  - scripts/memory/eval-memory-quality.py
+  - tests/memory/test_eval_memory_quality.py
+integrated_repo_tests:
+  - name: eval-memory-quality unit tests
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/memory/test_eval_memory_quality.py -v
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-638/evidence/test-results.md
+  - name: existing compact-memory tests unaffected
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/memory/test_compact_memory.py -q
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-638/evidence/test-results.md
+  - name: smoke test against real memory root
+    scope: integrated
+    command: uv run --no-project python scripts/memory/eval-memory-quality.py --memory-root ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/ --format md
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-638/evidence/test-results.md

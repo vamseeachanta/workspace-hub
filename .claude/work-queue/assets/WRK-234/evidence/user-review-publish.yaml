@@ -1,0 +1,29 @@
+wrk_id: WRK-234
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "1a45b12e"
+    documents:
+      - .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    published_at: "2026-02-20T10:35:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "1a45b12e"
+    documents:
+      - .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    published_at: "2026-02-20T11:05:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "c62f29c4"
+    documents:
+      - .claude/work-queue/assets/WRK-234/WRK-234-lifecycle.html
+    published_at: "2026-03-10T14:00:00Z"
+    reviewer: vamsee

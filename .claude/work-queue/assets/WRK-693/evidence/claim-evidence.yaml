@@ -1,0 +1,7 @@
+wrk_id: WRK-693
+claimed_at: "2026-03-10T09:00:00Z"
+claimed_by: claude
+session_id: session-20260310
+set_active_wrk: true
+orchestrator_agent: claude
+route: A

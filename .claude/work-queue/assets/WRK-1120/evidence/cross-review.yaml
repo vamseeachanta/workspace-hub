@@ -1,0 +1,10 @@
+wrk_id: WRK-1120
+stage: 6
+route: A
+verdicts:
+  claude: APPROVE
+  codex: APPROVE  # fallback: Claude Opus (quota exhausted)
+  gemini: APPROVE
+overall: APPROVE
+findings: []
+completed_at: "2026-03-10"

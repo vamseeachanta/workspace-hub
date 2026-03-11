@@ -1,0 +1,52 @@
+wrk_id: WRK-1010
+stage: 2
+completed_at: "2026-03-10T00:00:00Z"
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+
+skills_in_scope:
+  - id: work-queue
+    path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    found: true
+  - id: workflow-gatepass
+    path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+    found: true
+  - id: wrk-lifecycle-testpack
+    path: .claude/skills/workspace-hub/wrk-lifecycle-testpack/SKILL.md
+    found: true
+  - id: work-queue-workflow
+    path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    found: true
+  - id: comprehensive-learning
+    path: .claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+    found: true
+  - id: session-start
+    path: .claude/skills/workspace-hub/session-start/SKILL.md
+    found: true
+  - id: resource-intelligence
+    path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    found: true
+  - id: cross-review
+    path: .claude/skills/workspace-hub/cross-review/SKILL.md
+    found: false
+    note: cross-review is inline in work-queue-workflow/SKILL.md; no standalone file
+
+reference_docs:
+  - .claude/skills/_internal/builders/skill-creator/references/anthropic-complete-guide-building-skills.pdf
+  - specs/skills/skill-knowledge-map.md  # to be created
+  - specs/skills/capability-assessment-wrk-624-skills.md  # to be created
+
+related_wrk:
+  - WRK-624  # governance review that spawned this
+  - WRK-1009  # eval framework (automates future runs)
+  - WRK-690   # related governance work
+
+notes: >
+  8 skills in scope; cross-review has no standalone SKILL.md — it is documented
+  inline inside work-queue-workflow. specs/skills/ directory needs to be created
+  for deliverables. Anthropic guide PDF confirms with-vs-without eval methodology.

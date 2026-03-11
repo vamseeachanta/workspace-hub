@@ -1,0 +1,30 @@
+wrk_id: WRK-1067
+stage: 10
+scope: integrated
+completed_at: "2026-03-09T23:00:00Z"
+tdd_red_count: 12
+tdd_green_count: 14
+implementation_summary: >
+  - scripts/testing/check_coverage_ratchet.py (new): enforcement logic, JSON parsing,
+    bypass logging, report generation
+  - scripts/testing/run-all-tests.sh: --coverage flag added; cov-report=json; ratchet integration
+  - scripts/hooks/pre-push.sh: coverage gate integrated (SKIP_COVERAGE_REASON bypass)
+  - config/testing/coverage-baseline.yaml: real baselines captured for all 4 repos
+  - scripts/testing/coverage-reports/.gitkeep: audit trail directory
+  - Enforcement: below-80% repos get ratchet-only; at/above 80% get hard floor + ratchet
+integrated_repo_tests:
+  - name: test_coverage_gate
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/testing/tests/test_coverage_gate.py -v"
+    result: pass
+    artifact_ref: "scripts/testing/tests/test_coverage_gate.py"
+  - name: ratchet_smoke_pass
+    scope: integrated
+    command: "uv run --no-project python scripts/testing/check_coverage_ratchet.py --baseline config/testing/coverage-baseline.yaml --results /tmp/cov-results.json"
+    result: pass
+    artifact_ref: "scripts/testing/check_coverage_ratchet.py"
+  - name: ratchet_schema_validation
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/testing/tests/test_coverage_gate.py::TestBaselineSchema -v"
+    result: pass
+    artifact_ref: "scripts/testing/tests/test_coverage_gate.py"

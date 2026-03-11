@@ -1,6 +1,6 @@
 # Workspace Hub Skills
 
-> 13 subcategories in this domain.
+> 14 subcategories in this domain.
 
 ## Subcategories
 
@@ -17,6 +17,7 @@
 - [Skill Sync](skill-sync/INDEX.md) — 1 skill
 - [Sync](sync/INDEX.md) — 1 skill
 - [Tool Readiness](tool-readiness/SKILL.md) — 1 skill
+- [What's Next](whats-next/SKILL.md) — 1 skill (v1.0.0)
 - [Workstations](workstations/SKILL.md) — 1 skill
 - [Work-Queue Workflow](work-queue-workflow/SKILL.md) — 1 skill (v1.0.0)
 - [Workflow Gatepass](workflow-gatepass/SKILL.md) — 1 skill (v1.0.0)

@@ -1,0 +1,5 @@
+wrk_id: WRK-693
+reviewer: user
+reviewed_at: "2026-03-10T10:30:00Z"
+decision: approved
+notes: "Stage 17 approved — bare python3 fixes correct and complete"

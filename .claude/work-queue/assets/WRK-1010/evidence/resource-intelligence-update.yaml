@@ -1,0 +1,21 @@
+wrk_id: WRK-1010
+stage: 16
+updated_at: "2026-03-11T02:05:00Z"
+updater: claude
+
+additions:
+  - type: deliverable
+    path: specs/skills/skill-knowledge-map.md
+    description: "DAG + per-skill boundary table for all 8 governance skills; living doc"
+  - type: deliverable
+    path: specs/skills/capability-assessment-wrk-624-skills.md
+    description: "Full capability scorecard with delta, overlap, and merge recommendations"
+  - type: insight
+    description: "work-queue-workflow stage-order conflict (Stage 2/3 numbering) is a governance risk — resolve before merge"
+
+delta_from_stage_2:
+  new_files: 2
+  new_insights: 1
+  deprecated_sources: 0
+
+notes: "Assessment produced two reusable reference documents and surfaced a governance conflict in work-queue-workflow stage ordering."

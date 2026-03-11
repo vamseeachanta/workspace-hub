@@ -1,0 +1,31 @@
+wrk_id: WRK-1095
+stage: 10
+scope: integrated
+completed_at: "2026-03-10T19:35:00Z"
+commit: "b7dd5224"
+files_created:
+  - config/quality/complexity-baseline.yaml
+  - scripts/quality/check_complexity_ratchet.py
+  - scripts/quality/tests/test_check_complexity_ratchet.py
+files_modified:
+  - scripts/quality/check-all.sh
+  - scripts/hooks/pre-push.sh
+integrated_repo_tests:
+  - name: "complexity_ratchet_unit_tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/quality/tests/test_check_complexity_ratchet.py -v"
+    result: pass
+    artifact_ref: "scripts/quality/tests/test_check_complexity_ratchet.py"
+  - name: "live_ratchet_check"
+    scope: integrated
+    command: "uv run --no-project python scripts/quality/check_complexity_ratchet.py --baseline config/quality/complexity-baseline.yaml --repo-root ."
+    result: pass
+    artifact_ref: "config/quality/complexity-baseline.yaml"
+  - name: "ruff_lint_clean"
+    scope: integrated
+    command: "uvx ruff check scripts/quality/check_complexity_ratchet.py scripts/quality/tests/test_check_complexity_ratchet.py"
+    result: pass
+    artifact_ref: "scripts/quality/check_complexity_ratchet.py"
+cross_review_findings_resolved:
+  - F1: "COMPLEXITY_RATCHET_GATE=1 opt-in guard added to pre-push.sh"
+  - F2: "test_bypass_reason_logged added (6 TDD tests total)"

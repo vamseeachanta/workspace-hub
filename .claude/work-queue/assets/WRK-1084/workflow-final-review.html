@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1084 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1084 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Integrate skills.sh as reference for all skill lifecycle operations</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — - Browse https://skills.sh/ and identify skills that can replace, improve, or extend existing workspace-hub skills - Adopt/adapt relevant sk...</summary><div class="panel"><ul>
+<li>Browse https://skills.sh/ and identify skills that can replace, improve, or extend existing workspace-hub skills</li>
+<li>Adopt/adapt relevant skills from skills.sh directly into <code>.claude/skills/</code></li>
+<li>Update skill-learner SKILL.md to list skills.sh as primary external reference during any skill lifecycle operation (assess, analyze, learn, prune, curate)</li>
+<li>MEMORY.md already updated</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — skills.sh is a curated skill library. Pulling from it avoids reinventing patterns already proven elsewhere, and using it as a standard refer...</summary><div class="panel"><p>skills.sh is a curated skill library. Pulling from it avoids reinventing patterns already proven elsewhere, and using it as a standard reference during skill curation ensures we don't drift from best practices.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] skills.sh browsed; relevant skills identified and noted - [ ] At least one skill adopted or meaningfully improved from skills.sh patte...</summary><div class="panel"><ul>
+<li>[ ] skills.sh browsed; relevant skills identified and noted</li>
+<li>[ ] At least one skill adopted or meaningfully improved from skills.sh patterns</li>
+<li>[ ] skill-learner SKILL.md (or equivalent) lists skills.sh as canonical external reference</li>
+<li>[ ] Any skill assessment/curation workflow (WRK-1009, WRK-1010, WRK-1053) notes skills.sh as input source</li>
+<li>[ ] MEMORY.md entry already written (done 2026-03-09)</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1084 Plan: Integrate skills.sh as Canonical Reference confirmed_by: vamsee confirmed_at: 2026-03-11T10:30:00Z decision: passed ## Summ...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1084 Plan: Integrate skills.sh as Canonical Reference</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-11T10:30:00Z
+decision: passed</p>
+<h2>Summary</h2>
+<p>Three skill files modified + adoption workflow codified:
+1. skill-learner/SKILL.md — External Reference section
+2. skills-curation/SKILL.md — Phase 3 primary source + Adoption Workflow section
+3. skills-researcher/SKILL.md — Phase 3 step 2 prepended</p>
+<h2>Plan Detail</h2>
+<p>See user-provided plan in session transcript for full implementation steps.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>skill-learner has skills.sh reference</td><td>repo</td><td>pass</td><td><code>grep -c &#x27;skills.sh&#x27; .claude/skills/coordination/workspace/skill-learner/SKILL.md</code></td><td>ac-test-matrix.md</td></tr><tr><td>2</td><td>skills-curation has skills.sh in Phase 3</td><td>repo</td><td>pass</td><td><code>grep -c &#x27;skills.sh&#x27; .claude/skills/coordination/workspace/skills-curation/SKILL.md</code></td><td>ac-test-matrix.md</td></tr><tr><td>3</td><td>skills-researcher has skills.sh in Phase 3</td><td>repo</td><td>pass</td><td><code>grep -c &#x27;skills.sh&#x27; .claude/skills/coordination/workspace/skills-researcher/SKILL.md</code></td><td>ac-test-matrix.md</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1084, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1084, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['tdd_eval'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1084/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1084/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: no_additions_rationale=present</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-11T10:45:00Z, reviewed=2026-03-11T10:30:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1084 stage: 15 recommendations: - id: FW-1 title: Vet skills.sh publishers and document approved allow-list priority: medium dis...</summary><div class="panel"><p>wrk_id: WRK-1084
+stage: 15
+recommendations:
+  - id: FW-1
+    title: Vet skills.sh publishers and document approved allow-list
+    priority: medium
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    reason: Codex/Claude reviews raised governance question; formal vetting policy would strengthen it
+  - id: FW-2
+    title: Add legal-sanity-scan.sh integration to adoption workflow as enforcement step
+    priority: medium
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    reason: Claude review noted adopted skills should pass legal scan before commit
+  - id: FW-3
+    title: Version bump skills-curation to 1.1.0
+    priority: low
+    disposition: existing-updated
+    status: pending
+    captured: true
+    reason: Skills-curation gained new Adoption Workflow section and modified Phase 3</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1084 stages: - order: 1 stage: Capture status: done evidence: .claude/work-queue/assets/WRK-1084/evidence/user-review-capture.ya...</summary><div class="panel"><p>wrk_id: WRK-1084
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/user-review-capture.yaml
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/pending/WRK-1084.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/plan-html-review-final.md
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review Plan
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/review.md
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/plan-final-review.yaml
+  - order: 8
+    stage: Claim/Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/activation.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/activation.yaml
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/WRK-1084-lifecycle.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/ac-test-matrix.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/review.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/future-work.yaml
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1084/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review Implementation
+    status: n/a
+    evidence: n/a
+    notes: Stage 17 user review pending — awaiting user confirmation in this session
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: n/a
+  - order: 19
+    stage: Close
+    status: pending
+    evidence: pending
+  - order: 20
+    stage: Archive
+    status: pending
+    evidence: pending</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 22 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1084-lifecycle.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.md</code></li></ul></div></details>
+</body>
+</html>

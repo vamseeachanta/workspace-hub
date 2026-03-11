@@ -1,0 +1,36 @@
+wrk_id: WRK-1085
+generated_at: "2026-03-09T23:05:00Z"
+recommendations:
+  - id: fw-1085-1
+    title: "Expand test coverage for fallback paths and edge cases"
+    rationale: >
+      Deferred Codex MINOR C4: tests for duplicate symbols across repos,
+      deterministic output order, jq-absent fallback, rg-absent fallback,
+      and stale-index detection path.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Captured in backlog for next maintenance cycle.
+
+  - id: fw-1085-2
+    title: "Polyglot symbol indexing (JS/TS/YAML)"
+    rationale: >
+      Gemini G1: Python-only AST walker misses JS/TS files. Future WRK to
+      add tree-sitter or ctags for polyglot support.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Deferred — this WRK scoped to tier-1 Python repos only.
+
+  - id: fw-1085-3
+    title: "Add post-checkout and post-commit hooks for freshness"
+    rationale: >
+      post-merge hook alone does not cover local edits and branch switches.
+      Add post-checkout hook to warn on stale index.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Partially addressed by freshness check in find-symbol.sh.

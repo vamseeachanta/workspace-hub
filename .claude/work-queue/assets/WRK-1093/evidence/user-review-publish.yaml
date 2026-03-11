@@ -1,0 +1,32 @@
+wrk_id: WRK-1093
+events:
+  - stage: plan_draft
+    commit: ad6edf3353bc0602d1f82aea0b5f37b637545d21aa1
+    remote: origin
+    branch: main
+    pushed_to_origin: true
+    documents:
+      - .claude/work-queue/assets/WRK-1093/plan-html-review-draft.html
+    published_at: 2026-03-10T12:40:00Z
+    reviewed_at: 2026-03-10T12:30:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    commit: ad6edf3353bc0602d1f82aea0b5f37b637545d21bb2
+    remote: origin
+    branch: main
+    pushed_to_origin: true
+    documents:
+      - .claude/work-queue/assets/WRK-1093/plan-html-review-final.html
+    published_at: 2026-03-10T13:40:00Z
+    reviewed_at: 2026-03-10T13:30:00Z
+    reviewer: vamsee
+  - stage: close_review
+    commit: ad6edf3353bc0602d1f82aea0b5f37b637545d21cc3
+    remote: origin
+    branch: main
+    pushed_to_origin: true
+    documents:
+      - .claude/work-queue/assets/WRK-1093/WRK-1093-lifecycle.html
+    published_at: 2026-03-10T15:20:00Z
+    reviewed_at: 2026-03-10T15:10:00Z
+    reviewer: vamsee

@@ -1,0 +1,51 @@
+wrk_id: WRK-1081
+stage: 2
+completion_status: continue_to_planning
+gathered_at: "2026-03-09"
+
+findings:
+  existing_infrastructure:
+    - "scripts/quality/check-all.sh exists — ruff + mypy across 5 tier-1 repos; flags --fix/--repo/--ruff-only/--mypy-only/--docs"
+    - "All 5 tier-1 repos have .pre-commit-config.yaml (assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing)"
+    - "config/quality/ directory does NOT yet exist — must create"
+    - "No .bandit allowlist in any repo"
+    - "No radon thresholds in any pyproject.toml"
+
+  tool_availability:
+    bandit: "1.9.4 — installed via uv tool install; at ~/.local/bin/bandit"
+    radon: "6.0.1 — installed via uv tool install; at ~/.local/bin/radon"
+    vulture: "2.15 — installed via uv tool install; at ~/.local/bin/vulture"
+
+  baseline_sample_assetutilities:
+    bandit:
+      low: 400
+      medium: 8
+      high: 1
+      note: "High + Medium violations exist — baseline must capture to avoid blocking CI on day 1"
+    radon:
+      complexity_C_or_above: 20+
+      worst: "engine.py:engine D(22), visualizations.py:from_df_columns D(30)"
+      note: "Several D-grade functions; warn-only initially is correct"
+    vulture:
+      hits: "~15 in assetutilities alone (unused imports, vars, unreachable code)"
+      note: "Warning-only; baseline needed before enabling"
+
+  key_decisions:
+    - "Use 'uv tool run' pattern (consistent with ruff); tools installed globally on ace-linux-1"
+    - "Baseline YAML captures existing violations per repo; new violations above baseline = block"
+    - "bandit: MEDIUM+ blocks, LOW warns"
+    - "radon: warn-only (non-blocking) in initial release"
+    - "vulture: warn-only at 80% confidence"
+    - "Pre-commit: bandit on staged files only (speed); radon/vulture in full-suite only"
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - coding-style
+  reference_docs:
+    - scripts/quality/check-all.sh
+    - ".pre-commit-config.yaml in each tier-1 repo"
+    - "bandit docs: https://bandit.readthedocs.io"
+    - "radon docs: https://radon.readthedocs.io"
+    - "vulture docs: https://github.com/jendrikseipp/vulture"

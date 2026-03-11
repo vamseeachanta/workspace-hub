@@ -1,0 +1,6 @@
+wrk_id: WRK-1093
+route: B
+orchestrator: claude
+execution_workstation: ace-linux-1
+routed_at: 2026-03-10T14:00:00Z
+notes: Route B medium — scripts/quality + config/quality; ace-linux-1

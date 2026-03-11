@@ -1,0 +1,36 @@
+wrk_id: WRK-1094
+stage: 2
+completion_status: continue_to_planning
+surveyed_at: "2026-03-10T00:00:00Z"
+
+findings:
+  line_limit_violations_already_present:
+    - "assetutilities/CLAUDE.md: 31 lines (limit=20)"
+    - "digitalmodel/CLAUDE.md: 31 lines (limit=20)"
+    - "worldenergydata/CLAUDE.md: 54 lines (limit=20)"
+    - "assethold/CLAUDE.md: 31 lines (limit=20)"
+    - "OGManufacturing/CLAUDE.md: 31 lines (limit=20)"
+    - "workspace-hub/AGENTS.md: 27 lines (limit=20)"
+  missing_files:
+    - "CODEX.md missing in: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing"
+    - "GEMINI.md missing in: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing"
+  agents_md_schema: "YAML frontmatter required fields: purpose, entry_points, test_command, depends_on, maturity"
+
+existing_assets:
+  - "scripts/quality/check_doc_drift.py — follow as structural template"
+  - "scripts/quality/check-all.sh — add --config-drift flag"
+  - "scripts/hooks/pre-push.sh — add config drift check"
+  - "config/quality/ — drift baseline YAML goes here"
+
+skills:
+  core_used:
+    - "work-queue-workflow"
+    - "workflow-gatepass"
+    - "workspace-hub:ecosystem-terminology"
+    - "workspace-hub:work"
+
+notes: >
+  CODEX.md/GEMINI.md are missing in all 5 submodules — script should WARN (not FAIL) for missing adapter
+  files since they're optional. Line limit violations should FAIL. AGENTS.md frontmatter schema
+  should FAIL if frontmatter is absent. Missing sections = WARN.
+  Follow-up WRKs: (1) fix the 5 overlimit CLAUDE.md files, (2) add CODEX.md/GEMINI.md to submodules.

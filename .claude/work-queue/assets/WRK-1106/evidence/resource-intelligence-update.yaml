@@ -1,0 +1,7 @@
+wrk_id: "WRK-1106"
+generated_at: "2026-03-10T17:17:27Z"
+additions:
+  - type: pattern
+    description: "claim-item.sh resume vs collision: activation.yaml + non-empty session_id discriminates safe resume from concurrent collision"
+    target: ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+no_additions_rationale: ""

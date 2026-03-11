@@ -1,0 +1,29 @@
+wrk_id: WRK-668
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: session-668-plan-draft
+    documents:
+      - .claude/work-queue/assets/WRK-668/WRK-668-lifecycle.html
+    published_at: "2026-03-09T00:16:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: session-668-plan-final
+    documents:
+      - .claude/work-queue/assets/WRK-668/WRK-668-lifecycle.html
+    published_at: "2026-03-09T00:26:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: session-668-close-review
+    documents:
+      - .claude/work-queue/assets/WRK-668/WRK-668-lifecycle.html
+    published_at: "2026-03-09T01:22:00Z"
+    reviewer: vamsee

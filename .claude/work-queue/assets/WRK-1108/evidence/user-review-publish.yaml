@@ -1,0 +1,29 @@
+wrk_id: WRK-1108
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 69236e6c
+    documents:
+      - .claude/work-queue/assets/WRK-1108/WRK-1108-lifecycle.html
+    published_at: "2026-03-10T08:18:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 7375816a
+    documents:
+      - .claude/work-queue/assets/WRK-1108/WRK-1108-lifecycle.html
+    published_at: "2026-03-10T08:25:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2f784fff
+    documents:
+      - .claude/work-queue/assets/WRK-1108/workflow-final-review.html
+    published_at: "2026-03-10T09:05:00Z"
+    reviewer: vamsee

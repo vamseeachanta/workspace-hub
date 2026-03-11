@@ -1,0 +1,23 @@
+wrk_id: WRK-684
+stage: 15
+recommendations:
+  - id: FW-1
+    title: Emit structured YAML from comprehensive-learning for /today parsing
+    description: |
+      Currently learning-outcomes.sh parses free-form Markdown via sed/grep.
+      A structured YAML output from comprehensive-learning would make parsing
+      more robust and reduce maintenance burden.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: Low priority — current Markdown parsing works reliably for now.
+  - id: FW-2
+    title: Add cross-machine sync check before learning-outcomes.sh
+    description: |
+      If /today runs on ace-linux-2 or acma-ansys05, learning reports from
+      ace-linux-1 may not be synced. Add a sync check or skip gracefully.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: Deferred — fallback handles missing reports gracefully.
+completed_at: "2026-03-02T14:35:00Z"

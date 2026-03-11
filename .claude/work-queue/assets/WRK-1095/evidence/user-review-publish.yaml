@@ -1,0 +1,28 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "42969b446d23c4e13dd77f869bdf57b48bd94eed"
+    documents:
+      - ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+    published_at: "2026-03-10T09:10:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "42969b446d23c4e13dd77f869bdf57b48bd94eed"
+    documents:
+      - ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+    published_at: "2026-03-10T09:35:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "bcc6554f8f599a4dc1530eb06b1af677f2e93f9f"
+    documents:
+      - ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+    published_at: "2026-03-10T19:50:00Z"
+    reviewer: vamsee

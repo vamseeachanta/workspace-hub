@@ -1,0 +1,26 @@
+wrk_id: WRK-1081
+generated_at: "2026-03-09T21:00:00Z"
+additions:
+  - resource: "bandit[toml]==1.9.4"
+    type: tool
+    notes: >
+      Two-pass architecture: Pass 1 for LOW warnings, Pass 2 for MEDIUM+ gate.
+      [toml] extra required for pyproject.toml config parsing.
+  - resource: "radon==6.0.1"
+    type: tool
+    notes: >
+      radon cc src/ -n C — cyclomatic complexity C+ reporting; non-blocking.
+  - resource: "vulture==2.15"
+    type: tool
+    notes: >
+      vulture src/ --min-confidence 80 — dead-code detection; non-blocking.
+  - resource: "config/quality/bandit-baseline-{repo}.json"
+    type: pattern
+    notes: >
+      Native bandit JSON baseline format. Run bandit with -b to suppress existing
+      findings. Empty baselines mean all MEDIUM+ findings block.
+  - resource: "mock uv passthrough pattern"
+    type: pattern
+    notes: >
+      Mock uv in tests: check $1/$2/$3 for 'run --no-project python' and exec
+      python3 directly. Enables real JSON validation in mock environments.

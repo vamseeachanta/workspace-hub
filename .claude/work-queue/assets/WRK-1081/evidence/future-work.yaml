@@ -1,0 +1,35 @@
+wrk_id: WRK-1081
+generated_at: "2026-03-09T21:00:00Z"
+recommendations:
+  - id: fw-1081-1
+    title: "Automate bandit baseline generation and update workflow"
+    rationale: >
+      Currently baselines are empty JSON stubs. A script to run bandit across
+      all 5 repos and generate baseline files would make adoption easier.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Captured in backlog for future planning cycle.
+
+  - id: fw-1081-2
+    title: "Graduate radon and vulture to blocking thresholds after cleanup"
+    rationale: >
+      Once existing complexity/dead-code issues are addressed, radon (C+ grade)
+      and vulture (80%+ confidence) could become blocking checks in CI.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Captured in backlog; depends on codebase cleanup.
+
+  - id: fw-1081-3
+    title: "Align digitalmodel/worldenergydata bandit hooks with uvx baseline pattern"
+    rationale: >
+      digitalmodel and worldenergydata already have bandit hooks in legacy format.
+      Aligning them with the new uvx + bandit-baseline pattern improves consistency.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Captured in backlog for future maintenance cycle.

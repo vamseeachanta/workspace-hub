@@ -1,0 +1,31 @@
+wrk_id: WRK-668
+generated_at: "2026-03-09T01:15:00Z"
+recommendations:
+  - id: FW-1
+    title: "Harden archive-item.sh heredoc against shell injection (P1-B)"
+    description: "Replace Python heredoc with a proper script invocation to eliminate path injection surface in archive-item.sh"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    target_repo: workspace-hub
+  - id: FW-2
+    title: "Add allowlist validation for merge_status/sync_status values"
+    description: "gate_checks_archive.py currently blocks sentinel strings but does not enforce an allowlist of valid values (merged-to-main, no-branch-created, n/a-direct-commit)"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    target_repo: workspace-hub
+  - id: FW-3
+    title: "Fix archive-item.sh partial-write on stage-20 update failure (P2-D)"
+    description: "Write archive file atomically (temp + rename) or clean up on stage-20 update failure to avoid duplicate source/dest state"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    target_repo: workspace-hub
+  - id: FW-4
+    title: "Treat remote-unreachable as WARN not PASS in archive sync check (P3-D)"
+    description: "archive-item.sh sync gate currently treats remote-unreachable as success — should emit warning"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    target_repo: workspace-hub

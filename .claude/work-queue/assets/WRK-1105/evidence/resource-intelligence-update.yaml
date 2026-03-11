@@ -1,0 +1,25 @@
+wrk_id: WRK-1105
+stage: 16
+generated_at: "2026-03-10T22:00:00Z"
+additions:
+  - type: script
+    path: scripts/knowledge/capture-wrk-summary.sh
+    description: "Best-effort WRK completion knowledge capture at archive time"
+  - type: script
+    path: scripts/knowledge/query-knowledge.sh
+    description: "Query knowledge base by keyword or category; markdown output"
+  - type: script
+    path: scripts/knowledge/build-knowledge-index.sh
+    description: "Merge all knowledge stores (JSONL + career-learnings.yaml) into index.jsonl"
+  - type: script
+    path: scripts/knowledge/migrate-memory-to-knowledge.sh
+    description: "Migrate WRK ARCHIVED bullets from MEMORY.md to knowledge-base/"
+  - type: data
+    path: knowledge/seeds/career-learnings.yaml
+    description: "Committed career domain expertise seed (10 entries: engineering, finance, software)"
+  - type: skill_update
+    path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    description: "Added category 10 (knowledge-base query) to Resource Mining Checklist"
+  - type: skill_update
+    path: .claude/skills/workspace-hub/session-start/SKILL.md
+    description: "Added Step 2b: knowledge base surfacing at session start"

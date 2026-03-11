@@ -1,0 +1,212 @@
+---
+# career-learnings.yaml — Committed career domain expertise seed
+# Queried by: bash scripts/knowledge/query-knowledge.sh --category engineering
+# Legal: no client identifiers; use generic descriptive names only
+entries:
+  - id: CAREER-engineering-pipeline-integrity
+    type: career
+    category: engineering
+    subcategory: offshore
+    title: "Pipeline integrity assessment — DNV RP-F101 and API 579 methods"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Pipeline integrity assessment uses two main frameworks: DNV RP-F101 (Part B for
+      combined loading, Part A for internal pressure) and API 579-1/ASME FFS-1 for general
+      fitness-for-service. Key input parameters are defect depth (d/t ratio), length, pipe
+      grade (X52–X80), operating pressure, and corrosion rate from inspection data.
+      Partial safety factors vary by inspection confidence level (excellent/normal/poor).
+    patterns:
+      - "Always verify d/t ratio < 0.80 before applying SMTS correction"
+      - "DNV Part B requires combined stress interaction term (h parameter)"
+      - "API 579 Level 2 handles complex shapes; Level 1 is conservative bounding-box"
+      - "Corrosion allowance = design life × corrosion rate (mm/yr)"
+    follow_ons: []
+
+  - id: CAREER-engineering-orcaflex-viv
+    type: career
+    category: engineering
+    subcategory: offshore
+    title: "OrcaFlex VIV analysis — riser fatigue and wake interference"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      OrcaFlex VIV analysis for steel catenary risers requires model build from
+      as-built geometry (touchdown point, departure angle, wall thickness profile).
+      VIV fatigue is sensitive to current profile discretisation — use site-specific
+      metocean scatter diagram not simplified uniform current. Wake interference from
+      adjacent risers increases effective VIV amplitude (interference amplification factor).
+      Post-processing: fatigue life from S-N curve (DNV-RP-C203) integrated over all
+      current bins weighted by probability of occurrence.
+    patterns:
+      - "OrcaFlex line type must match actual riser wall thickness profile"
+      - "Wake interference: apply spacing/diameter ratio correction factor"
+      - "Fatigue damage accumulates per Miner's rule: sum(ni/Ni) < 1/DFF"
+      - "Design fatigue factor (DFF) = 3 for inspectable locations, 10 for inaccessible"
+    follow_ons:
+      - type: training
+        title: "Orcina OrcaFlex Automation Training (LinkedIn post)"
+        url: "https://www.linkedin.com/posts/orcina-ltd_orcaflex-automation-training-activity-7437060068174471169-d1P3?utm_source=share&utm_medium=member_ios&rcm=ACoAAAFdG9kB103ydcFGign1_8EYQx7YwiUPV4k"
+        added_at: "2026-03-11"
+        note: "Orcina official automation training — review for acma-ansys05 OrcaFlex scripting workflows"
+
+  - id: CAREER-engineering-fea-structural
+    type: career
+    category: engineering
+    subcategory: structural
+    title: "FEA structural analysis — meshing, boundary conditions, convergence"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Structural FEA best practices: element size driven by stress gradient (minimum 3
+      elements through thickness for bending-dominated problems). Convergence check: mesh
+      refine until stress change < 5% between refinement levels. Boundary conditions must
+      match physical constraints — fixed BC overstiffens; spring supports better represent
+      real flexibility. Contact elements for bearing problems; mesh tie for welded joints.
+      Post-processing: hot-spot stress extrapolation per IIW or DNVGL-RP-C203 for fatigue.
+    patterns:
+      - "Always check reaction forces sum to applied loads (equilibrium check)"
+      - "Singularities at point loads: use stress linearisation, not peak stress"
+      - "Shell vs solid elements: shell valid when t/L < 0.1; solid for local detail"
+      - "Geometric nonlinearity (NLGEOM) required when deflection > 0.1 × span"
+    follow_ons: []
+
+  - id: CAREER-engineering-cfd-offshore
+    type: career
+    category: engineering
+    subcategory: offshore
+    title: "CFD for offshore applications — scour, wave loading, and hydrodynamics"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      CFD for offshore structures uses OpenFOAM or ANSYS Fluent. Wave loading: Morison
+      equation valid for small D/λ ratio (< 0.2); diffraction important for larger structures.
+      Scour assessment: horseshoe vortex mechanism around monopile foundations; Shields
+      parameter determines onset. Turbulence model selection: k-ω SST reliable for
+      separated flows around bluff bodies. Domain sizing: upstream 10D, downstream 20D,
+      lateral 5D minimum.
+    patterns:
+      - "Morison coefficients: Cd=1.05, Cm=2.0 for cylindrical members (DNVGL-RP-C205)"
+      - "KC number determines drag vs inertia dominance: KC > 20 drag-dominated"
+      - "Scour depth estimate: 1.3 pile diameters for steady current (Sumer & Fredsoe)"
+    follow_ons: []
+
+  - id: CAREER-engineering-cathodic-protection
+    type: career
+    category: engineering
+    subcategory: offshore
+    title: "Cathodic protection design — impressed current and sacrificial anode"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      CP design uses DNV RP-F103 (offshore pipelines) and ABS rules for ships/offshore.
+      Four design routes in DNV: (1) ABS gn ships 2018, (2) DNV RP-F103 2010,
+      (3) ABS gn offshore 2018, (4) DNV RP-B401 offshore. Key parameters: design life,
+      coating breakdown factor, current density (initial/mean/final), seawater resistivity.
+      Anode mass = (current demand × design life) / (electrochemical efficiency × utilisation).
+    patterns:
+      - "Coating breakdown factors increase with time: DNV-RP-F103 Table A-4"
+      - "Aluminium anodes preferred over zinc for deepwater (weight efficiency)"
+      - "Close interval potential survey (CIPS) for in-service verification"
+    follow_ons: []
+
+  - id: CAREER-finance-real-estate-analysis
+    type: career
+    category: finance
+    subcategory: real-estate
+    title: "Real estate investment analysis — cap rate, cash-on-cash, and IRR"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Core metrics: cap rate = NOI/purchase price (risk indicator, market benchmark);
+      cash-on-cash = annual pre-tax cash flow / total equity invested (leverage effect);
+      IRR = total return including appreciation, amortisation, and cash flow over hold period.
+      DSCR > 1.25 typical lender requirement. Net lease structures (NNN) shift opex to tenant.
+      Value-add plays: reposition below-market rents; force appreciation via NOI improvement.
+    patterns:
+      - "Cap rate compression = price appreciation; watch spread vs treasury yields"
+      - "Cash-on-cash < cap rate = negative leverage (common when rates rise)"
+      - "1031 exchange defers capital gains tax on like-kind property swap"
+      - "Vacancy rate sensitivity: model base/upside/downside scenarios"
+    follow_ons: []
+
+  - id: CAREER-software-patterns-shell-scripting
+    type: career
+    category: software
+    subcategory: scripting
+    title: "Shell scripting patterns — flock, atomic writes, and idempotency"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Robust shell scripting requires: (1) atomic file writes via tmp+mv pattern to avoid
+      partial reads; (2) flock for concurrent-write protection on shared JSONL files;
+      (3) idempotency checks inside the lock section to avoid race conditions; (4) exit 0
+      on all error paths for best-effort hooks that must not block callers; (5) set -euo
+      pipefail at top of every script; (6) always use $() over backticks; (7) double-quote
+      all variable expansions. shellcheck enforces most of these.
+    patterns:
+      - "Atomic write: write to .tmp then mv — mv is atomic on same filesystem"
+      - "Flock pattern: exec FD>lockfile; flock -w N FD; ... ; flock -u FD"
+      - "Idempotency inside lock: check-then-append must be within same flock"
+      - "Best-effort hooks: always end with || true so parent process never fails"
+    follow_ons: []
+
+  - id: CAREER-software-python-type-safety
+    type: career
+    category: software
+    subcategory: python
+    title: "Python type safety — mypy strict mode and NamedTuple patterns"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      mypy strict mode catches most runtime errors at analysis time. Key patterns:
+      Use NamedTuple for immutable data structures (better than dataclass for read-only);
+      Path | None must be narrowed before use (assert or early return); subprocess.run
+      return type includes .returncode, .stdout, .stderr; use Optional[X] or X | None
+      consistently. For scripts without pyproject.toml: uv run --no-project --with mypy
+      python -m mypy <script.py>.
+    patterns:
+      - "assert var is not None narrows type for mypy without runtime cost"
+      - "Use Path not str for all filesystem operations — avoids join errors"
+      - "subprocess.run(check=False) then inspect .returncode for best-effort"
+    follow_ons: []
+
+  - id: CAREER-software-jsonl-knowledge-stores
+    type: career
+    category: software
+    subcategory: data-engineering
+    title: "JSONL as a knowledge store — append-only, queryable, portable"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      JSONL (newline-delimited JSON) is the right format for lightweight persistent stores
+      that need to be appended to, scanned, and filtered without a database. Each line is
+      valid JSON — partial writes are safe because only complete lines are parsed. Dedup
+      by id field before writing. Build an index file (index.jsonl) for query performance;
+      check source file mtimes against index mtime to detect staleness. Lock with flock
+      for concurrent-write safety.
+    patterns:
+      - "Never overwrite JSONL — always append, then dedup on read or rebuild index"
+      - "Corrupt lines: wrap json.loads in try/except, skip malformed lines with warning"
+      - "Index rebuild: atomic tmp+mv, flock to prevent concurrent rebuilds"
+    follow_ons: []
+
+  - id: CAREER-engineering-energy-economics
+    type: career
+    category: engineering
+    subcategory: energy
+    title: "Energy economics — field development economics and NPV analysis"
+    learned_at: "2026-03-10T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Oil and gas field development economics: NPV = sum(cashflow_t / (1+r)^t).
+      Key sensitivities: oil price, production profile, capex, opex, abandonment cost.
+      Breakeven price = opex + capex_recovery / (production × royalty_net). Government
+      take varies by fiscal regime (PSC, royalty/tax). Production decline modelled with
+      Arps equations (exponential, hyperbolic, harmonic). Monte Carlo simulation for
+      uncertainty quantification across P10/P50/P90 reserve estimates.
+    patterns:
+      - "NPV10 is industry standard discount rate for oil field economics"
+      - "P50 = median estimate; P90 = 90th percentile (conservative)"
+      - "Arps hyperbolic: q = qi / (1 + b*Di*t)^(1/b); b=1 for tight oil"
+    follow_ons: []

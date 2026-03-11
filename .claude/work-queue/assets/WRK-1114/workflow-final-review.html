@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1114 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1114 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Add a machine-specific ID floor convention to `next-id.sh` and document it in `state.yaml` + the work skill. Each machine owns a non-overlap...</summary><div class="panel"><p>Add a machine-specific ID floor convention to <code>next-id.sh</code> and document it in
+<code>state.yaml</code> + the work skill. Each machine owns a non-overlapping numeric range and
+re-allocates by bumping its floor when it nears the ceiling.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — ace-linux-1 and acma-ansys05 both pull from the same git repo and run `next-id.sh` independently. Without coordination, two machines can emi...</summary><div class="panel"><p>ace-linux-1 and acma-ansys05 both pull from the same git repo and run <code>next-id.sh</code>
+independently. Without coordination, two machines can emit the same WRK-NNN, causing
+silent overwrites on the next <code>git pull</code>.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `config/work-queue/machine-ranges.yaml` defines the canonical partition table - [ ] `next-id.sh` reads the table, detects `$HOSTNAME`,...</summary><div class="panel"><ul>
+<li>[ ] <code>config/work-queue/machine-ranges.yaml</code> defines the canonical partition table</li>
+<li>[ ] <code>next-id.sh</code> reads the table, detects <code>$HOSTNAME</code>, and enforces a minimum floor
+      for the current machine (if MAX_ID &lt; floor → start from floor)</li>
+<li>[ ] state.yaml gains a <code>machine_ranges</code> comment block pointing to the config file</li>
+<li>[ ] work-queue skill and <code>next-id.sh</code> header both document the convention and the
+      re-allocation policy ("bump floor when within 50 of ceiling")</li>
+<li>[ ] Tested: simulate ace-linux-1 (floor 1, ceiling 4999) and acma-ansys05 (floor 5000)
+      returning non-overlapping IDs</li>
+<li>[ ] No existing WRK IDs are renumbered</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — **Initial partition table** (`config/work-queue/machine-ranges.yaml`): | Machine | Floor | Ceiling | Notes | |---------|-------|---------|--...</summary><div class="panel"><p><strong>Initial partition table</strong> (<code>config/work-queue/machine-ranges.yaml</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Machine</th>
+<th>Floor</th>
+<th>Ceiling</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ace-linux-1</td>
+<td>1</td>
+<td>4999</td>
+<td>default; current IDs ~1113</td>
+</tr>
+<tr>
+<td>acma-ansys05</td>
+<td>5000</td>
+<td>9999</td>
+<td>Windows machine</td>
+</tr>
+<tr>
+<td>ace-linux-2</td>
+<td>10000</td>
+<td>14999</td>
+<td>reserved</td>
+</tr>
+<tr>
+<td>gali-linux-compute-1</td>
+<td>15000</td>
+<td>19999</td>
+<td>reserved</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1</strong> — Write <code>config/work-queue/machine-ranges.yaml</code>
+<strong>Step 2</strong> — Update <code>next-id.sh</code>: after computing MAX_ID, read floor for <code>$HOSTNAME</code>;
+             if <code>MAX_ID &lt; floor</code> set <code>NEXT_ID = floor</code>, else <code>NEXT_ID = MAX_ID + 1</code>
+<strong>Step 3</strong> — Add header comment to <code>next-id.sh</code> explaining the convention
+<strong>Step 4</strong> — Add <code>machine_ranges_ref</code> key to <code>state.yaml</code>
+<strong>Step 5</strong> — Update work-queue SKILL.md §Workstation Routing with the range table
+<strong>Step 6</strong> — Write 2 unit tests (bash): one per machine, assert non-overlapping output</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1114 Final Plan Review **WRK:** WRK-1114 — Machine-partitioned WRK ID ranges **Route:** A (Simple) ## Confirmation Block confirmed_by:...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1114 Final Plan Review</h1>
+<p><strong>WRK:</strong> WRK-1114 — Machine-partitioned WRK ID ranges
+<strong>Route:</strong> A (Simple)</p>
+<h2>Confirmation Block</h2>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-10T00:00:00Z
+decision: passed</p>
+<h2>Final Plan Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Create <code>config/work-queue/machine-ranges.yaml</code></td>
+<td>Done</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Update <code>next-id.sh</code> with machine-floor logic</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Add header comment to <code>next-id.sh</code></td>
+<td>Done</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Add <code>machine_ranges_ref</code> to <code>state.yaml</code></td>
+<td>Done</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Update SKILL.md §Workstation Routing with range table</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Write 5 bash unit tests</td>
+<td>Done — 5 PASS, 0 FAIL</td>
+</tr>
+</tbody>
+</table>
+<h2>Partition Table</h2>
+<table>
+<thead>
+<tr>
+<th>Machine</th>
+<th>Floor</th>
+<th>Ceiling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ace-linux-1</td>
+<td>1</td>
+<td>4999</td>
+</tr>
+<tr>
+<td>acma-ansys05</td>
+<td>5000</td>
+<td>9999</td>
+</tr>
+<tr>
+<td>ace-linux-2</td>
+<td>10000</td>
+<td>14999</td>
+</tr>
+<tr>
+<td>gali-linux-compute-1</td>
+<td>15000</td>
+<td>19999</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 5 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>ace-linux-1 empty queue → floor ID 001</td><td>repo</td><td>pass</td><td><code>bash tests/work-queue/test-machine-id-ranges.sh</code></td><td>tests/work-queue/test-machine-id-ranges.sh</td></tr><tr><td>2</td><td>acma-ansys05 empty queue → floor ID 5000</td><td>repo</td><td>pass</td><td><code>bash tests/work-queue/test-machine-id-ranges.sh</code></td><td>tests/work-queue/test-machine-id-ranges.sh</td></tr><tr><td>3</td><td>ace-linux-1 MAX_ID=1113 → next ID 1114</td><td>repo</td><td>pass</td><td><code>bash tests/work-queue/test-machine-id-ranges.sh</code></td><td>tests/work-queue/test-machine-id-ranges.sh</td></tr><tr><td>4</td><td>acma-ansys05 MAX_ID=5001 → next ID 5002</td><td>repo</td><td>pass</td><td><code>bash tests/work-queue/test-machine-id-ranges.sh</code></td><td>tests/work-queue/test-machine-id-ranges.sh</td></tr><tr><td>5</td><td>range non-overlap invariant: ace-linux-1 ceiling &lt; acma-ansys05 floor</td><td>repo</td><td>pass</td><td><code>bash tests/work-queue/test-machine-id-ranges.sh</code></td><td>tests/work-queue/test-machine-id-ranges.sh</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1114, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1114, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1114/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1114/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: no_follow_ups_rationale=present</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=2</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>WARN</td>
+<td>bypass: Route A — plan was authored by user; approved interactively in same capture session (stage=plan_draft, delta=0s)</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (2 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>WARN</td>
+<td>plan_draft and plan_final share commit '0c7ea148a0e04f5f3aa96f34cf5f0fb8e31e0e4a' — possible placeholder (WARN)</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-10T00:10:00Z, reviewed=2026-03-10 00:00:00+00:00)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1114 generated_at: 2026-03-10T00:00:00Z no_follow_ups_rationale: &gt; Route A simple item. Three low-priority FW ideas noted (add t...</summary><div class="panel"><p>wrk_id: WRK-1114
+generated_at: 2026-03-10T00:00:00Z
+no_follow_ups_rationale: &gt;
+  Route A simple item. Three low-priority FW ideas noted (add tests for reserved machines,
+  ceiling proximity alert, new-machine onboarding script) but none are required for this
+  WRK to be complete. Deferred to backlog capture in a future session.
+recommendations: []</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1114 generated_at: &#x27;2026-03-10T00:00:00Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1114
+generated_at: '2026-03-10T00:00:00Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created by user with full plan inline.
+  evidence: .claude/work-queue/working/WRK-1114.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Key files identified; all local to workspace-hub.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route A, priority medium, complexity simple. Workstations set.
+  evidence: .claude/work-queue/working/WRK-1114.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Inline plan in WRK + plan_claude.md artifact generated.
+  evidence: .claude/work-queue/assets/WRK-1114/plan_claude.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: User approved plan in session.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Route A single-pass Claude cross-review.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Route A — plan-final-review merged with Stage 5 approval.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and activation written.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route A routing logged.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/stage-evidence.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: All 5 implementation steps completed.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Lifecycle HTML generated.
+  evidence: .claude/work-queue/assets/WRK-1114/WRK-1114-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 5 bash unit tests — all PASS.
+  evidence: tests/work-queue/test-machine-id-ranges.sh
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Route A single-pass implementation review complete.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/cross-review-claude.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier run.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Future work captured.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence update recorded.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: User approved close — all 6 ACs met.
+  evidence: .claude/work-queue/assets/WRK-1114/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed — session stayed healthy.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting close-item.sh after Stage 17 approval.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting archive-item.sh after merge.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 27 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1114-lifecycle.html</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>plan_claude.md</code></li><li><code>review.md</code></li><li><code>test-results.md</code></li></ul></div></details>
+</body>
+</html>

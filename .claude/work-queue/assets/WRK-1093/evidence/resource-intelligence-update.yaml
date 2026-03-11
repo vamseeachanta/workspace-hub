@@ -1,0 +1,10 @@
+wrk_id: WRK-1093
+stage: 16
+completed_at: 2026-03-10T15:15:00Z
+additions:
+  - context: "symbol-index.jsonl uses 'symbol' field (not 'name') — confirmed by reading config/search/symbol-index.jsonl"
+    resource: config/search/symbol-index.jsonl
+    note: "Always use s.get('symbol') when reading symbol-index entries"
+  - context: "git log --since=90.days is the recommended bound for recent-change detection"
+    resource: scripts/quality/check_doc_drift.py
+    note: "Unbounded git log scans full history; add --since or -n bound"

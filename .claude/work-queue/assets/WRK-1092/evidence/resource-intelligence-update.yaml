@@ -1,0 +1,11 @@
+wrk_id: WRK-1092
+stage: 16
+updated_at: 2026-03-10T04:40:00Z
+
+additions:
+  - resource: config/quality/mypy-baseline.yaml
+    note: Mypy error baselines — assetutilities=941, digitalmodel=1, worldenergydata=3414, assethold=320, ogmanufacturing=0
+  - resource: scripts/quality/check_mypy_ratchet.py
+    note: Ratchet script — --init mode to seed, default mode enforces, SKIP_MYPY_REASON bypass
+  - resource: tests/quality/test_check_mypy_ratchet.py
+    note: 14 TDD tests for ratchet logic

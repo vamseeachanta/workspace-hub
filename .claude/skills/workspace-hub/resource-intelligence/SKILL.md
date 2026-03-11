@@ -176,6 +176,7 @@ Mine in this order (cheapest lookup first). Stop a category when no relevant res
 | 7 | **Document index** | `data/document-index/registry.yaml`, `index.jsonl`, `standards-transfer-ledger.yaml` | Engineering / standards WRKs |
 | 8 | **Mounted sources** | `/mnt/ace/`, `/mnt/remote/ace-linux-2/dde` | Engineering domain WRKs |
 | 9 | **Online / additive** | External URLs | Only when repo sources are insufficient |
+| 10 | **Knowledge base** | `bash scripts/knowledge/query-knowledge.sh --query <keyword> --category <cat>` | Always for harness/knowledge WRKs; check for any WRK when prior work patterns are relevant |
 
 ---
 
@@ -249,6 +250,39 @@ If no unresolved `P1` gaps remain → `completion_status: continue_to_planning`.
 - Every downloaded source must record: `source_type`, `origin`, `license/access`, `retrieval_date`, `canonical_storage_path`, `duplicate/superseded`, `status` (`available` | `source_unavailable`), fallback evidence when unavailable.
 
 Read `references/source-registry.md` before adding or changing source-root mappings.
+
+---
+
+## Canonical Usage Path
+
+### Step-by-Step for Authors
+
+1. **Scaffold**: `bash .claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh WRK-NNN`
+2. **Mine**: follow the Resource Mining Checklist and Category→Mining Map for `target_repos`
+3. **Fill artifacts**: `resource-pack.md`, `sources.md`, `resources.yaml`, `resource-intelligence-summary.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`
+4. **Fill gate artifact**: `evidence/resource-intelligence.yaml` with `skills.core_used ≥3`, `completion_status`, `top_p1_gaps`
+5. **Validate**: `bash .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh WRK-NNN` — must exit 0
+6. **Record quality**: populate `quality_signals` block in `evidence/resource-intelligence.yaml`
+
+### Confidence Derivation Rule
+
+`confidence = high` iff ALL of:
+
+- `missing_artifact_rate == 0.0` (all required artifacts present)
+- `top_p1_gaps` is empty **or** ≥1 P1 gap was resolved and documented
+- Provenance complete — every `resources.yaml` source has `retrieval_date` and `canonical_storage_path`
+
+Set `confidence: medium` when one of those conditions is not met; `confidence: low` when two or more are not met.
+
+### Measurable Quality Signals
+
+| Signal | Good | Needs work |
+|--------|------|------------|
+| `missing_artifact_rate` | 0.0 | > 0.0 |
+| `plan_edits_required` | 0–1 | ≥ 3 |
+| `confidence` | `high` | `medium` or `low` |
+
+See `evidence/ri-comparison-examples.md` for before/after WRK pairs with rubric.
 
 ---
 

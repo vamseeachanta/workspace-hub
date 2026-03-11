@@ -1,0 +1,21 @@
+wrk_id: WRK-684
+stage: 2
+completion_status: continue_to_planning
+findings_summary: |
+  Source and destination scripts are identified and readable.
+  comprehensive-learning outputs Markdown tables; /today sections are bash-generated.
+  A clean parser needed for integration. Path is clear — no blockers.
+  Cross-machine sync noted: ensure reports from ace-linux-1 are available before /today runs.
+skills:
+  core_used:
+    - work-queue
+    - workspace-hub/ecosystem-terminology
+    - workspace-hub/today
+  researched:
+    - comprehensive-learning pipeline output format
+    - /today section architecture
+    - scripts/productivity/sections/ patterns
+risks:
+  - Format mismatch between Markdown tables and bash-generated /today blocks
+  - Cross-machine sync dependency for reports
+notes: Legacy backfill from resource-intelligence-summary.md (2026-03-02).

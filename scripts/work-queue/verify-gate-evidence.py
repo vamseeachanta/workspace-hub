@@ -4,12 +4,22 @@
 import re
 import sys
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 try:
     import yaml  # type: ignore[import]
 except Exception:
     yaml = None
+
+# gate_checks_archive lives alongside this file in scripts/work-queue/
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+try:
+    from gate_checks_archive import check_archive_readiness  # type: ignore[import]
+except ImportError:
+    check_archive_readiness = None  # type: ignore[assignment]
 
 
 def parse_frontmatter(text: str) -> str:
@@ -1635,7 +1645,61 @@ def parse_gate_log(log_path: Path) -> list[dict[str, str]]:
     return entries
 
 
-def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple[bool, str]:
+LOG_GATE_SINCE = datetime(2026, 3, 9, tzinfo=timezone.utc)
+
+
+def _check_legacy_discriminator(wrk_frontmatter: dict) -> tuple[bool | None, str]:
+    """Two-tier legacy discriminator for check_agent_log_gate.
+
+    Returns:
+      (True, reason)  — skip gate (legacy or backfill)
+      (False, reason) — enforce gate (new WRK, malformed, or boundary/post-cutoff)
+      (None, "")      — discriminator not applicable (no wrk_frontmatter)
+    """
+    id_raw = str(wrk_frontmatter.get("id", "")).strip()
+    if not id_raw.upper().startswith("WRK-"):
+        return False, f"non-WRK-NNN id format: {id_raw!r}"
+    suffix = id_raw[4:]
+    try:
+        id_num = int(suffix)
+    except ValueError:
+        return False, f"non-integer WRK id suffix: {suffix!r}"
+
+    # Tier 1: numeric id < 658 → unconditional legacy skip
+    if id_num < 658:
+        return True, f"legacy WRK (id={id_num} < 658) — log gate skipped"
+
+    # Tier 2: id >= 658 — check created_at against LOG_GATE_SINCE
+    created_raw = str(wrk_frontmatter.get("created_at", "")).strip()
+    if not created_raw:
+        return False, f"id={id_num} >= 658 and created_at absent — gate enforced"
+    try:
+        # Normalize Z suffix for Python 3.8 fromisoformat compatibility
+        normalized = created_raw.replace("Z", "+00:00")
+        parsed_dt = datetime.fromisoformat(normalized)
+        if parsed_dt.tzinfo is None:
+            parsed_dt = parsed_dt.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return False, f"id={id_num} >= 658 and created_at malformed ({created_raw!r}) — gate enforced"
+    if parsed_dt < LOG_GATE_SINCE:
+        return True, f"pre-cutoff backfill (id={id_num}, created_at={created_raw}) — log gate skipped"
+    return False, f"id={id_num} >= 658, created_at={created_raw} >= cutoff — gate enforced"
+
+
+def check_agent_log_gate(
+    workspace_root: Path,
+    wrk_id: str,
+    phase: str,
+    wrk_frontmatter: dict | None = None,
+) -> tuple[bool, str]:
+    # Apply legacy discriminator when frontmatter is provided
+    if wrk_frontmatter is not None:
+        skip, reason = _check_legacy_discriminator(wrk_frontmatter)
+        if skip is True:
+            return True, reason
+        if skip is False:
+            pass  # proceed to log check
+
     log_dir = workspace_root / ".claude" / "work-queue" / "logs"
     if not log_dir.exists():
         return False, "work-queue log directory missing"
@@ -1660,8 +1724,15 @@ def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple
             ("execute", {"execute_wrapper_complete", "tdd_eval"}),
             ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
         ],
+        # archive phase: same requirements as close (close gate must have passed first)
+        "archive": [
+            ("routing", {"work_wrapper_complete", "work_queue_skill"}),
+            ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
+            ("execute", {"execute_wrapper_complete", "tdd_eval"}),
+            ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
+        ],
     }
-    requirements = required_by_phase[phase]
+    requirements = required_by_phase.get(phase, [])
     missing: list[str] = []
     matched: list[str] = []
     for stage, accepted_actions in requirements:
@@ -1684,8 +1755,9 @@ def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple
     return True, "matched " + ", ".join(matched)
 
 
-def run_checks(wrk_id: str, phase: str = "close") -> int:
-    workspace_root = Path(__file__).resolve().parents[2]
+def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = None) -> int:
+    if workspace_root is None:
+        workspace_root = Path(__file__).resolve().parents[2]
     queue_dir = workspace_root / ".claude" / "work-queue"
     wrk_path = None
     for folder in ["pending", "working", "done"]:
@@ -1749,7 +1821,11 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
     gates.append({"name": "Resource-intelligence gate", "ok": bool(ri_ok), "details": ri_details})
     activation_ok, activation_details = check_activation_gate(assets_dir, wrk_id)
     gates.append({"name": "Activation gate", "ok": activation_ok, "details": activation_details})
-    log_ok, log_details = check_agent_log_gate(workspace_root, wrk_id, phase)
+    wrk_fm = {
+        "id": get_field(front, "id") or "",
+        "created_at": get_field(front, "created_at") or "",
+    }
+    log_ok, log_details = check_agent_log_gate(workspace_root, wrk_id, phase, wrk_frontmatter=wrk_fm)
     gates.append({"name": "Agent log gate", "ok": log_ok, "details": log_details})
     html_open_required = ["plan_draft", "plan_final"]
     if phase == "close":
@@ -1863,6 +1939,23 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
         # Gap 11 — Reclaim gate n/a
         rna_ok, rna_details = check_reclaim_gate_na(assets_dir)
         gates.append({"name": "Reclaim n/a gate", "ok": bool(rna_ok), "warn": rna_ok is None, "details": rna_details})
+
+    if phase == "archive":
+        if check_archive_readiness is not None:
+            ar_ok, ar_details = check_archive_readiness(assets_dir)
+            gates.append({
+                "name": "Archive readiness gate",
+                "ok": ar_ok is True,
+                "warn": ar_ok is None,
+                "details": ar_details,
+            })
+        else:
+            gates.append({
+                "name": "Archive readiness gate",
+                "ok": False,
+                "warn": False,
+                "details": "gate_checks_archive module not found",
+            })
 
     success = True
     print(f"Gate evidence for {wrk_id} (phase={phase}, assets: {assets_dir}):")
@@ -2034,13 +2127,13 @@ def main() -> None:
         args = [a for a in args if a != "--json"]
 
     if len(args) not in {1, 3}:
-        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close] [--json]")
+        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--json]")
         sys.exit(1)
     wrk_id = args[0]
     phase = "close"
     if len(args) == 3:
-        if args[1] != "--phase" or args[2] not in {"claim", "close"}:
-            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close] [--json]")
+        if args[1] != "--phase" or args[2] not in {"claim", "close", "archive"}:
+            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--json]")
             sys.exit(1)
         phase = args[2]
     if use_json:

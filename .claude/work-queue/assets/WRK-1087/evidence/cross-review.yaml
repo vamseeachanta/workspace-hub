@@ -1,0 +1,37 @@
+wrk_id: WRK-1087
+stage: 6
+completed_at: 2026-03-09
+
+codex:
+  verdict: REQUEST_CHANGES
+  resolved: true
+  findings:
+    - severity: P1
+      issue: fail-open drops audit events silently
+      resolution: errors.log sentinel written on log_action failure
+    - severity: P1
+      issue: cross-file rotation chain undefined
+      resolution: audit-chain-state.json carries terminal hash across months
+    - severity: P1
+      issue: concurrent write race breaks SHA256 chain
+      resolution: flock -w 5 9 on per-file lock file
+    - severity: P1
+      issue: SHA256 spec underspecified (bytes/encoding)
+      resolution: "spec: printf '%s\\n' | sha256sum — UTF-8, LF-terminated"
+
+gemini:
+  verdict: REQUEST_CHANGES
+  resolved: true
+  findings:
+    - severity: P1
+      issue: fail-open silently drops events
+      resolution: errors.log sentinel
+    - severity: P2
+      issue: concurrency race
+      resolution: flock locking
+    - severity: P3
+      issue: naming conventions
+      resolution: deferred — kebab-case is consistent with repo patterns
+
+plan_updated: true
+plan_ref: specs/wrk/WRK-1087/wrk-1087-agent-audit-trail.md

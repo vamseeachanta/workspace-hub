@@ -1,0 +1,33 @@
+wrk_id: WRK-667
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 0ce8e391deaba8d3836eec4858ddc316356b6122
+    documents:
+      - .claude/work-queue/assets/WRK-667/plan-draft.md
+      - .claude/work-queue/assets/WRK-667/WRK-667-lifecycle.html
+    published_at: "2026-03-09T08:32:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 0ce8e391deaba8d3836eec4858ddc316356b6122
+    documents:
+      - .claude/work-queue/assets/WRK-667/plan-final.md
+      - .claude/work-queue/assets/WRK-667/WRK-667-lifecycle.html
+    published_at: "2026-03-09T08:32:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 65547760
+    documents:
+      - .claude/work-queue/assets/WRK-667/WRK-667-lifecycle.html
+      - .claude/work-queue/assets/WRK-667/evidence/execute.yaml
+      - .claude/work-queue/assets/WRK-667/evidence/future-work.yaml
+    published_at: "2026-03-10T02:59:00Z"
+    reviewer: vamsee

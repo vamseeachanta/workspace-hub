@@ -1,0 +1,54 @@
+wrk_id: WRK-1079
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T19:30:00Z
+executor: claude
+
+commits:
+  - repo: assetutilities
+    hash: 555981b
+    message: "feat(WRK-1079): add PEP 561 inline types to assetutilities public API"
+
+files_created:
+  - assetutilities/src/assetutilities/py.typed
+  - specs/wrk/WRK-1079/plan.md
+
+files_modified:
+  - assetutilities/src/assetutilities/common/update_deep.py
+  - assetutilities/src/assetutilities/common/yml_utilities.py
+  - assetutilities/src/assetutilities/common/file_management.py
+  - assetutilities/src/assetutilities/common/data.py
+  - assetutilities/pyproject.toml
+
+integrated_repo_tests:
+  - name: "assetutilities unit tests"
+    scope: repo
+    command: "cd assetutilities && uv run python -m pytest tests/ --noconftest -q --tb=no"
+    result: pass
+    artifact_ref: "assetutilities/tests/"
+    count: 692
+
+  - name: "assetutilities mypy clean"
+    scope: repo
+    command: "cd assetutilities && uv run mypy src/assetutilities/common/update_deep.py src/assetutilities/common/file_management.py src/assetutilities/common/yml_utilities.py"
+    result: pass
+    artifact_ref: "assetutilities/src/assetutilities/common/"
+    count: 0
+
+  - name: "consumer import verification"
+    scope: integrated
+    command: "PYTHONPATH=/mnt/.../digitalmodel/src:/mnt/.../assetutilities/src uv --project digitalmodel run python -c 'from assetutilities.common.data import ReadData, SaveData, Transform; ...; print(imports OK)'"
+    result: pass
+    artifact_ref: "assetutilities/src/assetutilities/"
+
+  - name: "worldenergydata consumer mypy (assetutilities errors)"
+    scope: integrated
+    command: "cd worldenergydata && PYTHONPATH=src:../assetutilities/src uv run mypy src/ --ignore-missing-imports 2>&1 | grep assetutilities"
+    result: pass
+    artifact_ref: "worldenergydata/src/"
+    count: 0
+
+cross_review_findings_addressed:
+  - id: all
+    status: addressed
+    note: "All 3 cross-review providers reviewed plan; Codex quota-blocked with user override; Claude+Gemini APPROVE"

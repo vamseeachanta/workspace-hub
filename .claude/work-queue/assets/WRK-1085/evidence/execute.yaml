@@ -1,0 +1,44 @@
+wrk_id: WRK-1085
+stage: 10
+scope: integrated
+executed_at: "2026-03-09T16:37:39Z"
+provider: claude
+outcome: pass
+changes:
+  - file: scripts/search/build-symbol-index.py
+    description: >
+      AST walker over all 5 tier-1 src/ roots; emits class/function/method/constant
+      records to JSONL; skips broken .py with warnings; prints summary line.
+  - file: scripts/search/find-symbol.sh
+    description: >
+      <1s jq lookup with --kind/--repo filters; grep+python fallback when jq absent;
+      exits 1 on miss; freshness check warns when src/ newer than index.
+  - file: scripts/search/cross-repo-search.sh
+    description: >
+      grep wrapper with src>tests>docs ranked output; rg preferred, grep -r fallback
+      with warning; --type and --repo filters supported.
+  - file: scripts/hooks/post-merge
+    description: Conditional index rebuild when src/ changes detected in merge.
+  - file: tests/search/test-symbol-index.sh
+    description: >
+      8 test cases covering happy path, miss, ranking, broken-file skip,
+      and filtered lookup — all PASS.
+  - file: .gitignore
+    description: Added config/search/symbol-index.jsonl to ignore (cache artifact).
+integrated_repo_tests:
+  - name: test_symbol_index
+    scope: integrated
+    command: bash tests/search/test-symbol-index.sh
+    result: pass
+    artifact_ref: tests/search/test-symbol-index.sh
+  - name: build_symbol_index_run
+    scope: integrated
+    command: uv run --no-project python scripts/search/build-symbol-index.py --quiet
+    result: pass
+    artifact_ref: scripts/search/build-symbol-index.py
+  - name: find_symbol_smoke
+    scope: integrated
+    command: bash scripts/search/find-symbol.sh SaveData
+    result: pass
+    artifact_ref: scripts/search/find-symbol.sh
+completed_at: "2026-03-09T16:37:39Z"

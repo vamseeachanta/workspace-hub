@@ -1,0 +1,20 @@
+wrk_id: WRK-1102
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1102/WRK-1102-lifecycle.html
+    opened_at: 2026-03-10T00:00:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1102/WRK-1102-lifecycle.html
+    opened_at: 2026-03-10T00:06:00Z
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1102/WRK-1102-lifecycle.html
+    opened_at: 2026-03-10T01:00:00Z
+    reviewer: vamsee

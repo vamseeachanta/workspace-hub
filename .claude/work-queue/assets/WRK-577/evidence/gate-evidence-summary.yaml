@@ -1,0 +1,30 @@
+wrk_id: WRK-577
+stage: 14
+generated_at: "2026-03-10T11:15:00Z"
+verifier: scripts/work-queue/verify-gate-evidence.py
+phase: close
+status: in_progress
+gates_ok:
+  - Plan gate
+  - Workstation contract gate
+  - Stage evidence gate
+  - Resource-intelligence gate
+  - Activation gate
+  - Agent log gate (legacy skip)
+  - User-review HTML-open gate
+  - User-review publish gate
+  - Cross-review gate
+  - TDD gate
+  - Integrated test gate
+  - Legal gate
+  - Approval ordering gate
+  - Claim artifact path gate
+  - ISO datetime format gate
+  - Codex keyword in review gate
+  - Future-work gate
+  - Resource-intelligence update gate
+  - Browser open elapsed time gate
+  - Stage evidence paths gate
+  - User-review close gate
+gates_pending: []
+notes: "All gates OK. Stage 17 user-review-close approved by vamsee."

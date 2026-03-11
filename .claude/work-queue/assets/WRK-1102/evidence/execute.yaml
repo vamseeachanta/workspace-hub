@@ -1,0 +1,32 @@
+wrk_id: WRK-1102
+stage: 10
+scope: integrated
+completed_at: 2026-03-10T01:00:00Z
+fixes_delivered:
+  - fix_1_signal_naming
+  - fix_2_cron_removal
+  - fix_3_direct_script_call
+  - fix_4_phase_scripts
+  - fix_6_codex_ingestion
+  - fix_7_classify_shell_router
+integrated_repo_tests:
+  - name: test_signal_file_detection
+    scope: integrated
+    command: bats tests/session-analysis/test_signal_file_detection.bats
+    result: pass
+    artifact_ref: tests/session-analysis/test_signal_file_detection.bats
+  - name: test_classify_routing
+    scope: integrated
+    command: bats tests/session-analysis/test_classify_routing.bats
+    result: pass
+    artifact_ref: tests/session-analysis/test_classify_routing.bats
+  - name: test_phase_scripts_exist
+    scope: integrated
+    command: bats tests/session-analysis/test_phase_scripts_exist.bats
+    result: pass
+    artifact_ref: tests/session-analysis/test_phase_scripts_exist.bats
+  - name: test_stage_exit_signal
+    scope: integrated
+    command: bats tests/session-analysis/test_stage_exit_signal.bats
+    result: pass
+    artifact_ref: tests/session-analysis/test_stage_exit_signal.bats

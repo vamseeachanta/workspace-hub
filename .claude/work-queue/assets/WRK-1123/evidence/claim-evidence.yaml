@@ -1,0 +1,16 @@
+wrk_id: WRK-1123
+claim_date: "2026-03-11T11:45:00Z"
+route: A
+orchestrator: claude
+best_fit_provider: claude
+alternate_provider: codex
+session_owner: vamsee
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: available
+  pct_remaining: 75
+agent_capability:
+  best_fit: python guard logic + unit testing
+  rationale: >
+    Simple inline guard + helper extraction in a Python CLI script;
+    stdlib only, no new deps.

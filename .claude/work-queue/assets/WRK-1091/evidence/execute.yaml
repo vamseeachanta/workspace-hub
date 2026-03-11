@@ -1,0 +1,50 @@
+stage: 10
+wrk_id: "WRK-1091"
+scope: integrated
+executed_at: "2026-03-10T09:50:00Z"
+completed_at: "2026-03-10T10:00:00Z"
+phases_completed:
+  - phase: 1
+    label: "Dependency graph + assethold contracts"
+    artifacts:
+      - config/deps/cross-repo-graph.yaml
+      - assethold/tests/contracts/__init__.py
+      - assethold/tests/contracts/conftest.py
+      - assethold/tests/contracts/test_assetutilities_contract.py
+  - phase: 2
+    label: "Cross-repo integration script + TDD"
+    artifacts:
+      - scripts/testing/tests/test_cross_repo_integration.py
+      - scripts/testing/run-cross-repo-integration.sh
+  - phase: 3
+    label: "Pre-push hook (version-controlled)"
+    artifacts:
+      - scripts/hooks/assetutilities-pre-push.sh
+      - assetutilities/.pre-commit-config.yaml (modified)
+      - scripts/hooks/pre-push.sh (modified)
+integrated_repo_tests:
+  - name: "cross-repo-integration-unit-tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/testing/tests/test_cross_repo_integration.py -v -m 'not integration'"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1091/evidence/test-results.md
+  - name: "digitalmodel-contract-tests"
+    scope: repo
+    command: "bash scripts/testing/run-cross-repo-integration.sh --repo digitalmodel"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1091/evidence/test-results.md
+  - name: "worldenergydata-contract-tests"
+    scope: repo
+    command: "bash scripts/testing/run-cross-repo-integration.sh --repo worldenergydata"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1091/evidence/test-results.md
+  - name: "assethold-contract-tests"
+    scope: repo
+    command: "bash scripts/testing/run-cross-repo-integration.sh --repo assethold"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1091/evidence/test-results.md
+  - name: "skip-bypass-test"
+    scope: integrated
+    command: "SKIP_CROSS_REPO_CHECK=1 bash scripts/testing/run-cross-repo-integration.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1091/evidence/test-results.md

@@ -1,0 +1,10 @@
+wrk_id: WRK-684
+stage: 17
+reviewer: user
+confirmed_at: "2026-03-10T18:40:59Z"
+reviewed_at: "2026-03-10T18:40:59Z"
+decision: approved
+notes: >
+  User approved closing WRK-684 on 2026-03-10. Implementation verified:
+  learning-outcomes.sh section in /today pipeline operational,
+  all 3 variation tests PASS, comprehensive-learning roll-up working.

@@ -1,0 +1,36 @@
+wrk_id: WRK-1090
+generated_at: "2026-03-10T04:30:00Z"
+recommendations:
+  - id: fw-1090-1
+    title: "Add severity-aware CVE triage when pip-audit gains severity field"
+    rationale: >
+      pip-audit JSON currently has no severity field; all vulns treated as
+      blocking. When pip-audit adds CVSS severity, add HIGH/CRITICAL filter
+      and MEDIUM/LOW warn-only tier.
+    disposition: existing-updated
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Defer until pip-audit upstream adds severity to JSON output.
+
+  - id: fw-1090-2
+    title: "Extend dep-health.sh to non-Python repos (JS/TS via npm audit)"
+    rationale: >
+      Current scope is 5 tier-1 Python repos only. Future WRK to add
+      npm audit support for any JS/TS repos added to workspace.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: Deferred — no JS repos in scope currently.
+
+  - id: fw-1090-3
+    title: "Dashboard integration for dep-health YAML reports"
+    rationale: >
+      YAML reports are useful but not surfaced in any dashboard.
+      Add to WRK-1057 dependency health panel.
+    disposition: existing-updated
+    status: open
+    captured: true
+    required_for_signoff: false
+    notes: WRK-1057 is the ecosystem dashboard WRK.

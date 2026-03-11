@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1014 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1014 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Add a new Stage 4a (&quot;Plan Mode Ideation&quot;) to the WRK 20-stage lifecycle. Before writing any plan artifacts, the orchestrator enters `EnterPl...</summary><div class="panel"><p>Add a new Stage 4a ("Plan Mode Ideation") to the WRK 20-stage lifecycle. Before
+writing any plan artifacts, the orchestrator enters <code>EnterPlanMode</code> to propose the
+full plan as text-only. The user can iterate without file side-effects. Once
+approved, <code>ExitPlanMode</code> is called and Stage 4b proceeds to write the spec + HTML.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Currently Stage 4 immediately writes `specs/wrk/WRK-NNN/plan.md` and generates HTML. Iterating on a wrong approach means regenerating artifa...</summary><div class="panel"><p>Currently Stage 4 immediately writes <code>specs/wrk/WRK-NNN/plan.md</code> and generates
+HTML. Iterating on a wrong approach means regenerating artifacts repeatedly. Plan
+mode forces the orchestrator to think through the full scope before touching anything,
+producing higher quality first-draft plans and reducing wasted artifact regeneration.</p>
+<p>The pattern was identified during WRK-1005 execution: the user asked whether
+<code>EnterPlanMode</code> should be used at the plan stage — this WRK implements the answer.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `work-queue/SKILL.md` Stage Contract §4 split into 4a + 4b - [ ] Mermaid flowchart updated with new 4a node - [ ] Stage Skills Matrix ...</summary><div class="panel"><ul>
+<li>[ ] <code>work-queue/SKILL.md</code> Stage Contract §4 split into 4a + 4b</li>
+<li>[ ] Mermaid flowchart updated with new 4a node</li>
+<li>[ ] Stage Skills Matrix row for Stage 4 shows EnterPlanMode/ExitPlanMode tools</li>
+<li>[ ] <code>work-queue-workflow/SKILL.md</code> start-to-finish chain updated</li>
+<li>[ ] <code>process.md</code> Plan Gate Workflow section updated</li>
+<li>[ ] At least one demonstration WRK execution uses the new 4a sub-stage</li>
+<li>[ ] <code>verify-gate-evidence.py WRK-1014</code> passes all gates</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # Plan Final Review — WRK-1014 confirmed_by: vamsee confirmed_at: 2026-03-10T08:00:00Z decision: passed notes: &gt; Plan provided by user at se...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>Plan Final Review — WRK-1014</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-10T08:00:00Z
+decision: passed
+notes: &gt;
+  Plan provided by user at session start as implementation instructions.
+  All 3 target files identified. No blocking concerns. Proceed to Stage 8.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 5 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>EnterPlanMode in SKILL.md tools array</td><td>repo</td><td>pass</td><td><code>grep &#x27;EnterPlanMode&#x27; .claude/skills/coordination/workspace/work-queue/SKILL.md</code></td><td>.claude/skills/coordination/workspace/work-queue/SKILL.md</td></tr><tr><td>2</td><td>4a/4b rows in Stage Contracts table</td><td>repo</td><td>pass</td><td><code>grep &#x27;4a&#x27; .claude/skills/coordination/workspace/work-queue/SKILL.md</code></td><td>.claude/skills/coordination/workspace/work-queue/SKILL.md</td></tr><tr><td>3</td><td>Mermaid 4a node in process.md</td><td>repo</td><td>pass</td><td><code>grep &#x27;4a: Plan Mode Ideation&#x27; .claude/work-queue/process.md</code></td><td>.claude/work-queue/process.md</td></tr><tr><td>4</td><td>Explicit coverage instruction in process.md</td><td>repo</td><td>pass</td><td><code>grep &#x27;explicit&#x27; .claude/work-queue/process.md</code></td><td>.claude/work-queue/process.md</td></tr><tr><td>5</td><td>SKILL.md line count &lt;= 250</td><td>repo</td><td>pass</td><td><code>wc -l .claude/skills/coordination/workspace/work-queue/SKILL.md</code></td><td>.claude/skills/coordination/workspace/work-queue/SKILL.md</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1014, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1014, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>pre-cutoff backfill (id=1014, created_at=2026-03-05T05:15:00Z) — log gate skipped</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1014/review-synthesis.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1014/legal-scan.md, result=pass</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml: status=n/a (Stage 18 not triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (2 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>WARN</td>
+<td>plan_draft and plan_final share commit '8c5ed55b' — possible placeholder (WARN)</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-10T11:45:00Z, reviewed=2026-03-10T07:30:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a; reclaim.yaml is placeholder</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1014 generated_at: &quot;2026-03-10T11:00:00Z&quot; recommendations: - id: FW-1 title: &quot;Add stage-04a-plan-mode-ideation.yaml contract fil...</summary><div class="panel"><p>wrk_id: WRK-1014
+generated_at: "2026-03-10T11:00:00Z"</p>
+<p>recommendations:
+  - id: FW-1
+    title: "Add stage-04a-plan-mode-ideation.yaml contract file"
+    rationale: &gt;
+      Create formal YAML contract for Stage 4a matching stage-NN-*.yaml pattern
+      (weight, parallelism, entry_reads, exit_artifacts, blocking_condition).
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new</p>
+<ul>
+<li>
+<p>id: FW-2
+    title: "Add stage-04a micro-skill (.claude/skills/workspace-hub/stages/stage-04a.md)"
+    rationale: Dedicated stage micro-skill for Stage 4a matching existing stage-NN-*.md pattern.
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new</p>
+</li>
+<li>
+<p>id: FW-3
+    title: "Benchmark self-verification pass quality in practice"
+    rationale: &gt;
+      After 5+ WRKs using the new pattern, measure whether explicit coverage instruction
+      and self-verification pass produce measurable reduction in Stage 6 MAJOR findings.
+    effort: medium
+    status: pending
+    captured: true
+    disposition: spun-off-new</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1014 generated_at: &quot;2026-03-07T06:49:59Z&quot; reviewed_by: &quot;agent&quot; autonomy_maturity_level: &quot;L2&quot; human_steers_agents_execute: true s...</summary><div class="panel"><p>wrk_id: WRK-1014
+generated_at: "2026-03-07T06:49:59Z"
+reviewed_by: "agent"
+autonomy_maturity_level: "L2"
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created with baseline metadata.
+    evidence: .claude/work-queue/working/WRK-1014.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Resource/document intelligence pack captured.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route, priority, complexity, and workstations set.
+    evidence: .claude/work-queue/working/WRK-1014.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Draft plan and artifact generated.
+    evidence: specs/wrk/WRK-1014/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Self-review (Route B single-provider; doc-only WRK).
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/cross-review.yaml
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Final plan approved by user; implementation plan provided at session start.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-plan-draft.yaml
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claim evidence and active WRK set.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/claim-evidence.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered canonical /work route.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/activation.yaml
+  - order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation completed under active claim.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Review artifacts generated.
+    evidence: .claude/work-queue/assets/WRK-1014/review-synthesis.md
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Tests/evals completed and recorded.
+    evidence: .claude/work-queue/assets/WRK-1014/ac-test-matrix.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation cross-review package complete.
+    evidence: .claude/work-queue/assets/WRK-1014/review-synthesis.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Gate verifier passed.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Follow-up disposition captured.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: New resources captured post execution.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Close package reviewed including gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Not needed in this run.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/reclaim.yaml
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting final close operation.
+    evidence: scripts/work-queue/close-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting merge/sync completion.
+    evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 22 assets indexed.</summary><div class="panel"><ul><li><code>ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/reclaim.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-synthesis.md</code></li></ul></div></details>
+</body>
+</html>

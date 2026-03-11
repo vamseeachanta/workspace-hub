@@ -1,0 +1,53 @@
+wrk_id: WRK-1093
+stage: 2
+completed_at: 2026-03-10T00:00:00Z
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/work-queue
+    - workspace-hub/ecosystem-terminology
+    - coordination/workspace/work-queue
+
+dependencies:
+  - name: config/search/symbol-index.jsonl
+    status: available
+    notes: "22,697 symbols; format: {symbol, kind, repo, file, line}; built by WRK-1085"
+  - name: scripts/quality/api-audit.py
+    status: available
+    notes: "WRK-1059; checks docstring presence — complementary, not duplicate of drift check"
+  - name: scripts/quality/check-all.sh
+    status: available
+    notes: "Has --docs and --api flags; --drift flag to be added"
+  - name: scripts/cron/crontab-template.sh
+    status: available
+    notes: "Nightly cron entries go here"
+  - name: python ast (stdlib)
+    status: available
+    version: "Python 3.13.12"
+  - name: git log / git blame (subprocess)
+    status: available
+    notes: "For staleness detection — check if file changed since last doc mention"
+
+risks:
+  - id: R1
+    description: "Symbol index lacks git blame timestamps — staleness requires subprocess git log"
+    severity: low
+    mitigation: "Use git log --format=%ct -- <file> for mtime; cache per-file"
+  - id: R2
+    description: "22,697 symbols is large — full doc scan per symbol may be slow"
+    severity: medium
+    mitigation: "Build inverted index: grep docs once, build set; O(symbols) lookup"
+  - id: R3
+    description: "docs/ dirs vary per repo — some have MkDocs, some just README.md"
+    severity: low
+    mitigation: "Search both docs/ and README.md; report per-repo coverage"
+
+design_notes:
+  - "check_doc_drift.py reads symbol-index.jsonl; for each unique file, greps docs/ + README.md"
+  - "Drift score = undocumented_public_symbols / total_public_symbols per repo"
+  - "Staleness = symbol file modified (git log) but docs haven't changed since (docs git log)"
+  - "Baseline stored at config/quality/doc-drift-baseline.yaml; drift increase → auto-WRK"
+  - "check-all.sh --drift flag calls check_doc_drift.py; outputs drift score summary"
+  - "Nightly cron at 02:30 — before comprehensive-learning at 03:00"

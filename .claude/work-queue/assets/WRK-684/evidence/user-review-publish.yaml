@@ -1,0 +1,32 @@
+wrk_id: WRK-684
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 6a4134d3
+    documents:
+      - .claude/work-queue/assets/WRK-684/review.html
+    published_at: "2026-03-02T14:17:30Z"
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b658a702
+    documents:
+      - .claude/work-queue/assets/WRK-684/review.html
+    published_at: "2026-03-02T14:24:30Z"
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2f784fff
+    documents:
+      - .claude/work-queue/assets/WRK-684/workflow-final-review.html
+    published_at: "2026-03-10T18:41:00Z"
+    reviewer: user
+notes: >
+  Legacy backfill — plan_draft/plan_final publish events reconstructed from 2026-03-02.
+  close_review published 2026-03-10 for Stage 17 closure.

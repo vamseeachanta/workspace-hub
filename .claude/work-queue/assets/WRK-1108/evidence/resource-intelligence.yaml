@@ -1,0 +1,22 @@
+wrk_id: WRK-1108
+stage: 2
+completion_status: continue_to_planning
+findings_summary: |
+  Multiple WhatsApp MCP servers exist today. Top option is lharries/whatsapp-mcp
+  (5,400 stars, QR-code setup, Claude Desktop ready). delltrak/wamcp is most
+  feature-complete (63 tools, supports both unofficial and official Meta Cloud API).
+  Integration is viable now — no need to wait until 2026-04-10 scheduled check date.
+skills:
+  core_used:
+    - work-queue
+    - workspace-hub/ecosystem-terminology
+    - work-queue-workflow
+  researched:
+    - whatsapp-mcp integration patterns
+    - meta whatsapp cloud api
+    - modelcontextprotocol/servers registry
+risks:
+  - Unofficial WhatsApp Web API — ToS violation risk and account ban potential
+  - Prompt injection via received messages exposing LLM to malicious content
+  - No official Anthropic/MCP endorsement for any discovered server
+completed_at: 2026-03-10T00:00:00Z

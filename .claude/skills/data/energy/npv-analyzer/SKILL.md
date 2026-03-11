@@ -1,6 +1,8 @@
 ---
 name: npv-analyzer
 description: Perform NPV analysis and economic evaluation for oil & gas assets. Use for cash flow modeling, price scenario analysis, Monte Carlo simulation, P10/P50/P90 probabilistic analysis, working interest calculations, and financial metrics (IRR, payback, NPV) for field development projects.
+version: 1.0.0
+category: data/energy
 capabilities: []
 requires: []
 see_also: []
@@ -1642,4 +1644,4 @@ reporter.generate_report(
 - [bsee-data-extractor](../bsee-data-extractor/SKILL.md) - Production data for forecasts
 - [hse-risk-analyzer](../hse-risk-analyzer/SKILL.md) - Risk-adjusted NPV with safety data
 - [production-forecaster](../production-forecaster/SKILL.md) - Decline curve production forecasts
-- [engineering-report-generator](/mnt/github/workspace-hub/.claude/skills/development/engineering-report-generator/SKILL.md) - Report generation
+- [engineering-report-generator](../../development/engineering-report-generator/SKILL.md) - Report generation

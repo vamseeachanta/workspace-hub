@@ -1,0 +1,58 @@
+wrk_id: WRK-1105
+stage: 10
+scope: integrated
+completed_at: "2026-03-10T22:00:00Z"
+executor: claude
+phases_completed:
+  - phase: 1
+    description: "Diagnosis document + Architecture ADR"
+    deliverables:
+      - assets/WRK-1105/diagnosis.md
+      - assets/WRK-1105/knowledge-routing-adr.md
+  - phase: 2
+    description: "Core knowledge scripts (TDD)"
+    deliverables:
+      - scripts/knowledge/capture-wrk-summary.sh
+      - scripts/knowledge/query-knowledge.sh
+      - scripts/knowledge/build-knowledge-index.sh
+      - scripts/knowledge/tests/test-knowledge-scripts.sh
+      - knowledge-base/.gitkeep
+  - phase: 3
+    description: "Integration hooks + skill updates + compact-memory routing"
+    deliverables:
+      - scripts/work-queue/archive-item.sh (hook added)
+      - .claude/skills/workspace-hub/resource-intelligence/SKILL.md (category 10)
+      - .claude/skills/workspace-hub/session-start/SKILL.md (Step 2b)
+      - scripts/memory/compact-memory.py (route_memory_md_archived_bullets)
+  - phase: 4
+    description: "Migration + career learnings seed"
+    deliverables:
+      - scripts/knowledge/migrate-memory-to-knowledge.sh
+      - knowledge/seeds/career-learnings.yaml (10 entries)
+      - MEMORY.md slimmed to 54 lines
+integrated_repo_tests:
+  - name: "knowledge TDD tests"
+    scope: integrated
+    command: "bash scripts/knowledge/tests/test-knowledge-scripts.sh"
+    result: pass
+    artifact_ref: scripts/knowledge/tests/test-knowledge-scripts.sh
+  - name: "compact-memory regression tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/memory/ -q"
+    result: pass
+    artifact_ref: tests/memory/test_compact_memory.py
+  - name: "mypy compact-memory.py"
+    scope: integrated
+    command: "uv run --no-project --with mypy python -m mypy scripts/memory/compact-memory.py"
+    result: pass
+    artifact_ref: scripts/memory/compact-memory.py
+  - name: "shellcheck knowledge scripts"
+    scope: integrated
+    command: "shellcheck scripts/knowledge/*.sh scripts/knowledge/tests/*.sh"
+    result: pass
+    artifact_ref: scripts/knowledge/
+  - name: "legal scan"
+    scope: integrated
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1105/legal-scan.md

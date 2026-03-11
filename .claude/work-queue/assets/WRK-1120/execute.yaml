@@ -1,0 +1,7 @@
+wrk_id: WRK-1120
+stage: 10
+files_changed:
+  - scripts/work-queue/next-id.sh
+  - scripts/work-queue/tests/test-next-id-collision.sh
+summary: "Added atomic noclobber sentinel (set -C) with 5-attempt retry loop to next-id.sh"
+executed_at: "2026-03-11T05:45:00Z"

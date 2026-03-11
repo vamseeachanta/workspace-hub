@@ -1,0 +1,49 @@
+wrk_id: WRK-1087
+stage: 2
+completion_status: continue_to_planning
+surveyed_at: 2026-03-09
+
+existing_infrastructure:
+  - name: scripts/work-queue/log-gate-event.sh
+    relevance: "Existing YAML gate logger per WRK+stage — complements (not replaces) this JSONL audit trail"
+  - name: scripts/agents/session.sh
+    relevance: "session_id established via session_set_scalar; used by gate-logger; will call log-action.sh on init/end"
+  - name: .claude/settings.json PreToolUse/PostToolUse/Stop hooks
+    relevance: "Hook integration points; Stop hook is where session_end action goes"
+  - name: scripts/work-queue/exit_stage.py
+    relevance: "Will add log-action.sh call at stage_exit point"
+  - name: scripts/work-queue/close-item.sh
+    relevance: "Will add log-action.sh call at wrk_close point"
+  - name: .claude/hooks/session-logger.sh
+    relevance: "PreToolUse/PostToolUse logger — already captures tool events to .claude/state/sessions/; audit trail is separate concern (action-level, chained)"
+
+gaps:
+  - scripts/audit/ directory does not exist — needs creation
+  - logs/audit/ directory does not exist — needs creation
+  - No SHA256-chained JSONL audit mechanism exists anywhere
+  - exit_stage.py has no call to any action logger
+  - close-item.sh has no call to any action logger
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  referenced:
+    - session-start
+    - wrk-lifecycle-testpack
+
+risks:
+  - SHA256 chain requires reading last entry to compute next hash — must handle empty/new file correctly
+  - Session ID availability: log-action.sh must tolerate absence (use "unknown" fallback)
+  - Hook performance: log-action.sh must complete <500ms (append-only jq write is fast)
+  - Monthly rotation: cron or on-write check? On-write check is simpler and avoids cron dependency
+  - Compression requires gzip; confirm available on ace-linux-1 (yes, standard)
+
+decisions:
+  - Separate from log-gate-event.sh (different format, different purpose)
+  - Chain is SHA256 of previous raw JSONL line (not parsed fields)
+  - session_id sourced from .claude/state/session.yaml if present, else "unknown"
+  - wrk_id sourced from .claude/state/active-wrk if present, else passed via --wrk flag
+  - Monthly rotation check on every write (if month changed, close old file)
+  - Compression triggered at write time when file is older than 6 months

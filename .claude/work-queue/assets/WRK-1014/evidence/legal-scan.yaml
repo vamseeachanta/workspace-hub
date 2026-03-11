@@ -1,0 +1,8 @@
+wrk_id: WRK-1014
+stage: 10
+scan_type: legal-sanity
+executed_at: "2026-03-10T00:00:00Z"
+result: pass
+violations: []
+command: "bash scripts/legal/legal-sanity-scan.sh"
+output_summary: "RESULT: PASS — no violations found"

@@ -1,0 +1,29 @@
+wrk_id: WRK-1071
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "555db9bc"
+    documents:
+      - .claude/work-queue/assets/WRK-1071/WRK-1071-plan-draft.html
+    published_at: "2026-03-10T10:10:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "555db9bc"
+    documents:
+      - .claude/work-queue/assets/WRK-1071/WRK-1071-plan-final.html
+    published_at: "2026-03-10T13:40:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "69c28df9"
+    documents:
+      - .claude/work-queue/assets/WRK-1071/WRK-1071-lifecycle.html
+    published_at: "2026-03-10T16:30:00Z"
+    reviewer: vamsee

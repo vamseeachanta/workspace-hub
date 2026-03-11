@@ -1,0 +1,11 @@
+wrk_id: WRK-1117
+stage: 1
+scope_approved: true
+reviewer: vamsee
+approved_at: "2026-03-11"
+notes: >
+  Scope approved: fix comprehensive-learning.sh Windows git add guard,
+  verify hooks wiring on acma-ansys05, remove bc from guard.sh,
+  add python3 resolver to classify.sh, document patterns in
+  cross-platform-compat skill. Multi-machine closure gate added
+  (ace-linux-1 + acma-ansys05 both required).

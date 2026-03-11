@@ -1,0 +1,11 @@
+wrk_id: WRK-1053
+changed_at: 2026-03-10T00:00:00Z
+item: skill-coverage-audit.sh AC #2
+original: "WRK category → skill dir mapping; gap list output"
+actual: "Which skills have any script reference (frontmatter scripts: field or exec patterns)"
+rationale: >
+  Cross-review (Codex) identified that category→dir mapping requires a WRK queue schema
+  dependency that adds complexity without clear value at this stage. The core goal (identify
+  unwired skills) is achieved by the simpler script-reference check. Category mapping deferred
+  to a follow-up WRK if needed.
+approved_by: vamsee

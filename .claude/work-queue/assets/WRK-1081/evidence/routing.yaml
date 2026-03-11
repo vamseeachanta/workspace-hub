@@ -1,0 +1,13 @@
+wrk_id: WRK-1081
+stage: 9
+routed_at: "2026-03-09T19:25:00Z"
+route: B
+complexity: medium
+workstation: ace-linux-1
+orchestrator: claude
+execution_provider: claude
+rationale: >
+  Route B (medium): extends existing scripts/quality/check-all.sh pattern,
+  touches 5 tier-1 repos for config/pre-commit changes, 12 TDD tests.
+  ace-linux-1: workspace-hub hub scripts + tier-1 repo work.
+  Claude as orchestrator: standard route B execution.

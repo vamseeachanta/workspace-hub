@@ -1,0 +1,7 @@
+wrk_id: WRK-1125
+updated_at: "2026-03-11T13:30:00Z"
+updated_by: claude
+changes:
+  - "whats-next.sh: added WORKING_PARKED array, WRK_NOTES/WRK_NOT_BEFORE assoc maps, annotation rendering"
+skills_used: [work-queue, work-queue-workflow, workflow-gatepass]
+notes: No new dependencies introduced; single-file additive change.

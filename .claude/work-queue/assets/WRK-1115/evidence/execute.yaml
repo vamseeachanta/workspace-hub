@@ -1,0 +1,53 @@
+changes:
+- "generate-html-review.py: Stage 10 renderer expanded \u2014 integrated_repo_tests\
+  \ table + changes[] bullets"
+- "generate-html-review.py: Stage 12 new renderer \u2014 ac-test-matrix.md PASS/FAIL\
+  \ table"
+- "generate-html-review.py: Stage 13 new renderer \u2014 cross-review-impl* files,\
+  \ reuses S6 logic"
+- "generate-html-review.py: Stage 14 renderer \u2014 added Details column to gate\
+  \ table"
+- "generate-html-review.py: generate_plan() function \u2014 new, outputs WRK-NNN-plan.html"
+- 'generate-html-review.py: --plan argparse flag dispatches to generate_plan()'
+- 'exit_stage.py: _regenerate_lifecycle_html() now also calls --plan (non-blocking)'
+- 'workflow-html/SKILL.md: updated to v2.0.0 two-file contract'
+executed_at: '2026-03-10T13:00:00Z'
+files_changed:
+- scripts/work-queue/generate-html-review.py
+- scripts/work-queue/exit_stage.py
+- .claude/skills/workspace-hub/workflow-html/SKILL.md
+- tests/unit/test_generate_html_review.py
+integrated_repo_tests:
+- artifact_ref: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+  command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_generated
+    -v
+  name: test_plan_html_generated
+  result: pass
+  scope: integrated
+- artifact_ref: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+  command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_has_meta_refresh
+    -v
+  name: test_plan_html_has_meta_refresh
+  result: pass
+  scope: integrated
+- artifact_ref: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+  command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_has_stage_circles
+    -v
+  name: test_plan_html_has_stage_circles
+  result: pass
+  scope: integrated
+- artifact_ref: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+  command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_shows_plan_text
+    -v
+  name: test_plan_html_shows_plan_text
+  result: pass
+  scope: integrated
+- artifact_ref: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+  command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_stage10_renders_integrated_tests
+    -v
+  name: test_stage10_renders_integrated_tests
+  result: pass
+  scope: integrated
+provider: claude
+stage: 10
+wrk_id: WRK-1115

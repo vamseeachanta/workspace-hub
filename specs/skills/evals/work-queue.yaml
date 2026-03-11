@@ -1,0 +1,22 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: work-queue
+skill_path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+evals:
+  - eval_id: wq-cap-01
+    eval_type: capability
+    description: Core commands documented
+    checks:
+      required_commands:
+        - "/work add"
+        - "/work run"
+        - "/work list"
+        - "/work status"
+  - eval_id: wq-proc-01
+    eval_type: procedural
+    description: 20-stage lifecycle documented
+    checks:
+      required_sections:
+        - "## Canonical 20-Stage Lifecycle"
+        - "## Stage Contracts"
+        - "## Complexity Routing"

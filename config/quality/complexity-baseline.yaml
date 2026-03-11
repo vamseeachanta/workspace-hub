@@ -1,0 +1,42 @@
+# Cyclomatic complexity baseline for WRK-1095 ratchet gate.
+# Enforcement: actual <= baseline → PASS; actual > baseline → FAIL (regression).
+# When actual < baseline, baseline is auto-updated (no auto-commit).
+# Update by running: uv run --no-project python scripts/quality/check_complexity_ratchet.py --init
+#
+# Metrics tracked per repo:
+#   high_cc_count      — functions with CC > 10 (radon rank D+)
+#   very_high_cc_count — functions with CC > 20 (radon rank E+)
+#   avg_cc             — informational only (not enforced)
+schema_version: "1"
+updated_at: "2026-03-10"
+repos:
+  assetutilities:
+    high_cc_count: 9
+    very_high_cc_count: 2
+    avg_cc: 3.03
+    updated_at: "2026-03-10"
+    note: "9 D+ functions, 2 E+ functions (CC>20)"
+  digitalmodel:
+    high_cc_count: 72
+    very_high_cc_count: 15
+    avg_cc: 3.48
+    updated_at: "2026-03-10"
+    note: "72 D+ functions, 15 E+ legacy (benchmark_plotter, report_generator). Ratchet prevents new additions."
+  worldenergydata:
+    high_cc_count: 39
+    very_high_cc_count: 3
+    avg_cc: 3.55
+    updated_at: "2026-03-10"
+    note: "39 D+ functions, 3 E+ functions"
+  assethold:
+    high_cc_count: 1
+    very_high_cc_count: 1
+    avg_cc: 3.07
+    updated_at: "2026-03-10"
+    note: "1 D+ function, 1 E+ function (daily_strategy.__main__.main)"
+  ogmanufacturing:
+    high_cc_count: 0
+    very_high_cc_count: 0
+    avg_cc: 1.72
+    updated_at: "2026-03-10"
+    note: "Clean — no complexity violations"

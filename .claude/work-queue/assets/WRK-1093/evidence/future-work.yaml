@@ -1,0 +1,22 @@
+wrk_id: WRK-1093
+stage: 15
+completed_at: 2026-03-10T15:10:00Z
+recommendations:
+  - id: FW-1
+    title: "Add run_drift_check orchestrator test"
+    description: "Unit test for the orchestrator with synthetic symbol index + doc file"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Promote --drift to hard gate after baseline stabilises"
+    description: "After 2 weeks of nightly runs, set threshold and fail check-all.sh when exceeded"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Extend doc-mention search to CHANGELOG/HISTORY files"
+    description: "Currently only docs/ + README.md; changelogs may reference public API"
+    disposition: existing-updated
+    status: captured
+    captured: true

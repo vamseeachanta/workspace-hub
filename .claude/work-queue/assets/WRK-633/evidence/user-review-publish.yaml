@@ -1,0 +1,30 @@
+wrk_id: WRK-633
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 01784669
+    published_at: "2026-03-10T11:35:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/pending/WRK-633.md
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 01784669
+    published_at: "2026-03-10T11:36:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/pending/WRK-633.md
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b1bfb5aa
+    published_at: "2026-03-10T11:44:30Z"
+    reviewer: vamsee
+    documents:
+      - .claude/skills/business/client-demo/engineering-chatbot/SKILL.md
+      - .claude/skills/engineering/maritime-legal/SKILL.md

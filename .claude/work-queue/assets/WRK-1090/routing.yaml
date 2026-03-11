@@ -1,0 +1,10 @@
+wrk_id: WRK-1090
+stage: 9
+routed_at: "2026-03-10T03:20:00Z"
+routed_by: claude
+route: B
+orchestrator: claude
+machine: ace-linux-1
+execution_machine: ace-linux-1
+plan_machine: ace-linux-1
+rationale: "Route B, medium complexity, scripts in workspace-hub, tests against all 5 repos via QUALITY_REPO_ROOT override"

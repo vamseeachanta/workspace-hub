@@ -1,0 +1,19 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: workflow-gatepass
+skill_path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+evals:
+  - eval_id: gp-cap-01
+    eval_type: capability
+    description: No-bypass rules documented
+    checks:
+      required_sections:
+        - "## No-Bypass Rules"
+        - "## Close Gate Minimum"
+        - "## Evidence Locations"
+  - eval_id: gp-proc-01
+    eval_type: procedural
+    description: Gate enforcement scripts documented
+    checks:
+      required_sections:
+        - "## Reusable Scripts"

@@ -1,0 +1,25 @@
+wrk_id: WRK-1094
+stage: 10
+scope: integrated
+completed_at: "2026-03-10T11:30:00Z"
+implementation_summary: >
+  check_config_drift.py (397 lines) — line limit ratchet, AGENTS.md YAML frontmatter check,
+  missing file check, baseline seeding, drift report generation.
+  check-all.sh --config-drift flag integrated.
+  pre-push.sh harness file change detection added.
+integrated_repo_tests:
+  - name: test_check_config_drift
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/quality/tests/test_check_config_drift.py -v"
+    result: passed
+    artifact_ref: "scripts/quality/tests/test_check_config_drift.py"
+  - name: check_config_drift_live_run
+    scope: integrated
+    command: "uv run --no-project python scripts/quality/check_config_drift.py"
+    result: passed
+    artifact_ref: "scripts/quality/check_config_drift.py"
+  - name: baseline_seeded
+    scope: integrated
+    command: "uv run --no-project python scripts/quality/check_config_drift.py --update-baseline"
+    result: passed
+    artifact_ref: "config/quality/config-drift-baseline.yaml"

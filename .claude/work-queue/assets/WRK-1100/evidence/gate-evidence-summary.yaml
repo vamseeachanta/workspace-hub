@@ -1,0 +1,8 @@
+wrk_id: WRK-1100
+generated_at: 2026-03-10T15:50:00Z
+result: PASS
+missing_count: 1
+warn_count: 2
+notes: >
+  Only missing gate is user-review-close (Stage 17 HARD GATE — pending user review).
+  Warns: reclaim n/a (expected — no reclaim triggered). All other gates PASS.

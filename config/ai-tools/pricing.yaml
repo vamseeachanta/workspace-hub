@@ -1,0 +1,47 @@
+# config/ai-tools/pricing.yaml
+# Per-model AI pricing in USD per 1M tokens.
+# cost_usd field in cost-tracking.jsonl is the PRIMARY source (recorded at session time).
+# This file is FALLBACK only — used to recalculate missing cost_usd entries.
+# Update manually when pricing changes.
+version: "2026-03-11"
+models:
+  claude-opus-4-6:
+    provider: claude
+    effective_from: "2026-01-01"
+    input_per_1m: 5.00
+    output_per_1m: 25.00
+  claude-sonnet-4-6:
+    provider: claude
+    effective_from: "2026-01-01"
+    input_per_1m: 3.00
+    output_per_1m: 15.00
+  claude-haiku-4-5:
+    provider: claude
+    effective_from: "2026-01-01"
+    input_per_1m: 0.80
+    output_per_1m: 4.00
+  o4-mini:
+    provider: codex
+    effective_from: "2026-01-01"
+    input_per_1m: 0.50
+    output_per_1m: 1.50
+  gpt-5.4:
+    provider: codex
+    effective_from: "2026-01-01"
+    input_per_1m: 0.50
+    output_per_1m: 1.50
+  gemini-2.5-pro:
+    provider: gemini
+    effective_from: "2026-01-01"
+    input_per_1m: 0.075
+    output_per_1m: 0.30
+  gemini-2.0-flash:
+    provider: gemini
+    effective_from: "2026-01-01"
+    input_per_1m: 0.075
+    output_per_1m: 0.30
+  # sonnet-4-6: legacy short-form alias for claude-sonnet-4-6 (same pricing)
+defaults:
+  unknown_model:
+    input_per_1m: 3.00
+    output_per_1m: 15.00

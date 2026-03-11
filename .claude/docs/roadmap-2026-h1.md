@@ -1,5 +1,5 @@
 # Repo Ecosystem Roadmap — 2026 H1
-*WRK-235 | Established: 2026-02-20 | Last updated: 2026-02-24 | Cadence: monthly review (first Friday)*
+*WRK-235 | Established: 2026-02-20 | Last updated: 2026-03-10 | Cadence: monthly review (first Friday)*
 
 ## Ecosystem Vision — August 2026
 
@@ -11,32 +11,41 @@ net-shrinking. Provider strategy is validated by cost data.
 ---
 
 ## Repo Assessment
-*Pending WRK = items with `status: pending` targeting repo. Done WRK = completed items.*
+*Pending WRK = items with `status: pending` targeting repo. Archived WRK = completed items.*
 *Strategic value 1–5, Agentic readiness 1–5 (1=low, 5=high). Investment: high/medium/low/defer.*
+*Updated: 2026-03-10*
 
-| Repo | Strategic Value | Agentic Readiness | Pending WRK | Done WRK | Priority | August 2026 Target |
+| Repo | Strategic Value | Agentic Readiness | Pending WRK | Archived WRK | Priority | August 2026 Target |
 |------|:-:|:-:|:-:|:-:|----------|---------------------|
-| `workspace-hub` | 5 | 4 | 11 | 3 | **high** | Autonomous session lifecycle; self-improving loop live |
-| `digitalmodel` | 5 | 3 | 34 | 0 | **high** | All major modules agent-callable; test coverage ≥80% |
-| `worldenergydata` | 5 | 3 | 17 | 1 | **high** | All sources queryable by agents; refresh scheduled |
-| `assethold` | 4 | 3 | 8 | 0 | **high** | Agents run daily strategy autonomously |
-| `assetutilities` | 4 | 3 | 5 | 0 | **high** | Shared utilities stable; used by assethold and agents |
-| `aceengineer-website` | 5 | 2 | 10 | 0 | **high** | Agents generate + publish content from module outputs |
-| `aceengineer-admin` | 3 | 2 | 1 | 0 | medium | Admin workflows documented; agent-executable |
-| `achantas-data` | 3 | 2 | 4 | 0 | medium | Data indexed; queryable by agents |
-| `doris` | 3 | 3 | 5 | 0 | medium | Pipeline structure clean; agent-callable for data pull |
-| `saipem` | 3 | 3 | 3 | 0 | medium | Installation modules stable; benchmarked |
-| `acma-projects` | 3 | 2 | 4 | 0 | medium | Structural modules integrated with digitalmodel |
-| `frontierdeepwater` | 2 | 2 | 1 | 0 | low | Vessel data extracted; minimal ongoing investment |
-| `OGManufacturing` | 2 | 2 | 2 | 2 | low | Stable; no new investment unless client need arises |
-| `rock-oil-field` | 2 | 2 | 2 | 0 | low | OrcaFlex models catalogued (WRK-121); then park |
-| `pdf-large-reader` | 2 | 3 | 2 | 0 | low | Utility tool; maintain, no expansion |
+| `workspace-hub` | 5 | **5** | 77 | 131 | **high** | Autonomous session lifecycle; self-improving loop live |
+| `digitalmodel` | 5 | 3 | 106 | 103 | **high** | All major modules agent-callable; test coverage ≥80% |
+| `worldenergydata` | 5 | 3 | 36 | 94 | **high** | All sources queryable by agents; refresh scheduled |
+| `assethold` | 4 | **4** | 5 | 14 | **high** | Agents run daily strategy autonomously |
+| `assetutilities` | 4 | **4** | 11 | 34 | **high** | Shared utilities stable; used by assethold and agents |
+| `aceengineer-website` | 5 | 2 | 6 | 15 | **high** | Agents generate + publish content from module outputs |
+| `aceengineer-admin` | 3 | 2 | 2 | 5 | medium | Admin workflows documented; agent-executable |
+| `achantas-data` | 3 | 2 | 4 | 6 | medium | Data indexed; queryable by agents |
+| `doris` | 3 | 3 | 22 | 0 | medium | Pipeline structure clean; agent-callable for data pull |
+| `saipem` | 3 | 3 | 1 | 5 | medium | Installation modules stable; benchmarked |
+| `acma-projects` | 3 | 2 | 4 | 8 | medium | Structural modules integrated with digitalmodel |
+| `frontierdeepwater` | 2 | 2 | 8 | 6 | low | Vessel data extracted; minimal ongoing investment |
+| `OGManufacturing` | 2 | 2 | 11 | 3 | low | Stable; no new investment unless client need arises |
+| `rock-oil-field` | 2 | 2 | 3 | 1 | low | OrcaFlex models catalogued (WRK-121); then park |
+| `pdf-large-reader` | 2 | 3 | 1 | 1 | low | Utility tool; maintain, no expansion |
 | `pyproject-starter` | 2 | 4 | 0 | 0 | low | Template stable; update when ecosystem changes |
 | `sd-work` | 1 | 2 | 0 | 0 | defer | No pending items; check quarterly |
 | `seanation` | 1 | 1 | 0 | 0 | defer | No active engineering use; park |
 | `teamresumes` | 1 | 2 | 0 | 0 | defer | Manual process; agent automation low ROI |
 | `hobbies` | 1 | 1 | 0 | 0 | defer | Personal; no compound value |
 | `sabithaandkrishnaestates` | 1 | 2 | 0 | 0 | defer | No pending items; reactive only |
+
+**Agentic readiness note (March 2026):** `workspace-hub` upgraded 4→5 and holding: pre-push CI gate,
+coverage ratchet, secrets scan, cross-repo symbol index, MkDocs pipeline, PEP 561 types, static
+analysis harness, onboarding maps all landed (WRK-1062–1085). New this week (2026-03-10):
+cross-repo integration test gate (WRK-1091), mypy error-count ratchet (WRK-1092), immutable agent
+audit trail (WRK-1087), dependency health check (WRK-1090), AI agent gate+logging contract (WRK-658),
+skill frontmatter normalization (WRK-577). `assethold`/`assetutilities` upgraded 3→4:
+deterministic fixtures, PEP 561 types, bandit baseline, ruff/mypy hooks in place.
 
 **Critical path repos**: `workspace-hub`, `digitalmodel`, `worldenergydata`, `assethold`, `assetutilities`,
 `aceengineer-website` — these 6 receive all high-priority investment.
@@ -45,7 +54,8 @@ net-shrinking. Provider strategy is validated by cost data.
 
 ## AI Provider Strategy
 
-### Current State (February 2026)
+### Current State (March 2026)
+*Tool versions: Claude 2.1.72, Codex CLI 0.112.0, Gemini 0.32.1 (ace-linux-1, verified 2026-03-09)*
 
 | Provider | Role Today | Unique Capability | Gap vs Claude |
 |----------|-----------|-------------------|---------------|
@@ -74,15 +84,19 @@ cross-review verdicts (tracked via WRK-237), consolidate to Claude + selective C
 1. **Self-improving session loop** (WRK-234) — sessions → analysis → skills → better sessions.
    Everything else compounds off this. Status: pending. Block nothing for this.
 
-2. **Engineering module agent-callability** — `digitalmodel` has 34 pending WRK items and 0 completed.
+2. **Engineering module agent-callability** — `digitalmodel` has 99 pending WRK items, 103 archived.
    Fatigue, FFS, wall thickness, OrcaFlex reporting are built but not wrapped as agent-callable skills.
    Highest ROI per hour: wrapping existing code, not new features.
 
 3. **Data queryability** (`worldenergydata`) — BSEE, EIA, drilling cost, GIS data exists.
    Agents cannot query it autonomously. WRK-171, WRK-219, WRK-254, WRK-417 are the path.
 
-4. **Agentic workflow infrastructure** (hooks, session lifecycle, preflight) — the scaffolding agents
-   need to run without supervision. In progress (WRK-118, WRK-125 working).
+4. **Agentic workflow infrastructure** — ✅ substantial progress in Q1 2026 continuing: pre-push CI
+   gate, coverage ratchet, secrets scan, symbol index, MkDocs, PEP 561, static analysis, onboarding
+   maps (WRK-1062–1085). Added this week: cross-repo integration test gate (WRK-1091), mypy ratchet
+   (WRK-1092), agent audit trail (WRK-1087), dep health (WRK-1090), agent gate+log contract (WRK-658),
+   ecosystem terminology skill (WRK-1098). Remaining: plan-mode integration (WRK-1083), skills.sh
+   adoption (WRK-1084). **Theme 4 is ~90% complete** — diminishing returns ahead.
 
 5. **Client-facing content automation** (`aceengineer-website`, WRK-148, WRK-259, WRK-261, WRK-382) —
    agents should generate portfolio content and case studies from module outputs, not manual writing.
@@ -132,7 +146,7 @@ August 2026 engineering-AI vision. Park explicitly.
 5. Horizon skill output: any `park` items now `do now`? Any `do now` items now obsolete?
 6. Update this document's `Last updated` date and Investment Themes if landscape has shifted.
 
-*Next review: 2026-03-06*
+*Last reviewed: 2026-03-10 (mid-month spot check) — Next monthly review: 2026-04-03 (first Friday of April)*
 
 ---
 

@@ -1,0 +1,21 @@
+wrk_id: "WRK-1106"
+route: "A"
+scope: integrated
+completed_at: "2026-03-10T17:17:27Z"
+integrated_repo_tests:
+  - name: "test-claim-collision.sh"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-claim-collision.sh"
+    result: pass
+    artifact_ref: "scripts/work-queue/tests/test-claim-collision.sh"
+  - name: "T6 resume path exit 0"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-claim-collision.sh (T6)"
+    result: pass
+    artifact_ref: "scripts/work-queue/tests/test-claim-collision.sh"
+  - name: "T7 empty session_id exit 1"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-claim-collision.sh (T7)"
+    result: pass
+    artifact_ref: "scripts/work-queue/tests/test-claim-collision.sh"
+notes: "Route A — 9/9 tests pass (7 existing + 2 new T6/T7)"

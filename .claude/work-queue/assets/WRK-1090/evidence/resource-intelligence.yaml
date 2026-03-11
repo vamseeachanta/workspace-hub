@@ -1,0 +1,57 @@
+wrk_id: WRK-1090
+stage: 2
+completion_status: continue_to_planning
+completed_at: "2026-03-09T00:00:00Z"
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+    - workspace-hub/workflow-gatepass
+
+existing_infrastructure:
+  dep_health_scripts: "none found"
+  check_all_sh_pattern: >
+    Iterates REPO_ORDER via declare -A REPO_MAP; runs per-repo tools using uvx (ephemeral)
+    or uv tool run; collects results into declare -A *_RESULTS maps; prints label+result
+    per repo; exits 0/1. QUALITY_REPO_ROOT env override redirects to fixture dirs in tests.
+  crontab_template_location: "scripts/cron/crontab-template.sh"
+  pip_audit_available: false
+  uv_audit_available: false
+  existing_tdd_test_path: "tests/quality/"
+  log_quality_dir: "not found — net-new directory required"
+  repos_with_uvlock:
+    - assetutilities
+    - digitalmodel
+    - worldenergydata
+    - assethold
+    - OGManufacturing
+  work_queue_capture_mechanism: >
+    scripts/work-queue/next-id.sh returns next WRK integer. WRK markdown written to
+    .claude/work-queue/pending/WRK-NNN.md. Pattern confirmed in
+    scripts/data/document-index/phase-f-wrk-items.py.
+
+key_findings:
+  - "All 5 tier-1 repos have uv.lock (version=1 revision=3) — uv lock --check is the correct freshness test"
+  - "check-all.sh is the exact structural template to follow for dep-health.sh"
+  - "No CVE, outdated-dep, or pip-audit tooling exists in scripts/quality/ — entirely net-new"
+  - "pip-audit must be invoked via uvx (ephemeral); no presence in any repo's pyproject.toml"
+  - "logs/quality/ is net-new; dep-health-{date}.yaml becomes first YAML report in that namespace"
+  - "Auto-WRK creation: next-id.sh + markdown write confirmed viable via phase-f-wrk-items.py"
+  - "TDD fixture pattern (mktemp + mock uv binary via PATH) well-established in tests/quality/"
+  - "crontab-template.sh CRON: comment format is canonical path for nightly entries on ace-linux-1"
+
+risks:
+  - "uv audit may not exist in installed uv version; must probe at runtime before relying on it"
+  - "next-id.sh is not atomic; concurrent runs could generate same WRK ID — add flock guard"
+
+recommendations:
+  - "Mirror check-all.sh structure: QUALITY_REPO_ROOT, REPO_MAP, REPO_ORDER, per-repo result maps, Summary line"
+  - "Probe uv audit at startup; fall back to uvx pip-audit as primary CVE path"
+  - "Use 'uv lock --check' inside each repo for freshness (exits 1 when stale)"
+  - "Use 'uv pip list --outdated --format=json' for parseable outdated package list"
+  - "Use 'uvx pip-audit --format=json' for CVE scan; HIGH/CRITICAL findings exit 1"
+  - "Write YAML report to logs/quality/dep-health-$(date +%Y-%m-%d).yaml; mkdir -p the dir"
+  - "Auto-WRK: flock state.yaml, call next-id.sh, write pending/WRK-NNN.md atomically"
+  - "Add nightly CRON: entry to crontab-template.sh at 01:00 (before comprehensive-learning at 02:00)"
+  - "TDD: write >=5 tests in tests/quality/test_dep_health.sh using mktemp fixture repos and mock uv binary"

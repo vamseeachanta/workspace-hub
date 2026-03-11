@@ -1,0 +1,23 @@
+wrk_id: WRK-1108
+stage: 15
+recommendations:
+  - id: FW-1
+    title: Implement lharries/whatsapp-mcp on ace-linux-1
+    description: |
+      Install and configure lharries/whatsapp-mcp (5,400+ stars) with Claude Desktop
+      on ace-linux-1. Requires Go + Python + uv. QR-code phone link for auth.
+      Test send/receive messages, media, search contacts.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1109
+  - id: FW-2
+    title: Evaluate delltrak/wamcp for production use
+    description: |
+      If lharries/whatsapp-mcp proves unstable, evaluate delltrak/wamcp (Docker,
+      63 tools, supports official Meta Cloud API) as the production-grade alternative.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: Defer until FW-1 (WRK-1109) is complete and assessed
+completed_at: 2026-03-10T00:00:00Z

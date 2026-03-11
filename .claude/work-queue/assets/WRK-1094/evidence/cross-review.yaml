@@ -1,0 +1,43 @@
+wrk_id: WRK-1094
+stage: 6
+phase: 1
+reviewed_at: "2026-03-10T00:00:00Z"
+
+verdicts:
+  codex: REQUEST_CHANGES
+  gemini: REQUEST_CHANGES
+  claude: APPROVE
+
+major_findings:
+  - id: CR-1
+    source: codex
+    finding: "AGENTS.md contract ambiguity — YAML frontmatter vs pointer model"
+    disposition: resolved
+    resolution: "Clarified: both coexist. Script checks YAML; validate_agent_contract.sh checks pointer."
+  - id: CR-2
+    source: codex
+    finding: "Severity inconsistency between plan sections"
+    disposition: resolved
+    resolution: "Explicit per-rule severity table added to plan v2."
+  - id: CR-3
+    source: [codex, gemini]
+    finding: "Hard FAIL on known violations blocks CI immediately"
+    disposition: resolved
+    resolution: "Ratchet/baseline approach: existing violations = WARN; new regressions = FAIL."
+  - id: CR-4
+    source: codex
+    finding: "Propagation check underspecified"
+    disposition: resolved
+    resolution: "Dropped from Route A scope."
+  - id: CR-5
+    source: [codex, gemini]
+    finding: "Pre-push scope too narrow (hub only)"
+    disposition: resolved
+    resolution: "Expanded to all changed harness files in push set."
+
+minor_findings:
+  - id: CR-6
+    source: codex
+    finding: "No stable latest symlink for report"
+    disposition: resolved
+    resolution: "Added to plan v2."

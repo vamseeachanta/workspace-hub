@@ -1,1 +1,17 @@
-events: []
+wrk_id: WRK-1079
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1079/WRK-1079-plan-draft.html
+    opened_at: 2026-03-09T17:50:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1079/WRK-1079-plan-final.html
+    opened_at: 2026-03-09T19:00:00Z
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1079/WRK-1079-lifecycle.html
+    opened_at: 2026-03-09T20:00:00Z
+    reviewer: vamsee

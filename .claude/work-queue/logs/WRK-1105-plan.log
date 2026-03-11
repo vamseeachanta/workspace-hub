@@ -1,0 +1,6 @@
+timestamp: 2026-03-10T00:10:02Z
+wrk_id: WRK-1105
+stage: plan
+action: plan_draft_complete
+provider: claude
+notes: Route C plan — 4 phases: diagnosis, core scripts, integration, migration; 18 TDD tests; MEMORY.md target ≤80 lines

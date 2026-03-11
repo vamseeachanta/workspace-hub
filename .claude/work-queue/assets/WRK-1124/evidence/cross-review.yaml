@@ -1,0 +1,17 @@
+wrk_id: WRK-1124
+provider: claude-self
+route: A
+reviewed_at: "2026-03-11T07:10:00Z"
+verdict: APPROVE
+codex_slot: claude-self-review
+notes: >
+  Route A single self-review. Codex cross-review not required for Route A (single pass).
+  No P1 or P2 findings.
+
+findings:
+  - severity: P3
+    description: >
+      Working items with no checkpoint show READY status (not inferred). Correct per spec.
+  - severity: P3
+    description: >
+      SKILL.md session-lock heredoc uses $$ which expands at runtime; low risk for guidance prose.

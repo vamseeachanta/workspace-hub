@@ -1,0 +1,20 @@
+wrk_id: WRK-684
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-684/review.html
+    opened_at: "2026-03-02T14:20:00Z"
+    reviewer: user
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-684/review.html
+    opened_at: "2026-03-02T14:17:00Z"
+    reviewer: user
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-684/workflow-final-review.html
+    opened_at: "2026-03-10T18:30:00Z"
+    reviewer: user
+notes: >
+  Legacy backfill — plan_draft/plan_final events reconstructed from 2026-03-02 session.
+  close_review opened 2026-03-10 for Stage 17 user approval.

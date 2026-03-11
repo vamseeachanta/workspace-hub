@@ -1,0 +1,19 @@
+wrk_id: WRK-1114
+stage: 16
+updated_at: 2026-03-10T00:00:00Z
+new_files_created:
+  - config/work-queue/machine-ranges.yaml
+  - tests/work-queue/test-machine-id-ranges.sh
+files_modified:
+  - scripts/work-queue/next-id.sh
+  - .claude/work-queue/state.yaml
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md
+additions:
+  - path: config/work-queue/machine-ranges.yaml
+    description: "New canonical machine-range partition table"
+  - path: tests/work-queue/test-machine-id-ranges.sh
+    description: "Bash unit tests for machine-range enforcement"
+learnings:
+  - "awk $NF handles YAML list items with leading dashes (  - hostname: value)"
+  - "bash set -e exits on ((PASS++)) when PASS=0 — use PASS=$((PASS+1)) instead"
+  - "config/work-queue/ directory is the canonical location for machine-range configs"

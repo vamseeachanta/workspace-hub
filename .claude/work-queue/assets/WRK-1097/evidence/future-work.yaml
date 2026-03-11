@@ -1,0 +1,30 @@
+wrk_id: WRK-1097
+generated_at: "2026-03-10T07:30:00Z"
+recommendations:
+  - id: FW-1
+    title: "Heartbeat mechanism for true session liveness detection"
+    description: >
+      v1 uses age-only heuristic (locked_at < 2h). A heartbeat file that the active session
+      updates every N minutes would enable true liveness detection without PID check.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-2
+    title: "claim-item.sh pre-claim collision warning using active-sessions.sh"
+    description: >
+      Integrate active-sessions.sh into claim-item.sh to warn when another session
+      has a recent lock on the same WRK before claiming.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+  - id: FW-3
+    title: "queue-status.sh active session observability"
+    description: >
+      Add active-sessions.sh output to queue-status.sh for full session visibility
+      in queue health reports.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low

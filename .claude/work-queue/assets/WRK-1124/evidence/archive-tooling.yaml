@@ -1,0 +1,9 @@
+wrk_id: WRK-1124
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1124/WRK-1124-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1124/legal-scan.md"
+archive_readiness: "ready"
+document_index_ref: ""
+document_index_exemption: "scripts and skill files — not documents for indexing"
+spin_off_wrks: []

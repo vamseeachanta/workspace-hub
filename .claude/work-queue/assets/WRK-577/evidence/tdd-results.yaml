@@ -1,0 +1,25 @@
+wrk_id: WRK-577
+stage: 12
+generated_at: "2026-03-10T11:06:00Z"
+test_approach: "Validator as gate — YAML frontmatter correctness tested via skill loader"
+tests:
+  - name: skill-validator-504-files
+    command: "bash scripts/skills/validate-skills.sh"
+    result: PASS
+    output: "Skill validation passed (504 files)."
+  - name: no-conflict-markers
+    command: "grep -c '^<<<<<<< ' .claude/skills/data/energy/*/SKILL.md"
+    result: PASS
+    output: "0 conflict markers in bsee-data-extractor, npv-analyzer, production-forecaster"
+  - name: required-name-field-present
+    command: "grep -l '^name:' .claude/skills/data/energy/*/SKILL.md .claude/skills/digitalmodel/module-lookup/SKILL.md .claude/skills/workspace-hub/document-batch/SKILL.md"
+    result: PASS
+    output: "name field present in all checked files"
+  - name: no-bare-python3-in-scope-skills
+    command: "grep -l 'python3' <9 in-scope SKILL.md files>"
+    result: PASS
+    output: "No bare python3 calls in any in-scope skill file"
+summary:
+  total: 4
+  pass: 4
+  fail: 0

@@ -163,6 +163,7 @@ run_claude_once() {
   if command -v timeout >/dev/null 2>&1; then
     ${SETSID_CMD:+"$SETSID_CMD"} timeout "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \
@@ -174,6 +175,7 @@ run_claude_once() {
   elif command -v perl >/dev/null 2>&1; then
     ${SETSID_CMD:+"$SETSID_CMD"} perl -e 'alarm shift; exec @ARGV' "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \
@@ -185,6 +187,7 @@ run_claude_once() {
   else
     ${SETSID_CMD:+"$SETSID_CMD"} "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \
@@ -235,13 +238,8 @@ while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
   [[ "$exit_code" -ne 0 ]] && LAST_EXIT_CODE=$exit_code
 
   if [[ "$exit_code" -eq 0 ]]; then
-    if command -v uv >/dev/null 2>&1; then
-      uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
-      render_exit=$?
-    else
-      python3 "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
-      render_exit=$?
-    fi
+    uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
+    render_exit=$?
   else
     render_exit=1
   fi

@@ -1,0 +1,8 @@
+wrk_id: WRK-1064
+stage: 9
+route: A
+orchestrator: claude
+computer: ace-linux-1
+execution_workstations: [ace-linux-1]
+routed_at: "2026-03-09T22:50:00Z"
+notes: Route A — simple complexity, single execution agent (claude on ace-linux-1)

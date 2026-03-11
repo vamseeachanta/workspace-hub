@@ -1,0 +1,67 @@
+wrk_id: WRK-1083
+phase: close
+verdict: all_pass
+missing_count: 0
+warn_count: 3
+notes: User-review-close gate pending Stage 17 (hard gate — awaiting user approval)
+gates:
+  - name: Plan gate
+    status: PASS
+    ok: true
+  - name: Workstation contract gate
+    status: PASS
+    ok: true
+  - name: Stage evidence gate
+    status: PASS
+    ok: true
+  - name: Resource-intelligence gate
+    status: PASS
+    ok: true
+  - name: Activation gate
+    status: PASS
+    ok: true
+  - name: Agent log gate
+    status: PASS
+    ok: true
+  - name: User-review HTML-open gate
+    status: PASS
+    ok: true
+  - name: User-review publish gate
+    status: PASS
+    ok: true
+  - name: Cross-review gate
+    status: PASS
+    ok: true
+  - name: TDD gate
+    status: PASS
+    ok: true
+  - name: Integrated test gate
+    status: PASS
+    ok: true
+  - name: Legal gate
+    status: PASS
+    ok: true
+  - name: Claim gate
+    status: PASS
+    ok: true
+  - name: Future-work gate
+    status: PASS
+    ok: true
+  - name: Resource-intelligence update gate
+    status: PASS
+    ok: true
+  - name: Reclaim gate
+    status: WARN
+    ok: null
+  - name: Approval ordering gate
+    status: PASS
+    ok: true
+  - name: Publish commit uniqueness gate
+    status: WARN
+    ok: null
+  - name: Stage evidence paths gate
+    status: PASS
+    ok: true
+  - name: Reclaim n/a gate
+    status: WARN
+    ok: null

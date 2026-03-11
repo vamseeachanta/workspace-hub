@@ -1,0 +1,31 @@
+wrk_id: WRK-1075
+stage: 16
+updated_at: 2026-03-09T17:00:00Z
+
+additions:
+  - topic: mkdocstrings_import_slow_under_load
+    learning: >
+      mkdocstrings import takes 40s under heavy CPU load (41 mypy/compileall processes).
+      Use a 120s+ timeout for mkdocs build when system is loaded.
+      The hang is not a hang — it is slow import due to markdown+mkdocstrings chain.
+    source: WRK-1075 Stage 10 debugging
+
+  - topic: mkdocs_enable_inventory_false
+    learning: >
+      Add enable_inventory: false and inventories: [] to mkdocs.yml to prevent
+      mkdocstrings from making network requests during build. Prevents hangs in
+      offline or restricted-network environments.
+    source: WRK-1075 Stage 10 debugging
+
+  - topic: uv_run_group_docs_for_optional_tools
+    learning: >
+      Use `uv run --group docs mkdocs build` to run tools from the [dependency-groups].docs
+      group without making them mandatory for all developers. Avoids polluting default venv
+      with heavy doc-build tools (mkdocs-material, mkdocstrings).
+    source: WRK-1075 Stage 10 cross-repo rollout
+
+  - topic: mkdocs_docs_dir_scope
+    learning: >
+      Set docs_dir: docs/api (not docs/) to limit mkdocs to API content only.
+      Legacy docs/ trees cause slow builds and unexpected nav entries.
+    source: WRK-1075 Stage 10

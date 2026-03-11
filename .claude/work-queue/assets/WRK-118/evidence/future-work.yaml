@@ -1,0 +1,43 @@
+wrk_id: WRK-118
+generated_at: "2026-03-10T09:00:00Z"
+
+recommendations:
+  - id: FW-1
+    title: "Pass full WRK description to task_classifier for higher-confidence recommendations"
+    rationale: >
+      Current integration passes only the WRK title (confidence 0.04–0.18).
+      Full ## What / ## Why body would engage more dimensions and improve tier accuracy.
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-2
+    title: "Wire post-cross-review assessment entries into provider-assessments/"
+    rationale: >
+      Phase 4 created directory and template but trigger not wired.
+      After each cross-review the reviewing agent should write a scored assessment YAML.
+    effort: medium
+    status: pending
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-3
+    title: "Enforce 2-of-3 quality gate for Route C in verify-gate-evidence.py"
+    rationale: >
+      Delegation templates specify two_of_three_approve for Route C but
+      verify-gate-evidence.py does not enforce this. Add gate check.
+    effort: medium
+    status: pending
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-4
+    title: "Quarterly provider comparison report from assessments/"
+    rationale: >
+      provider-assessments/README.md specifies quarterly report at
+      reports/ai-assessment/provider-comparison.md. Script not yet written.
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new

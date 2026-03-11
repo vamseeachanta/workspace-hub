@@ -1,0 +1,27 @@
+wrk_id: WRK-1120
+stage: 10
+files_changed:
+  - scripts/work-queue/next-id.sh
+  - scripts/work-queue/tests/test-next-id-collision.sh
+test_count: 3
+test_files:
+  - scripts/work-queue/tests/test-next-id-collision.sh
+test_result: 3 passed, 0 failed
+integrated_repo_tests:
+  - name: "test-next-id-collision: returns numeric ID"
+    scope: repo
+    command: bash scripts/work-queue/tests/test-next-id-collision.sh
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1120/ac-test-matrix.md
+  - name: "test-next-id-collision: concurrent calls return different IDs"
+    scope: repo
+    command: bash scripts/work-queue/tests/test-next-id-collision.sh
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1120/ac-test-matrix.md
+  - name: "test-next-id-collision: sentinel file created in pending/"
+    scope: repo
+    command: bash scripts/work-queue/tests/test-next-id-collision.sh
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1120/ac-test-matrix.md
+summary: "Atomic noclobber sentinel (set -C) + 5-attempt retry loop. TDD: 3 tests green."
+executed_at: "2026-03-11T05:45:00Z"

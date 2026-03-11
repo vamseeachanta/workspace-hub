@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: "WRK-1091"
+reviewer: "vamsee"
+confirmed_at: "2026-03-09T00:00:00Z"
+scope_approved: true
+notes: "User approved scope at session start: cross-repo integration test gate for assetutilities API break detection."

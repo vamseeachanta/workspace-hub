@@ -1,0 +1,34 @@
+stage: 2
+wrk_id: "WRK-1091"
+completed_at: "2026-03-09T00:05:00Z"
+completion_status: continue_to_planning
+risk_level: low
+summary: >
+  Substantial existing infrastructure available (85% reuse). Contract test pattern
+  already proven in digitalmodel/worldenergydata. Pre-push hook pattern from WRK-1064.
+  Symbol index from WRK-1085. Gaps are mechanical additions only.
+existing_assets:
+  - scripts/testing/run-all-tests.sh
+  - scripts/search/build-symbol-index.py
+  - scripts/search/find-symbol.sh
+  - scripts/hooks/pre-push.sh
+  - digitalmodel/tests/contracts/ (pattern reference)
+  - worldenergydata/tests/contracts/ (pattern reference)
+gaps:
+  - config/deps/dependency-graph.yaml (new)
+  - scripts/testing/run-cross-repo-integration.sh (new)
+  - assethold/tests/contracts/ (new, mirrors digitalmodel pattern)
+  - assetutilities pre-push hook for downstream break detection
+skills:
+  core_used:
+    - scripts/testing/run-all-tests.sh
+    - scripts/search/build-symbol-index.py
+    - scripts/search/find-symbol.sh
+    - scripts/hooks/pre-push.sh
+    - scripts/work-queue/SKILL.md
+    - work-queue-workflow/SKILL.md
+    - workflow-gatepass/SKILL.md
+notes: >
+  Dependency chain: assetutilities → digitalmodel, worldenergydata, assethold.
+  PYTHONPATH recipe already established in run-all-tests.sh line 168.
+  Contract tests use @pytest.mark.contracts marker.

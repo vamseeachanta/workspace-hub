@@ -1,0 +1,11 @@
+wrk_id: WRK-1009
+current_stage: 18
+stage_name: Reclaim
+completed_stage: 17
+next_action: Execute stage 18: Reclaim
+context_summary: Stage 17 complete. Next: stage 18 (Reclaim).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1009/checkpoint.yaml
+  - assets/WRK-1009/evidence/user-review-close.yaml
+checkpointed_at: 2026-03-10T20:32:50Z
+human_gate: false

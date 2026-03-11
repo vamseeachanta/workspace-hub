@@ -15,7 +15,7 @@ capabilities:
   - queue_state_management
   - archive_audit_trail
   - reflect_integration
-tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
+tools: [Read, Write, Edit, Bash, Grep, Glob, Task, EnterPlanMode, ExitPlanMode]
 related_skills: [claude-reflect, skill-learner, repo-sync, session-start, session-end, workflow-gatepass, wrk-lifecycle-testpack, work-queue-workflow, comprehensive-learning]
 scripts:
   - next-id.sh
@@ -66,7 +66,8 @@ Smart routing: action verbs (run/go/start) → Process; descriptive content → 
 
 ```
 1  Capture              2  Resource Intelligence   3  Triage
-4  Plan Draft           5  User Review Plan Draft  6  Cross-Review
+4  Plan Draft (4a: Ideation via EnterPlanMode → 4b: Artifact write)
+5  User Review Plan Draft  6  Cross-Review
 7  User Review Plan Final  8  Claim/Activation     9  Work-Queue Routing
 10 Work Execution       11 Artifact Generation     12 TDD / Eval
 13 Agent Cross-Review   14 Verify Gate Evidence    15 Future Work Synthesis
@@ -84,7 +85,8 @@ Gate evidence verifier: `scripts/work-queue/verify-gate-evidence.py WRK-NNN`
 | 1 | `evidence/user-review-capture.yaml` (`scope_approved: true`) | HARD |
 | 2 | `evidence/resource-intelligence.yaml` | — |
 | 3 | WRK frontmatter triage fields | — |
-| 4 | Draft plan + HTML | — |
+| 4a | `EnterPlanMode` + explicit coverage instruction → text draft → `ExitPlanMode` | — |
+| 4b | Draft plan spec + self-verification pass + HTML artifact | — |
 | 5 | `evidence/user-review-plan-draft.yaml`; HTML opened in browser | **HARD — user must respond** |
 | 6 | Multi-provider review outputs (`cross-review-*.md`) | — |
 | 7 | `evidence/plan-final-review.yaml` (`confirmed_by` human) | **HARD — R-25** |
@@ -177,6 +179,26 @@ Required frontmatter fields: `id`, `title`, `status` (pending|working|blocked|do
 
 Bulk-assign: `uv run --no-project python scripts/work-queue/assign-workstations.py [--apply]`
 
+### Machine WRK ID Ranges
+
+Each machine owns a non-overlapping numeric range (canonical: `config/work-queue/machine-ranges.yaml`).
+`next-id.sh` reads this table and enforces the floor automatically.
+
+| Machine | Floor | Ceiling | Notes |
+|---------|-------|---------|-------|
+| `ace-linux-1` | 1 | 4999 | Primary; current IDs ~1128 |
+| `acma-ansys05` | 5000 | 9999 | Windows / orcaflex |
+| `ace-linux-2` | 10000 | 14999 | Reserved |
+| `gali-linux-compute-1` | 15000 | 19999 | Reserved |
+
+Re-allocation: bump floor/ceiling when within 50 of ceiling.
+
+> **ID range confusion warning**: `next-id.sh` scans ALL pending/working files including those from
+> other machines. If a WRK-5000+ file exists in `pending/` (created on acma-ansys05), ace-linux-1
+> sessions will see MAX_FILE_ID ≥ 5000 and issue IDs from that range. This is a known limitation.
+> **Fix**: when in doubt, check `hostname` and compare issued ID against your machine's floor/ceiling.
+> Items created on the wrong range can be renamed; update frontmatter `id:` to match the new filename.
+
 ## Queue Directory Structure
 
 ```
@@ -208,6 +230,12 @@ uv run --no-project python .claude/work-queue/scripts/generate-index.py
 | `start_stage.py WRK-NNN N` | Stage entry (auto-prints resume block) |
 | `exit_stage.py WRK-NNN N` | Stage exit validation |
 
+## Work Execution Principle: Scripts Over LLM Overhead
+
+> Canonical rule: `.claude/rules/patterns.md §Scripts Over LLM Judgment` (includes the 25% repetition threshold).
+
+For every WRK item: if there is a ≥25% chance an operation will recur — write a script first, then call it. Scripts are reusable WRK assets; LLM prose is not.
+
 ## Parallel Work Policy
 
 - Independent tasks: separate WRKs with separate evidence packages.
@@ -216,8 +244,7 @@ uv run --no-project python .claude/work-queue/scripts/generate-index.py
 
 ## Archival Safety
 
-Never archive or mark done until user explicitly confirms completion.
-Check all ACs are met — partial completion is NOT done.
+Never archive or mark done until user explicitly confirms completion. Check all ACs are met — partial completion is NOT done.
 
 ## Integration Points
 
@@ -231,8 +258,6 @@ Check all ACs are met — partial completion is NOT done.
 
 ## Version History
 
-- **1.8.0** (2026-03-08): Pruned to ≤250 lines (WRK-1035); checkpoint validation in exit_stage.py; auto-resume in start_stage.py
-- **1.7.0** (2026-03-07): Stage 7/17 hard blocking gates; verify-gate-evidence Stage 17 gate (WRK-1034)
-- **1.6.4** (2026-03-05): Category view flags for /work list (WRK-1015)
-- **1.6.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
-- **1.5.0** (2026-02-24): Richer WRK item display template (WRK-390)
+- **1.9.0** (2026-03-10): Stage 4a plan-mode ideation sub-stage + explicit coverage instruction (WRK-1014)
+- **1.8.0** (2026-03-08): Pruned to ≤250 lines; checkpoint validation; auto-resume (WRK-1035)
+- **1.7.0** (2026-03-07): Stage 7/17 hard blocking gates (WRK-1034)

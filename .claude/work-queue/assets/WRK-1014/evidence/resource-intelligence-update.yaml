@@ -1,0 +1,25 @@
+wrk_id: WRK-1014
+stage: 16
+stage_name: Resource Intelligence Update
+updated_at: "2026-03-10T11:30:00Z"
+provider: claude
+
+additions:
+  - artifact: ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+    change: "Stage 4a/4b split; EnterPlanMode/ExitPlanMode in tools array; version 1.9.0"
+    impact: Every future WRK execution follows the 4a ideation gate before plan artifacts
+
+  - artifact: ".claude/work-queue/process.md"
+    change: "Mermaid 4a node + Stage 4 contract: explicit coverage instruction + self-verification"
+    impact: Orchestrators now have documented benchmark-backed guidance for plan quality
+
+  - artifact: ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+    change: "Start-to-Finish Chain step 3: 4a/4b explicit coverage instruction requirement"
+    impact: Entry-point skill surfaces 15-point benchmark delta as permanent reminder
+
+new_sources:
+  - title: "Matt Maher planning benchmark"
+    url: "https://youtu.be/it8g45WERAQ"
+    key_finding: >
+      Plan mode alone (no explicit coverage instruction) scores ~77% vs ~92%
+      in execution mode with explicit instruction — 15-point delta.

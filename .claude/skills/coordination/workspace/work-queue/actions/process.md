@@ -74,16 +74,24 @@ If the item is skipped due to unmet dependencies, select the next item by priori
 
 ## Step 4: Claim via Script (HARD RULE — never mv manually)
 
-Run the canonical claim script:
+**Pre-check (resume path)**: If `/work run WRK-NNN` was invoked with an explicit WRK
+ID and that item is already in `working/`, skip the claim script and proceed directly
+to resume — load `checkpoint.yaml` and continue from the last stage. Only invoke
+`claim-item.sh` for items currently in `pending/`.
 
 ```bash
-bash scripts/work-queue/claim-item.sh WRK-NNN
+QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
+if [[ -f "${QUEUE_DIR}/working/${WRK_ID}.md" ]]; then
+  # Already claimed — load checkpoint and resume
+  uv run --no-project python scripts/work-queue/start_stage.py "${WRK_ID}" resume
+else
+  bash scripts/work-queue/claim-item.sh "${WRK_ID}"
+fi
 ```
 
-This is the **only** valid claim path. The script handles all gate evidence, quota
-checks, session-lock validation, status updates, and the atomic pending→working move.
-
-If `claim-item.sh` exits non-zero, **stop** — do not proceed to Stage 9.
+`claim-item.sh` handles all gate evidence, quota checks, session-lock validation,
+status updates, and the atomic pending→working move. If it exits non-zero, **stop** —
+do not proceed to Stage 9.
 
 ## Step 5: Pre-check (Repo Readiness)
 

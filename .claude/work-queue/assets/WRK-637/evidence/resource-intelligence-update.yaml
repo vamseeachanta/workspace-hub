@@ -1,0 +1,35 @@
+wrk_id: WRK-637
+stage: 16
+completed_at: 2026-03-09T01:00:00Z
+
+additions:
+  - category: patterns
+    bullet: >-
+      compact-memory.py eviction rule order: done-WRK → stale-path (--check-paths) →
+      stale-command (--check-commands) → dedup (90%) → trim-to-limit; both opt-in
+      flags disabled by default for cross-machine cron safety
+    source: WRK-637 execute
+
+  - category: patterns
+    bullet: >-
+      Memory tier model: MEMORY.md (≤180L index) → topic files (≤140L active) →
+      archive/ (retired); `# keep` exempts trim/dedup only — done-WRK and path-staleness
+      run unconditionally
+    source: WRK-637 plan
+
+  - category: commands
+    bullet: >-
+      Memory compaction: `uv run --no-project python scripts/memory/compact-memory.py
+      --memory-root ~/.claude/projects/.../memory/ --work-queue-root .claude/work-queue`
+    source: WRK-637 execute
+
+  - category: commands
+    bullet: >-
+      Memory curation: `uv run --no-project python scripts/memory/curate-memory.py
+      --memory-root ~/.claude/projects/.../memory/` — read-only, generates
+      memory-promotion-candidates.md
+    source: WRK-637 execute
+
+  - category: test-counts
+    bullet: "tests/memory/: 21 pass (13 compact-memory + 8 curate-memory)"
+    source: WRK-637 execute Stage 13

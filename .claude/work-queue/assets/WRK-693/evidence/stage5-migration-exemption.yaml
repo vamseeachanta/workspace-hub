@@ -1,0 +1,4 @@
+wrk_id: WRK-693
+approved_by: user
+approval_scope: "Route A legacy item — plan was inline in WRK file; user approved stage 17 implementation review on 2026-03-10"
+rationale: "Simple one-shot audit+replace task created 2026-03-03; plan described in WRK body; implementation approved by user at stage 17"

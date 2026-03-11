@@ -1,0 +1,40 @@
+# archive-tooling.yaml — archive-stage evidence schema (WRK-668)
+# Copy to .claude/work-queue/assets/WRK-NNN/evidence/archive-tooling.yaml
+# and populate all required fields before running archive-item.sh.
+
+wrk_id: WRK-NNN   # required
+
+# ── Required fields ──────────────────────────────────────────────────────────
+
+# merge_status: confirm branch is merged or not applicable.
+# Must NOT be a sentinel like "checked (manual)" — use real values:
+#   "merged-to-main" | "no-branch-created" | "n/a-direct-commit"
+merge_status: ""
+
+# sync_status: confirm remote is in sync.
+#   "in-sync" | "no-remote" | "n/a"
+sync_status: ""
+
+# html_verification_ref: path to the lifecycle HTML file (must exist on disk).
+html_verification_ref: ".claude/work-queue/assets/WRK-NNN/WRK-NNN-lifecycle.html"
+
+# legal_scan_ref: path to legal scan artifact (must exist on disk).
+legal_scan_ref: ".claude/work-queue/assets/WRK-NNN/evidence/legal-scan.md"
+
+# archive_readiness: summary of gate outcomes.
+#   "pass" | "soft-fail" | "hard-fail"
+archive_readiness: ""
+
+# ── Optional fields ───────────────────────────────────────────────────────────
+
+# document_index_ref: post-archive document-index hook script or n/a.
+# Leave empty only if document_index_exemption is set.
+document_index_ref: ""
+
+# document_index_exemption: reason document_index_ref is not required.
+# Example: "hub-only item — no document-index entries affected"
+document_index_exemption: ""
+
+# spin_off_wrks: list of WRK IDs created to handle archive blockers.
+# Populated automatically by create-spinoff-wrk.sh when hard blockers are found.
+spin_off_wrks: []

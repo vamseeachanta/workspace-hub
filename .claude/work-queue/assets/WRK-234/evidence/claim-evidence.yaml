@@ -1,0 +1,9 @@
+wrk_id: WRK-234
+metadata_version: "1"
+claimed_by: claude
+claimed_at: "2026-02-20T10:00:00Z"
+session_id: session-wrk-234-2026-02-20
+route: C
+notes: >
+  Parent/compound standing WRK claimed for long-running mission orchestration.
+  Manages 18 child items across three ecosystem pillars.

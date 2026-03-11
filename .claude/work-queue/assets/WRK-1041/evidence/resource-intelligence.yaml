@@ -1,0 +1,34 @@
+wrk_id: WRK-1041
+stage: 2
+completion_status: continue_to_planning
+generated_at: 2026-03-10T00:00:00Z
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-html
+
+files_to_modify:
+  - path: scripts/work-queue/generate-html-review.py
+    size_lines: 2123
+    change: add meta http-equiv refresh tag to both <head> sections
+    head_locations:
+      - line: 984  # render_wrk_html plan/review HTML head
+      - line: 2053  # generate_lifecycle lifecycle HTML head
+
+  - path: tests/unit/test_generate_html_review.py
+    size_lines: 847
+    change: add 2 new tests for meta refresh presence
+
+existing_tests:
+  - tests/unit/test_generate_html_review.py (847 lines, 40+ tests)
+  - test_generate_lifecycle_idempotent confirms stateless generation
+
+blocker_cleared:
+  - WRK-1035 is archived — checkpoint/auto-resume complete; unblocks this item
+
+scope_summary: >
+  Add <meta http-equiv="refresh" content="30"> to both HTML generators
+  (lifecycle and plan/review). No new commands needed; auto-refresh handles
+  the requirement to keep 1 HTML per WRK always current.

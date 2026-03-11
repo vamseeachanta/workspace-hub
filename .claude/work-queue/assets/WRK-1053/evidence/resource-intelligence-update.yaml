@@ -1,0 +1,32 @@
+wrk_id: WRK-1053
+stage: 16
+generated_at: "2026-03-10T22:00:00Z"
+additions:
+  - type: script
+    path: scripts/skills/audit-skill-violations.sh
+    description: >
+      Audits SKILL.md files for 4 violation types: README.md presence (v2 anti-pattern),
+      word count >5000, description >1024 chars, XML/HTML tags in body. YAML output.
+  - type: script
+    path: scripts/skills/skill-coverage-audit.sh
+    description: >
+      Checks each SKILL.md for script references via frontmatter scripts: field or
+      exec patterns (bash scripts/, uv run, etc.). Exit 0=all wired, 1=gaps, 2=usage error.
+  - type: test
+    path: scripts/skills/tests/test_wrk1053_scripts.sh
+    description: >
+      8-test suite for audit-skill-violations.sh and skill-coverage-audit.sh.
+      Includes wiring verification tests for skill-eval SKILL.md.
+  - type: skill_update
+    path: .claude/skills/development/skill-eval/SKILL.md
+    description: >
+      Added Audit Scripts section referencing all 3 skill audit scripts.
+  - type: skill_update
+    path: .claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+    description: >
+      Phase 9 updated to reference skill-coverage-audit.sh for coverage gap detection.
+  - type: runtime_update
+    path: scripts/analysis/comprehensive_learning_pipeline.py
+    description: >
+      Phase 9 now calls audit-skill-violations.sh and skill-coverage-audit.sh;
+      scoped to workspace-hub skills dir to avoid 508-skill timeout.

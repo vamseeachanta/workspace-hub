@@ -1,0 +1,58 @@
+wrk_id: WRK-667
+stage: 6
+phase: 1
+reviewed_at: "2026-03-09T08:20:00Z"
+input_file: scripts/review/results/wrk-667-phase-1-review-input.md
+
+verdicts:
+  codex: MINOR
+  gemini: APPROVE
+  claude: APPROVE
+
+overall: MINOR
+hard_gate_passed: true   # Codex = hard gate; MINOR = proceed with fixes
+
+codex_findings:
+  - id: C1
+    severity: MINOR
+    finding: "quality_signals fields underspecified — no counting/attribution rules"
+    resolution: planned
+    note: "Add explicit semantics per field in template YAML comments"
+  - id: C2
+    severity: MINOR
+    finding: "skills.core_used ≥ 3 can be gamed; prefer outcome-oriented quality rule"
+    resolution: deferred
+    note: "This is a pre-existing gate rule (WRK-655); out of scope for this WRK to change; document in open-questions"
+  - id: C3
+    severity: MINOR
+    finding: "Comparison example methodology needs predefined rubric (avoid cherry-picking)"
+    resolution: planned
+    note: "Will define rubric in phase 5: same category, same artifacts, measure missing-artifact rate + plan edits"
+  - id: C4
+    severity: MINOR
+    finding: "resource_pack_ref path normalization not defined"
+    resolution: planned
+    note: "Will document: resource_pack_ref must be relative path to resource-pack.md under assets/"
+  - id: C5
+    severity: MINOR
+    finding: "HTML confidence self-reported — needs derivation rules"
+    resolution: planned
+    note: "confidence derived: high if required artifacts exist + ≥1 P1 resolved + provenance complete"
+
+gemini_suggestions:
+  - id: G1
+    finding: "Consider review_cycles_saved field"
+    resolution: deferred
+    note: "Too speculative for initial schema; captured as P3 enhancement"
+  - id: G2
+    finding: "RI should have top-level HTML visibility, not buried in stage section"
+    resolution: planned
+    note: "Will place RI summary as prominent callout near top of lifecycle HTML"
+  - id: G3
+    finding: "Define strict rubric for comparison pairs"
+    resolution: planned
+    note: "Merged with C3"
+  - id: G4
+    finding: "Warning messages should be actionable with exact snippet"
+    resolution: planned
+    note: "Will include exact YAML snippet in warn messages"

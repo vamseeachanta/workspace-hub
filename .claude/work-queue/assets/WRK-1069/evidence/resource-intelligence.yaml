@@ -1,0 +1,47 @@
+wrk_id: WRK-1069
+stage: 2
+completed_at: "2026-03-11T11:00:00Z"
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - superpowers/test-driven-development
+
+findings:
+  session_logger:
+    path: scripts/readiness/provider-cost-tracker.sh
+    current_token_events: true
+    actively_logs_to: .claude/state/session-signals/cost-tracking.jsonl
+    wrk_attribution_status: ALREADY IMPLEMENTED (field "wrk" present)
+    schema_fields: [ts, session_id, provider, model, input_tokens, output_tokens, cost_usd, wrk, anomaly, estimated, run_ts]
+
+  active_wrk_file:
+    path: .claude/state/active-wrk
+    format: plain text, single line containing WRK-NNN identifier
+
+  pricing_config:
+    exists: true
+    primary_source: config/agents/model-registry.yaml
+
+  close_item_sh:
+    path: scripts/work-queue/close-item.sh
+    does_cost_reporting: false
+
+  scripts_ai_dir:
+    exists: true
+    location: scripts/ai/
+
+  session_signals_schema:
+    cost_tracking_file: .claude/state/session-signals/cost-tracking.jsonl
+    cost_tracking_fields: [ts, session_id, provider, model, input_tokens, output_tokens, cost_usd, wrk, anomaly, estimated, run_ts]
+
+gaps:
+  - "scripts/ai/wrk-cost-report.py does not exist"
+  - "close-item.sh has no cost summary output"
+  - "No cross-session aggregation script"
+
+implementation_notes:
+  - "Cost attribution 70% complete: cost-tracking.jsonl already logs tokens, cost_usd, and wrk per session"
+  - "Model pricing versioned in model-registry.yaml"
+  - "session-params.py already maps model IDs to context windows"

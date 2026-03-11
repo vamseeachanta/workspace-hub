@@ -1,0 +1,9 @@
+wrk_id: WRK-118
+scanned_at: "2026-03-10T09:00:00Z"
+scan_command: "bash scripts/legal/legal-sanity-scan.sh"
+result: PASS
+violations: []
+artifacts_scanned:
+  - docs/modules/ai/agent-delegation-templates.md
+  - scripts/agents/work.sh
+notes: "Legal scan passed — no client identifiers or deny-list violations found"

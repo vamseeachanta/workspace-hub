@@ -1,0 +1,10 @@
+wrk_id: WRK-1108
+merge_status: no-branch-created
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1108/workflow-final-review.html
+legal_scan_ref: .claude/work-queue/assets/WRK-1108/legal-scan.md
+archive_readiness: pass
+document_index_ref: ""
+document_index_exemption: hub-only item — research task, no document-index entries affected
+spin_off_wrks:
+  - WRK-1109

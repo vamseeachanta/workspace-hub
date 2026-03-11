@@ -1,0 +1,39 @@
+wrk_id: WRK-1079
+generated_at: 2026-03-09T20:00:00Z
+
+recommendations:
+  - id: FW-1
+    title: "Extend mypy coverage to non-contracted data.py helper classes"
+    description: "data.py has ~50 legacy helper classes with no annotations. Re-enable disallow_untyped_defs for data.py once annotated."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-2
+    title: "Fix digitalmodel pre-existing syntax error in projectScheduleD01.py"
+    description: "Non-Python content in projectScheduleD01.py prevents full digitalmodel mypy run. Fix in separate WRK."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-3
+    title: "Add mypy CI gate for assetutilities"
+    description: "Add mypy clean check to assetutilities CI pipeline to prevent annotation regressions."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-4
+    title: "Install mypy stubs for third-party deps (yaml, pandas, etc.)"
+    description: "Install types-PyYAML, pandas-stubs to remove type: ignore[import-untyped] suppressions."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null

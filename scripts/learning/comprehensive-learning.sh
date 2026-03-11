@@ -30,22 +30,27 @@ if [[ "$MACHINE" != "ace-linux-1" ]]; then
   echo "comprehensive-learning runs on ace-linux-1 only."
   echo "From this machine, commit state files and push:"
   
-  # State files to commit
-  cd "$WS_HUB"
-  git add .claude/state/candidates/ \
-          .claude/state/corrections/ \
-          .claude/state/patterns/ \
-          .claude/state/reflect-history/ \
-          .claude/state/trends/ \
-          .claude/state/session-signals/ \
-          .claude/state/cc-insights/ \
-          .claude/state/learned-patterns.json \
-          .claude/state/skill-scores.yaml \
-          .claude/state/cc-user-insights.yaml
-  
-  if ! git diff --staged --quiet; then
-    git commit -m "chore: session learnings from $(hostname)"
-    git push origin main
+  # State files to commit — guarded loop skips missing paths (cross-platform safe)
+  STATE_PATHS=(
+      ".claude/state/candidates/"
+      ".claude/state/corrections/"
+      ".claude/state/patterns/"
+      ".claude/state/reflect-history/"
+      ".claude/state/trends/"
+      ".claude/state/session-signals/"
+      ".claude/state/cc-insights/"
+      ".claude/state/learned-patterns.json"
+      ".claude/state/skill-scores.yaml"
+      ".claude/state/cc-user-insights.yaml"
+  )
+  for path in "${STATE_PATHS[@]}"; do
+      [[ -e "${WS_HUB}/${path}" ]] && git -C "$WS_HUB" add "$path"
+  done
+  echo "Learning state: $(git -C "$WS_HUB" diff --staged --name-only | wc -l | tr -d ' ') file(s) staged"
+
+  if ! git -C "$WS_HUB" diff --staged --quiet; then
+    git -C "$WS_HUB" commit -m "chore: session learnings from $(hostname)"
+    git -C "$WS_HUB" push origin main
     echo "Learning state pushed."
   else
     echo "No new learning state to push."
@@ -96,7 +101,7 @@ run_py_phase() {
     echo "--- Phase ${phase_num}: ${phase_name} ---"
     
     local output
-    output=$(python3 "$ANALYSIS_PY" "$phase_num")
+    output=$(uv run --no-project python "$ANALYSIS_PY" "$phase_num")
     
     # Extract the PHASE_RESULT line
     local result_line
@@ -113,6 +118,11 @@ run_py_phase() {
 # --- Step 0: Git Pull (Aggregate contributions) ---
 echo "--- Step 0: Aggregating machine contributions ---"
 git -C "$WS_HUB" pull --no-rebase origin main --quiet || echo "Warning: git pull failed"
+
+# --- Pre-Phase 1: Codex session ingestion (best-effort, WRK-1102 Fix 6) ---
+echo "--- Pre-Phase 1: Codex Ingestion ---"
+bash "${WS_HUB}/scripts/analysis/ingest-codex-sessions.sh" > /tmp/cl_codex_ingest.log 2>&1 || \
+    echo "ingest-codex: best-effort step skipped (non-blocking)"
 
 # --- Phase 1: Insights (mandatory) ---
 echo "--- Phase 1: Insights ---"
@@ -150,7 +160,7 @@ fi
 
 # --- Phase 2: Reflect (non-mandatory) ---
 echo "--- Phase 2: Reflect ---"
-REFLECT_SCRIPT="${WS_HUB}/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh"
+REFLECT_SCRIPT="${WS_HUB}/scripts/analysis/daily-reflect.sh"
 if [[ -f "$REFLECT_SCRIPT" ]]; then
     if WORKSPACE_ROOT="$WS_HUB" bash "$REFLECT_SCRIPT" > /tmp/cl_phase2.log 2>&1; then
         log_phase "2 Reflect" "DONE" "Daily reflection completed"
@@ -158,12 +168,12 @@ if [[ -f "$REFLECT_SCRIPT" ]]; then
         log_phase "2 Reflect" "FAILED" "daily-reflect.sh failed"
     fi
 else
-    log_phase "2 Reflect" "SKIPPED" "Not found"
+    log_phase "2 Reflect" "SKIPPED" "Not found: ${REFLECT_SCRIPT}"
 fi
 
 # --- Phase 3: Knowledge (non-mandatory) ---
 echo "--- Phase 3: Knowledge ---"
-KNOWLEDGE_SCRIPT="${WS_HUB}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-capture.sh"
+KNOWLEDGE_SCRIPT="${WS_HUB}/scripts/analysis/knowledge-capture.sh"
 if [[ -f "$KNOWLEDGE_SCRIPT" ]]; then
     if WORKSPACE_HUB="$WS_HUB" bash "$KNOWLEDGE_SCRIPT" > /tmp/cl_phase3.log 2>&1; then
         log_phase "3 Knowledge" "DONE" "Knowledge captured"
@@ -171,7 +181,7 @@ if [[ -f "$KNOWLEDGE_SCRIPT" ]]; then
         log_phase "3 Knowledge" "FAILED" "knowledge-capture.sh failed"
     fi
 else
-    log_phase "3 Knowledge" "SKIPPED" "Not found"
+    log_phase "3 Knowledge" "SKIPPED" "Not found: ${KNOWLEDGE_SCRIPT}"
 fi
 
 # Additional Phase 3: Memory Staleness Check

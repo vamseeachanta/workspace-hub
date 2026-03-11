@@ -1,0 +1,45 @@
+wrk_id: WRK-1092
+stage: 10
+executed_at: 2026-03-10T04:08:00Z
+scope: integrated
+route: A
+provider: claude
+
+files_created:
+  - scripts/quality/check_mypy_ratchet.py
+  - config/quality/mypy-baseline.yaml
+  - tests/quality/test_check_mypy_ratchet.py
+
+files_modified:
+  - scripts/quality/check-all.sh
+  - scripts/hooks/pre-push.sh
+
+test_count: 14
+test_files:
+  - tests/quality/test_check_mypy_ratchet.py
+
+integrated_repo_tests:
+  - name: hub-quality-tests
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/quality/test_check_mypy_ratchet.py -v
+    result: pass
+    artifact_ref: tests/quality/test_check_mypy_ratchet.py
+  - name: ratchet-script-ruff
+    scope: integrated
+    command: uv run --no-project python -m ruff check scripts/quality/check_mypy_ratchet.py
+    result: pass
+    artifact_ref: scripts/quality/check_mypy_ratchet.py
+  - name: baseline-yaml-valid
+    scope: integrated
+    command: uv run --no-project python -c "import yaml; yaml.safe_load(open('config/quality/mypy-baseline.yaml'))"
+    result: pass
+    artifact_ref: config/quality/mypy-baseline.yaml
+
+baseline_error_counts:
+  assetutilities: 941
+  digitalmodel: 1
+  worldenergydata: 3414
+  assethold: 320
+  ogmanufacturing: 0
+
+notes: TDD — 14 tests written before implementation. 14/14 PASS.

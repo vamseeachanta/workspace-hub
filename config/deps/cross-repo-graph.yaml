@@ -1,0 +1,38 @@
+version: "1"
+generated_at: "2026-03-10T00:00:00Z"
+graph:
+  - id: assetutilities
+    layer: 0
+    depends_on: []
+    contract_tests: []
+
+  - id: digitalmodel
+    layer: 1
+    depends_on: [assetutilities]
+    contract_tests:
+      - path: tests/contracts/test_assetutilities_common_contract.py
+      - path: tests/contracts/test_assetutilities_data_contract.py
+      - path: tests/contracts/test_assetutilities_units_contract.py
+      - path: tests/contracts/test_assetutilities_yml_contract.py
+    pythonpath:
+      - digitalmodel/src
+      - assetutilities/src
+
+  - id: worldenergydata
+    layer: 1
+    depends_on: [assetutilities]
+    contract_tests:
+      - path: tests/contracts/test_assetutilities_data_contract.py
+      - path: tests/contracts/test_assetutilities_engine_contract.py
+    pythonpath:
+      - worldenergydata/src
+      - assetutilities/src
+
+  - id: assethold
+    layer: 1
+    depends_on: [assetutilities]
+    contract_tests:
+      - path: tests/contracts/test_assetutilities_contract.py
+    pythonpath:
+      - assethold/src
+      - assetutilities/src

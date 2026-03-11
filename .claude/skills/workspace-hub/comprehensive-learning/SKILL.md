@@ -76,7 +76,7 @@ in Phases 1 or 4 set `_PIPELINE_EXIT=1`. Phase 10 always runs via `trap EXIT`.
 | 6 | WRK Feedback + Ecosystem | — | WRK quality review + skill usage frequency + ecosystem health |
 | 7 | Action Candidates | — | Convert candidates/ entries to WRK items |
 | 8 | Report Review | — | Review learning report for coherence |
-| 9 | Skill Coverage Audit | weekly | Audit skill coverage against WRK item categories |
+| 9 | Skill Coverage Audit | weekly | Audit skill coverage via `identify-script-candidates.sh` + `skill-coverage-audit.sh` |
 | 10a | Cross-Machine Compile | full only | git pull + aggregate from all machines |
 | 10 | Report | always | Write report (trap EXIT) |
 

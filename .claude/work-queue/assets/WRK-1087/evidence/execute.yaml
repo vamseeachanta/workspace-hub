@@ -1,0 +1,34 @@
+wrk_id: WRK-1087
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T22:00:00Z
+executor: claude
+test_count: 20
+integrated_repo_tests:
+  - name: test_audit_trail
+    scope: integrated
+    command: bash tests/quality/test_audit_trail.sh
+    result: pass
+    artifact_ref: tests/quality/test_audit_trail.sh
+  - name: verify_chain_real_log
+    scope: integrated
+    command: bash scripts/audit/verify-chain.sh
+    result: pass
+    artifact_ref: scripts/audit/verify-chain.sh
+  - name: audit_query_smoke
+    scope: integrated
+    command: "bash scripts/audit/audit-query.sh --wrk WRK-1087"
+    result: pass
+    artifact_ref: scripts/audit/audit-query.sh
+commits:
+  - hash: 66a8011c
+    message: "feat(WRK-1087): add audit trail scripts"
+  - hash: 7521d113
+    message: "feat(WRK-1087): wire audit trail into hooks"
+  - hash: b200d679
+    message: "chore(WRK-1087): allow logs/audit/ in git"
+files_created:
+  - scripts/audit/log-action.sh
+  - scripts/audit/audit-query.sh
+  - scripts/audit/verify-chain.sh
+  - tests/quality/test_audit_trail.sh

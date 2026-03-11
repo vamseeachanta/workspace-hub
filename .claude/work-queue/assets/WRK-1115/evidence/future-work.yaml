@@ -1,0 +1,27 @@
+recommendations:
+- captured: true
+  disposition: existing-updated
+  notes: 'Stage comment from stage-evidence.yaml is shown when present. Full duration
+    (start→end timestamps) deferred — stage-evidence.yaml schema lacks per-stage timestamps
+    in current implementation.
+
+    '
+  status: captured
+  title: Stage duration in section headers (AC 15)
+- captured: true
+  disposition: spun-off-new
+  notes: 'Currently agent-written manually. Could auto-detect plan diffs from user-review-plan-draft.yaml
+    vs plan-final-review.yaml content.
+
+    '
+  status: captured
+  title: plan-changelog.yaml population automation
+- captured: true
+  disposition: spun-off-new
+  notes: 'test_detect_stage14_not_done_without_cross_review has wrong assertion (gate-evidence-summary.json
+    presence != S11 done). Fix in a separate WRK.
+
+    '
+  status: captured
+  title: Stage 11 detection fix (pre-existing test failure)
+wrk_id: WRK-1115

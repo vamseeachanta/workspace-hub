@@ -1,0 +1,14 @@
+wrk_id: WRK-1125
+phase: 1
+reviewed_at: "2026-03-11T00:00:00Z"
+verdicts:
+  codex: APPROVE
+  gemini: skipped-route-a
+  claude: APPROVE
+overall: APPROVE
+v1_verdict: REQUEST_CHANGES
+v2_verdict: REQUEST_CHANGES
+v3_verdict: APPROVE
+notes: >
+  v3 approved. Key fixes: associative arrays for note/not_before (no pipe corruption),
+  working-only parked routing (pending items unaffected), not_before as display annotation only.

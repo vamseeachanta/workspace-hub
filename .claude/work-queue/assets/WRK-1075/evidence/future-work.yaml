@@ -1,0 +1,27 @@
+wrk_id: WRK-1075
+generated_at: 2026-03-09T17:00:00Z
+
+recommendations:
+  - id: FW-1
+    title: GitHub Pages deployment for API docs (gh-pages branch per repo)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-2
+    title: Extend docs/api/index.md to cover all public subpackages, not just one module
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-3
+    title: Add mkdocs serve test to poll HTTP 200 up to 15s then SIGTERM
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-4
+    title: Cross-repo inventory links with intersphinx mapping between repos
+    disposition: spun-off-new
+    status: captured
+    captured: true

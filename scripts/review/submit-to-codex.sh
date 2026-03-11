@@ -180,7 +180,7 @@ EOF
 
   classify_codex_failure() {
     if [[ -s "$err_file" ]] && grep -Eqi \
-      "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0))" \
+      "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0)|usage limit|you.ve hit your usage|try again at)" \
       "$err_file"; then
       echo "QUOTA"
       return
@@ -197,15 +197,7 @@ EOF
   }
 
   run_renderer() {
-    if command -v uv >/dev/null 2>&1; then
-      # uv present: use it exclusively (no silent python3 fallback)
-      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
-      return
-    fi
-    if command -v python3 >/dev/null 2>&1; then
-      python3 "$RENDERER" --provider codex --input "$raw_file" && return
-    fi
-    return 127
+    uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
   }
 
   prompt_for_run="$FULL_PROMPT"
@@ -245,8 +237,10 @@ ${compact_text}
   if [[ "$exec_exit" -ne 0 ]]; then
     failure_kind="$(classify_codex_failure)"
     if [[ "$failure_kind" == "QUOTA" ]]; then
+      echo "# CODEX_QUOTA_EXHAUSTED"
       echo "# Codex quota/credits exhausted"
-      echo "# Action: refresh usage/credits, then rerun this review."
+      echo "# Action: Claude Opus fallback will be used automatically."
+      exit 3  # Reserved exit code for quota exhaustion (triggers Opus fallback in cross-review.sh)
     elif [[ "$failure_kind" == "TIMEOUT" ]]; then
       echo "# Codex exec timed out (exit $exec_exit)"
       echo "# Action: retry or increase CODEX_TIMEOUT_SECONDS."

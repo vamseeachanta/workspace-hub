@@ -1,0 +1,15 @@
+wrk_id: WRK-1099
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1099/WRK-1099-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1099/legal-scan.md"
+archive_readiness: "ready"
+document_index_ref: ""
+document_index_exemption: "script-only change, no document index impact"
+spin_off_wrks:
+  - id: FW-1
+    title: Group remote items per machine when 3+ workstations
+    captured: true
+  - id: FW-2
+    title: Add --subcategory to /work list command
+    captured: true

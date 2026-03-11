@@ -1,0 +1,25 @@
+stage: 13
+wrk_id: WRK-1090
+artifact: cross-review-implementation
+reviewed_at: "2026-03-10T04:00:00Z"
+phase: implementation
+
+reviews:
+  - provider: claude-opus
+    verdict: MAJOR
+    findings:
+      - id: C1
+        severity: critical
+        description: "uvx pip-audit --stdin is not a valid flag; use -r /dev/stdin"
+        resolution: "RESOLVED — fixed in commit 7c2e4c48"
+      - id: C2
+        severity: critical
+        description: "next-id.sh returns bare number; NEXT_ID must be prefixed WRK-"
+        resolution: "RESOLVED — fixed in commit 7c2e4c48"
+      - id: C3
+        severity: critical
+        description: "pip-audit JSON has no severity field; counting by severity missed all CVEs"
+        resolution: "RESOLVED — now counts all vulns as blocking; fixed in commit 7c2e4c48"
+
+all_major_resolved: true
+deferred_minors: []

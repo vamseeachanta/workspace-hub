@@ -1,0 +1,27 @@
+wrk_id: WRK-1041
+stage: 10
+executed_at: 2026-03-10T00:15:00Z
+commit: 724ee7157021fc2cbe8f42497bafa58892f149cb
+files_changed:
+  - scripts/work-queue/generate-html-review.py
+  - tests/unit/test_generate_html_review.py
+changes:
+  - render_wrk_html() head: added meta http-equiv refresh content=30
+  - generate_lifecycle() head: added meta http-equiv refresh content=30
+  - 2 new tests: test_lifecycle_html_has_meta_refresh, test_review_html_has_meta_refresh
+integrated_repo_tests:
+  - name: test_lifecycle_html_has_meta_refresh
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_lifecycle_html_has_meta_refresh -v
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1041/evidence/execute.yaml
+  - name: test_review_html_has_meta_refresh
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_review_html_has_meta_refresh -v
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1041/evidence/execute.yaml
+  - name: test_generate_html_review_full_suite
+    scope: repo
+    command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py -v
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1041/evidence/execute.yaml

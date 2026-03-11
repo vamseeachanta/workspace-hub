@@ -1,0 +1,12 @@
+wrk_id: WRK-1099
+stage: 1
+scope_approved: true
+reviewer: vamsee
+approved_by: vamsee
+reviewed_at: "2026-03-10T06:20:00Z"
+confirmed_at: "2026-03-10T06:20:00Z"
+approved_at: "2026-03-10T06:20:00Z"
+notes: >
+  Approved scope as written. Additional UX note: other-machine section should be
+  brief — a compact reminder only, not a full-detail listing. Current-machine items
+  get full treatment; other-machine items show minimal info (WRK-ID + machine label).

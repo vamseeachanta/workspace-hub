@@ -1,0 +1,49 @@
+wrk_id: WRK-118
+reviewed_at: "2026-03-10T09:00:00Z"
+review_input: "scripts/review/results/wrk-118-phase-final-review-input.md"
+
+providers:
+  claude:
+    verdict: APPROVE
+    artifact: "scripts/review/results/20260310T234753Z-wrk-118-phase-final-review-input.md-implementation-claude.md"
+    notes: "AC5 partial (2-of-3 enforce), confidence low (title-only), routing advisory is appropriate"
+
+  codex:
+    verdict: MINOR
+    findings:
+      - id: C1
+        severity: MINOR
+        description: "bash -c string interpolation with $_title unsafe for titles with special chars"
+        fixed: true
+        fix: "Changed to bash --noprofile --norc -c \". $1; classify_task $2\" -- classifier title"
+      - id: C2
+        severity: MINOR
+        description: "Routing block should explicitly note title-only / low-confidence"
+        fixed: false
+        deferred: "FW-1 — pass full description for higher signal"
+      - id: C3
+        severity: MINOR
+        description: "Route C docs should clarify task_agents doesn't replace cross-review gate"
+        fixed: false
+        deferred: "Acceptable as-is — delegation-templates.md is advisory, not prescriptive"
+      - id: C4
+        severity: MINOR
+        description: "Add wrapper tests for work.sh run (active-WRK fallback, missing jq, apostrophes)"
+        fixed: false
+        deferred: "FW-5 — test harness expansion"
+
+  gemini:
+    verdict: MINOR
+    findings:
+      - id: G1
+        severity: MINOR
+        description: "AC5 partially met — 2-of-3 enforcement not scripted"
+        fixed: false
+        deferred: "FW-3 — captured as future work"
+      - id: G2
+        severity: MINOR
+        description: "Pass full WRK description to classifier for better signal"
+        fixed: false
+        deferred: "FW-1 — captured as future work"
+
+overall_verdict: APPROVE  # all findings MINOR; Codex C1 fixed; others deferred to FW

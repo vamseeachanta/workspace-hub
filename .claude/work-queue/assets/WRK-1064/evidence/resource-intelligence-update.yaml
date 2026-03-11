@@ -1,0 +1,17 @@
+wrk_id: WRK-1064
+stage: 16
+updated_at: "2026-03-09T23:20:00Z"
+additions:
+  - resource: scripts/hooks/pre-push.sh
+    description: >
+      Pre-push CI gate — extends WRK-1070 stub; env overrides for testing
+      (PRE_PUSH_DRY_RUN, PRE_PUSH_CHECK_ALL_SCRIPT, PRE_PUSH_RUN_TESTS_SCRIPT,
+      PRE_PUSH_CHANGED_FILES, PRE_PUSH_BYPASS_LOG, GIT_PRE_PUSH_SKIP)
+  - resource: scripts/hooks/install-hooks.sh
+    description: >
+      Installs pre-push hook for hub + 5 tier-1 submodules; resolves
+      .git-as-file via git -C <sub> rev-parse --git-dir
+  - resource: logs/hooks/
+    description: Bypass log directory; pre-push-bypass.jsonl written on GIT_PRE_PUSH_SKIP
+  - resource: tests/hooks/test_pre_push.py
+    description: 10 TDD tests for pre-push.sh; mocks via fake bash scripts + env overrides

@@ -1,0 +1,30 @@
+wrk_id: WRK-1083
+stage: 2
+completion_status: continue_to_planning
+generated_at: "2026-03-09"
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - development/planning/writing-plans
+    - coordination/workspace/work-queue
+
+key_findings:
+  - "writing-plans skill exists at .claude/skills/development/planning/writing-plans/SKILL.md (v1.0.0, obra/superpowers origin)"
+  - "Stage-04 informal doc (.claude/skills/workspace-hub/stages/stage-04-plan-draft.md) says 'EnterPlanMode for thinking before writing' but no stage contract YAML has plan_mode annotation"
+  - "work-queue-workflow/SKILL.md has no reference to EnterPlanMode or plan-mode skill"
+  - "No plan_mode field exists in any stage-NN-*.yaml contract"
+  - "comprehensive-learning signals 'plan mode not used before implementation' as a quality flag"
+  - "Stage 4, 6, 10, 13 are primary deliberative stages — highest benefit from plan-mode guardrails"
+
+risks:
+  - level: low
+    description: "writing-plans skill is generic (not WRK-lifecycle-aware) — may need minimal extension not full rewrite"
+
+approach:
+  - "Enumerate 4+ stages with plan_mode: required rationale"
+  - "Extend work-queue-workflow/SKILL.md with plan-mode section"
+  - "Add plan_mode field to stage-04-plan-draft.yaml and stage-06-cross-review.yaml contracts"
+  - "Review writing-plans skill — wire it in rather than creating new skill (per AC)"
+  - "Optionally create work-queue:plan-mode thin skill if writing-plans is insufficient"

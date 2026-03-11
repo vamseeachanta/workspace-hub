@@ -1,0 +1,56 @@
+wrk_id: WRK-1016
+stage: 15
+captured_at: "2026-03-10T12:30:00Z"
+captured_by: claude
+
+recommendations:
+  - id: FW-1
+    title: "OGManufacturing pyproject.toml: add ruff + pytest canonical baseline"
+    description: >
+      OGManufacturing submodule was empty on ace-linux-1. When submodule is populated,
+      apply [tool.ruff] with line-length=100, target-version=py311. Run baseline ruff check
+      before enabling select rules to avoid CI failures.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    priority: medium
+    category: harness
+
+  - id: FW-2
+    title: "Add Bash(chmod -R 777:*) to deny list in settings.json"
+    description: >
+      Codex P3 finding: recursive chmod 777 variant not covered by current deny entry.
+      Add Bash(chmod -R 777:*) for completeness.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    required_for_signoff: false
+    priority: low
+    category: harness
+
+  - id: FW-3
+    title: "Comprehensive-learning Phase 10: canonical settings baseline"
+    description: >
+      Encode this settings audit as a canonical baseline in comprehensive-learning
+      for future drift detection. Add a Phase 10 section covering permissions,
+      hook latency thresholds, and harness file compliance checks.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    required_for_signoff: false
+    priority: high
+    category: harness
+    wrk_id: WRK-1018
+
+  - id: FW-4
+    title: "Add pre-commit hook for harness file line count enforcement"
+    description: >
+      Automate CLAUDE.md ≤20 line enforcement via pre-commit hook so future commits
+      cannot accidentally bloat harness files without failing the hook.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    priority: medium
+    category: harness

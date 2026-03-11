@@ -1,0 +1,16 @@
+title = "workspace-hub gitleaks config"
+
+[allowlist]
+description = "Known false positives"
+regexes = [
+  # Variable name contains test/example/placeholder (weak but retained for compat)
+  '''(?i)(example|placeholder|test|fake|dummy|sample|mock)_?(token|key|secret|password|api_?key)\s*=\s*["\']?[^"\']{0,50}["\']?''',
+  # Placeholder value patterns (angle brackets, YOUR_, etc.)
+  '''(?i)(=|:)\s*["\']?(<[^>]+>|YOUR_[A-Z_]+|EXAMPLE_[A-Z_]+|\$\{[^}]+\}|xxx+|aaa+)["\']?''',
+  '''TODO.*token''',
+]
+paths = [
+  '''.gitleaks.toml''',
+  '''scripts/security/tests/''',
+  '''tests/quality/test_secrets_scan.sh''',
+]

@@ -1,0 +1,6 @@
+wrk_id: WRK-1059
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1059/WRK-1059-lifecycle.html
+legal_scan_ref: .claude/work-queue/assets/WRK-1059/legal-scan.md
+archive_readiness: pass

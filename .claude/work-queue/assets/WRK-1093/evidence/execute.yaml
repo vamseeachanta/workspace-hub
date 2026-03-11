@@ -1,0 +1,30 @@
+wrk_id: WRK-1093
+stage: 10
+scope: integrated
+completed_at: 2026-03-10T14:30:00Z
+commit: 3d8e7cf970db6b86a1665f3a3a24cb7270e06feb
+integrated_repo_tests:
+  - name: "TDD unit tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/quality/test_check_doc_drift.py -v"
+    result: pass
+    artifact_ref: tests/quality/test_check_doc_drift.py
+  - name: "check-all.sh --drift smoke test"
+    scope: integrated
+    command: "bash scripts/quality/check-all.sh --drift"
+    result: pass
+    artifact_ref: scripts/quality/check_doc_drift.py
+  - name: "ruff lint check"
+    scope: integrated
+    command: "uv tool run ruff check scripts/quality/check_doc_drift.py"
+    result: pass
+    artifact_ref: scripts/quality/check_doc_drift.py
+files_created:
+  - scripts/quality/check_doc_drift.py
+  - tests/quality/test_check_doc_drift.py
+  - config/quality/doc-drift-baseline.yaml
+  - logs/quality/.gitkeep
+files_modified:
+  - scripts/quality/check-all.sh
+  - scripts/cron/crontab-template.sh
+  - .gitignore

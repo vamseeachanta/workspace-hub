@@ -1,0 +1,17 @@
+wrk_id: WRK-1123
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html"
+    opened_at: "2026-03-11T11:25:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html"
+    opened_at: "2026-03-11T11:35:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html"
+    opened_at: "2026-03-11T12:10:00Z"
+    reviewer: vamsee

@@ -1,0 +1,15 @@
+wrk_id: WRK-1100
+stage: 2
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:whats-next
+files_consulted:
+  - scripts/work-queue/whats-next.sh
+  - .claude/work-queue/pending/WRK-235.md
+  - .claude/work-queue/pending/WRK-234.md
+notes: >
+  Simple bash guard addition. No external dependencies. Fix already implemented and verified.
+  standing+cadence fields already present on WRK-235. No new dependencies introduced.

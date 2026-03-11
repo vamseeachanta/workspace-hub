@@ -1,0 +1,10 @@
+wrk_id: WRK-1069
+version: 1
+owner: claude
+session_id: wrk-1069-session-20260311T113000Z
+claimed_at: "2026-03-11T11:30:00Z"
+quota: available
+hostname: ace-linux-1
+route: B
+best_fit_provider: claude
+session_owner: vamsee

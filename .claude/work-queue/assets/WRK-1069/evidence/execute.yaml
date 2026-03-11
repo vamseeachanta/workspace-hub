@@ -1,0 +1,34 @@
+wrk_id: WRK-1069
+stage: 10
+completed_at: "2026-03-11T12:00:00Z"
+commit: "73422b837fd9bb7619b8a1dceeeee9870b34be10"
+deliverables:
+  - path: config/ai-tools/pricing.yaml
+    description: "Canonical pricing table, 8 models + defaults.unknown_model"
+  - path: scripts/ai/wrk_cost_report.py
+    description: "Aggregation script — streaming JSONL, groups by wrk, skipped count"
+  - path: scripts/ai/tests/test_wrk_cost_report.py
+    description: "10 TDD tests — all PASS"
+  - path: scripts/work-queue/close-item.sh
+    description: "Cost summary block — non-blocking, writes cost-summary.yaml"
+executed_at: "2026-03-11T11:50:00Z"
+test_results:
+  passed: 13
+  failed: 0
+  command: "uv run --no-project python -m pytest scripts/ai/tests/test_wrk_cost_report.py -v"
+integrated_repo_tests:
+  - name: wrk_cost_report unit tests
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/ai/tests/test_wrk_cost_report.py -v"
+    result: pass
+    artifact_ref: scripts/ai/tests/test_wrk_cost_report.py
+  - name: wrk_cost_report smoke — all WRKs table
+    scope: integrated
+    command: "uv run --no-project python scripts/ai/wrk_cost_report.py"
+    result: pass
+    artifact_ref: scripts/ai/wrk_cost_report.py
+  - name: close-item.sh cost hook smoke
+    scope: integrated
+    command: "grep -c 'wrk_cost_report' scripts/work-queue/close-item.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/close-item.sh

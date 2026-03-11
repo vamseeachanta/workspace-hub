@@ -1,0 +1,14 @@
+wrk_id: WRK-1016
+scanned_at: "2026-03-10T12:10:00Z"
+scanner: scripts/legal/legal-sanity-scan.sh
+result: PASS
+violations: []
+files_scanned:
+  - .claude/global/CLAUDE.md
+  - .claude/hooks/check-encoding.sh
+  - .claude/settings.json
+  - AGENTS.md
+  - assetutilities/CLAUDE.md
+  - digitalmodel/CLAUDE.md
+  - assethold/CLAUDE.md
+  - worldenergydata/CLAUDE.md

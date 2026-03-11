@@ -85,6 +85,14 @@ case "$*" in
     echo "Success: no issues found in 1 source file"
     exit 0
     ;;
+  *api-audit.py*)
+    if [[ -n "${MOCK_API_AUDIT_OUTPUT:-}" ]]; then
+      echo "$MOCK_API_AUDIT_OUTPUT"
+    else
+      echo '{"repo":"mock","total":10,"with_docstring":5,"coverage_pct":50.0}'
+    fi
+    exit 0
+    ;;
   *) exit 0 ;;
 esac
 MOCK_UV
@@ -237,6 +245,57 @@ echo "── T14: missing README.md → WARN ───────────�
 # ogmanufacturing fixture has no README.md
 t14_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo ogmanufacturing 2>&1)" || true
 assert_contains "T14 readme: WARN (missing README.md)" "readme: WARN (missing README.md)" "$t14_out"
+
+# ---------------------------------------------------------------------------
+# T15: --docs → docs-index: WARN when no index.md/rst
+# ---------------------------------------------------------------------------
+echo "── T15: docs-index: WARN when no index file ──────────────"
+# assetutilities has docs/ but no index.md — triggers WARN
+t15_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --ruff-only --repo assetutilities 2>&1)" \
+  || true
+assert_contains "T15 docs-index: WARN" "docs-index: WARN" "$t15_out"
+
+# ---------------------------------------------------------------------------
+# T16: --docs → docs-index: PASS when index.md present
+# ---------------------------------------------------------------------------
+echo "── T16: docs-index: PASS when index.md present ───────────"
+touch "${FIXTURE_ROOT}/assetutilities/docs/index.md"
+t16_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --ruff-only --repo assetutilities 2>&1)" \
+  || true
+rm "${FIXTURE_ROOT}/assetutilities/docs/index.md"
+assert_contains "T16 docs-index: PASS" "docs-index: PASS" "$t16_out"
+
+# ---------------------------------------------------------------------------
+# T17: --docs → changelog: WARN when missing
+# ---------------------------------------------------------------------------
+echo "── T17: changelog: WARN when missing ─────────────────────"
+# worldenergydata has no CHANGELOG.md — triggers WARN
+t17_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --ruff-only --repo worldenergydata 2>&1)" \
+  || true
+assert_contains "T17 changelog: WARN (missing)" "changelog: WARN" "$t17_out"
+
+# ---------------------------------------------------------------------------
+# T18: --docs → build: none when no Sphinx/mkdocs files
+# ---------------------------------------------------------------------------
+echo "── T18: build: none when no build system ─────────────────"
+# worldenergydata has no docs/conf.py or mkdocs.yml
+t18_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --ruff-only --repo worldenergydata 2>&1)" \
+  || true
+assert_contains "T18 build: none" "build: none" "$t18_out"
+
+# ---------------------------------------------------------------------------
+# T19: --api → api: line appears in output
+# ---------------------------------------------------------------------------
+echo "── T19: --api → api: line present ────────────────────────"
+# assetutilities has src/ — mock uv returns default JSON for api-audit.py
+t19_out="$(run_check --api --ruff-only --repo assetutilities 2>&1)" || true
+assert_contains "T19 api: line present" "api:" "$t19_out"
+
+# ---------------------------------------------------------------------------
+# T20: --api appears in --help
+# ---------------------------------------------------------------------------
+echo "── T20: --help mentions --api ────────────────────────────"
+assert_contains "T20 --help shows --api" "--api" "$help_out"
 
 # ---------------------------------------------------------------------------
 # Summary

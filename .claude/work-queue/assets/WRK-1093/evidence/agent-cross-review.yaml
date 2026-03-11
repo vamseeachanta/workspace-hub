@@ -1,0 +1,20 @@
+wrk_id: WRK-1093
+stage: 13
+completed_at: 2026-03-10T15:00:00Z
+commit_after_fixes: ad6edf3353bc0602d1f82aea0b5f37b637545d21
+providers:
+  claude:
+    verdict: REQUEST_CHANGES
+    majors_found: 4
+    majors_resolved: true
+    notes: "symbol field, staleness tautology, git log bounded, false-positive filtering"
+  codex:
+    verdict: REQUEST_CHANGES
+    majors_found: 2
+    majors_resolved: true
+    notes: "symbol field fix, git log returncode + --since=90.days"
+  gemini:
+    verdict: APPROVE
+    majors_found: 0
+all_majors_resolved: true
+tests_after_fixes: 8/8 PASS

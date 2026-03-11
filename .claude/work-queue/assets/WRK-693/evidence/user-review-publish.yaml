@@ -1,0 +1,29 @@
+wrk_id: WRK-693
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 16ca0a46
+    documents:
+      - specs/wrk/WRK-693/wrk-693-fix-bare-python3.md
+    published_at: "2026-03-10T09:00:00Z"
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 16ca0a46
+    documents:
+      - .claude/work-queue/assets/WRK-693/plan-html-review-final.md
+    published_at: "2026-03-10T09:15:00Z"
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 728c9324
+    documents:
+      - .claude/work-queue/assets/WRK-693/workflow-final-review.html
+    published_at: "2026-03-10T10:30:00Z"
+    reviewer: user

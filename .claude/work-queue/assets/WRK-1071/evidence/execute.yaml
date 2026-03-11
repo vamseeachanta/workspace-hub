@@ -1,0 +1,53 @@
+wrk_id: WRK-1071
+executed_at: "2026-03-10T16:20:00Z"
+executor: claude-sonnet-4-6
+
+summary: |
+  Implemented full benchmark harness across assetutilities, digitalmodel, and worldenergydata.
+  9 benchmarks across 3 repos: 2 SCR fatigue (assetutilities), 5 CP+wall-thickness (digitalmodel),
+  2 EIA production loaders (worldenergydata). Baseline bootstrapped. Self-comparison exits 0.
+  All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
+
+files_created:
+  - scripts/testing/run-benchmarks.sh
+  - scripts/testing/parse_benchmark_output.py
+  - scripts/testing/tests/test_run_benchmarks.py
+  - assetutilities/tests/benchmarks/__init__.py
+  - assetutilities/tests/benchmarks/test_scr_fatigue_benchmarks.py
+  - digitalmodel/tests/benchmarks/__init__.py
+  - digitalmodel/tests/benchmarks/test_cp_benchmarks.py
+  - digitalmodel/tests/benchmarks/test_wall_thickness_benchmarks.py
+  - worldenergydata/tests/benchmarks/__init__.py
+  - worldenergydata/tests/benchmarks/test_eia_benchmarks.py
+  - config/testing/benchmark-baseline.json
+
+files_modified:
+  - assetutilities/pyproject.toml          # pytest-benchmark added to [dependency-groups].test
+  - worldenergydata/pyproject.toml         # new [dependency-groups].benchmark
+  - scripts/cron/crontab-template.sh       # nightly 01:30 cron entry
+  - .gitignore                             # scripts/testing/benchmark-results/ excluded
+
+integrated_repo_tests:
+  - name: assetutilities SCR fatigue benchmarks
+    scope: repo
+    command: "bash scripts/testing/run-benchmarks.sh --save-baseline --no-compare --repo assetutilities"
+    result: pass
+    artifact_ref: scripts/testing/benchmark-results/assetutilities-2026-03-10-raw.json
+
+  - name: digitalmodel CP + wall-thickness benchmarks
+    scope: repo
+    command: "bash scripts/testing/run-benchmarks.sh --save-baseline --no-compare --repo digitalmodel"
+    result: pass
+    artifact_ref: scripts/testing/benchmark-results/digitalmodel-2026-03-10-raw.json
+
+  - name: worldenergydata EIA production loader benchmarks
+    scope: repo
+    command: "bash scripts/testing/run-benchmarks.sh --save-baseline --no-compare --repo worldenergydata"
+    result: pass
+    artifact_ref: scripts/testing/benchmark-results/worldenergydata-2026-03-10-raw.json
+
+  - name: self-comparison regression check (all repos vs fresh baseline)
+    scope: integrated
+    command: "bash scripts/testing/run-benchmarks.sh"
+    result: pass
+    artifact_ref: scripts/testing/benchmark-results/benchmark-2026-03-10.json

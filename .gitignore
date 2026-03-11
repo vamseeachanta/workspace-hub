@@ -60,6 +60,9 @@ wheels/
 *~
 .DS_Store
 
+# Benchmark run artifacts (transient; baseline is committed at config/testing/)
+scripts/testing/benchmark-results/
+
 # Temporary and cache files
 .cache/
 .pytest_cache/
@@ -82,6 +85,17 @@ logs/*
 !logs/orchestrator/
 logs/orchestrator/*
 !logs/orchestrator/README.md
+!logs/audit/
+logs/audit/*.jsonl
+logs/audit/*.jsonl.gz
+!logs/audit/.gitkeep
+!logs/quality/
+logs/quality/*.yaml
+logs/quality/*.log
+!logs/quality/.gitkeep
+!logs/hooks/
+logs/hooks/*.jsonl
+!logs/hooks/.gitkeep
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -242,6 +256,8 @@ workspace-*.json
 .swarm/
 memory/
 !.claude/memory/
+!scripts/memory/
+!tests/memory/
 *.memory.json
 *.session.json
 ai-memory/
@@ -387,3 +403,16 @@ data/document-index/enhancement-plan.yaml
 
 # Async notification log — runtime JSONL (WRK-1076)
 logs/notifications/*.jsonl
+
+# Search symbol index — runtime generated cache (WRK-1085)
+# Rebuild: uv run --no-project python scripts/search/build-symbol-index.py
+config/search/symbol-index.jsonl
+
+# Doc drift quality logs — runtime generated (WRK-1093)
+logs/quality/*.yaml
+logs/quality/*.log
+
+# knowledge-base/ — machine-local runtime JSONL (rebuilt from archive/ if lost)
+knowledge-base/*.jsonl
+knowledge-base/*.lock
+knowledge-base/*.tmp

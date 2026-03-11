@@ -1,6 +1,8 @@
 ---
 name: bsee-data-extractor
 description: Extract and process BSEE (Bureau of Safety and Environmental Enforcement) data including production, WAR (Well Activity Reports), and APD (Application for Permit to Drill) data. Use for querying production data, well activities, drilling permits, completions, and workovers by API number, block, lease, or field with automatic data normalization and caching.
+version: 1.0.0
+category: data/energy
 capabilities: []
 requires: []
 see_also: []

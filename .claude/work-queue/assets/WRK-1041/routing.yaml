@@ -1,0 +1,10 @@
+wrk_id: WRK-1041
+stage: 9
+route: A
+routed_at: 2026-03-10T00:10:00Z
+execution_workstation: ace-linux-1
+orchestrator: claude
+rationale: >
+  Route A (simple): single file, 2 one-line edits + 2 tests.
+  No cross-workstation coordination needed.
+  Executing directly on ace-linux-1 (workspace-hub orchestrator machine).

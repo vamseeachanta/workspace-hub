@@ -224,7 +224,7 @@ def _load_checkpoint_writer():
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
-    """Regenerate lifecycle HTML after stage exit so state is always current."""
+    """Regenerate both lifecycle and plan HTML after stage exit (two-file contract)."""
     import subprocess
     script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
     if not os.path.exists(script):
@@ -237,6 +237,13 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
         print(f"✔ Lifecycle HTML updated ({wrk_id})")
     else:
         print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    # Non-blocking: plan.html generation failure does not fail the stage exit
+    plan_result = subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id, "--plan"],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+    if plan_result.returncode != 0:
+        print(f"⚠ Plan HTML update failed (non-blocking): {plan_result.stderr.strip()[:120]}", file=sys.stderr)
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
@@ -330,6 +337,30 @@ def _main() -> None:
 
     # Emit stage_complete log event (non-blocking)
     _log_complete(wrk_id, stage, repo_root)
+
+    # Append to immutable audit trail (non-blocking, WRK-1087)
+    import subprocess as _sp
+    _log_action = os.path.join(repo_root, "scripts", "audit", "log-action.sh")
+    if os.path.isfile(_log_action):
+        _sp.run(
+            ["bash", _log_action, "stage_exit", f"stage-{stage}", "--wrk", wrk_id],
+            capture_output=True, timeout=5,
+        )
+
+    # Emit stage_exit signal to session-signals pipeline (WRK-1102 Fix 6)
+    import json as _json
+    from datetime import datetime as _dt
+    _today = _dt.utcnow().strftime("%Y-%m-%d")
+    _signals_dir = os.path.join(repo_root, "state", "session-signals")
+    _signal_file = os.path.join(_signals_dir, f"{_today}.jsonl")
+    try:
+        os.makedirs(_signals_dir, exist_ok=True)
+        _signal = {"event": "stage_exit", "wrk": wrk_id, "stage": stage,
+                   "date": _today, "timestamp": _dt.utcnow().isoformat() + "Z"}
+        with open(_signal_file, "a", encoding="utf-8") as _sf:
+            _sf.write(_json.dumps(_signal) + "\n")
+    except OSError:
+        pass  # non-blocking
 
     # Validate written checkpoint (non-blocking)
     checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")

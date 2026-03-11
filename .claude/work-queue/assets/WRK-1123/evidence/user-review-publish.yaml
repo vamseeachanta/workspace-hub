@@ -1,0 +1,29 @@
+wrk_id: WRK-1123
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "plan-draft-wip-1123"
+    documents:
+      - .claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html
+    published_at: "2026-03-11T11:32:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "plan-final-wip-1123"
+    documents:
+      - .claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html
+    published_at: "2026-03-11T11:46:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "close-wip-1123"
+    documents:
+      - .claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html
+    published_at: "2026-03-11T12:15:00Z"
+    reviewer: vamsee

@@ -95,11 +95,14 @@ why it matters, and a suggested approach.
 For each skill in the Priority list (top N by score):
 
 1. Identify the tool/framework/pattern the skill covers
-2. Research recent developments (use WebSearch or WebFetch if available; otherwise
+2. Check https://skills.sh/ first for existing proven implementations before web
+   searching — browse the leaderboard, read raw SKILL.md on GitHub; verify upstream
+   license before adoption; prefer adoption + adaptation over building net-new
+3. Research recent developments (use WebSearch or WebFetch if available; otherwise
    scan local state files for recent patterns)
-3. For each finding: update the relevant SKILL.md, or create a new skill if the
+4. For each finding: update the relevant SKILL.md, or create a new skill if the
    finding covers a capability gap
-4. Count findings (updates + new skills created) → this run's yield
+5. Count findings (updates + new skills created) → this run's yield
 
 ### Phase 4 — Index + Registry Update
 

@@ -32,10 +32,11 @@ Call `EnterPlanMode` at the START of these stages, before touching any file:
 ## Invocation Pattern
 
 ```
-1. EnterPlanMode          ← no file writes until plan is complete
-2. Think through approach, risks, and artifact layout
-3. ExitPlanMode           ← only now write artifacts
-4. Write stage evidence / lifecycle HTML via Write tool
+1. EnterPlanMode                    ← no file writes until plan is complete
+2. Invoke superpowers/writing-plans ← structure tasks, pseudocode, step granularity
+3. Think through approach, risks, and artifact layout
+4. ExitPlanMode                     ← only now write artifacts
+5. Write stage evidence / lifecycle HTML via Write tool
 ```
 
 ## Why This Matters

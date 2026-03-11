@@ -1,0 +1,15 @@
+wrk_id: WRK-633
+generated_at: "2026-03-10T11:43:00Z"
+recommendations:
+  - id: FW-1
+    title: Add engineering-chatbot to session-start skill rotation
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: Could surface engineering-chatbot-demo skill when client demo sessions are detected.
+  - id: FW-2
+    title: Link maritime-legal to worldenergydata MAIBLoader and NTSBMarineLoader
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: When those loaders are implemented (WRK-320), cross-reference the maritime-legal skill.

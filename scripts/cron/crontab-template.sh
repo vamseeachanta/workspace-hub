@@ -18,6 +18,10 @@
 
 # ── ROLE: full (ace-linux-1) ──────────────────────────────────────────────────
 
+# Nightly dependency health check (WRK-1090); checks uv.lock freshness, outdated
+# packages, CVE advisories across 5 repos; auto-captures WRK on HIGH/CRITICAL CVEs.
+# CRON: 0  1  * * *  cd $WORKSPACE_HUB && bash scripts/quality/dep-health.sh >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+
 # Nightly comprehensive learning pipeline (10 phases); runs at 02:00 to avoid
 # overlap with session work.  Log rotated by logrotate (see /etc/logrotate.d/).
 # CRON: 0  2  * * *  cd $WORKSPACE_HUB && bash scripts/cron/comprehensive-learning-nightly.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
@@ -37,6 +41,13 @@
 
 # Notification log 7-day retention (daily 04:30); purges old JSONL files (WRK-1076).
 # CRON: 30 4  * * *  cd $WORKSPACE_HUB && find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
+
+# Nightly doc drift baseline refresh (02:30); detects symbol-to-doc drift across repos.
+# CRON: 30 2  * * *  cd $WORKSPACE_HUB && uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+
+# Performance benchmark regression check (nightly 01:30); compares against committed baseline.
+# Exits 1 on >20% regression; results written to scripts/testing/benchmark-results/.
+# CRON: 30 1  * * *  PATH=$HOME/.local/bin:$PATH; cd $WORKSPACE_HUB && bash scripts/testing/run-benchmarks.sh >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
 
 # Repository sync every 4 hours; pulls from remotes, pushes derived state.
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1

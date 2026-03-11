@@ -1,10 +1,11 @@
 # Business Skills
 
-> 11 subcategories in this domain.
+> 12 subcategories in this domain.
 
 ## Subcategories
 
 - [Admin](admin/INDEX.md) — 7 skills
+- [Client Demo](client-demo/INDEX.md) — 1 skills
 - [Communication](communication/INDEX.md) — 9 skills
 - [Content Design](content-design/INDEX.md) — 5 skills
 - [Customer Support](customer-support/INDEX.md) — 5 skills

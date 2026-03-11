@@ -1,0 +1,8 @@
+wrk_id: WRK-1095
+stage: 9
+routed_at: "2026-03-10T09:45:00Z"
+route: A
+complexity: simple
+orchestrator: claude
+execution_machine: ace-linux-1
+rationale: "Route A simple item. Single execution machine. No cross-machine dependencies."

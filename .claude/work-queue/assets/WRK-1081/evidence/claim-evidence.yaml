@@ -1,0 +1,21 @@
+claim_date: "2026-03-09T19:12:58Z"
+wrk_id: "WRK-1081"
+route: "B"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: "codex"
+metadata_version: "1"
+session_owner: "vamsee"
+agent_fit:
+  capability_match: "undocumented"
+  rationale: "Route ? / execution_workstations=[ace-linux-1] / provider=unknown"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-09T19:12:58Z"
+  provider: "unknown"
+  status: "available"
+  pct_remaining: 80
+  source: "config/ai-tools/agent-quota-latest.json"

@@ -1,0 +1,43 @@
+wrk_id: WRK-1094
+stage: 13
+reviewed_at: "2026-03-10T12:00:00Z"
+
+phase2_verdicts:
+  codex: REQUEST_CHANGES
+  gemini: REQUEST_CHANGES
+
+major_findings_addressed:
+  - id: CR2-1
+    source: codex
+    finding: "Pre-push exits early before config-drift block on root harness changes"
+    disposition: resolved
+    resolution: "Moved harness detection before early exit; _HARNESS_DRIFT_EXIT propagated"
+  - id: CR2-2
+    source: codex
+    finding: "|| true swallows config-drift exit code in check-all.sh and pre-push.sh"
+    disposition: resolved
+    resolution: "check-all.sh: run_config_drift || FAIL_COUNT++; pre-push: OVERALL_EXIT propagated"
+
+minor_findings_addressed:
+  - id: CR2-3
+    source: codex
+    finding: "Missing/uninitialized submodule silently skips"
+    disposition: resolved
+    resolution: "WARN finding emitted for missing repo directory"
+  - id: CR2-4
+    source: codex
+    finding: "Symlink/non-regular file passes file-presence check"
+    disposition: resolved
+    resolution: "Changed .exists() to .is_file(); OSError → WARN finding"
+  - id: CR2-5
+    source: codex
+    finding: "Missing AGENTS.md YAML fields should be WARN not FAIL"
+    disposition: resolved
+    resolution: "frontmatter_missing_fields severity changed to WARN"
+  - id: CR2-G1
+    source: gemini
+    finding: "Script close to 400-line limit"
+    disposition: deferred
+    resolution: "File is 397 lines and within limit. Refactoring deferred to follow-up."
+
+post_fix_tests: 13 PASS, 0 errors

@@ -1,0 +1,13 @@
+wrk_id: WRK-1109
+title: "Set up WhatsApp MCP for Claude CLI on ace-linux-1"
+checkpointed_at: "2026-03-10T18:39:54Z"
+current_stage: 1
+stage_name: "Capture"
+entry_reads:
+  - .claude/work-queue/assets/WRK-1109/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1109/evidence/resource-intelligence.yaml
+  - .claude/work-queue/pending/WRK-1109.md
+decisions_this_session: []
+artifacts_written: []
+next_action: ""
+context_summary: []

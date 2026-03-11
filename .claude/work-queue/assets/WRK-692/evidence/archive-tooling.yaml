@@ -1,0 +1,19 @@
+wrk_id: WRK-692
+
+merge_status: "no-branch-created"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-692/workflow-final-review.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-692/legal-scan.md"
+archive_readiness: "soft-fail"
+
+document_index_ref: ""
+document_index_exemption: "hub-only item — retired before implementation; no document-index entries affected"
+
+spin_off_wrks:
+  - WRK-1101
+
+retirement_note: >
+  Retired 2026-03-10. WRK-691 took a different approach (detect-drift.sh nightly batch
+  scanner) than WRK-692 assumed (interactive load-assessment.sh). Codex JSONL log schema
+  (type/payload) is incompatible with detect-drift.sh's cmd/path parsing. Never entered
+  working state — no implementation was done. Follow-on properly scoped as WRK-1101.

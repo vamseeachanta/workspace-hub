@@ -1,0 +1,8 @@
+wrk_id: WRK-1059
+stage: 16
+additions:
+  - "api-audit.py: stdlib AST scanner for public symbol docstring coverage"
+  - "check-all.sh --api: per-repo coverage report (warn-only, baseline capture)"
+  - "check-all.sh --docs now also validates docs/index.md, CHANGELOG, build system"
+  - "Pattern: use tree.body + ClassDef.body traversal for correct symbol scope (not ast.walk)"
+completed_at: "2026-03-11T11:00:00Z"

@@ -1,0 +1,6 @@
+wrk_id: WRK-1084
+stage: 8
+claimed_at: "2026-03-11T10:50:00Z"
+claimed_by: claude
+machine: ace-linux-1
+route: A

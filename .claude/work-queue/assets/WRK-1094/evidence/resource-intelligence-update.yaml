@@ -1,0 +1,8 @@
+wrk_id: WRK-1094
+stage: 16
+updated_at: "2026-03-10T12:25:00Z"
+additions:
+  - type: pattern
+    description: "Config drift ratchet pattern: baseline YAML + --update-baseline flag reused from doc-drift; works well for enforcement without breaking CI"
+  - type: script
+    description: "check_config_drift.py added to scripts/quality/; integrates via check-all.sh --config-drift flag"

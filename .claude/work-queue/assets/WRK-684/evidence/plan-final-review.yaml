@@ -1,0 +1,9 @@
+wrk_id: WRK-684
+stage: 7
+confirmed_by: user
+confirmed_at: "2026-03-02T14:25:00Z"
+decision: passed
+notes: >
+  Legacy backfill. Plan reviewed and approved by user on 2026-03-02 prior to
+  Stage 7 hard gate activation (WRK-1034). Evidence recorded at close time.
+  stage5-migration-exemption.yaml covers pre-gate status.

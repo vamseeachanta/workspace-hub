@@ -1,0 +1,11 @@
+wrk_id: WRK-1069
+phase: close
+generated_at: "2026-03-11T14:45:00Z"
+status: pending_stage17
+gates_passing: 27
+gates_missing: 1
+missing:
+  - user-review-close (Stage 17 hard gate — awaiting human review)
+notes: >
+  All technical gates pass. User-review-close gate (Stage 17) requires
+  explicit human approval before close can proceed.

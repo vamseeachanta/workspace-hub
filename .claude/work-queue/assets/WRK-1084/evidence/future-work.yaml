@@ -1,0 +1,24 @@
+wrk_id: WRK-1084
+stage: 15
+recommendations:
+  - id: FW-1
+    title: Vet skills.sh publishers and document approved allow-list
+    priority: medium
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    reason: Codex/Claude reviews raised governance question; formal vetting policy would strengthen it
+  - id: FW-2
+    title: Add legal-sanity-scan.sh integration to adoption workflow as enforcement step
+    priority: medium
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    reason: Claude review noted adopted skills should pass legal scan before commit
+  - id: FW-3
+    title: Version bump skills-curation to 1.1.0
+    priority: low
+    disposition: existing-updated
+    status: pending
+    captured: true
+    reason: Skills-curation gained new Adoption Workflow section and modified Phase 3

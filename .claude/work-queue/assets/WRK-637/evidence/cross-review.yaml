@@ -1,0 +1,38 @@
+wrk_id: WRK-637
+stage: 6
+completed_at: 2026-03-09T00:00:00Z
+
+providers:
+  claude:
+    verdict: APPROVE
+    findings_count: 0
+    major_findings: 0
+    minor_findings: 0
+    ref: evidence/cross-review-claude.md
+  codex:
+    verdict: APPROVE
+    findings_count: 7
+    major_findings: 0
+    minor_findings: 7
+    ref: evidence/cross-review-codex.md
+  gemini:
+    verdict: APPROVE
+    findings_count: 4
+    major_findings: 0
+    minor_findings: 4
+    ref: evidence/cross-review-gemini.md
+
+overall_verdict: APPROVE
+major_findings_total: 0
+minor_findings_total: 9
+findings_deferred: []
+findings_absorbed:
+  - memory-root flag for explicit path
+  - check-commands opt-in flag
+  - keep marker exempts age eviction only
+  - timezone-aware date math with manual-review fallback
+  - atomic writes (.tmp + mv)
+  - zero-change idempotency contract
+  - expanded test coverage (>=10 tests)
+  - corrupt state file handling
+  - atomic write test coverage

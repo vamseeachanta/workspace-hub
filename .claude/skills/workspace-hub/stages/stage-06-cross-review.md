@@ -2,7 +2,9 @@ Stage 6 · Cross-Review | task_agent | medium | parallel — 3 providers
 Entry: WRK-NNN-lifecycle.html#s1-s5, evidence/user-review-plan-draft.yaml
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Mandatory: ALL 3 providers (Claude + Codex + Gemini) must review. No self-skip.
-Override only if user BOTH states quota unavailable AND explicitly instructs to continue.
+Codex quota fallback: when quota exhausted OR ≥2 Codex reviews already exist for this WRK,
+cross-review.sh auto-substitutes Claude Opus (claude-opus-4-6) in the Codex slot — no user
+instruction required. Result labeled "Codex-slot: Claude Opus fallback" in the review file.
 Checklist:
 0. EnterPlanMode — synthesize all inputs before writing any verdict artifact
 1. Send cross-review-package.md to Codex and Gemini simultaneously

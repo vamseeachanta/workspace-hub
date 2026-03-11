@@ -1,0 +1,16 @@
+wrk_id: "WRK-1091"
+route: "B"
+provider: "claude"
+execution_workstation: "ace-linux-1"
+routed_at: "2026-03-10T09:35:00Z"
+rationale: "Route B medium complexity; execution on ace-linux-1 (workspace-hub + tier-1 repos)"
+phases:
+  - phase: 1
+    label: "Dependency graph + assethold contracts"
+    subagent: claude
+  - phase: 2
+    label: "Cross-repo integration script + TDD"
+    subagent: claude
+  - phase: 3
+    label: "Pre-push hook (version-controlled)"
+    subagent: claude

@@ -1,0 +1,7 @@
+wrk_id: WRK-1094
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-10T10:50:00Z"
+plan_version: v2
+notes: "Plan v2 approved. Ratchet approach, explicit severity table, pre-push expanded scope."

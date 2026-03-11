@@ -1,0 +1,63 @@
+stage: 2
+wrk_id: "WRK-1085"
+completed_at: "2026-03-09T00:00:00Z"
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+    - coordination/workspace/work-queue
+
+dependencies:
+  - name: ripgrep (rg)
+    status: not_installed
+    mitigation: "Fallback to grep; or apt install ripgrep / uv tool install ripgrep"
+  - name: python ast (stdlib)
+    status: available
+    version: "Python 3.13.12"
+  - name: tier-1 repo src/ structures
+    status: confirmed
+    notes: "All 5 repos use src/<package>/ layout; digitalmodel largest (150 files)"
+  - name: .git/hooks/post-merge
+    status: exists
+    notes: "Already calls install-all-hooks.sh --quiet (WRK-312); extend carefully"
+
+risks:
+  - id: R1
+    description: "ripgrep not installed — cross-repo-search.sh may degrade to grep fallback"
+    severity: medium
+    mitigation: "Make rg optional; grep fallback with warning"
+  - id: R2
+    description: "post-merge hook modification may slow merges for large repos (digitalmodel 150 files)"
+    severity: medium
+    mitigation: "Conditional rebuild: only if git diff shows src/ changes"
+  - id: R3
+    description: "AST parse errors on broken/generated Python files"
+    severity: low
+    mitigation: "Graceful skip with warning log; tested on assetutilities known issues"
+  - id: R4
+    description: "/work status WRK-NNN integration is currently unimplemented in work.sh"
+    severity: medium
+    mitigation: "Treat as stretch goal; core deliverables (build+find) take priority"
+
+existing_patterns:
+  - "scripts/readiness/build-specs-index.py — direct model for AST symbol indexer"
+  - "scripts/data/document-index/ — precedent for JSONL indexing pipeline"
+  - "scripts/generate-resource-index.sh — precedent for config/ output"
+
+effort_estimate:
+  total_story_points: 11
+  phases:
+    - name: build-symbol-index.py
+      points: 3
+    - name: find-symbol.sh
+      points: 1
+    - name: cross-repo-search.sh
+      points: 2
+    - name: post-merge hook integration
+      points: 1
+    - name: /work status integration (stretch)
+      points: 2
+    - name: testing
+      points: 2

@@ -32,37 +32,41 @@ fi
 # GATES
 echo "Checking archive gates for ${ITEM_ID}..."
 
-# 1. Merge status check
-# Stub for now, would check git branch or remote
-echo "✔ Merge status: checked (manual)"
-
-# 2. Sync status check
-# Stub for now
-echo "✔ Sync status: checked (manual)"
-
-# 3. HTML Verification check
-if grep -q "html_verification_ref:" "$ITEM_FILE"; then
-  VERIF=$(grep "html_verification_ref:" "$ITEM_FILE" | cut -d':' -f2 | xargs)
-  if [[ -z "$VERIF" ]]; then
-    echo "⚠ Warning: html_verification_ref is empty. Ensure HTML review was performed."
-  fi
-fi
-
-# 4. Gate evidence check (close phase contract must pass before archive)
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
-if [[ -x "$GATE_LOGGER" ]]; then
-  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_start" "orchestrator" "phase=close"
+
+# 1. Merge status check (real git check — no more stub)
+GIT_STATUS=$(git -C "${WORKSPACE_ROOT}" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$GIT_STATUS" -gt 0 ]]; then
+  echo "⚠ Warning: working tree has ${GIT_STATUS} uncommitted change(s). Commit or stash before archiving." >&2
+else
+  echo "✔ Merge status: working tree clean"
 fi
-if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase close; then
+
+# 2. Sync status check (real remote check — no more stub)
+REMOTE_DIFF=$(git -C "${WORKSPACE_ROOT}" rev-list --count HEAD..origin/main 2>/dev/null || echo "unknown")
+if [[ "$REMOTE_DIFF" == "0" || "$REMOTE_DIFF" == "unknown" ]]; then
+  echo "✔ Sync status: in sync with origin/main (or remote unreachable)"
+else
+  echo "⚠ Warning: ${REMOTE_DIFF} commit(s) behind origin/main — push or pull before archiving." >&2
+fi
+
+# 3. Archive-tooling gate (new --phase archive check — WRK-668)
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_start" "orchestrator" "phase=archive"
+fi
+if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase archive; then
   if [[ -x "$GATE_LOGGER" ]]; then
-    bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_fail" "orchestrator" "phase=close"
+    bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_fail" "orchestrator" "phase=archive"
   fi
-  echo "✖ Gate evidence verification failed for ${ITEM_ID}; cannot archive." >&2
+  echo "✖ Archive gate evidence verification failed for ${ITEM_ID}; cannot archive." >&2
+  echo "  Tip: copy scripts/work-queue/templates/archive-tooling-template.yaml to" >&2
+  echo "       .claude/work-queue/assets/${ITEM_ID}/evidence/archive-tooling.yaml and fill it in." >&2
+  echo "  For hard blockers: bash scripts/work-queue/create-spinoff-wrk.sh ${ITEM_ID} '<blocker>'" >&2
   exit 1
 fi
 
 if [[ -x "$GATE_LOGGER" ]]; then
-  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_pass" "orchestrator" "phase=close"
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_pass" "orchestrator" "phase=archive"
   bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence" "orchestrator" "archive gate verified"
 fi
 
@@ -91,11 +95,13 @@ with open("$ARCHIVE_PATH", 'w') as f:
     f.write(content)
 EOF
 
-# Best-effort stage progress update for archive stage.
+# Hard gate: Stage 20 evidence update required before file move (WRK-668 GAP-F)
 STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
 if [[ -f "$STAGE_UPDATER" ]]; then
-  uv run --no-project python "$STAGE_UPDATER" "$ITEM_ID" --order 20 --status done --reviewed-by "orchestrator" >/dev/null || \
-    echo "⚠ Could not update stage-evidence order 20 for ${ITEM_ID}" >&2
+  if ! uv run --no-project python "$STAGE_UPDATER" "$ITEM_ID" --order 20 --status done --reviewed-by "orchestrator" >/dev/null; then
+    echo "✖ Could not update stage-evidence order 20 for ${ITEM_ID}; archive aborted." >&2
+    exit 1
+  fi
 fi
 
 # Remove from source directory
@@ -110,6 +116,12 @@ if [[ -x "$GATE_LOGGER" ]]; then
 fi
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"
+
+# Best-effort knowledge capture (non-blocking — never fails the archive gate)
+CAPTURE_SCRIPT="${WORKSPACE_ROOT}/scripts/knowledge/capture-wrk-summary.sh"
+if [[ -x "${CAPTURE_SCRIPT}" ]]; then
+  bash "${CAPTURE_SCRIPT}" "${ITEM_ID}" || true
+fi
 
 # Remove stale checkpoint so /work run does not try to resume an archived item
 CHECKPOINT="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/checkpoint.yaml"

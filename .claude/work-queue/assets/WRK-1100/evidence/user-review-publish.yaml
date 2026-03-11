@@ -1,0 +1,30 @@
+wrk_id: WRK-1100
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f2317f2c
+    documents:
+      - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
+    published_at: 2026-03-10T14:30:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 7e974d76
+    documents:
+      - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
+      - .claude/work-queue/assets/WRK-1100/plan-html-review-final.md
+    published_at: 2026-03-10T15:10:00Z
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 4ef11159
+    documents:
+      - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
+    published_at: 2026-03-10T15:50:00Z
+    reviewer: vamsee

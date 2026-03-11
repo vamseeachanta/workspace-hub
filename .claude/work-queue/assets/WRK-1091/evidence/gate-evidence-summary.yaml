@@ -1,0 +1,100 @@
+wrk_id: WRK-1091
+phase: close
+verdict: all_pass
+missing_count: 0
+warn_count: 2
+gates:
+  - name: Plan gate
+    status: PASS
+    ok: true
+  - name: Workstation contract gate
+    status: PASS
+    ok: true
+  - name: Stage evidence gate
+    status: PASS
+    ok: true
+  - name: Resource-intelligence gate
+    status: PASS
+    ok: true
+  - name: Activation gate
+    status: PASS
+    ok: true
+  - name: Agent log gate
+    status: PASS
+    ok: true
+  - name: User-review HTML-open gate
+    status: PASS
+    ok: true
+  - name: User-review publish gate
+    status: PASS
+    ok: true
+  - name: Cross-review gate
+    status: PASS
+    ok: true
+  - name: TDD gate
+    status: PASS
+    ok: true
+  - name: Integrated test gate
+    status: PASS
+    ok: true
+  - name: Legal gate
+    status: PASS
+    ok: true
+  - name: Claim gate
+    status: PASS
+    ok: true
+  - name: Future-work gate
+    status: PASS
+    ok: true
+  - name: Resource-intelligence update gate
+    status: PASS
+    ok: true
+  - name: User-review close gate
+    status: PASS
+    ok: true
+  - name: Reclaim gate
+    status: WARN
+    ok: false
+    warn: true
+    details: reclaim.yaml absent (no reclaim triggered — WARN)
+  - name: Approval ordering gate
+    status: PASS
+    ok: true
+  - name: Midnight UTC sentinel gate
+    status: PASS
+    ok: true
+  - name: Browser open elapsed time gate
+    status: PASS
+    ok: true
+  - name: Sentinel values gate
+    status: PASS
+    ok: true
+  - name: Claim artifact path gate
+    status: PASS
+    ok: true
+  - name: ISO datetime format gate
+    status: PASS
+    ok: true
+  - name: Codex keyword in review gate
+    status: PASS
+    ok: true
+  - name: Publish commit uniqueness gate
+    status: PASS
+    ok: true
+  - name: Stage evidence paths gate
+    status: PASS
+    ok: true
+  - name: Done/pending contradiction gate
+    status: PASS
+    ok: true
+  - name: Plan publish predates approval gate
+    status: PASS
+    ok: true
+  - name: Workstation contract (strict) gate
+    status: PASS
+    ok: true
+  - name: Reclaim n/a gate
+    status: WARN
+    ok: false
+    warn: true
+    details: "n/a: Stage 18 is n/a and no reclaim log exists"

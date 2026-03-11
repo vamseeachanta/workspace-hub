@@ -1,0 +1,35 @@
+wrk_id: WRK-1067
+stage: 2
+completion_status: continue_to_planning
+assessed_at: "2026-03-09"
+
+context:
+  existing_infra:
+    - "scripts/testing/run-all-tests.sh — unified test runner (no --coverage flag yet)"
+    - "scripts/hooks/pre-push.sh — pre-push gate (gitleaks only; WRK-1064 placeholder)"
+    - "all 4 repos have pytest-cov>=4.0 + coverage configured in pyproject.toml"
+    - "assethold already has --cov-fail-under=80 in addopts"
+    - "assetutilities, worldenergydata, digitalmodel: coverage configured but no fail-under gate"
+    - "no config/testing/ directory exists yet"
+    - "no scripts/testing/coverage-reports/ directory exists yet"
+
+skills:
+  core_used:
+    - "work-queue"
+    - "work-queue-workflow"
+    - "workflow-gatepass"
+    - "wrk-lifecycle-testpack"
+
+key_findings:
+  - "pytest-cov already a dep in all repos — no new dep installs needed"
+  - "run-all-tests.sh needs --coverage flag to invoke per-repo coverage with --cov-fail-under=80"
+  - "coverage % extraction: parse pytest --cov output for TOTAL line"
+  - "pre-push.sh extension: run coverage check per-repo, compare against baseline ratchet"
+  - "config/testing/coverage-baseline.yaml: must be populated with real % before hook activates"
+  - "digitalmodel: uses PYTHONPATH=src; coverage source already set to src in pyproject.toml"
+  - "worldenergydata: uses PYTHONPATH=src:../assetutilities/src"
+
+risks:
+  - "Coverage runs are slow (add --fast flag to skip coverage by default)"
+  - "assethold: --cov-fail-under=80 already in addopts — adding again would duplicate; run-all-tests.sh must not double-add"
+  - "Baseline capture must use real run to avoid stale numbers"

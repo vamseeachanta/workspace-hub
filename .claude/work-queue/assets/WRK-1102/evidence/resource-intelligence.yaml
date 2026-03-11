@@ -1,0 +1,81 @@
+wrk_id: WRK-1102
+stage: 2
+completion_status: continue_to_planning
+completed_at: 2026-03-10T00:00:00Z
+
+key_findings:
+  - "Nightly entry point: scripts/cron/comprehensive-learning-nightly.sh line 73 calls 'claude --skill' — must be replaced with direct bash call"
+  - "Signal naming bug confirmed: session-analysis.sh line 69 uses '${DATE}-*.jsonl' but hooks write '${DATE}.jsonl' — 0 signals found/day"
+  - "Phases 2+3 SKIPPED: call sites reference non-existent skill-internal paths; new standalone scripts needed"
+  - "Phase 4 improve.sh EXISTS at scripts/improve/improve.sh (131L) — no wrapper needed, just verify call site is correct"
+  - "classify.sh call_anthropic_api() at line 6 confirmed; sends up to 50 JSONL to Anthropic REST API nightly — pure shell routing replaces this"
+  - "pipeline.py is 637 lines (237 over hard limit) — phases 1/3/5-9 defined; Fix 5 splits into 6 modules"
+  - "3AM cron entry: setup-cron.sh line 81 installs 'session-analysis-nightly.sh' which does NOT exist — silently failing"
+  - "After Fix 7, pipeline requires zero credentials — classify.sh is only file reading ~/.claude/.credentials.json"
+
+files_to_modify:
+  - path: scripts/cron/comprehensive-learning-nightly.sh
+    line: 73
+    fix: 3
+  - path: scripts/cron/setup-cron.sh
+    line: 81
+    fix: 2
+  - path: scripts/cron/crontab-template.sh
+    line: 30
+    fix: 2
+  - path: scripts/analysis/session-analysis.sh
+    line: 69
+    fix: 1
+  - path: scripts/improve/lib/classify.sh
+    lines: "6-126"
+    fix: 7
+  - path: scripts/learning/comprehensive-learning.sh
+    lines: "153-193"
+    fix: 4
+  - path: scripts/analysis/comprehensive_learning_pipeline.py
+    fix: 5
+    note: reduce to shim after phase functions extracted
+
+files_to_create:
+  - path: scripts/analysis/daily-reflect.sh
+    fix: 4
+    max_lines: 100
+  - path: scripts/analysis/knowledge-capture.sh
+    fix: 4
+    max_lines: 100
+  - path: scripts/analysis/ingest-codex-sessions.sh
+    fix: 6
+    max_lines: 60
+  - path: scripts/analysis/phase5_correction_trends.py
+    fix: 5
+  - path: scripts/analysis/phase6_wrk_feedback.py
+    fix: 5
+  - path: scripts/analysis/phase7_action_candidates.py
+    fix: 5
+  - path: scripts/analysis/phase8_report_review.py
+    fix: 5
+  - path: scripts/analysis/phase9_coverage_audit.py
+    fix: 5
+  - path: scripts/analysis/pipeline_utils.py
+    fix: 5
+  - path: tests/session-analysis/test_signal_file_detection.bats
+    tdd: fix_1
+  - path: tests/session-analysis/test_phase_scripts_exist.bats
+    tdd: fix_4
+  - path: tests/session-analysis/test_pipeline_modules.py
+    tdd: fix_5
+  - path: tests/session-analysis/test_stage_exit_signal.bats
+    tdd: fix_6
+
+risks:
+  - "Fix 4 path discrepancy: comprehensive-learning.sh line 182 already calls scripts/improve/improve.sh (correct) — no wrapper needed"
+  - "Phases 2/3 call skill-internal paths (not standalone scripts) — new scripts/analysis/ implementations required"
+  - "Fix 5 is highest refactor risk — do last, test before and after"
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - comprehensive-learning
+    - session-analysis

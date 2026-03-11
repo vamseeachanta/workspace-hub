@@ -1,0 +1,26 @@
+### Verdict: REQUEST_CHANGES
+
+### Summary
+The script is well-structured overall and handles its three invocation routes cleanly, but it contains one critical correctness/safety bug in the stale-lock purge logic (PermissionError on os.kill signals a live process, not a dead one) and several important issues around import reliability and duplicated guard logic that should be resolved before merging.
+
+### Issues Found
+- [P1] Critical: start_stage.py:318 — `_maybe_purge_stale_lock` catches `PermissionError` in the `os.kill(pid, 0)` except clause and then falls through to `lock_path.unlink()`. On Linux/macOS, `os.kill(pid, 0)` raises `PermissionError` (EPERM) when the target process IS alive but owned by a different user — it does NOT mean the process is dead. Catching this and then deleting the lock will silently destroy a live session's claim, directly breaking the concurrent-session safety guarantee the lock was designed to provide. Fix: remove `PermissionError` from the except tuple and let it propagate (or explicitly `return` in a separate `except PermissionError` branch).
+- [P2] Important: start_stage.py:238 — `from checkpoint_writer import print_stage_banner` is a bare absolute import inside `route_stage()`. When the script is invoked as `uv run --no-project python scripts/work-queue/start_stage.py`, the scripts/work-queue/ directory is not automatically on `sys.path`, so this import will raise `ModuleNotFoundError` at runtime on any clean install. Either add the script's directory to `sys.path` in `_main()` before calling `route_stage`, or convert to a relative import if the directory is always a package.
+- [P2] Important: start_stage.py:347 — `stage = int(sys.argv[2])` raises an unhandled `ValueError` when passed a non-integer (e.g. `start_stage.py WRK-001 foo`). Add a try/except with a user-facing error message and `sys.exit(1)`, consistent with how other CLI errors are handled.
+- [P2] Important: start_stage.py:388-396 — The 'not in working/' guard for stage >= 9 duplicates the body of `_stage1_working_guard` inline. The two copies will inevitably drift; also, the stage-1 path calls the helper while the stage >= 9 path does not, meaning any future change to the message/logic must be made in two places. Refactor so both call the shared helper.
+- [P3] Minor: start_stage.py:356,373 — `glob` is imported twice inside `_main()` under different aliases (`_glob` and `_ag`). Move both imports to the top of the file (or at least deduplicate inside the function) to avoid confusion.
+- [P3] Minor: start_stage.py:30-45 and 158-167 — The simple key:value YAML scalar parsing logic is duplicated verbatim between `_load_yaml` and `_read_checkpoint`. Extract a shared `_parse_simple_yaml_scalars(content: str) -> dict` helper to keep the fallback parser in one place.
+- [P3] Minor: start_stage.py:399-431 — Two separate `if stage == 1:` blocks exist back-to-back. Merge them into a single block to reduce cognitive overhead and eliminate the risk of inserting code between them that runs for stage 1 when it should not.
+- [P3] Minor: No tests are included in this review. The project rules mandate TDD (tests written before implementation). Test coverage for the three invocation routes, the stale-lock purge logic, the section-selector regex, and the checkpoint resume path is not evidenced.
+
+### Suggestions
+- In `_maybe_purge_stale_lock`, handle PermissionError as a separate branch that returns early (process is alive, cannot purge): `except PermissionError: return  # process alive, different owner`
+- Add `sys.path.insert(0, str(Path(__file__).parent))` at the top of `_main()` (or at module level) to ensure `checkpoint_writer` is importable regardless of invocation CWD.
+- Consolidate both `if stage == 1:` blocks into a single block and call `_stage1_working_guard` from the consolidated `stage >= 9` guard path instead of repeating its body.
+- Move all stdlib imports (`glob`, `datetime`, `socket`, `re`, `subprocess`) to the top of the module rather than scattering them inside functions — the deferred-import pattern adds no benefit here since none of these are optional heavy deps.
+- Add unit tests (pytest) covering: (a) `_maybe_purge_stale_lock` with a live PID, dead PID, and cross-user PID; (b) `route_stage` for each of the three invocation strings; (c) `_resolve_entry_read` with and without a `#selector`; (d) `_extract_sections` with well-formed and malformed HTML.
+
+### Questions for Author
+- Was the `PermissionError` in `_maybe_purge_stale_lock` intentional? If all sessions always run as the same OS user this is low risk, but it is semantically incorrect and will silently purge live locks in multi-user or container environments.
+- Is `checkpoint_writer` deployed as a package alongside this script (i.e., is `scripts/work-queue/` always on `sys.path` at invocation time), or does it rely on some other mechanism such as a `conftest.py` or `PYTHONPATH` env var not shown here?
+- The `_extract_sections` regex (line 63) uses a non-greedy `.*?` with `re.DOTALL` between two `<section>` tags but does not account for nested sections. Has this been validated against the actual lifecycle HTML structure, especially sections that contain other sections?

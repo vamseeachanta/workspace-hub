@@ -1,0 +1,31 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 0c7ea148a0e04f5f3aa96f34cf5f0fb8e31e0e4a
+  documents:
+  - .claude/work-queue/assets/WRK-1114/plan_claude.md
+  published_at: '2026-03-10T00:10:00Z'
+  reviewer: user
+  notes: "Plan captured in WRK file at this commit (pre-implementation HEAD)"
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 0c7ea148a0e04f5f3aa96f34cf5f0fb8e31e0e4a
+  documents:
+  - .claude/work-queue/assets/WRK-1114/plan-html-review-final.md
+  published_at: '2026-03-10T00:20:00Z'
+  reviewer: user
+  notes: "Same pre-implementation commit — Route A, plan and approval done before code"
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 670fd318cddd678e8ca95362c0f0f58514309ed8
+  documents:
+  - .claude/work-queue/assets/WRK-1114/WRK-1114-lifecycle.html
+  published_at: '2026-03-11T01:45:00Z'
+  reviewer: user
+  notes: "Implementation commit — pending push to remote (Stage 17 gate)"

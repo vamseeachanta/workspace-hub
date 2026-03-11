@@ -844,3 +844,190 @@ def test_generate_lifecycle_idempotent(tmp_path: Path, monkeypatch):
     mod.generate_lifecycle("WRK-T5", str(out))
     html2 = out.read_text(encoding="utf-8")
     assert html1 == html2
+
+
+# ── WRK-1041: meta refresh tag ────────────────────────────────────────────────
+
+
+def test_lifecycle_html_has_meta_refresh(tmp_path: Path, monkeypatch):
+    """generate_lifecycle() output must include a 30s meta refresh tag."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    _make_wrk_file(queue, "WRK-T6")
+    (queue / "assets" / "WRK-T6" / "evidence").mkdir(parents=True)
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = queue / "assets" / "WRK-T6" / "WRK-T6-lifecycle.html"
+    mod.generate_lifecycle("WRK-T6", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert '<meta http-equiv="refresh" content="30">' in html
+
+
+def test_review_html_has_meta_refresh(mod, minimal_meta, minimal_sections):
+    """render_wrk_html() output must include a 30s meta refresh tag."""
+    html = mod.render_wrk_html(minimal_meta, "plan-draft", minimal_sections)
+    assert '<meta http-equiv="refresh" content="30">' in html
+
+
+# ── WRK-1115: plan.html + renderer expansions ─────────────────────────────────
+
+import yaml as _yaml
+
+
+def _make_wrk_env(tmp_path: Path, wrk_id: str, body: str = "") -> tuple:
+    """Return (repo, queue, assets, evidence) paths with WRK file and dirs set up."""
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    assets = queue / "assets" / wrk_id
+    evidence = assets / "evidence"
+    evidence.mkdir(parents=True)
+    (queue / "working").mkdir(parents=True, exist_ok=True)
+    (queue / "working" / f"{wrk_id}.md").write_text(
+        f"---\nid: {wrk_id}\ntitle: Plan HTML test\nstatus: working\n"
+        f"route: B\ncomplexity: medium\norchestrator: claude\n"
+        f"computer: ace-linux-1\ncreated_at: 2026-03-10\npercent_complete: 50\n"
+        f"---\n\n## Plan\n\nStep 1: do the thing.\nStep 2: done.\n\n{body}",
+        encoding="utf-8",
+    )
+    return repo, queue, assets, evidence
+
+
+def test_plan_html_generated(tmp_path: Path, monkeypatch):
+    """generate_plan() creates WRK-NNN-plan.html in the assets directory."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P1")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "WRK-P1-plan.html"
+    mod.generate_plan("WRK-P1", str(out))
+    assert out.exists(), "plan.html was not created"
+    assert "WRK-P1" in out.read_text(encoding="utf-8")
+
+
+def test_plan_html_has_meta_refresh(tmp_path: Path, monkeypatch):
+    """generate_plan() output includes a 30s meta refresh tag."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P2")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "WRK-P2-plan.html"
+    mod.generate_plan("WRK-P2", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert '<meta http-equiv="refresh" content="30">' in html
+
+
+def test_plan_html_has_stage_circles(tmp_path: Path, monkeypatch):
+    """generate_plan() output includes stage-strip markup (same as lifecycle)."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P3")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "WRK-P3-plan.html"
+    mod.generate_plan("WRK-P3", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert 'class="sc ' in html, "stage-strip chips not present in plan.html"
+
+
+def test_plan_html_shows_plan_text(tmp_path: Path, monkeypatch):
+    """generate_plan() includes the ## Plan section text from the WRK body."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P4")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "WRK-P4-plan.html"
+    mod.generate_plan("WRK-P4", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert "do the thing" in html, "Plan text from ## Plan section not found in plan.html"
+
+
+def test_stage10_renders_integrated_tests(tmp_path: Path, monkeypatch):
+    """Stage 10 body shows integrated_repo_tests as a table with test name and result."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P5")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    execute = {
+        "wrk_id": "WRK-P5",
+        "stage": 10,
+        "summary": "all good",
+        "integrated_repo_tests": [
+            {"name": "test_my_feature", "result": "pass",
+             "command": "pytest tests/test_my_feature.py"},
+        ],
+        "changes": ["Added render_plan() function"],
+    }
+    (evidence / "execute.yaml").write_text(_yaml.dump(execute), encoding="utf-8")
+    fm = {"complexity": "medium", "route": "B"}
+    html = mod.render_lifecycle_stage_body(10, "done", str(assets), fm, "")
+    assert "test_my_feature" in html, "Test name not rendered in Stage 10"
+    assert "pass" in html.lower(), "Test result not rendered in Stage 10"
+    assert "Added render_plan" in html, "changes[] bullet not rendered in Stage 10"
+
+
+def test_stage12_renders_ac_test_matrix(tmp_path: Path, monkeypatch):
+    """Stage 12 body parses ac-test-matrix.md and shows a PASS/FAIL table."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P6")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    matrix = (
+        "| # | AC | Result |\n"
+        "|---|-----|--------|\n"
+        "| 1 | plan.html generated | PASS |\n"
+        "| 2 | meta refresh present | PASS |\n"
+        "| 3 | missing AC | FAIL |\n"
+        "\n2 PASS · 1 FAIL\n"
+    )
+    (assets / "ac-test-matrix.md").write_text(matrix, encoding="utf-8")
+    fm = {"complexity": "medium", "route": "B"}
+    html = mod.render_lifecycle_stage_body(12, "done", str(assets), fm, "")
+    assert "PASS" in html, "PASS result not rendered in Stage 12"
+    assert "FAIL" in html, "FAIL result not rendered in Stage 12"
+    assert "plan.html generated" in html, "AC text not rendered in Stage 12"
+
+
+def test_stage12_ac_matrix_absent(tmp_path: Path, monkeypatch):
+    """Stage 12 body degrades gracefully when ac-test-matrix.md is absent."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P7")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    fm = {"complexity": "medium", "route": "B"}
+    html = mod.render_lifecycle_stage_body(12, "done", str(assets), fm, "")
+    # Should not raise; should return a non-empty fallback string
+    assert isinstance(html, str) and len(html) > 0
+
+
+def test_stage13_renders_cross_review(tmp_path: Path, monkeypatch):
+    """Stage 13 body shows verdict from cross-review-impl evidence."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P8")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    cr_data = {
+        "wrk_id": "WRK-P8", "stage": 13,
+        "providers": {
+            "claude": {"verdict": "APPROVE", "summary": "Implementation looks good.", "findings": []},
+        },
+    }
+    (evidence / "cross-review-impl-claude.yaml").write_text(
+        _yaml.dump(cr_data), encoding="utf-8"
+    )
+    fm = {"complexity": "medium", "route": "B"}
+    html = mod.render_lifecycle_stage_body(13, "done", str(assets), fm, "")
+    assert "APPROVE" in html, "Cross-review verdict not rendered in Stage 13"
+
+
+def test_stage14_shows_details_column(tmp_path: Path, monkeypatch):
+    """Stage 14 gate table includes a Details column with gate detail strings."""
+    mod = _load_html_module()
+    repo, queue, assets, evidence = _make_wrk_env(tmp_path, "WRK-P9")
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    gate_summary = {
+        "wrk_id": "WRK-P9",
+        "gates": [
+            {"name": "Plan gate", "status": "PASS", "ok": True,
+             "details": "reviewed=True, approved=True, artifact=plan.md"},
+            {"name": "Cross-review gate", "status": "PASS", "ok": True,
+             "details": "artifact=review-synthesis.md"},
+        ],
+    }
+    import json
+    (evidence / "gate-evidence-summary.json").write_text(
+        json.dumps(gate_summary), encoding="utf-8"
+    )
+    fm = {"complexity": "medium", "route": "B"}
+    html = mod.render_lifecycle_stage_body(14, "done", str(assets), fm, "")
+    assert "reviewed=True" in html, "Gate details string not shown in Stage 14"

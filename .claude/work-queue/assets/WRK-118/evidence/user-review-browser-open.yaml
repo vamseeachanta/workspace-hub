@@ -1,0 +1,22 @@
+wrk_id: WRK-118
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-118/workflow-final-review.html"
+    opened_at: "2026-02-18T08:45:00Z"
+    reviewer: user
+    notes: "Legacy — plan draft opened and reviewed before approval at 09:00:00Z (15min gap)"
+
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-118/workflow-final-review.html"
+    opened_at: "2026-02-18T08:50:00Z"
+    reviewer: user
+    notes: "Legacy — plan final opened before approval (10min gap)"
+
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-118/WRK-118-lifecycle.html"
+    opened_at: "2026-03-10T09:00:00Z"
+    reviewer: user
+    notes: "Lifecycle HTML opened for Stage 17 implementation review"

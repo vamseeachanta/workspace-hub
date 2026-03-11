@@ -1,0 +1,21 @@
+wrk_id: WRK-1069
+generated_at: "2026-03-11T14:30:00Z"
+recommendations:
+  - id: FW-1
+    description: "cost-tracking.jsonl grows unbounded — add rotation/archival script"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: low
+  - id: FW-2
+    description: "Cross-machine JSONL aggregation — collect cost data from ace-linux-2"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: low
+  - id: FW-3
+    description: "Subcategory cost breakdown in summary table (join WRK frontmatter)"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: medium

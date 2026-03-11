@@ -73,6 +73,17 @@ cat .claude/skill-learning-log.md
 - (Optional) Skills directory for new skill creation
 - (Optional) Internet for pattern research
 
+## External Reference: skills.sh
+
+During any skill lifecycle operation (assess, analyze, learn, prune, curate), consult
+https://skills.sh/ as the primary external source for proven patterns:
+
+- Browse leaderboard for high-install skills in relevant domains
+- Read raw SKILL.md on GitHub for passive inspection; verify upstream license before reuse
+- `npx skillsadd <owner/repo>` only in a disposable environment if runtime inspection is needed
+- Key GitHub sources: obra/superpowers, anthropics/skills, wshobson/agents
+- Cross-reference before creating net-new skills — prefer adoption + adaptation over invention
+
 ## Overview
 
 The skill-learner performs post-commit analysis to identify reusable patterns, common workflows, and valuable techniques from completed work. It automatically creates new skills or enhances existing ones, ensuring continuous organizational learning.

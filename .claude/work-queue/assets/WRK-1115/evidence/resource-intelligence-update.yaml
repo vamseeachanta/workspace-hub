@@ -1,0 +1,9 @@
+wrk_id: WRK-1115
+stage: 16
+updated_at: "2026-03-10T14:00:00Z"
+additions:
+  - "generate-html-review.py --plan flag: new two-file contract for all WRK HTML"
+  - "Stage 12/13 renderers: ac-test-matrix.md + cross-review-impl* now rendered inline"
+  - "Stage 10/14 renderers: integrated_repo_tests table + gate Details column"
+  - "exit_stage.py: dual HTML generation (lifecycle + plan) on every stage exit"
+  - "workflow-html SKILL v2.0.0: plan.html documented in two-file contract"

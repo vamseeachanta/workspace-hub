@@ -1,0 +1,9 @@
+wrk_id: WRK-1100
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1100/legal-scan.md"
+archive_readiness: "pass"
+document_index_exemption: "hub-only item — no document-index entries affected"
+spin_off_wrks: []
+commit: "ad4b18547eb0731a4554e23d7593b5b05455ada0"

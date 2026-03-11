@@ -1,0 +1,15 @@
+wrk_id: WRK-667
+generated_at: "2026-03-09T08:00:00Z"
+no_external_sources: false
+sources:
+  - id: workspace_hub_local
+    source_type: registry
+    origin: /mnt/local-analysis/workspace-hub
+    license_access: repo-native
+    retrieval_date: 2026-03-09
+    canonical_storage_path: /mnt/local-analysis/workspace-hub
+    duplicate_status: canonical
+    status: available
+routing_overrides: []
+agent_fit: claude
+quota_risk: low

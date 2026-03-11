@@ -1,0 +1,18 @@
+wrk_id: WRK-577
+stage: 15
+generated_at: "2026-03-10T11:10:00Z"
+recommendations:
+  - id: FW-1
+    title: "Extend validate-skills.sh to check version and category fields"
+    description: "Current validator only checks name+description. Add version/category checks to fully enforce normalization schema."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+  - id: FW-2
+    title: "Audit remaining skills for missing version/category"
+    description: "WRK-577 fixed 9 files. A broader audit may reveal other skills with incomplete frontmatter."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low

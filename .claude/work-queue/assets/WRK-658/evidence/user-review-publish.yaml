@@ -1,0 +1,28 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b42381df
+    documents:
+      - .claude/work-queue/assets/WRK-658/WRK-658-lifecycle.html
+    published_at: "2026-03-09T00:10:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b68b0c50
+    documents:
+      - .claude/work-queue/assets/WRK-658/workflow-final-review.html
+    published_at: "2026-03-10T03:12:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b68b0c50
+    documents:
+      - .claude/work-queue/assets/WRK-658/WRK-658-lifecycle.html
+    published_at: "2026-03-10T04:25:00Z"
+    reviewer: vamsee

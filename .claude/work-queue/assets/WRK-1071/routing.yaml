@@ -1,0 +1,13 @@
+wrk_id: WRK-1071
+stage: 9
+routed_at: "2026-03-10T13:50:00Z"
+route: B
+workstation: ace-linux-1
+orchestrator: claude
+execution_plan:
+  phase_1: pytest-benchmark integration (TDD) — assetutilities, digitalmodel, worldenergydata
+  phase_2: run-benchmarks.sh + parse_benchmark_output.py + baseline
+  phase_3: cron + config/testing/benchmark-baseline.json
+notes: >
+  Route B medium complexity. All 3 repos on ace-linux-1.
+  TDD harness (8 tests) before implementation.

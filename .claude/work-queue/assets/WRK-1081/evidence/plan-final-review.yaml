@@ -1,0 +1,7 @@
+wrk_id: WRK-1081
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-09T19:20:00Z"
+plan_version: v7
+notes: "Final plan approved — bandit two-pass, native baseline, 12 TDD tests, pinned tool versions"

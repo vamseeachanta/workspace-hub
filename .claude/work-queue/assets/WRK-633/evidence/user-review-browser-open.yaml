@@ -1,0 +1,20 @@
+wrk_id: WRK-633
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-633/WRK-633-lifecycle.html
+    opened_at: "2026-03-10T11:25:00Z"
+    reviewer: vamsee
+    notes: Plan presented in session for Stage 5 review.
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-633/WRK-633-lifecycle.html
+    opened_at: "2026-03-10T11:27:00Z"
+    reviewer: vamsee
+    notes: Final plan presented in session.
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-633/WRK-633-lifecycle.html
+    opened_at: "2026-03-10T11:37:00Z"
+    reviewer: vamsee
+    notes: Stage 17 implementation review presented in session (8 min before approval).

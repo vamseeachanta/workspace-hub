@@ -1,0 +1,9 @@
+wrk_id: WRK-118
+approved_by: user
+approval_scope: >
+  Pre-gate WRK — entered working/ before Stage 7 hard gate was activated (WRK-1034).
+  Plan was approved by user on 2026-02-18 as documented in
+  .claude/work-queue/working/WRK-118.md ("Approved by user: 2026-02-18").
+  Exempt from plan-final-review.yaml requirements.
+approved_at: 2026-03-08T09:00:00Z
+exemption_ref: WRK-1034

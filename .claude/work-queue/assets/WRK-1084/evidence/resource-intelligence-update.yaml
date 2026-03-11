@@ -1,0 +1,7 @@
+wrk_id: WRK-1084
+stage: 16
+updated_at: "2026-03-11T00:00:00Z"
+no_additions_rationale: >
+  No new dependencies or tools introduced. Changes are documentation/guidance
+  additions to existing SKILL.md files. skills.sh is a web reference only,
+  not a runtime dependency. No packages, scripts, or infrastructure added.

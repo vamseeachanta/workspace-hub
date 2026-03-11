@@ -1,0 +1,85 @@
+wrk_id: WRK-1102
+generated_at: '2026-03-10T16:55:02Z'
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: n/a
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: n/a
+- order: 3
+  stage: Triage
+  status: done
+  evidence: n/a
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: n/a
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  evidence: n/a
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: n/a
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  evidence: n/a
+- order: 8
+  stage: Claim/Activation
+  status: done
+  evidence: n/a
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  evidence: n/a
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: n/a
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: n/a
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: n/a
+- order: 13
+  stage: Agent Cross-Review
+  status: n/a
+  evidence: n/a
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: n/a
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: n/a
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: n/a
+- order: 17
+  stage: User Review Implementation
+  status: done
+  evidence: n/a
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  evidence: n/a
+- order: 20
+  stage: Archive
+  status: done
+  evidence: n/a

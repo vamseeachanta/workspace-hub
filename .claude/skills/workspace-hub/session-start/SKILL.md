@@ -68,6 +68,17 @@ Read `.claude/state/session-snapshot.md`. If the snapshot is less than 48 hours 
 (check the timestamp in the file), surface the `## Ideas / Notes` section and the
 WRK summary. If older than 48h, skip.
 
+### 2b. Knowledge Base Surfacing
+
+If the active WRK is known, query the knowledge base for relevant past work:
+
+```bash
+bash scripts/knowledge/query-knowledge.sh --category <wrk-category> --limit 3
+```
+
+Surface up to 3 relevant entries as "Past work context:" with entry ID and mission snippet.
+If `knowledge-base/` does not exist or is empty, skip silently.
+
 ### 3. Quota Status
 
 Read `config/ai-tools/agent-quota-latest.json`. Surface the weekly utilization for
@@ -92,6 +103,18 @@ bash scripts/hooks/tidy-agent-teams.sh --dry-run
 If teams exist that belong to archived WRKs, note that they will be auto-removed at next
 stage-gate. If you need to spawn a new team for the current WRK, use:
 `bash scripts/work-queue/spawn-team.sh WRK-NNN <slug>` — prints the recipe, does not auto-create.
+
+### 3c. Active Session Audit (when starting work)
+
+If about to pick up a WRK item, run:
+
+```bash
+bash scripts/work-queue/active-sessions.sh --unclaimed-only
+```
+
+If any items appear, investigate before starting — another session may already be
+executing them. An unclaimed item has a recent session lock (< 2h) but has not yet
+had `claim-item.sh` run. This indicates a session collision risk.
 
 ### 4. Top Items by Category
 

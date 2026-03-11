@@ -1,0 +1,29 @@
+wrk_id: WRK-1010
+stage: 15
+synthesized_at: "2026-03-11T02:00:00Z"
+synthesizer: claude
+
+recommendations:
+  - id: FW-1
+    priority: HIGH
+    disposition: spun-off-new
+    status: captured-in-queue
+    captured: true
+    description: "Merge work-queue-workflow into work-queue — migrate §Canonical Terminology, §Plan-Mode Gates, §Orchestrator Team Pattern; resolve stage-order conflict first"
+    required_for_signoff: false
+  - id: FW-2
+    priority: HIGH
+    disposition: spun-off-new
+    status: captured-in-queue
+    captured: true
+    description: "Create standalone cross-review SKILL.md from inline protocol split across work-queue and work-queue-workflow"
+    required_for_signoff: false
+  - id: FW-3
+    priority: MEDIUM
+    disposition: existing-updated
+    status: captured-in-queue
+    captured: true
+    description: "Clarify improve §Trigger Conditions vs comprehensive-learning prohibition on standalone sub-skills during sessions"
+    required_for_signoff: false
+
+notes: "FW-1 and FW-2 are HIGH priority candidates for next session. FW-3 is a documentation clarification."

@@ -1,0 +1,64 @@
+wrk_id: WRK-1071
+stage: 6
+reviewed_at: "2026-03-10T00:00:00Z"
+scope_change: false
+
+providers:
+  claude:
+    verdict: MINOR
+    artifact: assets/WRK-1071/cross-review-claude.md
+    findings_count: 0
+    notes: "Post-synthesis review — all MAJOR and MINOR findings from Codex/Gemini resolved in v1.1"
+  codex:
+    verdict: MAJOR_RESOLVED
+    artifact: assets/WRK-1071/plan_codex.md
+    findings_count: 5
+    notes: >
+      MAJOR findings: worldenergydata dep activation, conftest scope, cron REPO_ROOT,
+      TDD test gaps, digitalmodel whole-dir collect. All resolved in plan v1.1.
+  gemini:
+    verdict: MINOR_RESOLVED
+    artifact: assets/WRK-1071/plan_gemini.md
+    findings_count: 4
+    notes: >
+      MINOR findings: CP function naming, uv cd-into-repo pattern, cron PATH,
+      worldenergydata dep. All resolved in plan v1.1.
+
+resolved_findings:
+  - id: F1
+    source: codex
+    severity: P1
+    description: "worldenergydata pytest-benchmark in optional-dev only — not auto-activated by uv run"
+    resolution: "Moved to [dependency-groups].benchmark in pyproject.toml"
+  - id: F2
+    source: codex
+    severity: P1
+    description: "tests/benchmarks/ conftest not scoped to sibling worldenergydata/tests/performance/"
+    resolution: "benchmarks kept in tests/performance/ to reuse existing conftest"
+  - id: F3
+    source: codex
+    severity: P1
+    description: "Cron uses literal <REPO_ROOT> — fails at runtime"
+    resolution: "Changed to $WORKSPACE_HUB pattern with PATH=$HOME/.local/bin:$PATH"
+  - id: F4
+    source: codex
+    severity: P2
+    description: "TDD tests miss no-baseline bootstrap, invalid repo, new bench cases"
+    resolution: "Expanded from 5 to 8 TDD tests covering all edge cases"
+  - id: F5
+    source: codex
+    severity: P2
+    description: "digitalmodel whole-dir collect pulls unrelated generic benchmarks"
+    resolution: "run-benchmarks.sh targets specific files explicitly"
+  - id: F6
+    source: gemini
+    severity: P2
+    description: "CP bench function names don't match route names"
+    resolution: "4 separate bench functions — one per CP route, names match exactly"
+  - id: F7
+    source: gemini
+    severity: P2
+    description: "uv run from workspace root may not bind to repo's lockfile"
+    resolution: "cd into repo dir before uv run"
+
+deferred_findings: []

@@ -1,0 +1,11 @@
+wrk_id: WRK-693
+generated_at: "2026-03-03T00:00:00Z"
+completion_status: continue_to_planning
+summary: >
+  Simple one-file audit+replace task. All hub .py callers identified via grep.
+  close-item.sh confirmed as primary bug source (WRK-689). No external dependencies.
+skills:
+  core_used:
+    - work-queue
+    - python-runtime
+    - git-workflow
