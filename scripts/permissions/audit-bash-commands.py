@@ -113,12 +113,12 @@ def normalize_command_to_prefix(command: str) -> str:
     if not command:
         return command
 
+    tokens = command.split()
     # Absolute or relative paths — keep the path token up to first space
-    first_token = command.split()[0] if command.split() else command
+    first_token = tokens[0]
     if first_token.startswith("./") or first_token.startswith("/"):
         return first_token
 
-    tokens = command.split()
     # Check multi-word prefix table (longest match wins; table is pre-sorted longest first)
     for prefix_words in _MULTI_WORD_PREFIXES:
         n = len(prefix_words)
@@ -132,7 +132,7 @@ def normalize_command_to_prefix(command: str) -> str:
 def suggest_allow_pattern(prefix: str) -> str:
     """Return the Claude settings allow pattern for *prefix*."""
     if not prefix:
-        return f"Bash({prefix})"
+        raise ValueError("prefix cannot be empty")
 
     # Relative-path scripts map to a wildcard pattern
     if prefix.startswith("./scripts/") or prefix.startswith("./"):
@@ -155,7 +155,16 @@ def suggest_allow_pattern(prefix: str) -> str:
 
 
 def _yaml_str(value: str) -> str:
-    """Minimally safe YAML scalar: quote if it contains special chars."""
+    """Minimally safe YAML scalar: quote if it contains special chars.
+
+    Multi-line values (heredocs, embedded newlines) are truncated at the first
+    newline so the scalar stays on a single YAML line.
+    """
+    # Truncate at first newline/carriage-return/null — keeps YAML valid
+    for sep in ("\n", "\r", "\0"):
+        idx = value.find(sep)
+        if idx != -1:
+            value = value[:idx]
     need_quote = any(c in value for c in ('"', "'", ":", "#", "{", "}", "[", "]", ","))
     if need_quote:
         escaped = value.replace('"', '\\"')

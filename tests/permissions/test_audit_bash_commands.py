@@ -6,6 +6,7 @@ Red phase: all tests written before implementation exists.
 
 import importlib.util
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -131,6 +132,8 @@ def test_suggest_allow_pattern():
         ("ls", "Bash(ls:*)"),
         ("pwd", "Bash(pwd)"),
         ("uv run", "Bash(uv run:*)"),
+        # Relative-path scripts map to a directory-level wildcard
+        ("./scripts/foo.sh", "Bash(./scripts/*:*)"),
     ]
 
     for prefix, expected in cases:
@@ -216,12 +219,8 @@ def test_end_to_end_audit(tmp_path):
     assert content.strip(), "Output file is empty"
 
     # git diff should be the top entry (5 occurrences: 3 from A + 2 from B)
-    # Parse minimal check — just look for key strings
-    assert "git diff" in content, f"'git diff' not found in output:\n{content}"
-
-    # Find the count for git diff — expect 5
-    import re
-    # Look for the git diff entry with count: 5
-    assert re.search(r"count:\s*5", content), (
-        f"Expected count: 5 for git diff in output:\n{content}"
-    )
+    # Verify the git diff entry has count: 5 as adjacent fields in the same record block
+    assert re.search(
+        r"prefix:\s*git diff\s*\n\s*count:\s*5\b",
+        content,
+    ), f"Expected 'git diff' entry with count 5 (adjacent) in output:\n{content}"
