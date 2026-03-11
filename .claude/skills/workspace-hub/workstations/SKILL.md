@@ -237,18 +237,20 @@ Consistent terminal commands across all workstations. Refer to this when switchi
 
 | Action | claude | codex | gemini |
 |--------|--------|-------|--------|
-| Start | `claude` | `codex` | `gemini` |
+| Start (permissive) | `claude --dangerously-skip-permissions` | `codex --yolo` | `gemini --yolo` |
+| Resume session | `claude --resume <id>` | `codex resume <id>` | — |
 | Submit single-line | `Enter` | `Enter` | `Enter` |
 | Multi-line input | `Shift+Enter` or `\`+Enter | `\`+Enter | `Shift+Enter` |
 | Interrupt running task | `Ctrl+C` | `Ctrl+C` | `Ctrl+C` |
-| Exit REPL | `Ctrl+D` or `/exit` | `Ctrl+D` or `exit` | `Ctrl+D` or `/exit` |
+| Exit REPL | `exit` or `Ctrl+D` or `/exit` | `exit` or `Ctrl+D` | `exit` or `Ctrl+D` |
 | Clear screen | `Ctrl+L` | `Ctrl+L` | `Ctrl+L` |
+| Update CLI | `claude update` | `codex update` | `sudo npm install -g @google/gemini-cli` |
 
 ### General Productivity Shortcuts
 
 | Action | Shortcut | Notes |
 |--------|----------|-------|
-| Clear screen | `Ctrl+L` | Cross-platform |
+| Clear screen | `Ctrl+L` or `clear` | Cross-platform; `cls` is Windows-only — use `clear` on Linux |
 | Cancel / interrupt | `Ctrl+C` | Sends SIGINT to foreground process |
 | End-of-file / exit shell | `Ctrl+D` | Exits agent REPL or shell |
 | Move to line start | `Ctrl+A` | readline — works in Git Bash too |
