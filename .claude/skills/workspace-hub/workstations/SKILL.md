@@ -206,10 +206,10 @@ Consistent terminal commands across all workstations. Refer to this when switchi
 
 | Action | Linux Terminal | Windows Terminal Git Bash |
 |--------|---------------|---------------------------|
-| Copy selected text | `Ctrl+Shift+C` | `Ctrl+C` (with text selected) |
-| Paste | `Ctrl+Shift+V` | `Ctrl+V` or `Shift+Insert` |
-| Copy (mouse) | Select text → auto-copies | Select text → right-click → Copy |
-| Paste (mouse) | Middle-click | Right-click → Paste |
+| Copy selected text | Select text → right-click → Copy | `Ctrl+C` (with text selected) |
+| Paste | `Shift+Insert` | `Ctrl+V` or `Shift+Insert` |
+| Copy (keyboard) | `Ctrl+Shift+C` (GNOME Terminal) | `Ctrl+C` (with selection) |
+| Paste (keyboard) | `Ctrl+Shift+V` (GNOME Terminal) | `Ctrl+V` |
 
 > **Windows Git Bash note**: `Ctrl+C` is context-sensitive — with text selected it copies; without selection it sends interrupt signal.
 
@@ -218,6 +218,7 @@ Consistent terminal commands across all workstations. Refer to this when switchi
 | Context | Linux | Windows Git Bash |
 |---------|-------|-----------------|
 | AI agent multi-line input | `\` + Enter or `Shift+Enter` (claude/gemini) | Same |
+| New line in terminal | `Alt+Enter` | `Shift+Enter` |
 | Bash shell continuation | `\` + Enter | Same |
 | Heredoc | `<<'EOF'` … `EOF` | Same (via Git Bash) |
 
