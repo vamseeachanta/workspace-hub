@@ -83,3 +83,34 @@ def extract_pages(pdf_path: str) -> list:
         print(f"WARNING: could not extract {pdf_path}: {exc}", file=sys.stderr)
 
     return chunks
+
+
+# ---------------------------------------------------------------------------
+# JSONL persistence
+# ---------------------------------------------------------------------------
+
+def ingest_directory(source_dir: str, out_dir: str) -> int:
+    """
+    Walk source_dir for PDFs, extract page chunks, write to out_dir/chunks.jsonl.
+
+    Args:
+        source_dir: Directory containing PDF files.
+        out_dir: Output directory; chunks.jsonl written here.
+
+    Returns:
+        Number of chunks written.
+    """
+    source = Path(source_dir)
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    chunks_path = out / "chunks.jsonl"
+    count = 0
+
+    with open(chunks_path, "w") as fh:
+        for pdf_file in sorted(source.glob("*.pdf")):
+            chunks = extract_pages(str(pdf_file))
+            for chunk in chunks:
+                fh.write(json.dumps(chunk) + "\n")
+                count += 1
+
+    return count

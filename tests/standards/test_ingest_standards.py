@@ -47,3 +47,28 @@ def test_detect_code_family_from_path():
     assert detect_code_family("ISO_13628-4.pdf") == "ISO"
     assert detect_code_family("BS_EN_ISO_19902.pdf") == "BS"
     assert detect_code_family("unknown_doc.pdf") == "UNKNOWN"
+
+
+def test_ingest_directory_writes_chunks_jsonl(mini_pdf, tmp_path):
+    from scripts.standards.ingest_standards import ingest_directory
+    out_dir = tmp_path / "standards-index"
+    ingest_directory(str(mini_pdf.parent), str(out_dir))
+    chunks_path = out_dir / "chunks.jsonl"
+    assert chunks_path.exists()
+    with open(chunks_path) as f:
+        lines = [json.loads(l) for l in f if l.strip()]
+    assert len(lines) >= 1
+    assert lines[0]["doc_name"] == "mini.pdf"
+    assert lines[0]["page"] >= 1
+
+
+def test_ingest_directory_skips_non_pdf(tmp_path):
+    from scripts.standards.ingest_standards import ingest_directory
+    (tmp_path / "notes.txt").write_text("ignore me")
+    out_dir = tmp_path / "out"
+    ingest_directory(str(tmp_path), str(out_dir))
+    chunks_path = out_dir / "chunks.jsonl"
+    if chunks_path.exists():
+        with open(chunks_path) as f:
+            lines = [l for l in f if l.strip()]
+        assert len(lines) == 0
