@@ -1,0 +1,9 @@
+wrk_id: WRK-1135
+stage: 17
+reviewer: vamsee
+confirmed_by: vamsee
+approved_at: "2026-03-11"
+all_acs_met: true
+notes: >
+  All 4 ACs confirmed. 9/9 bats tests pass. WRK-1127 correctly shown in
+  COORDINATING section with child progress, suppressed from WORKING.

@@ -94,7 +94,7 @@ derive_status() {
   case "$stage" in 1|5|7|17) echo "WAITING" ;; *) echo "START" ;; esac
 }
 
-declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
+declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED COORDINATING_ITEMS
 declare -A WRK_NOTES WRK_NOT_BEFORE
 
 process_file() {
@@ -124,6 +124,32 @@ process_file() {
   local row="$id|$priority|$subcategory|$computer|$title|$cp_stage|$item_status|$item_pid"
 
   if [[ "$loc" == "working" ]]; then
+    local wrk_type
+    wrk_type=$(get_field "$f" "type")
+    if [[ "$status" == "coordinating" && "$wrk_type" == "feature" ]]; then
+      # Count child progress
+      local children_raw total_children archived_children pending_children done_children
+      children_raw=$(grep -m1 "^children:" "$f" 2>/dev/null | sed 's/^children: *//' | tr -d '[]' | tr ',' '\n' | tr -d ' ' | grep -v '^$' || true)
+      total_children=0; archived_children=0; pending_children=0; done_children=0
+      while IFS= read -r child; do
+        [[ -z "$child" ]] && continue
+        (( total_children++ ))
+        local cnum; cnum=$(echo "$child" | grep -oE '[0-9]+' || true)
+        if is_archived "$cnum" 2>/dev/null; then
+          (( archived_children++ ))
+        elif find "$QUEUE_DIR/working" -name "${child}.md" 2>/dev/null | grep -qc .; then
+          (( pending_children++ ))  # working = in progress, counted as pending for simplicity
+        else
+          (( pending_children++ ))
+        fi
+      done <<< "$children_raw"
+      local all_done=false
+      [[ $total_children -gt 0 && $archived_children -eq $total_children ]] && all_done=true
+      local progress="${archived_children}/${total_children} archived"
+      [[ "$all_done" == "true" ]] && progress="ALL DONE — ready to close"
+      COORDINATING_ITEMS+=("$id|$priority|$subcategory|$computer|$title|$progress")
+      return
+    fi
     [[ -n "$note" ]] && WORKING_PARKED+=("$row") || WORKING_ITEMS+=("$row")
     return
   fi
@@ -248,6 +274,16 @@ printf "\033[1m║   WHAT'S NEXT  %-30s║\033[0m\n" "$(date '+%Y-%m-%d %H:%M') 
 printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
+if [[ ${#COORDINATING_ITEMS[@]} -gt 0 ]]; then
+  echo ""
+  printf "\033[35m%s\033[0m\n" "◈  COORDINATING — feature WRKs managing children"
+  printf "%-12s %-8s %-22s %-14s %-48s %s\n" "WRK" "PRI" "SUBCATEGORY" "MACHINE" "TITLE" "CHILD PROGRESS"
+  echo "$HR"
+  for crow in "${COORDINATING_ITEMS[@]}"; do
+    IFS='|' read -r cid cpri csub ccpu cttl cprogress <<< "$crow"
+    printf "%-12s %-8s %-22s %-14s %-48s %s\n" "$cid" "$cpri" "$csub" "$ccpu" "$cttl" "$cprogress"
+  done
+fi
 print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS    "true"
 print_section "⏸  PARKED — deferred / awaiting input"  "\033[90m" WORKING_PARKED   "true"
 print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE "true"
@@ -301,5 +337,5 @@ else
 fi
 
 echo ""
-echo "Summary: \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[90m${#WORKING_PARKED[@]} parked\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
+echo "Summary: \033[35m${#COORDINATING_ITEMS[@]} coordinating\033[0m · \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[90m${#WORKING_PARKED[@]} parked\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
 echo ""
