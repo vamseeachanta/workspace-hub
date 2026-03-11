@@ -114,3 +114,45 @@ def ingest_directory(source_dir: str, out_dir: str) -> int:
                 count += 1
 
     return count
+
+
+# ---------------------------------------------------------------------------
+# BM25 index
+# ---------------------------------------------------------------------------
+
+def _tokenize(text: str) -> list:
+    """Simple whitespace+punctuation tokenizer."""
+    return re.sub(r"[^a-z0-9\s]", " ", text.lower()).split()
+
+
+def build_index(out_dir: str) -> None:
+    """
+    Build BM25 index from chunks.jsonl and serialize to bm25.pkl.
+
+    Args:
+        out_dir: Directory containing chunks.jsonl; bm25.pkl written here.
+    """
+    from rank_bm25 import BM25Okapi
+
+    out = Path(out_dir)
+    chunks_path = out / "chunks.jsonl"
+    if not chunks_path.exists():
+        raise FileNotFoundError(f"chunks.jsonl not found in {out_dir}. Run ingest first.")
+
+    chunks = []
+    with open(chunks_path) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                chunks.append(json.loads(line))
+
+    if not chunks:
+        raise ValueError("No chunks found in chunks.jsonl — nothing to index.")
+
+    tokenized = [_tokenize(c["text"]) for c in chunks]
+    bm25 = BM25Okapi(tokenized)
+
+    with open(out / "bm25.pkl", "wb") as f:
+        pickle.dump({"bm25": bm25, "chunks": chunks}, f)
+
+    print(f"Built BM25 index over {len(chunks)} chunks → {out}/bm25.pkl")

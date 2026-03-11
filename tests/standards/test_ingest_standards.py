@@ -1,4 +1,5 @@
 import json
+import pickle
 import pytest
 from pathlib import Path
 
@@ -72,3 +73,36 @@ def test_ingest_directory_skips_non_pdf(tmp_path):
         with open(chunks_path) as f:
             lines = [l for l in f if l.strip()]
         assert len(lines) == 0
+
+
+def test_build_index_writes_pickle(tmp_path):
+    from scripts.standards.ingest_standards import build_index
+    chunks = [
+        {"chunk_id": "a::p1::0", "doc_name": "a.pdf", "page": 1,
+         "code_family": "DNV", "text": "cathodic protection design requirements", "source_path": "/a.pdf"},
+        {"chunk_id": "b::p1::0", "doc_name": "b.pdf", "page": 1,
+         "code_family": "API", "text": "riser design fatigue analysis", "source_path": "/b.pdf"},
+    ]
+    chunks_path = tmp_path / "chunks.jsonl"
+    with open(chunks_path, "w") as f:
+        for c in chunks:
+            f.write(json.dumps(c) + "\n")
+    build_index(str(tmp_path))
+    assert (tmp_path / "bm25.pkl").exists()
+
+
+def test_build_index_pickle_loads_correctly(tmp_path):
+    from scripts.standards.ingest_standards import build_index
+    chunks = [
+        {"chunk_id": "x::p1::0", "doc_name": "x.pdf", "page": 1,
+         "code_family": "DNV", "text": "wall thickness pressure containment", "source_path": "/x.pdf"},
+    ]
+    chunks_path = tmp_path / "chunks.jsonl"
+    with open(chunks_path, "w") as f:
+        f.write(json.dumps(chunks[0]) + "\n")
+    build_index(str(tmp_path))
+    with open(tmp_path / "bm25.pkl", "rb") as f:
+        data = pickle.load(f)
+    assert "bm25" in data
+    assert "chunks" in data
+    assert len(data["chunks"]) == 1
