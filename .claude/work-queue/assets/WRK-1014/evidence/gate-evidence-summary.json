@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmation block incomplete \u2014 decision=approved (need 'passed')"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -173,17 +173,17 @@
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "FAIL",
+      "status": "WARN",
       "ok": false,
-      "warn": false,
-      "details": "all three publish stages share commit '8c5ed55b' (likely placeholder)"
+      "warn": true,
+      "details": "plan_draft and plan_final share commit '8c5ed55b' \u2014 possible placeholder (WARN)"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[9] evidence path not found: /work"
+      "details": "stage-evidence.yaml: stage[17] evidence path not found: .claude/work-queue/assets/WRK-1014/evidence/user-review-close.yaml"
     },
     {
       "name": "Done/pending contradiction gate",

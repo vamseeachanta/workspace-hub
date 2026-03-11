@@ -28,7 +28,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: "8c5ed55b"
+    commit: "1937c244"
     documents:
       - ".claude/work-queue/assets/WRK-1014/review-synthesis.md"
     published_at: "2026-03-10T11:47:00Z"

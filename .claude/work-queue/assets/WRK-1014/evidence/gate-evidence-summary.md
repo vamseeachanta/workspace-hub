@@ -2,7 +2,7 @@
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmation block incomplete — decision=approved (need 'passed') |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
@@ -26,8 +26,8 @@
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (2 file(s) checked) |
-| Publish commit uniqueness gate | FAIL | all three publish stages share commit '8c5ed55b' (likely placeholder) |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[9] evidence path not found: /work |
+| Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '8c5ed55b' — possible placeholder (WARN) |
+| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[17] evidence path not found: .claude/work-queue/assets/WRK-1014/evidence/user-review-close.yaml |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-10T11:45:00Z, reviewed=2026-03-10T07:30:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
