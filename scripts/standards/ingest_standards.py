@@ -156,3 +156,83 @@ def build_index(out_dir: str) -> None:
         pickle.dump({"bm25": bm25, "chunks": chunks}, f)
 
     print(f"Built BM25 index over {len(chunks)} chunks → {out}/bm25.pkl")
+
+
+# ---------------------------------------------------------------------------
+# Query
+# ---------------------------------------------------------------------------
+
+def query_standards(
+    query: str,
+    index_dir: str,
+    code_family: str = None,
+    limit: int = 10,
+) -> list:
+    """
+    Query the BM25 index and return ranked chunks with page citations.
+
+    Args:
+        query: Natural-language search query.
+        index_dir: Directory containing bm25.pkl.
+        code_family: Optional code filter (DNV, API, ABS, BS, ISO, NORSOK, ASTM).
+        limit: Maximum results to return.
+
+    Returns:
+        List of chunk dicts sorted by relevance, filtered by code_family if provided.
+        Returns [] if index not found or no matches.
+    """
+    pkl_path = Path(index_dir) / "bm25.pkl"
+    if not pkl_path.exists():
+        return []
+
+    with open(pkl_path, "rb") as f:
+        data = pickle.load(f)
+
+    bm25 = data["bm25"]
+    chunks = data["chunks"]
+
+    tokens = _tokenize(query)
+    if not tokens:
+        return []
+
+    scores = bm25.get_scores(tokens)
+
+    # Pair scores with chunks, apply code_family filter, sort
+    ranked = sorted(
+        [(score, chunk) for score, chunk in zip(scores, chunks)
+         if score > 0 and (code_family is None or chunk.get("code_family") == code_family.upper())],
+        key=lambda x: x[0],
+        reverse=True,
+    )
+
+    return [chunk for _, chunk in ranked[:limit]]
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(description="Standards ingestion and index build")
+    sub = parser.add_subparsers(dest="cmd")
+
+    p_ingest = sub.add_parser("ingest", help="Extract page chunks from PDFs")
+    p_ingest.add_argument("--source", default="docs/domains/", help="Source PDF directory")
+    p_ingest.add_argument("--out", default="data/standards-index/", help="Output directory")
+
+    p_build = sub.add_parser("build-index", help="Build BM25 index from chunks.jsonl")
+    p_build.add_argument("--out", default="data/standards-index/", help="Index directory")
+
+    args = parser.parse_args()
+
+    if args.cmd == "ingest":
+        n = ingest_directory(args.source, args.out)
+        print(f"Ingested {n} chunks from {args.source} → {args.out}/chunks.jsonl")
+    elif args.cmd == "build-index":
+        build_index(args.out)
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()
