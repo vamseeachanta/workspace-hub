@@ -135,6 +135,11 @@ process_file() {
     EXT_BLOCKED+=("$row|${bstatus#active:}"); return
   fi
 
+  # Detect misplaced items: status=working but file still in pending/ (claim-item.sh was skipped).
+  if [[ "$status" == "working" && "$loc" == "pending" ]]; then
+    UNCLAIMED_ACTIVE+=("$row"); return
+  fi
+
   # Skip periodic-review items (standing + cadence) from ready-to-start buckets only.
   # Items in working/ or blocked/ always display regardless of standing+cadence.
   if [[ "$loc" == "pending" ]]; then

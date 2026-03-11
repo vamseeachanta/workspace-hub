@@ -1,0 +1,27 @@
+wrk_id: WRK-1129
+stage: 10
+executed_at: "2026-03-11T12:00:00Z"
+provider: claude
+route: B
+
+files_created:
+  - config/work-queue/chunk-sizing.yaml
+  - .claude/rules/feature-planning.md
+  - .claude/work-queue/templates/WRK-FEATURE.md
+  - specs/wrk/WRK-1127/wrk-1127-feature-first-planning.md
+
+files_modified:
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - .claude/work-queue/scripts/generate-index.py
+
+acceptance_criteria:
+  AC1: "PASS — chunk-sizing.yaml with heuristic limits committed"
+  AC2: "PASS — feature-planning.md rules file added"
+  AC3: "PASS — WRK-FEATURE.md template with Decomposition section"
+  AC4: "PASS — SKILL.md Feature Layer section added"
+  AC5: "PASS — generate-index.py supports type/phases/coordinating fields"
+
+summary: >
+  Feature layer model — chunk-sizing rules, feature WRK template, SKILL.md
+  updates, and index support for type/phases/coordinating/workflow fields.
+  All commits landed on main (553195dc).

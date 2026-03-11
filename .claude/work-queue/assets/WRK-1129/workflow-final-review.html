@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1129 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1129 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `config/work-queue/chunk-sizing.yaml` exists and is valid YAML - [ ] `.claude/rules/feature-planning.md` exists, ≤ 400 lines - [ ] `co...</summary><div class="panel"><ul>
+<li>[ ] <code>config/work-queue/chunk-sizing.yaml</code> exists and is valid YAML</li>
+<li>[ ] <code>.claude/rules/feature-planning.md</code> exists, ≤ 400 lines</li>
+<li>[ ] <code>config/work-queue/feature-template.md</code> exists with <code>## Decomposition</code> section and <code>wrk_ref</code> column</li>
+<li>[ ] <code>generate-index.py normalize()</code> has defaults for <code>type</code> and <code>phases</code></li>
+<li>[ ] <code>generate-index.py</code> active-status filters include <code>coordinating</code> (both occurrences at lines 600+665)</li>
+<li>[ ] <code>generate-index.py</code> renders <code>[feature]</code> badge on Feature WRK rows</li>
+<li>[ ] <code>generate-index.py</code> <code>CATEGORY_ORDER</code> includes <code>workflow</code> (both occurrences at lines 599+666)</li>
+<li>[ ] <code>work-queue/SKILL.md</code> has <code>## Feature Layer</code> section; line count resolved (trim or budget update)</li>
+<li>[ ] All changes committed</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1129 Plan — Final Review confirmed_by: vamsee confirmed_at: 2026-03-11T19:04:52Z decision: passed notes: &gt; Final plan approved for chi...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1129 Plan — Final Review</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-11T19:04:52Z
+decision: passed
+notes: &gt;
+  Final plan approved for child-a model artifacts (chunk-sizing.yaml,
+  feature-planning.md, feature-template.md, SKILL.md Feature Layer section,
+  generate-index.py updates). Plan is fully specified in parent feature spec.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1129, phase=claim) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1129, phase=claim)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1129/review-synthesis.md</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=vamsee, quota=available(85%)</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=claim)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Stage1 capture gate</td>
+<td>PASS</td>
+<td>stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-11T19:02:38Z</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1129 generated_at: &quot;2026-03-11T19:00:12Z&quot; reviewed_by: &quot;agent&quot; autonomy_maturity_level: &quot;L2&quot; human_steers_agents_execute: true s...</summary><div class="panel"><p>wrk_id: WRK-1129
+generated_at: "2026-03-11T19:00:12Z"
+reviewed_by: "agent"
+autonomy_maturity_level: "L2"
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created with baseline metadata.
+    evidence: .claude/work-queue/working/WRK-1129.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Resource/document intelligence pack captured.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route, priority, complexity, and workstations set.
+    evidence: .claude/work-queue/working/WRK-1129.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Draft plan and artifact generated.
+    evidence: specs/wrk/WRK-1129/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+    evidence: .claude/work-queue/assets/WRK-1129/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Multi-provider review completed.
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Final plan reviewed with gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1129/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claim evidence and active WRK set.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered canonical /work route.
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation completed under active claim.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Review artifacts generated.
+    evidence: .claude/work-queue/assets/WRK-1129/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Tests/evals completed and recorded.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/test-results.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation cross-review package complete.
+    evidence: .claude/work-queue/assets/WRK-1129/cross-review-package.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Gate verifier passed.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Follow-up disposition captured.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: New resources captured post execution.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Close package reviewed including gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Not needed in this run.
+    evidence: .claude/work-queue/assets/WRK-1129/evidence/reclaim.yaml
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting final close operation.
+    evidence: scripts/work-queue/close-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting merge/sync completion.
+    evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 17 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1129-lifecycle.html</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-synthesis.md</code></li></ul></div></details>
+</body>
+</html>

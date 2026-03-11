@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T19:23:47Z by generate-index.py -->
+<!-- Generated: 2026-03-11T20:52:02Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T19:23:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T20:52:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 558
+**Total items:** 559
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 219 |
-| working | 3 |
+| pending | 221 |
+| working | 2 |
 | blocked | 10 |
 | archived | 325 |
 
@@ -22,16 +22,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 252 |
-| medium | 257 |
-| low | 48 |
+| high | 251 |
+| medium | 258 |
+| low | 49 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 122 |
-| medium | 268 |
+| simple | 124 |
+| medium | 267 |
 | complex | 102 |
 
 ### By Category
@@ -40,12 +40,12 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 40 |
+| harness | 39 |
 | engineering | 118 |
 | data | 25 |
 | platform | 13 |
 | business | 6 |
-| maintenance | 6 |
+| maintenance | 7 |
 | personal | 4 |
 | uncategorised | 7 |
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 219 |
+| workspace-hub | 220 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 232 / 558 |
-| Plans cross-reviewed | 154 |
-| Plans approved | 176 |
+| Plans exist | 232 / 559 |
+| Plans cross-reviewed | 153 |
+| Plans approved | 175 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 558 |
+| Total captured | 559 |
 | Total archived | 325 |
-| Completion rate | 325/558 (58%) |
+| Completion rate | 325/559 (58%) |
 | Monthly rate (current month) | 91 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 219 | 27% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 61 / 221 | 28% |
+| Plans cross-reviewed | 9 | 13% |
+| Plans user-approved | 9 | 13% |
 
 ### Aging
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 91 | 2 | 8 |
-| Medium   | 97  | 1  | 1  |
-| Low      | 31  | 0  | 1  |
+| High     | 91 | 1 | 8 |
+| Medium   | 98  | 1  | 1  |
+| Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (40 items — 7 high, 27 medium, 6 low)
+### harness (39 items — 6 high, 27 medium, 6 low)
 
 #### harness / agent-teams
 
@@ -177,7 +177,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1127 | HIGH | Feature-first planning with AI agent chunking [feature] | coordinating |
-| WRK-1129 | HIGH | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working |
 | WRK-1130 | HIGH | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending |
 | WRK-1131 | HIGH | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending |
 
@@ -528,7 +527,7 @@
 |----|----------|-------|--------|
 | WRK-580 | LOW | feat(worldenergydata): map open-access journal portfolio for engineering | pending |
 
-### maintenance (6 items — 2 high, 3 medium, 1 low)
+### maintenance (7 items — 2 high, 3 medium, 2 low)
 
 #### maintenance / cleanup
 
@@ -537,6 +536,12 @@
 | WRK-661 | MEDIUM | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending |
 | WRK-1001 | MEDIUM | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending |
 | WRK-575 | LOW | Clean digitalmodel docs/modules/ stale content | pending |
+
+#### maintenance / git-hygiene
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1134 | LOW | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending |
 
 #### maintenance / refactor
 
@@ -1140,10 +1145,11 @@
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1370,6 +1376,8 @@
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | high | medium | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | high | medium | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | medium | medium | - | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | medium | simple | workspace-hub | - |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | low | simple | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1381,7 +1389,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2347,9 +2354,10 @@
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working | high | medium | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | - |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2717,7 +2725,6 @@
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | medium | workspace-hub | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working | medium | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | medium | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | medium | workspace-hub | - |
 
@@ -2979,6 +2986,7 @@
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | simple | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | complex | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | - | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | simple | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3034,6 +3042,7 @@
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | archived | medium | - | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | simple | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | simple | workspace-hub | - |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
 
 ## By Complexity
@@ -3162,6 +3171,8 @@
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | workspace-hub | - |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | medium | workspace-hub | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | workspace-hub | - |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 
@@ -3431,7 +3442,6 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working | high | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | - | - |
@@ -3547,7 +3557,7 @@
 
 ## By Computer
 
-### ace-linux-1 (167 active / 277 total)
+### ace-linux-1 (168 active / 278 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3821,10 +3831,11 @@
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | workspace-hub |
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | workspace-hub |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working | high | medium | workspace-hub |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | workspace-hub |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | workspace-hub |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | medium | - |
+| WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | workspace-hub |
+| WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4200,7 +4211,6 @@
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | WRK-1035 | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | WRK-1044 | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
-| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | - | - | WRK-1127 |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | WRK-1129 | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | WRK-1129 | - | WRK-1127 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
