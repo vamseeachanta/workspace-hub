@@ -79,7 +79,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1132/evidence/gate-evidence-summary.json
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: pending
-generated_at: '2026-03-11T22:22:06Z'
+generated_at: '2026-03-11T22:23:19Z'
 reviewed_by: orchestrator

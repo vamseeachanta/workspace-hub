@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T22:22:07Z by generate-index.py -->
+<!-- Generated: 2026-03-11T22:23:20Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T22:22:07Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T22:23:20Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 569
+**Total items:** 570
 
 ### By Status
 
@@ -16,14 +16,14 @@
 | pending | 225 |
 | working | 5 |
 | blocked | 10 |
-| archived | 328 |
+| archived | 329 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 257 |
-| medium | 262 |
+| medium | 263 |
 | low | 49 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 126 |
-| medium | 271 |
+| medium | 272 |
 | complex | 103 |
 
 ### By Category
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 237 / 569 |
-| Plans cross-reviewed | 158 |
-| Plans approved | 181 |
+| Plans exist | 237 / 570 |
+| Plans cross-reviewed | 159 |
+| Plans approved | 182 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 569 |
-| Total archived | 328 |
-| Completion rate | 328/569 (58%) |
-| Monthly rate (current month) | 94 archived |
+| Total captured | 570 |
+| Total archived | 329 |
+| Completion rate | 329/570 (58%) |
+| Monthly rate (current month) | 95 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1169,6 +1169,7 @@
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
+| WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -1766,6 +1767,7 @@
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | high | simple | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | medium | simple | workspace-hub | - |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | medium | simple | workspace-hub | - |
+| WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | medium | medium | - | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | medium | small | workspace-hub | - |
 
 ## By Repository
@@ -3036,6 +3038,7 @@
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | simple | workspace-hub | - |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | simple | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | complex | workspace-hub | - |
+| WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | simple | workspace-hub | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | small | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | simple | workspace-hub | - |
@@ -3503,6 +3506,7 @@
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | workspace-hub | - |
+| WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 
@@ -3616,7 +3620,7 @@
 
 ## By Computer
 
-### ace-linux-1 (175 active / 287 total)
+### ace-linux-1 (175 active / 288 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3900,6 +3904,7 @@
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | workspace-hub |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | workspace-hub |
+| WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | medium | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | workspace-hub |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | workspace-hub |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | workspace-hub |
