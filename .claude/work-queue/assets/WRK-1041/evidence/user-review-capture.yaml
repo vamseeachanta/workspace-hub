@@ -1,0 +1,10 @@
+wrk_id: WRK-1041
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-10T00:00:00Z
+notes: >
+  Refined scope: maintain exactly 1 lifecycle HTML + 1 plan HTML per WRK item;
+  auto-refresh or on-demand refresh so latest changes are always visible.
+  Avoid multiple copies. Simpler than original capture — no new /work html command needed
+  if auto-refresh handles it; on-demand reload via a simple mechanism is sufficient.
