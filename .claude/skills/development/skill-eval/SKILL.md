@@ -121,6 +121,18 @@ uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --category d
 uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --summary-only
 ```
 
+## Audit Scripts
+
+Run these scripts as part of skill evaluation to catch structural violations and coverage gaps:
+
+```bash
+# Check for structural violations (README presence, word count, description length, XML tags)
+bash scripts/skills/audit-skill-violations.sh
+
+# Check which skills lack any script call reference
+bash scripts/skills/validate-skills.sh
+```
+
 ## Best Practices
 
 - Run after creating new skills with `/skill-creator` to validate structure

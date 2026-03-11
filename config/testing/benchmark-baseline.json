@@ -1,4 +1,11 @@
 {
-  "assetutilities::test_bench_keulegan_carpenter_number": 1.6592865153882175e-07,
-  "assetutilities::test_bench_soil_interaction_fatigue_factor": 3.2285600015164355e-06
+  "assetutilities::test_bench_keulegan_carpenter_number": 1.7107575313223399e-07,
+  "assetutilities::test_bench_soil_interaction_fatigue_factor": 3.1970121494534464e-06,
+  "digitalmodel::test_bench_cp_abs_gn_offshore": 8.47869406089636e-06,
+  "digitalmodel::test_bench_cp_abs_gn_ships": 2.2137132014902494e-05,
+  "digitalmodel::test_bench_cp_dnv_rp_b401": 1.41627855399058e-05,
+  "digitalmodel::test_bench_cp_dnv_rp_f103": 5.628443712507809e-05,
+  "digitalmodel::test_bench_wall_thickness_dnv": 2.1726777456977237e-05,
+  "worldenergydata::test_bench_basin_production_loader": 0.0015759555555026358,
+  "worldenergydata::test_bench_state_production_loader": 0.0028000415191941318
 }

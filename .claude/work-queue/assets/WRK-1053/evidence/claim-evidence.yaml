@@ -1,11 +1,11 @@
-claim_date: "2026-03-11T00:53:48Z"
+claim_date: "2026-03-11T00:52:29Z"
 wrk_id: "WRK-1053"
-route: ""
+route: "B"
 orchestrator: "claude"
-best_fit_provider: "unknown"
+best_fit_provider: "claude"
 alternate_provider: ""
 metadata_version: "1"
-session_owner: "unknown"
+session_owner: "vamsee"
 agent_fit:
   capability_match: "undocumented"
   rationale: "Route ? / execution_workstations=unknown / provider=unknown"
@@ -14,8 +14,8 @@ blocking_state:
   blocked_by: []
   notes: ""
 quota_snapshot:
-  timestamp: "2026-03-11T00:53:48Z"
+  timestamp: "2026-03-11T00:52:29Z"
   provider: "unknown"
   status: "available"
-  pct_remaining: null
+  pct_remaining: 85
   source: "config/ai-tools/agent-quota-latest.json"

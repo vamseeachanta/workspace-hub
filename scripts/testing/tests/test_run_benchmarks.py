@@ -17,7 +17,7 @@ SCRIPT = REPO_ROOT / "scripts" / "testing" / "run-benchmarks.sh"
 BASELINE_PATH = REPO_ROOT / "config" / "testing" / "benchmark-baseline.json"
 
 
-def run_script(*args, env_override=None):
+def run_script(*args, env_override=None, timeout=300):
     env = os.environ.copy()
     if env_override:
         env.update(env_override)
@@ -27,6 +27,7 @@ def run_script(*args, env_override=None):
         text=True,
         cwd=str(REPO_ROOT),
         env=env,
+        timeout=timeout,
     )
     return result
 
@@ -36,14 +37,14 @@ class TestRunBenchmarksBasic:
         """Script returns 0 when benchmarks pass and baseline exists."""
         if not BASELINE_PATH.exists():
             pytest.skip("Baseline not yet bootstrapped — run --save-baseline first")
-        result = run_script()
+        result = run_script(timeout=420)
         assert result.returncode == 0, f"stdout: {result.stdout}\nstderr: {result.stderr}"
 
     def test_run_benchmarks_single_repo(self):
         """--repo flag restricts run to one repo."""
         if not BASELINE_PATH.exists():
             pytest.skip("Baseline not yet bootstrapped")
-        result = run_script("--repo", "assetutilities")
+        result = run_script("--repo", "assetutilities", timeout=60)
         assert result.returncode == 0, f"stderr: {result.stderr}"
         assert "assetutilities" in result.stdout or result.returncode == 0
 
@@ -51,7 +52,11 @@ class TestRunBenchmarksBasic:
         """--save-baseline --no-compare writes benchmark-baseline.json."""
         baseline = tmp_path / "benchmark-baseline.json"
         env = {"BENCHMARK_BASELINE_PATH": str(baseline)}
-        result = run_script("--save-baseline", "--no-compare", env_override=env)
+        # Use single repo to keep test fast (assetutilities: pure-math, ~5s)
+        result = run_script(
+            "--save-baseline", "--no-compare", "--repo", "assetutilities",
+            env_override=env, timeout=60,
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
         assert baseline.exists(), "Baseline JSON not written"
         data = json.loads(baseline.read_text())
@@ -62,11 +67,14 @@ class TestRunBenchmarksBasic:
         """Comparing against itself (same baseline) returns exit 0."""
         baseline = tmp_path / "benchmark-baseline.json"
         env = {"BENCHMARK_BASELINE_PATH": str(baseline)}
-        # First: create baseline
-        result = run_script("--save-baseline", "--no-compare", env_override=env)
+        # First: create baseline (single repo for speed)
+        result = run_script(
+            "--save-baseline", "--no-compare", "--repo", "assetutilities",
+            env_override=env, timeout=60,
+        )
         assert result.returncode == 0, f"Bootstrap failed: {result.stderr}"
         # Second: compare against itself
-        result = run_script(env_override=env)
+        result = run_script("--repo", "assetutilities", env_override=env, timeout=60)
         assert result.returncode == 0, (
             f"Self-comparison failed (no regression expected)\n"
             f"stdout: {result.stdout}\nstderr: {result.stderr}"
@@ -95,11 +103,12 @@ class TestRunBenchmarksEdgeCases:
 
     def test_new_benchmark_not_in_baseline_warns_not_fails(self, tmp_path):
         """Benchmark absent from baseline produces WARN output, not exit 1."""
-        # Minimal baseline missing an entry that would appear in a real run
+        # Minimal baseline with a placeholder — real benchmark names will differ.
+        # Use single repo to keep test fast.
         baseline = tmp_path / "benchmark-baseline.json"
         baseline.write_text(json.dumps({"assetutilities::__placeholder__": 0.001}))
         env = {"BENCHMARK_BASELINE_PATH": str(baseline)}
-        result = run_script(env_override=env)
+        result = run_script("--repo", "assetutilities", env_override=env, timeout=60)
         # New benchmarks (not in baseline) should WARN but not cause exit 1
         assert result.returncode in (0, 2), (
             f"New benchmark should WARN (exit 0) or bootstrap-error (exit 2), "

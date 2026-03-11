@@ -1,13 +1,14 @@
 wrk_id: WRK-1053
-stage_3:
-  completed_at: 2026-03-10T00:00:00Z
-  complexity_confirmed: medium
-  route: B
-  category: harness/skills
-  blockers: []
-  notes: "Resource intelligence confirms 2 scripts to create, 4-5 skills to update. No blockers."
-stage_4:
-  completed_at: 2026-03-10T00:00:00Z
-  plan_written: true
-  plan_location: pending/WRK-1053.md#plan
-  notes: "Inline Route B plan with phases and test strategy"
+stages:
+  - stage: 3
+    completed_at: 2026-03-10T00:00:00Z
+    complexity_confirmed: medium
+    route: B
+    category: harness/skills
+    blockers: []
+    notes: "Resource intelligence confirms 2 scripts to create, 4-5 skills to update. No blockers."
+  - stage: 4
+    completed_at: 2026-03-10T00:00:00Z
+    plan_written: true
+    plan_location: pending/WRK-1053.md#plan
+    notes: "Inline Route B plan with phases and test strategy"

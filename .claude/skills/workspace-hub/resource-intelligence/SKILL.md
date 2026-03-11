@@ -256,8 +256,7 @@ Read `references/source-registry.md` before adding or changing source-root mappi
 
 ### Step-by-Step for Authors
 
-1. **Scaffold**: `bash scripts/validate-resource-pack.sh WRK-NNN` (reads `init-resource-pack.sh` output)
-   or run `bash .claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh WRK-NNN`
+1. **Scaffold**: `bash .claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh WRK-NNN`
 2. **Mine**: follow the Resource Mining Checklist and Category→Mining Map for `target_repos`
 3. **Fill artifacts**: `resource-pack.md`, `sources.md`, `resources.yaml`, `resource-intelligence-summary.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`
 4. **Fill gate artifact**: `evidence/resource-intelligence.yaml` with `skills.core_used ≥3`, `completion_status`, `top_p1_gaps`

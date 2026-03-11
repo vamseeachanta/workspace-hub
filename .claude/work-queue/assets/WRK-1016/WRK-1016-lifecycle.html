@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-1053 Lifecycle — chore(skills): convert deterministic skill loops to scripts </title>
+  <title>WRK-1016 Lifecycle — chore(harness): review all settings.json and ecosystem confi</title>
   <style>
 :root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
   --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
@@ -113,15 +113,15 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker &middot; Route  &middot; harness</p>
-    <h1>WRK-1053 — chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path</h1>
+    <p class="eyebrow">Lifecycle Tracker &middot; Route B &middot; harness</p>
+    <h1>WRK-1016 — chore(harness): review all settings.json and ecosystem configs for peak productivity</h1>
     <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
       <div class="pill"><strong>Priority</strong>medium</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
       <div class="pill"><strong>Orchestrator</strong>claude</div>
       <div class="pill"><strong>Category</strong>harness</div>
-      <div class="pill"><strong>Created</strong>2026-03-09</div>
+      <div class="pill"><strong>Created</strong>2026-03-05</div>
     </div>
   </div>
 </header>
@@ -129,11 +129,11 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-pending" title="01 Capture">1</a><a href="#s2" class="sc sc-pending" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-pending" title="03 Triage">3</a><a href="#s4" class="sc sc-pending" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-pending" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-pending" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-pending" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
 
-<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>continue_to_planning</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>3</div></div></div>
+<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>complete</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>6</div></div></div>
 
 <div class="content">
 
@@ -145,14 +145,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">chore(harness): review all settings.json and ecosystem configs for peak productivity</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1016.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s2">
@@ -163,14 +163,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">complete</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s3">
@@ -181,14 +181,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s4">
@@ -199,14 +199,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ Inventory of all settings files across hub + tier-1 repos (table: file, repo, last-modified, size)</li><li>☐ Permissions audit: `allow`/`deny` lists reviewed; gaps and risks documented</li><li>☐ Hooks audit: latency measured per hook; slow hooks flagged (&gt;2s threshold)</li><li>☐ Agent harness file compliance: CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md ≤20 lines each</li><li>☐ Plugin gap analysis: any official plugins from `anthropics/claude-plugins-official` not yet installed that would benefit this ecosystem</li><li>☐ `pyproject.toml` tool config reviewed across tier-1 repos; missing best-practice defaults proposed</li><li>☐ At least 5 concrete improvements applied (not just documented)</li><li>☐ Changes committed and INDEX regenerated</li><li>☐ Comprehensive-learning Phase 10 (or a new nightly section) captures the canonical settings baseline for future drift detection</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>**Route B — Steps + test strategy**</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1016.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -217,14 +217,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -235,14 +235,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -253,14 +253,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">
@@ -271,14 +271,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s9">
@@ -289,14 +289,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s10">
@@ -307,14 +307,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Execution record</div><p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">
@@ -325,14 +325,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Gate evidence</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -343,14 +343,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Stage completed.</p>
   </div>
 </section>
 <section class="stage-section" id="s13">
@@ -361,14 +361,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Stage completed.</p>
   </div>
 </section>
 <section class="stage-section" id="s14">
@@ -379,14 +379,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Gate evidence verified.</p>
   </div>
 </section>
 <section class="stage-section" id="s15">
@@ -397,14 +397,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>
   </div>
 </section>
 <section class="stage-section" id="s16">
@@ -415,14 +415,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Resource intelligence updated.</p>
   </div>
 </section>
 <section class="stage-section" id="s17">
@@ -433,14 +433,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s18">
@@ -451,14 +451,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-na">na</span>
       <span class="badge b-agent">task_agent</span>
       
       <span class="chevron">▼</span>
     </div>
   </div>
   <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Not applicable for this WRK.</p>
   </div>
 </section>
 <section class="stage-section" id="s19">

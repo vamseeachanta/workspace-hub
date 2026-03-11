@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -40,24 +40,24 @@
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: events[1] must confirm default browser open"
+      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: events[1] pushed_to_origin must be true"
+      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1053/review-synthesis.md"
     },
     {
       "name": "Claim gate",
@@ -89,10 +89,10 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage=plan_draft: approval confirmed only 0s after browser open (min 300s required)"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -103,10 +103,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",

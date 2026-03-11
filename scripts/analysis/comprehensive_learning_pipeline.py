@@ -598,19 +598,51 @@ def phase_9_skill_coverage_audit():
     # Only run on Sundays
     if datetime.now().weekday() != 6:
         return "SKIPPED", "Not Sunday"
-        
+
     print("--- Phase 9: Skill Coverage Audit ---")
-    # Identify manual workflows (multi-step tool sequences)
-    # Read session signals for tool call sequences
-    signals_files = glob.glob(os.path.join(STATE_DIR, "session-signals", "*.jsonl"))
-    
-    # We want tool sequences that took > 5 calls and happened >= 3 times
-    # and don't match an existing skill invocation
-    # (In reality, d.get('signals').get('skill_invocations') would be non-empty)
-    
-    gaps_found = 0
-    # Placeholder for actual logic which requires richer tool trace
-    return "DONE", f"Gaps found: {gaps_found}"
+    scripts_dir = os.path.join(WS_HUB, "scripts", "skills")
+    skill_coverage_script = os.path.join(scripts_dir, "skill-coverage-audit.sh")
+    id_candidates_script = os.path.join(scripts_dir, "identify-script-candidates.sh")
+
+    results = []
+
+    # Run skill-coverage-audit.sh
+    if os.path.exists(skill_coverage_script):
+        try:
+            proc = subprocess.run(
+                ["bash", skill_coverage_script],
+                capture_output=True, text=True, timeout=120
+            )
+            if proc.returncode == 1:
+                # Gaps found — parse gaps_total from output
+                match = re.search(r'^gaps_total:\s*(\d+)', proc.stdout, re.MULTILINE)
+                gaps = int(match.group(1)) if match else "?"
+                results.append(f"skill-coverage-audit: {gaps} gap(s)")
+            elif proc.returncode == 0:
+                results.append("skill-coverage-audit: clean")
+            else:
+                results.append(f"skill-coverage-audit: error (exit {proc.returncode})")
+        except Exception as e:
+            results.append(f"skill-coverage-audit: exception ({e})")
+    else:
+        results.append("skill-coverage-audit: script not found")
+
+    # Run identify-script-candidates.sh
+    if os.path.exists(id_candidates_script):
+        try:
+            proc = subprocess.run(
+                ["bash", id_candidates_script],
+                capture_output=True, text=True, timeout=120
+            )
+            results.append(
+                f"identify-script-candidates: exit {proc.returncode}"
+            )
+        except Exception as e:
+            results.append(f"identify-script-candidates: exception ({e})")
+    else:
+        results.append("identify-script-candidates: script not found")
+
+    return "DONE", " | ".join(results)
 
 if __name__ == "__main__":
     import sys

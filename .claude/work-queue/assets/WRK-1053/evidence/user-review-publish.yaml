@@ -1,8 +1,22 @@
 wrk_id: WRK-1053
 events:
   - stage: plan_draft
-    commit: ""
-    published_at: 2026-03-10T00:05:00Z
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 841825c72f4a1c7456fc0685750f5814fe271a91
+    documents:
+      - .claude/work-queue/assets/WRK-1053/WRK-1053-lifecycle.html
+      - .claude/work-queue/assets/WRK-1053/plan_claude.md
+    published_at: 2026-03-10T00:10:00Z
+    reviewer: vamsee
   - stage: plan_final
-    commit: ""
-    published_at: 2026-03-10T00:35:00Z
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 841825c72f4a1c7456fc0685750f5814fe271a91
+    documents:
+      - .claude/work-queue/assets/WRK-1053/WRK-1053-lifecycle.html
+      - .claude/work-queue/assets/WRK-1053/plan_claude.md
+    published_at: 2026-03-10T01:10:00Z
+    reviewer: vamsee

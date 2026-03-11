@@ -1,0 +1,110 @@
+wrk_id: WRK-1016
+stage: 2
+completion_status: complete
+generated_at: "2026-03-10"
+
+# --- Inventory ---------------------------------------------------------
+settings_files:
+  hub:
+    - path: .claude/settings.json
+      hooks: 4
+      permissions_allow: 26
+      permissions_deny: 4
+    - path: .claude/global/settings.json
+  submodules_with_settings:
+    - aceengineer-admin
+    - aceengineer-website
+    - frontierdeepwater
+    - digitalmodel
+    - rock-oil-field
+    - sabithaandkrishnaestates
+    - saipem
+    - sd-work
+    - seanation
+    - simpledigitalmarketing
+    - achantas-data
+    - client_projects
+    - doris
+    - hobbies
+    - teamresumes
+    - worldenergydata
+    - OGManufacturing
+    - pdf-large-reader
+
+agent_harness_files:
+  hub_root:
+    - { file: CLAUDE.md, lines: 16, compliant: true }
+    - { file: CODEX.md, lines: 13, compliant: true }
+    - { file: GEMINI.md, lines: 13, compliant: true }
+    - { file: .claude/global/CLAUDE.md, lines: 35, compliant: false }
+  tier1_repos:
+    - { repo: assetutilities, file: CLAUDE.md, lines: 31, compliant: false }
+    - { repo: digitalmodel, file: CLAUDE.md, lines: 31, compliant: false }
+    - { repo: worldenergydata, file: CLAUDE.md, lines: 54, compliant: false }
+    - { repo: assethold, file: CLAUDE.md, lines: 31, compliant: false }
+
+pre_commit_configs:
+  - workspace-hub (hub)
+  - digitalmodel
+  - saipem
+  - worldenergydata
+  - OGManufacturing
+  - acma-projects
+  - assethold
+  - assetutilities
+  - CAD-DEVELOPMENTS
+
+hooks_dir: .claude/hooks/
+hooks_count: 16  # files in hooks dir including scripts
+
+vscode_dirs:
+  - workspace-hub (hub)
+  - digitalmodel
+  - simpledigitalmarketing
+  - client_projects
+  - doris
+  - teamresumes
+  - acma-projects
+  - assethold
+  - assetutilities
+
+pyproject_toml_count: 20  # repos with pyproject.toml
+
+# --- Key findings -------------------------------------------------------
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - session-start
+    - claude-md-improver
+    - comprehensive-learning
+  relevant_scripts:
+    - .claude/hooks/  # all hook scripts
+    - scripts/review/cross-review.sh
+    - scripts/work-queue/verify-gate-evidence.py
+
+risks:
+  - id: R1
+    desc: ".claude/global/CLAUDE.md is 35 lines (>20 line limit)"
+    severity: high
+  - id: R2
+    desc: "Tier-1 CLAUDE.md files range 31-54 lines (>20 line limit)"
+    severity: high
+  - id: R3
+    desc: "Hub settings.json has only 4 deny rules — may be under-restricting risky cmds"
+    severity: medium
+  - id: R4
+    desc: "Hook latency not yet measured — some hooks may add unnecessary overhead"
+    severity: medium
+  - id: R5
+    desc: "pyproject.toml tool sections vary widely across repos — no canonical baseline"
+    severity: low
+
+opportunities:
+  - Slim .claude/global/CLAUDE.md to ≤20 lines (migrate excess to docs/skills)
+  - Slim tier-1 CLAUDE.md files to ≤20 lines
+  - Measure hook latency and flag slow hooks (>2s threshold)
+  - Review deny list for risky bash patterns not currently blocked
+  - Establish pyproject.toml canonical tool config for tier-1 repos
+  - Check plugin gaps vs anthropics/claude-plugins-official
