@@ -1,0 +1,18 @@
+wrk_id: WRK-118
+stage: 2
+stage_name: Resource Intelligence
+created_at: "2026-02-18T08:00:00Z"
+notes: >
+  Legacy resource intelligence — reconstructed for gate compliance.
+  Item predates formal resource-intelligence.yaml format.
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - cross-review
+    - agent-delegation
+  optional_used: []
+context_summary: >
+  AI agent utilization strategy. Multiple agents available (Claude, Codex, Gemini).
+  No blocking gaps — proceed to planning.

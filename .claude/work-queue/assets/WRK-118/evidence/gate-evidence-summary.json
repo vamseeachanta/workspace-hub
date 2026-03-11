@@ -26,10 +26,10 @@
     },
     {
       "name": "Resource-intelligence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence evidence absent (legacy item \u2014 WARN)"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
     },
     {
       "name": "Activation gate",
@@ -110,17 +110,17 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     },
     {
       "name": "Approval ordering gate",
@@ -180,10 +180,10 @@
     },
     {
       "name": "Stage evidence paths gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[16] evidence path not found: .claude/work-queue/assets/WRK-118/evidence/user-review-close.yaml"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     }
   ]
 }
