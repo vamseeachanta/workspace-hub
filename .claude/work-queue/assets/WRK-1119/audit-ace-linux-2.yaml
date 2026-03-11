@@ -1,0 +1,416 @@
+- prefix: ls
+  count: 331
+  example_command: ls /mnt/workspace-hub 2>&1
+  suggested_allow_pattern: "Bash(ls:*)"
+- prefix: ssh
+  count: 233
+  example_command: "ssh ace-linux-1 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \"---LOG---\" && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1'"
+  suggested_allow_pattern: "Bash(ssh:*)"
+- prefix: find
+  count: 176
+  example_command: "find /mnt/workspace-hub/.claude/work-queue/ -name 'WRK-61[1-4]*' 2>/dev/null"
+  suggested_allow_pattern: "Bash(find:*)"
+- prefix: grep
+  count: 120
+  example_command: "grep -rl \"CAD-DEVELOPMENTS\|cad-dev\|FEA\|hull\|mesh\|calculix\|freecad\|fcstd\" /mnt/workspace-hub/.claude/work-queue/pending/ 2>/dev/null | sort"
+  suggested_allow_pattern: "Bash(grep:*)"
+- prefix: cat
+  count: 85
+  example_command: cat ~/.local/share/FreeCAD/Mod/Ship/freecad/ship/shipCreateShip/Tools.py 2>/dev/null | head -80
+  suggested_allow_pattern: "Bash(cat:*)"
+- prefix: python3
+  count: 43
+  example_command: "python3 -c \"import OCC; print('pythonOCC available')\" 2>&1; pip3 show pythonocc-core 2>/dev/null | head -3"
+  suggested_allow_pattern: "Bash(python3:*)"
+- prefix: "#"
+  count: 42
+  example_command: "# Check if Ship workbench exists as a FreeCAD Mod"
+  suggested_allow_pattern: "Bash(#:*)"
+- prefix: journalctl
+  count: 36
+  example_command: "journalctl --user -u org.gnome.Shell -b --no-pager 2>/dev/null | grep -i -E 'dock|dash|error' | tail -20"
+  suggested_allow_pattern: "Bash(journalctl:*)"
+- prefix: which
+  count: 26
+  example_command: which nmap arp-scan avahi-browse 2>&1
+  suggested_allow_pattern: "Bash(which:*)"
+- prefix: sudo
+  count: 24
+  example_command: sudo ssh-keyscan -H ace-linux-1 2>/dev/null | sudo tee -a /root/.ssh/known_hosts
+  suggested_allow_pattern: "Bash(sudo:*)"
+- prefix: dpkg
+  count: 21
+  example_command: "dpkg -l | grep -E 'gnome-shell|ubuntu-desktop|kde-plasma|xfce4-panel|cinnamon' 2>/dev/null | head -20"
+  suggested_allow_pattern: "Bash(dpkg:*)"
+- prefix: head
+  count: 19
+  example_command: head -10 /mnt/workspace-hub/.claude/work-queue/pending/WRK-608.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-609.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-616.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-630.md 2>/dev/null
+  suggested_allow_pattern: "Bash(head:*)"
+- prefix: mkdir
+  count: 18
+  example_command: mkdir -p /mnt/workspace-hub/CAD-DEVELOPMENTS/specs/hulls
+  suggested_allow_pattern: "Bash(mkdir:*)"
+- prefix: echo
+  count: 17
+  example_command: "echo \"Desktop: $XDG_CURRENT_DESKTOP\" && echo \"Session: $XDG_SESSION_TYPE\" && echo \"Display server: $WAYLAND_DISPLAY $DISPLAY\""
+  suggested_allow_pattern: "Bash(echo:*)"
+- prefix: git status
+  count: 16
+  example_command: git status
+  suggested_allow_pattern: "Bash(git status:*)"
+- prefix: cd
+  count: 15
+  example_command: "cd /mnt/workspace-hub/CAD-DEVELOPMENTS && python3 -c \""
+  suggested_allow_pattern: "Bash(cd:*)"
+- prefix: systemctl
+  count: 15
+  example_command: systemctl status gdm 2>&1 | head -30
+  suggested_allow_pattern: "Bash(systemctl:*)"
+- prefix: wc
+  count: 14
+  example_command: wc -l /mnt/workspace-hub/scripts/setup/weekly-engineering-update.sh /mnt/workspace-hub/scripts/setup/setup-engineering-update-cron.sh /mnt/workspace-hub/scripts/setup/engineering-suite-install.sh
+  suggested_allow_pattern: "Bash(wc:*)"
+- prefix: python3 -m
+  count: 14
+  example_command: python3 -m pytest tests/test_fcstd_parser.py -v --tb=short 2>&1 | head -30
+  suggested_allow_pattern: "Bash(python3 -m:*)"
+- prefix: curl
+  count: 10
+  example_command: "curl -fsSL https://tailscale.com/install.sh | sh 2>&1"
+  suggested_allow_pattern: "Bash(curl:*)"
+- prefix: pip3
+  count: 8
+  example_command: "pip3 list --user 2>/dev/null | grep -iE 'meshio|pyfoam|pyvista|gmsh'"
+  suggested_allow_pattern: "Bash(pip3:*)"
+- prefix: bash
+  count: 8
+  example_command: "bash -n /mnt/workspace-hub/scripts/setup/weekly-engineering-update.sh && echo \"weekly-engineering-update.sh: syntax OK\""
+  suggested_allow_pattern: "Bash(bash:*)"
+- prefix: gh
+  count: 8
+  example_command: "gh api repos/BEMRosetta/BEMRosetta/releases/latest --jq '.tag_name, .name, (.assets[] | \"\(.name) \(.browser_download_url)\")' 2>&1"
+  suggested_allow_pattern: "Bash(gh:*)"
+- prefix: gmsh
+  count: 7
+  example_command: "gmsh /tmp/gmsh-validation/test.geo -2 -format msh22 -o /tmp/gmsh-validation/test_v22.msh -v 5 2>&1 | head -20; echo \"---\"; ls -la /tmp/gmsh-validation/ 2>&1"
+  suggested_allow_pattern: "Bash(gmsh:*)"
+- prefix: xrandr
+  count: 6
+  example_command: xrandr --query 2>&1 | head -10
+  suggested_allow_pattern: "Bash(xrandr:*)"
+- prefix: hostname
+  count: 6
+  example_command: hostname
+  suggested_allow_pattern: "Bash(hostname:*)"
+- prefix: chmod
+  count: 6
+  example_command: chmod +x /mnt/workspace-hub/scripts/setup/weekly-engineering-update.sh /mnt/workspace-hub/scripts/setup/setup-engineering-update-cron.sh
+  suggested_allow_pattern: "Bash(chmod:*)"
+- prefix: rm
+  count: 6
+  example_command: rm /mnt/workspace-hub/.git/index.lock
+  suggested_allow_pattern: "Bash(rm:*)"
+- prefix: "DISPLAY=:1"
+  count: 6
+  example_command: "DISPLAY=:1 pvbatch /tmp/paraview-validation/test_skill.py 2>&1 | head -80"
+  suggested_allow_pattern: "Bash(DISPLAY=:1:*)"
+- prefix: gsettings
+  count: 5
+  example_command: gsettings get org.gnome.shell.extensions.dash-to-dock dock-fixed 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock autohide 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock intellihide 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock dock-position 2>/dev/null
+  suggested_allow_pattern: "Bash(gsettings:*)"
+- prefix: snap
+  count: 5
+  example_command: snap list 2>/dev/null | grep -i blender
+  suggested_allow_pattern: "Bash(snap:*)"
+- prefix: git diff
+  count: 5
+  example_command: git diff
+  suggested_allow_pattern: "Bash(git diff:*)"
+- prefix: mv
+  count: 5
+  example_command: mv /mnt/workspace-hub/.claude/work-queue/pending/WRK-289.md /mnt/workspace-hub/.claude/work-queue/working/WRK-289.md
+  suggested_allow_pattern: "Bash(mv:*)"
+- prefix: blender
+  count: 5
+  example_command: blender --background --python /tmp/blender-validation/test_skill.py -- --output-dir /tmp/blender-validation 2>&1
+  suggested_allow_pattern: "Bash(blender:*)"
+- prefix: pvbatch
+  count: 5
+  example_command: pvbatch --force-offscreen-rendering /tmp/paraview-validation/test_skill.py 2>&1
+  suggested_allow_pattern: "Bash(pvbatch:*)"
+- prefix: npm
+  count: 5
+  example_command: npm config get prefix
+  suggested_allow_pattern: "Bash(npm:*)"
+- prefix: mount
+  count: 5
+  example_command: "mount | grep -i ssh 2>&1; echo \"---\"; mount | grep -i fuse 2>&1; echo \"---\"; mount | grep /mnt 2>&1"
+  suggested_allow_pattern: "Bash(mount:*)"
+- prefix: sleep
+  count: 5
+  example_command: sleep 2 && cat /tmp/claude-1000/-mnt-workspace-hub/tasks/b3c7b19.output
+  suggested_allow_pattern: "Bash(sleep:*)"
+- prefix: gnome-extensions
+  count: 4
+  example_command: gnome-extensions show ubuntu-dock@ubuntu.com 2>/dev/null
+  suggested_allow_pattern: "Bash(gnome-extensions:*)"
+- prefix: git log
+  count: 4
+  example_command: git log --oneline -5
+  suggested_allow_pattern: "Bash(git log:*)"
+- prefix: for
+  count: 4
+  example_command: for f in geometry/hull/*.FCStd; do
+  suggested_allow_pattern: "Bash(for:*)"
+- prefix: tail
+  count: 4
+  example_command: tail -3 /tmp/openfoam-validation/cavity/log.icoFoam | cat -A
+  suggested_allow_pattern: "Bash(tail:*)"
+- prefix: pip
+  count: 4
+  example_command: pip install gmsh 2>&1 | tail -5
+  suggested_allow_pattern: "Bash(pip:*)"
+- prefix: export
+  count: 4
+  example_command: "export PATH=\"$HOME/.npm-global/bin:$PATH\" && which claude"
+  suggested_allow_pattern: "Bash(export:*)"
+- prefix: source
+  count: 4
+  example_command: "source /usr/lib/openfoam/openfoam2312/etc/bashrc 2>/dev/null && cp -r \"$FOAM_TUTORIALS/incompressible/simpleFoam/pitzDaily\" /tmp/of_test && cd /tmp/of_test && blockMesh > /dev/null 2>&1 && simpleFoam -latestTime 2>&1 | tail -5 && echo \"OpenFOAM smoke test OK\""
+  suggested_allow_pattern: "Bash(source:*)"
+- prefix: apt
+  count: 3
+  example_command: apt list --installed 2>/dev/null | grep -i dbusmenu
+  suggested_allow_pattern: "Bash(apt:*)"
+- prefix: ip
+  count: 3
+  example_command: "ip -4 addr show | grep 'inet ' | grep -v '127.0.0.1'"
+  suggested_allow_pattern: "Bash(ip:*)"
+- prefix: ping
+  count: 3
+  example_command: ping -c 1 -W 1 192.168.1.169 2>&1 | tail -2 & ping -c 1 -W 1 192.168.1.197 2>&1 | tail -2 & wait
+  suggested_allow_pattern: "Bash(ping:*)"
+- prefix: id
+  count: 3
+  example_command: id
+  suggested_allow_pattern: "Bash(id:*)"
+- prefix: freecadcmd
+  count: 3
+  example_command: "freecadcmd -c \""
+  suggested_allow_pattern: "Bash(freecadcmd:*)"
+- prefix: touch
+  count: 3
+  example_command: touch /mnt/workspace-hub/.claude/work-queue/pending/WRK-352.md
+  suggested_allow_pattern: "Bash(touch:*)"
+- prefix: ps
+  count: 3
+  example_command: "ps aux | grep -E '[X]org|[X]wayland|[g]dm' 2>/dev/null"
+  suggested_allow_pattern: "Bash(ps:*)"
+- prefix: ss
+  count: 3
+  example_command: "ss -tlnp | grep 5900 2>/dev/null; echo \"---\"; pgrep -a x11vnc 2>/dev/null || echo \"no x11vnc processes\""
+  suggested_allow_pattern: "Bash(ss:*)"
+- prefix: nvidia-smi
+  count: 3
+  example_command: nvidia-smi 2>&1
+  suggested_allow_pattern: "Bash(nvidia-smi:*)"
+- prefix: scp
+  count: 3
+  example_command: "scp /tmp/ace-linux-1-nvidia-guardrails.sh ace-linux-1:/tmp/nvidia-guardrails.sh 2>&1"
+  suggested_allow_pattern: "Bash(scp:*)"
+- prefix: git
+  count: 3
+  example_command: git remote -v
+  suggested_allow_pattern: "Bash(git:*)"
+- prefix: code
+  count: 2
+  example_command: code /mnt/workspace-hub/docs/research/open-source-fea-survey.md
+  suggested_allow_pattern: "Bash(code:*)"
+- prefix: crontab
+  count: 2
+  example_command: "crontab -l 2>&1; echo \"---\"; sudo crontab -l 2>&1 || echo \"no sudo access for root crontab\""
+  suggested_allow_pattern: "Bash(crontab:*)"
+- prefix: file
+  count: 2
+  example_command: file /usr/bin/gmsh; head -5 /usr/bin/gmsh 2>/dev/null; which python python3 2>&1
+  suggested_allow_pattern: "Bash(file:*)"
+- prefix: loginctl
+  count: 2
+  example_command: "loginctl list-sessions --no-legend 2>/dev/null; echo \"---\"; for s in $(loginctl list-sessions --no-legend | awk '{print $1}'); do echo \"Session $s:\"; loginctl show-session \"$s\" -p Display -p Type -p State -p User -p Seat 2>/dev/null; echo; done"
+  suggested_allow_pattern: "Bash(loginctl:*)"
+- prefix: apt-cache
+  count: 2
+  example_command: apt-cache policy nvidia-driver-580-open nvidia-driver-590-open 2>&1
+  suggested_allow_pattern: "Bash(apt-cache:*)"
+- prefix: sshfs
+  count: 2
+  example_command: "sshfs ace-linux-1:/mnt/local-analysis/workspace-hub /mnt/workspace-hub -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3 2>&1"
+  suggested_allow_pattern: "Bash(sshfs:*)"
+- prefix: ssh-keygen
+  count: 2
+  example_command: ssh-keygen -F ace-linux-1 2>&1 | head -3
+  suggested_allow_pattern: "Bash(ssh-keygen:*)"
+- prefix: lspci
+  count: 2
+  example_command: "lspci | grep -iE 'vga|3d|display' 2>/dev/null; echo \"---\"; ls /dev/dri/ 2>/dev/null || echo \"No /dev/dri directory\"; echo \"---\"; lsmod | grep -iE 'i915|amdgpu|nouveau|nvidia' 2>/dev/null || echo \"No GPU kernel modules loaded\""
+  suggested_allow_pattern: "Bash(lspci:*)"
+- prefix: lsmod
+  count: 2
+  example_command: "lsmod | grep -iE 'nvidia|nouveau|amdgpu|radeon|i915|xe' 2>/dev/null; echo \"---\"; cat /proc/driver/nvidia/version 2>/dev/null || echo \"No NVIDIA driver loaded\""
+  suggested_allow_pattern: "Bash(lsmod:*)"
+- prefix: /home/vamsee/.npm-global/bin/codex
+  count: 2
+  example_command: /home/vamsee/.npm-global/bin/codex --version 2>&1
+  suggested_allow_pattern: "Bash(/home/vamsee/.npm-global/bin/codex:*)"
+- prefix: pvpython
+  count: 2
+  example_command: "pvpython -c \"import paraview.simple as pv; s = pv.Sphere(); print(f'ParaView {pv.GetParaViewVersion()}'); print('pvpython smoke test OK')\" 2>&1"
+  suggested_allow_pattern: "Bash(pvpython:*)"
+- prefix: git add
+  count: 2
+  example_command: "git add .claude/work-queue/working/WRK-290.md && git commit -m \"$(cat <<'EOF'"
+  suggested_allow_pattern: "Bash(git add:*)"
+- prefix: git push
+  count: 2
+  example_command: git push
+  suggested_allow_pattern: "Bash(git push:*)"
+- prefix: strings
+  count: 2
+  example_command: "strings /usr/bin/gpu-manager | grep -i \"nvidia-driver\|wbritish\|ubuntu-restricted\|apt-get\" | head -20"
+  suggested_allow_pattern: "Bash(strings:*)"
+- prefix: mountpoint
+  count: 1
+  example_command: "mountpoint -q /mnt/workspace-hub && echo \"MOUNTED\" || echo \"NOT MOUNTED\""
+  suggested_allow_pattern: "Bash(mountpoint:*)"
+- prefix: lsb_release
+  count: 1
+  example_command: lsb_release -a 2>/dev/null || cat /etc/os-release 2>/dev/null
+  suggested_allow_pattern: "Bash(lsb_release:*)"
+- prefix: gnome-shell
+  count: 1
+  example_command: gnome-shell --version 2>/dev/null && gnome-extensions list --enabled 2>/dev/null
+  suggested_allow_pattern: "Bash(gnome-shell:*)"
+- prefix: dbus-send
+  count: 1
+  example_command: "dbus-send --session --dest=org.gnome.Shell --type=method_call /org/gnome/Shell org.gnome.Shell.Eval string:'Main.overview._overview._controls._dashSpacer.visible' 2>&1"
+  suggested_allow_pattern: "Bash(dbus-send:*)"
+- prefix: gdbus
+  count: 1
+  example_command: "gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval \"Main.overview.dash.visible\" 2>&1"
+  suggested_allow_pattern: "Bash(gdbus:*)"
+- prefix: nohup
+  count: 1
+  example_command: nohup sudo -A gedit /etc/samba/smb.conf 2>/dev/null &
+  suggested_allow_pattern: "Bash(nohup:*)"
+- prefix: GIT_OPTIONAL_LOCKS=0
+  count: 1
+  example_command: GIT_OPTIONAL_LOCKS=0 git status --short 2>&1
+  suggested_allow_pattern: "Bash(GIT_OPTIONAL_LOCKS=0:*)"
+- prefix: HULL_SPEC=specs/hulls/small_planing_hull.yaml
+  count: 1
+  example_command: HULL_SPEC=specs/hulls/small_planing_hull.yaml HULL_BACKEND=freecad HULL_OUTPUT=/tmp/hull_debug freecadcmd -c agents/geometry_agent.py 2>/dev/null
+  suggested_allow_pattern: "Bash(HULL_SPEC=specs/hulls/small_planing_hull.yaml:*)"
+- prefix: wget
+  count: 1
+  example_command: "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/packages.microsoft.gpg > /dev/null && echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main\" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null && sudo apt update -qq && sudo apt install -y -qq code"
+  suggested_allow_pattern: "Bash(wget:*)"
+- prefix: qgis
+  count: 1
+  example_command: qgis --version 2>&1
+  suggested_allow_pattern: "Bash(qgis:*)"
+- prefix: google-earth-pro
+  count: 1
+  example_command: "google-earth-pro --version 2>&1 || dpkg -l google-earth-pro-stable 2>&1 | grep \"^ii\""
+  suggested_allow_pattern: "Bash(google-earth-pro:*)"
+- prefix: type
+  count: 1
+  example_command: type -a gmsh 2>&1; ls -la /usr/bin/gmsh 2>&1; ls -la ~/.local/bin/gmsh 2>&1
+  suggested_allow_pattern: "Bash(type:*)"
+- prefix: x11vnc
+  count: 1
+  example_command: "x11vnc -display :1 -auth /run/user/1000/gdm/Xauthority -forever -bg -nopw -listen localhost -rfbport 5900"
+  suggested_allow_pattern: "Bash(x11vnc:*)"
+- prefix: coredumpctl
+  count: 1
+  example_command: coredumpctl list 2>&1 | head -20
+  suggested_allow_pattern: "Bash(coredumpctl:*)"
+- prefix: dkms
+  count: 1
+  example_command: dkms status 2>&1
+  suggested_allow_pattern: "Bash(dkms:*)"
+- prefix: apt-mark
+  count: 1
+  example_command: apt-mark showhold 2>&1
+  suggested_allow_pattern: "Bash(apt-mark:*)"
+- prefix: prime-select
+  count: 1
+  example_command: "prime-select query 2>/dev/null || echo \"prime-select not available\"; echo \"===\"; cat /lib/modprobe.d/nvidia-kms.conf 2>/dev/null; echo \"---\"; cat /etc/modprobe.d/nvidia*.conf 2>/dev/null || echo \"No nvidia modprobe configs\""
+  suggested_allow_pattern: "Bash(prime-select:*)"
+- prefix: paraview
+  count: 1
+  example_command: paraview --version 2>&1
+  suggested_allow_pattern: "Bash(paraview:*)"
+- prefix: freecad
+  count: 1
+  example_command: freecad --version 2>&1; which freecad 2>&1
+  suggested_allow_pattern: "Bash(freecad:*)"
+- prefix: "PYFOAM_SIX=\"/home/vamsee/.local/lib/python3.12/site-packages/PyFoam/ThirdParty/six.py\""
+  count: 1
+  example_command: "PYFOAM_SIX=\"/home/vamsee/.local/lib/python3.12/site-packages/PyFoam/ThirdParty/six.py\" && cp \"$PYFOAM_SIX\" \"${PYFOAM_SIX}.bak\" && rm \"$PYFOAM_SIX\" && mkdir -p \"/home/vamsee/.local/lib/python3.12/site-packages/PyFoam/ThirdParty/six\" && cat > \"/home/vamsee/.local/lib/python3.12/site-packages/PyFoam/ThirdParty/six/__init__.py\" << 'INITEOF'"
+  suggested_allow_pattern: "Bash(PYFOAM_SIX=\"/home/vamsee/.local/lib/python3.12/site-packages/PyFoam/ThirdParty/six.py\":*)"
+- prefix: "DISPLAY=:0"
+  count: 1
+  example_command: "DISPLAY=:0 xrandr --listmonitors 2>&1; echo \"---\"; DISPLAY=:0 xrandr --query 2>&1 | head -30"
+  suggested_allow_pattern: "Bash(DISPLAY=:0:*)"
+- prefix: df
+  count: 1
+  example_command: "df -h /mnt/workspace-hub && echo \"---\" && readlink -f /mnt/workspace-hub && echo \"---\" && mount | grep -E \"sda|sdc\""
+  suggested_allow_pattern: "Bash(df:*)"
+- prefix: smartctl
+  count: 1
+  example_command: "smartctl -H /dev/sda 2>&1 && echo \"---sda---\" && smartctl -A /dev/sda 2>&1 | grep -E \"Reallocated|Power_On|Temperature|Pending|Offline_Unc\" && echo \"---sdb---\" && smartctl -H /dev/sdb 2>&1 && smartctl -A /dev/sdb 2>&1 | grep -E \"Power_On|Temperature|Wear\" && echo \"---sdc---\" && smartctl -H /dev/sdc 2>&1 && smartctl -A /dev/sdc 2>&1 | grep -E \"Reallocated|Power_On|Temperature|Pending|Offline_Unc|Spin_Retry\""
+  suggested_allow_pattern: "Bash(smartctl:*)"
+- prefix: tailscale
+  count: 1
+  example_command: tailscale status 2>&1
+  suggested_allow_pattern: "Bash(tailscale:*)"
+- prefix: fusermount3
+  count: 1
+  example_command: fusermount3 -u /tmp/test-workspace-hub-mount 2>&1
+  suggested_allow_pattern: "Bash(fusermount3:*)"
+- prefix: ssh-keyscan
+  count: 1
+  example_command: "ssh-keyscan -H ace-linux-1 2>/dev/null | head -3; echo \"---\"; sudo cat /root/.ssh/known_hosts 2>&1; echo \"===\"; grep ace-linux-1 /home/vamsee/.ssh/known_hosts 2>&1 | head -3"
+  suggested_allow_pattern: "Bash(ssh-keyscan:*)"
+- prefix: getent
+  count: 1
+  example_command: "getent hosts ace-linux-1 2>&1; echo \"---\"; host ace-linux-1 2>&1; echo \"---\"; ping -c1 -W2 ace-linux-1 2>&1"
+  suggested_allow_pattern: "Bash(getent:*)"
+- prefix: if
+  count: 1
+  example_command: "if [ -d /mnt/workspace-hub/.git ]; then cd /mnt/workspace-hub && git log --all --oneline --grep=\"WRK-287\" 2>/dev/null; else echo \"No git repo at /mnt/workspace-hub\"; fi"
+  suggested_allow_pattern: "Bash(if:*)"
+- prefix: tree
+  count: 1
+  example_command: tree -L 3 /mnt/workspace-hub/digitalmodel/src/digitalmodel/gis/ 2>/dev/null || find /mnt/workspace-hub/digitalmodel/src/digitalmodel/gis -type d | sort
+  suggested_allow_pattern: "Bash(tree:*)"
+- prefix: whoami;
+  count: 1
+  example_command: "whoami; id; sudo -n true 2>&1; echo \"sudo_exit: $?\""
+  suggested_allow_pattern: "Bash(whoami;:*)"
+- prefix: lsblk
+  count: 1
+  example_command: "lsblk -o NAME,UUID,FSTYPE,SIZE,MOUNTPOINT /dev/sda2 /dev/sdc2 2>&1"
+  suggested_allow_pattern: "Bash(lsblk:*)"
+- prefix: pkexec
+  count: 1
+  example_command: pkexec --help 2>&1 | head -5
+  suggested_allow_pattern: "Bash(pkexec:*)"
+- prefix: whoami
+  count: 1
+  example_command: whoami && hostname
+  suggested_allow_pattern: "Bash(whoami:*)"
+- prefix: wait
+  count: 1
+  example_command: wait bac314d && cat /tmp/claude-1000/-mnt-workspace-hub/tasks/bac314d.output
+  suggested_allow_pattern: "Bash(wait:*)"
