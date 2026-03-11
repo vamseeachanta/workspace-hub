@@ -1,0 +1,24 @@
+wrk_id: WRK-1053
+stage: 15
+generated_at: "2026-03-10T22:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Extend audit-skill-violations.sh to validate category→directory alignment"
+    description: >
+      AC #2 (category field matches directory structure) was deferred due to scope
+      creep risk. A follow-up WRK should implement category→dir mapping validation
+      so that SKILL.md files with incorrect category fields are flagged.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+  - id: FW-2
+    title: "Add audit-skill-violations.sh to CI pipeline as a gate"
+    description: >
+      Currently the script is callable but not wired into any automated CI gate.
+      Wire it into the pre-commit or nightly validation pipeline so violations
+      are caught without manual runs.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium

@@ -20,3 +20,13 @@ events:
       - .claude/work-queue/assets/WRK-1053/plan_claude.md
     published_at: 2026-03-10T01:10:00Z
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 517c70b7
+    documents:
+      - .claude/work-queue/assets/WRK-1053/WRK-1053-lifecycle.html
+      - .claude/work-queue/assets/WRK-1053/evidence/gate-evidence-summary.yaml
+    published_at: 2026-03-10T22:05:00Z
+    reviewer: vamsee

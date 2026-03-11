@@ -204,23 +204,4 @@ run_py_phase "7" "Candidates"
 run_py_phase "8" "Report Review"
 run_py_phase "9" "Coverage Audit"
 
-# --- Phase 9 supplement: Script-based skill coverage audit (weekly, Sundays) ---
-if [[ "$(date +%u)" == "7" ]]; then
-  echo "--- Phase 9 (supplement): Script Coverage Audit ---"
-  SKILL_COVERAGE="${WS_HUB}/scripts/skills/skill-coverage-audit.sh"
-  ID_CANDIDATES="${WS_HUB}/scripts/skills/identify-script-candidates.sh"
-  if [[ -f "$SKILL_COVERAGE" ]]; then
-    bash "$SKILL_COVERAGE" > /tmp/cl_skill_coverage.log 2>&1 || true
-    log_phase "9 Script Coverage" "DONE" "skill-coverage-audit.sh ran (see /tmp/cl_skill_coverage.log)"
-  else
-    log_phase "9 Script Coverage" "SKIPPED" "skill-coverage-audit.sh not found"
-  fi
-  if [[ -f "$ID_CANDIDATES" ]]; then
-    bash "$ID_CANDIDATES" > /tmp/cl_id_candidates.log 2>&1 || true
-    log_phase "9 ID Candidates" "DONE" "identify-script-candidates.sh ran (see /tmp/cl_id_candidates.log)"
-  else
-    log_phase "9 ID Candidates" "SKIPPED" "identify-script-candidates.sh not found"
-  fi
-fi
-
 exit 0

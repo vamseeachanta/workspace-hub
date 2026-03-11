@@ -129,8 +129,11 @@ Run these scripts as part of skill evaluation to catch structural violations and
 # Check for structural violations (README presence, word count, description length, XML tags)
 bash scripts/skills/audit-skill-violations.sh
 
-# Check which skills lack any script call reference
+# Validate skill structure (name conventions, required fields)
 bash scripts/skills/validate-skills.sh
+
+# Check which skills lack any script call reference
+bash scripts/skills/skill-coverage-audit.sh
 ```
 
 ## Best Practices

@@ -606,11 +606,12 @@ def phase_9_skill_coverage_audit():
 
     results = []
 
-    # Run skill-coverage-audit.sh
+    # Run skill-coverage-audit.sh — scope to hub-only skills to stay under timeout
+    hub_skills_dir = os.path.join(WS_HUB, ".claude", "skills", "workspace-hub")
     if os.path.exists(skill_coverage_script):
         try:
             proc = subprocess.run(
-                ["bash", skill_coverage_script],
+                ["bash", skill_coverage_script, "--skill-dir", hub_skills_dir],
                 capture_output=True, text=True, timeout=120
             )
             if proc.returncode == 1:
