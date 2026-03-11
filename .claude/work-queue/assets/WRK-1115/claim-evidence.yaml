@@ -1,0 +1,21 @@
+claim_date: "2026-03-11T04:26:06Z"
+wrk_id: "WRK-1115"
+route: "B"
+orchestrator: ""
+best_fit_provider: "unknown"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "unknown"
+agent_fit:
+  capability_match: "undocumented"
+  rationale: "Route B / execution_workstations=unknown / provider=unknown"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-11T04:26:06Z"
+  provider: "unknown"
+  status: "available"
+  pct_remaining: null
+  source: "config/ai-tools/agent-quota-latest.json"

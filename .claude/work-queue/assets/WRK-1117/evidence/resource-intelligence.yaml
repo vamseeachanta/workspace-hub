@@ -1,0 +1,42 @@
+wrk_id: WRK-1117
+stage: 2
+completed_at: "2026-03-11"
+
+key_findings:
+  - id: RI-1
+    file: scripts/learning/comprehensive-learning.sh
+    lines: 35-44
+    issue: git add on missing dirs; no -e guard; fatal error swallowed by set -uo
+    portable_fix: loop with [[ -e path ]] guard before each git add
+
+  - id: RI-2
+    file: scripts/improve/lib/guard.sh
+    line: 30
+    issue: "bc -l not available on Git Bash"
+    portable_fix: 'awk "BEGIN {exit !($score < 0.6)}"'
+    note: awk is already used in ecosystem.sh; consistent pattern
+
+  - id: RI-3
+    file: scripts/improve/lib/classify.sh
+    line: 27
+    issue: bare python3 call; python3 not in PATH on Windows
+    portable_fix: "uv run --no-project python (HARD RULE per python-runtime.md)"
+    note: resolve_python() from cross-platform-compat skill is secondary fallback
+
+  - id: RI-4
+    scope: hook_wiring
+    file: .claude/settings.json
+    lines: 146-172
+    finding: Stop hook chain IS configured (consume-signals, emit-session-quality-signals etc.)
+    note: resolve-workspace.sh already handles MINGW/MSYS/Cygwin detection
+
+no_existing_tests: true
+test_patterns:
+  shell: tests/hooks/ and tests/work-queue/ — bash + mktemp -d + trap cleanup
+  python: tests/unit/ — pytest
+
+reusable_helpers:
+  - resolve-workspace.sh (cross-platform WORKSPACE_HUB detection — already works on Windows)
+  - awk pattern (ecosystem.sh already uses awk for numeric extraction)
+
+conflicts: none

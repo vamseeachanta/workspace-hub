@@ -1698,12 +1698,38 @@ def render_lifecycle_stage_body(
         pairs = [(k, str(data.get(k, ""))) for k in
                  ("files_changed", "commits", "tests_run", "summary")
                  if data.get(k) is not None]
-        return (
+        parts = (
             '<div class="section-label">Execution record</div>'
             + (_render_schema_block(pairs) if pairs else
                '<p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p>')
-            + _render_exit_artifacts(["evidence/execute.yaml"])
         )
+        # changes[] bullet list
+        changes = data.get("changes") or []
+        if isinstance(changes, list) and changes:
+            items = "".join(f"<li>{_esc(str(c))}</li>" for c in changes[:12])
+            parts += (
+                '<div class="section-label" style="margin-top:.6rem;">What changed</div>'
+                f'<ul class="item-list">{items}</ul>'
+            )
+        # integrated_repo_tests table
+        tests = data.get("integrated_repo_tests") or []
+        if isinstance(tests, list) and tests:
+            rows = ""
+            for t in tests[:20]:
+                if not isinstance(t, dict):
+                    continue
+                name = _esc(str(t.get("name", "")))
+                result = str(t.get("result", "")).lower()
+                cmd = _esc(str(t.get("command", ""))[:70])
+                cls = "b-done" if result == "pass" else ("b-pending" if result == "fail" else "")
+                badge_html = f'<span class="badge {cls}">{_esc(result)}</span>' if result else ""
+                rows += f"<tr><td>{name}</td><td>{badge_html}</td><td><code>{cmd}</code></td></tr>"
+            if rows:
+                parts += (
+                    '<div class="section-label" style="margin-top:.6rem;">Tests run</div>'
+                    f'<table><tr><th>Test</th><th>Result</th><th>Command</th></tr>{rows}</table>'
+                )
+        return parts + _render_exit_artifacts(["evidence/execute.yaml"])
 
     # ── S11 Artifact Generation ───────────────────────────────────────────────
     if stage_n == 11:
@@ -1726,6 +1752,91 @@ def render_lifecycle_stage_body(
                                       f"WRK-???-lifecycle.html"])
         )
 
+    # ── S12 TDD / Eval ────────────────────────────────────────────────────────
+    if stage_n == 12:
+        matrix_path = Path(assets_dir) / "ac-test-matrix.md"
+        if matrix_path.exists():
+            try:
+                lines = matrix_path.read_text(encoding="utf-8").splitlines()
+                rows = ""
+                pass_count = fail_count = 0
+                for line in lines:
+                    if not line.startswith("|") or line.startswith("| #") or set(line.replace("|", "").replace("-", "").replace(" ", "")) == set():
+                        continue
+                    cells = [c.strip() for c in line.strip("|").split("|")]
+                    if not cells:
+                        continue
+                    result_cell = cells[-1] if cells else ""
+                    result_upper = result_cell.upper()
+                    if result_upper == "PASS":
+                        pass_count += 1
+                        cls = "b-done"
+                    elif result_upper == "FAIL":
+                        fail_count += 1
+                        cls = "b-pending"
+                    else:
+                        cls = ""
+                    cols = "".join(
+                        f'<td>{_esc(c)}</td>' if i < len(cells) - 1
+                        else f'<td><span class="badge {cls}">{_esc(c)}</span></td>'
+                        for i, c in enumerate(cells)
+                    )
+                    rows += f"<tr>{cols}</tr>"
+                if rows:
+                    summary_badge = (
+                        f'<span class="badge b-done">{pass_count} PASS</span> '
+                        f'<span class="badge {"b-pending" if fail_count else "b-done"}">'
+                        f'{fail_count} FAIL</span>'
+                    )
+                    return (
+                        f'<div class="section-label">AC test matrix &nbsp;{summary_badge}</div>'
+                        f'<table>{rows}</table>'
+                        + _render_exit_artifacts(["ac-test-matrix.md"])
+                    )
+            except Exception:
+                pass
+        return '<p style="color:var(--muted);font-size:.85rem;">ac-test-matrix.md not yet written.</p>'
+
+    # ── S13 Agent Cross-Review (post-implementation) ──────────────────────────
+    if stage_n == 13:
+        # Glob for cross-review-impl files (yaml or md), parameterised by prefix
+        impl_prefix = "cross-review-impl"
+        candidates = list(ev.glob(f"{impl_prefix}*.yaml")) + list(ev.glob(f"{impl_prefix}*.md"))
+        if not candidates:
+            candidates = list(ev.glob("cross-review-implementation*.md"))
+        if candidates:
+            # Reuse S6 cross-review rendering logic via cross-review.yaml if present
+            cr_yaml = ev / "cross-review-impl.yaml"
+            # Fall back to individual provider yamls
+            if not cr_yaml.exists():
+                cr_yaml_candidates = list(ev.glob(f"{impl_prefix}*.yaml"))
+                cr_yaml = cr_yaml_candidates[0] if cr_yaml_candidates else None
+            html = ""
+            if cr_yaml and cr_yaml.exists():
+                data = _read_yaml_safe(cr_yaml)
+                providers = data.get("providers", {})
+                for pname, pdata in list(providers.items())[:3]:
+                    if not isinstance(pdata, dict):
+                        continue
+                    verdict = str(pdata.get("verdict", "")).upper()
+                    cls = "b-done" if verdict == "APPROVE" else ("b-active" if "MINOR" in verdict else "b-pending")
+                    summary = _esc(str(pdata.get("summary", ""))[:200])
+                    html += (
+                        f'<div style="margin:.4rem 0;">'
+                        f'<strong>{_esc(pname)}</strong> '
+                        f'<span class="badge {cls}">{_esc(verdict)}</span>'
+                        f'<p style="margin:.2rem 0 0;font-size:.88rem;color:var(--muted);">{summary}</p>'
+                        f'</div>'
+                    )
+            if not html:
+                html = f'<p style="color:var(--muted);font-size:.85rem;">{len(candidates)} cross-review file(s) present.</p>'
+            return (
+                '<div class="section-label">Agent cross-review (implementation)</div>'
+                + html
+                + _render_exit_artifacts([f"evidence/{impl_prefix}*.yaml"])
+            )
+        return '<p style="color:var(--muted);font-size:.85rem;">Cross-review not yet complete.</p>'
+
     # ── S14 Verify Gate Evidence ──────────────────────────────────────────────
     if stage_n == 14:
         gep = ev / "gate-evidence-summary.json"
@@ -1733,17 +1844,29 @@ def render_lifecycle_stage_body(
             try:
                 import json
                 ge = json.loads(gep.read_text(encoding="utf-8"))
+                # Support both {gates: [...]} and legacy {name: {status:...}} formats
+                gate_list = ge.get("gates") if isinstance(ge.get("gates"), list) else None
+                if gate_list is None:
+                    gate_list = [
+                        {"name": k, "status": v.get("status", "?"), "details": v.get("details", "")}
+                        for k, v in ge.items() if isinstance(v, dict)
+                    ]
                 rows = ""
-                for gate, val in list(ge.items())[:12]:
-                    if isinstance(val, dict):
-                        st = val.get("status", "?")
-                        cls = "b-done" if st == "PASS" else ("b-active" if st == "WARN" else "b-pending")
-                        rows += (f'<tr><td>{_esc(gate)}</td>'
-                                 f'<td><span class="badge {cls}">{_esc(st)}</span></td></tr>')
+                for gate in gate_list[:16]:
+                    if not isinstance(gate, dict):
+                        continue
+                    st = str(gate.get("status", "?"))
+                    cls = "b-done" if st == "PASS" else ("b-active" if st == "WARN" else "b-pending")
+                    details = _esc(str(gate.get("details", ""))[:120])
+                    rows += (
+                        f'<tr><td>{_esc(str(gate.get("name", "")))}</td>'
+                        f'<td><span class="badge {cls}">{_esc(st)}</span></td>'
+                        f'<td style="font-size:.82rem;color:var(--muted);">{details}</td></tr>'
+                    )
                 if rows:
                     return (
                         '<div class="section-label">Gate results</div>'
-                        f'<table><tr><th>Gate</th><th>Status</th></tr>{rows}</table>'
+                        f'<table><tr><th>Gate</th><th>Status</th><th>Details</th></tr>{rows}</table>'
                     )
             except Exception:
                 pass
@@ -2099,20 +2222,164 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     print(f"\u2714 Lifecycle HTML generated: {output_file}")
 
 
+def generate_plan(wrk_id: str, output_file: str | None = None) -> None:
+    """Generate plan HTML (WRK-NNN-plan.html) — two-file contract, workflow-html SKILL v2.0.
+
+    Sections: HERO + stage-circle strip + latest plan text (## Plan section) +
+    per-stage change log (evidence/plan-changelog.yaml, optional).
+    Regenerated on every stage exit alongside lifecycle.html.
+    """
+    workspace_root = os.popen("git rev-parse --show-toplevel").read().strip()
+    queue_dir = os.path.join(workspace_root, ".claude/work-queue")
+
+    # Find WRK file
+    wrk_file = ""
+    for folder in ["working", "pending", "done", "archived"]:
+        path = os.path.join(queue_dir, folder, f"{wrk_id}.md")
+        if os.path.exists(path):
+            wrk_file = path
+            break
+    if not wrk_file:
+        for p in Path(queue_dir).glob(f"archive/**/{wrk_id}.md"):
+            wrk_file = str(p)
+            break
+    if not wrk_file:
+        print(f"Error: Could not find {wrk_id}.md for plan.html generation")
+        return
+
+    content = Path(wrk_file).read_text(encoding="utf-8")
+    fm_match = re.match(r"^---\s*\n(.*?)\n---\s*\n", content, re.DOTALL)
+    fm: dict = {}
+    if fm_match:
+        try:
+            fm = yaml.safe_load(fm_match.group(1)) or {}
+        except Exception:
+            pass
+    body_md = content[fm_match.end():] if fm_match else content
+
+    assets_dir = os.path.join(queue_dir, "assets", wrk_id)
+    os.makedirs(assets_dir, exist_ok=True)
+    ev = Path(assets_dir) / "evidence"
+
+    if output_file is None:
+        output_file = os.path.join(assets_dir, f"{wrk_id}-plan.html")
+
+    # Extract ## Plan section from body
+    plan_text = ""
+    plan_match = re.search(r"(?:^|\n)##\s+Plan\s*\n(.*?)(?=\n##\s|\Z)", body_md, re.DOTALL)
+    if plan_match:
+        plan_text = plan_match.group(1).strip()
+
+    plan_html_body = markdown.markdown(plan_text) if plan_text else "<p><em>No plan section found.</em></p>"
+
+    # Stage-circle strip (reuse detect_stage_statuses)
+    statuses = detect_stage_statuses(wrk_id, assets_dir, fm, body_md, queue_dir)
+    strip_chips = ""
+    for n in range(1, 21):
+        st = statuses.get(n, "pending")
+        cls = {"done": "sc-done", "active": "sc-active", "na": "sc-na"}.get(st, "sc-pending")
+        name = STAGE_NAMES.get(n, str(n))
+        strip_chips += (
+            f'<a href="#{wrk_id}-lifecycle.html#s{n}" class="sc {cls}" '
+            f'title="{_esc(str(n).zfill(2))} {_esc(name)}">{n}</a>'
+        )
+
+    # Per-stage change log (optional)
+    changelog_html = ""
+    changelog_path = ev / "plan-changelog.yaml"
+    if changelog_path.exists():
+        try:
+            changelog = yaml.safe_load(changelog_path.read_text(encoding="utf-8")) or []
+            if isinstance(changelog, list) and changelog:
+                entries_html = ""
+                for entry in changelog[:20]:
+                    if not isinstance(entry, dict):
+                        continue
+                    stage_n = entry.get("stage", "?")
+                    summary = _esc(str(entry.get("summary", "No summary.")))
+                    changed_at = str(entry.get("changed_at", ""))[:16]
+                    entries_html += (
+                        f'<details style="margin:.4rem 0;">'
+                        f'<summary>Stage {_esc(str(stage_n))}'
+                        + (f' <span style="color:var(--muted);font-size:.8rem;">{_esc(changed_at)}</span>' if changed_at else "")
+                        + f'</summary><p style="margin:.4rem 0 0 1rem;font-size:.9rem;">{summary}</p></details>'
+                    )
+                if entries_html:
+                    changelog_html = (
+                        '<div class="card" style="margin-top:16px;">'
+                        '<h2>Plan Change Log</h2>'
+                        + entries_html
+                        + "</div>"
+                    )
+        except Exception:
+            pass
+    if not changelog_html:
+        changelog_html = '<p style="color:var(--muted);font-size:.85rem;">No plan changes recorded.</p>'
+
+    title = _esc(str(fm.get("title", wrk_id)))
+    route = str(fm.get("route", ""))
+    priority = str(fm.get("priority", ""))
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="30">
+<title>{wrk_id} — Plan</title>
+<style>{CSS}</style>
+</head>
+<body>
+<script>{JS}</script>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">{wrk_id} &middot; Plan Document</div>
+    <h1>{title}</h1>
+    <p class="lede">Route {_esc(route)} &middot; Priority {_esc(priority)} &middot; Auto-refreshes every 30s</p>
+    <div class="stage-strip" style="margin-top:16px;">{strip_chips}</div>
+  </div>
+</header>
+<div class="content">
+  <div class="card">
+    <h2>Current Plan</h2>
+    <div class="plan-body">
+{plan_html_body}
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h2>Stage Change Log</h2>
+    {changelog_html}
+  </div>
+</div>
+</body>
+</html>"""
+
+    Path(output_file).write_text(html, encoding="utf-8")
+    print(f"\u2714 Plan HTML generated: {output_file}")
+
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Generate canonical WRK lifecycle HTML (workflow-html SKILL v1.5.0)"
+        description=(
+            "Generate canonical WRK HTML artifacts (workflow-html SKILL v2.0).\n"
+            "Two-file contract: --lifecycle (default) + --plan."
+        )
     )
     parser.add_argument("wrk_id")
     parser.add_argument(
         "--lifecycle",
         action="store_true",
-        help="Generate single lifecycle HTML (canonical mode)",
+        help="Generate lifecycle HTML — WRK-NNN-lifecycle.html (canonical mode)",
+    )
+    parser.add_argument(
+        "--plan",
+        action="store_true",
+        help="Generate plan HTML — WRK-NNN-plan.html (two-file contract)",
     )
     parser.add_argument("--output", default=None)
-    # --type is suppressed so legacy invocations don't crash; all modes now generate lifecycle HTML
+    # --type is suppressed so legacy invocations don't crash
     import argparse as _argparse
     parser.add_argument("--type", default=None, help=_argparse.SUPPRESS)
     args = parser.parse_args()
@@ -2122,4 +2389,7 @@ if __name__ == "__main__":
             f"Note: --type {args.type!r} is deprecated and ignored."
             " Generating lifecycle HTML instead."
         )
-    generate_lifecycle(args.wrk_id, args.output)
+    if args.plan:
+        generate_plan(args.wrk_id, args.output)
+    else:
+        generate_lifecycle(args.wrk_id, args.output)

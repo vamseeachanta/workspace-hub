@@ -1,0 +1,6 @@
+wrk_id: WRK-1120
+stage: 5
+decision: approved
+confirmed_by: vamsee
+confirmed_at: "2026-03-10"
+notes: "Route A simple item. User approved plan: atomic noclobber sentinel in next-id.sh + collision test."

@@ -224,7 +224,7 @@ def _load_checkpoint_writer():
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
-    """Regenerate lifecycle HTML after stage exit so state is always current."""
+    """Regenerate both lifecycle and plan HTML after stage exit (two-file contract)."""
     import subprocess
     script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
     if not os.path.exists(script):
@@ -237,6 +237,13 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
         print(f"✔ Lifecycle HTML updated ({wrk_id})")
     else:
         print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    # Non-blocking: plan.html generation failure does not fail the stage exit
+    plan_result = subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id, "--plan"],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+    if plan_result.returncode != 0:
+        print(f"⚠ Plan HTML update failed (non-blocking): {plan_result.stderr.strip()[:120]}", file=sys.stderr)
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────

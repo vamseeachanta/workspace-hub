@@ -32,7 +32,7 @@ MAX_FILE_ID=0
 for dir in pending working blocked; do
   for file in "${QUEUE_DIR}/${dir}"/WRK-*.md; do
     [[ -f "$file" ]] || continue
-    ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+')
+    ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+' || true)
     [[ -n "$ID_NUM" ]] && (( 10#$ID_NUM > MAX_FILE_ID )) && MAX_FILE_ID=$((10#$ID_NUM))
   done
 done
@@ -40,7 +40,7 @@ done
 # Also scan archive subdirectories (archive/*/)
 for file in "${QUEUE_DIR}"/archive/*/WRK-*.md; do
   [[ -f "$file" ]] || continue
-  ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+')
+  ID_NUM=$(basename "$file" | grep -oE 'WRK-([0-9]+)' | grep -oE '[0-9]+' || true)
   [[ -n "$ID_NUM" ]] && (( 10#$ID_NUM > MAX_FILE_ID )) && MAX_FILE_ID=$((10#$ID_NUM))
 done
 

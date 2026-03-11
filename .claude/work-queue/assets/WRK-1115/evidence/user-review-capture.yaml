@@ -1,0 +1,8 @@
+wrk_id: WRK-1115
+stage: 1
+scope_approved: true
+approved_by: user
+reviewer: user
+approved_at: "2026-03-10T10:00:00Z"
+confirmed_at: "2026-03-10T10:00:00Z"
+notes: "15 ACs confirmed: plan.html + lifecycle.html two-file contract, stage 12 ac-test-matrix renderer, stage 10 integrated_repo_tests + changes[], stage 14 gate details column, stage 13 cross-review renderer, stage duration headers."

@@ -27,7 +27,7 @@ phase_guard() {
         local reject_reason=""
 
         # --- Score threshold ---
-        if (( $(echo "$score < 0.6" | bc -l 2>/dev/null || echo "1") )); then
+        if awk "BEGIN {exit !($score < 0.6)}"; then
             reject_reason="score_below_threshold"
         fi
 

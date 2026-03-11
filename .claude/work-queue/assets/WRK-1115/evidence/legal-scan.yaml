@@ -1,0 +1,10 @@
+wrk_id: WRK-1115
+scan_date: "2026-03-10T14:00:00Z"
+result: PASS
+violations: []
+files_scanned:
+  - scripts/work-queue/generate-html-review.py
+  - scripts/work-queue/exit_stage.py
+  - .claude/skills/workspace-hub/workflow-html/SKILL.md
+  - tests/unit/test_generate_html_review.py
+command: bash scripts/legal/legal-sanity-scan.sh

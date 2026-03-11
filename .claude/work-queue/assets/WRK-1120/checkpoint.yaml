@@ -1,0 +1,12 @@
+wrk_id: WRK-1120
+current_stage: 7
+stage_name: User Review - Plan Final
+completed_stage: 6
+next_action: Execute stage 7: User Review - Plan Final
+context_summary: Stage 6 complete. Next: stage 7 (User Review - Plan Final).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1120/checkpoint.yaml
+  - assets/WRK-1120/WRK-1120-lifecycle.html#s1-s6
+  - assets/WRK-1120/evidence/cross-review.yaml
+checkpointed_at: 2026-03-11T04:34:44Z
+human_gate: true

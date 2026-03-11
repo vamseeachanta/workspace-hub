@@ -24,8 +24,8 @@ route_to_skill_scores() {
     [[ -z "$skill" ]] && return 0
     count=$(echo "$line" | jq -r '.count // 1' 2>/dev/null || echo 1)
     # Read-modify-write: increment usage count in YAML via Python (safe structured update)
-    if command -v python3 &>/dev/null; then
-        python3 - <<PYEOF 2>/dev/null || true
+    if command -v uv &>/dev/null; then
+        uv run --no-project python - <<PYEOF 2>/dev/null || true
 import yaml, sys, os
 path = os.environ.get('SKILL_SCORES_FILE', '')
 if not path or not os.path.exists(path):

@@ -30,22 +30,27 @@ if [[ "$MACHINE" != "ace-linux-1" ]]; then
   echo "comprehensive-learning runs on ace-linux-1 only."
   echo "From this machine, commit state files and push:"
   
-  # State files to commit
-  cd "$WS_HUB"
-  git add .claude/state/candidates/ \
-          .claude/state/corrections/ \
-          .claude/state/patterns/ \
-          .claude/state/reflect-history/ \
-          .claude/state/trends/ \
-          .claude/state/session-signals/ \
-          .claude/state/cc-insights/ \
-          .claude/state/learned-patterns.json \
-          .claude/state/skill-scores.yaml \
-          .claude/state/cc-user-insights.yaml
-  
-  if ! git diff --staged --quiet; then
-    git commit -m "chore: session learnings from $(hostname)"
-    git push origin main
+  # State files to commit — guarded loop skips missing paths (cross-platform safe)
+  STATE_PATHS=(
+      ".claude/state/candidates/"
+      ".claude/state/corrections/"
+      ".claude/state/patterns/"
+      ".claude/state/reflect-history/"
+      ".claude/state/trends/"
+      ".claude/state/session-signals/"
+      ".claude/state/cc-insights/"
+      ".claude/state/learned-patterns.json"
+      ".claude/state/skill-scores.yaml"
+      ".claude/state/cc-user-insights.yaml"
+  )
+  for path in "${STATE_PATHS[@]}"; do
+      [[ -e "${WS_HUB}/${path}" ]] && git -C "$WS_HUB" add "$path"
+  done
+  echo "Learning state: $(git -C "$WS_HUB" diff --staged --name-only | wc -l | tr -d ' ') file(s) staged"
+
+  if ! git -C "$WS_HUB" diff --staged --quiet; then
+    git -C "$WS_HUB" commit -m "chore: session learnings from $(hostname)"
+    git -C "$WS_HUB" push origin main
     echo "Learning state pushed."
   else
     echo "No new learning state to push."

@@ -1,0 +1,10 @@
+wrk_id: WRK-1117
+stage: 3
+completed_at: "2026-03-11"
+route: B
+complexity: medium
+rationale: >
+  3 files to patch + 3 TDD tests + skill already created.
+  Clear scope, no architectural decisions needed.
+  Multi-provider cross-review required at Stage 6 (Route B).
+computer: ace-linux-1

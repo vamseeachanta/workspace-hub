@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T03:30:38Z by generate-index.py -->
+<!-- Generated: 2026-03-11T04:26:09Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T03:30:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T04:26:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 538
+**Total items:** 544
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 211 |
-| working | 2 |
+| pending | 216 |
+| working | 3 |
 | blocked | 10 |
 | archived | 315 |
 
@@ -22,16 +22,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 245 |
-| medium | 245 |
+| high | 246 |
+| medium | 250 |
 | low | 47 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 116 |
-| medium | 256 |
+| simple | 117 |
+| medium | 261 |
 | complex | 100 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 38 |
+| harness | 40 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 201 |
+| workspace-hub | 207 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 224 / 538 |
-| Plans cross-reviewed | 143 |
-| Plans approved | 165 |
+| Plans exist | 224 / 544 |
+| Plans cross-reviewed | 144 |
+| Plans approved | 166 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 538 |
+| Total captured | 544 |
 | Total archived | 315 |
-| Completion rate | 315/538 (59%) |
+| Completion rate | 315/544 (58%) |
 | Monthly rate (current month) | 81 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 211 | 27% |
+| Pending items with plans | 57 / 216 | 26% |
 | Plans cross-reviewed | 9 | 14% |
 | Plans user-approved | 9 | 14% |
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 1 | 8 |
-| Medium   | 91  | 1  | 1  |
+| High     | 89 | 1 | 8 |
+| Medium   | 95  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (38 items — 3 high, 27 medium, 8 low)
+### harness (40 items — 4 high, 28 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -204,6 +204,12 @@
 |----|----------|-------|--------|
 | WRK-1086 | MEDIUM | feat(harness): module scaffolding — new engineering module boilerplate generator | pending |
 
+#### harness / security
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1119 | MEDIUM | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending |
+
 #### harness / session
 
 | ID | Priority | Title | Status |
@@ -247,6 +253,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
+| WRK-1120 | HIGH | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
 
@@ -1115,6 +1122,12 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1333,6 +1346,11 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | medium | medium | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | medium | medium | workspace-hub | - |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | medium | medium | workspace-hub | - |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | medium | medium | workspace-hub | - |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1340,6 +1358,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2284,6 +2303,12 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | - |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | - |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | - |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | - |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | - |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending | high | simple | - |
 
 ### worldenergydata
 
@@ -2643,6 +2668,7 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | complex | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | simple | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending | simple | workspace-hub | - |
 
 ### Medium
 
@@ -2893,6 +2919,11 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | workspace-hub | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | simple | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | workspace-hub | - |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | workspace-hub | - |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3068,6 +3099,7 @@
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | workspace-hub | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | workspace-hub | - |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending | high | workspace-hub | - |
 
 ### Medium
 
@@ -3329,6 +3361,11 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | workspace-hub | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | workspace-hub | - |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | workspace-hub | - |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -3437,7 +3474,7 @@
 
 ## By Computer
 
-### ace-linux-1 (158 active / 258 total)
+### ace-linux-1 (164 active / 264 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3699,6 +3736,12 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | workspace-hub |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | workspace-hub, digitalmodel |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | workspace-hub |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | workspace-hub |
+| WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | workspace-hub |
+| WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | workspace-hub |
+| WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | workspace-hub |
+| WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | workspace-hub |
+| WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | pending | high | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

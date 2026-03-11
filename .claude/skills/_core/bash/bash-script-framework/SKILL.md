@@ -1,7 +1,7 @@
 ---
 name: bash-script-framework
 description: Create organized bash script structure with color output, menu systems, error handling, and cross-platform support. Standardizes CLI tooling.
-version: 1.0.0
+version: 1.1.0
 category: workspace-hub
 type: skill
 trigger: manual
@@ -50,6 +50,8 @@ related_skills:
 - Python script is more appropriate
 - Simple one-liner needed
 - Windows-only environment
+
+> For Windows/Git Bash-compatible scripts, see `_core/bash/cross-platform-compat`.
 
 ## Prerequisites
 

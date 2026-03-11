@@ -1,0 +1,11 @@
+wrk_id: WRK-1120
+stage: 2
+files_reviewed:
+  - scripts/work-queue/next-id.sh
+  - config/work-queue/machine-ranges.yaml
+key_findings:
+  - "next-id.sh scans files to find max ID, returns MAX+1 — no reservation step"
+  - "WRK-TEST-ENSEMBLE.md already fixed in this session (|| true guard)"
+  - "noclobber (set -C) is the standard bash atomic file creation primitive"
+  - "Retry loop needed: up to 5 attempts before giving up"
+estimated_effort: "30min — single file edit + test script"

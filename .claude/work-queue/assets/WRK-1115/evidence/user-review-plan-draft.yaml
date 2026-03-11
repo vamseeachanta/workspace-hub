@@ -1,0 +1,10 @@
+wrk_id: WRK-1115
+stage: 5
+reviewed_by: user
+approved: true
+confirmed_by: user
+confirmed_at: "2026-03-10T11:00:00Z"
+decision: approved
+approval_decision: approve_as_is
+artifact: specs/modules/wrk-1115-unified-plan-lifecycle-html.md
+notes: "Plan approved. Four phases: expand S10/12/13/14 renderers, new plan.html + --plan flag, exit_stage.py dual call, workflow-html SKILL update. 8 TDD tests."
