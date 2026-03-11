@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T23:54:57Z by generate-index.py -->
+<!-- Generated: 2026-03-11T00:50:54Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T23:54:57Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T00:50:54Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 217 |
+| pending | 216 |
 | working | 2 |
 | blocked | 10 |
-| archived | 308 |
+| archived | 309 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 43 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 220 / 537 |
-| Plans cross-reviewed | 137 |
-| Plans approved | 159 |
+| Plans cross-reviewed | 138 |
+| Plans approved | 160 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,16 +92,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 537 |
-| Total archived | 308 |
-| Completion rate | 308/537 (57%) |
-| Monthly rate (current month) | 74 archived |
+| Total archived | 309 |
+| Completion rate | 309/537 (58%) |
+| Monthly rate (current month) | 75 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 217 | 27% |
+| Pending items with plans | 57 / 216 | 26% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -111,7 +111,7 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 38 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-310, WRK-311, WRK-343, WRK-352, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 2 | WRK-118, WRK-129 |
+| Working > 7 days | 1 | WRK-129 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 88 | 1 | 8 |
-| Medium   | 97  | 1  | 1  |
+| Medium   | 96  | 1  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 3 high, 33 medium, 8 low)
+### harness (43 items — 3 high, 32 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -228,7 +228,7 @@
 | WRK-1010 | MEDIUM | Skill capability assessment for WRK-624 workflow governance skill set | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
-| WRK-1053 | MEDIUM | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending |
+| WRK-1053 | MEDIUM | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working |
 | WRK-1101 | MEDIUM | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
@@ -250,7 +250,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
 
@@ -698,7 +697,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | blocked | high | medium | orcaflex-license-machine | orcaflex-license-machine | orcaflex-license-machine | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
@@ -1071,7 +1070,7 @@
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1052 | feat(harness): log model, context limit, effort level at session start | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1054 | feat(harness): unified test runner and result aggregation across tier-1 repos | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1055 | feat(harness): engineering MCP servers — domain tools for AI agents | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -1334,7 +1333,6 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | high | medium | workspace-hub, digitalmodel, worldenergydata | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | medium | simple | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | medium | simple | - | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | medium | medium | workspace-hub | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | medium | medium | - | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | low | medium | - | - |
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | medium | medium | - | - |
@@ -1359,8 +1357,8 @@
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1468,6 +1466,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | medium | medium | digitalmodel | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | medium | medium | digitalmodel | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | medium | complex | digitalmodel | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-120 | Research and purchase a smart watch | low | simple | achantas-data | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities | - |
@@ -2103,7 +2102,7 @@
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium | - |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | archived | medium | medium | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | medium | - |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | archived | medium | complex | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | blocked | high | medium | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - |
@@ -2261,7 +2260,7 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | - |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1068 | feat(harness): WRK dependency graph — visualise blocked_by chains for sequencing | archived | medium | simple | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
@@ -2705,7 +2704,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | digitalmodel | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | archived | medium | digitalmodel | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | complex | digitalmodel | - |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | complex | workspace-hub | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | archived | complex | workspace-hub | - |
 | WRK-124 | Session 20260211_095832 — 1 file(s) created | archived | low | digitalmodel | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
@@ -2867,7 +2866,7 @@
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | archived | medium | workspace-hub | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | simple | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | simple | - | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | workspace-hub | - |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working | medium | workspace-hub | - |
 | WRK-1055 | feat(harness): engineering MCP servers — domain tools for AI agents | archived | medium | - | - |
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | archived | medium | - | - |
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | archived | simple | - | - |
@@ -3303,7 +3302,7 @@
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | high | workspace-hub | - |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | workspace-hub, digitalmodel, worldenergydata | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | workspace-hub | - |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working | medium | workspace-hub | - |
 | WRK-1054 | feat(harness): unified test runner and result aggregation across tier-1 repos | archived | high | - | - |
 | WRK-1055 | feat(harness): engineering MCP servers — domain tools for AI agents | archived | medium | - | - |
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | archived | medium | - | - |
@@ -3390,7 +3389,7 @@
 | WRK-111 | BSEE field development interactive map and analytics | archived | medium | worldenergydata, aceengineer-website | - |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | digitalmodel, worldenergydata | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | medium | digitalmodel | - |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | workspace-hub | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | archived | medium | workspace-hub | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | working | high | digitalmodel | - |
@@ -3647,7 +3646,7 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | workspace-hub, digitalmodel, worldenergydata |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | workspace-hub |
 | WRK-1052 | feat(harness): log model, context limit, effort level at session start | archived | high | simple | - |
-| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | workspace-hub |
+| WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working | medium | medium | workspace-hub |
 | WRK-1054 | feat(harness): unified test runner and result aggregation across tier-1 repos | archived | high | medium | - |
 | WRK-1055 | feat(harness): engineering MCP servers — domain tools for AI agents | archived | medium | medium | - |
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | archived | medium | medium | - |
@@ -3743,7 +3742,7 @@
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | workspace-hub |
 
-### (unassigned) (22 active / 229 total)
+### (unassigned) (21 active / 229 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3834,7 +3833,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | archived | medium | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | medium | complex | digitalmodel |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | workspace-hub |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | archived | medium | complex | workspace-hub |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | achantas-data |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | acma-projects, assetutilities |

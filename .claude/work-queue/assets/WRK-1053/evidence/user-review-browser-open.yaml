@@ -1,0 +1,8 @@
+wrk_id: WRK-1053
+events:
+  - stage: plan_draft
+    opened_at: 2026-03-10T00:00:00Z
+    file: .claude/work-queue/assets/WRK-1053/WRK-1053-lifecycle.html
+  - stage: plan_final
+    opened_at: 2026-03-10T00:30:00Z
+    file: .claude/work-queue/assets/WRK-1053/WRK-1053-lifecycle.html

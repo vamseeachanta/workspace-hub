@@ -1,0 +1,23 @@
+wrk_id: WRK-1053
+stage: 6
+completed_at: 2026-03-10T00:00:00Z
+providers:
+  codex:
+    verdict: REQUEST_CHANGES
+    major_count: 3
+    minor_count: 4
+    resolved: true
+    notes: "All MAJOR findings addressed in plan revision"
+  gemini:
+    verdict: MINOR
+    major_count: 0
+    minor_count: 5
+    resolved: true
+    notes: "All findings addressed"
+plan_revised: true
+revision_summary: >
+  Flipped README.md check (presence=violation); strengthened coverage heuristic
+  (frontmatter scripts: + broader exec patterns); added Phase 9 runtime updates
+  (comprehensive-learning.sh + pipeline.py); dropped detect-drift.sh and
+  queue-status.sh wiring (low-value/duplication); added YAML schema ACs and
+  exit code 0/1/2 convention.

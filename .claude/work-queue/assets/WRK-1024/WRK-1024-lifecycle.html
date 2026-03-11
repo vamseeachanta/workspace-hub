@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-1071 Lifecycle — feat(harness): performance benchmark harness — regression de</title>
+  <title>WRK-1024 Lifecycle — chore(harness): increase context window limits for Claude an</title>
   <style>
 :root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
   --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
@@ -113,15 +113,15 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker &middot; Route B &middot; harness</p>
-    <h1>WRK-1071 — feat(harness): performance benchmark harness — regression detection for engineering calculations</h1>
+    <p class="eyebrow">Lifecycle Tracker &middot; Route  &middot; harness</p>
+    <h1>WRK-1024 — chore(harness): increase context window limits for Claude and Codex</h1>
     <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
       <div class="pill"><strong>Priority</strong>medium</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
       <div class="pill"><strong>Orchestrator</strong>claude</div>
       <div class="pill"><strong>Category</strong>harness</div>
-      <div class="pill"><strong>Created</strong>2026-03-09</div>
+      <div class="pill"><strong>Created</strong>2026-03-06</div>
     </div>
   </div>
 </header>
@@ -133,7 +133,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
   </div>
 </nav>
 
-<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>continue_to_planning</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>5</div></div></div>
+<div class="ri-callout"><div class="ri-callout-inner ri-absent"><div class="ri-label ri-absent">Resource Intelligence</div><div class="ri-field">evidence/resource-intelligence.yaml absent — Stage 2 not yet complete.</div></div></div>
 
 <div class="content">
 
@@ -152,7 +152,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">feat(harness): performance benchmark harness — regression detection for engineering calculations</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1071.md</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">chore(harness): increase context window limits for Claude and Codex</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val"></span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1024.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s2">
@@ -170,7 +170,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+    <div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s3">
@@ -188,7 +188,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s4">
@@ -206,7 +206,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `pytest-benchmark` added to assetutilities, digitalmodel, worldenergydata</li><li>☐ `tests/benchmarks/` with ≥1 benchmark per heavy module per repo</li><li>☐ `run-benchmarks.sh` runs suites, compares to baseline, flags &gt;20% regression</li><li>☐ `benchmark-baseline.json` populated from initial run</li><li>☐ Weekly cron entry for benchmark runs</li><li>☐ Cross-review (Codex) passes</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>&gt; Route B — Steps + test strategy.</li><li>&gt; Clarification baked in: assetutilities targets riser/fatigue calcs (not CP).</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1071.md</code></li></ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ Audit current context limit settings for Claude CLI on each machine</li><li>☐ Audit current context limit settings for Codex CLI on each machine</li><li>☐ Apply maximum supported context window values in each provider&#x27;s config</li><li>☐ Confirm whether repo-local config (`.claude/settings.json`, `.codex/`) supports context overrides</li><li>☐ If repo-local: commit to workspace-hub and document; if user-only: add rsync propagation to `setup-cron.sh`</li><li>☐ Document config file paths and field names in `workstations/SKILL.md` or `ai-orchestration.md`</li><li>☐ Verify no quota or cost implications of max context (note any tradeoffs)</li><li>☑ Verify Codex default model and reasoning effort on `ace-linux-1` (explicit recorded check)</li><li>☐ Verify Codex default model and reasoning effort on `ace-linux-2` (explicit recorded check)</li><li>☐ Verify Codex default model and reasoning effort on `acma-ansys05` (explicit recorded check)</li><li>☐ Do not close WRK-1024 until all three workstation checks are complete and explicitly documented in this WRK file</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1024.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -224,7 +224,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -242,7 +242,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th><th>P1</th><th>P2</th></tr></thead><tbody></tbody></table><p style="margin:8px 0 4px">Overall: <span class="badge badge-fail"></span> &nbsp; <span class="badge badge-fail">P1 open</span> &nbsp;<span style="font-size:.82rem;color:var(--muted)">1 round(s)</span></p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -260,7 +260,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/plan-final-review.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">
@@ -314,11 +314,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">summary</span><span class="schema-val">Implemented full benchmark harness across assetutilities, digitalmodel, and worldenergydata.
-9 benchmarks across 3 repos: 2 SCR fatigue (assetutilities), 5 CP+wall-thickness (digitalmodel),
-2 EIA production loaders (worldenergydata). Baseline bootstrapped. Self-comparison exits 0.
-All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
-</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
+    <div class="section-label">Execution record</div><p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">
@@ -336,7 +332,7 @@ All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
+    <div class="section-label">Gate evidence</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -408,7 +404,7 @@ All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Future work</div><table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>Add digitalmodel to dependency-groups.benchmark for consistency</td><td>spun-off-new</td><td>True</td></tr><tr><td>Extend harness to OGManufacturing and assethold repos</td><td>spun-off-new</td><td>True</td></tr><tr><td>Nightly cron integration test — verify cron entry works end-to-end</td><td>existing-updated</td><td>True</td></tr></table>
+    <p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>
   </div>
 </section>
 <section class="stage-section" id="s16">
@@ -426,7 +422,7 @@ All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Additions</div><ul class="item-list"><li>{&#x27;resource&#x27;: &#x27;pytest-benchmark&gt;=4.0.0,&lt;5.0.0&#x27;, &#x27;type&#x27;: &#x27;dependency&#x27;, &#x27;repos&#x27;: [&#x27;assetutilities&#x27;, &#x27;worldenergydata&#x27;], &#x27;notes&#x27;: &#x27;Added to [dependency-groups].test for assetutilities; [dependency-groups].benchmark for worldenergydata&#x27;}</li><li>{&#x27;resource&#x27;: &#x27;scripts/testing/run-benchmarks.sh&#x27;, &#x27;type&#x27;: &#x27;script&#x27;, &#x27;repos&#x27;: [&#x27;workspace-hub&#x27;], &#x27;notes&#x27;: &#x27;Multi-repo benchmark runner with --repo/--save-baseline/--no-compare flags; BENCHMARK_BASELINE_PATH env override&#x27;}</li><li>{&#x27;resource&#x27;: &#x27;scripts/testing/parse_benchmark_output.py&#x27;, &#x27;type&#x27;: &#x27;script&#x27;, &#x27;repos&#x27;: [&#x27;workspace-hub&#x27;], &#x27;notes&#x27;: &#x27;pytest-benchmark JSON parser; save-baseline and compare modes; exit 1 on &gt;20% regression&#x27;}</li><li>{&#x27;resource&#x27;: &#x27;config/testing/benchmark-baseline.json&#x27;, &#x27;type&#x27;: &#x27;artifact&#x27;, &#x27;repos&#x27;: [&#x27;workspace-hub&#x27;], &#x27;notes&#x27;: &#x27;9 committed benchmarks across 3 repos; bootstrap via --save-baseline --no-compare&#x27;}</li></ul>
+    <p style="color:var(--muted);font-size:.85rem;">Resource intelligence updated.</p>
   </div>
 </section>
 <section class="stage-section" id="s17">
@@ -444,7 +440,7 @@ All 5 runnable TDD tests pass; 2 all-repos integration tests validated manually.
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s18">

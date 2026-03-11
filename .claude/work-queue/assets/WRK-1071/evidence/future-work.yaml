@@ -1,0 +1,30 @@
+wrk_id: WRK-1071
+created_at: "2026-03-10T16:25:00Z"
+
+recommendations:
+  - id: FW-1
+    title: Add digitalmodel to dependency-groups.benchmark for consistency
+    description: >
+      Currently pytest-benchmark is in digitalmodel's main [project.dependencies].
+      Move to [dependency-groups].benchmark to match assetutilities/worldenergydata pattern.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-2
+    title: Extend harness to OGManufacturing and assethold repos
+    description: >
+      Add benchmark suites for ogmanufacturing (structural calcs) and assethold
+      (financial calcs) once benchmark patterns are proven stable.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-3
+    title: Nightly cron integration test — verify cron entry works end-to-end
+    description: >
+      Install cron entry from crontab-template.sh on ace-linux-1 and verify
+      the nightly run produces logs in logs/quality/benchmark-*.log.
+    disposition: existing-updated
+    status: captured
+    captured: true

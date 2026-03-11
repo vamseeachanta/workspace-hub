@@ -1,0 +1,56 @@
+wrk_id: WRK-1071
+phase: claim
+generated_at: "2026-03-10T16:35:00Z"
+all_ok: false
+gates:
+  - name: Plan gate
+    status: PASS
+    ok: true
+  - name: Workstation contract gate
+    status: PASS
+    ok: true
+  - name: Resource-intelligence gate
+    status: PASS
+    ok: true
+  - name: Activation gate
+    status: PASS
+    ok: true
+  - name: Agent log gate
+    status: PASS
+    ok: true
+  - name: User-review HTML-open gate
+    status: PASS
+    ok: true
+  - name: User-review publish gate
+    status: PASS
+    ok: true
+  - name: Cross-review gate
+    status: PASS
+    ok: true
+  - name: Claim gate
+    status: PASS
+    ok: true
+  - name: Reclaim gate
+    status: WARN
+    ok: false
+  - name: Approval ordering gate
+    status: PASS
+    ok: true
+  - name: Midnight UTC sentinel gate
+    status: PASS
+    ok: true
+  - name: Browser open elapsed time gate
+    status: PASS
+    ok: true
+  - name: Sentinel values gate
+    status: PASS
+    ok: true
+  - name: Claim artifact path gate
+    status: PASS
+    ok: true
+  - name: ISO datetime format gate
+    status: PASS
+    ok: true
+  - name: Stage1 capture gate
+    status: PASS
+    ok: true

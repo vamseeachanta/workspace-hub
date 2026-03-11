@@ -1,0 +1,7 @@
+wrk_id: WRK-1053
+stage: 1
+scope_approved: true
+reviewer: vamsee
+confirmed_at: 2026-03-10T00:00:00Z
+reviewed_at: 2026-03-10T00:00:00Z
+notes: "Scope approved — convert deterministic skill loops to scripts"

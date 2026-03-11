@@ -1,5 +1,6 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+wrk_id: WRK-1071
+reviewer: vamsee
+reviewed_at: "2026-03-10T16:45:00Z"
+confirmed_at: "2026-03-10T16:45:00Z"
+decision: approved
+notes: "User approved stage 17 — 9 benchmarks across 3 repos, baseline committed, self-comparison passes."

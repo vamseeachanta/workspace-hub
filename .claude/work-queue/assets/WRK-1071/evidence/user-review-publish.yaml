@@ -18,3 +18,12 @@ events:
       - .claude/work-queue/assets/WRK-1071/WRK-1071-plan-final.html
     published_at: "2026-03-10T13:40:00Z"
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "69c28df9"
+    documents:
+      - .claude/work-queue/assets/WRK-1071/WRK-1071-lifecycle.html
+    published_at: "2026-03-10T16:30:00Z"
+    reviewer: vamsee

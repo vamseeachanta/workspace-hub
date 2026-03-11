@@ -1,0 +1,23 @@
+wrk_id: WRK-1071
+updated_at: "2026-03-10T16:25:00Z"
+
+additions:
+  - resource: pytest-benchmark>=4.0.0,<5.0.0
+    type: dependency
+    repos: [assetutilities, worldenergydata]
+    notes: Added to [dependency-groups].test for assetutilities; [dependency-groups].benchmark for worldenergydata
+
+  - resource: scripts/testing/run-benchmarks.sh
+    type: script
+    repos: [workspace-hub]
+    notes: Multi-repo benchmark runner with --repo/--save-baseline/--no-compare flags; BENCHMARK_BASELINE_PATH env override
+
+  - resource: scripts/testing/parse_benchmark_output.py
+    type: script
+    repos: [workspace-hub]
+    notes: pytest-benchmark JSON parser; save-baseline and compare modes; exit 1 on >20% regression
+
+  - resource: config/testing/benchmark-baseline.json
+    type: artifact
+    repos: [workspace-hub]
+    notes: 9 committed benchmarks across 3 repos; bootstrap via --save-baseline --no-compare
