@@ -53,12 +53,12 @@ if os.path.isdir(kb_dir):
                     seen_ids.add(eid)
                     entries.append(e)
 
-# Normalize career-learnings.yaml
-career_path = os.path.join(seeds_dir, "career-learnings.yaml")
-if os.path.exists(career_path):
+# Load all *.yaml seed files from knowledge/seeds/
+import glob as _glob
+import yaml  # type: ignore[import]
+for seed_path in sorted(_glob.glob(os.path.join(seeds_dir, "*.yaml"))):
     try:
-        import yaml  # type: ignore[import]
-        with open(career_path) as f:
+        with open(seed_path) as f:
             seed = yaml.safe_load(f) or {}
         for e in seed.get("entries", []):
             eid = e.get("id", "")
@@ -66,7 +66,8 @@ if os.path.exists(career_path):
                 seen_ids.add(eid)
                 entries.append(e)
     except Exception as exc:
-        print(f"[build-knowledge-index] WARN: career-learnings.yaml parse error: {exc}", file=sys.stderr)
+        fname = os.path.basename(seed_path)
+        print(f"[build-knowledge-index] WARN: {fname} parse error: {exc}", file=sys.stderr)
 
 # Atomic write
 with open(index_tmp, "w") as f:

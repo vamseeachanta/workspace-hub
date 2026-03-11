@@ -113,3 +113,6 @@
 {"event": "stage_exit", "wrk": "WRK-1069", "stage": 20, "date": "2026-03-11", "timestamp": "2026-03-11T12:01:50.054606Z"}
 {"event": "stage_exit", "wrk": "WRK-1115", "stage": 17, "date": "2026-03-11", "timestamp": "2026-03-11T12:04:02.467650Z"}
 {"event": "stage_exit", "wrk": "WRK-1115", "stage": 18, "date": "2026-03-11", "timestamp": "2026-03-11T12:04:24.742924Z"}
+{"event": "stage_exit", "wrk": "WRK-1126", "stage": 1, "date": "2026-03-11", "timestamp": "2026-03-11T14:46:14.137928Z"}
+{"event": "stage_exit", "wrk": "WRK-1126", "stage": 2, "date": "2026-03-11", "timestamp": "2026-03-11T14:48:12.400785Z"}
+{"event": "stage_exit", "wrk": "WRK-1126", "stage": 3, "date": "2026-03-11", "timestamp": "2026-03-11T14:48:29.999368Z"}

@@ -225,6 +225,32 @@ HOURS_TO_RESET=$(( (MIDNIGHT_SECS - NOW_SECS) / 3600 ))
 echo "Hours to daily reset: ${HOURS_TO_RESET}h"
 ```
 
+## Task Exposure Tiers (Labor Market Research Insights)
+
+Anthropic's 2026 labor market research ([source](https://www.anthropic.com/research/labor-market-impacts))
+found these occupational exposure rates to AI automation:
+
+| Task type | Theoretical exposure | Observed (actual) | Implication |
+|-----------|--------------------|--------------------|-------------|
+| Computer programming | 94% | ~33% | High potential; use Sonnet/Codex |
+| Data entry / formatting | 67% | high | Routine tier → Haiku |
+| Financial / cost analysis | high | moderate | Standard tier → Sonnet |
+| Physical / manual trades | ~0% | ~0% | Not applicable |
+
+### Complexity Tier → Model Mapping
+
+Use this alongside Route mapping when task nature is clear:
+
+| Complexity tier | Keywords | Recommended model |
+|----------------|----------|------------------|
+| `routine` | format, rename, config, scaffold, update-doc, copy | Claude Haiku |
+| `standard` | implement, review, test, fix, migrate, document | Claude Sonnet |
+| `complex` | architecture, design, cross-repo, security, compound | Claude Opus |
+
+**Key insight**: the gap between theoretical and observed exposure is an implementation gap —
+not a capability gap. Routing routine tasks to cheaper models closes this gap for our workflow.
+See WRK-5002 to automate tier detection in `task_classifier.sh`.
+
 ---
 
 *Use this skill before any multi-item work session or when quota is a concern.*

@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T14:34:50Z by generate-index.py -->
+<!-- Generated: 2026-03-11T14:51:03Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T14:34:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T14:51:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 546
+**Total items:** 554
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 212 |
+| pending | 220 |
 | working | 2 |
 | blocked | 10 |
 | archived | 322 |
@@ -22,17 +22,17 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 247 |
-| medium | 251 |
-| low | 47 |
+| high | 249 |
+| medium | 256 |
+| low | 48 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 119 |
-| medium | 261 |
-| complex | 100 |
+| simple | 122 |
+| medium | 265 |
+| complex | 101 |
 
 ### By Category
 
@@ -40,8 +40,8 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 37 |
-| engineering | 117 |
+| harness | 38 |
+| engineering | 118 |
 | data | 25 |
 | platform | 13 |
 | business | 6 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 208 |
+| workspace-hub | 216 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,7 +79,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 225 / 546 |
+| Plans exist | 226 / 554 |
 | Plans cross-reviewed | 150 |
 | Plans approved | 172 |
 | Brochure pending | 8 |
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 546 |
+| Total captured | 554 |
 | Total archived | 322 |
-| Completion rate | 322/546 (59%) |
+| Completion rate | 322/554 (58%) |
 | Monthly rate (current month) | 88 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 212 | 27% |
-| Plans cross-reviewed | 9 | 14% |
-| Plans user-approved | 9 | 14% |
+| Pending items with plans | 58 / 220 | 26% |
+| Plans cross-reviewed | 9 | 13% |
+| Plans user-approved | 9 | 13% |
 
 ### Aging
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 1 | 8 |
-| Medium   | 92  | 1  | 1  |
-| Low      | 32  | 0  | 1  |
+| High     | 90 | 1 | 8 |
+| Medium   | 97  | 1  | 1  |
+| Low      | 33  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (37 items — 3 high, 26 medium, 8 low)
+### harness (38 items — 3 high, 27 medium, 8 low)
 
 #### harness / agent-teams
 
@@ -248,6 +248,7 @@
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
+| WRK-1125 | MEDIUM | refine(whats-next): surface note/reason fields and improve focus signals | pending |
 
 #### harness / workstations
 
@@ -255,7 +256,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (117 items — 68 high, 38 medium, 11 low)
+### engineering (118 items — 68 high, 39 medium, 11 low)
 
 #### engineering / cathodic-protection
 
@@ -305,6 +306,12 @@
 | WRK-583 | LOW | research: verify ANP Brazil production data REST API availability | pending |
 | WRK-585 | LOW | feat(worldenergydata): add IRENA offshore wind capacity data | pending |
 | WRK-604 | LOW | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending |
+
+#### engineering / offshore
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5000 | MEDIUM | OrcaFlex scripting workflows — automation foundation | pending |
 
 #### engineering / pipeline
 
@@ -1122,6 +1129,14 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1128 |
 
 ## By Status
 
@@ -1341,6 +1356,14 @@
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | medium | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | medium | medium | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | medium | simple | workspace-hub | - |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | medium | complex | workspace-hub | - |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | high | medium | workspace-hub | - |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | high | medium | workspace-hub | - |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
 
 ### Working
 
@@ -2306,6 +2329,14 @@
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | - |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | - |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | - |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | - |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | - |
 
 ### worldenergydata
 
@@ -2667,6 +2698,8 @@
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | medium | workspace-hub | - |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2923,6 +2956,11 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | simple | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | simple | workspace-hub | - |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | complex | workspace-hub | - |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2975,6 +3013,7 @@
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | medium | - | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | simple | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | simple | workspace-hub | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
 
 ## By Complexity
 
@@ -3101,6 +3140,9 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | workspace-hub | - |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3367,6 +3409,10 @@
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | workspace-hub | - |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 
 ### Complex
 
@@ -3472,10 +3518,11 @@
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | - | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | high | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | workspace-hub, digitalmodel | - |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (159 active / 266 total)
+### ace-linux-1 (166 active / 273 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3745,6 +3792,13 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | workspace-hub |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | simple | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | workspace-hub |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | workspace-hub |
+| WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | workspace-hub |
+| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | workspace-hub |
+| WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
+| WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
+| WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -3765,7 +3819,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | - |
 
-### acma-ansys05 (14 active / 14 total)
+### acma-ansys05 (15 active / 15 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3783,6 +3837,7 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | workspace-hub, digitalmodel |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | workspace-hub |
+| WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | workspace-hub |
 
 ### (unassigned) (21 active / 229 total)
 
@@ -4116,4 +4171,5 @@
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | WRK-1035 | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | WRK-1044 | - | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | WRK-1059 | - | - |
+| WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 

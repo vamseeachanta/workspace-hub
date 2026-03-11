@@ -1,0 +1,39 @@
+wrk_id: WRK-1126
+stage: 2
+surveyed_at: "2026-03-11"
+
+existing_assets:
+  maritime_skill:
+    path: .claude/skills/engineering/maritime-legal/SKILL.md
+    status: exists
+    lines: 92
+    notes: "Created by WRK-633; covers casualty investigation, admiralty law, liability framing, regulatory frameworks. WRK-1126 extends the knowledge layer rather than duplicating this skill."
+  knowledge_seeds_dir: knowledge/seeds/
+  existing_seeds:
+    - career-learnings.yaml   # 10 entries, schema reference
+  knowledge_index: knowledge-base/index.jsonl  # gitignored, 19KB currently
+  related_skills:
+    - .claude/skills/data/energy/marine-safety-incidents/SKILL.md
+    - .claude/skills/business/legal/legal-risk-assessment/SKILL.md
+    - .claude/skills/business/legal/contract-review/SKILL.md
+
+seed_yaml_schema:
+  top_key: entries
+  entry_fields: [id, type, category, subcategory, title, learned_at, source, context, patterns, follow_ons]
+  id_convention: "DOMAIN-subcategory-concept"
+
+knowledge_scripts:
+  build_index: scripts/knowledge/build-knowledge-index.sh
+  query: scripts/knowledge/query-knowledge.sh
+  capture_wrk: scripts/knowledge/capture-wrk-summary.sh
+
+gaps:
+  - maritime-law-cases.yaml   # missing — must create with ≥10 landmark cases
+  - maritime-liabilities.yaml # missing — must create with ≥5 conventions
+  - TDD schema validation tests
+
+risks:
+  - YAML category field must be "maritime-law" (kebab-case) for query to match AC5
+  - config/ai_agents/ai-tools-status.yaml is auto-generated — do NOT edit manually; remove that AC sub-item from plan
+
+skill_directory_note: "No domains/ subdirectory. Skills live under engineering/maritime-legal/. No new skill directory needed — extend existing or add data layer only."

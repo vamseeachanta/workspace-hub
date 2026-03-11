@@ -43,7 +43,12 @@ entries:
       - "Wake interference: apply spacing/diameter ratio correction factor"
       - "Fatigue damage accumulates per Miner's rule: sum(ni/Ni) < 1/DFF"
       - "Design fatigue factor (DFF) = 3 for inspectable locations, 10 for inaccessible"
-    follow_ons: []
+    follow_ons:
+      - type: training
+        title: "Orcina OrcaFlex Automation Training (LinkedIn post)"
+        url: "https://www.linkedin.com/posts/orcina-ltd_orcaflex-automation-training-activity-7437060068174471169-d1P3?utm_source=share&utm_medium=member_ios&rcm=ACoAAAFdG9kB103ydcFGign1_8EYQx7YwiUPV4k"
+        added_at: "2026-03-11"
+        note: "Orcina official automation training — review for acma-ansys05 OrcaFlex scripting workflows"
 
   - id: CAREER-engineering-fea-structural
     type: career

@@ -1,0 +1,15 @@
+wrk_id: WRK-1125
+gathered_at: "2026-03-11T00:00:00Z"
+files_reviewed:
+  - scripts/work-queue/whats-next.sh
+  - .claude/work-queue/working/WRK-1022.md
+  - .claude/work-queue/pending/WRK-1109.md
+key_findings:
+  - "whats-next.sh row format: id|priority|subcategory|computer|title|cp_stage|item_status|item_pid (8 fields)"
+  - "process_file() builds row string and routes to arrays by location/blocker state"
+  - "print_section() renders header + rows, handles local/remote partitioning"
+  - "WRK-1022 has note: 'needs multi-workstation coordination — waiting on acma-ansys05 inputs'"
+  - "WRK-1109 has not_before: 2026-04-10 and note: 'punted ~1 month — revisit 2026-04-10'"
+  - "No existing WORKING_PARKED array; all working items go to WORKING_ITEMS"
+  - "get_field() helper reads any frontmatter field by name"
+no_blockers: true
