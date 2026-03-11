@@ -1,0 +1,9 @@
+wrk_id: WRK-1135
+stage: 12
+completed_at: "2026-03-11T16:09:00"
+framework: bats
+test_file: tests/work-queue/test_whats_next.bats
+total: 9
+passed: 9
+failed: 0
+new_tests: 3

@@ -2,7 +2,10 @@ wrk_id: WRK-1135
 stage: 17
 reviewer: vamsee
 confirmed_by: vamsee
-approved_at: "2026-03-11"
+approved_at: "2026-03-11T16:15:00Z"
+reviewed_at: "2026-03-11T16:15:00Z"
+confirmed_at: "2026-03-11T16:15:00Z"
+decision: approved
 all_acs_met: true
 notes: >
   All 4 ACs confirmed. 9/9 bats tests pass. WRK-1127 correctly shown in

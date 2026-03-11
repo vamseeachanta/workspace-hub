@@ -1,0 +1,14 @@
+wrk_id: WRK-1135
+stage: 2
+completion_status: continue_to_planning
+completed_at: "2026-03-11T16:05:00Z"
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+files_reviewed:
+  - scripts/work-queue/whats-next.sh
+  - tests/work-queue/test_whats_next.bats
+notes: "Route A — shell script fix with bats tests"
