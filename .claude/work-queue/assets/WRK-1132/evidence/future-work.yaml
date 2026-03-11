@@ -1,0 +1,25 @@
+wrk_id: WRK-1132
+stage: 15
+completed_at: "2026-03-11T22:10:00Z"
+recommendations:
+  - id: FW-1
+    title: "Add recursive PDF discovery (rglob) for nested docs/domains/ subdirectories"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Codex MEDIUM finding — current glob misses subdirs and uppercase .PDF"
+  - id: FW-2
+    title: "Add subprocess integration test for query-standards.sh CLI with quotes/spaces"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Codex MEDIUM — shell wrapper not tested by pytest"
+  - id: FW-3
+    title: "Ingest real DNV/API/ABS PDFs from docs/domains/ once curated"
+    priority: high
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Staging dir created; tool ready but no real PDFs ingested yet"

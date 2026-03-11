@@ -1,0 +1,85 @@
+wrk_id: WRK-1132
+route: B
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: frontmatter triage fields
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/WRK-1132-plan.html
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/cross-review-results.md
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim/Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  evidence: frontmatter routing fields
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/WRK-1132-lifecycle.html
+- order: 12
+  stage: TDD/Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/tdd-results.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/cross-review-results.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/gate-evidence-summary.json
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: no continuity break triggered
+- order: 19
+  stage: Close
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1132/evidence/gate-evidence-summary.json
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: pending
+generated_at: '2026-03-11T22:22:06Z'
+reviewed_by: orchestrator

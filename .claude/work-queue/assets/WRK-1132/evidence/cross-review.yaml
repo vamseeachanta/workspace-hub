@@ -1,0 +1,11 @@
+wrk_id: WRK-1132
+stage: 13
+route: B
+reviewed_at: "2026-03-11T22:13:42Z"
+provider: claude
+verdict: APPROVE
+codex_verdict: REQUEST_CHANGES
+codex_finding: "MAJOR: shell injection via string interpolation in query-standards.sh heredoc"
+codex_resolution: "Fixed — user input now passed via environment variables; LIMIT validated as integer. Commit 48b0b594."
+gemini_verdict: pending
+notes: "Codex MAJOR finding fixed before close. 18 tests still passing post-fix."

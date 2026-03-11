@@ -1,0 +1,10 @@
+scope_approved: true
+reviewed_by: vamsee
+reviewed_at: "2026-03-11"
+notes: |
+  Scope approved. AC6 revised: WRK stays open until validated on BOTH ace-linux-1 and acma-ansys05.
+  Execution order:
+    1. Audit ace-linux-1 + SSH ace-linux-2 session JSONLs → derive allow list
+    2. Commit .claude/settings.json to repo
+    3. Validate ace-linux-1
+    4. Gather data and validate acma-ansys05 (Windows) — WRK closes after this passes

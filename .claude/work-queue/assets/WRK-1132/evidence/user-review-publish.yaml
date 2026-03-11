@@ -1,0 +1,32 @@
+wrk_id: WRK-1132
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 79c1caf9
+    published_at: "2026-03-11T21:21:00Z"
+    reviewer: vamsee
+    documents:
+      - WRK-1132-plan.html
+    notes: "Plan committed after approval"
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 79c1caf9
+    published_at: "2026-03-11T21:20:00Z"
+    reviewer: vamsee
+    documents:
+      - WRK-1132-plan.html
+    notes: "Plan finalised"
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 48b0b594
+    published_at: "2026-03-11T22:14:00Z"
+    reviewer: vamsee
+    documents:
+      - WRK-1132-lifecycle.html
+    notes: "Implementation merged to main with security fix"

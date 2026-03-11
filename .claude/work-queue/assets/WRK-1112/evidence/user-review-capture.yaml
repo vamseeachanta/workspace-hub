@@ -1,0 +1,9 @@
+wrk_id: WRK-1112
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-11T00:00:00Z
+notes: >
+  Scope approved. User added: reviewer agent preamble must explicitly communicate
+  the cycle limitation so reviewers front-load critical findings and prioritise
+  within the 3-iteration budget. Phase 2 preamble to be more directive on this.

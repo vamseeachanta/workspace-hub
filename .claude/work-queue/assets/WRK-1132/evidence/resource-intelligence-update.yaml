@@ -1,0 +1,7 @@
+wrk_id: WRK-1132
+stage: 16
+updated_at: "2026-03-11T22:13:56Z"
+additions:
+  - skill: "uv run --no-project --with <pkg> python for ad-hoc package use without pyproject.toml"
+  - pattern: "Pass user shell input to Python via environment variables (not heredoc interpolation) to prevent injection"
+  - pattern: "BM25Okapi (rank_bm25) for local PDF semantic search — no GPU/API key; sub-second on typical corpora"

@@ -1,0 +1,13 @@
+wrk_id: WRK-1132
+stage: 3
+triaged_at: "2026-03-11"
+complexity_confirmed: medium
+route: B
+rationale: >
+  Single repo (workspace-hub), clear outcome (BM25 CLI over standards PDFs),
+  2 new scripts (ingest-standards.py + query-standards.sh), 1 new data dir.
+  Fits within one agent context window. Route B: Explore → Implement → Test.
+blocked_by: []
+priority_confirmed: medium
+category: harness
+subcategory: standards-tooling

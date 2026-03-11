@@ -1,0 +1,28 @@
+wrk_id: WRK-1112
+stage: 2
+completion_status: done
+generated_at: 2026-03-11T00:00:00Z
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/work
+  referenced: []
+files_consulted:
+  - scripts/review/cross-review.sh
+  - scripts/review/submit-to-codex.sh
+  - scripts/review/submit-to-gemini.sh
+  - scripts/review/prompts/implementation-review.md
+  - scripts/review/prompts/plan-review.md
+  - scripts/review/tests/test-cross-review-codex-hardgate.sh
+key_findings:
+  - cross-review.sh manages PROMPT from prompt file and dispatches to submit_review()
+  - WRK_ID auto-extracted from file path via regex in cross-review.sh and both submit scripts
+  - submit-to-codex.sh has REPO_ROOT via git rev-parse; can reach assets/WRK-NNN/
+  - submit-to-gemini.sh same pattern — REPO_ROOT available
+  - CODEX_MAX_REVIEWS_PER_WRK env var already limits Codex-specifically but not overall
+  - Test format is plain bash (assert_eq pattern); no bats dependency
+  - Prompts loaded from prompts/*.md — easy injection point for preamble prefix
+notes: >
+  Iteration tracking file at assets/WRK-NNN/review-iteration.yaml. Enforcement
+  in cross-review.sh (increment + check before dispatch) and read-only guard
+  in both submit scripts. Preamble injected into PROMPT after file load.

@@ -1,0 +1,190 @@
+wrk_id: WRK-1132
+stage: 2
+assessed_at: "2026-03-11T00:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue-workflow
+    - subagent-driven-development
+    - test-driven-development
+    - finishing-a-development-branch
+    - using-git-worktrees
+
+findings:
+  document_index:
+    path: data/document-index/index.jsonl
+    format: JSONL — one JSON object per line, one record per file (not per page)
+    record_count: 1033789
+    has_pdf_pages: false
+    og_standards_record_count: 27981
+    notes: >
+      Records are file-level only. No chunk_id, page_number, or section_id
+      fields exist. The og_standards source (27,981 records) covers PDFs
+      from /mnt/ace/O&G-Standards/ on ace-linux-1. Summaries are null for
+      most records (status: "gap"). A dedicated page-level chunk store must
+      be built — the existing index cannot serve semantic search directly.
+    sample_schema:
+      path: string
+      host: string
+      source: string
+      ext: string
+      size_mb: float
+      mtime: string
+      content_hash: string
+      og_db_id: integer
+      org: string
+      doc_number: string
+      is_cad: boolean
+      domain: string
+      summary: null
+      status: string
+      target_repos: list
+
+  docs_domains:
+    path: docs/domains/
+    exists: false
+    pdf_count: 0
+    code_families_found: []
+    total_size_mb: 0
+    notes: >
+      docs/domains/ does NOT exist in the repo. Standards PDFs reside on
+      the remote mount at /mnt/ace/O&G-Standards/ (og_standards, 27,981
+      index records) and /mnt/ace/docs/_standards (ace_standards). Both
+      accessible only on ace-linux-1.
+      Code families confirmed in index path structure: DNV, API, ABS,
+      ISO, ASTM, BS (British Standards), NORSOK, AMJIG.
+
+  existing_scripts:
+    standards_dir_exists: false
+    relevant_scripts:
+      - path: scripts/data/document-index/phase-a-index.py
+        purpose: >
+          Multi-source file indexer (file-level). Pattern to adapt for
+          page-chunk extraction with resume-safe checkpointing.
+      - path: scripts/data/document-index/config.yaml
+        purpose: >
+          Defines og_standards db_path (/mnt/ace/O&G-Standards/_inventory.db)
+          and ace_standards paths. Output paths for index.jsonl.
+      - path: scripts/knowledge/query-knowledge.sh
+        purpose: >
+          CANONICAL CLI PATTERN TO REPLICATE. Bash wrapper → uv run --no-project
+          python3 inline heredoc. Flags: --query, --category, --limit.
+          query-standards.sh should follow this exact skeleton.
+      - path: CAD-DEVELOPMENTS/_archive/skills/office-docs/pypdf/SKILL.md
+        purpose: >
+          pypdf text extraction patterns including page-by-page extraction
+          with page numbers. Covers PdfReader, page.extract_text(),
+          extraction_mode="layout". OCR fallback via pytesseract.
+      - path: CAD-DEVELOPMENTS/_archive/skills/sme/standards/dnv/SKILL.md
+        purpose: DNV OS/RP/ST document taxonomy (OS-C101, RP-C203, OS-F101, etc.)
+      - path: CAD-DEVELOPMENTS/_archive/skills/sme/standards/api/SKILL.md
+        purpose: API standards taxonomy (2RD, 2A-WSD, RP series)
+      - path: CAD-DEVELOPMENTS/_archive/skills/sme/standards/iso/SKILL.md
+        purpose: ISO oil & gas standards (ISO 15156, 13628, 19900 series)
+
+  python_deps:
+    available:
+      - pypdf
+      - pdfplumber
+      - yaml
+      - json
+    missing_but_needed:
+      - rank_bm25  # BM25 ranking MVP — lightweight pure Python
+      - sentence-transformers  # Phase 2 semantic embeddings (heavy)
+      - faiss-cpu  # Phase 2 vector similarity (heavy)
+    notes: >
+      Hub root has no pyproject.toml. All Python via uv run --no-project.
+      MVP: uv run --no-project --with pypdf --with rank_bm25 python.
+      Heavy ML deps (sentence-transformers, faiss) deferred to Phase 2.
+      BM25 meets <5s CLI requirement without ML inference.
+
+  related_wrk_findings:
+    WRK-272:
+      status: not found in pending or archive
+      inference: >
+        Likely DNV-RP-B401 / cathodic protection standards work.
+        CP is listed in WRK-1132's topic filter scope.
+    WRK-277:
+      status: not found in pending or archive
+      inference: >
+        Likely ABS offshore CP work. ABS is one of the target code families.
+    WRK-688:
+      status: not found in pending or archive
+      inference: Nature unknown from available data.
+    WRK-137:
+      status: pending (parked until 2026-05-01)
+      relevance: >
+        DIRECT PRECEDENT. PDF parsing of 102 rig spec PDFs using pdfplumber.
+        Parked due to image-based PDF complexity.
+        KEY LESSON: text-based standards PDFs (DNV, API, ABS) are much more
+        tractable than image-based rig spec sheets.
+
+  mcp_semantic_scholar:
+    configured: true
+    config_path: .mcp.json
+    server_name: semantic-scholar-mcp
+    type: stdio
+    notes: >
+      MCP server wired into hub .mcp.json and active in Claude Code sessions.
+      Provides academic paper search via Semantic Scholar API. Useful as
+      gap-fill when local standards PDFs lack coverage. No auth token
+      required for basic access.
+
+  query_pattern_reference:
+    file: scripts/knowledge/query-knowledge.sh
+    pattern_summary: >
+      1. Bash sets REPO_ROOT via git rev-parse --show-toplevel
+      2. Parse --query, --category, --limit flags with while/case
+      3. uv run --no-project python3 - <<PYEOF ... PYEOF
+      4. Python heredoc: load JSONL, filter, score by keyword frequency,
+         print markdown output
+
+recommendations:
+  approach: >
+    Two-phase delivery.
+    PHASE 1 (MVP — meets all ACs): Build keyword/BM25 search over page-level
+    text chunks from curated subset of standards (20-50 key PDFs staged to
+    docs/domains/). Ingest with pypdf page-by-page; store as
+    data/standards-index/chunks.jsonl. Pre-build BM25 index serialized to
+    data/standards-index/bm25.pkl. CLI query-standards.sh loads pkl, ranks
+    in <5s. Code family detected from file path regex.
+    PHASE 2 (optional): sentence-transformers embeddings + faiss. MCP
+    Semantic Scholar for academic gap-fill.
+
+  key_risks:
+    - risk: "docs/domains/ does not exist; PDFs only on /mnt/ace/ remote mount"
+      mitigation: >
+        Build ingestion from og_standards source paths in config.yaml directly.
+        Create docs/domains/ as curated staging area with copies or symlinks
+        of 20-50 most relevant standards.
+    - risk: "Many standards PDFs may be image-based (scanned) — pypdf returns empty text"
+      mitigation: >
+        Detect empty extraction; log warning with path; skip or index
+        filename/doc_number only. WRK-137 confirms this is a real problem.
+    - risk: "org field is 'Unknown' for most records — code family unreliable from metadata"
+      mitigation: >
+        Parse code family from file path via regex: contains dnv, api, abs,
+        iso, bs/, norsok (case-insensitive). Use org field as secondary signal.
+    - risk: "27,981 og_standards records — full extraction would take hours"
+      mitigation: >
+        Scope MVP to curated subset. Build incremental ingestion with
+        checkpointing (same pattern as phase-a-index.py).
+    - risk: "<5s CLI requirement — loading large JSONL on every query is slow"
+      mitigation: >
+        Pre-serialize BM25 index as pickle. Load at query time (~0.3-0.5s).
+        BM25 query itself is microseconds. Total <1s expected for MVP corpus.
+
+  suggested_stack:
+    ingestion_library: "pypdf (primary); pdfplumber (fallback)"
+    ranking_library: "rank_bm25 (BM25Okapi) — pure Python, no ML"
+    chunk_storage: "data/standards-index/chunks.jsonl"
+    index_storage: "data/standards-index/bm25.pkl"
+    cli_pattern: >
+      scripts/standards/query-standards.sh — bash wrapper →
+      uv run --no-project --with pypdf --with rank_bm25 python inline heredoc,
+      mirroring query-knowledge.sh exactly
+    code_family_filter: "Regex on file path: DNV|API|ABS|ISO|BS|NORSOK (case-insensitive)"
+    topic_filter: "Keyword tag at ingest from section headings + filename analysis"
+    mcp_gap_fill: "Semantic Scholar MCP (.mcp.json already configured)"
+    phase_2_embedding: "sentence-transformers/all-MiniLM-L6-v2 + faiss-cpu (optional, future)"

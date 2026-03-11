@@ -1,0 +1,37 @@
+wrk_id: WRK-1132
+stage: 10
+completed_at: "2026-03-11T22:00:00Z"
+executed_at: "2026-03-11T22:00:00Z"
+commit: a435816e
+files_changed:
+  - scripts/standards/ingest_standards.py
+  - scripts/standards/query-standards.sh
+  - tests/standards/conftest.py
+  - tests/standards/test_ingest_standards.py
+  - tests/standards/test_query_logic.py
+  - tests/standards/test_integration.py
+  - docs/domains/.gitkeep
+  - data/standards-index/.gitkeep
+integrated_repo_tests:
+  - name: "standards unit tests — page extraction"
+    scope: integrated
+    command: "uv run --no-project --with pymupdf --with rank_bm25 python -m pytest tests/standards/test_ingest_standards.py -v"
+    result: passed
+    artifact_ref: tests/standards/test_ingest_standards.py
+    passed: 9
+    failed: 0
+  - name: "standards unit tests — query logic"
+    scope: integrated
+    command: "uv run --no-project --with pymupdf --with rank_bm25 python -m pytest tests/standards/test_query_logic.py -v"
+    result: passed
+    artifact_ref: tests/standards/test_query_logic.py
+    passed: 5
+    failed: 0
+  - name: "standards integration tests — e2e + speed gate"
+    scope: integrated
+    command: "uv run --no-project --with pymupdf --with rank_bm25 python -m pytest tests/standards/test_integration.py -v"
+    result: passed
+    artifact_ref: tests/standards/test_integration.py
+    passed: 4
+    failed: 0
+    notes: "Speed gate: query completed in < 5s (0.49s measured)"
