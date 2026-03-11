@@ -1,0 +1,26 @@
+wrk_id: WRK-129
+title: "Standardize analysis reporting for each OrcaFlex structure type"
+stage: 10
+stage_name: "Work Execution — Phase 1"
+next_action: |
+  Start Phase 1 — data models in src/digitalmodel/solvers/orcaflex/reporting/models/
+  1. Create reporting/ package skeleton (dirs + __init__.py files)
+  2. Implement models/report.py — OrcaFlexAnalysisReport root model (all sections Optional)
+  3. Implement models/geometry.py — GeometryData, LineProfileData, KeyPointData
+  4. Implement models/design_checks.py — DesignCheckData, UtilizationData
+  5. Write unit tests: tests/solvers/orcaflex/reporting/test_models.py
+context_summary:
+  - "Spec v1.4 approved (2026-02-21) — authoritative source: specs/modules/wrk-129-orcaflex-analysis-reporting.md"
+  - "Planning complete: 17-section HTML report, subsection anchor map, 5 structure-type worked examples"
+  - "Phase 1 (models) is next — OrcFxAPI-free Pydantic v2 models; data via model_validate(dict)"
+  - "Phase 4 (OrcFxAPI extractors) deferred to follow-on WRK — needs acma-ansys05 for OrcFxAPI"
+  - "Key patterns: reuse hydrodynamics/diffraction/report_generator.py and mooring_analysis/comprehensive_analysis/models.py"
+  - "Execution machine: acma-ansys05 (OrcaFlex license)"
+decisions_this_session:
+  - "percent_complete corrected from 100 to 25 (planning done, no code written)"
+  - "execution_workstations updated to acma-ansys05"
+artifacts_written: []
+entry_reads:
+  - specs/modules/wrk-129-orcaflex-analysis-reporting.md
+  - .claude/work-queue/working/WRK-129.md
+updated_at: 2026-03-11T00:00:00Z

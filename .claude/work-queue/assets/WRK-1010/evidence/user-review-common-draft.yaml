@@ -1,11 +1,7 @@
 wrk_id: WRK-1010
 stage: 5
 reviewed_at: "2026-03-11T01:05:00Z"
-decision: approved
 approval_decision: approve_as_is
 review_cycle_id: "2026-03-11-r1"
-scope_approved: true
-plan_approved: true
 confirmed_by: vamsee
-plan_ref: specs/wrk/WRK-1010/plan.md
-notes: "User approved plan draft at Stage 5."
+notes: "User approved plan draft at Stage 5 (common-draft review)."

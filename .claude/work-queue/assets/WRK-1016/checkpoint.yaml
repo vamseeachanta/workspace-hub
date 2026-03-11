@@ -1,11 +1,12 @@
 wrk_id: WRK-1016
-current_stage: 5
-stage_name: User Review - Plan Draft
-completed_stage: 4
-next_action: Execute stage 5: User Review - Plan Draft
-context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
+current_stage: 8
+stage_name: Claim / Activation
+completed_stage: 7
+next_action: Execute stage 8: Claim / Activation
+context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
 entry_reads:
   - .claude/work-queue/assets/WRK-1016/checkpoint.yaml
-  - assets/WRK-1016/WRK-1016-lifecycle.html#s1-s4
-checkpointed_at: 2026-03-11T00:58:12Z
-human_gate: true
+  - assets/WRK-1016/evidence/plan-final-review.yaml
+checkpointed_at: 2026-03-11T01:21:07Z
+human_gate: false
+chained_stages: [[8, 9]]

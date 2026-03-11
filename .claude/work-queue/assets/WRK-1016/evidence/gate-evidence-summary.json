@@ -1,7 +1,7 @@
 {
-  "wrk_id": "WRK-1010",
+  "wrk_id": "WRK-1016",
   "phase": "claim",
-  "summary_file": "assets/WRK-1010/evidence/gate-evidence-summary.json",
+  "summary_file": "assets/WRK-1016/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
@@ -15,14 +15,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
+      "details": "plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05]"
     },
     {
       "name": "Resource-intelligence gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=6"
     },
     {
       "name": "Activation gate",
@@ -36,7 +36,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "pre-cutoff backfill (id=1010, created_at=2026-03-04T00:00:00Z) \u2014 log gate skipped"
+      "details": "pre-cutoff backfill (id=1016, created_at=2026-03-05T00:00:00Z) \u2014 log gate skipped"
     },
     {
       "name": "User-review HTML-open gate",
@@ -57,7 +57,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1010/review.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1016/review-synthesis.md"
     },
     {
       "name": "Claim gate",
@@ -82,24 +82,24 @@
     },
     {
       "name": "Midnight UTC sentinel gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no midnight UTC sentinel found"
+      "details": "midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-10T00:00:00Z"
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "browser open elapsed time OK"
+      "details": "stage=plan_draft: approval confirmed only 0s after browser open (min 300s required)"
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no sentinel values found"
+      "details": "claim-evidence.yaml: best_fit_provider='unknown'; claim-evidence.yaml: session_owner='unknown'; claim-evidence.yaml: quota_snapshot.pct_remaining=null when status=available"
     },
     {
       "name": "Claim artifact path gate",
@@ -120,7 +120,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-04T00:00:00Z"
+      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-05T00:00:00Z"
     }
   ]
 }

@@ -1,0 +1,7 @@
+wrk_id: WRK-1014
+stage: 1
+gate: capture
+scope_approved: true
+confirmed_by: vamsee
+confirmed_at: "2026-03-10T00:00:00Z"
+notes: "Scope approved — add Stage 4a Plan Mode Ideation to WRK lifecycle"

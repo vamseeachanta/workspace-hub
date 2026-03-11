@@ -1,0 +1,20 @@
+wrk_id: WRK-1014
+stage: 2
+generated_at: "2026-03-10T00:00:00Z"
+sources_consulted:
+  - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    relevance: primary — Stage 4 contract to split into 4a/4b; Stage Matrix row to update
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    relevance: primary — Start-to-Finish Chain step 4 reference to update
+  - path: .claude/work-queue/process.md
+    relevance: primary — Plan Gate Workflow / Canonical Lifecycle / Stage 4 contract
+constraints:
+  - SKILL.md files have a 250-line soft limit (currently 238 lines for work-queue SKILL.md)
+  - No code changes required — doc/YAML only
+  - Must not rename existing stages (stages remain 1-20; 4a/4b are sub-stages)
+open_questions: []
+risk: low
+notes: >
+  All three files are doc-only. Stage 4a (Plan Mode Ideation) adds EnterPlanMode/ExitPlanMode
+  tooling to the plan draft sub-stage. The mermaid flowchart in process.md needs a new node.
+  SKILL.md stage contract table needs a new 4a row. work-queue-workflow step 4 needs a note.

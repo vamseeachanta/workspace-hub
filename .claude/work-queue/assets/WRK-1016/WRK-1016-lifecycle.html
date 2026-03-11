@@ -206,7 +206,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ Inventory of all settings files across hub + tier-1 repos (table: file, repo, last-modified, size)</li><li>☐ Permissions audit: `allow`/`deny` lists reviewed; gaps and risks documented</li><li>☐ Hooks audit: latency measured per hook; slow hooks flagged (&gt;2s threshold)</li><li>☐ Agent harness file compliance: CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md ≤20 lines each</li><li>☐ Plugin gap analysis: any official plugins from `anthropics/claude-plugins-official` not yet installed that would benefit this ecosystem</li><li>☐ `pyproject.toml` tool config reviewed across tier-1 repos; missing best-practice defaults proposed</li><li>☐ At least 5 concrete improvements applied (not just documented)</li><li>☐ Changes committed and INDEX regenerated</li><li>☐ Comprehensive-learning Phase 10 (or a new nightly section) captures the canonical settings baseline for future drift detection</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>**Route B — Steps + test strategy**</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1016.md</code></li></ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ Inventory of all settings files across hub + tier-1 repos (table: file, repo, last-modified, size)</li><li>☐ Permissions audit: `allow`/`deny` lists reviewed; gaps and risks documented</li><li>☐ Hooks audit: latency measured per hook; slow hooks flagged (&gt;2s threshold)</li><li>☐ Agent harness file compliance: CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md ≤20 lines each</li><li>☐ Plugin gap analysis: any official plugins from `anthropics/claude-plugins-official` not yet installed that would benefit this ecosystem</li><li>☐ `pyproject.toml` tool config reviewed across tier-1 repos; missing best-practice defaults proposed</li><li>☐ At least 5 concrete improvements applied (not just documented)</li><li>☐ Changes committed and INDEX regenerated</li><li>☐ Comprehensive-learning Phase 10 (or a new nightly section) captures the canonical settings baseline for future drift detection</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>**Route B — Steps + test strategy**</li><li>*Revised after Codex/Gemini cross-review (both MAJOR → fixed below)*</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1016.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -224,7 +224,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -242,7 +242,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+    <div class="section-label">Cross-review summary</div><table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th><th>P1</th><th>P2</th></tr></thead><tbody></tbody></table><p style="margin:8px 0 4px">Overall: <span class="badge badge-fail"></span> &nbsp; <span class="badge badge-fail">P1 open</span> &nbsp;<span style="font-size:.82rem;color:var(--muted)">1 round(s)</span></p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -260,7 +260,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/plan-final-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">

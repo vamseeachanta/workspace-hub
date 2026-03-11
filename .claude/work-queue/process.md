@@ -25,8 +25,9 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 flowchart TD
     A[Capture] --> B[Resource Intelligence]
     B --> C[Triage]
-    C --> D[Plan Draft]
-    D --> E{User Reviewed Draft HTML?}
+    C --> D[4a: Plan Mode Ideation]
+    D --> D2[4b: Plan Artifact Write]
+    D2 --> E{User Reviewed Draft HTML?}
     E -- Yes --> F[Multi-Agent Review]
     E -- No --> D
     F --> G{User Review Passed on Final HTML?}
@@ -83,6 +84,21 @@ For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, 
 - `plan_workstations` and `execution_workstations` must be non-empty and may include multiple machines.
 
 ### Stage 4. Plan Draft
+
+**4a — Plan Mode Ideation**: Before writing any artifacts, invoke `EnterPlanMode`. Draft the
+full plan scope as text-only; iterate with the user if needed. Exit with `ExitPlanMode` once
+the text plan is approved. This is a non-blocking sub-stage — no exit artifact required.
+
+**Critical**: Do NOT rely on plan mode's implicit planning behavior. Always open with an
+explicit instruction: "Produce a complete plan covering every requirement in the WRK spec /
+PRD before proceeding." This explicit coverage instruction is what drives high-quality output
+— plan mode alone (without the instruction) measurably degrades plan coverage.
+
+**4b — Plan Artifact Creation**: Write plan spec and generate HTML review artifact (existing
+Stage 4 behavior). Before writing the artifact, run a self-verification pass: check the draft
+plan against every Acceptance Criterion and WRK `## What` requirement, and close any gaps
+found. Then proceed to Stage 5.
+
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
 - Must produce HTML review artifact.
 - Every generated HTML review artifact must include a `Test Summary` section showing example-pack and variation-test presence.

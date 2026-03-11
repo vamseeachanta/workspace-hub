@@ -1,0 +1,57 @@
+wrk_id: WRK-1016
+stage: 6
+reviewed_at: "2026-03-10T00:30:00Z"
+
+providers:
+  claude:
+    verdict: APPROVE
+    file: assets/WRK-1016/plan_claude.md
+    notes: "Plan is well-scoped and incremental."
+
+  codex:
+    verdict: MAJOR
+    file: scripts/review/results/wrk-1016-phase-1-cross-review-codex.md
+    findings:
+      - id: C1
+        severity: P1
+        desc: "Missing scope — pre-commit, uv.toml, vscode, cron not in Phase 1"
+        resolved: true
+        resolution: "Added steps 7-10 to Phase 1"
+      - id: C2
+        severity: P1
+        desc: "target_repos too narrow — tier-1 repos not listed"
+        resolved: true
+        resolution: "target_repos expanded to include all 5 tier-1 repos"
+      - id: C3
+        severity: P2
+        desc: "Plan omits Stage 6/7 gate text (lifecycle gates handled by workflow)"
+        resolved: true
+        resolution: "Deferred — gates are enforced at lifecycle level, not in plan text"
+    re_verdict: APPROVE
+
+  gemini:
+    verdict: MAJOR
+    file: scripts/review/results/wrk-1016-phase-1-cross-review-gemini.md
+    findings:
+      - id: G1
+        severity: P2
+        desc: "Missing cross-review step in Phase 3"
+        resolved: true
+        resolution: "Added step 17: cross-review.sh invocation in Phase 3"
+      - id: G2
+        severity: P1
+        desc: "Slimming scope only covered CLAUDE.md, not AGENTS.md/CODEX.md/GEMINI.md"
+        resolved: true
+        resolution: "Step 11 now covers all agent harness file types"
+      - id: G3
+        severity: P1
+        desc: "verify-gate-evidence.py missing uv run invocation"
+        resolved: true
+        resolution: "Step 16 now uses uv run --no-project python"
+    re_verdict: APPROVE
+
+summary:
+  all_providers_reviewed: true
+  blocking_findings_resolved: true
+  deferred_minors: []
+  outcome: APPROVE
