@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T01:28:59Z by generate-index.py -->
+<!-- Generated: 2026-03-11T01:52:15Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T01:28:59Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T01:52:15Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 538
+**Total items:** 539
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 214 |
-| working | 5 |
+| pending | 213 |
+| working | 6 |
 | blocked | 10 |
-| archived | 309 |
+| archived | 310 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 245 |
-| medium | 245 |
+| medium | 246 |
 | low | 47 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 116 |
-| medium | 256 |
+| medium | 257 |
 | complex | 100 |
 
 ### By Category
@@ -54,34 +54,34 @@
 | Repository | Count |
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
-| OGManufacturing | 18 |
+| OGManufacturing | 19 |
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 5 |
-| assethold | 15 |
-| assetutilities | 18 |
+| assethold | 16 |
+| assetutilities | 19 |
 | client_projects | 1 |
-| digitalmodel | 181 |
+| digitalmodel | 182 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 201 |
-| worldenergydata | 102 |
+| workspace-hub | 202 |
+| worldenergydata | 103 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 222 / 538 |
-| Plans cross-reviewed | 140 |
-| Plans approved | 162 |
+| Plans exist | 224 / 539 |
+| Plans cross-reviewed | 143 |
+| Plans approved | 165 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,19 +91,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 538 |
-| Total archived | 309 |
-| Completion rate | 309/538 (57%) |
-| Monthly rate (current month) | 75 archived |
+| Total captured | 539 |
+| Total archived | 310 |
+| Completion rate | 310/539 (58%) |
+| Monthly rate (current month) | 76 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 214 | 27% |
-| Plans cross-reviewed | 11 | 16% |
-| Plans user-approved | 11 | 16% |
+| Pending items with plans | 57 / 213 | 27% |
+| Plans cross-reviewed | 13 | 19% |
+| Plans user-approved | 13 | 19% |
 
 ### Aging
 
@@ -119,7 +119,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 88 | 1 | 8 |
-| Medium   | 94  | 4  | 1  |
+| Medium   | 93  | 5  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
@@ -227,6 +227,7 @@
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-1010 | MEDIUM | Skill capability assessment for WRK-624 workflow governance skill set | working |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | working |
+| WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | working |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
 | WRK-1053 | MEDIUM | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | working |
 | WRK-1101 | MEDIUM | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending |
@@ -252,7 +253,6 @@
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
-| WRK-1114 | MEDIUM | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending |
 
 #### harness / workflow
 
@@ -1034,8 +1034,9 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 85% | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1130,7 +1131,7 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 
 ## By Status
 
@@ -1351,7 +1352,6 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | medium | medium | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -1360,6 +1360,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | medium | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | medium | medium | workspace-hub | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | medium | medium | workspace-hub | - |
 
@@ -1691,6 +1692,7 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | high | complex | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | low | simple | workspace-hub | - |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1716,6 +1718,7 @@
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | high | medium | - |
@@ -1802,6 +1805,7 @@
 | WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | high | medium | - |
@@ -1823,6 +1827,7 @@
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
@@ -2012,6 +2017,7 @@
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | - |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
@@ -2237,6 +2243,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | medium | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | - |
@@ -2299,7 +2306,7 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending | medium | simple | - |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | - |
 
 ### worldenergydata
 
@@ -2395,6 +2402,7 @@
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
@@ -2858,6 +2866,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | simple | workspace-hub | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
@@ -2908,7 +2917,7 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | workspace-hub | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | workspace-hub | - |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending | simple | workspace-hub | - |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | simple | workspace-hub | - |
 
 ### Low
 
@@ -3083,7 +3092,7 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | workspace-hub | - |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending | medium | workspace-hub | - |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3300,6 +3309,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
@@ -3453,7 +3463,7 @@
 
 ## By Computer
 
-### ace-linux-1 (164 active / 258 total)
+### ace-linux-1 (164 active / 259 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3625,6 +3635,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | working | medium | medium | workspace-hub |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | working | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | workspace-hub |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | workspace-hub |
@@ -3714,7 +3725,7 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | workspace-hub |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | workspace-hub, digitalmodel |
-| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | pending | medium | simple | workspace-hub |
+| WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

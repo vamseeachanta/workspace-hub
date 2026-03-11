@@ -2,9 +2,12 @@
 
 **WRK:** WRK-1114 — Machine-partitioned WRK ID ranges
 **Route:** A (Simple)
-**Confirmed by:** vamsee
-**Confirmed at:** 2026-03-10T00:00:00Z
-**Decision:** APPROVED
+
+## Confirmation Block
+
+confirmed_by: vamsee
+confirmed_at: 2026-03-10T00:00:00Z
+decision: passed
 
 ## Final Plan Summary
 
@@ -25,10 +28,3 @@
 | acma-ansys05 | 5000 | 9999 |
 | ace-linux-2 | 10000 | 14999 |
 | gali-linux-compute-1 | 15000 | 19999 |
-
-## Gate Pass
-
-- `plan_approved: true`
-- `plan_reviewed: true`
-- Tests: 5 PASS, 0 FAIL
-- Legal scan: PASS

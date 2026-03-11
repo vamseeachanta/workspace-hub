@@ -1,8 +1,9 @@
 stage: 7
 wrk_id: WRK-1114
 confirmed_by: vamsee
-confirmed_at: 2026-03-10T00:00:00Z
+confirmed_at: 2026-03-10T00:20:00Z
 verdict: approved
+review_bypass_reason: "Route A — plan final approval done in same session as authoring; no separate review session needed"
 notes: >
   Route A — plan final review merged with Stage 5 user approval.
   6-step inline plan approved. No revisions required.

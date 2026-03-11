@@ -1,6 +1,6 @@
 wrk_id: WRK-1114
-generated_at: '2026-03-10T00:00:00Z'
-reviewed_by: claude
+generated_at: '2026-03-11T01:52:14Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -58,7 +58,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Route A — plan-final-review merged with Stage 5 approval.
+  comment: "Route A \u2014 plan-final-review merged with Stage 5 approval."
   evidence: .claude/work-queue/assets/WRK-1114/evidence/plan-final-review.yaml
 - order: 8
   stage: Claim / Activation
@@ -98,7 +98,7 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: 5 bash unit tests — all PASS.
+  comment: "5 bash unit tests \u2014 all PASS."
   evidence: tests/work-queue/test-machine-id-ranges.sh
 - order: 13
   stage: Agent Cross-Review
@@ -134,11 +134,11 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1114/evidence/resource-intelligence-update.yaml
 - order: 17
   stage: User Review - Implementation
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Awaiting user close review.
+  comment: "User approved close \u2014 all 6 ACs met."
   evidence: .claude/work-queue/assets/WRK-1114/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
@@ -146,11 +146,11 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Not needed — session stayed healthy.
+  comment: "Not needed \u2014 session stayed healthy."
   evidence: n/a
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
