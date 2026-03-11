@@ -94,7 +94,8 @@ derive_status() {
   case "$stage" in 1|5|7|17) echo "WAITING" ;; *) echo "START" ;; esac
 }
 
-declare -a WORKING_ITEMS UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
+declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
+declare -A WRK_NOTES WRK_NOT_BEFORE
 
 process_file() {
   local f="$1" loc="$2"
@@ -112,14 +113,19 @@ process_file() {
   title=$(get_field "$f" "title" | cut -c1-48)
   blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
 
-  local cp_stage item_status item_pid
+  local cp_stage item_status item_pid note not_before
   cp_stage=$(get_checkpoint_stage "$id")
   item_status=$(derive_status "$cp_stage")
   item_pid=$(get_session_pid "$id")
+  note=$(get_field "$f" "note")
+  not_before=$(get_field "$f" "not_before")
+  WRK_NOTES["$id"]="$note"
+  WRK_NOT_BEFORE["$id"]="$not_before"
   local row="$id|$priority|$subcategory|$computer|$title|$cp_stage|$item_status|$item_pid"
 
   if [[ "$loc" == "working" ]]; then
-    WORKING_ITEMS+=("$row"); return
+    [[ -n "$note" ]] && WORKING_PARKED+=("$row") || WORKING_ITEMS+=("$row")
+    return
   fi
 
   local bstatus
@@ -205,6 +211,9 @@ print_section() {
       printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
         "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$ttl"
     fi
+    local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
+    [[ -n "$_note" ]] && printf "  \033[2m↳ %s\033[0m\n" "$_note"
+    [[ -n "$_nb" ]]   && printf "  \033[2m↳ not before: %s\033[0m\n" "$_nb"
   done
   # Remote items: brief one-liner when local items exist, full rows when only remote
   if [[ $has_remote -eq 1 ]]; then
@@ -235,6 +244,7 @@ printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
 print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS    "true"
+print_section "⏸  PARKED — deferred / awaiting input"  "\033[90m" WORKING_PARKED   "true"
 print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE "true"
 print_section "★  HIGH PRIORITY — ready to start"     "\033[32m" HIGH_UNBLOCKED
 print_section "↑  NEWLY UNBLOCKED — blockers cleared" "\033[33m" NEWLY_UNBLOCKED
@@ -286,5 +296,5 @@ else
 fi
 
 echo ""
-echo "Summary: \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
+echo "Summary: \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[90m${#WORKING_PARKED[@]} parked\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
 echo ""

@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T14:51:03Z by generate-index.py -->
+<!-- Generated: 2026-03-11T15:38:10Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T14:51:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T15:38:10Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 220 |
-| working | 2 |
+| pending | 219 |
+| working | 3 |
 | blocked | 10 |
 | archived | 322 |
 
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 122 |
-| medium | 265 |
-| complex | 101 |
+| medium | 264 |
+| complex | 102 |
 
 ### By Category
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 38 |
+| harness | 39 |
 | engineering | 118 |
 | data | 25 |
 | platform | 13 |
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 226 / 554 |
-| Plans cross-reviewed | 150 |
-| Plans approved | 172 |
+| Plans exist | 227 / 554 |
+| Plans cross-reviewed | 151 |
+| Plans approved | 173 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 220 | 26% |
+| Pending items with plans | 59 / 219 | 27% |
 | Plans cross-reviewed | 9 | 13% |
 | Plans user-approved | 9 | 13% |
 
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 90 | 1 | 8 |
-| Medium   | 97  | 1  | 1  |
+| Medium   | 96  | 2  | 1  |
 | Low      | 33  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (38 items — 3 high, 27 medium, 8 low)
+### harness (39 items — 4 high, 27 medium, 8 low)
 
 #### harness / agent-teams
 
@@ -178,6 +178,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-180 | LOW | Stop Hook: Cross-Agent Learning Sync | pending |
+
+#### harness / project-management
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1127 | HIGH | Feature-first planning with AI agent chunking | pending |
 
 #### harness / release-management
 
@@ -248,7 +254,7 @@
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
-| WRK-1125 | MEDIUM | refine(whats-next): surface note/reason fields and improve focus signals | pending |
+| WRK-1125 | MEDIUM | refine(whats-next): surface note/reason fields and improve focus signals | working |
 
 #### harness / workstations
 
@@ -1129,9 +1135,9 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1356,9 +1362,8 @@
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | medium | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | medium | medium | workspace-hub | - |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | medium | simple | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | medium | complex | workspace-hub | - |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | high | medium | workspace-hub | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | high | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | high | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
@@ -1371,6 +1376,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | medium | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -2329,9 +2335,9 @@
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | - |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | working | medium | simple | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | - |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
@@ -2698,7 +2704,7 @@
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | medium | workspace-hub | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | pending | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | medium | workspace-hub | - |
 
 ### Medium
@@ -2956,7 +2962,7 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | simple | workspace-hub | - |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | simple | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | working | simple | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | complex | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
@@ -3140,7 +3146,7 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | - | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | workspace-hub | - |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | workspace-hub | - |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | working | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 
@@ -3409,7 +3415,6 @@
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
@@ -3519,6 +3524,7 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | high | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | workspace-hub, digitalmodel | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | workspace-hub | - |
 
 ## By Computer
 
@@ -3792,9 +3798,9 @@
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | workspace-hub |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | high | simple | - |
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | workspace-hub |
-| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | pending | medium | simple | workspace-hub |
+| WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | working | medium | simple | workspace-hub |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | workspace-hub |
-| WRK-1127 | Improve project management — feature-first planning with AI agent chunking | pending | high | medium | workspace-hub |
+| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | workspace-hub |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |

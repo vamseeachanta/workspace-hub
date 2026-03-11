@@ -83,7 +83,7 @@ If any constraint is exceeded → create a Feature WRK and decompose into childr
 
 | File | Change |
 |------|--------|
-| `.claude/work-queue/scripts/generate-index.py` | Add `type`, `phases` to `normalize()`; add "By Feature" rollup section |
+| `.claude/work-queue/scripts/generate-index.py` | Add `type`, `phases` to `normalize()`; add `coordinating` to active status filters; add `[feature]` badge; add "By Feature" rollup section |
 | `scripts/work-queue/dep_graph.py` | Render feature trees (parent → children with status) |
 | `scripts/work-queue/whats-next.sh` | Show feature completion % alongside individual WRK items |
 | `.claude/skills/coordination/workspace/work-queue/SKILL.md` | Add Feature layer section |
@@ -314,23 +314,42 @@ git commit -m "feat(skill): add Feature layer section to work-queue SKILL.md"
 
 ---
 
-### Task 5: Update generate-index.py — add type/phases to normalize()
+### Task 5: Update generate-index.py — type/phases, coordinating status, category fix
 
 **Files:**
 - Modify: `.claude/work-queue/scripts/generate-index.py`
 
-- [ ] Read lines 37–50 and 198–272 of `generate-index.py`
+- [ ] Read lines 37–50, 198–272, 600–670 of `generate-index.py`
 
 - [ ] In `FRONTMATTER_FIELDS` list (line ~37), add:
 ```python
-"type", "phases", "parent",   # feature layer fields
+"type", "phases",   # feature layer fields (parent/children already present)
 ```
-(Note: `children` and `parent` already exist — only add `type` and `phases` if missing)
 
 - [ ] In `normalize()` function, add defaults for new fields:
 ```python
-item.setdefault("type", "task")        # "task" | "feature"
+item.setdefault("type", "task")   # "task" | "feature"
 item.setdefault("phases", [])
+```
+
+- [ ] Add `coordinating` to every active-status filter (lines ~600 and ~665):
+```python
+# Before (two occurrences):
+it["status"] in ("pending", "working", "blocked")
+# After:
+it["status"] in ("pending", "working", "blocked", "coordinating")
+```
+
+- [ ] In the By Category table row renderer, append `[feature]` badge when `type == "feature"`:
+```python
+badge = " [feature]" if it.get("type") == "feature" else ""
+# include badge after title in the rendered row
+```
+
+- [ ] Add `workflow` to `CATEGORY_ORDER` list (used at lines ~608 and ~662):
+```python
+CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business",
+                  "maintenance", "workflow", "personal", "uncategorised"]
 ```
 
 - [ ] Run generate-index.py to verify no regression:
@@ -339,10 +358,15 @@ uv run --no-project python .claude/work-queue/scripts/generate-index.py
 ```
 Expected: `Generated .../INDEX.md with NNN items.` (no errors)
 
+- [ ] Verify WRK-1127 appears in `workflow` section of By Category:
+```bash
+grep -A 5 "workflow" .claude/work-queue/INDEX.md | head -10
+```
+
 - [ ] Commit:
 ```bash
 git add .claude/work-queue/scripts/generate-index.py
-git commit -m "feat(index): add type/phases fields to normalize() for feature layer"
+git commit -m "feat(index): feature layer — type/phases fields, coordinating status, workflow category, [feature] badge"
 ```
 
 ---
@@ -394,6 +418,12 @@ fi
 echo "Feature: $WRK_ID  Spec: $SPEC_REF"
 echo ""
 
+# Inherit category/subcategory from Feature WRK (children share same category by default)
+PARENT_CAT=$(grep '^category:' "$WRK_FILE" | awk '{print $2}' | tr -d '"')
+PARENT_SUB=$(grep '^subcategory:' "$WRK_FILE" | awk '{print $2}' | tr -d '"')
+PARENT_CAT="${PARENT_CAT:-uncategorised}"
+PARENT_SUB="${PARENT_SUB:-uncategorised}"
+
 # Parse decomposition table rows: | child-key | title | scope | depends-on | agent |
 # Skips header and separator rows
 CHILDREN=()
@@ -429,8 +459,8 @@ computer: ace-linux-1
 orchestrator: ${agent:-claude}
 plan_workstations: [ace-linux-1]
 execution_workstations: [ace-linux-1]
-category: ""
-subcategory: ""
+category: ${PARENT_CAT}
+subcategory: ${PARENT_SUB}
 ---
 
 ## Mission
@@ -788,6 +818,9 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 - [ ] `.claude/rules/feature-planning.md` exists, ≤ 400 lines
 - [ ] `config/work-queue/feature-template.md` exists with `## Decomposition` section
 - [ ] `generate-index.py normalize()` has defaults for `type` and `phases`
+- [ ] `generate-index.py` active-status filters include `coordinating`
+- [ ] `generate-index.py` renders `[feature]` badge on Feature WRK rows
+- [ ] `generate-index.py` `CATEGORY_ORDER` includes `workflow`
 - [ ] `work-queue/SKILL.md` has `## Feature Layer` section
 - [ ] All changes committed
 
@@ -836,5 +869,8 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 - [ ] Stage 9 routing handles `type: feature` items
 - [ ] `work-queue-workflow/SKILL.md` documents feature lifecycle
 - [ ] `whats-next.sh` shows feature completion
+- [ ] Feature WRKs with `status: coordinating` appear in By Category (not hidden)
+- [ ] Children inherit `category` / `subcategory` from parent Feature WRK via `new-feature.sh`
+- [ ] `workflow` category renders correctly in INDEX.md (not silently dropped to uncategorised)
 - [ ] All existing tests and scripts pass without modification (backward compatible)
 - [ ] WRK-1127 itself has `type: feature`, `spec_ref` set, `children:` populated by new-feature.sh

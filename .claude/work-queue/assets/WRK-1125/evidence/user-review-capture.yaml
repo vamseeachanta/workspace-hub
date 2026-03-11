@@ -1,4 +1,7 @@
+wrk_id: WRK-1125
 scope_approved: true
-approved_by: vamsee
-approved_at: 2026-03-11
+confirmed_by: vamsee
+reviewer: vamsee
+confirmed_at: "2026-03-11T13:00:00Z"
+approved_at: "2026-03-11"
 notes: "Approved Stage 1 scope — refine whats-next.sh to surface note/not_before fields with PARKED sub-section"
