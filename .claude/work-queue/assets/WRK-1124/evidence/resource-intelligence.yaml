@@ -1,0 +1,21 @@
+wrk_id: WRK-1124
+assessed_at: "2026-03-11T07:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used: [work-queue, work-queue-workflow, workflow-gatepass]
+files_affected:
+  - scripts/work-queue/whats-next.sh  # primary change target; 241 lines, well within 400 limit
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md  # session-lock.yaml resume note
+risks:
+  - risk: Column width increase may push HR line too narrow
+    mitigation: Reduce SUBCATEGORY from 26→22 chars; update HR to 100; stage+status headers fit
+  - risk: cp_stage variable name conflicts with bash builtins
+    mitigation: Use cp_stage (no conflict), not $stage (used elsewhere as general var)
+  - risk: Pending items at Stage 20 (archived) should not surface as in-progress
+    mitigation: Archived items are in archive/ folder, not pending/ — no conflict
+dependencies_resolved: true
+notes: >
+  WRK-1059 checkpoint shows current_stage=19 (non-gate), session-lock exists but stale (>2h).
+  After fix: WRK-1059 will surface in UNCLAIMED via checkpoint detection. session_pid=848682.
+  whats-next.sh is 241 lines — new functions ~15 lines, row format extension minor; total <270.

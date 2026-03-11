@@ -1,0 +1,18 @@
+wrk_id: WRK-1059
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Add skipped_files count to api-audit.py JSON output"
+    priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Track files skipped due to encoding/parse errors for metric trustworthiness"
+  - id: FW-2
+    title: "Use tokenize.open for PEP-263 encoding detection"
+    priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Handles non-UTF-8 source files declared with encoding cookie"
+no_follow_ups_rationale: "Core feature complete. FW-1/FW-2 are P3 nice-to-haves."

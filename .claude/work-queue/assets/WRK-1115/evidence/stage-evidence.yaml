@@ -138,7 +138,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Close package reviewed including gate-pass section.
+  comment: User approved implementation. decision=approved in user-review-close.yaml.
   evidence: .claude/work-queue/assets/WRK-1115/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim

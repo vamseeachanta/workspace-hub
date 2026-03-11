@@ -1,0 +1,9 @@
+wrk_id: WRK-1124
+scope_approved: true
+confirmed_by: vamsee
+reviewer: vamsee
+confirmed_at: "2026-03-11T07:00:00Z"
+notes: >
+  User updated spec with two additional ACs (Stage+Status columns; PID column).
+  Acknowledged via prompt: "incorporate two additional requirements before proceeding
+  to implementation". Extended scope approved.

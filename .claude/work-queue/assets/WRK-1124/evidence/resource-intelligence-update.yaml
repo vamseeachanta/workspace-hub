@@ -1,0 +1,8 @@
+wrk_id: WRK-1124
+updated_at: "2026-03-11T07:15:00Z"
+additions:
+  - file: scripts/work-queue/whats-next.sh
+    change: Added 3 helpers + checkpoint routing + Stage/Status/PID columns (~35 lines)
+  - file: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    change: Added session-lock.yaml write step to resume path (~12 lines)
+no_new_dependencies: true

@@ -1,11 +1,17 @@
 wrk_id: WRK-1120
 stage: 2
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - superpowers/test-driven-development
 files_reviewed:
   - scripts/work-queue/next-id.sh
   - config/work-queue/machine-ranges.yaml
+  - scripts/work-queue/gate_checks_extra.py
 key_findings:
-  - "next-id.sh scans files to find max ID, returns MAX+1 — no reservation step"
-  - "WRK-TEST-ENSEMBLE.md already fixed in this session (|| true guard)"
-  - "noclobber (set -C) is the standard bash atomic file creation primitive"
-  - "Retry loop needed: up to 5 attempts before giving up"
-estimated_effort: "30min — single file edit + test script"
+  - "next-id.sh has no reservation step — scans max ID and returns MAX+1"
+  - "noclobber (set -C) is POSIX atomic file creation primitive"
+  - "Route A: single provider cross-review sufficient"

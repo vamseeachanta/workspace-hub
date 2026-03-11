@@ -1,0 +1,34 @@
+wrk_id: WRK-1123
+stage: 2
+generated_at: "2026-03-11"
+
+key_files:
+  - path: scripts/work-queue/start_stage.py
+    lines: 387
+    relevant_lines: "339-378"
+    notes: |
+      - Stage guard at line 339: `if stage >= 9` — excludes Stage 1
+      - Stage 1 block at line 350-378: writes session-lock.yaml BEFORE any working/ check
+      - No stale-lock purge logic exists anywhere in this file
+
+  - path: scripts/work-queue/tests/test_stage1_gate.py
+    lines: 152
+    notes: "Tests for Stage 1 evidence (capture gate). New tests go in test_start_stage_guards.py per AC"
+
+existing_guard_pattern:
+  location: "start_stage.py:339-348"
+  condition: "stage >= 9"
+  fix: "Add `stage == 1` check BEFORE the session-lock write"
+
+stale_lock_check:
+  approach: "os.kill(pid, 0) raises ProcessLookupError if PID dead; combine with mtime check"
+  stdlib_only: true
+  no_new_deps: true
+
+implementation_plan:
+  1: "Insert working/ guard for stage==1 at line ~349 (before lock write)"
+  2: "Insert stale-lock purge before the guard (age>2h AND pid dead)"
+  3: "Add test_start_stage_guards.py with test_stage1_guard_blocks_pending"
+
+complexity_confirmed: simple
+route: A

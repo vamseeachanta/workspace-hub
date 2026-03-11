@@ -166,14 +166,36 @@ btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
     <div class="eyebrow">WRK-1120 &middot; Plan Document</div>
     <h1>fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions</h1>
     <p class="lede">Route A &middot; Priority high &middot; Auto-refreshes every 30s</p>
-    <div class="stage-strip" style="margin-top:16px;"><a href="#WRK-1120-lifecycle.html#s1" class="sc sc-done" title="01 Capture">1</a><a href="#WRK-1120-lifecycle.html#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#WRK-1120-lifecycle.html#s3" class="sc sc-done" title="03 Triage">3</a><a href="#WRK-1120-lifecycle.html#s4" class="sc sc-active" title="04 Plan Draft">4</a><a href="#WRK-1120-lifecycle.html#s5" class="sc sc-pending" title="05 User Review — Plan Draft">5</a><a href="#WRK-1120-lifecycle.html#s6" class="sc sc-pending" title="06 Cross-Review">6</a><a href="#WRK-1120-lifecycle.html#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#WRK-1120-lifecycle.html#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#WRK-1120-lifecycle.html#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#WRK-1120-lifecycle.html#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#WRK-1120-lifecycle.html#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#WRK-1120-lifecycle.html#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#WRK-1120-lifecycle.html#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#WRK-1120-lifecycle.html#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#WRK-1120-lifecycle.html#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#WRK-1120-lifecycle.html#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#WRK-1120-lifecycle.html#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#WRK-1120-lifecycle.html#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#WRK-1120-lifecycle.html#s19" class="sc sc-pending" title="19 Close">19</a><a href="#WRK-1120-lifecycle.html#s20" class="sc sc-pending" title="20 Archive">20</a></div>
+    <div class="stage-strip" style="margin-top:16px;"><a href="WRK-1120-lifecycle.html#s1" class="sc sc-done" title="01 Capture">1</a> <a href="WRK-1120-lifecycle.html#s2" class="sc sc-done" title="02 Resource Intelligence">2</a> <a href="WRK-1120-lifecycle.html#s3" class="sc sc-done" title="03 Triage">3</a> <a href="WRK-1120-lifecycle.html#s4" class="sc sc-done" title="04 Plan Draft">4</a> <a href="WRK-1120-lifecycle.html#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a> <a href="WRK-1120-lifecycle.html#s6" class="sc sc-done" title="06 Cross-Review">6</a> <a href="WRK-1120-lifecycle.html#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a> <a href="WRK-1120-lifecycle.html#s8" class="sc sc-done" title="08 Claim / Activation">8</a> <a href="WRK-1120-lifecycle.html#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a> <a href="WRK-1120-lifecycle.html#s10" class="sc sc-done" title="10 Work Execution">10</a> <a href="WRK-1120-lifecycle.html#s11" class="sc sc-done" title="11 Artifact Generation">11</a> <a href="WRK-1120-lifecycle.html#s12" class="sc sc-done" title="12 TDD / Eval">12</a> <a href="WRK-1120-lifecycle.html#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a> <a href="WRK-1120-lifecycle.html#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a> <a href="WRK-1120-lifecycle.html#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a> <a href="WRK-1120-lifecycle.html#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a> <a href="WRK-1120-lifecycle.html#s17" class="sc sc-done" title="17 User Review — Implementation">17</a> <a href="WRK-1120-lifecycle.html#s18" class="sc sc-na" title="18 Reclaim">18</a> <a href="WRK-1120-lifecycle.html#s19" class="sc sc-pending" title="19 Close">19</a> <a href="WRK-1120-lifecycle.html#s20" class="sc sc-pending" title="20 Archive">20</a> </div>
   </div>
 </header>
 <div class="content">
   <div class="card">
     <h2>Current Plan</h2>
     <div class="plan-body">
-<p><em>No plan section found.</em></p>
+<h1>WRK-1120 Plan: Atomic ID Reservation in next-id.sh</h1>
+<h2>Approach</h2>
+<p>Use bash <code>set -C</code> (noclobber) to atomically create <code>pending/WRK-NNN.md</code> sentinel
+before returning the ID. Retry up to 5 times on collision.</p>
+<h2>Steps</h2>
+<ol>
+<li>After computing NEXT_ID, set <code>set -C</code> (noclobber on).</li>
+<li>Attempt: <code>echo "" &gt; "${QUEUE_DIR}/pending/WRK-${NEXT_ID}.md"</code> — fails if exists.</li>
+<li>On success: <code>set +C</code>, print ID, exit 0.</li>
+<li>On EEXIST (collision): increment NEXT_ID, retry.</li>
+<li>After 5 failures: <code>set +C</code>, exit 1 with message.</li>
+</ol>
+<h2>Test</h2>
+<p><code>scripts/work-queue/tests/test-next-id-collision.sh</code>:
+- Spawn two concurrent <code>next-id.sh</code> calls via <code>&amp;</code>
+- Assert IDs are different
+- Assert both sentinel files exist
+- Clean up sentinels</p>
+<h2>Files Changed</h2>
+<ul>
+<li><code>scripts/work-queue/next-id.sh</code> (implementation)</li>
+<li><code>scripts/work-queue/tests/test-next-id-collision.sh</code> (new test)</li>
+</ul>
     </div>
   </div>
   <div class="card" style="margin-top:16px;">

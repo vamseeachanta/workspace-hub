@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1115 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1115 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Unified Plan+Lifecycle HTML — single refresh per WRK item</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Currently, `generate-html-review.py` can emit separate plan-draft / plan-final / lifecycle files at different stages, and not all stages reg...</summary><div class="panel"><p>Currently, <code>generate-html-review.py</code> can emit separate plan-draft / plan-final / lifecycle
+files at different stages, and not all stages regenerate every file. This leads to stale
+views and unclear "which file to open" UX.</p>
+<p>Desired end-state:</p>
+<h3><code>plan.html</code></h3>
+<ul>
+<li><strong>Top section</strong>: latest approved plan (always kept current).</li>
+<li><strong>Stage-change log</strong>: a collapsible per-stage section showing what changed in the plan at
+  that stage (diff-like narrative or structured table).</li>
+<li><strong>Stage-progress ring</strong>: same coloured stage-circles widget used in <code>lifecycle.html</code>
+  so the user can see how far the item has progressed while reading the plan.</li>
+<li>Regenerated on every stage exit (stages 1–20).</li>
+</ul>
+<h3><code>lifecycle.html</code></h3>
+<ul>
+<li>Unchanged widget + stage circles, but also regenerated on every stage exit (currently
+  regenerated only on some stages).</li>
+</ul>
+<h3>Skill integration</h3>
+<ul>
+<li><code>workflow-html/SKILL.md</code> and <code>workflow-gatepass/SKILL.md</code> should reference these two
+  canonical files.</li>
+<li><code>exit_stage.py</code> should call <code>generate-html-review.py WRK-NNN --plan</code> and
+  <code>generate-html-review.py WRK-NNN --lifecycle</code> after every successful stage exit.</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — - Single refresh URL per document type reduces cognitive overhead. - Plan evolution is visible inline — no need to diff separate files. - St...</summary><div class="panel"><ul>
+<li>Single refresh URL per document type reduces cognitive overhead.</li>
+<li>Plan evolution is visible inline — no need to diff separate files.</li>
+<li>Stage-circle widget in both HTMLs gives immediate orientation.</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — 1. `plan.html` exists in `assets/WRK-NNN/` for any item that has completed stage 4b. 2. `plan.html` top section always shows the most recent...</summary><div class="panel"><ol>
+<li><code>plan.html</code> exists in <code>assets/WRK-NNN/</code> for any item that has completed stage 4b.</li>
+<li><code>plan.html</code> top section always shows the most recent approved plan text.</li>
+<li><code>plan.html</code> includes per-stage change log (at minimum: stage number, summary of what
+   changed; ideally: diff of plan bullet points).</li>
+<li><code>plan.html</code> includes the same stage-circle progress widget as <code>lifecycle.html</code>.</li>
+<li><code>lifecycle.html</code> is regenerated on every stage exit (no gaps).</li>
+<li><code>exit_stage.py</code> (or equivalent hook) triggers both regenerations automatically.</li>
+<li>Both files use <code>&lt;meta http-equiv="refresh" content="30"&gt;</code> for auto-refresh.</li>
+<li>Existing <code>workflow-html/SKILL.md</code> updated to document the two-file contract.</li>
+<li>TDD: ≥3 passing unit/integration tests covering HTML generation and stage-exit hook.</li>
+<li>Stage 12 renderer shows <code>ac-test-matrix.md</code> as a PASS/FAIL table inline (not just gate existence).</li>
+<li>Stage 10 renderer shows <code>execute.yaml → integrated_repo_tests</code> as a per-test name/command/result table.</li>
+<li>Stage 10 renderer shows <code>execute.yaml → changes[]</code> as a bullet list of what was modified.</li>
+<li>Stage 14 gate table includes the <code>details</code> column from <code>gate-evidence-summary.json</code> (not just gate name + status).</li>
+<li>Stage 13 uses the same cross-review renderer as Stage 6 (verdict + findings with severity).</li>
+<li>Each stage section header shows duration (start→end) from <code>stage-evidence.yaml</code> where available.</li>
+</ol></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1115 Plan Final Review confirmed_by: user confirmed_at: 2026-03-10T12:00:00Z decision: passed ## Plan Summary Four-phase plan: (1) exp...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1115 Plan Final Review</h1>
+<p>confirmed_by: user
+confirmed_at: 2026-03-10T12:00:00Z
+decision: passed</p>
+<h2>Plan Summary</h2>
+<p>Four-phase plan: (1) expand lifecycle stage renderers S10/12/13/14, (2) add new
+plan.html + --plan flag to generate-html-review.py, (3) dual call in exit_stage.py,
+(4) workflow-html SKILL update. 15 ACs, 8 TDD tests. Route B.</p>
+<h2>Acceptance Criteria (abbreviated)</h2>
+<ul>
+<li>plan.html exists for items past stage 4b</li>
+<li>plan.html has stage-circle widget, meta refresh 30s, latest plan text</li>
+<li>S10 shows integrated_repo_tests + changes[] from execute.yaml</li>
+<li>S12 renders ac-test-matrix.md as PASS/FAIL table</li>
+<li>S13 uses cross-review renderer (same as S6)</li>
+<li>S14 shows Details column in gate table</li>
+<li>exit_stage.py calls both --lifecycle and --plan</li>
+<li>workflow-html SKILL documents two-file contract</li>
+<li>TDD: ≥8 passing tests</li>
+</ul></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 5 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>test_plan_html_generated</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_generated -v</code></td><td>.claude/work-queue/assets/WRK-1115/evidence/execute.yaml</td></tr><tr><td>2</td><td>test_plan_html_has_meta_refresh</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_has_meta_refresh -v</code></td><td>.claude/work-queue/assets/WRK-1115/evidence/execute.yaml</td></tr><tr><td>3</td><td>test_plan_html_has_stage_circles</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_has_stage_circles -v</code></td><td>.claude/work-queue/assets/WRK-1115/evidence/execute.yaml</td></tr><tr><td>4</td><td>test_plan_html_shows_plan_text</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_plan_html_shows_plan_text -v</code></td><td>.claude/work-queue/assets/WRK-1115/evidence/execute.yaml</td></tr><tr><td>5</td><td>test_stage10_renders_integrated_tests</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/unit/test_generate_html_review.py::test_stage10_renders_integrated_tests -v</code></td><td>.claude/work-queue/assets/WRK-1115/evidence/execute.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1115, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1115, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=ace-linux-1, execution_workstations=ace-linux-1</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1115/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1115/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=unknown, quota=available(null)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=5</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>FAIL</td>
+<td>user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at']</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (7 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-10T11:00:00Z, reviewed=2026-03-10T11:00:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — recommendations: - captured: true disposition: existing-updated notes: &#x27;Stage comment from stage-evidence.yaml is shown when present. Full d...</summary><div class="panel"><p>recommendations:
+- captured: true
+  disposition: existing-updated
+  notes: 'Stage comment from stage-evidence.yaml is shown when present. Full duration
+    (start→end timestamps) deferred — stage-evidence.yaml schema lacks per-stage timestamps
+    in current implementation.</p>
+<pre><code>'
+</code></pre>
+<p>status: captured
+  title: Stage duration in section headers (AC 15)
+- captured: true
+  disposition: spun-off-new
+  notes: 'Currently agent-written manually. Could auto-detect plan diffs from user-review-plan-draft.yaml
+    vs plan-final-review.yaml content.</p>
+<pre><code>'
+</code></pre>
+<p>status: captured
+  title: plan-changelog.yaml population automation
+- captured: true
+  disposition: spun-off-new
+  notes: 'test_detect_stage14_not_done_without_cross_review has wrong assertion (gate-evidence-summary.json
+    presence != S11 done). Fix in a separate WRK.</p>
+<pre><code>'
+</code></pre>
+<p>status: captured
+  title: Stage 11 detection fix (pre-existing test failure)
+wrk_id: WRK-1115</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1115 generated_at: &#x27;2026-03-11T04:26:07Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1115
+generated_at: '2026-03-11T04:26:07Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/working/WRK-1115.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations set.
+  evidence: .claude/work-queue/working/WRK-1115.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan and artifact generated.
+  evidence: specs/modules/wrk-1115-unified-plan-lifecycle-html.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+  evidence: .claude/work-queue/assets/WRK-1115/plan-html-review-final.md
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Multi-provider review completed.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/cross-review-plan-claude.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed with gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1115/plan-html-review-final.md
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical /work route.
+  evidence: .claude/work-queue/assets/WRK-1115/routing.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation completed under active claim.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Review artifacts generated.
+  evidence: .claude/work-queue/assets/WRK-1115/WRK-1115-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Tests/evals completed and recorded.
+  evidence: .claude/work-queue/assets/WRK-1115/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation cross-review package complete.
+  evidence: .claude/work-queue/assets/WRK-1115/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Follow-up disposition captured.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Awaiting user review of close package.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed in this run.
+  evidence: .claude/work-queue/assets/WRK-1115/evidence/claim-evidence.yaml
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting merge/sync completion.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 42 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1115-lifecycle.html</code></li><li><code>WRK-1115-plan.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>checkpoint.yaml</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-impl-claude.md</code></li><li><code>evidence/cross-review-impl-gemini.md</code></li><li><code>evidence/cross-review-plan-claude.md</code></li><li><code>evidence/cross-review-plan-codex.md</code></li><li><code>evidence/cross-review-plan-gemini.md</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/reclaim.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>plan_claude.md</code></li><li><code>plan_codex.md</code></li><li><code>plan_gemini.md</code></li><li><code>review-synthesis.md</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li><li><code>wrk-1115-unified-plan-lifecycle-html.md</code></li></ul></div></details>
+</body>
+</html>

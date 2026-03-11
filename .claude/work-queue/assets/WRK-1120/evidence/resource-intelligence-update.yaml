@@ -1,0 +1,7 @@
+wrk_id: WRK-1120
+stage: 16
+additions:
+  - "next-id.sh now atomically reserves IDs via noclobber (set -C) sentinel"
+  - "bash pattern: set -C + redirect for atomic create-or-fail (POSIX, no deps)"
+  - "caller pattern: overwrite sentinel with full YAML — no caller changes needed"
+completed_at: "2026-03-11T06:00:00Z"

@@ -1,0 +1,6 @@
+wrk_id: WRK-1120
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1120/WRK-1120-lifecycle.html
+legal_scan_ref: .claude/work-queue/assets/WRK-1120/legal-scan.md
+archive_readiness: pass

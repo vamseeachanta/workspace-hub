@@ -1,0 +1,13 @@
+wrk_id: WRK-1124
+scan_date: "2026-03-11T07:10:00Z"
+result: PASS
+violations: []
+files_scanned:
+  - scripts/work-queue/whats-next.sh
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+command: bash scripts/legal/legal-sanity-scan.sh
+changes:
+  - "whats-next.sh: added get_checkpoint_stage, get_session_pid, derive_status helpers"
+  - "whats-next.sh: extended row format with stage/status/pid fields"
+  - "whats-next.sh: print_section show_pid parameter and Stage+Status columns"
+  - "work-queue-workflow/SKILL.md: session-lock.yaml write note in start-to-finish chain"

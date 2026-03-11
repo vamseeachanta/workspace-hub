@@ -1,0 +1,19 @@
+wrk_id: WRK-1124
+executed_at: "2026-03-11T07:10:00Z"
+route: A
+files_changed:
+  - path: scripts/work-queue/whats-next.sh
+    edit_type: modify
+    purpose: Add checkpoint detection, Stage+Status+PID columns, helper functions
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    edit_type: modify
+    purpose: Add session-lock.yaml write instruction to session-resume path
+tests_run:
+  - bash -n scripts/work-queue/whats-next.sh  # syntax OK
+  - bash scripts/work-queue/whats-next.sh --category harness  # live output verified
+result: PASS
+integrated_repo_tests:
+  - name: whats-next live run
+    scope: integrated
+    result: pass
+    notes: All 6 ACs verified via live output

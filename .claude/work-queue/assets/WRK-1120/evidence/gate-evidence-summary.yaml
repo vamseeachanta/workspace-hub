@@ -1,0 +1,9 @@
+wrk_id: WRK-1120
+stage: 14
+result: PASS
+checks_run: 17
+checks_passed: 16
+checks_warned: 1
+checks_failed: 0
+warn_details: "reclaim.yaml absent (no reclaim triggered — expected for first-run)"
+verified_at: "2026-03-11T05:50:00Z"

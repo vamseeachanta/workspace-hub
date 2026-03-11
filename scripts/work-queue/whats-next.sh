@@ -71,6 +71,29 @@ has_recent_session_lock() {
   [[ $age -gt -86400 && $age -lt 7200 ]]
 }
 
+# Returns current_stage from checkpoint.yaml (empty string if no checkpoint).
+get_checkpoint_stage() {
+  local wrk_id="$1"
+  local cp="$QUEUE_DIR/assets/$wrk_id/checkpoint.yaml"
+  [[ ! -f "$cp" ]] && return
+  get_field "$cp" "current_stage"
+}
+
+# Returns session_pid from evidence/session-lock.yaml (empty if absent/missing field).
+get_session_pid() {
+  local wrk_id="$1"
+  local lock="$QUEUE_DIR/assets/$wrk_id/evidence/session-lock.yaml"
+  [[ ! -f "$lock" ]] && return
+  get_field "$lock" "session_pid"
+}
+
+# Maps stage number → Status label: WAITING (hard gates 1/5/7/17) / START / READY (no stage).
+derive_status() {
+  local stage="$1"
+  [[ -z "$stage" ]] && echo "READY" && return
+  case "$stage" in 1|5|7|17) echo "WAITING" ;; *) echo "START" ;; esac
+}
+
 declare -a WORKING_ITEMS UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
 
 process_file() {
@@ -89,7 +112,11 @@ process_file() {
   title=$(get_field "$f" "title" | cut -c1-48)
   blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
 
-  local row="$id|$priority|$subcategory|$computer|$title"
+  local cp_stage item_status item_pid
+  cp_stage=$(get_checkpoint_stage "$id")
+  item_status=$(derive_status "$cp_stage")
+  item_pid=$(get_session_pid "$id")
+  local row="$id|$priority|$subcategory|$computer|$title|$cp_stage|$item_status|$item_pid"
 
   if [[ "$loc" == "working" ]]; then
     WORKING_ITEMS+=("$row"); return
@@ -112,8 +139,8 @@ process_file() {
   fi
 
   if [[ "$bstatus" == "clear" ]]; then
-    # Check for unclaimed active session (pending/ + recent lock)
-    if has_recent_session_lock "$id"; then
+    # Check for unclaimed active session: recent lock OR checkpoint present
+    if has_recent_session_lock "$id" || [[ -n "$cp_stage" ]]; then
       UNCLAIMED_ACTIVE+=("$row"); return
     fi
     # Was it previously blocked (had WRK deps that are now cleared)?
@@ -135,20 +162,26 @@ for f in "$QUEUE_DIR/blocked"/*.md;  do [[ -f "$f" ]] && process_file "$f" block
 
 # ── Render ────────────────────────────────────────────────────────────────────
 
-HR=$(printf '%0.s─' {1..88})
+HR=$(printf '%0.s─' {1..100})
 
 print_section() {
-  local label="$1" colour="$2" arr_name="$3"
+  local label="$1" colour="$2" arr_name="$3" show_pid="${4:-false}"
   local -n _arr="$arr_name"
   [[ ${#_arr[@]} -eq 0 ]] && return
   echo ""
   printf "${colour}%s\033[0m\n" "$label"
-  printf "%-12s %-8s %-26s %-15s %s\n" "WRK" "PRI" "SUBCATEGORY" "MACHINE" "TITLE"
+  if [[ "$show_pid" == "true" ]]; then
+    printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
+      "WRK" "PRI" "SUBCATEGORY" "MACHINE" "STAGE" "STATUS" "PID" "TITLE"
+  else
+    printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
+      "WRK" "PRI" "SUBCATEGORY" "MACHINE" "STAGE" "STATUS" "TITLE"
+  fi
   echo "$HR"
   # Partition into local vs remote rows
   local _local_rows=() _remote_ids=()
   for row in "${_arr[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
+    IFS='|' read -r id pri sub cpu ttl _cpstage _status _pid _rest <<< "$row"
     if [[ "$cpu" == "$THIS_HOST" ]]; then
       _local_rows+=("$row")
     else
@@ -162,8 +195,16 @@ print_section() {
     echo "  [this machine: $THIS_HOST]"
   fi
   for row in "${_local_rows[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
-    printf "%-12s %-8s %-26s %-15s %s\n" "$id" "$pri" "$sub" "$cpu" "$ttl"
+    IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
+    local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
+    local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
+    if [[ "$show_pid" == "true" ]]; then
+      printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
+        "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$pid_disp" "$ttl"
+    else
+      printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
+        "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$ttl"
+    fi
   done
   # Remote items: brief one-liner when local items exist, full rows when only remote
   if [[ $has_remote -eq 1 ]]; then
@@ -171,8 +212,16 @@ print_section() {
       printf "  [other machines: %s]\n" "${_remote_ids[*]}"
     else
       for row in "${_arr[@]}"; do
-        IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
-        printf "%-12s %-8s %-26s %-15s %s\n" "$id" "$pri" "$sub" "$cpu" "$ttl"
+        IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
+        local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
+        local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
+        if [[ "$show_pid" == "true" ]]; then
+          printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
+            "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$pid_disp" "$ttl"
+        else
+          printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
+            "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$ttl"
+        fi
       done
     fi
   fi
@@ -185,8 +234,8 @@ printf "\033[1m║   WHAT'S NEXT  %-30s║\033[0m\n" "$(date '+%Y-%m-%d %H:%M') 
 printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
-print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS
-print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE
+print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS    "true"
+print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE "true"
 print_section "★  HIGH PRIORITY — ready to start"     "\033[32m" HIGH_UNBLOCKED
 print_section "↑  NEWLY UNBLOCKED — blockers cleared" "\033[33m" NEWLY_UNBLOCKED
 # Cap medium section
@@ -205,7 +254,7 @@ if [[ ${#EXT_BLOCKED[@]} -gt 0 ]]; then
   printf "%-12s %-26s %s\n" "WRK" "SUBCATEGORY" "BLOCKED BY"
   echo "$HR"
   for row in "${EXT_BLOCKED[@]}"; do
-    IFS='|' read -r id _pri sub _cpu _ttl reason <<< "$row"
+    IFS='|' read -r id _pri sub _cpu _ttl _cpstage _status _pid reason <<< "$row"
     display_reason="$reason"
     [[ "$display_reason" == "clear" || -z "$display_reason" ]] && display_reason="external (no WRK deps)"
     printf "%-12s %-26s %s\n" "$id" "$sub" "$display_reason"
