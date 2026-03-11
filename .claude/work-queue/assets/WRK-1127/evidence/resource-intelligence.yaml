@@ -1,0 +1,103 @@
+wrk_id: WRK-1127
+stage: 2
+produced_at: "2026-03-11"
+key_files:
+  generate_index_py:
+    path: .claude/work-queue/scripts/generate-index.py
+    normalize_line: 198
+    frontmatter_fields_line: 37
+    active_status_filter_lines: [600, 665]
+    category_order_lines: [599, 666]
+  dep_graph_py:
+    path: scripts/work-queue/dep_graph.py
+    approach: >
+      Uses argparse with --category, --critical-path, --dot, --summary flags.
+      main() function at line 326. Add --feature WRK-NNN flag to argparse, add
+      a new _discover_items_for_feature() helper that reads children: from the
+      feature WRK frontmatter, then renders ASCII tree via a new format_feature_tree()
+      function. The WRKItem dataclass will need type/children/parent fields added,
+      or a separate FeatureTreeItem dataclass can be used.
+    line_count: 370
+  whats_next_sh:
+    path: scripts/work-queue/whats-next.sh
+    output_sections:
+      - "WORKING — in progress"
+      - "PARKED — deferred / awaiting input"
+      - "IN-PROGRESS UNCLAIMED — session active, not yet claimed"
+      - "HIGH PRIORITY — ready to start"
+      - "NEWLY UNBLOCKED — blockers cleared"
+      - "MEDIUM — ready"
+      - "EXTERNALLY BLOCKED"
+      - "Parallel hints"
+      - "Summary: N working · N parked · N unclaimed · N high ready · N newly unblocked · N medium · N blocked"
+    line_count: 300
+  stage_09_routing:
+    path: scripts/work-queue/stages/stage-09-routing.yaml
+    top_level_keys:
+      - order
+      - name
+      - weight
+      - invocation
+      - human_gate
+      - parallelism
+      - chained_stages
+      - skills_required
+      - entry_reads
+      - exit_artifacts
+      - blocking_condition
+      - log_action
+      - context_budget_kb
+  work_queue_skill:
+    path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    current_line_count: 262
+    insertion_point: >
+      After the ## Complexity Routing section (ends around line 122).
+      The section ends with: "See work-queue-workflow/SKILL.md §Complexity Routing for full detail."
+      Insert ## Feature Layer immediately after that line.
+
+config_work_queue_existing:
+  files:
+    - machine-ranges.yaml
+
+existing_feature_scripts: []
+
+risks:
+  - >
+    CATEGORY_ORDER is defined TWICE in generate-index.py (lines 599 and 666), one for
+    the summary stats block and one for the By Category section. Both must be updated
+    when adding "workflow" — a single-site edit will miss the second occurrence.
+  - >
+    active_status_filter at lines 600 and 665 also appears twice and both must include
+    "coordinating" to prevent coordinating-status features from disappearing from the index.
+  - >
+    work-queue/SKILL.md is currently 262 lines. Its pruned target per the plan is ≤250
+    lines. Adding a ## Feature Layer section (~20 lines) will push it to ~282 lines.
+    The implementing WRK-A child must trim equivalent content or accept the overage and
+    update the target comment in the plan.
+  - >
+    stage-09-routing.yaml is currently a stage-contract descriptor (metadata keys like
+    order, name, human_gate) — not a routing decision table. The plan's feature_routing:
+    block is a new top-level key that changes the file's semantics. The child WRK-C
+    should confirm whether this file is consumed as data by any script before adding
+    new keys, to avoid parse errors.
+  - >
+    dep_graph.py WRKItem dataclass does not include type, children, or parent fields.
+    A --feature flag needs either: (a) a separate dataclass, or (b) extending WRKItem
+    without breaking existing compute_graph() callers which iterate blocked_by only.
+  - >
+    whats-next.sh filters by category (default: harness). A "Features in progress"
+    section that calls feature-status.sh for coordinating items must either bypass
+    the category filter or ensure feature WRKs carry category: harness to appear.
+    WRK-1127 has category: harness so this should be fine, but new features in other
+    categories would be hidden by default.
+
+notes: >
+  WRK-1127.md frontmatter is already correct: type: feature, spec_ref set, children: [],
+  status: pending, complexity: complex — no frontmatter update needed at Stage 14.
+  The feature plan (wrk-1127-feature-first-planning.md) is 903 lines and includes a
+  complete Decomposition table with three children (child-a, child-b, child-c), all
+  mapped to agent: claude with no existing wrk_ref (all will be newly created by
+  new-feature.sh at Stage 7 exit). new-feature.sh does not yet exist — it is one of
+  the deliverables of child-b. config/work-queue/ currently contains only
+  machine-ranges.yaml; the new chunk-sizing.yaml and feature-template.md will be the
+  second and third files added there.

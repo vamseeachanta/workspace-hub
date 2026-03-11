@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T17:25:02Z by generate-index.py -->
+<!-- Generated: 2026-03-11T18:49:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T17:25:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T18:49:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 554
+**Total items:** 557
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 219 |
-| working | 2 |
+| working | 4 |
 | blocked | 10 |
 | archived | 323 |
 
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 249 |
+| high | 252 |
 | medium | 256 |
 | low | 48 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 122 |
-| medium | 264 |
+| medium | 267 |
 | complex | 102 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 38 |
+| harness | 40 |
 | engineering | 118 |
 | data | 25 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 216 |
+| workspace-hub | 219 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 228 / 554 |
-| Plans cross-reviewed | 151 |
-| Plans approved | 173 |
+| Plans exist | 231 / 557 |
+| Plans cross-reviewed | 152 |
+| Plans approved | 174 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 554 |
+| Total captured | 557 |
 | Total archived | 323 |
-| Completion rate | 323/554 (58%) |
+| Completion rate | 323/557 (58%) |
 | Monthly rate (current month) | 89 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 219 | 27% |
+| Pending items with plans | 61 / 219 | 28% |
 | Plans cross-reviewed | 9 | 13% |
 | Plans user-approved | 9 | 13% |
 
@@ -118,21 +118,21 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 90 | 1 | 8 |
+| High     | 92 | 1 | 8 |
 | Medium   | 96  | 1  | 1  |
-| Low      | 33  | 0  | 1  |
+| Low      | 31  | 2  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (38 items — 4 high, 26 medium, 8 low)
+### harness (40 items — 6 high, 26 medium, 8 low)
 
 #### harness / agent-teams
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1042 | LOW | tidy-agent-teams: sentinel file support for non-conforming team names | pending |
+| WRK-1042 | LOW | tidy-agent-teams: sentinel file support for non-conforming team names | working |
 | WRK-1043 | LOW | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending |
 
 #### harness / agent-ux
@@ -153,7 +153,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending |
+| WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | working |
 
 #### harness / context
 
@@ -183,7 +183,9 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1127 | HIGH | Feature-first planning with AI agent chunking | pending |
+| WRK-1129 | HIGH | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending |
+| WRK-1130 | HIGH | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending |
+| WRK-1131 | HIGH | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending |
 
 #### harness / release-management
 
@@ -1055,7 +1057,7 @@
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-1035 |
 | WRK-1041 | Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | working | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-2, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-1044 |
@@ -1073,7 +1075,7 @@
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1059 |
+| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | working | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | scripts/review, tests/testing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -1136,8 +1138,11 @@
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1336,12 +1341,10 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | low | simple | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | high | medium | workspace-hub, digitalmodel, worldenergydata | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | medium | simple | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | medium | simple | - | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | low | medium | - | - |
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | medium | medium | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | medium | simple | workspace-hub | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | medium | medium | workspace-hub | - |
@@ -1362,8 +1365,10 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | medium | medium | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | medium | complex | workspace-hub | - |
-| WRK-1127 | Feature-first planning with AI agent chunking | high | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | high | medium | workspace-hub | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | high | medium | workspace-hub | - |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | high | medium | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | high | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1375,6 +1380,8 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | low | simple | workspace-hub | - |
+| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | low | medium | - | - |
 
 ### Blocked
 
@@ -2286,7 +2293,7 @@
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | - |
 | WRK-1041 | Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML | archived | medium | simple | - |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | - |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | working | low | simple | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | - |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | high | complex | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | archived | medium | medium | - |
@@ -2336,8 +2343,11 @@
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | - |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | medium | simple | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | - |
-| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending | high | medium | - |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2703,8 +2713,11 @@
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
-| WRK-1127 | Feature-first planning with AI agent chunking | pending | complex | workspace-hub | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | coordinating | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | medium | workspace-hub | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending | medium | workspace-hub | - |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | medium | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3013,9 +3026,9 @@
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | simple | workspace-hub | - |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | simple | workspace-hub | - |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | working | simple | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | simple | workspace-hub | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | medium | - | - |
+| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | working | medium | - | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | simple | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
@@ -3111,7 +3124,7 @@
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | archived | high | workspace-hub | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | workspace-hub | - |
 | WRK-1041 | Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML | archived | medium | workspace-hub | - |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | workspace-hub | - |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | working | low | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | workspace-hub | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | workspace-hub | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | - | - |
@@ -3383,7 +3396,7 @@
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | archived | medium | - | - |
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | archived | medium | - | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | archived | medium | - | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | - | - |
+| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | working | low | - | - |
 | WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | scripts/review, tests/testing | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | archived | high | - | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | workspace-hub, assetutilities, assethold, digitalmodel, worldenergydata | - |
@@ -3415,6 +3428,9 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending | high | workspace-hub | - |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 
@@ -3523,11 +3539,11 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | high | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | workspace-hub, digitalmodel | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
-| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | workspace-hub | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (165 active / 273 total)
+### ace-linux-1 (168 active / 276 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3722,7 +3738,7 @@
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | workspace-hub |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | workspace-hub |
 | WRK-1041 | Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML | archived | medium | simple | workspace-hub |
-| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | workspace-hub |
+| WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | working | low | simple | workspace-hub |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | workspace-hub |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | high | complex | workspace-hub |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | archived | medium | medium | workspace-hub |
@@ -3738,7 +3754,7 @@
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | archived | medium | simple | - |
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | archived | medium | medium | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | archived | medium | medium | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | medium | - |
+| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | working | low | medium | - |
 | WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | scripts/review, tests/testing |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | archived | high | medium | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | archived | medium | simple | - |
@@ -3799,8 +3815,11 @@
 | WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | workspace-hub |
 | WRK-1125 | refine(whats-next): surface note/reason fields and improve focus signals | archived | medium | simple | workspace-hub |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | complex | workspace-hub |
-| WRK-1127 | Feature-first planning with AI agent chunking | pending | high | complex | workspace-hub |
+| WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | workspace-hub |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | pending | high | medium | workspace-hub |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending | high | medium | workspace-hub |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4175,6 +4194,9 @@
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | WRK-1035 | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | WRK-1044 | - | - |
-| WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | WRK-1059 | - | - |
+| WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
+| WRK-1129 | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | - | - | WRK-1127 |
+| WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | WRK-1129 | - | WRK-1127 |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | WRK-1129 | - | WRK-1127 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 

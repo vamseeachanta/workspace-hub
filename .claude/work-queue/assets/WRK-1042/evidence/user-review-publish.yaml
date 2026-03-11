@@ -1,0 +1,20 @@
+wrk_id: WRK-1042
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "a6c261ff-plan-draft"
+    documents:
+      - .claude/work-queue/assets/WRK-1042/plan-html-review-final.md
+    published_at: "2026-03-11T00:00:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "a6c261ff-plan-final"
+    documents:
+      - .claude/work-queue/assets/WRK-1042/plan-html-review-final.md
+    published_at: "2026-03-11T00:00:00Z"
+    reviewer: vamsee

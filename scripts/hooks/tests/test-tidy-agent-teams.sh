@@ -27,6 +27,7 @@ bash "$TIDY" >/dev/null 2>&1 && ok "T2 live run exits 0" || fail "T2" "non-zero 
 
 # T3+T4: archived WRK team detected and deleted
 ARCHIVE="${REPO_ROOT}/.claude/work-queue/archive"
+ARCHIVED_WRK=""
 ARCHIVED_FILE=$(ls "${ARCHIVE}"/WRK-*.md 2>/dev/null | head -1 || echo "")
 if [[ -n "$ARCHIVED_FILE" ]]; then
   ARCHIVED_WRK=$(basename "$ARCHIVED_FILE" .md)
@@ -41,7 +42,7 @@ else
   ok "T3 skipped (no archive)"; ok "T4 skipped (no archive)"
 fi
 
-# T5: non-conforming team dir preserved
+# T5: non-conforming team dir without sentinel is preserved
 mkdir -p "${TEST_TEAMS_DIR}/not-a-wrk-team"
 bash "$TIDY" >/dev/null
 [[ -d "${TEST_TEAMS_DIR}/not-a-wrk-team" ]] && ok "T5 non-conforming team preserved" || fail "T5" "incorrectly deleted"
@@ -70,16 +71,52 @@ bash "$SPAWN" NOT-VALID slug 2>/dev/null; RC=$?; [[ $RC -ne 0 ]] && ok "T9 bad W
 # T10: spawn-team.sh bad slug rejected
 bash "$SPAWN" WRK-999 "BAD SLUG!" 2>/dev/null; RC=$?; [[ $RC -ne 0 ]] && ok "T10 bad slug rejected" || fail "T10" "exit was $RC"
 
-# T11: spawn-team.sh valid input prints recipe
-out=$(bash "$SPAWN" WRK-1036 cp-design)
-[[ "$out" == *"wrk-1036-cp-design"* && "$out" == *"mkdir -p"* ]] && ok "T11 spawn prints recipe" || fail "T11" "$out"
+# T11/T12: spawn-team.sh using a synthetic WRK with a temp capture fixture
+TEMP_CAPTURE_WRK="WRK-9998"
+TEMP_ASSETS_DIR="${REPO_ROOT}/.claude/work-queue/assets/${TEMP_CAPTURE_WRK}/evidence"
+mkdir -p "$TEMP_ASSETS_DIR"
+cat > "${TEMP_ASSETS_DIR}/user-review-capture.yaml" << 'YAML'
+wrk_id: WRK-9998
+scope_approved: true
+confirmed_by: vamsee
+confirmed_at: "2026-01-01T00:00:00Z"
+YAML
+cleanup_capture() { rm -rf "${REPO_ROOT}/.claude/work-queue/assets/${TEMP_CAPTURE_WRK}"; }
+trap 'cleanup_capture; rm -rf "$TEST_TEAMS_DIR" "$TEST_TASKS_DIR"' EXIT
+
+# T11: spawn-team.sh valid input prints recipe with .wrk-id sentinel line
+out=$(bash "$SPAWN" "${TEMP_CAPTURE_WRK}" sentinel-test)
+[[ "$out" == *"wrk-9998-sentinel-test"* && "$out" == *"mkdir -p"* ]] && ok "T11 spawn prints recipe" || fail "T11" "$out"
+[[ "$out" == *".wrk-id"* ]] && ok "T11b spawn recipe includes .wrk-id line" || fail "T11b" "$out"
 
 # T12: spawn-team.sh already-exists exits 0 with message
-EXISTING_TEAM="${HOME}/.claude/teams/wrk-1036-cp-design"
+EXISTING_TEAM="${HOME}/.claude/teams/wrk-9998-sentinel-test"
 mkdir -p "$EXISTING_TEAM" 2>/dev/null || true
-out=$(bash "$SPAWN" WRK-1036 cp-design 2>&1); RC=$?
+out=$(bash "$SPAWN" "${TEMP_CAPTURE_WRK}" sentinel-test 2>&1); RC=$?
 [[ $RC -eq 0 && "$out" == *"already exists"* ]] && ok "T12 spawn already-exists exits 0" || fail "T12" "RC=$RC out=$out"
 rm -rf "$EXISTING_TEAM" 2>/dev/null || true
+
+# T13/T13b: non-conforming dir with sentinel + archived WRK → deleted
+if [[ -n "$ARCHIVED_WRK" ]]; then
+  SENTINEL_DIR="${TEST_TEAMS_DIR}/custom-team-name"
+  mkdir -p "$SENTINEL_DIR"
+  echo "$ARCHIVED_WRK" > "${SENTINEL_DIR}/.wrk-id"
+  # T13: dry-run detects the sentinel dir
+  out=$(bash "$TIDY" --dry-run)
+  [[ "$out" == *"custom-team-name"* && "$out" == *"candidate for deletion"* ]] && ok "T13 sentinel+archived detected in dry-run" || fail "T13" "$out"
+  # T13b: live run deletes it
+  bash "$TIDY" >/dev/null
+  [[ ! -d "$SENTINEL_DIR" ]] && ok "T13b sentinel+archived → deleted" || fail "T13b" "dir still exists"
+else
+  ok "T13 skipped (no archive)"; ok "T13b skipped (no archive)"
+fi
+
+# T14: non-conforming dir with sentinel pointing to non-archived WRK → preserved
+NON_ARCHIVED_DIR="${TEST_TEAMS_DIR}/another-custom-team"
+mkdir -p "$NON_ARCHIVED_DIR"
+echo "WRK-99999" > "${NON_ARCHIVED_DIR}/.wrk-id"
+bash "$TIDY" >/dev/null
+[[ -d "$NON_ARCHIVED_DIR" ]] && ok "T14 sentinel+non-archived → preserved" || fail "T14" "incorrectly deleted"
 
 echo ""
 echo "Results: PASS=$PASS FAIL=$FAIL"

@@ -1,0 +1,116 @@
+wrk_id: WRK-1127
+stage: 6
+produced_at: "2026-03-11"
+providers:
+  claude:
+    artifact: assets/WRK-1127/plan_claude.md
+    verdict: APPROVE
+    summary: Plan is structurally complete with all Stage 2 risks mitigated; five MINOR findings (generate-index.py unit test gap, Stage 19 close gate wiring, CLAUDE.md pointer, sed portability note, adopt blocked_by documentation) are addressable during child WRK execution.
+  codex:
+    artifact: assets/WRK-1127/plan_codex.md
+    verdict: APPROVE
+    summary: Bash patterns are correct for GNU/Linux target; seven MINOR edge cases identified (IFS split on pipe chars, grep filter over-exclusion, multi-space padding, empty CHILDREN guard, silent adoption skip, block-sequence YAML format, dep_graph search scope) none of which break the primary execution path.
+  gemini:
+    artifact: assets/WRK-1127/plan_gemini.md
+    verdict: MINOR
+    summary: Architecture fits existing work-queue patterns well; one elevated finding (feature-close-check.sh not wired into stage-19-close.yaml blocking_condition) should be resolved in child-c scope as a mandatory AC before Stage 7 sign-off; six additional MINOR findings are deferred to execution.
+overall_verdict: APPROVE
+major_findings: []
+minor_findings:
+  - id: MINOR-claude-1
+    source: claude
+    finding: >
+      generate-index.py changes (Task 5) lack a pytest unit test; only grep
+      verification and a manual run are specified. A test asserting type/phases
+      defaults and coordinating filter inclusion should be added in child-a scope.
+  - id: MINOR-claude-2
+    source: claude
+    finding: >
+      Stage 19 feature close gate is documented only in SKILL.md prose, not wired
+      into stage-19-close.yaml blocking_condition. Gemini raises this as an elevated
+      MINOR (MAJOR-1 within that review); child-c must add blocking_condition update
+      to stage-19-close.yaml as a mandatory AC.
+  - id: MINOR-claude-3
+    source: claude
+    finding: >
+      CLAUDE.md Quick Reference has no pointer to the new .claude/rules/feature-planning.md
+      rule file. Child-a should decide whether to add the reference and trim accordingly.
+  - id: MINOR-claude-4
+    source: claude
+    finding: >
+      new-feature.sh adopt path sed \n portability is Linux-only (GNU sed); add a
+      comment in the script header noting this assumption.
+  - id: MINOR-claude-5
+    source: claude
+    finding: >
+      Adopt path does not overwrite existing blocked_by when deps is "—"; plan prose
+      should document this explicitly ("adoption does not clear existing blocked_by").
+  - id: MINOR-codex-1
+    source: codex
+    finding: >
+      IFS='|' split in new-feature.sh breaks if a decomposition cell contains a literal
+      pipe character; add a comment warning against pipe chars in decomposition cells.
+  - id: MINOR-codex-2
+    source: codex
+    finding: >
+      grep -v 'Child key\|---' in new-feature.sh may filter valid content rows whose
+      titles contain "---" or "Child key"; tighten the separator filter pattern.
+  - id: MINOR-codex-3
+    source: codex
+    finding: >
+      Single-space strip (## /  %% ) leaves multi-space Markdown table padding in
+      generated child WRK frontmatter title fields; use sed-based trim instead.
+  - id: MINOR-codex-4
+    source: codex
+    finding: >
+      Empty CHILDREN array serializes to "[ ]" not "[]" due to IFS expansion; add
+      a guard that exits non-zero when no children are parsed.
+  - id: MINOR-codex-5
+    source: codex
+    finding: >
+      Failed adoption (wrk_ref not found) silently skips and produces an incomplete
+      children: list; emit a clear INCOMPLETE footer or exit non-zero.
+  - id: MINOR-codex-6
+    source: codex
+    finding: >
+      feature-close-check.sh and feature-status.sh parse children: only in inline
+      YAML list format; block-sequence format is not handled. Add a comment noting
+      the inline-list-only assumption.
+  - id: MINOR-codex-7
+    source: codex
+    finding: >
+      dep_graph.py --feature helper must search pending/, working/, blocked/, and
+      archive/ for the feature WRK file; search scope not specified in the plan.
+  - id: MINOR-gemini-1
+    source: gemini
+    finding: >
+      coordinating → archived transition in close-item.sh (and move-to-archive script)
+      not verified; child-c should confirm close-item.sh accepts coordinating as
+      a valid source status before Stage 7 sign-off.
+  - id: MINOR-gemini-2
+    source: gemini
+    finding: >
+      stage-07-user-review-plan-final.yaml exit_artifacts not updated to include
+      feature-decomposition.yaml for Feature WRK items; add to child-c scope.
+  - id: MINOR-gemini-3
+    source: gemini
+    finding: >
+      By Feature section completion % computation method unspecified; child-b should
+      use in-memory Python count (Option A) rather than subprocess-calling feature-status.sh.
+  - id: MINOR-gemini-4
+    source: gemini
+    finding: >
+      By Feature section scope (active-only vs. all-time features) not specified;
+      recommend active-only (status in pending/working/blocked/coordinating) for
+      consistency with By Category section.
+  - id: MINOR-gemini-5
+    source: gemini
+    finding: >
+      Plan does not explicitly state that children must reach archived (not just done)
+      before the feature may close; add this clarification to feature-planning.md.
+  - id: MINOR-gemini-7
+    source: gemini
+    finding: >
+      whats-next.sh "Features in progress" section subject to category filter; coordinating
+      Feature WRKs in non-harness categories are hidden by default. Child-c should either
+      bypass the category filter for coordinating feature WRKs or add a note in the output.

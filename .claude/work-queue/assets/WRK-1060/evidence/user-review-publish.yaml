@@ -1,0 +1,20 @@
+wrk_id: WRK-1060
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "pending"
+    documents:
+      - .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
+    published_at: "2026-03-11T12:07:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "pending"
+    documents:
+      - .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
+    published_at: "2026-03-11T12:12:00Z"
+    reviewer: vamsee

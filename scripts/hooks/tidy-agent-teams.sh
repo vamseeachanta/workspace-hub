@@ -27,7 +27,7 @@ fi
 
 # Tidy named teams whose WRK is archived
 if [[ -d "${TEAMS_DIR}" ]]; then
-    for team_dir in "${TEAMS_DIR}"/wrk-* ; do
+    for team_dir in "${TEAMS_DIR}"/* ; do
         [[ -d "${team_dir}" ]] || continue
         team_name="$(basename "${team_dir}")"
         if [[ "${team_name}" =~ ^wrk-([0-9]+)-[a-z0-9-]+$ ]]; then
@@ -38,8 +38,21 @@ if [[ -d "${TEAMS_DIR}" ]]; then
                 ((deleted_teams++)) || true
             fi
         else
-            echo "[tidy] skip ${team_name} — does not match wrk-NNN-slug convention"
-            ((skipped++)) || true
+            sentinel="${team_dir}/.wrk-id"
+            if [[ -f "${sentinel}" ]]; then
+                sentinel_id="$(tr -d '[:space:]' < "${sentinel}")"
+                if [[ -n "${archived_ids[${sentinel_id}]+_}" ]]; then
+                    echo "[tidy] team ${team_name} → sentinel ${sentinel_id} archived, candidate for deletion"
+                    if [[ "${DRY_RUN}" == false ]]; then rm -rf "${team_dir}"; fi
+                    ((deleted_teams++)) || true
+                else
+                    echo "[tidy] skip ${team_name} — sentinel ${sentinel_id} not archived"
+                    ((skipped++)) || true
+                fi
+            else
+                echo "[tidy] skip ${team_name} — does not match wrk-NNN-slug convention"
+                ((skipped++)) || true
+            fi
         fi
     done
 fi
