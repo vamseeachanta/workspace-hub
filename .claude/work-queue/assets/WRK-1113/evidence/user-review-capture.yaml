@@ -1,0 +1,9 @@
+wrk_id: WRK-1113
+stage: 1
+reviewer: vamsee
+scope_approved: true
+approved_at: "2026-03-12T00:00:00Z"
+notes: >
+  Scope approved: document corpus parametric extraction pipeline — Drilling Riser +
+  CP Phase 1, 10/10/10 document selection at Stage 5, doc-verified tests, exhaustion
+  marking, drilling riser module, index consolidation with domain/exhausted filters.

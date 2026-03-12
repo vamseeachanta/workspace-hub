@@ -12,3 +12,9 @@ events:
     html_ref: .claude/work-queue/assets/WRK-1141/WRK-1141-lifecycle.html
     opened_at: "2026-03-12T10:55:00Z"
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1141/WRK-1141-lifecycle.html
+    opened_at: "2026-03-12T14:50:00Z"
+    reviewer: vamsee

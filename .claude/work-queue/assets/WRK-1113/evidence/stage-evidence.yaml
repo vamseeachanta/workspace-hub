@@ -1,0 +1,19 @@
+wrk_id: WRK-1113
+stages_complete:
+  - stage: 1
+    name: Capture
+    completed_at: "2026-03-12T00:00:00Z"
+    gate: HARD
+    gate_passed: true
+    reviewer: vamsee
+  - stage: 2
+    name: Resource Intelligence
+    completed_at: "2026-03-12T00:00:00Z"
+    gate: none
+    notes: "CP module 14 functions, 261 tests; no drilling riser module; ledger schema gaps identified"
+  - stage: 3
+    name: Triage
+    completed_at: "2026-03-12T00:00:00Z"
+    gate: none
+    notes: "Route C confirmed; open questions deferred to Stage 5 (riser namespace, canonical CP routes)"
+current_stage: 4

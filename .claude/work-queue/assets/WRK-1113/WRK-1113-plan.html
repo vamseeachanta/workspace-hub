@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="30">
-<title>WRK-1141 — Plan</title>
+<title>WRK-1113 — Plan</title>
 <style>
 :root {
   --bg:         #f3efe6;
@@ -197,19 +197,19 @@ table.md-table{font-size:.87rem;}
     <div class="hero-brand">
       <div class="hero-brand-logo">DM</div>
       <span class="hero-brand-name">digitalmodel &middot; workspace-hub</span>
-      <a class="hero-nav-link" href="WRK-1141-lifecycle.html">&#8599; Lifecycle</a>
+      <a class="hero-nav-link" href="WRK-1113-lifecycle.html">&#8599; Lifecycle</a>
     </div>
-    <p class="eyebrow">WRK-1141 &middot; PLAN DOCUMENT</p>
-    <h1>WRK-1141 — feat(git-hooks): post-commit auto-push + trunk-based routing script</h1>
-    <p class="lede">Route B &middot; medium complexity &middot; workspace-hub &middot; 2026-03-12</p>
-    <div class="meta-row"><div class="pill pill-stage"><strong>Now</strong>Stage 17: User Review — Implementation</div><div class="pill pill-stage"><strong>Status</strong>working</div><div class="pill"><strong>Workstation</strong>ace-linux-1</div><div class="pill"><strong>Orchestrator</strong>claude</div><div class="pill"><strong>Created</strong>2026-03-12</div><div class="meta-break"></div><div class="pill"><strong>Repo</strong>workspace-hub</div><div class="pill"><strong>Category</strong>harness</div><div class="pill"><strong>Subcategory</strong>git</div><div class="pill"><strong>Priority</strong>medium</div><div class="pill"><strong>Route</strong>Route B</div></div>
+    <p class="eyebrow">WRK-1113 &middot; PLAN DOCUMENT</p>
+    <h1>WRK-1113 — feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking</h1>
+    <p class="lede">Route C &middot; complex complexity &middot; workspace-hub, digitalmodel &middot; 2026-03-10</p>
+    <div class="meta-row"><div class="pill pill-stage"><strong>Now</strong>Stage 4: Plan Draft</div><div class="pill pill-stage"><strong>Status</strong>working</div><div class="pill"><strong>Workstation</strong>ace-linux-1</div><div class="pill"><strong>Orchestrator</strong>claude</div><div class="pill"><strong>Created</strong>2026-03-10</div><div class="meta-break"></div><div class="pill"><strong>Repo</strong>workspace-hub, digitalmodel</div><div class="pill"><strong>Category</strong>document-intelligence</div><div class="pill"><strong>Subcategory</strong>parametric-extraction</div><div class="pill"><strong>Priority</strong>high</div><div class="pill"><strong>Route</strong>Route C</div></div>
   </div>
 </header>
 
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="WRK-1141-lifecycle.html#s1" class="sc sc-done" title="01 Capture">1</a> <a href="WRK-1141-lifecycle.html#s2" class="sc sc-done" title="02 Resource Intelligence">2</a> <a href="WRK-1141-lifecycle.html#s3" class="sc sc-done" title="03 Triage">3</a> <a href="WRK-1141-lifecycle.html#s4" class="sc sc-done" title="04 Plan Draft">4</a> <a href="WRK-1141-lifecycle.html#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a> <a href="WRK-1141-lifecycle.html#s6" class="sc sc-done" title="06 Cross-Review">6</a> <a href="WRK-1141-lifecycle.html#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a> <a href="WRK-1141-lifecycle.html#s8" class="sc sc-done" title="08 Claim / Activation">8</a> <a href="WRK-1141-lifecycle.html#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a> <a href="WRK-1141-lifecycle.html#s10" class="sc sc-done" title="10 Work Execution">10</a> <a href="WRK-1141-lifecycle.html#s11" class="sc sc-done" title="11 Artifact Generation">11</a> <a href="WRK-1141-lifecycle.html#s12" class="sc sc-done" title="12 TDD / Eval">12</a> <a href="WRK-1141-lifecycle.html#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a> <a href="WRK-1141-lifecycle.html#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a> <a href="WRK-1141-lifecycle.html#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a> <a href="WRK-1141-lifecycle.html#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a> <a href="WRK-1141-lifecycle.html#s17" class="sc sc-active" title="17 User Review — Implementation">17</a> <a href="WRK-1141-lifecycle.html#s18" class="sc sc-na" title="18 Reclaim">18</a> <a href="WRK-1141-lifecycle.html#s19" class="sc sc-pending" title="19 Close">19</a> <a href="WRK-1141-lifecycle.html#s20" class="sc sc-pending" title="20 Archive">20</a> 
+    <a href="WRK-1113-lifecycle.html#s1" class="sc sc-done" title="01 Capture">1</a> <a href="WRK-1113-lifecycle.html#s2" class="sc sc-done" title="02 Resource Intelligence">2</a> <a href="WRK-1113-lifecycle.html#s3" class="sc sc-done" title="03 Triage">3</a> <a href="WRK-1113-lifecycle.html#s4" class="sc sc-active" title="04 Plan Draft">4</a> <a href="WRK-1113-lifecycle.html#s5" class="sc sc-pending" title="05 User Review — Plan Draft">5</a> <a href="WRK-1113-lifecycle.html#s6" class="sc sc-pending" title="06 Cross-Review">6</a> <a href="WRK-1113-lifecycle.html#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a> <a href="WRK-1113-lifecycle.html#s8" class="sc sc-pending" title="08 Claim / Activation">8</a> <a href="WRK-1113-lifecycle.html#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a> <a href="WRK-1113-lifecycle.html#s10" class="sc sc-pending" title="10 Work Execution">10</a> <a href="WRK-1113-lifecycle.html#s11" class="sc sc-pending" title="11 Artifact Generation">11</a> <a href="WRK-1113-lifecycle.html#s12" class="sc sc-pending" title="12 TDD / Eval">12</a> <a href="WRK-1113-lifecycle.html#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a> <a href="WRK-1113-lifecycle.html#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a> <a href="WRK-1113-lifecycle.html#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a> <a href="WRK-1113-lifecycle.html#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a> <a href="WRK-1113-lifecycle.html#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a> <a href="WRK-1113-lifecycle.html#s18" class="sc sc-na" title="18 Reclaim">18</a> <a href="WRK-1113-lifecycle.html#s19" class="sc sc-pending" title="19 Close">19</a> <a href="WRK-1113-lifecycle.html#s20" class="sc sc-pending" title="20 Archive">20</a> 
   </div>
 </nav>
 
@@ -217,14 +217,7 @@ table.md-table{font-size:.87rem;}
   <div class="card">
     <h2>Current Plan</h2>
     <div class="plan-body">
-<ol>
-<li>Read <code>scripts/setup/install-all-hooks.sh</code> to understand hook install pattern</li>
-<li>Write <code>scripts/hooks/post-commit</code> with all guards</li>
-<li>Write <code>scripts/work-queue/start-wrk.sh</code> reading WRK frontmatter</li>
-<li>Update <code>install-all-hooks.sh</code> to include <code>post-commit</code></li>
-<li>Write <code>tests/scripts/test_post_commit_push.sh</code></li>
-<li>Commit + push</li>
-</ol>
+<p><em>No plan section found.</em></p>
     </div>
   </div>
   <div class="card">

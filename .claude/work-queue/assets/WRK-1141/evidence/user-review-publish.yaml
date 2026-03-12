@@ -18,3 +18,12 @@ events:
       - .claude/work-queue/assets/WRK-1141/plan_claude.md
     published_at: "2026-03-12T11:06:00Z"
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2e5df979
+    documents:
+      - .claude/work-queue/assets/WRK-1141/WRK-1141-lifecycle.html
+    published_at: "2026-03-12T14:51:00Z"
+    reviewer: vamsee

@@ -1,0 +1,22 @@
+src/assetutilities/calculations/polynomial.py                                       5      1    80%   6
+src/assetutilities/calculations/scr_fatigue.py                                     51     31    39%   51, 53, 55, 81, 117-127, 152-158, 181-187, 211-215
+src/assetutilities/devtools/cli.py                                                195    195     0%   6-419
+src/assetutilities/devtools/__init__.py                                             6      6     0%   10-16
+src/assetutilities/devtools/modernize_deps.py                                     238    238     0%   5-510
+src/assetutilities/devtools/organize_structure.py                                 221    221     0%   9-623
+src/assetutilities/devtools/propagate_commands.py                                 158    158     0%   5-380
+src/assetutilities/units/computation.py                                            39      2    95%   62-63
+src/assetutilities/units/domains/energy.py                                         14      0   100%
+src/assetutilities/units/domains/__init__.py                                        1      0   100%
+src/assetutilities/units/domains/metocean.py                                       28      1    96%   69
+src/assetutilities/units/domains/offshore.py                                        4      0   100%
+src/assetutilities/units/exceptions.py                                             10      0   100%
+src/assetutilities/units/__init__.py                                               11      2    82%   31-32
+src/assetutilities/units/input_parser.py                                           25      1    96%   114
+src/assetutilities/units/output_formatter.py                                       62      1    98%   71
+src/assetutilities/units/policy.py                                                 26      0   100%
+src/assetutilities/units/quantity.py                                              108      2    98%   101, 246
+src/assetutilities/units/registry.py                                               22      0   100%
+src/assetutilities/units/traceability.py                                           54      0   100%
+src/assetutilities/units/visualization.py                                          81     13    84%   119-135
+Note: calculations files not appearing = 0% (not imported by test suite)

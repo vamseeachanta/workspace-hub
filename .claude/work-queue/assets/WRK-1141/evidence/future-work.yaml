@@ -1,0 +1,23 @@
+wrk_id: WRK-1141
+stage: 15
+completed_at: "2026-03-12T14:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Add post-push failure notification via session-start-notify"
+    description: >
+      Background push to /tmp/post-commit-push.log is silent on failure.
+      Wire failure notification into session-start-notify.sh so push errors
+      surface at next session start.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-2
+    title: "Wire start-wrk.sh into claim/activation flow"
+    description: >
+      Automate branch routing at Stage 9 so start-wrk.sh runs without
+      manual invocation. Hook into claim-item.sh or work.sh run.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low

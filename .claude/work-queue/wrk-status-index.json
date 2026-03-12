@@ -423,10 +423,10 @@
     "category": "harness"
   },
   "WRK-1141": {
-    "status": "pending",
+    "status": "working",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:32.844741+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-12T16:17:06.949360+00:00",
+    "updated_by": "claim-item.sh",
     "title": "feat(git-hooks): post-commit auto-push + trunk-based routing script",
     "priority": "medium",
     "category": "harness"

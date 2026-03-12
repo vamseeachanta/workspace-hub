@@ -68,97 +68,97 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1141/evidence/claim-evidence.yaml
   - order: 9
     stage: Work-Queue Routing
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: Routed to ace-linux-1, claude orchestrator.
+    evidence: .claude/work-queue/assets/WRK-1141/routing.yaml
   - order: 10
     stage: Work Execution
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Implemented post-commit, start-wrk.sh, tests; committed 5fc3f8df + 2e5df979."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/execute.yaml
   - order: 11
     stage: Artifact Generation
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Lifecycle HTML generated."
+    evidence: .claude/work-queue/assets/WRK-1141/WRK-1141-lifecycle.html
   - order: 12
     stage: TDD / Eval
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "13 PASS, 0 FAIL across test_post_commit_push.sh and test_start_wrk.sh."
+    evidence: .claude/work-queue/assets/WRK-1141/ac-test-matrix.md
   - order: 13
     stage: Agent Cross-Review
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Codex P1+2P2 findings addressed in commit 2e5df979. All tests re-pass."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/agent-cross-review.yaml
   - order: 14
     stage: Verify Gate Evidence
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Gate evidence verified. Stage 17 user review gate populated separately."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/gate-evidence-summary.md
   - order: 15
     stage: Future Work Synthesis
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "FW-1 and FW-2 captured."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/future-work.yaml
   - order: 16
     stage: Resource Intelligence Update
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "RI updated with new hooks, scripts, and tests."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/resource-intelligence-update.yaml
   - order: 17
     stage: User Review Implementation
-    status: pending
+    status: in_progress
     human_decision_required: "yes"
     owner: human
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Awaiting user review and approval."
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/user-review-close.yaml
   - order: 18
     stage: Reclaim
     status: n/a
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: No continuity break.
-    evidence: ""
+    comment: "No continuity break — single session."
+    evidence: n/a
   - order: 19
     stage: Close
     status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Pending Stage 17 user approval."
+    evidence: pending
   - order: 20
     stage: Archive
     status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: ""
-    evidence: ""
+    comment: "Pending close."
+    evidence: pending

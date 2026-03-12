@@ -1,0 +1,171 @@
+wrk_id: WRK-1113
+stage: 2
+completion_status: complete
+domain: document-intelligence/parametric-extraction
+assessed_at: "2026-03-12T00:00:00Z"
+
+existing_infrastructure:
+  cp_module:
+    path: digitalmodel/src/digitalmodel/cathodic_protection/
+    files:
+      - __init__.py
+      - api_rp_1632.py
+      - iso_15589_2.py
+    api_rp_1632_functions:
+      - anode_driving_voltage
+      - anode_resistance_vertical_rod
+      - current_demand
+      - current_per_anode
+      - number_of_anodes
+      - anode_life_years
+      - check_protection_potential
+    iso_15589_2_functions:
+      - initial_current_density
+      - coating_breakdown_factor
+      - pipeline_current_demand
+      - anode_resistance
+      - anode_output_current
+      - anode_mass_requirement
+      - check_protection_potential
+    module_pattern: >
+      Typed function signatures, module-level standard constants (SCREAMING_SNAKE_CASE),
+      section references in docstrings (e.g. "§4.2"), hand-calculated benchmark values
+      in tests. References are inline in docstrings (no @doc_ref decorator).
+    infrastructure_cp_routes:
+      - digitalmodel/src/digitalmodel/infrastructure/common/cp_DNV_RP_B401_2021.py
+      - digitalmodel/src/digitalmodel/infrastructure/common/cp_DNV_RP_F103_2010.py
+      - digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py
+      - digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_DNV_RP_B401_2021.py
+      - digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_DNV_RP_F103_2010.py
+      - digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_sacrificial_anode_b401.py
+      - digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cathodic_protection.py
+      - digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_astm_g42.py
+
+  drilling_riser_module:
+    exists: false
+    path: "digitalmodel/src/digitalmodel/drilling_riser/ — does not exist"
+    notes: >
+      No parametric drilling riser module exists. Only a data-procurement database
+      client at digitalmodel/src/digitalmodel/data_systems/data_procurement/riser/
+      database_clients/pipe_db_client.py — not a parametric calculation module.
+      A vertical riser component file exists at digitalmodel/src/digitalmodel/subsea/
+      vertical_riser/vertical_riser_components.py but is OrcaFlex-oriented, not a
+      parametric standard-wrapper.
+
+  standards_transfer_ledger:
+    exists: true
+    path: data/document-index/standards-transfer-ledger.yaml
+    generated_at: "2026-02-27"
+    total_entries: 425
+    summary_counts:
+      gap: 235
+      reference: 138
+      wrk_captured: 29
+      done: 23
+    schema_fields:
+      - id
+      - title
+      - org
+      - domain
+      - doc_path
+      - doc_paths
+      - status
+      - wrk_id
+      - repo
+      - modules
+      - implemented_at
+      - notes
+    missing_fields_for_wrk_1113:
+      - exhausted       # boolean — not present in current schema
+      - exhausted_at    # ISO timestamp — not present
+      - absorbed_into   # list of module paths — not present
+
+  query_ledger_py:
+    exists: true
+    path: scripts/data/document-index/query-ledger.py
+    existing_filters:
+      - "--domain   (substring match on domain field)"
+      - "--status   (exact match: gap|wrk_captured|done|reference|deferred)"
+      - "--id       (partial match, case-insensitive)"
+      - "--repo     (substring match)"
+      - "--org      (substring match, case-insensitive)"
+      - "--verbose  (show doc_path, modules, notes)"
+      - "--summary  (counts only)"
+    missing_filters_for_wrk_1113:
+      - "--exhausted  (filter by exhausted: true — not yet implemented)"
+
+  build_ledger_py:
+    exists: true
+    path: scripts/data/document-index/build-ledger.py
+    run_command: "uv run --no-project python scripts/data/document-index/build-ledger.py"
+
+  document_index:
+    path: data/document-index/
+    key_files:
+      - data/document-index/standards-transfer-ledger.yaml
+      - data/document-index/enhancement-plan.yaml
+      - data/document-index/registry.yaml
+
+  legal_scan:
+    path: scripts/legal/legal-sanity-scan.sh
+    exists: true
+
+  spec_dir_wrk_1113:
+    path: specs/wrk/WRK-1113/
+    exists: false
+    notes: >
+      Directory does not exist yet. Must be scaffolded before Stage 5 to hold
+      selection-matrix.md, doc-extracts/, and improvements-log.md.
+
+  existing_tests:
+    cp_test_dir_primary: digitalmodel/tests/cathodic_protection/
+    cp_test_dir_specialized: digitalmodel/tests/specialized/cathodic_protection/
+    cp_benchmarks: digitalmodel/tests/benchmarks/test_cp_benchmarks.py
+    test_count_primary: 36
+    test_count_specialized: 221
+    test_count_benchmarks: 4
+    test_count_total: 261
+    naming_pattern: >
+      Class-based: class Test<FeatureName> with methods def test_<calculation>_<scenario>(self).
+      Benchmark values hand-calculated from standard equations with pytest.approx().
+      Docstrings cite standard section (e.g. "§6.3") and show the manual calculation.
+
+gaps_identified:
+  - >
+    standards-transfer-ledger.yaml schema lacks exhausted, exhausted_at, and
+    absorbed_into fields required for Phase 4 exhaustion marking. These three
+    fields must be added before Phase 4 can run.
+  - >
+    query-ledger.py has no --exhausted filter. Must be added for Phase 5.
+  - >
+    No drilling riser parametric module exists anywhere in digitalmodel. Phase 3
+    requires creating digitalmodel/src/digitalmodel/drilling_riser/ from scratch.
+  - >
+    specs/wrk/WRK-1113/ directory does not exist. Must be scaffolded before Stage 5.
+  - >
+    The CP infrastructure routes (infrastructure/common/ and base_solvers/hydrodynamics/)
+    overlap with the primary cathodic_protection/ module. Canonical targets for
+    doc-verified tests must be clarified during Stage 5 planning.
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - resource-intelligence
+    - tdd
+
+complexity_assessment: complex
+complexity_rationale: >
+  Route C: multi-phase across two repos, new module creation (drilling riser),
+  10/10/10 document selection gate at Stage 5, doc-verified TDD with worked-example
+  assertions, legal compliance gating on all tabular data, ledger schema extension
+  (3 new fields), query-ledger filter extension, specs directory scaffolding, and
+  cross-review (Claude + Codex + Gemini).
+
+constraints:
+  - "legal: all extracted tabular data must pass scripts/legal/legal-sanity-scan.sh before commit"
+  - "scope: Phase 1 only (Drilling Riser + CP) — remaining domains in follow-on WRKs"
+  - "tdd: doc-verified tests must be written BEFORE gap-fill implementation"
+  - "schema: exhausted/exhausted_at/absorbed_into fields require ledger schema update before Phase 4"
+  - "drilling riser namespace: confirm digitalmodel/drilling_riser/ vs cathodic_protection/ at Stage 5"
+  - "legal: no client project names, proprietary platform identifiers, or IP in extracted constants"

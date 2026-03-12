@@ -1,0 +1,15 @@
+wrk_id: WRK-1141
+stage: 16
+completed_at: "2026-03-12T14:00:00Z"
+additions:
+  - resource: scripts/hooks/post-commit
+    description: "New auto-push hook with 9 guards; installed to .git/hooks/ via install-all-hooks.sh"
+  - resource: scripts/work-queue/start-wrk.sh
+    description: "New trunk-vs-branch routing script; reads WRK frontmatter complexity/compound"
+  - resource: tests/scripts/test_post_commit_push.sh
+    description: "8-test suite for post-commit hook guards"
+  - resource: tests/scripts/test_start_wrk.sh
+    description: "5-test suite for start-wrk.sh routing logic"
+modifications:
+  - resource: scripts/setup/verify-setup.sh
+    description: "Added post-commit to verified hooks list"

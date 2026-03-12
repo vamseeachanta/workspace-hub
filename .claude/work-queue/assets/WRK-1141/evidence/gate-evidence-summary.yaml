@@ -1,0 +1,9 @@
+wrk_id: WRK-1141
+stage: 14
+phase: close
+generated_at: "2026-03-12T14:30:00Z"
+overall: PASS
+gates_passing: 26
+gates_failing: 1
+gates_warning: 4
+pending_gate: user-review-close (Stage 17 — awaiting human reviewer)
