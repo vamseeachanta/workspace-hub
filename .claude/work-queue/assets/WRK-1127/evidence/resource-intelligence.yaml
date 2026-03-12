@@ -102,7 +102,7 @@ notes: >
   machine-ranges.yaml; the new chunk-sizing.yaml and feature-template.md will be the
   second and third files added there.
 
-completion_status: complete
+completion_status: continue_to_planning
 p1_count: 0
 skills:
   core_used:

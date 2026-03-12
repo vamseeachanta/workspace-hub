@@ -1,6 +1,6 @@
 wrk_id: WRK-1127
 stage: 5
-reviewed_at: "2026-03-11"
+reviewed_at: "2026-03-11T12:00:00Z"
 reviewer: vamsee
 decision: approved
 plan_artifact: specs/wrk/WRK-1127/wrk-1127-feature-first-planning.md
