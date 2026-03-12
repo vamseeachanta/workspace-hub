@@ -1,0 +1,18 @@
+doc_ref: "50043-PRS-0001-1"
+title: "DeepStar Drilling Riser Structural Damping Test"
+source: "2H Offshore / DeepStar consortium"
+year: 2013
+key_data:
+  plain_pipe_damping_ratio: 0.003  # 0.3% critical damping
+  test_setup_damping_ratio: 0.0015  # 0.15% confirmed from scaled test
+  riser_joint_od_inch: 21.0
+  riser_joint_wt_inch: 0.625
+  buoyancy_od_inch: 36.0
+  ck_line_od_inch: 4.0
+  ck_line_wt_inch: 0.75
+  test_lengths_ft: [100, 150, 200]
+  joint_types_tested: ["bare", "buoyant"]
+notes: |
+  Objective: quantify structural damping of buoyant vs bare drilling riser joints.
+  Buoyancy + auxiliary lines increase damping above bare pipe baseline.
+  VIV analysis sensitivity to damping is significant (factor of 10 bias in SHEAR7).

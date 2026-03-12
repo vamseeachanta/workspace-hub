@@ -1,0 +1,24 @@
+doc_ref: "2H-TNE-0050-03"
+title: "Drilling Riser Analysis Guidelines"
+source: "2H Offshore"
+year: 2015
+key_data:
+  tension_requirements:
+    minimum_slip_ring_tension: "T_SRmin = W_s * f_wt - B_n * f_bt + A_i * (d_m * H_m - d_w * H_w)"
+    max_tension_setting: "90% DTL"
+    dtl_formula: "DTL = P_A * A_CYL / N_LP"
+  tolerance_factors:
+    submerged_weight_f_wt: 1.05
+    buoyancy_loss_f_bt: 0.96
+    reduction_factor_r_r: [0.90, 0.95]
+  analysis_types:
+    - tension_variation
+    - operating_envelope
+    - installation_retrieval
+    - first_order_fatigue
+    - viv_fatigue
+  damping_section: 4.9
+  boundary_conditions_section: 4.10
+notes: |
+  Comprehensive drilling riser analysis guidelines covering strength and fatigue.
+  API RP 16Q Section 3.3 referenced for tension requirements.

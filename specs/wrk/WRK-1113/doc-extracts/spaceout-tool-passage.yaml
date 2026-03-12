@@ -1,0 +1,23 @@
+doc_ref: "144507"
+title: "Drilling Riser SpaceOut - Tool Passage"
+source: "Generic spaceout drawing"
+year: 2014
+key_data:
+  dimensions_unit: "inches"
+  shear_od: 4.143
+  seal_od: 5.875
+  connector_lengths_typical:
+    lmrp_connector: 104.331
+    flex_joint: 113.610
+  riser_string_components:
+    - flex_joint
+    - lmrp_connector
+    - riser_joints
+    - bop_stack
+  ram_sizes: "3.500 - 6.625 inch"
+  lsa_minimum_id: 2.975
+  max_wp_psi: 8400
+notes: |
+  Spaceout drawing showing riser string component arrangement.
+  Tool passage clearance governed by minimum ID through riser string.
+  All dimensions in inches unless noted.

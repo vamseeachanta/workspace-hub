@@ -1,0 +1,15 @@
+doc_ref: "API SPEC 16F 1st Ed Addendum 2"
+title: "Specification for Marine Drilling Riser Equipment"
+source: "American Petroleum Institute"
+year: 2014
+key_data:
+  design_safety_factor: 2.25  # SF_D per section 14.2.2.2
+  allowable_membrane_stress: "sigma_ys / SF_D"  # Eq (1)
+  allowable_membrane_plus_bending: "1.5 * sigma_ys / SF_D"  # Eq (2)
+  allowable_secondary: "3.0 * sigma_ys / SF_D"  # Eq (3)
+  shear_ratio: 0.58  # yield in shear / yield in tension
+  proof_load_factor: 1.5  # production proof load test
+  pressure_test_factor: 1.5  # pressure containing systems
+notes: |
+  Addendum 2 covers Section 14 (Riser Running and Handling Equipment).
+  Key equations for allowable stress analysis of riser handling components.
