@@ -57,7 +57,7 @@ echo ""
 echo "--- Git hooks"
 HOOKS_SRC="${WORKSPACE_HUB}/scripts/hooks"
 HOOKS_DST="${WORKSPACE_HUB}/.git/hooks"
-for hook in pre-commit post-merge post-rewrite; do
+for hook in pre-commit post-merge post-rewrite post-commit; do
   src="${HOOKS_SRC}/${hook}"
   dst="${HOOKS_DST}/${hook}"
   if [[ ! -f "$src" ]]; then

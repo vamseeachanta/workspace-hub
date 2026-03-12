@@ -1,0 +1,20 @@
+wrk_id: WRK-1141
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ecc4a02a934b3dba774e86619320c0a8e0e1c83c
+    documents:
+      - .claude/work-queue/assets/WRK-1141/plan_claude.md
+    published_at: "2026-03-12T10:06:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ecc4a02a934b3dba774e86619320c0a8e0e1c83c
+    documents:
+      - .claude/work-queue/assets/WRK-1141/plan_claude.md
+    published_at: "2026-03-12T11:06:00Z"
+    reviewer: vamsee

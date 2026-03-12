@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# post-commit: auto-push to remote after every commit (WRK-1141)
+# Guards: SKIP_PUSH, CI, detached HEAD, no upstream, submodule,
+#         rebase/cherry-pick/amend/merge-conflict in progress
+set -euo pipefail
+
+# Guard 1: explicit opt-out
+[[ "${SKIP_PUSH:-}" == "1" ]] && exit 0
+
+# Guard 2: CI environments
+[[ "${CI:-}" == "true" || -n "${GITHUB_ACTIONS:-}" ]] && exit 0
+
+# Guard 3: detached HEAD (symbolic-ref fails on detached HEAD)
+git symbolic-ref HEAD >/dev/null 2>&1 || exit 0
+
+# Guard 4: rebase in progress
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+[[ -d "${REPO_ROOT}/.git/rebase-merge" || -d "${REPO_ROOT}/.git/rebase-apply" ]] && exit 0
+
+# Guard 5: cherry-pick in progress
+[[ -f "${REPO_ROOT}/.git/CHERRY_PICK_HEAD" ]] && exit 0
+
+# Guard 6: amend / reword via GIT_REFLOG_ACTION
+case "${GIT_REFLOG_ACTION:-}" in
+  *amend*|*reword*) exit 0 ;;
+esac
+
+# Guard 7: merge conflict in progress
+[[ -f "${REPO_ROOT}/.git/MERGE_HEAD" ]] && exit 0
+
+# Guard 8: submodule context — only push from the top-level repo
+superproject="$(git rev-parse --show-superproject-working-tree 2>/dev/null || true)"
+[[ -n "${superproject}" ]] && exit 0
+
+# Guard 9: no upstream configured
+if ! git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1; then
+  echo "post-commit: no upstream configured — skipping auto-push" >&2
+  exit 0
+fi
+
+# All guards passed — push in background so the terminal is not blocked
+(git push origin HEAD > /tmp/post-commit-push.log 2>&1) &
+
+exit 0

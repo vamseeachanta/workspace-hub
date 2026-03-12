@@ -1,0 +1,22 @@
+wrk_id: WRK-1141
+stage: 6
+completed_at: "2026-03-12T00:00:00Z"
+reviews:
+  codex:
+    verdict: REQUEST_CHANGES
+    findings:
+      - Missing rebase/cherry-pick/amend guards in post-commit
+      - Tests don't cover start-wrk.sh routing
+      - verify-setup.sh hard-codes hook list
+      - start-wrk.sh routing inputs underspecified (branch-already-exists)
+    resolution: All addressed in plan v2
+  gemini:
+    verdict: REQUEST_CHANGES
+    findings:
+      - Synchronous push blocks terminal
+      - git commit --amend triggers post-commit → non-fast-forward rejection
+      - YAML frontmatter parsing fragile
+    resolution: All addressed in plan v2 (background push, amend guard, grep parsing)
+plan_updated: true
+plan_version: v2
+all_major_findings_resolved: true

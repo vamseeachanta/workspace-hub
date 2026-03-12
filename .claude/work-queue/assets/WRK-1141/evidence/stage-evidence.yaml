@@ -1,7 +1,164 @@
 wrk_id: WRK-1141
+generated_at: "2026-03-12T10:00:00Z"
+reviewed_by: "agent"
 stages:
-  1:
-    status: complete
-    completed_at: "2026-03-12T00:00:00Z"
-    artifacts:
-      - evidence/user-review-capture.yaml
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Scope approved by vamsee.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/user-review-capture.yaml
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Existing hook infrastructure surveyed.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route B, medium complexity, harness/git category.
+    evidence: .claude/work-queue/working/WRK-1141.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Plan written and cross-review submitted.
+    evidence: .claude/work-queue/assets/WRK-1141/plan_claude.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: human
+    blocker: "no"
+    comment: Plan draft approved by vamsee.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Codex + Gemini reviewed; all findings addressed in v2.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/cross-review.yaml
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: human
+    blocker: "no"
+    comment: Final plan approved by vamsee.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/plan-final-review.yaml
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK claimed and activated.
+    evidence: .claude/work-queue/assets/WRK-1141/evidence/claim-evidence.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 10
+    stage: Work Execution
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 11
+    stage: Artifact Generation
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 12
+    stage: TDD / Eval
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 13
+    stage: Agent Cross-Review
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 14
+    stage: Verify Gate Evidence
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 15
+    stage: Future Work Synthesis
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 16
+    stage: Resource Intelligence Update
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 17
+    stage: User Review Implementation
+    status: pending
+    human_decision_required: "yes"
+    owner: human
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: No continuity break.
+    evidence: ""
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: ""
+    evidence: ""

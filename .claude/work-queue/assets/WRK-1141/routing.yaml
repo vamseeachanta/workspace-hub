@@ -1,0 +1,7 @@
+wrk_id: WRK-1141
+stage: 9
+routed_at: "2026-03-12T12:00:00Z"
+route: B
+workstation: ace-linux-1
+provider: claude
+notes: "Route B medium — ace-linux-1, claude orchestrator"
