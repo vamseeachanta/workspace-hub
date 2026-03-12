@@ -142,16 +142,28 @@ if [[ ${#ROW_KEYS[@]} -eq 0 ]]; then
     exit 1
 fi
 
-# ── PASS 1: Allocate/adopt IDs; build child-key → WRK-ID map ─────────────────
+# ── PASS 1a: Allocate/adopt IDs; build child-key → WRK-ID map ────────────────
+# No files are written yet. Sentinel files from next-id.sh ARE created but are
+# tracked so they can be removed on failure in Pass 1b.
 declare -A KEY_TO_ID=()
 declare -A KEY_ADOPT_FAIL=()   # tracks keys where adoption target not found
+declare -a CREATED_SENTINELS=()  # sentinels written by next-id.sh this pass
+
+# Cleanup trap: remove any sentinel files created during Pass 1a if we exit
+# non-zero before reaching Pass 2.
+_cleanup_sentinels() {
+    for s in "${CREATED_SENTINELS[@]:-}"; do
+        [[ -f "$s" ]] && rm -f "$s"
+    done
+}
+trap '_cleanup_sentinels' EXIT
 
 for i in "${!ROW_KEYS[@]}"; do
     key="${ROW_KEYS[$i]}"
     wrk_ref="${ROW_WRK_REFS[$i]}"
 
     if [[ -n "$wrk_ref" && "$wrk_ref" =~ ^WRK-[0-9]+$ ]]; then
-        # ADOPT existing WRK
+        # ADOPT existing WRK — no files created here
         existing_file=""
         for dir in pending working blocked archived archive; do
             candidate="${WORK_QUEUE_ROOT}/${dir}/${wrk_ref}.md"
@@ -194,6 +206,7 @@ for i in "${!ROW_KEYS[@]}"; do
             mv "$SENTINEL_REAL" "$SENTINEL_TARGET" 2>/dev/null || true
         fi
         KEY_TO_ID["$key"]="WRK-${new_id}"
+        CREATED_SENTINELS+=("$SENTINEL_TARGET")
     fi
 done
 
@@ -229,6 +242,9 @@ for i in "${!ROW_KEYS[@]}"; do
         exit 1
     fi
 done
+
+# Both passes succeeded — disarm the sentinel cleanup trap before writing files
+trap - EXIT
 
 # ── PASS 2: Write child files ─────────────────────────────────────────────────
 declare -a CHILDREN_IDS=()
@@ -356,7 +372,24 @@ with open(path, 'w') as f:
 PYEOF
     fi
 else
-    echo "children: ${CHILDREN_YAML}" >> "$WRK_FILE"
+    # Insert children: inside frontmatter, before the closing ---
+    python3 - "$WRK_FILE" "$CHILDREN_YAML" <<'PYEOF2'
+import sys, re
+path, yaml_val = sys.argv[1], sys.argv[2]
+with open(path) as f:
+    content = f.read()
+# Insert children: before the closing --- of the frontmatter block
+# Match: opening ---, frontmatter body, closing ---
+content = re.sub(
+    r'^(---\s*\n.*?\n)(---)',
+    lambda m: m.group(1) + f'children: {yaml_val}\n' + m.group(2),
+    content,
+    count=1,
+    flags=re.DOTALL,
+)
+with open(path, 'w') as f:
+    f.write(content)
+PYEOF2
 fi
 
 echo ""

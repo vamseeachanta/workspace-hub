@@ -15,6 +15,7 @@ Usage:
     python .claude/work-queue/scripts/generate-index.py
 """
 
+import os
 import re
 import sys
 from datetime import datetime, date, timezone
@@ -528,13 +529,18 @@ def render_metrics(items: list[dict]) -> str:
     return METRICS_TEMPLATE.format(**values)
 
 
-def _find_child_status(child_id: str, queue_root: Path) -> str | None:
+def _find_child_status(child_id: str, queue_root: Path | None = None) -> str | None:
     """Search all queue dirs to determine the status of a child WRK item.
 
     Searches pending/, working/, blocked/, done/, archived/, and archive/YYYY-MM/
     subdirectories. Returns the status string (normalised to lowercase) or None
     if the child cannot be found.
+
+    If queue_root is None, falls back to the WORK_QUEUE_ROOT env var, then QUEUE_ROOT.
     """
+    if queue_root is None:
+        env_root = os.environ.get("WORK_QUEUE_ROOT")
+        queue_root = Path(env_root) if env_root else QUEUE_ROOT
     # Explicit status dirs
     for status_name in ("pending", "working", "blocked", "done", "archived"):
         candidate = queue_root / status_name / f"{child_id}.md"
@@ -781,7 +787,9 @@ def generate_index(items: list[dict]) -> str:
             w("")
 
     # ── By Feature ───────────────────────────────────────────
-    lines.extend(render_by_feature(items, QUEUE_ROOT))
+    _env_root = os.environ.get("WORK_QUEUE_ROOT")
+    _feature_queue_root = Path(_env_root) if _env_root else QUEUE_ROOT
+    lines.extend(render_by_feature(items, _feature_queue_root))
 
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")

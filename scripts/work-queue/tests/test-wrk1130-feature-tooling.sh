@@ -729,6 +729,74 @@ else
     fail "T17b: children: field changed unexpectedly: $children_after"
 fi
 
+# ── T18: children: written inside frontmatter when key was absent ─────────────
+echo ""
+echo "=== T18: children: inserted inside frontmatter (not after closing ---) ==="
+T18_SPEC="${TMPDIR_ROOT}/specs/wrk/WRK-9008/t18-spec.md"
+mkdir -p "$(dirname "$T18_SPEC")"
+cat > "$T18_SPEC" <<'T18SPEC'
+## Decomposition
+
+| Child key | Title | Scope (one sentence) | Depends on | Agent | wrk_ref |
+|-----------|-------|----------------------|------------|-------|---------|
+| t18-a | T18 task | Single child for T18 | — | claude | |
+
+T18SPEC
+
+# Feature WRK with NO children: field in frontmatter at all
+T18_WRK="${WQROOT}/working/WRK-9008.md"
+cat > "$T18_WRK" <<T18WRK
+---
+id: WRK-9008
+title: "T18 no-children-key feature"
+type: feature
+status: coordinating
+priority: high
+complexity: medium
+created_at: "2026-03-11"
+target_repos: [workspace-hub]
+computer: ace-linux-1
+category: harness
+subcategory: testing
+spec_ref: ${T18_SPEC}
+---
+
+## Mission
+
+Feature with no children: key — tests frontmatter insertion.
+T18WRK
+
+T18_OUT=$(WORK_QUEUE_ROOT="$WQROOT" bash "$NEW_FEATURE" WRK-9008 2>&1)
+T18_EXIT=$?
+TOTAL=$((TOTAL + 1))
+if [[ $T18_EXIT -eq 0 ]]; then
+    pass "T18a: new-feature.sh exits 0 for feature with no children: key"
+else
+    fail "T18a: new-feature.sh exited $T18_EXIT; output: $T18_OUT"
+fi
+
+# children: must appear INSIDE the frontmatter (before the closing ---)
+TOTAL=$((TOTAL + 1))
+if python3 - "$T18_WRK" <<'PYCHECK'
+import re, sys
+with open(sys.argv[1]) as f:
+    content = f.read()
+m = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+if not m:
+    print("no frontmatter found"); sys.exit(1)
+fm_body = m.group(1)
+if re.search(r'^children:\s*\[WRK-', fm_body, re.MULTILINE):
+    sys.exit(0)
+print("children: not found inside frontmatter")
+print("frontmatter body:", repr(fm_body))
+sys.exit(1)
+PYCHECK
+then
+    pass "T18b: children: appears inside YAML frontmatter block"
+else
+    fail "T18b: children: not inside frontmatter"
+fi
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "=== Results ==="
