@@ -1,0 +1,8 @@
+wrk_id: WRK-1042
+stage: 1
+scope_approved: true
+confirmed_by: vamsee
+reviewer: vamsee
+confirmed_at: "2026-03-11T00:00:00Z"
+approved_at: "2026-03-11T00:00:00Z"
+notes: "Approved Stage 1 scope — sentinel file support for tidy-agent-teams.sh + spawn-team.sh"

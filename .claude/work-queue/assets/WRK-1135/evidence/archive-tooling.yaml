@@ -1,0 +1,9 @@
+wrk_id: WRK-1135
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1135/plan-html-review-final.md"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1135/evidence/legal-scan.md"
+archive_readiness: "pass"
+document_index_ref: ""
+document_index_exemption: "hub-only item — only whats-next.sh and bats tests changed"
+spin_off_wrks: []

@@ -1,0 +1,32 @@
+wrk_id: WRK-1135
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: da42239d
+    published_at: "2026-03-11T15:50:00Z"
+    reviewer: vamsee
+    documents:
+      - plan-html-review-final.md
+    notes: "Route A — plan captured at this commit"
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 553195dc
+    published_at: "2026-03-11T15:55:00Z"
+    reviewer: vamsee
+    documents:
+      - plan-html-review-final.md
+    notes: "Route A — plan finalised at this commit"
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 1ca0a73e
+    published_at: "2026-03-11T16:09:00Z"
+    reviewer: vamsee
+    documents:
+      - review-results.md
+    notes: "Route A — implementation committed to main"

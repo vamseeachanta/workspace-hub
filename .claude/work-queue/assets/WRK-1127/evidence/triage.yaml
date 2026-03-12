@@ -1,0 +1,19 @@
+wrk_id: WRK-1127
+stage: 3
+produced_at: "2026-03-11"
+complexity: complex
+route: C
+priority: high
+category: harness
+subcategory: project-management
+triage_confirmed: true
+risks_addressed:
+  - CATEGORY_ORDER double-definition at lines 599+666 — plan now specifies both sites
+  - active_status filter double-occurrence at lines 600+665 — plan now specifies both
+  - SKILL.md line budget overage (~282 vs 250) — plan now requires explicit resolution
+  - stage-09-routing.yaml semantic change — plan now requires consumer grep before edit
+  - dep_graph.py WRKItem extension risk — plan now uses separate FeatureTreeItem dataclass
+  - whats-next.sh category filter hiding non-harness features — acceptable; WRK-1127 is harness
+notes: >
+  All 6 risks from resource intelligence have explicit mitigations in the plan spec.
+  No scope changes required. Proceed to Stage 4 plan draft.

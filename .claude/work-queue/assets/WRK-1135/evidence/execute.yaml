@@ -1,0 +1,30 @@
+wrk_id: WRK-1135
+stage: 10
+completed_at: "2026-03-11T16:08:00Z"
+executed_at: "2026-03-11T16:08:00Z"
+commit: 1ca0a73e
+files_changed:
+  - scripts/work-queue/whats-next.sh
+  - tests/work-queue/test_whats_next.bats
+integrated_repo_tests:
+  - name: whats-next unit tests (full suite)
+    scope: integrated
+    command: "bats tests/work-queue/test_whats_next.bats"
+    result: passed
+    artifact_ref: tests/work-queue/test_whats_next.bats
+    passed: 9
+    failed: 0
+  - name: whats-next coordinating section tests
+    scope: integrated
+    command: "bats tests/work-queue/test_whats_next.bats"
+    result: passed
+    artifact_ref: tests/work-queue/test_whats_next.bats
+    passed: 3
+    failed: 0
+    notes: "new tests for AC1/AC2/AC3"
+  - name: whats-next smoke test on live queue
+    scope: repo
+    command: "bash scripts/work-queue/whats-next.sh --category harness"
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-1135/test-results.md
+    notes: "WRK-1127 in COORDINATING, not WORKING"

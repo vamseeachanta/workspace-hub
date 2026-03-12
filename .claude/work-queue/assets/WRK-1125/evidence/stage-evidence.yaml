@@ -1,6 +1,6 @@
 wrk_id: WRK-1125
-generated_at: '2026-03-11T15:38:03Z'
-reviewed_by: claude
+generated_at: '2026-03-11T17:25:01Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -51,7 +51,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Multi-provider review completed.
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: scripts/review/results/wrk-1125-phase-1-review-input-v3.md
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -67,7 +67,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Claim evidence and active WRK set.
-  evidence: .claude/work-queue/assets/WRK-1125/evidence/claim.yaml
+  evidence: .claude/work-queue/assets/WRK-1125/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
@@ -75,7 +75,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: .claude/work-queue/logs/WRK-1125-routing.log
 - order: 10
   stage: Work Execution
   status: done
@@ -91,7 +91,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1125/review.html
+  evidence: .claude/work-queue/assets/WRK-1125/review.md
 - order: 12
   stage: TDD / Eval
   status: done
@@ -99,7 +99,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1125/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-1125/ac-test-matrix.md
 - order: 13
   stage: Agent Cross-Review
   status: done
@@ -107,7 +107,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1125/cross-review-package.md
+  evidence: .claude/work-queue/assets/WRK-1125/evidence/cross-review-codex.md
 - order: 14
   stage: Verify Gate Evidence
   status: done
@@ -147,10 +147,10 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Not needed in this run.
-  evidence: .claude/work-queue/assets/WRK-1125/evidence/reclaim.yaml
+  evidence: .claude/work-queue/assets/WRK-1125/evidence/stage-evidence.yaml
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'

@@ -1,11 +1,17 @@
 wrk_id: WRK-1125
 generated_at: "2026-03-11T13:30:00Z"
-items:
+recommendations:
   - id: FW-1
-    priority: medium
     title: "Suppress future-dated (not_before) items from ready sections"
-    notes: "not_before is display-only in this WRK; suppression = separate WRK"
+    priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "not_before is display-only in this WRK; rebucketing = separate WRK"
   - id: FW-2
-    priority: low
     title: "Regression test matrix for whats-next.sh routing logic"
-    notes: "Codex suggested: working+note->PARKED, working-no-note->WORKING, pending+note->unchanged, any+not_before->annotation"
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Codex suggested: working+note->PARKED, pending+note->unchanged, any+not_before->annotation"

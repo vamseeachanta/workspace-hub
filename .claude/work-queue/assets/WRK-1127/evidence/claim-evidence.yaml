@@ -1,0 +1,10 @@
+wrk_id: WRK-1127
+stage: 8
+best_fit_provider: claude
+session_owner: vamsee
+route: C
+claimed_at: "2026-03-11"
+computer: ace-linux-1
+quota_snapshot:
+  status: available
+  pct_remaining: 80

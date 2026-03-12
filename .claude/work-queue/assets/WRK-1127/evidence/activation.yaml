@@ -1,0 +1,7 @@
+wrk_id: WRK-1127
+stage: 8
+session_id: session-2026-03-11-wrk-1127
+orchestrator_agent: claude
+activated_at: "2026-03-11"
+provider: claude
+status_set: working

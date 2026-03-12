@@ -38,6 +38,7 @@ FRONTMATTER_FIELDS = [
     "id", "title", "status", "priority", "complexity", "target_repos",
     "blocked_by", "related", "children", "parent", "compound", "route",
     "created_at", "completed_at",
+    "type", "phases",
     "plan_ensemble", "ensemble_consensus_score",
     "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
     "provider", "provider_alt",
@@ -225,6 +226,10 @@ def normalize(item: dict) -> dict:
     item.setdefault("computer", "")
     item.setdefault("plan_workstations", [])
     item.setdefault("execution_workstations", [])
+
+    # Feature layer fields
+    item.setdefault("type", "task")   # "task" | "feature"
+    item.setdefault("phases", [])
 
     # Category classification
     item.setdefault("category", "uncategorised")
@@ -596,8 +601,8 @@ def generate_index(items: list[dict]) -> str:
     w("")
 
     # By category (active items only)
-    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "personal", "uncategorised"]
-    active_items_summary = [it for it in items if it["status"] in ("pending", "working", "blocked")]
+    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "workflow", "personal", "uncategorised"]
+    active_items_summary = [it for it in items if it["status"] in ("pending", "working", "blocked", "coordinating")]
     cat_counts_summary: dict[str, int] = {}
     for it in active_items_summary:
         cat = str(it.get("category", "uncategorised")).lower()
@@ -662,8 +667,8 @@ def generate_index(items: list[dict]) -> str:
     w("> Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.")
     w("")
 
-    active_items = [it for it in items if it["status"] in ("pending", "working", "blocked")]
-    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "personal", "uncategorised"]
+    active_items = [it for it in items if it["status"] in ("pending", "working", "blocked", "coordinating")]
+    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "workflow", "personal", "uncategorised"]
     PRIO_ORDER = {"high": 0, "medium": 1, "low": 2}
 
     for cat in CATEGORY_ORDER:
@@ -687,7 +692,8 @@ def generate_index(items: list[dict]) -> str:
             w("| ID | Priority | Title | Status |")
             w("|----|----------|-------|--------|")
             for it in sub_items:
-                w(f"| {it.get('id', '?')} | {str(it.get('priority', '-')).upper()} | {it['title']} | {it['status']} |")
+                badge = " [feature]" if it.get("type") == "feature" else ""
+                w(f"| {it.get('id', '?')} | {str(it.get('priority', '-')).upper()} | {it['title']}{badge} | {it['status']} |")
             w("")
 
     # ── Master Table ─────────────────────────────────────────

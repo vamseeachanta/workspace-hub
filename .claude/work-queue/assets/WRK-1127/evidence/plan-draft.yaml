@@ -1,0 +1,24 @@
+wrk_id: WRK-1127
+stage: 4
+produced_at: "2026-03-11"
+plan_artifact: specs/wrk/WRK-1127/wrk-1127-feature-first-planning.md
+plan_line_count: 932
+approach: >
+  Plan written interactively in this session (stages 1-4 combined).
+  Covers three child WRKs (child-a model/docs, child-b tooling, child-c process).
+  All 6 triage risks have explicit mitigations.
+  Adopt-existing-WRK capability added (wrk_ref column in Decomposition table).
+  Category inheritance fix added to new-feature.sh.
+self_verification:
+  ac1_chunk_sizing_heuristic: "covered — Task 1 (chunk-sizing.yaml) + Task 2 (feature-planning.md)"
+  ac2_feature_template: "covered — Task 3 (feature-template.md)"
+  ac3_skill_reference: "covered — Task 4 (SKILL.md Feature Layer section)"
+  ac4_adopt_existing: "covered — wrk_ref column + new-feature.sh adoption branch"
+  ac5_category_inheritance: "covered — new-feature.sh reads PARENT_CAT/PARENT_SUB"
+  ac6_coordinating_visible: "covered — Task 5 generate-index.py status filter + badge"
+  ac7_backward_compatible: "covered — all fields opt-in via normalize() setdefault"
+  ac8_dep_graph: "covered — Task 9 FeatureTreeItem dataclass approach"
+  ac9_index_by_feature: "covered — Task 10"
+  ac10_stage9_routing: "covered — Task 11 with consumer-grep safety check"
+  ac11_workflow_skill: "covered — Task 12"
+  ac12_whats_next: "covered — Task 13"

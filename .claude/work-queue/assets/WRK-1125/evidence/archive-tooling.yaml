@@ -1,0 +1,10 @@
+wrk_id: WRK-1125
+merge_status: "n/a-direct-commit"
+sync_status: "no-remote"
+html_verification_ref: ".claude/work-queue/assets/WRK-1125/WRK-1125-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1125/legal-scan.md"
+archive_readiness: "pass"
+archived_at: "2026-03-11T13:40:00Z"
+archived_by: claude
+commit: "7cc3748504c3ac865d00209c3ee701ea75676729"
+notes: "Route A item. All gates PASS. whats-next.sh refined with PARKED section and note/not_before annotations."

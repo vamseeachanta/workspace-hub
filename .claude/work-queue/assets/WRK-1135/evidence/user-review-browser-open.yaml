@@ -1,0 +1,23 @@
+wrk_id: WRK-1135
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1135/plan-html-review-final.md
+    opened_at: "2026-03-11T15:45:00Z"
+    reviewer: vamsee
+    notes: "Route A — plan presented inline; confirmed in chat"
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1135/plan-html-review-final.md
+    opened_at: "2026-03-11T15:50:00Z"
+    reviewer: vamsee
+    notes: "Route A — same plan artifact"
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1135/plan-html-review-final.md
+    opened_at: "2026-03-11T16:09:00Z"
+    reviewer: vamsee
+    notes: "Route A — implementation summary presented inline; user approved Stage 17"

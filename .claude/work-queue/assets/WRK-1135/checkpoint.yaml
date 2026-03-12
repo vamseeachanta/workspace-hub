@@ -1,0 +1,9 @@
+wrk_id: WRK-1135
+stage: 17
+current_stage: 17
+next_action: "user-review-close — confirm implementation complete and ACs met"
+context_summary: >
+  Implemented coordinating feature WRK handling in whats-next.sh.
+  Added COORDINATING_ITEMS array, child progress counting, COORDINATING section
+  in render block, and summary line update. 9/9 bats tests pass (3 new tests).
+updated_at: "2026-03-11"

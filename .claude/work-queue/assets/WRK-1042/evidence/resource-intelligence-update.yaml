@@ -1,0 +1,7 @@
+wrk_id: WRK-1042
+updated_at: "2026-03-11T19:00:00Z"
+no_additions_rationale: "Route A change to two bash scripts; no new reusable knowledge assets needed"
+additions: []
+patterns_learned:
+  - "spawn-team.sh now emits .wrk-id sentinel; non-conforming dirs can be auto-tidied"
+  - "tidy-agent-teams.sh glob expanded to * — all subdirs evaluated"

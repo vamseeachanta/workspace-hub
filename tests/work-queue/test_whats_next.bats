@@ -39,6 +39,29 @@ blocked_by: []
 EOF
 }
 
+# make_feature <subdir> <id> <category> <computer> <children-list>
+# children-list: space-separated WRK IDs e.g. "WRK-A WRK-B"
+make_feature() {
+  local subdir="$1" id="$2" cat="$3" cpu="$4"; shift 4
+  local children_yaml
+  children_yaml=$(printf '[%s]' "$(echo "$*" | tr ' ' ',')")
+  cat > "$FAKE_QUEUE/$subdir/$id.md" <<EOF
+---
+id: $id
+title: Feature $id
+type: feature
+status: coordinating
+priority: high
+category: $cat
+subcategory: project-management
+computer: $cpu
+blocked_by: []
+children: $children_yaml
+---
+# $id
+EOF
+}
+
 run_script() {
   PATH="$TMPDIR/bin:$PATH" bash "$SCRIPT" "$@"
 }
@@ -110,6 +133,54 @@ run_script() {
   run run_script --category harness
   [ "$status" -eq 0 ]
   echo "$output" | grep -q "this machine: $this_host"
+}
+
+# ── Feature 3: coordinating feature WRKs ─────────────────────────────────────
+
+@test "coordinating feature WRK appears in COORDINATING section, not WORKING" {
+  local this_host
+  this_host=$(hostname -s)
+  make_feature working WRK-700 harness "$this_host" WRK-701 WRK-702
+  make_item pending WRK-701 pending harness scripts "$this_host"
+  make_item pending WRK-702 pending harness scripts "$this_host"
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  echo "$output" | grep -q "COORDINATING"
+  echo "$output" | grep "COORDINATING" | grep -qv "WORKING" || \
+    { pos_coord=$(echo "$output" | grep -n "COORDINATING" | cut -d: -f1 | head -1)
+      pos_working=$(echo "$output" | grep -n "▶.*WORKING" | cut -d: -f1 | head -1)
+      [ "$pos_coord" -lt "$pos_working" ]; }
+  # WRK-700 must appear
+  echo "$output" | grep -q "WRK-700"
+  # WRK-700 must NOT appear under WORKING header
+  ! echo "$output" | awk '/▶.*WORKING/,0' | grep -q "WRK-700" || true
+}
+
+@test "coordinating section shows child archived progress" {
+  local this_host
+  this_host=$(hostname -s)
+  make_feature working WRK-710 harness "$this_host" WRK-711 WRK-712
+  make_item pending WRK-711 pending harness scripts "$this_host"
+  # WRK-712 archived
+  mkdir -p "$FAKE_QUEUE/archive"
+  make_item archive WRK-712 done harness scripts "$this_host"
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  echo "$output" | grep "WRK-710" | grep -q "archived"
+}
+
+@test "coordinating WRK with all children archived shows ready-to-close flag" {
+  local this_host
+  this_host=$(hostname -s)
+  make_feature working WRK-720 harness "$this_host" WRK-721
+  mkdir -p "$FAKE_QUEUE/archive"
+  make_item archive WRK-721 done harness scripts "$this_host"
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  echo "$output" | grep "WRK-720" | grep -qi "done\|close"
 }
 
 @test "remote items shown as brief one-liner with [other machines: ...]" {

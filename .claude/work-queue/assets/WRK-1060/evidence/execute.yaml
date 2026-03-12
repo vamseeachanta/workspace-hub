@@ -1,0 +1,49 @@
+wrk_id: WRK-1060
+stage: 10
+executed_at: "2026-03-11T19:20:00Z"
+provider: claude
+route: B
+
+files_created:
+  - scripts/quality/quality_gap_report.py
+  - scripts/quality/tests/test_quality_gap_report.py
+  - config/quality/quality-gap-report.yaml
+  - specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md
+
+files_modified:
+  - scripts/quality/check-all.sh
+
+integrated_repo_tests:
+  - name: "pytest unit tests (quality_gap_report.py)"
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/quality/tests/test_quality_gap_report.py -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1060/ac-test-matrix.md
+    notes: "8/8 PASS"
+  - name: "smoke test (check-all.sh --gap)"
+    scope: integrated
+    command: "bash scripts/quality/check-all.sh --gap --repo assetutilities"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1060/ac-test-matrix.md
+    notes: "Gap report generated, --gap flag works end-to-end"
+  - name: "full 5-repo gap report"
+    scope: integrated
+    command: "uv run --no-project python scripts/quality/quality_gap_report.py"
+    result: pass
+    artifact_ref: config/quality/quality-gap-report.yaml
+    notes: "25 dir gaps found across 5 repos, YAML written to config/quality/"
+
+acceptance_criteria:
+  AC1: "PASS — script walks all 5 repos (REPO_MAP verified)"
+  AC2: "PASS — uncovered dirs listed with recommended_tool and effort"
+  AC3: "PASS — config/quality/quality-gap-report.yaml generated (25 dir gaps)"
+  AC4: "PASS — check-all.sh --gap is the concrete new check"
+  AC5: "PASS — Codex review addressed (HIGH finding fixed)"
+
+cross_review_findings_closed:
+  claude_p2: ["full 5-repo YAML committed", "_dump_yaml raises ImportError"]
+  codex_high: ["worldenergydata coverage map corrected"]
+
+summary: >
+  Quality gap discovery script + YAML report + check-all.sh --gap flag.
+  8 TDD tests. Codex HIGH finding (worldenergydata false positives) fixed.

@@ -1,0 +1,29 @@
+wrk_id: WRK-1060
+stage: 2
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - tdd
+
+existing_assets:
+  check_all_sh: scripts/quality/check-all.sh
+  api_audit_py: scripts/quality/api-audit.py
+  check_mypy_ratchet: scripts/quality/check_mypy_ratchet.py
+  check_complexity_ratchet: scripts/quality/check_complexity_ratchet.py
+  quality_tests_dir: scripts/quality/tests/
+
+findings:
+  universal_gap: scripts/ dir uncovered in all 5 repos
+  partial_gaps:
+    - pydocstyle missing in 4 repos (only digitalmodel has it)
+    - radon missing in 4 repos
+    - vulture missing in 4 repos
+    - ratchet gates exist but not in pre-commit
+  covered_well:
+    - src/ and tests/ covered by ruff + mypy + pytest + bandit in all repos
+    - digitalmodel is quality leader with 18+ checks

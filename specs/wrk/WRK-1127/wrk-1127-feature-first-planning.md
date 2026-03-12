@@ -162,6 +162,9 @@ The feature plan (Stage 4b artifact) MUST include a `## Decomposition` section w
 - Which files/skills each child needs (entry_reads)
 - Explicit dependencies between children (`blocked_by:`)
 - Preferred agent per child (`orchestrator:`)
+- Optional `wrk_ref` column — set to an existing `WRK-NNN` to adopt it under this feature instead of creating a new item
+
+**Adopting existing WRKs:** `new-feature.sh` adds `parent: WRK-NNN` to the adopted item's frontmatter and includes it in `children:`. The adopted item continues its own lifecycle unchanged — adoption is purely a linking operation.
 
 ## Linking and Dependency Fields
 
@@ -236,10 +239,11 @@ One sentence. Defines the scope boundary — what is IN and what is OUT.
 <!-- REQUIRED for Feature WRKs — filled in at Stage 4b -->
 <!-- new-feature.sh reads this section to scaffold child WRKs -->
 
-| Child key | Title | Scope (one sentence) | Depends on | Agent |
-|-----------|-------|----------------------|------------|-------|
-| child-a | ... | ... | — | claude |
-| child-b | ... | ... | child-a | codex |
+<!-- wrk_ref: leave blank to create a new WRK; set to existing WRK-NNN to adopt it -->
+| Child key | Title | Scope (one sentence) | Depends on | Agent | wrk_ref |
+|-----------|-------|----------------------|------------|-------|---------|
+| child-a | ... | ... | — | claude | |
+| child-b | ... | ... | child-a | codex | WRK-032 |
 
 ### Child: child-a
 
@@ -301,10 +305,13 @@ Key frontmatter fields:
 Feature status: `scripts/work-queue/feature-status.sh WRK-NNN`
 ```
 
-- [ ] Verify SKILL.md is still ≤ 250 lines (its pruned target):
+- [ ] Verify SKILL.md line count after insertion:
 ```bash
 wc -l .claude/skills/coordination/workspace/work-queue/SKILL.md
 ```
+Note: current count is 262; adding ~20 lines for Feature Layer pushes to ~282.
+Either trim equivalent content elsewhere in the file (Version History section is a candidate)
+or update the target comment to ≤300. Do NOT leave it silently over budget.
 
 - [ ] Commit:
 ```bash
@@ -332,9 +339,9 @@ item.setdefault("type", "task")   # "task" | "feature"
 item.setdefault("phases", [])
 ```
 
-- [ ] Add `coordinating` to every active-status filter (lines ~600 and ~665):
+- [ ] Add `coordinating` to BOTH active-status filter occurrences (confirmed at lines 600 AND 665):
 ```python
-# Before (two occurrences):
+# Before (two occurrences — must fix both):
 it["status"] in ("pending", "working", "blocked")
 # After:
 it["status"] in ("pending", "working", "blocked", "coordinating")
@@ -346,11 +353,18 @@ badge = " [feature]" if it.get("type") == "feature" else ""
 # include badge after title in the rendered row
 ```
 
-- [ ] Add `workflow` to `CATEGORY_ORDER` list (used at lines ~608 and ~662):
+- [ ] Add `workflow` to BOTH `CATEGORY_ORDER` definitions (confirmed at lines 599 AND 666 — must fix both):
 ```python
 CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business",
                   "maintenance", "workflow", "personal", "uncategorised"]
 ```
+
+- [ ] Verify no remaining occurrences missed:
+```bash
+grep -n "CATEGORY_ORDER\|\"pending\", \"working\", \"blocked\"" \
+  .claude/work-queue/scripts/generate-index.py
+```
+Expected: only the 2 CATEGORY_ORDER lines and 2 status-filter lines, all already updated
 
 - [ ] Run generate-index.py to verify no regression:
 ```bash
@@ -381,10 +395,12 @@ git commit -m "feat(index): feature layer — type/phases fields, coordinating s
 This script:
 1. Takes `WRK-NNN` as argument
 2. Reads the `## Decomposition` table from the feature spec
-3. For each child row: runs `next-id.sh`, creates a child `.md` with correct frontmatter
-4. Sets `parent: WRK-NNN`, `blocked_by:` from decomposition deps, `entry_reads:` from the child section
-5. Updates the Feature WRK's `children:` list
-6. Prints a summary of created children
+3. For each child row:
+   - If `wrk_ref` column is blank → run `next-id.sh` and create a new child `.md`
+   - If `wrk_ref` = `WRK-NNN` → **adopt** the existing item: add `parent: WRK-NNN` to its frontmatter
+4. Sets `blocked_by:` from decomposition deps on new AND adopted items
+5. Updates the Feature WRK's `children:` list (new IDs + adopted IDs)
+6. Prints a summary: "Created WRK-X, Adopted WRK-032"
 
 - [ ] Write `scripts/work-queue/new-feature.sh`:
 
@@ -424,19 +440,17 @@ PARENT_SUB=$(grep '^subcategory:' "$WRK_FILE" | awk '{print $2}' | tr -d '"')
 PARENT_CAT="${PARENT_CAT:-uncategorised}"
 PARENT_SUB="${PARENT_SUB:-uncategorised}"
 
-# Parse decomposition table rows: | child-key | title | scope | depends-on | agent |
+# Parse decomposition table rows: | child-key | title | scope | depends-on | agent | wrk_ref |
 # Skips header and separator rows
 CHILDREN=()
-while IFS='|' read -r _ key title scope deps agent _; do
+while IFS='|' read -r _ key title scope deps agent wrk_ref _; do
   key="${key// /}"
   [[ -z "$key" || "$key" == "Child key" || "$key" =~ ^-+$ ]] && continue
   title="${title## }"; title="${title%% }"
   scope="${scope## }"; scope="${scope%% }"
-  deps="${deps## }";  deps="${deps%% }"
+  deps="${deps## }";   deps="${deps%% }"
   agent="${agent## }"; agent="${agent%% }"
-
-  CHILD_ID=$(bash scripts/work-queue/next-id.sh)
-  CHILDREN+=("$CHILD_ID")
+  wrk_ref="${wrk_ref## }"; wrk_ref="${wrk_ref%% }"
 
   # Build blocked_by list
   BLOCKED_BY="[]"
@@ -444,7 +458,27 @@ while IFS='|' read -r _ key title scope deps agent _; do
     BLOCKED_BY="[${deps}]"
   fi
 
-  cat > "${PENDING_DIR}/${CHILD_ID}.md" <<EOF
+  if [[ -n "$wrk_ref" && "$wrk_ref" =~ ^WRK- ]]; then
+    # ADOPT existing WRK — add parent: and update blocked_by: in its frontmatter
+    EXISTING=$(find .claude/work-queue -name "${wrk_ref}.md" 2>/dev/null | head -1)
+    if [[ -z "$EXISTING" ]]; then
+      echo "WARNING: wrk_ref ${wrk_ref} not found — skipping adoption" >&2
+    else
+      # Add parent field if not present
+      grep -q '^parent:' "$EXISTING" \
+        || sed -i "s/^id: ${wrk_ref}/id: ${wrk_ref}\nparent: ${WRK_ID}/" "$EXISTING"
+      # Update blocked_by if explicitly set in decomposition
+      [[ "$BLOCKED_BY" != "[]" ]] \
+        && sed -i "s/^blocked_by: .*/blocked_by: ${BLOCKED_BY}/" "$EXISTING"
+      CHILDREN+=("$wrk_ref")
+      echo "Adopted  ${wrk_ref}: ${title} (blocked_by: ${BLOCKED_BY})"
+    fi
+  else
+    # CREATE new child WRK
+    CHILD_ID=$(bash scripts/work-queue/next-id.sh)
+    CHILDREN+=("$CHILD_ID")
+
+    cat > "${PENDING_DIR}/${CHILD_ID}.md" <<EOF
 ---
 id: ${CHILD_ID}
 title: "${title}"
@@ -476,7 +510,8 @@ ${scope}
 <!-- Copy ACs from feature spec: ### Child: ${key} -->
 EOF
 
-  echo "Created ${CHILD_ID}: ${title} (blocked_by: ${BLOCKED_BY})"
+    echo "Created  ${CHILD_ID}: ${title} (blocked_by: ${BLOCKED_BY})"
+  fi
 done < <(grep '^|' "$SPEC_REF" | grep -v 'Child key\|---')
 
 # Update children list on Feature WRK
@@ -634,7 +669,21 @@ git commit -m "feat(work-queue): add feature-close-check.sh for gate enforcement
 **Files:**
 - Modify: `scripts/work-queue/dep_graph.py`
 
-- [ ] Read `dep_graph.py` to understand current rendering approach
+- [ ] Read `dep_graph.py` — note: `WRKItem` dataclass does NOT include `type`, `children`, or `parent` fields; `compute_graph()` iterates `blocked_by` only
+
+- [ ] Add feature support using a **separate** `FeatureTreeItem` dataclass rather than extending `WRKItem` — avoids breaking existing `compute_graph()` callers:
+```python
+@dataclass
+class FeatureTreeItem:
+    id: str
+    title: str
+    status: str
+    type: str        # "feature" | "task"
+    children: list   # list of child WRK IDs
+    parent: str      # parent feature WRK ID or ""
+    orchestrator: str
+    blocked_by: list
+```
 
 - [ ] Add a `--feature WRK-NNN` flag that prints an ASCII tree:
 
@@ -694,7 +743,13 @@ git commit -m "feat(index): add By Feature section to INDEX.md"
 **Files:**
 - Modify: `scripts/work-queue/stages/stage-09-routing.yaml`
 
-- [ ] Read `stage-09-routing.yaml` to understand current routing logic
+- [ ] Read `stage-09-routing.yaml` — confirm its top-level keys are: `order, name, weight, invocation, human_gate, parallelism, chained_stages, skills_required, entry_reads, exit_artifacts, blocking_condition, log_action, context_budget_kb`
+
+- [ ] Check whether any script parses this file as strict schema (grep for stage-09-routing in scripts/):
+```bash
+grep -r "stage-09-routing" scripts/ .claude/ --include="*.py" --include="*.sh" -l
+```
+If any script reads it, verify adding `feature_routing:` won't break the parser before proceeding.
 
 - [ ] Add a routing decision block for feature items:
 
@@ -797,11 +852,11 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 
 ## Decomposition (for new-feature.sh at Stage 7 exit)
 
-| Child key | Title | Scope (one sentence) | Depends on | Agent |
-|-----------|-------|----------------------|------------|-------|
-| child-a | Model, heuristic docs, SKILL.md | Chunk-sizing YAML, feature-planning rules, feature template, SKILL.md update, generate-index.py normalize() | — | claude |
-| child-b | Tooling scripts + INDEX.md | new-feature.sh, feature-status.sh, feature-close-check.sh, dep_graph --feature, INDEX.md By Feature | child-a | claude |
-| child-c | Process integration | Stage 9 routing, work-queue-workflow SKILL.md, whats-next.sh feature section | child-a | claude |
+| Child key | Title | Scope (one sentence) | Depends on | Agent | wrk_ref |
+|-----------|-------|----------------------|------------|-------|---------|
+| child-a | Model, heuristic docs, SKILL.md | Chunk-sizing YAML, feature-planning rules, feature template, SKILL.md update, generate-index.py normalize() | — | claude | |
+| child-b | Tooling scripts + INDEX.md | new-feature.sh (with adopt support), feature-status.sh, feature-close-check.sh, dep_graph --feature, INDEX.md By Feature | child-a | claude | |
+| child-c | Process integration | Stage 9 routing, work-queue-workflow SKILL.md, whats-next.sh feature section | child-a | claude | |
 
 ### Child: child-a
 
@@ -835,10 +890,14 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 
 **Acceptance Criteria:**
 - [ ] `new-feature.sh WRK-1127` creates 3 child WRK files without error
+- [ ] `new-feature.sh` exits non-zero when no children are parsed (empty CHILDREN guard)
+- [ ] `new-feature.sh` emits warning when `wrk_ref` adoption fails (does not silently skip)
+- [ ] `new-feature.sh` header comment warns: no pipe chars in decomposition cells; children: uses inline-list YAML only
 - [ ] `feature-status.sh WRK-1127` prints correct completion %
 - [ ] `feature-close-check.sh WRK-1127` exits 1 (children not done) correctly
-- [ ] `dep_graph.py --feature WRK-1127` prints ASCII tree
-- [ ] INDEX.md contains `## By Feature` section after regeneration
+- [ ] `feature-status.sh` and `feature-close-check.sh` header comment notes inline-list-only assumption for `children:`
+- [ ] `dep_graph.py --feature WRK-1127` prints ASCII tree; searches pending/ working/ blocked/ archive/ for feature WRK file
+- [ ] INDEX.md `## By Feature` section: active-only features (coordinating/pending/working/blocked), completion % computed in-memory
 - [ ] All scripts are executable and committed
 
 ### Child: child-c
@@ -852,8 +911,11 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 
 **Acceptance Criteria:**
 - [ ] `stage-09-routing.yaml` has `feature_routing:` block, valid YAML
-- [ ] `work-queue-workflow/SKILL.md` has `## Feature WRK Lifecycle` section
-- [ ] `whats-next.sh` shows "Features in progress" section when coordinating items exist
+- [ ] `stage-19-close.yaml` `blocking_condition` includes `feature-close-check.sh` for `type: feature` items
+- [ ] `stage-07-user-review-plan-final.yaml` `exit_artifacts` includes `feature-decomposition.yaml` for Feature WRK items
+- [ ] `close-item.sh` accepts `coordinating` as a valid source status (verify or patch)
+- [ ] `work-queue-workflow/SKILL.md` has `## Feature WRK Lifecycle` section documenting `archived` (not just `done`) as the required child terminal state
+- [ ] `whats-next.sh` "Features in progress" section bypasses category filter for `coordinating` items (all features visible regardless of category)
 - [ ] All changes committed
 
 ---
@@ -862,7 +924,8 @@ git commit -m "chore(WRK-1127): add spec_ref and type:feature to frontmatter"
 
 - [ ] Chunk-sizing heuristic is documented in machine-readable form (`chunk-sizing.yaml`) AND prose (`.claude/rules/feature-planning.md`)
 - [ ] Feature WRK template exists with `## Decomposition` section
-- [ ] `new-feature.sh` scaffolds child WRKs with correct `parent`, `blocked_by`, `orchestrator` fields
+- [ ] `new-feature.sh` creates new child WRKs with correct `parent`, `blocked_by`, `orchestrator`, `category`, `subcategory` fields
+- [ ] `new-feature.sh` adopts existing WRKs (adds `parent:` to their frontmatter; does not modify other fields)
 - [ ] `feature-status.sh` and `feature-close-check.sh` work correctly
 - [ ] `dep_graph.py --feature` renders feature trees
 - [ ] INDEX.md includes `## By Feature` rollup section

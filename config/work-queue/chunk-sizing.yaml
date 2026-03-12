@@ -1,0 +1,9 @@
+# Canonical chunk-sizing heuristic for AI agent work items
+# Referenced by new-feature.sh and feature-planning.md
+version: "1.0"
+max_repos: 1
+max_files_changed: 5
+max_plan_words: 150
+max_stage10_phases: 3
+max_test_modules: 1
+# If any limit exceeded → use a Feature WRK and decompose into children

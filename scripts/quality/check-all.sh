@@ -36,6 +36,7 @@ OPT_MYPY_RATCHET=false
 OPT_DRIFT=false
 OPT_CONFIG_DRIFT=false
 OPT_COMPLEXITY_RATCHET=false
+OPT_GAP=false
 
 usage() {
   cat <<'EOF'
@@ -59,6 +60,7 @@ Options:
   --mypy-ratchet     Run mypy error count ratchet gate (WRK-1092)
   --drift            Run documentation drift detector (warn-only, WRK-1093)
   --config-drift     Run agent harness config drift detector (WRK-1094)
+  --gap              Run quality gap discovery report (WRK-1060)
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -81,6 +83,7 @@ while [[ $# -gt 0 ]]; do
     --drift)         OPT_DRIFT=true;          shift ;;
     --config-drift)       OPT_CONFIG_DRIFT=true;        shift ;;
     --complexity-ratchet) OPT_COMPLEXITY_RATCHET=true;  shift ;;
+    --gap)                OPT_GAP=true;                 shift ;;
     --help|-h)            usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -566,6 +569,30 @@ if $OPT_COMPLEXITY_RATCHET; then
     echo "WARNING: complexity ratchet script or baseline not found — skipping" >&2
   fi
   if [[ $complexity_ratchet_exit -ne 0 ]]; then
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+  else
+    PASS_COUNT=$((PASS_COUNT + 1))
+  fi
+fi
+
+# ---------------------------------------------------------------------------
+# Gap report (WRK-1060)
+# ---------------------------------------------------------------------------
+if $OPT_GAP; then
+  GAP_SCRIPT="${REPO_ROOT}/scripts/quality/quality_gap_report.py"
+  echo ""
+  echo "=== Quality Gap Report ==="
+  gap_exit=0
+  if [[ -f "$GAP_SCRIPT" ]]; then
+    gap_args=()
+    if [[ -n "$OPT_REPO" ]]; then
+      gap_args+=(--repo "$OPT_REPO")
+    fi
+    uv run --no-project python "$GAP_SCRIPT" "${gap_args[@]}" || gap_exit=$?
+  else
+    echo "WARNING: quality_gap_report.py not found — skipping (non-blocking)" >&2
+  fi
+  if [[ $gap_exit -ne 0 ]]; then
     FAIL_COUNT=$((FAIL_COUNT + 1))
   else
     PASS_COUNT=$((PASS_COUNT + 1))

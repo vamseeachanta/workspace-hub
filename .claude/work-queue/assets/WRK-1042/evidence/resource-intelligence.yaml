@@ -1,0 +1,24 @@
+wrk_id: WRK-1042
+assessed_at: "2026-03-11T00:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used: [work-queue, work-queue-workflow, workflow-gatepass]
+files_affected:
+  - scripts/hooks/tidy-agent-teams.sh
+  - scripts/work-queue/spawn-team.sh
+  - scripts/hooks/tests/test-tidy-agent-teams.sh
+key_findings:
+  - "tidy-agent-teams.sh line 30-44: iterates wrk-* dirs, skips non-conforming (no delete)"
+  - "spawn-team.sh: prints recipe with mkdir; no .wrk-id sentinel in recipe"
+  - "test file: T5 covers non-conforming preserved; T11/T12 already fail (fixture missing)"
+  - "tidy iterates wrk-* glob only; non-wrk named dirs never processed"
+change_sites:
+  - tidy-agent-teams.sh:33-44 — add sentinel read in else branch; expand glob to *
+  - spawn-team.sh:69-73 — add echo WRK-NNN > .wrk-id to recipe
+  - test-tidy-agent-teams.sh — fix T11/T12, add T13/T13b/T14
+risks:
+  - risk: glob expansion from wrk-* to * could process unrelated dirs
+    mitigation: sentinel-only delete path; no-sentinel dirs still skipped
+dependencies_resolved: true
+notes: "Route A simple change; pre-existing T11/T12 failure to be fixed in scope."

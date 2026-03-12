@@ -1,0 +1,10 @@
+wrk_id: WRK-1127
+stage: 1
+reviewed_at: "2026-03-11"
+reviewer: vamsee
+scope_approved: true
+notes: >
+  User approved scope: feature-first planning with AI agent chunking.
+  Confirmed: existing ~550 items unaffected (additive fields only).
+  Confirmed: existing items can be adopted into feature via wrk_ref column.
+  Confirmed: Feature WRK requires full Stage 1-7 including Stage 6 cross-review.

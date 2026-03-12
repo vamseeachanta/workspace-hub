@@ -116,3 +116,12 @@
 {"event": "stage_exit", "wrk": "WRK-1126", "stage": 1, "date": "2026-03-11", "timestamp": "2026-03-11T14:46:14.137928Z"}
 {"event": "stage_exit", "wrk": "WRK-1126", "stage": 2, "date": "2026-03-11", "timestamp": "2026-03-11T14:48:12.400785Z"}
 {"event": "stage_exit", "wrk": "WRK-1126", "stage": 3, "date": "2026-03-11", "timestamp": "2026-03-11T14:48:29.999368Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 1, "date": "2026-03-11", "timestamp": "2026-03-11T17:24:29.997148Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 2, "date": "2026-03-11", "timestamp": "2026-03-11T17:27:44.127451Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 3, "date": "2026-03-11", "timestamp": "2026-03-11T17:29:01.977937Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 4, "date": "2026-03-11", "timestamp": "2026-03-11T17:30:45.523790Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 6, "date": "2026-03-11", "timestamp": "2026-03-11T18:34:31.279850Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 5, "date": "2026-03-11", "timestamp": "2026-03-11T18:34:35.717081Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 7, "date": "2026-03-11", "timestamp": "2026-03-11T18:38:43.332913Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 8, "date": "2026-03-11", "timestamp": "2026-03-11T18:39:20.125591Z"}
+{"event": "stage_exit", "wrk": "WRK-1127", "stage": 9, "date": "2026-03-11", "timestamp": "2026-03-11T18:41:17.577975Z"}

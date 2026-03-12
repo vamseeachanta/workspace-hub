@@ -1,0 +1,12 @@
+wrk_id: WRK-1127
+stage: 9
+routed_at: "2026-03-11"
+type: feature
+action: spawned_children
+children_created: [WRK-1129, WRK-1130, WRK-1131]
+status_set: coordinating
+note: >
+  new-feature.sh not yet available (delivered by WRK-1130). Children scaffolded
+  manually from Decomposition table in spec. IDs assigned in ace-linux-1 range
+  (1129-1131); state.yaml corrected from 5008 to 1131 due to acma-ansys05
+  WRK-5000+ files in pending/ causing next-id.sh contamination.
