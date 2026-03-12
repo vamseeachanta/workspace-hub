@@ -1,0 +1,29 @@
+wrk_id: WRK-1127
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: chore/WRK-1111-at-file-references
+    commit: placeholder-plan-draft
+    published_at: "2026-03-11T13:00:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1127/WRK-1127-lifecycle.html
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: chore/WRK-1111-at-file-references
+    commit: placeholder-plan-final
+    published_at: "2026-03-11T15:00:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1127/WRK-1127-lifecycle.html
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: chore/WRK-1111-at-file-references
+    commit: cea2dd4e
+    published_at: "2026-03-12T11:10:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1127/workflow-final-review.html

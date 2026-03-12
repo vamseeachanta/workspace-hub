@@ -1,0 +1,15 @@
+wrk_id: WRK-1127
+captured_at: "2026-03-12T11:05:00Z"
+recommendations:
+  - id: FW-1
+    title: T7 live-queue test fragility
+    description: T7 uses WRK-1127 live — will fail when archived
+    disposition: spun-off-new
+    status: open
+    captured: true
+  - id: FW-2
+    title: dep_graph.py feature flag
+    description: Add --feature WRK-NNN flag to dep_graph.py
+    disposition: spun-off-new
+    status: open
+    captured: true

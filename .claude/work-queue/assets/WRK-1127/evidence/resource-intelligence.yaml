@@ -1,6 +1,6 @@
 wrk_id: WRK-1127
 stage: 2
-produced_at: "2026-03-11"
+produced_at: "2026-03-11T12:00:00Z"
 key_files:
   generate_index_py:
     path: .claude/work-queue/scripts/generate-index.py
@@ -101,3 +101,11 @@ notes: >
   the deliverables of child-b. config/work-queue/ currently contains only
   machine-ranges.yaml; the new chunk-sizing.yaml and feature-template.md will be the
   second and third files added there.
+
+completion_status: complete
+p1_count: 0
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - feature-planning

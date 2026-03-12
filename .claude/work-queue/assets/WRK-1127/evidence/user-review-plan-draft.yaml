@@ -7,3 +7,4 @@ plan_artifact: specs/wrk/WRK-1127/wrk-1127-feature-first-planning.md
 notes: >
   User approved plan draft covering feature layer model, tooling, process integration,
   adopt-existing-WRK via wrk_ref, category inheritance, and coordinating status visibility.
+approval_decision: approve_as_is
