@@ -1,6 +1,6 @@
 wrk_id: WRK-660
-generated_at: '2026-03-12T17:58:09Z'
-reviewed_by: claude
+generated_at: '2026-03-12T19:39:08Z'
+reviewed_by: orchestrator
 stages:
 - order: 1
   stage: Capture
@@ -76,5 +76,9 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 19
   stage: Archive
-  status: pending
+  status: done
   evidence: scripts/work-queue/archive-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh
