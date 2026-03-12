@@ -72,7 +72,7 @@ mkdir -p "${STUB5}"
 cat > "${STUB5}/git" <<SH
 #!/usr/bin/env bash
 if [[ "\${1:-}" == "symbolic-ref" ]]; then echo "refs/heads/main"; exit 0; fi
-if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--show-toplevel" ]]; then echo "${T5}"; exit 0; fi
+if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--git-dir" ]]; then echo "${FAKE_GIT_DIR5}"; exit 0; fi
 echo "stub-git: unhandled: \$*" >&2; exit 1
 SH
 chmod +x "${STUB5}/git"
@@ -92,7 +92,7 @@ mkdir -p "${STUB7}"
 cat > "${STUB7}/git" <<SH
 #!/usr/bin/env bash
 if [[ "\${1:-}" == "symbolic-ref" ]]; then echo "refs/heads/main"; exit 0; fi
-if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--show-toplevel" ]]; then echo "${T7}"; exit 0; fi
+if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--git-dir" ]]; then echo "${FAKE_GIT_DIR7}"; exit 0; fi
 if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--abbrev-ref" ]]; then exit 128; fi
 if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--show-superproject-working-tree" ]]; then echo ""; exit 0; fi
 echo "stub-git: unhandled: \$*" >&2; exit 1
@@ -111,8 +111,8 @@ mkdir -p "${STUB8}"
 cat > "${STUB8}/git" <<SH
 #!/usr/bin/env bash
 if [[ "\${1:-}" == "symbolic-ref" ]]; then echo "refs/heads/main"; exit 0; fi
-if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--show-toplevel" ]]; then echo "${T8}"; exit 0; fi
-if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--abbrev-ref" ]]; then echo "main"; exit 0; fi
+if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--git-dir" ]]; then echo "${FAKE_GIT_DIR8}"; exit 0; fi
+if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--abbrev-ref" ]]; then echo "origin/main"; exit 0; fi
 if [[ "\${1:-}" == "rev-parse" && "\${2:-}" == "--show-superproject-working-tree" ]]; then echo ""; exit 0; fi
 if [[ "\${1:-}" == "push" ]]; then echo "pushed" > "${PUSH_LOG8}"; exit 0; fi
 echo "stub-git: unhandled: \$*" >&2; exit 1

@@ -13,12 +13,12 @@ set -euo pipefail
 # Guard 3: detached HEAD (symbolic-ref fails on detached HEAD)
 git symbolic-ref HEAD >/dev/null 2>&1 || exit 0
 
-# Guard 4: rebase in progress
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-[[ -d "${REPO_ROOT}/.git/rebase-merge" || -d "${REPO_ROOT}/.git/rebase-apply" ]] && exit 0
+# Guard 4: rebase in progress (use git rev-parse --git-dir for worktree safety)
+GIT_DIR="$(git rev-parse --git-dir)"
+[[ -d "${GIT_DIR}/rebase-merge" || -d "${GIT_DIR}/rebase-apply" ]] && exit 0
 
 # Guard 5: cherry-pick in progress
-[[ -f "${REPO_ROOT}/.git/CHERRY_PICK_HEAD" ]] && exit 0
+[[ -f "${GIT_DIR}/CHERRY_PICK_HEAD" ]] && exit 0
 
 # Guard 6: amend / reword via GIT_REFLOG_ACTION
 case "${GIT_REFLOG_ACTION:-}" in
@@ -26,19 +26,21 @@ case "${GIT_REFLOG_ACTION:-}" in
 esac
 
 # Guard 7: merge conflict in progress
-[[ -f "${REPO_ROOT}/.git/MERGE_HEAD" ]] && exit 0
+[[ -f "${GIT_DIR}/MERGE_HEAD" ]] && exit 0
 
 # Guard 8: submodule context — only push from the top-level repo
 superproject="$(git rev-parse --show-superproject-working-tree 2>/dev/null || true)"
 [[ -n "${superproject}" ]] && exit 0
 
-# Guard 9: no upstream configured
-if ! git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1; then
+# Guard 9: no upstream configured — derive remote/branch from @{u}
+upstream="$(git rev-parse --abbrev-ref --symbolic-full-name "@{u}" 2>/dev/null || true)"
+if [[ -z "${upstream}" ]]; then
   echo "post-commit: no upstream configured — skipping auto-push" >&2
   exit 0
 fi
+remote="${upstream%%/*}"
 
 # All guards passed — push in background so the terminal is not blocked
-(git push origin HEAD > /tmp/post-commit-push.log 2>&1) &
+(git push "${remote}" HEAD > /tmp/post-commit-push.log 2>&1) &
 
 exit 0

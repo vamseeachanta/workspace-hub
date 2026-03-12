@@ -65,6 +65,15 @@ if [[ "${_route}" == "branch" ]]; then
     echo "start-wrk: branch '${BRANCH}' already exists — switch to it manually if needed" >&2
     exit 0
   fi
-  git checkout -b "${BRANCH}"
-  echo "start-wrk: created and switched to branch '${BRANCH}'"
+  # Branch from trunk regardless of current HEAD to avoid contamination
+  # Detect trunk: prefer main, fall back to master, then default branch
+  if git show-ref --verify --quiet "refs/heads/main" 2>/dev/null; then
+    TRUNK="main"
+  elif git show-ref --verify --quiet "refs/heads/master" 2>/dev/null; then
+    TRUNK="master"
+  else
+    TRUNK="$(git rev-parse --abbrev-ref HEAD)"
+  fi
+  git checkout -b "${BRANCH}" "${TRUNK}"
+  echo "start-wrk: created and switched to branch '${BRANCH}' (from ${TRUNK})"
 fi
