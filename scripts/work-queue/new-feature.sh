@@ -394,5 +394,19 @@ with open(path, 'w') as f:
 PYEOF2
 fi
 
+# Set status: coordinating on the feature WRK (frontmatter block only)
+uv run --no-project python - "$WRK_FILE" <<'PYEOF3'
+import sys, re
+path = sys.argv[1]
+with open(path) as f:
+    content = f.read()
+m = re.match(r'^(---\s*\n)(.*?)(\n---)', content, re.DOTALL)
+if m:
+    fm = re.sub(r'^status:\s*working\b', 'status: coordinating', m.group(2), flags=re.MULTILINE)
+    content = m.group(1) + fm + m.group(3) + content[m.end():]
+    with open(path, 'w') as f:
+        f.write(content)
+PYEOF3
+
 echo ""
 echo "Feature ${WRK_ID} — children updated: ${CHILDREN_YAML}"

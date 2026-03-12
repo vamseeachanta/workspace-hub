@@ -13,7 +13,7 @@ from pathlib import Path
 workspace_root = Path(sys.argv[1])
 queue_dir = workspace_root / ".claude" / "work-queue"
 
-allowed_statuses = {"pending", "working", "done", "archived", "blocked", "failed"}
+allowed_statuses = {"pending", "working", "coordinating", "done", "archived", "blocked", "failed"}
 legacy_statuses = {"complete", "completed", "closed", "merged"}
 active_dirs = {"pending": "pending", "working": "working", "blocked": "blocked", "done": "done"}
 errors = []
@@ -181,7 +181,7 @@ def check_file(path: Path, expected_status: str | None):
         errors.append(f"{path.name}: invalid status '{status}'")
         return
 
-    if expected_status and status != expected_status:
+    if expected_status and status != expected_status and not (status == "coordinating" and expected_status == "working"):
         errors.append(f"{path.name}: status '{status}' does not match containing folder '{expected_status}/'")
 
     if expected_status == "working":

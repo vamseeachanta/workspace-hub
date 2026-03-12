@@ -14,3 +14,8 @@ exit_artifacts:
 blocking_condition: "routing.yaml missing"
 log_action: routing_complete
 context_budget_kb: 4
+feature_routing:
+  step: "9b — Feature scaffolding"
+  condition: "type: feature"
+  action: "bash scripts/work-queue/new-feature.sh WRK-NNN"
+  note: "Run after Stage 7 exit; scaffolds children from Decomposition table; sets status:coordinating"

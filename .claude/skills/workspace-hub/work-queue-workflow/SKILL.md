@@ -292,3 +292,9 @@ At Stage 17/18 (Close): regenerate lifecycle HTML with a **Deliverables** table 
 ## Stage-Evidence Path After Close (WRK-1035)
 
 When `close-item.sh` moves a WRK from `working/` to `done/`, update `stage-evidence.yaml` entries referencing `working/WRK-NNN.md` → `done/WRK-NNN.md`. (WRK-1044 D-scope)
+
+## Feature WRK Lifecycle
+
+See full details: @.claude/docs/feature-wrk-lifecycle.md
+
+Short form: Feature WRK (`type: feature`) → Stage 7 exit → `new-feature.sh WRK-NNN` (Stage 9b) scaffolds children and sets `status: coordinating` → children run their own lifecycles → all children reach `archived` (required terminal state) → `feature-close-check.sh WRK-NNN` exits 0 → `close-item.sh` closes the feature WRK.

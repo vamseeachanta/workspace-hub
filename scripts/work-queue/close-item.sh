@@ -166,6 +166,19 @@ if [[ "$HTML_OUTPUT_ABS" == "${WORKSPACE_ROOT}/"* ]]; then
   HTML_OUTPUT="${HTML_OUTPUT_ABS#${WORKSPACE_ROOT}/}"
 fi
 
+# Feature WRK gate (WRK-1131): all children must be archived before a feature can close
+_wrk_type=$(grep -m1 "^type:" "$FILE_PATH" | sed 's/^type:[[:space:]]*//' | tr -d '"' || true)
+if [[ "$_wrk_type" == "feature" ]]; then
+  FEATURE_CLOSE_CHECK="${WORKSPACE_ROOT}/scripts/work-queue/feature-close-check.sh"
+  if [[ -x "$FEATURE_CLOSE_CHECK" ]]; then
+    if ! bash "$FEATURE_CLOSE_CHECK" "$WRK_ID" >/dev/null 2>&1; then
+      echo "✖ close-item.sh: feature-close-check.sh failed — not all children archived (WRK-1131)" >&2
+      echo "  Run: bash scripts/work-queue/feature-status.sh ${WRK_ID}" >&2
+      exit 1
+    fi
+  fi
+fi
+
 # Phase 2 hardening (WRK-1035): assert execute.yaml and timestamp ordering before verifier
 ASSETS_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"
 EXECUTE_YAML="${ASSETS_DIR}/evidence/execute.yaml"

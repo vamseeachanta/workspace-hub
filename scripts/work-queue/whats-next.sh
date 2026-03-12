@@ -102,12 +102,18 @@ process_file() {
   local id status priority subcategory category blocked_by computer title
 
   id=$(get_field "$f" "id"); [[ -z "$id" ]] && return
-  category=$(get_field "$f" "category")
-  [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && return
-  subcategory=$(get_field "$f" "subcategory")
-  [[ -n "$FILTER_SUBCATEGORY" && "$subcategory" != *"$FILTER_SUBCATEGORY"* ]] && return
-
   status=$(get_field "$f" "status")
+  local wrk_type_early
+  wrk_type_early=$(get_field "$f" "type")
+  # Coordinating feature WRKs bypass category/subcategory filters so they always appear
+  if [[ "$status" != "coordinating" || "$wrk_type_early" != "feature" ]]; then
+    category=$(get_field "$f" "category")
+    [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && return
+    subcategory=$(get_field "$f" "subcategory")
+    [[ -n "$FILTER_SUBCATEGORY" && "$subcategory" != *"$FILTER_SUBCATEGORY"* ]] && return
+  fi
+  category=${category:-$(get_field "$f" "category")}
+  subcategory=${subcategory:-$(get_field "$f" "subcategory")}
   priority=$(get_field "$f" "priority")
   computer=$(get_field "$f" "computer")
   title=$(get_field "$f" "title" | cut -c1-48)

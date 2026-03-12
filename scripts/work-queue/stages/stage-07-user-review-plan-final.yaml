@@ -17,3 +17,6 @@ exit_artifacts:
 blocking_condition: "plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed"
 log_action: plan_final_reviewed
 context_budget_kb: 16
+feature_notes:
+  - "Feature WRKs: generate evidence/feature-decomposition.yaml before Stage 7 sign-off"
+  - "Consumed by: new-feature.sh (scaffold input at Stage 9b)"
