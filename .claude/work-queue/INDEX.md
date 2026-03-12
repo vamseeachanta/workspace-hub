@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T18:07:53Z by generate-index.py -->
+<!-- Generated: 2026-03-12T19:42:12Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T18:07:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T19:42:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 222 |
-| working | 6 |
+| working | 5 |
 | blocked | 10 |
-| archived | 342 |
+| archived | 343 |
 
 ### By Priority
 
@@ -45,7 +45,7 @@
 | data | 24 |
 | platform | 13 |
 | business | 6 |
-| maintenance | 6 |
+| maintenance | 5 |
 | personal | 4 |
 | uncategorised | 10 |
 
@@ -92,9 +92,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 580 |
-| Total archived | 342 |
-| Completion rate | 342/580 (59%) |
-| Monthly rate (current month) | 108 archived |
+| Total archived | 343 |
+| Completion rate | 343/580 (59%) |
+| Monthly rate (current month) | 109 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 63 / 222 | 28% |
-| Plans cross-reviewed | 9 | 12% |
-| Plans user-approved | 9 | 12% |
+| Plans cross-reviewed | 8 | 11% |
+| Plans user-approved | 8 | 11% |
 
 ### Aging
 
@@ -111,14 +111,14 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 141 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-294, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-578, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 2 | WRK-129, WRK-660 |
+| Working > 7 days | 1 | WRK-129 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 3 | 8 |
+| High     | 88 | 2 | 8 |
 | Medium   | 100  | 3  | 1  |
 | Low      | 34  | 0  | 1  |
 
@@ -520,7 +520,7 @@
 |----|----------|-------|--------|
 | WRK-580 | LOW | feat(worldenergydata): map open-access journal portfolio for engineering | pending |
 
-### maintenance (6 items — 1 high, 3 medium, 2 low)
+### maintenance (5 items — 0 high, 3 medium, 2 low)
 
 #### maintenance / cleanup
 
@@ -541,12 +541,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-574 | MEDIUM | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending |
-
-#### maintenance / testing
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-660 | HIGH | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working |
 
 ### personal (4 items — 1 high, 0 medium, 3 low)
 
@@ -1001,7 +995,7 @@
 | WRK-638 | Memory quality eval harness | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1411,7 +1405,6 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | high | medium | assetutilities | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | medium | medium | digitalmodel | - |
@@ -1671,6 +1664,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-638 | Memory quality eval harness | medium | simple | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | high | medium | assetutilities | - |
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
@@ -1909,7 +1903,7 @@
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | medium | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | archived | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
@@ -2733,7 +2727,7 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | medium | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | medium | workspace-hub | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | medium | assetutilities | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | medium | assetutilities | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | complex | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | medium | workspace-hub | - |
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | medium | workspace-hub | - |
@@ -3453,7 +3447,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | workspace-hub | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | assetutilities | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | assetutilities | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
@@ -3659,7 +3653,7 @@
 
 ## By Computer
 
-### ace-linux-1 (174 active / 300 total)
+### ace-linux-1 (173 active / 300 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3801,7 +3795,7 @@
 | WRK-638 | Memory quality eval harness | archived | medium | simple | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | workspace-hub |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | medium | assetutilities |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | medium | assetutilities |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | worldenergydata |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | digitalmodel |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | workspace-hub |
