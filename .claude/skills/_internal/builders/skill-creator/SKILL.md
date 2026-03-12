@@ -201,7 +201,35 @@ Edge cases and optimization
 Complete API/options reference
 ```
 
-### 3. Actionable Content
+### 3. Multi-Stage Workflow Architecture
+
+**Problem:** A monolithic SKILL.md for a workflow with N stages is only loaded when explicitly invoked — NOT at the moment each stage executes. Rules written there won't fire at execution time.
+
+**Pattern: per-stage micro-skills auto-loaded at entry**
+
+```
+skills/my-workflow/
+  SKILL.md                    ← index + cross-cutting rules only (≤150 lines)
+  stages/
+    stage-01-intake.md        ← complete rules for stage 1
+    stage-02-planning.md      ← complete rules for stage 2
+    stage-NN-<name>.md        ← one file per stage
+```
+
+The orchestrating script (`start_stage.py` / `start_stage.sh`) resolves the micro-skill
+glob and prints its content into context at stage entry — mechanical, not LLM memory.
+
+**Design rules:**
+- SKILL.md = index + terminology + gate policy table only. No stage-specific content.
+- Each micro-skill: entry reads, checklist, scripts-over-LLM audit (where applicable), exit gate, hard-gate flag
+- Minimum 15 lines per micro-skill — stubs < 15 lines provide no useful guidance
+- Loader script uses glob: `stage-{N:02d}-*.md` → read → inject as entry_reads block
+
+**When to use this pattern:** Any skill with 3+ sequential stages where different rules apply at different stages (e.g., work-queue-workflow, SPARC, release pipelines).
+
+**Anti-pattern:** Adding stage-specific rules to the top-level SKILL.md — they won't load at stage entry unless the skill happens to be explicitly invoked that session.
+
+### 4. Actionable Content
 
 Every section should guide action:
 

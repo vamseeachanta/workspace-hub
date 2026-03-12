@@ -83,6 +83,7 @@ Assess the overall health of ecosystem files and recommend reallocation. This ph
 | **Memory overlap** | Same topic in repo + user memory | Recommend single source of truth |
 | **Thin categories** | Category with only 1 skill | Consider merging into parent |
 | **Stale signals** | >50 unprocessed signals in pending-reviews/ | Warn about signal backlog |
+| **Stub micro-skills** | Stage micro-skill file < 15 lines | Flag as enhancement candidate — stubs provide no guidance at stage entry |
 
 > **Note on raw count thresholds**: Total skill count and per-category count limits
 > (previously 350/50) have been removed. A large, well-indexed skill library is not
