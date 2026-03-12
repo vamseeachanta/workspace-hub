@@ -12,12 +12,14 @@ FILTER_SUBCATEGORY=""
 SHOW_ALL=false
 MED_LIMIT=20
 _CATEGORY_EXPLICIT=false
+_DEBUG=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --category)     FILTER_CATEGORY="$2"; _CATEGORY_EXPLICIT=true; shift 2 ;;
     --subcategory)  FILTER_SUBCATEGORY="$2"; shift 2 ;;
     --all)          SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
     --limit)        MED_LIMIT="$2"; shift 2 ;;
+    --debug)        _DEBUG=true; shift ;;
     *) shift ;;
   esac
 done
@@ -25,6 +27,21 @@ done
 [[ -n "$FILTER_SUBCATEGORY" && "$_CATEGORY_EXPLICIT" == false ]] && FILTER_CATEGORY=""
 
 get_field() { grep -m1 "^$2:" "$1" 2>/dev/null | sed "s/^$2: *//" | tr -d '"' || true; }
+
+read_index_status() {
+  # Returns status from wrk-status-index.json, or empty string if absent.
+  local _id="$1"
+  local _idx="${QUEUE_DIR}/wrk-status-index.json"
+  [[ -f "$_idx" ]] || return
+  python3 -c "
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+    print(d.get(sys.argv[2], {}).get('status', ''))
+except Exception:
+    pass
+" "$_idx" "$_id" 2>/dev/null
+}
 
 is_archived() {
   local num="$1"
@@ -117,6 +134,11 @@ process_file() {
   priority=$(get_field "$f" "priority")
   computer=$(get_field "$f" "computer")
   title=$(get_field "$f" "title" | cut -c1-48)
+  local _idx_status _idx_source
+  _idx_status=$(read_index_status "$id")
+  _idx_source="scan"
+  [[ -n "$_idx_status" ]] && _idx_source="index"
+  [[ "$_DEBUG" == "true" ]] && title="${title} (${_idx_source})"
   blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
 
   local cp_stage item_status item_pid note not_before

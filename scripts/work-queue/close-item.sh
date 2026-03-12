@@ -332,6 +332,12 @@ if [[ -f "$STAGE_UPDATER" ]]; then
     echo "⚠ Could not update stage-evidence order 19 for ${WRK_ID}" >&2
 fi
 
+# Update centralized status index
+INDEX_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-wrk-index.sh"
+if [[ -x "$INDEX_UPDATER" ]]; then
+  bash "$INDEX_UPDATER" "$WRK_ID" "done" "$(basename "$0")" || true
+fi
+
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 if [[ "$DO_COMMIT" == "true" ]]; then

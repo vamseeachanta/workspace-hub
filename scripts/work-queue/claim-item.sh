@@ -370,6 +370,12 @@ if [[ -f "$lock_file" ]]; then
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$lock_file"
 fi
 
+# Update centralized status index
+INDEX_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-wrk-index.sh"
+if [[ -x "$INDEX_UPDATER" ]]; then
+  bash "$INDEX_UPDATER" "$WRK_ID" "working" "$(basename "$0")" || true
+fi
+
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 echo "✔ ${WRK_ID} claimed and moved to working/"

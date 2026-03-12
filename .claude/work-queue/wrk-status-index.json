@@ -1,0 +1,5303 @@
+{
+  "WRK-005": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:22.262515+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Clean up email using AI (when safe)",
+    "priority": "low",
+    "category": "personal"
+  },
+  "WRK-008": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:22.468981+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Upload photos from multiple devices to achantas-media",
+    "priority": "low",
+    "category": "personal"
+  },
+  "WRK-021": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:22.698693+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Stock analysis for drastic trend changes, technical indicators, and insider",
+    "priority": "medium",
+    "category": "business"
+  },
+  "WRK-023": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:22.902852+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Property GIS development timeline with future projection and Google Earth animation",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-032": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:23.109960+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Modular OrcaFlex pipeline installation input with parametric campaign support",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-036": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:23.345614+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex structure deployment analysis - supply boat side deployment with structural",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-039": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:23.564706+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "SPM project benchmarking - AQWA vs OrcaFlex",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-043": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:23.783105+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Parametric hull form analysis with RAO generation and client-facing lookup",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-045": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:24.000032+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex rigid jumper analysis - stress and VIV for various configurations",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-046": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:24.207454+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex drilling and completion riser parametric analysis",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-047": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:24.443179+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OpenFOAM CFD analysis capability for digitalmodel",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-048": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:24.658182+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Blender working configurations for digitalmodel",
+    "priority": "low",
+    "category": "platform"
+  },
+  "WRK-075": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:25.075283+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-099": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:25.287101+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Run 3-way benchmark on Unit Box hull",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-1000": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:25.490417+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(work-queue): restore /work skill compatibility in Codex CLI",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1001": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:25.692925+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo",
+    "priority": "medium",
+    "category": "maintenance"
+  },
+  "WRK-1012": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:25.924299+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(plugins): install and verify official Claude Code plugins on all 3 workstations",
+    "priority": "high",
+    "category": "platform"
+  },
+  "WRK-1021": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:26.153079+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit and migrate scheduled jobs to claude code schedule tasks on all workstations",
+    "priority": "medium",
+    "category": "platform"
+  },
+  "WRK-1024": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:26.370550+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): increase context window limits for Claude and Codex",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1027": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:26.586607+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-1043": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:26.800655+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-1048": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:27.013713+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CV gap analysis + repo project alignment for Power Generation Controls Engineer role",
+    "priority": "high",
+    "category": "career"
+  },
+  "WRK-1050": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:27.227692+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up)",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1051": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:27.463261+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1072": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:27.704348+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): release management \u2014 semantic versioning + changelog for tier-1 repos",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1088": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:27.931169+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): data pipeline framework \u2014 consistent ETL for EIA, BSEE, engineering datasets",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1089": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:28.165357+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Split check-all.sh by responsibility (400L hard limit violated)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-1096": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:28.398344+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add HydroComp NavCad electric-motor resources to workspace library",
+    "priority": "medium",
+    "category": "resources"
+  },
+  "WRK-1101": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:28.632960+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(session): extend detect-drift.sh to parse Codex JSONL log format",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1103": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:28.870435+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1107": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:29.091797+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assess(sessions): unified provider assessment + compliance audit \u2014 parse logs, score gates, emit routing signals",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1109": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:29.307674+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Set up WhatsApp MCP for Claude CLI on ace-linux-1",
+    "priority": "low",
+    "category": "harness/skills"
+  },
+  "WRK-1110": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:29.545170+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1113": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:29.761987+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doc-intel): squeeze max value from document corpus \u2014 parametric wrappers, index consolidation, exhaustion marking",
+    "priority": "high",
+    "category": "document-intelligence"
+  },
+  "WRK-1116": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:29.965745+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Extract + integrate website-building skill patterns from Nate Herk video",
+    "priority": "medium",
+    "category": "skills"
+  },
+  "WRK-1117": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:30.190546+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Windows/Git Bash: fix comprehensive-learning push path + signal generation",
+    "priority": "medium",
+    "category": "tooling"
+  },
+  "WRK-1118": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:30.424387+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cross-platform bash sweep \u2014 replace bc/python3/nproc in all scripts",
+    "priority": "medium",
+    "category": "tooling"
+  },
+  "WRK-1121": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:30.653067+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-1122": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:30.869705+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-1126": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:31.102489+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add maritime law domain: skill, data, public cases, liabilities",
+    "priority": "medium",
+    "category": "knowledge-domain"
+  },
+  "WRK-1128": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:31.322327+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Observed-exposure tracker \u2014 measure AI vs human work % per WRK category",
+    "priority": "high",
+    "category": "automation"
+  },
+  "WRK-1133": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:31.540850+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add acma-ws014 to workstations documentation and routing",
+    "priority": "medium",
+    "category": "infrastructure"
+  },
+  "WRK-1134": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:31.756298+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit empty submodule dirs in workspace-hub \u2014 init or remove CAD-DEVELOPMENTS et al",
+    "priority": "low",
+    "category": "maintenance"
+  },
+  "WRK-1136": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:31.968390+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Improve repo-sync skill: comprehensive origin status summary",
+    "priority": "medium",
+    "category": "tooling"
+  },
+  "WRK-1137": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:32.185314+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Document and enforce Linux-first workstation routing policy for non-licensed work",
+    "priority": "high",
+    "category": "operations"
+  },
+  "WRK-1139": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:32.403083+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1140": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:32.616406+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(automation): nightly cron job \u2014 release-notes scan and WRK capture",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1141": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:32.844741+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(git-hooks): post-commit auto-push + trunk-based routing script",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1143": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:33.061667+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): centralized WRK status index \u2014 updated at source by workflow scripts",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1144": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:33.276357+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): micro-skill \u2192 script extraction audit \u2014 identify stage checklist items that can become deterministic scripts",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1145": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:33.489733+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(charts): implement Anthropic-style research chart library \u2014 dual-panel DiD, sensitivity error-bar, lower-triangular heatmap",
+    "priority": "medium",
+    "category": "analysis"
+  },
+  "WRK-1146": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:33.692774+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts",
+    "priority": "low",
+    "category": "marketing"
+  },
+  "WRK-125": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:33.898607+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex module roadmap \u2014 evolving coordination and progress tracking",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-126": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:34.129381+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Benchmark all example models across time domain and frequency domain with seed equivalence",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-137": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:34.346225+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Download and parse rig spec PDFs (102 PDFs from 4 operators)",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-140": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:34.580088+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Integrate gmsh meshing skill into digitalmodel and solver pipelines",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-148": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:34.809956+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "ACE-GTM: A&CE Go-to-Market strategy stream",
+    "priority": "high",
+    "category": "business"
+  },
+  "WRK-149": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:35.046061+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "digitalmodel test coverage improvement (re-creates WRK-051)",
+    "priority": "high",
+    "category": "maintenance"
+  },
+  "WRK-162": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:35.265974+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": "engineering"
+  },
+  "WRK-171": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:35.483031+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cost data calibration \u2014 sanctioned project benchmarking & multivariate cost prediction",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-180": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:35.711176+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Stop Hook: Cross-Agent Learning Sync'",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-181": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:35.917498+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Session Replay & Time Travel",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-182": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:36.147744+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Predictive Session Planning",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-219": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:36.366661+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Batch drilling economics analysis \u2014 campaign scheduling and cost optimization",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-227": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:36.583983+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Evaluate cowork relevance \u2014 repo ecosystem fit vs agentic coding momentum",
+    "priority": "medium",
+    "category": "platform"
+  },
+  "WRK-235": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:36.799397+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "ROADMAP: Repo ecosystem 3-6 month horizon \u2014 plan and gear for agentic AI maturation",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-256": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:37.014342+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Unified parametric study coordinator \u2014 orchestrate OrcaFlex, wall thickness, and fatigue sweeps",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-261": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:37.235018+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "BSEE field economics case study \u2014 rebuild on calibrated cost data (WRK-019 + WRK-171)",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-294": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:37.454966+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Standardize ace-linux-2 mount paths \u2014 fstab entries for HDDs with clean paths",
+    "priority": "high",
+    "category": "platform"
+  },
+  "WRK-297": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:37.691673+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "SSHFS mounts on ace-linux-1 for ace-linux-2 drives \u2014 bidirectional file access",
+    "priority": "high",
+    "category": "platform"
+  },
+  "WRK-311": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:37.912024+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "improve: QTF benchmarking for case 3.1 \u2014 charts, comparisons, and validation depth",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-343": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:38.136671+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OpenFOAM technical debt and exploration \u2014 tutorials, ecosystem audit, WRK-047 refresh",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-352": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:38.346146+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Set up remote desktop access on ace-linux-2",
+    "priority": "low",
+    "category": "platform"
+  },
+  "WRK-389": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:38.575785+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(ace-linux-2): switch Claude install from sudo-npm to native installer",
+    "priority": "medium",
+    "category": "platform"
+  },
+  "WRK-416": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:38.791376+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": "engineering"
+  },
+  "WRK-470": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:38.999800+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem",
+    "priority": "high",
+    "category": "business"
+  },
+  "WRK-473": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:39.208450+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(hydrodynamics): integrate wavespectra library for spectral processing",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-474": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:39.402157+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(subsea): integrate MoorDyn + MoorPy for mooring analysis",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-475": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:39.623561+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(marine_ops): wire Open-Meteo Marine API into weather-window module",
+    "priority": "medium",
+    "category": "uncategorised"
+  },
+  "WRK-476": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:39.839769+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): create ESG/Carbon Emissions module",
+    "priority": "high",
+    "category": "uncategorised"
+  },
+  "WRK-477": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:40.041901+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): create Offshore Geohazard Feed module using USGS API",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-478": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:40.249042+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(subsea): create Cathodic Protection module (DNV-RP-B401)",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-479": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:40.439509+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): wire SODIR FactPages OData API",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-480": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:40.652352+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): integrate CMEMS Wave Multi-Year Product",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-481": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:40.872719+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-483": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:41.101660+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ASTM G80 \u2014 ASTM G80 (1998) Std Test Method for Specific Catho",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-484": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:41.321383+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ASTM G42 \u2014 ASTM G42 (1996) Std Test Method for Cathodic Disbo",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-485": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:41.541113+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ASTM G95 \u2014 ASTM G95 (1998) Std Test Method for Cathodic Disbo",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-486": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:41.759349+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ASTM G8 \u2014 ASTM G8 (1996) Std Test Methods for Cathodic Disbo",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-487": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:41.980177+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ASTM G110 \u2014 ASTM G110 (2003) Std Practice for Evaluating Inter",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-488": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:42.194137+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ISO 15156 \u2014 ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-489": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:42.401301+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ISO 11881 \u2014 ISO 11881 1st Ed (1999) Corrosion of metals and al",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-490": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:42.612795+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ISO 11881 \u2014 ISO 11881 Corrigendum 1 (1999) Corrosion of metals",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-492": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:42.807980+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement ISO 11846 \u2014 ISO 11846 1st Ed (1995) Corrosion of metals and al",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-494": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:43.014466+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement DNV F106 \u2014 DNV RP F106 (2003) Factory Applied External Pipeli",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-496": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:43.239116+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/cathodic_protection): Implement DNV F112 \u2014 DNV RP F112 (2008) Stainless steel subsea equipmen",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-498": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:43.449742+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement API RP 1111 \u2014 API RP 1111",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-499": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:43.661896+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement API RP 1109 \u2014 API RP 1109 Marking Liquid Petroleum Pipeline Faci",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-5000": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:43.869073+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex scripting workflows \u2014 automation foundation",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-5001": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:44.090701+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Research-to-WRK synthesis \u2014 automate paper \u2192 action-item capture",
+    "priority": "medium",
+    "category": "automation"
+  },
+  "WRK-5002": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:44.311614+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Task complexity tier \u2192 model routing (extend task_classifier.sh)",
+    "priority": "medium",
+    "category": "automation"
+  },
+  "WRK-5003": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:44.546692+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "O*NET task tagging for WRK capture \u2014 classify work by occupational category",
+    "priority": "low",
+    "category": "automation"
+  },
+  "WRK-5004": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:44.763059+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5005": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:44.981211+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5006": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:45.214446+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5007": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:45.432121+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5008": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:45.654025+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5009": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:45.876914+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-500": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:46.098066+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement API RP 1109 \u2014 API RP 1109 Marking Liquid Petroleum Pipeline Faci",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-5010": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:46.327446+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5011": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:46.544046+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5012": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:46.735831+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5013": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:46.963212+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection)",
+    "priority": "medium",
+    "category": "tooling"
+  },
+  "WRK-5014": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:47.183345+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5015": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:47.403298+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5016": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:47.620114+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex demo version input-file troubleshooting workflow",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-5017": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:47.835003+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-501": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:48.064728+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement ISO 16708 \u2014 ISO 16708 1st Ed (2006) Pipeline transportation se",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-5020": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:48.278293+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix: recurring correction correction pattern on Write",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-5021": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:48.496809+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix: recurring correction correction pattern on Edit",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-5022": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:48.712995+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix: recurring correction correction pattern on Write",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-5023": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:48.927691+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix: recurring correction correction pattern on Edit",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-5024": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:49.144542+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5025": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:49.343638+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5026": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:49.578851+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(onboarding): add inotify watch limit fix to new-machine-setup",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-5028": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:49.793991+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-5029": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:50.014402+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-502": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:50.230589+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement ISO 16708 \u2014 ISO 16708 1st Ed (2006) Pipeline transportation se",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-5030": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:50.462258+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Research speech-to-text tool similar to Whisper-flow for Linux",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-5031": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:50.682390+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-503": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:50.915459+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement ISO 13628 \u2014 ISO 13628 Pt 7 DRAFT (2003) Completion workover ri",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-504": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:51.138362+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement ISO 13628 \u2014 ISO 13628 Pt 7 DRAFT (2003) Completion workover ri",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-505": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:51.345938+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement ISO 13624-1 \u2014 DIN EN ISO 13624-1 (2007-11) Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-506": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:51.555573+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement ISO 13624-1 \u2014 DIN EN ISO 13624-1 (2007-11) Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-507": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:51.786015+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement ISO 13628-7 \u2014 ISO 13628-7 2005 Completion Workover Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-508": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:51.998304+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement ISO 13628-7 \u2014 ISO 13628-7 2005 Completion Workover Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-509": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:52.206550+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement ISO 16389 \u2014 ISO 16389 (2003) Dynamic Risers for Floating Produ",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-510": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:52.426012+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement ISO 16389 \u2014 ISO 16389 (2003) Dynamic Risers for Floating Produ",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-511": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:52.663354+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement API STD 2RD \u2014 API STD 2RD 2nd Ed (2013) Dynamic Risers for Float",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-512": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:52.887927+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement API STD 2RD \u2014 API STD 2RD 2nd Ed (2013) Dynamic Risers for Float",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-513": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:53.100575+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F101 \u2014 DNV OS F101 (2010) Submarine Pipeline Systems",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-514": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:53.311827+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F101 \u2014 DNV OS F101 (2010) Submarine Pipeline Systems",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-515": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:53.526651+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement API RP 17G \u2014 API RP 17G 2nd Ed (2006) Design and Operation of C",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-516": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:53.757163+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement API RP 17G \u2014 API RP 17G 2nd Ed (2006) Design and Operation of C",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-517": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:53.977871+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV OSS 006 \u2014 DNV OSS 006 (1981) Rules for Submarine Pipeline Sy",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-518": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:54.208842+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV OSS 006 \u2014 DNV OSS 006 (1981) Rules for Submarine Pipeline Sy",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-519": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:54.407597+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F201 \u2014 DNV OS F201 (2010) Dynamic Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-520": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:54.640277+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F201 \u2014 DNV OS F201 (2010) Dynamic Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-521": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:54.862132+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F110 \u2014 DNV RP F110 (2007) Global buckling of submarine pi",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-522": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:55.083829+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F110 \u2014 DNV RP F110 (2007) Global buckling of submarine pi",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-523": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:55.335841+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F108 \u2014 DNV RP F108 with update 2009 (2006) Fracture Contr",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-524": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:55.563746+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F108 \u2014 DNV RP F108 with update 2009 (2006) Fracture Contr",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-525": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:55.763407+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F203 \u2014 DNV RP F203 (2009) Riser interference",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-526": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:55.977695+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F203 \u2014 DNV RP F203 (2009) Riser interference",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-527": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:56.198761+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F105 \u2014 DNV RP F105 (2006) Free Spanning Pipelines",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-528": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:56.410942+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F105 \u2014 DNV RP F105 (2006) Free Spanning Pipelines",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-529": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:56.648917+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F102 \u2014 DNV RP F102 (2011) Pipeline Field Joint Coating an",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-530": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:56.884436+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F102 \u2014 DNV RP F102 (2011) Pipeline Field Joint Coating an",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-531": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:57.102948+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F202 \u2014 DNV RP F202 (2010) Composite Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-532": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:57.299715+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F202 \u2014 DNV RP F202 (2010) Composite Risers",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-533": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:57.504428+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F206 \u2014 DNV RP F206 (2008) Riser Integrity Management",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-534": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:57.722839+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F206 \u2014 DNV RP F206 (2008) Riser Integrity Management",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-535": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:57.917287+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F109 \u2014 DNV RP F109 (2007) On-bottom stability design of s",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-536": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:58.148733+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F109 \u2014 DNV RP F109 (2007) On-bottom stability design of s",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-537": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:58.367157+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/pipeline): Implement DNV F116 \u2014 DNV RP F116 (2009) Integrity Management of Submari",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-538": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:58.600345+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(doris/pipeline): Implement DNV F116 \u2014 DNV RP F116 (2009) Integrity Management of Submari",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-539": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:58.822532+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement API RP 2A \u2014 API RP 2A WSD",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-540": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:59.037638+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement API RP 2A \u2014 API RP 2A WSD",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-541": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:59.259820+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM A131 \u2014 ASTM A131 (2004) Std Specification for Structural ",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-542": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:59.477544+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM A131 \u2014 ASTM A131 (2004) Std Specification for Structural ",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-543": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:59.692205+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM E1049 \u2014 ASTM E1049-85(2005) Standard Practices for Cycle C",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-544": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:04:59.922958+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM E1049 \u2014 ASTM E1049-85(2005) Standard Practices for Cycle C",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-545": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:00.135221+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM E606 \u2014 ASTM E606 (2004) Std Practice for Strain-Controlle",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-546": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:00.350908+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM E606 \u2014 ASTM E606 (2004) Std Practice for Strain-Controlle",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-547": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:00.552036+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM E647 \u2014 ASTM E647 (2005) Std Test Method for Measurement o",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-548": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:00.786181+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM E647 \u2014 ASTM E647 (2005) Std Test Method for Measurement o",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-549": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:01.022375+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM E466 \u2014 ASTM E466 (2002) Std Practice for Conducting Force",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-550": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:01.256867+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM E466 \u2014 ASTM E466 (2002) Std Practice for Conducting Force",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-551": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:01.476241+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM E739 \u2014 ASTM E739 (2004) Std Practice for Statistical Anal",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-552": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:01.716140+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM E739 \u2014 ASTM E739 (2004) Std Practice for Statistical Anal",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-553": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:01.924164+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/structural): Implement ASTM A36 \u2014 ASTM A36M-04 (2004) Standard Specification for Car",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-554": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:02.116759+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(OGManufacturing/structural): Implement ASTM A36 \u2014 ASTM A36M-04 (2004) Standard Specification for Car",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-555": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:02.303204+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/marine): Implement DNV E301 \u2014 DNV OS E301 (2010) Position Mooring",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-556": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:02.508493+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/marine): Implement API RP 2I \u2014 API RP 2I 3rd Ed (2008) In-service Inspection of M",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-557": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:02.725224+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/marine): Implement API RP 572 \u2014 API RP 572 2nd Ed (2001) Inspection of Pressure Ve",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-558": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:02.944332+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/marine): Implement API RP 2SM \u2014 API RP 2SM 1st Ed & Addendum (2001 & 2007) Design,",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-559": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:03.164690+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel/marine): Implement API RP 2P \u2014 API RP 2P 2nd Ed (1987) Analysis of Spread Mooring",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-571": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:03.398512+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-574": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:03.617716+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Remove digitalmodel setup.py (superseded by pyproject.toml)",
+    "priority": "medium",
+    "category": "maintenance"
+  },
+  "WRK-575": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:03.839182+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Clean digitalmodel docs/modules/ stale content",
+    "priority": "low",
+    "category": "maintenance"
+  },
+  "WRK-578": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:04.066892+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): audit MCP registry for engineering-domain servers",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-579": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:04.299681+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): install Semantic Scholar MCP server for literature search",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-580": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:04.508892+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): map open-access journal portfolio for engineering",
+    "priority": "low",
+    "category": "business"
+  },
+  "WRK-581": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:04.715737+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): evaluate IEA Methane Tracker for ESG module",
+    "priority": "low",
+    "category": "uncategorised"
+  },
+  "WRK-582": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:04.954170+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "research: geomechanics module feasibility (OpenGeoSys, MOOSE)",
+    "priority": "low",
+    "category": "platform"
+  },
+  "WRK-583": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:05.165423+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "research: verify ANP Brazil production data REST API availability",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-584": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:05.391095+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): index NSTA UK National Data Repository datasets",
+    "priority": "low",
+    "category": "data"
+  },
+  "WRK-585": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:05.604360+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(worldenergydata): add IRENA offshore wind capacity data",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-586": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:05.815584+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): auto-fetch IACS Blue Book UR updates",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-587": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:06.016662+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "research: evaluate Code_Aster for large-scale topside structural FEA",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-588": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:06.210679+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "research: evaluate OpenTURNS for fatigue reliability integration",
+    "priority": "low",
+    "category": "platform"
+  },
+  "WRK-589": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:06.442344+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(orcaflex): dat-to-yaml pipeline \u2014 extract, legal-scan, import to digitalmodel",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-595": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:06.667514+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-597": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:06.902555+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel): geotechnical module \u2014 umbrella tracker",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-598": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:07.105510+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(product): build engineering chatbot for oil & gas clients",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-603": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:07.323530+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(doc-index): review disciplines/knowledge_skills \u2014 30K docs, add repo linkage",
+    "priority": "low",
+    "category": "platform"
+  },
+  "WRK-604": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:07.551828+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(doc-index): remap legacy HDD records \u2014 va-hdd-2, 2021-11-22-sd-HDD (25K records)",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-608": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:07.789233+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts \u2014 997 .m files",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-609": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:08.010328+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models \u2014 1070 files",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-616": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:08.231230+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(wrk-309): convert document-intelligence findings into structured data sources",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-618": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:08.467120+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): soil profile models, CPT correlation, shared types",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-619": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:08.700224+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-620": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:08.924347+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-621": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:09.139525+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat)",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-622": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:09.354225+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): anchor capacity \u2014 drag, suction caisson, torpedo/SEPLA",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-623": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:09.581824+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(geotechnical): scour prediction per DNV-RP-F107",
+    "priority": "low",
+    "category": "engineering"
+  },
+  "WRK-625": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:09.778604+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): engineering AI demo \u2014 system prompts + knowledge base (Day 1)",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-626": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:09.988902+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): engineering AI demo \u2014 calculation templates + data processing (Days 2-3)",
+    "priority": "high",
+    "category": "personal"
+  },
+  "WRK-627": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:10.199676+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): engineering AI demo \u2014 workflows + BSEE data + demo package (Days 4-5)",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-628": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:10.412233+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): client AI roadshow \u2014 phased engineering AI adoption programme",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-629": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:10.647923+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(client2): engineering AI demo \u2014 diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-630": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:10.871966+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(client2): engineering AI demo \u2014 diffraction + plate FFS + GoA + maritime legal workflows + demo package",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-631": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:11.110861+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): Microsoft Teams chatbot integration \u2014 Phase 2 deployment for both clients",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-632": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:11.326720+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(frontierdeepwater): chatbot fundamentals \u2014 shared persona, tone, tiers, pitch template (all clients)",
+    "priority": "high",
+    "category": "business"
+  },
+  "WRK-634": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:11.553141+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(workspace-hub): client roadshow brochures \u2014 client1 rigid jumper/pipeline + client2 structural/maritime",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-635": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:11.773405+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(memory): session scanner \u2014 extract learnings from all historical Claude sessions into auto-memory",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-636": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:11.987022+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-639": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:12.216633+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(skills): audit and resolve _diverged/ and incoming/ skill directories",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-660": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:12.413613+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "analysis(assetutilities): test coverage gap audit \u2014 5 untested modules via Gemini",
+    "priority": "high",
+    "category": "maintenance"
+  },
+  "WRK-661": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:12.615274+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "analysis(worldenergydata): dead code identification in common/legacy/ \u2014 Gemini call-site sweep",
+    "priority": "medium",
+    "category": "maintenance"
+  },
+  "WRK-662": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:12.848717+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "analysis(digitalmodel): engineering standards citation audit \u2014 version + clause consistency via Gemini",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-665": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:13.074157+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset",
+    "priority": "medium",
+    "category": "business"
+  },
+  "WRK-666": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:13.292142+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(workspace-hub): WhatsApp \u2192 WRK capture pipeline \u2014 monitor number/channel and auto-create work items",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-679": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:13.503679+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "test(review): standardize execute gate variation tests",
+    "priority": "medium",
+    "category": "data"
+  },
+  "WRK-680": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:13.724049+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "governance(review): strengthen archive gate validation",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-681": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:13.961258+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): add anti-pattern sections (no-to-do lists) to agent skills",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-685": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:14.182668+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): update /today to highlight availability of unused preview AI models",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-687": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:14.396989+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation",
+    "priority": "high",
+    "category": "platform"
+  },
+  "WRK-688": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:14.630668+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-694": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:14.853239+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Per-session log files in session-logger.sh",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-TEST-ENSEMBLE": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:15.073492+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Smoke test for ensemble planning",
+    "priority": "low",
+    "category": "uncategorised"
+  },
+  "WRK-1022": {
+    "status": "working",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:15.288969+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-129": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:33.881228+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Standardize analysis reporting for each OrcaFlex structure type",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-5027": {
+    "status": "working",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:15.760306+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-006": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:15.982202+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Upload videos from iPhone to YouTube",
+    "priority": "low",
+    "category": "personal"
+  },
+  "WRK-064": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:16.193770+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'OrcaFlex format converter: license-required validation and backward-compat",
+    "priority": "medium",
+    "category": "engineering"
+  },
+  "WRK-069": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:16.428954+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Acquire USCG MISLE bulk dataset",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-1082": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:16.668259+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): dependency pinning audit \u2014 lock file hygiene + CVE scan across tier-1 repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-121": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:16.901347+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Extract & Catalog OrcaFlex Models from rock-oil-field/s7",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-130": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:17.146254+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Standardize analysis reporting for each OrcaWave structure type",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-131": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:17.364746+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Passing ship analysis for moored vessels \u2014 AQWA-based force calculation and mooring response",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-133": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:17.579313+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Update OrcaFlex license agreement with addresses and 3rd-party terms",
+    "priority": "high",
+    "category": "engineering"
+  },
+  "WRK-280": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:52.309881+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "ABS standards acquisition: create folder + download CP Guidance Notes",
+    "priority": "high",
+    "category": "data"
+  },
+  "WRK-664": {
+    "status": "blocked",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:17.989147+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-009": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:18.224344+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Reproduce rev30 lower tertiary BSEE field results for repeatability",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-010": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:18.445499+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Rerun lower tertiary analysis with latest BSEE data and validate",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-026": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:18.669188+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-057": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:18.887497+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Define canonical spec.yml schema for diffraction analysis",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-058": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:19.127660+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AQWA input backend \u2014 spec.yml to single .dat and modular deck files",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-059": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:19.356598+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaWave input backend \u2014 spec.yml to single .yml and modular includes",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-060": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:19.600638+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Common mesh format and converter pipeline (BEMRosetta + GMSH)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-061": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:19.843311+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CLI and integration layer for spec converter",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-062": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:20.063086+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Test suite for spec converter using existing example data",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-063": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:20.299070+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Reverse parsers \u2014 AQWA .dat and OrcaWave .yml to canonical spec.yml",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-065": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:20.543455+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "S-lay pipeline installation schema + builders for PRPP Eclipse vessel",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-001": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:20.786690+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Repair sink faucet in powder room at 11511 Piping Rock",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-002": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:21.027614+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Stove repair with factory service at 11511 Piping Rock",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-003": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:21.255904+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Garage clean up",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-004": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:21.476093+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Reorganize storage in upstairs bathroom at 11511 Piping Rock",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-007": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:21.709304+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Upload videos from Doris computer to YouTube",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-014": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:21.936187+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "HSE risk index \u2014 client-facing risk insights with risk scoring",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-015": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:22.174746+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Metocean data extrapolation to target locations using GIS and nearest-source",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-017": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:22.418426+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Streamline BSEE field data analysis pipeline \u2014 wellbore, casing, drilling, completions, interventions",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-018": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:22.659261+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico,",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-024": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:22.890214+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Buckskin field BSEE data analysis \u2014 Keathley Canyon blocks 785, 828, 829, 830, 871, 872",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-025": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:23.132880+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AQWA diffraction analysis runner",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-027": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:23.359797+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AQWA batch analysis execution",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-028": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:23.595994+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AQWA postprocessing - RAOs and verification",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-029": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:23.823607+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaWave diffraction analysis runner + file preparation",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-030": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:24.055027+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaWave batch analysis + postprocessing",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-031": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:24.293324+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Benchmark OrcaWave vs AQWA for 2-3 hulls",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-033": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:24.515412+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Develop OrcaFlex include-file modular skill for parametrised analysis input",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-034": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:24.741861+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Develop OrcaWave modular file prep skill for parametrised analysis input",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-035": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:24.981350+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Develop AQWA modular file prep skill for parametrised analysis input",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-037": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:25.215425+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Get OrcaFlex framework of agreement and terms",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-038": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:25.444115+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Compile global LNG terminal project dataset with comprehensive parameters",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-040": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:25.690749+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Mooring benchmarking - AQWA vs OrcaFlex",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-044": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:25.907984+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Pipeline wall thickness calculations with parametric utilisation analysis",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-055": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:26.150118+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "aceengineer-website test coverage improvement",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-067": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:26.397397+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Acquire OSHA enforcement and fatality data",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-068": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:26.631832+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Acquire BSEE incident investigations and INCs data",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-071": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:26.879710+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Acquire NTSB CAROL marine investigations and EPA TRI data",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-076": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:27.126490+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add data collection scheduler/orchestrator for automated refresh pipelines",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-077": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:27.364522+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Validate and wire decline curve modeling into BSEE production workflow",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-079": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:27.594445+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Create marine safety case study \u2014 cross-database incident correlation",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-082": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:27.822353+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Complete LNG terminal data pipeline \u2014 from config to working collection",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-084": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:28.047232+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Integrate metocean data sources into unified aggregation interface",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-087": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:28.291674+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Improve test coverage across workspace repos",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-088": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:28.530032+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode)",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-089": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:28.763568+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Review Claude Code version gap and update cc-insights",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-090": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:29.008442+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Identify and refactor large files exceeding 400-line limit",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-091": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:29.239273+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add dynacard module README",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-092": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:29.461737+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Register dynacard CLI entry point",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-094": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:29.690364+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Plan, reassess, and improve the workspace-hub workflow",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-100": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:29.913526+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Run 3-way benchmark on Barge hull",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-102": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:30.142637+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add generic hull definition/data for all rigs in worldenergydata",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-104": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:30.383610+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Expand drilling rig fleet dataset to all offshore and onshore rigs",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-105": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:30.602052+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add drilling riser component data to worldenergydata",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-107": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:30.833771+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-108": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:31.058130+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Agent usage credits display \u2014 show remaining quota at session start for weekly planning",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-110": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:31.289897+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-111": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:31.537980+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "BSEE field development interactive map and analytics",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-113": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:31.765314+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Maintain always-current data index with freshness tracking and source metadata",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-114": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:31.993781+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Collect hull panel shapes and sizes for various floating bodies from existing sources",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-115": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:32.247435+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Link RAO data to hull shapes in hull library catalog",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-116": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:32.486685+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Scale hull panel meshes to target principal dimensions for hydrodynamic analysis",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-117": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:32.729434+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-119": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:32.962805+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Test suite optimization \u2014 tiered test profiles for commit, task, and session workflows",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-120": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:33.195486+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Research and purchase a smart watch",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-124": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:33.429034+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Session 20260211_095832 \u2014 1 file(s) created",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-127": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:33.655518+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-132": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:34.117937+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-135": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:34.355089+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Ingest XLS historical rig fleet data (163 deepwater rigs)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-139-gmsh": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:34.588119+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Develop gmsh skill and documentation",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-139": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:34.817832+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Unified multi-agent orchestration architecture (Claude/Codex/Gemini)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-142": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:35.058845+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Review work accomplishments and draft Anthropic outreach message",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-143": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:35.301130+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Full symmetric M-T envelope \u2014 closed polygon lens shapes",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-144": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:35.529774+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "API RP 2RD + API STD 2RD riser wall thickness \u2014 WSD & LRFD combined loading",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-145": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:35.781384+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Design code versioning \u2014 handle changing revisions of standards",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-151": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:36.022607+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "worldenergydata test coverage improvement (re-creates WRK-054)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-152": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:36.258599+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Marine safety importer validation \u2014 verify MAIB/TSB/IMO/EMSA importers against real data",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-154": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:36.500494+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CI workflow rewrite \u2014 fix 2 GitHub Actions workflows",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-155": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:36.743449+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "DNV-ST-F101 submarine pipeline wall thickness \u2014 WSD and LRFD methods",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-157": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:36.975911+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fatigue analysis module enhancement \u2014 S-N curve reporting and parametric sweeps",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-158": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:37.214811+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wall thickness parametric engine \u2014 Cartesian sweep across D/t, pressure, material",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-159": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:37.445627+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Three-way design code comparison report \u2014 API RP 1111 vs RP 2RD vs STD 2RD",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-160": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:37.699123+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OSHA severe injury + fatality data completion and severity mapping fix",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-161": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:37.929403+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "BSEE Excel statistics re-download and URL importer verification",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-163": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:38.161294+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Well planning risk empowerment framework",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-167": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:38.395556+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Calendar: Krishna ADHD evaluation \u2014 24 Feb 2:30 PM",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-168": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:38.621091+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "MPD systems knowledge module \u2014 pressure management for drillships",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-170": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:38.857470+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Integrate MET-OM/metocean-stats as statistical analysis engine for metocean module",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-177": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:39.295176+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Stop Hook: Engineering Calculation Audit Trail'",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-178": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:39.506240+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Stop Hook: Data Provenance Snapshot'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-185": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:39.730781+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Ecosystem Truth Review: instruction/skills/work-item centralization",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-186": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:39.974944+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Context budget: trim rules/ to under 16KB'",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-188": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:40.213536+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wave-1 spec migration: worldenergydata dry-run manifest and apply plan",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-190": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:40.452073+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "NCS production data module \u2014 NPD/Sodir open data integration (worldenergydata)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-193": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:40.689583+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "UKCS production data module \u2014 NSTA/OPRED open data integration (worldenergydata)",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-194": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:40.935202+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Brazil ANP production data module \u2014 well-level monthly CSV integration (worldenergydata)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-195": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:41.162908+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "EIA US production data module \u2014 non-GoM onshore + Alaska integration (worldenergydata)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-196": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:41.388714+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor)",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-200": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:41.616248+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Filesystem naming cleanup \u2014 eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-201": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:41.841175+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Work queue workflow gate enforcement \u2014 plan_reviewed, Route C spec, pre-move checks",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-207": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:30.586131+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wire model-tier routing into work queue plan.sh and execute.sh \u2014 Sonnet 4.6 default, Opus 4.6 for Route C plan only",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-210": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:42.330022+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Interoperability skill \u2014 cross-OS standards and health checks for workspace-hub'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-211": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:42.559747+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Ecosystem health check skill \u2014 parallel agent for session and repo-sync workflows'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-212": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:42.807385+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Agent teams protocol skill \u2014 orchestrator routing, subagent patterns, team lifecycle'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-218": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:43.034746+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Well bore design analysis \u2014 slim-hole vs. standard-hole hydraulic and mechanical trade-offs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-220": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:43.284839+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Offshore decommissioning analytics \u2014 data-driven lifecycle planning module",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-226": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:43.517986+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit and improve agent performance files across Claude, Codex, and Gemini",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-228": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:43.740594+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cross-machine terminal UX consistency \u2014 Windows Git Bash vs Linux terminal",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-229": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:43.964194+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Skills curation \u2014 online research, knowledge graph review, update index, session-input health check",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-230": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:44.206141+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Holistic session lifecycle \u2014 unify gap surfacing, stop hooks, and skill input pipeline",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-231": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:44.439624+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "session-analysis skill \u2014 first-class session mining as foundation for skills, gaps, and agent improvement",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-232": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:44.670905+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "session-bootstrap skill \u2014 one-time historical session analysis per machine",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-233": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:44.905174+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Assess and simplify existing workflows in light of session-analysis self-learning loop",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-239": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:45.139623+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "BSEE field pipeline skill \u2014 zero-config agent-callable wrapper",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-240": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:45.382084+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Diffraction spec converter skill \u2014 register as named agent-callable skill",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-241": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:45.611895+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Pipeline integrity skill \u2014 chain wall thickness, parametric engine, and FFS into one callable workflow",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-242": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:45.855164+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Multi-format export as automatic pipeline output stage",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-243": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:46.083971+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Hull analysis setup skill \u2014 chain select, scale, mesh, RAO-link into one call",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-244": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:46.333759+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "OrcaFlex template library skill \u2014 get canonical spec.yml by structure type",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-245": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:46.577977+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fatigue assessment skill \u2014 wrap full module with input schema and auto export",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-246": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:46.825249+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "LNG terminal dataset \u2014 queryable module and aceengineer website data card",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-247": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:47.053853+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "digitalmodel capability manifest \u2014 machine-readable module index for agent discovery",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-248": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:47.296076+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "PHMSA pipeline safety case study \u2014 aceengineer website with data-to-assessment workflow",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-249": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:47.529665+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "ENIGMA safety analysis skill \u2014 register as agent-callable capability",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-250": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:47.773784+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cross-database marine safety case study \u2014 MAIB, IMO, EMSA, TSB correlation analysis",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-252": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:48.011927+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "worldenergydata module discoverability review \u2014 regenerate after new data source modules",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-255": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:48.255192+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Hull library lookup skill \u2014 closest-match hull form by target dimensions",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-258": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:48.485266+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Close WRK-153 as superseded \u2014 defer BSEE case study rebuild to after WRK-019 and WRK-171",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-259": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:48.697521+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "common.units \u2014 global unit conversion registry for cross-basin analysis",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-260": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:48.918467+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cross-regional production data query interface \u2014 unified layer across all 8 basins",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-265": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:49.121219+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-266": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:49.364819+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Calibrate decommissioning cost model against BSEE platform removal notices",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-267": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:49.596786+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Calibrate well planning risk probabilities against BSEE incident and HSE data",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-268": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:49.839405+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wire ENIGMA safety skill to real HSE incident database for data-driven scoring",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-269": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:50.064839+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CP standards research \u2014 inventory codes, map version gaps, define implementation scope",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-270": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:50.288556+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fix cathodic-protection SKILL.md \u2014 align examples to real CathodicProtection API",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-271": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:50.531445+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CP worked examples \u2014 end-to-end reference calculations for pipeline, ship, and offshore platform",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-272": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:50.762813+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CP capability extension \u2014 DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-274": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:51.000836+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "saipem repo content index \u2014 searchable catalog of disciplines, project files, and key docs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-275": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:51.237974+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "acma-projects repo content index \u2014 catalog projects, codes & standards, and key reference docs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-276": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:51.458304+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Abstract all CP client calcs to .md reference \u2014 strip project names, keep engineering data, use as tests",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-277": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:51.665110+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "CP capability \u2014 ABS GN Offshore Structures 2018 route for ABS-classed offshore structures",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-278": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:51.878586+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Wire legal-sanity-scan into pre-commit for CP-stream repos \u2014 activate deny list CI gate",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-279": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:52.088085+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit & govern the /mnt/ace/ Codex relocation plan",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-282": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:52.518306+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-283": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:52.764930+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-285": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:52.995730+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Write active WRK id to state file on working/ transition",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-290": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:53.220556+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta)",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-303": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:53.448615+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Ensemble planning \u2014 3\u00d7Claude + 3\u00d7Codex + 3\u00d7Gemini independent agents for non-deterministic plan diversity",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-309": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:53.685722+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Document intelligence \u2014 index, understand, link and plan use of all stored documents",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-351": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:53.916868+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Assign workstation to all pending/working/blocked WRK items + bake into planning workflow",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-357": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:54.138679+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Extract offshore vessel fleet data from Offshore Magazine survey PDFs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-358": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:54.365352+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Enrich vessel fleet data with online research \u2014 current fleet status + newer surveys",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-359": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:54.593973+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Design and build vessel marine-parameters database for engineering analysis",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-360": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:54.845547+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Extract contractor contact data + build offshore contractor BD call list",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-372": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:55.081849+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AI-engineering software interface skills \u2014 map and build skills AI agents need to drive engineering programs",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-373": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:55.332063+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Vision document \u2014 bridge current repo mission to autonomous-production future",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-374": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:55.560157+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Verify repository_sync cron job on all workstations",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-375": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:55.807065+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-471": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:56.029098+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-610": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:56.269124+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-615": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:56.495031+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Organize files and establish directory structure in CAD-DEVELOPMENTS",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-1002": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:56.730390+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "test(gatepass): claude orchestrator \u2014 work-queue lifecycle end-to-end with circle math TDD",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-1003": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:56.971891+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "test(gatepass): codex orchestrator \u2014 work-queue lifecycle end-to-end with circle math TDD",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-1004": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:57.201330+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "test(gatepass): gemini orchestrator \u2014 work-queue lifecycle end-to-end with circle math TDD",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-1005": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:57.442746+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assess(orchestrators): cross-provider capability assessment \u2014 Claude vs Codex vs Gemini",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1009": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:57.689441+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Skill upkeep and curation \u2014 evals, A/B tests, daily cron integration",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1010": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:57.925390+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Skill capability assessment for WRK-624 workflow governance skill set",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1013": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:58.174178+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(skills): fix Anthropic guide violations \u2014 README.md in skill folders, oversized SKILL.md files",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1014": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:58.414076+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "improve(workflow): add plan-mode ideation stage to WRK lifecycle \u2014 pre-Stage 4 orchestrator think-through",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1015": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:58.660619+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1016": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:58.872962+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): review all settings.json and ecosystem configs for peak productivity",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1017": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:59.105815+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1018": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:59.340845+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1019": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:59.572206+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): repo-portfolio-steering skill \u2014 balance harness vs technical work to hit GTM objectives",
+    "priority": "high",
+    "category": "business"
+  },
+  "WRK-1020": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:05:59.813718+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "[Route B] feat(cron): portfolio-signals.yaml \u2014 daily agentic activity + capability research signal for repo-portfolio-steering",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1023": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:00.024673+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): add per-provider model/effort/knobs summary to daily cron checks",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1025": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:00.279868+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(session): execution-stage analytics \u2014 structured signals from Stage 10 work execution",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1026": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:00.528839+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1028": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:00.737346+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1030": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:00.963083+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add /resume slash command for WRK checkpoint resumption",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1034": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:01.187902+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Enforce Stage 7 and Stage 17 user-review as hard blocking gates",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1035": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:01.423151+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Beef up user-review stages in work-queue-workflow SKILL from recent session learnings",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1036": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:01.653414+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Agent teams lifecycle \u2014 audit logs, session-start availability, session-exit tidy",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1037": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:01.897967+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "cross-review hardening: uv readiness tests + Codex-missing user approval gate",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1038": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:02.115369+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Investigate verbose output effect on session logs and log learning to skill",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-1039": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:02.357842+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Harden gate verifier \u2014 14 gaps from WRK-1035 session audit",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1040": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:02.599184+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Nomenclature canonicalisation \u2014 eliminate session/stage/phase confusion",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1041": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:02.808521+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Lifecycle HTML \u2014 auto-refresh (30s meta tag) for lifecycle + plan HTML",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1042": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:03.025738+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "tidy-agent-teams: sentinel file support for non-conforming team names",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-1044": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:03.267307+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Deterministic gate enforcement \u2014 D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit)",
+    "priority": "high",
+    "category": "harness/session"
+  },
+  "WRK-1045": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:03.487155+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Session compliance audit \u2014 validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening",
+    "priority": "medium",
+    "category": "harness/session"
+  },
+  "WRK-1046": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:03.734836+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Auto context-reset between WRK stages \u2014 checkpoint-driven subagent-per-stage execution",
+    "priority": "high",
+    "category": "harness/session"
+  },
+  "WRK-1047": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:03.978088+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): keep all workstations ready so engineering work is never blocked by harness drift",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1049": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:04.234688+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "work-queue: prevent concurrent session claim collision \u2014 session lock + process.md deprecation",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1052": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:04.476519+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): log model, context limit, effort level at session start",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1053": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:04.702992+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(skills): convert deterministic skill loops to scripts \u2014 non-deterministic \u2192 deterministic path",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1054": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:04.948090+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): unified test runner and result aggregation across tier-1 repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1055": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:05.183279+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): engineering MCP servers \u2014 domain tools for AI agents",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1056": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:05.426331+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): code quality automation \u2014 ruff + mypy across tier-1 repos",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1057": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:05.657059+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): repo health dashboard \u2014 dirty state, branch, test signal per repo",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1058": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:05.903669+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): documentation layout quality checks \u2014 docstrings + README completeness",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1059": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:06.153312+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): reference documentation quality checks \u2014 API completeness + docs/ audit",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1060": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:06.385017+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): quality gap discovery \u2014 audit folders not covered by quality checks",
+    "priority": "low",
+    "category": "harness"
+  },
+  "WRK-1061": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:06.634116+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): cross-review input auto-generation from WRK diff + context",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1062": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:06.875973+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): engineering test fixtures \u2014 deterministic data layer for live-data tests",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1063": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:07.105731+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): engineering spec templates \u2014 Route C domain starters for structural, marine, energy",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1064": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:07.352002+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): pre-push CI gate \u2014 test + quality checks on every push",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1065": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:07.571130+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): context budget monitor \u2014 auto-checkpoint at 80% + session chunking guide",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1066": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:07.817702+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): environment parity audit \u2014 tool versions across ace-linux-1, ace-linux-2, acma-ansys05",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1067": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:08.063231+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): test coverage enforcement \u2014 per-repo coverage gate at 80% minimum",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1068": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:08.302966+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): WRK dependency graph \u2014 visualise blocked_by chains for sequencing",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1069": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:08.552722+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): per-WRK token cost attribution \u2014 track AI spend by work item",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1070": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:08.777698+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): secrets audit \u2014 automated scan for hardcoded credentials across all repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1071": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:09.022033+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): performance benchmark harness \u2014 regression detection for engineering calculations",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1073": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:09.269707+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): repo onboarding maps \u2014 agent-readable entry points per tier-1 repo",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1074": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:09.488373+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): cross-repo API contracts \u2014 interface tests for assetutilities consumers",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1076": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:09.719764+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): async completion notifications \u2014 cron, CI, benchmark failure alerts",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1077": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:09.950878+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "acma-ansys05 workstation readiness setup",
+    "priority": "medium",
+    "category": "harness/ops"
+  },
+  "WRK-1078": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:10.182428+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit and fix WRK pipeline Windows/Git Bash compatibility gaps",
+    "priority": "medium",
+    "category": "harness/ops"
+  },
+  "WRK-1079": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:10.418015+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): type stubs for assetutilities public API \u2014 enable mypy in consumers",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1080": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:10.662376+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(harness): workspace backup strategy \u2014 skills, memory, queue, configs off ace-linux-1",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1081": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:10.907884+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): extended static analysis \u2014 bandit, radon, vulture across tier-1 repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1083": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:11.159099+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Plan-mode integration for work-queue-workflow stages",
+    "priority": "medium",
+    "category": "harness/skills"
+  },
+  "WRK-1084": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:11.407301+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Integrate skills.sh as reference for all skill lifecycle operations",
+    "priority": "medium",
+    "category": "harness/skills"
+  },
+  "WRK-1085": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:11.637899+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): search indexing \u2014 fast cross-repo code and content search",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1086": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:11.869852+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): module scaffolding \u2014 new engineering module boilerplate generator",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1087": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:12.116927+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): agent audit trail \u2014 immutable action log across all sessions",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1090": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:12.363247+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Dependency health \u2014 uv.lock freshness, CVE advisories, outdated deps across 5 repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1091": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:12.580079+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Cross-repo integration test gate \u2014 detect API breaks between assetutilities, digitalmodel, worldenergydata",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1092": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:12.824140+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Type coverage ratchet \u2014 mypy error count can only decrease across 5 repos",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1093": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:13.027549+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Documentation currency \u2014 detect when README/docs drift from code",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1094": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:13.251547+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Config drift \u2014 CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1095": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:13.471811+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Complexity ratchet \u2014 radon cyclomatic complexity progressive gate across 5 repos",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1097": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:13.698576+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1098": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:13.911384+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(workspace-hub): repo ecosystem terminology skill \u2014 canonical names, abbreviations, and relationships for humans and coding assistants",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1099": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:14.143892+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): whats-next.sh \u2014 subcategory filter + workstation-aware sort",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1100": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:14.371458+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(whats-next): exclude standing+cadence items from priority list",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1102": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:14.593840+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(comprehensive-learning): repair modular chain \u2014 signal naming, missing phases, redundant cron, LLM\u2192script conversions",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1105": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:14.838143+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Knowledge persistence architecture \u2014 move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1106": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:15.071467+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1108": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:15.298272+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Investigate WhatsApp MCP integration for Claude",
+    "priority": "low",
+    "category": "harness/skills"
+  },
+  "WRK-1111": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:15.513312+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(context): @ file reference pipeline \u2014 auto-include key schemas and configs in CLAUDE.md",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1112": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:15.721720+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(review): limit cross-review iterations to 3 and announce limit upfront",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1114": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:15.946778+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): machine-partitioned WRK ID ranges \u2014 prevent ID clash between machines",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1115": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:16.170660+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Unified Plan+Lifecycle HTML \u2014 single refresh per WRK item",
+    "priority": "medium",
+    "category": "tooling"
+  },
+  "WRK-1119": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:16.397890+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): defined permission model \u2014 replace dangerouslySkipPermissions with allow/deny lists",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1120": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:16.636450+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(work-queue): atomic ID reservation \u2014 prevent concurrent new-item ID collisions",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1123": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:16.866726+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(work-queue): Stage 1 guard missing \u2014 start_stage.py writes session-lock on pending items",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1124": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:17.111302+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1125": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:17.342555+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "refine(whats-next): surface note/reason fields and improve focus signals",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1127": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:17.592243+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Feature-first planning with AI agent chunking",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1130": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:17.841239+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Feature layer tooling \u2014 new-feature.sh, status, close-check, dep_graph, INDEX.md",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1131": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:18.072150+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Feature layer process \u2014 stage contracts, workflow SKILL.md, whats-next",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1132": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:18.298544+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(harness): multi-code standards semantic search \u2014 RuleAgent-equivalent for DNV/API/ABS/BS",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1135": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:18.536018+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(whats-next): handle coordinating feature WRKs \u2014 suppress from WORKING, show child progress",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1138": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:18.769889+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(whats-next): guard pending scan against archived ghost items",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1142": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:19.010451+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-118": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:19.253929+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "AI agent utilization strategy \u2014 leverage Claude, Codex, Gemini for planning, development, testing workflows",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-234": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:19.483295+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "MISSION: Self-healing and self-improving repo ecosystem \u2014 code, deps, types, tests, docs, and agents all improve automatically",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-570": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:19.719658+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-577": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:19.960401+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-624": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:20.189332+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "chore(work-queue): review and harden workflow \u2014 linear stage schematic + agent completion gates",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-633": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:20.402586+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(workspace-hub): create missing roadshow skills \u2014 engineering-chatbot-demo + maritime-legal",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-637": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:20.609525+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(memory): memory governance \u2014 compaction, tiering, eviction to prevent context-rot",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-638": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:20.845483+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Memory quality eval harness",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-658": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:21.071829+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(workflow): enforce gate+logging contract for every AI agent",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-667": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:21.278673+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-668": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:21.526492+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): archive tooling contract and auto spin-off workflow",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-684": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:21.753984+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-691": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:21.979183+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(session): interactive session analysis \u2014 assess loaded rules, skills, and context at session start",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-692": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:22.206483+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(session): interactive session analysis \u2014 codex-orchestrator variant",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-693": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:22.424895+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "fix(scripts): audit and replace bare python3 with uv across all hub scripts",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-011": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:22.621689+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Run BSEE analysis for all leases with field nicknames and geological era grouping",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-012": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:22.815691+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Audit HSE public data coverage and identify gaps",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-013": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:23.016979+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "HSE data analysis to identify typical mishaps by activity and subactivity",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-016": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:23.241650+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "BSEE completion and intervention activity analysis for insights",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-049": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:23.454689+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Determine dynacard module way forward",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-051": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:23.663453+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "digitalmodel test coverage improvement",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-052": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:23.859484+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assetutilities test coverage improvement",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-053": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:24.075837+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assethold test coverage improvement",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-054": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:24.276400+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "worldenergydata test coverage improvement",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-056": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:24.479311+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "aceengineer-admin test coverage improvement",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-066": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:24.699613+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Review and improve digitalmodel module structure for discoverability",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-070": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:24.909444+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Import PHMSA pipeline data and build pipeline_safety module",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-072": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:25.102489+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Technical safety analysis module for worldenergydata using ENIGMA theory",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-073": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:25.315459+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Market digitalmodel and worldenergydata capabilities on aceengineer website",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-074": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:25.535523+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Complete marine safety database importers (MAIB, IMO, EMSA, TSB)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-078": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:25.727022+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Create energy data case study \u2014 BSEE field economics with NPV/IRR workflow",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-083": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:25.928706+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "",
+    "priority": "",
+    "category": ""
+  },
+  "WRK-086": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:26.126643+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Rewrite CI workflows for Python/bash workspace",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-093": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:26.324989+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Improve dynacard AI diagnostics",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-096": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:26.520605+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Review and improve worldenergydata module structure for discoverability",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-097": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:26.725889+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Implement three-tier data residence strategy (worldenergydata \u2194 digitalmodel)",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-098": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:26.932973+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Clean up 7.1GB large data committed to worldenergydata git history",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-1011": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:27.121524+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "feat(work-queue): workflow-html skill \u2014 mandatory consistent HTML review artifact for all WRK items",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1029": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:27.336653+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Align resource-intelligence skill with Stage 2 micro-skill contract",
+    "priority": "medium",
+    "category": "harness"
+  },
+  "WRK-1031": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:27.531962+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Single lifecycle HTML: embed full plan content inline, retire snapshot files",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-103": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:27.733788+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add heavy construction/installation vessel data to worldenergydata",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-109": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:27.932354+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Review, refine, and curate hooks + skills \u2014 research best practices from existing workflows",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-122": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:28.140729+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Licensed Software Usage Workflow & Burden Reduction",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-134": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:28.348946+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add future-work brainstorming step before archiving completed items",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-138": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:28.540787+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-153": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:28.756702+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Energy data case study \u2014 BSEE field economics with NPV/IRR workflow",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-164": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:28.958275+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Well production test data quality and nodal analysis foundation",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-179": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:29.173455+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Start Hook: Agent Capacity Pre-flight'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-184": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:29.391423+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Improve /improve \u2014 Bug fixes, recommendations output, startup readiness",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-187": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:29.613584+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Improve /improve: usage-based skill health, classify retry, apply API content'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-204": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:29.863943+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-205": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:30.111544+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Skills knowledge graph \u2014 capability metadata and relationship layer beyond flat index",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-206": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:30.342809+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Asset integrity / fitness-for-service (FFS) engineering skill \u2014 corrosion damage assessment and run-repair-replace decisions",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-208": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:30.821742+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Cross-platform encoding guard \u2014 pre-commit + post-pull encoding validation'",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-209": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:31.045945+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Add unit validator to EnvironmentSpec.water_density \u2014 catch physically implausible values",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-213": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:31.273598+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Codex multi-agent roles \u2014 assess native role system vs workspace-hub agent skill approach'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-214": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:31.517684+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Session lifecycle compliance \u2014 interview-driven review of all workflow scaffolding'",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-215": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:31.762704+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Graph-aware skill discovery and enhancement \u2014 extend /improve with proactive gap analysis'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-216": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:32.008906+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Subagent learning capture \u2014 emit signals to pending-reviews before task completion'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-217": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:32.256011+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "'Update ecosystem-health-check.sh \u2014 remove stale skill count threshold'",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-222": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:32.496893+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Pre-clear session snapshot \u2014 /save skill + save-snapshot.sh script",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-223": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:32.740109+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Workstations registry \u2014 hardware inventory, hardware-info.sh, ace-linux-1 specs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-224": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:32.984053+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Tool-readiness SKILL.md \u2014 session-start check for CLI, data sources, statusline, work queue",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-225": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:33.207547+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Investigate plugins vs skills trade-off for repo ecosystem",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-287": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:33.451552+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-299": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:33.702015+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "comprehensive-learning skill \u2014 single batch command for all session learning + ecosystem improvement",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-300": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:33.933732+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "workstations skill \u2014 evolve from registry to multi-machine work distribution",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-307": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:34.176710+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "track: lean-session hook requirement missed \u2014 accountability record",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-310": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:34.408308+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Daily network-mount readiness check \u2014 SSHFS mounts always available on both machines",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-350": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:34.652662+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Fix pre-existing test failures in assetutilities",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-364": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:34.887297+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Delete Windows-path directory artifacts in digitalmodel and worldenergydata",
+    "priority": "high",
+    "category": ""
+  },
+  "WRK-365": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:35.112327+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "worldenergydata root cleanup \u2014 modules/, validators/, tests/agent_os/",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-366": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:35.357681+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assethold root cleanup \u2014 .agent-os/, business/, agents/, empty dirs",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-367": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:35.603648+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "assetutilities src/ cleanup \u2014 orphaned src/modules/ and src/validators/",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-368": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:35.851307+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Create repo-structure skill \u2014 canonical source layout for all tier-1 repos",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-369": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:36.062781+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "Remove agent_os references from digitalmodel .claude/ infrastructure",
+    "priority": "low",
+    "category": ""
+  },
+  "WRK-377": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T15:06:36.310072+00:00",
+    "updated_by": "rebuild-wrk-index",
+    "title": "ROP prediction model \u2014 Bourgoyne-Young and Warren in digitalmodel",
+    "priority": "high",
+    "category": ""
+  }
+}

@@ -985,6 +985,9 @@ def main() -> None:
             sys.exit(result.returncode)
         else:
             print("Queue state validation passed.")
+            rebuild_script = QUEUE_ROOT.parent.parent / "scripts" / "work-queue" / "rebuild-wrk-index.sh"
+            if rebuild_script.exists():
+                subprocess.run([bash, str(rebuild_script)], capture_output=True)
 
 
 if __name__ == "__main__":

@@ -113,6 +113,12 @@ for dir in "working" "pending" "blocked" "done"; do
   fi
 done
 
+# Update centralized status index
+INDEX_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-wrk-index.sh"
+if [[ -x "$INDEX_UPDATER" ]]; then
+  bash "$INDEX_UPDATER" "$ITEM_ID" "archived" "$(basename "$0")" || true
+fi
+
 # Regenerate index
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
