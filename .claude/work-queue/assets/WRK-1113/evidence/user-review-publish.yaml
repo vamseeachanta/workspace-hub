@@ -1,0 +1,36 @@
+wrk_id: WRK-1113
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-1113-doc-corpus-extraction
+    commit: eafdee63
+    documents:
+      - .claude/work-queue/assets/WRK-1113/WRK-1113-plan.html
+      - specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+    published_at: "2026-03-12T18:00:00Z"
+    reviewer: user
+    notes: Stage 5 plan draft pushed for user review
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-1113-doc-corpus-extraction
+    commit: 877916ef
+    documents:
+      - .claude/work-queue/assets/WRK-1113/WRK-1113-plan.html
+      - specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+    published_at: "2026-03-12T18:30:00Z"
+    reviewer: user
+    notes: Stage 7 final plan pushed and user-approved
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-1113-doc-corpus-extraction
+    commit: a2df381d
+    documents:
+      - .claude/work-queue/assets/WRK-1113/WRK-1113-lifecycle.html
+      - .claude/work-queue/assets/WRK-1113/review.md
+      - .claude/work-queue/assets/WRK-1113/ac-test-matrix.md
+    published_at: "2026-03-12T21:30:00Z"
+    reviewer: user
+    notes: Stage 17 close review — lifecycle HTML and cross-review artifacts pushed
