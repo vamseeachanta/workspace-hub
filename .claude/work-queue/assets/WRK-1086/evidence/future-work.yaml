@@ -1,0 +1,30 @@
+wrk_id: WRK-1086
+generated_at: "2026-03-12T08:55:00Z"
+recommendations:
+  - id: FW-1
+    title: "mypy check on generated module stubs"
+    rationale: >
+      AC5 covers ruff. A follow-on should verify generated code also passes mypy
+      for repos with strict type-checking (assetutilities has py.typed).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P3
+  - id: FW-2
+    title: "Add --list-templates flag to new-module.sh"
+    rationale: >
+      Engineers may not know available domains; --list-templates would print
+      the domain names and their stub descriptions.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P3
+  - id: FW-3
+    title: "Extend templates to include conftest.py fixtures"
+    rationale: >
+      Many modules will need shared fixtures (e.g. sample cfg dict).
+      Scaffolding a conftest.py stub reduces boilerplate further.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P3

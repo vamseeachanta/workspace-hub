@@ -1,0 +1,23 @@
+wrk_id: WRK-1086
+scope: integrated
+completed_at: "2026-03-12T08:50:00Z"
+commit: a4b252ae
+integrated_repo_tests:
+  - name: "5 TDD cases pass (all 5 repos + domains)"
+    scope: integrated
+    command: "bash scripts/scaffolding/tests/test_new_module.sh"
+    result: pass
+    artifact_ref: scripts/scaffolding/tests/test_new_module.sh
+    notes: "5 PASS, 0 FAIL"
+  - name: "ruff clean on generated code"
+    scope: repo
+    command: "uv tool run ruff check <generated_dir>"
+    result: pass
+    artifact_ref: scripts/scaffolding/new-module.sh
+    notes: "All checks passed on assetutilities generated output"
+  - name: "assetutilities generic module scaffold"
+    scope: integrated
+    command: "bash scripts/scaffolding/new-module.sh assetutilities test_mod --output-root /tmp/t"
+    result: pass
+    artifact_ref: scripts/scaffolding/templates/generic/module.py.tmpl
+    notes: "4 artefacts created, py.typed present, failing test marker confirmed"

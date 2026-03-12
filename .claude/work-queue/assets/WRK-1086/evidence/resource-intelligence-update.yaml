@@ -1,0 +1,13 @@
+wrk_id: WRK-1086
+updated_at: "2026-03-12T08:55:00Z"
+additions:
+  - topic: "module scaffolding script location"
+    learning: >
+      scripts/scaffolding/new-module.sh generates TDD-ready module stubs for
+      all 5 tier-1 repos. Use before starting any new engineering module WRK.
+    source: WRK-1086 implementation
+  - topic: "template renderer pattern"
+    learning: >
+      scripts/scaffolding/render_template.py uses plain str.replace with
+      {{TOKEN}} syntax — no Jinja2 dep needed for simple scaffolding.
+    source: WRK-1086 implementation
