@@ -298,7 +298,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `specs/wrk/WRK-660/test-coverage-gap-plan.md` exists with pytest code blocks</li><li>☐ Each module has ≥3 test functions (happy + edge + error)</li><li>☐ 5 test files scaffolded and collect without errors</li><li>☐ No overlap with existing test functions (comm check passes)</li><li>☐ Legal scan passes</li></ul><div class="section-label">Plan</div><ul class="item-list"></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-660.md</code></li></ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `specs/wrk/WRK-660/coverage-baseline.txt` exists with per-module % before</li><li>☐ `specs/wrk/WRK-660/test-coverage-gap-plan.md` with pytest blocks for all 4 gap modules</li><li>☐ Each module ≥3 test functions, each with at least one `assert` (no empty stubs)</li><li>☐ `uv run python -m pytest` on 4 new test files exits 0</li><li>☐ Coverage increased vs baseline for all 4 gap modules</li><li>☐ No name collision with existing tests (sorted `grep -hoP` + comm check passes)</li><li>☐ Legal scan passes</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-660.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -316,7 +316,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -334,7 +334,10 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+    <div class="section-label">Cross-review summary</div><table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th><th>P1</th><th>P2</th></tr></thead><tbody><tr><td>1</td><td><strong>claude</strong></td><td><span class="badge badge-fail">REQUEST_CHANGES</span></td><td style='text-align:center'>—</td><td style='text-align:center'></td></tr>
+<tr><td>1</td><td><strong>gemini</strong></td><td><span class="badge badge-fail">REQUEST_CHANGES</span></td><td style='text-align:center'>—</td><td style='text-align:center'></td></tr>
+<tr><td>1</td><td><strong>codex</strong></td><td><span class="badge badge-info">SKIPPED</span></td><td style='text-align:center'>—</td><td style='text-align:center'></td></tr>
+</tbody></table><p style="margin:8px 0 4px">Overall: <span class="badge badge-fail">MINOR_REVISIONS_APPLIED</span> &nbsp; <span class="badge badge-warn">P1 OPEN</span> &nbsp;<span style="font-size:.82rem;color:var(--muted)">1 round(s)</span></p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
