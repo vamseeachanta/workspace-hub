@@ -12,3 +12,9 @@ events:
     html_ref: .claude/work-queue/assets/WRK-660/WRK-660-lifecycle.html
     opened_at: "2026-03-12T14:25:00Z"
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-660/WRK-660-lifecycle.html
+    opened_at: "2026-03-12T15:55:00Z"
+    reviewer: vamsee

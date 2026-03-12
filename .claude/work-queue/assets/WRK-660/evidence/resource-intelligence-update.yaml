@@ -2,17 +2,17 @@ wrk_id: WRK-660
 stage: 16
 updated_at: "2026-03-12T15:45:00Z"
 
-learnings:
+additions:
   - repo: assetutilities
-    finding: "base_configs modules are YAML config files only, not Python — no unit tests possible via pytest"
+    finding: "base_configs modules are YAML config files only — no Python source to test"
     applies_to: future coverage WRKs targeting assetutilities
 
   - repo: assetutilities
-    finding: "calculations/ and devtools/ were 0% covered; Gemini large-context approach succeeded for calculations (150 tests from single prompt); devtools CLI functions require filesystem mocking"
+    finding: "calculations/ fully untested (0%); Gemini large-context approach generated 150 tests in one pass; devtools CLI requires filesystem mocking for full coverage"
     applies_to: future coverage WRKs
 
   - tool: gemini
-    finding: "Parallel large-context Gemini calls hit MODEL_CAPACITY_EXHAUSTED on second concurrent call; serialize sequential calls or add delay"
+    finding: "Parallel large-context Gemini calls fail on second call with MODEL_CAPACITY_EXHAUSTED — serialize sequential calls"
     applies_to: any WRK using concurrent Gemini invocations
 
 skills_used:
