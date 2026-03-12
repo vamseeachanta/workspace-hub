@@ -1,0 +1,88 @@
+wrk_id: WRK-1153
+stage: 2
+completion_status: complete
+surveyed_at: "2026-03-12"
+
+existing_resources:
+  scripts_lib_dir:
+    exists: true
+    path: /mnt/local-analysis/workspace-hub/scripts/lib
+    current_contents:
+      - python-resolver.sh (portable Python 3 resolver)
+      - uv-env.sh (uv environment wrapper)
+    status: "Minimal library — ready to expand with download-helpers.sh"
+  
+  knowledge_seeds_dir:
+    exists: true
+    path: /mnt/local-analysis/workspace-hub/knowledge/seeds
+    current_files:
+      - career-learnings.yaml (10 entries; entries[] array schema with id/type/category/title/learned_at/source/context/patterns/follow_ons)
+      - maritime-law-cases.yaml (case-law entries; same array schema)
+      - maritime-liabilities.yaml (legal reference entries; same array schema)
+      - naval-architecture-resources.yaml (domain seed; category/subcategory header; textbooks/hydrostatics_stability/ship_plans/online_portals/pending_manual sections; each entry has id/title/author/year/local_path/source_url/size_mb/topics/notes)
+    status: "Schema established; naval-architecture-resources.yaml provides direct template"
+  
+  skills_data_dir:
+    exists: true
+    path: /mnt/local-analysis/workspace-hub/.claude/skills/data
+    subdirs:
+      - analysis/ (autoviz, bsee-sodir-extraction, data-analysis, data-management, dash, excel-translation, great-tables, polars, streamlit, sweetviz, ydata-profiling)
+      - analytics/
+      - documents/
+      - energy/
+      - engineering/ (empty — ready for new skills)
+      - office/
+      - scientific/
+      - visualization/
+    status: "Directory structure exists; data/ is the correct location for doc-research-download skill"
+  
+  source_script:
+    exists: true
+    path: /mnt/local-analysis/workspace-hub/scripts/data/naval-architecture/download-naval-arch-docs.sh
+    size_lines: 155
+    key_patterns:
+      - "log() function for timestamped logging"
+      - "download() function with: URL, destination directory, optional custom filename"
+      - "Dry-run mode support (--dry-run flag)"
+      - "wget with timeout/retry settings; size reporting"
+      - "Error handling: skip if exists, log failures, clean up failed downloads"
+      - "Batch URL loops for maritime.org ship plans"
+      - "Log file output to .claude/work-queue/assets/WRK-NNN/download.log"
+    status: "Source confirmed; ready for refactoring"
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow (referenced by Stage 10 contract)
+    - superpowers/test-driven-development (Stage 10 requirement)
+    - superpowers/systematic-debugging (Stage 10 requirement)
+  
+  reference_skills:
+    - .claude/skills/data/analysis/autoviz/SKILL.md (1503-line example; comprehensive frontmatter: name/version/description/author/category/capabilities/tools/tags/platforms/related_skills/requires/see_also)
+    - .claude/skills/data/analysis/ subdirectory structure (each skill in own folder with SKILL.md + optional README.md)
+
+skill_format_example: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/autoviz/SKILL.md
+  
+schema_observations:
+  knowledge_seeds_schema:
+    - Top-level fields: category, subcategory, created_at, (optional) source
+    - Naval-architecture template uses section keys (textbooks, hydrostatics_stability, ship_plans, online_portals, pending_manual)
+    - Career-learnings uses entries[] array with id, type, category, subcategory, title, learned_at, source, context, patterns[], follow_ons[]
+    - Each seed file is domain-specific; no canonical unified schema yet defined
+  
+  skill_format_schema:
+    - Frontmatter (YAML between --- delimiters): name, version, description, author, category, capabilities[], tools[], tags[], platforms[], related_skills[], requires[], see_also[]
+    - Body (Markdown): structured sections (When to Use, Prerequisites, Core Capabilities, Complete Examples, Integration Examples, Best Practices, Troubleshooting, Version History, Resources)
+    - Line limits: frontmatter ~30 lines, body typically 500-1500 lines
+  
+  skill_subdirectory_pattern:
+    - Parent: .claude/skills/data/<domain>/
+    - Child: <skill-name>/ containing SKILL.md (required) and optional README.md
+    - Naming: kebab-case folder name matches skill name in SKILL.md frontmatter
+
+gaps:
+  - Knowledge/seeds schema is not yet canonicalized; each seed (naval-arch, career-learnings, maritime-law) uses slightly different structure. WRK-1153 output should standardize schema.md format.
+  - No existing download-helpers.sh in scripts/lib; this is a greenfield addition.
+  - No doc-research-download skill exists yet; .claude/skills/data/engineering/ is empty, ready to receive it.
+  - Stage 10 contract requires entry_reads from stage-7-9 HTML + routing.yaml; plan.html and lifecycle.html may need generation.
+
+notes: "Naval-architecture-resources.yaml is the direct template for knowledge/seeds/schema.md. download-naval-arch-docs.sh contains refactorable log/download/batch patterns. SKILL.md format reference confirmed via autoviz. All prerequisite directories exist."

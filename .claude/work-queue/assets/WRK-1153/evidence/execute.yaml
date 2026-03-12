@@ -1,0 +1,24 @@
+wrk_id: WRK-1153
+stage: execute
+completed_at: "2026-03-12T20:35:00Z"
+files_created:
+  - scripts/lib/download-helpers.sh
+  - knowledge/seeds/schema.md
+  - .claude/skills/data/doc-research-download/SKILL.md
+files_modified:
+  - scripts/data/naval-architecture/download-naval-arch-docs.sh
+  - .claude/work-queue/pending/WRK-1152.md
+verifications:
+  - dry_run_pass: true
+  - lib_standalone_source: true
+  - yaml_frontmatter_valid: true
+cross_review:
+  codex_verdict: REQUEST_CHANGES
+  issues_fixed:
+    - P1: "DRY_RUN comparison hardened to [[ == \"true\" ]]"
+    - P2: "download() returns 1 on wget failure"
+    - P2_skill: "Discovery vs download phase clarified in workflow step 1"
+    - P2_skill: "PDF validation note added (file <path> check)"
+    - P3_skill: "PLANS array ref removed from step 3"
+    - P3_skill: "index-regen-queued.txt defined as concrete evidence artifact"
+legal_scan: PASS
