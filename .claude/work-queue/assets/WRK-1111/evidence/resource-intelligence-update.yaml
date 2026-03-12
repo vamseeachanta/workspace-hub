@@ -1,0 +1,7 @@
+wrk_id: WRK-1111
+stage: 16
+updated_at: 2026-03-12T20:18:00Z
+learnings:
+  - context: Claude Code @file syntax in CLAUDE.md auto-includes file contents every session
+  - context: check-claude-md-limits.sh now exists at scripts/work-queue/ for harness line-limit enforcement
+  - context: docs/context-pipeline.md is canonical reference for @ reference decisions and maintenance

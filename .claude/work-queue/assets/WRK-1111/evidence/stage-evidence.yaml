@@ -6,3 +6,97 @@ stages_completed:
       - evidence/user-review-capture.yaml
     gate: HARD
     gate_result: PASS
+  - stage: 2
+    completed_at: 2026-03-12T00:30:00Z
+    exit_artifacts:
+      - evidence/resource-intelligence.yaml
+    gate: NONE
+    gate_result: PASS
+  - stage: 3
+    completed_at: 2026-03-12T00:44:00Z
+    exit_artifacts: []
+    gate: NONE
+    gate_result: PASS
+  - stage: 4
+    completed_at: 2026-03-12T20:00:00Z
+    exit_artifacts:
+      - WRK-1111-plan.html
+    gate: NONE
+    gate_result: PASS
+  - stage: 5
+    completed_at: 2026-03-12T20:00:00Z
+    exit_artifacts:
+      - evidence/user-review-plan-draft.yaml
+    gate: HARD
+    gate_result: PASS
+  - stage: 6
+    completed_at: 2026-03-12T20:00:00Z
+    exit_artifacts: []
+    gate: NONE
+    gate_result: PASS
+    notes: Route B single-provider review; plan confirmed sound by user
+  - stage: 7
+    completed_at: 2026-03-12T20:00:00Z
+    exit_artifacts:
+      - evidence/plan-final-review.yaml
+    gate: HARD
+    gate_result: PASS
+  - stage: 8
+    completed_at: 2026-03-12T20:05:00Z
+    exit_artifacts:
+      - evidence/activation.yaml
+    gate: HARD
+    gate_result: PASS
+  - stage: 9
+    completed_at: 2026-03-12T20:05:00Z
+    exit_artifacts: []
+    gate: NONE
+    gate_result: PASS
+  - stage: 10
+    completed_at: 2026-03-12T20:15:00Z
+    exit_artifacts:
+      - evidence/execute.yaml
+    gate: NONE
+    gate_result: PASS
+  - stage: 11
+    completed_at: 2026-03-12T20:15:00Z
+    exit_artifacts:
+      - WRK-1111-lifecycle.html
+    gate: NONE
+    gate_result: PASS
+  - stage: 12
+    completed_at: 2026-03-12T20:16:00Z
+    exit_artifacts:
+      - evidence/tdd-results.yaml
+    gate: NONE
+    gate_result: PASS
+  - stage: 13
+    completed_at: 2026-03-12T20:16:00Z
+    exit_artifacts: []
+    gate: NONE
+    gate_result: PASS
+  - stage: 14
+    completed_at: 2026-03-12T20:17:00Z
+    exit_artifacts:
+      - evidence/gate-evidence-summary.md
+    gate: NONE
+    gate_result: PASS
+  - stage: 15
+    completed_at: 2026-03-12T20:17:00Z
+    exit_artifacts:
+      - evidence/future-work.yaml
+    gate: NONE
+    gate_result: PASS
+  - stage: 16
+    completed_at: 2026-03-12T20:18:00Z
+    exit_artifacts:
+      - evidence/resource-intelligence-update.yaml
+    gate: NONE
+    gate_result: PASS
+  - stage: 17
+    completed_at: 2026-03-12T20:20:00Z
+    exit_artifacts:
+      - evidence/user-review-close.yaml
+    gate: HARD
+    gate_result: PASS
+    confirmed_by: vamsee

@@ -1,0 +1,15 @@
+wrk_id: WRK-1111
+stage: 10
+executed_at: 2026-03-12T20:15:00Z
+executor: claude
+files_created:
+  - scripts/work-queue/check-claude-md-limits.sh
+  - docs/context-pipeline.md
+files_modified:
+  - CLAUDE.md
+  - worldenergydata/AGENTS.md
+summary: >
+  TDD guard script written; CLAUDE.md +1 line (17 total, both @ refs added);
+  worldenergydata/AGENTS.md +3 lines (15 total, module shim @ ref added);
+  docs/context-pipeline.md written with audit table and maintenance guide.
+  All files within 20-line harness limit.
