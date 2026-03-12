@@ -432,10 +432,10 @@
     "category": "harness"
   },
   "WRK-1143": {
-    "status": "pending",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:33.061667+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-12T20:31:34.334202+00:00",
+    "updated_by": "manual-close",
     "title": "feat(work-queue): centralized WRK status index \u2014 updated at source by workflow scripts",
     "priority": "high",
     "category": "harness"
