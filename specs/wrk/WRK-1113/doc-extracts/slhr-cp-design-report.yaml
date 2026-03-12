@@ -1,0 +1,54 @@
+doc_ref: "slhr-cp-design-report"
+doc_title: "Hybrid Riser Cathodic Protection Design Report"
+doc_type: report
+domain: cathodic_protection
+section: "§5.1, §5.2, §5.3"
+calc: current_demand, anode_mass_requirement, protected_length, anode_current_output
+module: cathodic_protection/dnv_rp_b401.py
+
+inputs:
+  # Current demand (DNV-RP-B401 Eq 1): I_c = A_c * i_c * f_c
+  buoyancy_tank_area_m2: 1021.0
+  current_density_initial_A_m2: 0.440
+  current_density_mean_A_m2: 0.220
+  breakdown_factor_initial: 0.02
+  breakdown_factor_mean: 0.11
+  breakdown_factor_final: 0.20
+  design_life_years: 22.0
+  utilization_factor: 0.90
+  electrochemical_capacity_Ah_kg: 2000.0
+  # Anode: AFA1190
+  anode_net_mass_kg: 119.0
+  anode_gross_mass_kg: 126.0
+  anode_length_mm: 1530.0
+  # Seawater resistivity
+  rho_buoyancy_ohm_m: 0.22
+  rho_line_pipe_ohm_m: 0.32
+  # Protected length inputs
+  steel_resistivity_ohm_m: 2.0e-7
+  delta_E_me_V: 0.15
+
+expected:
+  buoyancy_tank_initial_current_A: 8.99
+  buoyancy_tank_mean_current_A: 24.70
+  buoyancy_tank_final_current_A: 44.92
+  buoyancy_tank_anode_mass_kg: 2645
+  ura_anode_mass_kg: 1030
+  line_pipe_anode_mass_kg: 159
+  ballast_box_anode_mass_kg: 1860
+  protected_length_12in_upper_m: 3829
+  protected_length_8in_upper_m: 4022
+  unit: "A, kg, m"
+  note: "DNV-RP-B401:2005 methodology, 22-year design life"
+
+mapping_status: found
+
+gap_fill_notes: "Created dnv_rp_b401.py with current_demand, anode_mass_requirement, protected_length, coating_breakdown_factor, anode_resistance_slender_standoff, anode_current_output, flush_anode_resistance, equivalent_radius_from_mass, number_of_anodes"
+
+test_file: "tests/cathodic_protection/test_dnv_rp_b401_doc_verified.py"
+test_function: "TestCurrentDemand, TestAnodeMassRequirement, TestProtectedLength, TestParametricSweeps"
+
+exhausted: false
+exhausted_at: null
+absorbed_into:
+  - cathodic_protection/dnv_rp_b401.py

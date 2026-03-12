@@ -1,0 +1,25 @@
+doc_ref: "impressed-current-spec"
+doc_title: "Specification for Cathodic Protection - Impressed Current Systems"
+doc_type: standard
+domain: cathodic_protection
+section: "N/A"
+calc: N/A
+module: N/A
+
+inputs: {}
+
+expected:
+  value: null
+  unit: ""
+  note: "Binary .doc format — unreadable by automated tools"
+
+mapping_status: unreadable
+
+gap_fill_notes: "Requires manual conversion to PDF or DOCX before extraction. Contains impressed current system sizing parameters for future gap-fill."
+
+test_file: ""
+test_function: ""
+
+exhausted: false
+exhausted_at: null
+absorbed_into: []

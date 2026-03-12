@@ -1,0 +1,37 @@
+doc_ref: "anode-arrangement-drawing"
+doc_title: "Hull Anode Arrangement Drawing"
+doc_type: calculation
+domain: cathodic_protection
+section: "Bill of Materials, General Notes"
+calc: N/A
+module: N/A
+
+inputs:
+  # Bill of materials from drawing
+  bottom_shell_anode_type: "GA-A-1-23H"
+  bottom_shell_qty: 192
+  side_shell_anode_type: "GA-A-1-23H"
+  side_shell_qty: 84
+  thruster_anode_type: "GA-A-1-23H"
+  thruster_qty: 8
+  sea_chest_anode_type: "GA-A-1-23H"
+  sea_chest_qty: 4
+  box_cooler_anode_type: "GA-A-2-10H"
+  box_cooler_qty_total: 20
+  design_life_years: 5
+
+expected:
+  value: null
+  unit: "count"
+  note: "Anode arrangement for vessel hull — 5-year design life. Drawing only, no calculations to verify."
+
+mapping_status: found
+
+gap_fill_notes: "Drawing-only document. No worked calculations to absorb. Anode counts and layout are reference data."
+
+test_file: ""
+test_function: ""
+
+exhausted: true
+exhausted_at: "2026-03-12"
+absorbed_into: []

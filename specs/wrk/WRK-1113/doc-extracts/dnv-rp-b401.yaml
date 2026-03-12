@@ -1,0 +1,34 @@
+doc_ref: "dnv-rp-b401"
+doc_title: "DNV-RP-B401 Cathodic Protection Design"
+doc_type: standard
+domain: cathodic_protection
+section: "§5.4.1, §7.4.1, §7.7.1, §10-4, §10-6, §10-7, §10-8"
+calc: current_demand, anode_mass_requirement, coating_breakdown_factor, anode_resistance_slender_standoff, anode_current_output
+module: cathodic_protection/dnv_rp_b401.py
+
+inputs:
+  # Standard constants implemented as module constants
+  protection_potential_AgAgCl_V: -0.800
+  anode_closed_circuit_potential_V: -1.050
+  design_driving_voltage_V: 0.25
+  anode_capacity_AlZnIn_Ah_kg: 2000.0
+  anode_density_AlZnIn_kg_m3: 2750.0
+  utilization_factor_standoff: 0.90
+  utilization_factor_flush: 0.85
+
+expected:
+  value: null
+  unit: ""
+  note: "Standard reference — constants and formulas verified via report worked examples"
+
+mapping_status: found
+
+gap_fill_notes: "New module dnv_rp_b401.py created with 9 functions covering all key DNV-RP-B401 calculations."
+
+test_file: "tests/cathodic_protection/test_dnv_rp_b401_doc_verified.py"
+test_function: "all test classes"
+
+exhausted: false
+exhausted_at: null
+absorbed_into:
+  - cathodic_protection/dnv_rp_b401.py

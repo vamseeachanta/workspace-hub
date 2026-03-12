@@ -1,0 +1,57 @@
+doc_ref: "riser-modification-cp-design"
+doc_title: "Free-Standing Riser Modification Cathodic Protection Design"
+doc_type: report
+domain: cathodic_protection
+section: "§3.2, §3.3, §3.4, Appendix 2"
+calc: flush_anode_resistance, anode_current_output
+module: cathodic_protection/dnv_rp_b401.py
+
+inputs:
+  # Flush-mount hull anode GA-A-1-29H
+  anode_weight_lb: 29.0
+  anode_weight_kg: 13.2
+  anode_length_in: 24.0
+  anode_width_in: 5.0
+  anode_height_in: 2.5
+  anode_eq_radius_in: 2.39
+  anode_depleted_radius_in: 0.90
+  anode_capacity_Ah_lb: 909.0
+  utilization_factor: 0.85
+  design_driving_voltage_V: 0.25
+  # Suction pile environment
+  suction_pile_rho_ohm_cm: 31.0
+  # Buoyancy can environment
+  buoyancy_can_rho_ohm_cm: 24.0
+  # Coating breakdown factors
+  suction_pile_coating_loss_initial: 0.05
+  buoyancy_can_coating_loss_initial: 0.10
+  design_life_years: 0.5
+
+expected:
+  suction_pile_Ra_initial_ohm: 0.4209
+  suction_pile_Ra_final_ohm: 0.5114
+  suction_pile_Ia_initial_A: 0.59
+  suction_pile_Ia_final_A: 0.49
+  buoyancy_can_Ra_initial_ohm: 0.3258
+  buoyancy_can_Ia_initial_A: 0.77
+  buoyancy_can_Ia_final_A: 0.63
+  suction_pile_anodes_initial: 11.97
+  suction_pile_anodes_final: 10.9
+  buoyancy_can_anodes_initial: 16.5
+  buoyancy_can_anodes_final: 14.7
+  aircan_anodes_initial: 3.8
+  aircan_anodes_final: 4.0
+  unit: "ohm, A, count"
+  note: "DNV RP-B401 methodology, flush-mount Al/Zn/In hull anodes, 6-month service life"
+
+mapping_status: found
+
+gap_fill_notes: "flush_anode_resistance uses Sunde half-space formula (rho/(pi*L) * (ln(2L/r) - 0.5))"
+
+test_file: "tests/cathodic_protection/test_dnv_rp_b401_doc_verified.py"
+test_function: "TestFlushAnodeResistance, TestAnodeCurrentOutput"
+
+exhausted: false
+exhausted_at: null
+absorbed_into:
+  - cathodic_protection/dnv_rp_b401.py
