@@ -67,9 +67,10 @@ lines.append(f"\n## Stage Micro-Skill (rules for this stage)\n```\n{micro_skill}
 ## Tests / Evals
 | what | type | expected |
 |------|------|----------|
-| start_stage.py WRK-test 4 — output includes stage-04 content | happy | stdout contains "Plan Draft" |
-| start_stage.py WRK-test 10 — output includes stage-10 content | happy | stdout contains "Work Execution" |
-| start_stage.py WRK-test 99 — non-existent stage | edge | prints "stage micro-skill not found" (no crash) |
+| start_stage.py WRK-test 4 — stdout includes stage-04 content | happy | stdout contains "Plan Draft" |
+| start_stage.py WRK-test 10 — stage-N-prompt.md includes stage-10 micro-skill | happy | prompt file contains "Work Execution" |
+| valid stage contract + absent micro-skill file | edge | prints "[stage micro-skill not found: ...]", continues without crash |
+| valid stage contract + 2 micro-skill files for same stage | edge | raises RuntimeError / exits non-zero |
 | All 20 micro-skills have ≥5 content lines | happy | wc -l each ≥5 |
 | SKILL.md ≤150 lines after migration | happy | wc -l ≤150 |
 

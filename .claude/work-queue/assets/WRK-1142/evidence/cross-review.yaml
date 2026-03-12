@@ -1,7 +1,7 @@
 wrk_id: WRK-1142
 stage: cross_review
 reviewed_at: "2026-03-12T12:30:00Z"
-verdict: APPROVE
+verdict: REVISE_INCORPORATED
 reviewers:
   - claude
   - codex
