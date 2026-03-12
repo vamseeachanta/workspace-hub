@@ -1,0 +1,7 @@
+wrk_id: WRK-660
+
+merge_status: "no-branch-created"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-660/WRK-660-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-660/legal-scan.md"
+archive_readiness: "pass"
