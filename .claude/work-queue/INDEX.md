@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T11:23:35Z by generate-index.py -->
+<!-- Generated: 2026-03-12T11:26:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T11:23:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T11:26:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 570
+**Total items:** 571
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 222 |
+| pending | 223 |
 | working | 2 |
 | blocked | 10 |
 | archived | 336 |
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 254 |
-| medium | 265 |
+| medium | 266 |
 | low | 50 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 131 |
-| medium | 270 |
+| medium | 271 |
 | complex | 101 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 36 |
+| harness | 37 |
 | engineering | 118 |
 | data | 24 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 229 |
+| workspace-hub | 230 |
 | worldenergydata | 101 |
 
 ### Plan Tracking
@@ -79,7 +79,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 240 / 570 |
+| Plans exist | 240 / 571 |
 | Plans cross-reviewed | 163 |
 | Plans approved | 185 |
 | Brochure pending | 8 |
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 570 |
+| Total captured | 571 |
 | Total archived | 336 |
-| Completion rate | 336/570 (59%) |
+| Completion rate | 336/571 (59%) |
 | Monthly rate (current month) | 102 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 65 / 222 | 29% |
+| Pending items with plans | 65 / 223 | 29% |
 | Plans cross-reviewed | 9 | 12% |
 | Plans user-approved | 9 | 12% |
 
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 92 | 1 | 8 |
-| Medium   | 97  | 1  | 1  |
+| Medium   | 98  | 1  | 1  |
 | Low      | 33  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (36 items — 5 high, 24 medium, 7 low)
+### harness (37 items — 5 high, 25 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -139,6 +139,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1022 | MEDIUM | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | working |
+| WRK-1143 | MEDIUM | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending |
 
 #### harness / ai-config
 
@@ -1161,6 +1162,7 @@ No active feature WRKs found.
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1139 |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1022 |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1390,6 +1392,7 @@ No active feature WRKs found.
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | medium | medium | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | high | medium | workspace-hub | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -2393,6 +2396,7 @@ No active feature WRKs found.
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3028,6 +3032,7 @@ No active feature WRKs found.
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | simple | workspace-hub | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | workspace-hub | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3499,6 +3504,7 @@ No active feature WRKs found.
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | workspace-hub | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -3615,7 +3621,7 @@ No active feature WRKs found.
 
 ## By Computer
 
-### ace-linux-1 (170 active / 290 total)
+### ace-linux-1 (171 active / 291 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3900,6 +3906,7 @@ No active feature WRKs found.
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | workspace-hub |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | workspace-hub |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | workspace-hub |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4283,5 +4290,6 @@ No active feature WRKs found.
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | WRK-1139 | - | - |
+| WRK-1143 | Keyboard shortcut autosuggest — surface missed shortcuts during sessions and make reference always available | WRK-1022 | - | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 
