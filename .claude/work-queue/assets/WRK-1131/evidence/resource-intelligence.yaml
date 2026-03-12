@@ -1,0 +1,27 @@
+wrk_id: WRK-1131
+stage: 2
+generated_at: "2026-03-12T03:45:00Z"
+agent: claude
+completion_status: continue_to_planning
+
+p1_blockers: []
+
+skills:
+  core_used:
+    - name: work-queue-workflow
+      path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+      reason: Stage contract patterns and SKILL.md update guidance
+    - name: workflow-gatepass
+      path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+      reason: Gate-pass requirements for stage contracts
+    - name: work
+      path: .claude/skills/workspace-hub/work/SKILL.md
+      reason: Work queue processing pipeline
+
+key_docs:
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    purpose: Current workflow — will be extended with Feature WRK Lifecycle section
+  - path: scripts/work-queue/close-item.sh
+    purpose: Needs coordinating status acceptance
+  - path: scripts/work-queue/whats-next.sh
+    purpose: Needs Features in progress section

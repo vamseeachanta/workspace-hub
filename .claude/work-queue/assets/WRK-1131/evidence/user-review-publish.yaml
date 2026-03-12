@@ -1,0 +1,22 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "placeholder"
+    published_at: "2026-03-12T03:30:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1131/WRK-1131-lifecycle.html
+      - .claude/work-queue/assets/WRK-1131/evidence/user-review-plan-draft.yaml
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "placeholder2"
+    published_at: "2026-03-12T04:05:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1131/WRK-1131-lifecycle.html
+      - .claude/work-queue/assets/WRK-1131/evidence/plan-final-review.yaml

@@ -1,0 +1,31 @@
+wrk_id: WRK-1131
+stage: 6
+reviewed_at: "2026-03-12T04:30:00Z"
+iterations: 3
+codex_verdict: REQUEST_CHANGES  # round 3 — medium/minor findings noted for implementation
+gemini_verdict: APPROVE
+claude_verdict: APPROVE
+overall: APPROVE  # all P1 findings resolved across iterations
+
+round_1:
+  codex: REQUEST_CHANGES
+  gemini: APPROVE
+  fixes:
+    - new-feature.sh sets status:coordinating after writing children:
+    - validate-queue-state.sh folder-status exemption for coordinating in working/
+    - whats-next.sh reads status+type before category filter
+
+round_2:
+  codex: REQUEST_CHANGES
+  gemini: APPROVE
+  fixes:
+    - close-item.sh has executable feature-close-check.sh guard for type:feature
+    - stage-07 uses feature_notes: not exit_artifacts (exit_stage.py is unconditional)
+
+round_3:
+  codex: REQUEST_CHANGES  # medium/minor only
+  gemini: APPROVE
+  deferred_to_impl:
+    - re.sub must target frontmatter block only (not whole file)
+    - feature-decomposition.yaml is informational per AC3
+    - file count corrected to 9

@@ -1,0 +1,8 @@
+stage: capture
+reviewer: vamsee
+reviewed_at: "2026-03-12T03:45:00Z"
+confirmed_at: "2026-03-12T03:45:00Z"
+approval_decision: approve_as_is
+scope_approved: true
+decision: approved
+notes: "Stage 1 approved. WRK-1131 scope confirmed."

@@ -1,0 +1,6 @@
+stage: plan_draft
+reviewer: vamsee
+reviewed_at: "2026-03-12T03:45:00Z"
+approval_decision: approve_as_is
+decision: approved
+notes: "Stage 1 approved."

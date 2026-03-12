@@ -1,0 +1,8 @@
+version: 1
+wrk_id: WRK-1131
+session_id: "5e6adc33-fc6c-404f-9aeb-a8a6627672d1"
+claimed_at: "2026-03-12T03:45:00Z"
+owner: claude
+quota: available
+route: B
+provider: claude
