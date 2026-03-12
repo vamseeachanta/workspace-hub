@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="30">
+  <title>WRK-1148 Lifecycle — Naval architecture literature gathering — propeller-rudder i</title>
+  <style>
+:root {
+  --bg:         #f3efe6;
+  --panel:      #fffdf8;
+  --ink:        #172126;
+  --muted:      #55636b;
+  --accent:     #0f766e;
+  --accent-2:   #8a5a2b;
+  --line:       #d9d0c0;
+  --shadow:     0 16px 40px rgba(20,33,38,0.08);
+  --good:       #166534;
+  --warn:       #b45309;
+  --bad:        #b91c1c;
+  --done:       #166534;   --done-bg:    #dcfce7;
+  --active:     #92400e;   --active-bg:  #fef3c7;
+  --pending:    #55636b;   --pending-bg: #f1f5f9;
+  --na:         #6b7280;   --na-bg:      #f3f4f6;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.2em .4em;border-radius:3px;font-size:.88em;}
+pre code{background:none;padding:0;}
+pre{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;margin:10px 0;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+/* ── Hero ── */
+.hero{padding:28px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.hero-brand{display:flex;align-items:center;gap:7px;margin-bottom:12px;text-decoration:none;}
+.hero-brand-logo{width:26px;height:26px;background:var(--accent);border-radius:5px;
+  color:#fff;font-weight:900;font-size:.82rem;display:inline-flex;align-items:center;
+  justify-content:center;flex-shrink:0;letter-spacing:-.5px;}
+.hero-brand-name{font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);}
+.hero-nav-link{font-size:.72rem;color:var(--accent);text-decoration:none;margin-left:auto;
+  opacity:.75;font-weight:600;}
+.hero-nav-link:hover{opacity:1;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+/* ── Meta chips (hero) ── */
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;}
+.meta-chip{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.meta-chip strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+/* ── Pill grid (plan/review meta grid) ── */
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.pill-stage{background:var(--active-bg);border-color:#fbbf24;font-weight:600;}
+.meta-break{flex-basis:100%;height:0;}
+.pill-stage strong{color:var(--active);}
+/* ── Stage strip (sticky) ── */
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+/* ── Content & cards ── */
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.plan-body{line-height:1.65;}
+.plan-body p{margin:.6em 0;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+/* ── Data tables (unified across lifecycle + plan) ── */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+thead th{background:var(--panel);border-bottom:2px solid var(--accent);
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.78rem;padding:8px 10px;text-align:left;color:var(--ink);}
+tbody td{border-bottom:1px solid var(--line);padding:7px 10px;
+  color:var(--muted);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td strong,tbody td code{color:var(--ink);}
+tbody tr:hover>td{background:rgba(15,118,110,.03);}
+table.table-sm{font-size:.82rem;}
+table.table-sm thead th{padding:5px 8px;}
+table.table-sm tbody td{padding:4px 8px;}
+/* ── Badges ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;}
+.badge-pass,.b-done{background:#dcfce7;color:var(--good);}
+.badge-warn,.b-active{background:#fef3c7;color:var(--active);}
+.badge-fail,.b-pending{background:#fee2e2;color:var(--bad);}
+.badge-info,.b-chain{background:#dbeafe;color:#1d4ed8;}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+/* ── Lifecycle stage sections ── */
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-weight:600;}
+.schema-val{color:var(--ink);word-break:break-word;max-width:640px;}
+.kv-val{word-break:break-word;max-width:640px;}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+/* ── RI callout ── */
+.ri-callout{max-width:1100px;margin:18px auto 0;padding:0 24px;}
+.ri-callout-inner{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-start;}
+.ri-callout-inner.ri-absent{border-left-color:#d97706;background:#fffbeb;}
+.ri-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
+  font-weight:700;margin-bottom:4px;}
+.ri-label.ri-absent{color:#d97706;}
+.ri-field{font-size:.83rem;line-height:1.4;}
+.ri-field strong{color:var(--ink);display:block;font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);}
+.ri-conf-high{color:var(--done)}.ri-conf-medium{color:#92400e}.ri-conf-low{color:#991b1b}
+/* ── Layout helpers ── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+/* ── Markdown table (plan.html) — inherits global table; slightly smaller ── */
+table.md-table{font-size:.87rem;}
+/* ── Brand footer ── */
+.brand-footer{text-align:center;padding:24px;color:var(--muted);font-size:.78rem;letter-spacing:.05em;}
+.brand-footer strong{color:var(--ink);}
+.brand-dm-logo{display:inline-block;width:18px;height:18px;background:var(--accent);border-radius:3px;color:#fff;font-weight:900;font-size:.7rem;line-height:18px;text-align:center;margin-right:5px;vertical-align:middle;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-brand">
+      <div class="hero-brand-logo">DM</div>
+      <span class="hero-brand-name">digitalmodel &middot; workspace-hub</span>
+      <a class="hero-nav-link" href="WRK-1148-plan.html">&#8599; Plan</a>
+    </div>
+    <p class="eyebrow">WRK-1148 &middot; LIFECYCLE TRACKER</p>
+    <h1>WRK-1148 — Naval architecture literature gathering — propeller-rudder interaction</h1>
+    <p class="lede">Pending &middot; 1/20 stages complete &middot; medium priority</p>
+    <div class="meta-row">
+      <div class="pill pill-stage"><strong>Now</strong>Stage 2: Resource Intelligence</div>
+      <div class="pill pill-stage"><strong>Status</strong>pending</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Orchestrator</strong></div>
+      <div class="pill"><strong>Created</strong>2026-03-12</div>
+      <div class="meta-break"></div>
+      <div class="pill"><strong>Repo</strong>digitalmodel</div>
+      <div class="pill"><strong>Category</strong>engineering</div>
+      <div class="pill"><strong>Subcategory</strong>hydrodynamics</div>
+      <div class="pill"><strong>Priority</strong>medium</div>
+      
+    </div>
+  </div>
+</header>
+
+<nav class="stage-strip">
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-active" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-pending" title="03 Triage">3</a><a href="#s4" class="sc sc-pending" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-pending" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-pending" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+  </div>
+</nav>
+
+<div class="ri-callout"><div class="ri-callout-inner ri-absent"><div class="ri-label ri-absent">Resource Intelligence</div><div class="ri-field">evidence/resource-intelligence.yaml absent — Stage 2 not yet complete.</div></div></div>
+
+<div class="content">
+
+<section class="stage-section" id="s1">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">1</div>
+    <div>
+      <div class="stitle">Capture</div>
+      <div class="smeta">Human interactive · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_interactive</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">Naval architecture literature gathering — propeller-rudder interaction</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val"></span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1148.md</code></li></ul>
+  </div>
+</section>
+<section class="stage-section" id="s2">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">2</div>
+    <div>
+      <div class="stitle">Resource Intelligence</div>
+      <div class="smeta">Chained agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-active">active</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+  </div>
+</section>
+<section class="stage-section" id="s3">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">3</div>
+    <div>
+      <div class="stitle">Triage</div>
+      <div class="smeta">Chained agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s4">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">4</div>
+    <div>
+      <div class="stitle">Plan Draft</div>
+      <div class="smeta">Chained agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s5">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">5</div>
+    <div>
+      <div class="stitle">User Review — Plan Draft</div>
+      <div class="smeta">Human interactive · Heavy · <span class="badge" style="font-size:.68rem;padding:2px 6px;">GATE</span></div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-human">human_interactive</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s6">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">6</div>
+    <div>
+      <div class="stitle">Cross-Review</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s7">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">7</div>
+    <div>
+      <div class="stitle">User Review — Plan Final</div>
+      <div class="smeta">Human interactive · Heavy · <span class="badge" style="font-size:.68rem;padding:2px 6px;">GATE</span></div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-human">human_interactive</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s8">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">8</div>
+    <div>
+      <div class="stitle">Claim / Activation</div>
+      <div class="smeta">Chained agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s9">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">9</div>
+    <div>
+      <div class="stitle">Work-Queue Routing</div>
+      <div class="smeta">Chained agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s10">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">10</div>
+    <div>
+      <div class="stitle">Work Execution</div>
+      <div class="smeta">Task agent · Heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s11">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">11</div>
+    <div>
+      <div class="stitle">Artifact Generation</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s12">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">12</div>
+    <div>
+      <div class="stitle">TDD / Eval</div>
+      <div class="smeta">Task agent · Heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s13">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">13</div>
+    <div>
+      <div class="stitle">Agent Cross-Review</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s14">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">14</div>
+    <div>
+      <div class="stitle">Verify Gate Evidence</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s15">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">15</div>
+    <div>
+      <div class="stitle">Future Work Synthesis</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s16">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">16</div>
+    <div>
+      <div class="stitle">Resource Intelligence Update</div>
+      <div class="smeta">Task agent · Medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s17">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">17</div>
+    <div>
+      <div class="stitle">User Review — Implementation</div>
+      <div class="smeta">Human interactive · Heavy · <span class="badge" style="font-size:.68rem;padding:2px 6px;">GATE</span></div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-human">human_interactive</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s18">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">18</div>
+    <div>
+      <div class="stitle">Reclaim</div>
+      <div class="smeta">Task agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-na">na</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Not applicable for this WRK.</p>
+  </div>
+</section>
+<section class="stage-section" id="s19">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">19</div>
+    <div>
+      <div class="stitle">Close</div>
+      <div class="smeta">Task agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+<section class="stage-section" id="s20">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">20</div>
+    <div>
+      <div class="stitle">Archive</div>
+      <div class="smeta">Task agent · Light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
+</section>
+</div>
+
+<footer class="brand-footer">
+  <span class="brand-dm-logo">DM</span>
+  <strong>digitalmodel</strong> &middot; workspace-hub &middot; work-queue
+</footer>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  chevron.textContent = collapsed ? '\u25bc' : '\u25b2';
+}
+</script>
+</body>
+</html>

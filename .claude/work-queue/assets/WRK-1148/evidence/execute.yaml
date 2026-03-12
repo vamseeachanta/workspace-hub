@@ -1,0 +1,25 @@
+wrk_id: WRK-1148
+stage: 10
+executed_at: "2026-03-12"
+provider: claude
+output_files:
+  - digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md
+sources_used:
+  repo_pdfs:
+    - digitalmodel/docs/domains/openfoam/naval_architecture/propeller_hull_interaction.pdf
+    - digitalmodel/docs/domains/ship-design/maneuvering_ship.pdf
+  synthesised_from_knowledge:
+    - Actuator-disk / Rankine-Froude momentum theory
+    - Holtrop & Mennen (1982, 1984)
+    - Söding (1998) / Brix (1993) Manoeuvring Technical Manual
+    - Molland & Turnock (2007) Marine Rudders and Control Surfaces
+    - ITTC procedures 7.5-02-03-02.1 and 7.5-02-06-01
+    - RANS validation studies 2011-2020
+ac_results:
+  AC1_reference_count: PASS  # 8 numbered sections
+  AC2_entry_fields: PASS      # title/authors/year/contribution/formulae all present
+  AC3_parameter_table: PASS   # J, C_L, t, w all in canonical table
+  AC4_applicability: PASS     # all 8 sections have applicability range
+  AC5_Va_Vt: PASS             # 27 occurrences of Va/Vt
+  AC6_file_exists: PASS       # 616 lines
+  AC7_legal_scan: PASS        # no violations

@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T15:51:34Z by generate-index.py -->
+<!-- Generated: 2026-03-12T16:31:23Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T15:51:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T16:31:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 576
+**Total items:** 580
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 224 |
-| working | 2 |
+| working | 6 |
 | blocked | 10 |
 | archived | 340 |
 
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 255 |
-| medium | 269 |
+| medium | 273 |
 | low | 51 |
 
 ### By Complexity
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 134 |
-| medium | 273 |
-| complex | 101 |
+| medium | 276 |
+| complex | 102 |
 
 ### By Category
 
@@ -41,7 +41,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 35 |
-| engineering | 119 |
+| engineering | 122 |
 | data | 24 |
 | platform | 13 |
 | business | 6 |
@@ -64,14 +64,14 @@
 | assethold | 15 |
 | assetutilities | 18 |
 | client_projects | 1 |
-| digitalmodel | 182 |
+| digitalmodel | 185 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 234 |
+| workspace-hub | 235 |
 | worldenergydata | 101 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 244 / 576 |
-| Plans cross-reviewed | 167 |
-| Plans approved | 189 |
+| Plans exist | 245 / 580 |
+| Plans cross-reviewed | 168 |
+| Plans approved | 190 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 576 |
+| Total captured | 580 |
 | Total archived | 340 |
-| Completion rate | 340/576 (59%) |
+| Completion rate | 340/580 (59%) |
 | Monthly rate (current month) | 106 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,25 +101,25 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 66 / 224 | 29% |
-| Plans cross-reviewed | 9 | 12% |
-| Plans user-approved | 9 | 12% |
+| Pending items with plans | 64 / 224 | 29% |
+| Plans cross-reviewed | 10 | 13% |
+| Plans user-approved | 10 | 13% |
 
 ### Aging
 
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
-| Pending > 14 days | 142 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-294, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-578, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 1 | WRK-129 |
+| Pending > 14 days | 141 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-294, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-578, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-TEST-ENSEMBLE |
+| Working > 7 days | 2 | WRK-129, WRK-149 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 91 | 1 | 8 |
-| Medium   | 99  | 1  | 1  |
+| High     | 89 | 3 | 8 |
+| Medium   | 101  | 3  | 1  |
 | Low      | 34  | 0  | 1  |
 
 ## By Category
@@ -171,7 +171,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1141 | MEDIUM | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending |
+| WRK-1141 | MEDIUM | feat(git-hooks): post-commit auto-push + trunk-based routing script | working |
 
 #### harness / hooks
 
@@ -248,7 +248,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (119 items — 69 high, 39 medium, 11 low)
+### engineering (122 items — 69 high, 42 medium, 11 low)
 
 #### engineering / cathodic-protection
 
@@ -268,7 +268,10 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1147 | MEDIUM | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending |
+| WRK-1147 | MEDIUM | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation [feature] | pending |
+| WRK-1148 | MEDIUM | Naval architecture literature gathering — propeller-rudder interaction | working |
+| WRK-1149 | MEDIUM | Method assessment and selection — propeller-rudder interaction models | pending |
+| WRK-1150 | MEDIUM | Python implementation — propeller-rudder interaction with RPM sweep | pending |
 
 #### engineering / marine
 
@@ -549,7 +552,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-149 | HIGH | digitalmodel test coverage improvement (re-creates WRK-051) | pending |
+| WRK-149 | HIGH | digitalmodel test coverage improvement (re-creates WRK-051) | working |
 | WRK-660 | HIGH | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending |
 
 ### personal (4 items — 1 high, 0 medium, 3 low)
@@ -592,7 +595,9 @@
 
 ## By Feature
 
-No active feature WRKs found.
+| ID | Title | Status | Children |
+|----|-------|--------|----------|
+| [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
 
 ## Master Table
 
@@ -730,7 +735,7 @@ No active feature WRKs found.
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 35% | n/a | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | marine_safety | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -1129,7 +1134,7 @@ No active feature WRKs found.
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1154,13 +1159,17 @@ No active feature WRKs found.
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1139 |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1142 |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1148 |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1149 |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1201,7 +1210,6 @@ No active feature WRKs found.
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | high | complex | digitalmodel | - |
 | WRK-162 | Untitled | medium | medium | - | - |
 | WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | medium | complex | worldenergydata | cost |
 | WRK-180 | Stop Hook: Cross-Agent Learning Sync | low | high | workspace-hub | - |
@@ -1375,7 +1383,6 @@ No active feature WRKs found.
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | medium | medium | workspace-hub | - |
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | low | simple | workspace-hub | - |
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | medium | medium | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | medium | medium | workspace-hub | - |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | medium | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
@@ -1387,12 +1394,14 @@ No active feature WRKs found.
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | high | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | medium | simple | workspace-hub | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | medium | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | high | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | medium | simple | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | medium | medium | workspace-hub | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | low | simple | workspace-hub, aceengineer-website | - |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | medium | medium | digitalmodel | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | medium | complex | digitalmodel | - |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1411,7 +1420,11 @@ No active feature WRKs found.
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | medium | medium | workspace-hub | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | medium | medium | digitalmodel | - |
 
 ### Blocked
 
@@ -1985,7 +1998,7 @@ No active feature WRKs found.
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | complex | structural |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | complex | fatigue |
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | archived | medium | medium | structural |
@@ -2106,8 +2119,11 @@ No active feature WRKs found.
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending | medium | medium | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | - |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | - |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | - |
 
 ### doris
 
@@ -2377,7 +2393,7 @@ No active feature WRKs found.
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | - |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | - |
@@ -2400,12 +2416,13 @@ No active feature WRKs found.
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | - |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | - |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | working | medium | medium | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2583,7 +2600,7 @@ No active feature WRKs found.
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | complex | workspace-hub | agents |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | medium | workspace-hub | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | complex | digitalmodel | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | complex | digitalmodel | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | medium | worldenergydata | marine_safety |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | medium | workspace-hub | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | complex | digitalmodel | structural |
@@ -2772,7 +2789,7 @@ No active feature WRKs found.
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | complex | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | simple | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | archived | complex | workspace-hub | - |
@@ -3042,10 +3059,14 @@ No active feature WRKs found.
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | simple | workspace-hub | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | workspace-hub | - |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | working | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | simple | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | workspace-hub | - |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending | medium | digitalmodel | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | digitalmodel | - |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | digitalmodel | - |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3520,11 +3541,14 @@ No active feature WRKs found.
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | archived | high | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | workspace-hub | - |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | working | medium | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | workspace-hub | - |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending | medium | digitalmodel | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | digitalmodel | - |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | digitalmodel | - |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -3599,7 +3623,7 @@ No active feature WRKs found.
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | workspace-hub | agents |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | digitalmodel | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | digitalmodel | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | digitalmodel | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | digitalmodel | structural |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | digitalmodel | fatigue |
 | WRK-163 | Well planning risk empowerment framework | archived | medium | worldenergydata, digitalmodel | risk_assessment |
@@ -3635,13 +3659,14 @@ No active feature WRKs found.
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | high | workspace-hub | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | - | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | high | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | workspace-hub, digitalmodel | - |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | workspace-hub, digitalmodel | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | archived | high | workspace-hub | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | digitalmodel | - |
 
 ## By Computer
 
-### ace-linux-1 (172 active / 296 total)
+### ace-linux-1 (176 active / 300 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3657,7 +3682,7 @@ No active feature WRKs found.
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | digitalmodel |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | worldenergydata |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | digitalmodel |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | digitalmodel |
 | WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | archived | high | simple | - |
 | WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | pending | medium | complex | worldenergydata |
 | WRK-180 | Stop Hook: Cross-Agent Learning Sync | pending | low | high | workspace-hub |
@@ -3899,7 +3924,7 @@ No active feature WRKs found.
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | workspace-hub |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | workspace-hub |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | workspace-hub, digitalmodel |
+| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | workspace-hub, digitalmodel |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | workspace-hub |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | workspace-hub |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | workspace-hub |
@@ -3924,13 +3949,17 @@ No active feature WRKs found.
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | workspace-hub |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | workspace-hub |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | workspace-hub |
-| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | workspace-hub |
+| WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | working | medium | medium | workspace-hub |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | workspace-hub |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | workspace-hub |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | workspace-hub |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | workspace-hub |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | workspace-hub, aceengineer-website |
-| WRK-1147 | Research and calculate propeller-rudder hydrodynamic interaction on a ship | pending | medium | medium | digitalmodel |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | complex | digitalmodel |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | digitalmodel |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | digitalmodel |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | digitalmodel |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4316,5 +4345,8 @@ No active feature WRKs found.
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | WRK-1139 | - | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | WRK-1142 | - | - |
+| WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | - | - | WRK-1147 |
+| WRK-1149 | Method assessment and selection — propeller-rudder interaction models | WRK-1148 | - | WRK-1147 |
+| WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | WRK-1149 | - | WRK-1147 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 
