@@ -2,5 +2,10 @@ wrk_id: WRK-1131
 stage: 20
 merge_status: n/a-direct-commit
 sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1131/plan-html-review-final.md
+legal_scan_ref: .claude/work-queue/assets/WRK-1131/legal-scan.md
 archive_readiness: pass
-notes: Implementation committed directly on feature branch chore/WRK-1111-at-file-references
+document_index_ref: ""
+document_index_exemption: workflow scripts and docs — not indexed in document-index
+spin_off_wrks: []
+notes: Implementation on feature branch chore/WRK-1111-at-file-references
