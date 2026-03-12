@@ -1,0 +1,35 @@
+wrk_id: WRK-1130
+stage: 13
+reviewed_at: "2026-03-12T03:00:00Z"
+iterations: 3
+codex_verdict: REQUEST_CHANGES  # iteration 3 — minor findings fixed inline
+gemini_verdict: APPROVE
+claude_verdict: APPROVE
+overall: APPROVE  # all P1/High/Medium findings resolved across iterations
+
+round_1:
+  codex: REQUEST_CHANGES
+  gemini: REQUEST_CHANGES
+  claude: REQUEST_CHANGES
+  fixes:
+    - new-feature.sh re-run guard (P1)
+    - dep_graph.py extracted to lib/feature_tree.py (400-line limit)
+    - new-feature.sh atomicity via EXIT trap + sentinel cleanup
+    - children: written inside frontmatter (not after closing ---)
+    - generate-index.py WORK_QUEUE_ROOT env var support
+    - UV_CACHE_DIR bootstrap in dep_graph.py shell wrapper
+
+round_2:
+  codex: REQUEST_CHANGES
+  gemini: APPROVE
+  claude: APPROVE
+  fixes:
+    - python3 → uv run in new-feature.sh heredoc helpers
+    - YAML title escaping (double-quote escape) in child WRK creation
+
+tests_final: 33 PASS / 0 FAIL (57 assertions)
+legal_scan: PASS
+
+deferred_future_work:
+  - Shared children-list parser across 3 shell scripts (DRY / 25% rule)
+  - dep_graph.py at exactly 400 lines — no headroom for future additions
