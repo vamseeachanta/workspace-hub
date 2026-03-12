@@ -13,4 +13,5 @@
 - Cross-review (MANDATORY): `scripts/review/cross-review.sh <file> all` — Codex is hard gate
 - Workflow lifecycle skills (MANDATORY): `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` and `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md`
 - Context: Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max
+- Dep graph: @config/deps/cross-repo-graph.yaml | Repo map: @config/onboarding/repo-map.yaml
 *Delegation: `.claude/docs/orchestrator-pattern.md` | Full docs: `.claude/docs/`*
