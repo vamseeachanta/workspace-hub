@@ -78,7 +78,7 @@ stages:
   stage: Archive
   status: done
   evidence: scripts/work-queue/archive-item.sh
-  - order: 20
-    stage: Archive
-    status: pending
-    evidence: scripts/work-queue/archive-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: scripts/work-queue/archive-item.sh
