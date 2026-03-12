@@ -68,6 +68,24 @@ Fixes #234
 
 See `.claude/docs/pr-process.md` for PR requirements, review process, merge strategy, and branch protection.
 
+## Solo / Multi-Workstation Policy
+
+> Single developer, multiple machines (ace-linux-1, ace-linux-2, acma-ansys05).
+
+**Default: commit directly to `main`, push immediately after every commit.**
+Never leave commits unpushed — push is part of the commit step.
+
+| Situation | Action |
+|---|---|
+| Single-session WRK (most work) | Commit to `main` → push |
+| Multi-session complex WRK (3+ files, >1 session) | Short branch → merge + push same day |
+| Cross-machine work-in-progress | Push branch; pull on other machine |
+| Nightly cron / automation | Commit to `main` → push |
+| Experimental spike | Branch; discard or merge within 1 session |
+
+**`finishing-a-development-branch` skill:** use only for multi-session branches.
+For single-session work, skip it — just commit and push to main directly.
+
 ## Operational Guidelines
 
 - Submodules: commit inside submodule first, then update pointer at hub level

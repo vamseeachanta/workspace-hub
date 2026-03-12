@@ -9,7 +9,7 @@
 6. **Gate evidence verification** — run `scripts/work-queue/verify-gate-evidence.py WRK-xxx` before claiming or closing a WRK so every cross-review (Claude/Codex/Gemini), plan approval, TDD, legal artifact, and required `.claude/work-queue/logs/WRK-*-<stage>.log` audit signal is recorded.
 ## Quick Reference
 - Skills: `/skills` — on-demand only | Session start: `/session-start` before any work request | Terminology: `/ecosystem-terminology`
-- Git: `.claude/rules/git-workflow.md` | Python: `.claude/rules/python-runtime.md` (uv always) | Plans: `specs/modules/`
+- Git: `.claude/rules/git-workflow.md` — commit to `main` + push immediately by default; branch only for multi-session WRKs | Python: `.claude/rules/python-runtime.md` (uv always) | Plans: `specs/modules/`
 - Cross-review (MANDATORY): `scripts/review/cross-review.sh <file> all` — Codex is hard gate
 - Workflow lifecycle skills (MANDATORY): `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` and `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md`
 - Context: Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max
