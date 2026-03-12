@@ -1,5 +1,5 @@
 wrk_id: WRK-1127
-generated_at: "2026-03-12T11:05:00Z"
+generated_at: '2026-03-12T10:55:33Z'
 stages:
 - order: 1
   stage: Capture
@@ -75,9 +75,10 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1127/evidence/reclaim.yaml
 - order: 19
   stage: Close
-  status: pending
+  status: done
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
   status: pending
   evidence: scripts/work-queue/archive-item.sh
+reviewed_by: orchestrator

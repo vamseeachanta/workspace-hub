@@ -1,0 +1,11 @@
+wrk_id: WRK-1127
+stage: 20
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1127/plan-html-review-final.md
+legal_scan_ref: .claude/work-queue/assets/WRK-1127/legal-scan.md
+archive_readiness: pass
+document_index_ref: ""
+document_index_exemption: feature WRK coordinating children — not a direct code artifact
+spin_off_wrks: []
+notes: Feature WRK closed after all 3 children (WRK-1129, WRK-1130, WRK-1131) archived
