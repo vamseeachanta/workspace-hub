@@ -491,6 +491,201 @@ UWRK
 assert_exit "T12: unresolved symbolic dep key → exit 1" 1 \
     env WORK_QUEUE_ROOT="$WQROOT" bash "$NEW_FEATURE" WRK-9006
 
+# ── T13: dep_graph.py --feature exits 0 and prints feature tree ───────────────
+echo ""
+echo "=== T13: dep_graph.py --feature exits 0 and prints tree ==="
+DEP_GRAPH="${REPO_ROOT}/scripts/work-queue/dep_graph.py"
+
+# Build hermetic queue with a feature + 2 children
+DG_ROOT="${TMPDIR_ROOT}/dg-queue/.claude/work-queue"
+mkdir -p "${DG_ROOT}/pending" "${DG_ROOT}/working" "${DG_ROOT}/archived"
+
+cat > "${DG_ROOT}/working/WRK-8001.md" <<'FWRK'
+---
+id: WRK-8001
+title: "DG Test Feature"
+type: feature
+status: coordinating
+children: [WRK-8002, WRK-8003]
+---
+FWRK
+
+cat > "${DG_ROOT}/archived/WRK-8002.md" <<'CWA'
+---
+id: WRK-8002
+title: "DG Child A"
+status: archived
+orchestrator: claude
+blocked_by: []
+parent: WRK-8001
+---
+CWA
+
+cat > "${DG_ROOT}/pending/WRK-8003.md" <<'CWB'
+---
+id: WRK-8003
+title: "DG Child B"
+status: pending
+orchestrator: codex
+blocked_by: [WRK-8002]
+parent: WRK-8001
+---
+CWB
+
+DG_OUT=$(uv run --no-project python "$DEP_GRAPH" \
+    --feature WRK-8001 \
+    --queue-root "${DG_ROOT}" 2>&1)
+DG_EXIT=$?
+
+TOTAL=$((TOTAL + 1))
+if [[ $DG_EXIT -eq 0 ]]; then
+    pass "T13a: dep_graph.py --feature exits 0"
+else
+    fail "T13a: dep_graph.py --feature exited $DG_EXIT; output: $DG_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$DG_OUT" | grep -q "WRK-8001"; then
+    pass "T13b: output contains feature WRK-8001"
+else
+    fail "T13b: output missing WRK-8001; got: $DG_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$DG_OUT" | grep -q "WRK-8002"; then
+    pass "T13c: output contains child WRK-8002"
+else
+    fail "T13c: output missing WRK-8002; got: $DG_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$DG_OUT" | grep -q "WRK-8003"; then
+    pass "T13d: output contains child WRK-8003"
+else
+    fail "T13d: output missing WRK-8003; got: $DG_OUT"
+fi
+
+# ── T14: missing child → [missing] placeholder, still exits 0 ────────────────
+echo ""
+echo "=== T14: missing child → [missing] placeholder, exits 0 ==="
+cat > "${DG_ROOT}/working/WRK-8010.md" <<'FWRK2'
+---
+id: WRK-8010
+title: "Feature with ghost child"
+type: feature
+status: coordinating
+children: [WRK-8011, WRK-9999]
+---
+FWRK2
+
+cat > "${DG_ROOT}/pending/WRK-8011.md" <<'RWA'
+---
+id: WRK-8011
+title: "Real Child"
+status: pending
+orchestrator: claude
+blocked_by: []
+parent: WRK-8010
+---
+RWA
+
+MISS_OUT=$(uv run --no-project python "$DEP_GRAPH" \
+    --feature WRK-8010 \
+    --queue-root "${DG_ROOT}" 2>&1)
+MISS_EXIT=$?
+
+TOTAL=$((TOTAL + 1))
+if [[ $MISS_EXIT -eq 0 ]]; then
+    pass "T14a: missing child does not crash, exits 0"
+else
+    fail "T14a: missing child caused non-zero exit $MISS_EXIT; output: $MISS_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$MISS_OUT" | grep -qiE "missing|WRK-9999"; then
+    pass "T14b: missing child shows placeholder (WRK-9999 or [missing])"
+else
+    fail "T14b: missing child placeholder not shown; got: $MISS_OUT"
+fi
+
+# ── T15: --feature does not affect existing dep_graph behavior ────────────────
+echo ""
+echo "=== T15: existing dep_graph --summary still works (no regression) ==="
+SUMM_OUT=$(uv run --no-project python "$DEP_GRAPH" \
+    --summary \
+    --queue-root "${DG_ROOT}" 2>&1)
+SUMM_EXIT=$?
+
+TOTAL=$((TOTAL + 1))
+if [[ $SUMM_EXIT -eq 0 ]]; then
+    pass "T15a: --summary exits 0 after --feature implementation"
+else
+    fail "T15a: --summary exited $SUMM_EXIT; output: $SUMM_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$SUMM_OUT" | grep -q "dep-graph"; then
+    pass "T15b: --summary output contains [dep-graph] prefix"
+else
+    fail "T15b: --summary output missing [dep-graph]; got: $SUMM_OUT"
+fi
+
+# ── T16: block-list children: YAML format in dep_graph.py --feature ───────────
+echo ""
+echo "=== T16: block-list children: YAML format parses in dep_graph --feature ==="
+cat > "${DG_ROOT}/working/WRK-8020.md" <<'FWRK3'
+---
+id: WRK-8020
+title: "Block-list children feature"
+type: feature
+status: coordinating
+children:
+  - WRK-8021
+  - WRK-8022
+---
+FWRK3
+
+cat > "${DG_ROOT}/pending/WRK-8021.md" <<'BLA'
+---
+id: WRK-8021
+title: "Block-list child A"
+status: pending
+orchestrator: claude
+blocked_by: []
+parent: WRK-8020
+---
+BLA
+
+cat > "${DG_ROOT}/pending/WRK-8022.md" <<'BLB'
+---
+id: WRK-8022
+title: "Block-list child B"
+status: pending
+orchestrator: codex
+blocked_by: [WRK-8021]
+parent: WRK-8020
+---
+BLB
+
+BL16_OUT=$(uv run --no-project python "$DEP_GRAPH" \
+    --feature WRK-8020 \
+    --queue-root "${DG_ROOT}" 2>&1)
+BL16_EXIT=$?
+
+TOTAL=$((TOTAL + 1))
+if [[ $BL16_EXIT -eq 0 ]]; then
+    pass "T16a: block-list children parsed correctly, exits 0"
+else
+    fail "T16a: block-list parse failed, exit $BL16_EXIT; output: $BL16_OUT"
+fi
+
+TOTAL=$((TOTAL + 1))
+if echo "$BL16_OUT" | grep -q "WRK-8021" && echo "$BL16_OUT" | grep -q "WRK-8022"; then
+    pass "T16b: both block-list children appear in output"
+else
+    fail "T16b: block-list children missing from output; got: $BL16_OUT"
+fi
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "=== Results ==="
