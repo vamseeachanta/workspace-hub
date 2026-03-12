@@ -1,0 +1,36 @@
+wrk_id: WRK-5027
+stage: 10
+executed_at: 2026-03-12T13:00:00Z
+provider: claude
+commit: fae16aa6
+
+integrated_repo_tests:
+  - name: quota-status TDD suite
+    scope: repo
+    command: bash scripts/session/tests/test_quota_status.sh
+    result: pass
+    artifact_ref: scripts/session/tests/test_quota_status.sh
+
+  - name: snapshot-age TDD suite
+    scope: repo
+    command: bash scripts/session/tests/test_snapshot_age.sh
+    result: pass
+    artifact_ref: scripts/session/tests/test_snapshot_age.sh
+
+  - name: repo-map-context TDD suite
+    scope: repo
+    command: bash scripts/session/tests/test_repo_map_context.sh
+    result: pass
+    artifact_ref: scripts/session/tests/test_repo_map_context.sh
+
+  - name: session-briefing TDD suite
+    scope: repo
+    command: bash scripts/session/tests/test_session_briefing.sh
+    result: pass
+    artifact_ref: scripts/session/tests/test_session_briefing.sh
+
+  - name: audit-prose-operations TDD suite
+    scope: repo
+    command: bash scripts/skills/tests/test_audit_prose_operations.sh
+    result: pass
+    artifact_ref: scripts/skills/tests/test_audit_prose_operations.sh

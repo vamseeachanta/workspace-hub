@@ -1,0 +1,166 @@
+wrk_id: WRK-5027
+generated_at: '2026-03-12T14:55:00Z'
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created — patterns audit for 25% repetition rule.
+  evidence: .claude/work-queue/working/WRK-5027.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route B, medium complexity, ace-linux-1.
+  evidence: .claude/work-queue/working/WRK-5027.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Plan drafted covering 3-phase approach (scan, triage, convert).
+  evidence: .claude/work-queue/assets/WRK-5027/plan-wrk-5027-patterns-audit.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Plan draft reviewed.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Gemini v1 REQUEST_CHANGES, v2 APPROVE; Codex findings addressed in v3 spec.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/cross-review-plan.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK claimed and activated.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Routed to ace-linux-1 for direct execution.
+  evidence: .claude/work-queue/logs/WRK-5027-routing.log
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 5 scripts implemented (commit fae16aa6); session-start SKILL.md prose updated.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Lifecycle HTML generated; audit report written.
+  evidence: .claude/work-queue/assets/WRK-5027/WRK-5027-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 33 PASS, 0 FAIL across 5 test suites.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Gemini APPROVE on implementation (2x P3 minor deferred to FW).
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/cross-review-impl.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: All gates pass after strip_code_fences fix (83007feb); Gemini APPROVE.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 4 FW items captured.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 6 new resources recorded.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Awaiting user review and approval.
+  evidence: .claude/work-queue/assets/WRK-5027/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed — single session, no continuity break.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Pending Stage 17 user approval.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Pending close.
+  evidence: scripts/work-queue/archive-item.sh

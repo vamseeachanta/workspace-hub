@@ -1,0 +1,39 @@
+wrk_id: WRK-5027
+captured_at: 2026-03-12T14:50:00Z
+
+recommendations:
+  - id: FW-1
+    title: "Document classification criteria (new-one-liner vs new-utility) in audit-prose-operations.py"
+    priority: low
+    category: harness
+    disposition: existing-updated
+    status: captured
+    captured: true
+    required_for_signoff: false
+
+  - id: FW-2
+    title: "Add error handling/monitoring for session-briefing.sh dependency failures"
+    priority: low
+    category: harness
+    disposition: existing-updated
+    status: captured
+    captured: true
+    required_for_signoff: false
+
+  - id: FW-3
+    title: "Convert remaining 26 new-utility candidates from 56-item audit report"
+    priority: medium
+    category: harness
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+
+  - id: FW-4
+    title: "Port audit-prose-operations.py tests to pytest for Python-native testing"
+    priority: low
+    category: harness
+    disposition: existing-updated
+    status: captured
+    captured: true
+    required_for_signoff: false

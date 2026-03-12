@@ -1,0 +1,29 @@
+wrk_id: WRK-5027
+stage: 16
+updated_at: 2026-03-12T14:50:00Z
+provider: claude
+
+additions:
+  - path: scripts/session/quota-status.sh
+    type: script
+    notes: Deterministic quota threshold checker; reads agent-quota-latest.json; normalizes week_pct/pct_remaining
+
+  - path: scripts/session/snapshot-age.sh
+    type: script
+    notes: ISO timestamp extractor + 48h stale check for session-snapshot.md; exits 0=fresh, 1=stale
+
+  - path: scripts/session/repo-map-context.sh
+    type: script
+    notes: Tier-1 repo context from active WRK target_repos; graceful for workspace-hub and unknowns
+
+  - path: scripts/session/session-briefing.sh
+    type: script
+    notes: Single session-start briefing wrapper; replaces inline LLM reasoning in Steps 2/3/4
+
+  - path: scripts/skills/audit-prose-operations.py
+    type: script
+    notes: 6-category prose pattern scanner; 56 ops flagged in first run
+
+  - path: docs/patterns-audit-25pct-rule.md
+    type: document
+    notes: Audit report; 56 flagged ops classified; baseline for future conversion WRKs

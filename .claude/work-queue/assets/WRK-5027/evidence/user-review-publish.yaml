@@ -1,0 +1,31 @@
+wrk_id: WRK-5027
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a28fa880
+    documents:
+      - .claude/work-queue/assets/WRK-5027/WRK-5027-lifecycle.html
+    published_at: 2026-03-12T11:00:00Z
+    reviewer: vamsee
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: fae16aa6
+    documents:
+      - .claude/work-queue/assets/WRK-5027/WRK-5027-lifecycle.html
+    published_at: 2026-03-12T12:30:00Z
+    reviewer: vamsee
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 83007feb
+    documents:
+      - .claude/work-queue/assets/WRK-5027/WRK-5027-lifecycle.html
+    published_at: 2026-03-12T15:00:00Z
+    reviewer: vamsee

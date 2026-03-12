@@ -1,0 +1,8 @@
+wrk_id: WRK-5027
+stage: 8
+claimed_at: 2026-03-12T12:50:00Z
+orchestrator: claude
+provider: claude
+session_id: 2026-03-12-patterns-audit
+route: B
+notes: WRK-5027 claimed for execution on ace-linux-1 after Stage 7 approval
