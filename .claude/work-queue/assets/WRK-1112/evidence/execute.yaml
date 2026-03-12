@@ -1,0 +1,29 @@
+wrk_id: WRK-1112
+stage: 10
+completed_at: "2026-03-12T01:00:00Z"
+executed_at: "2026-03-12T01:00:00Z"
+commit: f1c157c8
+files_changed:
+  - scripts/review/cross-review.sh
+  - scripts/review/submit-to-codex.sh
+  - scripts/review/submit-to-gemini.sh
+  - scripts/review/tests/test-wrk1112-iteration-cap.sh
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+integrated_repo_tests:
+  - name: "WRK-1112 iteration cap tests"
+    scope: integrated
+    command: "bash scripts/review/tests/test-wrk1112-iteration-cap.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1112/test-results.md
+  - name: "Cross-review integration test (codex guard)"
+    scope: integrated
+    command: "bash scripts/review/tests/test-wrk1112-iteration-cap.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1112/test-results.md
+  - name: "Cross-review integration test (gemini guard)"
+    scope: integrated
+    command: "bash scripts/review/tests/test-wrk1112-iteration-cap.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1112/test-results.md

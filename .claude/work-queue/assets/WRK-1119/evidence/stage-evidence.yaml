@@ -79,7 +79,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: scripts/work-queue/archive-item.sh
-generated_at: '2026-03-12T01:11:15Z'
+generated_at: '2026-03-12T01:13:26Z'
 reviewed_by: orchestrator

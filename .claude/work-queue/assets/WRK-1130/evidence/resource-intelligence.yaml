@@ -1,15 +1,37 @@
 wrk_id: WRK-1130
 stage: 2
-gathered_at: "2026-03-11T00:00:00Z"
-agent: claude
-dependencies_available:
-  - dep_graph.py (scripts/work-queue/dep_graph.py)
-  - generate-index.py (.claude/work-queue/scripts/generate-index.py)
-  - WRK-1129 archived — chunk-sizing.yaml, feature-template.md in place
-  - feature-planning.md rule file in place
-  - work-queue SKILL.md Feature Layer section in place
-blockers: none
-quota_status: available
-notes: >
-  All prerequisite model artifacts from WRK-1129 are committed. Tooling scripts
-  can proceed against a stable base. No additional dependencies needed.
+produced_at: "2026-03-12T00:15:00Z"
+completion_status: continue_to_planning
+
+domain:
+  problem: >
+    Feature layer tooling scripts not yet created. WRK-1129 (child-a) has delivered the
+    model artifacts (chunk-sizing.yaml, feature-planning.md, feature-template.md, SKILL.md
+    Feature Layer section). This child WRK delivers the scripts that implement the feature
+    layer workflow: new-feature.sh, feature-status.sh, feature-close-check.sh, dep_graph.py
+    --feature flag, and generate-index.py By Feature section.
+  key_files:
+    new_feature_sh:
+      path: scripts/work-queue/new-feature.sh
+      note: new file — scaffold children from Decomposition table
+    feature_status_sh:
+      path: scripts/work-queue/feature-status.sh
+      note: new file — completion % for feature WRK
+    feature_close_check_sh:
+      path: scripts/work-queue/feature-close-check.sh
+      note: new file — gate check for all children archived
+    dep_graph_py:
+      path: scripts/work-queue/dep_graph.py
+      note: modify — add FeatureTreeItem + --feature flag
+    generate_index_py:
+      path: .claude/work-queue/scripts/generate-index.py
+      note: modify — add By Feature section
+    test_script:
+      path: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
+      note: new file — hermetic test harness with tmp-dir fixture
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:ecosystem-terminology

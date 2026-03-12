@@ -1,0 +1,11 @@
+wrk_id: WRK-1112
+stage: 16
+updated_at: "2026-03-12T00:55:00Z"
+additions:
+  - pattern: >
+      Cross-review iteration cap: review-iteration.yaml persists count per WRK in
+      assets/WRK-NNN/; cross-review.sh increments before dispatch and injects preamble;
+      submit-to-codex.sh and submit-to-gemini.sh have secondary guards on direct invocation
+  - pattern: >
+      Reviewer preamble pattern: inject iteration N of MAX budget guidance before every
+      review prompt so reviewers front-load critical findings; avoids diminishing-return churn

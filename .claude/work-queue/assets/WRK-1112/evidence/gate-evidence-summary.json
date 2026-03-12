@@ -1,7 +1,7 @@
 {
-  "wrk_id": "WRK-1130",
-  "phase": "claim",
-  "summary_file": "assets/WRK-1130/evidence/gate-evidence-summary.json",
+  "wrk_id": "WRK-1112",
+  "phase": "archive",
+  "summary_file": "assets/WRK-1112/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
@@ -36,35 +36,35 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete']"
+      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1130/review-synthesis.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1112/review-results.md"
     },
     {
       "name": "Claim gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "claim-evidence.yaml: version=1, owner=unknown, quota=available(null)"
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "claim evidence absent (legacy item \u2014 WARN)"
     },
     {
       "name": "Reclaim gate",
@@ -78,7 +78,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=claim)"
+      "details": "approval ordering OK (phase=archive)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -116,11 +116,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Stage1 capture gate",
-      "status": "PASS",
-      "ok": true,
+      "name": "Archive readiness gate",
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-12T00:10:00Z"
+      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1112/evidence/archive-tooling.yaml"
     }
   ]
 }

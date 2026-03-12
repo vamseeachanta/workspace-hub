@@ -1,10 +1,9 @@
 wrk_id: WRK-1112
 stage: 17
 reviewer: vamsee
-confirmed_by: vamsee
-review_date: "2026-03-12"
-approved: true
-approval_message: "I approve stage 17"
+reviewed_at: "2026-03-12T01:10:00Z"
+confirmed_at: "2026-03-12T01:10:00Z"
+decision: approved
 all_acs_met: true
 ac_summary:
   - "review-iteration.yaml created per-WRK on first review; incremented each pass — PASS"

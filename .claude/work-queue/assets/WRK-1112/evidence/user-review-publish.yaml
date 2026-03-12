@@ -1,0 +1,30 @@
+wrk_id: WRK-1112
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a5a84640
+    published_at: "2026-03-12T00:15:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1112/WRK-1112-plan.html
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 5ff448e2
+    published_at: "2026-03-12T00:30:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1112/WRK-1112-plan.html
+      - .claude/work-queue/assets/WRK-1112/WRK-1112-lifecycle.html
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f1c157c8
+    published_at: "2026-03-12T00:58:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1112/WRK-1112-lifecycle.html

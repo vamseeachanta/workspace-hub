@@ -1,0 +1,8 @@
+wrk_id: WRK-1112
+approved_by: vamsee
+approval_scope: >
+  WRK-1112 was planned and approved via plan-mode session before Stage 5 common-draft
+  evidence artifacts were in place. The plan was presented to the user in plan mode,
+  user approved Stage 17 (implementation complete, 14/14 TDD PASS). Exemption granted
+  as a legacy pre-gate item.
+approved_at: "2026-03-12T00:00:00Z"

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1112 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1112 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(review): limit cross-review iterations to 3 and announce limit upfront</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — ### Phase 1 — Enforce the 3-iteration cap in cross-review scripts - `scripts/review/cross-review.sh` — add `MAX_REVIEW_ITERATIONS=3` guard; ...</summary><div class="panel"><h3>Phase 1 — Enforce the 3-iteration cap in cross-review scripts</h3>
+<ul>
+<li><code>scripts/review/cross-review.sh</code> — add <code>MAX_REVIEW_ITERATIONS=3</code> guard; abort with
+  an explanatory message if a caller tries a 4th pass on the same file/WRK.</li>
+<li><code>scripts/review/submit-to-codex.sh</code> and <code>scripts/review/submit-to-gemini.sh</code> — track
+  invocation count per WRK (persisted to <code>assets/WRK-NNN/review-iteration.yaml</code>);
+  refuse iteration 4+.</li>
+</ul>
+<h3>Phase 2 — Announce the budget in the reviewer system prompt</h3>
+<p>Prefix every cross-review submission with a standard preamble:</p>
+<pre><code>You are reviewing [WRK-NNN] — iteration N of 3 (maximum).
+Plan your feedback to maximise impact within this budget:
+  • Iteration 1: blockers and security issues only
+  • Iteration 2: major design / correctness issues
+  • Iteration 3: minor / style / nice-to-haves
+After iteration 3 no further review passes will be accepted.
+</code></pre>
+<p>Wire the preamble into <code>cross-review.sh</code> and both <code>submit-to-*.sh</code> wrappers.</p>
+<h3>Phase 3 — Update skill documentation</h3>
+<ul>
+<li><code>work-queue/SKILL.md</code> §Cross-Review: note the 3-iteration cap.</li>
+<li><code>work-queue-workflow/SKILL.md</code> Stage 13 contract: add iteration-count gate.</li>
+<li><code>workflow-gatepass/SKILL.md</code>: add R-28 — "cross-review iteration count ≤ 3".</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — Unbounded review loops waste quota, slow delivery, and dilute feedback quality — reviewers iterate indefinitely rather than prioritising the...</summary><div class="panel"><p>Unbounded review loops waste quota, slow delivery, and dilute feedback quality — reviewers
+iterate indefinitely rather than prioritising the most impactful comments. A hard cap of 3
+forces the reviewer to front-load critical findings and prevents diminishing-return churn.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `review-iteration.yaml` created per-WRK on first review; incremented each pass - [ ] `cross-review.sh` exits non-zero with clear messa...</summary><div class="panel"><ul>
+<li>[ ] <code>review-iteration.yaml</code> created per-WRK on first review; incremented each pass</li>
+<li>[ ] <code>cross-review.sh</code> exits non-zero with clear message on iteration 4+</li>
+<li>[ ] Both <code>submit-to-*.sh</code> scripts enforce the same cap</li>
+<li>[ ] Preamble with iteration count and budget guidance injected into every review prompt</li>
+<li>[ ] SKILL.md files updated with the 3-iteration policy</li>
+<li>[ ] TDD: ≥5 tests covering cap enforcement, yaml persistence, preamble injection</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # Plan Final Review — WRK-1112 ## Review Summary Plan for `feat(review): limit cross-review iterations to 3` reviewed and approved. ## Confi...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>Plan Final Review — WRK-1112</h1>
+<h2>Review Summary</h2>
+<p>Plan for <code>feat(review): limit cross-review iterations to 3</code> reviewed and approved.</p>
+<h2>Confirmation</h2>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-12T11:30:00Z
+decision: passed</p>
+<h2>Acceptance Criteria Verified</h2>
+<ul>
+<li>3-iteration cap enforced via review-iteration.yaml</li>
+<li>Cap guard in cross-review.sh and both submit-to-*.sh wrappers</li>
+<li>Preamble injection with iteration budget guidance</li>
+<li>SKILL.md documentation updates (work-queue, work-queue-workflow, workflow-gatepass)</li>
+<li>TDD: 5 test groups, 14 assertions</li>
+</ul></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>WRK-1112 iteration cap tests</td><td>integrated</td><td>pass</td><td><code>bash scripts/review/tests/test-wrk1112-iteration-cap.sh</code></td><td>.claude/work-queue/assets/WRK-1112/test-results.md</td></tr><tr><td>2</td><td>Cross-review integration test (codex guard)</td><td>integrated</td><td>pass</td><td><code>bash scripts/review/tests/test-wrk1112-iteration-cap.sh</code></td><td>.claude/work-queue/assets/WRK-1112/test-results.md</td></tr><tr><td>3</td><td>Cross-review integration test (gemini guard)</td><td>integrated</td><td>pass</td><td><code>bash scripts/review/tests/test-wrk1112-iteration-cap.sh</code></td><td>.claude/work-queue/assets/WRK-1112/test-results.md</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1112, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1112, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1112/review-results.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1112/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: no_follow_ups_rationale=present</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=2</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-plan-draft.yaml absent — skip ordering check</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1112 stage: 15 no_follow_ups_rationale: &gt; The iteration cap is self-contained and fully enforced. No follow-up WRKs required. If...</summary><div class="panel"><p>wrk_id: WRK-1112
+stage: 15
+no_follow_ups_rationale: &gt;
+  The iteration cap is self-contained and fully enforced. No follow-up WRKs required.
+  If per-reviewer caps (separate codex/gemini counters) are desired in future, that
+  can be captured as a new standalone WRK.
+items: []</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1112 route: B stages: - order: 1 stage: Capture status: done evidence: .claude/work-queue/assets/WRK-1112/evidence/user-review-c...</summary><div class="panel"><p>wrk_id: WRK-1112
+route: B
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: frontmatter
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/WRK-1112-plan.html
+- order: 5
+  stage: User Review - Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/stage5-migration-exemption.yaml
+- order: 6
+  stage: Cross-Review Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/review-results.md
+- order: 7
+  stage: User Review - Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim/Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  evidence: frontmatter
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/WRK-1112-lifecycle.html
+- order: 12
+  stage: TDD/Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/review-results.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: n/a
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Close
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1112/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  evidence: n/a
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: n/a</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 25 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1112-lifecycle.html</code></li><li><code>WRK-1112-plan.html</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/stage5-migration-exemption.yaml</code></li><li><code>evidence/tdd-gate.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-results.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li><li><code>test-results.md</code></li></ul></div></details>
+</body>
+</html>

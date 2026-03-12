@@ -1,6 +1,6 @@
 wrk_id: WRK-1130
 stage: 5
-reviewed_at: "2026-03-11T00:00:00Z"
+reviewed_at: "2026-03-12T00:30:00Z"
 reviewer: vamsee
 decision: approved
 approval_decision: approve_as_is
@@ -8,7 +8,6 @@ review_cycle_id: rc-1130-plan-draft
 plan_artifact: .claude/work-queue/pending/WRK-1130.md
 notes: >
   User approved plan draft for WRK-1130: feature layer tooling scripts.
-  Phase 1: new-feature.sh, feature-status.sh, feature-close-check.sh.
-  Phase 2: dep_graph.py --feature flag with FeatureTreeItem dataclass.
-  Phase 3: generate-index.py By Feature section.
-  Test strategy: live integration tests against WRK-1127.
+  Phase 1: new-feature.sh (two-pass), feature-status.sh, feature-close-check.sh.
+  Phase 2: dep_graph.py --feature flag. Phase 3: generate-index.py By Feature section.
+  Test strategy: hermetic tmp-dir fixture in test-wrk1130-feature-tooling.sh.

@@ -1,0 +1,7 @@
+wrk_id: WRK-1112
+stage: 15
+no_follow_ups_rationale: >
+  The iteration cap is self-contained and fully enforced. No follow-up WRKs required.
+  If per-reviewer caps (separate codex/gemini counters) are desired in future, that
+  can be captured as a new standalone WRK.
+items: []
