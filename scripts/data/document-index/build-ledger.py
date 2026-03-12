@@ -178,6 +178,9 @@ def load_enhancement_plan() -> dict[str, dict]:
                     "modules": [],
                     "implemented_at": None,
                     "notes": "",
+                    "exhausted": False,
+                    "exhausted_at": None,
+                    "absorbed_into": [],
                 }
 
     return entries
@@ -238,6 +241,9 @@ def merge_data_sources(entries: dict[str, dict]) -> None:
                     "modules": [],
                     "implemented_at": None,
                     "notes": s.get("summary", "")[:120] if s.get("summary") else "",
+                    "exhausted": False,
+                    "exhausted_at": None,
+                    "absorbed_into": [],
                 }
 
 

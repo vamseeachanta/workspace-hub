@@ -1,0 +1,8 @@
+wrk_id: WRK-1113
+stage: 8
+claimed_at: "2026-03-12T17:00:00Z"
+claimed_by: claude
+computer: ace-linux-1
+branch: feature/WRK-1113-doc-corpus-extraction
+provider: claude
+notes: "Execution branch created; proceeding to Phase 0 foundation scripts"

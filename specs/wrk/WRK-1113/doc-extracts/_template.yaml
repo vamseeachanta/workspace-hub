@@ -1,0 +1,38 @@
+# Template for worked-example extraction
+# One file per document. Filename: <doc-ref>.yaml (e.g. 2100-RPT-4005-06.yaml)
+# Fill in all fields from the source document.
+
+doc_ref: "XXXX-XXX-XXXX-XX"          # Document number / filename stem
+doc_title: ""                          # Full document title
+doc_type: report                       # report | standard | calculation | guideline
+domain: cathodic_protection            # cathodic_protection | drilling_riser | structural | pipeline | ...
+section: "§X.Y"                        # Source section (used in test docstrings)
+calc: function_name                    # Python function name this maps to
+module: cathodic_protection/xxx.py     # Relative path from digitalmodel/src/digitalmodel/
+
+# Input values exactly as used in the document worked example
+inputs:
+  param_1: 0.0       # units in comment
+  param_2: 0.0
+
+# Expected output from the document
+expected:
+  value: 0.0
+  unit: ""
+  note: "doc states: ..."  # Exact quote or paraphrase from document
+
+# Is this calc currently implemented in the codebase?
+# found | missing
+mapping_status: found
+
+# If mapping_status is missing: describe the gap-fill needed
+gap_fill_notes: ""
+
+# After verification test is written and passes:
+test_file: ""   # e.g. tests/cathodic_protection/test_xxx_doc_verified.py
+test_function: ""   # e.g. test_current_demand_from_2100_rpt_4005_section_4_2
+
+# After all calcs from this doc are absorbed:
+exhausted: false
+exhausted_at: null
+absorbed_into: []   # list of module paths
