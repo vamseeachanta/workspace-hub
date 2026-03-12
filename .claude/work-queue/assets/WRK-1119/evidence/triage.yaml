@@ -1,0 +1,17 @@
+stage: 3
+wrk_id: WRK-1119
+triaged_at: "2026-03-11"
+complexity: medium
+route: B
+priority: medium
+category: harness
+subcategory: security
+computer: ace-linux-1
+plan_workstations:
+  - ace-linux-1
+execution_workstations:
+  - ace-linux-1
+notes: |
+  Route B (medium). Single implementation target: .claude/settings.json.
+  Audit script derives allow list from session JSONLs.
+  Validation on acma-ansys05 required before close (user-confirmed gate in Stage 1 notes).

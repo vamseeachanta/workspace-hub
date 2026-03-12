@@ -1,0 +1,20 @@
+stage: 10
+wrk_id: WRK-1119
+executed_at: "2026-03-11"
+commits:
+  - hash: cf0a4b33
+    message: "feat(permissions): comprehensive allow list from audit data"
+    description: "118 allow patterns from merged-audit.yaml; 13 deny patterns including AC4 minimums"
+  - hash: 92453cee
+    message: "fix(permissions): deny git push --force variants (AC4 gap)"
+    description: "Added Bash(git push --force:*) and Bash(git push -f:*) to deny list"
+files_changed:
+  - .claude/settings.json
+ac_status:
+  AC1: PASS  # audit script derived allow list (merged-audit.yaml)
+  AC2: PASS  # settings.json updated and committed
+  AC3: PENDING  # bypass removal pending validation session
+  AC4: PASS  # deny list covers rm -rf /, chmod 777, git push --force, eval, sudo
+  AC5: PASS  # .claude/docs/permissions-extend.md written (this session)
+  AC6: PENDING  # validation on ace-linux-1 + acma-ansys05 pending
+  AC7: PASS  # 23 TDD tests, all PASS (tests/unit/test_permissions_model.py)
