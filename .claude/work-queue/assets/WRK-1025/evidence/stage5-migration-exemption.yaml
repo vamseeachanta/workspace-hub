@@ -1,0 +1,12 @@
+wrk_id: WRK-1025
+approved_by: vamsee
+approved_at: "2026-03-12T00:00:00Z"
+approval_scope: >
+  WRK-1025 was captured and absorbed into WRK-1102 before the Stage 5 gate was
+  fully activated. The scope (execution-stage analytics / structured signals from
+  Stage 10) was completed under WRK-1102 (archived, commit 29435808). This
+  exemption permits close without separate Stage 5 plan-draft artifacts since
+  WRK-1025 never proceeded through independent planning — it was subsumed.
+reason: absorbed_pre_stage5_gate
+absorbed_by: WRK-1102
+absorb_commit: "29435808"

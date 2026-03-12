@@ -1,0 +1,15 @@
+wrk_id: WRK-1025
+reviewer: vamsee
+confirmed_at: "2026-03-12T00:00:00Z"
+executed_at: "2026-03-06T00:00:00Z"
+disposition: absorbed
+absorbed_by: WRK-1102
+absorb_commit: "29435808"
+notes: >
+  WRK-1025 scope (execution-stage analytics — structured signals from Stage 10)
+  was absorbed into WRK-1102 (comprehensive-learning modular chain repair),
+  commit 29435808 "feat(WRK-1102): capture — close session-analysis loop, fix
+  signal naming, absorb WRK-636/1018/1025". WRK-1102 is archived. User confirmed
+  close on 2026-03-12.
+decision: approved
+gate_pass: true
