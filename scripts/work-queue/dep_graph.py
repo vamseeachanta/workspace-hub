@@ -18,6 +18,8 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from lib.feature_tree import load_feature_tree, render_feature_tree
+
 # ---------------------------------------------------------------------------
 # Data model
 # ---------------------------------------------------------------------------
@@ -42,18 +44,6 @@ class GraphResult:
     critical_path: list[str]
     chain_length: int
     all_ids: set[str] = field(default_factory=set)
-
-
-@dataclass
-class FeatureTreeItem:
-    id: str
-    title: str
-    status: str
-    type: str          # "feature" | "task"
-    children: list     # list of child WRK IDs
-    parent: str        # parent feature WRK ID or ""
-    orchestrator: str
-    blocked_by: list
 
 
 # ---------------------------------------------------------------------------
@@ -172,104 +162,6 @@ def _discover_items(
                 blocked_by=blocked_by,
             ))
     return items
-
-
-# ---------------------------------------------------------------------------
-# Feature tree helpers
-# ---------------------------------------------------------------------------
-
-_ALL_QUEUE_DIRS = ("pending", "working", "blocked", "archived", "archive", "done")
-
-
-def _parse_children_list(fm: dict, raw_text: str) -> list[str]:
-    """Extract children: list from frontmatter, supporting inline and block-list formats."""
-    raw = fm.get("children")
-    if isinstance(raw, list):
-        return [str(c).strip() for c in raw if str(c).strip()]
-    if isinstance(raw, str) and raw.strip():
-        # Non-empty inline scalar — may be "[WRK-A, WRK-B]" or a single ID
-        return _parse_inline_list(raw)
-    # Empty scalar or None: try block-list in raw frontmatter text
-    parts = raw_text.split("---", 2)
-    if len(parts) >= 2:
-        block = re.search(r"^children:\s*\n((?:\s+-[^\n]*\n?)*)", parts[1], re.MULTILINE)
-        if block:
-            return [v.strip().strip('"').strip("'")
-                    for v in re.findall(r"^\s+-\s+(\S+)", block.group(1), re.MULTILINE)]
-    return []
-
-
-def _find_wrk_file(wrk_id: str, queue_root: Path) -> Path | None:
-    """Search all queue dirs (including archive/YYYY-MM/ subdirs) for wrk_id.md."""
-    for dirname in _ALL_QUEUE_DIRS:
-        d = queue_root / dirname
-        if not d.is_dir():
-            continue
-        # direct child
-        candidate = d / f"{wrk_id}.md"
-        if candidate.exists():
-            return candidate
-        # dated subdirs (e.g. archive/2026-03/)
-        for sub in d.iterdir():
-            if sub.is_dir():
-                candidate = sub / f"{wrk_id}.md"
-                if candidate.exists():
-                    return candidate
-    return None
-
-
-def _load_feature_tree_item(wrk_id: str, queue_root: Path) -> FeatureTreeItem | None:
-    """Load a FeatureTreeItem from any queue directory. Returns None if not found."""
-    path = _find_wrk_file(wrk_id, queue_root)
-    if path is None:
-        return None
-    try:
-        text = path.read_text(encoding="utf-8")
-    except OSError:
-        return None
-    fm = _parse_frontmatter(text)
-    children = _parse_children_list(fm, text)
-    raw_blocked = fm.get("blocked_by", [])
-    blocked_by = raw_blocked if isinstance(raw_blocked, list) else _parse_inline_list(str(raw_blocked))
-    return FeatureTreeItem(
-        id=wrk_id,
-        title=str(fm.get("title", "")),
-        status=str(fm.get("status", "unknown")),
-        type=str(fm.get("type", "task")),
-        children=children,
-        parent=str(fm.get("parent", "")),
-        orchestrator=str(fm.get("orchestrator", "")),
-        blocked_by=blocked_by if isinstance(blocked_by, list) else [],
-    )
-
-
-def format_feature_tree(feature: FeatureTreeItem, queue_root: Path) -> str:
-    """Render ASCII tree for a feature WRK and its children."""
-    lines: list[str] = []
-    title_str = f"  {feature.title}" if feature.title else ""
-    lines.append(f"{feature.id} [{feature.status}]{title_str}")
-
-    child_ids = feature.children
-    for idx, child_id in enumerate(child_ids):
-        is_last = idx == len(child_ids) - 1
-        prefix = "└──" if is_last else "├──"
-        child = _load_feature_tree_item(child_id, queue_root)
-        if child is None:
-            lines.append(f"{prefix} {child_id} [missing]")
-            continue
-        parts: list[str] = [f"{prefix} {child_id} [{child.status}]"]
-        if child.title:
-            parts.append(f"  {child.title}")
-        extras: list[str] = []
-        if child.blocked_by:
-            blockers = ", ".join(child.blocked_by) if isinstance(child.blocked_by, list) else str(child.blocked_by)
-            extras.append(f"blocked_by: {blockers}")
-        if child.orchestrator:
-            extras.append(f"agent: {child.orchestrator}")
-        if extras:
-            parts.append(f"  ({', '.join(extras)})")
-        lines.append("".join(parts))
-    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -465,11 +357,11 @@ def main() -> None:
 
     # --feature mode: render ASCII feature tree and exit
     if args.feature:
-        feature = _load_feature_tree_item(args.feature, queue_root)
+        feature = load_feature_tree(args.feature, queue_root)
         if feature is None:
             print(f"[dep-graph] ERROR: {args.feature} not found in any queue directory", file=sys.stderr)
             sys.exit(1)
-        print(format_feature_tree(feature, queue_root))
+        print(render_feature_tree(feature, queue_root))
         return
 
     archived_ids = _discover_archived_ids(queue_root)
@@ -503,7 +395,6 @@ def main() -> None:
         dot_path = Path(args.dot)
         dot_path.write_text(format_dot(result, items))
         print(f"\nDOT file written to: {dot_path}")
-
 
 if __name__ == "__main__":
     main()

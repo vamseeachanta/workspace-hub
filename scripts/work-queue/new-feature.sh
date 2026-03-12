@@ -44,6 +44,19 @@ if [[ -z "$WRK_FILE" ]]; then
     exit 1
 fi
 
+# ── Re-run guard: abort if children: already populated ───────────────────────
+_existing_children=$(grep '^children:' "$WRK_FILE" | head -1 || true)
+# Match inline list with at least one WRK-NNN entry
+if echo "$_existing_children" | grep -qE 'WRK-[0-9]+'; then
+    echo "ERROR: ${WRK_ID} children list already populated — run new-feature.sh only on fresh features" >&2
+    exit 1
+fi
+# Also check block-list format (- WRK-NNN on following lines)
+if grep -A5 '^children:' "$WRK_FILE" | grep -qE '^\s*-\s+WRK-[0-9]+'; then
+    echo "ERROR: ${WRK_ID} children list already populated — run new-feature.sh only on fresh features" >&2
+    exit 1
+fi
+
 # ── Read spec_ref from frontmatter ────────────────────────────────────────────
 SPEC_REF=$(grep '^spec_ref:' "$WRK_FILE" | head -1 | sed 's/spec_ref: *//' | tr -d '"' | xargs)
 if [[ -z "$SPEC_REF" ]]; then

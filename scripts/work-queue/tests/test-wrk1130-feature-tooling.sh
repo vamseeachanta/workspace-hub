@@ -686,6 +686,49 @@ else
     fail "T16b: block-list children missing from output; got: $BL16_OUT"
 fi
 
+# ── T17: re-run guard exits 1 when children already populated ─────────────────
+echo ""
+echo "=== T17: new-feature.sh re-run guard exits 1 when children already populated ==="
+RERUN_SPEC="${TMPDIR_ROOT}/specs/wrk/WRK-9007/rerun-spec.md"
+mkdir -p "$(dirname "$RERUN_SPEC")"
+cat > "$RERUN_SPEC" <<'RSPEC'
+# Rerun Guard Spec
+
+## Decomposition
+
+| Child key | Title | Scope (one sentence) | Depends on | Agent | wrk_ref |
+|-----------|-------|----------------------|------------|-------|---------|
+| rerun-a | Rerun task | Does a thing | — | claude | |
+
+RSPEC
+
+# Feature WRK with children: already populated (non-empty)
+RERUN_WRK="${WQROOT}/working/WRK-9007.md"
+cat > "$RERUN_WRK" <<RWRK
+---
+id: WRK-9007
+title: "Rerun guard test feature"
+type: feature
+status: coordinating
+children: [WRK-001]
+category: harness
+subcategory: testing
+spec_ref: ${RERUN_SPEC}
+---
+RWRK
+
+assert_exit "T17a: new-feature.sh exits 1 when children already populated" 1 \
+    env WORK_QUEUE_ROOT="$WQROOT" bash "$NEW_FEATURE" WRK-9007
+
+# Verify children: field is unchanged after the guard fires
+TOTAL=$((TOTAL + 1))
+children_after=$(grep "^children:" "$RERUN_WRK" | head -1)
+if echo "$children_after" | grep -qE "WRK-001"; then
+    pass "T17b: children: field unchanged after re-run guard fired"
+else
+    fail "T17b: children: field changed unexpectedly: $children_after"
+fi
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "=== Results ==="

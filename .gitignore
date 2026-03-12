@@ -43,6 +43,7 @@ lib/
 !scripts/coordination/routing/lib/
 !scripts/improve/lib/
 !scripts/lib/
+!scripts/work-queue/lib/
 lib64/
 parts/
 sdist/
