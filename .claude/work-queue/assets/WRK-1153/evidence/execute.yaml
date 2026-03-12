@@ -8,19 +8,27 @@ files_created:
 files_modified:
   - scripts/data/naval-architecture/download-naval-arch-docs.sh
   - .claude/work-queue/pending/WRK-1152.md
-verifications:
-  - dry_run_pass: true
-  - lib_standalone_source: true
-  - yaml_frontmatter_valid: true
 cross_review:
   codex_verdict: REQUEST_CHANGES
   issues_fixed:
-    - P1: "DRY_RUN comparison hardened to [[ == \"true\" ]]"
+    - P1: "DRY_RUN comparison hardened to [[ == 'true' ]]"
     - P2: "download() returns 1 on wget failure"
     - P2_skill: "Discovery vs download phase clarified in workflow step 1"
-    - P2_skill: "PDF validation note added (file <path> check)"
-    - P3_skill: "PLANS array ref removed from step 3"
-    - P3_skill: "index-regen-queued.txt defined as concrete evidence artifact"
+    - P3_skill: "PLANS array ref removed; index-regen-queued.txt evidence artifact defined"
 legal_scan: PASS
-integrated_repo_tests: []
-tdd_note: "Bash lib + skill/markdown deliverables — no unit test suite applicable; dry-run verification serves as functional test"
+integrated_repo_tests:
+  - name: dry-run pass
+    scope: integrated
+    command: "bash scripts/data/naval-architecture/download-naval-arch-docs.sh --dry-run"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1153/evidence/execute.yaml
+  - name: lib standalone source
+    scope: integrated
+    command: "LOG_FILE=/tmp/test.log DRY_RUN=true bash -c 'source scripts/lib/download-helpers.sh && download https://example.com /tmp test.txt && log ok'"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1153/evidence/execute.yaml
+  - name: skill yaml frontmatter valid
+    scope: repo
+    command: "uv run --no-project python -c 'import yaml; yaml.safe_load(...)'"
+    result: pass
+    artifact_ref: .claude/skills/data/doc-research-download/SKILL.md

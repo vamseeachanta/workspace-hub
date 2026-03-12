@@ -5299,5 +5299,14 @@
     "title": "ROP prediction model \u2014 Bourgoyne-Young and Warren in digitalmodel",
     "priority": "high",
     "category": ""
+  },
+  "WRK-1153": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T21:55:43.928612+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Extract doc-research-download patterns from WRK-1151 into reusable skill + lib",
+    "priority": "medium",
+    "category": "tooling"
   }
 }

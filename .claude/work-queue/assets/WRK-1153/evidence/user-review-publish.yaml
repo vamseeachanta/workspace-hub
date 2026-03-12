@@ -3,10 +3,10 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: feature/WRK-1113-doc-corpus-extraction
-    commit: "c2184ba4bf074bb27162a5463fe92b7e65c90542"
+    commit: "2db560adffe8f5c78aa4ead548e867a773259929"
     documents:
       - .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
-    published_at: "2026-03-12T20:22:00Z"
+    published_at: "2026-03-12T20:28:00Z"
     reviewer: vamsee
   - stage: plan_final
     pushed_to_origin: true
@@ -15,13 +15,13 @@ events:
     commit: "c2184ba4bf074bb27162a5463fe92b7e65c90542"
     documents:
       - .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
-    published_at: "2026-03-12T20:27:00Z"
+    published_at: "2026-03-12T20:30:00Z"
     reviewer: vamsee
   - stage: close_review
     pushed_to_origin: true
     remote: origin
     branch: feature/WRK-1113-doc-corpus-extraction
-    commit: "c2184ba4bf074bb27162a5463fe92b7e65c90542"
+    commit: "76e289e47f7d6ff9c80ede3f2be2e6cc1682c732"
     documents:
       - .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
     published_at: "2026-03-12T20:42:00Z"

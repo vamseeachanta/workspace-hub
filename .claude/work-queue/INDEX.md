@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T21:53:05Z by generate-index.py -->
+<!-- Generated: 2026-03-12T21:55:45Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T21:53:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T21:55:45Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 235 |
+| pending | 234 |
 | working | 4 |
 | blocked | 10 |
-| archived | 346 |
+| archived | 347 |
 
 ### By Priority
 
@@ -92,16 +92,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 595 |
-| Total archived | 346 |
-| Completion rate | 346/595 (58%) |
-| Monthly rate (current month) | 111 archived |
+| Total archived | 347 |
+| Completion rate | 347/595 (58%) |
+| Monthly rate (current month) | 112 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 62 / 235 | 26% |
+| Pending items with plans | 62 / 234 | 26% |
 | Plans cross-reviewed | 8 | 11% |
 | Plans user-approved | 8 | 11% |
 
@@ -119,7 +119,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 97 | 1 | 8 |
-| Medium   | 103  | 3  | 1  |
+| Medium   | 102  | 3  | 1  |
 | Low      | 35  | 0  | 1  |
 
 ## By Category
@@ -1161,7 +1161,7 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1149 |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | - | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1404,7 +1404,6 @@
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | medium | medium | workspace-hub | - |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | medium | medium | workspace-hub | - |
 | WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | high | simple | workspace-hub | - |
 | WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | high | simple | workspace-hub | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
@@ -1804,6 +1803,7 @@
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | high | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | high | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | medium | simple | workspace-hub | - |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | medium | medium | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 
 ## By Repository
@@ -2445,7 +2445,7 @@
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | - |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | pending | medium | medium | - |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | - |
 | WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | pending | high | simple | - |
 | WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | pending | high | simple | - |
@@ -3114,7 +3114,7 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | workspace-hub | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | workspace-hub | - |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | pending | medium | workspace-hub | - |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3607,7 +3607,7 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | workspace-hub | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | workspace-hub | - |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | pending | medium | workspace-hub | - |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -3732,7 +3732,7 @@
 
 ## By Computer
 
-### ace-linux-1 (185 active / 315 total)
+### ace-linux-1 (184 active / 315 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4027,7 +4027,7 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | digitalmodel |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | workspace-hub |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | workspace-hub |
-| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | pending | medium | medium | workspace-hub |
+| WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | workspace-hub |
 | WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | pending | high | simple | workspace-hub |
 | WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | workspace-hub |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | pending | high | simple | workspace-hub |

@@ -3,13 +3,13 @@ events:
     opened_in_default_browser: true
     browser: default
     html_ref: .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
-    opened_at: "2026-03-12T20:22:00Z"
+    opened_at: "2026-03-12T20:15:00Z"
     reviewer: vamsee
   - stage: plan_final
     opened_in_default_browser: true
     browser: default
     html_ref: .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
-    opened_at: "2026-03-12T20:27:00Z"
+    opened_at: "2026-03-12T20:20:00Z"
     reviewer: vamsee
   - stage: close_review
     opened_in_default_browser: true

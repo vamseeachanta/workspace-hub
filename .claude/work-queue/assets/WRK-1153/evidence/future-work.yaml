@@ -8,11 +8,11 @@ recommendations:
     disposition: spun-off-new
     description: "Post-download validation: check file magic bytes (25 50 44 46) to detect WAF HTML responses saved as .pdf"
     status: open
-    captured: false
+    captured: true
   - id: FW-2
     priority: low
     title: Extend doc-research-download skill with seed-URL crawler template
     disposition: spun-off-new
     description: "Discovery phase currently manual — add a discover-<domain>-docs.sh template that crawls a seed URL and extracts PDF links"
     status: open
-    captured: false
+    captured: true
