@@ -1,6 +1,8 @@
 wrk_id: WRK-1111
 stage: 16
-updated_at: 2026-03-12T20:18:00Z
+updated_at: 2026-03-12T01:30:00Z
+no_additions_rationale: context-pipeline.md documents the @ reference decisions; no new memory entries required
+additions: []
 learnings:
   - context: Claude Code @file syntax in CLAUDE.md auto-includes file contents every session
   - context: check-claude-md-limits.sh now exists at scripts/work-queue/ for harness line-limit enforcement

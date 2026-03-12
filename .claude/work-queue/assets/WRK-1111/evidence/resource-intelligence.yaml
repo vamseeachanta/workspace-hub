@@ -52,6 +52,14 @@ claude_md_headroom:
   digitalmodel: 6   # 14/20 lines
   worldenergydata: 2 # 18/20 lines — tight; references go to AGENTS.md
 
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub:work
+    - superpowers:test-driven-development
+    - workspace-hub:whats-next
+
 approved_candidates:
   - workspace-hub/config/deps/cross-repo-graph.yaml
   - workspace-hub/config/onboarding/repo-map.yaml

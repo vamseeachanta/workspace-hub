@@ -1,8 +1,10 @@
 wrk_id: WRK-1111
 stage: 5
 reviewer: vamsee
-reviewed_at: 2026-03-12T20:00:00Z
+reviewed_at: 2026-03-12T01:20:00Z
 verdict: APPROVE
 confirmed_by: vamsee
 decision: approved
+approval_decision: approve_as_is
+review_cycle_id: WRK-1111-cycle-1
 notes: Plan provided directly by user for implementation.

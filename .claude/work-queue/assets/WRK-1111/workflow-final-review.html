@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1111 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1111 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — ### Phase 1: Audit — identify high-value @ reference candidates For each repo, identify files that: - Are referenced repeatedly across many ...</summary><div class="panel"><h3>Phase 1: Audit — identify high-value @ reference candidates</h3>
+<p>For each repo, identify files that:
+- Are referenced repeatedly across many sessions (schemas, dep maps, config)
+- Change infrequently (stable enough to be safe as always-on context)
+- Are small enough not to bloat every request (target ≤200 lines each)</p>
+<p>Candidates:
+| Repo | File | Why always-on? |
+|------|------|----------------|
+| workspace-hub | <code>config/deps/cross-repo-graph.yaml</code> | Dep routing for every cross-repo decision |
+| workspace-hub | <code>config/onboarding/repo-map.yaml</code> | Repo capability map, referenced in every session-start |
+| workspace-hub | <code>.claude/skills/workspace-hub/workstations/SKILL.md</code> | Machine routing for every WRK item |
+| assethold | <code>prisma/schema.prisma</code> | DB schema for every data model question |
+| digitalmodel | <code>src/geometry/circle.py</code> | Gatepass reference ("circle math") |
+| worldenergydata | <code>src/worldenergydata/modules/__init__.py</code> | Backward-compat shim — preserve signal |</p>
+<h3>Phase 2: Size + stability check</h3>
+<p>For each candidate:
+- Measure line count — reject if &gt;200 lines (bloat risk)
+- Check git log frequency — reject if changed &gt;2×/month (staleness risk)
+- Flag as <code>@ mention</code> (include always) or <code>note-only</code> (just document its path in CLAUDE.md)</p>
+<h3>Phase 3: Add @ references to CLAUDE.md files</h3>
+<p>For each approved candidate, add a context block to the relevant repo's CLAUDE.md:</p>
+<p>```markdown</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Course learning: mentioning `@prisma/schema.prisma` in CLAUDE.md causes that file&#x27;s contents to be included automatically in every request —...</summary><div class="panel"><p>Course learning: mentioning <code>@prisma/schema.prisma</code> in CLAUDE.md causes that file's
+contents to be included automatically in every request — Claude can answer schema questions
+immediately without a search-and-read cycle. This is a low-effort, high-leverage context
+optimisation that compounds across every session.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] Candidate audit table completed (all 6 repos assessed) - [ ] Size + stability check done for each candidate - [ ] @ references added t...</summary><div class="panel"><ul>
+<li>[ ] Candidate audit table completed (all 6 repos assessed)</li>
+<li>[ ] Size + stability check done for each candidate</li>
+<li>[ ] @ references added to CLAUDE.md (or linked doc) for all approved candidates</li>
+<li>[ ] CLAUDE.md ≤20 line limit respected in all repos</li>
+<li>[ ] Validation pass: at least one question answered per repo using auto-included context</li>
+<li>[ ] <code>docs/context-pipeline.md</code> written documenting the @ reference decisions and rationale</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — confirmed_by: vamsee confirmed_at: 2026-03-12T20:00:00Z decision: passed Plan approved directly by user as session prompt. Route B, medium c...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p>confirmed_by: vamsee
+confirmed_at: 2026-03-12T20:00:00Z
+decision: passed</p>
+<p>Plan approved directly by user as session prompt. Route B, medium complexity.
+@ file reference pipeline — add 3 approved candidates to CLAUDE.md / AGENTS.md.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 4 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>check-claude-md-limits baseline</td><td>repo</td><td>pass</td><td><code>bash scripts/work-queue/check-claude-md-limits.sh</code></td><td>evidence/tdd-results.yaml</td></tr><tr><td>2</td><td>check-claude-md-limits post-edit</td><td>repo</td><td>pass</td><td><code>bash scripts/work-queue/check-claude-md-limits.sh</code></td><td>evidence/tdd-results.yaml</td></tr><tr><td>3</td><td>grep @ syntax CLAUDE.md</td><td>repo</td><td>pass</td><td><code>grep -n &#x27;@&#x27; CLAUDE.md</code></td><td>evidence/tdd-results.yaml</td></tr><tr><td>4</td><td>grep @ syntax worldenergydata/AGENTS.md</td><td>repo</td><td>pass</td><td><code>grep -n &#x27;@&#x27; worldenergydata/AGENTS.md</code></td><td>evidence/tdd-results.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1111, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1111, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=19, contract=19-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['tdd_eval'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1111/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['tdd-test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=4 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1111/legal-scan.md, result=PASS — no violations found</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: no_follow_ups_rationale=present</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: no_additions_rationale=present</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>WARN</td>
+<td>plan_draft and plan_final share commit '2bf9ff58f41247f270f593b11ee912c51c3d85d6' — possible placeholder (WARN)</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-12T20:00:00Z, reviewed=2026-03-12 20:00:00+00:00)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1111 stage: 15 captured_at: 2026-03-12T20:17:00Z no_follow_ups_rationale: &gt; All approved @ references implemented. Rejected cand...</summary><div class="panel"><p>wrk_id: WRK-1111
+stage: 15
+captured_at: 2026-03-12T20:17:00Z
+no_follow_ups_rationale: &gt;
+  All approved @ references implemented. Rejected candidates documented in
+  docs/context-pipeline.md. No immediate follow-up WRKs required; periodic
+  churn review is a maintenance checklist item, not a separate WRK.
+recommendations: []</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1111 stages: - order: 1 stage: Capture status: done evidence: .claude/work-queue/assets/WRK-1111/evidence/user-review-capture.ya...</summary><div class="panel"><p>wrk_id: WRK-1111
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/user-review-capture.yaml
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: triage complete
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/WRK-1111-plan.html
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/review.md
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/plan-final-review.yaml
+  - order: 8
+    stage: Claim/Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/activation.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: done
+    evidence: .claude/work-queue/logs/WRK-1111-routing.log
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/WRK-1111-lifecycle.html
+  - order: 12
+    stage: TDD/Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/tdd-results.yaml
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: .claude/work-queue/logs/WRK-1111-cross-review.log
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/gate-evidence-summary.md
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review Implementation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1111/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: n/a
+  - order: 19
+    stage: Close
+    status: done
+    evidence: pending archive</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 29 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1111-lifecycle.html</code></li><li><code>WRK-1111-plan.html</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/archive-tooling.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/review.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/tdd-results.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.md</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>tdd-test-results.md</code></li></ul></div></details>
+</body>
+</html>

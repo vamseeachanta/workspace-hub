@@ -1,12 +1,8 @@
 wrk_id: WRK-1111
 stage: 15
-captured_at: 2026-03-12T20:17:00Z
-items:
-  - id: FW-1
-    title: Extend @ references to assethold, assetutilities, digitalmodel when stable small files identified
-    priority: low
-    notes: No approved candidates found in this WRK; revisit when new stable schemas emerge
-  - id: FW-2
-    title: Periodic churn review for existing @ references (every 6 months)
-    priority: low
-    notes: Add to quarterly harness maintenance checklist; see docs/context-pipeline.md §Maintenance
+captured_at: 2026-03-12T01:30:00Z
+no_follow_ups_rationale: >
+  All approved @ references implemented. Rejected candidates documented in
+  docs/context-pipeline.md. No immediate follow-up WRKs required; periodic
+  churn review is a maintenance checklist item, not a separate WRK.
+recommendations: []

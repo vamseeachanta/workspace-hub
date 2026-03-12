@@ -1,6 +1,6 @@
 wrk_id: WRK-1111
 stage: 10
-executed_at: 2026-03-12T20:15:00Z
+executed_at: 2026-03-12T01:30:00Z
 executor: claude
 files_created:
   - scripts/work-queue/check-claude-md-limits.sh
@@ -8,6 +8,27 @@ files_created:
 files_modified:
   - CLAUDE.md
   - worldenergydata/AGENTS.md
+integrated_repo_tests:
+  - name: check-claude-md-limits baseline
+    scope: repo
+    command: bash scripts/work-queue/check-claude-md-limits.sh
+    result: pass
+    artifact_ref: evidence/tdd-results.yaml
+  - name: check-claude-md-limits post-edit
+    scope: repo
+    command: bash scripts/work-queue/check-claude-md-limits.sh
+    result: pass
+    artifact_ref: evidence/tdd-results.yaml
+  - name: grep @ syntax CLAUDE.md
+    scope: repo
+    command: "grep -n '@' CLAUDE.md"
+    result: pass
+    artifact_ref: evidence/tdd-results.yaml
+  - name: grep @ syntax worldenergydata/AGENTS.md
+    scope: repo
+    command: "grep -n '@' worldenergydata/AGENTS.md"
+    result: pass
+    artifact_ref: evidence/tdd-results.yaml
 summary: >
   TDD guard script written; CLAUDE.md +1 line (17 total, both @ refs added);
   worldenergydata/AGENTS.md +3 lines (15 total, module shim @ ref added);

@@ -1,0 +1,28 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: chore/WRK-1111-at-file-references
+  commit: 2bf9ff58f41247f270f593b11ee912c51c3d85d6
+  documents:
+  - .claude/work-queue/assets/WRK-1111/WRK-1111-plan.html
+  published_at: '2026-03-12T01:20:00Z'
+  reviewer: vamsee
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: chore/WRK-1111-at-file-references
+  commit: 2bf9ff58f41247f270f593b11ee912c51c3d85d6
+  documents:
+  - .claude/work-queue/assets/WRK-1111/WRK-1111-plan.html
+  published_at: '2026-03-12T01:20:00Z'
+  reviewer: vamsee
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: chore/WRK-1111-at-file-references
+  commit: 101eabf82e3974c1c931e4ef52bef379d867be15
+  documents:
+  - .claude/work-queue/assets/WRK-1111/WRK-1111-lifecycle.html
+  published_at: '2026-03-12T01:40:00Z'
+  reviewer: vamsee
