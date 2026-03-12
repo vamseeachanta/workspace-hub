@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T02:32:49Z by generate-index.py -->
+<!-- Generated: 2026-03-12T04:21:02Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T02:32:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T04:21:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 571
+**Total items:** 574
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 224 |
-| working | 3 |
+| pending | 226 |
+| working | 4 |
 | blocked | 10 |
 | archived | 333 |
 
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 256 |
-| medium | 265 |
+| medium | 268 |
 | low | 49 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 128 |
-| medium | 271 |
+| medium | 274 |
 | complex | 103 |
 
 ### By Category
@@ -40,14 +40,14 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 38 |
+| harness | 37 |
 | engineering | 120 |
 | data | 26 |
 | platform | 13 |
 | business | 7 |
 | maintenance | 7 |
 | personal | 4 |
-| uncategorised | 7 |
+| uncategorised | 11 |
 
 ### By Repository
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 230 |
+| workspace-hub | 229 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 236 / 571 |
-| Plans cross-reviewed | 161 |
-| Plans approved | 184 |
+| Plans exist | 236 / 574 |
+| Plans cross-reviewed | 162 |
+| Plans approved | 185 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 571 |
+| Total captured | 574 |
 | Total archived | 333 |
-| Completion rate | 333/571 (58%) |
+| Completion rate | 333/574 (58%) |
 | Monthly rate (current month) | 99 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 61 / 224 | 27% |
-| Plans cross-reviewed | 9 | 13% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 60 / 226 | 27% |
+| Plans cross-reviewed | 10 | 14% |
+| Plans user-approved | 11 | 15% |
 
 ### Aging
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 1 | 8 |
-| Medium   | 97  | 2  | 1  |
+| High     | 94 | 2 | 8 |
+| Medium   | 100  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (38 items — 6 high, 26 medium, 6 low)
+### harness (37 items — 6 high, 25 medium, 6 low)
 
 #### harness / agent-teams
 
@@ -171,7 +171,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1127 | HIGH | Feature-first planning with AI agent chunking [feature] | coordinating |
-| WRK-1131 | HIGH | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending |
+| WRK-1131 | HIGH | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working |
 
 #### harness / release-management
 
@@ -209,7 +209,6 @@
 | WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-1011 | MEDIUM | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working |
-| WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
 | WRK-1101 | MEDIUM | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
@@ -565,7 +564,7 @@
 | WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
 | WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
 
-### uncategorised (7 items — 3 high, 2 medium, 2 low)
+### uncategorised (11 items — 3 high, 6 medium, 2 low)
 
 #### uncategorised / uncategorised
 
@@ -576,6 +575,10 @@
 | WRK-634 | HIGH | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending |
 | WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
 | WRK-1089 | MEDIUM | Split check-all.sh by responsibility (400L hard limit violated) | pending |
+| WRK-5020 | MEDIUM | fix: recurring correction correction pattern on Write | pending |
+| WRK-5021 | MEDIUM | fix: recurring correction correction pattern on Edit | pending |
+| WRK-5022 | MEDIUM | fix: recurring correction correction pattern on Write | pending |
+| WRK-5023 | MEDIUM | fix: recurring correction correction pattern on Edit | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
 
@@ -1033,7 +1036,6 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1147,7 +1149,7 @@
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1129 |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
@@ -1160,6 +1162,10 @@
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1128 |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05, ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1353,7 +1359,6 @@
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | medium | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | medium | simple | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | high | simple | workspace-hub | - |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | medium | medium | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
@@ -1380,7 +1385,6 @@
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | medium | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | high | medium | workspace-hub | - |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | high | medium | workspace-hub | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | medium | simple | workspace-hub | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | low | simple | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | medium | simple | workspace-hub | - |
@@ -1391,6 +1395,10 @@
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | medium | simple | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | medium | simple | workspace-hub | - |
+| WRK-5020 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
+| WRK-5021 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
+| WRK-5022 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
+| WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 
 ### Working
 
@@ -1399,6 +1407,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2298,7 +2307,6 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | - |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | medium | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | archived | medium | medium | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
@@ -2380,7 +2388,7 @@
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | medium | - |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working | high | medium | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | - |
@@ -2760,7 +2768,7 @@
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | complex | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | medium | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | medium | workspace-hub | - |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | medium | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working | medium | workspace-hub | - |
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | simple | workspace-hub | - |
 
 ### Medium
@@ -2958,7 +2966,6 @@
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | archived | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | archived | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
@@ -3032,6 +3039,10 @@
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | simple | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | simple | workspace-hub | - |
+| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 
 ### Low
 
@@ -3435,7 +3446,6 @@
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | archived | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | archived | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
@@ -3493,10 +3503,14 @@
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | archived | medium | workspace-hub | - |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | workspace-hub | - |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | workspace-hub | - |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working | high | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
+| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 
 ### Complex
 
@@ -3608,7 +3622,7 @@
 
 ## By Computer
 
-### ace-linux-1 (170 active / 287 total)
+### ace-linux-1 (173 active / 290 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3779,7 +3793,6 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | workspace-hub |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | workspace-hub |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | workspace-hub |
-| WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | workspace-hub |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | medium | workspace-hub |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | archived | medium | medium | workspace-hub |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
@@ -3889,7 +3902,7 @@
 | WRK-1127 | Feature-first planning with AI agent chunking | coordinating | high | complex | workspace-hub |
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | pending | high | medium | workspace-hub |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | medium | workspace-hub |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | workspace-hub |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | working | high | medium | workspace-hub |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | medium | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | workspace-hub |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | workspace-hub |
@@ -3899,6 +3912,10 @@
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
+| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
+| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
+| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
+| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -4278,6 +4295,6 @@
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | WRK-1044 | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
-| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | WRK-1129 | - | WRK-1127 |
+| WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 

@@ -1,0 +1,10 @@
+wrk_id: WRK-1013
+
+merge_status: "merged-to-main"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1013/WRK-1013-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1013/legal-scan.md"
+archive_readiness: "pass"
+document_index_ref: ""
+document_index_exemption: "hub-only item — skills cleanup, no document-index entries affected"
+spin_off_wrks: []
