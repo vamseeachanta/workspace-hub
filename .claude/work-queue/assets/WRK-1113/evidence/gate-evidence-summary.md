@@ -4,7 +4,7 @@
 |---|---|---|
 | Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
-| Stage evidence gate | FAIL | stage-evidence.yaml: stage order 17 must be done\|n/a before close (found pending) |
+| Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | matched routing:['work_queue_skill'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'] |
@@ -17,7 +17,7 @@
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
 | Future-work gate | PASS | future-work.yaml: recommendations=4 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=4 |
-| User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at', 'decision'] |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |

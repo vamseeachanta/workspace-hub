@@ -1,12 +1,12 @@
 wrk_id: WRK-1113
 stage: 17
-status: pending
-reviewed_at: ""
-confirmed_at: ""
-reviewer: ""
-decision: ""
+status: approved
+reviewed_at: "2026-03-12T22:00:00Z"
+confirmed_at: "2026-03-12T22:00:00Z"
+reviewer: user
+decision: approved
 notes: >
-  Stage 17 User Review — awaiting user approval before close.
-  Implementation complete: drilling_riser/ module (13 functions, 49 tests),
+  Stage 17 User Review approved. Implementation complete:
+  drilling_riser/ module (13 functions, 49 tests),
   DNV-RP-B401 module (9 functions, 33 tests), exhaustion marking (3 entries),
   coverage report updated. All 122 tests PASS. Cross-review APPROVE (Claude/Codex/Gemini).

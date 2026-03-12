@@ -68,7 +68,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1113/evidence/resource-intelligence-update.yaml
 - order: 17
   stage: User Review
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-1113/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
