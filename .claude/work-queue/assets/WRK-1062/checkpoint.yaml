@@ -1,12 +1,11 @@
 wrk_id: WRK-1062
-current_stage: 19
-stage_name: Close
-completed_stage: 18
-next_action: Execute stage 19: Close
-context_summary: Stage 18 complete. Next: stage 19 (Close).
+current_stage: 20
+stage_name: Archive
+completed_stage: 19
+next_action: Execute stage 20: Archive
+context_summary: Stage 19 complete. Next: stage 20 (Archive).
 entry_reads:
   - .claude/work-queue/assets/WRK-1062/checkpoint.yaml
-  - assets/WRK-1062/evidence/user-review-close.yaml
-  - assets/WRK-1062/evidence/gate-evidence-summary.yaml
-checkpointed_at: 2026-03-09T12:04:42Z
+  - done/WRK-1062.md
+checkpointed_at: 2026-03-12T00:34:05Z
 human_gate: false
