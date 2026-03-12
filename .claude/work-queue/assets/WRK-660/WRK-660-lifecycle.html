@@ -201,10 +201,10 @@ table.md-table{font-size:.87rem;}
     </div>
     <p class="eyebrow">WRK-660 &middot; LIFECYCLE TRACKER</p>
     <h1>WRK-660 — analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini</h1>
-    <p class="lede">Pending &middot; 16/20 stages complete &middot; high priority</p>
+    <p class="lede">Working &middot; 16/20 stages complete &middot; high priority</p>
     <div class="meta-row">
       <div class="pill pill-stage"><strong>Now</strong>Stage 18: Reclaim</div>
-      <div class="pill pill-stage"><strong>Status</strong>pending</div>
+      <div class="pill pill-stage"><strong>Status</strong>working</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
       <div class="pill"><strong>Orchestrator</strong>gemini</div>
       <div class="pill"><strong>Created</strong>2026-03-01</div>
@@ -225,7 +225,7 @@ table.md-table{font-size:.87rem;}
   </div>
 </nav>
 
-<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>—</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>0</div></div></div>
+<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>continue_to_planning</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>3</div></div></div>
 
 <div class="content">
 
@@ -262,7 +262,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s3">
@@ -355,7 +355,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/plan-final-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">
@@ -427,7 +427,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">13/30 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-660-lifecycle.html</code></li></ul>
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">16/17 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-660-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -481,7 +481,7 @@ table.md-table{font-size:.87rem;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Gate results</div><table><thead><tr><th>Gate</th><th>Status</th><th>Details</th></tr></thead><tbody><tr><td>Plan gate</td><td><span class="badge b-pending">FAIL</span></td><td>reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing</td></tr><tr><td>Workstation contract gate</td><td><span class="badge b-done">PASS</span></td><td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td></tr><tr><td>Stage evidence gate</td><td><span class="badge b-done">PASS</span></td><td>stage-evidence.yaml: stages=19, contract=19-stage</td></tr><tr><td>Resource-intelligence gate</td><td><span class="badge b-pending">FAIL</span></td><td>resource-intelligence evidence absent (legacy item — WARN)</td></tr><tr><td>Activation gate</td><td><span class="badge b-pending">FAIL</span></td><td>activation.yaml missing</td></tr><tr><td>Agent log gate</td><td><span class="badge b-done">PASS</span></td><td>pre-cutoff backfill (id=660, created_at=2026-03-01T00:00:00Z) — log gate skipped</td></tr><tr><td>User-review HTML-open gate</td><td><span class="badge b-pending">FAIL</span></td><td>user-review-browser-open.yaml missing</td></tr><tr><td>User-review publish gate</td><td><span class="badge b-pending">FAIL</span></td><td>user-review-publish.yaml missing</td></tr><tr><td>Cross-review gate</td><td><span class="badge b-pending">FAIL</span></td><td>artifact=none</td></tr><tr><td>TDD gate</td><td><span class="badge b-pending">FAIL</span></td><td>none</td></tr><tr><td>Integrated test gate</td><td><span class="badge b-pending">FAIL</span></td><td>execute evidence missing (required: evidence/execute.yaml)</td></tr><tr><td>Legal gate</td><td><span class="badge b-pending">FAIL</span></td><td>artifact=missing, none</td></tr><tr><td>Claim gate</td><td><span class="badge b-active">WARN</span></td><td>claim evidence absent (legacy item — WARN)</td></tr><tr><td>Future-work gate</td><td><span class="badge b-pending">FAIL</span></td><td>future-work evidence absent (legacy item — WARN)</td></tr><tr><td>Resource-intelligence update gate</td><td><span class="badge b-pending">FAIL</span></td><td>resource-intelligence-update.yaml missing</td></tr><tr><td>User-review close gate</td><td><span class="badge b-pending">FAIL</span></td><td>user-review-close.yaml missing</td></tr></tbody></table>
+    <div class="section-label">Gate results</div><table><thead><tr><th>Gate</th><th>Status</th><th>Details</th></tr></thead><tbody><tr><td>Plan gate</td><td><span class="badge b-done">PASS</span></td><td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=presen</td></tr><tr><td>Workstation contract gate</td><td><span class="badge b-done">PASS</span></td><td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td></tr><tr><td>Resource-intelligence gate</td><td><span class="badge b-done">PASS</span></td><td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td></tr><tr><td>Activation gate</td><td><span class="badge b-done">PASS</span></td><td>activation.yaml: activation evidence OK</td></tr><tr><td>Agent log gate</td><td><span class="badge b-done">PASS</span></td><td>pre-cutoff backfill (id=660, created_at=2026-03-01T00:00:00Z) — log gate skipped</td></tr><tr><td>User-review HTML-open gate</td><td><span class="badge b-done">PASS</span></td><td>user-review-browser-open.yaml: stages=[&#x27;plan_draft&#x27;, &#x27;plan_final&#x27;]</td></tr><tr><td>User-review publish gate</td><td><span class="badge b-done">PASS</span></td><td>user-review-publish.yaml: stages=[&#x27;plan_draft&#x27;, &#x27;plan_final&#x27;]</td></tr><tr><td>Cross-review gate</td><td><span class="badge b-done">PASS</span></td><td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-660/review-synthesis.md</td></tr><tr><td>Claim gate</td><td><span class="badge b-done">PASS</span></td><td>claim-evidence.yaml: version=1, owner=gemini, quota=available(100%)</td></tr><tr><td>Reclaim gate</td><td><span class="badge b-active">WARN</span></td><td>reclaim.yaml absent (no reclaim triggered — WARN)</td></tr><tr><td>Approval ordering gate</td><td><span class="badge b-done">PASS</span></td><td>approval ordering OK (phase=claim)</td></tr><tr><td>Midnight UTC sentinel gate</td><td><span class="badge b-done">PASS</span></td><td>no midnight UTC sentinel found</td></tr><tr><td>Browser open elapsed time gate</td><td><span class="badge b-done">PASS</span></td><td>browser open elapsed time OK</td></tr><tr><td>Sentinel values gate</td><td><span class="badge b-done">PASS</span></td><td>no sentinel values found</td></tr><tr><td>Claim artifact path gate</td><td><span class="badge b-done">PASS</span></td><td>canonical claim artifact found: claim-evidence.yaml</td></tr><tr><td>ISO datetime format gate</td><td><span class="badge b-done">PASS</span></td><td>all timestamp fields have time components</td></tr></tbody></table>
   </div>
 </section>
 <section class="stage-section" id="s15">
