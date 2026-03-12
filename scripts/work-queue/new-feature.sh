@@ -308,10 +308,12 @@ for i in "${!ROW_KEYS[@]}"; do
         # CREATE new child WRK file (sentinel already created by next-id.sh)
         numeric_id="${child_id#WRK-}"
         child_file="${WORK_QUEUE_ROOT}/pending/WRK-${numeric_id}.md"
+        # Escape double-quotes in title to keep YAML frontmatter valid
+        safe_title="${title//\"/\\\"}"
         cat > "$child_file" <<EOF
 ---
 id: ${child_id}
-title: "${title}"
+title: "${safe_title}"
 status: pending
 priority: high
 complexity: medium
@@ -358,7 +360,7 @@ if grep -q '^children:' "$WRK_FILE"; then
         sed -i "s/^children: \[.*\]/children: ${CHILDREN_YAML}/" "$WRK_FILE"
     else
         # Block-list format — replace multi-line; use Python for safety
-        python3 - "$WRK_FILE" "$CHILDREN_YAML" <<'PYEOF' 2>/dev/null || \
+        uv run --no-project python - "$WRK_FILE" "$CHILDREN_YAML" <<'PYEOF' 2>/dev/null || \
             sed -i "/^children:/{ N; s/children:.*//; }" "$WRK_FILE"
 import sys, re
 path, yaml_val = sys.argv[1], sys.argv[2]
@@ -373,7 +375,7 @@ PYEOF
     fi
 else
     # Insert children: inside frontmatter, before the closing ---
-    python3 - "$WRK_FILE" "$CHILDREN_YAML" <<'PYEOF2'
+    uv run --no-project python - "$WRK_FILE" "$CHILDREN_YAML" <<'PYEOF2'
 import sys, re
 path, yaml_val = sys.argv[1], sys.argv[2]
 with open(path) as f:
