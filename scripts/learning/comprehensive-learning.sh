@@ -44,7 +44,7 @@ if [[ "$MACHINE" != "ace-linux-1" ]]; then
       ".claude/state/cc-user-insights.yaml"
   )
   for path in "${STATE_PATHS[@]}"; do
-      [[ -e "${WS_HUB}/${path}" ]] && git -C "$WS_HUB" add "$path"
+      [[ -e "${WS_HUB}/${path}" ]] && git -C "$WS_HUB" add "$path" 2>/dev/null || true
   done
   echo "Learning state: $(git -C "$WS_HUB" diff --staged --name-only | wc -l | tr -d ' ') file(s) staged"
 
