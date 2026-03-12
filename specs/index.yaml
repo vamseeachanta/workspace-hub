@@ -1,13 +1,13 @@
-generated: '2026-03-11'
-total_specs: 1603
+generated: '2026-03-12'
+total_specs: 1620
 by_category:
   archive: 10
   data-sources: 13
-  modules: 128
+  modules: 137
   other: 31
   repos: 1344
   templates: 20
-  wrk: 57
+  wrk: 65
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 242
+  workspace-hub: 259
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -85,7 +85,7 @@ by_wrk:
   WRK-96: 2
   WRK-97: 2
   WRK-98: 3
-  WRK-100: 2
+  WRK-100: 3
   WRK-101: 1
   WRK-102: 2
   WRK-103: 2
@@ -229,6 +229,7 @@ by_wrk:
   WRK-622: 1
   WRK-623: 1
   WRK-624: 9
+  WRK-633: 1
   WRK-637: 1
   WRK-655: 2
   WRK-656: 3
@@ -254,6 +255,7 @@ by_wrk:
   WRK-690: 1
   WRK-693: 1
   WRK-700: 1
+  WRK-999: 1
   WRK-1000: 1
   WRK-1002: 2
   WRK-1003: 2
@@ -273,21 +275,27 @@ by_wrk:
   WRK-1035: 3
   WRK-1036: 2
   WRK-1037: 1
+  WRK-1042: 1
   WRK-1044: 1
   WRK-1045: 1
   WRK-1052: 1
   WRK-1054: 1
+  WRK-1056: 1
   WRK-1057: 1
   WRK-1058: 1
-  WRK-1059: 1
+  WRK-1059: 2
+  WRK-1060: 1
   WRK-1061: 1
   WRK-1062: 2
   WRK-1066: 1
+  WRK-1069: 3
   WRK-1073: 2
   WRK-1074: 1
+  WRK-1077: 1
   WRK-1079: 1
   WRK-1081: 1
   WRK-1083: 3
+  WRK-1084: 1
   WRK-1085: 1
   WRK-1087: 2
   WRK-1090: 1
@@ -295,8 +303,19 @@ by_wrk:
   WRK-1100: 1
   WRK-1102: 1
   WRK-1105: 1
+  WRK-1111: 1
+  WRK-1112: 2
   WRK-1115: 1
   WRK-1117: 1
+  WRK-1119: 1
+  WRK-1120: 1
+  WRK-1123: 2
+  WRK-1124: 1
+  WRK-1125: 1
+  WRK-1126: 1
+  WRK-1127: 1
+  WRK-1132: 1
+  WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -805,6 +824,17 @@ specs:
   - best-practices-integration-everything-claude-code
   wrk_refs: []
   mtime: '2026-01-24'
+- path: specs/modules/breezy-toasting-scone.md
+  title: 'WRK-1132: Multi-Code Standards Semantic Search — Implementation Plan'
+  description: '**Goal:** Build a CLI tool (`scripts/standards/query-standards.sh`) that searches engineering standards PDFs
+    (DNV/API/ABS/BS/ISO) by natural-language query and returns ranked results with doc name ...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - breezy-toasting-scone
+  wrk_refs:
+  - WRK-1132
+  mtime: '2026-03-11'
 - path: specs/modules/bright-seeking-wren.md
   title: 'Plan: WRK-607 — DNV RP F105 Free-Spanning Pipeline VIV Module'
   description: WRK-607 implements `digitalmodel.subsea.pipeline.free_span` — the DNV RP F105 free-spanning pipeline VIV assessment.
@@ -891,6 +921,17 @@ specs:
   wrk_refs:
   - WRK-290
   mtime: '2026-02-24'
+- path: specs/modules/cozy-toasting-minsky.md
+  title: 'Plan: WRK-1112 — Limit Cross-Review Iterations to 3'
+  description: Unbounded review loops waste AI quota and dilute feedback quality. This change caps all cross-review cycles
+    at 3 iterations per WRK, persists the count to a YAML file, and injects a preamble into e...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - cozy-toasting-minsky
+  wrk_refs:
+  - WRK-1112
+  mtime: '2026-03-11'
 - path: specs/modules/cryptic-hugging-leaf.md
   title: 'WRK-162 Phase 2b: Inject Panel Geometry Schematic into index.html (Case 2.6)'
   description: Run OrcFxAPI on test05a.owd, extract panelGeometry, build Plotly scatter, inject into existing index.html and
@@ -967,6 +1008,17 @@ specs:
   wrk_refs:
   - WRK-95
   mtime: '2026-02-09'
+- path: specs/modules/glittery-sprouting-island.md
+  title: 'WRK-1111 Plan: @ File Reference Pipeline'
+  description: Claude Code's `@file` syntax in CLAUDE.md causes a file's contents to be auto-included in every session context
+    — eliminating the recurring search-and-read cycle for stable, high-value references. ...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - glittery-sprouting-island
+  wrk_refs:
+  - WRK-1111
+  mtime: '2026-03-12'
 - path: specs/modules/global-vessel-fleet-data-collection.md
   title: Global Vessel Fleet Data Collection & Enrichment Plan
   description: '**Version**: 1.0 **Module**: worldenergydata **Session ID**: logical-kindling-quail **Session Agent**: claude-opus-4.6
@@ -1104,6 +1156,17 @@ specs:
   wrk_refs:
   - WRK-318
   mtime: '2026-02-24'
+- path: specs/modules/linked-pondering-toucan.md
+  title: 'WRK-1084 Plan: Integrate skills.sh as Canonical Reference'
+  description: skills.sh (https://skills.sh/) is an open ecosystem for reusable AI agent skills. The workspace-hub already
+    adopts skills from there (superpowers/*, frontend-design) but the skill curation workflow...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - linked-pondering-toucan
+  wrk_refs:
+  - WRK-1084
+  mtime: '2026-03-11'
 - path: specs/modules/md-to-pdf-skill-via-chrome-headless.md
   title: md-to-pdf skill — Markdown to styled PDF via Chrome headless
   description: Build a reusable md-to-pdf skill with HTML template, print CSS components, and Chrome headless PDF generation
@@ -1259,6 +1322,19 @@ specs:
   - WRK-1005
   - WRK-1014
   mtime: '2026-03-11'
+- path: specs/modules/quiet-churning-whistle.md
+  title: 'WRK-1123 Plan: Stage 1 Guard — start_stage.py'
+  description: '`start_stage.py` writes `session-lock.yaml` during Stage 1 before verifying the item is in `working/`. A crashed
+    Stage 1 session on a `pending/` item leaves an orphaned lock that causes `whats-next...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - quiet-churning-whistle
+  wrk_refs:
+  - WRK-999
+  - WRK-1069
+  - WRK-1123
+  mtime: '2026-03-11'
 - path: specs/modules/quiet-soaring-truffle.md
   title: WRK-309 Implementation Plan — Document Intelligence
   description: Thousands of engineering standards, reports, and reference documents exist across three drives (`/mnt/ace`,
@@ -1282,6 +1358,18 @@ specs:
   - WRK-299
   - WRK-300
   mtime: '2026-02-22'
+- path: specs/modules/refactored-stargazing-melody.md
+  title: 'WRK-1059 Plan Draft: Reference Documentation Quality Checks'
+  description: '`check-all.sh` (WRK-1056/1058) already runs ruff + mypy + `--docs` (basic README/docs/ checks). Gap: no check
+    that public API symbols have docstrings, no docs/ structure validation (index.md, chang...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - refactored-stargazing-melody
+  wrk_refs:
+  - WRK-1056
+  - WRK-1059
+  mtime: '2026-03-11'
 - path: specs/modules/remove-claude-flow-references.md
   title: Remove claude-flow References from All Repos
   description: '`claude-flow` is an npm MCP package (`npx claude-flow@alpha`) by ruvnet that was previously configured for
@@ -1302,6 +1390,17 @@ specs:
   - repo-capability-map-skill
   wrk_refs: []
   mtime: '2026-01-29'
+- path: specs/modules/resilient-hopping-crayon.md
+  title: 'WRK-1119 Plan: Defined Permission Model'
+  description: 'Claude Code sessions run with `skipDangerousModePermissionPrompt: true` in `~/.claude/settings.json`, which
+    silently bypasses all tool-call permission checks. The project-level `.claude/settings.js...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - resilient-hopping-crayon
+  wrk_refs:
+  - WRK-1119
+  mtime: '2026-03-11'
 - path: specs/modules/restructure-digitalmodel-into-grouped-module-architecture.md
   title: Restructure digitalmodel into grouped module architecture
   description: Group 68 flat modules into ~11 domain clusters, add backward compat shim, create test/example/doc stubs for
@@ -1468,6 +1567,18 @@ specs:
   wrk_refs:
   - WRK-72
   mtime: '2026-02-03'
+- path: specs/modules/ticklish-riding-wozniak.md
+  title: 'WRK-1126 Plan: Maritime Law Knowledge Data Layer'
+  description: Offshore engineering work (OrcaFlex, ANSYS, CFD) operates within maritime legal and regulatory frameworks.
+    The existing `engineering/maritime-legal/SKILL.md` (WRK-633) covers the engineering-analys...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - ticklish-riding-wozniak
+  wrk_refs:
+  - WRK-633
+  - WRK-1126
+  mtime: '2026-03-11'
 - path: specs/modules/toasty-painting-kernighan.md
   title: 'Plan: Pre-Clear Session Snapshot'
   description: '`/clear` is a Claude Code built-in CLI command processed at the shell level before messages reach Claude.
@@ -1482,6 +1593,17 @@ specs:
   - WRK-205
   - WRK-218
   mtime: '2026-02-19'
+- path: specs/modules/tranquil-crafting-sparrow.md
+  title: 'WRK-1112 Plan — feat(review): Limit Cross-Review Iterations to 3'
+  description: Unbounded cross-review loops waste AI quota and dilute feedback quality. Reviewers iterate indefinitely rather
+    than front-loading critical findings. This WRK caps all review cycles at 3 iterations ...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tranquil-crafting-sparrow
+  wrk_refs:
+  - WRK-1112
+  mtime: '2026-03-12'
 - path: specs/modules/use-orchestrator-pattern-for-all-execution.md
   title: Knowledge Manager Skill
   description: 'Five gaps in the current workspace-hub knowledge ecosystem:'
@@ -2081,7 +2203,7 @@ specs:
   - hardware-inventory
   - manifests
   wrk_refs: []
-  mtime: '2026-03-09'
+  mtime: '2026-03-11'
 - path: specs/modules/hardware-inventory/manifests/vamsee-linux1.yml
   title: Vamsee Linux1
   description: ''
@@ -20355,6 +20477,18 @@ specs:
   - WRK-1036
   - WRK-1037
   mtime: '2026-03-08'
+- path: specs/wrk/WRK-1042/plan.md
+  title: WRK-1042 Plan
+  description: Route A inline plan.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1042
+  wrk_refs:
+  - WRK-1042
+  - WRK-9998
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-1044/plan.md
   title: WRK-1044 Plan — Deterministic Gate Enforcement D1-D16
   description: Convert 16 deterministic gate rules (D1-D16) from LLM prose into verifiable scripts/hooks. Fix P1 bug in `exit_stage.py`
@@ -20401,6 +20535,18 @@ specs:
   wrk_refs:
   - WRK-1057
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md
+  title: 'WRK-1060: Quality Gap Discovery'
+  description: Quality checks across the 5 tier-1 repos (assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing)
+    are inconsistent. `check-all.sh` and per-repo `.pre-commit-config.yaml` cover `s...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1060
+  - wrk-1060-quality-gap-discovery
+  wrk_refs:
+  - WRK-1060
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-1061/plan.md
   title: 'WRK-1061 Plan: generate-review-input.sh'
   description: Auto-generate a structured cross-review input file from the WRK item and its git diff, so agents stop hand-writing
@@ -20449,6 +20595,18 @@ specs:
   wrk_refs:
   - WRK-1066
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1069/plan.md
+  title: 'WRK-1069 Plan: Per-WRK Token Cost Attribution'
+  description: Attribute AI token usage to specific WRK items so cost-per-WRK is visible.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1069
+  wrk_refs:
+  - WRK-100
+  - WRK-1069
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-1073/plan.md
   title: WRK-1073 Plan — Repo Onboarding Maps
   description: Give every AI agent an instant orientation to any tier-1 repo through AGENTS.md files and a hub-level repo-map.yaml.
@@ -20471,6 +20629,17 @@ specs:
   wrk_refs:
   - WRK-1074
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1077/plan.md
+  title: WRK-1077 Plan — acma-ansys05 workstation readiness setup
+  description: Get acma-ansys05 to pass workspace-hub readiness checks and participate in the work queue.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1077
+  wrk_refs:
+  - WRK-1077
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-1079/plan.md
   title: 'WRK-1079 Plan: PEP 561 Type Stubs for assetutilities Public API'
   description: Add PEP 561 inline type annotations to assetutilities contracted public API symbols to enable mypy type checking
@@ -20565,6 +20734,54 @@ specs:
   wrk_refs:
   - WRK-1105
   mtime: '2026-03-10'
+- path: specs/wrk/WRK-1120/plan.md
+  title: 'WRK-1120 Plan: Atomic ID Reservation in next-id.sh'
+  description: Use bash `set -C` (noclobber) to atomically create `pending/WRK-NNN.md` sentinel before returning the ID. Retry
+    up to 5 times on collision.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1120
+  wrk_refs:
+  - WRK-1120
+  mtime: '2026-03-11'
+- path: specs/wrk/WRK-1124/plan.md
+  title: WRK-1124 Plan
+  description: Route A inline plan.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1124
+  wrk_refs:
+  - WRK-1069
+  - WRK-1123
+  - WRK-1124
+  mtime: '2026-03-11'
+- path: specs/wrk/WRK-1125/plan.md
+  title: WRK-1125 Plan
+  description: Route A inline plan.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1125
+  wrk_refs:
+  - WRK-1125
+  mtime: '2026-03-11'
+- path: specs/wrk/WRK-1127/wrk-1127-feature-first-planning.md
+  title: Feature-First Planning + AI Agent Chunking — Implementation Plan
+  description: '**Goal:** Introduce a feature layer above individual WRK items so large work is planned as a whole, decomposed
+    into AI-agent-sized execution chunks, and tracked with explicit linking and dependency...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1127
+  - wrk-1127-feature-first-planning
+  wrk_refs:
+  - WRK-1127
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
