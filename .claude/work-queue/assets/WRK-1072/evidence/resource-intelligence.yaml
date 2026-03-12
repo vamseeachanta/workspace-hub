@@ -1,0 +1,40 @@
+completion_status: complete
+wrk_id: WRK-1072
+stage: 2
+assessed_at: "2026-03-12"
+
+domain: harness/release-management
+
+findings:
+  version_fields:
+    status: already_present
+    detail: "All 5 repos have version = '0.1.0' in pyproject.toml — AC1 is already met"
+  existing_tags:
+    assetutilities: ["enhanced-agent-os-v1.0.0", "0.0.8"]
+    digitalmodel: ["pre-restructure-v1", "data-reorganization-v1.0", "0.0.9"]
+    worldenergydata: []
+    assethold: []
+    OGManufacturing: []
+  existing_changelog:
+    digitalmodel: "CHANGELOG.md present (manually written, Keep a Changelog format)"
+    others: "no CHANGELOG.md"
+  changelog_tools: "none installed — must generate from git log via shell script"
+  commit_style: "conventional commits (feat/fix/chore/docs/refactor/test)"
+  release_scripts: "none — scripts/release/ does not exist"
+  release_config: "none — config/releases/ does not exist"
+
+constraints:
+  - "No git-cliff or conventional-changelog available — script must parse git log directly"
+  - "Tags in assetutilities/digitalmodel are non-semver (use as pre-history; tag from 0.1.0)"
+  - "Repos are git submodules — tagging must happen inside each submodule"
+  - "uv manages versions via pyproject.toml — bump with sed, no hatch-vcs"
+
+skills:
+  core_used:
+    - git-workflow
+    - python-runtime
+    - patterns (scripts-over-llm-judgment)
+    - coding-style
+
+complexity_assessment: medium
+route: B

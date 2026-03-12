@@ -1,0 +1,26 @@
+wrk_id: WRK-1153
+stage: 6
+codex_verdict: REQUEST_CHANGES
+gemini_verdict: reviewed
+findings:
+  - id: P1
+    source: codex
+    severity: critical
+    description: "if \"${DRY_RUN}\" executes variable as shell command — command injection risk when sourced"
+    resolution: "Changed to [[ \"${DRY_RUN}\" == \"true\" ]]"
+  - id: P2_lib
+    source: codex
+    severity: important
+    description: "download() swallows wget failure — rm -f exit 0 masks errors from callers"
+    resolution: "Added explicit return 1 after rm -f on wget failure"
+  - id: P2_skill
+    source: codex
+    severity: important
+    description: "Workflow step 1 mixes discovery and download — template does not implement crawl"
+    resolution: "Step 1 clarified: discovery phase produces URL list that feeds the download script"
+  - id: P3_skill
+    source: codex
+    severity: minor
+    description: "PLANS/URL array reference in step 3 not present in template"
+    resolution: "Removed PLANS array reference; template shows direct download calls"
+reviewed_at: "2026-03-12T20:35:00Z"

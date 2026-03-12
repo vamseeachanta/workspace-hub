@@ -1,0 +1,9 @@
+wrk_id: WRK-1113
+stage: 5
+review_cycle_id: "WRK-1113-cycle-1"
+reviewed_at: "2026-03-12T17:00:00Z"
+reviewer: user
+approval_decision: approve_as_is
+notes: >
+  Stage 5 common-draft review. Plan scope and approach approved as-is.
+  Drilling riser namespace, CP primary layer targets, and 10/10/10 selection gate confirmed.

@@ -1,0 +1,19 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-1113-doc-corpus-extraction
+    commit: "acf96bc39c08ba96589105e07180a621b327da2c"
+    documents:
+      - .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
+    published_at: "2026-03-12T20:42:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-1113-doc-corpus-extraction
+    commit: "acf96bc39c08ba96589105e07180a621b327da2c"
+    documents:
+      - .claude/work-queue/assets/WRK-1153/WRK-1153-lifecycle.html
+    published_at: "2026-03-12T20:42:00Z"
+    reviewer: vamsee

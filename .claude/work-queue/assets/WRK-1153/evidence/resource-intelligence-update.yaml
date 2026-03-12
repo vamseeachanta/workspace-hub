@@ -1,0 +1,17 @@
+wrk_id: WRK-1153
+stage: 16
+updated_at: "2026-03-12T20:40:00Z"
+additions:
+  - path: scripts/lib/download-helpers.sh
+    purpose: "Shared log() + download() bash functions for domain doc-download scripts"
+    reuse_note: "Source this file in any domain download script; set LOG_FILE and DRY_RUN before sourcing"
+  - path: .claude/skills/data/doc-research-download/SKILL.md
+    purpose: "6-step workflow for any domain doc-research WRK"
+    reuse_note: "Load via entry_reads in any doc-research WRK; replace <domain> placeholders"
+  - path: knowledge/seeds/schema.md
+    purpose: "Canonical resource-catalog YAML schema for knowledge/seeds/<domain>-resources.yaml files"
+    reuse_note: "Reference when creating new domain seed files"
+patterns_learned:
+  - "DRY_RUN bash variable must be compared with [[ == 'true' ]] not evaluated as command"
+  - "Bash lib functions should return non-zero on failure for caller error detection"
+  - "Skill workflow steps should distinguish discovery phase (produces URL list) from download phase (consumes URL list)"

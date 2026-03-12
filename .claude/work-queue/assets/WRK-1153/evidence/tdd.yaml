@@ -1,0 +1,15 @@
+wrk_id: WRK-1153
+stage: 12
+approach: dry-run-functional-test
+rationale: "Deliverables are bash lib (sourced, not unit-tested) and markdown/YAML files — no test suite applicable"
+verifications:
+  - name: dry-run pass
+    command: "bash scripts/data/naval-architecture/download-naval-arch-docs.sh --dry-run"
+    result: pass
+  - name: lib standalone source
+    command: "LOG_FILE=/tmp/test.log DRY_RUN=true bash -c 'source scripts/lib/download-helpers.sh && download https://example.com /tmp test.txt && log ok'"
+    result: pass
+  - name: yaml frontmatter valid
+    command: "python3 -c \"import yaml; yaml.safe_load(open('.claude/skills/data/doc-research-download/SKILL.md').read().split('---')[1])\""
+    result: pass
+completed_at: "2026-03-12T20:28:00Z"

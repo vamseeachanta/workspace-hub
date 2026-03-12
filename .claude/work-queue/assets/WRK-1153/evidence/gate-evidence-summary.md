@@ -12,12 +12,12 @@
 | User-review publish gate | FAIL | user-review-publish.yaml missing |
 | Cross-review gate | FAIL | artifact=none |
 | TDD gate | FAIL | none |
-| Integrated test gate | FAIL | execute evidence missing (required: evidence/execute.yaml) |
+| Integrated test gate | FAIL | execute.yaml: integrated_repo_tests must be a list |
 | Legal gate | FAIL | artifact=missing, none |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
 | Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
 | Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
-| User-review close gate | FAIL | user-review-close.yaml missing |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |

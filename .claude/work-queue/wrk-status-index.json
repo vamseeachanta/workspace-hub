@@ -441,10 +441,10 @@
     "category": "harness"
   },
   "WRK-1144": {
-    "status": "working",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T20:34:16.611921+00:00",
-    "updated_by": "claim-item.sh",
+    "last_updated": "2026-03-12T21:49:28.253521+00:00",
+    "updated_by": "archive-item.sh",
     "title": "chore(harness): micro-skill \u2192 script extraction audit \u2014 identify stage checklist items that can become deterministic scripts",
     "priority": "medium",
     "category": "harness"

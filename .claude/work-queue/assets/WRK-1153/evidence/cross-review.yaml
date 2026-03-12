@@ -1,0 +1,28 @@
+wrk_id: WRK-1153
+stage: cross_review
+reviewed_at: "2026-03-12T20:30:00Z"
+verdict: REVISE_INCORPORATED
+reviewers:
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    artifact: scripts/review/results/20260312T203216Z-download-helpers.sh-implementation-codex.md
+    p1_count: 1
+    p2_count: 1
+    note: "P1 DRY_RUN command injection fixed; P2 download() returns 1 on failure; P2/P3 SKILL clarifications applied"
+  - provider: gemini
+    verdict: reviewed
+    artifact: scripts/review/results/20260312T203216Z-download-helpers.sh-implementation-gemini.md
+    p1_count: 0
+    p2_count: 0
+    note: "Gemini review completed"
+findings_resolved:
+  - id: P1
+    resolution: "DRY_RUN comparison changed from execute-variable to [[ == 'true' ]] string test"
+  - id: P2_lib
+    resolution: "download() now returns 1 on wget failure — callers can detect failures"
+  - id: P2_skill
+    resolution: "Discovery vs download phase separated in workflow step 1"
+  - id: P2_skill_validation
+    resolution: "PDF validation note added: file <path> must report PDF document before cataloguing"
+  - id: P3_skill
+    resolution: "PLANS array reference removed; index-regen-queued.txt defined as concrete evidence artifact"

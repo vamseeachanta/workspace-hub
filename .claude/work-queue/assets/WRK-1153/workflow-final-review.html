@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1153 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1153 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Extract doc-research-download patterns from WRK-1151 into reusable skill + lib</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — ### Deliverable 1 — `scripts/lib/download-helpers.sh` Extract the `download()` and `log()` functions from `scripts/data/naval-architecture/d...</summary><div class="panel"><h3>Deliverable 1 — <code>scripts/lib/download-helpers.sh</code></h3>
+<p>Extract the <code>download()</code> and <code>log()</code> functions from
+<code>scripts/data/naval-architecture/download-naval-arch-docs.sh</code> into a shared bash library.</p>
+<ul>
+<li><code>download &lt;url&gt; &lt;dest_dir&gt; [filename]</code> — skip-if-exists, dry-run, timestamped log, cleanup on failure</li>
+<li><code>log &lt;message&gt;</code> — ISO-8601 timestamp prefix, tee to <code>${LOG_FILE}</code></li>
+<li><code>LOG_FILE</code> and <code>DRY_RUN</code> vars set by caller before sourcing</li>
+<li>Refactor <code>download-naval-arch-docs.sh</code> to <code>source scripts/lib/download-helpers.sh</code></li>
+<li>Verify script still works (dry-run pass)</li>
+</ul>
+<h3>Deliverable 2 — <code>knowledge/seeds/schema.md</code></h3>
+<p>Document the canonical per-entry fields so all domain seed YAMLs are queryable uniformly.</p>
+<p>Fields to standardise (from naval-architecture-resources.yaml):
+- Top-level: <code>category</code>, <code>subcategory</code>, <code>created_at</code>
+- Per-entry: <code>title</code>, <code>author</code>, <code>year</code>, <code>local_path</code>, <code>source_url</code>, <code>size_mb</code>, <code>topics[]</code>, <code>notes</code>
+- Section keys: <code>textbooks</code>, <code>online_portals</code>, <code>pending_manual</code> (domain-specific sections allowed alongside)
+- Note: <code>ship_plans</code>-style bulk sections (count + dir, no per-file entries) also acceptable for large batches</p>
+<h3>Deliverable 3 — <code>.claude/skills/data/doc-research-download/SKILL.md</code></h3>
+<p>Skill covering the full repeatable workflow for any domain documentation research WRK:</p>
+<ol>
+<li>Fetch seed URLs, extract linked PDFs and further resource links</li>
+<li>Web search for additional freely-available resources (OpenCourseWare, archive.org, standards bodies)</li>
+<li>Download via <code>scripts/lib/download-helpers.sh</code> — use domain-specific script sourcing the lib</li>
+<li>Catalogue into <code>knowledge/seeds/&lt;domain&gt;-resources.yaml</code> following <code>schema.md</code></li>
+<li>Regenerate document index (<code>scripts/data/document-index/</code>)</li>
+<li>Record WAF-blocked / borrow-only items in <code>pending_manual:</code> section — never skip silently</li>
+<li>No paywalled or DRM-protected content</li>
+</ol>
+<p>Include: script template stub, catalogue YAML template, AC checklist.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — WRK-1152 (electrical engineering) needs the same pattern immediately. Structural / mechanical / geotechnical domain WRKs will follow. Withou...</summary><div class="panel"><p>WRK-1152 (electrical engineering) needs the same pattern immediately. Structural / mechanical /
+geotechnical domain WRKs will follow. Without extraction now, each WRK duplicates 40+ lines of
+bash and reinvents the catalogue schema.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `scripts/lib/download-helpers.sh` exists and is sourced; naval-arch script passes `--dry-run` - [ ] `knowledge/seeds/schema.md` docume...</summary><div class="panel"><ul>
+<li>[ ] <code>scripts/lib/download-helpers.sh</code> exists and is sourced; naval-arch script passes <code>--dry-run</code></li>
+<li>[ ] <code>knowledge/seeds/schema.md</code> documents all canonical fields with a minimal example</li>
+<li>[ ] <code>.claude/skills/data/doc-research-download/SKILL.md</code> exists with workflow, script template, YAML template, AC checklist</li>
+<li>[ ] WRK-1152 WRK file updated with <code>entry_reads</code> pointing to the new skill</li>
+<li>[ ] No behaviour change to existing naval-arch download script</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — No summary available.</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1153, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | FAIL | reviewed=False, approved=Fals...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1153, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>FAIL</td>
+<td>reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>FAIL</td>
+<td>stage_evidence_ref missing in WRK frontmatter</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>FAIL</td>
+<td>resource-intelligence.yaml: invalid completion_status</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>FAIL</td>
+<td>activation.yaml missing</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>FAIL</td>
+<td>routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>FAIL</td>
+<td>user-review-browser-open.yaml missing</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>FAIL</td>
+<td>user-review-publish.yaml missing</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>FAIL</td>
+<td>artifact=none</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>FAIL</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>FAIL</td>
+<td>execute evidence missing (required: evidence/execute.yaml)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>FAIL</td>
+<td>artifact=missing, none</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>FAIL</td>
+<td>future-work evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>FAIL</td>
+<td>resource-intelligence-update.yaml missing</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>FAIL</td>
+<td>user-review-close.yaml missing</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml absent — skip elapsed check</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>FAIL</td>
+<td>no claim artifact found (expected evidence/claim-evidence.yaml)</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip commit uniqueness check</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip path existence check</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip done/pending check</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 12 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1153-lifecycle.html</code></li><li><code>WRK-1153-plan.html</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li></ul></div></details>
+</body>
+</html>

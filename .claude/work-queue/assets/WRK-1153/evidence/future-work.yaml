@@ -1,0 +1,18 @@
+wrk_id: WRK-1153
+stage: 15
+generated_at: "2026-03-12T20:40:00Z"
+recommendations:
+  - id: FW-1
+    priority: medium
+    title: Add PDF magic-bytes validator to download-helpers.sh
+    disposition: new-wrk
+    description: "Post-download validation: check file magic bytes (25 50 44 46) to detect WAF HTML responses saved as .pdf"
+    status: open
+    captured: false
+  - id: FW-2
+    priority: low
+    title: Extend doc-research-download skill with seed-URL crawler template
+    disposition: new-wrk
+    description: "Discovery phase currently manual — add a discover-<domain>-docs.sh template that crawls a seed URL and extracts PDF links"
+    status: open
+    captured: false

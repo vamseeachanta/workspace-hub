@@ -22,3 +22,5 @@ cross_review:
     - P3_skill: "PLANS array ref removed from step 3"
     - P3_skill: "index-regen-queued.txt defined as concrete evidence artifact"
 legal_scan: PASS
+integrated_repo_tests: []
+tdd_note: "Bash lib + skill/markdown deliverables — no unit test suite applicable; dry-run verification serves as functional test"
