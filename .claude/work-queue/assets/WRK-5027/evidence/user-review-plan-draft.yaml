@@ -3,4 +3,5 @@ stage: 5
 approved_by: vamsee
 approved_at: 2026-03-12T12:35:00Z
 plan_approved: true
+approval_decision: approve_as_is
 notes: "User approved plan draft at stage 5. Top-5 conversions: quota-status.sh, snapshot-age.sh, audit-prose-operations.py, session-briefing.sh, prose updates to session-start."
