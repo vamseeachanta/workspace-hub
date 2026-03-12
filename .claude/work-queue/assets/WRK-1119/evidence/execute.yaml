@@ -1,6 +1,7 @@
 stage: 10
 wrk_id: WRK-1119
-executed_at: "2026-03-11"
+executed_at: "2026-03-11T10:00:00Z"
+completed_at: "2026-03-12T10:00:00Z"
 commits:
   - hash: cf0a4b33
     message: "feat(permissions): comprehensive allow list from audit data"
@@ -18,3 +19,19 @@ ac_status:
   AC5: PASS  # .claude/docs/permissions-extend.md written (this session)
   AC6: PENDING  # validation on ace-linux-1 + acma-ansys05 pending
   AC7: PASS  # 23 TDD tests, all PASS (tests/unit/test_permissions_model.py)
+integrated_repo_tests:
+  - name: "permissions model TDD — deny-list enforcement and allow-list coverage"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_permissions_model.py -v"
+    result: passed
+    artifact_ref: tests/unit/test_permissions_model.py
+  - name: "deny-list parametrized — 6 required dangerous patterns"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_permissions_model.py::TestDenyList -v"
+    result: passed
+    artifact_ref: tests/unit/test_permissions_model.py
+  - name: "allow-list parametrized — 7 required ecosystem commands"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_permissions_model.py::TestAllowList -v"
+    result: passed
+    artifact_ref: tests/unit/test_permissions_model.py

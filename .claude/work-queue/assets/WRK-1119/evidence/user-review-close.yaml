@@ -1,0 +1,12 @@
+stage: 17
+wrk_id: WRK-1119
+reviewed_at: "2026-03-12T10:00:00Z"
+confirmed_at: "2026-03-12T10:00:00Z"
+reviewer: vamsee
+confirmed: true
+decision: approved
+notes: |
+  Stage 17 approved. AC3/AC6 (bypass removal + fresh-session validation on ace-linux-1
+  and acma-ansys05) deferred as future work — captured in future-work.yaml.
+  All other ACs complete: 23 TDD PASS, docs written, deny list covers minimums,
+  settings.json committed and travels with the repo.

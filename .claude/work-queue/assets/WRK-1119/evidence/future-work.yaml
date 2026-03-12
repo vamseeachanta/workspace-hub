@@ -1,0 +1,35 @@
+stage: 15
+wrk_id: WRK-1119
+completed_at: "2026-03-12T10:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Remove skipDangerousModePermissionPrompt and validate ace-linux-1"
+    priority: high
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: |
+      Remove "skipDangerousModePermissionPrompt": true from ~/.claude/settings.json on
+      ace-linux-1. Start fresh Claude Code session without bypass flag; confirm normal
+      operations work without permission prompts. (AC3/AC6 deferred from WRK-1119)
+
+  - id: FW-2
+    title: "Validate permission model on acma-ansys05 (Windows)"
+    priority: high
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: |
+      On acma-ansys05, start Claude Code session without --dangerouslySkipPermissions.
+      Confirm the allow list covers Windows-specific commands (orcaflex, ansys, etc.).
+      Add any missing patterns and commit. Blocked by FW-1.
+
+  - id: FW-3
+    title: "Audit script as recurring maintenance tool"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: |
+      Schedule quarterly re-runs of audit-session-permissions.py to catch new command
+      patterns that accumulate over time. Add to maintenance calendar or cron.

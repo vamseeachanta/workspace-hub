@@ -1,0 +1,8 @@
+wrk_id: WRK-1119
+stage: 16
+updated_at: "2026-03-12T10:00:00Z"
+additions:
+  - skill: "Permission model audit: parse session JSONLs for Bash command prefixes to derive allow list"
+  - pattern: "Use Bash(prefix:*) syntax in .claude/settings.json allow/deny — prefix before : must match command start"
+  - pattern: "Deny list beats allow list: more-specific deny pattern blocks broader allow (e.g. rm -rf / vs rm:*)"
+  - skill: "Extension guide pattern: always run TDD after editing permissions to catch duplicates and structural errors"

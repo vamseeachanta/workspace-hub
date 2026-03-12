@@ -1,0 +1,23 @@
+wrk_id: WRK-1119
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1119/WRK-1119-plan.html
+    opened_at: "2026-03-11T09:00:00Z"
+    reviewer: vamsee
+    notes: "Plan discussed and approved via user-review-capture.yaml scope notes"
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1119/WRK-1119-plan.html
+    opened_at: "2026-03-11T09:00:00Z"
+    reviewer: vamsee
+    notes: "Plan finalised — same session, scope notes confirmed"
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: .claude/work-queue/assets/WRK-1119/WRK-1119-lifecycle.html
+    opened_at: "2026-03-12T10:00:00Z"
+    reviewer: vamsee
+    notes: "User approved Stage 17 — 'I approve stage 17'"
