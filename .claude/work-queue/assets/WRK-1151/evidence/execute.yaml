@@ -1,0 +1,27 @@
+wrk_id: WRK-1151
+stage: 10
+completed_at: "2026-03-12T18:05:00Z"
+
+downloads:
+  textbooks_ok: 9
+  hydrostatics_stability_ok: 3
+  ship_plans_ok: 107
+  total_ok: 119
+  failed_manual_required:
+    - "ABS Intro to Rules and Guides — WAF blocks automated download"
+    - "PNA Vol III (motions) — borrow-only on archive.org"
+    - "Gillmer Introduction to Naval Architecture — borrow-only on archive.org"
+
+destination: /mnt/ace/docs/_standards/SNAME/
+catalogue: knowledge/seeds/naval-architecture-resources.yaml
+download_script: scripts/data/naval-architecture/download-naval-arch-docs.sh
+index_records_added: 119
+index_total_after: 1033908
+
+acceptance_criteria:
+  seed_urls_fetched: true
+  web_search_performed: true
+  pdfs_downloaded: true
+  catalogue_yaml_written: true
+  document_index_updated: true
+  no_drm_content: true

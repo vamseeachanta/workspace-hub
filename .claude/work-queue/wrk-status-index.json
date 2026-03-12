@@ -513,10 +513,10 @@
     "category": "business"
   },
   "WRK-149": {
-    "status": "done",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T18:05:02.511305+00:00",
-    "updated_by": "close-item.sh",
+    "last_updated": "2026-03-12T18:07:52.295036+00:00",
+    "updated_by": "archive-item.sh",
     "title": "digitalmodel test coverage improvement (re-creates WRK-051)",
     "priority": "high",
     "category": "maintenance"
