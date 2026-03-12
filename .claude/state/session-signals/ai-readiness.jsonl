@@ -1,0 +1,3 @@
+{"ts":"2026-03-06T12:41:00Z","host":"ACMA-ANSYS05","agent":"claude","status":"ok","version":"2.1.70","message":"version 2.1.70 ok; expected model claude-sonnet-4-6"}
+{"ts":"2026-03-06T12:41:00Z","host":"ACMA-ANSYS05","agent":"codex","status":"warn","version":"0.105.0","message":"version 0.105.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-03-06T12:41:00Z","host":"ACMA-ANSYS05","agent":"gemini","status":"warn","version":"0.28.2","message":"version 0.28.2 below minimum 1.0.0 — run update"}
