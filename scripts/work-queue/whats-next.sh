@@ -28,7 +28,7 @@ get_field() { grep -m1 "^$2:" "$1" 2>/dev/null | sed "s/^$2: *//" | tr -d '"' ||
 
 is_archived() {
   local num="$1"
-  find "$QUEUE_DIR/archive" -name "WRK-${num}.md" 2>/dev/null | grep -qc . 2>/dev/null
+  find "$QUEUE_DIR/archive" "$QUEUE_DIR/archived" -name "WRK-${num}.md" 2>/dev/null | grep -qc . 2>/dev/null
   return $?
 }
 
@@ -175,7 +175,7 @@ process_file() {
   # Guard: skip pending items already in archive (ghost copies).
   if [[ "$loc" == "pending" ]]; then
     local _num; _num=$(echo "$id" | grep -oE '[0-9]+')
-    if [[ -n "$_num" ]] && find "$QUEUE_DIR/archive" -name "WRK-${_num}.md" 2>/dev/null | grep -qc .; then
+    if [[ -n "$_num" ]] && find "$QUEUE_DIR/archive" "$QUEUE_DIR/archived" -name "WRK-${_num}.md" 2>/dev/null | grep -qc .; then
       return
     fi
   fi
