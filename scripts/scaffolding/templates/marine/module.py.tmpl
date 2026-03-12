@@ -1,0 +1,35 @@
+# ABOUTME: {{MODULE_TITLE}} — marine/hydrodynamic analysis
+# ABOUTME: TODO: add specific standard (e.g. API RP 2A, ISO 19901-1, DNV-RP-C205)
+from __future__ import annotations
+
+"""{{MODULE_TITLE}} — Marine / Hydrodynamic Analysis
+
+Standards reference:
+    - API RP 2A-WSD: Planning, Designing, and Constructing Fixed Offshore Platforms
+    - DNV-RP-C205: Environmental Conditions and Environmental Loads
+    - ISO 19901-1: Metocean Design and Operating Considerations
+    - TODO: add project-specific standard
+
+Environmental assumptions:
+    - Wave theory: TODO (e.g. Airy, Stokes 5th, stream function)
+    - Current profile: TODO
+    - Return period: TODO years
+"""
+
+
+class {{CLASS_NAME}}:
+    """{{MODULE_TITLE}} — marine hydrodynamic analysis.
+
+    TODO: describe sea states, structure geometry, and output (forces, RAOs, etc.).
+    """
+
+    def __init__(self, cfg: dict | None = None) -> None:
+        self.cfg = cfg or {}
+        # marine parameters — TODO populate from cfg
+        self.water_depth_m: float = self.cfg.get("water_depth_m", 0.0)
+        self.Hs_m: float = self.cfg.get("Hs_m", 0.0)   # Significant wave height
+        self.Tp_s: float = self.cfg.get("Tp_s", 0.0)    # Peak period
+
+    def run(self) -> dict:
+        """Execute marine analysis. Returns hydrodynamic loads and response statistics."""
+        raise NotImplementedError("Implement run()")

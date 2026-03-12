@@ -1,0 +1,22 @@
+# ABOUTME: {{MODULE_TITLE}} — {{DOMAIN_DESC}}
+# ABOUTME: TODO: add standard/reference description
+from __future__ import annotations
+
+"""{{MODULE_TITLE}}
+
+TODO: Add module docstring.
+"""
+
+
+class {{CLASS_NAME}}:
+    """{{MODULE_TITLE}}.
+
+    TODO: describe purpose and usage.
+    """
+
+    def __init__(self, cfg: dict | None = None) -> None:
+        self.cfg = cfg or {}
+
+    def run(self) -> dict:
+        """Execute the main analysis. Returns a result dict."""
+        raise NotImplementedError("Implement run()")

@@ -1,0 +1,17 @@
+"""Tests for {{MODULE_TITLE}}."""
+from __future__ import annotations
+
+import pytest
+
+from {{IMPORT_BASE}}.{{MODULE}}.{{MODULE}} import {{CLASS_NAME}}
+
+
+class Test{{CLASS_NAME}}:
+    """Unit tests for {{CLASS_NAME}}."""
+
+    def test_{{MODULE}}_run_not_implemented(self) -> None:
+        """TDD-RED: run() raises NotImplementedError until implemented."""
+        obj = {{CLASS_NAME}}()
+        # TDD-RED — implement {{CLASS_NAME}}.run() to make this pass
+        with pytest.raises(NotImplementedError):
+            obj.run()

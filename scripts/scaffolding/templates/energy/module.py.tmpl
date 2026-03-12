@@ -1,0 +1,33 @@
+# ABOUTME: {{MODULE_TITLE}} — energy/regulatory data analysis
+# ABOUTME: TODO: add specific data source (e.g. EIA API, BSEE, ANP)
+from __future__ import annotations
+
+"""{{MODULE_TITLE}} — Energy / Regulatory Analysis
+
+Data sources / regulatory references:
+    - EIA: U.S. Energy Information Administration (api.eia.gov)
+    - BSEE: Bureau of Safety and Environmental Enforcement (bsee.gov)
+    - TODO: add project-specific regulatory reference
+
+Assumptions:
+    - Units: TODO (e.g. MMBtu, bbl/day, Mcf)
+    - Date range: TODO
+    - Geography: TODO
+"""
+
+
+class {{CLASS_NAME}}:
+    """{{MODULE_TITLE}} — energy regulatory analysis.
+
+    TODO: describe data sources, aggregation logic, and output metrics.
+    """
+
+    def __init__(self, cfg: dict | None = None) -> None:
+        self.cfg = cfg or {}
+        # energy parameters — TODO populate from cfg
+        self.api_key: str = self.cfg.get("api_key", "")
+        self.series_id: str = self.cfg.get("series_id", "")
+
+    def run(self) -> dict:
+        """Fetch and analyse energy data. Returns structured metrics dict."""
+        raise NotImplementedError("Implement run()")
