@@ -56,7 +56,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1113/review.md
 - order: 14
   stage: Verify Gate Evidence
-  status: in_progress
+  status: done
   evidence: scripts/work-queue/verify-gate-evidence.py
 - order: 15
   stage: Future Work Synthesis

@@ -1,6 +1,9 @@
 wrk_id: WRK-1113
 stage: 8
 activated_at: "2026-03-12T17:00:00Z"
+set_active_wrk: true
+session_id: "2026-03-12-WRK-1113-ace-linux-1"
+orchestrator_agent: claude
 provider: claude
 computer: ace-linux-1
 branch: feature/WRK-1113-doc-corpus-extraction

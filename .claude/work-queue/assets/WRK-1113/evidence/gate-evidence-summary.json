@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -22,42 +22,42 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: missing stage orders [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]"
+      "details": "stage-evidence.yaml: stage order 17 must be done|n/a before close (found pending)"
     },
     {
       "name": "Resource-intelligence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: invalid completion_status"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4"
     },
     {
       "name": "Activation gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: activation evidence OK"
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -75,10 +75,10 @@
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['result']"
+      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
     },
     {
       "name": "Legal gate",
@@ -96,24 +96,24 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: recommendations[1] disposition must be existing-updated|spun-off-new"
+      "details": "future-work.yaml: recommendations=4"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml: additions must be a list"
+      "details": "resource-intelligence-update.yaml: additions=4"
     },
     {
       "name": "User-review close gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at', 'decision']"
     },
     {
       "name": "Reclaim gate",
@@ -141,7 +141,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -176,7 +176,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "publish commits appear unique across stages"
     },
     {
       "name": "Stage evidence paths gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan publish ordering OK (published=2026-03-12T18:00:00Z, reviewed=2026-03-12T17:00:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
     }
   ]
 }

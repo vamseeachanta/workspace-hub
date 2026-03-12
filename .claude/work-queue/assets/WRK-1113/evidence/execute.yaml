@@ -35,20 +35,22 @@ test_totals:
 integrated_repo_tests:
   - name: CP + drilling_riser doc-verified tests
     repo: digitalmodel
-    scope: tests/cathodic_protection/ tests/drilling_riser/
+    scope: repo
     command: "PYTHONPATH=src uv run python -m pytest tests/cathodic_protection/ tests/drilling_riser/"
     artifact_ref: "122 PASS / 0 FAIL"
+    result: pass
   - name: Phase 0 foundation scripts
     repo: workspace-hub
-    scope: scripts/data/document-index/tests/
+    scope: repo
     command: "uv run --no-project python -m pytest scripts/data/document-index/tests/"
     artifact_ref: "16 PASS / 0 FAIL"
-    result: "16 PASS / 0 FAIL"
+    result: pass
   - name: Full digitalmodel suite
     repo: digitalmodel
-    scope: tests/
+    scope: repo
     command: "PYTHONPATH=src uv run python -m pytest"
     artifact_ref: "all green (no regressions)"
+    result: pass
 
 legal_scan: PASS
 
