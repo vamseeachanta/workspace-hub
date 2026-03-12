@@ -7,16 +7,16 @@
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
-| Agent log gate | FAIL | execute:missing-log ; cross-review:missing-log |
-| User-review HTML-open gate | FAIL | user-review-browser-open.yaml: missing required stages ['close_review'] |
-| User-review publish gate | FAIL | user-review-publish.yaml: missing required stages ['close_review'] |
+| Agent log gate | PASS | matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['tdd_eval'], cross-review:['agent_cross_review'] |
+| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1130/review-synthesis.md |
-| TDD gate | FAIL | none |
-| Integrated test gate | FAIL | execute evidence missing (required: evidence/execute.yaml) |
-| Legal gate | FAIL | artifact=missing, none |
+| TDD gate | PASS | test files=['test-results.md'] |
+| Integrated test gate | PASS | execute.yaml: integrated_repo_tests=5 (all passing) |
+| Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1130/legal-scan.md, result=PASS |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
-| Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
-| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
+| Future-work gate | PASS | future-work.yaml: recommendations=3 |
+| Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=3 |
 | User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
@@ -27,7 +27,7 @@
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (2 file(s) checked) |
 | Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit 'f1c157c8' — possible placeholder (WARN) |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[4] evidence path not found: specs/wrk/WRK-1130/plan.md |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-12T00:30:00Z, reviewed=2026-03-12T00:30:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |

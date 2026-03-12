@@ -2,29 +2,35 @@ wrk_id: WRK-1130
 produced_at: "2026-03-12T02:30:00Z"
 agent: claude
 
-items:
+recommendations:
   - id: FW-1
-    priority: medium
     title: "Shared children-list parser across shell scripts"
     description: >
       new-feature.sh, feature-status.sh, feature-close-check.sh all implement
       children: parsing independently. Extract to scripts/work-queue/lib/parse-children.sh
-      (25% Repetition Rule applies — 3 callers + likely 4th for WRK-1131).
-    candidate_wrk: true
+      (25% Repetition Rule — 3 callers + likely 4th for WRK-1131).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
 
   - id: FW-2
-    priority: low
     title: "dep_graph.py headroom — at exactly 400-line limit"
     description: >
       dep_graph.py is at exactly 400 lines after extraction to lib/feature_tree.py.
       Any future addition triggers the hard limit. Extract one more logical unit
       (e.g. the DOT renderer) to create headroom.
-    candidate_wrk: false
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
 
   - id: FW-3
-    priority: medium
     title: "new-feature.sh --force flag for intentional re-scaffolding"
     description: >
       The re-run guard (exit 1 if children: already populated) is a hard abort.
       A --force flag would allow intentional re-scaffolding with explicit user acknowledgment.
-    candidate_wrk: true
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false

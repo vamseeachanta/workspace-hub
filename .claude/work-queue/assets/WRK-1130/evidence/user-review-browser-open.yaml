@@ -12,3 +12,10 @@ events:
     browser: default
     opened_at: "2026-03-12T00:45:00Z"
     reviewer: vamsee
+
+  - stage: close_review
+    html_ref: .claude/work-queue/assets/WRK-1130/WRK-1130-lifecycle.html
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-12T03:15:00Z"
+    reviewer: vamsee

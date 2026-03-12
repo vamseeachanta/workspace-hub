@@ -29,6 +29,33 @@ acceptance_criteria:
 test_script: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
 test_results: "33 PASS / 0 FAIL (57 assertions)"
 
+integrated_repo_tests:
+  - name: "new-feature.sh hermetic scaffold"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-wrk1130-feature-tooling.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
+  - name: "feature-status.sh block-list YAML parsing"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-wrk1130-feature-tooling.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
+  - name: "feature-close-check.sh exit codes"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-wrk1130-feature-tooling.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
+  - name: "dep_graph.py --feature ASCII tree"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-wrk1130-feature-tooling.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1130-feature-tooling.sh
+  - name: "generate-index.py By Feature section"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-wrk1130-feature-tooling.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/scripts/generate-index.py
+
 summary: >
   Feature layer tooling scripts delivered: new-feature.sh (two-pass, atomic, WORK_QUEUE_ROOT),
   feature-status.sh and feature-close-check.sh (robust YAML parsing), dep_graph.py --feature

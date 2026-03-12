@@ -3,17 +3,20 @@ stage: 16
 updated_at: "2026-03-12T02:30:00Z"
 agent: claude
 
-key_learnings:
-  - >
-    Feature layer tooling (new-feature.sh, feature-status.sh, feature-close-check.sh)
-    confirmed working pattern: WORK_QUEUE_ROOT injection + two-pass atomic writes
-    + EXIT trap for sentinel cleanup.
-  - >
-    dep_graph.py shell wrapper needs UV_CACHE_DIR bootstrap for sandboxed environments
-    (Codex found this; applies to any polyglot shell/Python script).
-  - >
-    children: YAML format (inline vs block-list) requires robust parsing — both
-    formats appear in real queue items (WRK-597 uses block-list).
+additions:
+  - type: learning
+    summary: >
+      Feature layer tooling (new-feature.sh, feature-status.sh, feature-close-check.sh)
+      confirmed working pattern: WORK_QUEUE_ROOT injection + two-pass atomic writes
+      + EXIT trap for sentinel cleanup.
+  - type: learning
+    summary: >
+      dep_graph.py shell wrapper needs UV_CACHE_DIR bootstrap for sandboxed environments
+      (Codex found this; applies to any polyglot shell/Python script).
+  - type: learning
+    summary: >
+      children: YAML format (inline vs block-list) requires robust parsing — both
+      formats appear in real queue items (WRK-597 uses block-list).
 
 updated_files:
   - scripts/work-queue/new-feature.sh

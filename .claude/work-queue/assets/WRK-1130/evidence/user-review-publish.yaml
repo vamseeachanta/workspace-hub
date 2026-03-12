@@ -20,3 +20,14 @@ events:
     documents:
       - .claude/work-queue/assets/WRK-1130/WRK-1130-lifecycle.html
       - .claude/work-queue/assets/WRK-1130/evidence/plan-final-review.yaml
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "d464c820"
+    published_at: "2026-03-12T03:20:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1130/WRK-1130-lifecycle.html
+      - .claude/work-queue/assets/WRK-1130/evidence/cross-review-impl.yaml
