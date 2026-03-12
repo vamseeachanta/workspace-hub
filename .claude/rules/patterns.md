@@ -12,6 +12,19 @@
 - LLM judgment is only the fallback when a script cannot reasonably be written
 - Corollary: if a rule matters, encode it in a script/hook — skill prose is context-rot prone
 
+### Enforcement Gradient
+
+Rules exist on a maturity spectrum. Move rules toward stronger enforcement over time:
+
+| Level | Mechanism | Reliability | When to use |
+|---|---|---|---|
+| 0 — Prose | Monolithic SKILL.md | Lowest — only if skill is explicitly invoked | Broad guidance, judgment calls |
+| 1 — Micro-skill | Per-stage file, auto-loaded by orchestrator script | Medium — guaranteed in context at stage entry | Stage-specific checklists and rules |
+| 2 — Script | Deterministic shell/Python, called from micro-skill or CI | High — auditable, testable, version-controlled | Binary checks: did/didn't happen |
+| 3 — Hook | pre-commit / stop-hook / post-checkout | Strongest — fires automatically, can't be silently skipped | Must-never-miss enforcement |
+
+**Migration path:** when a prose rule or micro-skill checklist item can be expressed as a binary check (exit 0/1), write a script. When it must fire on every commit or session exit, promote it to a hook.
+
 ### Create Scripts to Avoid LLM Overheads (Hard Rule)
 
 When an operation will recur or involves non-trivial logic, **write a script** instead of
