@@ -1,5 +1,13 @@
 wrk_id: WRK-1142
-status: ready
-verified_at: "2026-03-12T08:35:00Z"
-verified_by: orchestrator
-notes: "All ACs verified: 6 TDD tests pass, start_stage.py wired, stage micro-skills complete, SKILL.md ≤150 lines."
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1142/WRK-1142-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1142/legal-scan.md"
+archive_readiness: "pass"
+document_index_exemption: "hub-only item — no document-index entries affected"
+spin_off_wrks: []
+commit: "7a8c4058327e79af1f1e9d84f83ba150acae8cd6"
+notes: >
+  6 TDD tests (T50-T55) all PASS. start_stage.py wired with _load_stage_micro_skill().
+  All 20 stage micro-skills ≥5 content lines. SKILL.md 312→120 lines.
+  Stage 17 approved by vamsee 2026-03-12T08:30:00Z.
