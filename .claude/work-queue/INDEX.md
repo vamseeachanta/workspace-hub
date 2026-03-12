@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T17:58:11Z by generate-index.py -->
+<!-- Generated: 2026-03-12T18:05:59Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T17:58:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T18:05:59Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 580
+**Total items:** 579
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 222 |
-| working | 7 |
+| working | 6 |
 | blocked | 10 |
 | archived | 341 |
 
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 255 |
+| high | 254 |
 | medium | 273 |
 | low | 51 |
 
@@ -32,7 +32,7 @@
 |------------|-------|
 | simple | 134 |
 | medium | 276 |
-| complex | 102 |
+| complex | 101 |
 
 ### By Category
 
@@ -45,7 +45,7 @@
 | data | 24 |
 | platform | 13 |
 | business | 6 |
-| maintenance | 7 |
+| maintenance | 6 |
 | personal | 4 |
 | uncategorised | 10 |
 
@@ -64,7 +64,7 @@
 | assethold | 15 |
 | assetutilities | 18 |
 | client_projects | 1 |
-| digitalmodel | 185 |
+| digitalmodel | 184 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 245 / 580 |
-| Plans cross-reviewed | 169 |
-| Plans approved | 192 |
+| Plans exist | 244 / 579 |
+| Plans cross-reviewed | 168 |
+| Plans approved | 191 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 580 |
+| Total captured | 579 |
 | Total archived | 341 |
-| Completion rate | 341/580 (59%) |
+| Completion rate | 341/579 (59%) |
 | Monthly rate (current month) | 107 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 63 / 222 | 28% |
-| Plans cross-reviewed | 10 | 13% |
-| Plans user-approved | 10 | 13% |
+| Plans cross-reviewed | 9 | 12% |
+| Plans user-approved | 9 | 12% |
 
 ### Aging
 
@@ -111,14 +111,14 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 141 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-294, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-578, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 3 | WRK-129, WRK-149, WRK-660 |
+| Working > 7 days | 2 | WRK-129, WRK-660 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 4 | 8 |
+| High     | 88 | 3 | 8 |
 | Medium   | 100  | 3  | 1  |
 | Low      | 34  | 0  | 1  |
 
@@ -520,7 +520,7 @@
 |----|----------|-------|--------|
 | WRK-580 | LOW | feat(worldenergydata): map open-access journal portfolio for engineering | pending |
 
-### maintenance (7 items — 2 high, 3 medium, 2 low)
+### maintenance (6 items — 1 high, 3 medium, 2 low)
 
 #### maintenance / cleanup
 
@@ -546,7 +546,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-149 | HIGH | digitalmodel test coverage improvement (re-creates WRK-051) | working |
 | WRK-660 | HIGH | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working |
 
 ### personal (4 items — 1 high, 0 medium, 3 low)
@@ -729,7 +728,6 @@
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 35% | n/a | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | marine_safety | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -1412,7 +1410,6 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | high | complex | digitalmodel | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | high | medium | assetutilities | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
@@ -1992,7 +1989,6 @@
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | complex | structural |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | complex | fatigue |
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | archived | medium | medium | structural |
@@ -2594,7 +2590,6 @@
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | complex | workspace-hub | agents |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | medium | workspace-hub | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | complex | digitalmodel | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | medium | worldenergydata | marine_safety |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | medium | workspace-hub | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | complex | digitalmodel | structural |
@@ -3617,7 +3612,6 @@
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | workspace-hub | agents |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | digitalmodel | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | digitalmodel | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | digitalmodel | structural |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | digitalmodel | fatigue |
 | WRK-163 | Well planning risk empowerment framework | archived | medium | worldenergydata, digitalmodel | risk_assessment |
@@ -3660,7 +3654,7 @@
 
 ## By Computer
 
-### ace-linux-1 (175 active / 300 total)
+### ace-linux-1 (174 active / 299 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3676,7 +3670,6 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | digitalmodel |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | worldenergydata |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | digitalmodel |
 | WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | archived | high | simple | - |
 | WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | pending | medium | complex | worldenergydata |
 | WRK-180 | Stop Hook: Cross-Agent Learning Sync | pending | low | high | workspace-hub |

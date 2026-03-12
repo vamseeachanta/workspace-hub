@@ -1,0 +1,8 @@
+wrk_id: WRK-149
+metadata_version: "1.0"
+route: B
+claimed_by: claude
+claimed_at: "2026-02-18T08:00:00Z"
+session_id: session-20260218
+orchestrator_agent: claude
+note: Legacy claim record — item was claimed 2026-02-18 before claim-evidence.yaml was required.

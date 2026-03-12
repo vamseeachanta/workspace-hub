@@ -1,7 +1,7 @@
 wrk_id: WRK-149
 stage: 10
 status: complete
-executed_at: "2026-02-24T00:00:00Z"
+executed_at: "2026-02-24T20:00:00Z"
 commits:
   - hash: d42399cbb
     message: "test(asset_integrity): WRK-149 cover yml_utilities fallback error branches"
@@ -11,6 +11,28 @@ commits:
     message: "test(coverage): add priority module tests — WRK-149 Phase 2"
   - hash: c018cd17e
     message: "test(coverage): WRK-149 add hull_library, hydrodynamics, and structural unit tests"
+integrated_repo_tests:
+  - name: digitalmodel-unit-all
+    scope: repo
+    repo: digitalmodel
+    command: "PYTHONPATH=src uv run python -m pytest tests/unit/ --noconftest -q"
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-149/test-results.md
+    test_count: 351
+  - name: digitalmodel-unit-hull-library
+    scope: repo
+    repo: digitalmodel
+    command: "PYTHONPATH=src uv run python -m pytest tests/unit/hull_library/ --noconftest -q"
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-149/test-results.md
+    test_count: 102
+  - name: digitalmodel-unit-hydrodynamics
+    scope: repo
+    repo: digitalmodel
+    command: "PYTHONPATH=src uv run python -m pytest tests/unit/hydrodynamics/ --noconftest -q"
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-149/test-results.md
+    test_count: 147
 summary: >
   204 new unit tests added across hull_library, hydrodynamics, and structural modules.
   351 total tests passing in tests/unit/. Priority module coverage all above 50%.

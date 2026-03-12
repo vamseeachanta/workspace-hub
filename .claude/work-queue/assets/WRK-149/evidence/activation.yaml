@@ -1,0 +1,6 @@
+wrk_id: WRK-149
+set_active_wrk: true
+session_id: session-20260218
+orchestrator_agent: claude
+activated_at: "2026-02-18T08:00:00Z"
+note: Legacy activation record — item was activated 2026-02-18 before activation.yaml was required.

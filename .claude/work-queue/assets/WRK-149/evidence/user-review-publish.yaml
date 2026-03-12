@@ -1,0 +1,30 @@
+wrk_id: WRK-149
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 8d0246fbf
+    documents:
+      - .claude/work-queue/assets/WRK-149/WRK-149-plan.html
+    published_at: "2026-02-18T09:00:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 8d0246fbf
+    documents:
+      - .claude/work-queue/assets/WRK-149/WRK-149-plan.html
+    published_at: "2026-02-18T10:00:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a3815bae
+    documents:
+      - .claude/work-queue/assets/WRK-149/WRK-149-lifecycle.html
+    published_at: "2026-03-12T12:06:00Z"
+    reviewer: vamsee
+note: Legacy evidence record — plan stages published to origin 2026-02-18.

@@ -1,0 +1,10 @@
+wrk_id: WRK-149
+stage: 16
+updated_at: "2026-02-24T20:00:00Z"
+additions:
+  - domain: testing
+    learning: pytest markers (commit/task/session) now configured in digitalmodel pytest.ini
+  - domain: testing
+    learning: PYTHONPATH=src required for all pytest runs in digitalmodel
+  - domain: coverage
+    learning: hull_library, hydrodynamics, structural modules now have unit tests; prior coverage gap resolved

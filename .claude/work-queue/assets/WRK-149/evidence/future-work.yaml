@@ -1,0 +1,21 @@
+wrk_id: WRK-149
+recorded_at: "2026-02-24T20:00:00Z"
+recommendations:
+  - title: Rename test_hull_parametric.py to be more specific
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+    rationale: Codex minor finding — file covers profile_schema/lookup; name is slightly broad
+  - title: Add license-dependent test suite for orcaflex integration points
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+    rationale: License-free tests only; orcaflex core needs licensed machine
+  - title: Configure CI coverage ratchet gate for digitalmodel
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+    rationale: Prevent coverage regression; baseline at current levels
