@@ -1,4 +1,7 @@
 """:"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+export UV_CACHE_DIR="${REPO_ROOT}/.claude/state/uv-cache"
+mkdir -p "$UV_CACHE_DIR"
 exec uv run --no-project python "$0" "$@"
 ":"""
 """dep_graph.py — WRK dependency graph visualisation.
@@ -20,10 +23,7 @@ from pathlib import Path
 
 from lib.feature_tree import load_feature_tree, render_feature_tree
 
-# ---------------------------------------------------------------------------
 # Data model
-# ---------------------------------------------------------------------------
-
 
 class CycleError(Exception):
     """Raised when a dependency cycle is detected."""
