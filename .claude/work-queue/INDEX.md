@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T10:56:17Z by generate-index.py -->
+<!-- Generated: 2026-03-12T10:59:34Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T10:56:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T10:59:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 565
+**Total items:** 568
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 217 |
+| pending | 220 |
 | working | 2 |
 | blocked | 10 |
 | archived | 336 |
@@ -23,15 +23,15 @@
 | Priority | Count |
 |----------|-------|
 | high | 253 |
-| medium | 262 |
-| low | 49 |
+| medium | 264 |
+| low | 50 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 130 |
-| medium | 266 |
+| simple | 131 |
+| medium | 268 |
 | complex | 101 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 31 |
+| harness | 34 |
 | engineering | 118 |
 | data | 24 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 224 |
+| workspace-hub | 227 |
 | worldenergydata | 101 |
 
 ### Plan Tracking
@@ -79,7 +79,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 237 / 565 |
+| Plans exist | 238 / 568 |
 | Plans cross-reviewed | 163 |
 | Plans approved | 185 |
 | Brochure pending | 8 |
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 565 |
+| Total captured | 568 |
 | Total archived | 336 |
-| Completion rate | 336/565 (59%) |
+| Completion rate | 336/568 (59%) |
 | Monthly rate (current month) | 102 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 62 / 217 | 29% |
-| Plans cross-reviewed | 9 | 13% |
-| Plans user-approved | 9 | 13% |
+| Pending items with plans | 63 / 220 | 29% |
+| Plans cross-reviewed | 9 | 12% |
+| Plans user-approved | 9 | 12% |
 
 ### Aging
 
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 91 | 1 | 8 |
-| Medium   | 94  | 1  | 1  |
-| Low      | 32  | 0  | 1  |
+| Medium   | 96  | 1  | 1  |
+| Low      | 33  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (31 items — 4 high, 21 medium, 6 low)
+### harness (34 items — 4 high, 23 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -148,6 +148,12 @@
 | WRK-1050 | MEDIUM | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending |
 | WRK-1051 | MEDIUM | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending |
 
+#### harness / automation
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1140 | MEDIUM | feat(automation): nightly cron job — release-notes scan and WRK capture | pending |
+
 #### harness / data-pipeline
 
 | ID | Priority | Title | Status |
@@ -165,6 +171,18 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-180 | LOW | Stop Hook: Cross-Agent Learning Sync | pending |
+
+#### harness / onboarding
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5026 | LOW | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending |
+
+#### harness / patterns
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5027 | MEDIUM | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending |
 
 #### harness / release-management
 
@@ -1133,6 +1151,7 @@ No active feature WRKs found.
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1139 |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1143,6 +1162,8 @@ No active feature WRKs found.
 | WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1357,6 +1378,7 @@ No active feature WRKs found.
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | high | simple | workspace-hub | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | high | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | medium | simple | workspace-hub | - |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1367,6 +1389,8 @@ No active feature WRKs found.
 | WRK-5021 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 | WRK-5022 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -2355,12 +2379,15 @@ No active feature WRKs found.
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | pending | high | simple | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | - |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | - |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2985,6 +3012,7 @@ No active feature WRKs found.
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | small | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | simple | workspace-hub | - |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -2994,6 +3022,7 @@ No active feature WRKs found.
 | WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3048,6 +3077,7 @@ No active feature WRKs found.
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | simple | workspace-hub | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | simple | workspace-hub | - |
 
 ## By Complexity
 
@@ -3185,6 +3215,7 @@ No active feature WRKs found.
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | workspace-hub | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | workspace-hub | - |
 
 ### Medium
 
@@ -3450,12 +3481,14 @@ No active feature WRKs found.
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | archived | high | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
 | WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -3565,7 +3598,7 @@ No active feature WRKs found.
 
 ## By Computer
 
-### ace-linux-1 (165 active / 285 total)
+### ace-linux-1 (168 active / 288 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3847,6 +3880,7 @@ No active feature WRKs found.
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | workspace-hub |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | pending | high | simple | workspace-hub |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | workspace-hub |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -3854,6 +3888,8 @@ No active feature WRKs found.
 | WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | workspace-hub |
+| WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -4227,5 +4263,6 @@ No active feature WRKs found.
 | WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
+| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | WRK-1139 | - | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 

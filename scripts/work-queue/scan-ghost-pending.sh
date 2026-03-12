@@ -20,7 +20,7 @@ for f in "$QUEUE_DIR/pending/"*.md; do
   [[ -z "$id" ]] && continue
   num=$(echo "$id" | grep -oE '[0-9]+' || true)
   [[ -z "$num" ]] && continue
-  if find "$QUEUE_DIR/archive" -name "WRK-${num}.md" 2>/dev/null | grep -qc .; then
+  if find "$QUEUE_DIR/archive" "$QUEUE_DIR/archived" -name "WRK-${num}.md" 2>/dev/null | grep -qc .; then
     ghosts+=("$f")
   fi
 done
