@@ -1,0 +1,39 @@
+wrk_id: WRK-1113
+stage: 15
+recorded_at: "2026-03-12T21:30:00Z"
+
+recommendations:
+  - id: FW-1
+    priority: high
+    title: "Input validation for pure-math engineering functions"
+    description: >
+      anode_resistance_slender_standoff, equivalent_radius_from_mass, protected_length,
+      and damping functions accept zero/negative inputs that produce ZeroDivisionError
+      or math domain errors. Add lightweight ValueError guards for physically invalid inputs.
+    disposition: spun-off-new
+
+  - id: FW-2
+    priority: high
+    title: "Doc Intelligence Platform — Phase 2 implementation (8 child WRKs)"
+    description: >
+      WRK-5035 through WRK-5042 captured. Execute the doc intelligence platform:
+      gitignore scaffold, extraction skill, extract-document.py, federated indexes,
+      query layer, code promotion, URL extraction, batch pipeline.
+    disposition: spun-off-new
+
+  - id: FW-3
+    priority: medium
+    title: "Absorb remaining 21 candidates from selection matrix"
+    description: >
+      10 CP + 14 drilling riser documents selected. Current WRK absorbed 4 drilling riser
+      docs + 3 CP standards. Remaining 17 documents can be absorbed in future WRKs.
+    disposition: spun-off-new
+
+  - id: FW-4
+    priority: low
+    title: "Barlow formula design factor cross-validation"
+    description: >
+      Add a test comparing wall_thickness_required against hand-calculated values from
+      the 2H-TNE-0050-03 worked example to confirm SF=1.5 interpretation matches the
+      source document's intent.
+    disposition: spun-off-new

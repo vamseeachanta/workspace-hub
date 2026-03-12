@@ -1,0 +1,22 @@
+wrk_id: WRK-1113
+stage: 16
+updated_at: "2026-03-12T21:30:00Z"
+
+additions:
+  - area: digitalmodel.drilling_riser
+    description: "New module with 4 files, 13 functions, 49 doc-verified tests"
+    path: digitalmodel/src/digitalmodel/drilling_riser/
+  - area: digitalmodel.cathodic_protection.dnv_rp_b401
+    description: "New DNV-RP-B401 module, 9 functions, 33 doc-verified tests"
+    path: digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py
+  - area: standards-transfer-ledger
+    description: "3 entries marked exhausted: DNV-RP-B401, API-RP-1632, ISO15589-2"
+    path: data/document-index/standards-transfer-ledger.yaml
+  - area: doc-intelligence-platform
+    description: "8 child WRKs queued: WRK-5035 through WRK-5042"
+    path: .claude/work-queue/pending/WRK-5035.md..WRK-5042.md
+
+next_context: >
+  Doc intelligence platform (WRK-5035-5042) is the next major initiative.
+  drilling_riser/ and cathodic_protection/ modules are production-ready.
+  17 documents from the selection matrix remain unabsorbed.

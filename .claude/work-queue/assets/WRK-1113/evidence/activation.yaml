@@ -1,0 +1,7 @@
+wrk_id: WRK-1113
+stage: 8
+activated_at: "2026-03-12T17:00:00Z"
+provider: claude
+computer: ace-linux-1
+branch: feature/WRK-1113-doc-corpus-extraction
+notes: "Branch created; agent team dispatched (cp-absorber, riser-builder, wrk-capturer)"

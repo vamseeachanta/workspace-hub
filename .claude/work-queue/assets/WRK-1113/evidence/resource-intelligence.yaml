@@ -1,7 +1,14 @@
 wrk_id: WRK-1113
 stage: 2
-completion_status: complete
+completion_status: continue_to_planning
+top_p1_gaps: []
 domain: document-intelligence/parametric-extraction
+skills:
+  core_used:
+    - work-queue
+    - legal-sanity-scan
+    - cathodic-protection
+    - drilling-riser-analysis
 assessed_at: "2026-03-12T00:00:00Z"
 
 existing_infrastructure:

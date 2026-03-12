@@ -1,0 +1,23 @@
+wrk_id: WRK-1113
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1113/WRK-1113-plan.html
+    opened_at: "2026-03-12T18:00:00Z"
+    reviewer: user
+    notes: Stage 5 plan draft review — user reviewed plan.html before approving
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1113/WRK-1113-plan.html
+    opened_at: "2026-03-12T18:30:00Z"
+    reviewer: user
+    notes: Stage 7 final plan review — user approved final plan before execution
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1113/WRK-1113-lifecycle.html
+    opened_at: "2026-03-12T21:30:00Z"
+    reviewer: user
+    notes: Stage 17 close review — lifecycle HTML opened for user review

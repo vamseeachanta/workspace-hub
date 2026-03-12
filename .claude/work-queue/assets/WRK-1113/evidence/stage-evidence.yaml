@@ -1,45 +1,84 @@
 wrk_id: WRK-1113
-stages_complete:
-  - stage: 1
-    name: Capture
-    completed_at: "2026-03-12T00:00:00Z"
-    gate: HARD
-    gate_passed: true
-    reviewer: vamsee
-  - stage: 2
-    name: Resource Intelligence
-    completed_at: "2026-03-12T00:00:00Z"
-    gate: none
-    notes: "CP module 14 functions, 261 tests; no drilling riser module; ledger schema gaps identified"
-  - stage: 3
-    name: Triage
-    completed_at: "2026-03-12T00:00:00Z"
-    gate: none
-    notes: "Route C confirmed; open questions deferred to Stage 5 (riser namespace, canonical CP routes)"
-  - stage: 4
-    name: Plan Draft
-    completed_at: "2026-03-12T17:00:00Z"
-    gate: none
-    notes: "Plan spec written to specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md; drilling_riser/ namespace confirmed; CP primary layer as test targets"
-  - stage: 5
-    name: User Review Plan Draft
-    completed_at: "2026-03-12T17:00:00Z"
-    gate: HARD
-    gate_passed: true
-    reviewer: vamsee
-    notes: "User submitted 'Implement the following plan' — explicit approval"
-  - stage: 7
-    name: User Review Plan Final
-    completed_at: "2026-03-12T17:00:00Z"
-    gate: HARD
-    gate_passed: true
-    reviewer: vamsee
-    confirmed_by: vamsee
-    notes: "Plan approved for execution; 10/10/10 selection gate built into Phase 1"
-  - stage: 8
-    name: Claim/Activation
-    completed_at: "2026-03-12T17:00:00Z"
-    gate: HARD
-    gate_passed: true
-    notes: "Branch feature/WRK-1113-doc-corpus-extraction created; execution started"
-current_stage: 10
+generated_at: "2026-03-12T21:30:00Z"
+reviewed_by: orchestrator
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/working/WRK-1113.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-1113.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/review.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/WRK-1113-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: in_progress
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 19
+  stage: Close
+  status: pending
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: scripts/work-queue/archive-item.sh

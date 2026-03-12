@@ -201,9 +201,9 @@ table.md-table{font-size:.87rem;}
     </div>
     <p class="eyebrow">WRK-1113 &middot; LIFECYCLE TRACKER</p>
     <h1>WRK-1113 — feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking</h1>
-    <p class="lede">Working &middot; 5/20 stages complete &middot; high priority</p>
+    <p class="lede">Working &middot; 12/20 stages complete &middot; high priority</p>
     <div class="meta-row">
-      <div class="pill pill-stage"><strong>Now</strong>Stage 6: Cross-Review</div>
+      <div class="pill pill-stage"><strong>Now</strong>Stage 13: Agent Cross-Review</div>
       <div class="pill pill-stage"><strong>Status</strong>working</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
       <div class="pill"><strong>Orchestrator</strong>claude</div>
@@ -221,7 +221,7 @@ table.md-table{font-size:.87rem;}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-active" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-active" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
 
@@ -327,14 +327,25 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Task agent · Medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-active">active</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);"># WRK-1113 Stage 13 Cross-Review
+
+&gt; Stage 13 Agent Cross-Review
+
+## Verdict: APPROVE (post-fix)
+
+## Reviewers
+
+| Provider | Verdict (initial) | Post-fix |
+|----------|-------------------|---------|
+| Claude   | APPROVE           | N/A |
+| Codex    | REQUEST_CHANGES   | APPROVE (all findings addresse</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -345,14 +356,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Human interactive · Heavy · <span class="badge" style="font-size:.68rem;padding:2px 6px;">GATE</span></div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/plan-final-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">
@@ -363,14 +374,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Chained agent · Light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s9">
@@ -381,14 +392,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Chained agent · Light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s10">
@@ -399,14 +410,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Task agent · Heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">commits</span><span class="schema-val">{&#x27;digitalmodel&#x27;: [&#x27;d0b021808 feat(WRK-1113): drilling_riser/ module&#x27;, &#x27;5b7c427f3 feat(cp): add DNV-RP-B401 module — 9 functions, 33 doc-verified tests&#x27;], &#x27;workspace_hub&#x27;: [&#x27;3458e9fe chore(WRK-1113): capture 8 child WRKs&#x27;, &#x27;9d86ef76 feat(WRK-1113): absorb CP documents — 6 doc-extracts, DNV-RP-B401 module&#x27;, &#x27;877916ef chore(WRK-1113): Phase 4-5 — exhaustion marking + coverage report&#x27;]}</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">
@@ -417,14 +428,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Task agent · Medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Gate evidence</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-1113-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -435,14 +446,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Task agent · Heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">AC test matrix &nbsp;<span class="badge b-done">12 PASS</span> <span class="badge b-done">0 FAIL</span></div><table><thead><tr><th>#</th><th>Acceptance Criterion</th><th>Test(s)</th><th>Result</th></tr></thead><tbody><tr><td>AC-1</td><td>selection-matrix.md drafted + user-approved</td><td>specs/wrk/WRK-1113/selection-matrix.md; stage-evidence.yaml stage 5 user approved</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-2</td><td>doc-extracts/&lt;doc-ref&gt;.yaml per selected doc</td><td>10 YAML files in specs/wrk/WRK-1113/doc-extracts/</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-3</td><td>≥1 doc-verification test per calc</td><td>test_dnv_rp_b401_doc_verified.py (33 tests), test_api_rp_1632.py (16 tests), test_iso_15589_2.py (20 tests)</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-4</td><td>All existing CP tests still PASS</td><td>69 CP tests PASS (digitalmodel pytest run)</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-5</td><td>Gap-fill functions follow module pattern</td><td>dnv_rp_b401.py: typed sigs, SCREAMING_SNAKE constants, NumPy docstrings w/ §refs</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-6</td><td>All extracted tabular data passes legal scan</td><td>`bash scripts/legal/legal-sanity-scan.sh` → PASS</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-7</td><td>improvements-log.md captures findings</td><td>specs/wrk/WRK-1113/improvements-log.md exists</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-8</td><td>drilling_riser/ module ≥3 functions + tests</td><td>4 modules, 13 functions, 49 doc-verified tests</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-9</td><td>Exhaustion marking applied</td><td>DNV-RP-B401, API-RP-1632, ISO15589-2 marked in ledger</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-10</td><td>query-ledger --exhausted + --domain working</td><td>tests/test_query_ledger_exhausted.py (4 tests PASS)</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-11</td><td>domain-coverage.md committed</td><td>docs/document-intelligence/domain-coverage.md committed on branch</td><td><span class="badge b-done">PASS</span></td></tr><tr><td>AC-12</td><td>Legal scan PASS all new code</td><td>legal-sanity-scan.sh exit 0</td><td><span class="badge b-done">PASS</span></td></tr></tbody></table><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>ac-test-matrix.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s13">
@@ -453,14 +464,14 @@ table.md-table{font-size:.87rem;}
       <div class="smeta">Task agent · Medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-active">active</span>
       <span class="badge b-agent">task_agent</span>
       
       <span class="chevron">▼</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Cross-review not yet complete.</p>
   </div>
 </section>
 <section class="stage-section" id="s14">

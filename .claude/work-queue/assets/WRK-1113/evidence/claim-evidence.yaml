@@ -1,5 +1,6 @@
 wrk_id: WRK-1113
 stage: 8
+route: C
 claimed_at: "2026-03-12T17:00:00Z"
 claimed_by: claude
 computer: ace-linux-1

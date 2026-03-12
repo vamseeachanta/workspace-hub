@@ -29,8 +29,26 @@ phases_complete:
     description: "Coverage report — domain-coverage.md, 425 entries, 3 exhausted"
 
 test_totals:
-  cp_and_drilling_riser: 118
+  cp_and_drilling_riser: 122
   overall_result: PASS
+
+integrated_repo_tests:
+  - name: CP + drilling_riser doc-verified tests
+    repo: digitalmodel
+    scope: tests/cathodic_protection/ tests/drilling_riser/
+    command: "PYTHONPATH=src uv run python -m pytest tests/cathodic_protection/ tests/drilling_riser/"
+    artifact_ref: "122 PASS / 0 FAIL"
+  - name: Phase 0 foundation scripts
+    repo: workspace-hub
+    scope: scripts/data/document-index/tests/
+    command: "uv run --no-project python -m pytest scripts/data/document-index/tests/"
+    artifact_ref: "16 PASS / 0 FAIL"
+    result: "16 PASS / 0 FAIL"
+  - name: Full digitalmodel suite
+    repo: digitalmodel
+    scope: tests/
+    command: "PYTHONPATH=src uv run python -m pytest"
+    artifact_ref: "all green (no regressions)"
 
 legal_scan: PASS
 
