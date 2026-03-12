@@ -1,9 +1,11 @@
 wrk_id: WRK-1113
 stage: 5
+review_cycle_id: "WRK-1113-cycle-1"
 reviewed_at: "2026-03-12T17:00:00Z"
 reviewer: vamsee
 scope_approved: true
 plan_approved: true
+approval_decision: approve_as_is
 notes: "User submitted full plan for implementation — explicit approval signal"
 open_questions_resolved:
   - drilling_riser namespace confirmed as digitalmodel/src/digitalmodel/drilling_riser/
