@@ -1,0 +1,21 @@
+wrk_id: WRK-660
+generated_at: "2026-03-12T15:45:00Z"
+
+items:
+  - id: FW-1
+    title: "Increase devtools coverage beyond unit-testable boundary"
+    description: "cli.py at 7%, organize_structure at 11%, propagate_commands at 19%. Requires fixtures/mocks for real repo structures. Capture as a follow-on WRK with integration test harness."
+    priority: medium
+    category: testing
+
+  - id: FW-2
+    title: "Add __init__.py to tests/modules/calculations/ and tests/modules/devtools/"
+    description: "Currently collected without __init__.py (flat discovery). Adding __init__.py would allow explicit package imports and avoid potential namespace collisions in larger test runs."
+    priority: low
+    category: maintenance
+
+  - id: FW-3
+    title: "Gemini rate limit workaround for parallel large-context calls"
+    description: "Second Gemini call hit MODEL_CAPACITY_EXHAUSTED. Pattern: serialize large-context Gemini calls or add retry with exponential backoff in cross-review wrapper."
+    priority: medium
+    category: infrastructure
