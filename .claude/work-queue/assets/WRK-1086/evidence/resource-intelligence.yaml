@@ -1,0 +1,27 @@
+wrk_id: WRK-1086
+stage: 2
+completion_status: done
+generated_at: "2026-03-12T00:00:00Z"
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/ecosystem-terminology
+  related:
+    - workspace-hub/repo-capability-map
+findings:
+  - "No scripts/scaffolding/ directory exists — needs to be created"
+  - "All 5 tier-1 repos confirmed: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing"
+  - "assetutilities has py.typed (PEP 561 marker)"
+  - "Module structure varies: assetutilities uses calculations/<name>.py (flat) and src/assetutilities/<subpkg>/"
+  - "digitalmodel uses src/digitalmodel/<domain>/__init__.py + domain-specific modules"
+  - "Test pattern: plain pytest functions or class-based with setup_method; ABOUTME: docstrings at top"
+  - "Jinja2 available in hub (uv run --no-project); or use Python string templates (simpler for Route A)"
+  - "ruff/mypy CI enforced in assetutilities; need generated code to pass immediately"
+  - "py.typed is an empty marker file — just touch() it per repo that has PEP 561"
+repo_paths:
+  assetutilities: "assetutilities/src/assetutilities/"
+  digitalmodel: "digitalmodel/src/digitalmodel/"
+  worldenergydata: "worldenergydata/src/worldenergydata/"
+  assethold: "assethold/src/assethold/"
+  OGManufacturing: "OGManufacturing/src/ogmanufacturing/"

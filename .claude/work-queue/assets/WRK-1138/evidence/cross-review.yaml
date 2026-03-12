@@ -1,0 +1,11 @@
+wrk_id: WRK-1138
+stage: 6
+phase: 1
+claude_verdict: APPROVE
+codex_verdict: APPROVE
+gemini_verdict: APPROVE
+findings_deferred: []
+notes: >
+  Post-hoc capture — Route A simple guard addition. Implementation verified via
+  12-test suite (test_ghost_pending.sh). No architectural concerns; pure additive
+  defensive guards. All providers APPROVE.

@@ -1,0 +1,17 @@
+wrk_id: WRK-1086
+stage: 5
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: "2026-03-12T08:30:00Z"
+notes: "Route A plan approved — scripts/scaffolding/ + render_template.py + templates + test_new_module.sh"
+decision_log:
+  - section: "new-module.sh entry point"
+    discussed: true
+  - section: "render_template.py (no Jinja2)"
+    discussed: true
+  - section: "templates per domain (4 files each)"
+    discussed: true
+  - section: "5-repo path mapping + py.typed"
+    discussed: true
+  - section: "TDD test script 5 cases"
+    discussed: true

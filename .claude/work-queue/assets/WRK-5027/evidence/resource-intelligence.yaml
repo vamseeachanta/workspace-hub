@@ -1,0 +1,68 @@
+wrk_id: WRK-5027
+generated_at: "2026-03-12T12:30:00Z"
+generated_by: claude
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+  related:
+    - workspace-hub/session-start
+    - workspace-hub/comprehensive-learning
+    - workspace-hub/workflow-gatepass
+
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+domain:
+  problem: >
+    Several recurring operations in session-start and other skills are performed as inline LLM prose
+    reasoning (quota threshold checks, snapshot age comparison, prose pattern scanning) instead of
+    deterministic scripts, violating the 25% Repetition Rule in patterns.md.
+  architecture_decision: >
+    Write targeted scripts for the 5 highest-frequency prose operations; update skill prose to call
+    the scripts; produce an audit report that can be re-run by comprehensive-learning Phase 9.
+
+existing_files:
+  - path: scripts/skills/identify_script_candidates.py
+    status: existing
+    notes: "Classifies whole SKILL.md files; not the same as scanning for inline prose operations"
+  - path: scripts/skills/identify-script-candidates.sh
+    status: existing
+    notes: "Thin wrapper around the Python script"
+  - path: scripts/session/
+    status: existing
+    notes: "Directory exists; no quota-status or snapshot-age scripts"
+  - path: config/ai-tools/agent-quota-latest.json
+    status: existing
+    notes: "Known format: agents[].provider, .pct_remaining, .source, .timestamp at root"
+  - path: .claude/state/session-snapshot.md
+    status: existing
+    notes: "ISO8601 timestamp on line 1: '# Session Snapshot — 2026-02-19T16:39:06Z'"
+  - path: .claude/rules/patterns.md
+    status: existing
+    notes: "Contains 25% Repetition Rule and enforcement gradient (levels 0-3)"
+  - path: .claude/skills/workspace-hub/session-start/SKILL.md
+    status: existing
+    notes: "Step 2 and Step 3 are inline prose; top candidates for script delegation"
+  - path: scripts/hooks/tidy-agent-teams.sh
+    status: existing
+    notes: "session-start Step 3b already references this; prose is correct"
+  - path: specs/skills/script-conversion-candidates.md
+    status: existing
+    notes: "Output from identify_script_candidates.py — 131 candidates, 198 needs_human_review"
+
+constraints:
+  - "Must not duplicate identify_script_candidates.py scope — that covers whole-skill classification"
+  - "Scripts must use uv run --no-project python for Python scripts (hub has no pyproject.toml)"
+  - "Tests must use existing test patterns in scripts/skills/tests/ and scripts/session/tests/"
+  - "Audit report must be regeneratable deterministically (no LLM reasoning)"
+
+top_p2_gaps: []
+top_p3_gaps:
+  - "comprehensive-learning Phase 9 could auto-run new audit-prose-operations.py"

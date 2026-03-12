@@ -1,0 +1,12 @@
+wrk_id: WRK-1138
+generated_at: 2026-03-12T10:52:00Z
+recommendations:
+  - id: FW-1
+    title: "Add ghost-pending check to pre-commit hook"
+    rationale: >
+      scan-ghost-pending.sh could run as a pre-commit hook to prevent ghost creation
+      at commit time rather than relying on runtime guards.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Low priority — runtime guards sufficient; hook would be belt-and-suspenders"

@@ -1,0 +1,35 @@
+wrk_id: WRK-1142
+stage: cross_review
+reviewed_at: "2026-03-12T12:30:00Z"
+verdict: APPROVE
+reviewers:
+  - claude
+  - codex
+  - gemini
+p1_findings: []
+p2_findings:
+  - source: claude
+    finding: "scripts-over-LLM rule should be checklist position 0 in stage-04 and stage-10"
+  - source: claude
+    finding: "micro-skill content should print unconditionally at stage entry, not only in resume block"
+  - source: codex
+    finding: "test placement should be in scripts/work-queue/tests/ suite"
+  - source: codex
+    finding: "missing-micro-skill edge case: tolerate gracefully with warning"
+  - source: codex
+    finding: "migrate-stage-rules.py scope to stage-numbered sections only, not shared rules"
+p3_findings:
+  - source: gemini
+    finding: "migrate-stage-rules.py error handling for malformed sections"
+  - source: gemini
+    finding: "micro-skill print position: unconditional, not checkpoint-conditional"
+resolutions:
+  - finding: "print micro-skill unconditionally in route_stage() not in resume block"
+    disposition: incorporated — update plan to print in route_stage()
+  - finding: "test in scripts/work-queue/tests/"
+    disposition: incorporated — use existing test runner
+  - finding: "migrate-stage-rules.py: stage-numbered sections only"
+    disposition: incorporated — clarify scope in plan
+  - finding: "scripts-over-LLM at position 0"
+    disposition: incorporated — place as first checklist item
+return_to_stage: null

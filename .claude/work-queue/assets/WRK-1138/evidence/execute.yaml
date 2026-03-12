@@ -1,0 +1,25 @@
+wrk_id: WRK-1138
+stage: 10
+executed_at: 2026-03-12T10:48:37Z
+commit: 0f243abd
+notes: "Post-hoc capture — implementation committed in 0f243abd (chore(wrk-1131): move to done)"
+route: A
+integrated_repo_tests:
+  - name: "scan-ghost-pending.sh returns zero archived copies in queue"
+    scope: integrated
+    command: "bash scripts/work-queue/scan-ghost-pending.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1138/test-results.md
+    notes: "Exit 0 — no archived items found in queue."
+  - name: "test_ghost_pending.sh passes full suite"
+    scope: repo
+    command: "bash tests/scripts/test_ghost_pending.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1138/test-results.md
+    notes: "Results: 12 PASS, 0 FAIL"
+  - name: "whats-next.sh runs without errors after is_archived guard addition"
+    scope: repo
+    command: "bash scripts/work-queue/whats-next.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1138/test-results.md
+    notes: "Exit 0; is_archived guard fires correctly for archived items."

@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-1142
+reviewer: vamsee
+confirmed_at: "2026-03-12T12:24:52Z"
+scope_approved: true
+notes: "User approved Stage 1 capture scope."

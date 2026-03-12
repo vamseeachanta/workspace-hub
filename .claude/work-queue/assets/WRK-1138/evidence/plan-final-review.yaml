@@ -1,0 +1,6 @@
+wrk_id: WRK-1138
+stage: 7
+confirmed_by: vamsee
+confirmed_at: 2026-03-12T10:55:00Z
+decision: passed
+plan_summary: "Guard whats-next.sh/claim-item.sh against ghost archived items; scan-ghost-pending.sh; archive-item.sh multi-dir sweep; 12-test suite"

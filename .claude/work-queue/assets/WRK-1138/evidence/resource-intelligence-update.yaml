@@ -1,0 +1,8 @@
+wrk_id: WRK-1138
+updated_at: 2026-03-12T10:52:00Z
+additions:
+  - topic: whats-next.sh archive guard placement
+    learning: >
+      archive guard in process_file() must check both archive/ and archived/ dirs.
+      is_archived() helper handles both variants transparently.
+    source: Implementation review

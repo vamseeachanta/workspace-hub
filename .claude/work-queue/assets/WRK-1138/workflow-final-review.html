@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1138 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1138 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>fix(whats-next): guard pending scan against archived ghost items</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>A</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — 9 WRK items (WRK-691, WRK-1019, WRK-207, WRK-208, WRK-230, WRK-259, WRK-310, WRK-570, WRK-624) appeared as &quot;HIGH PRIORITY — ready to start&quot; ...</summary><div class="panel"><p>9 WRK items (WRK-691, WRK-1019, WRK-207, WRK-208, WRK-230, WRK-259, WRK-310,
+WRK-570, WRK-624) appeared as "HIGH PRIORITY — ready to start" in <code>/whats-next</code>
+despite being fully archived. Root cause: <code>archive-item.sh</code> removes the
+<code>working/</code> copy but a separate <code>pending/</code> copy can exist (e.g. from an earlier
+capture before the item was claimed). Neither <code>whats-next.sh</code> nor <code>claim-item.sh</code>
+cross-checks <code>archive/</code> before surfacing an item.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Ghost items pollute the work queue view and trigger confusing errors when `/work run NNN` is called on an already-completed item.</summary><div class="panel"><p>Ghost items pollute the work queue view and trigger confusing errors when
+<code>/work run NNN</code> is called on an already-completed item.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [x] `archive-item.sh` sweeps all queue dirs (working/pending/blocked/done) and removes every copy — prevents ghost creation at the source ...</summary><div class="panel"><ul>
+<li>[x] <code>archive-item.sh</code> sweeps all queue dirs (working/pending/blocked/done) and
+      removes every copy — prevents ghost creation at the source</li>
+<li>[x] <code>whats-next.sh</code> <code>process_file()</code> skips any <code>pending/</code> item whose ID is
+      already in <code>archive/</code> (defensive layer)</li>
+<li>[x] <code>claim-item.sh</code> early-exits with a clear "already archived" message if the
+      WRK is in <code>archive/</code> (defensive layer)</li>
+<li>[x] <code>scripts/work-queue/scan-ghost-pending.sh</code> created — reports (and with
+      <code>--fix</code> removes) pending files already in archive; exits 1 if any found</li>
+<li>[x] <code>tests/scripts/test_ghost_pending.sh</code> passes 9/9</li>
+<li>[x] Manual run of <code>scan-ghost-pending.sh</code> on current queue returns 0 ghosts</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — 1. Add `is_archived` guard in `whats-next.sh` `process_file()` — 3-line change 2. Add early-exit in `claim-item.sh` before Stage 5 check — 5...</summary><div class="panel"><ol>
+<li>Add <code>is_archived</code> guard in <code>whats-next.sh</code> <code>process_file()</code> — 3-line change</li>
+<li>Add early-exit in <code>claim-item.sh</code> before Stage 5 check — 5-line change</li>
+<li>Create <code>scripts/work-queue/scan-ghost-pending.sh</code> (detect + <code>--fix</code> mode)</li>
+<li>Write <code>tests/unit/test_ghost_pending.sh</code></li>
+</ol></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — No summary available.</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 8 assets indexed.</summary><div class="panel"><ul><li><code>evidence/ac-test-matrix.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li></ul></div></details>
+</body>
+</html>

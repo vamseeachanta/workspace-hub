@@ -1,0 +1,13 @@
+wrk_id: WRK-1142
+stage: plan_draft
+review_checkpoint: combined_plan
+review_cycle_id: "stage5-20260312"
+approval_decision: approve_as_is
+approved_draft_commit: "316b2ebd398ecd24119553504378e0aec31b054d"
+reviewed_at: "2026-03-12T12:25:00Z"
+reviewed_by: vamsee
+capture_method: manual_live_review
+generated_at_commit: "316b2ebd398ecd24119553504378e0aec31b054d"
+interactive_session: true
+gatepass_section_reviewed_with_user: true
+notes: "User approved plan at Stage 5."

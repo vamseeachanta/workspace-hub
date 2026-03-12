@@ -1,9 +1,9 @@
 # Skill Script Conversion Candidates
 
-Generated: 2026-03-10T19:44:48Z  
-Total skills scanned: 393
+Generated: 2026-03-12T12:27:18Z  
+Total skills scanned: 395
 
-## Candidates (130)
+## Candidates (131)
 
 Skills with purely deterministic content (bash commands only, no reasoning).
 
@@ -11,6 +11,7 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 |------|------|
 | bash-cli-framework | `.claude/skills/_core/bash/bash-cli-framework/SKILL.md` |
 | bash-script-framework | `.claude/skills/_core/bash/bash-script-framework/SKILL.md` |
+| cross-platform-compat | `.claude/skills/_core/bash/cross-platform-compat/SKILL.md` |
 | git-sync-manager | `.claude/skills/_core/bash/git-sync-manager/SKILL.md` |
 | interactive-menu-builder | `.claude/skills/_core/bash/interactive-menu-builder/SKILL.md` |
 | parallel-batch-executor | `.claude/skills/_core/bash/parallel-batch-executor/SKILL.md` |
@@ -37,7 +38,6 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | repo-sync | `.claude/skills/coordination/workspace/repo-sync/SKILL.md` |
 | session-analysis | `.claude/skills/coordination/workspace/session-analysis/SKILL.md` |
 | session-bootstrap | `.claude/skills/coordination/workspace/session-bootstrap/SKILL.md` |
-| work-queue | `.claude/skills/coordination/workspace/work-queue/SKILL.md` |
 | workspace-cli | `.claude/skills/coordination/workspace/workspace-cli/SKILL.md` |
 | dash | `.claude/skills/data/analysis/dash/SKILL.md` |
 | data-management | `.claude/skills/data/analysis/data-management/SKILL.md` |
@@ -131,6 +131,7 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | document-batch | `.claude/skills/workspace-hub/document-batch/SKILL.md` |
 | ecosystem-health | `.claude/skills/workspace-hub/ecosystem-health/SKILL.md` |
 | qa-closure | `.claude/skills/workspace-hub/qa-closure/SKILL.md` |
+| release-notes-adoption | `.claude/skills/workspace-hub/release-notes-adoption/SKILL.md` |
 | repo-portfolio-steering | `.claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md` |
 | repo-structure | `.claude/skills/workspace-hub/repo-structure/SKILL.md` |
 | repo-sync | `.claude/skills/workspace-hub/repo-sync/SKILL.md` |
@@ -140,7 +141,7 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | workflow-html | `.claude/skills/workspace-hub/workflow-html/SKILL.md` |
 | wrk-lifecycle-testpack | `.claude/skills/workspace-hub/wrk-lifecycle-testpack/SKILL.md` |
 
-## Needs Human Review (197)
+## Needs Human Review (198)
 
 Mixed signals — may be convertible with refactoring.
 
@@ -148,13 +149,13 @@ Mixed signals — may be convertible with refactoring.
 |------|------|:-:|:-:|
 | complexity-scorer | `.claude/skills/_core/bash/complexity-scorer/SKILL.md` | 2 | 8 |
 | json-config-loader | `.claude/skills/_core/bash/json-config-loader/SKILL.md` | 1 | 20 |
-| skill-creator | `.claude/skills/_internal/builders/skill-creator/SKILL.md` | 0 | 13 |
+| skill-creator | `.claude/skills/_internal/builders/skill-creator/SKILL.md` | 0 | 15 |
 | web-artifacts-builder | `.claude/skills/_internal/builders/web-artifacts-builder/SKILL.md` | 0 | 1 |
 | discipline-refactor | `.claude/skills/_internal/meta/discipline-refactor/SKILL.md` | 2 | 27 |
 | hidden-folder-audit | `.claude/skills/_internal/meta/hidden-folder-audit/SKILL.md` | 1 | 24 |
 | brainstorming | `.claude/skills/_internal/workflows/brainstorming/SKILL.md` | 2 | 0 |
 | legal-sanity-review | `.claude/skills/_internal/workflows/legal-sanity-review/SKILL.md` | 0 | 4 |
-| agent-usage-optimizer | `.claude/skills/ai/agent-usage-optimizer/SKILL.md` | 1 | 3 |
+| agent-usage-optimizer | `.claude/skills/ai/agent-usage-optimizer/SKILL.md` | 1 | 7 |
 | model-selection | `.claude/skills/ai/optimization/model-selection/SKILL.md` | 0 | 1 |
 | usage-optimization | `.claude/skills/ai/optimization/usage-optimization/SKILL.md` | 1 | 1 |
 | expense-tracking | `.claude/skills/business/admin/expense-tracking/SKILL.md` | 2 | 3 |
@@ -215,6 +216,7 @@ Mixed signals — may be convertible with refactoring.
 | repo-capability-map | `.claude/skills/coordination/workspace/repo-capability-map/SKILL.md` | 2 | 22 |
 | repo-readiness | `.claude/skills/coordination/workspace/repo-readiness/SKILL.md` | 2 | 18 |
 | skills-researcher | `.claude/skills/coordination/workspace/skills-researcher/SKILL.md` | 0 | 7 |
+| work-queue | `.claude/skills/coordination/workspace/work-queue/SKILL.md` | 0 | 83 |
 | bsee-sodir-extraction | `.claude/skills/data/analysis/bsee-sodir-extraction/SKILL.md` | 0 | 1 |
 | data-analysis | `.claude/skills/data/analysis/data-analysis/SKILL.md` | 2 | 1 |
 | great-tables | `.claude/skills/data/analysis/great-tables/SKILL.md` | 0 | 1 |
@@ -329,20 +331,20 @@ Mixed signals — may be convertible with refactoring.
 | instrument-data-allotrope | `.claude/skills/science/bio-research/instrument-data-allotrope/SKILL.md` | 1 | 16 |
 | scientific-problem-selection | `.claude/skills/science/bio-research/scientific-problem-selection/SKILL.md` | 2 | 13 |
 | single-cell-rna-qc | `.claude/skills/science/bio-research/single-cell-rna-qc/SKILL.md` | 2 | 18 |
-| agent-teams | `.claude/skills/workspace-hub/agent-teams/SKILL.md` | 2 | 20 |
+| agent-teams | `.claude/skills/workspace-hub/agent-teams/SKILL.md` | 2 | 22 |
 | clean-code | `.claude/skills/workspace-hub/clean-code/SKILL.md` | 1 | 37 |
-| comprehensive-learning | `.claude/skills/workspace-hub/comprehensive-learning/SKILL.md` | 2 | 15 |
+| comprehensive-learning | `.claude/skills/workspace-hub/comprehensive-learning/SKILL.md` | 2 | 16 |
 | ecosystem-terminology | `.claude/skills/workspace-hub/ecosystem-terminology/SKILL.md` | 1 | 68 |
 | engineering-context-loader | `.claude/skills/workspace-hub/engineering-context-loader/SKILL.md` | 1 | 20 |
 | file-taxonomy | `.claude/skills/workspace-hub/file-taxonomy/SKILL.md` | 1 | 83 |
 | infrastructure-layout | `.claude/skills/workspace-hub/infrastructure-layout/SKILL.md` | 0 | 107 |
 | interoperability | `.claude/skills/workspace-hub/interoperability/SKILL.md` | 0 | 25 |
 | plan-mode | `.claude/skills/workspace-hub/plan-mode/SKILL.md` | 2 | 4 |
-| session-start | `.claude/skills/workspace-hub/session-start/SKILL.md` | 0 | 14 |
+| session-start | `.claude/skills/workspace-hub/session-start/SKILL.md` | 0 | 16 |
 | skill-sync | `.claude/skills/workspace-hub/skill-sync/SKILL.md` | 1 | 21 |
 | sync | `.claude/skills/workspace-hub/sync/SKILL.md` | 0 | 25 |
 | work-document-exit | `.claude/skills/workspace-hub/work-document-exit/SKILL.md` | 2 | 15 |
-| workstations | `.claude/skills/workspace-hub/workstations/SKILL.md` | 0 | 24 |
+| workstations | `.claude/skills/workspace-hub/workstations/SKILL.md` | 0 | 62 |
 
 ## Not Candidates (66)
 

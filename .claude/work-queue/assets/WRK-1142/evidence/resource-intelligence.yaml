@@ -1,0 +1,34 @@
+wrk_id: WRK-1142
+stage: resource_intelligence
+completion_status: complete
+generated_at: "2026-03-12T00:00:00Z"
+domain:
+  area: harness/work-queue
+  problem: stage micro-skills not auto-loaded at stage entry; SKILL.md too large
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/stages/stage-NN-*.md (20 files)
+    - superpowers/test-driven-development
+existing_infrastructure:
+  - path: scripts/work-queue/start_stage.py
+    role: Stage entry orchestrator — currently does NOT load stage micro-skills
+    lines: ~320
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    role: Monolithic workflow reference (312 lines — target ≤150)
+    note: Contains stage-specific rules that should live in micro-skill files
+  - path: .claude/skills/workspace-hub/stages/
+    role: 20 stage micro-skill files (stage-01 to stage-20)
+    state: stubs (9-31 lines each); all 20 exist
+  - path: scripts/work-queue/stages/stage-NN-*.yaml
+    role: Machine-readable gate contracts (20 YAMLs) — NOT to be changed
+key_gaps:
+  - start_stage.py does not resolve or print stage micro-skill at entry
+  - stage-04-plan-draft.md missing scripts-over-LLM audit instruction
+  - stage-10-work-execution.md missing scripts-over-LLM check (already has TDD; needs scripts rule)
+  - SKILL.md stage-specific sections (Stage 4/5/6/10) duplicated from micro-skills
+complexity_assessment: medium
+route: B
+risks:
+  - start_stage.py glob pattern must match exact filename format (stage-NN-*.md)
+  - Slimming SKILL.md must not delete cross-cutting rules (terminology, gate policy table)

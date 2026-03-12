@@ -1,0 +1,17 @@
+wrk_id: WRK-1138
+stage: 2
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:whats-next
+files_consulted:
+  - scripts/work-queue/whats-next.sh
+  - scripts/work-queue/claim-item.sh
+  - scripts/work-queue/archive-item.sh
+  - scripts/work-queue/scan-ghost-pending.sh
+  - tests/scripts/test_ghost_pending.sh
+notes: >
+  Post-hoc capture — all files already exist and implemented. Route A simple
+  defensive guard. No external dependencies.
