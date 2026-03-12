@@ -95,7 +95,9 @@ Violations to avoid:
    | 5 | User Review Plan Draft | **HARD** | `user-review-plan-draft.yaml` |
    | 6 | Cross Review Plan | auto | — (pause on P1 finding) |
    | 7 | User Review Plan Final | **HARD** | `plan-final-review.yaml` |
-   | 8–16 | Execution stages | auto | — |
+   | 8–12 | Execution stages | auto | — |
+   | 13 | Agent Cross-Review | auto | cross-review iteration ≤ 3 (`review-iteration.yaml`) |
+   | 14–16 | Execution stages | auto | — |
    | 17 | User Review Close | **HARD** | `user-review-close.yaml` |
    | 18–20 | Archive stages | auto | — |
 
@@ -212,7 +214,7 @@ before writing any artifact. `plan_mode: required` is recorded in each stage con
 | Stage 4 | Plan Draft | Before first lifecycle HTML write |
 | Stage 6 | Cross-Review | Before synthesizing 3-provider verdicts |
 | Stage 10 | Work Execution | Before implementation file writes |
-| Stage 13 | Agent Cross-Review | Before recording implementation verdict |
+| Stage 13 | Agent Cross-Review | Before recording implementation verdict; cross-review iteration ≤ 3 (`review-iteration.yaml`) |
 
 Pattern: `EnterPlanMode` → think → `ExitPlanMode` → write evidence via Write tool.
 

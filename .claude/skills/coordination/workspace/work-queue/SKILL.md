@@ -155,6 +155,9 @@ After each implementation phase:
 Codex: `scripts/review/submit-to-codex.sh --file <path>`
 Gemini: `scripts/review/submit-to-gemini.sh --file <path>`
 
+Maximum 3 iterations per WRK. Enforced by `review-iteration.yaml` in assets.
+After 3 passes `cross-review.sh` exits 1 — resolve findings and close the WRK.
+
 ## Planning Requirement
 
 Every WRK item must have an approved plan before implementation begins.

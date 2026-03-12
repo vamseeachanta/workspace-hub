@@ -6,7 +6,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)"
+REPO_ROOT="${REPO_ROOT:-$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)}"
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
 CODEX_TIMEOUT_SECONDS="${CODEX_TIMEOUT_SECONDS:-300}"
@@ -39,6 +39,19 @@ done
 if [[ -n "$CONTENT_FILE" ]]; then
   if [[ "$CONTENT_FILE" =~ (WRK-[0-9]+) ]]; then
     WRK_ID="${BASH_REMATCH[1]}"
+  fi
+fi
+
+# Secondary iteration cap guard (prevents direct invocations bypassing cross-review.sh)
+if [[ -n "$WRK_ID" && -n "$REPO_ROOT" ]]; then
+  _iter_file="${REPO_ROOT}/.claude/work-queue/assets/${WRK_ID}/review-iteration.yaml"
+  if [[ -f "$_iter_file" ]]; then
+    _iter_count="$(awk -F': ' '/^iteration:/ {print $2+0; exit}' "$_iter_file")"
+    if [[ "$_iter_count" -ge 3 ]]; then
+      echo "# REVIEW_ITERATION_CAP_EXCEEDED: ${WRK_ID} has used ${_iter_count}/3 review passes." >&2
+      echo "# No further review passes accepted. Resolve findings and close the WRK." >&2
+      exit 1
+    fi
   fi
 fi
 

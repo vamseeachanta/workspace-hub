@@ -1,0 +1,15 @@
+wrk_id: WRK-1130
+stage: 2
+gathered_at: "2026-03-11T00:00:00Z"
+agent: claude
+dependencies_available:
+  - dep_graph.py (scripts/work-queue/dep_graph.py)
+  - generate-index.py (.claude/work-queue/scripts/generate-index.py)
+  - WRK-1129 archived — chunk-sizing.yaml, feature-template.md in place
+  - feature-planning.md rule file in place
+  - work-queue SKILL.md Feature Layer section in place
+blockers: none
+quota_status: available
+notes: >
+  All prerequisite model artifacts from WRK-1129 are committed. Tooling scripts
+  can proceed against a stable base. No additional dependencies needed.

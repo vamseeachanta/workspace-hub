@@ -1,11 +1,6 @@
 wrk_id: WRK-1062
-current_stage: 20
-stage_name: Archive
-completed_stage: 19
-next_action: Execute stage 20: Archive
-context_summary: Stage 19 complete. Next: stage 20 (Archive).
-entry_reads:
-  - .claude/work-queue/assets/WRK-1062/checkpoint.yaml
-  - done/WRK-1062.md
-checkpointed_at: 2026-03-12T00:34:05Z
-human_gate: false
+current_stage: complete
+completed_stage: 20
+next_action: WRK complete — archive if not done
+context_summary: Stage 20 complete. WRK finished.
+checkpointed_at: 2026-03-12T00:36:06Z

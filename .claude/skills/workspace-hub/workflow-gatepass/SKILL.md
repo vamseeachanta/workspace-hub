@@ -143,7 +143,7 @@ Before close, require all of:
 - `TDD gate` passed
 - `integrated test gate` passed (3-5 pass records)
 - `legal gate` passed
-- `cross-review gate` passed
+- `cross-review gate` passed (R-28: iteration count ≤ 3, verified via `review-iteration.yaml`)
 - `user-review html-open gate` passed for each user-review checkpoint
 - `user-review publish gate` passed for each user-review checkpoint
 - `resource-intelligence gate` passed

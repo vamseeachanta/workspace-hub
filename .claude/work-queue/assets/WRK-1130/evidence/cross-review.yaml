@@ -1,0 +1,44 @@
+wrk_id: WRK-1130
+stage: 6
+reviewed_at: "2026-03-12T00:00:00Z"
+iterations: 3
+codex_verdict: APPROVE
+gemini_verdict: APPROVE
+claude_verdict: REQUEST_CHANGES
+overall: APPROVE  # hard gate (Codex) passed
+
+iteration_1:
+  input: scripts/review/results/wrk-1130-phase-1-review-input.md
+  codex: REQUEST_CHANGES
+  gemini: REQUEST_CHANGES
+  claude: REQUEST_CHANGES
+  fixes:
+    - Hermetic test fixture (replaces live WRK-1127 tests)
+    - Robust children: parsing (inline + block-list YAML)
+    - generate-index.py scans archived/ and done/
+    - new-feature.sh two-pass parsing for dep resolution
+    - Adoption idempotency check
+    - feature-status.sh counts only archived (aligned with close-check)
+
+iteration_2:
+  input: scripts/review/results/wrk-1130-phase-2-review-input.md
+  codex: REQUEST_CHANGES
+  gemini: APPROVE
+  claude: (submitted, not blocking)
+  fixes:
+    - WORK_QUEUE_ROOT injection across all scripts/tools
+    - Tightened adoption: different-parent → hard exit 1
+    - Dep-resolution: concrete WRK-NNN pass-through; unknown key → hard exit 1
+
+iteration_3:
+  input: scripts/review/results/wrk-1130-phase-3-review-input.md
+  codex: APPROVE
+  gemini: APPROVE
+  claude: REQUEST_CHANGES (minor: legal scan mention, TDD statement, "active" definition)
+  deferred_to_implementation:
+    - Validate concrete WRK-NNN references exist in queue dirs (hard exit 1 if not found)
+    - "active" filter = coordinating|pending|working|blocked (exclude done|archived|cancelled)
+    - TDD first (mandatory per CLAUDE.md/testing.md regardless)
+    - Legal scan (mandatory process gate always run)
+    - dep_graph missing-child: render placeholder [missing] node (Codex suggestion)
+    - new-feature.sh pre-validation before any file writes (atomicity — Codex suggestion)

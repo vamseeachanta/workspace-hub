@@ -1,0 +1,5 @@
+{"event": "stage_exit", "wrk": "WRK-1062", "stage": 19, "date": "2026-03-12", "timestamp": "2026-03-12T00:34:05.185663Z"}
+{"event": "stage_exit", "wrk": "WRK-1062", "stage": 20, "date": "2026-03-12", "timestamp": "2026-03-12T00:36:06.309996Z"}
+{"event": "stage_exit", "wrk": "WRK-1112", "stage": 3, "date": "2026-03-12", "timestamp": "2026-03-12T00:41:03.098361Z"}
+{"event": "stage_exit", "wrk": "WRK-1111", "stage": 2, "date": "2026-03-12", "timestamp": "2026-03-12T00:44:11.460995Z"}
+{"event": "stage_exit", "wrk": "WRK-1111", "stage": 3, "date": "2026-03-12", "timestamp": "2026-03-12T00:44:39.406352Z"}

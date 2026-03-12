@@ -1,0 +1,22 @@
+wrk_id: WRK-1130
+stage: 5
+artifact: user-review-common-draft
+reviewed_by: vamsee
+confirmed_by: vamsee
+reviewed_at: "2026-03-11T00:00:00Z"
+confirmed_at: "2026-03-11T00:00:00Z"
+approval_decision: approve_as_is
+review_cycle_id: rc-1130-plan-draft
+
+scope_decisions:
+  in_scope:
+    - scripts/work-queue/new-feature.sh — scaffold children from Decomposition table, adopt via wrk_ref
+    - scripts/work-queue/feature-status.sh — completion % from inline children list
+    - scripts/work-queue/feature-close-check.sh — gate: all children archived
+    - scripts/work-queue/dep_graph.py --feature flag — ASCII tree
+    - .claude/work-queue/scripts/generate-index.py — By Feature section
+  out_of_scope:
+    - Stage contracts (stage-09-routing.yaml, stage-19-close.yaml) — WRK-1131
+    - work-queue-workflow SKILL.md feature lifecycle section — WRK-1131
+    - whats-next.sh feature progress — WRK-1131
+    - close-item.sh coordinating status — WRK-1131

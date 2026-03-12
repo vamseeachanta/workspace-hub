@@ -1,0 +1,6 @@
+wrk_id: WRK-1111
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-12T00:00:00Z
+notes: "Approved scope as written — 4-phase @ file reference pipeline across 5 repos"

@@ -1,0 +1,58 @@
+wrk_id: WRK-1111
+stage: 2
+completed_at: 2026-03-12T00:00:00Z
+
+candidate_audit:
+  - repo: workspace-hub
+    file: config/deps/cross-repo-graph.yaml
+    lines: 38
+    changes_6mo: 1
+    decision: approve
+    reason: "Small, stable, relevant to every cross-repo routing decision"
+
+  - repo: workspace-hub
+    file: config/onboarding/repo-map.yaml
+    lines: 60
+    changes_6mo: 1
+    decision: approve
+    reason: "Small, stable, repo capability map used at session-start"
+
+  - repo: workspace-hub
+    file: .claude/skills/workspace-hub/workstations/SKILL.md
+    lines: 385
+    changes_6mo: 18
+    decision: reject
+    reason: "385 lines (>200 limit) and high churn (18 changes/6mo)"
+
+  - repo: assethold
+    file: prisma/schema.prisma
+    lines: null
+    changes_6mo: null
+    decision: reject
+    reason: "File not found — submodule may not be checked out at this path"
+
+  - repo: digitalmodel
+    file: src/geometry/circle.py
+    lines: null
+    changes_6mo: null
+    decision: reject
+    reason: "File not found — submodule may not be checked out"
+
+  - repo: worldenergydata
+    file: src/worldenergydata/modules/__init__.py
+    lines: 37
+    changes_6mo: 1
+    decision: approve
+    reason: "Small, stable backward-compat shim — useful signal for module imports"
+
+claude_md_headroom:
+  workspace-hub: 4  # 16/20 lines
+  assethold: 6      # 14/20 lines
+  assetutilities: 6 # 14/20 lines
+  digitalmodel: 6   # 14/20 lines
+  worldenergydata: 2 # 18/20 lines — tight; references go to AGENTS.md
+
+approved_candidates:
+  - workspace-hub/config/deps/cross-repo-graph.yaml
+  - workspace-hub/config/onboarding/repo-map.yaml
+  - worldenergydata/src/worldenergydata/modules/__init__.py

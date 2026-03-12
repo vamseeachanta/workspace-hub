@@ -7,6 +7,8 @@
 # Preferred: cross-review.sh <file_or_diff> all --type implementation
 set -euo pipefail
 
+MAX_REVIEW_ITERATIONS=3
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROMPTS_DIR="${SCRIPT_DIR}/prompts"
 RESULTS_DIR="${SCRIPT_DIR}/results"
@@ -185,6 +187,34 @@ preserve_raw_result() {
   cp "$result_file" "$raw_file"
 }
 
+# Returns the current iteration number (1-based) for the given WRK, initialising if absent.
+get_review_iteration() {
+  local wrk_id="$1"
+  local iter_file="${WS_HUB_ROOT}/.claude/work-queue/assets/${wrk_id}/review-iteration.yaml"
+  if [[ ! -f "$iter_file" ]]; then echo 0; return; fi
+  awk -F': ' '/^iteration:/ {print $2+0; exit}' "$iter_file"
+}
+
+# Increments iteration counter; writes review-iteration.yaml; returns new count.
+increment_review_iteration() {
+  local wrk_id="$1"
+  local assets_dir="${WS_HUB_ROOT}/.claude/work-queue/assets/${wrk_id}"
+  mkdir -p "$assets_dir"
+  local iter_file="${assets_dir}/review-iteration.yaml"
+  local current; current="$(get_review_iteration "$wrk_id")"
+  local new_count=$(( current + 1 ))
+  local first_review_at
+  first_review_at="$(awk -F': ' '/^first_review_at:/ {print $2; exit}' "$iter_file" 2>/dev/null \
+    || date -u +%Y-%m-%dT%H:%M:%SZ)"
+  cat > "$iter_file" <<YAML
+wrk_id: "${wrk_id}"
+iteration: ${new_count}
+first_review_at: "${first_review_at}"
+last_review_at: "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+YAML
+  echo "$new_count"
+}
+
 # Submit to reviewers
 submit_review() {
   local reviewer="$1"
@@ -356,6 +386,33 @@ submit_review() {
 
   echo "    Result: ${result_file}"
 }
+
+# --- Iteration cap and preamble injection ---
+CURRENT_ITER=0
+if [[ -n "$WRK_ID" ]]; then
+  CURRENT_ITER="$(get_review_iteration "$WRK_ID")"
+  if [[ "$CURRENT_ITER" -ge "$MAX_REVIEW_ITERATIONS" ]]; then
+    echo "✖ Review iteration cap reached: ${WRK_ID} has already had ${CURRENT_ITER}/${MAX_REVIEW_ITERATIONS} review passes." >&2
+    echo "  No further review passes will be accepted for this WRK." >&2
+    echo "  Resolve findings and close the WRK instead of requesting another review." >&2
+    exit 1
+  fi
+  CURRENT_ITER="$(increment_review_iteration "$WRK_ID")"
+  ITER_PREAMBLE="You are reviewing ${WRK_ID} — iteration ${CURRENT_ITER} of ${MAX_REVIEW_ITERATIONS} (maximum).
+
+This is a hard budget. After iteration ${MAX_REVIEW_ITERATIONS} no further review passes will be
+accepted. Plan your feedback to maximise impact within this constraint:
+  * Iteration 1: blockers and security issues only — nothing else
+  * Iteration 2: major design / correctness issues
+  * Iteration 3: minor / style / nice-to-haves
+
+Front-load your most critical finding first. If you have only one shot to prevent a
+serious defect, this is it. Do not save critical issues for a later pass.
+
+---"
+  PROMPT="${ITER_PREAMBLE}
+${PROMPT}"
+fi
 
 # Dispatch
 case "$REVIEWER" in
