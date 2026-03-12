@@ -18,3 +18,12 @@ events:
       - specs/wrk/WRK-1142/plan.md
     published_at: "2026-03-12T12:40:11Z"
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "7a8c4058327e79af1f1e9d84f83ba150acae8cd6"
+    documents:
+      - .claude/work-queue/assets/WRK-1142/WRK-1142-lifecycle.html
+    published_at: "2026-03-12T08:30:00Z"
+    reviewer: vamsee
