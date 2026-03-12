@@ -93,6 +93,8 @@ def main() -> None:
     parser.add_argument("--id",      help="Find a specific standard by ID (partial match)")
     parser.add_argument("--repo",    help="Filter by target repo (e.g. digitalmodel)")
     parser.add_argument("--org",     help="Filter by organisation (DNV, API, ASTM, ISO…)")
+    parser.add_argument("--exhausted", action="store_true",
+                        help="Show only entries marked exhausted: true")
     parser.add_argument("--verbose", "-v", action="store_true", help="Show doc_path and notes")
     parser.add_argument("--summary", "-s", action="store_true", help="Show summary counts only")
     args = parser.parse_args()
@@ -109,6 +111,8 @@ def main() -> None:
         standards = [s for s in standards if args.repo.lower() in (s.get("repo") or "").lower()]
     if args.org:
         standards = [s for s in standards if args.org.upper() in (s.get("org") or "").upper()]
+    if args.exhausted:
+        standards = [s for s in standards if s.get("exhausted")]
 
     if args.summary:
         print_summary(standards)

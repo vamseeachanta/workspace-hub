@@ -1,10 +1,10 @@
-generated: '2026-02-27'
+generated: '2026-03-12'
 total: 425
 summary:
   reference: 138
-  wrk_captured: 29
+  wrk_captured: 23
   gap: 235
-  done: 23
+  done: 29
 standards:
 - id: 5L
   title: API Specification 5L for Line Pipe
@@ -18,6 +18,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This standard specifies requirements for the manufacture of seamless and welded steel pipe for use in pipeline transport
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-INSP-570
   title: API_Insp_570_(2001)
   org: API
@@ -30,6 +33,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Provides requirements for the inspection, repair, alteration, and rerating of in-service metallic and fiberglass-reinfor
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1109
   title: API RP 1109 (1993).pdf
   org: API
@@ -45,6 +51,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1109-MARKING-LIQUID-PET
   title: API_RP_1109_Marking_Liquid_Petroleum_Pipeline_Facilities_(2nd_1993_19p)
   org: API
@@ -58,6 +67,9 @@ standards:
   implemented_at: null
   notes: 'This recommended practice provides guidelines for the design, fabrication, installation, and maintenance of markers
     and '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1110
   title: API RP 1110 (1991).pdf
   org: API
@@ -71,6 +83,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1111
   title: API RP 1111.PDF
   org: API
@@ -87,6 +102,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1111-(THIRD-EDITION)
   title: Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit State Design)
   org: API
@@ -100,6 +118,9 @@ standards:
   implemented_at: null
   notes: This recommended practice sets forth criteria for the design, construction, operation, and maintenance of offshore
     hydro
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1111-3RD-ED
   title: API_RP_1111_3rd_Ed_(1999)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
   org: API
@@ -113,6 +134,9 @@ standards:
   implemented_at: null
   notes: 'Guidelines for the design, construction, operation, and maintenance of offshore hydrocarbon pipelines using limit
     state '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1111-DRAFT
   title: API_RP_1111_Draft_(1998)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
   org: API
@@ -125,6 +149,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'This API recommended practice establishes criteria for the design, construction, operation, and maintenance of offshore '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1111-ERRATA
   title: API_RP_1111_Errata_(2011)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
   org: API
@@ -138,6 +165,9 @@ standards:
   implemented_at: null
   notes: Errata for API RP 1111 Fourth Edition correcting pipeline collapse factors, SCR fatigue analysis requirements for
     extrem
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1114-(1994)
   title: Design of Solution-Mined Underground Storage Facilities
   org: API
@@ -151,6 +181,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides basic guidance on the design and development of new solution-mined underground
     storag
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1117
   title: API RP 1117 (1996).pdf
   org: API
@@ -164,6 +197,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1163-1ST-ED
   title: API_RP_1163_1st_Ed_(2005)_In-line_Inspection_Systems_Qualification_Standard
   org: API
@@ -177,6 +213,9 @@ standards:
   implemented_at: null
   notes: 'API RP 1163 provides a standard for qualifying in-line inspection (ILI) systems used to assess the integrity of
     gas and '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-17B-2ND-ED
   title: API_RP_17B_2nd_Ed_(1998)_Flexible_Pipe
   org: API
@@ -190,6 +229,9 @@ standards:
   implemented_at: null
   notes: Guidelines for the design, material selection, testing, and operation of unbonded and bonded flexible pipe systems
     for s
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-17B-5TH-ED
   title: API_RP_17B_5th_Ed_(2014)_Flexible_Pipe
   org: API
@@ -202,6 +244,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Recommended practice for the design, analysis, testing, and operation of flexible pipe systems in offshore applications.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-17G
   title: API RP 17G 2nd Ed (2006) Design and Operation of Completion-Workover Riser Systems.pdf
   org: API
@@ -217,6 +262,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2201
   title: API RP 2201 (1995).pdf
   org: API
@@ -230,6 +278,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-574,-SECOND-EDITION
   title: API RP 574 (1998) - Inspection Practices for Piping System Components
   org: API
@@ -242,6 +293,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This recommended practice describes inspection practices for piping system components in the petroleum and petrochemical
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-5UE-2ND-ED-ADDENDUM
   title: API_RP_5UE_2nd_Ed_Addendum_(2009)_Ultrasonic_Evaluation_of_Pipe_Imperfections
   org: API
@@ -255,6 +309,9 @@ standards:
   implemented_at: null
   notes: Procedure for the ultrasonic evaluation and sizing of planar non-surface breaking pipe imperfections from the outside
     su
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-17J-4RD-ED
   title: API_SPEC_17J_4rd_Ed_(2014)_Unbonded_Flexible_Pipe
   org: API
@@ -268,6 +325,9 @@ standards:
   implemented_at: null
   notes: 'Specification for the design, material selection, manufacture, testing, and packaging of unbonded flexible pipe
     systems '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-17K,-SPECIFICATION-FO
   title: Api_Spec_17K,_SPECIFICATION_FOR_BONDED_FLEXIBLE_PIPE
   org: API
@@ -281,6 +341,9 @@ standards:
   implemented_at: null
   notes: This specification defines the requirements for the design, material selection, manufacture, testing, marking, and
     packa
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-5L
   title: API_Spec_5L_(2000)
   org: API
@@ -294,6 +357,9 @@ standards:
   implemented_at: null
   notes: 'This specification provides standards for seamless and welded steel line pipe used for conveying gas, water, and
     oil in '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-5LC
   title: API_Spec_5LC_(1998)
   org: API
@@ -307,6 +373,9 @@ standards:
   implemented_at: null
   notes: 'API Spec 5LC provides requirements for the manufacture and testing of corrosion-resistant alloy (CRA) line pipe
     used in '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STANDART-1102-STEEL-PIPELI
   title: API_STANDART_1102_Steel_Pipelines_Crossing_Railroads_and_Highways
   org: API
@@ -319,6 +388,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Guidelines for the design, installation, and inspection of steel pipelines crossing under railroads and highways.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-2RD
   title: API STD 2RD 2nd Ed (2013) Dynamic Risers for Floating Production Systems.pdf
   org: API
@@ -333,6 +405,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-594
   title: API Std 594 (1997).pdf
   org: API
@@ -346,6 +421,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-599-(1994)
   title: Metal Plug Valves—Flanged and Welding Ends
   org: API
@@ -359,6 +437,9 @@ standards:
   implemented_at: null
   notes: This standard provides a purchase specification for metal plug valves with flanged or butt-welding ends and ductile
     iron
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-609
   title: API Std 609 (1997).pdf
   org: API
@@ -372,6 +453,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API.1104.1999
   title: api.1104.1999
   org: API
@@ -385,6 +469,9 @@ standards:
   implemented_at: null
   notes: This standard specifies requirements for welding methods, welder qualification, and inspection techniques for the
     produc
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-006
   title: DNV OSS 006 (1981) Rules for Submarine Pipeline Systems.PDF
   org: DNV
@@ -400,6 +487,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-GUIDELINE-NO-14---FREE-SPA
   title: DNV_Guideline_No_14_-_Free_Spanning_Pipelines
   org: DNV
@@ -412,6 +502,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Technical guidelines for the analysis, assessment, and management of free spanning submarine pipelines.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-OS-F101
   title: DNVOS-F101.pdf
   org: DNV
@@ -428,11 +521,14 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F101/DNV OS F101 (2007) Submarine Pipeline Systems.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F101/DNV OS F101 (2013) Submarine Pipeline Systems.pdf
   status: done
-  wrk_id: WRK-482
+  wrk_id: WRK-498
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-OS-F201
   title: DnV-OS-F201 - Dynamic Risers.pdf
   org: DNV
@@ -449,6 +545,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F101
   title: DNV RP F101 (2004) Corroded Pipelines.pdf
   org: DNV
@@ -464,6 +563,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F102
   title: DNV RP F102 (2011) Pipeline Field Joint Coating and Field Repair of Linepipe Coating.pdf
   org: DNV
@@ -481,6 +583,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F105
   title: DNV-RP-F105.pdf
   org: DNV
@@ -496,6 +601,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F108
   title: DNV RP F108 with update 2009 (2006) Fracture Control for pipeline installation.pdf
   org: DNV
@@ -511,6 +619,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F109
   title: DNV RP F109 (2007) On-bottom stability design of submarine pipelines.pdf
   org: DNV
@@ -528,6 +639,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F110
   title: DNV RP F110 (2007) Global buckling of submarine pipelines.pdf
   org: DNV
@@ -543,6 +657,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F116
   title: DNV RP F116 (2009) Integrity Management of Submarine Pipeline Systems.pdf
   org: DNV
@@ -558,6 +675,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F201
   title: DNV RP F201 3rd Ed (2001) Design of titanium risers.pdf
   org: DNV
@@ -573,6 +693,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F202
   title: DNV RP F202 (2010) Composite Risers.pdf
   org: DNV
@@ -587,6 +710,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F203
   title: DNV RP F203 (2009) Riser interference.pdf
   org: DNV
@@ -600,6 +726,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F206
   title: DNV RP F206 (2008) Riser Integrity Management.pdf
   org: DNV
@@ -617,6 +746,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13624-1
   title: DIN EN ISO 13624-1 (2007-11) Risers.pdf
   org: ISO
@@ -632,6 +764,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13628
   title: ISO 13628 Pt 7 DRAFT (2003) Completion workover riser systems.pdf
   org: ISO
@@ -649,6 +784,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13628-7
   title: ISO 13628-7 2005 Completion Workover Risers.pdf
   org: ISO
@@ -664,6 +802,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-16389
   title: ISO 16389 (2003) Dynamic Risers for Floating Production Installations.pdf
   org: ISO
@@ -672,12 +813,15 @@ standards:
     Installations.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 16389/ISO 16389 (2003) Dynamic Risers for Floating Production Installations.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-509
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-16708
   title: ISO 16708 1st Ed (2006) Pipeline transportation service.pdf
   org: ISO
@@ -691,6 +835,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-8494
   title: Code Conflicts for High Pressure Flowlines and Steel Catenary Risers
   org: ''
@@ -704,6 +851,9 @@ standards:
   implemented_at: null
   notes: This paper addresses concerns that current pipeline codes result in overly conservative designs for high-pressure
     subsea
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: PUB123-GUIDE-TO-COLORS
   title: Pub123_Guide_to_Colors
   org: ''
@@ -717,6 +867,9 @@ standards:
   implemented_at: null
   notes: A guide for the building and classing of subsea riser systems, including color-coding conventions for tracking rule
     chan
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: PUB123-RISER-RCN2
   title: Pub123_Riser_RCN2
   org: ''
@@ -730,6 +883,9 @@ standards:
   implemented_at: null
   notes: 'Technical guide and rule changes for the classification, construction, and survey of subsea riser systems as defined
     by '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: '[WELDING]-WELDING-OF-PIPELINES'
   title: '[Welding]_Welding_Of_Pipelines_And_Related_Facilities_-_Api_Standard_1104_(Ebook,_86_Pages)'
   org: API
@@ -743,6 +899,9 @@ standards:
   implemented_at: null
   notes: 'API Standard 1104 establishes the requirements for welding procedures, welder qualification, and inspection methods
     for '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 1-API-RP2A-2007
   title: 1-api-rp2a-2007_(searchable)
   org: API
@@ -755,6 +914,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This recommended practice provides engineering design principles and practices for the planning, design, and constructio
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 2016-API579-PART2B
   title: 2016-API579-Part2b
   org: API
@@ -768,6 +930,9 @@ standards:
   implemented_at: null
   notes: API 579 provides standardized procedures for fitness-for-service assessments to evaluate the structural integrity
     of pre
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 2T
   title: Recommended Practice for Planning, Designing, and Constructing Tension Leg Platforms
   org: ''
@@ -781,6 +946,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides comprehensive guidelines for the planning, design, fabrication, and installation
     of T
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-INSP-510
   title: API_Insp_510_(2001)
   org: API
@@ -794,6 +962,9 @@ standards:
   implemented_at: null
   notes: Provides requirements for the in-service inspection, repair, alteration, and rerating of pressure vessels in the
     petrole
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2-A-SIM-JIP-FINAL-REPORT
   title: API_2_A_SIM_JIP_Final_Report
   org: API
@@ -806,6 +977,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This final report provides technical guidance for the Structural Integrity Management (SIM) of fixed offshore structures
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A
   title: API RP 2A WSD.pdf
   org: API
@@ -814,11 +988,14 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API-2A/API RP 2A WSD.pdf
   status: done
-  wrk_id: WRK-482
+  wrk_id: WRK-499
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A-LFRD-1ST-ED.-SUPPLEM
   title: API-RP_2A_LFRD_1st_Ed._Supplement_(1993)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms_-_Load_and_Resistance_Factor_Design
   org: API
@@ -832,6 +1009,9 @@ standards:
   implemented_at: null
   notes: Recommended practice providing guidelines for the planning, design, and construction of fixed offshore platforms
     using L
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A-WSD
   title: Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms—Working Stress Design
   org: API
@@ -845,6 +1025,9 @@ standards:
   implemented_at: null
   notes: This document provides comprehensive guidelines for the structural design, fabrication, and installation of fixed
     offsho
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A-WSD-21ST-ED-ERRATA-&
   title: API_RP_2A-WSD_21st_Ed_Errata_&_Supplement_2&3_(2007)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design
   org: API
@@ -858,6 +1041,9 @@ standards:
   implemented_at: null
   notes: Errata and Supplement 3 for API RP 2A-WSD (21st Edition) providing updates to spatial coherence, structural equations,
     w
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A-WSD-22ND-EDITION-NOV
   title: API_RP_2A-WSD_22nd_Edition_Nov_2014
   org: API
@@ -871,6 +1057,9 @@ standards:
   implemented_at: null
   notes: This document provides recommended practices for planning, designing, and constructing fixed offshore steel platforms
     us
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2A-WSD-3RD-ED
   title: API_RP_2A-WSD_3rd_Ed_(1997)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design
   org: API
@@ -884,6 +1073,9 @@ standards:
   implemented_at: null
   notes: Recommended practice for the planning, design, and construction of fixed offshore platforms using working stress
     design,
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2EQ-1ST-EDITION-NOV-201
   title: API_RP_2EQ_1st_Edition_Nov_2014
   org: API
@@ -897,6 +1089,9 @@ standards:
   implemented_at: null
   notes: Provides procedures and criteria for the seismic design of offshore structures, including earthquake ground motion
     and s
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2GEO-1ST-EDITION-ADDEND
   title: API_RP_2GEO_1st_Edition_Addendum_1,_Oct_2014
   org: API
@@ -910,6 +1105,9 @@ standards:
   implemented_at: null
   notes: 'This recommended practice specifies requirements and provides recommendations for geotechnical and foundation design
     of '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2RD-1ST-ED-WITH-ERRATA
   title: API_RP_2RD_1st_Ed_with_errata_(2009)_Design_of_Risers_for_FPSs_and_TLPs
   org: API
@@ -923,6 +1121,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides guidelines for the design, analysis, and material selection of risers used in
     floatin
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2SIM-1ST-EDITION-NOV-20
   title: API_RP_2SIM_1st_Edition_Nov_2014
   org: API
@@ -936,6 +1137,9 @@ standards:
   implemented_at: null
   notes: This document provides guidelines and recommendations for the structural integrity management (SIM) of existing fixed
     of
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2T-(3RD-EDITION)
   title: Recommended Practice for Planning, Designing, and Constructing Tension Leg Platforms
   org: API
@@ -949,6 +1153,9 @@ standards:
   implemented_at: null
   notes: API RP 2T provides comprehensive guidelines for the planning, design, and construction of Tension Leg Platforms (TLPs)
     t
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2X
   title: API RP 2X.pdf
   org: API
@@ -962,6 +1169,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-572-2ND-ED
   title: API_RP_572_2nd_Ed_(2001)_Inspection_of_Pressure_Vessels_(Towers,_Drums,_Reactors,_Heat_Exchangers,_and_Condensers)
   org: API
@@ -975,6 +1185,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides guidelines for the inspection of pressure vessels, including towers, reactors,
     and he
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-650-2003
   title: API-650_2003
   org: API
@@ -988,6 +1201,9 @@ standards:
   implemented_at: null
   notes: API 650 specifies requirements for the design, fabrication, and testing of welded steel atmospheric storage tanks
     used i
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12B
   title: API_Spec_12B_(1995)
   org: API
@@ -1001,6 +1217,9 @@ standards:
   implemented_at: null
   notes: This specification establishes requirements for the design, materials, and fabrication of bolted steel tanks used
     for th
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12D
   title: API_Spec_12D_(1994)
   org: API
@@ -1014,6 +1233,9 @@ standards:
   implemented_at: null
   notes: This specification covers the material, design, fabrication, and testing requirements for vertical, cylindrical,
     abovegr
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12F
   title: API_Spec_12F_(1994)
   org: API
@@ -1026,6 +1248,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'Specification covering the material, design, fabrication, and testing requirements for shop-welded vertical cylindrical '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12J
   title: API_Spec_12J_(1989)
   org: API
@@ -1039,6 +1264,9 @@ standards:
   implemented_at: null
   notes: Minimum requirements for the design, fabrication, and shop testing of vertical, spherical, and horizontal oil and
     gas se
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-IFICATION-2B,-SIXTH-EDITION
   title: Specification for the Fabrication of Structural Steel Pipe
   org: API
@@ -1052,6 +1280,9 @@ standards:
   implemented_at: null
   notes: This specification provides standards for the fabrication of structural steel pipe formed from plate steel. It is
     specif
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-620
   title: API Std 620 (2002).pdf
   org: API
@@ -1065,6 +1296,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-653
   title: API Std 653 (2001).pdf
   org: API
@@ -1078,6 +1312,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-653-3RD-ED-&-ADD
   title: API_STD_653_3rd_Ed_&_Add_(2001_&_2003)_Tank_Inspection,_Repair,_Alteration_and_Reconstruction
   org: API
@@ -1091,6 +1328,9 @@ standards:
   implemented_at: null
   notes: Minimum requirements and guidance for the inspection, repair, alteration, and reconstruction of steel storage tanks
     used
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-A
   title: append_a
   org: ''
@@ -1104,6 +1344,9 @@ standards:
   implemented_at: null
   notes: This document provides equations and guidelines for calculating minimum required wall thickness, maximum allowable
     worki
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-A-1
   title: append_a_1
   org: ''
@@ -1117,6 +1360,9 @@ standards:
   implemented_at: null
   notes: This document provides equations and procedures for calculating minimum wall thickness, maximum allowable working
     pressu
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-B
   title: append_b
   org: ''
@@ -1130,6 +1376,9 @@ standards:
   implemented_at: null
   notes: Overview of stress analysis methods and criteria for Fitness-For-Service (FFS) assessments of components with flaws
     acco
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-B-1
   title: append_b_1
   org: ''
@@ -1143,6 +1392,9 @@ standards:
   implemented_at: null
   notes: This document provides an overview of stress analysis methods and acceptance criteria for Fitness-For-Service (FFS)
     asse
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-C
   title: append_c
   org: ''
@@ -1155,6 +1407,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Compendium of stress intensity factor solutions for various crack and component geometries used in API 579 fitness-for-s
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-D
   title: Append_d
   org: ''
@@ -1168,6 +1423,9 @@ standards:
   implemented_at: null
   notes: 'Compendium of reference stress solutions for crack geometries in pressurized components to be used in the assessment
     of '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-E
   title: append_e
   org: ''
@@ -1180,6 +1438,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Guidance for determining residual stress distributions in various welded joint configurations for use in fitness-for-ser
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A131
   title: ASTM A131 (2004) Std Specification for Structural Steel for Ships.pdf
   org: ASTM
@@ -1194,6 +1455,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A36
   title: ASTM A36M-04 (2004) Standard Specification for Carbon Structural Steel.pdf
   org: ASTM
@@ -1209,6 +1473,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A6
   title: ASTM A6M-01a (2001) Standard Specification for General Requirements for Rolled Structural Steel Bars, Plates, Shapes,
     and Sheet Piling.pdf
@@ -1225,6 +1492,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1049
   title: ASTM E1049-85(2005) Standard Practices for Cycle Counting in Fatigue Analysis.pdf
   org: ASTM
@@ -1240,6 +1510,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1180
   title: ASTM E1180 (2003) Standard Practice for Preparing Sulfur Prints for Macrostructural Examination.pdf
   org: ASTM
@@ -1255,6 +1528,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E139
   title: ASTM E139 (2006) Std Test Methods for Conducting Creep, Creep-Rupture, and Stress-RuptureTests of Metallic Materials.pdf
   org: ASTM
@@ -1270,6 +1546,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1450
   title: ASTM E1450 (2003) Standard Test Method for Tension Testing of Structural Alloys in Liquid Helium.pdf
   org: ASTM
@@ -1285,6 +1564,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1681
   title: ASTM E1681 (2003) Standard Test Method for Determining Threshold Stress Intensity Factor for Environment.PDF
   org: ASTM
@@ -1300,6 +1582,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1761
   title: ASTM E1761 (1999) Standard Guide for Recommended Formats for Data Records Used in Computerization of Fatigue.PDF
   org: ASTM
@@ -1315,6 +1600,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E190
   title: ASTM E190 (2003) Std Test Method for Guided Bend Test for Ductility of Welds.pdf
   org: ASTM
@@ -1330,6 +1618,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1928
   title: ASTM E1928 (2007) Standard Practice for Estimating the Approximate Residual Circumferential Stress inStraight.pdf
   org: ASTM
@@ -1345,6 +1636,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1942
   title: ASTM E1942-98 (2004) Standard Guide for Evaluating Data Acquisition Systems Used in Cyclic Fatigue and Fracture.pdf
   org: ASTM
@@ -1360,6 +1654,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1949
   title: ASTM E1949 (2003) Standard Test Method for Ambient Temperature Fatigue Life of Metallic Bonded Resistance.pdf
   org: ASTM
@@ -1375,6 +1672,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2015
   title: ASTM E2015(2004) Standard Guide for Preparation of Plastics and Polymeric Specimens for Microstructural Examination.pdf
   org: ASTM
@@ -1390,6 +1690,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2207
   title: ASTM E2207 (2002) Standard Practice for Strain-Controlled Axial-Torsional Fatigue Testing with Thin-Walled.pdf
   org: ASTM
@@ -1405,6 +1708,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2368
   title: ASTM E2368 (2004) Standard Practice for Strain Controlled Thermomechanical Fatigue Testing.pdf
   org: ASTM
@@ -1420,6 +1726,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E328
   title: ASTM E328 (2002) Std Test Methods for Stress Relaxation for Materials and Structures.pdf
   org: ASTM
@@ -1435,6 +1744,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E466
   title: ASTM E466 (2002) Std Practice for Conducting Force Controlled Constant Amplitude Axial Fatigue Tests of Metallic
     Materials.pdf
@@ -1451,6 +1763,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E467
   title: ASTM E467 (2004) Std Practice for Verification of Constant Amplitude Dynamic Forces in an Axial Fatigue Testing System.pdf
   org: ASTM
@@ -1466,6 +1781,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E468
   title: ASTM E468 (2004) Std Practice for Presentation of Constant Amplitude Fatigue Test Results for Metallic Materials.pdf
   org: ASTM
@@ -1481,6 +1799,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E606
   title: ASTM E606 (2004) Std Practice for Strain-Controlled Fatigue Testing.pdf
   org: ASTM
@@ -1490,12 +1811,15 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM E606
     (2004) Std Practice for Strain-Controlled Fatigue Testing.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-545
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E633
   title: ASTM E633 (2005) Std Guide for Use of Thermocouples in Creep and Stress-Rupture Testing to 1800 F (1000 C) in Air.pdf
   org: ASTM
@@ -1511,6 +1835,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E647
   title: ASTM E647 (2005) Std Test Method for Measurement of Fatigue Crack Growth Rates.pdf
   org: ASTM
@@ -1526,6 +1853,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E739
   title: ASTM E739 (2004) Std Practice for Statistical Analysis for Linear or Linearized Stress-Life (S-N) and Strain Life
     (e-N) Fatigue Data.pdf
@@ -1544,6 +1874,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E837
   title: ASTM E837 (2001) Std Test Method for Determining Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
   org: ASTM
@@ -1559,6 +1892,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: BKCOV
   title: BKCOV
   org: ''
@@ -1571,6 +1907,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'API RP 579-1 provides standardized procedures for performing fitness-for-service assessments to evaluate the structural '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: BS-7608
   title: Guide to fatigue design and assessment of steel products
   org: BS
@@ -1584,6 +1923,9 @@ standards:
   implemented_at: null
   notes: This document provides comprehensive guidance on the fatigue design and assessment of fabricated steel products and
     stru
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: CORRIGENDA-1
   title: Corrigenda_1
   org: ''
@@ -1596,6 +1938,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Corrigenda and editorial updates for the ABS Guide for the Fatigue Assessment of Offshore Structures.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: CORRIGENDA-2
   title: Corrigenda_2
   org: ''
@@ -1608,6 +1953,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'Corrigenda and editorial updates to the ABS Guide for Spectral-Based Fatigue Analysis for FPSO Installations, including '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DESIGN-OF-LARGE-DIAMETER-MONOP
   title: Design_of_Large_Diameter_Monopiles_under_Lateral_Loads_in_Normally_to_Lightly_Overconsolidated_Clay
   org: ''
@@ -1621,6 +1969,9 @@ standards:
   implemented_at: null
   notes: Design and analysis of large diameter monopiles subjected to lateral loading in normally to lightly overconsolidated
     cla
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: FAOS-COMMENTARY-CORRIGENDA
   title: FAOS_Commentary_Corrigenda
   org: ''
@@ -1633,6 +1984,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Corrigenda and editorial corrections for the ABS Commentary on the Guide for the Fatigue Assessment of Offshore Structur
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: FAOS-COMMENTARY-GUIDE-TO-COLOR
   title: FAOS_Commentary_Guide_to_Colors
   org: ''
@@ -1646,6 +2000,9 @@ standards:
   implemented_at: null
   notes: A guide explaining color-coding conventions for rule changes, corrigenda, and editorial updates within the commentary
     fo
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: GUIDE-COLORS
   title: Guide_Colors
   org: ''
@@ -1659,6 +2016,9 @@ standards:
   implemented_at: null
   notes: 'Guide detailing the dynamic loading approach for the structural analysis and design of Floating Production, Storage
     and '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: GUIDE-TO-COLORS
   title: Guide_to_Colors
   org: ''
@@ -1671,6 +2031,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Guide for the fatigue assessment of offshore structures including a key for color-coded rule changes and corrigenda.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: GUIDETOCOLORS
   title: GuidetoColors
   org: ''
@@ -1684,6 +2047,9 @@ standards:
   implemented_at: null
   notes: This document provides guidance on spectral-based fatigue analysis for Floating Production, Storage and Offloading
     (FPSO
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-129
   title: ISO 129.pdf
   org: ISO
@@ -1697,6 +2063,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13819-PT-2-1ST-ED
   title: ISO_13819_Pt_2_1st_Ed_(1995)_Fixed_steel_structures
   org: ISO
@@ -1709,6 +2078,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This standard specifies requirements and recommendations for the design and analysis of fixed steel offshore structures.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-2768-PT-1-2ND-ED
   title: ISO_2768_Pt_1_2nd_Ed_(1993)_Tolerances_for_linear_and_angular_dimensions_without_individual_tolerance_indications
   org: ISO
@@ -1722,6 +2094,9 @@ standards:
   implemented_at: null
   notes: This standard specifies general tolerances for linear and angular dimensions without individual tolerance indications,
     i
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: JAN98-MOBILE-OFFSHORE-UNITS-ST
   title: Jan98_Mobile_Offshore_Units-Structural_Design_General
   org: ''
@@ -1734,6 +2109,9 @@ standards:
   modules: []
   implemented_at: null
   notes: General requirements and principles for the structural design of mobile offshore units according to DNV standards.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: JUN84-MOBILE-OFFSHROE-UNITS-BU
   title: Jun84_Mobile_Offshroe_Units-Buckling_Strength_Analysis
   org: ''
@@ -1746,6 +2124,9 @@ standards:
   modules: []
   implemented_at: null
   notes: DNV classification note from June 1984 detailing buckling strength analysis requirements and methods for mobile offshore
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTO01006
   title: oto01006
   org: ''
@@ -1759,6 +2140,9 @@ standards:
   implemented_at: null
   notes: A comparative appraisal of the API RP 2FPS code against ISO, NORSOK, and Lloyds standards to determine its suitability
     f
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: RCN1
   title: RCN1
   org: ''
@@ -1772,6 +2156,9 @@ standards:
   implemented_at: null
   notes: 'ABS commentary providing technical guidance on S-N curves and weld improvement techniques for the fatigue assessment
     of '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: RCN1-1
   title: RCN1_1
   org: ''
@@ -1785,6 +2172,9 @@ standards:
   implemented_at: null
   notes: This notice updates the ABS Guide for Spectral-Based Fatigue Analysis for FPSO Installations with revised criteria
     for S
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-01
   title: Sect_01
   org: ''
@@ -1798,6 +2188,9 @@ standards:
   implemented_at: null
   notes: 'Introduction and scope of Fitness-For-Service (FFS) assessment methodologies for evaluating the structural integrity
     of '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-02
   title: sect_02
   org: ''
@@ -1811,6 +2204,9 @@ standards:
   implemented_at: null
   notes: This document outlines a general eight-step Fitness-For-Service (FFS) engineering assessment procedure for evaluating
     th
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-04
   title: Sect_04
   org: ''
@@ -1824,6 +2220,9 @@ standards:
   implemented_at: null
   notes: This document provides Fitness-For-Service (FFS) assessment procedures for pressurized components subjected to general
     m
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-08
   title: sect_08
   org: ''
@@ -1837,6 +2236,9 @@ standards:
   implemented_at: null
   notes: Assessment of weld misalignment and shell distortions in pressurized components using API 579 Fitness-For-Service
     proced
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-09
   title: Sect_09
   org: ''
@@ -1850,6 +2252,9 @@ standards:
   implemented_at: null
   notes: Fitness-For-Service assessment procedures for evaluating crack-like flaws in pressurized components using the Failure
     As
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1632
   title: API RP 1632 (1996).pdf
   org: API
@@ -1861,12 +2266,15 @@ standards:
     Tanks and Piping Systems (3rd 1996 31p).pdf
   - /mnt/ace/0000 O&G/Oil and Gas Codes/API Stds/API/API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks
     and Piping Systems (3rd 1996 31p).pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-482
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1632-(1996)
   title: Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems
   org: API
@@ -1880,6 +2288,9 @@ standards:
   implemented_at: null
   notes: 'This recommended practice describes the corrosion problems characteristic of underground steel storage tanks and
     piping '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1632-CATHODIC-PROTECTIO
   title: API_RP_1632_Cathodic_Protection_of_Underground_Petroleum_Storage_Tanks_and_Piping_Systems_(3rd_1996_31p)
   org: API
@@ -1892,6 +2303,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Provides recommended procedures for the corrosion protection of underground steel petroleum storage tanks and associated
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-603
   title: API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
   org: API
@@ -1905,6 +2319,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-651
   title: API RP 651 (1997).pdf
   org: API
@@ -1918,6 +2335,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-G110
   title: ASTM G110-92 (Reapproved 2003).pdf
   org: ASTM
@@ -1933,6 +2353,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-G42
   title: ASTM G42-96.pdf
   org: ASTM
@@ -1948,6 +2371,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-G8
   title: ASTM G8-96.pdf
   org: ASTM
@@ -1963,6 +2389,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-G80
   title: ASTM G80-98.pdf
   org: ASTM
@@ -1978,6 +2407,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-G95
   title: ASTM G95-87.pdf
   org: ASTM
@@ -1993,6 +2425,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-B401
   title: DNV RP B401 with 2008 amendments (2005) Cathodic Protection Design.pdf
   org: DNV
@@ -2007,11 +2442,14 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP B401/DNV RP B401 (2011) Cathodic Protection
     Design.pdf
   status: done
-  wrk_id: WRK-470
+  wrk_id: WRK-1027
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-B401-2011
   title: Cathodic Protection Design
   org: DNV
@@ -2024,6 +2462,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Implemented in digitalmodel.cp_module — routes DNV_RP_B401_offshore and ABS_gn_ships_2018. 128 tests pass.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F103
   title: DNV RP F103 (2010) Cathodic Protection of Submarine Pipelines by Galvanic Anodes.pdf
   org: DNV
@@ -2036,11 +2477,14 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F103/DNV RP F103 (2003) Cathodic protection
     of submarine pipelines by galvanic anodes.pdf
   status: done
-  wrk_id: WRK-493
+  wrk_id: WRK-273
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F103-2010
   title: Cathodic Protection of Submarine Pipelines by Galvanic Anodes
   org: DNV
@@ -2053,6 +2497,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Implemented in digitalmodel.cp_module — routes DNV_RP_F103_2010 and ABS_gn_offshore_2018. 128 tests pass.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F106
   title: DNV RP F106 (2003) Factory Applied External Pipeline Coating for Corrosion Control.pdf
   org: DNV
@@ -2064,12 +2511,15 @@ standards:
     External Pipeline Coating for Corrosion Control.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F106/DNV RP F106 (2011) Factory Applied
     External Pipeline Coating for Corrosion Control.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-494
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-RP-F112
   title: DNV RP F112 (2008) Stainless steel subsea equipment exposed to cathodic protection.pdf
   org: DNV
@@ -2087,6 +2537,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-11846
   title: ISO 11846.pdf
   org: ISO
@@ -2102,6 +2555,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-11881
   title: ISO 11881.pdf
   org: ISO
@@ -2119,6 +2575,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-15156
   title: ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CRAs (corrosion resistant alloys) and other alloys.pdf
   org: ISO
@@ -2128,12 +2587,15 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 15156/ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CRAs (corrosion
     resistant alloys) and other alloys.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-488
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO15589-2
   title: ISO15589-2-2004forOR Cathodic Protection.pdf
   org: ISO
@@ -2147,6 +2609,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 095-OTC-2001
   title: Alternative Tensioning System for Spar Top Tensioned Risers
   org: ''
@@ -2160,6 +2625,9 @@ standards:
   implemented_at: null
   notes: 'This document introduces a novel riser tensioning scheme for Spar hulls that uses a common table structure supported
     by '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 15OTC-CFP-WEB
   title: 15otc_cfp_web
   org: ''
@@ -2173,6 +2641,9 @@ standards:
   implemented_at: null
   notes: A call for technical paper proposals for the 2015 Offshore Technology Conference (OTC) highlighting innovations in
     offsh
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 2008-INTRO-TO-API-RP-2MET
   title: 2008_Intro_to_API_RP_2MET
   org: API
@@ -2186,6 +2657,9 @@ standards:
   implemented_at: null
   notes: This document provides an introduction to the API RP 2MET and ISO 19901-1 standards for determining meteorological
     and o
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: A1865-1-STEVENS
   title: a1865_1_Stevens
   org: ''
@@ -2199,6 +2673,9 @@ standards:
   implemented_at: null
   notes: The document provides design procedures and geotechnical guidelines for various marine renewable energy foundations,
     foc
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: A1895-1-VANZWEITEN
   title: a1895_1_VanZweiten
   org: ''
@@ -2212,6 +2689,9 @@ standards:
   implemented_at: null
   notes: This paper evaluates ocean current resources and seafloor geotechnical conditions off Florida, North Carolina, and
     South
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ABS-GUI-00
   title: ABS_GUI_00_(1994)_Guide_for_Thrusters_and_Dynamic_Positioning_Systems
   org: ABS
@@ -2225,6 +2705,9 @@ standards:
   implemented_at: null
   notes: Guide for the design, testing, and survey of thrusters and dynamic positioning systems for marine vessels and offshore
     u
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ABS-GUI-002
   title: ABS_GUI_002_(1994)_Guide_for_Building_and_Classing_Floating_Production_Storage_Systems
   org: ABS
@@ -2238,6 +2721,9 @@ standards:
   implemented_at: null
   notes: A guide by the American Bureau of Shipping (ABS) defining the requirements for designing, building, and classing
     floatin
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: AERIAL-OF-PELICAN-POINT[1]
   title: aerial_of_Pelican_Point[1]
   org: ''
@@ -2250,6 +2736,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Aerial survey or photographic documentation of the Pelican Point site for coastal or marine infrastructure assessment.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1141-(1994)
   title: Guidelines for Confined Space Entry On Board Tank Ships in The Petroleum Industry
   org: API
@@ -2263,6 +2752,9 @@ standards:
   implemented_at: null
   notes: 'This recommended practice provides guidelines for developing safe confined space entry procedures specifically for
     work '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14C
   title: API RP 14C (2001).pdf
   org: API
@@ -2276,6 +2768,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14J
   title: API RP 14J (2001).pdf
   org: API
@@ -2289,6 +2784,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-17A
   title: API RP 17A.pdf
   org: API
@@ -2302,6 +2800,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2I
   title: API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating Structures.pdf
   org: API
@@ -2312,12 +2813,15 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/API Recommended Practice/API RP 2I/API RP 2I 3rd Ed (2008) In-service
     Inspection of Mooring Hardware for Floating Structures.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/STA/API RP2I In-Service Inspection of Mooring Hardware.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-556
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2MET-1ST-EDITION-NOV-20
   title: API_RP_2MET_1st_Edition_Nov_2014
   org: API
@@ -2330,6 +2834,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This document provides procedures for deriving meteorological and oceanographic (metocean) design and operating conditio
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2P
   title: API 2P.pdf
   org: API
@@ -2340,11 +2847,14 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/API Recommended Practice/API RP 2P/API RP 2P 2nd Ed (1987) Analysis of
     Spread Mooring Systems for Floating Drilling Units.pdf
   status: done
-  wrk_id: WRK-482
+  wrk_id: WRK-499
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2RD-1ST-ED.
   title: API_RP_2RD_1st_Ed._(1998)_Design_of_Risers_for_FPSs_and_TLPs
   org: API
@@ -2357,6 +2867,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Design guidelines for risers used in floating production systems (FPSs) and tension-leg platforms (TLPs).
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2SK-2ND-ED
   title: API_RP_2SK_2nd_Ed_(1996)_Design_and_Analysis_of_Stationkeeping_Systems_for_Floating_Structures
   org: API
@@ -2370,6 +2883,9 @@ standards:
   implemented_at: null
   notes: Provides guidelines for the design and analysis of stationkeeping systems for floating structures used in offshore
     opera
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2SM
   title: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber Ropes
     for Offshore Mooring.pdf
@@ -2386,6 +2902,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2T-1ST-ED
   title: API_RP_2T_1st_Ed_(1987)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
   org: API
@@ -2398,6 +2917,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Recommended practice for the planning, design, and construction of Tension Leg Platforms (TLPs) in offshore environments
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2T-2ND-ED
   title: API_RP_2T_2nd_Ed_(1997)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
   org: API
@@ -2411,6 +2933,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides guidelines for the planning, design, analysis, and construction of tension leg
     platfo
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-572
   title: API RP 572 (2001).pdf
   org: API
@@ -2426,6 +2951,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A508
   title: ASTM A508 (1999) Std Spec for Quenched and Tempered Vacumn-Treated Carbon and Alloy Steel Forgings for Pressure Vessels.pdf
   org: ASTM
@@ -2441,6 +2969,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A541
   title: ASTM A541 (1999) Std Spec for Quenched and Tempered Carbon and Alloy Steel Forgings for Pressure Vessel Components.pdf
   org: ASTM
@@ -2456,6 +2987,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A859
   title: ASTM A859.pdf
   org: ASTM
@@ -2471,6 +3005,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: DNV-OS-E301
   title: DNV OS E301 (2010) Position Mooring.pdf
   org: DNV
@@ -2485,6 +3022,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: FEBRUARY-1994
   title: ABS Guide for Building and Classing Floating Production Installations
   org: ABS
@@ -2498,6 +3038,9 @@ standards:
   implemented_at: null
   notes: This guide establishes comprehensive criteria for the design, construction, and classification of floating production
     in
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: GUDMESTAD,-O.T.,-ET-AL---REGUL
   title: Regular Water Wave Kinematics
   org: ''
@@ -2511,6 +3054,9 @@ standards:
   implemented_at: null
   notes: This study evaluates the accuracy of various water wave theories by comparing them against experimental velocity
     measure
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: MARINE-RENEWABLE-ENERGY-–-OCEA
   title: Marine_Renewable_Energy_–_Ocean_Current_Turbine_Mooring_Considerations
   org: ''
@@ -2524,6 +3070,9 @@ standards:
   implemented_at: null
   notes: This document examines the engineering considerations and design requirements for mooring systems used to secure
     ocean c
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: MINUTES-OF-28TH-WG7-MEETING--
   title: Minutes_of_28th_WG7_meeting_-_Hamburg_October_2010
   org: ''
@@ -2537,6 +3086,9 @@ standards:
   implemented_at: null
   notes: Minutes of the 28th ISO/TC 67/SC 7/WG 7 meeting discussing the progress and updates to the ISO 19905 standards for
     the s
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: N/A
   title: Comparison of models for vortex induced vibrations of slender marine structures
   org: ISO
@@ -2550,6 +3102,9 @@ standards:
   implemented_at: null
   notes: This paper presents a comparison of seven different models for predicting vortex-induced vibrations (VIV) in slender
     mar
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-13109
   title: Sensitivity of SCR Response and Fatigue Life to Variations in Hydrodynamic Loading at Low Keulegan-Carpenter Numbers
   org: ''
@@ -2562,6 +3117,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This document investigates hydrodynamic coefficients for bare and straked pipes in oscillatory flows at low Keulegan-Car
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-2015-COPRI-MRE-SPECIAL-SES
   title: OTC_2015_COPRI_MRE_Special_Session_Rv4
   org: ''
@@ -2575,6 +3133,9 @@ standards:
   implemented_at: null
   notes: Proceedings of the OTC 2015 COPRI special session focused on advancements and challenges in marine renewable energy
     tech
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-26035-MS-MORING-SYSTEMS
   title: OTC-26035-MS_Moring_Systems
   org: ''
@@ -2587,6 +3148,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Technical paper discussing the design, analysis, and implementation of mooring systems for offshore structures.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-4587
   title: Improved Wave Kinematics From Wave Staff Arrays
   org: ''
@@ -2600,6 +3164,9 @@ standards:
   implemented_at: null
   notes: This paper presents a procedure for improved prediction of wave kinematics from wave staff array records by assigning
     di
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: OTC-5468
   title: Fatigue Life Analysis of Production Risers
   org: ''
@@ -2613,6 +3180,9 @@ standards:
   implemented_at: null
   notes: This paper presents a methodology for evaluating the fatigue life of production risers subjected to environmental
     loadin
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: PIERSON,-JR.,-W.J.,-ET-AL,-196
   title: A Proposed Spectral Form for Fully Developed Wind Seas Based on the Similarity Theory of S. A. Kitaigorodskii
   org: ''
@@ -2626,6 +3196,9 @@ standards:
   implemented_at: null
   notes: The paper proposes a nondimensional spectral form for fully developed wind-generated seas by applying Kitaigorodskii's
     s
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: PUB101-FPSO-DLA
   title: Pub101_FPSO_DLA
   org: ''
@@ -2639,6 +3212,9 @@ standards:
   implemented_at: null
   notes: Detailed procedures for the 'Dynamic Loading Approach' to determine design loads and strength criteria for ship-type
     Flo
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-12R1-(1997)
   title: Recommended Practice for Setting, Maintenance, Inspection, Operation, and Repair of Tanks in Production Service
   org: API
@@ -2652,6 +3228,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides comprehensive guidelines for the setting and connection of lease tanks at new
     battery
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14H
   title: API RP 14H (1994).pdf
   org: API
@@ -2665,6 +3244,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1615
   title: API RP 1615 (1996).pdf
   org: API
@@ -2678,6 +3260,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-520-PART-II
   title: API_RP_520_Part_II_(1994)
   org: API
@@ -2690,6 +3275,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Recommended practices for the installation of pressure-relieving devices for refinery equipment with a maximum allowable
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-686
   title: API RP 686 (1996).pdf
   org: API
@@ -2703,6 +3291,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 2016-API579-PART2A
   title: 2016-API579-Part2a
   org: API
@@ -2716,6 +3307,9 @@ standards:
   implemented_at: null
   notes: Standardized procedures for performing Fitness-For-Service (FFS) assessments on pressurized equipment to evaluate
     struct
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: 2016-API579-PART5
   title: 2016-API579-Part5
   org: API
@@ -2728,6 +3322,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Assessment procedures for local metal loss in pressure-containing equipment to evaluate fitness-for-service.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1631
   title: API RP 1631 (2001).pdf
   org: API
@@ -2741,6 +3338,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2Z
   title: API RP 2Z.pdf
   org: API
@@ -2754,6 +3354,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-571-1ST-ED
   title: API_RP_571_1st_Ed_(2003)_Damage_Mechanisms_Affecting_Fixed_Equipment_in_the_Refining_Industry
   org: API
@@ -2766,6 +3369,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Recommended practice providing a description of damage mechanisms affecting fixed equipment in the refining and petroche
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-578
   title: API RP 578 (1999).pdf
   org: API
@@ -2780,6 +3386,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-582
   title: API RP 582 (2001).pdf
   org: API
@@ -2793,6 +3402,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-591
   title: API RP 591 (1998).pdf
   org: API
@@ -2806,6 +3418,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-621
   title: API RP 621 (2002).pdf
   org: API
@@ -2819,6 +3434,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-652
   title: API RP 652 (1997).pdf
   org: API
@@ -2832,6 +3450,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-687
   title: API RP 687 (2001).pdf
   org: API
@@ -2845,6 +3466,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12GDU
   title: API_Spec_12GDU_(1990)
   org: API
@@ -2858,6 +3482,9 @@ standards:
   implemented_at: null
   notes: This specification covers the minimum requirements for the design, materials, fabrication, and testing of glycol-type
     ga
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12L
   title: API_Spec_12L_(1994)
   org: API
@@ -2870,6 +3497,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'This specification establishes the minimum requirements for the design, material selection, and fabrication of vertical '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-12P
   title: API_Spec_12P_(1995)
   org: API
@@ -2883,6 +3513,9 @@ standards:
   implemented_at: null
   notes: 'This specification covers the material, design, fabrication, and testing requirements for fiberglass reinforced
     plastic '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-SPEC-2H,-EIGHTH-EDITION
   title: Specification for Carbon Manganese Steel Plate for Offshore Platform Tubular Joints
   org: API
@@ -2896,6 +3529,9 @@ standards:
   implemented_at: null
   notes: This specification provides standards for carbon manganese steel plates intended for use in welded tubular joints
     on off
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-526
   title: API Std 526 (2002).pdf
   org: API
@@ -2909,6 +3545,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-530
   title: API Std 530 (1996).pdf
   org: API
@@ -2922,6 +3561,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-560
   title: API Std 560 (2001).pdf
   org: API
@@ -2935,6 +3577,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-589
   title: API Std 589 (1998).pdf
   org: API
@@ -2948,6 +3593,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-598
   title: API Std 598 (1996).pdf
   org: API
@@ -2961,6 +3609,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-602
   title: API Std 602 (1998).pdf
   org: API
@@ -2974,6 +3625,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-603
   title: API Std 603 (2001).pdf
   org: API
@@ -2987,6 +3641,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-608
   title: API Std 608 (1995).pdf
   org: API
@@ -3000,6 +3657,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-VT-2-CORROSION-OF-OIL--AND
   title: API_VT-2_Corrosion_of_Oil-_and_Gas-Well_Equipment_
   org: API
@@ -3013,6 +3673,9 @@ standards:
   implemented_at: null
   notes: This book provides field operating personnel with practical knowledge to recognize, report, and mitigate corrosion
     in oi
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-F
   title: append_f
   org: ''
@@ -3026,6 +3689,9 @@ standards:
   implemented_at: null
   notes: Guidance and equations for determining material properties such as yield strength, tensile strength, and flow stress
     for
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-F-1
   title: append_f_1
   org: ''
@@ -3039,6 +3705,9 @@ standards:
   implemented_at: null
   notes: Technical guidance and data for material properties, fracture toughness, and fatigue/creep life estimation used in
     Fitne
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-G
   title: append_g
   org: ''
@@ -3051,6 +3720,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This document provides an overview of pre-service deficiencies and in-service deterioration mechanisms, such as corrosio
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-H
   title: append_h
   org: ''
@@ -3063,6 +3735,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Appendix H provides validation procedures for the API 579 Fitness-For-Service standard regarding the structural integrit
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: APPEND-I
   title: Append_i
   org: ''
@@ -3076,6 +3751,9 @@ standards:
   implemented_at: null
   notes: Glossary of terms and definitions supporting fitness-for-service assessments for pressure vessels, piping, and storage
     t
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E103
   title: ASTM_E103_(2002)_Std_Test_Method_for_Rapid_Indentation_Hardness_Testing_of_Metallic_Materials
   org: API
@@ -3089,6 +3767,9 @@ standards:
   implemented_at: null
   notes: This standard specifies procedures for rapid indentation hardness testing of metallic materials as an alternative
     to the
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1922
   title: ASTM E1922 (2004) Standard Test Method for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix.pdf
   org: ASTM
@@ -3104,6 +3785,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: AWS-A5.10
   title: AWS A5.10 Specification for Bare Aluminum and Aluminum-Alloy Welding Electrodes and Rods
   org: ''
@@ -3116,6 +3800,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This specification establishes requirements for the classification of bare aluminum and aluminum-alloy welding electrode
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: COVER
   title: cover
   org: ''
@@ -3129,6 +3816,9 @@ standards:
   implemented_at: null
   notes: API RP 579 provides standardized procedures for performing fitness-for-service assessments to evaluate the structural
     in
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-1099-1ST-ED
   title: ISO_1099_1st_Ed_(1975)_Axial_load_fatigue_testing
   org: ISO
@@ -3141,6 +3831,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'This standard specifies conditions for axial load fatigue testing of metals at room temperature to determine properties '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-11881-1999
   title: ISO 11881-1999.pdf
   org: ISO
@@ -3154,6 +3847,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-11881-CORRIGENDUM-1
   title: ISO_11881_Corrigendum_1_(1999)_Corrosion_of_metals_and_alloys_-_Exfoliation_corrosion_testing_of_aluminum
   org: ISO
@@ -3167,6 +3863,9 @@ standards:
   implemented_at: null
   notes: Technical corrigendum providing corrections to ISO 11881:1999 regarding exfoliation corrosion testing procedures
     and rat
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13665-1ST-ED
   title: ISO_13665_1st_Ed_(1997)_Seamless_and_Welded_Steel_Tubes_for_Pressure_Purposes
   org: ISO
@@ -3180,6 +3879,9 @@ standards:
   implemented_at: null
   notes: Specifies requirements for magnetic particle inspection of seamless and welded ferromagnetic steel tubes for pressure
     pu
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-148
   title: ISO 148.pdf
   org: ISO
@@ -3193,6 +3895,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14919
   title: ISO 14919.pdf
   org: ISO
@@ -3206,6 +3911,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14921
   title: ISO 14921.pdf
   org: ISO
@@ -3219,6 +3927,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-15653-1ST-ED
   title: ISO_15653_1st_Ed_(2010)_Metallic_materials_-Method_for_test_for_the_determination_of_quasistatic_fracture_toughness
   org: ISO
@@ -3231,6 +3942,9 @@ standards:
   modules: []
   implemented_at: null
   notes: This standard specifies methods for determining the quasistatic fracture toughness of welds in metallic materials.
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-4200-4TH-ED
   title: ISO_4200_4th_Ed_(1991)_Plain_end_steel_tubes,_welded_and_seamless_-_General_tables_of_dimensions_and_masses_per_unit_length
   org: ISO
@@ -3244,6 +3958,9 @@ standards:
   implemented_at: null
   notes: This international standard specifies dimensions and masses per unit length for welded and seamless plain end steel
     tube
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-DIS-1099
   title: ISO_DIS_1099
   org: ISO
@@ -3257,6 +3974,9 @@ standards:
   implemented_at: null
   notes: This standard specifies conditions for constant-amplitude axial force-controlled fatigue testing of metallic specimens
     a
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-DIS-1099-1ST-ED-DRAFT
   title: ISO_DIS_1099_1st_Ed_DRAFT_(2002)_Metallic_materials-fatigue_testing-axial_force_controlled_method
   org: ISO
@@ -3270,6 +3990,9 @@ standards:
   implemented_at: null
   notes: This document specifies the conditions for performing axial constant amplitude force-controlled fatigue tests on
     metalli
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-03
   title: sect_03
   org: ''
@@ -3282,6 +4005,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Guidelines for evaluating brittle fracture resistance in existing carbon and low alloy steel pressure equipment includin
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-06
   title: Sect_06
   org: ''
@@ -3294,6 +4020,9 @@ standards:
   modules: []
   implemented_at: null
   notes: Procedures for evaluating metal loss from pitting corrosion in pressurized components and tanks to determine fitness-for
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-07
   title: Sect_07
   org: ''
@@ -3307,6 +4036,9 @@ standards:
   implemented_at: null
   notes: Assessment procedures for hydrogen blisters and laminations in pressurized steel components according to API 579
     Fitness
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SECT-11
   title: Sect_11
   org: ''
@@ -3320,6 +4052,9 @@ standards:
   implemented_at: null
   notes: Procedures for Fitness-For-Service assessments of pressure boundary components exposed to fire damage to evaluate
     mechan
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: SPE-163884-MS
   title: SPE-163884-MS
   org: ''
@@ -3333,6 +4068,9 @@ standards:
   implemented_at: null
   notes: A new process for tracking coiled tubing fatigue life and diametrical expansion using manufacturer-provided material
     mod
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: TABLE-OF-CONTENTS
   title: Table_of_contents
   org: ''
@@ -3346,6 +4084,9 @@ standards:
   implemented_at: null
   notes: Guidelines for Fitness-For-Service engineering assessments to evaluate the structural integrity and remaining life
     of in
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1102
   title: API RP 1102 (1993).pdf
   org: API
@@ -3359,6 +4100,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1104
   title: API 1104_wE1.pdf
   org: API
@@ -3372,6 +4116,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1114
   title: API RP 1114 (1994).pdf
   org: API
@@ -3385,6 +4132,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1141
   title: API RP 1141 (1994).pdf
   org: API
@@ -3398,6 +4148,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-12N
   title: API RP 12N (1994).pdf
   org: API
@@ -3411,6 +4164,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-12R1
   title: API RP 12R1 (1997).pdf
   org: API
@@ -3424,6 +4180,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14B
   title: API RP 14B (1994).pdf
   org: API
@@ -3437,6 +4196,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14E
   title: API RP 14E (1991).pdf
   org: API
@@ -3450,6 +4212,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14G
   title: API RP 14G (1993).pdf
   org: API
@@ -3463,6 +4228,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-16A
   title: API 16A.pdf
   org: API
@@ -3476,6 +4244,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-16Q
   title: API RP 16Q.pdf
   org: API
@@ -3490,6 +4261,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-16R
   title: API 16R.pdf
   org: API
@@ -3503,6 +4277,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-17B
   title: API RP 17B.pdf
   org: API
@@ -3516,6 +4293,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2016
   title: API RP 2016 Guidelines and Procedures for Entering and Cleaning Petroleum Storage Tanks (1st 2001 112p).pdf
   org: API
@@ -3532,6 +4312,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2210
   title: API RP 2210 (2000).pdf
   org: API
@@ -3545,6 +4328,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2B
   title: API 2B.pdf
   org: API
@@ -3558,6 +4344,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2H
   title: API 2H.pdf
   org: API
@@ -3571,6 +4360,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2RD
   title: API RP 2RD.pdf
   org: API
@@ -3584,6 +4376,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2T
   title: API 2T.pdf
   org: API
@@ -3602,6 +4397,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-520
   title: API RP 520 Part I (2000).pdf
   org: API
@@ -3616,6 +4414,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-521
   title: API RP 521 (1997).pdf
   org: API
@@ -3629,6 +4430,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-531M
   title: API RP 531M (1980).pdf
   org: API
@@ -3642,6 +4446,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-551
   title: API RP 551 (1993).pdf
   org: API
@@ -3655,6 +4462,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-552
   title: API RP 552 (1994).pdf
   org: API
@@ -3668,6 +4478,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-553
   title: API RP 553 (1998).pdf
   org: API
@@ -3681,6 +4494,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-554
   title: API RP 554 (1995).pdf
   org: API
@@ -3694,6 +4510,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-555
   title: API RP 555 (2001).pdf
   org: API
@@ -3707,6 +4526,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-556
   title: API RP 556 (1997).pdf
   org: API
@@ -3720,6 +4542,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-557
   title: API RP 557 (2000).pdf
   org: API
@@ -3733,6 +4558,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-573
   title: API RP 573 (1991).pdf
   org: API
@@ -3746,6 +4574,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-574
   title: API RP 574 (1998).pdf
   org: API
@@ -3759,6 +4590,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-575
   title: API RP 575 (1995).pdf
   org: API
@@ -3772,6 +4606,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-576
   title: API RP 576 (2000).pdf
   org: API
@@ -3785,6 +4622,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-579
   title: API RP 579 (2000).pdf
   org: API
@@ -3793,11 +4633,14 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 579 (2000).pdf
   status: done
-  wrk_id: WRK-570
+  wrk_id: WRK-608
   repo: null
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-5CT
   title: API 5CT.PDF
   org: API
@@ -3811,6 +4654,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-5D
   title: API 5D.pdf
   org: API
@@ -3824,6 +4670,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-5L
   title: API 5L.pdf
   org: API
@@ -3841,6 +4690,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-683
   title: API RP 683 (1993).pdf
   org: API
@@ -3854,6 +4706,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-6A
   title: API 6A.pdf
   org: API
@@ -3867,6 +4722,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-6AF
   title: API 6AF.pdf
   org: API
@@ -3880,6 +4738,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-6ASECTION
   title: API 6ASECTION 2.pdf
   org: API
@@ -3893,6 +4754,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-80
   title: API RP 80 (2000).pdf
   org: API
@@ -3906,6 +4770,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-527
   title: API Std 527 (1991).pdf
   org: API
@@ -3919,6 +4786,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-581
   title: API Std 581 (1996).pdf
   org: API
@@ -3932,6 +4802,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-599
   title: API Std 599 (1994).pdf
   org: API
@@ -3945,6 +4818,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-600
   title: API Std 600 (2001).pdf
   org: API
@@ -3958,6 +4834,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-607
   title: API Std 607 (1993).pdf
   org: API
@@ -3971,6 +4850,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-610
   title: API STD 610 Centrigugal Pumps for Petroleum, Petrochemical and Natural Gas Industries (9th 2003 204p).pdf
   org: API
@@ -3987,6 +4869,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-611
   title: Api Std 611 General-Purpose Steam Turbines For Petroleum, Chemical, And Gas Industry Services.pdf
   org: API
@@ -4003,6 +4888,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-612
   title: API Std 612 (1995).pdf
   org: API
@@ -4016,6 +4904,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-613
   title: API Std 613 (1995).pdf
   org: API
@@ -4029,6 +4920,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-614
   title: API Std 614 (1994).pdf
   org: API
@@ -4042,6 +4936,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-616
   title: API Std 616 (1998).pdf
   org: API
@@ -4055,6 +4952,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-617
   title: API Std 617 (1995).pdf
   org: API
@@ -4068,6 +4968,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-618
   title: API Std 618 (1995).pdf
   org: API
@@ -4083,6 +4986,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-619
   title: API Std 619 (1997).pdf
   org: API
@@ -4098,6 +5004,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-650
   title: API Std 650 (2001).pdf
   org: API
@@ -4111,6 +5020,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-660
   title: API Std 660 (2001).pdf
   org: API
@@ -4124,6 +5036,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-661
   title: API Std 661 (2002).pdf
   org: API
@@ -4137,6 +5052,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-662
   title: API Std 662 (1995).pdf
   org: API
@@ -4150,6 +5068,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-670
   title: API Std 670 (2000).pdf
   org: API
@@ -4163,6 +5084,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-671
   title: API Std 671 (1998).pdf
   org: API
@@ -4176,6 +5100,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-672
   title: API STD 672 Packaged, integrally geared centrifugal air compressors for petroleum, chemical and gas industry services.PDF
   org: API
@@ -4192,6 +5119,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-673
   title: Api Std 673 Centrifugal Fans For Petroleum, Chemical And Gas Industry Services.pdf
   org: API
@@ -4208,6 +5138,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-STD-677
   title: Api Std 677 General Purpose Gear Units For Petroleum, Chemical, And Gas Industry Services.pdf
   org: API
@@ -4223,6 +5156,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A182
   title: ASTM A182-02.pdf
   org: ASTM
@@ -4240,6 +5176,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A29
   title: ASTM A29 (1999) Std Spec for Steel Bars, Carbon and Alloy, Hot-Wrought and Cold-Finished.pdf
   org: ASTM
@@ -4255,6 +5194,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A320
   title: ASTM A320 A320M (2008) Std. Spec Alloy-Steel and Stainless Steel Bolting Materials for Low Temp Service.pdf
   org: ASTM
@@ -4270,6 +5212,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A380
   title: ASTM A380.pdf
   org: ASTM
@@ -4283,6 +5228,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A388
   title: ASTM A388-01.pdf
   org: ASTM
@@ -4296,6 +5244,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A453
   title: ASTM A453 - A453M-02.pdf
   org: ASTM
@@ -4309,6 +5260,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A487
   title: ASTM A487 (1998) Std Spec for Steel Castings Suitable for Pressure Service.pdf
   org: ASTM
@@ -4324,6 +5278,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A521
   title: ASTM A521 (2006) Std Spec for Steel, Closed-Impression Die Forgings for General Industrial Use.pdf
   org: ASTM
@@ -4339,6 +5296,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A694
   title: ASTM A694 (2008) Std. Spec for Carbon and Alloy Steel Forgings for Pipe FLanges, Fittings, Valves, and Parts for
     High-Pressure Transmission Service.pdf
@@ -4357,6 +5317,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A703
   title: ASTM A703 (2001) Std Spec for Steel Castings, General Requirements, for Pressure Containing Parts.pdf
   org: ASTM
@@ -4372,6 +5335,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A707
   title: ASTM A707 (2000) Std Spec for Forged and Alloy Steel Flanges for Low-Temperature Service.pdf
   org: ASTM
@@ -4389,6 +5355,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A739
   title: ASTM A739-95.pdf
   org: ASTM
@@ -4402,6 +5371,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A745
   title: ASTM A745 (2009) Std Practice for Ultrasonic Examination of Austenitic Steel Forgings.pdf
   org: ASTM
@@ -4417,6 +5389,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A788
   title: ASTM A788 (2011) Std Spec for Steel Forgings, General Requirements.pdf
   org: ASTM
@@ -4432,6 +5407,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-A967
   title: ASTM A967-01.pdf
   org: ASTM
@@ -4447,6 +5425,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-D610
   title: ASTM D610-08 (2008) Standard Practice for Evaluating Degree of Rusting on Painted Steel Surfaces.pdf
   org: ASTM
@@ -4462,6 +5443,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1077
   title: ASTM E1077-01 (2005) Standard Test Methods for Estimating the Depth of Decarburization of Steel Specimens.pdf
   org: ASTM
@@ -4477,6 +5461,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E112
   title: ASTM E112 (2004) Std Test Methods for Determining Average Grain Size.pdf
   org: ASTM
@@ -4492,6 +5479,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1181
   title: ASTM E1181 (2002)tandard Test Methods for Characterizing Duplex Grain Sizes.pdf
   org: ASTM
@@ -4507,6 +5497,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1221
   title: ASTM E1221(2006) Standard Test Method for Determining Plane-Strain Crack-Arrest Fracture Toughness, K Ia, of Ferritic.pdf
   org: ASTM
@@ -4522,6 +5515,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1245
   title: ASTM E1245 (2003)  Standard Practice for Determining the Inclusion or Second-Phase Constituent Content of Metals.PDF
   org: ASTM
@@ -4537,6 +5533,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E125
   title: ASTM E125 (1997) Std Reference Photographs for Magnetic Particle Indications on Ferrous Castings.pdf
   org: ASTM
@@ -4552,6 +5551,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1290
   title: ASTM E1290 (2002) Standard Test Method for Crack-Tip Opening Displacement (CTOD) Fracture Toughness.pdf
   org: ASTM
@@ -4567,6 +5569,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1304
   title: ASTM E1304-97 (2002) Standard Test Method for Plane-Strain (Chevron-Notch) Fracture Toughness of Metallic Materials.pdf
   org: ASTM
@@ -4582,6 +5587,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E132
   title: ASTM E132 (2004) Std Test Method for Poisson's Ratio at Room Temperature.pdf
   org: ASTM
@@ -4597,6 +5605,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E140
   title: ASTM E140 (2007) Std Hardness Conversion Tables for Metals Relationship Among Brinell Hardness Vickers Hardness.pdf
   org: ASTM
@@ -4612,6 +5623,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E143
   title: ASTM E143 (2002) Std Test Method for Shear Modulus at Room Temperature.pdf
   org: ASTM
@@ -4627,6 +5641,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1457
   title: ASTM E1457 (2007) Standard Test Method for Measurement of Creep Crack Growth Times in Metals.pdf
   org: ASTM
@@ -4642,6 +5659,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1508
   title: ASTM E1508-98 (2003) Standard Guide for Quantitative Analysis by Energy-Dispersive Spectroscopy.pdf
   org: ASTM
@@ -4657,6 +5677,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1558
   title: ASTM E1558-99 (2004) Standard Guide for Electrolytic Polishing of Metallographic Specimens.pdf
   org: ASTM
@@ -4672,6 +5695,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E18
   title: ASTM E18 (2007) Std Test Methods for Rockwell Hardness of Metallic Materials.pdf
   org: ASTM
@@ -4687,6 +5713,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E186
   title: ASTM E186 (1998) Std Reference Radiographs for Heavy-Walled (2 to 4.5 in. (51 to 114 mm)) Steel Castings.pdf
   org: ASTM
@@ -4702,6 +5731,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1875
   title: ASTM E1875-00e1 Standard Test Method for Dynamic Young's Modulus, Shear Modulus, and Poisson's Ratio by Sonic.pdf
   org: ASTM
@@ -4717,6 +5749,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1876
   title: ASTM E1876 (2007) Standard Test Method for Dynamic Young's Modulus, Shear Modulus, and Poisson's Ratio byImpulse.pdf
   org: ASTM
@@ -4732,6 +5767,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2014
   title: ASTM E2014-99 (2005) Standard guide on Metallographic Laboratory Safety.pdf
   org: ASTM
@@ -4747,6 +5785,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E21
   title: ASTM E21 (2005) Std Test Methods for Elevated Temperature Tension Tests of Metallic Materials.pdf
   org: ASTM
@@ -4762,6 +5803,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2218
   title: ASTM E2218 (2002) Standard Test Method for Determining Forming Limit Curves.pdf
   org: ASTM
@@ -4777,6 +5821,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2244
   title: ASTM E2244 (2005) Standard Test Method for In-Plane Length Measurements of Thin, Reflecting Films Using.pdf
   org: ASTM
@@ -4792,6 +5839,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2245
   title: ASTM E2245 (2005) Standard Test Method for Residual Strain Measurements of Thin, Reflecting Films Using.pdf
   org: ASTM
@@ -4807,6 +5857,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2246
   title: ASTM E2246 (2005) Standard Test Method for Strain Gradient Measurements of Thin, Reflecting Films Using an Optical.pdf
   org: ASTM
@@ -4822,6 +5875,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2443
   title: ASTM E2443 (2005) Standard Guide for Verifying Computer-Generated Test Results Through The Use Of Standard Data Sets.pdf
   org: ASTM
@@ -4837,6 +5893,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E2448
   title: ASTM E2448 (2006) Standard Test Method for Determining the Superplastic Properties of Metallic.pdf
   org: ASTM
@@ -4852,6 +5911,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E290
   title: ASTM E290 (2004) Std Test Methods for Bend Testing of Material for Ductility.pdf
   org: ASTM
@@ -4867,6 +5929,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E338
   title: ASTM E338 (2003) Std Test Method of Sharp-Notch Tension Testing of High-Strength Sheet Materials.pdf
   org: ASTM
@@ -4882,6 +5947,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E407
   title: ASTM E407 (2007) Std Practice for Microetching Metals and Alloys.pdf
   org: ASTM
@@ -4897,6 +5965,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E517
   title: ASTM E517 (2006) Std Test Method for Plastic Strain Ratio r for Sheet Metal.pdf
   org: ASTM
@@ -4912,6 +5983,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E561
   title: ASTM E561 (2005) Std Test Method for K-R Curve Determination.pdf
   org: ASTM
@@ -4927,6 +6001,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E562
   title: ASTM E562 (2002) Std Test Method for Determining Volume Fraction by Systematic Manual Point Count.pdf
   org: ASTM
@@ -4942,6 +6019,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E643
   title: ASTM E643 (2000) Std Test Method for Ball Punch Deformation of Metallic Sheet Material.pdf
   org: ASTM
@@ -4957,6 +6037,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E646
   title: ASTM E646 (2000) Std Test Method for Tensile Strain-Hardening Exponents (n-Values) of Metallic Sheet Materials.pdf
   org: ASTM
@@ -4972,6 +6055,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E7
   title: ASTM E7 (2003) Standard Terminology Relating to Metallography.pdf
   org: ASTM
@@ -4987,6 +6073,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E74
   title: ASTM E74 (2006) Std Practice of Calibration of Force-Measuring Instruments for Verifying the Force Indication of
     Testing Machines.pdf
@@ -5003,6 +6092,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E766
   title: ASTM E766 (2003) Std Practice for Calibrating the Magnification of a Scanning Electron Microscope.pdf
   org: ASTM
@@ -5018,6 +6110,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E796
   title: ASTM E796 (2000) Std Test Method for Ductility Testing of Metallic Foil.pdf
   org: ASTM
@@ -5033,6 +6128,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E8
   title: ASTM E8 (2004) Std Test Methods for Tension Testing of Metallic Materials.pdf
   org: ASTM
@@ -5048,6 +6146,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E81
   title: ASTM E81 (2007) Std Test Method for Preparing Quantitative Pole Figures.pdf
   org: ASTM
@@ -5063,6 +6164,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E83
   title: ASTM E83 (2006) Std Practice for Verification and Classification of Extensometer Systems.pdf
   org: ASTM
@@ -5078,6 +6182,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E855
   title: ASTM E855 (2000) STM for Bend Testing of Metallic Flat Materials for Spring Applications Involving Static Loading.pdf
   org: ASTM
@@ -5093,6 +6200,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E9
   title: ASTM E9 (2000) Std Test Methods of Compression Testing of Metallic Materials at Room Temperature.pdf
   org: ASTM
@@ -5108,6 +6218,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E915
   title: ASTM E915 (2002) Standard Test Method for Verifying the Alignment of X-Ray Diffraction Instrumentation.PDF
   org: ASTM
@@ -5123,6 +6236,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E975
   title: ASTM E975 (2003) Standard Practice for X-Ray Determination of Retained Austenite in Steel with Near Random.pdf
   org: ASTM
@@ -5138,6 +6254,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E992
   title: ASTM E 992.pdf
   org: ASTM
@@ -5151,6 +6270,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-10474
   title: ISO 10474.pdf
   org: ISO
@@ -5164,6 +6286,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-1099
   title: ISO 1099.pdf
   org: ISO
@@ -5177,6 +6302,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-1101
   title: ISO 1101.pdf
   org: ISO
@@ -5190,6 +6318,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-1
   title: ISO 128-1.pdf
   org: ISO
@@ -5203,6 +6334,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-20
   title: ISO 128-20.pdf
   org: ISO
@@ -5216,6 +6350,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-21
   title: ISO 128-21.pdf
   org: ISO
@@ -5229,6 +6366,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-22
   title: ISO 128-22.pdf
   org: ISO
@@ -5242,6 +6382,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-24
   title: ISO 128-24.pdf
   org: ISO
@@ -5255,6 +6398,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-30
   title: ISO 128-30.pdf
   org: ISO
@@ -5268,6 +6414,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-34
   title: ISO 128-34.pdf
   org: ISO
@@ -5281,6 +6430,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-40
   title: ISO 128-40.pdf
   org: ISO
@@ -5294,6 +6446,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-44
   title: ISO 128-44.pdf
   org: ISO
@@ -5307,6 +6462,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-128-50
   title: ISO 128-50.pdf
   org: ISO
@@ -5320,6 +6478,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13628-5
   title: ISO 13628-5.pdf
   org: ISO
@@ -5333,6 +6494,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-13819-2
   title: ISO 13819-2.pdf
   org: ISO
@@ -5346,6 +6510,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14231
   title: ISO 14231.pdf
   org: ISO
@@ -5359,6 +6526,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14232
   title: ISO 14232.pdf
   org: ISO
@@ -5372,6 +6542,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14916
   title: ISO 14916.pdf
   org: ISO
@@ -5385,6 +6558,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14917
   title: ISO 14917.pdf
   org: ISO
@@ -5398,6 +6574,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14918
   title: ISO 14918.pdf
   org: ISO
@@ -5411,6 +6590,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14920
   title: ISO 14920.pdf
   org: ISO
@@ -5424,6 +6606,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14922-1
   title: ISO 14922-1.pdf
   org: ISO
@@ -5437,6 +6622,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-14922-2
   title: ISO 14922-2.pdf
   org: ISO
@@ -5450,6 +6638,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-2063
   title: ISO 2063.pdf
   org: ISO
@@ -5463,6 +6654,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-2768-1
   title: ISO 2768-1.pdf
   org: ISO
@@ -5476,6 +6670,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-2768-2
   title: ISO 2768-2.pdf
   org: ISO
@@ -5489,6 +6686,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-2902
   title: ISO 2902.pdf
   org: ISO
@@ -5502,6 +6702,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-3183-3
   title: ISO 3183-3.pdf
   org: ISO
@@ -5515,6 +6718,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-406
   title: ISO 406.pdf
   org: ISO
@@ -5528,6 +6734,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-5456-1
   title: ISO 5456-1.pdf
   org: ISO
@@ -5541,6 +6750,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-5457
   title: ISO 5457.pdf
   org: ISO
@@ -5554,6 +6766,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-6410-1
   title: ISO 6410-1.pdf
   org: ISO
@@ -5567,6 +6782,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-6892
   title: ISO 6892.pdf
   org: ISO
@@ -5580,6 +6798,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-7200
   title: ISO 7200.pdf
   org: ISO
@@ -5593,6 +6814,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-7438
   title: ISO 7438.pdf
   org: ISO
@@ -5606,6 +6830,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-7519
   title: ISO 7519.pdf
   org: ISO
@@ -5619,6 +6846,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-7539-7
   title: ISO 7539-7.pdf
   org: ISO
@@ -5632,6 +6862,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-7573
   title: iso 7573.pdf
   org: ISO
@@ -5645,6 +6878,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-8492
   title: ISO 8492.pdf
   org: ISO
@@ -5658,6 +6894,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14C-7TH-ED
   title: API_RP_14C_7th_Ed_(2007)_Analysis,_Design,_Installation,_and_Testing_of_Basic_Surface_Safety_Systems_for_Offshore_Production_Platforms
   org: API
@@ -5670,6 +6909,9 @@ standards:
   modules: []
   implemented_at: null
   notes: 'Standardized procedures for the analysis, design, installation, and testing of basic surface safety systems on offshore '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-14J-2ND-ED
   title: API_RP_14J_2nd_Ed_(2001)_Design_and_Hazards_Analysis_for_Offshore_Production_Facilities
   org: API
@@ -5683,6 +6925,9 @@ standards:
   implemented_at: null
   notes: 'Guidance for the design and hazards analysis of offshore production facilities to minimize risk of fire, explosion,
     and '
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1604
   title: API RP 1604 (1996).pdf
   org: API
@@ -5696,6 +6941,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-1621
   title: API RP 1621 (1993).pdf
   org: API
@@ -5709,6 +6957,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-2350
   title: API RP 2350 (1996).pdf
   org: API
@@ -5722,6 +6973,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-536
   title: API RP 536 (1998).pdf
   org: API
@@ -5735,6 +6989,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-580-2ND-ED
   title: API_RP_580_2nd_Ed_(2009)_Risk-Based_Inspection
   org: API
@@ -5748,6 +7005,9 @@ standards:
   implemented_at: null
   notes: This recommended practice provides guidance for developing, implementing, and sustaining a risk-based inspection
     (RBI) p
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: API-RP-75-3RD-ED
   title: API_RP_75_3rd_Ed_(R2008)_Development_of_a_Safety_and_Environmental_Management_Program_for_Offshore_Operations_and_Facilities
   org: API
@@ -5761,6 +7021,9 @@ standards:
   implemented_at: null
   notes: Recommended practice for the development and implementation of Safety and Environmental Management Programs (SEMP)
     for o
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ASTM-E1544
   title: ASTM E1544 (2004) Standard Practice for Construction of a Stepped Block and Its Use to Estimate Errors.PDF
   org: ASTM
@@ -5776,6 +7039,9 @@ standards:
   modules: []
   implemented_at: null
   notes: ''
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: ISO-STANDARDS-ISSUED-2016
   title: ISO_Standards_Issued_2016
   org: ISO
@@ -5789,6 +7055,9 @@ standards:
   implemented_at: null
   notes: A comprehensive list of ISO standards and technical specifications for the oil and gas industry, covering drilling,
     offs
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: NEMA-250
   title: NEMA_250_(2008)_Enclosures_for_Electrical_Equiptment_(1000_Volts_Maximum)
   org: ''
@@ -5802,6 +7071,9 @@ standards:
   implemented_at: null
   notes: NEMA 250 establishes requirements for the construction, testing, and performance of electrical enclosures rated up
     to 10
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []
 - id: PUB123-RISER-RCN1
   title: Pub123_Riser_RCN1
   org: ''
@@ -5815,3 +7087,6 @@ standards:
   implemented_at: null
   notes: An ABS regulatory guide and rule change notice detailing the construction, classification, and maintenance survey
     requir
+  exhausted: false
+  exhausted_at: null
+  absorbed_into: []

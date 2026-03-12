@@ -1,13 +1,13 @@
 wrk_id: WRK-1113
-current_stage: 4
-stage_name: Plan Draft
-completed_stage: 3
-next_action: Execute stage 4: Plan Draft
-context_summary: Stage 3 complete. Next: stage 4 (Plan Draft).
+current_stage: 10
+stage_name: Work Execution
+completed_stage: 8
+next_action: "Execute Phase 0 (foundation scripts), then Phase 1 (selection matrix draft)"
+context_summary: "Stages 4-8 complete. Plan approved by user. Branch feature/WRK-1113-doc-corpus-extraction created. Executing Phase 0: extend build-ledger.py, query-ledger.py; create mark-exhausted.py, generate-coverage-report.py. Then Phase 1 selection matrix for user 10/10/10 gate."
 entry_reads:
   - .claude/work-queue/assets/WRK-1113/checkpoint.yaml
-  - pending/WRK-1113.md
-  - assets/WRK-1113/evidence/resource-intelligence.yaml
-checkpointed_at: 2026-03-12T16:34:57Z
+  - specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+  - .claude/work-queue/assets/WRK-1113/evidence/stage-evidence.yaml
+checkpointed_at: "2026-03-12T17:00:00Z"
 human_gate: false
-chained_stages: [[2, 3, 4]]
+branch: feature/WRK-1113-doc-corpus-extraction

@@ -16,4 +16,30 @@ stages_complete:
     completed_at: "2026-03-12T00:00:00Z"
     gate: none
     notes: "Route C confirmed; open questions deferred to Stage 5 (riser namespace, canonical CP routes)"
-current_stage: 4
+  - stage: 4
+    name: Plan Draft
+    completed_at: "2026-03-12T17:00:00Z"
+    gate: none
+    notes: "Plan spec written to specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md; drilling_riser/ namespace confirmed; CP primary layer as test targets"
+  - stage: 5
+    name: User Review Plan Draft
+    completed_at: "2026-03-12T17:00:00Z"
+    gate: HARD
+    gate_passed: true
+    reviewer: vamsee
+    notes: "User submitted 'Implement the following plan' — explicit approval"
+  - stage: 7
+    name: User Review Plan Final
+    completed_at: "2026-03-12T17:00:00Z"
+    gate: HARD
+    gate_passed: true
+    reviewer: vamsee
+    confirmed_by: vamsee
+    notes: "Plan approved for execution; 10/10/10 selection gate built into Phase 1"
+  - stage: 8
+    name: Claim/Activation
+    completed_at: "2026-03-12T17:00:00Z"
+    gate: HARD
+    gate_passed: true
+    notes: "Branch feature/WRK-1113-doc-corpus-extraction created; execution started"
+current_stage: 10
