@@ -1,0 +1,31 @@
+wrk_id: WRK-660
+generated_at: "2026-03-12T00:00:00Z"
+generated_by: claude
+
+scope:
+  repo: assetutilities
+  target_modules:
+    - base_configs   # src/assetutilities/base_configs/ — 14 sub-modules under modules/
+    - calculations   # 12 .py files (riser, pipeline, wellhead, scr, etc.)
+    - devtools       # 4 .py files (cli, modernize_deps, organize_structure, propagate_commands)
+    - tools          # subdirs: git/, pdf/ (no .py at top level yet)
+    - units          # 11 .py files (quantity, registry, policy, computation, domains/)
+
+source_file_count: 31
+existing_test_count: 82
+zero_test_coverage_confirmed: true
+
+key_resources:
+  - path: src/assetutilities/calculations/scr_fatigue.py
+    note: most mature calc; benchmarks exist in tests/benchmarks/
+  - path: src/assetutilities/units/quantity.py
+    note: core units abstraction; likely high-value to test
+  - path: src/assetutilities/units/registry.py
+    note: central registry; tested indirectly via other modules
+  - path: tests/modules/
+    note: 82 existing tests — pattern reference for imports and fixture style
+
+constraints:
+  - Gemini large-context window ideal for ingesting all 31 source files at once
+  - No external deps for test stubs — standard pytest only
+  - Legal scan required before commit
