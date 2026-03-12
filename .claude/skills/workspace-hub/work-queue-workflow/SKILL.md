@@ -3,8 +3,8 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.7.1
-updated: 2026-03-10
+version: 1.7.2
+updated: 2026-03-12
 category: workspace-hub
 triggers:
   - work-queue workflow
@@ -150,6 +150,12 @@ Violations to avoid:
 
    ### Stage 4 — Plan Draft Creation
 
+   **Scripts-over-LLM audit (mandatory before writing plan phases):**
+   Scan every operation in the WRK spec: *"Will this run again — same WRK, future WRK, or another machine?"*
+   If ≥25% chance of recurrence → add a `## Scripts to Create` section to the plan listing
+   each script, its inputs/outputs, and which phase creates it. Execution phases must call
+   those scripts; never re-derive the same logic inline. Rule: `.claude/rules/patterns.md §Scripts Over LLM Judgment`.
+
    Produce `specs/wrk/WRK-NNN/plan.md`. Required sections (Route B/C): Mission/What/Why, Phases, Pseudocode (for logic ≥3 steps; N/A+reason allowed), Tests/Evals ≥3 entries (`name|happy/edge/error|expected`), Risks/Out of Scope.
 
    ### Stage 5 — Plan Draft (Human-in-Loop Interactive)
@@ -190,6 +196,12 @@ Violations to avoid:
    Override limit: `CODEX_MAX_REVIEWS_PER_WRK=N` env var (default 2).
 
    ### Stage 10 — Work Execution
+
+   **Scripts-over-LLM check (mandatory before writing any implementation logic):**
+   Before coding any non-trivial operation inline, ask: *"Does a script already exist for this?
+   Will this logic recur?"* If yes to either → write or call the script; do not inline via LLM.
+   This applies to: data transforms, file mutations, gate checks, report generation, index rebuilds.
+   Anti-pattern: reasoning through a calculation in prose that `grep | wc -l` handles in 10ms.
 
    **Context Budget**: Route A <40%, Route B <70%, Route C = plan multi-session.
    At 80%: call `bash scripts/hooks/context-monitor.sh --usage-pct 80` to auto-checkpoint.
