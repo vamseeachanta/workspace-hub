@@ -1,0 +1,22 @@
+wrk_id: WRK-1144
+stage: resource_intelligence
+completion_status: continue_to_planning
+generated_at: "2026-03-12T09:05:00Z"
+domain:
+  area: harness/work-queue
+  problem: identify stage micro-skill checklist items promotable to deterministic scripts (Level 1 → Level 2/3)
+skills:
+  core_used:
+    - work-queue/SKILL.md
+    - .claude/rules/patterns.md (enforcement gradient L0-L3)
+    - .claude/skills/workspace-hub/stages/stage-NN-*.md (20 files, WRK-1142 output)
+  adjacent:
+    - scripts/work-queue/audit-skill-violations.sh (audit script pattern)
+    - scripts/work-queue/verify-gate-evidence.py (binary gate checker pattern)
+existing_infra:
+  - 20 stage micro-skills at .claude/skills/workspace-hub/stages/
+  - scripts/work-queue/ — existing scripts to cross-reference for already-scripted detection
+top_p1_gaps: []
+notes: >
+  Single Python audit script, self-contained. Low risk.
+  verify-gate-evidence.py and audit-skill-violations.sh are direct analogues.

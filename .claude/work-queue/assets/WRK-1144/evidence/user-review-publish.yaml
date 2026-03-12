@@ -1,0 +1,19 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "3458e9fe59f6b9d1ec8d71dcd300b6bcb3602411"
+    documents:
+      - .claude/work-queue/assets/WRK-1144/WRK-1144-lifecycle.html
+    published_at: "2026-03-12T09:20:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "3458e9fe59f6b9d1ec8d71dcd300b6bcb3602411"
+    documents:
+      - .claude/work-queue/assets/WRK-1144/WRK-1144-lifecycle.html
+    published_at: "2026-03-12T09:35:00Z"
+    reviewer: vamsee

@@ -1,0 +1,6 @@
+wrk_id: WRK-1144
+stage: 1
+scope_approved: true
+reviewer: vamsee
+confirmed_at: "2026-03-12T09:00:00Z"
+notes: "Scope approved: audit 20 stage micro-skills, classify checklist items, identify script candidates, create child WRKs"

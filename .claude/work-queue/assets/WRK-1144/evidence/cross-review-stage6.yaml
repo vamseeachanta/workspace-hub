@@ -1,0 +1,26 @@
+wrk_id: WRK-1144
+stage: 6
+codex_verdict: APPROVE
+gemini_verdict: MINOR
+findings:
+  - id: F1
+    source: codex+gemini
+    severity: minor
+    description: "Keyword classifier too shallow — needs positive binary-check patterns AND judgment denylist"
+    resolution: "Split into binary_patterns list (exists, matches, passes, generated, present) and judgment_patterns denylist (assess, evaluate, decide, draft, summarize)"
+  - id: F2
+    source: gemini
+    severity: minor
+    description: "Priority score applies to all classifications — judgment items in hard-gate stages get inflated scores"
+    resolution: "Only scriptable items receive priority score; already-scripted and judgment skip child WRK creation"
+  - id: F3
+    source: codex+gemini
+    severity: minor
+    description: "Auto child WRK creation is risky — can spam queue with heuristic noise"
+    resolution: "Script generates proposed_wrks in YAML only; human approves before .md files created; cap at top 5"
+  - id: F4
+    source: codex
+    severity: minor
+    description: "already-scripted detection too narrow (literal script calls only)"
+    resolution: "Also check references to known workflow entrypoints in scripts/work-queue/ by filename"
+reviewed_at: 2026-03-12T00:00:00Z

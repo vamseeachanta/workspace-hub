@@ -1,0 +1,26 @@
+wrk_id: WRK-1144
+stage: cross_review
+reviewed_at: "2026-03-12T09:25:00Z"
+verdict: REVISE_INCORPORATED
+reviewers:
+  - provider: codex
+    verdict: APPROVE
+    artifact: scripts/review/results/wrk-1144-plan-review-input.md
+    p1_count: 0
+    p2_count: 4
+    note: "APPROVE — 4 minor findings incorporated: judgment denylist, scriptable-only scoring, gated child WRK, broader already-scripted detection"
+  - provider: gemini
+    verdict: MINOR
+    artifact: scripts/review/results/wrk-1144-plan-review-input.md
+    p1_count: 0
+    p2_count: 3
+    note: "MINOR — findings incorporated in revised plan"
+findings_resolved:
+  - id: F1
+    resolution: "Added JUDGMENT_PATTERNS denylist alongside BINARY_PATTERNS allowlist"
+  - id: F2
+    resolution: "priority_score returns 0 for non-scriptable items"
+  - id: F3
+    resolution: "Script generates proposed_wrks in YAML only; human approves before .md creation; cap at 5"
+  - id: F4
+    resolution: "already-scripted detection checks KNOWN_SCRIPTS by filename from scripts/work-queue/"

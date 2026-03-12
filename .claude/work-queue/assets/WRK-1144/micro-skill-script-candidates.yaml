@@ -1,0 +1,660 @@
+wrk_id: WRK-1144
+generated_at: '2026-03-12T20:36:09Z'
+summary:
+  total: 116
+  scriptable: 22
+  judgment: 83
+  already_scripted: 11
+  high_priority_count: 5
+high_priority:
+- stage: 1
+  line: Confirm WRK-NNN.md frontmatter has all required fields
+  score: 3
+  stage_file: stage-01-capture.md
+- stage: 5
+  line: 'DO NOT proceed until decision: approved confirmed'
+  score: 3
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  line: 'DO NOT proceed until decision: approved confirmed'
+  score: 3
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 7
+  line: Confirm all P1 findings resolved
+  score: 3
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 17
+  line: Confirm all ACs pass; all gates green
+  score: 3
+  stage_file: stage-17-user-review-implementation.md
+proposed_wrks:
+- proposed_title: 'chore(harness): script — Confirm WRK-NNN.md frontmatter has all
+    required fields'
+  stage: 1
+  score: 3
+  blocked_by:
+  - WRK-1144
+  note: PROPOSED ONLY — human must approve before creating .md file
+- proposed_title: 'chore(harness): script — DO NOT proceed until decision: approved
+    confirmed'
+  stage: 5
+  score: 3
+  blocked_by:
+  - WRK-1144
+  note: PROPOSED ONLY — human must approve before creating .md file
+- proposed_title: 'chore(harness): script — DO NOT proceed until decision: approved
+    confirmed'
+  stage: 5
+  score: 3
+  blocked_by:
+  - WRK-1144
+  note: PROPOSED ONLY — human must approve before creating .md file
+- proposed_title: 'chore(harness): script — Confirm all P1 findings resolved'
+  stage: 7
+  score: 3
+  blocked_by:
+  - WRK-1144
+  note: PROPOSED ONLY — human must approve before creating .md file
+- proposed_title: 'chore(harness): script — Confirm all ACs pass; all gates green'
+  stage: 17
+  score: 3
+  blocked_by:
+  - WRK-1144
+  note: PROPOSED ONLY — human must approve before creating .md file
+all_items:
+- stage: 1
+  cls: judgment
+  n_stages: 1
+  line: 'Ask human: WRK title, mission, category'
+  stage_file: stage-01-capture.md
+- stage: 1
+  cls: judgment
+  n_stages: 1
+  line: Write pending/WRK-NNN.md with valid frontmatter (id, title, status:pending,
+    category)
+  stage_file: stage-01-capture.md
+- stage: 1
+  cls: judgment
+  n_stages: 1
+  line: Create assets/WRK-NNN/WRK-NNN-lifecycle.html (stage 1 chip done, stages 2-20
+    pending)
+  stage_file: stage-01-capture.md
+- stage: 1
+  cls: judgment
+  n_stages: 1
+  line: Set status chip 1 to done in lifecycle HTML
+  stage_file: stage-01-capture.md
+- stage: 1
+  cls: scriptable
+  n_stages: 1
+  line: Confirm WRK-NNN.md frontmatter has all required fields
+  stage_file: stage-01-capture.md
+- stage: 2
+  cls: judgment
+  n_stages: 1
+  line: Research domain — identify existing infra, skills, constraints
+  stage_file: stage-02-resource-intelligence.md
+- stage: 2
+  cls: judgment
+  n_stages: 1
+  line: Assess complexity (simple/medium/complex)
+  stage_file: stage-02-resource-intelligence.md
+- stage: 2
+  cls: judgment
+  n_stages: 1
+  line: Write evidence/resource-intelligence.yaml (completion_status, domain, skills.core_used
+    ≥3)
+  stage_file: stage-02-resource-intelligence.md
+- stage: 2
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 2 section
+  stage_file: stage-02-resource-intelligence.md
+- stage: 3
+  cls: judgment
+  n_stages: 1
+  line: Read resource-intelligence.yaml
+  stage_file: stage-03-triage.md
+- stage: 3
+  cls: scriptable
+  n_stages: 1
+  line: Confirm route (A/B/C), workstations, orchestrator
+  stage_file: stage-03-triage.md
+- stage: 3
+  cls: judgment
+  n_stages: 1
+  line: Surface open questions; update WRK frontmatter
+  stage_file: stage-03-triage.md
+- stage: 3
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 3 section
+  stage_file: stage-03-triage.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: 'scripts-over-LLM audit (MANDATORY first step): scan every operation in the
+    WRK spec —'
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: EnterPlanMode for thinking before writing
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: Define ACs (specific, testable)
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: Write pseudocode for key functions (≥3 steps; N/A+reason allowed for pure-doc
+    WRKs)
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: 'Write test plan (≥3 entries: what|happy/edge/error|expected; N/A+reason allowed)'
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: Record plan in lifecycle HTML Stage 4 section
+  stage_file: stage-04-plan-draft.md
+- stage: 4
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 4 chip to done
+  stage_file: stage-04-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Open lifecycle HTML in browser (xdg-open); present Plan Draft section
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Walk each AC / pseudocode block section-by-section; wait for response before
+    continuing
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Apply all requested revisions before moving to next section
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Ask for explicit final approval from human — silence is not approval
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 2
+  line: 'Write evidence/user-review-plan-draft.yaml (decision: approved|revise) via
+    Write tool'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 2
+  line: Update lifecycle HTML Stage 5 section; flip chip to done
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: scriptable
+  n_stages: 2
+  line: 'DO NOT proceed until decision: approved confirmed'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Claude produces initial draft (specs/wrk/WRK-NNN/plan.md); opens lifecycle
+    HTML
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: 'Dispatch Codex and Gemini in parallel using the batch script:'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: 'SYNTHESIS (interactive with user — do NOT auto-merge):'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 1
+  line: Ask for explicit final approval from human
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 2
+  line: 'Write evidence/user-review-plan-draft.yaml (decision: approved|revise) via
+    Write tool'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: judgment
+  n_stages: 2
+  line: Update lifecycle HTML Stage 5 section; flip chip to done
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 5
+  cls: scriptable
+  n_stages: 2
+  line: 'DO NOT proceed until decision: approved confirmed'
+  stage_file: stage-05-user-review-plan-draft.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: EnterPlanMode — synthesize all inputs before writing any verdict artifact
+  stage_file: stage-06-cross-review.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: Send cross-review-package.md to Codex and Gemini simultaneously
+  stage_file: stage-06-cross-review.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: Collect all 3 verdicts (APPROVE|REVISE) with P1/P2 findings
+  stage_file: stage-06-cross-review.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: Synthesize into evidence/cross-review.yaml (verdict, reviewers[], p1_findings,
+    p2_findings)
+  stage_file: stage-06-cross-review.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 6 section with findings
+  stage_file: stage-06-cross-review.md
+- stage: 6
+  cls: judgment
+  n_stages: 1
+  line: 'If REVISE: set return_to_stage in cross-review.yaml; revise plan before Stage
+    7'
+  stage_file: stage-06-cross-review.md
+- stage: 7
+  cls: judgment
+  n_stages: 1
+  line: Read cross-review findings; present revisions to human
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: judgment
+  n_stages: 1
+  line: Apply all requested changes to plan
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: scriptable
+  n_stages: 1
+  line: Confirm all P1 findings resolved
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: judgment
+  n_stages: 1
+  line: Ask for explicit final approval
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: judgment
+  n_stages: 1
+  line: 'Write evidence/plan-final-review.yaml via Write tool:'
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 7 section; flip chip to done
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 7
+  cls: already-scripted
+  n_stages: 2
+  line: 'Print: GATE PASSED — /checkpoint WRK-NNN → new session → /resume WRK-NNN'
+  stage_file: stage-07-user-review-plan-final.md
+- stage: 8
+  cls: judgment
+  n_stages: 1
+  line: Read agent-quota-latest.json; assess proceed/pause
+  stage_file: stage-08-claim-activation.md
+- stage: 8
+  cls: judgment
+  n_stages: 1
+  line: Write evidence/claim-evidence.yaml (quota snapshot, proceed decision)
+  stage_file: stage-08-claim-activation.md
+- stage: 8
+  cls: judgment
+  n_stages: 1
+  line: 'Update working/WRK-NNN.md (status: working, activated_at)'
+  stage_file: stage-08-claim-activation.md
+- stage: 8
+  cls: scriptable
+  n_stages: 1
+  line: Write evidence/activation.yaml (activated_at, gates_confirmed)
+  stage_file: stage-08-claim-activation.md
+- stage: 8
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 8 section
+  stage_file: stage-08-claim-activation.md
+- stage: 9
+  cls: judgment
+  n_stages: 1
+  line: Load all required skills (work-queue-workflow, workflow-gatepass, domain skills)
+  stage_file: stage-09-routing.md
+- stage: 9
+  cls: scriptable
+  n_stages: 1
+  line: Confirm delivery order (P1→P2→P3→P4 or as planned)
+  stage_file: stage-09-routing.md
+- stage: 9
+  cls: judgment
+  n_stages: 1
+  line: Write routing.yaml (skills_loaded, stage_sequence_from_here)
+  stage_file: stage-09-routing.md
+- stage: 9
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 9 section
+  stage_file: stage-09-routing.md
+- stage: 10
+  cls: scriptable
+  n_stages: 1
+  line: 'scripts-over-LLM check (MANDATORY first step): before coding any non-trivial
+    operation'
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: EnterPlanMode — plan test and file strategy before any implementation writes
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: Invoke superpowers/test-driven-development skill
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: scriptable
+  n_stages: 1
+  line: Write ALL failing tests first (Red); confirm test collection
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: Implement minimum code to pass (Green); no untested code
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: Refactor while tests stay green
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: 'Parallel-optional: dispatch independent file sets to parallel agents'
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: Write evidence/execute.yaml (integrated_repo_tests ≥3, execution_summary)
+  stage_file: stage-10-work-execution.md
+- stage: 10
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 10 section
+  stage_file: stage-10-work-execution.md
+- stage: 11
+  cls: already-scripted
+  n_stages: 1
+  line: 'Run: uv run --no-project python scripts/work-queue/generate-html-review.py
+    WRK-NNN --lifecycle'
+  stage_file: stage-11-artifact-generation.md
+- stage: 11
+  cls: scriptable
+  n_stages: 1
+  line: Verify 20 stage sections present in WRK-NNN-lifecycle.html
+  stage_file: stage-11-artifact-generation.md
+- stage: 11
+  cls: scriptable
+  n_stages: 1
+  line: Check required evidence files present (files changed, test results, gate summary)
+  stage_file: stage-11-artifact-generation.md
+- stage: 11
+  cls: scriptable
+  n_stages: 1
+  line: Open lifecycle HTML in browser and confirm Stage 10/11 content visible
+  stage_file: stage-11-artifact-generation.md
+- stage: 12
+  cls: scriptable
+  n_stages: 1
+  line: Run full test suite; capture results
+  stage_file: stage-12-tdd-eval.md
+- stage: 12
+  cls: scriptable
+  n_stages: 1
+  line: Map each AC to test result (PASS/FAIL/N/A+reason)
+  stage_file: stage-12-tdd-eval.md
+- stage: 12
+  cls: scriptable
+  n_stages: 1
+  line: Fix any FAIL before writing matrix (no partial passes)
+  stage_file: stage-12-tdd-eval.md
+- stage: 12
+  cls: judgment
+  n_stages: 1
+  line: Write ac-test-matrix.md via Write tool
+  stage_file: stage-12-tdd-eval.md
+- stage: 12
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 12 section (AC matrix summary)
+  stage_file: stage-12-tdd-eval.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: EnterPlanMode — analyze all implementation + tests before recording any verdict
+  stage_file: stage-13-agent-cross-review.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: Send implementation + tests to Codex and Gemini simultaneously
+  stage_file: stage-13-agent-cross-review.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: 'Each provider reviews: security, correctness, missing ACs, code quality'
+  stage_file: stage-13-agent-cross-review.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: Collect verdicts (APPROVE|REVISE) with P1/P2 findings
+  stage_file: stage-13-agent-cross-review.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: Write review.md via Write tool (verdict, reviewers[], findings)
+  stage_file: stage-13-agent-cross-review.md
+- stage: 13
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 13 section
+  stage_file: stage-13-agent-cross-review.md
+- stage: 14
+  cls: already-scripted
+  n_stages: 2
+  line: 'Run: uv run --no-project python scripts/work-queue/verify-gate-evidence.py
+    WRK-NNN'
+  stage_file: stage-14-verify-gate-evidence.md
+- stage: 14
+  cls: scriptable
+  n_stages: 1
+  line: Fix any FAIL gates before proceeding (do not skip)
+  stage_file: stage-14-verify-gate-evidence.md
+- stage: 14
+  cls: scriptable
+  n_stages: 1
+  line: Re-run until all gates PASS
+  stage_file: stage-14-verify-gate-evidence.md
+- stage: 14
+  cls: judgment
+  n_stages: 1
+  line: 'Write evidence/gate-evidence-summary.yaml (all gates: PASS)'
+  stage_file: stage-14-verify-gate-evidence.md
+- stage: 14
+  cls: scriptable
+  n_stages: 1
+  line: Update lifecycle HTML Stage 14 section (gate checklist)
+  stage_file: stage-14-verify-gate-evidence.md
+- stage: 15
+  cls: judgment
+  n_stages: 1
+  line: Review execution notes and review.md for deferred ideas
+  stage_file: stage-15-future-work.md
+- stage: 15
+  cls: judgment
+  n_stages: 1
+  line: Capture each as WRK item if not already in queue (use /work add)
+  stage_file: stage-15-future-work.md
+- stage: 15
+  cls: judgment
+  n_stages: 1
+  line: Write evidence/future-work.yaml (recommendations[] with disposition/status/captured)
+  stage_file: stage-15-future-work.md
+- stage: 15
+  cls: judgment
+  n_stages: 1
+  line: 'All spun-off-new items must have captured: true'
+  stage_file: stage-15-future-work.md
+- stage: 15
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 15 section
+  stage_file: stage-15-future-work.md
+- stage: 16
+  cls: judgment
+  n_stages: 1
+  line: Identify ≥3 lessons learned from this WRK execution
+  stage_file: stage-16-resource-intelligence-update.md
+- stage: 16
+  cls: judgment
+  n_stages: 1
+  line: Note new tools, patterns, or constraints discovered
+  stage_file: stage-16-resource-intelligence-update.md
+- stage: 16
+  cls: judgment
+  n_stages: 1
+  line: Write evidence/resource-intelligence-update.yaml (lessons[], additions[])
+  stage_file: stage-16-resource-intelligence-update.md
+- stage: 16
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 16 section
+  stage_file: stage-16-resource-intelligence-update.md
+- stage: 17
+  cls: judgment
+  n_stages: 1
+  line: Human reviews lifecycle HTML (Stages 10-16 complete)
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: judgment
+  n_stages: 1
+  line: Agent answers questions; applies any requested fixes
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: scriptable
+  n_stages: 1
+  line: Confirm all ACs pass; all gates green
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: judgment
+  n_stages: 1
+  line: Ask for explicit approval
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: judgment
+  n_stages: 1
+  line: 'Write evidence/user-review-close.yaml via Write tool (decision: approved)'
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 17 section
+  stage_file: stage-17-user-review-implementation.md
+- stage: 17
+  cls: already-scripted
+  n_stages: 2
+  line: 'Print: GATE PASSED — /checkpoint WRK-NNN → new session → /resume WRK-NNN'
+  stage_file: stage-17-user-review-implementation.md
+- stage: 18
+  cls: already-scripted
+  n_stages: 1
+  line: Check for assets/WRK-NNN/checkpoint.yaml
+  stage_file: stage-18-reclaim.md
+- stage: 18
+  cls: already-scripted
+  n_stages: 1
+  line: 'If no checkpoint: write evidence/reclaim.yaml (status: n/a) via Write tool'
+  stage_file: stage-18-reclaim.md
+- stage: 18
+  cls: already-scripted
+  n_stages: 1
+  line: 'If checkpoint found: re-orient from checkpoint; write reclaim.yaml (status:
+    reclaimed)'
+  stage_file: stage-18-reclaim.md
+- stage: 18
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 18 section
+  stage_file: stage-18-reclaim.md
+- stage: 19
+  cls: already-scripted
+  n_stages: 2
+  line: 'Run: uv run --no-project python scripts/work-queue/verify-gate-evidence.py
+    WRK-NNN'
+  stage_file: stage-19-close.md
+- stage: 19
+  cls: scriptable
+  n_stages: 1
+  line: Confirm exit 0; if non-zero fix gates first
+  stage_file: stage-19-close.md
+- stage: 19
+  cls: already-scripted
+  n_stages: 1
+  line: 'Run: bash scripts/work-queue/close-item.sh WRK-NNN'
+  stage_file: stage-19-close.md
+- stage: 19
+  cls: scriptable
+  n_stages: 1
+  line: 'Verify done/WRK-NNN.md exists; percent_complete: 100'
+  stage_file: stage-19-close.md
+- stage: 19
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 19 section (close timestamp)
+  stage_file: stage-19-close.md
+- stage: 20
+  cls: already-scripted
+  n_stages: 1
+  line: 'Run: bash scripts/work-queue/archive-item.sh WRK-NNN'
+  stage_file: stage-20-archive.md
+- stage: 20
+  cls: scriptable
+  n_stages: 1
+  line: Verify archive/WRK-NNN.md exists
+  stage_file: stage-20-archive.md
+- stage: 20
+  cls: judgment
+  n_stages: 1
+  line: Regenerate INDEX.md
+  stage_file: stage-20-archive.md
+- stage: 20
+  cls: already-scripted
+  n_stages: 1
+  line: 'Clear active-wrk: bash scripts/work-queue/clear-active-wrk.sh'
+  stage_file: stage-20-archive.md
+- stage: 20
+  cls: judgment
+  n_stages: 1
+  line: Update lifecycle HTML Stage 20 section (archive path)
+  stage_file: stage-20-archive.md
+- stage: 20
+  cls: judgment
+  n_stages: 1
+  line: Git commit lifecycle HTML final state
+  stage_file: stage-20-archive.md
