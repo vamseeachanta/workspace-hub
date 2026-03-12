@@ -1,0 +1,36 @@
+wrk_id: WRK-1142
+generated_at: "2026-03-12T15:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Harden start_stage.py YAML fallback to fail-fast when PyYAML absent"
+    description: >
+      The _load_yaml() fallback silently drops list-valued fields (exit_artifacts, entry_reads,
+      chained_stages) when PyYAML is unavailable. Add an explicit check: if yaml not imported,
+      raise ImportError with instructions to run `uv add pyyaml`. Removes silent partial-parse risk.
+    disposition: spun-off-new
+    wrk_id: null
+    required_for_signoff: false
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Slim start_stage.py below 400-line hard limit"
+    description: >
+      start_stage.py is 474 lines, exceeding the 400-line hard limit from coding-style.md.
+      Extract _print_checkpoint_resume(), _extract_sections(), and _regenerate_lifecycle_html()
+      into a start_stage_helpers.py module to bring main file under the limit.
+    disposition: spun-off-new
+    wrk_id: null
+    required_for_signoff: false
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Add migrate-stage-rules.py argparse + idempotent-apply test"
+    description: >
+      CLI parsing is `'--apply' in sys.argv` (silently ignores unknown args). Replace with
+      argparse for explicit validation. Add test covering repeated --apply runs to confirm
+      idempotent behavior with the stable marker check.
+    disposition: spun-off-new
+    wrk_id: null
+    required_for_signoff: false
+    status: captured
+    captured: true

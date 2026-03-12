@@ -8,29 +8,29 @@ execution_summary: >
   scripts-over-LLM audit as mandatory checklist item 0. migrate-stage-rules.py created with
   explicit SECTION_MAP. work-queue-workflow/SKILL.md slimmed from 312 to 120 lines.
 integrated_repo_tests:
-  - id: T50
-    description: "start_stage.py stdout includes 'scripts-over-LLM' from stage-04 micro-skill"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-  - id: T51
-    description: "stage-10 prompt package includes 'TDD MANDATORY' or 'scripts-over-LLM' from micro-skill"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-  - id: T52
-    description: "valid contract + absent micro-skill → warning string, no crash"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-  - id: T53
-    description: "two stage-04-*.md files → RuntimeError"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-  - id: T54
-    description: "all 20 micro-skills have ≥5 non-blank lines"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-  - id: T55
-    description: "work-queue-workflow/SKILL.md ≤150 lines (actual: 120)"
-    result: PASS
-    file: scripts/work-queue/tests/test_stage_micro_skills.py
-test_run_command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py -v"
+  - name: T50 start_stage stdout includes stage-04 micro-skill
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py::test_T50_start_stage_stdout_includes_stage04_micro_skill -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_micro_skills.py
+  - name: T51 prompt package includes stage-10 unique micro-skill text
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py::test_T51_prompt_package_includes_stage10_micro_skill -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_micro_skills.py
+  - name: T52 missing micro-skill warns no crash
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py::test_T52_missing_micro_skill_warns_no_crash -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_micro_skills.py
+  - name: T54 all 20 micro-skills have 5 or more content lines
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py::test_T54_all_20_micro_skills_have_5_or_more_content_lines -v"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/stages/
+  - name: T55 SKILL.md at most 150 lines
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py::test_T55_work_queue_workflow_skill_md_at_most_150_lines -v"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
 all_tests_passing: true

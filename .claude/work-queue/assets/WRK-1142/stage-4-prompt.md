@@ -39,4 +39,12 @@ Exit: WRK-NNN-lifecycle.html (Stage 4 section present)
 [entry_reads: assets/WRK-NNN/evidence/resource-intelligence.yaml — file not found]
 ```
 
+## Chained stages (complete in sequence)
+
+### Chained stage 1: Resource Intelligence
+Exit artifacts: ['assets/WRK-NNN/evidence/resource-intelligence.yaml']
+
+### Chained stage 2: Triage
+Exit artifacts: ['pending/WRK-NNN.md']
+
 **Blocking condition:** lifecycle HTML Stage 4 section absent

@@ -96,7 +96,8 @@ def run(apply: bool = False) -> int:
 
             if apply:
                 existing = target.read_text(encoding="utf-8")
-                if heading in existing:
+                marker = f"## Migrated from SKILL.md: {heading}"
+                if marker in existing:
                     print(f"  → Already present in {target.name}, skipping.")
                 else:
                     target.write_text(

@@ -1,0 +1,52 @@
+wrk_id: WRK-1142
+stage: 13
+completed_at: "2026-03-12T00:00:00Z"
+verdict: REVISE_INCORPORATED
+reviewers:
+  - provider: claude
+    verdict: REQUEST_CHANGES
+    findings:
+      - severity: P2
+        file: scripts/work-queue/start_stage.py
+        note: chained_agent not passing extra_contracts to build_prompt — FIXED
+      - severity: P3
+        file: scripts/work-queue/start_stage.py
+        note: file >400 lines; deferred as FW (no refactor in scope)
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    findings:
+      - severity: P2
+        file: scripts/work-queue/start_stage.py
+        note: chained_agent not passing extra_contracts — FIXED
+      - severity: P2
+        file: scripts/work-queue/start_stage.py
+        note: YAML fallback cannot parse list-valued fields — deferred as FW (yaml always available in uv env)
+      - severity: P3
+        file: scripts/work-queue/start_stage.py
+        note: nondeterministic contract selection (unsorted glob) — FIXED (sorted())
+      - severity: P2
+        file: scripts/work-queue/migrate-stage-rules.py
+        note: idempotency check used heading text not stable marker — FIXED
+      - severity: P1
+        file: scripts/work-queue/tests/test_stage_micro_skills.py
+        note: T51 stale artifacts + missing exit code check — FIXED
+      - severity: P1
+        file: scripts/work-queue/tests/test_stage_micro_skills.py
+        note: T51 assertion accepted stage-04 text — FIXED (TDD MANDATORY only)
+  - provider: gemini
+    verdict: REQUEST_CHANGES
+    findings:
+      - severity: P2
+        file: scripts/work-queue/tests/test_stage_micro_skills.py
+        note: T50/T51 ignored subprocess return code — FIXED
+      - severity: P3
+        file: scripts/work-queue/tests/test_stage_micro_skills.py
+        note: unused WORKING_DIR and import os — FIXED
+fixes_applied:
+  - chained_agent now loads extra_contracts from chained_stages list and passes to build_prompt
+  - contract glob uses sorted() for deterministic selection
+  - migrate-stage-rules.py idempotency uses stable marker string
+  - T50/T51 assert rc == 0; T51 deletes stale artifact before run; T51 assertion uses TDD MANDATORY only
+  - T53 uses pytest.raises; removed unused WORKING_DIR and import os
+all_tests_passing: true
+test_run_after_fixes: "6/6 passed — uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py -v"

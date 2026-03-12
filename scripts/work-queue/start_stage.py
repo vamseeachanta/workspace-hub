@@ -298,7 +298,21 @@ def route_stage(
     elif invocation == "chained_agent":
         _print_checkpoint_resume(wrk_id, stage, output_dir)
         chained = contract.get("chained_stages", [stage])
-        out = build_prompt(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
+        extra_contracts = []
+        for cs in chained:
+            if cs == stage:
+                continue
+            cs_glob = os.path.join(
+                repo_root, "scripts", "work-queue", "stages", f"stage-{cs:02d}-*.yaml"
+            )
+            import glob as _glob2
+            cs_matches = sorted(_glob2.glob(cs_glob))
+            if cs_matches:
+                extra_contracts.append(_load_yaml(cs_matches[0]))
+        out = build_prompt(
+            contract, wrk_id, stage, output_dir, assets_root,
+            extra_contracts=extra_contracts or None, repo_root=repo_root,
+        )
         print(f"Chained prompt package ready: {out}")
         print(f"Covers stages: {chained}")
         print("Single Task agent handles all chained stages; exits after all complete.")
@@ -397,7 +411,7 @@ def _main() -> None:
         repo_root, "scripts", "work-queue", "stages", f"stage-{stage:02d}-*.yaml"
     )
     import glob as _glob
-    matches = _glob.glob(contract_glob)
+    matches = sorted(_glob.glob(contract_glob))
     if not matches:
         print(f"No contract found: {contract_glob}", file=sys.stderr)
         sys.exit(1)

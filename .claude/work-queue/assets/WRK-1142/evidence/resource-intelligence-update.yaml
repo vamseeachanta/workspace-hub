@@ -1,0 +1,18 @@
+wrk_id: WRK-1142
+updated_at: "2026-03-12T15:00:00Z"
+additions:
+  - type: script
+    path: scripts/work-queue/migrate-stage-rules.py
+    description: Extracts named sections from work-queue-workflow/SKILL.md into target stage micro-skills. Use SECTION_MAP to route headings to stage numbers. Dry-run by default; --apply to write.
+  - type: script
+    path: scripts/work-queue/start_stage.py
+    description: Now auto-loads stage micro-skill at stage entry via _load_stage_micro_skill(). Injects into route_stage() stdout (human operators) and build_prompt() prompt package (dispatched agents). chained_agent path now loads extra_contracts from chained_stages.
+  - type: skill
+    path: .claude/skills/workspace-hub/stages/stage-04-plan-draft.md
+    description: Updated with scripts-over-LLM audit as mandatory item 0. Include a Scripts to Create section if ≥25% recurrence chance.
+  - type: skill
+    path: .claude/skills/workspace-hub/stages/stage-10-work-execution.md
+    description: Updated with scripts-over-LLM check as mandatory item 0. Check before any non-trivial inline operation.
+  - type: test
+    path: scripts/work-queue/tests/test_stage_micro_skills.py
+    description: 6 TDD tests (T50-T55) covering micro-skill injection, missing/duplicate file handling, all-20-stages coverage, and SKILL.md line count.
