@@ -1,0 +1,11 @@
+wrk_id: WRK-1144
+stage: 16
+updated_at: "2026-03-12T10:08:00Z"
+additions:
+  - path: scripts/work-queue/audit_micro_skill_scripts.py
+    purpose: "Classifies micro-skill checklist items as scriptable/judgment/already-scripted"
+    reuse_note: "Run after any micro-skill update; --stages-dir and --output for customisation"
+patterns_learned:
+  - "Word-boundary regex required for keyword classifiers to avoid substring false positives"
+  - "Cross-stage counting must use distinct stage sets, not occurrence counts"
+  - "Write-action prefix guard prevents scriptable false-positives on evidence write steps"

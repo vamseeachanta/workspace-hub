@@ -1,0 +1,37 @@
+wrk_id: WRK-1144
+stage: 15
+generated_at: '2026-03-12T10:05:00Z'
+recommendations:
+- id: FW-1
+  priority: high
+  title: Implement stage-01 frontmatter validator script
+  disposition: spun-off-new
+  description: 'Binary check: all required frontmatter fields present/non-empty'
+  blocked_by:
+  - WRK-1144
+  status: open
+  captured: true
+- id: FW-2
+  priority: high
+  title: Implement stage-07/17 AC-pass checker script
+  disposition: spun-off-new
+  description: 'Binary check: all ACs confirmed, all gates green before stage exit'
+  blocked_by:
+  - WRK-1144
+  status: open
+  captured: true
+- id: FW-3
+  priority: medium
+  title: Expand judgment denylist from observed false-positives
+  disposition: existing-updated
+  description: Run audit quarterly, refine BINARY_PATTERNS/JUDGMENT_PATTERNS
+  status: open
+  captured: true
+- id: FW-4
+  priority: medium
+  title: Promote top script candidates to hooks (Level 3)
+  disposition: existing-updated
+  description: Evaluate promoting hard-gate checks to pre-commit hooks once scripts
+    exist
+  status: open
+  captured: true

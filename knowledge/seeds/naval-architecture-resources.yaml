@@ -1,0 +1,159 @@
+# Naval Architecture Resources — WRK-1151
+# Downloaded to /mnt/ace/docs/_standards/SNAME/
+# Generated: 2026-03-12
+
+category: naval-architecture
+subcategory: references
+created_at: "2026-03-12"
+
+# ─────────────────────────────────────────────
+# TEXTBOOKS
+# ─────────────────────────────────────────────
+textbooks:
+
+  - title: "Principles of Naval Architecture, Volume I — Stability and Strength"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol1-SNAME.pdf"
+    source_url: "https://navalifpe.wordpress.com/wp-content/uploads/2011/09/principles-of-naval-architecture-vol-1-sname.pdf"
+    size_mb: 29
+    topics: [stability, strength, hull-form]
+    notes: "Classic SNAME 3-volume set. Vol I covers buoyancy, stability, subdivisions, ship forms."
+
+  - title: "Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-SNAME.pdf"
+    source_url: "https://navalifpe.files.wordpress.com/2011/09/principles-of-naval-architecture-vol-2-sname.pdf"
+    size_mb: 30
+    topics: [resistance, propulsion, vibration]
+    notes: "SNAME 3-volume set Vol II."
+
+  - title: "Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration (Internet Archive scan)"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf"
+    source_url: "https://archive.org/details/principles-of-naval-architecture-vol-ii-resistance-propulsion-and-vibration"
+    size_mb: 84
+    topics: [resistance, propulsion, vibration]
+    notes: "Higher-quality archive.org scan — same content as Vol2-SNAME.pdf but better OCR."
+
+  - title: "Principles of Naval Architecture (Second Revision), Volume I"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf"
+    source_url: "https://ftp.idu.ac.id/wp-content/uploads/ebook/tdg/ADNVANCED%20MILITARY%20PLATFORM%20DESIGN/Principles%20of%20Naval%20Architecture%20(Second%20Revision),%20Volume%20I.pdf"
+    size_mb: 32
+    topics: [stability, strength, hull-form]
+    notes: "Second revision edition of Vol I."
+
+  - title: "Introduction to Naval Architecture"
+    author: "E. C. Tupper"
+    year: 1996
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Tupper-1996.pdf"
+    source_url: "https://home.hvl.no/ansatte/gste/ftp/MarinLab_files/Litteratur/IntroductionToNavalArchitecture_Tupper1996.pdf"
+    size_mb: 19
+    topics: [general, hull-form, stability, resistance, structures]
+    notes: "Standard undergraduate introduction. Covers all core NA disciplines."
+
+  - title: "Introduction to Naval Architecture"
+    author: "John P. Comstock"
+    year: 1942
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Comstock-1942.pdf"
+    source_url: "https://archive.org/details/Comstock1942NavalArchitecture"
+    size_mb: 5.7
+    topics: [general, stability, propulsion]
+    notes: "Classic 1942 SNAME text. Public domain. OCR'd text version."
+
+# ─────────────────────────────────────────────
+# HYDROSTATICS, STABILITY & RESISTANCE
+# ─────────────────────────────────────────────
+hydrostatics_stability:
+
+  - title: "Ship Hydrostatics and Stability"
+    author: "A. B. Biran"
+    year: ~2003
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-Biran.pdf"
+    source_url: "https://home.hvl.no/ansatte/gste/ftp/mas124_intro_marinteknikk/Litteratur/Kompendier_Books/Ship_hydrostatics_and_stability_Biran.pdf"
+    size_mb: 9.4
+    topics: [hydrostatics, stability, GZ-curve, trim]
+    notes: "Rigorous treatment of hydrostatics and stability. Used in HVL MarinLab course."
+
+  - title: "Ship Hydrostatics and Stability (2nd Edition)"
+    author: "A. B. Biran & R. López Pulido"
+    year: ~2014
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-2ndEd.pdf"
+    source_url: "https://rexresearch1.com/BoatShipBuildingLibrary/ShipHydrostaticsStability.pdf"
+    size_mb: 11
+    topics: [hydrostatics, stability, GZ-curve, trim, parametric-rolling]
+    notes: "Updated 2nd edition — includes new IMO stability regulations and parametric resonance."
+
+  - title: "Principles of Naval Architecture Series — Ship Resistance and Flow"
+    author: "SNAME"
+    year: ~2010
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Principles-Naval-Architecture-Ship-Resistance-Flow.pdf"
+    source_url: "https://rexresearch1.com/BoatShipBuildingLibrary/PrinciplesNavalArchitShipResistanceFlow.pdf"
+    size_mb: 9.8
+    topics: [resistance, hull-form, CFD, viscous-flow]
+    notes: "Part of the newer SNAME Principles series covering ship resistance and computational methods."
+
+# ─────────────────────────────────────────────
+# SHIP PLANS (maritime.org)
+# ─────────────────────────────────────────────
+ship_plans:
+  source: "https://maritime.org/doc/plans/index.php"
+  local_dir: "/mnt/ace/docs/_standards/SNAME/ship-plans/"
+  count: 107
+  description: >
+    Historical US Navy and Allied vessel general arrangement / inboard profile drawings
+    scanned by San Francisco Maritime National Park Association. Covers 1863–2008.
+    Includes battleships, carriers, destroyers, submarines, coast guard, and research vessels.
+  categories:
+    - US Navy combatants (BB, CV, DD, SS, CG, etc.)
+    - US Coast Guard (WAGL, WLB, WPC, etc.)
+    - Allied vessels (RN, RCN)
+    - Commercial / research (Liberty cargo, NS Savannah, NOAA vessels)
+
+# ─────────────────────────────────────────────
+# REFERENCE PORTALS (not downloadable — access online)
+# ─────────────────────────────────────────────
+online_portals:
+
+  - title: "USNA Nimitz Library — Naval Architecture & Ocean Engineering Guide"
+    url: "https://libguides.usna.edu/c.php?g=410506&p=8554464"
+    notes: "Links to ship registers, LOC resources, Lloyd's Register Foundation, National Archives plans."
+
+  - title: "USNA Nimitz Library — Naval Architecture Tools & Databases"
+    url: "https://libguides.usna.edu/c.php?g=410506&p=2795318"
+    notes: "Knovel access, ABS Rules, US Army Corps Coastal Engineering Manual, key textbook list."
+
+  - title: "National Archives — Ship Plans"
+    url: "https://www.archives.gov/research/cartographic/ship-plans"
+    notes: "Naval engineering drawings 1790s–Korean War. Free browse, prints on request."
+
+  - title: "Lloyd's Register Foundation Heritage & Education Centre"
+    url: "https://hec.lrfoundation.org.uk/archive-library/digital-resources"
+    notes: "Historic Lloyd's Register editions, ship plans, survey reports."
+
+  - title: "Internet Archive — Naval Architecture Collection"
+    url: "https://archive.org/search?query=naval+architecture&mediatype=texts"
+    notes: >
+      Large collection including Comstock 1942, PNA Vol II (freely downloadable).
+      Gillmer, Baxter, Lewis, PNA Vol III are borrow-only (restricted access).
+
+# ─────────────────────────────────────────────
+# STILL TO RETRIEVE (manual / login required)
+# ─────────────────────────────────────────────
+pending_manual:
+
+  - title: "ABS — Introduction to ABS Rules and Guides"
+    url: "https://ww2.eagle.org/en/rules-and-resources/rules-and-guides.html"
+    notes: "WAF blocks wget. Download manually via browser from ABS Rule Manager."
+
+  - title: "Principles of Naval Architecture, Volume III — Motions in Waves and Controllability"
+    url: "https://archive.org/details/principlesofnava0000unse"
+    notes: "Borrow-only on archive.org. Requires account and active loan."
+
+  - title: "Introduction to Naval Architecture — Gillmer & Johnson"
+    url: "https://archive.org/details/introductiontona0000gill"
+    notes: "Borrow-only on archive.org."

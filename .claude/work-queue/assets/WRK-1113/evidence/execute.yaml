@@ -1,0 +1,46 @@
+wrk_id: WRK-1113
+stage: 10
+status: complete
+completed_at: "2026-03-12T21:00:00Z"
+
+phases_complete:
+  phase_0:
+    description: "Foundation scripts — mark-exhausted.py, generate-coverage-report.py, ledger schema extension"
+    tests: 16
+    result: PASS
+  phase_1:
+    description: "10/10/10 selection matrix — all 24 candidates approved by user"
+    gate: "user-approved (all 24)"
+  phase_2:
+    description: "CP document absorption — DNV-RP-B401 module + 6 doc-extracts"
+    new_module: "digitalmodel.cathodic_protection.dnv_rp_b401"
+    functions: 9
+    tests: 33
+    result: PASS
+  phase_3:
+    description: "drilling_riser/ module — stackup, operability, tool_passage, damping"
+    functions: 13
+    tests: 49
+    result: PASS
+  phase_4:
+    description: "Exhaustion marking — DNV-RP-B401, API-RP-1632, ISO15589-2"
+    entries_marked: 3
+  phase_5:
+    description: "Coverage report — domain-coverage.md, 425 entries, 3 exhausted"
+
+test_totals:
+  cp_and_drilling_riser: 118
+  overall_result: PASS
+
+legal_scan: PASS
+
+commits:
+  digitalmodel:
+    - "d0b021808 feat(WRK-1113): drilling_riser/ module"
+    - "5b7c427f3 feat(cp): add DNV-RP-B401 module — 9 functions, 33 doc-verified tests"
+  workspace_hub:
+    - "3458e9fe chore(WRK-1113): capture 8 child WRKs"
+    - "9d86ef76 feat(WRK-1113): absorb CP documents — 6 doc-extracts, DNV-RP-B401 module"
+    - "877916ef chore(WRK-1113): Phase 4-5 — exhaustion marking + coverage report"
+
+branch: feature/WRK-1113-doc-corpus-extraction

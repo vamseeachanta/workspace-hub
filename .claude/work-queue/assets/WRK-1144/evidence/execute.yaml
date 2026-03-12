@@ -1,0 +1,25 @@
+wrk_id: WRK-1144
+stage: execute
+executed_at: "2026-03-12T10:00:00Z"
+provider: claude
+tdd_result: 29_pass_0_fail
+artifacts:
+  - scripts/work-queue/audit_micro_skill_scripts.py
+  - scripts/work-queue/tests/test_audit_micro_skill_scripts.py
+  - .claude/work-queue/assets/WRK-1144/micro-skill-script-candidates.yaml
+integrated_repo_tests:
+  - name: unit-classify
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_audit_micro_skill_scripts.py::TestClassify -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_audit_micro_skill_scripts.py
+  - name: unit-priority-score
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_audit_micro_skill_scripts.py::TestPriorityScore -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_audit_micro_skill_scripts.py
+  - name: integration-real-stage-files
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_audit_micro_skill_scripts.py::TestIntegration -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1144/micro-skill-script-candidates.yaml

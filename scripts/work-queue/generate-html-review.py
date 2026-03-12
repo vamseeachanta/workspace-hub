@@ -1536,6 +1536,8 @@ def render_lifecycle_stage_body(
         parts = ""
         if data:
             dom = data.get("domain", {})
+            if isinstance(dom, str):
+                dom = {"problem": dom}
             pairs = [
                 ("completion_status", str(data.get("completion_status", ""))),
                 ("domain.problem", str(dom.get("problem", ""))[:120] if dom else ""),
@@ -2155,6 +2157,8 @@ def _build_ri_callout(assets_dir: str) -> str:
     core_used = skills_block.get("core_used") or []
     core_count = len(core_used) if isinstance(core_used, list) else 0
     domain = ri.get("domain") or {}
+    if isinstance(domain, str):
+        domain = {"problem": domain}
     problem_text = _esc(str(domain.get("problem", "")).strip())[:180]
     qs = ri.get("quality_signals") or {}
     confidence = str(qs.get("confidence", "")).strip()
