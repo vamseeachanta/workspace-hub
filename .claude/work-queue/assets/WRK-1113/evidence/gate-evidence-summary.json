@@ -117,10 +117,10 @@
     },
     {
       "name": "Archive readiness gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1113/evidence/archive-tooling.yaml"
+      "details": "archive-tooling.yaml: all gates pass (archive_readiness=pass)"
     }
   ]
 }

@@ -297,10 +297,10 @@
     "category": "harness"
   },
   "WRK-1113": {
-    "status": "done",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T21:50:20.529597+00:00",
-    "updated_by": "close-item.sh",
+    "last_updated": "2026-03-12T21:53:04.253152+00:00",
+    "updated_by": "archive-item.sh",
     "title": "feat(doc-intel): squeeze max value from document corpus \u2014 parametric wrappers, index consolidation, exhaustion marking",
     "priority": "high",
     "category": "document-intelligence"

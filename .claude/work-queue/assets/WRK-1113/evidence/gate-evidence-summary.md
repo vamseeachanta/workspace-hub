@@ -18,4 +18,4 @@
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Archive readiness gate | FAIL | archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1113/evidence/archive-tooling.yaml |
+| Archive readiness gate | PASS | archive-tooling.yaml: all gates pass (archive_readiness=pass) |
