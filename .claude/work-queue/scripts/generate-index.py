@@ -528,6 +528,90 @@ def render_metrics(items: list[dict]) -> str:
     return METRICS_TEMPLATE.format(**values)
 
 
+def _find_child_status(child_id: str, queue_root: Path) -> str | None:
+    """Search all queue dirs to determine the status of a child WRK item.
+
+    Searches pending/, working/, blocked/, done/, archived/, and archive/YYYY-MM/
+    subdirectories. Returns the status string (normalised to lowercase) or None
+    if the child cannot be found.
+    """
+    # Explicit status dirs
+    for status_name in ("pending", "working", "blocked", "done", "archived"):
+        candidate = queue_root / status_name / f"{child_id}.md"
+        if candidate.exists():
+            return status_name
+
+    # archive/ flat + subdirs
+    archive_dir = queue_root / "archive"
+    if archive_dir.is_dir():
+        candidate = archive_dir / f"{child_id}.md"
+        if candidate.exists():
+            return "archived"
+        for sub in archive_dir.iterdir():
+            if sub.is_dir():
+                candidate = sub / f"{child_id}.md"
+                if candidate.exists():
+                    return "archived"
+
+    return None
+
+
+def _compute_feature_completion(item: dict, queue_root: Path) -> str:
+    """Return a human-readable completion string for a feature WRK item.
+
+    e.g. '1/3 archived (33%)' or '0/0' when no children are defined.
+    """
+    children = item.get("children") or []
+    if not children:
+        return "0/0"
+
+    archived_count = sum(
+        1 for cid in children
+        if _find_child_status(str(cid).strip(), queue_root) == "archived"
+    )
+    total = len(children)
+    pct = _safe_pct(archived_count, total)
+    return f"{archived_count}/{total} archived ({pct}%)"
+
+
+def render_by_feature(items: list[dict], queue_root: Path) -> list[str]:
+    """Build the ## By Feature section lines.
+
+    Only includes feature items with an active status (coordinating, pending,
+    working, or blocked). Archived, done, and cancelled features are excluded.
+    """
+    active_statuses = {"coordinating", "pending", "working", "blocked"}
+    feature_items = [
+        it for it in items
+        if str(it.get("type", "")).lower() == "feature"
+        and str(it.get("status", "")).lower() in active_statuses
+    ]
+    feature_items = sorted(feature_items, key=sort_key)
+
+    lines: list[str] = []
+    w = lines.append
+
+    w("## By Feature")
+    w("")
+    if not feature_items:
+        w("No active feature WRKs found.")
+        w("")
+        return lines
+
+    w("| ID | Title | Status | Children |")
+    w("|----|-------|--------|----------|")
+    for it in feature_items:
+        wrk_id = it.get("id", "?")
+        file_path = it.get("_file", "")
+        title = it["title"]
+        status = it["status"]
+        completion = _compute_feature_completion(it, queue_root)
+        id_cell = f"[{wrk_id}]({file_path})" if file_path else wrk_id
+        w(f"| {id_cell} | {title} | {status} | {completion} |")
+    w("")
+    return lines
+
+
 def generate_index(items: list[dict]) -> str:
     """Build the full INDEX.md content."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -695,6 +779,9 @@ def generate_index(items: list[dict]) -> str:
                 badge = " [feature]" if it.get("type") == "feature" else ""
                 w(f"| {it.get('id', '?')} | {str(it.get('priority', '-')).upper()} | {it['title']}{badge} | {it['status']} |")
             w("")
+
+    # ── By Feature ───────────────────────────────────────────
+    lines.extend(render_by_feature(items, QUEUE_ROOT))
 
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")

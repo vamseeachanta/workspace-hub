@@ -79,7 +79,7 @@ stages:
   evidence: n/a
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: n/a
-generated_at: '2026-03-12T01:13:12Z'
+generated_at: '2026-03-12T01:14:19Z'
 reviewed_by: orchestrator
