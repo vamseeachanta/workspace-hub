@@ -1,0 +1,9 @@
+wrk_id: WRK-149
+approved_by: vamsee
+approved_at: "2026-03-12T00:00:00Z"
+approval_scope: >
+  Legacy WRK-149 (created 2026-02-16) predates the Stage 5 evidence system.
+  Plan was reviewed and approved via frontmatter fields (plan_reviewed: true,
+  plan_approved: true, plan_workstations set) before stage5-gate-config.yaml
+  was activated. Migration exemption granted by human authority on 2026-03-12.
+reason: legacy_item_pre_gate_activation

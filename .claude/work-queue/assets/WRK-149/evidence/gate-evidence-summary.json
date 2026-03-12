@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
+      "details": "execute.yaml: integrated_repo_tests must be a list"
     },
     {
       "name": "Legal gate",
@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -131,10 +131,10 @@
     },
     {
       "name": "Midnight UTC sentinel gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no midnight UTC sentinel found"
+      "details": "midnight UTC sentinel detected in user-review-close.yaml.reviewed_at: 2026-03-12T00:00:00Z"
     },
     {
       "name": "Browser open elapsed time gate",
@@ -183,7 +183,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-149.md"
+      "details": "stage-evidence.yaml: stage[2] evidence path not found: .claude/work-queue/assets/WRK-149/evidence/resource-intelligence.yaml"
     },
     {
       "name": "Done/pending contradiction gate",

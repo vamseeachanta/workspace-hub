@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T17:54:49Z by generate-index.py -->
+<!-- Generated: 2026-03-12T17:58:11Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T17:54:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T17:58:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 223 |
-| working | 6 |
+| pending | 222 |
+| working | 7 |
 | blocked | 10 |
 | archived | 341 |
 
@@ -81,7 +81,7 @@
 | Ensemble planning complete | 0 |
 | Plans exist | 245 / 580 |
 | Plans cross-reviewed | 169 |
-| Plans approved | 190 |
+| Plans approved | 192 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 63 / 223 | 28% |
+| Pending items with plans | 63 / 222 | 28% |
 | Plans cross-reviewed | 10 | 13% |
-| Plans user-approved | 9 | 12% |
+| Plans user-approved | 10 | 13% |
 
 ### Aging
 
@@ -119,7 +119,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 88 | 4 | 8 |
-| Medium   | 101  | 2  | 1  |
+| Medium   | 100  | 3  | 1  |
 | Low      | 34  | 0  | 1  |
 
 ## By Category
@@ -1002,7 +1002,7 @@
 | WRK-638 | Memory quality eval harness | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1163,7 +1163,7 @@
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1148 |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1149 |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1394,7 +1394,6 @@
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | medium | complex | digitalmodel | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1418,6 +1417,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | medium | medium | digitalmodel | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2416,7 +2416,7 @@
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3060,7 +3060,7 @@
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | digitalmodel | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | workspace-hub | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3542,7 +3542,7 @@
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | digitalmodel | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | workspace-hub | - |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -3953,7 +3953,7 @@
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | digitalmodel |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | digitalmodel |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | digitalmodel |
-| WRK-1151 | Collect and download naval architecture resources to document-intelligence | pending | medium | medium | workspace-hub |
+| WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |

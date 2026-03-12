@@ -1,5 +1,5 @@
 wrk_id: WRK-1141
-generated_at: '2026-03-12T17:53:21Z'
+generated_at: '2026-03-12T17:54:47Z'
 reviewed_by: orchestrator
 stages:
 - order: 1
@@ -156,7 +156,7 @@ stages:
   evidence: pending
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'

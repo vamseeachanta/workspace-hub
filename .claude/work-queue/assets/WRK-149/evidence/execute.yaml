@@ -1,0 +1,18 @@
+wrk_id: WRK-149
+stage: 10
+status: complete
+executed_at: "2026-02-24T00:00:00Z"
+commits:
+  - hash: d42399cbb
+    message: "test(asset_integrity): WRK-149 cover yml_utilities fallback error branches"
+  - hash: 3423b4540
+    message: "test(asset_integrity): WRK-149 drive yml_utilities to full branch coverage"
+  - hash: 8d0246fbf
+    message: "test(coverage): add priority module tests — WRK-149 Phase 2"
+  - hash: c018cd17e
+    message: "test(coverage): WRK-149 add hull_library, hydrodynamics, and structural unit tests"
+summary: >
+  204 new unit tests added across hull_library, hydrodynamics, and structural modules.
+  351 total tests passing in tests/unit/. Priority module coverage all above 50%.
+  catalog.py 96.97%, lookup.py 75.91%, beam_element 100%, models.py 98.95%,
+  profile_schema 94.81%, von_mises 90.76%, elastic_buckling 84.73%.

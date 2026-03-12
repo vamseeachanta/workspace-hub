@@ -1,0 +1,31 @@
+wrk_id: WRK-1151
+stage: 2
+completion_status: complete
+domain: naval-architecture
+complexity_assessment: medium
+assessed_at: "2026-03-12"
+
+skills:
+  core_used:
+    - web-search
+    - document-download
+    - document-index
+  supporting:
+    - knowledge-base
+    - work-queue
+
+infrastructure:
+  download_target: /mnt/ace/docs/_standards/SNAME/
+  index_system: /mnt/local-analysis/workspace-hub/data/document-index/index.jsonl
+  catalogue_target: knowledge/seeds/naval-architecture-resources.yaml
+  existing_sname_files:
+    - Panel_Member_copy_of_SNAME_5-5_and_5-5A_Rev3.pdf
+
+constraints:
+  - Only freely-available / open-access content (no paywalled or DRM-protected PDFs)
+  - Files must be indexed in document-index after download
+
+seed_urls_count: 7
+notes: >
+  Destination confirmed by user: /mnt/ace/docs/_standards/SNAME/.
+  Document-index ingestion is required so agent tooling can discover files.

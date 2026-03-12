@@ -2052,10 +2052,10 @@
     "category": "harness"
   },
   "WRK-660": {
-    "status": "pending",
+    "status": "working",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:05:12.413613+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-12T17:58:09.656163+00:00",
+    "updated_by": "claim-item.sh",
     "title": "analysis(assetutilities): test coverage gap audit \u2014 5 untested modules via Gemini",
     "priority": "high",
     "category": "maintenance"

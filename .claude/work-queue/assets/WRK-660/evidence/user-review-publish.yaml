@@ -1,0 +1,20 @@
+wrk_id: WRK-660
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a2e9e19b
+    documents:
+      - .claude/work-queue/assets/WRK-660/WRK-660-lifecycle.html
+    published_at: "2026-03-12T14:21:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 8730880d
+    documents:
+      - .claude/work-queue/assets/WRK-660/WRK-660-lifecycle.html
+    published_at: "2026-03-12T14:45:00Z"
+    reviewer: vamsee

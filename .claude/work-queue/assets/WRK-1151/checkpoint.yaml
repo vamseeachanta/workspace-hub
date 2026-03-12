@@ -1,0 +1,12 @@
+wrk_id: WRK-1151
+current_stage: 3
+stage_name: Triage
+completed_stage: 2
+next_action: Execute stage 3: Triage
+context_summary: Stage 2 complete. Next: stage 3 (Triage).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1151/checkpoint.yaml
+  - assets/WRK-1151/evidence/resource-intelligence.yaml
+checkpointed_at: 2026-03-12T17:54:42Z
+human_gate: false
+chained_stages: [[2, 3, 4]]

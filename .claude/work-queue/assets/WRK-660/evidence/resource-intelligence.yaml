@@ -1,5 +1,7 @@
 wrk_id: WRK-660
-generated_at: "2026-03-12T00:00:00Z"
+stage: 2
+completed_at: "2026-03-12T14:15:00Z"
+completion_status: continue_to_planning
 generated_by: claude
 
 scope:
@@ -24,6 +26,12 @@ key_resources:
     note: central registry; tested indirectly via other modules
   - path: tests/modules/
     note: 82 existing tests — pattern reference for imports and fixture style
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
 
 constraints:
   - Gemini large-context window ideal for ingesting all 31 source files at once
