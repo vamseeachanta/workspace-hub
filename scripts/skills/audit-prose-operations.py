@@ -49,8 +49,8 @@ KNOWN_SCRIPTS: dict[str, str] = {
 
 
 def strip_code_fences(text: str) -> str:
-    """Remove content inside ```...``` blocks to avoid false positives."""
-    return re.sub(r'```[^\n]*\n.*?```', '', text, flags=re.DOTALL)
+    """Replace content inside ```...``` blocks with blank lines to preserve line numbers."""
+    return re.sub(r'```[^\n]*\n.*?```', lambda m: '\n' * m.group(0).count('\n'), text, flags=re.DOTALL)
 
 
 def classify_operation(line: str, category: str) -> str:

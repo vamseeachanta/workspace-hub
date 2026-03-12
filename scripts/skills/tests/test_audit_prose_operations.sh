@@ -79,6 +79,15 @@ run_test "empty_file_no_crash" \
     "" \
     "ERROR|error|traceback" "no"
 
+run_test "line_numbers_preserved_after_fence" \
+    'Line 1 text.
+```bash
+line 2 inside fence
+line 3 inside fence
+```
+count the files here on line 7.' \
+    "count_ops" "yes"
+
 # Test output report generation
 OUT_FILE="${TMPDIR_TEST}/report.md"
 echo "Count the repos and tally results." > "${TMPDIR_TEST}/probe.md"
