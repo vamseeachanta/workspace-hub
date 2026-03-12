@@ -1,21 +1,22 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T21:26:08Z by generate-index.py -->
+<!-- Generated: 2026-03-12T01:27:05Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T21:26:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T01:27:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 570
+**Total items:** 572
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 226 |
+| pending | 227 |
 | working | 5 |
 | blocked | 10 |
+| done | 1 |
 | archived | 328 |
 
 ### By Priority
@@ -23,14 +24,14 @@
 | Priority | Count |
 |----------|-------|
 | high | 258 |
-| medium | 262 |
+| medium | 264 |
 | low | 49 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 125 |
+| simple | 126 |
 | medium | 273 |
 | complex | 103 |
 
@@ -71,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 227 |
+| workspace-hub | 229 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 238 / 570 |
-| Plans cross-reviewed | 158 |
-| Plans approved | 182 |
+| Plans exist | 238 / 572 |
+| Plans cross-reviewed | 159 |
+| Plans approved | 183 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 570 |
+| Total captured | 572 |
 | Total archived | 328 |
-| Completion rate | 328/570 (58%) |
+| Completion rate | 328/572 (57%) |
 | Monthly rate (current month) | 94 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 63 / 226 | 28% |
+| Pending items with plans | 63 / 227 | 28% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 12 | 16% |
 
@@ -119,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 96 | 3 | 8 |
-| Medium   | 98  | 2  | 1  |
+| Medium   | 99  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
@@ -1185,13 +1186,21 @@
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | done | medium | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1128 |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05, ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
+
+### Done (unarchived)
+
+| ID | Title | Priority | Complexity | Repos | Module |
+|-----|-------|----------|------------|-------|--------|
+| WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | medium | small | workspace-hub | - |
 
 ### Pending
 
@@ -1423,6 +1432,7 @@
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -2413,11 +2423,13 @@
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending | high | medium | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | - |
+| WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | done | medium | small | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | - |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -3053,10 +3065,12 @@
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | complex | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | - | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | simple | workspace-hub | - |
+| WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | done | small | workspace-hub | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | small | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -3243,6 +3257,7 @@
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3632,7 +3647,7 @@
 
 ## By Computer
 
-### ace-linux-1 (176 active / 288 total)
+### ace-linux-1 (177 active / 289 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3920,6 +3935,7 @@
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | pending | medium | medium | - |
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | simple | workspace-hub |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | workspace-hub |
+| WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | done | medium | small | workspace-hub |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
@@ -3944,7 +3960,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | - |
 
-### acma-ansys05 (14 active / 15 total)
+### acma-ansys05 (15 active / 16 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3963,6 +3979,7 @@
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | archived | medium | simple | workspace-hub |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | workspace-hub |
+| WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | workspace-hub |
 
 ### (unassigned) (22 active / 230 total)
 
