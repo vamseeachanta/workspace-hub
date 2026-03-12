@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T12:39:47Z by generate-index.py -->
+<!-- Generated: 2026-03-12T12:47:02Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T12:39:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T12:47:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 224 |
-| working | 4 |
+| pending | 223 |
+| working | 5 |
 | blocked | 10 |
 | archived | 337 |
 
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 244 / 575 |
-| Plans cross-reviewed | 164 |
-| Plans approved | 186 |
+| Plans cross-reviewed | 166 |
+| Plans approved | 188 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 67 / 224 | 30% |
-| Plans cross-reviewed | 9 | 12% |
-| Plans user-approved | 9 | 12% |
+| Pending items with plans | 66 / 223 | 30% |
+| Plans cross-reviewed | 11 | 14% |
+| Plans user-approved | 11 | 14% |
 
 ### Aging
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 92 | 1 | 8 |
+| High     | 91 | 2 | 8 |
 | Medium   | 98  | 3  | 1  |
 | Low      | 34  | 0  | 1  |
 
@@ -249,7 +249,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-1142 | HIGH | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending |
+| WRK-1142 | HIGH | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working |
 | WRK-1143 | HIGH | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
@@ -1110,7 +1110,7 @@ No active feature WRKs found.
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1162,7 +1162,7 @@ No active feature WRKs found.
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1139 |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-1142 |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1394,7 +1394,6 @@ No active feature WRKs found.
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | medium | simple | workspace-hub | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | medium | medium | workspace-hub | - |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | high | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | high | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | medium | simple | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | medium | medium | workspace-hub | - |
@@ -1419,6 +1418,7 @@ No active feature WRKs found.
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | medium | simple | - | - |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | high | medium | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 
 ### Blocked
@@ -2405,7 +2405,7 @@ No active feature WRKs found.
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | - |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | - |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working | high | medium | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | - |
@@ -2785,7 +2785,7 @@ No active feature WRKs found.
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | archived | medium | workspace-hub | - |
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | simple | workspace-hub | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | simple | workspace-hub | - |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | medium | workspace-hub | - |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | medium | workspace-hub | - |
 
 ### Medium
@@ -3524,7 +3524,7 @@ No active feature WRKs found.
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | workspace-hub | - |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | workspace-hub | - |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working | high | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
@@ -3927,7 +3927,7 @@ No active feature WRKs found.
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | simple | workspace-hub |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | pending | medium | medium | workspace-hub |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | pending | medium | medium | workspace-hub |
-| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | pending | high | medium | workspace-hub |
+| WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | working | high | medium | workspace-hub |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | pending | high | medium | workspace-hub |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | pending | medium | simple | workspace-hub |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | medium | workspace-hub |

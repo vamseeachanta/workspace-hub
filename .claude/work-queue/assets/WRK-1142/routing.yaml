@@ -1,0 +1,22 @@
+wrk_id: WRK-1142
+routed_at: "2026-03-12T12:45:00Z"
+route: B
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/stages/stage-10-work-execution
+  - superpowers/test-driven-development
+stage_sequence_from_here:
+  - 10  # Work Execution
+  - 11  # Artifact Generation
+  - 12  # TDD/Eval
+  - 13  # Agent Cross-Review
+  - 14  # Verify Gate Evidence
+  - 15  # Future Work Synthesis
+  - 16  # Resource Intelligence Update
+  - 17  # User Review Implementation (HARD GATE)
+  - 18  # Reclaim
+  - 19  # Close
+  - 20  # Archive
+delivery_order: P1=start_stage.py patch, P2=stage micro-skills flush, P3=SKILL.md slim, P4=tests

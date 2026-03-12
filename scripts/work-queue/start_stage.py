@@ -25,6 +25,29 @@ except ImportError:
     _HAS_YAML = False
 
 
+# ── Stage micro-skill loader ─────────────────────────────────────────────────
+
+def _load_stage_micro_skill(stage: int, repo_root: str) -> str:
+    """Load per-stage micro-skill file content.
+
+    Returns file content on success, a warning string if not found, raises
+    RuntimeError if multiple files match (prevents nondeterministic loading).
+    """
+    import glob as _glob
+    pattern = os.path.join(
+        repo_root, ".claude", "skills", "workspace-hub", "stages",
+        f"stage-{stage:02d}-*.md",
+    )
+    matches = sorted(_glob.glob(pattern))
+    if len(matches) == 0:
+        return f"[stage micro-skill not found: stage-{stage:02d}-*.md]"
+    if len(matches) > 1:
+        raise RuntimeError(
+            f"Multiple stage micro-skill files matched for stage {stage}: {matches}"
+        )
+    return Path(matches[0]).read_text(encoding="utf-8")
+
+
 # ── YAML loader (no-dep fallback) ────────────────────────────────────────────
 
 def _load_yaml(path: str) -> dict:
@@ -102,6 +125,7 @@ def build_prompt(
     output_dir: str,
     assets_root: Optional[str] = None,
     extra_contracts: Optional[list[dict]] = None,
+    repo_root: Optional[str] = None,
 ) -> str:
     """
     Build and write stage-N-prompt.md. Returns the output file path.
@@ -109,6 +133,8 @@ def build_prompt(
     """
     if assets_root is None:
         assets_root = output_dir
+    if repo_root is None:
+        repo_root = os.environ.get("WORKSPACE_HUB", str(Path(__file__).parent.parent.parent))
 
     lines = [
         f"# Stage {stage} Prompt Package — {wrk_id}",
@@ -121,6 +147,10 @@ def build_prompt(
     ]
     for artifact in contract.get("exit_artifacts", []):
         lines.append(f"  - `{artifact}`")
+
+    # Inject stage micro-skill so dispatched agents have rules in scope
+    micro_skill = _load_stage_micro_skill(stage, repo_root)
+    lines += ["", "## Stage Micro-Skill (rules for this stage)", "```", micro_skill, "```"]
 
     lines += ["", "## Entry reads"]
     for entry in contract.get("entry_reads", []):
@@ -231,19 +261,27 @@ def route_stage(
     stage: int,
     output_dir: str,
     assets_root: Optional[str] = None,
+    repo_root: Optional[str] = None,
 ) -> None:
     """
     Route stage based on invocation type. Prints to stdout.
     """
     from checkpoint_writer import print_stage_banner  # same package dir
+    if repo_root is None:
+        repo_root = os.environ.get("WORKSPACE_HUB", str(Path(__file__).parent.parent.parent))
+
     stage_name = contract.get("name", f"Stage {stage}")
     print_stage_banner(stage, stage_name, "START")
+
+    # Print stage micro-skill for human operator (unconditional — all invocation types)
+    micro_skill = _load_stage_micro_skill(stage, repo_root)
+    print(f"\n--- Stage {stage} Micro-Skill ---\n{micro_skill}\n---\n")
 
     invocation = contract.get("invocation", "task_agent")
 
     if invocation == "task_agent":
         _print_checkpoint_resume(wrk_id, stage, output_dir)
-        out = build_prompt(contract, wrk_id, stage, output_dir, assets_root)
+        out = build_prompt(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
         print(f"Prompt package ready: {out}")
         print("Run: scripts/agents/work.sh with the prompt package above.")
 
@@ -260,7 +298,7 @@ def route_stage(
     elif invocation == "chained_agent":
         _print_checkpoint_resume(wrk_id, stage, output_dir)
         chained = contract.get("chained_stages", [stage])
-        out = build_prompt(contract, wrk_id, stage, output_dir, assets_root)
+        out = build_prompt(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
         print(f"Chained prompt package ready: {out}")
         print(f"Covers stages: {chained}")
         print("Single Task agent handles all chained stages; exits after all complete.")
@@ -426,7 +464,7 @@ def _main() -> None:
             f"status: in_progress\n"
         )
 
-    route_stage(contract, wrk_id, stage, output_dir, assets_root)
+    route_stage(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
 
     # Auto-regenerate lifecycle HTML so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)

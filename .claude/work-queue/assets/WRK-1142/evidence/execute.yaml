@@ -1,0 +1,36 @@
+wrk_id: WRK-1142
+stage: 10
+completed_at: "2026-03-12T00:00:00Z"
+execution_summary: >
+  Implemented stage micro-skill auto-loading in start_stage.py via _load_stage_micro_skill().
+  Micro-skill injected into both route_stage() stdout (human operators) and build_prompt()
+  prompt package file (dispatched agents). stage-04 and stage-10 micro-skills updated with
+  scripts-over-LLM audit as mandatory checklist item 0. migrate-stage-rules.py created with
+  explicit SECTION_MAP. work-queue-workflow/SKILL.md slimmed from 312 to 120 lines.
+integrated_repo_tests:
+  - id: T50
+    description: "start_stage.py stdout includes 'scripts-over-LLM' from stage-04 micro-skill"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+  - id: T51
+    description: "stage-10 prompt package includes 'TDD MANDATORY' or 'scripts-over-LLM' from micro-skill"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+  - id: T52
+    description: "valid contract + absent micro-skill → warning string, no crash"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+  - id: T53
+    description: "two stage-04-*.md files → RuntimeError"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+  - id: T54
+    description: "all 20 micro-skills have ≥5 non-blank lines"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+  - id: T55
+    description: "work-queue-workflow/SKILL.md ≤150 lines (actual: 120)"
+    result: PASS
+    file: scripts/work-queue/tests/test_stage_micro_skills.py
+test_run_command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_micro_skills.py -v"
+all_tests_passing: true

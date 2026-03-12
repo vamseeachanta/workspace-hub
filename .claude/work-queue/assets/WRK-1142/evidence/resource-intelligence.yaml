@@ -1,6 +1,7 @@
 wrk_id: WRK-1142
 stage: resource_intelligence
-completion_status: complete
+completion_status: continue_to_planning
+top_p1_gaps: []
 generated_at: "2026-03-12T00:00:00Z"
 domain:
   area: harness/work-queue

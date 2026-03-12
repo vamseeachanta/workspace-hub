@@ -3,9 +3,23 @@ stage: cross_review
 reviewed_at: "2026-03-12T12:30:00Z"
 verdict: REVISE_INCORPORATED
 reviewers:
-  - claude
-  - codex
-  - gemini
+  - provider: claude
+    verdict: APPROVE
+    artifact: evidence/cross-review-claude.md
+    p1_count: 0
+    p2_count: 2
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    artifact: evidence/cross-review-codex.md
+    p1_count: 0
+    high_count: 2
+    medium_count: 2
+    note: "REQUEST_CHANGES — all findings incorporated in revised plan"
+  - provider: gemini
+    verdict: APPROVE
+    artifact: evidence/cross-review-gemini.md
+    p1_count: 0
+    p3_count: 2
 p1_findings: []
 p2_findings:
   - source: claude

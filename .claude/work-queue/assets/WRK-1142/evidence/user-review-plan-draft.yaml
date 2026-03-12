@@ -3,6 +3,7 @@ stage: plan_draft
 review_checkpoint: combined_plan
 review_cycle_id: "stage5-20260312"
 approval_decision: approve_as_is
+decision: approved
 approved_draft_commit: "316b2ebd398ecd24119553504378e0aec31b054d"
 reviewed_at: "2026-03-12T12:25:00Z"
 reviewed_by: vamsee
