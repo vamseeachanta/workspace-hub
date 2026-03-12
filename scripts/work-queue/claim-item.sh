@@ -46,6 +46,14 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 1
 fi
 
+# Guard: reject claim if item is already in archive (stale pending/ ghost).
+WRK_NUM=$(echo "$WRK_ID" | grep -oE '[0-9]+')
+if find "${QUEUE_DIR}/archive" -name "WRK-${WRK_NUM}.md" 2>/dev/null | grep -qc .; then
+  echo "✖ ${WRK_ID} is already archived — pending/ copy is a ghost. Remove it with:" >&2
+  echo "  rm ${FILE_PATH}" >&2
+  exit 1
+fi
+
 provider="$(awk -F': ' '/^provider:/ { gsub(/"/, "", $2); print $2; exit }' "$FILE_PATH")"
 
 CLAIM_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"

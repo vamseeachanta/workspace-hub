@@ -9,3 +9,6 @@ bash "$REPO_ROOT/scripts/setup/install-all-hooks.sh" --quiet
 if git diff --name-only ORIG_HEAD HEAD 2>/dev/null | grep -q '/src/'; then
     uv run --no-project python "$REPO_ROOT/scripts/search/build-symbol-index.py" --quiet
 fi
+
+# Remove ghost pending items restored by the merge (WRK-1138)
+bash "$REPO_ROOT/scripts/work-queue/scan-ghost-pending.sh" --fix --quiet 2>/dev/null || true

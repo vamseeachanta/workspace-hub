@@ -10,4 +10,4 @@ context_summary: >
   Blocked on acma-ansys05 check (no SSH from hub — requires manual Git Bash session on Windows machine).
   Do not close until acma-ansys05 checkbox is filled in WRK-1024.md.
 blocking_reason: acma-ansys05 verification pending (manual access required)
-updated_at: "2026-03-10T00:00:00Z"
+updated_at: "2026-03-12T00:00:00Z"

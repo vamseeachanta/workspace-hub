@@ -172,6 +172,14 @@ process_file() {
     UNCLAIMED_ACTIVE+=("$row"); return
   fi
 
+  # Guard: skip pending items already in archive (ghost copies).
+  if [[ "$loc" == "pending" ]]; then
+    local _num; _num=$(echo "$id" | grep -oE '[0-9]+')
+    if [[ -n "$_num" ]] && find "$QUEUE_DIR/archive" -name "WRK-${_num}.md" 2>/dev/null | grep -qc .; then
+      return
+    fi
+  fi
+
   # Skip periodic-review items (standing + cadence) from ready-to-start buckets only.
   # Items in working/ or blocked/ always display regardless of standing+cadence.
   if [[ "$loc" == "pending" ]]; then

@@ -15,9 +15,9 @@ fi
 # Normalize ID format
 [[ "$ITEM_ID" =~ ^WRK- ]] || ITEM_ID="WRK-${ITEM_ID}"
 
-# Find the item file
+# Find the item file — prefer working > pending > blocked > done order
 ITEM_FILE=""
-for dir in "done" "working" "pending" "blocked"; do
+for dir in "working" "pending" "blocked" "done"; do
   if [[ -f "${QUEUE_DIR}/${dir}/${ITEM_ID}.md" ]]; then
     ITEM_FILE="${QUEUE_DIR}/${dir}/${ITEM_ID}.md"
     break
@@ -104,8 +104,14 @@ if [[ -f "$STAGE_UPDATER" ]]; then
   fi
 fi
 
-# Remove from source directory
-rm "$ITEM_FILE"
+# Remove from all source directories (prevents ghost copies in pending/blocked)
+for dir in "working" "pending" "blocked" "done"; do
+  stale="${QUEUE_DIR}/${dir}/${ITEM_ID}.md"
+  if [[ -f "$stale" ]]; then
+    rm "$stale"
+    [[ "$stale" != "$ITEM_FILE" ]] && echo "✔ Removed ghost copy: ${dir}/${ITEM_ID}.md"
+  fi
+done
 
 # Regenerate index
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"

@@ -5,3 +5,6 @@
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 bash "$REPO_ROOT/scripts/setup/install-all-hooks.sh" --quiet
+
+# Remove ghost pending items restored by the rebase (WRK-1138)
+bash "$REPO_ROOT/scripts/work-queue/scan-ghost-pending.sh" --fix --quiet 2>/dev/null || true

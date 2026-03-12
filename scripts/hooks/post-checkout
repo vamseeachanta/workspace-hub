@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# post-checkout: remove ghost pending items restored by branch switch (WRK-1138)
+# Fires on: git checkout, git switch
+# $1=prev HEAD, $2=new HEAD, $3=1 (branch checkout) or 0 (file checkout)
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Only run on branch checkouts (not file-level checkouts)
+[[ "${3:-0}" == "1" ]] || exit 0
+
+bash "$REPO_ROOT/scripts/work-queue/scan-ghost-pending.sh" --fix --quiet 2>/dev/null || true
