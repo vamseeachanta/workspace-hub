@@ -401,6 +401,9 @@ data/modules/**/cache/
 data/document-index/index.jsonl
 data/document-index/summaries/
 data/document-index/enhancement-plan.yaml
+# Doc Intelligence Platform — manifests + indexes are local runtime (WRK-1113)
+# Public repo: client document content must never be committed
+data/doc-intelligence/
 
 # Async notification log — runtime JSONL (WRK-1076)
 logs/notifications/*.jsonl
