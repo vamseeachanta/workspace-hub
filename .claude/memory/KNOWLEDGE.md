@@ -10,7 +10,7 @@
 - Shell scripts: `#!/usr/bin/env bash`, LF line endings, test on all 3 platforms
 - Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
 - Symlinks: use `ln -s` on Linux/macOS, `cmd //c mklink /J` on Windows (no elevation)
-- MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var
+- MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var *stale: 2026-03-11*
 - Never commit symlinks to git cross-platform — use runtime linking + `.gitignore`
 
 ## Tool/Solver Quick Reference
@@ -49,7 +49,7 @@
 
 ## Skill Registration
 
-- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`)
+- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *stale: 2026-03-11*
 - `.claude/skills/` holds the detailed SKILL.md implementation
 - Command file references SKILL.md via `@.claude/skills/<path>/SKILL.md`
 - Command file needs YAML frontmatter: `name`, `description`, `category`
@@ -61,12 +61,12 @@
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
 - `.gitignore` blanket rules (e.g., `lib/`, `memory/`) override earlier whitelists — add negation AFTER the blanket rule
-- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/`
+- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-03-11*
 - Always verify new `lib/` directories: `git check-ignore <path>`
 
 ## Shell Script Portability
 
-- **mawk vs gawk**: `match($0, /regex/, arr)` with capture groups is **gawk-only** — fails on mawk (Ubuntu/Debian default)
+- **mawk vs gawk**: `match($0, /regex/, arr)` with capture groups is **gawk-only** — fails on mawk (Ubuntu/Debian default) *stale: 2026-03-11*
 - Portable JSON extraction in awk: use `index()` + `substr()` + `sub()` instead of regex capture groups
 - `sed -i` follows symlinks — replaces symlink with regular file. Check `git diff --diff-filter=T` after bulk sed
 - Shell scripts: `#!/usr/bin/env bash`, LF line endings (`dos2unix` if needed)
@@ -76,7 +76,7 @@
 - Submodules: commit INSIDE submodule first, then `git add <submodule>` at workspace-hub level
 - Push blocked by `workflow` scope: OAuth token needs `workflow` scope to push commits touching `.github/workflows/`
 - **Credential mismatch**: `gh auth setup-git` reconfigures git to use `gh` token (fixes stale cached credentials)
-- `pre-commit` hook requires virtualenv: bypass with `git -c core.hooksPath=/dev/null commit`
+- `pre-commit` hook requires virtualenv: bypass with `git -c core.hooksPath=/dev/null commit` *stale: 2026-03-11*
 
 ## Smart Agent Router (v2.0)
 

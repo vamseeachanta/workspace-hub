@@ -289,7 +289,7 @@ Last week: {s['last_week']}
 
 ### Diagnosis
 - **Top affected files**: {", ".join([f"{f} ({c})" for f, c in top_files])}
-- **Common error patterns**: {", ".join([f"\"{e[:50]}\" ({c})" for e, c in top_errors])}
+- **Common error patterns**: {", ".join([f"'{e[:50]}' ({c})" for e, c in top_errors])}
 
 ### Examples
 ```json
