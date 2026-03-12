@@ -4,7 +4,7 @@ events:
     remote: origin
     branch: main
     commit: "placeholder"
-    published_at: "2026-03-12T03:30:00Z"
+    published_at: "2026-03-12T03:50:00Z"
     reviewer: vamsee
     documents:
       - .claude/work-queue/assets/WRK-1131/WRK-1131-lifecycle.html
@@ -20,3 +20,14 @@ events:
     documents:
       - .claude/work-queue/assets/WRK-1131/WRK-1131-lifecycle.html
       - .claude/work-queue/assets/WRK-1131/evidence/plan-final-review.yaml
+
+  - stage: close_review
+    commit: "91cf0b29"
+    branch: chore/WRK-1111-at-file-references
+    remote: origin
+    published_at: "2026-03-12T10:45:00Z"
+    pushed_to_origin: true
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1131/WRK-1131-lifecycle.html
+      - .claude/work-queue/assets/WRK-1131/evidence/execute.yaml

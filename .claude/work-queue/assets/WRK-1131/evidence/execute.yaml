@@ -1,0 +1,36 @@
+wrk_id: WRK-1131
+stage: 10
+provider: claude
+started_at: "2026-03-12T09:00:00Z"
+completed_at: "2026-03-12T10:30:00Z"
+route: B
+changes_summary: >
+  9 implementation changes: stage YAMLs (3), validate-queue-state.sh,
+  close-item.sh, new-feature.sh, whats-next.sh, SKILL.md, feature-wrk-lifecycle.md.
+  Test harness: test-wrk1131-process-integration.sh (13 assertions, all pass).
+integrated_repo_tests:
+  - name: test-wrk1131-process-integration
+    scope: integrated
+    command: bash scripts/work-queue/tests/test-wrk1131-process-integration.sh
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1131-process-integration.sh
+  - name: validate-queue-state hermetic
+    scope: integrated
+    command: included in test-wrk1131-process-integration.sh
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1131-process-integration.sh
+  - name: feature-close-check hermetic
+    scope: integrated
+    command: included in test-wrk1131-process-integration.sh
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1131-process-integration.sh
+  - name: new-feature-sh-coordinating hermetic
+    scope: integrated
+    command: included in test-wrk1131-process-integration.sh
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-wrk1131-process-integration.sh
+  - name: whats-next-live-queue
+    scope: repo
+    command: bash scripts/work-queue/whats-next.sh --category engineering
+    result: pass
+    artifact_ref: scripts/work-queue/whats-next.sh

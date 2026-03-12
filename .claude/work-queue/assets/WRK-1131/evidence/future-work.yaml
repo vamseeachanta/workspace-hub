@@ -1,0 +1,22 @@
+wrk_id: WRK-1131
+captured_at: "2026-03-12T10:45:00Z"
+recommendations:
+  - id: FW-1
+    title: T7 live-queue test fragility
+    description: >
+      T7 uses live WRK-1127 to verify whats-next.sh bypasses category filter.
+      When WRK-1127 is archived, T7 will fail. Fix: inject a fixture into a
+      QUEUE_DIR env var that whats-next.sh respects, or patch whats-next.sh to
+      support QUEUE_DIR override.
+    disposition: spun-off-new
+    status: open
+    captured: true
+  - id: FW-2
+    title: feature-close-check.sh — partial archive detection
+    description: >
+      feature-close-check.sh counts archived children by scanning archive/YYYY-MM/ dirs.
+      If a child is in done/ (closed but not yet archived), it will block the feature close.
+      Consider accepting done/ as a valid terminal state for close-check.
+    disposition: spun-off-new
+    status: open
+    captured: true

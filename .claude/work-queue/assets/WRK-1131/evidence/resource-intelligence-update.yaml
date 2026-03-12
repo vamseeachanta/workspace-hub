@@ -1,0 +1,15 @@
+wrk_id: WRK-1131
+updated_at: "2026-03-12T10:45:00Z"
+additions:
+  - type: script
+    path: scripts/work-queue/feature-close-check.sh
+    description: Guards feature WRK close — exits 1 if any child not archived
+  - type: script
+    path: scripts/work-queue/new-feature.sh
+    description: Updated to set status:coordinating after scaffolding children
+  - type: doc
+    path: .claude/docs/feature-wrk-lifecycle.md
+    description: Full Feature WRK Lifecycle reference documentation
+  - type: test
+    path: scripts/work-queue/tests/test-wrk1131-process-integration.sh
+    description: Hermetic integration test harness for feature lifecycle changes (13 assertions)

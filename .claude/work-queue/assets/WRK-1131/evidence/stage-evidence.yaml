@@ -51,7 +51,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Multi-provider review completed.
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: .claude/work-queue/assets/WRK-1131/review-synthesis.md
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -67,7 +67,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Claim evidence and active WRK set.
-  evidence: .claude/work-queue/assets/WRK-1131/evidence/claim.yaml
+  evidence: .claude/work-queue/assets/WRK-1131/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
@@ -75,7 +75,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: .claude/work-queue/working/WRK-1131.md
 - order: 10
   stage: Work Execution
   status: done
@@ -91,7 +91,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1131/review.html
+  evidence: .claude/work-queue/assets/WRK-1131/review-synthesis.md
 - order: 12
   stage: TDD / Eval
   status: done
@@ -99,7 +99,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1131/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-1131/test-results.md
 - order: 13
   stage: Agent Cross-Review
   status: done
@@ -107,7 +107,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1131/cross-review-package.md
+  evidence: .claude/work-queue/assets/WRK-1131/evidence/cross-review-impl.yaml
 - order: 14
   stage: Verify Gate Evidence
   status: done

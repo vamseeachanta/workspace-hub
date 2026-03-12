@@ -1,5 +1,7 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+wrk_id: WRK-1131
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-12T11:00:00Z"
+confirmed_at: "2026-03-12T11:00:00Z"
+decision: approved
+notes: "Stage 17 approved. All ACs and P1 verified. 13/13 tests pass."
