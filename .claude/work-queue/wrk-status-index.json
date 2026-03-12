@@ -2187,10 +2187,10 @@
     "category": "engineering"
   },
   "WRK-5027": {
-    "status": "working",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:05:15.760306+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-12T15:51:33.380352+00:00",
+    "updated_by": "archive-item.sh",
     "title": "audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule",
     "priority": "medium",
     "category": "harness"

@@ -1,0 +1,30 @@
+wrk_id: WRK-1141
+stage: 2
+completed_at: "2026-03-12T00:00:00Z"
+completion_status: complete
+domain: git-hooks-bash-scripting
+complexity_assessment: medium
+skills:
+  core_used:
+    - bash-scripting
+    - git-hooks
+    - work-queue-frontmatter-parsing
+existing_infrastructure:
+  hooks_src: scripts/hooks/
+  hooks_dst: .git/hooks/
+  installer: scripts/setup/install-all-hooks.sh
+  existing_hooks:
+    - post-checkout (ghost-pending cleanup)
+    - post-merge (re-installs hooks + symbol index rebuild)
+    - post-rewrite (similar to post-merge)
+    - pre-commit (legal scan + WRK gate)
+  test_pattern: scripts/hooks/tests/test-*.sh (PASS_COUNT/FAIL_COUNT pattern)
+  install_mechanism: install-all-hooks.sh copies all scripts/hooks/* → .git/hooks/
+gaps:
+  - scripts/hooks/post-commit does not exist
+  - scripts/work-queue/start-wrk.sh does not exist
+  - tests/scripts/test_post_commit_push.sh does not exist
+notes: >
+  install-all-hooks.sh automatically picks up any new file in scripts/hooks/ — no
+  code change needed beyond adding the hook file. post-merge already re-runs it, so
+  the hook auto-propagates on pull.

@@ -1,0 +1,22 @@
+wrk_id: WRK-1143
+stage: 2
+completion_status: continue_to_planning
+generated_at: "2026-03-12T16:00:00Z"
+top_p1_gaps: []
+core_skills:
+  - scripts/work-queue/claim-item.sh
+  - scripts/work-queue/close-item.sh
+  - scripts/work-queue/archive-item.sh
+  - scripts/work-queue/whats-next.sh
+  - scripts/work-queue/generate-index.py
+key_findings:
+  - No index wiring exists yet in any of the 4 scripts
+  - claim-item.sh calls generate-index.py at exit; good hook point for update-wrk-index.sh
+  - close-item.sh ends with echo success; update hook fits before that line
+  - archive-item.sh ends with lifecycle HTML refresh; update hook fits before that
+  - whats-next.sh uses derive_status() + file-location scan for status; needs index-first path
+  - tests/work-queue/ exists with 8 test files; new test goes there
+  - generate-index.py already does full rebuild; add reconcile call to rebuild-wrk-index.sh
+domain:
+  area: harness/work-queue
+  problem: centralized status index for deterministic cross-session WRK state

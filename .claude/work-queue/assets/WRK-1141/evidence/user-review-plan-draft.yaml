@@ -1,0 +1,6 @@
+wrk_id: WRK-1141
+stage: 5
+decision: approved
+confirmed_by: vamsee
+reviewed_at: "2026-03-12T00:00:00Z"
+notes: "Plan approved: post-commit hook + start-wrk.sh routing + tests"
