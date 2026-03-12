@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1113 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1113 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — ### Phase 1 — User Selects 10 / 10 / 10 Agent presents candidate list (above) as `specs/wrk/WRK-1113/selection-matrix.md`. **User handpicks ...</summary><div class="panel"><h3>Phase 1 — User Selects 10 / 10 / 10</h3>
+<p>Agent presents candidate list (above) as <code>specs/wrk/WRK-1113/selection-matrix.md</code>.
+<strong>User handpicks final items at Stage 5 plan review</strong> before any implementation.</p>
+<h3>Phase 2 — Document-Verified Tests + Gap-Fill</h3>
+<p><strong>Per-document workflow</strong> — execute in order for each selected document:</p>
+<p><strong>Step 1 — Worked example extraction</strong>
+Locate the worked example(s) in the document (input values + expected output + source
+section). Record in <code>specs/wrk/WRK-1113/doc-extracts/&lt;doc-ref&gt;.yaml</code>:</p>
+<pre><code class="language-yaml">doc_ref: 2100-RPT-4005-06
+section: &quot;§4.2&quot;
+calc: current_demand
+inputs: {area_m2: 150.0, current_density_a_m2: 0.025, coating_factor: 0.05}
+expected: {value: 0.1875, unit: A, note: &quot;doc states 0.19 A rounded&quot;}
+</code></pre>
+<p><strong>Step 2 — Map to existing route</strong>
+Identify which function in <code>src/digitalmodel/cathodic_protection/</code> covers this calc.
+If found, proceed to Step 3. If missing, go to Step 4.</p>
+<p><strong>Step 3 — Write verification test</strong></p>
+<pre><code class="language-python">def test_current_demand_from_2100_rpt_4005_section_4_2(self):
+    &quot;&quot;&quot;Verify against worked example: 2100-RPT-4005-06 §4.2.&quot;&quot;&quot;
+    result = current_demand(area=150.0, current_density=0.025, coating_factor=0.05)
+    assert result == pytest.approx(0.1875, rel=0.01)
+</code></pre>
+<p>If test passes → route is verified. If test fails → diagnose and fix the route.</p>
+<p><strong>Step 4 — Gap-fill (TDD)</strong>
+Function missing → write the failing test first (doc example as assertion), then
+implement the minimal function following existing module conventions:
+typed params, module-level standard constants, <code>@doc_ref</code> in docstring.</p>
+<p><strong>Step 5 — Data extraction (legal-gated)</strong>
+Extract any tabular data, empirical curves, or reference constants that can be
+represented as plain numerical constants (no client identifiers):
+- Material properties tables → module-level <code>dict</code> or <code>numpy</code> array
+- Lookup charts → interpolation constants (<code>scipy.interpolate</code> or piecewise linear)
+- Run <code>scripts/legal/legal-sanity-scan.sh</code> on the extract before committing;
+  block-severity violations must be resolved (rename generic, remove proprietary refs)</p>
+<p><strong>Step 6 — Parametric sweep test</strong>
+For each new or verified function: vary one key input over its physical range and assert
+monotonicity or a known trend (e.g. more area → more current demand).</p>
+<p><strong>Step 7 — Analysis improvements</strong>
+After verifying the route against the document, note any improvements identified:
+- Missing edge-case handling (e.g. coated vs. bare structure branching)
+- Better default constants from a newer edition of the standard
+- Additional output quantities (e.g. return <code>CalcResult</code> with intermediate steps)
+Record in <code>specs/wrk/WRK-1113/improvements-log.md</code>; implement only if clearly in scope,
+otherwise capture as a follow-on WRK.</p>
+<p><strong>Step 8 — Exhaustion marking</strong>
+Once all key calcs in the document have a test + any extractable data is absorbed:
+set <code>exhausted: true</code> + <code>exhausted_at</code> + <code>absorbed_into: [module path]</code> in
+<code>standards-transfer-ledger.yaml</code>.</p>
+<p>Test file naming: <code>tests/cathodic_protection/test_&lt;route&gt;_doc_verified.py</code></p>
+<h3>Phase 3 — Drilling Riser Route (new module)</h3>
+<p>Add <code>src/digitalmodel/cathodic_protection/drilling_riser_stackup.py</code> (or appropriate
+<code>src/digitalmodel/drilling_riser/</code> namespace — to be confirmed at plan stage):</p>
+<ul>
+<li>Riser stackup / tension capacity calculation</li>
+<li>RAO-based operability envelope (tabular lookup from document)</li>
+<li>Tool passage / spacing calculation</li>
+<li>Structural damping parametric</li>
+</ul>
+<p>Follow same module pattern: typed functions, module-level constants, <code>@doc_ref</code>.</p>
+<h3>Phase 4 — Exhaustion Marking</h3>
+<p>After each document's worked examples are absorbed into tests:
+- Set <code>exhausted: true</code> + <code>exhausted_at</code> + <code>absorbed_into: [module path]</code>
+  in <code>standards-transfer-ledger.yaml</code>
+- Regenerate: <code>uv run --no-project python scripts/data/document-index/build-ledger.py</code></p>
+<h3>Phase 5 — Index Consolidation &amp; Domain Coverage Report</h3>
+<ul>
+<li>Add <code>domain</code> tag to each selected ledger entry</li>
+<li>Extend <code>query-ledger.py --domain &lt;name&gt; --exhausted</code> filters</li>
+<li>Publish: <code>docs/document-intelligence/domain-coverage.md</code></li>
+</ul>
+<h3>Phase 6 — Spin-off WRKs</h3>
+<p>High-effort new modules (&gt;200 lines) → dedicated WRK per module:
+<code>feat(calc/&lt;domain&gt;): parametric wrapper for &lt;calc name&gt;</code></p>
+<p>All remaining domains → follow-on WRK-1113-phase-2.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — The document corpus exists to serve one purpose: eliminate the need to re-read source documents by integrating their data, analysis, and con...</summary><div class="panel"><p>The document corpus exists to serve one purpose: eliminate the need to re-read source
+documents by integrating their data, analysis, and concepts directly into the codebase.
+The GTM target is open-source publication and website deployment. This WRK formalises
+the extraction pipeline starting with two domains:</p>
+<ul>
+<li><strong>Phase 1 domains</strong>: Drilling Riser + Cathodic Protection</li>
+<li><strong>All remaining domains</strong>: tackled iteratively in follow-on WRKs</li>
+<li><strong>Lookup charts</strong> → baked into code as tabular constants or interpolation functions;
+  sufficient for open-source publish</li>
+<li><strong>Detailed analysis</strong> → on-demand parametric modules invoked per request</li>
+<li>Once a document's key content is absorbed: mark <code>exhausted: true</code> in the ledger;
+  source document no longer needed for routine work</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `specs/wrk/WRK-1113/selection-matrix.md` drafted; user-approved at Stage 5 - [ ] `specs/wrk/WRK-1113/doc-extracts/&lt;doc-ref&gt;.yaml` crea...</summary><div class="panel"><ul>
+<li>[ ] <code>specs/wrk/WRK-1113/selection-matrix.md</code> drafted; user-approved at Stage 5</li>
+<li>[ ] <code>specs/wrk/WRK-1113/doc-extracts/&lt;doc-ref&gt;.yaml</code> created per selected document</li>
+<li>[ ] ≥1 document-verification test per selected calculation, citing doc + section</li>
+<li>[ ] All existing CP route tests still PASS after new additions</li>
+<li>[ ] Gap-fill functions follow existing module pattern (typed params, constants, <code>@doc_ref</code>)</li>
+<li>[ ] All extracted tabular data / lookup constants pass legal scan before commit</li>
+<li>[ ] <code>specs/wrk/WRK-1113/improvements-log.md</code> captures any analysis improvements found;
+      in-scope items implemented, out-of-scope items spun off as new WRKs</li>
+<li>[ ] Drilling riser module added with ≥3 functions + ≥3 doc-verified tests each</li>
+<li>[ ] Exhaustion marking applied to every fully-absorbed document in <code>standards-transfer-ledger.yaml</code></li>
+<li>[ ] <code>query-ledger.py --exhausted</code> and <code>--domain</code> filters working</li>
+<li>[ ] <code>docs/document-intelligence/domain-coverage.md</code> committed</li>
+<li>[ ] Legal scan PASS on all new code and extracted constants</li>
+<li>[ ] Cross-review (Claude + Codex + Gemini) PASS on selection-matrix + implementations</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — confirmed_by: user confirmed_at: 2026-03-12T18:30:00Z decision: passed wrk_id: WRK-1113 stage: 7 notes: &gt; User approved final plan for WRK-1...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p>confirmed_by: user
+confirmed_at: 2026-03-12T18:30:00Z
+decision: passed
+wrk_id: WRK-1113
+stage: 7
+notes: &gt;
+  User approved final plan for WRK-1113 at Stage 7 (User Review — Plan Final).
+  Plan artifact: specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+  Branch: feature/WRK-1113-doc-corpus-extraction
+  Scope confirmed: Phase 1 only (Drilling Riser + CP); 10/10/10 selection matrix approved.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>CP + drilling_riser doc-verified tests</td><td>repo</td><td>pass</td><td><code>PYTHONPATH=src uv run python -m pytest tests/cathodic_protection/ tests/drilling_riser/</code></td><td>122 PASS / 0 FAIL</td></tr><tr><td>2</td><td>Phase 0 foundation scripts</td><td>repo</td><td>pass</td><td><code>uv run --no-project python -m pytest scripts/data/document-index/tests/</code></td><td>16 PASS / 0 FAIL</td></tr><tr><td>3</td><td>Full digitalmodel suite</td><td>repo</td><td>pass</td><td><code>PYTHONPATH=src uv run python -m pytest</code></td><td>all green (no regressions)</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1113, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1113, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1113/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1113/legal-scan.md, result=<strong>PASS</strong> — no violations found</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=4</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=4</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-12T18:00:00Z, reviewed=2026-03-12T17:00:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1113 stage: 15 recorded_at: &quot;2026-03-12T21:30:00Z&quot; recommendations: - id: FW-1 priority: high title: &quot;Input validation for pure-...</summary><div class="panel"><p>wrk_id: WRK-1113
+stage: 15
+recorded_at: "2026-03-12T21:30:00Z"</p>
+<p>recommendations:
+  - id: FW-1
+    priority: high
+    title: "Input validation for pure-math engineering functions"
+    description: &gt;
+      anode_resistance_slender_standoff, equivalent_radius_from_mass, protected_length,
+      and damping functions accept zero/negative inputs that produce ZeroDivisionError
+      or math domain errors. Add lightweight ValueError guards for physically invalid inputs.
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+<ul>
+<li>
+<p>id: FW-2
+    priority: high
+    title: "Doc Intelligence Platform — Phase 2 implementation (8 child WRKs)"
+    description: &gt;
+      WRK-5035 through WRK-5042 captured. Execute the doc intelligence platform:
+      gitignore scaffold, extraction skill, extract-document.py, federated indexes,
+      query layer, code promotion, URL extraction, batch pipeline.
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-3
+    priority: medium
+    title: "Absorb remaining 17 candidates from selection matrix"
+    description: &gt;
+      10 CP + 14 drilling riser documents selected. Current WRK absorbed 4 drilling riser
+      docs + 3 CP standards. Remaining 17 documents can be absorbed in future WRKs.
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-4
+    priority: low
+    title: "Barlow formula design factor cross-validation"
+    description: &gt;
+      Add a test comparing wall_thickness_required against hand-calculated values from
+      the 2H-TNE-0050-03 worked example to confirm SF=1.5 interpretation matches the
+      source document's intent.
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1113 generated_at: &quot;2026-03-12T21:30:00Z&quot; reviewed_by: orchestrator stages: - order: 1 stage: Capture status: done evidence: .cl...</summary><div class="panel"><p>wrk_id: WRK-1113
+generated_at: "2026-03-12T21:30:00Z"
+reviewed_by: orchestrator
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/working/WRK-1113.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-1113.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/review.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/WRK-1113-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1113/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 19
+  stage: Close
+  status: pending
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 32 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1113-lifecycle.html</code></li><li><code>WRK-1113-plan.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review.md</code></li><li><code>stage-11-prompt.md</code></li><li><code>stage-12-prompt.md</code></li><li><code>stage-13-prompt.md</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li></ul></div></details>
+</body>
+</html>

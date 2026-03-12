@@ -1,0 +1,11 @@
+wrk_id: WRK-1113
+
+merge_status: "merged-to-main"
+sync_status: "in-sync"
+html_verification_ref: ".claude/work-queue/assets/WRK-1113/WRK-1113-lifecycle.html"
+legal_scan_ref: ".claude/work-queue/assets/WRK-1113/evidence/legal-scan.md"
+archive_readiness: "pass"
+
+document_index_ref: "scripts/data/document-index/build-ledger.py"
+document_index_exemption: ""
+spin_off_wrks: []

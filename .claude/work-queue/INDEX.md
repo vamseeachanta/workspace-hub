@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T21:49:29Z by generate-index.py -->
+<!-- Generated: 2026-03-12T21:50:22Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T21:49:29Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-12T21:50:22Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 595
+**Total items:** 594
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 235 |
-| working | 5 |
+| working | 4 |
 | blocked | 10 |
 | archived | 345 |
 
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 265 |
+| high | 264 |
 | medium | 277 |
 | low | 52 |
 
@@ -32,7 +32,7 @@
 |------------|-------|
 | simple | 140 |
 | medium | 280 |
-| complex | 107 |
+| complex | 106 |
 
 ### By Category
 
@@ -64,14 +64,14 @@
 | assethold | 15 |
 | assetutilities | 18 |
 | client_projects | 1 |
-| digitalmodel | 186 |
+| digitalmodel | 185 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 250 |
+| workspace-hub | 249 |
 | worldenergydata | 101 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 245 / 595 |
-| Plans cross-reviewed | 171 |
-| Plans approved | 194 |
+| Plans exist | 244 / 594 |
+| Plans cross-reviewed | 170 |
+| Plans approved | 193 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 595 |
+| Total captured | 594 |
 | Total archived | 345 |
-| Completion rate | 345/595 (58%) |
+| Completion rate | 345/594 (58%) |
 | Monthly rate (current month) | 110 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 62 / 235 | 26% |
-| Plans cross-reviewed | 9 | 12% |
-| Plans user-approved | 9 | 12% |
+| Plans cross-reviewed | 8 | 11% |
+| Plans user-approved | 8 | 11% |
 
 ### Aging
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 2 | 8 |
+| High     | 97 | 1 | 8 |
 | Medium   | 103  | 3  | 1  |
 | Low      | 35  | 0  | 1  |
 
@@ -1124,7 +1124,6 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1437,7 +1436,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | medium | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 
@@ -2139,7 +2137,6 @@
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | - |
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | complex | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | working | medium | medium | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | pending | medium | medium | - |
@@ -2414,7 +2411,6 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | - |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | - |
@@ -2825,7 +2821,6 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | complex | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | simple | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
 | WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | archived | simple | - | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | archived | complex | workspace-hub | - |
@@ -3720,7 +3715,6 @@
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | high | workspace-hub | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | - | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | archived | high | workspace-hub | - |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | workspace-hub, digitalmodel | - |
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | archived | high | workspace-hub | - |
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | digitalmodel | - |
@@ -3732,7 +3726,7 @@
 
 ## By Computer
 
-### ace-linux-1 (186 active / 315 total)
+### ace-linux-1 (185 active / 314 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3990,7 +3984,6 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | workspace-hub |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | archived | medium | medium | workspace-hub |
-| WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | working | high | complex | workspace-hub, digitalmodel |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | workspace-hub |
 | WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | workspace-hub |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | workspace-hub |

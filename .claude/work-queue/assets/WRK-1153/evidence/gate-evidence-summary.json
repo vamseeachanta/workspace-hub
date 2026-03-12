@@ -33,31 +33,31 @@
     },
     {
       "name": "Activation gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: activation evidence OK"
     },
     {
       "name": "Agent log gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "details": "routing:missing-provider ; plan:missing-provider ; execute:missing-provider ; cross-review:missing-provider"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: missing required stages ['plan_final']"
     },
     {
       "name": "User-review publish gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: missing required stages ['plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
+      "details": "execute.yaml: integrated_repo_tests count must be 3-5 (found 0)"
     },
     {
       "name": "Legal gate",
@@ -99,14 +99,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: recommendations[1] disposition must be existing-updated|spun-off-new"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: additions=3"
     },
     {
       "name": "User-review close gate",
@@ -138,10 +138,10 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "stage=close_review: approval confirmed only 0s after browser open (min 300s required)"
     },
     {
       "name": "Sentinel values gate",
@@ -152,10 +152,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -169,35 +169,35 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+      "details": "codex keyword found in review artifacts (1 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "publish commits appear unique across stages"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip path existence check"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip done/pending check"
+      "details": "no done/pending contradictions found"
     },
     {
       "name": "Plan publish predates approval gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan publish ordering OK (published=2026-03-12T20:42:00Z, reviewed=2026-03-12T20:27:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
     }
   ]
 }
