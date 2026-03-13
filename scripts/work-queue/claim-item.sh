@@ -122,7 +122,7 @@ QUOTA_STATUS="missing"
 if [[ -f "$QUOTA_FILE" ]]; then
   QUOTA_STATUS="available"
 else
-  echo "⚠ Quota file missing: $QUOTA_FILE"
+  echo "⚠ Quota file missing: $QUOTA_FILE" >&2
 fi
 
 uv run --no-project python - "$FILE_PATH" "$CLAIM_FILE" "$QUOTA_FILE" "$QUOTA_STATUS" "$WORKSPACE_ROOT" <<'PY'

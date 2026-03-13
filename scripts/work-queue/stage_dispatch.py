@@ -72,9 +72,9 @@ def run_d_item_checks(stage: int, assets_dir: Path, repo_root: str) -> bool:
     for fn in checks:
         ok, msg = fn()
         if ok is False:
-            print(f"D-ITEM BLOCKED: {msg}", file=sys.stderr)
+            print(f"[ERROR] D-ITEM: {msg}", file=sys.stderr)
             sys.exit(1)
         elif ok is None:
-            print(f"D-ITEM WARN: {msg}", file=sys.stderr)
+            print(f"[WARN] D-ITEM: {msg}", file=sys.stderr)
 
     return True

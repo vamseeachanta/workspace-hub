@@ -51,8 +51,7 @@ def _deterministic_stage_check(stage: int, stage_dir: str, repo_root: str) -> No
 
     try:
         from stage_dispatch import run_d_item_checks  # type: ignore[import]
-    except ImportError as exc:
-        print(f"WARN: D-item checks unavailable ({exc})", file=sys.stderr)
+    except ImportError:
         return
 
     run_d_item_checks(stage, Path(stage_dir), repo_root)
