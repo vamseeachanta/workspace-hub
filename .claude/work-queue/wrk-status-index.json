@@ -414,10 +414,10 @@
     "category": "harness"
   },
   "WRK-1140": {
-    "status": "done",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-13T08:54:12.299008+00:00",
-    "updated_by": "close-item.sh",
+    "last_updated": "2026-03-13T08:55:56.823059+00:00",
+    "updated_by": "archive-item.sh",
     "title": "feat(automation): nightly cron job \u2014 release-notes scan and WRK capture",
     "priority": "medium",
     "category": "harness"
