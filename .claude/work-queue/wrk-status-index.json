@@ -5310,10 +5310,10 @@
     "category": "tooling"
   },
   "WRK-1154": {
-    "status": "done",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-13T00:23:40.460434+00:00",
-    "updated_by": "close-item.sh",
+    "last_updated": "2026-03-13T00:25:04.067772+00:00",
+    "updated_by": "archive-item.sh",
     "title": "chore(harness): stage-01 frontmatter validator script \u2014 confirm WRK-NNN.md has all required fields",
     "priority": "high",
     "category": "harness"
