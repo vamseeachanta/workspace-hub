@@ -116,6 +116,32 @@ class TestHtmlMetadata:
         assert len(m.metadata.checksum) == 64  # SHA256 hex
 
 
+class TestHtmlNestedDivs:
+    def test_nested_divs_no_duplication(self, tmp_dir):
+        """Container divs should not duplicate descendant text."""
+        html = """\
+<html><body>
+<div class="container">
+  <div class="inner">Inner content only</div>
+</div>
+</body></html>"""
+        f = tmp_dir / "nested.html"
+        f.write_text(html)
+        m = HtmlParser().parse(str(f), domain="test")
+        texts = [s.text for s in m.sections if s.level == 0]
+        # Should have "Inner content only" exactly once
+        assert texts.count("Inner content only") == 1
+
+    def test_inline_tags_preserve_whitespace(self, tmp_dir):
+        """Inline markup should not collapse word boundaries."""
+        html = "<html><body><p>A <b>bold</b> word</p></body></html>"
+        f = tmp_dir / "inline.html"
+        f.write_text(html)
+        m = HtmlParser().parse(str(f), domain="test")
+        texts = [s.text for s in m.sections if s.level == 0]
+        assert any("A bold word" in t for t in texts)
+
+
 class TestHtmlParserSourceOverride:
     def test_source_document_override(self, sample_html_file):
         m = HtmlParser().parse(

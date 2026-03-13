@@ -59,7 +59,7 @@ class HtmlParser(BaseParser):
 
         # Extract headings
         for tag in soup.find_all(HEADING_TAGS):
-            text = tag.get_text(strip=True)
+            text = tag.get_text(" ", strip=True)
             if text:
                 level = int(tag.name[1])
                 sections.append(
@@ -68,9 +68,21 @@ class HtmlParser(BaseParser):
                     )
                 )
 
-        # Extract paragraphs and divs (body text)
-        for tag in soup.find_all(["p", "div"]):
-            text = tag.get_text(strip=True)
+        # Extract paragraphs (leaf-level text nodes)
+        for tag in soup.find_all("p"):
+            text = tag.get_text(" ", strip=True)
+            if text:
+                sections.append(
+                    ExtractedSection(
+                        heading=None, level=0, text=text, source=src
+                    )
+                )
+
+        # Extract leaf divs only (no nested div children) to avoid duplication
+        for tag in soup.find_all("div"):
+            if tag.find("div") is not None:
+                continue  # skip container divs
+            text = tag.get_text(" ", strip=True)
             if text:
                 sections.append(
                     ExtractedSection(
