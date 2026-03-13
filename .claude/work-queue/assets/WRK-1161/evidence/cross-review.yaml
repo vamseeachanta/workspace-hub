@@ -2,6 +2,7 @@ wrk_id: WRK-1161
 stage: 13
 route: A
 cross_review_required: false
+reviewer: codex-waived
 rationale: >
-  Route A simple item — single cross-review pass not required per SKILL.md §Complexity Routing.
+  Route A simple item — codex cross-review waived for simple items per SKILL.md §Complexity Routing.
   Changes are minimal stderr routing fixes with no architectural impact.

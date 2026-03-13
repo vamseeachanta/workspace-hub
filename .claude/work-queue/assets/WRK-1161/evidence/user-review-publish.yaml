@@ -22,7 +22,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: cab4cb5a
+    commit: b07df857
     documents:
       - WRK-1161-lifecycle.html
     published_at: "2026-03-13T04:01:00Z"

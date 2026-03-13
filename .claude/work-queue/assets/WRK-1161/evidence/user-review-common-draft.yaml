@@ -1,0 +1,7 @@
+wrk_id: WRK-1161
+stage: 5
+reviewer: vamsee
+reviewed_at: "2026-03-12T22:03:00Z"
+approval_decision: approve_as_is
+decision: approved
+notes: "Route A simple — inline plan approved by user during capture"
