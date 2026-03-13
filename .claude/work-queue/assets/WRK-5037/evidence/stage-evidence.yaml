@@ -1,84 +1,84 @@
 wrk_id: WRK-5037
-generated_at: "2026-03-13T05:20:00+00:00"
-
+generated_at: '2026-03-13T08:30:20Z'
 stages:
-  - order: 1
-    stage: "Capture"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/user-review-capture.yaml"
-  - order: 2
-    stage: "Resource Intelligence"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/resource-intelligence.yaml"
-  - order: 3
-    stage: "Plan"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/plan.yaml"
-  - order: 4
-    stage: "Plan Draft"
-    status: done
-    evidence: "specs/modules/tender-hatching-matsumoto.md"
-  - order: 5
-    stage: "User Review Plan"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/user-review-browser-open.yaml"
-  - order: 6
-    stage: "Cross-Review"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/cross-review.yaml"
-  - order: 7
-    stage: "User Review Gate"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/user-review-close.yaml"
-  - order: 8
-    stage: "TDD"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/tdd.yaml"
-  - order: 9
-    stage: "Implementation"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/execute.yaml"
-  - order: 10
-    stage: "Smoke Test"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/execute.yaml"
-  - order: 11
-    stage: "Integration Test"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/execute.yaml"
-  - order: 12
-    stage: "Legal Scan"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/legal.yaml"
-  - order: 13
-    stage: "Documentation"
-    status: n/a
-    evidence: "n/a"
-  - order: 14
-    stage: "Commit"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/user-review-publish.yaml"
-  - order: 15
-    stage: "Future Work"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/future-work.yaml"
-  - order: 16
-    stage: "Resource Intelligence Update"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/resource-intelligence-update.yaml"
-  - order: 17
-    stage: "User Review Close"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/user-review-close.yaml"
-  - order: 18
-    stage: "Claim"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/claim-evidence.yaml"
-  - order: 19
-    stage: "Activation"
-    status: done
-    evidence: ".claude/work-queue/assets/WRK-5037/evidence/activation.yaml"
-  - order: 20
-    stage: "Archive"
-    status: pending
-    evidence: "n/a"
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/plan.yaml
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: specs/modules/tender-hatching-matsumoto.md
+- order: 5
+  stage: User Review Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/user-review-browser-open.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/cross-review.yaml
+- order: 7
+  stage: User Review Gate
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/user-review-close.yaml
+- order: 8
+  stage: TDD
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/tdd.yaml
+- order: 9
+  stage: Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/execute.yaml
+- order: 10
+  stage: Smoke Test
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/execute.yaml
+- order: 11
+  stage: Integration Test
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/execute.yaml
+- order: 12
+  stage: Legal Scan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/legal.yaml
+- order: 13
+  stage: Documentation
+  status: n/a
+  evidence: n/a
+- order: 14
+  stage: Commit
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/user-review-publish.yaml
+- order: 15
+  stage: Future Work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Close
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/user-review-close.yaml
+- order: 18
+  stage: Claim
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/claim-evidence.yaml
+- order: 19
+  stage: Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5037/evidence/activation.yaml
+- order: 20
+  stage: Archive
+  status: done
+  evidence: .claude/work-queue/done/WRK-5037.md
+reviewed_by: orchestrator
