@@ -1,0 +1,29 @@
+wrk_id: WRK-1140
+generated_at: "2026-03-13T08:45:00Z"
+recommendations:
+  - id: FW-01
+    title: "Isolated test workspace for Bash integration tests"
+    description: >
+      test_nightly_release_scan.sh operates on real REPO_ROOT; add TEST_WORKSPACE_ROOT
+      override for CI safety and reproducibility.
+    priority: medium
+    disposition: spun-off-new
+    captured: true
+    status: deferred
+  - id: FW-02
+    title: "Happy-path integration test for run_scan(dry_run=False)"
+    description: >
+      Mock _get_next_id and _rebuild_index to test full WRK creation path end-to-end.
+    priority: low
+    disposition: spun-off-new
+    captured: true
+    status: deferred
+  - id: FW-03
+    title: "Extend nightly scan to Codex/Gemini release feeds"
+    description: >
+      Currently detects installed CLI versions; could also poll GitHub releases or
+      changelogs for providers not installed locally.
+    priority: low
+    disposition: spun-off-new
+    captured: true
+    status: deferred

@@ -1,0 +1,7 @@
+---
+wrk_id: WRK-1140
+gate: legal
+status: PASS
+scanned_at: 2026-03-13T08:42:00Z
+scope: workspace-hub (root)
+violations: 0

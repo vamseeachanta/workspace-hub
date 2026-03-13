@@ -19,7 +19,15 @@ PROVIDER="all"
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry-run)  DRY_RUN="--dry-run"; shift ;;
-        --provider) PROVIDER="${2:-all}"; shift 2 ;;
+        --provider)
+            if [[ -n "${2:-}" && "${2:-}" != --* ]]; then
+                PROVIDER="$2"
+                shift 2
+            else
+                PROVIDER="all"
+                shift 1
+            fi
+            ;;
         *)          echo "Unknown arg: $1" >&2; exit 1 ;;
     esac
 done
@@ -56,6 +64,10 @@ esac
 VERSIONS="claude=${CLAUDE_V},codex=${CODEX_V},gemini=${GEMINI_V}"
 
 echo "Detected versions: claude=${CLAUDE_V:-n/a} codex=${CODEX_V:-n/a} gemini=${GEMINI_V:-n/a}"
+
+# ── Ensure uv cache is writable (matches generate-index.py pattern) ──
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${REPO_ROOT}/.claude/state/uv-cache}"
+mkdir -p "$UV_CACHE_DIR"
 
 # ── Delegate to Python for state comparison + WRK creation ───────────
 uv run --no-project python "${REPO_ROOT}/scripts/automation/release_scan_wrk.py" \

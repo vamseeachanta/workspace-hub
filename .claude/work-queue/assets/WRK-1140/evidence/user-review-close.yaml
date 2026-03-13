@@ -1,0 +1,9 @@
+wrk_id: WRK-1140
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-13T08:55:00Z"
+decision: approved
+notes: >
+  Route B item. Implementation verified: nightly-release-scan.sh + release_scan_wrk.py.
+  21 tests passing. Cross-review complete (Claude APPROVE, Codex APPROVE post-fix,
+  Gemini MINOR). All ACs met. 3 future-work items captured.

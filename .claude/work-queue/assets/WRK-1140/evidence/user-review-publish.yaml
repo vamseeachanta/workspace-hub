@@ -1,0 +1,32 @@
+wrk_id: WRK-1140
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ea942f0b
+    documents:
+      - .claude/work-queue/working/WRK-1140.md
+    published_at: "2026-03-12T00:16:00Z"
+    reviewer: vamsee
+    close_review: plan_draft
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a7c74ba1
+    documents:
+      - .claude/work-queue/assets/WRK-1140/plan-html-review-final.md
+    published_at: "2026-03-12T00:18:00Z"
+    reviewer: vamsee
+    close_review: plan_final
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b07df857
+    documents:
+      - .claude/work-queue/working/WRK-1140.md
+    published_at: "2026-03-13T08:50:00Z"
+    reviewer: vamsee
+    close_review: close_review

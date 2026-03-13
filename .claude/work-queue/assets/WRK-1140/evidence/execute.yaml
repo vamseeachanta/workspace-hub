@@ -1,0 +1,52 @@
+wrk_id: WRK-1140
+stage: 10
+executed_at: "2026-03-12T02:00:00Z"
+orchestrator: claude
+route: B
+commit: ea942f0b
+phases:
+  - phase: 1
+    description: "Core Python module: release_scan_wrk.py"
+    files_modified:
+      - scripts/automation/release_scan_wrk.py
+    outcome: "State parsing, version comparison, WRK generation, idempotent scan"
+  - phase: 2
+    description: "Bash entry point: nightly-release-scan.sh"
+    files_modified:
+      - scripts/automation/nightly-release-scan.sh
+    outcome: "CLI version detection, argument parsing, uv delegation"
+  - phase: 3
+    description: "Config and tests"
+    files_modified:
+      - config/ai-tools/release-scan-state.yaml
+      - tests/automation/test_release_scan_wrk.py
+      - tests/automation/test_nightly_release_scan.sh
+    outcome: "State schema, 17 Python + 4 Bash tests"
+test_count: 21
+integrated_repo_tests:
+  - name: test_release_scan_wrk
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/automation/test_release_scan_wrk.py -v
+    result: pass
+    artifact_ref: tests/automation/test_release_scan_wrk.py
+  - name: test_nightly_release_scan
+    scope: integrated
+    command: bash tests/automation/test_nightly_release_scan.sh
+    result: pass
+    artifact_ref: tests/automation/test_nightly_release_scan.sh
+  - name: test_dry_run_smoke
+    scope: integrated
+    command: bash scripts/automation/nightly-release-scan.sh --dry-run --provider claude
+    result: pass
+    artifact_ref: scripts/automation/nightly-release-scan.sh
+test_files:
+  - name: test_release_scan_wrk
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/automation/test_release_scan_wrk.py -v
+    result: pass
+    artifact_ref: tests/automation/test_release_scan_wrk.py
+  - name: test_nightly_release_scan
+    scope: integrated
+    command: bash tests/automation/test_nightly_release_scan.sh
+    result: pass
+    artifact_ref: tests/automation/test_nightly_release_scan.sh

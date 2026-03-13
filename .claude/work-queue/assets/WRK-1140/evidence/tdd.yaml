@@ -1,0 +1,29 @@
+---
+wrk_id: WRK-1140
+stage: 12
+status: PASS
+tests_total: 21
+tests_passing: 21
+tests_failing: 0
+test_files:
+  - path: tests/automation/test_release_scan_wrk.py
+    count: 17
+    framework: pytest
+    classes:
+      - TestParseState (3)
+      - TestDetectChanges (5)
+      - TestGenerateWrkContent (2)
+      - TestUpdateState (2)
+      - TestIdempotency (1)
+      - TestNoOpTimestamp (1)
+      - TestDynamicHostname (2)
+      - TestDryRun (1)
+  - path: tests/automation/test_nightly_release_scan.sh
+    count: 4
+    framework: bash
+    tests:
+      - script exists and executable
+      - dry-run produces expected output
+      - dry-run does not modify state file
+      - provider filter works
+verified_at: 2026-03-13T08:35:00Z

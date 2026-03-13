@@ -198,6 +198,42 @@ class TestIdempotency:
         assert changes == []
 
 
+class TestNoOpTimestamp:
+    def test_no_change_updates_scan_timestamp(self, mod, state_dir):
+        """No-op scan still updates last_scan_at for cron health auditing."""
+        state_file = _write_state(
+            state_dir,
+            {"claude": "2.1.74", "codex": "0.111.0", "gemini": "0.32.1"},
+            scan_at="2026-03-10T00:00:00Z",
+        )
+        mod.run_scan(
+            workspace_root=state_dir,
+            current_versions={"claude": "2.1.74", "codex": "0.111.0", "gemini": "0.32.1"},
+            dry_run=False,
+        )
+        updated = yaml.safe_load(state_file.read_text())
+        # Timestamp should be refreshed (not the old 2026-03-10)
+        assert updated["last_scan_at"] != "2026-03-10T00:00:00Z"
+        assert updated["last_scan_by"] == "nightly"
+
+
+class TestDynamicHostname:
+    def test_computer_field_uses_platform_node(self, mod):
+        """WRK content uses runtime hostname, not hardcoded value."""
+        import platform as _p
+
+        changes = [{"provider": "claude", "old": "2.1.72", "new": "2.1.74"}]
+        content = mod.generate_wrk_content("WRK-9999", changes)
+        expected_host = _p.node() or "unknown"
+        assert f"computer: {expected_host}" in content
+
+    def test_computer_field_override(self, mod):
+        """Explicit computer parameter overrides hostname detection."""
+        changes = [{"provider": "claude", "old": "2.1.72", "new": "2.1.74"}]
+        content = mod.generate_wrk_content("WRK-9999", changes, computer="acma-ansys05")
+        assert "computer: acma-ansys05" in content
+
+
 # ── 6. Dry-run ──────────────────────────────────────────────────────
 
 

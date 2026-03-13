@@ -1,0 +1,13 @@
+wrk_id: WRK-1140
+updated_at: "2026-03-13T08:45:00Z"
+additions:
+  - path: scripts/automation/nightly-release-scan.sh
+    role: "New: Bash entry point for nightly version detection"
+  - path: scripts/automation/release_scan_wrk.py
+    role: "New: Python module for state I/O, version comparison, WRK creation"
+  - path: config/ai-tools/release-scan-state.yaml
+    role: "New: state file tracking last-seen CLI versions per provider"
+  - path: tests/automation/test_release_scan_wrk.py
+    role: "New: 17 pytest unit tests"
+  - path: tests/automation/test_nightly_release_scan.sh
+    role: "New: 4 bash integration tests"

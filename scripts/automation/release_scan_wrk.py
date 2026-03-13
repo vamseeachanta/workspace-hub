@@ -10,6 +10,7 @@ Usage:
 
 import argparse
 import os
+import platform
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -70,11 +71,16 @@ def detect_changes(
     return changes
 
 
-def generate_wrk_content(wrk_id: str, changes: list[dict[str, str]]) -> str:
+def generate_wrk_content(
+    wrk_id: str,
+    changes: list[dict[str, str]],
+    computer: str | None = None,
+) -> str:
     """Generate WRK markdown content for detected version changes."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     providers_changed = ", ".join(c["provider"] for c in changes)
     title = f"Release notes review: {providers_changed}"
+    host = computer or platform.node() or "unknown"
 
     # Build version table
     rows = []
@@ -92,7 +98,7 @@ category: harness
 subcategory: tooling
 target_repos: [workspace-hub]
 created_at: "{now}"
-computer: ace-linux-1
+computer: {host}
 provider: claude
 ---
 
@@ -125,6 +131,16 @@ def update_state(state_path: Path, changes: list[dict[str, str]]) -> None:
     for c in changes:
         versions[c["provider"]] = c["new"]
     data["last_seen_version"] = versions
+    data["last_scan_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    data["last_scan_by"] = "nightly"
+    state_path.write_text(yaml.dump(data, default_flow_style=False))
+
+
+def _touch_scan_timestamp(state_path: Path) -> None:
+    """Update last_scan_at/last_scan_by without changing versions."""
+    if not state_path.exists():
+        return
+    data = yaml.safe_load(state_path.read_text()) or {}
     data["last_scan_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     data["last_scan_by"] = "nightly"
     state_path.write_text(yaml.dump(data, default_flow_style=False))
@@ -183,6 +199,9 @@ def run_scan(
 
     if not changes:
         print("No version changes detected.")
+        if not dry_run:
+            # Persist scan timestamp even on no-op so cron health is auditable
+            _touch_scan_timestamp(state_path)
         return []
 
     if dry_run:
@@ -195,6 +214,7 @@ def run_scan(
     wrk_id = _get_next_id(workspace_root)
     content = generate_wrk_content(wrk_id, changes)
     wrk_path = workspace_root / PENDING_REL / f"{wrk_id}.md"
+    wrk_path.parent.mkdir(parents=True, exist_ok=True)
     wrk_path.write_text(content)
     print(f"Created {wrk_path}")
 
