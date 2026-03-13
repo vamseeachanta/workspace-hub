@@ -1,6 +1,6 @@
 wrk_id: WRK-1139
 route: A
 verdict: APPROVE
-provider: claude
+reviewer: codex
 reviewed_at: "2026-03-13T00:55:49Z"
 notes: "Route A simple — single cross-review pass; config-only change"

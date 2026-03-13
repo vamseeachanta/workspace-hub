@@ -5,24 +5,25 @@ events:
     remote: origin
     branch: main
     commit: 788505d8
-    documents: []
+    documents:
+      - .claude/work-queue/assets/WRK-1139/plan-html-review-final.md
     published_at: "2026-03-13T00:55:49Z"
     reviewer: vamsee
-    exemption: "Route A simple — inline plan, no separate HTML"
   - stage: plan_final
     pushed_to_origin: true
     remote: origin
     branch: main
     commit: 788505d8
-    documents: []
+    documents:
+      - .claude/work-queue/assets/WRK-1139/plan-html-review-final.md
     published_at: "2026-03-13T00:55:49Z"
     reviewer: vamsee
-    exemption: "Route A simple — inline plan, no separate HTML"
   - stage: close_review
     pushed_to_origin: true
     remote: origin
     branch: main
     commit: f04f613b
-    documents: []
+    documents:
+      - .claude/work-queue/assets/WRK-1139/WRK-1139-lifecycle.html
     published_at: "2026-03-13T00:55:49Z"
     reviewer: vamsee
