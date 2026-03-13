@@ -144,10 +144,10 @@
     "category": "maintenance"
   },
   "WRK-1012": {
-    "status": "pending",
+    "status": "working",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:25.924299+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-13T09:09:25.871535+00:00",
+    "updated_by": "claim-item.sh",
     "title": "chore(plugins): install and verify official Claude Code plugins on all 3 workstations",
     "priority": "high",
     "category": "platform"
@@ -5303,20 +5303,20 @@
   "WRK-1153": {
     "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T21:55:43.928612+00:00",
+    "last_updated": "2026-03-13T09:17:54.260668+00:00",
     "updated_by": "archive-item.sh",
-    "title": "Extract doc-research-download patterns from WRK-1151 into reusable skill + lib",
-    "priority": "medium",
-    "category": "tooling"
+    "title": "SCADA/protocols toolkit \u2014 Modbus, DNP3, OPC UA, EPMS data model",
+    "priority": "high",
+    "category": "career"
   },
   "WRK-1154": {
     "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-13T00:25:04.067772+00:00",
+    "last_updated": "2026-03-13T09:20:49.761531+00:00",
     "updated_by": "archive-item.sh",
-    "title": "chore(harness): stage-01 frontmatter validator script \u2014 confirm WRK-NNN.md has all required fields",
+    "title": "Generator sequencing \u2014 paralleling, load-shed, black-start state machine",
     "priority": "high",
-    "category": "harness"
+    "category": "career"
   },
   "WRK-1158": {
     "status": "archived",
@@ -5398,5 +5398,14 @@
     "title": "Suppress non-actionable CLI stderr noise in work-queue scripts",
     "priority": "medium",
     "category": "work-queue"
+  },
+  "WRK-5038": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T09:20:30.110688+00:00",
+    "updated_by": "close-item.sh",
+    "title": "feat(doc-intel): build-doc-intelligence.py + federated content indexes",
+    "priority": "high",
+    "category": "document-intelligence"
   }
 }
