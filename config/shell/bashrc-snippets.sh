@@ -71,6 +71,13 @@ alias wh-ready='bash "${WORKSPACE_HUB}/scripts/readiness/nightly-readiness.sh"'
 # UX consistency check (keybindings, screenshot dir, Chrome extension)
 alias wh-ux='bash "${WORKSPACE_HUB}/scripts/readiness/check-ux-consistency.sh"'
 
+# ── Screenshot-to-Claude alias (WRK-1022) ────────────────────────────────────
+# Copies "@<latest-screenshot-path>" to clipboard for pasting into Claude Code.
+# Requires: xclip (Linux). Usage: type ccss, then Ctrl+Shift+V in Claude Code.
+if [[ "$_WH_OS" == "linux" ]] && command -v xclip &>/dev/null; then
+  alias ccss='bash "${WORKSPACE_HUB}/scripts/operations/screenshot-to-claude.sh"'
+fi
+
 # ── Shell prompt: branch + active WRK item ────────────────────────────────────
 # Appended to PS1; only activates inside a git repo.
 _wh_prompt_info() {

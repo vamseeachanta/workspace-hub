@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T12:02:38Z by generate-index.py -->
+<!-- Generated: 2026-03-13T12:15:03Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T12:02:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T12:15:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 613
+**Total items:** 624
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 230 |
+| pending | 241 |
 | working | 3 |
 | blocked | 10 |
 | done | 1 |
@@ -23,9 +23,9 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 270 |
-| medium | 290 |
-| low | 52 |
+| high | 275 |
+| medium | 294 |
+| low | 54 |
 
 ### By Complexity
 
@@ -33,7 +33,7 @@
 |------------|-------|
 | simple | 143 |
 | medium | 290 |
-| complex | 111 |
+| complex | 122 |
 
 ### By Category
 
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 30 |
-| engineering | 124 |
+| engineering | 135 |
 | data | 24 |
 | platform | 13 |
 | business | 6 |
@@ -65,7 +65,7 @@
 | assethold | 16 |
 | assetutilities | 18 |
 | client_projects | 1 |
-| digitalmodel | 200 |
+| digitalmodel | 211 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
@@ -73,14 +73,14 @@
 | scripts/review | 1 |
 | tests/testing | 1 |
 | workspace-hub | 256 |
-| worldenergydata | 102 |
+| worldenergydata | 103 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 254 / 613 |
+| Plans exist | 265 / 624 |
 | Plans cross-reviewed | 189 |
 | Plans approved | 212 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 613 |
+| Total captured | 624 |
 | Total archived | 369 |
-| Completion rate | 369/613 (60%) |
+| Completion rate | 369/624 (59%) |
 | Monthly rate (current month) | 127 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,9 +102,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 63 / 230 | 27% |
-| Plans cross-reviewed | 8 | 11% |
-| Plans user-approved | 8 | 11% |
+| Pending items with plans | 74 / 241 | 31% |
+| Plans cross-reviewed | 8 | 10% |
+| Plans user-approved | 8 | 10% |
 
 ### Aging
 
@@ -119,9 +119,9 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 2 | 8 |
-| Medium   | 107  | 1  | 1  |
-| Low      | 35  | 0  | 1  |
+| High     | 93 | 2 | 8 |
+| Medium   | 111  | 1  | 1  |
+| Low      | 37  | 0  | 1  |
 
 ## By Category
 
@@ -234,7 +234,19 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (124 items — 69 high, 44 medium, 11 low)
+### engineering (135 items — 74 high, 48 medium, 13 low)
+
+#### engineering / artificial-lift
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5072 | LOW | Artificial lift and rod pump study — literature, methods and implementation [feature] | pending |
+
+#### engineering / asset-integrity
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5064 | HIGH | Asset integrity and fitness-for-service study — literature, methods and implementation [feature] | pending |
 
 #### engineering / cathodic-protection
 
@@ -243,6 +255,13 @@
 | WRK-478 | HIGH | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending |
 | WRK-496 | HIGH | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending |
 | WRK-1027 | MEDIUM | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending |
+| WRK-5068 | MEDIUM | Cathodic protection study — literature, methods and implementation [feature] | pending |
+
+#### engineering / coiled-tubing
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5071 | LOW | Coiled tubing hydraulics study — literature, methods and implementation [feature] | pending |
 
 #### engineering / drilling
 
@@ -264,6 +283,7 @@
 | WRK-1147 | MEDIUM | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation [feature] | pending |
 | WRK-1149 | MEDIUM | Method assessment and selection — propeller-rudder interaction models | pending |
 | WRK-1150 | MEDIUM | Python implementation — propeller-rudder interaction with RPM sweep | pending |
+| WRK-5067 | MEDIUM | Hydrodynamics and wave mechanics study — literature, methods and implementation [feature] | pending |
 
 #### engineering / marine
 
@@ -299,6 +319,18 @@
 | WRK-583 | LOW | research: verify ANP Brazil production data REST API availability | pending |
 | WRK-585 | LOW | feat(worldenergydata): add IRENA offshore wind capacity data | pending |
 | WRK-604 | LOW | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending |
+
+#### engineering / metocean
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5070 | MEDIUM | Metocean and extreme value analysis study — literature, methods and implementation [feature] | pending |
+
+#### engineering / mooring
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5062 | HIGH | Mooring analysis study — literature, methods and implementation [feature] | pending |
 
 #### engineering / offshore
 
@@ -393,16 +425,29 @@
 |----|----------|-------|--------|
 | WRK-5060 | MEDIUM | Pipeline engineering study — literature, methods and implementation [feature] | pending |
 
+#### engineering / production-engineering
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5066 | HIGH | Production engineering study — literature, methods and implementation [feature] | pending |
+
 #### engineering / structural
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-543 | HIGH | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending |
 | WRK-544 | HIGH | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending |
+| WRK-5065 | HIGH | Structural analysis study — literature, methods and implementation [feature] | pending |
 | WRK-416 | MEDIUM | Untitled | pending |
 | WRK-609 | MEDIUM | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending |
 | WRK-036 | LOW | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending |
 | WRK-587 | LOW | research: evaluate Code_Aster for large-scale topside structural FEA | pending |
+
+#### engineering / subsea-risers
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5069 | MEDIUM | Subsea risers and flowlines study — literature, methods and implementation [feature] | pending |
 
 #### engineering / uncategorised
 
@@ -413,6 +458,12 @@
 | WRK-490 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending |
 | WRK-492 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending |
 | WRK-487 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending |
+
+#### engineering / viv
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5063 | HIGH | VIV analysis study — literature, methods and implementation [feature] | pending |
 
 #### engineering / wind
 
@@ -593,6 +644,17 @@
 | [WRK-5058](pending/WRK-5058.md) | Drilling riser engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5059](pending/WRK-5059.md) | Drilling engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5060](pending/WRK-5060.md) | Pipeline engineering study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5062](pending/WRK-5062.md) | Mooring analysis study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5063](pending/WRK-5063.md) | VIV analysis study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5064](pending/WRK-5064.md) | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5065](pending/WRK-5065.md) | Structural analysis study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5066](pending/WRK-5066.md) | Production engineering study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5067](pending/WRK-5067.md) | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5068](pending/WRK-5068.md) | Cathodic protection study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5069](pending/WRK-5069.md) | Subsea risers and flowlines study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5070](pending/WRK-5070.md) | Metocean and extreme value analysis study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5071](pending/WRK-5071.md) | Coiled tubing hydraulics study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5072](pending/WRK-5072.md) | Artificial lift and rod pump study — literature, methods and implementation | pending | 0/0 |
 
 ## Master Table
 
@@ -1211,6 +1273,17 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5066 | Production engineering study — literature, methods and implementation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1454,6 +1527,17 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | medium | complex | digitalmodel | - |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | medium | complex | digitalmodel | - |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | medium | complex | digitalmodel | - |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | high | complex | digitalmodel | - |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | high | complex | digitalmodel | - |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | high | complex | digitalmodel | - |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | high | complex | digitalmodel | - |
+| WRK-5066 | Production engineering study — literature, methods and implementation | high | complex | digitalmodel | - |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | medium | complex | digitalmodel | - |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | medium | complex | digitalmodel | - |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | medium | complex | digitalmodel | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | medium | complex | digitalmodel, worldenergydata | - |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | low | complex | digitalmodel | - |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | low | complex | digitalmodel | - |
 
 ### Working
 
@@ -2206,6 +2290,17 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | pending | medium | complex | - |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | pending | high | complex | - |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | pending | high | complex | - |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | high | complex | - |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | pending | high | complex | - |
+| WRK-5066 | Production engineering study — literature, methods and implementation | pending | high | complex | - |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | - |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | - |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | - |
 
 ### doris
 
@@ -2642,6 +2737,7 @@
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | - |
 
 ## By Priority
 
@@ -2919,6 +3015,11 @@
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5066 | Production engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
 
 ### Medium
 
@@ -3214,6 +3315,10 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | complex | digitalmodel, worldenergydata | - |
 
 ### Low
 
@@ -3271,6 +3376,8 @@
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | simple | workspace-hub | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | medium | workspace-hub | - |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | complex | digitalmodel | - |
 
 ## By Complexity
 
@@ -3832,10 +3939,21 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | digitalmodel | - |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | pending | medium | digitalmodel | - |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | pending | medium | digitalmodel | - |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | pending | high | digitalmodel | - |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | pending | high | digitalmodel | - |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | high | digitalmodel | - |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | pending | high | digitalmodel | - |
+| WRK-5066 | Production engineering study — literature, methods and implementation | pending | high | digitalmodel | - |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | medium | digitalmodel | - |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | pending | medium | digitalmodel | - |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | medium | digitalmodel | - |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | digitalmodel, worldenergydata | - |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | digitalmodel | - |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | digitalmodel | - |
 
 ## By Computer
 
-### ace-linux-1 (179 active / 332 total)
+### ace-linux-1 (190 active / 343 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4171,6 +4289,17 @@
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | digitalmodel |
 | WRK-5059 | Drilling engineering study — literature, methods and implementation | pending | medium | complex | digitalmodel |
 | WRK-5060 | Pipeline engineering study — literature, methods and implementation | pending | medium | complex | digitalmodel |
+| WRK-5062 | Mooring analysis study — literature, methods and implementation | pending | high | complex | digitalmodel |
+| WRK-5063 | VIV analysis study — literature, methods and implementation | pending | high | complex | digitalmodel |
+| WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | high | complex | digitalmodel |
+| WRK-5065 | Structural analysis study — literature, methods and implementation | pending | high | complex | digitalmodel |
+| WRK-5066 | Production engineering study — literature, methods and implementation | pending | high | complex | digitalmodel |
+| WRK-5067 | Hydrodynamics and wave mechanics study — literature, methods and implementation | pending | medium | complex | digitalmodel |
+| WRK-5068 | Cathodic protection study — literature, methods and implementation | pending | medium | complex | digitalmodel |
+| WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | medium | complex | digitalmodel |
+| WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | digitalmodel, worldenergydata |
+| WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | digitalmodel |
+| WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | digitalmodel |
 
 ### ace-linux-2 (8 active / 15 total)
 
