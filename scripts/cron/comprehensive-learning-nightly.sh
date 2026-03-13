@@ -42,6 +42,18 @@ bash scripts/cron/update-portfolio-signals.sh 2>&1 | tee -a "$LOG_FILE" || \
 echo "--- AI agent readiness $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/readiness/ai-agent-readiness.sh || true
 
+# Step 3c: release-notes scan (best-effort — WRK-1140)
+echo "--- Release notes scan $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/automation/nightly-release-scan.sh || \
+  echo "WARNING: release notes scan failed — see above"
+
+# Auto-commit any WRK items created by the release scan
+if ! git diff --quiet .claude/work-queue/ config/ai-tools/release-scan-state.yaml 2>/dev/null; then
+  git add .claude/work-queue/pending/WRK-*.md .claude/work-queue/INDEX.md config/ai-tools/release-scan-state.yaml
+  git commit -m "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
+  git push
+fi
+
 # Step 4: validate skill frontmatter (best-effort — WRK-308)
 echo "--- Skill validation $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/skills/validate-skills.sh .claude/skills || \
@@ -73,7 +85,7 @@ source scripts/lib/python-resolver.sh
 ${PYTHON} scripts/readiness/build-specs-index.py || \
   echo "WARNING: specs index rebuild failed — see above"
 
-# Step 3c: Phase 1b — scan Codex sessions for drift (best-effort — WRK-1101)
+# Step 3d: Phase 1b — scan Codex sessions for drift (best-effort — WRK-1101)
 echo "--- Codex drift scan $(date +%Y-%m-%dT%H:%M:%S) ---"
 YESTERDAY=$(date -d "yesterday" +%Y/%m/%d 2>/dev/null || date -v-1d +%Y/%m/%d 2>/dev/null || echo "")
 if [[ -n "$YESTERDAY" ]]; then
@@ -91,7 +103,7 @@ else
     echo "  WARNING: could not determine yesterday's date"
 fi
 
-# Step 3d: run pipeline (WRK-1076: notify on completion)
+# Step 3e: run pipeline (WRK-1076: notify on completion)
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
