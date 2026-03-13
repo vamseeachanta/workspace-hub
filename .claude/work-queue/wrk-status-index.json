@@ -216,10 +216,10 @@
     "category": "harness"
   },
   "WRK-1072": {
-    "status": "done",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-13T01:05:23.222757+00:00",
-    "updated_by": "close-item.sh",
+    "last_updated": "2026-03-13T01:07:39.123938+00:00",
+    "updated_by": "archive-item.sh",
     "title": "feat(harness): release management \u2014 semantic versioning + changelog for tier-1 repos",
     "priority": "medium",
     "category": "harness"
@@ -405,10 +405,10 @@
     "category": "operations"
   },
   "WRK-1139": {
-    "status": "pending",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:32.403083+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-13T01:08:35.908249+00:00",
+    "updated_by": "archive-item.sh",
     "title": "chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements",
     "priority": "medium",
     "category": "harness"
