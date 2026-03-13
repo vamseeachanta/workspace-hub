@@ -1,0 +1,30 @@
+stage: 17
+wrk_id: WRK-5039
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    published_at: "2026-03-13T04:46:00Z"
+    remote: origin
+    branch: main
+    commit: plan-draft-5039
+    documents:
+      - specs/wrk/WRK-5039/wrk-5039-query-doc-intelligence.md
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    published_at: "2026-03-13T09:37:00Z"
+    remote: origin
+    branch: main
+    commit: plan-final-5039
+    documents:
+      - .claude/work-queue/assets/WRK-5039/plan-html-review-final.md
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    published_at: "2026-03-13T09:49:00Z"
+    remote: origin
+    branch: main
+    commit: close-review-5039
+    documents:
+      - .claude/work-queue/assets/WRK-5039/review.md
+    reviewer: vamsee

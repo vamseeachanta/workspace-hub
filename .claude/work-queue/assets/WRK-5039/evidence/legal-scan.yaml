@@ -1,0 +1,6 @@
+stage: 13
+wrk_id: WRK-5039
+scan_tool: scripts/legal/legal-sanity-scan.sh
+result: PASS
+violations: 0
+scanned_at: "2026-03-13T09:48:00Z"

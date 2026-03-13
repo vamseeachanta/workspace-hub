@@ -1,0 +1,18 @@
+stage: 17
+wrk_id: WRK-5039
+events:
+  - stage: plan_draft
+    opened_at: "2026-03-13T04:40:00Z"
+    html_ref: specs/wrk/WRK-5039/wrk-5039-query-doc-intelligence.md
+    reviewer: vamsee
+    opened_in_default_browser: true
+  - stage: plan_final
+    opened_at: "2026-03-13T09:30:00Z"
+    html_ref: .claude/work-queue/assets/WRK-5039/plan-html-review-final.md
+    reviewer: vamsee
+    opened_in_default_browser: true
+  - stage: close_review
+    opened_at: "2026-03-13T09:48:00Z"
+    html_ref: .claude/work-queue/assets/WRK-5039/plan-html-review-final.md
+    reviewer: vamsee
+    opened_in_default_browser: true

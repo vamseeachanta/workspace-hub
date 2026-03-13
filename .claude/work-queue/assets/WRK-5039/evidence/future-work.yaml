@@ -1,0 +1,25 @@
+stage: 15
+wrk_id: WRK-5039
+recommendations:
+  - id: FW-1
+    title: "Stage 2 auto-injection wiring"
+    description: "Wire query-doc-intelligence.py --stage2-brief into stage-02-resource-intelligence.yaml so it runs automatically during resource-intelligence stage"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: high
+  - id: FW-2
+    title: "Relevance ranking"
+    description: "Add relevance scoring to query results (keyword frequency, source recency) instead of file-order iteration"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-3
+    title: "--quiet flag for pipeline use"
+    description: "Add --quiet flag that suppresses warnings and only outputs data or exit code (from cross-review suggestion)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+completed_at: "2026-03-13T09:46:00Z"

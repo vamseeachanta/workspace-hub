@@ -1,0 +1,18 @@
+stage: 12
+wrk_id: WRK-5039
+test_file: tests/data/doc_intelligence/test_query.py
+test_count: 23
+red_phase: "Import error confirmed — module did not exist"
+green_phase: "23/23 pass after implementing query.py"
+refactor_phase: "Fixed test_keyword_in_title assertion (keyword 'resistance' only in table title, not equation text)"
+test_classes:
+  - TestQueryByType (5 tests)
+  - TestQueryByDomain (2 tests)
+  - TestQueryByKeyword (3 tests)
+  - TestCombinedFilters (3 tests)
+  - TestLimit (2 tests)
+  - TestEmptyIndexes (2 tests)
+  - TestMalformedJsonl (1 test)
+  - TestFormatStage2Brief (3 tests)
+  - TestFormatFull (2 tests)
+completed_at: "2026-03-13T09:45:00Z"

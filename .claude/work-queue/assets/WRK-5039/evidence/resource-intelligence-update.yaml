@@ -1,0 +1,16 @@
+stage: 16
+wrk_id: WRK-5039
+additions:
+  - scripts/data/doc_intelligence/query.py
+  - scripts/data/doc-intelligence/query-doc-intelligence.py
+  - tests/data/doc_intelligence/test_query.py
+new_assets:
+  - scripts/data/doc_intelligence/query.py
+  - scripts/data/doc-intelligence/query-doc-intelligence.py
+  - tests/data/doc_intelligence/test_query.py
+reusable_for_future:
+  - "query.py: query_indexes() can be imported by any Python script"
+  - "CLI: can be called from shell scripts during Stage 2"
+integration_points:
+  - "Stage 2 resource-intelligence: call via --stage2-brief --domain <domain>"
+completed_at: "2026-03-13T09:46:00Z"

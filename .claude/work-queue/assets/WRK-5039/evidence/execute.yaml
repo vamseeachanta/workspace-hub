@@ -1,0 +1,30 @@
+stage: 10
+wrk_id: WRK-5039
+files_created:
+  - scripts/data/doc_intelligence/query.py
+  - scripts/data/doc-intelligence/query-doc-intelligence.py
+  - tests/data/doc_intelligence/test_query.py
+files_modified: []
+integrated_repo_tests:
+  - name: doc-intelligence-query
+    scope: repo
+    artifact_ref: tests/data/doc_intelligence/test_query.py
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_query.py -v"
+    result: pass
+  - name: doc-intelligence-classifiers
+    scope: repo
+    artifact_ref: tests/data/doc_intelligence/test_classifiers.py
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_classifiers.py -v"
+    result: pass
+  - name: doc-intelligence-index-builder
+    scope: repo
+    artifact_ref: tests/data/doc_intelligence/test_index_builder.py
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_index_builder.py -v"
+    result: pass
+  - name: cli-exit-codes
+    scope: integrated
+    artifact_ref: scripts/data/doc-intelligence/query-doc-intelligence.py
+    command: "uv run --no-project python scripts/data/doc-intelligence/query-doc-intelligence.py --type tables"
+    result: pass
+test_summary: "73 passed (23 query + 26 classifiers + 24 index_builder)"
+completed_at: "2026-03-13T09:45:00Z"

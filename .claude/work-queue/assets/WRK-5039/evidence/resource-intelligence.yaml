@@ -1,0 +1,34 @@
+stage: 2
+wrk_id: WRK-5039
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue-workflow
+    - work-queue
+    - workflow-gatepass
+  secondary: []
+findings:
+  predecessor: WRK-5038 (federated index builder — CLOSED, 50 tests)
+  existing_indexes:
+    - data/doc-intelligence/manifest-index.jsonl (1 manifest)
+    - data/doc-intelligence/constants.jsonl (0 records)
+    - data/doc-intelligence/equations.jsonl (0 records)
+    - data/doc-intelligence/tables/index.jsonl (6 records)
+    - data/doc-intelligence/curves/index.jsonl (0 records)
+    - data/doc-intelligence/procedures.jsonl (0 records)
+    - data/doc-intelligence/requirements.jsonl (0 records)
+    - data/doc-intelligence/definitions.jsonl (0 records)
+    - data/doc-intelligence/worked_examples.jsonl (0 records)
+  reusable_modules:
+    - scripts/data/doc_intelligence/schema.py (manifest_from_dict, dataclasses)
+    - scripts/data/doc_intelligence/index_builder.py (CONTENT_TYPES list)
+    - scripts/data/doc_intelligence/classifiers.py (content type taxonomy)
+  stage2_integration_point:
+    file: scripts/work-queue/stages/stage-02-resource-intelligence.yaml
+    mechanism: "query CLI called during resource-intelligence stage, output merged into yaml"
+  jsonl_record_schemas:
+    section_types: "{text, source, domain, manifest}"
+    tables: "{title, columns, row_count, csv_path, source, domain, manifest}"
+    curves: "{caption, figure_id, source, domain, manifest}"
+  test_fixtures: tests/data/doc_intelligence/fixtures/ (3 manifests from WRK-5038)
+notes: "Sparse data (only 1 manifest, 6 tables, 0 classified sections). Query tool must handle empty indexes gracefully."

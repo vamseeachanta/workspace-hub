@@ -1,0 +1,6 @@
+stage: 8
+wrk_id: WRK-5039
+set_active_wrk: true
+session_id: "2026-03-13-wrk5039"
+orchestrator_agent: claude
+activated_at: "2026-03-13T09:37:00Z"
