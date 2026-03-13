@@ -1,5 +1,5 @@
 wrk_id: WRK-5044
-generated_at: '2026-03-12T22:30:00Z'
+generated_at: '2026-03-13T03:45:03Z'
 stages:
 - order: 1
   stage: Capture
@@ -47,7 +47,7 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Route A — cross-review not required.
+  comment: "Route A \u2014 cross-review not required."
   evidence: n/a
 - order: 7
   stage: User Review - Plan (Final)
@@ -55,7 +55,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Route A — not required.
+  comment: "Route A \u2014 not required."
   evidence: n/a
 - order: 8
   stage: Claim
@@ -79,7 +79,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: commit 05e7e626 — routed --commit through structured pipeline.
+  comment: "commit 05e7e626 \u2014 routed --commit through structured pipeline."
   evidence: .claude/work-queue/assets/WRK-5044/evidence/execute.yaml
 - order: 11
   stage: Artifact Generation
@@ -87,7 +87,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route A — no separate artifacts.
+  comment: "Route A \u2014 no separate artifacts."
   evidence: n/a
 - order: 12
   stage: TDD / Eval
@@ -103,7 +103,7 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Route A — cross-review not required.
+  comment: "Route A \u2014 cross-review not required."
   evidence: n/a
 - order: 14
   stage: Verify Gate Evidence

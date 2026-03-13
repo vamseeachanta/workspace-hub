@@ -14,3 +14,67 @@ signal: verify_gate_evidence_fail
 provider: orchestrator
 notes: phase=close
 
+timestamp: 2026-03-13T03:44:34Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T03:44:34Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T03:44:34Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence
+signal: verify_gate_evidence
+provider: orchestrator
+notes: close gate verified
+
+timestamp: 2026-03-13T03:45:02Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T03:45:03Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T03:45:03Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence
+signal: verify_gate_evidence
+provider: orchestrator
+notes: close gate verified
+
+timestamp: 2026-03-13T03:45:03Z
+wrk_id: WRK-5044
+stage: close
+action: close_item
+signal: close_item
+provider: orchestrator
+notes: work item moved to done
+
+timestamp: 2026-03-13T03:45:03Z
+wrk_id: WRK-5044
+stage: close
+action: close_or_archive
+signal: close_or_archive
+provider: orchestrator
+notes: terminal close signal
+

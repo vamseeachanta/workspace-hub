@@ -5335,5 +5335,14 @@
     "title": "Naval architecture literature gathering \u2014 propeller-rudder interaction",
     "priority": "medium",
     "category": "engineering"
+  },
+  "WRK-5044": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T03:45:04.039084+00:00",
+    "updated_by": "close-item.sh",
+    "title": "fix(cross-review): Codex output format compliance \u2014 structured headings",
+    "priority": "medium",
+    "category": "harness"
   }
 }
