@@ -9,23 +9,23 @@ artifacts_created:
 integrated_repo_tests:
   - name: "doc-extraction skill tests"
     repo: workspace-hub
-    scope: "tests/skills/test_doc_extraction_skill.py"
+    scope: repo
     command: "uv run --no-project python -m pytest tests/skills/test_doc_extraction_skill.py -v"
     result: pass
-    passed: 14
+    passed: 22
     failed: 0
     artifact_ref: "tests/skills/test_doc_extraction_skill.py"
   - name: "all skill tests"
     repo: workspace-hub
-    scope: "tests/skills/"
+    scope: integrated
     command: "uv run --no-project python -m pytest tests/skills/ -v"
     result: pass
-    passed: 14
+    passed: 22
     failed: 0
     artifact_ref: "tests/skills/"
   - name: "line count verification"
     repo: workspace-hub
-    scope: ".claude/skills/engineering/doc-extraction/"
+    scope: repo
     command: "wc -l .claude/skills/engineering/doc-extraction/SKILL.md .claude/skills/engineering/doc-extraction/cp/SKILL.md .claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
     result: pass
     passed: 3

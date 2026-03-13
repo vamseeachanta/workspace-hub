@@ -54,13 +54,71 @@ download \
   "${DEST}/textbooks" \
   "Introduction-to-Naval-Architecture-Comstock-1942.pdf"
 
-# Note: introductiontona0000gill, navalarchitectur0000baxt, principlesofnava0000unse,
-# principlesofnava0000lewi are access-restricted borrow-only items on archive.org — skipped.
+# Note: introductiontona0000gill, navalarchitectur0000baxt are access-restricted borrow-only — skipped.
 
 download \
   "https://archive.org/download/principles-of-naval-architecture-vol-ii-resistance-propulsion-and-vibration/Principles_Of_Naval_Architecture_Vol_II_-_Resistance%2C_Propulsion_and_Vibration.pdf" \
   "${DEST}/textbooks" \
   "Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf"
+
+# ─────────────────────────────────────────────
+# ADDITIONAL RESOURCES (WRK-1151 Step 2 web search)
+# ─────────────────────────────────────────────
+log "--- Additional Resources (web search) ---"
+
+# USNA EN400 — Principles of Ship Performance (full course textbook)
+download \
+  "https://www.usna.edu/NAOE/_files/documents/Courses/EN400/EN400_Course_Notes,_Summer_2020.pdf" \
+  "${DEST}/textbooks" \
+  "USNA-EN400-Principles-Ship-Performance-2020.pdf" || true
+
+# DTIC — Engineering for Ship Production
+download \
+  "https://apps.dtic.mil/sti/pdfs/ADA452843.pdf" \
+  "${DEST}/textbooks" \
+  "DTIC-Engineering-for-Ship-Production.pdf" || true
+
+# DTIC — Small Craft Design Guide (1977)
+download \
+  "https://apps.dtic.mil/sti/tr/pdf/ADA047494.pdf" \
+  "${DEST}/textbooks" \
+  "DTIC-Small-Craft-Design-Guide-1977.pdf" || true
+
+# Attwood — Text-book of Theoretical Naval Architecture (1899, public domain)
+download \
+  "https://www.dieselduck.info/historical/06%20books/1899%20Therory%20of%20Naval%20Architecture.pdf" \
+  "${DEST}/textbooks" \
+  "Theoretical-Naval-Architecture-Attwood-1899.pdf" || true
+
+# University of Michigan — Basic Naval Architecture Vol I
+download \
+  "https://deepblue.lib.umich.edu/bitstream/2027.42/809/2/78490.0001.001.pdf" \
+  "${DEST}/textbooks" \
+  "UMich-Basic-Naval-Architecture-Vol1.pdf" || true
+
+# University of Michigan — Basic Naval Architecture Vol II
+download \
+  "https://deepblue.lib.umich.edu/bitstream/2027.42/810/2/78491.0001.001.pdf" \
+  "${DEST}/textbooks" \
+  "UMich-Basic-Naval-Architecture-Vol2.pdf" || true
+
+# DNV-RP-C205 Environmental Conditions and Environmental Loads (2007)
+download \
+  "https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2007-10/RP-C205.pdf" \
+  "${DEST}/hydrostatics-stability" \
+  "DNV-RP-C205-Environmental-Conditions-Loads-2007.pdf" || true
+
+# DNV-RP-H103 Modelling and Analysis of Marine Operations (2010)
+download \
+  "https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2010-04/RP-H103.pdf" \
+  "${DEST}/hydrostatics-stability" \
+  "DNV-RP-H103-Marine-Operations-2010.pdf" || true
+
+# Ship Structural Analysis and Design (Hughes & Paik)
+download \
+  "https://rexresearch1.com/BoatShipBuildingLibrary/ShipStructuralAnalysisDesign.pdf" \
+  "${DEST}/textbooks" \
+  "Ship-Structural-Analysis-Design-Hughes-Paik.pdf" || true
 
 # ─────────────────────────────────────────────
 # HYDROSTATICS, STABILITY & RESISTANCE
@@ -83,14 +141,43 @@ download \
   "Principles-Naval-Architecture-Ship-Resistance-Flow.pdf"
 
 # ─────────────────────────────────────────────
-# ABS
+# ABS — classification rules (freely downloadable from eagle.org)
 # ─────────────────────────────────────────────
 log "--- ABS ---"
 
 download \
-  "https://ww2.eagle.org/content/dam/eagle/rules-and-resources/RuleManager2/intro/Intro%20to%20ABS%20Rules%20and%20Guides-Jul25.pdf" \
+  "https://ww2.eagle.org/content/dam/eagle/rules-and-resources/RuleManager2/intro-to-abs-rules-and-guides.pdf" \
   "${DEST}/textbooks" \
   "ABS-Intro-to-Rules-and-Guides.pdf"
+
+# ABS Marine Vessel Rules — hull structure (Part 4) — WAF may block wget
+download \
+  "https://ww2.eagle.org/content/dam/eagle/rules-and-guides/current/other/1-rules-for-building-and-classing-marine-vessels-2024/1-mvr-part-4-jan24.pdf" \
+  "${DEST}/textbooks" \
+  "ABS-MVR-Part4-Vessel-Systems-Machinery-2024.pdf" || log "NOTE: ABS WAF blocks wget — download manually via browser"
+
+# ─────────────────────────────────────────────
+# IMO — freely available convention extracts
+# ─────────────────────────────────────────────
+log "--- IMO ---"
+
+# UK MCA guidance on intact stability
+download \
+  "https://assets.publishing.service.gov.uk/media/6441189f22ef3b000f66f5dc/MSIS43_Intact_Stability_R05.23.pdf" \
+  "${DEST}/hydrostatics-stability" \
+  "UK-MCA-MSIS43-Intact-Stability-Guidance.pdf"
+
+# IMO guidelines on intact stability 2014 (maritime mutual copy — may 403)
+download \
+  "https://maritime-mutual.com/wp-content/uploads/2020/06/Vol_3_2014_Guidelines_on_Intact_Stabili.pdf" \
+  "${DEST}/hydrostatics-stability" \
+  "IMO-Guidelines-Intact-Stability-2014.pdf" || log "NOTE: IMO guidelines download failed — try manually"
+
+# SOLAS 2020 consolidated edition (Icelandic maritime authority copy)
+download \
+  "https://www.samgongustofa.is/media/english/SOLAS-2020-Consolidated-Edition.pdf" \
+  "${DEST}/textbooks" \
+  "SOLAS-2020-Consolidated-Edition.pdf" || log "NOTE: SOLAS download failed — try manually"
 
 # ─────────────────────────────────────────────
 # MARITIME.ORG SHIP PLANS (~100 PDFs)

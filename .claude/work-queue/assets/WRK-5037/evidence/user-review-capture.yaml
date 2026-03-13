@@ -1,0 +1,11 @@
+wrk_id: WRK-5037
+stage: 1
+gate: capture
+scope_approved: true
+approved_by: vamsee
+approved_at: "2026-03-12"
+scope_summary: >
+  extract-document.py CLI tool under scripts/data/doc-intelligence/ with
+  pdfplumber PDF, python-docx DOCX, openpyxl XLSX parsers producing
+  extraction manifest YAML. First domain: naval architecture (145 SNAME PDFs).
+acceptance_criteria_count: 7

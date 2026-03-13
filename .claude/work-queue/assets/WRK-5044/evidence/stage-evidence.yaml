@@ -1,5 +1,5 @@
 wrk_id: WRK-5044
-generated_at: '2026-03-13T03:45:03Z'
+generated_at: '2026-03-13T03:47:10Z'
 stages:
 - order: 1
   stage: Capture
@@ -155,7 +155,7 @@ stages:
   evidence: .claude/work-queue/working/WRK-5044.md
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'

@@ -1,15 +1,20 @@
 wrk_id: WRK-1151
-current_stage: 4
-stage_name: Plan Draft
-completed_stage: 3
-next_action: Execute stage 4a (Ideation) and 4b (Artifact write)
+current_stage: 16
+stage_name: Implementation Complete
+completed_stage: 15
+next_action: Cross-review and close
 context_summary: >
-  Triage complete. Route B, medium complexity, ace-linux-1.
-  7 seed URLs + web search for naval architecture PDFs.
-  Download to /mnt/ace/docs/_standards/SNAME/, catalogue to knowledge/seeds/naval-architecture-resources.yaml.
+  145 PDFs on disk in /mnt/ace/docs/_standards/SNAME/ (20 textbooks, 13 hydrostatics,
+  110 ship plans, 1 root-level standard, 1 ABS intro). Catalogue updated at
+  knowledge/seeds/naval-architecture-resources.yaml. Document index regenerated
+  (1,033,933 records, 148 SNAME entries). Download script updated with web search
+  results (USNA EN400, Attwood 1899, Ship Structural Analysis Hughes&Paik,
+  DNV-RP-C205, DNV-RP-H103, UK MCA MSIS43, SOLAS 2020). ABS MVR Part 4, IMO
+  Intact Stability 2014, DTIC x2, UMich x2 blocked by WAF — in pending_manual.
+  All 6 ACs verified passing. Downstream: WRK-5035→5041 doc-intel pipeline.
 entry_reads:
   - .claude/work-queue/working/WRK-1151.md
-  - .claude/work-queue/assets/WRK-1151/evidence/resource-intelligence.yaml
-checkpointed_at: "2026-03-12T18:10:00Z"
+  - knowledge/seeds/naval-architecture-resources.yaml
+  - scripts/data/naval-architecture/download-naval-arch-docs.sh
+checkpointed_at: "2026-03-13T03:10:00Z"
 human_gate: false
-chained_stages: [[2, 3, 4]]

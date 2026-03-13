@@ -1,16 +1,25 @@
+stage: 15
+wrk_id: WRK-5036
 recommendations:
   - id: FW-1
     priority: MEDIUM
     title: "Add golden extraction examples per Codex P3 feedback"
     description: "Add 2-3 fixture-based examples showing source snippet → expected structured output for a table, equation, and requirement"
     disposition: spun-off-new
+    status: captured
+    captured: true
   - id: FW-2
     priority: LOW
     title: "Per-content-type JSON Schema for output validation"
     description: "Define discriminated schema per content_type with required/optional fields"
     disposition: spun-off-new
+    status: captured
+    captured: true
   - id: FW-3
     priority: LOW
     title: "F103 pipeline sub-type disambiguation"
     description: "Determine whether F103 pipeline-specific values use same schema as B401 or separate sub-type"
     disposition: spun-off-new
+    status: captured
+    captured: true
+completed_at: "2026-03-13T03:55:00Z"

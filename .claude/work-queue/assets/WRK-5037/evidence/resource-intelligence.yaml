@@ -1,0 +1,54 @@
+wrk_id: WRK-5037
+stage: 2
+gate: resource-intelligence
+completed_at: "2026-03-12"
+
+existing_assets:
+  doc_extraction_skill: ".claude/skills/engineering/doc-extraction/SKILL.md"
+  domain_subskills: [cp, drilling-riser, naval-architecture]
+  naval_arch_catalogue: "knowledge/seeds/naval-architecture-resources.yaml"
+  gitignore_entry: "data/doc-intelligence/ — already present"
+
+reusable_code:
+  - path: scripts/utilities/doc-to-context/src/doc_to_context.py
+    relevance: HIGH
+    reuse: "Format detection, DocumentMetadata dataclass, lazy imports pattern"
+  - path: scripts/data/document-index/phase-b-extract.py
+    relevance: HIGH
+    reuse: "File extension routing, proven PDF/DOCX/XLSX extraction logic"
+  - path: scripts/data/pipeline/manifest.py
+    relevance: HIGH
+    reuse: "Atomic YAML writes via os.replace()"
+
+dependencies_needed:
+  pdfplumber:
+    min_version: "0.10.0"
+    available_in: [worldenergydata]
+  python-docx:
+    min_version: "0.8.0"
+    available_in: [assetutilities, digitalmodel, assethold]
+  openpyxl:
+    min_version: "3.0.0"
+    available_in: [assetutilities, digitalmodel, assethold]
+  note: "Hub scripts use uv run --no-project; deps via inline script metadata"
+
+predecessor:
+  WRK-5036: "doc-extraction skill (done, commit 9f59975c) — Layer 1-3 extraction taxonomy"
+
+target_domain:
+  name: naval_architecture
+  pdf_count: ~145
+  base_path: /mnt/ace/docs/_standards/SNAME/
+  categories: [textbooks (17), hydrostatics-stability (10), ship-plans (110), regulatory (2), additional (5)]
+
+design_constraints:
+  - "Hub scripts use uv run --no-project (no pyproject.toml at hub root)"
+  - "Manifests written to data/doc-intelligence/manifests/<domain>/ (gitignored)"
+  - "Atomic writes: temp file → os.replace()"
+  - "Align manifest content_types with doc-extraction SKILL.md Layer 1 taxonomy (8 types)"
+  - "One parser class per format for independent TDD testing"
+  - "Confidence scores (high/medium/low) on every extracted item"
+
+manifest_schema_status: "No existing schema — design in Stage 4"
+target_output_dir: "scripts/data/doc-intelligence/"
+manifest_output_dir: "data/doc-intelligence/manifests/"

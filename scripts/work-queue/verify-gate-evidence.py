@@ -2077,6 +2077,87 @@ def _run_stage17_check(args: list[str]) -> int:
     return 0
 
 
+def _parse_gate_statuses(output: str) -> dict[str, str]:
+    """Parse gate output lines into {gate_name: status} dict."""
+    statuses: dict[str, str] = {}
+    for line in output.splitlines():
+        line = line.strip().lstrip("- ")
+        if ": OK (" in line:
+            name = line.split(":")[0].strip()
+            statuses[name] = "OK"
+        elif ": MISSING (" in line:
+            name = line.split(":")[0].strip()
+            statuses[name] = "MISSING"
+        elif ": WARN (" in line:
+            name = line.split(":")[0].strip()
+            statuses[name] = "WARN"
+    return statuses
+
+
+def run_checks_with_retry(
+    wrk_id: str,
+    phase: str = "close",
+    max_retries: int = 1,
+    workspace_root: Path | None = None,
+) -> tuple[int, int]:
+    """Run gate checks with optional retry and diagnostic output.
+
+    Returns (exit_code, attempt_count).
+    Backoff schedule: 1s, 3s, 9s (3^i for i=0,1,2...).
+    """
+    import io
+    import contextlib
+    import time
+
+    prev_statuses: dict[str, str] = {}
+
+    for attempt in range(1, max_retries + 1):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code = run_checks(wrk_id, phase=phase, workspace_root=workspace_root)
+        output = buf.getvalue()
+        current_statuses = _parse_gate_statuses(output)
+
+        if max_retries > 1:
+            print(f"[verify-gate-evidence] attempt={attempt}/{max_retries}")
+
+        # Show delta from previous attempt
+        if prev_statuses and attempt > 1:
+            for gate, status in current_statuses.items():
+                prev = prev_statuses.get(gate)
+                if prev and prev != status:
+                    print(f"  delta: {gate}: {prev} -> {status}")
+
+        # On failure, show only MISSING gates (not full output)
+        if code != 0:
+            missing = [g for g, s in current_statuses.items() if s == "MISSING"]
+            if missing:
+                print(f"  unmet gates: {missing}")
+        else:
+            # On success, print full output
+            print(output, end="")
+
+        if code == 0:
+            return 0, attempt
+
+        prev_statuses = current_statuses
+
+        # Backoff before next attempt (not after last)
+        if attempt < max_retries:
+            delay = 3 ** (attempt - 1)  # 1, 3, 9
+            time.sleep(delay)
+
+    if max_retries > 1:
+        missing = [g for g, s in prev_statuses.items() if s == "MISSING"]
+        print(
+            f"[verify-gate-evidence] FAILED after {max_retries}/{max_retries} attempts. "
+            f"Unmet gates: {missing}",
+            file=sys.stderr,
+        )
+
+    return 1, max_retries
+
+
 def run_checks_json(wrk_id: str, phase: str = "close") -> int:
     """D14 — JSON-mode gate check. Writes one JSON line to stdout; exit 0/1.
 
@@ -2126,18 +2207,35 @@ def main() -> None:
     if use_json:
         args = [a for a in args if a != "--json"]
 
+    # WRK-1160 — --retry N: retry with exponential backoff and diagnostics
+    max_retries = 1
+    if "--retry" in args:
+        idx = args.index("--retry")
+        if idx + 1 < len(args):
+            try:
+                max_retries = int(args[idx + 1])
+            except ValueError:
+                print("--retry requires an integer argument", file=sys.stderr)
+                sys.exit(1)
+            args = args[:idx] + args[idx + 2:]
+        else:
+            print("--retry requires an integer argument", file=sys.stderr)
+            sys.exit(1)
+
     if len(args) not in {1, 3}:
-        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--json]")
+        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--retry N] [--json]")
         sys.exit(1)
     wrk_id = args[0]
     phase = "close"
     if len(args) == 3:
         if args[1] != "--phase" or args[2] not in {"claim", "close", "archive"}:
-            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--json]")
+            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close|archive] [--retry N] [--json]")
             sys.exit(1)
         phase = args[2]
     if use_json:
         code = run_checks_json(wrk_id, phase=phase)
+    elif max_retries > 1:
+        code, _attempts = run_checks_with_retry(wrk_id, phase=phase, max_retries=max_retries)
     else:
         code = run_checks(wrk_id, phase=phase)
     sys.exit(code)

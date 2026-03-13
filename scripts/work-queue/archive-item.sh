@@ -54,7 +54,7 @@ fi
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_start" "orchestrator" "phase=archive"
 fi
-if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase archive; then
+if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase archive --retry 3; then
   if [[ -x "$GATE_LOGGER" ]]; then
     bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_fail" "orchestrator" "phase=archive"
   fi

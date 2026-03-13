@@ -1290,3 +1290,125 @@ def test_run_stage17_check_exit_code_mapping(tmp_path: Path, monkeypatch):
         with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
             ret = mod._run_stage17_check(["WRK-999"])
     assert ret == 2, f"expected 2 (infra fail), got {ret}"
+
+
+# ---------------------------------------------------------------------------
+# WRK-1160 — retry mode tests
+# ---------------------------------------------------------------------------
+
+
+def test_run_checks_with_retry_passes_immediately_on_success():
+    """When all gates pass on first attempt, retry exits with 0 and attempt=1."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    with unittest.mock.patch.object(mod, "run_checks", return_value=0) as mock_rc:
+        code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=3)
+
+    assert code == 0
+    assert attempts == 1
+    mock_rc.assert_called_once()
+
+
+def test_run_checks_with_retry_caps_at_max_retries():
+    """When gates never pass, retry stops at max_retries and returns failure."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    with unittest.mock.patch.object(mod, "run_checks", return_value=1):
+        with unittest.mock.patch("time.sleep") as mock_sleep:
+            code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=3)
+
+    assert code == 1
+    assert attempts == 3
+    # Backoff: sleep(1), sleep(3) — no sleep after last attempt
+    assert mock_sleep.call_count == 2
+    mock_sleep.assert_any_call(1)
+    mock_sleep.assert_any_call(3)
+
+
+def test_run_checks_with_retry_heals_on_second_attempt():
+    """When gates fail first but pass second, retry returns success with attempt=2."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    call_count = {"n": 0}
+
+    def side_effect(*args, **kwargs):
+        call_count["n"] += 1
+        return 1 if call_count["n"] == 1 else 0
+
+    with unittest.mock.patch.object(mod, "run_checks", side_effect=side_effect):
+        with unittest.mock.patch("time.sleep"):
+            code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=3)
+
+    assert code == 0
+    assert attempts == 2
+
+
+def test_run_checks_with_retry_no_retry_flag_single_run():
+    """max_retries=1 means single run, no retry (backward compat)."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    with unittest.mock.patch.object(mod, "run_checks", return_value=1):
+        with unittest.mock.patch("time.sleep") as mock_sleep:
+            code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=1)
+
+    assert code == 1
+    assert attempts == 1
+    mock_sleep.assert_not_called()
+
+
+def test_run_checks_with_retry_captures_failed_gates(capsys):
+    """Failed gates are listed in diagnostic output on each attempt."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    def fake_run_checks(wrk_id, phase="close", workspace_root=None):
+        print("  - Plan gate: MISSING (reviewed=False)")
+        print("  - TDD gate: OK (test files=['ac-test-matrix.md'])")
+        return 1
+
+    with unittest.mock.patch.object(mod, "run_checks", side_effect=fake_run_checks):
+        with unittest.mock.patch("time.sleep"):
+            code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=2)
+
+    assert code == 1
+    captured = capsys.readouterr()
+    assert "attempt=1/2" in captured.out
+    assert "Plan gate" in captured.out
+
+
+def test_run_checks_with_retry_shows_delta_on_heal(capsys):
+    """When a gate heals between attempts, delta output is printed."""
+    import unittest.mock
+
+    mod = _load_verify_module()
+
+    call_count = {"n": 0}
+
+    def fake_run_checks(wrk_id, phase="close", workspace_root=None):
+        call_count["n"] += 1
+        if call_count["n"] == 1:
+            print("  - Plan gate: MISSING (reviewed=False)")
+            print("  - TDD gate: MISSING (none)")
+            return 1
+        else:
+            print("  - Plan gate: OK (reviewed=True)")
+            print("  - TDD gate: MISSING (none)")
+            return 1
+
+    with unittest.mock.patch.object(mod, "run_checks", side_effect=fake_run_checks):
+        with unittest.mock.patch("time.sleep"):
+            code, attempts = mod.run_checks_with_retry("WRK-TEST", phase="close", max_retries=2)
+
+    captured = capsys.readouterr()
+    # Should show that Plan gate healed
+    assert "Plan gate" in captured.out
+    assert "MISSING" in captured.out and "OK" in captured.out

@@ -230,7 +230,7 @@ echo "Running gate evidence validator for ${WRK_ID} before close..."
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_start" "orchestrator" "phase=close"
 fi
-if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close; then
+if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close --retry 3; then
   if [[ -x "$GATE_LOGGER" ]]; then
     bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_fail" "orchestrator" "phase=close"
   fi
