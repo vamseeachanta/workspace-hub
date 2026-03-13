@@ -1,0 +1,17 @@
+wrk_id: WRK-5035
+events:
+  - stage: plan_draft
+    opened_at: "2026-03-12T14:25:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5035/WRK-5035-plan.html"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_at: "2026-03-12T14:26:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5035/WRK-5035-plan.html"
+    reviewer: vamsee
+  - stage: close_review
+    opened_at: "2026-03-12T14:42:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5035/WRK-5035-lifecycle.html"
+    reviewer: vamsee

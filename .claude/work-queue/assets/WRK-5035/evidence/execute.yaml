@@ -1,0 +1,29 @@
+wrk_id: WRK-5035
+stage: 10
+executed_at: "2026-03-12T14:40:00Z"
+completed_at: "2026-03-12T14:40:00Z"
+integrated_repo_tests:
+  - name: "gitignore scaffold shell tests"
+    scope: repo
+    command: "bash tests/doc-intel/test_gitignore_scaffold.sh"
+    result: pass
+    artifact_ref: "tests/doc-intel/test_gitignore_scaffold.sh"
+  - name: "git check-ignore promoted directory"
+    scope: integrated
+    command: "git check-ignore data/standards/promoted/example.csv"
+    result: pass
+    artifact_ref: ".gitignore"
+  - name: "git check-ignore doc-intelligence directory"
+    scope: integrated
+    command: "git check-ignore data/doc-intelligence/test.json"
+    result: pass
+    artifact_ref: ".gitignore"
+commit: 38b93656
+summary: |
+  Added data/standards/promoted/* gitignore pattern with .gitkeep negation.
+  Scaffolded data/standards/promoted/ directory.
+  8 TDD shell tests all passing.
+artifacts:
+  - .gitignore
+  - data/standards/promoted/.gitkeep
+  - tests/doc-intel/test_gitignore_scaffold.sh

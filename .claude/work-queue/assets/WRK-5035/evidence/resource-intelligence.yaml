@@ -1,0 +1,15 @@
+wrk_id: WRK-5035
+stage: 2
+completed_at: "2026-03-12T14:30:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+sources_consulted:
+  - specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+  - .gitignore
+  - .claude/work-queue/pending/WRK-5040.md
+findings: "data/standards/promoted/ referenced by WRK-5040 AC but not in WRK-1113 spec. WRK-5035 owns the design decision."
+skills:
+  core_used:
+    - work-queue
+    - doc-extraction
+    - comprehensive-learning

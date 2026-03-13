@@ -1,0 +1,10 @@
+wrk_id: WRK-5035
+tests:
+  - file: tests/doc-intel/test_gitignore_scaffold.sh
+    framework: bash
+    total: 8
+    passed: 8
+    failed: 0
+run_at: "2026-03-12T14:42:00Z"
+command: "bash tests/doc-intel/test_gitignore_scaffold.sh"
+result: pass

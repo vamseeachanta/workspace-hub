@@ -1,8 +1,11 @@
 wrk_id: WRK-5035
-future_work:
+recommendations:
   - id: FW-1
     title: "skill(doc-intel): gitignore-scaffold skill for doc-intel directory setup"
     priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
     description: |
       Codify the gitignore pattern + directory scaffold process into a reusable skill.
       Covers: when to use directory/* vs directory/ patterns, .gitkeep negation,
@@ -12,6 +15,9 @@ future_work:
   - id: FW-2
     title: "skill(tdd-shell): shell TDD test harness patterns"
     priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
     description: |
       Codify the shell-based TDD test pattern used in WRK-5035: pass/fail counters,
       git check-ignore assertions, scaffold existence checks, regression guards.

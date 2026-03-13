@@ -1,0 +1,9 @@
+wrk_id: WRK-5035
+stage: 8
+activated_at: "2026-03-12T14:35:00Z"
+activated_by: claude
+route: A
+computer: ace-linux-1
+set_active_wrk: true
+session_id: "ace-linux-1-2026-03-12T14:25:00Z"
+orchestrator_agent: claude

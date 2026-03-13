@@ -1,6 +1,7 @@
 reviewer: vamsee
 plan_approved: true
-reviewed_at: "2026-03-12T00:00:00Z"
+approval_decision: approve_as_is
+reviewed_at: "2026-03-12T14:33:00Z"
 notes: |
   Flat data/standards/promoted/ with .gitkeep. WRK-5035 owns this design decision
   (not retrofitted to archived WRK-1113). Future work items for skills to be captured

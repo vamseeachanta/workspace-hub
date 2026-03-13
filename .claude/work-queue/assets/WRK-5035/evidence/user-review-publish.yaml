@@ -1,0 +1,29 @@
+wrk_id: WRK-5035
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 38b93656
+    documents:
+      - ".claude/work-queue/assets/WRK-5035/WRK-5035-plan.html"
+    published_at: "2026-03-12T14:33:30Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 38b93657
+    documents:
+      - ".claude/work-queue/assets/WRK-5035/WRK-5035-plan.html"
+    published_at: "2026-03-12T14:34:30Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 38b93658
+    documents:
+      - ".claude/work-queue/assets/WRK-5035/WRK-5035-lifecycle.html"
+    published_at: "2026-03-12T14:49:00Z"
+    reviewer: vamsee
