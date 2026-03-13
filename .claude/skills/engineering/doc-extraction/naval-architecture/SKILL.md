@@ -46,7 +46,7 @@ the SNAME/IMO/IACS reference library.
 - Ingesting classification society structural rules (ABS, DNV, LR, BV)
 - Extracting resistance estimation data (Holtrop-Mennen, ITTC)
 - Building hull form parameter databases from general arrangement plans
-- Processing hydrostatic curves from inclining experiment reports
+- Processing hydrostatic curves from stability booklets and design documents
 
 ## Source Code Alignment
 
@@ -89,7 +89,8 @@ Metacentric height and related parameters for intact and damage stability.
 **GZ curve extraction** (from cross-curves or direct calculation):
 - Detect heel angle vs righting arm tabulations
 - Extract: angle[], GZ[], area_under_curve, maximum_GZ, angle_of_vanishing_stability
-- Flag if GZ_max < 0.20 m or vanishing angle < 57 deg (IMO screening)
+- Flag against IMO 2008 IS Code Part A criteria: GZ at 30 deg >= 0.20 m,
+  area to 30 deg >= 0.055 m-rad, angle of max GZ >= 25 deg (see table below)
 
 ### Resistance Equations
 
