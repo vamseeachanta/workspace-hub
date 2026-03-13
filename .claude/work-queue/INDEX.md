@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T12:15:03Z by generate-index.py -->
+<!-- Generated: 2026-03-13T15:19:31Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T12:15:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T15:19:31Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 624
+**Total items:** 625
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 241 |
+| pending | 242 |
 | working | 3 |
 | blocked | 10 |
 | done | 1 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 275 |
+| high | 276 |
 | medium | 294 |
 | low | 54 |
 
@@ -33,7 +33,7 @@
 |------------|-------|
 | simple | 143 |
 | medium | 290 |
-| complex | 122 |
+| complex | 123 |
 
 ### By Category
 
@@ -43,7 +43,7 @@
 |----------|-------------|
 | harness | 30 |
 | engineering | 135 |
-| data | 24 |
+| data | 25 |
 | platform | 13 |
 | business | 6 |
 | maintenance | 5 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 256 |
+| workspace-hub | 257 |
 | worldenergydata | 103 |
 
 ### Plan Tracking
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 265 / 624 |
+| Plans exist | 265 / 625 |
 | Plans cross-reviewed | 189 |
 | Plans approved | 212 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 624 |
+| Total captured | 625 |
 | Total archived | 369 |
-| Completion rate | 369/624 (59%) |
+| Completion rate | 369/625 (59%) |
 | Monthly rate (current month) | 127 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 74 / 241 | 31% |
+| Pending items with plans | 74 / 242 | 31% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -119,7 +119,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 93 | 2 | 8 |
+| High     | 94 | 2 | 8 |
 | Medium   | 111  | 1  | 1  |
 | Low      | 37  | 0  | 1  |
 
@@ -471,7 +471,7 @@
 |----|----------|-------|--------|
 | WRK-688 | MEDIUM | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending |
 
-### data (24 items — 11 high, 12 medium, 1 low)
+### data (25 items — 12 high, 12 medium, 1 low)
 
 #### data / document-intelligence
 
@@ -479,6 +479,7 @@
 |----|----------|-------|--------|
 | WRK-547 | HIGH | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
 | WRK-548 | HIGH | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
+| WRK-1170 | HIGH | Analyze mounted-drive documents and establish domain classification for each | pending |
 | WRK-541 | MEDIUM | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-542 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-545 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending |
@@ -1246,6 +1247,7 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1507,6 +1509,7 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | high | medium | digitalmodel, workspace-hub | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | medium | medium | workspace-hub | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | high | medium | workspace-hub | - |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | high | complex | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -2611,6 +2614,7 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | high | medium | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | - |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3012,6 +3016,7 @@
 | WRK-1163 | IEC 61850 GOOSE messaging model | pending | medium | digitalmodel | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | medium | workspace-hub | - |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | complex | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3933,6 +3938,7 @@
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | digitalmodel | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | digitalmodel | - |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
@@ -3953,7 +3959,7 @@
 
 ## By Computer
 
-### ace-linux-1 (190 active / 343 total)
+### ace-linux-1 (191 active / 344 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4266,6 +4272,7 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | high | medium | digitalmodel, workspace-hub |
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | workspace-hub |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | workspace-hub |
+| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |

@@ -60,8 +60,8 @@ Every WRK item **should** set `computer:` in frontmatter. Leave blank only for m
 | Device | Size | Type | Model | Notes |
 |--------|------|------|-------|-------|
 | sdb | 465.8 GB | SSD | Samsung 870 EVO 500GB | OS / boot (from spare inventory) |
-| sda | 931.5 GB | HDD | WDC WD10EZEX | /media/vamsee/Local Analysis |
-| sdc | 2.7 TB | HDD | Seagate ST3000NC002 | /media/vamsee/DDE |
+| sda | 931.5 GB | HDD | WDC WD10EZEX | /mnt/local-analysis |
+| sdc | 2.7 TB | HDD | Seagate ST3000NC002 | /mnt/dde |
 
 ## WRK Item Integration
 

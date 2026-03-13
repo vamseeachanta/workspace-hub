@@ -33,8 +33,8 @@ work_item: WRK-050
 | Device | Size | Model | Serial | Transport | Mount Point | Usage |
 |--------|------|-------|--------|-----------|-------------|-------|
 | /dev/sdb | 465.8 GB | Samsung SSD 870 EVO 500GB | S6PXNM0TB13548D | SATA | / (root) | 19 GB / 458 GB (5%) |
-| /dev/sda | 931.5 GB | WDC WD10EZEX-21M2NA0 | WCC3F6EFP0TX | SATA | /media/vamsee/Local Analysis | 441 GB / 932 GB (48%) |
-| /dev/sdc | 2.7 TB | ST3000NC002-1DY166 | Z1F2GEBF | SATA | /media/vamsee/DDE | 2.0 TB / 2.8 TB (70%) |
+| /dev/sda | 931.5 GB | WDC WD10EZEX-21M2NA0 | WCC3F6EFP0TX | SATA | /mnt/local-analysis | 441 GB / 932 GB (48%) |
+| /dev/sdc | 2.7 TB | ST3000NC002-1DY166 | Z1F2GEBF | SATA | /mnt/dde | 2.0 TB / 2.8 TB (70%) |
 
 ### SMART Health (assessed 2026-02-21 via udisks2, WRK-293)
 
