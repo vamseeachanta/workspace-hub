@@ -1,0 +1,27 @@
+stage: 10
+provider: claude
+commit: 05e7e626
+files_changed:
+  - scripts/review/submit-to-codex.sh
+  - tests/review/test-submit-scripts.sh
+integrated_repo_tests:
+  - name: "T24 codex --commit invalid SHA"
+    scope: integrated
+    command: "bash tests/review/test-submit-scripts.sh"
+    result: pass
+    artifact_ref: "tests/review/test-submit-scripts.sh:T24"
+  - name: "T25 codex --commit structured pipeline"
+    scope: integrated
+    command: "bash tests/review/test-submit-scripts.sh"
+    result: pass
+    artifact_ref: "tests/review/test-submit-scripts.sh:T25"
+  - name: "T15 codex fixture render+validate"
+    scope: integrated
+    command: "bash tests/review/test-submit-scripts.sh"
+    result: pass
+    artifact_ref: "tests/review/test-submit-scripts.sh:T15"
+summary: >
+  Routed codex --commit through structured exec pipeline (codex exec
+  --output-schema + render-structured-review.py) instead of free-form
+  codex review --commit. Added T24-T25 tests for codex --commit path.
+completed_at: "2026-03-12T22:21:57Z"

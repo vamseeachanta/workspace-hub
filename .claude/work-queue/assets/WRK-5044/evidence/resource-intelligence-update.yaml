@@ -1,0 +1,6 @@
+stage: 16
+wrk_id: WRK-5044
+no_additions_rationale: >
+  No resource intelligence updates needed. The codex exec --output-schema
+  pipeline was already documented; this fix simply routes --commit through it.
+completed_at: "2026-03-12T22:30:00Z"

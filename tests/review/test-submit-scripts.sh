@@ -295,6 +295,25 @@ PROVIDERS
   assert_not_contains "T23: no nested-session error" "nested session" "$combined"
 }
 
+# ── T24: codex --commit with invalid SHA → exit 1 ────────────────────────────
+{
+  ec=0; out=$(bash "$SCRIPTS/submit-to-codex.sh" \
+    --commit "not-a-sha!!!" --prompt "p" 2>&1) || ec=$?
+  assert_exit "T24: codex --commit invalid SHA → exit 1" 1 "$ec"
+  assert_contains "T24: codex --commit invalid SHA → message" "invalid commit SHA" "$out"
+}
+
+# ── T25: codex --commit with valid SHA routes through structured pipeline ────
+{
+  # Use HEAD commit; codex CLI not installed → exit 2 with "COMPULSORY" message
+  # This proves the --commit path converts to diff and falls through to --file path
+  head_sha="$(git rev-parse --short HEAD)"
+  ec=0; out=$(CODEX_BIN=__no_codex__ bash "$SCRIPTS/submit-to-codex.sh" \
+    --commit "$head_sha" --prompt "p" 2>&1) || ec=$?
+  assert_exit "T25: codex --commit valid SHA, no CLI → exit 2" 2 "$ec"
+  assert_contains "T25: codex --commit valid SHA → compulsory message" "CODEX REVIEW IS COMPULSORY" "$out"
+}
+
 # ── summary ───────────────────────────────────────────────────────────────────
 echo ""
 echo "Results: ${PASS} passed  ${FAIL} failed  (total $((PASS+FAIL)))"

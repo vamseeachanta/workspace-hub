@@ -1,0 +1,17 @@
+stage: 2
+completion_status: continue_to_planning
+searched:
+  - scripts/review/submit-to-codex.sh
+  - scripts/review/validate-review-output.sh
+  - scripts/review/render-structured-review.py
+  - tests/review/test-submit-scripts.sh
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+findings: >
+  submit-to-codex.sh --commit path used codex review --commit (free-form).
+  The --file path already uses codex exec --output-schema + renderer.
+  Fix: convert commit to diff, route through same pipeline.
+completed_at: "2026-03-12T22:00:00Z"

@@ -1,0 +1,8 @@
+stage: 15
+wrk_id: WRK-5044
+recommendations: []
+no_follow_ups_rationale: >
+  Fix is self-contained — the --commit path now shares the same structured
+  codex exec --output-schema + render-structured-review.py pipeline as --file.
+  No additional work needed.
+completed_at: "2026-03-12T22:30:00Z"

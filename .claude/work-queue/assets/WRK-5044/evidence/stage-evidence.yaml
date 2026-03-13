@@ -1,0 +1,62 @@
+wrk_id: WRK-5044
+stages:
+  1:
+    status: done
+    evidence: evidence/user-review-capture.yaml
+  2:
+    status: done
+    evidence: evidence/resource-intelligence.yaml
+  3:
+    status: done
+    evidence: n/a
+  4:
+    status: done
+    evidence: n/a
+  5:
+    status: n/a
+    evidence: n/a
+  6:
+    status: n/a
+    evidence: n/a
+  7:
+    status: n/a
+    evidence: n/a
+  8:
+    status: done
+    evidence: evidence/activation.yaml
+  9:
+    status: done
+    evidence: n/a
+  10:
+    status: done
+    evidence: evidence/execute.yaml
+  11:
+    status: n/a
+    evidence: n/a
+  12:
+    status: done
+    evidence: evidence/ac-test-matrix.md
+  13:
+    status: n/a
+    evidence: n/a
+  14:
+    status: done
+    evidence: evidence/legal-scan.yaml
+  15:
+    status: done
+    evidence: evidence/future-work.yaml
+  16:
+    status: done
+    evidence: evidence/resource-intelligence-update.yaml
+  17:
+    status: pending
+    evidence: n/a
+  18:
+    status: n/a
+    evidence: n/a
+  19:
+    status: pending
+    evidence: n/a
+  20:
+    status: pending
+    evidence: n/a
