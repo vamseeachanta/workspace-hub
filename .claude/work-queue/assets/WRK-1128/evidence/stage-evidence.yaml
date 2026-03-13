@@ -1,101 +1,103 @@
 wrk_id: WRK-1128
 stages:
-  - order: 1
-    stage: "Capture"
-    status: done
-    completed_at: "2026-03-13T09:10:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-capture.yaml
-  - order: 2
-    stage: "Resource Intelligence"
-    status: done
-    completed_at: "2026-03-13T09:20:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/resource-intelligence.yaml
-  - order: 3
-    stage: "Triage"
-    status: done
-    completed_at: "2026-03-13T09:21:00Z"
-    evidence: route B set in WRK frontmatter
-  - order: 4
-    stage: "Plan Draft"
-    status: done
-    completed_at: "2026-03-13T09:22:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/plan-html-review-final.md
-  - order: 5
-    stage: "User Review Plan Draft"
-    status: done
-    completed_at: "2026-03-13T09:25:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-plan-draft.yaml
-  - order: 6
-    stage: "Cross-Review"
-    status: done
-    completed_at: "2026-03-13T09:27:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/cross-review.yaml
-  - order: 7
-    stage: "User Review Plan Final"
-    status: done
-    completed_at: "2026-03-13T09:28:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/plan-final-review.yaml
-  - order: 8
-    stage: "Claim/Activation"
-    status: done
-    completed_at: "2026-03-13T09:32:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/activation.yaml
-  - order: 9
-    stage: "Work-Queue Routing"
-    status: done
-    completed_at: "2026-03-13T09:32:30Z"
-    evidence: .claude/work-queue/logs/WRK-1128-routing.log
-  - order: 10
-    stage: "Work Execution"
-    status: done
-    completed_at: "2026-03-13T09:34:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/execute.yaml
-  - order: 11
-    stage: "Artifact Generation"
-    status: done
-    completed_at: "2026-03-13T09:34:10Z"
-    evidence: .claude/work-queue/assets/WRK-1128/WRK-1128-lifecycle.html
-  - order: 12
-    stage: "TDD / Eval"
-    status: done
-    completed_at: "2026-03-13T09:34:20Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/tdd.yaml
-  - order: 13
-    stage: "Agent Cross-Review"
-    status: done
-    completed_at: "2026-03-13T09:34:30Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/cross-review-impl.yaml
-  - order: 14
-    stage: "Verify Gate Evidence"
-    status: done
-    completed_at: "2026-03-13T09:34:40Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/gate-evidence-summary.md
-  - order: 15
-    stage: "Future Work Synthesis"
-    status: done
-    completed_at: "2026-03-13T09:34:50Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/future-work.yaml
-  - order: 16
-    stage: "Resource Intelligence Update"
-    status: done
-    completed_at: "2026-03-13T09:35:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/resource-intelligence-update.yaml
-  - order: 17
-    stage: "User Review Implementation"
-    status: done
-    completed_at: "2026-03-13T09:35:30Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-close.yaml
-  - order: 18
-    stage: "Reclaim"
-    status: n/a
-    evidence: "n/a"
-  - order: 19
-    stage: "Close"
-    status: done
-    completed_at: "2026-03-13T09:36:00Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/archive-tooling.yaml
-  - order: 20
-    stage: "Archive"
-    status: done
-    completed_at: "2026-03-13T09:36:30Z"
-    evidence: .claude/work-queue/assets/WRK-1128/evidence/archive-tooling.yaml
+- order: 1
+  stage: Capture
+  status: done
+  completed_at: '2026-03-13T09:10:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  completed_at: '2026-03-13T09:20:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  completed_at: '2026-03-13T09:21:00Z'
+  evidence: route B set in WRK frontmatter
+- order: 4
+  stage: Plan Draft
+  status: done
+  completed_at: '2026-03-13T09:22:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/plan-html-review-final.md
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  completed_at: '2026-03-13T09:25:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  completed_at: '2026-03-13T09:27:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/cross-review.yaml
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  completed_at: '2026-03-13T09:28:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim/Activation
+  status: done
+  completed_at: '2026-03-13T09:32:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  completed_at: '2026-03-13T09:32:30Z'
+  evidence: .claude/work-queue/logs/WRK-1128-routing.log
+- order: 10
+  stage: Work Execution
+  status: done
+  completed_at: '2026-03-13T09:34:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  completed_at: '2026-03-13T09:34:10Z'
+  evidence: .claude/work-queue/assets/WRK-1128/WRK-1128-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  completed_at: '2026-03-13T09:34:20Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/tdd.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  completed_at: '2026-03-13T09:34:30Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/cross-review-impl.yaml
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  completed_at: '2026-03-13T09:34:40Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/gate-evidence-summary.md
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  completed_at: '2026-03-13T09:34:50Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  completed_at: '2026-03-13T09:35:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  completed_at: '2026-03-13T09:35:30Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  completed_at: '2026-03-13T09:36:00Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/archive-tooling.yaml
+- order: 20
+  stage: Archive
+  status: done
+  completed_at: '2026-03-13T09:36:30Z'
+  evidence: .claude/work-queue/assets/WRK-1128/evidence/archive-tooling.yaml
+generated_at: '2026-03-13T09:47:16Z'
+reviewed_by: orchestrator
