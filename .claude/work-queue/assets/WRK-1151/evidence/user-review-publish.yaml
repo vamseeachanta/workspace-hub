@@ -1,0 +1,31 @@
+wrk_id: WRK-1151
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "709e9175"
+    documents:
+      - ".claude/work-queue/working/WRK-1151.md"
+    published_at: "2026-03-12T12:05:00+00:00"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "9ea09625"
+    documents:
+      - ".claude/work-queue/working/WRK-1151.md"
+      - ".claude/work-queue/assets/WRK-1151/evidence/plan.yaml"
+    published_at: "2026-03-12T12:10:00+00:00"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "394a80a9"
+    documents:
+      - "knowledge/seeds/naval-architecture-resources.yaml"
+      - "scripts/data/naval-architecture/download-naval-arch-docs.sh"
+    published_at: "2026-03-13T10:15:00+00:00"
+    reviewer: vamsee

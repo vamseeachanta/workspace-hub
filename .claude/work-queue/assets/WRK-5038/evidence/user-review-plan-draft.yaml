@@ -1,0 +1,11 @@
+stage: 5
+wrk_id: WRK-5038
+reviewer: vamsee
+decision: approved
+scope_approved: true
+reviewed_at: "2026-03-13T04:00:00Z"
+plan_source: conversation-provided
+notes: >
+  User provided full implementation plan in conversation. Plan covers:
+  classifiers.py (6 heuristic classifiers), index_builder.py (core builder),
+  build-doc-intelligence.py (CLI), TDD tests. Approved as-is.

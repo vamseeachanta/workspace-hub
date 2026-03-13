@@ -1,0 +1,15 @@
+wrk_id: WRK-5041
+stage: 4
+gate: plan-draft
+completed_at: "2026-03-13"
+plan_source: user-provided
+plan_location: inline (user prompt at session start)
+plan_steps: 6
+files_to_create: 7
+files_to_modify: 2
+tdd_steps: 6
+dependencies: [requests, beautifulsoup4]
+notes: >
+  Full architecture plan provided by user — extend existing parser registry
+  with HtmlParser, add UrlFetcher with caching/robots.txt, CLI entry point
+  with HTML vs PDF routing.

@@ -12,6 +12,26 @@ downloads:
     - "PNA Vol III (motions) — borrow-only on archive.org"
     - "Gillmer Introduction to Naval Architecture — borrow-only on archive.org"
 
+integrated_repo_tests:
+  - name: download-script-dry-run
+    scope: repo
+    command: bash scripts/data/naval-architecture/download-naval-arch-docs.sh --dry-run
+    result: pass
+    artifact_ref: evidence/execute.yaml
+    notes: Download script dry-run validates URL list and target directory
+  - name: document-index-integrity
+    scope: repo
+    command: uv run --no-project python scripts/data/document-index/phase-e2-remap.py --check
+    result: pass
+    artifact_ref: evidence/execute.yaml
+    notes: Document index integrity check after regeneration
+  - name: legal-sanity-scan
+    scope: integrated
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: pass
+    artifact_ref: legal-scan.md
+    notes: Legal scan on WRK-1151 assets — no violations
+
 destination: /mnt/ace/docs/_standards/SNAME/
 catalogue: knowledge/seeds/naval-architecture-resources.yaml
 download_script: scripts/data/naval-architecture/download-naval-arch-docs.sh

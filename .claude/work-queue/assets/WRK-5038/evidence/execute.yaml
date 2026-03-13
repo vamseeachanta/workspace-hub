@@ -1,0 +1,28 @@
+stage: 10
+wrk_id: WRK-5038
+executed_at: "2026-03-13T03:50:00Z"
+files_created:
+  - scripts/data/doc_intelligence/classifiers.py
+  - scripts/data/doc_intelligence/index_builder.py
+  - scripts/data/doc-intelligence/build-doc-intelligence.py
+  - tests/data/doc_intelligence/test_classifiers.py
+  - tests/data/doc_intelligence/test_index_builder.py
+  - tests/data/doc_intelligence/fixtures/mixed-content.manifest.yaml
+  - tests/data/doc_intelligence/fixtures/tables-only.manifest.yaml
+  - tests/data/doc_intelligence/fixtures/empty.manifest.yaml
+files_modified: []
+files_reused:
+  - scripts/data/doc_intelligence/schema.py
+  - scripts/data/doc_intelligence/utils.py
+test_results:
+  total: 49
+  passed: 49
+  failed: 0
+real_data_verification:
+  manifest: data/doc-intelligence/manifests/naval-architecture/ABS-Intro-to-Rules-and-Guides.manifest.yaml
+  tables_extracted: 6
+  incremental_verified: true
+bug_found_and_fixed:
+  description: "Incremental runs overwrote JSONL indexes with empty content (skipped manifests didn't populate accumulators)"
+  fix: "Always accumulate from all manifests; checksum only controls stats + CSV rewrites"
+  regression_test_added: test_content_survives_incremental

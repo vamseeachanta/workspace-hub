@@ -414,10 +414,10 @@
     "category": "harness"
   },
   "WRK-1140": {
-    "status": "pending",
+    "status": "done",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:32.616406+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-13T08:54:12.299008+00:00",
+    "updated_by": "close-item.sh",
     "title": "feat(automation): nightly cron job \u2014 release-notes scan and WRK capture",
     "priority": "medium",
     "category": "harness"
@@ -5379,6 +5379,24 @@
     "updated_by": "close-item.sh",
     "title": "Gate verification retry noise \u2014 add diagnostics and cap retries",
     "priority": "high",
+    "category": "work-queue"
+  },
+  "WRK-1151": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T08:44:28.123856+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Collect and download naval architecture resources to document-intelligence",
+    "priority": "medium",
+    "category": "research"
+  },
+  "WRK-1161": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T08:52:45.479583+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Suppress non-actionable CLI stderr noise in work-queue scripts",
+    "priority": "medium",
     "category": "work-queue"
   }
 }

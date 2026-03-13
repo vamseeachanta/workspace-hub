@@ -1,5 +1,5 @@
 wrk_id: WRK-1140
-generated_at: '2026-03-13T08:40:00Z'
+generated_at: '2026-03-13T08:54:12Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -58,7 +58,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Route B — plan approved with capture.
+  comment: "Route B \u2014 plan approved with capture."
   evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-capture.yaml
 - order: 8
   stage: Claim / Activation
@@ -106,7 +106,8 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: "Claude=APPROVE, Codex=REQUEST_CHANGES\u2192APPROVE (post-fix), Gemini=MINOR (addressed). All findings fixed."
+  comment: "Claude=APPROVE, Codex=REQUEST_CHANGES\u2192APPROVE (post-fix), Gemini=MINOR\
+    \ (addressed). All findings fixed."
   evidence: .claude/work-queue/assets/WRK-1140/evidence/cross-review.yaml
 - order: 14
   stage: Verify Gate Evidence
@@ -138,7 +139,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: 'User approved implementation.'
+  comment: User approved implementation.
   evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
@@ -154,7 +155,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: 'Closing after Stage 17 user approval.'
+  comment: Closing after Stage 17 user approval.
   evidence: .claude/work-queue/assets/WRK-1140/evidence/gate-evidence-summary.json
 - order: 20
   stage: Archive
@@ -162,5 +163,5 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: 'Archived.'
+  comment: Archived.
   evidence: .claude/work-queue/assets/WRK-1140/evidence/gate-evidence-summary.json

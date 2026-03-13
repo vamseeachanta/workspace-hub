@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1140 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1140 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(automation): nightly cron job — release-notes scan and WRK capture</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — - A nightly cron (or `/loop`-based) job that: 1. Fetches latest CC release notes (`claude /release-notes` or equivalent) 2. Compares against...</summary><div class="panel"><ul>
+<li>A nightly cron (or <code>/loop</code>-based) job that:</li>
+<li>Fetches latest CC release notes (<code>claude /release-notes</code> or equivalent)</li>
+<li>Compares against last-seen version stored in <code>config/ai-tools/</code></li>
+<li>If new versions exist, runs analysis (via Claude) against ecosystem context</li>
+<li>Auto-creates WRK pending items for actionable improvements found</li>
+<li>Updates last-seen version marker</li>
+<li>Optionally extends to Codex and Gemini release feeds in later iterations</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — - Removes manual `/work add &lt;release notes&gt;` step from user workflow - Ensures improvements are captured promptly rather than accumulating -...</summary><div class="panel"><ul>
+<li>Removes manual <code>/work add &lt;release notes&gt;</code> step from user workflow</li>
+<li>Ensures improvements are captured promptly rather than accumulating</li>
+<li>Consistent analysis quality — same prompt/context every run</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `scripts/automation/nightly-release-scan.sh` created and executable - [ ] Last-seen version persisted in `config/ai-tools/release-scan...</summary><div class="panel"><ul>
+<li>[ ] <code>scripts/automation/nightly-release-scan.sh</code> created and executable</li>
+<li>[ ] Last-seen version persisted in <code>config/ai-tools/release-scan-state.yaml</code></li>
+<li>[ ] New WRK items auto-created in <code>pending/</code> when new versions detected</li>
+<li>[ ] Cron entry documented in <code>config/automation/cron-schedule.md</code> (or equivalent)</li>
+<li>[ ] Dry-run mode (<code>--dry-run</code>) prints findings without writing WRK files</li>
+<li>[ ] Script idempotent — re-running on same version produces no duplicate items</li>
+<li>[ ] At least one successful nightly run verified in logs</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — 1. Design `config/ai-tools/release-scan-state.yaml` schema (last_seen_version per provider) 2. Write `scripts/automation/nightly-release-sca...</summary><div class="panel"><ol>
+<li>Design <code>config/ai-tools/release-scan-state.yaml</code> schema (last_seen_version per provider)</li>
+<li>Write <code>scripts/automation/nightly-release-scan.sh</code>:</li>
+<li>Fetch release notes → diff against last-seen</li>
+<li>Pipe new content to Claude with ecosystem-analysis prompt</li>
+<li>Parse output → write WRK pending file(s) via <code>next-id.sh</code> + template</li>
+<li>Update state file</li>
+<li>Add cron entry (or <code>/loop</code> invocation) for nightly execution</li>
+<li>Write tests: idempotency, dry-run, no-new-versions path</li>
+<li>Document in <code>config/automation/</code></li>
+</ol></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1140 Plan Review — Final ## Plan Summary Nightly cron job to detect AI tool version changes and auto-create WRK items. Two-layer Bash+...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1140 Plan Review — Final</h1>
+<h2>Plan Summary</h2>
+<p>Nightly cron job to detect AI tool version changes and auto-create WRK items.
+Two-layer Bash+Python architecture. Route B, medium complexity.</p>
+<h2>Acceptance Criteria</h2>
+<ol>
+<li><code>scripts/automation/nightly-release-scan.sh</code> created and executable</li>
+<li>Last-seen version persisted in <code>config/ai-tools/release-scan-state.yaml</code></li>
+<li>New WRK items auto-created in <code>pending/</code> when new versions detected</li>
+<li>Cron entry integrated with existing nightly infrastructure</li>
+<li>Dry-run mode prints findings without writing WRK files</li>
+<li>Script idempotent — re-running on same version produces no duplicate items</li>
+</ol>
+<h2>Confirmation</h2>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-12T00:15:00Z
+decision: passed</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>test_release_scan_wrk</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/automation/test_release_scan_wrk.py -v</code></td><td>tests/automation/test_release_scan_wrk.py</td></tr><tr><td>2</td><td>test_nightly_release_scan</td><td>integrated</td><td>pass</td><td><code>bash tests/automation/test_nightly_release_scan.sh</code></td><td>tests/automation/test_nightly_release_scan.sh</td></tr><tr><td>3</td><td>test_dry_run_smoke</td><td>integrated</td><td>pass</td><td><code>bash scripts/automation/nightly-release-scan.sh --dry-run --provider claude</code></td><td>scripts/automation/nightly-release-scan.sh</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1140, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1140, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1140/review-results.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1140/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=5</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (1 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-12T00:16:00Z, reviewed=2026-03-12T00:15:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1140 generated_at: &quot;2026-03-13T08:45:00Z&quot; recommendations: - id: FW-01 title: &quot;Isolated test workspace for Bash integration test...</summary><div class="panel"><p>wrk_id: WRK-1140
+generated_at: "2026-03-13T08:45:00Z"
+recommendations:
+  - id: FW-01
+    title: "Isolated test workspace for Bash integration tests"
+    description: &gt;
+      test_nightly_release_scan.sh operates on real REPO_ROOT; add TEST_WORKSPACE_ROOT
+      override for CI safety and reproducibility.
+    priority: medium
+    disposition: spun-off-new
+    captured: true
+    status: deferred
+  - id: FW-02
+    title: "Happy-path integration test for run_scan(dry_run=False)"
+    description: &gt;
+      Mock _get_next_id and _rebuild_index to test full WRK creation path end-to-end.
+    priority: low
+    disposition: spun-off-new
+    captured: true
+    status: deferred
+  - id: FW-03
+    title: "Extend nightly scan to Codex/Gemini release feeds"
+    description: &gt;
+      Currently detects installed CLI versions; could also poll GitHub releases or
+      changelogs for providers not installed locally.
+    priority: low
+    disposition: spun-off-new
+    captured: true
+    status: deferred</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1140 generated_at: &#x27;2026-03-13T08:40:00Z&#x27; reviewed_by: orchestrator autonomy_maturity_level: L2 human_steers_agents_execute: tru...</summary><div class="panel"><p>wrk_id: WRK-1140
+generated_at: '2026-03-13T08:40:00Z'
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: User approved scope. Blocker WRK-1139 resolved.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Target files identified; cron infra and work-queue scripts.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route B, complexity=medium.
+  evidence: .claude/work-queue/working/WRK-1140.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Inline plan in WRK file (Route B).
+  evidence: .claude/work-queue/working/WRK-1140.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Plan approved inline during capture session.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-capture.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Plan cross-review deferred to implementation phase (Route B).
+  evidence: n/a
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Route B — plan approved with capture.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-capture.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claimed and activated on ace-linux-1.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route B, ace-linux-1, claude orchestrator.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/activation.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation committed (ea942f0b). Bash+Python two-layer architecture.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: No lifecycle HTML needed (Route B simple automation).
+  evidence: n/a
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 21 tests passing (17 Python + 4 Bash).
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/tdd.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: "Claude=APPROVE, Codex=REQUEST_CHANGES\u2192APPROVE (post-fix), Gemini=MINOR (addressed). All findings fixed."
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/cross-review.yaml
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate evidence collected and verified.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/gate-evidence-summary.json
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 3 FW items captured (test isolation, happy-path test, multi-provider feeds).
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 5 new files documented.
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: 'User approved implementation.'
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: No continuity break.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 'Closing after Stage 17 user approval.'
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/gate-evidence-summary.json
+- order: 20
+  stage: Archive
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 'Archived.'
+  evidence: .claude/work-queue/assets/WRK-1140/evidence/gate-evidence-summary.json</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 24 assets indexed.</summary><div class="panel"><ul><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/tdd.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review-results.md</code></li><li><code>test-results.md</code></li></ul></div></details>
+</body>
+</html>

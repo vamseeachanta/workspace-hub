@@ -1,7 +1,7 @@
 {
-  "wrk_id": "WRK-1161",
+  "wrk_id": "WRK-1151",
   "phase": "archive",
-  "summary_file": "assets/WRK-1161/evidence/gate-evidence-summary.json",
+  "summary_file": "assets/WRK-1151/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
@@ -36,7 +36,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['tdd_eval'], cross-review:['review_wrapper_complete']"
+      "details": "matched routing:['work_wrapper_complete'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
@@ -57,7 +57,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1161/review.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1151/review.md"
     },
     {
       "name": "Claim gate",
@@ -117,10 +117,10 @@
     },
     {
       "name": "Archive readiness gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "archive-tooling.yaml: document_index_ref absent \u2014 exemption accepted: hub-only item \u2014 no document-index entries affected"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "archive-tooling.yaml: all gates pass (archive_readiness=pass)"
     }
   ]
 }

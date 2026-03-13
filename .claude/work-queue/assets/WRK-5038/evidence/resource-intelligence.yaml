@@ -1,0 +1,44 @@
+stage: 2
+wrk_id: WRK-5038
+findings:
+  existing_scripts:
+    - scripts/data/doc_intelligence/schema.py          # DocumentManifest dataclass
+    - scripts/data/doc_intelligence/orchestrator.py     # format detection + extraction
+    - scripts/data/doc_intelligence/parsers/pdf.py
+    - scripts/data/doc_intelligence/parsers/docx_parser.py
+    - scripts/data/doc_intelligence/parsers/xlsx.py
+    - scripts/data/doc-intelligence/extract-document.py # CLI entry point
+    - scripts/data/doc_intelligence/utils.py            # doc_ref + availability
+  manifest_format: >
+    YAML with: version, tool, domain, doc_ref, metadata (filename/format/size_bytes/pages/
+    checksum/extraction_timestamp), sections[] (heading/level/text/source), tables[]
+    (title/columns/rows/source), figure_refs[] (caption/figure_id/source),
+    extraction_stats, errors
+  manifest_location: data/doc-intelligence/manifests/<domain>/*.manifest.yaml
+  proven_manifest: data/doc-intelligence/manifests/naval-architecture/ABS-Intro-to-Rules-and-Guides.manifest.yaml
+  content_type_taxonomy:
+    - constants     # symbol, value, units, source_standard
+    - equations     # expression, variables, applicability
+    - tables        # title, columns, rows, interpolation_method
+    - curves        # x_axis, y_axis, data_points
+    - procedures    # steps, prerequisites, decision_points
+    - requirements  # id, text, verification_method, normative_strength
+    - definitions   # term, definition, synonyms, domain
+    - worked_examples # given, solution_steps, answer
+  index_patterns: >
+    document-index uses JSONL (json.dumps + newline), atomic rename (tempfile + os.replace),
+    content_hash for incremental skip, summary stats per-source/per-type
+  dependencies:
+    - pyyaml (manifest parsing)
+    - hashlib (stdlib, for content hashing)
+  key_files:
+    - scripts/data/doc-intelligence/build-doc-intelligence.py  # NEW — main builder
+    - data/doc-intelligence/manifests/                          # INPUT
+    - data/doc-intelligence/*.jsonl                             # OUTPUT indexes
+    - data/doc-intelligence/tables/                             # OUTPUT per-table CSVs
+    - data/doc-intelligence/curves/                             # OUTPUT per-curve CSVs
+  predecessor: WRK-5037 (extraction pipeline, 50 tests, 8 files)
+  related_context:
+    - WRK-1113: parametric wrapper + exhaustion marking
+    - WRK-1151: observability/tracking for federated indexes
+notes: "Architecture well-established: JSONL indexes, hash-based incremental, atomic writes, 8-type taxonomy from doc-extraction skill"

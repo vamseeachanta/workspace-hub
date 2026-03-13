@@ -1,0 +1,16 @@
+stage: 12
+wrk_id: WRK-5038
+test_command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_classifiers.py tests/data/doc_intelligence/test_index_builder.py -v"
+test_results:
+  total: 49
+  passed: 49
+  failed: 0
+  skipped: 0
+test_files:
+  - path: tests/data/doc_intelligence/test_classifiers.py
+    tests: 26
+    coverage: constants, equations, requirements, procedures, definitions, worked_examples, none/edge-cases
+  - path: tests/data/doc_intelligence/test_index_builder.py
+    tests: 23
+    coverage: build_indexes, incremental, dry_run, atomic_writes, content_survival
+tdd_order: "tests written first (RED), then classifiers.py (GREEN), then index_builder.py (GREEN), then bug fix (content_survives_incremental)"

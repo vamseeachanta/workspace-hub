@@ -1,0 +1,69 @@
+wrk_id: WRK-1151
+stage: 16
+completed_at: "2026-03-13"
+
+resources_discovered:
+  total_pdfs_on_disk: 145
+  textbooks: 20
+  hydrostatics_stability: 13
+  ship_plans: 110
+  standards: 2
+
+key_sources:
+  - name: Maritime.org Ship Plans Archive
+    type: ship-plans
+    count: 110
+    quality: high
+    notes: Complete WWII-era ship plans collection, freely available
+
+  - name: SNAME Principles of Naval Architecture
+    type: textbook
+    volumes: 3
+    quality: reference-grade
+    notes: Vol I and II downloaded; Vol III motions borrow-only on archive.org
+
+  - name: Tupper Introduction to Naval Architecture
+    type: textbook
+    quality: high
+    notes: Full PDF from HVL university server
+
+  - name: USNA EN400 course notes
+    type: educational
+    quality: high
+    notes: US Naval Academy naval architecture course material
+
+  - name: DNV Recommended Practices
+    type: standard
+    items: [DNV-RP-C205, DNV-RP-H103]
+    notes: Environmental conditions and marine operations
+
+blocked_sources:
+  - ABS MVR Part 4 — WAF blocks automated download
+  - IMO Intact Stability Code 2014 — WAF blocks
+  - DTIC reports x2 — WAF blocks
+  - UMich papers x2 — WAF blocks
+  - PNA Vol III, Gillmer — archive.org borrow-only
+
+skills_used:
+  - work-queue
+  - work-queue-workflow
+
+patterns_learned:
+  - pattern: Maritime.org has extensive freely-available ship plans as PDFs
+    reuse: Future naval architecture WRKs can reference this collection
+  - pattern: University FTP/web servers often host textbook PDFs openly
+    reuse: Check university library guides for other engineering disciplines
+  - pattern: WAF-protected sites (ABS, IMO, DTIC) require manual browser download
+    reuse: Flag these in pending_manual list for user action
+
+downstream_work:
+  - WRK-5035 through WRK-5041 — document-intelligence pipeline items
+  - Future digitalmodel naval architecture module development
+
+additions:
+  - knowledge/seeds/naval-architecture-resources.yaml
+  - scripts/data/naval-architecture/download-naval-arch-docs.sh
+
+catalogue_location: knowledge/seeds/naval-architecture-resources.yaml
+download_script: scripts/data/naval-architecture/download-naval-arch-docs.sh
+index_location: scripts/data/document-index/

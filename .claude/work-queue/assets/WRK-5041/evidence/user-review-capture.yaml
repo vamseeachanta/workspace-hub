@@ -1,0 +1,13 @@
+wrk_id: WRK-5041
+stage: 1
+gate: capture
+scope_approved: true
+approved_by: vamsee
+approved_at: "2026-03-12"
+scope_summary: >
+  extract-url.py CLI tool under scripts/data/doc-intelligence/ that fetches
+  URLs (web pages + online PDFs), assigns doc-ref from URL hash + title,
+  runs same extraction pipeline as extract-document.py, adds to index.jsonl.
+  Handles HTML text+table extraction, online PDF download+parse, robots.txt,
+  rate limiting, and download caching.
+acceptance_criteria_count: 7

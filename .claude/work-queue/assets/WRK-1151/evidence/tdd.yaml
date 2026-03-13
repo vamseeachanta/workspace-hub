@@ -1,0 +1,7 @@
+wrk_id: WRK-1151
+stage: 12
+not_applicable: true
+rationale: >
+  WRK-1151 is a research/download task — no application code was written.
+  The download script was validated via dry-run, and document index integrity
+  was verified after regeneration. No unit tests apply.

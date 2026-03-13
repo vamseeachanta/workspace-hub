@@ -1,0 +1,9 @@
+wrk_id: WRK-5041
+stage: 8
+gate: claim-activation
+claimed_by: claude
+claimed_at: "2026-03-13"
+provider: claude
+orchestrator: claude
+execution_workstations: [ace-linux-1]
+method: retroactive

@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T08:52:47Z by generate-index.py -->
+<!-- Generated: 2026-03-13T08:54:13Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T08:52:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T08:54:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 598
+**Total items:** 597
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 223 |
+| pending | 222 |
 | working | 4 |
 | blocked | 10 |
 | archived | 361 |
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 264 |
-| medium | 281 |
+| medium | 280 |
 | low | 52 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 143 |
-| medium | 280 |
+| medium | 279 |
 | complex | 107 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 29 |
+| harness | 28 |
 | engineering | 121 |
 | data | 24 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 254 |
+| workspace-hub | 253 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 249 / 598 |
-| Plans cross-reviewed | 185 |
-| Plans approved | 207 |
+| Plans exist | 248 / 597 |
+| Plans cross-reviewed | 186 |
+| Plans approved | 208 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 598 |
+| Total captured | 597 |
 | Total archived | 361 |
-| Completion rate | 361/598 (60%) |
+| Completion rate | 361/597 (60%) |
 | Monthly rate (current month) | 123 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 223 | 27% |
-| Plans cross-reviewed | 9 | 13% |
-| Plans user-approved | 9 | 13% |
+| Pending items with plans | 60 / 222 | 27% |
+| Plans cross-reviewed | 8 | 12% |
+| Plans user-approved | 8 | 12% |
 
 ### Aging
 
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 88 | 2 | 8 |
-| Medium   | 100  | 2  | 1  |
+| Medium   | 99  | 2  | 1  |
 | Low      | 35  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (29 items — 3 high, 19 medium, 7 low)
+### harness (28 items — 3 high, 18 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -148,12 +148,6 @@
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
 | WRK-1050 | MEDIUM | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending |
 | WRK-1051 | MEDIUM | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending |
-
-#### harness / automation
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1140 | MEDIUM | feat(automation): nightly cron job — release-notes scan and WRK capture | working |
 
 #### harness / data-pipeline
 
@@ -1129,7 +1123,6 @@
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | WRK-1139 |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
@@ -1164,10 +1157,10 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5036 |
-| WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ██░ 80% | - | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1398,7 +1391,6 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | high | complex | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | medium | complex | workspace-hub, digitalmodel | - |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | medium | medium | workspace-hub | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | low | complex | workspace-hub | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
@@ -1409,8 +1401,8 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | high | complex | workspace-hub | - |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2425,7 +2417,6 @@
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | - |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | working | medium | medium | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | archived | medium | medium | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | high | medium | - |
@@ -2455,7 +2446,7 @@
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | working | high | complex | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | - |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | - |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | working | medium | medium | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | - |
@@ -3096,7 +3087,6 @@
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | small | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | simple | workspace-hub | - |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | working | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | archived | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | archived | simple | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | pending | medium | workspace-hub | - |
@@ -3120,7 +3110,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | simple | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | complex | workspace-hub, digitalmodel | - |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | workspace-hub | - |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | working | medium | workspace-hub | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | simple | workspace-hub | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | simple | workspace-hub | - |
@@ -3596,7 +3586,6 @@
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | high | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | archived | high | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | archived | medium | - | - |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | working | medium | workspace-hub | - |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | archived | medium | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | high | workspace-hub | - |
@@ -3615,7 +3604,7 @@
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | workspace-hub | - |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | working | medium | workspace-hub | - |
 
 ### Complex
 
@@ -3731,7 +3720,7 @@
 
 ## By Computer
 
-### ace-linux-1 (173 active / 318 total)
+### ace-linux-1 (172 active / 317 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4013,7 +4002,6 @@
 | WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | workspace-hub |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | workspace-hub |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | workspace-hub |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | working | medium | medium | workspace-hub |
 | WRK-1141 | feat(git-hooks): post-commit auto-push + trunk-based routing script | archived | medium | medium | workspace-hub |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | high | medium | workspace-hub |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | high | medium | workspace-hub |
@@ -4048,7 +4036,7 @@
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | working | high | complex | workspace-hub |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | workspace-hub, digitalmodel |
-| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | workspace-hub |
+| WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | working | medium | medium | workspace-hub |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | workspace-hub |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | workspace-hub |
@@ -4426,7 +4414,6 @@
 | WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
-| WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | WRK-1139 | - | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | - | - | WRK-1147 |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | WRK-1148 | - | WRK-1147 |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | WRK-1149 | - | WRK-1147 |

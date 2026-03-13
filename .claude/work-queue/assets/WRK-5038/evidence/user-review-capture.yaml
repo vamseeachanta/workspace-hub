@@ -1,0 +1,7 @@
+stage: 1
+wrk_id: WRK-5038
+gate: HARD
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-13T00:00:00Z
+notes: "Scope approved as described — 8 content-type indexes + manifest-index + incremental rebuild"

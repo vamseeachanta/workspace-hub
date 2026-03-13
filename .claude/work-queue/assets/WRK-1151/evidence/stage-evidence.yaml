@@ -1,0 +1,84 @@
+wrk_id: WRK-1151
+generated_at: '2026-03-13T08:44:27Z'
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/plan.yaml
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/working/WRK-1151.md
+- order: 5
+  stage: User Review Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/user-review-browser-open.yaml
+- order: 6
+  stage: Cross-Review
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/cross-review.yaml
+- order: 7
+  stage: User Review Gate
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/user-review-close.yaml
+- order: 8
+  stage: Claim
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/claim-evidence.yaml
+- order: 9
+  stage: Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/activation.yaml
+- order: 10
+  stage: Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/execute.yaml
+- order: 11
+  stage: Smoke Test
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/execute.yaml
+- order: 12
+  stage: Integration Test
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/execute.yaml
+- order: 13
+  stage: Legal Scan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/legal-scan.md
+- order: 14
+  stage: Commit
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/user-review-publish.yaml
+- order: 15
+  stage: Future Work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Close
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: TDD
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1151/evidence/tdd.yaml
+- order: 20
+  stage: Archive
+  status: done
+  evidence: .claude/work-queue/working/WRK-1151.md
+reviewed_by: orchestrator

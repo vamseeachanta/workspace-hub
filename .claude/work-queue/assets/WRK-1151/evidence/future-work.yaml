@@ -1,0 +1,38 @@
+stage: 15
+wrk_id: WRK-1151
+completed_at: "2026-03-13T10:00:00+00:00"
+
+recommendations:
+  - id: FW-1
+    title: Manual download of WAF-blocked resources
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    description: >
+      ABS MVR Part 4, IMO Intact Stability 2014, DTIC x2, UMich x2
+      require manual browser download due to WAF protection.
+    target_repos: [workspace-hub]
+
+  - id: FW-2
+    title: Document-intelligence pipeline for SNAME collection
+    priority: medium
+    disposition: existing-updated
+    status: captured
+    captured: true
+    description: >
+      WRK-5035 through WRK-5041 queued to process the 145 downloaded PDFs
+      through the document-intelligence extraction pipeline.
+    target_repos: [workspace-hub]
+
+  - id: FW-3
+    title: Expand collection to other engineering disciplines
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    description: >
+      Pattern of checking university library guides and FTP servers
+      can be applied to structural engineering, offshore engineering,
+      and other disciplines relevant to digitalmodel.
+    target_repos: [workspace-hub]

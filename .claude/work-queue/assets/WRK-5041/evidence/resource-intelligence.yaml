@@ -1,0 +1,32 @@
+wrk_id: WRK-5041
+stage: 2
+gate: resource-intelligence
+completed_at: "2026-03-12"
+findings:
+  existing_infrastructure:
+    - scripts/data/doc-intelligence/extract-document.py (CLI entry, 89 lines)
+    - scripts/data/doc_intelligence/orchestrator.py (format dispatch, 60 lines)
+    - scripts/data/doc_intelligence/schema.py (DocumentManifest dataclasses, 219 lines)
+    - scripts/data/doc_intelligence/utils.py (doc_ref generation, 24 lines)
+    - scripts/data/doc_intelligence/parsers/ (pdf, docx, xlsx parsers + base + registry)
+    - scripts/data/doc-intelligence/run-extract.sh (uv runner with --with deps)
+  reusable_components:
+    - DocumentManifest + ExtractedSection + ExtractedTable + SourceLocation (schema.py)
+    - write_manifest() atomic YAML serialization
+    - generate_doc_ref() kebab-case ID from name
+    - BaseParser abstract class + get_parser() registry
+    - conftest.py synthetic fixture generators
+  schema_extensions_needed:
+    - SourceLocation: add url, http_status fields
+    - DocumentMetadata: add original_url, fetch_timestamp fields
+  new_parsers_needed:
+    - HTML parser (beautifulsoup4): text + table extraction from web pages
+    - URL PDF handler: download + delegate to existing PDF parser
+  additional_deps:
+    - requests (HTTP fetching)
+    - beautifulsoup4 (HTML parsing)
+  target_urls: knowledge/seeds/naval-architecture-resources.yaml
+  test_patterns: tests/data/doc_intelligence/ (14+ tests, synthetic fixtures via conftest.py)
+  output_path: data/doc-intelligence/manifests/{domain}/
+  index_integration: phase-a-index.py auto-discovers manifests
+  reuse_estimate: "~80% of existing schema, serialization, orchestration"

@@ -1,4 +1,4 @@
-# Gate Evidence Summary (WRK-1161, phase=archive)
+# Gate Evidence Summary (WRK-1151, phase=archive)
 
 | Gate | Status | Details |
 |---|---|---|
@@ -6,10 +6,10 @@
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
-| Agent log gate | PASS | matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['tdd_eval'], cross-review:['review_wrapper_complete'] |
+| Agent log gate | PASS | matched routing:['work_wrapper_complete'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['review_wrapper_complete'] |
 | User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
 | User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
-| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1161/review.md |
+| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1151/review.md |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=archive) |
@@ -18,4 +18,4 @@
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Archive readiness gate | WARN | archive-tooling.yaml: document_index_ref absent — exemption accepted: hub-only item — no document-index entries affected |
+| Archive readiness gate | PASS | archive-tooling.yaml: all gates pass (archive_readiness=pass) |

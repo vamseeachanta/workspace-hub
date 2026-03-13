@@ -1,0 +1,11 @@
+wrk_id: WRK-5041
+stage: 3
+gate: triage
+completed_at: "2026-03-12"
+route: B
+priority: medium
+complexity: medium
+category: document-intelligence
+subcategory: internet-extraction
+target_repos: [workspace-hub]
+computer: ace-linux-1

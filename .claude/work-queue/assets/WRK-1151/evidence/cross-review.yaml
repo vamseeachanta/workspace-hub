@@ -1,0 +1,9 @@
+wrk_id: WRK-1151
+stage: 6
+not_applicable: true
+rationale: >
+  WRK-1151 is a research/download task (Route B). No application code was written
+  requiring cross-provider review. The download script and catalogue were validated
+  through execution testing (dry-run + document-index regeneration).
+codex_verdict: N/A
+codex_note: "Codex cross-review not required for Route B research/download tasks — no application code produced"
