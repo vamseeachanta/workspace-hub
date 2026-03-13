@@ -1,0 +1,5 @@
+wrk_id: WRK-5037
+scanned_at: "2026-03-13T05:10:00+00:00"
+result: PASS
+scanner: scripts/legal/legal-sanity-scan.sh
+violations: 0

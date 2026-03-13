@@ -1,0 +1,4 @@
+scan_run: true
+scan_passed: true
+timestamp: "2026-03-13T05:10:00+00:00"
+note: "legal-sanity-scan.sh: 0 violations across all new scripts/data/doc_intelligence/ files"

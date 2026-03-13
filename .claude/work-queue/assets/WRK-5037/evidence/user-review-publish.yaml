@@ -1,0 +1,33 @@
+wrk_id: WRK-5037
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "dc408940"
+    documents:
+      - "specs/modules/tender-hatching-matsumoto.md"
+      - ".claude/work-queue/working/WRK-5037.md"
+    published_at: "2026-03-12T23:30:00+00:00"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "81941900"
+    documents:
+      - "specs/modules/tender-hatching-matsumoto.md"
+      - ".claude/work-queue/assets/WRK-5037/evidence/plan.yaml"
+    published_at: "2026-03-13T04:10:00+00:00"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "709e9175"
+    documents:
+      - "scripts/data/doc_intelligence/"
+      - "tests/data/doc_intelligence/"
+      - "scripts/data/doc-intelligence/extract-document.py"
+    published_at: "2026-03-13T05:00:00+00:00"
+    reviewer: vamsee

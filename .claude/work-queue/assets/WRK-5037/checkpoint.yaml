@@ -1,8 +1,10 @@
 wrk_id: WRK-5037
-stage: 2
-next_action: "Resource Intelligence — scan existing doc-intelligence code, dependencies, and naval-arch catalogue"
+stage: 16
+next_action: "Cross-review and gate evidence verification"
 context_summary: >
-  Stage 1 complete. User approved scope for extract-document.py with 3 parsers
-  (pdfplumber, python-docx, openpyxl) producing extraction manifest YAML.
-  Route C complex item. First domain: naval architecture.
-updated_at: "2026-03-12"
+  Implementation complete. 36 TDD tests pass across 6 test files.
+  Package: scripts/data/doc_intelligence/ (schema, orchestrator, 3 parsers).
+  CLI: scripts/data/doc-intelligence/extract-document.py with --dry-run, --verbose, --doc-ref flags.
+  Smoke tested on real SNAME PDF (ABS-Intro-to-Rules-and-Guides.pdf).
+  Committed and pushed to main (709e9175).
+updated_at: "2026-03-13"

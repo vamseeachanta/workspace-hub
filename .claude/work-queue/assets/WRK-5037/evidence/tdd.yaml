@@ -1,0 +1,24 @@
+red_phase:
+  test_file: "tests/data/doc_intelligence/"
+  tests_written: 50
+  all_failed: true
+  timestamp: "2026-03-13T04:35:00+00:00"
+green_phase:
+  files_created:
+    - scripts/data/doc_intelligence/schema.py
+    - scripts/data/doc_intelligence/orchestrator.py
+    - scripts/data/doc_intelligence/parsers/base.py
+    - scripts/data/doc_intelligence/parsers/pdf.py
+    - scripts/data/doc_intelligence/parsers/docx_parser.py
+    - scripts/data/doc_intelligence/parsers/xlsx.py
+    - scripts/data/doc_intelligence/utils.py
+    - scripts/data/doc-intelligence/extract-document.py
+  tests_passed: 50
+  tests_failed: 0
+  timestamp: "2026-03-13T04:45:00+00:00"
+refactor_phase:
+  changes: "Consolidated imports to scripts.data.doc_intelligence prefix; added doc_ref field to manifest schema"
+  tests_passed: 50
+  tests_failed: 0
+  timestamp: "2026-03-13T04:50:00+00:00"
+command: "uv run --no-project python -m pytest tests/data/doc_intelligence/ -v"

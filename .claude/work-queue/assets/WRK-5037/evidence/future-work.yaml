@@ -1,0 +1,35 @@
+stage: 15
+wrk_id: WRK-5037
+completed_at: "2026-03-13T05:00:00+00:00"
+
+recommendations:
+  - id: FW-1
+    priority: HIGH
+    title: "Content type classification layer (Layer 1 mapping)"
+    description: >
+      Map extracted sections/tables/figure_refs to the 8 Layer 1 content types
+      defined in WRK-5036 taxonomy. Downstream WRK.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-2
+    priority: MEDIUM
+    title: "Batch extraction across SNAME corpus"
+    description: >
+      Run extract-document.py across all 145 SNAME PDFs, collect manifests,
+      generate corpus summary statistics.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-3
+    priority: LOW
+    title: "Figure extraction (image capture)"
+    description: >
+      Currently only figure references (captions/IDs) are extracted.
+      Actual figure image extraction requires pdfplumber image support
+      or pdf2image + pytesseract for OCR.
+    disposition: spun-off-new
+    status: captured
+    captured: true

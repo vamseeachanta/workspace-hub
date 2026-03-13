@@ -1,0 +1,12 @@
+provider: claude
+action: work_queue_skill
+wrk_id: WRK-5037
+timestamp: 2026-03-12T23:00:00Z
+workstation: ace-linux-1
+route: C
+---
+provider: claude
+action: work_wrapper_complete
+wrk_id: WRK-5037
+timestamp: 2026-03-12T23:05:00Z
+workstation: ace-linux-1

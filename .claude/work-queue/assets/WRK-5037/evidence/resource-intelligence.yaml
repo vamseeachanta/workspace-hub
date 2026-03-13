@@ -1,7 +1,14 @@
 wrk_id: WRK-5037
 stage: 2
 gate: resource-intelligence
-completed_at: "2026-03-12"
+completion_status: continue_to_planning
+completed_at: "2026-03-12T23:30:00+00:00"
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - test-driven-development
 
 existing_assets:
   doc_extraction_skill: ".claude/skills/engineering/doc-extraction/SKILL.md"

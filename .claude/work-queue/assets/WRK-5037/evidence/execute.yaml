@@ -1,0 +1,62 @@
+wrk_id: WRK-5037
+executed_at: "2026-03-13T04:45:00+00:00"
+provider: claude
+workstation: ace-linux-1
+
+artifacts_created:
+  - scripts/data/doc_intelligence/__init__.py
+  - scripts/data/doc_intelligence/schema.py
+  - scripts/data/doc_intelligence/orchestrator.py
+  - scripts/data/doc_intelligence/parsers/__init__.py
+  - scripts/data/doc_intelligence/parsers/base.py
+  - scripts/data/doc_intelligence/parsers/pdf.py
+  - scripts/data/doc_intelligence/parsers/docx_parser.py
+  - scripts/data/doc_intelligence/parsers/xlsx.py
+  - scripts/data/doc_intelligence/utils.py
+  - scripts/data/doc-intelligence/extract-document.py
+  - scripts/data/doc-intelligence/run-extract.sh
+  - tests/data/doc_intelligence/conftest.py
+  - tests/data/doc_intelligence/test_schema.py
+  - tests/data/doc_intelligence/test_pdf_parser.py
+  - tests/data/doc_intelligence/test_docx_parser.py
+  - tests/data/doc_intelligence/test_xlsx_parser.py
+  - tests/data/doc_intelligence/test_orchestrator.py
+  - tests/data/doc_intelligence/test_cli.py
+  - tests/data/doc_intelligence/test_utils.py
+  - tests/data/doc_intelligence/test_integration.py
+
+integrated_repo_tests:
+  - name: "schema round-trip + atomic write"
+    scope: repo
+    command: "PYTHONPATH=scripts uv run --no-project --with pyyaml python -m pytest tests/data/doc_intelligence/test_schema.py -v"
+    result: pass
+    artifact_ref: "tests/data/doc_intelligence/test_schema.py"
+  - name: "PDF parser extraction + figure refs"
+    scope: repo
+    command: "PYTHONPATH=scripts uv run --no-project --with fpdf2 --with pdfplumber --with pyyaml python -m pytest tests/data/doc_intelligence/test_pdf_parser.py -v"
+    result: pass
+    artifact_ref: "tests/data/doc_intelligence/test_pdf_parser.py"
+  - name: "orchestrator format dispatch + manifest write"
+    scope: integrated
+    command: "PYTHONPATH=scripts uv run --no-project --with fpdf2 --with pdfplumber --with python-docx --with openpyxl --with pyyaml python -m pytest tests/data/doc_intelligence/test_orchestrator.py -v"
+    result: pass
+    artifact_ref: "tests/data/doc_intelligence/test_orchestrator.py"
+  - name: "CLI end-to-end with exit codes"
+    scope: integrated
+    command: "PYTHONPATH=scripts uv run --no-project --with fpdf2 --with pdfplumber --with python-docx --with openpyxl --with pyyaml python -m pytest tests/data/doc_intelligence/test_cli.py -v"
+    result: pass
+    artifact_ref: "tests/data/doc_intelligence/test_cli.py"
+
+tdd:
+  test_command: "uv run --no-project python -m pytest tests/data/doc_intelligence/ -v"
+  test_count: 50
+  test_pass: 50
+  test_fail: 0
+  tdd_sequence: "red-green-refactor across 8 test files"
+
+smoke_test:
+  input: "/mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Tupper-1996.pdf"
+  domain: naval-architecture
+  result: "370 sections, 0 tables, 309 figure_refs from 372-page book — valid manifest YAML"
+
+commit: "709e9175"
