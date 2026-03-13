@@ -1,0 +1,8 @@
+wrk_id: WRK-1157
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: "n/a"
+legal_scan_ref: "n/a"
+archive_readiness: "pass"
+route: A
+notes: "Route A simple item — direct commit to main, no branch, no HTML lifecycle"
