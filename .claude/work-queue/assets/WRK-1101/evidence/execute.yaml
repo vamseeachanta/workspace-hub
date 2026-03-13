@@ -1,0 +1,30 @@
+wrk_id: WRK-1101
+stage: 10
+completed_at: "2026-03-12T00:00:00Z"
+
+files_modified:
+  - scripts/session/detect-drift.sh
+  - scripts/session/tests/test_detect_drift.sh
+  - scripts/cron/comprehensive-learning-nightly.sh
+  - .claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md
+
+files_created:
+  - scripts/session/tests/fixtures/codex-session-with-violations.jsonl
+  - scripts/session/tests/fixtures/codex-session-clean.jsonl
+  - scripts/session/tests/fixtures/codex-session-compound-cmd.jsonl
+
+summary: |
+  Added --provider flag (claude|codex) to detect-drift.sh with Codex JSONL
+  extractor (PY_EXTRACT_CODEX). Double-parses envelope format:
+  response_item → function_call → exec_command → json.loads(arguments) → cmd.
+  Detects python_runtime, file_placement (via write-command regex), and
+  git_workflow violations. Wired into nightly cron Step 3c scanning
+  ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl. Provider field added to
+  drift-summary.yaml output. 221 lines total (under 400 limit).
+
+test_results:
+  total: 16
+  passed: 16
+  failed: 0
+  new_tests: 7
+  existing_tests: 9
