@@ -5416,5 +5416,23 @@
     "title": "feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration",
     "priority": "high",
     "category": "document-intelligence"
+  },
+  "WRK-1156": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T09:55:05.329913+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Commissioning validator \u2014 FAT/SAT/IST test sequence generator and results checker",
+    "priority": "medium",
+    "category": "career"
+  },
+  "WRK-5042": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T11:32:40.378588+00:00",
+    "updated_by": "close-item.sh",
+    "title": "feat(doc-intel): batch extraction pipeline \u2014 1M doc queue with cost tracking",
+    "priority": "low",
+    "category": "document-intelligence"
   }
 }

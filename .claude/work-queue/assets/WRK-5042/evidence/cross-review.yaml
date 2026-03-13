@@ -1,0 +1,11 @@
+wrk_id: WRK-5042
+stage: 6
+phase: 1
+claude_verdict: APPROVE
+codex_verdict: APPROVE
+gemini_verdict: APPROVE
+findings_deferred: []
+notes: >
+  Batch extraction pipeline: queue.py + batch-extract.py.
+  15/15 TDD tests pass. Integration test 5/5 docs (PDF/DOCX/XLSX).
+  All providers approve — clean implementation reusing existing infrastructure.

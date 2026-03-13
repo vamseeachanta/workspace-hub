@@ -1,0 +1,30 @@
+wrk_id: WRK-5042
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b4368e06
+    documents:
+      - .claude/work-queue/assets/WRK-5042/WRK-5042-lifecycle.html
+    published_at: 2026-03-13T10:21:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 3ad95650
+    documents:
+      - .claude/work-queue/assets/WRK-5042/WRK-5042-lifecycle.html
+      - .claude/work-queue/assets/WRK-5042/plan-html-review-final.md
+    published_at: 2026-03-13T10:23:00Z
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: c71323da
+    documents:
+      - .claude/work-queue/assets/WRK-5042/WRK-5042-lifecycle.html
+    published_at: 2026-03-13T10:31:00Z
+    reviewer: vamsee

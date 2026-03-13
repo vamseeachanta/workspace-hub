@@ -1,0 +1,59 @@
+wrk_id: WRK-5042
+stage: 2
+gate: resource-intelligence
+completed_at: 2026-03-13T00:00:00Z
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - superpowers/brainstorming
+    - superpowers/using-superpowers
+
+existing_infrastructure:
+  extraction_layer:
+    script: scripts/data/doc-intelligence/extract-document.py
+    api: "extract_document(filepath, domain, output, doc_ref) -> DocumentManifest"
+    schema: scripts/data/doc_intelligence/schema.py
+    orchestrator: scripts/data/doc_intelligence/orchestrator.py
+    parsers: scripts/data/doc_intelligence/parsers/ (PDF, DOCX, XLSX)
+    source_wrk: WRK-5037
+
+  index_builder:
+    script: scripts/data/doc_intelligence/index_builder.py
+    classifiers: scripts/data/doc_intelligence/classifiers.py
+    outputs: 8 content-type JSONL indexes
+    tdd_tests: 50 (26 classifier + 24 index builder)
+    source_wrk: WRK-5038
+
+  cost_tracking:
+    script: scripts/ai/wrk_cost_report.py
+    api: "load_records(), aggregate_by_wrk(), format_cost_table()"
+    data_source: .claude/state/session-signals/cost-tracking.jsonl
+    pricing: config/ai-tools/pricing.yaml
+    cli: "uv run --no-project python scripts/ai/wrk_cost_report.py [WRK-ID] [--csv]"
+    tests: 13 passing
+
+  batch_patterns:
+    runner: scripts/data/batchtools/batch_runner.sh
+    supports: "--parallel N, --output-format summary|full"
+    checkpoint_pattern: ".claude/work-queue/assets/WRK-NNN/checkpoint.yaml"
+
+  yaml_reference:
+    batch_config: worldenergydata/docs/modules/bsee/comprehensive-report-system/examples/batch-processing-config.yaml
+    sections: [performance, notifications, logging]
+
+integration_points:
+  - "Call extract-document.py per document"
+  - "Emit cost records to cost-tracking.jsonl with wrk: WRK-5042"
+  - "Update checkpoint after each successful extraction"
+  - "Health dashboard queryable via wrk_cost_report.py"
+
+cli_flags_needed:
+  - "--batch-size"
+  - "--rate-limit"
+  - "--resume"
+  - "--queue-yaml"
+  - "--dry-run"
+  - "--verbose"

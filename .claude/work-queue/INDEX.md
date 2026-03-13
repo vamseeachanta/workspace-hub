@@ -1,39 +1,39 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T09:51:03Z by generate-index.py -->
+<!-- Generated: 2026-03-13T11:32:42Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T09:51:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T11:32:42Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 600
+**Total items:** 607
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 218 |
+| pending | 224 |
 | working | 3 |
 | blocked | 10 |
-| done | 2 |
-| archived | 367 |
+| done | 1 |
+| archived | 369 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 265 |
-| medium | 282 |
-| low | 52 |
+| high | 269 |
+| medium | 286 |
+| low | 51 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 142 |
-| medium | 281 |
-| complex | 109 |
+| simple | 143 |
+| medium | 287 |
+| complex | 108 |
 
 ### By Category
 
@@ -65,14 +65,14 @@
 | assethold | 16 |
 | assetutilities | 18 |
 | client_projects | 1 |
-| digitalmodel | 191 |
+| digitalmodel | 197 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 251 |
+| workspace-hub | 253 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 251 / 600 |
+| Plans exist | 251 / 607 |
 | Plans cross-reviewed | 190 |
-| Plans approved | 212 |
+| Plans approved | 213 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 600 |
-| Total archived | 367 |
-| Completion rate | 367/600 (61%) |
+| Total captured | 607 |
+| Total archived | 369 |
+| Completion rate | 369/607 (61%) |
 | Monthly rate (current month) | 127 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 218 | 28% |
+| Pending items with plans | 60 / 224 | 27% |
 | Plans cross-reviewed | 8 | 12% |
 | Plans user-approved | 8 | 12% |
 
@@ -119,9 +119,9 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 85 | 2 | 8 |
-| Medium   | 98  | 1  | 1  |
-| Low      | 35  | 0  | 1  |
+| High     | 87 | 2 | 8 |
+| Medium   | 103  | 1  | 1  |
+| Low      | 34  | 0  | 1  |
 
 ## By Category
 
@@ -563,7 +563,7 @@
 
 | ID | Title | Status | Children |
 |----|-------|--------|----------|
-| [WRK-1048](pending/WRK-1048.md) | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | 2/5 archived (40%) |
+| [WRK-1048](pending/WRK-1048.md) | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | 3/10 archived (30%) |
 | [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
 
 ## Master Table
@@ -1122,7 +1122,7 @@
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | WRK-1139 |
@@ -1140,14 +1140,19 @@
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-1153 |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-1154 |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-1154 |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1153 |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1162 | Protection relay coordination module | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1163 | IEC 61850 GOOSE messaging model | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1164 | Power flow / load flow calculator | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1165 | Droop control simulator | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1166 | Generator fuel system CP design | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1165,11 +1170,13 @@
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5036 |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ██░ 90% | - | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | ace-linux-2 | ace-linux-1 | ace-linux-2 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5054 |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5054 |
 
 ## By Status
 
@@ -1177,7 +1184,6 @@
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | medium | medium | digitalmodel | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | medium | medium | digitalmodel | - |
 
 ### Pending
@@ -1380,13 +1386,17 @@
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | medium | simple | workspace-hub | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | low | simple | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | medium | simple | workspace-hub | - |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | high | simple | workspace-hub | - |
 | WRK-1145 | feat(charts): implement Anthropic-style research chart library — dual-panel DiD, sensitivity error-bar, lower-triangular heatmap | medium | medium | workspace-hub | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | low | simple | workspace-hub, aceengineer-website | - |
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | medium | complex | digitalmodel | - |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | medium | medium | workspace-hub | - |
+| WRK-1162 | Protection relay coordination module | high | medium | digitalmodel | - |
+| WRK-1163 | IEC 61850 GOOSE messaging model | high | medium | digitalmodel | - |
+| WRK-1164 | Power flow / load flow calculator | medium | medium | digitalmodel | - |
+| WRK-1165 | Droop control simulator | medium | medium | digitalmodel | - |
+| WRK-1166 | Generator fuel system CP design | medium | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1399,9 +1409,11 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | low | complex | workspace-hub | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | high | medium | workspace-hub, digitalmodel | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | medium | high | workspace-hub | - |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | medium | medium | digitalmodel | - |
 
 ### Working
 
@@ -1773,6 +1785,7 @@
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | high | medium | workspace-hub | - |
 | WRK-1132 | feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS | medium | medium | - | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | medium | small | workspace-hub | - |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | high | simple | workspace-hub | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | high | simple | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | medium | simple | workspace-hub | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | medium | medium | workspace-hub | - |
@@ -1784,6 +1797,7 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | high | complex | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | high | complex | digitalmodel | - |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | high | simple | workspace-hub | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | high | complex | digitalmodel | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
@@ -2140,9 +2154,15 @@
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | - |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | - |
+| WRK-1162 | Protection relay coordination module | pending | high | medium | - |
+| WRK-1163 | IEC 61850 GOOSE messaging model | pending | high | medium | - |
+| WRK-1164 | Power flow / load flow calculator | pending | medium | medium | - |
+| WRK-1165 | Droop control simulator | pending | medium | medium | - |
+| WRK-1166 | Generator fuel system CP design | pending | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | high | medium | - |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 
 ### doris
 
@@ -2432,7 +2452,7 @@
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | - |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | medium | simple | - |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | - |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | archived | high | simple | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | - |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | archived | medium | medium | - |
@@ -2444,6 +2464,7 @@
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | archived | medium | medium | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | - |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | archived | high | simple | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | - |
@@ -2462,11 +2483,12 @@
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | high | medium | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | - |
 
 ### worldenergydata
 
@@ -2832,20 +2854,24 @@
 | WRK-1128 | Observed-exposure tracker — measure AI vs human work % per WRK category | archived | medium | workspace-hub | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | archived | medium | workspace-hub | - |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | archived | medium | workspace-hub | - |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | simple | workspace-hub | - |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | archived | simple | workspace-hub | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | simple | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | medium | workspace-hub | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | complex | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | complex | digitalmodel | - |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | archived | simple | workspace-hub | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | complex | digitalmodel | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | simple | workspace-hub | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | medium | workspace-hub | - |
+| WRK-1162 | Protection relay coordination module | pending | medium | digitalmodel | - |
+| WRK-1163 | IEC 61850 GOOSE messaging model | pending | medium | digitalmodel | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | medium | workspace-hub, digitalmodel | - |
 
 ### Medium
 
@@ -3114,9 +3140,11 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | archived | medium | workspace-hub | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | workspace-hub | - |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | digitalmodel | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | digitalmodel | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | simple | workspace-hub | - |
+| WRK-1164 | Power flow / load flow calculator | pending | medium | digitalmodel | - |
+| WRK-1165 | Droop control simulator | pending | medium | digitalmodel | - |
+| WRK-1166 | Generator fuel system CP design | pending | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3133,6 +3161,8 @@
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | workspace-hub | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | high | workspace-hub | - |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
 
 ### Low
 
@@ -3189,7 +3219,6 @@
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | simple | workspace-hub, aceengineer-website | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | simple | workspace-hub | - |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | complex | workspace-hub | - |
 
 ## By Complexity
 
@@ -3320,11 +3349,12 @@
 | WRK-1133 | Add acma-ws014 to workstations documentation and routing | pending | medium | workspace-hub | - |
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | workspace-hub | - |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | medium | workspace-hub | - |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | workspace-hub | - |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | archived | high | workspace-hub | - |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | workspace-hub | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | archived | medium | workspace-hub | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | workspace-hub, aceengineer-website | - |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | archived | high | workspace-hub | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | workspace-hub | - |
@@ -3614,9 +3644,13 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | archived | medium | workspace-hub | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | workspace-hub | - |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | digitalmodel | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | digitalmodel | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | workspace-hub | - |
+| WRK-1162 | Protection relay coordination module | pending | high | digitalmodel | - |
+| WRK-1163 | IEC 61850 GOOSE messaging model | pending | high | digitalmodel | - |
+| WRK-1164 | Power flow / load flow calculator | pending | medium | digitalmodel | - |
+| WRK-1165 | Droop control simulator | pending | medium | digitalmodel | - |
+| WRK-1166 | Generator fuel system CP design | pending | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -3625,6 +3659,8 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | workspace-hub | - |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | high | workspace-hub, digitalmodel | - |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
 
 ### Complex
 
@@ -3738,11 +3774,10 @@
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (169 active / 320 total)
+### ace-linux-1 (173 active / 326 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4021,7 +4056,7 @@
 | WRK-1134 | Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al | pending | low | simple | workspace-hub |
 | WRK-1135 | fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress | archived | medium | small | workspace-hub |
 | WRK-1136 | Improve repo-sync skill: comprehensive origin status summary | pending | medium | simple | workspace-hub |
-| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | pending | high | simple | workspace-hub |
+| WRK-1137 | Document and enforce Linux-first workstation routing policy for non-licensed work | archived | high | simple | workspace-hub |
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | high | simple | workspace-hub |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | archived | medium | simple | workspace-hub |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | archived | medium | medium | workspace-hub |
@@ -4039,14 +4074,19 @@
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | workspace-hub |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | digitalmodel |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | digitalmodel |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | archived | high | simple | workspace-hub |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | digitalmodel |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | digitalmodel |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | workspace-hub |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | digitalmodel |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | workspace-hub |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | workspace-hub |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | workspace-hub |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | simple | workspace-hub |
+| WRK-1162 | Protection relay coordination module | pending | high | medium | digitalmodel |
+| WRK-1163 | IEC 61850 GOOSE messaging model | pending | high | medium | digitalmodel |
+| WRK-1164 | Power flow / load flow calculator | pending | medium | medium | digitalmodel |
+| WRK-1165 | Droop control simulator | pending | medium | medium | digitalmodel |
+| WRK-1166 | Generator fuel system CP design | pending | medium | medium | digitalmodel |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4061,13 +4101,14 @@
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | workspace-hub |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | workspace-hub, digitalmodel |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | workspace-hub |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | workspace-hub |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | workspace-hub |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | workspace-hub |
+| WRK-5054 | feat(doc-intel): run extraction pipeline on naval architecture collection | pending | high | medium | workspace-hub, digitalmodel |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | digitalmodel |
 
-### ace-linux-2 (7 active / 14 total)
+### ace-linux-2 (8 active / 15 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4085,6 +4126,7 @@
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | CAD-DEVELOPMENTS |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | workspace-hub |
 
 ### acma-ansys05 (16 active / 17 total)
 
@@ -4436,7 +4478,7 @@
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | WRK-1035 | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | WRK-1044 | - | - |
-| WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | - | WRK-1153, WRK-1154, WRK-1155, WRK-1156, WRK-1157 | - |
+| WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | - | WRK-1153, WRK-1154, WRK-1155, WRK-1156, WRK-1157, WRK-1162, WRK-1163, WRK-1164, WRK-1165, WRK-1166 | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | - | WRK-1129, WRK-1130, WRK-1131 | - |
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
@@ -4446,15 +4488,21 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | WRK-1149 | - | WRK-1147 |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | - | - | WRK-1048 |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | WRK-1153 | - | WRK-1048 |
+| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | - | - | WRK-1144 |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | WRK-1154 | - | WRK-1048 |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | WRK-1154 | - | WRK-1048 |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | - | - | WRK-1144 |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | WRK-1153 | - | WRK-1048 |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | - | - | WRK-1144 |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | - | - | WRK-1144 |
+| WRK-1162 | Protection relay coordination module | - | - | WRK-1048 |
+| WRK-1163 | IEC 61850 GOOSE messaging model | - | - | WRK-1048 |
+| WRK-1164 | Power flow / load flow calculator | - | - | WRK-1048 |
+| WRK-1165 | Droop control simulator | - | - | WRK-1048 |
+| WRK-1166 | Generator fuel system CP design | - | - | WRK-1048 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | WRK-5038 | - | - |
-| WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | WRK-5037, WRK-5038 | - | - |
+| WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | WRK-5054 | - | - |
+| WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | WRK-5054 | - | - |
 

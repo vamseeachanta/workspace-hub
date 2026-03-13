@@ -1,0 +1,34 @@
+wrk_id: WRK-5042
+scope: integrated
+completed_at: 2026-03-13T10:20:00Z
+integrated_repo_tests:
+  - name: queue.py unit tests (8 tests)
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_batch_extract.py -k 'TestLoadQueue or TestGetPending or TestGetStats or TestMarkCompleted or TestMarkFailed or TestSaveQueue' -v"
+    result: pass
+    artifact_ref: scripts/data/doc_intelligence/tests/test_batch_extract.py
+    notes: "8/8 pass — load, save (atomic), filter, stats, mark completed/failed"
+  - name: batch-extract.py CLI tests (7 tests)
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_batch_extract.py -k TestBatchExtractCLI -v"
+    result: pass
+    artifact_ref: scripts/data/doc_intelligence/tests/test_batch_extract.py
+    notes: "7/7 pass — dry run, rate limit, checkpoint, resume, failure tracking, exit codes"
+  - name: Integration test — 5 real docs
+    scope: integrated
+    command: "uv run --no-project python scripts/data/doc-intelligence/batch-extract.py --queue config/doc-intelligence/integration-test-queue.yaml --batch-size 3 --rate-limit 0.5 --verbose"
+    result: pass
+    artifact_ref: config/doc-intelligence/integration-test-queue.yaml
+    notes: "5/5 docs extracted: 2 PDF, 1 DOCX, 2 XLSX across 5 domains. Checkpoint at doc 3 verified."
+  - name: Resume with no pending docs
+    scope: repo
+    command: "uv run --no-project python scripts/data/doc-intelligence/batch-extract.py --queue config/doc-intelligence/integration-test-queue.yaml --resume"
+    result: pass
+    artifact_ref: scripts/data/doc-intelligence/batch-extract.py
+    notes: "Exit code 3 — correctly reports no pending documents"
+  - name: Cost tracking JSONL emission
+    scope: integrated
+    command: "tail -1 .claude/state/session-signals/cost-tracking.jsonl"
+    result: pass
+    artifact_ref: .claude/state/session-signals/cost-tracking.jsonl
+    notes: "Cost record emitted with batch_stats: processed=5, failed=0"

@@ -1,0 +1,27 @@
+wrk_id: WRK-5042
+stage: 16
+completed_at: 2026-03-13T10:25:00Z
+
+additions:
+  - type: script
+    path: scripts/data/doc-intelligence/batch-extract.py
+    description: "Batch document extraction CLI with queue management"
+  - type: module
+    path: scripts/data/doc_intelligence/queue.py
+    description: "Queue state management (load/save/filter/mark)"
+  - type: tests
+    path: scripts/data/doc_intelligence/tests/test_batch_extract.py
+    description: "15 TDD tests for batch pipeline"
+  - type: config
+    path: config/doc-intelligence/extraction-queue-example.yaml
+    description: "Example extraction queue YAML"
+
+new_resources:
+  batch_pipeline:
+    script: scripts/data/doc-intelligence/batch-extract.py
+    module: scripts/data/doc_intelligence/queue.py
+    tests: scripts/data/doc_intelligence/tests/test_batch_extract.py
+    example_queue: config/doc-intelligence/extraction-queue-example.yaml
+    cli: "uv run --no-project python scripts/data/doc-intelligence/batch-extract.py --queue <path> [--batch-size N] [--rate-limit S] [--resume] [--dry-run]"
+    exit_codes: {0: "all ok", 1: "partial failure", 2: "invalid queue", 3: "no pending"}
+    cost_tracking: ".claude/state/session-signals/cost-tracking.jsonl"

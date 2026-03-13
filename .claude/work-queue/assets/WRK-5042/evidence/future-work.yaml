@@ -1,0 +1,23 @@
+wrk_id: WRK-5042
+recommendations:
+  - id: FW-1
+    title: "Parallel extraction support"
+    priority: medium
+    description: "Add --parallel N flag for concurrent document extraction using multiprocessing"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Auto-index rebuild after batch"
+    priority: low
+    description: "Trigger index_builder.py after batch completion to update federated content indexes"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "LLM classification integration"
+    priority: medium
+    description: "Integrate LLM-based document classification during extraction for auto-domain tagging"
+    disposition: spun-off-new
+    status: captured
+    captured: true

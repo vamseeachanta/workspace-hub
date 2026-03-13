@@ -1,0 +1,9 @@
+wrk_id: WRK-5042
+stage: 1
+gate: capture-review
+result: approved
+reviewer: vamsee
+reviewed_at: 2026-03-13T00:00:00Z
+confirmed_at: 2026-03-13T00:00:00Z
+scope_approved: true
+notes: "Blockers WRK-5037 (archived) and WRK-5038 (done) resolved. Scope approved as written."

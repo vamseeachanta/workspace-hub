@@ -1,0 +1,8 @@
+wrk_id: WRK-5042
+stage: 5
+decision: approved
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: 2026-03-13T10:20:00Z
+review_cycle_id: WRK-5042-rc1
+notes: "Plan approved — 4 new files, 15 TDD tests, reuses extract-document.py + schema.py + wrk_cost_report.py"
