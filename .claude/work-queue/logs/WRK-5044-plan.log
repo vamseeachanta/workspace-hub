@@ -1,0 +1,6 @@
+timestamp: 2026-03-12T22:05:00Z
+wrk_id: WRK-5044
+provider: claude
+action: plan_draft_complete
+stage: 4
+details: Inline plan — fix --commit path to use structured exec pipeline

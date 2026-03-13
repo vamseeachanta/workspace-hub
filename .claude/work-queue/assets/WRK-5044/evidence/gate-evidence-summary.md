@@ -2,33 +2,33 @@
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
-| Stage evidence gate | FAIL | stage evidence file missing: ".claude/work-queue/assets/WRK-5044/evidence/stage-evidence.yaml" |
+| Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
-| Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |
-| User-review HTML-open gate | FAIL | user-review-browser-open.yaml missing |
-| User-review publish gate | FAIL | user-review-publish.yaml missing |
-| Cross-review gate | FAIL | artifact=none |
-| TDD gate | FAIL | none |
+| Agent log gate | PASS | matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['review_wrapper_complete'] |
+| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5044/review-results.md |
+| TDD gate | PASS | test files=['ac-test-matrix.md'] |
 | Integrated test gate | PASS | execute.yaml: integrated_repo_tests=3 (all passing) |
-| Legal gate | FAIL | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5044/legal-scan.md, result=missing |
+| Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5044/legal-scan.md, result=PASS |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
 | Future-work gate | PASS | future-work.yaml: no_follow_ups_rationale=present |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: no_additions_rationale=present |
-| User-review close gate | FAIL | user-review-close.yaml missing |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
-| Browser open elapsed time gate | PASS | user-review-browser-open.yaml absent — skip elapsed check |
+| Browser open elapsed time gate | PASS | browser open elapsed time OK |
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Codex keyword in review gate | PASS | no review files found — skip codex keyword check (handled by cross-review gate) |
-| Publish commit uniqueness gate | PASS | user-review-publish.yaml absent — skip commit uniqueness check |
-| Stage evidence paths gate | PASS | stages not a list — skip |
+| Codex keyword in review gate | PASS | codex keyword found in review artifacts (1 file(s) checked) |
+| Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '05e7e626' — possible placeholder (WARN) |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
-| Plan publish predates approval gate | PASS | user-review-publish.yaml absent — skip |
+| Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-12T22:42:00Z, reviewed=2026-03-12T10:00:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
-| Reclaim n/a gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |

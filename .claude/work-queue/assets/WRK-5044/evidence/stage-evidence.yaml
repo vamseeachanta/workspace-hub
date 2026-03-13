@@ -1,62 +1,164 @@
 wrk_id: WRK-5044
+generated_at: '2026-03-12T22:30:00Z'
 stages:
-  1:
-    status: done
-    evidence: evidence/user-review-capture.yaml
-  2:
-    status: done
-    evidence: evidence/resource-intelligence.yaml
-  3:
-    status: done
-    evidence: n/a
-  4:
-    status: done
-    evidence: n/a
-  5:
-    status: n/a
-    evidence: n/a
-  6:
-    status: n/a
-    evidence: n/a
-  7:
-    status: n/a
-    evidence: n/a
-  8:
-    status: done
-    evidence: evidence/activation.yaml
-  9:
-    status: done
-    evidence: n/a
-  10:
-    status: done
-    evidence: evidence/execute.yaml
-  11:
-    status: n/a
-    evidence: n/a
-  12:
-    status: done
-    evidence: evidence/ac-test-matrix.md
-  13:
-    status: n/a
-    evidence: n/a
-  14:
-    status: done
-    evidence: evidence/legal-scan.yaml
-  15:
-    status: done
-    evidence: evidence/future-work.yaml
-  16:
-    status: done
-    evidence: evidence/resource-intelligence-update.yaml
-  17:
-    status: pending
-    evidence: n/a
-  18:
-    status: n/a
-    evidence: n/a
-  19:
-    status: pending
-    evidence: n/a
-  20:
-    status: pending
-    evidence: n/a
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created and scope approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence captured.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route A, simple complexity.
+  evidence: .claude/work-queue/working/WRK-5044.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Inline plan in WRK body.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/plan.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Plan approved at capture.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review Plan
+  status: n/a
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Route A — cross-review not required.
+  evidence: n/a
+- order: 7
+  stage: User Review - Plan (Final)
+  status: n/a
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Route A — not required.
+  evidence: n/a
+- order: 8
+  stage: Claim
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claimed by claude.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/claim-evidence.yaml
+- order: 9
+  stage: Routing
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Routed to claude, Route A.
+  evidence: n/a
+- order: 10
+  stage: Execute
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: commit 05e7e626 — routed --commit through structured pipeline.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route A — no separate artifacts.
+  evidence: n/a
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 45/45 tests pass (T24-T25 added).
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: n/a
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Route A — cross-review not required.
+  evidence: n/a
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier run.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/legal-scan.yaml
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: No future work identified.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: No updates needed.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-5044/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Closing.
+  evidence: .claude/work-queue/working/WRK-5044.md
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting archive.
+  evidence: .claude/work-queue/working/WRK-5044.md
+reviewed_by: orchestrator

@@ -1,0 +1,9 @@
+wrk_id: WRK-5044
+test_file: tests/review/test-submit-scripts.sh
+tests_added:
+  - T24: "codex --commit invalid SHA → exit 1"
+  - T25: "codex --commit valid SHA routes through structured pipeline"
+total_tests: 45
+passed: 45
+failed: 0
+run_at: "2026-03-12T22:35:00Z"

@@ -1,0 +1,17 @@
+wrk_id: WRK-5044
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-5044/workflow-final-review.html
+    opened_at: "2026-03-12T09:50:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-5044/workflow-final-review.html
+    opened_at: "2026-03-12T09:50:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-5044/workflow-final-review.html
+    opened_at: "2026-03-12T22:35:00Z"
+    reviewer: vamsee

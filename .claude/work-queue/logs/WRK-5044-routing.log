@@ -1,0 +1,6 @@
+timestamp: 2026-03-12T22:00:00Z
+wrk_id: WRK-5044
+provider: claude
+action: work_queue_skill
+stage: 3
+details: Route A simple — single fix to submit-to-codex.sh

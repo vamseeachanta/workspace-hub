@@ -1,0 +1,16 @@
+timestamp: 2026-03-13T03:38:22Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T03:38:27Z
+wrk_id: WRK-5044
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
