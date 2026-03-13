@@ -1,0 +1,14 @@
+wrk_id: WRK-1012
+generated_at: "2026-03-13T09:06:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - session-start
+    - ecosystem-terminology
+resources:
+  - type: config
+    path: .claude/settings.json
+    relevance: "enabledPlugins and extraKnownMarketplaces declarations"
+notes: "Simple chore — no external resources needed"

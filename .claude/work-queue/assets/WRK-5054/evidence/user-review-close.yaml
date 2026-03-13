@@ -1,6 +1,6 @@
-stage: 7
-gate_type: user-review
-result: approved
+wrk_id: WRK-5054
 reviewer: vamsee
-reviewed_at: "2026-03-13T18:02:00Z"
-notes: "User approved hard gate directly — 'approve stage 5, 7'"
+reviewed_at: "2026-03-13T11:50:00Z"
+confirmed_at: "2026-03-13T11:50:00Z"
+decision: approved
+notes: "User approved close review -- 145 PDFs extracted, 25/25 TDD tests pass"

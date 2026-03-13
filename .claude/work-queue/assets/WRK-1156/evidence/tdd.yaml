@@ -1,0 +1,18 @@
+wrk_id: WRK-1156
+stage: 12
+approach: pytest-tdd
+rationale: "Full TDD cycle: 27 tests written first (RED), then implementation (GREEN)"
+verifications:
+  - name: data model tests
+    command: "PYTHONPATH=src uv run python -m pytest tests/power/commissioning/ -k 'TestCommissioningPhase or TestTestStep or TestPunchItem' -v"
+    result: pass
+  - name: generator tests
+    command: "PYTHONPATH=src uv run python -m pytest tests/power/commissioning/ -k TestCommissioningSequenceGenerator -v"
+    result: pass
+  - name: validator tests
+    command: "PYTHONPATH=src uv run python -m pytest tests/power/commissioning/ -k TestTestResultsValidator -v"
+    result: pass
+  - name: export tests
+    command: "PYTHONPATH=src uv run python -m pytest tests/power/commissioning/ -k TestExport -v"
+    result: pass
+completed_at: "2026-03-13T04:35:00Z"

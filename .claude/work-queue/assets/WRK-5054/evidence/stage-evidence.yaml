@@ -1,38 +1,84 @@
 wrk_id: WRK-5054
-stages_completed:
-  - stage: 1
-    completed_at: "2026-03-13T12:00:00Z"
-    evidence: evidence/user-review-capture.yaml
-  - stage: 2
-    completed_at: "2026-03-13T12:01:00Z"
-    evidence: evidence/resource-intelligence.yaml
-  - stage: 3
-    completed_at: "2026-03-13T12:01:30Z"
-    notes: "Triage: Route B, medium complexity, high priority"
-  - stage: 4
-    completed_at: "2026-03-13T18:00:00Z"
-    notes: "Plan drafted and executed inline — 6-step plan covering batch extract, index build, query validation, promote, skill, TDD"
-  - stage: 5
-    completed_at: "2026-03-13T18:01:00Z"
-    evidence: evidence/user-review-plan-draft.yaml
-    notes: "User approved plan (stage 5) directly"
-  - stage: 6
-    completed_at: "2026-03-13T18:01:30Z"
-    notes: "Cross-review deferred — execution-validated pipeline run"
-  - stage: 7
-    completed_at: "2026-03-13T18:02:00Z"
-    evidence: evidence/user-review-close.yaml
-    notes: "User approved hard gate (stage 7) directly"
-  - stage: 8
-    completed_at: "2026-03-13T18:10:00Z"
-    notes: "Execution: batch-extract-naval.sh — 145/145 PDFs, 0 failures"
-  - stage: 9
-    completed_at: "2026-03-13T18:11:00Z"
-    notes: "TDD: 25/25 tests pass (pipeline outputs, promoted artifacts, textbook values, query results)"
-  - stage: 10
-    completed_at: "2026-03-13T18:12:00Z"
-    notes: "Index build: 7,241 classified records across 6 content types + 3,884 tables + 7,393 curves"
-  - stage: 11
-    completed_at: "2026-03-13T18:13:00Z"
-    notes: "Promotion: constants.py, requirements.py, glossary.yaml, 3,683 CSVs, 6,779 curve placeholders"
-current_stage: 12
+generated_at: '2026-03-13T12:02:36Z'
+reviewed_by: orchestrator
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/pending/WRK-5054.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/pending/WRK-5054.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/user-review-common-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  evidence: n/a
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/workflow-final-review.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/cross-review.yaml
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5054/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: done
+  evidence: scripts/work-queue/archive-item.sh

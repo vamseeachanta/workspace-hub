@@ -1,0 +1,20 @@
+wrk_id: WRK-1012
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a4268458
+    documents:
+      - ".claude/work-queue/assets/WRK-1012/plan-html-review-final.md"
+    published_at: "2026-03-13T09:05:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a4268458
+    documents:
+      - ".claude/work-queue/assets/WRK-1012/plan-html-review-final.md"
+    published_at: "2026-03-13T09:05:29Z"
+    reviewer: vamsee

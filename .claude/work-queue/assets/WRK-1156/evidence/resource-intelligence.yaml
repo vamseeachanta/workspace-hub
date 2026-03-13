@@ -1,0 +1,35 @@
+wrk_id: WRK-1156
+stage: 2
+completion_status: continue_to_planning
+surveyed_at: "2026-03-13T04:25:00Z"
+domain: power-systems-commissioning
+research_summary: |
+  Target: digitalmodel/src/digitalmodel/power/commissioning/
+  The power/ module does not exist yet — new module creation required.
+  Reference patterns: cathodic_protection (3 calc files + __init__),
+  drilling_riser (4 calc files + __init__), structural/offshore_resilience
+  (installation_checklist.py — closest commissioning-adjacent code).
+  Test pattern: class-based, pytest.approx, doc-verified naming.
+  Test command: PYTHONPATH=src uv run python -m pytest
+  Import convention: re-export public API in __init__.py with __all__.
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  relevant:
+    - test-driven-development
+    - comprehensive-learning
+constraints:
+  - New module — no existing power/ directory
+  - Must follow digitalmodel module conventions (see cathodic_protection, drilling_riser)
+  - Tests in tests/power/commissioning/ mirroring src structure
+  - Parent WRK-1048 (feature); sibling WRK-1154 (archived — blocker cleared)
+files_to_create:
+  - digitalmodel/src/digitalmodel/power/__init__.py
+  - digitalmodel/src/digitalmodel/power/commissioning/__init__.py
+  - digitalmodel/src/digitalmodel/power/commissioning/test_sequence_validator.py
+  - digitalmodel/tests/power/__init__.py
+  - digitalmodel/tests/power/commissioning/__init__.py
+  - digitalmodel/tests/power/commissioning/test_commissioning_doc_verified.py
+complexity_assessment: medium

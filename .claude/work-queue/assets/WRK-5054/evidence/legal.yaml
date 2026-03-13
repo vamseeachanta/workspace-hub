@@ -1,0 +1,5 @@
+stage: 14
+gate_type: legal
+result: passed
+scanned_at: "2026-03-13T11:45:00Z"
+notes: "No client identifiers in scripts or tests. Data files are gitignored runtime artifacts."

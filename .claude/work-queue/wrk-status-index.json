@@ -5434,5 +5434,14 @@
     "title": "feat(doc-intel): batch extraction pipeline \u2014 1M doc queue with cost tracking",
     "priority": "low",
     "category": "document-intelligence"
+  },
+  "WRK-5054": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T12:02:36.730155+00:00",
+    "updated_by": "close-item.sh",
+    "title": "feat(doc-intel): run extraction pipeline on naval architecture collection",
+    "priority": "high",
+    "category": "document-intelligence"
   }
 }

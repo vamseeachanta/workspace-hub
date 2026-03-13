@@ -1,0 +1,34 @@
+wrk_id: WRK-1155
+stage: 2
+completion_status: continue_to_planning
+surveyed_at: "2026-03-13T09:25:00Z"
+top_p1_gaps: []
+
+existing_resources:
+  digitalmodel_src:
+    exists: true
+    path: digitalmodel/src/digitalmodel
+    subpackages: 28
+    status: "Well-established module structure with __init__.py pattern"
+  power_dir:
+    exists: false
+    path: digitalmodel/src/digitalmodel/power
+    status: "Greenfield — needs power/ and power/microgrid/ directories"
+  module_pattern:
+    reference: digitalmodel/src/digitalmodel/cathodic_protection/__init__.py
+    pattern: "Docstring + from-imports of public API functions/classes"
+    status: "Follow same pattern for power/microgrid/__init__.py"
+  test_pattern:
+    reference: digitalmodel/tests/cathodic_protection/
+    pattern: "test_*.py with pytest, TDD mandatory"
+    status: "Create tests/power/microgrid/ directory"
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - superpowers/test-driven-development
+    - superpowers/systematic-debugging
+  reference_skills: []
+
+gaps: []
+notes: "Greenfield module. No power/ directory exists yet — all additions. Follow cathodic_protection pattern for __init__.py exports and test layout."

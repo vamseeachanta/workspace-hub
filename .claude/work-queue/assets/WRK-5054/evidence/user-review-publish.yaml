@@ -1,0 +1,29 @@
+wrk_id: WRK-5054
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 6a1e3b2c
+    documents:
+      - .claude/work-queue/pending/WRK-5054.md
+    published_at: "2026-03-13T11:10:30Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 7be05a0d
+    documents:
+      - .claude/work-queue/assets/WRK-5054/plan-html-review-final.md
+    published_at: "2026-03-13T11:11:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: https://github.com/vamseeachanta/workspace-hub.git
+    branch: main
+    commit: 8cf16b3e
+    documents:
+      - .claude/work-queue/assets/WRK-5054/workflow-final-review.html
+    published_at: "2026-03-13T11:50:30Z"
+    reviewer: vamsee

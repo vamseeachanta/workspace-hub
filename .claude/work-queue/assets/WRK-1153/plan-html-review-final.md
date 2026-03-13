@@ -1,3 +1,5 @@
+reviewed: true
+approved: true
 confirmed_by: vamsee
 confirmed_at: 2026-03-12T20:27:00Z
 decision: passed

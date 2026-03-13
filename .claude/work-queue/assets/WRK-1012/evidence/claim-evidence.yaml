@@ -1,0 +1,22 @@
+claim_date: "2026-03-13T09:06:05Z"
+claimed_at: "2026-03-13T09:06:05Z"
+wrk_id: "WRK-1012"
+route: "A"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "vamsee"
+agent_fit:
+  capability_match: "full"
+  rationale: "Route A / simple chore / execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05] / provider=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-13T09:06:05Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 85
+  source: "config/ai-tools/agent-quota-latest.json"

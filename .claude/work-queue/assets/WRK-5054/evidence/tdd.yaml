@@ -1,0 +1,14 @@
+stage: 9
+gate_type: tdd
+result: passed
+completed_at: "2026-03-13T11:45:00Z"
+test_file: tests/promoted/naval-architecture/test_naval_architecture_constants.py
+test_count: 25
+passed: 25
+failed: 0
+command: "uv run --no-project python -m pytest tests/promoted/naval-architecture/ -v"
+categories:
+  - pipeline_outputs: 7
+  - promoted_artifacts: 4
+  - textbook_values: 10
+  - query_results: 4

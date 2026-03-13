@@ -1,0 +1,11 @@
+wrk_id: WRK-1156
+stage: 16
+updated_at: "2026-03-13T04:42:00Z"
+additions:
+  - path: digitalmodel/src/digitalmodel/power/commissioning/test_sequence_validator.py
+    purpose: "FAT/SAT/IST test sequence generator and results validator"
+    reuse_note: "Import from digitalmodel.power.commissioning; use CommissioningSequenceGenerator for sequence generation, TestResultsValidator for results validation"
+patterns_learned:
+  - "PunchItem severity validation via __post_init__ dataclass hook"
+  - "Phase-specific step templates as module-level constants for easy extension"
+  - "CSV round-trip via csv.DictReader/DictWriter with required column validation"

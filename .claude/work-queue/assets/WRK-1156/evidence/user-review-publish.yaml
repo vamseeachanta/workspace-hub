@@ -1,0 +1,28 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "pending-plan-draft"
+    documents:
+      - .claude/work-queue/assets/WRK-1156/WRK-1156-lifecycle.html
+    published_at: "2026-03-13T04:41:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "pending-plan-final"
+    documents:
+      - .claude/work-queue/assets/WRK-1156/WRK-1156-lifecycle.html
+    published_at: "2026-03-13T04:42:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "pending-close"
+    documents:
+      - .claude/work-queue/assets/WRK-1156/WRK-1156-lifecycle.html
+    published_at: "2026-03-13T04:46:00Z"
+    reviewer: vamsee

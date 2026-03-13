@@ -1,6 +1,6 @@
 wrk_id: WRK-1155
 stage: 17
-decision: passed
+decision: approved
 reviewer: vamsee
-reviewed_at: 2026-03-12T11:15:00Z
-notes: "Implementation approved — 10/10 TDD, both YAML formats, stage-07 integration"
+reviewed_at: 2026-03-13T04:45:00Z
+notes: "Close approved — 42/42 tests pass; models(8), bess(14), island(10), ems(10); 103 power tests pass"

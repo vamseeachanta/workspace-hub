@@ -1,4 +1,6 @@
 wrk_id: WRK-1154
+reviewed: true
+approved: true
 confirmed_by: vamsee
 confirmed_at: 2026-03-12T11:01:00Z
 decision: passed

@@ -1,0 +1,29 @@
+wrk_id: WRK-5054
+scope: integrated
+executed_at: "2026-03-13T11:20:00Z"
+completed_at: "2026-03-13T11:40:00Z"
+commit: 7be05a0d
+changes_summary: >
+  Batch-extracted 145 SNAME PDFs (0 failures). Built 8 content-type indexes
+  (7,241 classified records). Promoted constants, requirements, glossary,
+  3,683 CSVs, 6,779 curve placeholders. 25/25 TDD tests pass.
+artifacts:
+  - scripts/data/doc-intelligence/batch-extract-naval.sh
+  - scripts/data/doc-intelligence/build-ship-plans-index.py
+  - tests/promoted/naval-architecture/test_naval_architecture_constants.py
+integrated_repo_tests:
+  - name: naval-architecture TDD suite
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/promoted/naval-architecture/ -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-5054/test-results.md
+  - name: legal scan
+    scope: integrated
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-5054/legal-scan.md
+  - name: close-item.sh help
+    scope: integrated
+    command: "bash scripts/work-queue/close-item.sh --help"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-5054/test-results.md

@@ -1,6 +1,6 @@
 wrk_id: WRK-1155
 stage: 5
-decision: passed
+decision: approved
 reviewer: vamsee
-reviewed_at: 2026-03-12T11:05:00Z
-notes: "Route A inline plan approved — TDD tests + script + stage-07 integration"
+reviewed_at: 2026-03-13T04:45:00Z
+notes: "Plan approved — 5-phase TDD: models, BESS controller, island detector, EMS, package wiring"

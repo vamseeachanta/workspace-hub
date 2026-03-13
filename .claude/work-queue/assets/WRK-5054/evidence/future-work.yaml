@@ -1,0 +1,24 @@
+wrk_id: WRK-5054
+generated_at: "2026-03-13T11:45:00Z"
+recommendations:
+  - id: FW-1
+    title: "Ship plan drawing extraction via CAD pipeline on ace-linux-2"
+    rationale: "108/110 ship plans yield zero text -- require CAD/image extraction"
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    wrk_id: WRK-5055
+  - id: FW-2
+    title: "Integrate theoretical naval architecture into digitalmodel"
+    rationale: "Promoted constants and equations need integration into digitalmodel modules"
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    wrk_id: WRK-5056
+  - id: FW-3
+    title: "Dedup + multi-source provenance layer"
+    rationale: "Multiple PDFs contain overlapping content -- need deduplication and provenance tracking"
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    wrk_id: WRK-5057

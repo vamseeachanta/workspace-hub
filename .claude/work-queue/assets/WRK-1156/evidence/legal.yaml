@@ -1,0 +1,7 @@
+wrk_id: WRK-1156
+scan_tool: scripts/legal/legal-sanity-scan.sh
+scan_mode: full
+result: PASS
+scanned_at: "2026-03-13T04:40:00Z"
+violations_block: 0
+violations_warn: 0

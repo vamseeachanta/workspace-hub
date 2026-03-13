@@ -1,0 +1,166 @@
+wrk_id: WRK-1156
+generated_at: '2026-03-13T09:55:05Z'
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/pending/WRK-1156.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence captured.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route B, medium complexity, ace-linux-1 set.
+  evidence: .claude/work-queue/pending/WRK-1156.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Plan written with 26 test cases across 4 categories.
+  evidence: .claude/work-queue/assets/WRK-1156/WRK-1156-lifecycle.html
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Plan approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: "Cross-review completed \u2014 no blocking issues."
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Stage 7 approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical route.
+  evidence: .claude/work-queue/logs/WRK-1156-routing.log
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 6 files created; 27/27 tests pass.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Lifecycle HTML generated.
+  evidence: .claude/work-queue/assets/WRK-1156/WRK-1156-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: "Full TDD cycle \u2014 27 tests RED then GREEN."
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/tdd.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 3 providers (claude, codex, gemini) reviewed.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/cross-review.yaml
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier run.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: No follow-up items identified.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New module path captured.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Stage 17 approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1156/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Single-session; no reclaim needed.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting archive operation.
+  evidence: scripts/work-queue/archive-item.sh

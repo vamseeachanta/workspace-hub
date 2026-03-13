@@ -1,0 +1,14 @@
+wrk_id: WRK-1012
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: ".claude/work-queue/assets/WRK-1012/plan-html-review-final.md"
+    opened_at: "2026-03-13T08:55:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: ".claude/work-queue/assets/WRK-1012/plan-html-review-final.md"
+    opened_at: "2026-03-13T08:55:00Z"
+    reviewer: vamsee

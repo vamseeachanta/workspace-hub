@@ -1,24 +1,32 @@
-gate: stage-2-resource-intelligence
 wrk_id: WRK-5054
-timestamp: "2026-03-13T12:01:00Z"
-
+generated_at: "2026-03-13T11:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+summary: >
+  Pipeline tools exist and are validated. 145 SNAME PDFs at /mnt/ace/docs/_standards/SNAME/.
+  Extract, index, query, promote scripts all operational. No external dependencies.
+  Ship plans (110) expected thin text extraction.
+skills:
+  core_used:
+    - engineering/doc-extraction
+    - engineering/doc-extraction/naval-architecture
+    - engineering/marine-offshore/naval-architecture
 tools_assessed:
   - script: scripts/data/doc-intelligence/extract-document.py
     status: exists
-    notes: "CLI wrapper; dispatches to orchestrator.py → PdfParser. Uses pdfplumber."
+    notes: "CLI wrapper; dispatches to orchestrator.py -> PdfParser. Uses pdfplumber."
   - script: scripts/data/doc-intelligence/run-extract.sh
     status: exists
     notes: "Shell wrapper with uv run --no-project + deps."
   - script: scripts/data/doc-intelligence/build-doc-intelligence.py
     status: exists
-    notes: "Reads *.manifest.yaml → writes 8 content-type JSONL indexes."
+    notes: "Reads *.manifest.yaml -> writes 8 content-type JSONL indexes."
   - script: scripts/data/doc-intelligence/query-doc-intelligence.py
     status: exists
     notes: "CLI query against JSONL indexes. Supports --domain, --type, --keyword."
   - script: scripts/data/doc-intelligence/promote-to-code.py
     status: exists
-    notes: "Reads JSONL indexes → writes Python modules, CSV, YAML skills, tests."
-
+    notes: "Reads JSONL indexes -> writes Python modules, CSV, YAML skills, tests."
 input_data:
   location: /mnt/ace/docs/_standards/SNAME/
   total_pdfs: 145
@@ -27,17 +35,15 @@ input_data:
     hydrostatics: 13
     ship_plans: 110
   catalogue: knowledge/seeds/naval-architecture-resources.yaml
-
 output_targets:
   manifests: data/doc-intelligence/manifests/naval-architecture/
   indexes: data/doc-intelligence/
   promoted_code: digitalmodel/src/digitalmodel/naval_architecture/
   promoted_tables: data/standards/promoted/naval-architecture/
   promoted_skills: .claude/skills/engineering/doc-extraction/naval-architecture/
-
 key_findings:
   - "PDF parser extracts per-page text sections, tables (pdfplumber), and figure refs via regex"
-  - "No LLM calls in extraction pipeline — pure pdfplumber text/table extraction"
-  - "Ship plans (110) likely yield thin text — monitor extraction stats"
+  - "No LLM calls in extraction pipeline -- pure pdfplumber text/table extraction"
+  - "Ship plans (110) likely yield thin text -- monitor extraction stats"
   - "Manifest output is YAML with sections/tables/figure_refs/errors/extraction_stats"
   - "run-extract.sh provides proper uv invocation with all deps"
