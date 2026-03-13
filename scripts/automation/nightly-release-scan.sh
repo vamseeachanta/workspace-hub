@@ -58,7 +58,7 @@ VERSIONS="claude=${CLAUDE_V},codex=${CODEX_V},gemini=${GEMINI_V}"
 echo "Detected versions: claude=${CLAUDE_V:-n/a} codex=${CODEX_V:-n/a} gemini=${GEMINI_V:-n/a}"
 
 # ── Delegate to Python for state comparison + WRK creation ───────────
-uv run --no-project ${PYTHON} "${REPO_ROOT}/scripts/automation/release_scan_wrk.py" \
+uv run --no-project python "${REPO_ROOT}/scripts/automation/release_scan_wrk.py" \
     --workspace-root "${REPO_ROOT}" \
     --versions "${VERSIONS}" \
     --providers "${PROVIDER}" \

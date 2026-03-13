@@ -174,6 +174,16 @@ class TestUpdateState:
         assert updated["last_scan_by"] == "nightly"
         assert "last_scan_at" in updated
 
+    def test_update_state_missing_file(self, mod, tmp_path):
+        """update_state creates the file when it does not exist (first scan)."""
+        state_file = tmp_path / "config" / "ai-tools" / "release-scan-state.yaml"
+        changes = [{"provider": "claude", "old": "(first scan)", "new": "2.1.74"}]
+        mod.update_state(state_file, changes)
+        assert state_file.exists()
+        updated = yaml.safe_load(state_file.read_text())
+        assert updated["last_seen_version"]["claude"] == "2.1.74"
+        assert updated["last_scan_by"] == "nightly"
+
 
 # ── 5. Idempotency ─────────────────────────────────────────────────
 

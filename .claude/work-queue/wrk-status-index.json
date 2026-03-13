@@ -5326,5 +5326,14 @@
     "title": "chore(harness): stage-17 gate-evidence green checker \u2014 all gates OK before close",
     "priority": "high",
     "category": "harness"
+  },
+  "WRK-1148": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T03:05:19.058046+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Naval architecture literature gathering \u2014 propeller-rudder interaction",
+    "priority": "medium",
+    "category": "engineering"
   }
 }

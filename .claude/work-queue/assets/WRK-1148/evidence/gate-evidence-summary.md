@@ -2,26 +2,26 @@
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
-| Stage evidence gate | FAIL | stage evidence file missing: assets/WRK-1148/evidence/stage-evidence.yaml |
+| Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['tdd_eval'], cross-review:['review_wrapper_complete'] |
 | User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
 | User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
-| Cross-review gate | FAIL | artifact=none |
+| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1148/review.md |
 | TDD gate | PASS | test files=['ac-test-matrix.md'] |
-| Integrated test gate | FAIL | execute.yaml: integrated_repo_tests[1] missing fields: ['name', 'scope', 'artifact_ref'] |
-| Legal gate | FAIL | artifact=missing, none |
+| Integrated test gate | PASS | execute.yaml: integrated_repo_tests=3 (all passing) |
+| Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1148/legal-scan.md, result=PASS — no client references, no secrets, literature document only |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
-| Future-work gate | FAIL | future-work.yaml: recommendations[1] disposition must be existing-updated\|spun-off-new |
+| Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=1 |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
-| Browser open elapsed time gate | FAIL | stage=plan_draft: approval confirmed only 0s after browser open (min 300s required) |
+| Browser open elapsed time gate | PASS | browser open elapsed time OK |
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |

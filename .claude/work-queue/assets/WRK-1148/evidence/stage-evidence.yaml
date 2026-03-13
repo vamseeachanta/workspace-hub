@@ -1,5 +1,5 @@
 wrk_id: WRK-1148
-generated_at: '2026-03-12T20:40:00Z'
+generated_at: '2026-03-13T03:05:18Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -50,7 +50,7 @@ stages:
   human_decision_required: 'no'
   owner: codex
   blocker: 'no'
-  comment: "Route B — Claude APPROVE, Codex 3 iterations resolved."
+  comment: "Route B \u2014 Claude APPROVE, Codex 3 iterations resolved."
   evidence: .claude/work-queue/assets/WRK-1148/evidence/cross-review.yaml
 - order: 7
   stage: User Review Plan Final
@@ -75,13 +75,14 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Routed to ace-linux-1.
+  evidence: .claude/work-queue/assets/WRK-1148/evidence/activation.yaml
 - order: 10
   stage: Work Execution
   status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Literature survey written — 665 lines, 19 references.
+  comment: "Literature survey written \u2014 665 lines, 19 references."
   evidence: .claude/work-queue/assets/WRK-1148/evidence/execute.yaml
 - order: 11
   stage: Artifact Generation
@@ -146,6 +147,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: No reclaim needed.
+  evidence: n/a
 - order: 19
   stage: Close
   status: done
@@ -153,6 +155,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Closing WRK-1148.
+  evidence: .claude/work-queue/assets/WRK-1148/evidence/user-review-close.yaml
 - order: 20
   stage: Archive
   status: done
@@ -160,3 +163,4 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Ready for archive.
+  evidence: .claude/work-queue/assets/WRK-1148/evidence/stage-evidence.yaml

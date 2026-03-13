@@ -3,11 +3,20 @@ stage: 15
 recommendations:
   - title: "Add 4-quadrant K_T data for crash-stop scenarios"
     priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
     notes: "Current survey covers first-quadrant (forward motion) only."
   - title: "Add twin-screw interaction references"
     priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
     notes: "Survey focused on single-screw configurations."
   - title: "Add energy-saving device literature (pre-swirl stators, ducts)"
     priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
     notes: "Devices upstream of propeller alter inflow and slipstream."
 completed_at: "2026-03-12T20:30:00Z"

@@ -49,7 +49,7 @@ bash scripts/automation/nightly-release-scan.sh || \
 
 # Auto-commit any WRK items created by the release scan
 if ! git diff --quiet .claude/work-queue/ config/ai-tools/release-scan-state.yaml 2>/dev/null; then
-  git add .claude/work-queue/pending/WRK-*.md .claude/work-queue/INDEX.md config/ai-tools/release-scan-state.yaml
+  git add -A .claude/work-queue/pending/ .claude/work-queue/INDEX.md config/ai-tools/release-scan-state.yaml
   git commit -m "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
   git push
 fi

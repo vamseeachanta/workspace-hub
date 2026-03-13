@@ -16,17 +16,26 @@ sources_used:
     - ITTC procedures 7.5-02-03-02.1 and 7.5-02-06-01
     - RANS validation studies 2011-2020
 integrated_repo_tests:
-  - repo: digitalmodel
+  - name: "literature-doc-exists"
+    repo: digitalmodel
+    scope: repo
     command: "wc -l digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md"
     result: PASS
+    artifact_ref: "digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md"
     notes: "Literature document exists, 665 lines"
-  - repo: digitalmodel
+  - name: "source-section-count"
+    repo: digitalmodel
+    scope: repo
     command: "grep -c '^## [0-9]' digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md"
     result: PASS
+    artifact_ref: ".claude/work-queue/assets/WRK-1148/ac-test-matrix.md"
     notes: "8 numbered source sections found"
-  - repo: digitalmodel
+  - name: "legal-scan"
+    repo: workspace-hub
+    scope: integrated
     command: "bash scripts/legal/legal-sanity-scan.sh"
     result: PASS
+    artifact_ref: ".claude/work-queue/assets/WRK-1148/legal-scan.md"
     notes: "No legal violations found"
 ac_results:
   AC1_reference_count: PASS  # 8 numbered sections

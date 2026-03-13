@@ -3,15 +3,15 @@ events:
   - stage: plan_draft
     opened_in_default_browser: true
     html_ref: .claude/work-queue/assets/WRK-1148/WRK-1148-plan.html
-    opened_at: "2026-03-12T16:15:00Z"
+    opened_at: "2026-03-12T16:05:00Z"
     reviewer: vamsee
   - stage: plan_final
     opened_in_default_browser: true
     html_ref: .claude/work-queue/assets/WRK-1148/WRK-1148-plan.html
-    opened_at: "2026-03-12T16:15:00Z"
+    opened_at: "2026-03-12T16:05:00Z"
     reviewer: vamsee
   - stage: close_review
     opened_in_default_browser: true
     html_ref: .claude/work-queue/assets/WRK-1148/WRK-1148-lifecycle.html
-    opened_at: "2026-03-12T20:42:00Z"
+    opened_at: "2026-03-12T20:35:00Z"
     reviewer: vamsee

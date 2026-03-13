@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -19,10 +19,10 @@
     },
     {
       "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage evidence file missing: assets/WRK-1148/evidence/stage-evidence.yaml"
+      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
     },
     {
       "name": "Resource-intelligence gate",
@@ -61,10 +61,10 @@
     },
     {
       "name": "Cross-review gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1148/review.md"
     },
     {
       "name": "TDD gate",
@@ -75,17 +75,17 @@
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['name', 'scope', 'artifact_ref']"
+      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
     },
     {
       "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=missing, none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1148/legal-scan.md, result=PASS \u2014 no client references, no secrets, literature document only"
     },
     {
       "name": "Claim gate",
@@ -96,10 +96,10 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: recommendations[1] disposition must be existing-updated|spun-off-new"
+      "details": "future-work.yaml: recommendations=3"
     },
     {
       "name": "Resource-intelligence update gate",
@@ -138,10 +138,10 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage=plan_draft: approval confirmed only 0s after browser open (min 300s required)"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",

@@ -9,6 +9,7 @@ Usage:
 """
 
 import argparse
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -115,7 +116,11 @@ capture any relevant WRK items for new features or breaking changes.
 
 def update_state(state_path: Path, changes: list[dict[str, str]]) -> None:
     """Update state file with new versions and timestamp."""
-    data = yaml.safe_load(state_path.read_text()) or {}
+    if state_path.exists():
+        data = yaml.safe_load(state_path.read_text()) or {}
+    else:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {}
     versions = data.get("last_seen_version", {}) or {}
     for c in changes:
         versions[c["provider"]] = c["new"]
@@ -133,8 +138,7 @@ def _get_next_id(workspace_root: Path) -> str:
         capture_output=True,
         text=True,
         cwd=str(workspace_root),
-        env={"PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(Path.home()),
-             "WORKSPACE_ROOT": str(workspace_root)},
+        env={**os.environ, "WORKSPACE_ROOT": str(workspace_root)},
     )
     if result.returncode != 0:
         print(f"ERROR: next-id.sh failed: {result.stderr}", file=sys.stderr)
