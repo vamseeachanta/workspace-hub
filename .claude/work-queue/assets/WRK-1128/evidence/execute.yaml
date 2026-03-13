@@ -1,0 +1,37 @@
+wrk_id: WRK-1128
+stage: 10
+completed_at: "2026-03-13T09:34:00Z"
+commit: "8633aad8"
+deliverables:
+  - path: scripts/ai/observed_exposure_report.py
+    description: "Observed AI exposure report — scans WRK queue, classifies stages, outputs table"
+  - path: scripts/ai/tests/test_observed_exposure_report.py
+    description: "9 TDD tests — all PASS"
+  - path: scripts/ai/README.md
+    description: "Updated with observed_exposure_report.py usage docs"
+executed_at: "2026-03-13T09:33:00Z"
+test_results:
+  passed: 9
+  failed: 0
+  command: "uv run --no-project python -m pytest scripts/ai/tests/test_observed_exposure_report.py -v"
+tdd:
+  test_count: 9
+  pass_count: 9
+  fail_count: 0
+  command: "uv run --no-project python -m pytest scripts/ai/tests/test_observed_exposure_report.py -v"
+integrated_repo_tests:
+  - name: observed_exposure_report unit tests
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/ai/tests/test_observed_exposure_report.py -v"
+    result: pass
+    artifact_ref: scripts/ai/tests/test_observed_exposure_report.py
+  - name: observed_exposure_report smoke — real queue markdown
+    scope: integrated
+    command: "uv run --no-project python scripts/ai/observed_exposure_report.py"
+    result: pass
+    artifact_ref: scripts/ai/observed_exposure_report.py
+  - name: observed_exposure_report smoke — real queue CSV
+    scope: integrated
+    command: "uv run --no-project python scripts/ai/observed_exposure_report.py --csv"
+    result: pass
+    artifact_ref: scripts/ai/observed_exposure_report.py

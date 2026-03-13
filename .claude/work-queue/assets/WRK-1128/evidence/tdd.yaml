@@ -1,0 +1,25 @@
+wrk_id: WRK-1128
+test_command: "uv run --no-project python -m pytest scripts/ai/tests/test_observed_exposure_report.py -v"
+test_count: 9
+pass_count: 9
+fail_count: 0
+ran_at: "2026-03-13T09:34:20Z"
+tests:
+  - name: test_empty_queue
+    result: pass
+  - name: test_single_wrk_all_stages_done
+    result: pass
+  - name: test_mixed_categories
+    result: pass
+  - name: test_partial_stages
+    result: pass
+  - name: test_missing_stage_evidence
+    result: pass
+  - name: test_csv_output
+    result: pass
+  - name: test_human_gate_stages_match_script
+    result: pass
+  - name: test_format_table_markdown
+    result: pass
+  - name: test_archive_wrk_files_discovered
+    result: pass

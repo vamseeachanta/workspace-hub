@@ -1,21 +1,25 @@
----
 stage: 2
 wrk_id: WRK-1128
-gathered_at: "2026-03-13T00:00:00Z"
+gathered_at: "2026-03-13T09:20:00Z"
 resources:
   existing_scripts:
-    - scripts/ai/wrk_cost_report.py  # pattern for reading WRK files + JSONL aggregation
-    - scripts/work-queue/is-human-gate.sh  # classifies stages as human/AI (exit 0=human, 1=AI)
+    - scripts/ai/wrk_cost_report.py
+    - scripts/work-queue/is-human-gate.sh
   data_sources:
-    - .claude/work-queue/pending/*.md  # active WRK files with category frontmatter
+    - .claude/work-queue/pending/*.md
     - .claude/work-queue/working/*.md
-    - .claude/work-queue/archive/**/*.md  # ~134 in 2026-03 alone
+    - .claude/work-queue/archive/**/*.md
   key_findings:
     - is-human-gate.sh uses case statement: stages 1,5,7,17 = human; all others = AI
-    - WRK frontmatter has 'category' field; ~20 distinct categories; harness(135), engineering(117), data(23) dominant
+    - WRK frontmatter has 'category' field; ~20 distinct categories
     - 20-stage lifecycle = 4 human gates + 16 AI stages = 80% theoretical max
     - wrk_cost_report.py provides good pattern for REPO_ROOT, JSONL parsing, argparse CLI
-    - Evidence dir per WRK in assets/ tracks which stages were actually completed
   dependencies:
     - PyYAML for frontmatter parsing (available via uv)
----
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass

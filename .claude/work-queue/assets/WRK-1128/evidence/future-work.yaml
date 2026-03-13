@@ -1,0 +1,21 @@
+wrk_id: WRK-1128
+generated_at: "2026-03-13T09:34:30Z"
+recommendations:
+  - id: FW-1
+    description: "Track actual execution method per stage to reveal true observed vs theoretical gap"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: high
+  - id: FW-2
+    description: "Add time-series tracking — run report weekly to show automation trend over time"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: medium
+  - id: FW-3
+    description: "Integrate with O*NET task taxonomy for cross-reference with Anthropic labor market data"
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: medium

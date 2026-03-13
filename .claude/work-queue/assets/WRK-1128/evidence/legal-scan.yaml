@@ -1,0 +1,6 @@
+wrk_id: WRK-1128
+scanned_at: "2026-03-13T09:34:35Z"
+tool: "scripts/legal/legal-sanity-scan.sh"
+scope: "workspace-hub (root)"
+result: pass
+violations: 0

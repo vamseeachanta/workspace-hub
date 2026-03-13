@@ -1,0 +1,17 @@
+wrk_id: WRK-1128
+stage: 16
+updated_at: "2026-03-13T00:00:00Z"
+additions:
+  - type: new_file
+    path: scripts/ai/observed_exposure_report.py
+    description: "Observed AI exposure report by WRK category"
+  - type: new_file
+    path: scripts/ai/tests/test_observed_exposure_report.py
+    description: "9 TDD tests for observed_exposure_report"
+  - type: modified_file
+    path: scripts/ai/README.md
+    description: "Added observed_exposure_report.py usage documentation"
+patterns_confirmed:
+  - "HUMAN_GATE_STAGES = {1, 5, 7, 17} matches is-human-gate.sh"
+  - "stage-evidence.yaml 'order' field maps to stage number"
+  - "Binary classification means observed = theoretical for completed WRKs"
