@@ -1,26 +1,13 @@
 wrk_id: WRK-1148
 stage: 15
 recommendations:
-  - "Add 4-quadrant K_T data for crash-stop scenarios"
-  - "Add twin-screw interaction references"
-  - "Add energy-saving device literature"
-items:
-  - id: FW-1
-    title: Add propeller 4-quadrant K_T data to literature survey
+  - title: "Add 4-quadrant K_T data for crash-stop scenarios"
     priority: low
-    notes: >
-      Current survey covers first-quadrant (forward motion) only.
-      Four-quadrant data needed for crash-stop and reversing scenarios.
-  - id: FW-2
-    title: Add twin-screw interaction references
+    notes: "Current survey covers first-quadrant (forward motion) only."
+  - title: "Add twin-screw interaction references"
     priority: low
-    notes: >
-      Survey focused on single-screw. Twin-screw ships have different
-      wake patterns and rudder-propeller geometry.
-  - id: FW-3
-    title: Add energy-saving device literature (pre-swirl stators, ducts)
+    notes: "Survey focused on single-screw configurations."
+  - title: "Add energy-saving device literature (pre-swirl stators, ducts)"
     priority: low
-    notes: >
-      Energy-saving devices upstream of propeller alter the inflow
-      to the propeller disc and hence the slipstream at the rudder.
+    notes: "Devices upstream of propeller alter inflow and slipstream."
 completed_at: "2026-03-12T20:30:00Z"

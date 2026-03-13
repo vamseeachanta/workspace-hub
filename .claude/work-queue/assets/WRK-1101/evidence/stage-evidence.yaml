@@ -1,40 +1,78 @@
 wrk_id: WRK-1101
-stages_completed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-
-stage_3_triage:
-  route: B
-  complexity: medium
-  category: harness
-  subcategory: skills
-
-stage_5_user_review:
-  scope_approved: true
-  reviewer: vamsee
-  reviewed_at: "2026-03-12T00:00:00Z"
-
-stage_7_plan_final:
-  confirmed_by: vamsee
-  notes: "User provided approved plan directly for implementation"
-
-stage_10_execution:
-  files_modified: 5
-  files_created: 3
-  test_results: "16 passed, 0 failed (9 existing + 7 new)"
-
-stage_13_cross_review:
-  claude:
-    verdict: REQUEST_CHANGES
-    p1_count: 2
-    issues:
-      - "2>/dev/null on Python extractor suppresses errors silently"
-      - "Hardcoded WORKSPACE_HUB path in nightly cron"
-    resolution: "Both P1s fixed — error handling added, hardcoded path replaced"
-  codex:
-    verdict: TIMEOUT
-    notes: "Codex CLI exec timed out at 120s (tried 2x). CLI v0.112.0 functional but exec hangs. Infrastructure issue, not code."
-
-stage_14_gate_evidence:
-  all_ac_met: true
-  tests_pass: true
-  cross_review_claude: RESOLVED
-  cross_review_codex: TIMEOUT
+stages:
+  - order: 1
+    name: capture
+    status: done
+    evidence: evidence/user-review-capture.yaml
+  - order: 2
+    name: resource-intelligence
+    status: done
+    evidence: evidence/resource-intelligence.yaml
+  - order: 3
+    name: triage
+    status: done
+    evidence: n/a
+  - order: 4
+    name: plan
+    status: done
+    evidence: evidence/plan-artifact.yaml
+  - order: 5
+    name: user-review-plan
+    status: done
+    evidence: evidence/user-review-plan-draft.yaml
+  - order: 6
+    name: cross-review
+    status: done
+    evidence: evidence/cross-review.yaml
+  - order: 7
+    name: user-review-final
+    status: done
+    evidence: evidence/user-review-common-draft.yaml
+  - order: 8
+    name: claim
+    status: done
+    evidence: evidence/claim-evidence.yaml
+  - order: 9
+    name: routing
+    status: done
+    evidence: n/a
+  - order: 10
+    name: execution
+    status: done
+    evidence: evidence/execute.yaml
+  - order: 11
+    name: artifact-generation
+    status: done
+    evidence: n/a
+  - order: 12
+    name: tdd
+    status: done
+    evidence: evidence/tdd.yaml
+  - order: 13
+    name: agent-cross-review
+    status: done
+    evidence: evidence/cross-review.yaml
+  - order: 14
+    name: verify-gate
+    status: done
+    evidence: evidence/gate-evidence-summary.json
+  - order: 15
+    name: future-work
+    status: done
+    evidence: evidence/future-work.yaml
+  - order: 16
+    name: resource-intelligence-update
+    status: done
+    evidence: evidence/resource-intelligence-update.yaml
+  - order: 17
+    name: user-review-close
+    status: done
+    evidence: evidence/user-review-close.yaml
+  - order: 18
+    name: reclaim
+    status: n/a
+    evidence: n/a
+  - order: 19
+    name: close
+    status: done
+    evidence: n/a

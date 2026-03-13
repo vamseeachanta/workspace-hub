@@ -1,12 +1,13 @@
 wrk_id: WRK-1159
-current_stage: 3
-stage_name: Triage
-completed_stage: 2
-next_action: Execute stage 3: Triage
-context_summary: Stage 2 complete. Next: stage 3 (Triage).
+current_stage: 4
+stage_name: Plan Draft
+completed_stage: 3
+next_action: Execute stage 4: Plan Draft
+context_summary: Stage 3 complete. Next: stage 4 (Plan Draft).
 entry_reads:
   - .claude/work-queue/assets/WRK-1159/checkpoint.yaml
+  - pending/WRK-1159.md
   - assets/WRK-1159/evidence/resource-intelligence.yaml
-checkpointed_at: 2026-03-13T02:57:59Z
+checkpointed_at: 2026-03-13T02:58:17Z
 human_gate: false
 chained_stages: [[2, 3, 4]]

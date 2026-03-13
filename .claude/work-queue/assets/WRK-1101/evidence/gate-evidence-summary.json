@@ -22,21 +22,21 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage_evidence_ref missing in WRK frontmatter"
+      "details": "stage-evidence.yaml: missing stage orders [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]"
     },
     {
       "name": "Resource-intelligence gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence.yaml: skills.core_used must include at least 3 core skills"
+      "details": "resource-intelligence.yaml: invalid completion_status"
     },
     {
       "name": "Activation gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml: set_active_wrk must be true"
+      "details": "activation.yaml: session_id missing"
     },
     {
       "name": "Agent log gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
+      "details": "execute.yaml: integrated_repo_tests count must be 3-5 (found 1)"
     },
     {
       "name": "Legal gate",
@@ -96,17 +96,17 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
+      "details": "future-work.yaml: no_follow_ups_rationale=present"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml: add additions[] or no_additions_rationale"
+      "details": "resource-intelligence-update.yaml: no_additions_rationale=present"
     },
     {
       "name": "User-review close gate",
@@ -169,7 +169,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+      "details": "codex keyword found in review artifacts (1 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",

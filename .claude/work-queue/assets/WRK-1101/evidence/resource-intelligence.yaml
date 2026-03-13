@@ -1,6 +1,7 @@
 wrk_id: WRK-1101
 stage: 2
 completed_at: "2026-03-12T19:45:00Z"
+completion_status: continue_to_planning
 
 skills:
   core_used:
@@ -10,10 +11,8 @@ skills:
 
 codex_jsonl_schema:
   top_level_fields: [timestamp, type, payload]
-  payload_types: [message, task_started, user_message, token_count, reasoning, function_call, function_call_output]
+  payload_types: [message, function_call, function_call_output, reasoning]
   shell_function: exec_command
-  shell_args_format: '{"cmd": "...", "workdir": "...", "max_output_tokens": N}'
-  file_write_function: null
   log_path: "~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl"
 
 existing_files:

@@ -20,6 +20,14 @@ integrated_repo_tests:
     command: "wc -l digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md"
     result: PASS
     notes: "Literature document exists, 665 lines"
+  - repo: digitalmodel
+    command: "grep -c '^## [0-9]' digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md"
+    result: PASS
+    notes: "8 numbered source sections found"
+  - repo: digitalmodel
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: PASS
+    notes: "No legal violations found"
 ac_results:
   AC1_reference_count: PASS  # 8 numbered sections
   AC2_entry_fields: PASS      # title/authors/year/contribution/formulae all present

@@ -26,38 +26,38 @@
     },
     {
       "name": "Resource-intelligence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: invalid completion_status"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
     },
     {
       "name": "Activation gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "activation.yaml: session_id missing"
+      "details": "activation.yaml: activation evidence OK"
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "routing:missing-actions=['work_queue_skill', 'work_wrapper_complete'] ; plan:missing-actions=['plan_draft_complete', 'plan_wrapper_complete'] ; execute:missing-actions=['execute_wrapper_complete', 'tdd_eval'] ; cross-review:missing-actions=['agent_cross_review', 'review_wrapper_complete']"
+      "details": "matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['tdd_eval'], cross-review:['review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests count must be 3-5 (found 1)"
+      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['name', 'scope', 'artifact_ref']"
     },
     {
       "name": "Legal gate",
@@ -99,7 +99,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work.yaml: recommendations[1] must be an object"
+      "details": "future-work.yaml: recommendations[1] disposition must be existing-updated|spun-off-new"
     },
     {
       "name": "Resource-intelligence update gate",
@@ -138,17 +138,17 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "browser open elapsed time OK"
-    },
-    {
-      "name": "Sentinel values gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "claim-evidence.yaml: route='' (empty)"
+      "details": "stage=plan_draft: approval confirmed only 0s after browser open (min 300s required)"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no sentinel values found"
     },
     {
       "name": "Claim artifact path gate",
@@ -169,21 +169,21 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+      "details": "codex keyword found in review artifacts (1 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "insufficient commit data \u2014 skip uniqueness check"
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "plan_draft and plan_final share commit 'e024d988' \u2014 possible placeholder (WARN)"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stages not a list \u2014 skip"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_draft publish event not found \u2014 skip"
+      "details": "plan publish ordering OK (published=2026-03-12T16:20:00Z, reviewed=2026-03-12T16:15:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",

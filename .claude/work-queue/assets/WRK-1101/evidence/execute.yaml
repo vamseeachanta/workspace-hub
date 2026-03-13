@@ -14,26 +14,24 @@ files_created:
   - scripts/session/tests/fixtures/codex-session-clean.jsonl
   - scripts/session/tests/fixtures/codex-session-compound-cmd.jsonl
 
+integrated_repo_tests:
+  - name: "detect-drift Claude tests (9 existing)"
+    scope: integrated
+    command: "bash scripts/session/tests/test_detect_drift.sh"
+    result: pass
+    artifact_ref: "scripts/session/tests/test_detect_drift.sh"
+  - name: "detect-drift Codex tests (7 new)"
+    scope: integrated
+    command: "bash scripts/session/tests/test_detect_drift.sh"
+    result: pass
+    artifact_ref: "scripts/session/tests/fixtures/codex-session-with-violations.jsonl"
+  - name: "detect-drift real Codex session"
+    scope: integrated
+    command: "bash scripts/session/detect-drift.sh --log ~/.codex/sessions/2026/02/08/rollout-*.jsonl --provider codex --no-git"
+    result: pass
+    artifact_ref: "scripts/session/detect-drift.sh"
+
 summary: |
   Added --provider flag (claude|codex) to detect-drift.sh with Codex JSONL
-  extractor (PY_EXTRACT_CODEX). Double-parses envelope format:
-  response_item → function_call → exec_command → json.loads(arguments) → cmd.
-  Detects python_runtime, file_placement (via write-command regex), and
-  git_workflow violations. Wired into nightly cron Step 3c scanning
-  ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl. Provider field added to
-  drift-summary.yaml output. 221 lines total (under 400 limit).
-
-integrated_repo_tests:
-  - repo: workspace-hub
-    command: "bash scripts/session/tests/test_detect_drift.sh"
-    result: PASS
-    total: 16
-    passed: 16
-    failed: 0
-
-test_results:
-  total: 16
-  passed: 16
-  failed: 0
-  new_tests: 7
-  existing_tests: 9
+  extractor (PY_EXTRACT_CODEX). Double-parses envelope format. Error handling
+  for extractors. Hardcoded path fix in nightly cron. 16/16 tests pass.

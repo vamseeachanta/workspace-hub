@@ -1,5 +1,7 @@
 wrk_id: WRK-1101
 activated_at: "2026-03-12T19:55:00Z"
 set_active_wrk: true
+session_id: "01ad3dff-23b6-492b-a861-1280417fd56a"
+orchestrator_agent: claude
 provider: claude
 computer: ace-linux-1
