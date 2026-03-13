@@ -1,5 +1,6 @@
 wrk_id: WRK-1101
 claimed_by: claude
-claimed_at: "2026-03-12T20:08:00Z"
+claimed_at: "2026-03-12T19:50:00Z"
 provider: claude
 computer: ace-linux-1
+route: B

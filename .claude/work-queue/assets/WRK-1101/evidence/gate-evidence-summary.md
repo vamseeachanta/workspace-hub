@@ -6,7 +6,7 @@
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
 | Stage evidence gate | FAIL | stage_evidence_ref missing in WRK frontmatter |
 | Resource-intelligence gate | FAIL | resource-intelligence.yaml: skills.core_used must include at least 3 core skills |
-| Activation gate | FAIL | activation.yaml missing |
+| Activation gate | FAIL | activation.yaml: set_active_wrk must be true |
 | Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |
 | User-review HTML-open gate | FAIL | user-review-browser-open.yaml missing |
 | User-review publish gate | FAIL | user-review-publish.yaml missing |
@@ -17,13 +17,13 @@
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
 | Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
 | Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
-| User-review close gate | FAIL | user-review-close.yaml missing |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
-| Approval ordering gate | PASS | approval ordering OK (phase=close) |
-| Midnight UTC sentinel gate | FAIL | midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-12T00:00:00Z |
+| Approval ordering gate | FAIL | timestamp ordering violation: claim-evidence.claimed_at (2026-03-12T20:08:00Z) >= execute.executed_at (2026-03-12T00:00:00Z) |
+| Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | user-review-browser-open.yaml absent — skip elapsed check |
-| Sentinel values gate | PASS | no sentinel values found |
-| Claim artifact path gate | FAIL | no claim artifact found (expected evidence/claim-evidence.yaml) |
+| Sentinel values gate | FAIL | claim-evidence.yaml: route='' (empty) |
+| Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | no review files found — skip codex keyword check (handled by cross-review gate) |
 | Publish commit uniqueness gate | PASS | user-review-publish.yaml absent — skip commit uniqueness check |

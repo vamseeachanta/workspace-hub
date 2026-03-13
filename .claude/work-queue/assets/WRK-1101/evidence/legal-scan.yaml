@@ -1,0 +1,4 @@
+wrk_id: WRK-1101
+scanned_at: "2026-03-12T20:30:00Z"
+result: PASS
+notes: "legal-sanity-scan.sh — no violations found"

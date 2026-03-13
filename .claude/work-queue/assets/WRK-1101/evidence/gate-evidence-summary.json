@@ -36,7 +36,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: set_active_wrk must be true"
     },
     {
       "name": "Agent log gate",
@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -124,17 +124,17 @@
     },
     {
       "name": "Approval ordering gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "approval ordering OK (phase=close)"
-    },
-    {
-      "name": "Midnight UTC sentinel gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-12T00:00:00Z"
+      "details": "timestamp ordering violation: claim-evidence.claimed_at (2026-03-12T20:08:00Z) >= execute.executed_at (2026-03-12T00:00:00Z)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
     },
     {
       "name": "Browser open elapsed time gate",
@@ -145,17 +145,17 @@
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no sentinel values found"
-    },
-    {
-      "name": "Claim artifact path gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "claim-evidence.yaml: route='' (empty)"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
