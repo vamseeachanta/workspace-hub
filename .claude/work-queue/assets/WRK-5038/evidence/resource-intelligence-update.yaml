@@ -1,20 +1,23 @@
 stage: 16
 wrk_id: WRK-5038
-updates:
-  new_scripts:
-    - scripts/data/doc_intelligence/classifiers.py
-    - scripts/data/doc_intelligence/index_builder.py
-    - scripts/data/doc-intelligence/build-doc-intelligence.py
-  new_outputs:
-    - data/doc-intelligence/manifest-index.jsonl
-    - data/doc-intelligence/constants.jsonl
-    - data/doc-intelligence/equations.jsonl
-    - data/doc-intelligence/requirements.jsonl
-    - data/doc-intelligence/procedures.jsonl
-    - data/doc-intelligence/definitions.jsonl
-    - data/doc-intelligence/worked_examples.jsonl
-    - data/doc-intelligence/tables/index.jsonl
-    - data/doc-intelligence/tables/*.csv
-    - data/doc-intelligence/curves/index.jsonl
-  classifier_priority_order: "requirements > worked_examples > constants > equations > procedures > definitions"
-  incremental_mechanism: "manifest checksum from metadata.checksum field"
+additions:
+  - type: script
+    path: scripts/data/doc_intelligence/classifiers.py
+    description: "6 heuristic content-type classifiers (regex-based)"
+  - type: script
+    path: scripts/data/doc_intelligence/index_builder.py
+    description: "Core federated index builder with incremental rebuild"
+  - type: script
+    path: scripts/data/doc-intelligence/build-doc-intelligence.py
+    description: "CLI entry point with --force, --dry-run, --verbose"
+  - type: output
+    path: data/doc-intelligence/*.jsonl
+    description: "8 content-type JSONL indexes + manifest-index"
+  - type: output
+    path: data/doc-intelligence/tables/
+    description: "Per-table CSV files + tables/index.jsonl"
+  - type: output
+    path: data/doc-intelligence/curves/
+    description: "Curves metadata index (curves/index.jsonl)"
+classifier_priority_order: "requirements > worked_examples > constants > equations > procedures > definitions"
+incremental_mechanism: "manifest checksum from metadata.checksum field"

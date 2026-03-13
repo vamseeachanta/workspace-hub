@@ -1,0 +1,79 @@
+wrk_id: WRK-5038
+generated_at: "2026-03-13T04:25:00Z"
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-5038.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/cross-review.yaml
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/plan-final-review.yaml
+- order: 8
+  stage: Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/activation.yaml
+- order: 9
+  stage: Routing
+  status: done
+  evidence: .claude/work-queue/logs/WRK-5038-routing.log
+- order: 10
+  stage: Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/review.md
+- order: 12
+  stage: TDD
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/tdd.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/cross-review.yaml
+- order: 14
+  stage: Gate Evidence Verification
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/legal-scan.yaml
+- order: 15
+  stage: Future Work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5038/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: done
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  evidence: pending

@@ -1,6 +1,6 @@
 stage: 10
 wrk_id: WRK-5038
-executed_at: "2026-03-13T03:50:00Z"
+executed_at: "2026-03-13T04:22:00Z"
 files_created:
   - scripts/data/doc_intelligence/classifiers.py
   - scripts/data/doc_intelligence/index_builder.py
@@ -14,9 +14,28 @@ files_modified: []
 files_reused:
   - scripts/data/doc_intelligence/schema.py
   - scripts/data/doc_intelligence/utils.py
+integrated_repo_tests:
+  - repo: workspace-hub
+    name: classifier-tests
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_classifiers.py -v"
+    result: passed
+    artifact_ref: tests/data/doc_intelligence/test_classifiers.py
+  - repo: workspace-hub
+    name: index-builder-tests
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_index_builder.py -v"
+    result: passed
+    artifact_ref: tests/data/doc_intelligence/test_index_builder.py
+  - repo: workspace-hub
+    name: existing-tests-regression
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/data/doc_intelligence/test_utils.py tests/data/doc_intelligence/test_schema.py -v"
+    result: passed
+    artifact_ref: tests/data/doc_intelligence/test_utils.py
 test_results:
-  total: 49
-  passed: 49
+  total: 50
+  passed: 50
   failed: 0
 real_data_verification:
   manifest: data/doc-intelligence/manifests/naval-architecture/ABS-Intro-to-Rules-and-Guides.manifest.yaml
@@ -26,3 +45,8 @@ bug_found_and_fixed:
   description: "Incremental runs overwrote JSONL indexes with empty content (skipped manifests didn't populate accumulators)"
   fix: "Always accumulate from all manifests; checksum only controls stats + CSV rewrites"
   regression_test_added: test_content_survives_incremental
+security_fix:
+  description: "Path traversal via unsanitized doc_ref in CSV write paths"
+  fix: "Added _sanitize_ref() helper stripping path separators and traversal sequences"
+  regression_test_added: test_malicious_doc_ref_sanitized
+  source: cross-review P1

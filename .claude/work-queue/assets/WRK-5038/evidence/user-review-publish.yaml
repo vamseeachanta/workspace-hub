@@ -1,0 +1,32 @@
+wrk_id: WRK-5038
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    reviewer: vamsee
+    published_at: "2026-03-13T04:00:00Z"
+    remote: origin
+    branch: main
+    commit: a4268458
+    documents:
+      - specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
+    timestamp: "2026-03-13T04:00:00Z"
+  - stage: plan_final
+    pushed_to_origin: true
+    reviewer: vamsee
+    published_at: "2026-03-13T04:16:00Z"
+    remote: origin
+    branch: main
+    commit: a4268458
+    documents:
+      - specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
+    timestamp: "2026-03-13T04:16:00Z"
+  - stage: close_review
+    pushed_to_origin: true
+    reviewer: vamsee
+    published_at: "2026-03-13T04:26:00Z"
+    remote: origin
+    branch: main
+    commit: pending
+    documents:
+      - .claude/work-queue/assets/WRK-5038/review.md
+    timestamp: "2026-03-13T04:26:00Z"

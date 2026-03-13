@@ -1,12 +1,15 @@
 stage: 15
 wrk_id: WRK-5038
-future_work:
+recommendations:
   - id: FW-1
     priority: MEDIUM
     title: "Structured constant extraction (symbol/value/units parsing)"
     description: >
       Currently constants.jsonl stores raw section text. Parse symbol = value units
       triples into structured fields for richer querying.
+    disposition: spun-off-new
+    status: captured
+    captured: true
     blocked_by: []
   - id: FW-2
     priority: MEDIUM
@@ -14,6 +17,9 @@ future_work:
     description: >
       Parse equations to extract variable lists and LaTeX/unicode representations
       for equations.jsonl structured fields.
+    disposition: spun-off-new
+    status: captured
+    captured: true
     blocked_by: []
   - id: FW-3
     priority: LOW
@@ -21,6 +27,9 @@ future_work:
     description: >
       Figure refs currently produce metadata only. OCR or plot digitization
       could extract actual data points into curves/*.csv files.
+    disposition: spun-off-new
+    status: captured
+    captured: true
     blocked_by: []
   - id: FW-4
     priority: HIGH
@@ -28,4 +37,7 @@ future_work:
     description: >
       Only 1 manifest exists (ABS Intro). Extract more engineering standards
       (DNV, API, ISO) to populate the federated index with real content.
+    disposition: spun-off-new
+    status: captured
+    captured: true
     blocked_by: []
