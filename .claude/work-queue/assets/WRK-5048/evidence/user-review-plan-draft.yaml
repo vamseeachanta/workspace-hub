@@ -1,0 +1,8 @@
+evidence_type: user-review-plan-draft
+wrk_id: WRK-5048
+stage: 5
+reviewed_by: vamsee
+reviewed_at: "2026-03-13T04:20:00Z"
+decision: approved
+approval_decision: approve_as_is
+notes: "Plan approved during plan mode conversation"

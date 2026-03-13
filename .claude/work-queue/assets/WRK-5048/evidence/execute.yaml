@@ -1,0 +1,10 @@
+evidence_type: execute
+wrk_id: WRK-5048
+stage: 10
+executed_at: "2026-03-13T04:25:00Z"
+files_modified:
+  - scripts/work-queue/whats-next.sh
+  - tests/work-queue/test_whats_next.bats
+summary: |
+  Replaced rendering layer (lines 236-377) with draw_table() box-drawing function
+  and per-section wrappers. Added 3 new BATS tests. All 12/12 tests pass.

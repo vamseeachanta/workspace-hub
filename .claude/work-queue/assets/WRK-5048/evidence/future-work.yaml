@@ -1,0 +1,19 @@
+evidence_type: future-work
+wrk_id: WRK-5048
+stage: 15
+items:
+  - id: FW-1
+    priority: low
+    description: "Terminal width detection — auto-adapt TABLE_WIDTH to actual tput cols"
+    category: harness
+    subcategory: work-queue
+  - id: FW-2
+    priority: low
+    description: "Add --no-color flag to strip ANSI codes for piping to files/tools"
+    category: harness
+    subcategory: work-queue
+  - id: FW-3
+    priority: low
+    description: "Add sorting within sections (by priority, then WRK number)"
+    category: harness
+    subcategory: work-queue

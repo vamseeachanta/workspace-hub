@@ -1,0 +1,16 @@
+wrk_id: WRK-5048
+generated_at: 2026-03-13
+files:
+  - path: scripts/work-queue/whats-next.sh
+    lines: 377
+    role: "Target file — rendering layer lines 236-377 are the change scope"
+  - path: tests/work-queue/test_whats_next.bats
+    lines: 197
+    role: "Existing BATS test suite — 9 tests covering subcategory filter, workstation sort, coordinating, remote one-liner"
+skills: []
+patterns:
+  - "Box-drawing chars: ┌─┬─┐ │ ├─┼─┤ └─┴─┘"
+  - "Emoji status: 🔄 ⏸ ⚠ ★ ↑ · ✗ ◈"
+  - "Data-gathering logic (lines 1-235) unchanged"
+  - "Terminal width: 80 default, target ≥120 for full table"
+notes: "BATS test infrastructure already in place — extend existing suite"

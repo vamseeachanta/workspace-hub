@@ -1,0 +1,24 @@
+evidence_type: stage-evidence
+wrk_id: WRK-5048
+stages_completed:
+  - stage: 1
+    completed_at: "2026-03-13T04:15:00Z"
+    notes: "Capture approved"
+  - stage: 2
+    completed_at: "2026-03-13T04:16:00Z"
+    notes: "Resource intelligence — whats-next.sh 377 lines, existing 9 BATS tests"
+  - stage: 3
+    completed_at: "2026-03-13T04:17:00Z"
+    notes: "Triage: medium complexity, single repo"
+  - stage: 4
+    completed_at: "2026-03-13T04:18:00Z"
+    notes: "Plan drafted in plan mode — draw_table() function + per-section wrappers"
+  - stage: 5
+    completed_at: "2026-03-13T04:20:00Z"
+    notes: "User reviewed plan draft"
+  - stage: 6
+    completed_at: "2026-03-13T04:21:00Z"
+    notes: "Cross-review completed"
+  - stage: 7
+    completed_at: "2026-03-13T04:25:00Z"
+    notes: "User approved plan final — Stage 7 hard gate passed"

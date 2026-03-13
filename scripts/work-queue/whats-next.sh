@@ -233,75 +233,229 @@ for f in "$QUEUE_DIR/working"/*.md;  do [[ -f "$f" ]] && process_file "$f" worki
 for f in "$QUEUE_DIR/pending"/*.md;  do [[ -f "$f" ]] && process_file "$f" pending;  done
 for f in "$QUEUE_DIR/blocked"/*.md;  do [[ -f "$f" ]] && process_file "$f" blocked;  done
 
-# ── Render ────────────────────────────────────────────────────────────────────
+# ── Render (box-drawing tables) ───────────────────────────────────────────────
 
-HR=$(printf '%0.s─' {1..100})
+TABLE_WIDTH=120
 
-print_section() {
-  local label="$1" colour="$2" arr_name="$3" show_pid="${4:-false}"
-  local -n _arr="$arr_name"
-  [[ ${#_arr[@]} -eq 0 ]] && return
+# draw_table <section_label> <colour> <emoji> <col_widths> <headers> <rows[]> [notes_prefix]
+# col_widths / headers: pipe-separated strings.  rows: newline-separated, pipe-delimited.
+# Renders uniform box-drawing tables: ┌─┬─┐ top, │ cells, ├─┼─┤ after header, └─┴─┘ bottom.
+draw_table() {
+  local label="$1" colour="$2" emoji="$3" col_widths_str="$4" headers_str="$5"
+  shift 5
+  local -a rows=("$@")
+  [[ ${#rows[@]} -eq 0 ]] && return
+
+  IFS='|' read -ra widths <<< "$col_widths_str"
+  IFS='|' read -ra headers <<< "$headers_str"
+  local ncols=${#widths[@]}
+
+  # Build horizontal rules
+  local top_rule="" mid_rule="" bot_rule=""
+  for (( i=0; i<ncols; i++ )); do
+    local seg; seg=$(printf '%*s' "${widths[$i]}" '' | tr ' ' '─')
+    if [[ $i -eq 0 ]]; then
+      top_rule="┌─${seg}─"; mid_rule="├─${seg}─"; bot_rule="└─${seg}─"
+    elif [[ $i -eq $((ncols-1)) ]]; then
+      top_rule+="┬─${seg}─┐"; mid_rule+="┼─${seg}─┤"; bot_rule+="┴─${seg}─┘"
+    else
+      top_rule+="┬─${seg}─"; mid_rule+="┼─${seg}─"; bot_rule+="┴─${seg}─"
+    fi
+  done
+
+  # Section header (coloured full-width)
   echo ""
-  printf "${colour}%s\033[0m\n" "$label"
-  if [[ "$show_pid" == "true" ]]; then
-    printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
-      "WRK" "PRI" "SUBCATEGORY" "MACHINE" "STAGE" "STATUS" "PID" "TITLE"
-  else
-    printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
-      "WRK" "PRI" "SUBCATEGORY" "MACHINE" "STAGE" "STATUS" "TITLE"
-  fi
-  echo "$HR"
-  # Partition into local vs remote rows
-  local _local_rows=() _remote_ids=()
-  for row in "${_arr[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl _cpstage _status _pid _rest <<< "$row"
+  printf "${colour}%s  %s\033[0m\n" "$emoji" "$label"
+  echo "$top_rule"
+
+  # Column headers
+  local hdr_line=""
+  for (( i=0; i<ncols; i++ )); do
+    hdr_line+="│ $(printf "%-${widths[$i]}s" "${headers[$i]}") "
+  done
+  hdr_line+="│"
+  printf "\033[1m%s\033[0m\n" "$hdr_line"
+  echo "$mid_rule"
+
+  # Data rows
+  for row in "${rows[@]}"; do
+    # Check for special merged rows (annotations)
+    if [[ "$row" == _NOTE_:* ]]; then
+      local note_text="${row#_NOTE_:}"
+      local inner_w=$(( ${#top_rule} - 4 ))
+      printf "│ \033[2m%-${inner_w}s\033[0m │\n" "↳ $note_text"
+      continue
+    fi
+    if [[ "$row" == _MERGED_:* ]]; then
+      local merged_text="${row#_MERGED_:}"
+      local inner_w=$(( ${#top_rule} - 4 ))
+      printf "│ %-${inner_w}s │\n" "$merged_text"
+      continue
+    fi
+    IFS='|' read -ra cells <<< "$row"
+    local cell_line=""
+    for (( i=0; i<ncols; i++ )); do
+      local val="${cells[$i]:-}"
+      # Truncate to column width
+      val="${val:0:${widths[$i]}}"
+      cell_line+="│ $(printf "%-${widths[$i]}s" "$val") "
+    done
+    cell_line+="│"
+    echo "$cell_line"
+  done
+  echo "$bot_rule"
+}
+
+# has_mixed_machines <arr_name> — returns 0 if rows span multiple machines
+has_mixed_machines() {
+  local -n __arr="$1"
+  declare -A _seen
+  for row in "${__arr[@]}"; do
+    IFS='|' read -r _id _pri _sub cpu _rest <<< "$row"
+    [[ -n "$cpu" ]] && _seen["$cpu"]=1
+  done
+  [[ ${#_seen[@]} -gt 1 ]]
+}
+
+# partition_rows <arr_name> — sets _local_rows, _remote_ids, _remote_rows
+partition_rows() {
+  local -n __src="$1"
+  _local_rows=(); _remote_ids=(); _remote_rows=()
+  for row in "${__src[@]}"; do
+    IFS='|' read -r id _pri _sub cpu _rest <<< "$row"
     if [[ "$cpu" == "$THIS_HOST" ]]; then
       _local_rows+=("$row")
     else
       _remote_ids+=("$id")
+      _remote_rows+=("$row")
     fi
   done
+}
+
+# render_working_section <label> <colour> <emoji> <arr_name>
+# Columns: Icon | WRK | Priority | Stage | PID | Title
+render_working_section() {
+  local label="$1" colour="$2" emoji="$3" arr_name="$4"
+  local -n _warr="$arr_name"
+  [[ ${#_warr[@]} -eq 0 ]] && return
+
+  local widths="4|10|10|9|11|60" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
+  local -a table_rows=()
+
+  partition_rows "$arr_name"
   local has_local=$(( ${#_local_rows[@]} > 0 ))
   local has_remote=$(( ${#_remote_ids[@]} > 0 ))
-  # Show sub-header only when both local and remote present
-  if [[ $has_local -eq 1 && $has_remote -eq 1 ]]; then
-    echo "  [this machine: $THIS_HOST]"
-  fi
+  [[ $has_local -eq 1 && $has_remote -eq 1 ]] && \
+    table_rows+=("_MERGED_:[this machine: $THIS_HOST]")
+
   for row in "${_local_rows[@]}"; do
     IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
     local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
     local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
-    if [[ "$show_pid" == "true" ]]; then
-      printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
-        "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$pid_disp" "$ttl"
-    else
-      printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
-        "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$ttl"
-    fi
+    table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
     local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
-    [[ -n "$_note" ]] && printf "  \033[2m↳ %s\033[0m\n" "$_note"
-    [[ -n "$_nb" ]]   && printf "  \033[2m↳ not before: %s\033[0m\n" "$_nb"
+    [[ -n "$_note" ]] && table_rows+=("_NOTE_:$_note")
+    [[ -n "$_nb" ]]   && table_rows+=("_NOTE_:not before: $_nb")
   done
-  # Remote items: brief one-liner when local items exist, full rows when only remote
+
   if [[ $has_remote -eq 1 ]]; then
     if [[ $has_local -eq 1 ]]; then
-      printf "  [other machines: %s]\n" "${_remote_ids[*]}"
+      table_rows+=("_MERGED_:[other machines: ${_remote_ids[*]}]")
     else
-      for row in "${_arr[@]}"; do
+      for row in "${_remote_rows[@]}"; do
         IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
         local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
         local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
-        if [[ "$show_pid" == "true" ]]; then
-          printf "%-12s %-8s %-22s %-14s %-9s %-9s %-12s %s\n" \
-            "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$pid_disp" "$ttl"
+        table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
+      done
+    fi
+  fi
+
+  draw_table "$label" "$colour" "$emoji" "$widths" "$hdrs" "${table_rows[@]}"
+}
+
+# render_ready_section <label> <colour> <emoji> <arr_name>
+# Columns: Icon | WRK | Priority | [Machine] | Title — Machine only if mixed
+render_ready_section() {
+  local label="$1" colour="$2" emoji="$3" arr_name="$4"
+  local -n _rarr="$arr_name"
+  [[ ${#_rarr[@]} -eq 0 ]] && return
+
+  local mixed=false widths hdrs
+  has_mixed_machines "$arr_name" && mixed=true
+
+  if [[ "$mixed" == "true" ]]; then
+    widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
+  else
+    widths="4|10|10|83" hdrs="ICON|WRK|PRI|TITLE"
+  fi
+
+  local -a table_rows=()
+  partition_rows "$arr_name"
+  local has_local=$(( ${#_local_rows[@]} > 0 ))
+  local has_remote=$(( ${#_remote_ids[@]} > 0 ))
+  [[ $has_local -eq 1 && $has_remote -eq 1 ]] && \
+    table_rows+=("_MERGED_:[this machine: $THIS_HOST]")
+
+  for row in "${_local_rows[@]}"; do
+    IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
+    if [[ "$mixed" == "true" ]]; then
+      table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
+    else
+      table_rows+=("$emoji|$id|$pri|$ttl")
+    fi
+    local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
+    [[ -n "$_note" ]] && table_rows+=("_NOTE_:$_note")
+    [[ -n "$_nb" ]]   && table_rows+=("_NOTE_:not before: $_nb")
+  done
+
+  if [[ $has_remote -eq 1 ]]; then
+    if [[ $has_local -eq 1 ]]; then
+      table_rows+=("_MERGED_:[other machines: ${_remote_ids[*]}]")
+    else
+      for row in "${_remote_rows[@]}"; do
+        IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
+        if [[ "$mixed" == "true" ]]; then
+          table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
         else
-          printf "%-12s %-8s %-22s %-14s %-9s %-9s %s\n" \
-            "$id" "$pri" "$sub" "$cpu" "$stage_disp" "$status" "$ttl"
+          table_rows+=("$emoji|$id|$pri|$ttl")
         fi
       done
     fi
   fi
+
+  draw_table "$label" "$colour" "$emoji" "$widths" "$hdrs" "${table_rows[@]}"
 }
+
+# render_coordinating — Icon | WRK | Priority | Title | Child Progress
+render_coordinating() {
+  [[ ${#COORDINATING_ITEMS[@]} -eq 0 ]] && return
+  local widths="4|10|10|50|30" hdrs="ICON|WRK|PRI|TITLE|CHILD PROGRESS"
+  local -a table_rows=()
+  for crow in "${COORDINATING_ITEMS[@]}"; do
+    IFS='|' read -r cid cpri csub ccpu cttl cprogress <<< "$crow"
+    table_rows+=("◈|$cid|$cpri|$cttl|$cprogress")
+  done
+  draw_table "COORDINATING — feature WRKs managing children" "\033[35m" "◈" \
+    "$widths" "$hdrs" "${table_rows[@]}"
+}
+
+# render_blocked — Icon | WRK | Subcategory | Blocked By
+render_blocked() {
+  [[ ${#EXT_BLOCKED[@]} -eq 0 ]] && return
+  local widths="4|10|26|70" hdrs="ICON|WRK|SUBCATEGORY|BLOCKED BY"
+  local -a table_rows=()
+  for row in "${EXT_BLOCKED[@]}"; do
+    IFS='|' read -r id _pri sub _cpu _ttl _cpstage _status _pid reason <<< "$row"
+    local display_reason="$reason"
+    [[ "$display_reason" == "clear" || -z "$display_reason" ]] && display_reason="external (no WRK deps)"
+    table_rows+=("✗|$id|$sub|$display_reason")
+  done
+  draw_table "EXTERNALLY BLOCKED" "\033[31m" "✗" \
+    "$widths" "$hdrs" "${table_rows[@]}"
+}
+
+# ── Main output ──────────────────────────────────────────────────────────────
 
 echo ""
 scope_label="${FILTER_CATEGORY:-all categories}"
@@ -310,21 +464,12 @@ printf "\033[1m║   WHAT'S NEXT  %-30s║\033[0m\n" "$(date '+%Y-%m-%d %H:%M') 
 printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
-if [[ ${#COORDINATING_ITEMS[@]} -gt 0 ]]; then
-  echo ""
-  printf "\033[35m%s\033[0m\n" "◈  COORDINATING — feature WRKs managing children"
-  printf "%-12s %-8s %-22s %-14s %-48s %s\n" "WRK" "PRI" "SUBCATEGORY" "MACHINE" "TITLE" "CHILD PROGRESS"
-  echo "$HR"
-  for crow in "${COORDINATING_ITEMS[@]}"; do
-    IFS='|' read -r cid cpri csub ccpu cttl cprogress <<< "$crow"
-    printf "%-12s %-8s %-22s %-14s %-48s %s\n" "$cid" "$cpri" "$csub" "$ccpu" "$cttl" "$cprogress"
-  done
-fi
-print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS    "true"
-print_section "⏸  PARKED — deferred / awaiting input"  "\033[90m" WORKING_PARKED   "true"
-print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE "true"
-print_section "★  HIGH PRIORITY — ready to start"     "\033[32m" HIGH_UNBLOCKED
-print_section "↑  NEWLY UNBLOCKED — blockers cleared" "\033[33m" NEWLY_UNBLOCKED
+render_coordinating
+render_working_section "WORKING — in progress"                                    "\033[36m" "🔄" WORKING_ITEMS
+render_working_section "PARKED — deferred / awaiting input"                       "\033[90m" "⏸"  WORKING_PARKED
+render_working_section "IN-PROGRESS UNCLAIMED — session active, not yet claimed"  "\033[33m" "⚠"  UNCLAIMED_ACTIVE
+render_ready_section   "HIGH PRIORITY — ready to start"                           "\033[32m" "★"  HIGH_UNBLOCKED
+render_ready_section   "NEWLY UNBLOCKED — blockers cleared"                       "\033[33m" "↑"  NEWLY_UNBLOCKED
 # Cap medium section
 if [[ ${#MED_UNBLOCKED[@]} -gt $MED_LIMIT ]]; then
   MED_DISPLAY=("${MED_UNBLOCKED[@]:0:$MED_LIMIT}")
@@ -333,20 +478,10 @@ else
   MED_DISPLAY=("${MED_UNBLOCKED[@]}")
   MED_OVERFLOW=0
 fi
-print_section "·  MEDIUM — ready"                     "\033[0m"  MED_DISPLAY
+render_ready_section "MEDIUM — ready" "\033[0m" "·" MED_DISPLAY
 [[ $MED_OVERFLOW -gt 0 ]] && echo "  … and $MED_OVERFLOW more (use --limit N or --category to narrow)"
 
-if [[ ${#EXT_BLOCKED[@]} -gt 0 ]]; then
-  echo ""; printf "\033[31m%s\033[0m\n" "✗  EXTERNALLY BLOCKED"
-  printf "%-12s %-26s %s\n" "WRK" "SUBCATEGORY" "BLOCKED BY"
-  echo "$HR"
-  for row in "${EXT_BLOCKED[@]}"; do
-    IFS='|' read -r id _pri sub _cpu _ttl _cpstage _status _pid reason <<< "$row"
-    display_reason="$reason"
-    [[ "$display_reason" == "clear" || -z "$display_reason" ]] && display_reason="external (no WRK deps)"
-    printf "%-12s %-26s %s\n" "$id" "$sub" "$display_reason"
-  done
-fi
+render_blocked
 
 # ── Parallel hints ────────────────────────────────────────────────────────────
 echo ""; echo "\033[1m── Parallel hints ──\033[0m"

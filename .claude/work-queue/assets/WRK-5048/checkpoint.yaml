@@ -1,0 +1,8 @@
+wrk_id: WRK-5048
+current_stage: 14
+next_action: "verify gate evidence, then proceed to Stage 15 future work"
+context_summary: |
+  Implementation complete. Replaced whats-next.sh rendering layer (lines 236-377) with
+  box-drawing draw_table() function + per-section wrappers. 3 new BATS tests added.
+  All 12/12 tests pass. Visual verification done with --all, --category, --subcategory.
+updated_at: "2026-03-13T04:30:00Z"

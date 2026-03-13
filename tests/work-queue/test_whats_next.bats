@@ -194,3 +194,55 @@ run_script() {
   echo "$output" | grep -q "other machines"
   echo "$output" | grep "other machines" | grep -q "WRK-601"
 }
+
+# ── Feature 4: box-drawing table format ──────────────────────────────────────
+
+@test "output contains box-drawing characters for table borders" {
+  local this_host
+  this_host=$(hostname -s)
+  make_item pending WRK-801 pending harness scripts "$this_host" high
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  # Top border
+  echo "$output" | grep -q "┌"
+  # Cell separators
+  echo "$output" | grep -q "│"
+  # Bottom border
+  echo "$output" | grep -q "└"
+}
+
+@test "section emoji icons appear in section headers" {
+  local this_host
+  this_host=$(hostname -s)
+  make_item pending WRK-811 pending harness scripts "$this_host" high
+  make_item working WRK-812 working harness scripts "$this_host"
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  # HIGH PRIORITY section uses ★ emoji
+  echo "$output" | grep -q "★"
+  # WORKING section uses 🔄 emoji
+  echo "$output" | grep -q "🔄"
+}
+
+@test "machine column only appears when rows span multiple machines" {
+  local this_host
+  this_host=$(hostname -s)
+  # Single machine — no MACHINE column header
+  make_item pending WRK-821 pending harness scripts "$this_host" high
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  # HIGH section should NOT have MACHINE column when single machine
+  local high_section
+  high_section=$(echo "$output" | sed -n '/★.*HIGH/,/^$/p')
+  ! echo "$high_section" | grep -q "MACHINE"
+
+  # Now add a remote item — MACHINE column should appear
+  make_item pending WRK-822 pending harness skills remote-box high
+
+  run run_script --category harness
+  [ "$status" -eq 0 ]
+  echo "$output" | grep -q "MACHINE"
+}
