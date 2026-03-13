@@ -106,6 +106,10 @@ When documenting next work in markdown artifacts, use a table with an explicit
 - `yes`/`✓` when captured as `existing-updated` or `spun-off-new`
 - `no`/`✗` when identified but not yet captured (must be cleared before Stage 17)
 
+## Visual Reference
+
+Stage flow diagram (mermaid): `.claude/docs/wrk-lifecycle-stages.md`
+
 ## Route Consistency (A/B/C)
 
 - All routes use the same canonical 20-stage lifecycle.

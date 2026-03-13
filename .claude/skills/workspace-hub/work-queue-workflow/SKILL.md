@@ -94,6 +94,10 @@ Each stage (or stage group) must be a separate agent task.
 - Orchestrator accumulates summaries/pass-fail signals — never raw file content
 - Scope-discovery-first (R-28): find ALL items first, then spawn agents at once
 
+## Visual Reference
+
+Stage flow diagram (mermaid): `.claude/docs/wrk-lifecycle-stages.md`
+
 ## Source of Truth
 
 - Process contract: `.claude/work-queue/process.md`
