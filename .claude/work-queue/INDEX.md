@@ -1,36 +1,36 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T03:45:05Z by generate-index.py -->
+<!-- Generated: 2026-03-13T03:47:14Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T03:45:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T03:47:14Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 597
+**Total items:** 598
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 224 |
-| working | 8 |
+| pending | 223 |
+| working | 9 |
 | blocked | 10 |
-| archived | 355 |
+| archived | 356 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 266 |
-| medium | 278 |
+| medium | 279 |
 | low | 52 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 140 |
+| simple | 141 |
 | medium | 282 |
 | complex | 107 |
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 253 |
+| workspace-hub | 254 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 246 / 597 |
-| Plans cross-reviewed | 180 |
-| Plans approved | 203 |
+| Plans exist | 248 / 598 |
+| Plans cross-reviewed | 182 |
+| Plans approved | 205 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,19 +91,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 597 |
-| Total archived | 355 |
-| Completion rate | 355/597 (59%) |
-| Monthly rate (current month) | 117 archived |
+| Total captured | 598 |
+| Total archived | 356 |
+| Completion rate | 356/598 (60%) |
+| Monthly rate (current month) | 118 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 224 | 27% |
-| Plans cross-reviewed | 8 | 11% |
-| Plans user-approved | 8 | 11% |
+| Pending items with plans | 60 / 223 | 27% |
+| Plans cross-reviewed | 9 | 13% |
+| Plans user-approved | 9 | 13% |
 
 ### Aging
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 91 | 4 | 8 |
+| High     | 90 | 5 | 8 |
 | Medium   | 98  | 4  | 1  |
 | Low      | 35  | 0  | 1  |
 
@@ -1164,13 +1164,14 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 80% | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5036 |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037 |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
 | WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037 |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 
 ## By Status
 
@@ -1395,7 +1396,6 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | high | medium | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | high | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | high | complex | workspace-hub | - |
@@ -1415,6 +1415,7 @@
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | high | medium | workspace-hub | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | medium | simple | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1790,6 +1791,7 @@
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -2450,13 +2452,14 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | working | high | simple | - |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | high | medium | - |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | working | high | medium | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | pending | high | complex | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | - |
 | WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | - |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
 
 ### worldenergydata
 
@@ -2833,7 +2836,7 @@
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | working | medium | workspace-hub | - |
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | working | simple | workspace-hub | - |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | medium | workspace-hub | - |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | working | medium | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | pending | complex | workspace-hub | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | complex | workspace-hub | - |
@@ -3120,6 +3123,7 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | simple | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | workspace-hub | - |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | simple | workspace-hub | - |
 
 ### Low
 
@@ -3324,6 +3328,7 @@
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | working | high | workspace-hub | - |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3609,7 +3614,7 @@
 | WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | high | workspace-hub | - |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | working | high | workspace-hub | - |
 | WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | workspace-hub | - |
 
 ### Complex
@@ -3726,7 +3731,7 @@
 
 ## By Computer
 
-### ace-linux-1 (178 active / 317 total)
+### ace-linux-1 (178 active / 318 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4040,13 +4045,14 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | workspace-hub |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | workspace-hub |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | working | high | simple | workspace-hub |
-| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | high | medium | workspace-hub |
+| WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | working | high | medium | workspace-hub |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | pending | high | complex | workspace-hub |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | workspace-hub |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | workspace-hub, digitalmodel |
 | WRK-5041 | feat(doc-intel): extract-url.py — internet document extraction pipeline | pending | medium | medium | workspace-hub |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | workspace-hub |
+| WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
