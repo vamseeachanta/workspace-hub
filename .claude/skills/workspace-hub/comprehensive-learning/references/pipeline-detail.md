@@ -92,19 +92,29 @@ LAST_LOG="logs/orchestrator/claude/session_${YESTERDAY}.jsonl"
 bash scripts/session/detect-drift.sh --log "$LAST_LOG" --since "$YESTERDAY"
 ```
 
+**Provider support:**
+
+| Provider | Log format | Flag |
+|----------|-----------|------|
+| `claude` (default) | Flat JSONL: `{"cmd": "...", "path": "..."}` | `--provider claude` (or omit) |
+| `codex` | Envelope JSONL: `{"type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":"{\"cmd\":\"...\"}"}}` | `--provider codex` |
+
+Codex logs live at `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`. The nightly cron
+scans yesterday's Codex sessions automatically (Step 3c in `comprehensive-learning-nightly.sh`).
+
 **Detection patterns:**
 
 | Pattern | Method | Output field |
 |---------|--------|-------------|
 | `python_runtime` | grep `cmd` fields for bare `python3` not preceded by `uv run` | `python_runtime_violations` |
-| `file_placement` | grep `path` fields for `src/*/tests/` write events | `file_placement_violations` |
+| `file_placement` | Claude: grep `path` fields for `src/*/tests/` write events. Codex: regex for write commands (`>`, `tee`, `cat >`, `touch`, `cp`, `mv`) targeting `src/*/tests/` | `file_placement_violations` |
 | `git_workflow` | `git log --since=<YYYYMMDD>` on real commits; filter against conventional-commit regex | `git_workflow_violations` |
 
 Git workflow sub-categories: `non_conventional`, `missing_wrk_ref`, `exempt_type`.
 
-**Output:** Appends a dated entry to `.claude/state/drift-summary.yaml` (gitignored).
-30-day rolling aggregate tracks which rules are drifted most often → informs
-`python-runtime.md` and `git-workflow.md` `## Session Learnings` updates.
+**Output:** Appends a dated entry to `.claude/state/drift-summary.yaml` (gitignored)
+with `provider` field. 30-day rolling aggregate tracks which rules are drifted most
+often → informs `python-runtime.md` and `git-workflow.md` `## Session Learnings` updates.
 
 If the session log for yesterday is absent, Phase 1b logs `SKIP` (non-fatal).
 

@@ -4,7 +4,7 @@
 # set -euo pipefail ensures git pull failure aborts before the pipeline runs.
 set -euo pipefail
 
-WORKSPACE_HUB="/mnt/local-analysis/workspace-hub"
+WORKSPACE_HUB="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$WORKSPACE_HUB"
 
 # Preflight: confirm PyYAML available (required for Phase 7 WRK frontmatter validation)
@@ -73,7 +73,25 @@ source scripts/lib/python-resolver.sh
 ${PYTHON} scripts/readiness/build-specs-index.py || \
   echo "WARNING: specs index rebuild failed — see above"
 
-# Step 3c: run pipeline (WRK-1076: notify on completion)
+# Step 3c: Phase 1b — scan Codex sessions for drift (best-effort — WRK-1101)
+echo "--- Codex drift scan $(date +%Y-%m-%dT%H:%M:%S) ---"
+YESTERDAY=$(date -d "yesterday" +%Y/%m/%d 2>/dev/null || date -v-1d +%Y/%m/%d 2>/dev/null || echo "")
+if [[ -n "$YESTERDAY" ]]; then
+    CODEX_DIR="${HOME}/.codex/sessions/${YESTERDAY}"
+    if [[ -d "$CODEX_DIR" ]]; then
+        for codex_log in "$CODEX_DIR"/rollout-*.jsonl; do
+            [[ -f "$codex_log" ]] || continue
+            bash scripts/session/detect-drift.sh --log "$codex_log" --provider codex --no-git || true
+        done
+        echo "  Codex drift scan complete for ${YESTERDAY}"
+    else
+        echo "  No Codex sessions found for ${YESTERDAY}"
+    fi
+else
+    echo "  WARNING: could not determine yesterday's date"
+fi
+
+# Step 3d: run pipeline (WRK-1076: notify on completion)
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?

@@ -89,7 +89,83 @@ print(f"file_placement={file_placement}")
 print(f"git_cmds={'|||'.join(git_workflow_cmds)}")
 PYEOF
 
-result=$(uv run --no-project python -c "$PY_EXTRACT" "$LOG_FILE" 2>/dev/null)
+# Codex JSONL extractor — double-parsed envelope format
+read -r -d '' PY_EXTRACT_CODEX << 'PYEOF' || true
+import sys, json, re
+
+log_file = sys.argv[1]
+python_runtime = 0
+file_placement = 0
+git_workflow_cmds = []
+
+WRITE_RE = re.compile(r'(?:>\s*|tee\s+|cat\s*>\s*|touch\s+|cp\s+\S+\s+|mv\s+\S+\s+)(\S+)')
+
+def is_python3_violation(cmd):
+    sub_cmds = re.split(r'\s*(?:&&|\|\||;|\|)\s*', cmd)
+    for sub in sub_cmds:
+        sub = sub.strip()
+        if re.search(r'\bpython3\b', sub) and not re.search(r'\buv\s+run\b.*\bpython3\b', sub):
+            return True
+    return False
+
+with open(log_file) as f:
+    for line in f:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if rec.get("type") != "response_item":
+            continue
+        payload = rec.get("payload", {})
+        if payload.get("type") != "function_call" or payload.get("name") != "exec_command":
+            continue
+        try:
+            args = json.loads(payload.get("arguments", "{}"))
+        except json.JSONDecodeError:
+            continue
+        cmd = args.get("cmd", "")
+        if not cmd:
+            continue
+        # python_runtime: bare python3 not invoked via uv run
+        if is_python3_violation(cmd):
+            python_runtime += 1
+        # file_placement: write commands targeting src/*/tests/
+        m = WRITE_RE.search(cmd)
+        if m:
+            path = m.group(1)
+            if "src/" in path and "/tests/" in path:
+                file_placement += 1
+        # git_workflow: collect commit messages
+        if "git commit" in cmd:
+            m2 = re.search(r"-m\s+['\"]([^'\"]+)['\"]", cmd)
+            if m2:
+                git_workflow_cmds.append(m2.group(1))
+            else:
+                m3 = re.search(r"-m\s+(\S+)", cmd)
+                if m3:
+                    git_workflow_cmds.append(m3.group(1))
+
+print(f"python_runtime={python_runtime}")
+print(f"file_placement={file_placement}")
+print(f"git_cmds={'|||'.join(git_workflow_cmds)}")
+PYEOF
+
+_extract_err=$(mktemp)
+if [[ "$PROVIDER" == "codex" ]]; then
+    result=$(uv run --no-project python -c "$PY_EXTRACT_CODEX" "$LOG_FILE" 2>"$_extract_err") || {
+        echo "ERROR: Codex extractor failed: $(cat "$_extract_err")" >&2
+        rm -f "$_extract_err"; exit 1
+    }
+else
+    result=$(uv run --no-project python -c "$PY_EXTRACT" "$LOG_FILE" 2>"$_extract_err") || {
+        echo "ERROR: extractor failed: $(cat "$_extract_err")" >&2
+        rm -f "$_extract_err"; exit 1
+    }
+fi
+rm -f "$_extract_err"
 python_runtime=$(echo "$result" | grep "^python_runtime=" | cut -d= -f2)
 file_placement=$(echo "$result" | grep "^file_placement=" | cut -d= -f2)
 git_cmds=$(echo "$result" | grep "^git_cmds=" | cut -d= -f2-)
@@ -146,8 +222,8 @@ mkdir -p "$STATE_DIR"
 LOCK_FILE="${SUMMARY_FILE}.lock"
 (
   flock -x 9
-  printf -- '- scanned_at: "%s"\n  log: "%s"\n  violations:\n    python_runtime: %s\n    file_placement: %s\n    git_workflow: %s\n    git_non_conventional: %s\n    git_missing_wrk_ref: %s\n    git_exempt_type: %s\n' \
-    "$scanned_at" "$LOG_FILE" "$python_runtime" "$file_placement" \
+  printf -- '- scanned_at: "%s"\n  log: "%s"\n  provider: "%s"\n  violations:\n    python_runtime: %s\n    file_placement: %s\n    git_workflow: %s\n    git_non_conventional: %s\n    git_missing_wrk_ref: %s\n    git_exempt_type: %s\n' \
+    "$scanned_at" "$LOG_FILE" "$PROVIDER" "$python_runtime" "$file_placement" \
     "$git_workflow" "$non_conventional" "$missing_wrk_ref" "$exempt_type" \
     >> "$SUMMARY_FILE"
 ) 9>"$LOCK_FILE"
