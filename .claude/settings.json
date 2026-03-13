@@ -295,5 +295,6 @@
       }
     }
   },
-  "plansDirectory": "specs/modules"
+  "plansDirectory": "specs/modules",
+  "autoMemoryDirectory": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
 }

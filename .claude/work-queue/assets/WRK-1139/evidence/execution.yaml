@@ -1,0 +1,23 @@
+wrk_id: WRK-1139
+stage: 10
+completed_at: "2026-03-12T00:00:00Z"
+changes:
+  - file: .claude/settings.json
+    action: added autoMemoryDirectory key
+    detail: "Points to /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
+ac_results:
+  ac1_html_comments:
+    status: compliant
+    detail: "CLAUDE.md is 17 lines — already minimal. No verbose metadata to hide."
+  ac2_auto_memory_directory:
+    status: done
+    detail: "Added autoMemoryDirectory to .claude/settings.json"
+  ac3_session_end_timeout:
+    status: not_needed
+    detail: "All 4 Stop hooks total ~0.89s (max single: tidy-agent-teams.sh at 0.73s). Well under 1.5s default."
+    hook_timings:
+      consume-signals.sh: 0.02s
+      emit-session-quality-signals.sh: 0.04s
+      tidy-agent-teams.sh: 0.73s
+      log-action.sh: 0.10s
+      total: 0.89s
