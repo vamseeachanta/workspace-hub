@@ -1,0 +1,8 @@
+# Legal Scan
+wrk_id: WRK-1171
+scanned_at: "2026-03-13T13:35:00-05:00"
+result: PASS
+scanner: scripts/legal/legal-sanity-scan.sh
+scope: workspace-hub
+violations: 0
+scan_type: full

@@ -1,0 +1,30 @@
+# Stage 10: Work Execution
+wrk_id: WRK-1171
+stage: 10
+completed_at: "2026-03-13T13:25:00-05:00"
+executor: claude
+files_created:
+  - config/ai-tools/agent-capability-scores.yaml
+  - config/ai-tools/agent-capability-radar.html
+  - scripts/ai/generate-agent-radar.py
+files_modified:
+  - config/agents/behavior-contract.yaml
+  - config/agents/provider-capabilities.yaml
+  - config/agents/routing-config.yaml
+  - .claude/docs/agent-delegation-templates.md
+integrated_repo_tests:
+  - name: "generate-agent-radar.py output"
+    scope: "repo"
+    command: "uv run --no-project python scripts/ai/generate-agent-radar.py --output /tmp/test-radar.html"
+    result: pass
+    artifact_ref: "/tmp/test-radar.html"
+  - name: "crontab verification"
+    scope: "integrated"
+    command: "crontab -l | grep agent-radar"
+    result: pass
+    artifact_ref: "crontab"
+  - name: "legal-sanity-scan"
+    scope: "repo"
+    command: "scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: "evidence/legal-scan.yaml"

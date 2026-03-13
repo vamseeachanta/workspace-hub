@@ -1,0 +1,30 @@
+# Stage 15: Future Work Synthesis
+wrk_id: WRK-1171
+recommendations:
+  - id: FW-1
+    priority: LOW
+    title: "Auto-update scores from provider-assessments data"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    description: >
+      Wire generate-agent-radar.py to read .claude/state/provider-assessments/
+      and compute weighted scores automatically from real assessment data.
+  - id: FW-2
+    priority: LOW
+    title: "Add task-type heatmap panel to radar"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    description: >
+      Third chart panel showing task_type_matrix from behavior-contract.yaml
+      as an interactive heatmap (task type x provider).
+  - id: FW-3
+    priority: MEDIUM
+    title: "Surface radar link in session-start Step 3"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    description: >
+      Add a step in session-start/SKILL.md that prints a one-line radar status
+      or opens the HTML when provider capability changes are detected.

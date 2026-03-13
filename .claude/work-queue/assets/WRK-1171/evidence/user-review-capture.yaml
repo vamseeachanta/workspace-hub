@@ -1,0 +1,12 @@
+# Stage 1: User Review — Capture
+wrk_id: WRK-1171
+stage: 1
+gate: HARD
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-13T13:10:00-05:00"
+notes: >
+  User requested radar chart visualization ("let us add similar chart for our
+  latest ai agent capability so we are always informed of what to do and how
+  to use it"). Scope: two-panel radar (providers + Claude tiers), YAML-driven,
+  daily cron. Approved in-conversation.

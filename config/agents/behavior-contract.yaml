@@ -284,6 +284,11 @@ provider_assessment:
       - "Trend over time (improving/declining per provider)"
       - "Recommended task_agents mapping updates"
       - "Cost efficiency (score per dollar)"
+  visualization:
+    radar_scores: "config/ai-tools/agent-capability-scores.yaml"
+    radar_html: "config/ai-tools/agent-capability-radar.html"
+    generator: "scripts/ai/generate-agent-radar.py"
+    regenerate: "uv run --no-project python scripts/ai/generate-agent-radar.py"
 
 normalized_verdicts:
   allowed: [APPROVE, MINOR, MAJOR, NO_OUTPUT, CONDITIONAL_PASS, ERROR]

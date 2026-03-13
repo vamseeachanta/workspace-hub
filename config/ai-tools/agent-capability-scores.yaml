@@ -1,0 +1,92 @@
+# Agent Capability Radar — Scores (0-10 scale)
+# Source of truth for radar chart visualization.
+# Update when provider capabilities change or after quarterly assessment.
+# Generated HTML: config/ai-tools/agent-capability-radar.html
+# Generator: scripts/ai/generate-agent-radar.py
+version: "2026-03-13"
+next_review: "2026-06-06"  # Aligns with provider-capabilities.yaml reassessment
+
+# Chart 1: Cross-provider comparison (default models)
+provider_comparison:
+  dimensions:
+    - Reasoning
+    - Code Generation
+    - Context Window
+    - Cost Efficiency
+    - Research & Docs
+    - Orchestration
+  agents:
+    claude:
+      label: "Claude (Sonnet 4.6)"
+      color: "#6366f1"
+      role: "Orchestrator + executor"
+      default_model: "Sonnet 4.6"
+      cost_display: "$3/$15 per 1M tok"
+      badge: { text: "primary", class: "badge-primary" }
+      scores: [9, 9, 6, 7, 8, 10]
+    codex:
+      label: "Codex (o4-mini)"
+      color: "#f59e0b"
+      role: "Cross-review + focused code"
+      default_model: "o4-mini"
+      cost_display: "$0.50/$1.50 per 1M tok"
+      badge: { text: "hard gate", class: "badge-gate" }
+      scores: [6, 8, 6, 9, 4, 3]
+    gemini:
+      label: "Gemini (2.5 Pro)"
+      color: "#10b981"
+      role: "Research + large-doc"
+      default_model: "Gemini 2.5 Pro"
+      cost_display: "$0.075/$0.30 per 1M tok"
+      badge: { text: "research", class: "badge-research" }
+      scores: [8, 7, 10, 10, 9, 5]
+    openai:
+      label: "OpenAI (GPT-4.1)"
+      color: "#ef4444"
+      role: "General fallback"
+      default_model: "GPT-4.1"
+      cost_display: "~$2/$8 per 1M tok"
+      badge: { text: "alt", class: "badge-alt" }
+      scores: [8, 8, 10, 7, 7, 5]
+
+# Chart 2: Claude internal model tiers
+claude_tiers:
+  dimensions:
+    - Reasoning Depth
+    - Code Quality
+    - Speed
+    - Cost Efficiency
+    - Context Capacity
+    - Quota Safety
+  models:
+    opus:
+      label: "Opus 4.6"
+      color: "#8b5cf6"
+      route: "Route C plan only"
+      quota_risk: "HIGH"
+      effort: "max"
+      scores: [10, 10, 4, 3, 10, 2]
+    sonnet:
+      label: "Sonnet 4.6"
+      color: "#6366f1"
+      route: "A/B/C execute (default)"
+      quota_risk: "LOW"
+      effort: "medium"
+      scores: [8, 9, 7, 7, 6, 8]
+    haiku:
+      label: "Haiku 4.5"
+      color: "#a5b4fc"
+      route: "Route A review / lookups"
+      quota_risk: "MINIMAL"
+      effort: "low"
+      scores: [5, 6, 10, 10, 6, 10]
+
+# Routing quick reference (displayed below charts)
+routing_notes:
+  - "**Default all work:** Claude Sonnet 4.6 — best quality-to-cost ratio"
+  - "**Escalate to Opus 4.6:** only Route C plan phase (complex multi-repo architecture)"
+  - "**Cross-review (HARD GATE):** Codex CLI — independent second opinion; substitute Claude Opus when Codex quota exhausted"
+  - "**Research & large docs:** Gemini 2.5 Pro — 1M context window advantage"
+  - "**Budget tasks:** Haiku 4.5 (index queries, status checks) or Codex o4-mini (focused code)"
+  - "**Config source of truth:** `config/agents/model-registry.yaml` & `provider-capabilities.yaml`"
+  - "**Next reassessment:** June 2026 — consolidation triggers documented in provider-capabilities.yaml"

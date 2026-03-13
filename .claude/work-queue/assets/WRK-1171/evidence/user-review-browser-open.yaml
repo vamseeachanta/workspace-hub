@@ -1,0 +1,13 @@
+# Browser open evidence
+wrk_id: WRK-1171
+plan_draft:
+  opened_at: "2026-03-13T13:15:00-05:00"
+  method: "in-conversation review"
+plan_final:
+  opened_at: "2026-03-13T13:20:00-05:00"
+  method: "mcp__claude-in-chrome__navigate"
+  url: "http://localhost:8791/agent-capability-radar.html"
+close_review:
+  opened_at: "2026-03-13T13:30:00-05:00"
+  method: "mcp__claude-in-chrome__computer screenshot"
+  screenshots_taken: 2

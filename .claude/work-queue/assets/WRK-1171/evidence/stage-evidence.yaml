@@ -1,0 +1,23 @@
+# Stage Evidence Tracker
+wrk_id: WRK-1171
+stages:
+  1:  { status: done, evidence: evidence/user-review-capture.yaml }
+  2:  { status: done, evidence: evidence/resource-intelligence.yaml }
+  3:  { status: done, evidence: n/a }
+  4:  { status: done, evidence: n/a }
+  5:  { status: done, evidence: evidence/user-review-plan-draft.yaml }
+  6:  { status: n/a, evidence: n/a }
+  7:  { status: done, evidence: evidence/plan-final-review.yaml }
+  8:  { status: done, evidence: evidence/activation.yaml }
+  9:  { status: n/a, evidence: n/a }
+  10: { status: done, evidence: evidence/execute.yaml }
+  11: { status: n/a, evidence: n/a }
+  12: { status: done, evidence: evidence/execute.yaml }
+  13: { status: n/a, evidence: n/a }
+  14: { status: done, evidence: evidence/legal-scan.yaml }
+  15: { status: done, evidence: evidence/future-work.yaml }
+  16: { status: done, evidence: evidence/resource-intelligence-update.yaml }
+  17: { status: done, evidence: evidence/user-review-close.yaml }
+  18: { status: n/a, evidence: n/a }
+  19: { status: pending, evidence: n/a }
+  20: { status: pending, evidence: n/a }

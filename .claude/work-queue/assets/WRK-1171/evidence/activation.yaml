@@ -1,0 +1,10 @@
+# Stage 8: Claim/Activation
+wrk_id: WRK-1171
+stage: 8
+claimed_by: claude
+claimed_at: "2026-03-13T13:10:00-05:00"
+machine: ace-linux-1
+session_type: interactive
+session_id: "2026-03-13-ace-linux-1-radar"
+set_active_wrk: true
+orchestrator_agent: claude

@@ -1,0 +1,13 @@
+# Stage 16: Resource Intelligence Update
+wrk_id: WRK-1171
+stage: 16
+completed_at: "2026-03-13T13:28:00-05:00"
+additions:
+  - target: config/agents/behavior-contract.yaml
+    change: "Added visualization: block linking radar scores, HTML, and generator script"
+  - target: config/agents/provider-capabilities.yaml
+    change: "Added header comments referencing radar visualization"
+  - target: config/agents/routing-config.yaml
+    change: "Added capability_radar: reference"
+  - target: .claude/docs/agent-delegation-templates.md
+    change: "Added visual reference link after role matrix"

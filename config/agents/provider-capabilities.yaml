@@ -10,6 +10,10 @@
 version: 1.1.0
 last_updated: "2026-02-24"
 
+# Radar visualization: config/ai-tools/agent-capability-radar.html
+# Scores data: config/ai-tools/agent-capability-scores.yaml
+# Regenerate: uv run --no-project python scripts/ai/generate-agent-radar.py
+#
 # WRK-235 Strategy Decision (2026-02-24): Maintain all three providers (Option A)
 # - Claude: orchestrator + primary executor
 # - Codex: cross-review hard gate (independent second opinion, budget cost tier)

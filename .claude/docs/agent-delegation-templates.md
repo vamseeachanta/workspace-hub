@@ -22,6 +22,8 @@
 **Rationale:** Codex for focused single-file code/test; Claude for multi-module arch/integration;
 Gemini for 1M-token research/docs synthesis.
 
+**Visual:** `config/ai-tools/agent-capability-radar.html` — regenerate: `uv run --no-project python scripts/ai/generate-agent-radar.py`
+
 ---
 
 ## Standard task_agents Maps

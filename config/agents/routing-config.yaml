@@ -68,6 +68,7 @@ session_pinning:
 
 models:
   registry: model-registry.yaml
+  capability_radar: ../ai-tools/agent-capability-scores.yaml
   adaptive_routing:
     enabled: true
     ewma_override: false  # Set true to override registry EWMA params here

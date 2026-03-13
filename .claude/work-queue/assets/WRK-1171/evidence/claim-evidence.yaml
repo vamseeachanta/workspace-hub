@@ -1,0 +1,8 @@
+# Claim Evidence
+wrk_id: WRK-1171
+claimed_by: claude
+claimed_at: "2026-03-13T13:10:00-05:00"
+machine: ace-linux-1
+route: A
+plan_approved: true
+plan_reviewed: true
