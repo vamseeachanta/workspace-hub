@@ -1,0 +1,4 @@
+wrk_id: WRK-1154
+generated_at: "2026-03-12T22:30:00Z"
+items: []
+no_follow_ups_rationale: "Self-contained bash script with 10 tests. No extensions needed — validator covers all required frontmatter fields per SKILL.md."

@@ -6,3 +6,4 @@
 
 ## Summary
 Route A simple item — deterministic bash script with clear ACs. No architectural concerns.
+Route A: single cross-review pass — codex/gemini not required per SKILL.md §Complexity Routing.

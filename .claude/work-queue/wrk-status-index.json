@@ -5310,11 +5310,20 @@
     "category": "tooling"
   },
   "WRK-1154": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T00:23:40.460434+00:00",
+    "updated_by": "close-item.sh",
+    "title": "chore(harness): stage-01 frontmatter validator script \u2014 confirm WRK-NNN.md has all required fields",
+    "priority": "high",
+    "category": "harness"
+  },
+  "WRK-1158": {
     "status": "working",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T22:11:57.078805+00:00",
+    "last_updated": "2026-03-13T00:18:28.325315+00:00",
     "updated_by": "claim-item.sh",
-    "title": "chore(harness): stage-01 frontmatter validator script \u2014 confirm WRK-NNN.md has all required fields",
+    "title": "chore(harness): stage-17 gate-evidence green checker \u2014 all gates OK before close",
     "priority": "high",
     "category": "harness"
   }

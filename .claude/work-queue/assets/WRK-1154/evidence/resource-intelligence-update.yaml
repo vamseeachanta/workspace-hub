@@ -1,0 +1,8 @@
+wrk_id: WRK-1154
+generated_at: "2026-03-12T22:30:00Z"
+additions:
+  - path: scripts/work-queue/validate-wrk-frontmatter.sh
+    role: "Deterministic Stage 1 exit checker — validates 12 required frontmatter fields"
+  - path: scripts/work-queue/tests/test-validate-wrk-frontmatter.sh
+    role: "TDD test suite for frontmatter validator (10 tests)"
+notes: "Level 2 enforcement gradient script for Stage 1 capture gate"

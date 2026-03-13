@@ -1,0 +1,13 @@
+timestamp: 2026-03-12T11:00:00Z
+wrk_id: WRK-1154
+action: work_queue_skill
+provider: claude
+machine: ace-linux-1
+stage: 9
+
+timestamp: 2026-03-12T11:00:00Z
+wrk_id: WRK-1154
+action: work_wrapper_complete
+provider: claude
+machine: ace-linux-1
+stage: 9

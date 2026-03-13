@@ -1,0 +1,23 @@
+wrk_id: WRK-1154
+scope: repo
+executed_at: 2026-03-12T19:09:00Z
+commit: f51d4736
+integrated_repo_tests:
+  - name: validate-wrk-frontmatter.sh exits 0 for complete WRK
+    scope: repo
+    command: "bash scripts/work-queue/validate-wrk-frontmatter.sh WRK-1154"
+    result: pass
+    artifact_ref: scripts/work-queue/validate-wrk-frontmatter.sh
+    notes: "All 12 required fields present"
+  - name: validate-wrk-frontmatter.sh exits 1 for incomplete WRK
+    scope: repo
+    command: "bash scripts/work-queue/tests/test-validate-wrk-frontmatter.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test-validate-wrk-frontmatter.sh
+    notes: "10 TDD tests all pass"
+  - name: stage-01-capture.md references validator script
+    scope: repo
+    command: "grep validate-wrk-frontmatter .claude/skills/workspace-hub/stages/stage-01-capture.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/stages/stage-01-capture.md
+    notes: "Checklist item added for Stage 1 exit"

@@ -1,29 +1,28 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-12T22:11:58Z by generate-index.py -->
+<!-- Generated: 2026-03-13T00:23:42Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-12T22:11:58Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T00:23:42Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 595
+**Total items:** 593
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 231 |
-| working | 6 |
+| pending | 229 |
+| working | 5 |
 | blocked | 10 |
-| done | 1 |
-| archived | 347 |
+| archived | 349 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 265 |
+| high | 263 |
 | medium | 277 |
 | low | 52 |
 
@@ -31,7 +30,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 140 |
+| simple | 138 |
 | medium | 280 |
 | complex | 107 |
 
@@ -41,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 36 |
+| harness | 33 |
 | engineering | 122 |
 | data | 24 |
 | platform | 13 |
@@ -72,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 250 |
+| workspace-hub | 248 |
 | worldenergydata | 101 |
 
 ### Plan Tracking
@@ -80,7 +79,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 246 / 595 |
+| Plans exist | 246 / 593 |
 | Plans cross-reviewed | 173 |
 | Plans approved | 196 |
 | Brochure pending | 8 |
@@ -92,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 595 |
-| Total archived | 347 |
-| Completion rate | 347/595 (58%) |
+| Total captured | 593 |
+| Total archived | 349 |
+| Completion rate | 349/593 (59%) |
 | Monthly rate (current month) | 112 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 63 / 231 | 27% |
-| Plans cross-reviewed | 8 | 11% |
-| Plans user-approved | 8 | 11% |
+| Pending items with plans | 62 / 229 | 27% |
+| Plans cross-reviewed | 9 | 12% |
+| Plans user-approved | 9 | 12% |
 
 ### Aging
 
@@ -119,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 94 | 3 | 8 |
+| High     | 92 | 2 | 8 |
 | Medium   | 102  | 3  | 1  |
 | Low      | 35  | 0  | 1  |
 
@@ -127,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (36 items — 7 high, 22 medium, 7 low)
+### harness (33 items — 4 high, 22 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -232,10 +231,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-1154 | HIGH | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working |
-| WRK-1155 | HIGH | chore(harness): stage-07 P1-findings-resolved checker script | pending |
-| WRK-1156 | HIGH | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working |
-| WRK-1158 | HIGH | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending |
+| WRK-1158 | HIGH | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
 
@@ -1162,11 +1158,9 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | - | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | done | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1190,12 +1184,6 @@
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
 
 ## By Status
-
-### Done (unarchived)
-
-| ID | Title | Priority | Complexity | Repos | Module |
-|-----|-------|----------|------------|-------|--------|
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
 
 ### Pending
 
@@ -1410,8 +1398,6 @@
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | medium | medium | workspace-hub | - |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | high | simple | workspace-hub | - |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1441,8 +1427,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | medium | medium | digitalmodel | - |
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | high | simple | workspace-hub | - |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -1809,6 +1794,8 @@
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | high | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | medium | simple | workspace-hub | - |
 | WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | medium | medium | workspace-hub | - |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 
 ## By Repository
@@ -2451,11 +2438,9 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | - |
 | WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | - |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working | high | simple | - |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | - |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working | high | simple | - |
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | done | high | simple | - |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending | high | simple | - |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | - |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | - |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working | high | simple | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2841,11 +2826,9 @@
 | WRK-1138 | fix(whats-next): guard pending scan against archived ghost items | archived | simple | workspace-hub | - |
 | WRK-1142 | feat(workflow): migrate stage rules into stage micro-skills; auto-load via start_stage.py | archived | medium | workspace-hub | - |
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | medium | workspace-hub | - |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working | simple | workspace-hub | - |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | simple | workspace-hub | - |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working | simple | workspace-hub | - |
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | done | simple | workspace-hub | - |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending | simple | workspace-hub | - |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | simple | workspace-hub | - |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | simple | workspace-hub | - |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working | simple | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | pending | simple | workspace-hub | - |
 | WRK-5036 | feat(doc-intel): doc-extraction skill — generic + CP + drilling-riser sub-skills | pending | medium | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | pending | complex | workspace-hub | - |
@@ -3325,11 +3308,9 @@
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | pending | medium | workspace-hub | - |
 | WRK-1144 | chore(harness): micro-skill → script extraction audit — identify stage checklist items that can become deterministic scripts | archived | medium | workspace-hub | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | workspace-hub, aceengineer-website | - |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working | high | workspace-hub | - |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | workspace-hub | - |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working | high | workspace-hub | - |
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | done | high | workspace-hub | - |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending | high | workspace-hub | - |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | workspace-hub | - |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | workspace-hub | - |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working | high | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -3737,7 +3718,7 @@
 
 ## By Computer
 
-### ace-linux-1 (184 active / 315 total)
+### ace-linux-1 (180 active / 313 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4033,11 +4014,9 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | medium | workspace-hub |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | workspace-hub |
 | WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | medium | workspace-hub |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | working | high | simple | workspace-hub |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | pending | high | simple | workspace-hub |
-| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | working | high | simple | workspace-hub |
-| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | done | high | simple | workspace-hub |
-| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | pending | high | simple | workspace-hub |
+| WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | workspace-hub |
+| WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | workspace-hub |
+| WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | working | high | simple | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4433,8 +4412,6 @@
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | - | - | WRK-1147 |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | WRK-1148 | - | WRK-1147 |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | WRK-1149 | - | WRK-1147 |
-| WRK-1154 | chore(harness): stage-01 frontmatter validator script — confirm WRK-NNN.md has all required fields | - | - | WRK-1144 |
-| WRK-1155 | chore(harness): stage-07 P1-findings-resolved checker script | - | - | WRK-1144 |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | - | - | WRK-1144 |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | - | - | WRK-1144 |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | - | - | WRK-1144 |

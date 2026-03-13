@@ -1,0 +1,160 @@
+timestamp: 2026-03-13T00:16:46Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:16:47Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:19:14Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:19:14Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:21:23Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:21:23Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:21:50Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:21:50Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:22:07Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:22:08Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:22:25Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:22:25Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_fail
+signal: verify_gate_evidence_fail
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:23:11Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:23:11Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:23:11Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence
+signal: verify_gate_evidence
+provider: orchestrator
+notes: close gate verified
+
+timestamp: 2026-03-13T00:23:39Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_start
+signal: verify_gate_evidence_start
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:23:39Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence_pass
+signal: verify_gate_evidence_pass
+provider: orchestrator
+notes: phase=close
+
+timestamp: 2026-03-13T00:23:39Z
+wrk_id: WRK-1154
+stage: close
+action: verify_gate_evidence
+signal: verify_gate_evidence
+provider: orchestrator
+notes: close gate verified
+
+timestamp: 2026-03-13T00:23:40Z
+wrk_id: WRK-1154
+stage: close
+action: close_item
+signal: close_item
+provider: orchestrator
+notes: work item moved to done
+
+timestamp: 2026-03-13T00:23:40Z
+wrk_id: WRK-1154
+stage: close
+action: close_or_archive
+signal: close_or_archive
+provider: orchestrator
+notes: terminal close signal
+
