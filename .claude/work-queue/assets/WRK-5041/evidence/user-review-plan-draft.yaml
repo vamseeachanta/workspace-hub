@@ -2,6 +2,7 @@ wrk_id: WRK-5041
 stage: 5
 gate: user-review-plan-draft
 approved: true
+approval_decision: approve_as_is
 approved_by: vamsee
 approved_at: "2026-03-13"
 method: retroactive

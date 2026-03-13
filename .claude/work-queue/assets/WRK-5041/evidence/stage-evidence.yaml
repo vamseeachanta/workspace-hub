@@ -37,14 +37,26 @@ stages_completed:
     status: done
     artifact: ac-test-matrix.md
   - stage: 13
-    status: pending
+    status: done
     artifact: evidence/cross-review.yaml
   - stage: 14
-    status: pending
+    status: done
     artifact: evidence/gate-evidence-summary.json
   - stage: 15
-    status: pending
+    status: done
     artifact: evidence/future-work.yaml
   - stage: 16
-    status: pending
+    status: done
     artifact: evidence/resource-intelligence-update.yaml
+  - stage: 17
+    status: done
+    artifact: evidence/user-review-close.yaml
+  - stage: 18
+    status: done
+    artifact: n/a
+  - stage: 19
+    status: done
+    artifact: close-item.sh
+  - stage: 20
+    status: done
+    artifact: archive-item.sh

@@ -2,6 +2,11 @@ wrk_id: WRK-5041
 stage: 15
 gate: future-work
 completed_at: "2026-03-13T10:30:00Z"
+recommendations:
+  - "Add list/blockquote extraction to HtmlParser"
+  - "Cache robots.txt per domain with TTL"
+  - "Batch URL extraction from naval-architecture-resources.yaml"
+  - "Async rate limiting for concurrent fetches"
 items:
   - id: FW-1
     priority: medium

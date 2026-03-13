@@ -1,0 +1,5 @@
+wrk_id: WRK-5041
+stage: 17
+opened_at: "2026-03-13T11:00:00Z"
+method: retroactive
+html_file: WRK-5041-lifecycle.html

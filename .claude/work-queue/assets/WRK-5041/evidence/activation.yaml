@@ -7,4 +7,5 @@ provider: claude
 orchestrator: claude
 execution_workstations: [ace-linux-1]
 set_active_wrk: true
+session_id: "38150f67-51ef-4a62-b5d9-a6d0a774f573"
 method: retroactive

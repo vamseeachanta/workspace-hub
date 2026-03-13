@@ -2,6 +2,11 @@ wrk_id: WRK-5041
 stage: 16
 gate: resource-intelligence-update
 completed_at: "2026-03-13T10:30:00Z"
+additions:
+  - "fetcher.py: UrlFetcher with SSRF protection, streaming, cache metadata"
+  - "parsers/html.py: HtmlParser registered in PARSERS"
+  - "extract_url.py: module-importable CLI main()"
+  - "utils.py: generate_doc_ref_from_url()"
 new_infrastructure:
   - scripts/data/doc_intelligence/fetcher.py (UrlFetcher — reusable for any URL fetch+cache)
   - scripts/data/doc_intelligence/parsers/html.py (HtmlParser — registered in PARSERS)

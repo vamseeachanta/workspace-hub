@@ -22,21 +22,21 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage_evidence_ref missing in WRK frontmatter"
+      "details": "stage-evidence.yaml: missing stage orders [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]"
     },
     {
       "name": "Resource-intelligence gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence.yaml: skills.core_used must include at least 3 core skills"
+      "details": "resource-intelligence.yaml: invalid completion_status"
     },
     {
       "name": "Activation gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml: set_active_wrk must be true"
+      "details": "activation.yaml: orchestrator_agent missing"
     },
     {
       "name": "Agent log gate",
@@ -50,14 +50,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "User-review publish gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "Cross-review gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
+      "details": "execute.yaml: integrated_repo_tests count must be 3-5 (found 1)"
     },
     {
       "name": "Legal gate",
@@ -99,21 +99,21 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: recommendations[1] must be an object"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: additions=4"
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -141,28 +141,28 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no sentinel values found"
+      "details": "claim-evidence.yaml: route='' (empty)"
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-plan-final.yaml.confirmed_at: date-only value '2026-03-13' \u2014 time component required"
+      "details": "all timestamp fields have time components"
     },
     {
       "name": "Codex keyword in review gate",
@@ -176,28 +176,28 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "insufficient commit data \u2014 skip uniqueness check"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip path existence check"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip done/pending check"
+      "details": "no done/pending contradictions found"
     },
     {
       "name": "Plan publish predates approval gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan_draft publish event not found \u2014 skip"
     },
     {
       "name": "Workstation contract (strict) gate",
