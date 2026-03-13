@@ -2,6 +2,7 @@ stage: 5
 wrk_id: WRK-5038
 reviewer: vamsee
 decision: approved
+approval_decision: approve_as_is
 scope_approved: true
 reviewed_at: "2026-03-13T04:00:00Z"
 plan_source: conversation-provided
