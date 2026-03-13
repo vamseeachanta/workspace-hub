@@ -1,0 +1,39 @@
+reviews:
+  - file: ".claude/skills/engineering/doc-extraction/SKILL.md"
+    providers: [claude, codex, gemini]
+    codex_verdict: REQUEST_CHANGES
+    codex_p2_issues:
+      - "procedures/requirements overlap — no disambiguation rule"
+      - "edition inference rule missing"
+    codex_p2_resolved: true
+    results:
+      - "scripts/review/results/20260313T034637Z-SKILL.md-implementation-claude.md"
+      - "scripts/review/results/20260313T034637Z-SKILL.md-implementation-codex.md"
+      - "scripts/review/results/20260313T034637Z-SKILL.md-implementation-gemini.md"
+  - file: ".claude/skills/engineering/doc-extraction/cp/SKILL.md"
+    providers: [claude, codex, gemini]
+    codex_verdict: REQUEST_CHANGES
+    codex_p2_issues:
+      - "current_density_type discriminator missing"
+      - "protection potential validation lacks reference electrode"
+    codex_p2_resolved: true
+    results:
+      - "scripts/review/results/20260313T034840Z-SKILL.md-implementation-claude.md"
+      - "scripts/review/results/20260313T034840Z-SKILL.md-implementation-codex.md"
+      - "scripts/review/results/20260313T034840Z-SKILL.md-implementation-gemini.md"
+  - file: ".claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
+    providers: [claude, codex, gemini]
+    codex_verdict: REQUEST_CHANGES
+    codex_p2_issues:
+      - "BOP source misattributed to API RP 16Q (should be API STD 53)"
+      - "kill/choke line edition/vendor dependence not noted"
+    codex_p2_resolved: true
+    results:
+      - "scripts/review/results/20260313T035029Z-SKILL.md-implementation-claude.md"
+      - "scripts/review/results/20260313T035029Z-SKILL.md-implementation-codex.md"
+      - "scripts/review/results/20260313T035029Z-SKILL.md-implementation-gemini.md"
+  - file: "tests/skills/test_doc_extraction_skill.py"
+    providers: [claude, codex, gemini]
+    codex_verdict: pending
+timestamp: "2026-03-13T03:55:00Z"
+all_p2_resolved: true

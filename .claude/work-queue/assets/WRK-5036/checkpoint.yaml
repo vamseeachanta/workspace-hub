@@ -1,0 +1,39 @@
+id: WRK-5036
+stage: 12
+status: working
+percent_complete: 80
+last_updated: 2026-03-12T00:00:00Z
+provider: claude
+workstation: ace-linux-1
+stages_completed:
+  - {stage: 1, name: "capture", completed: true}
+  - {stage: 2, name: "triage", completed: true}
+  - {stage: 3, name: "plan-draft", completed: true}
+  - {stage: 4, name: "plan-review", completed: true}
+  - {stage: 5, name: "plan-approval", completed: true}
+  - {stage: 6, name: "cross-review-plan", completed: true}
+  - {stage: 7, name: "hard-gate", completed: true}
+  - {stage: 8, name: "tdd-red", completed: true}
+  - {stage: 9, name: "tdd-green", completed: true}
+  - {stage: 10, name: "tdd-refactor", completed: true}
+  - {stage: 11, name: "implementation", completed: true}
+current_stage: 12
+current_stage_name: "cross-review"
+artifacts:
+  - path: .claude/skills/engineering/doc-extraction/SKILL.md
+    type: skill
+    lines: 313
+  - path: .claude/skills/engineering/doc-extraction/cp/SKILL.md
+    type: skill
+    lines: 214
+  - path: .claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md
+    type: skill
+    lines: 227
+  - path: tests/skills/test_doc_extraction_skill.py
+    type: test
+    lines: 101
+test_results:
+  total: 14
+  passed: 14
+  failed: 0
+  command: "uv run --no-project python -m pytest tests/skills/test_doc_extraction_skill.py -v"

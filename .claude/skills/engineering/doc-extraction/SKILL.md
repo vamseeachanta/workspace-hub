@@ -127,9 +127,15 @@ data series legends, often accompanied by a caption describing the relationship.
 
 Sequential steps for performing an operation or assessment.
 
-**Detection heuristics**: Numbered or lettered steps, normative language
-("shall", "must", "should"), sequential dependencies between steps,
-prerequisites section.
+**Detection heuristics**: Numbered or lettered steps with sequential dependencies,
+prerequisites section, action-oriented language. The distinguishing feature vs
+`requirements` is sequential execution order — procedures describe *how* to do
+something step-by-step, requirements state *what* must be true.
+
+**Disambiguation rule**: If a clause contains both normative language ("shall")
+and sequential steps, classify as `procedures` when the steps have execution
+order, or `requirements` when each statement stands independently. Multi-label
+output is allowed when both types genuinely co-exist in the same passage.
 
 **Key extraction fields**:
 | Field | Description |
@@ -217,12 +223,17 @@ Parse references like `DNV-RP-B401 Section 3.4.6` into structured form:
 standard_ref:
   body: DNV
   document: RP-B401
-  edition: 2021        # if inferable from context
+  edition: null         # null unless explicitly stated in source text
+  edition_inferred: 2021  # set only when edition can be inferred; null otherwise
   section: 3.4.6
   table: null
   figure: null
   raw: "DNV-RP-B401 Section 3.4.6"
 ```
+
+**Inference rule**: `edition` must be null unless the source text explicitly
+states the year. Use `edition_inferred` only when surrounding context (title
+page, header, or adjacent reference) provides strong evidence; never guess.
 
 Common patterns:
 - `DNV-RP-XXXX Sec N.N.N` / `Section N.N` / `Table N-N` / `Figure N-N`

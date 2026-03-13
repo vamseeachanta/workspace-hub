@@ -159,6 +159,7 @@ Design current densities by zone and environmental condition.
   sub_type: current_density
   data:
     name: "Mean design current density — submerged, coated"
+    current_density_type: mean   # mean | initial | final
     value: 0.060
     units: "A/m²"
     applicability:
@@ -167,6 +168,9 @@ Design current densities by zone and environmental condition.
       surface_condition: coated
     source: "DNV-RP-B401 Table 3-1"
 ```
+
+**Structured discriminator**: Always include `current_density_type` (one of
+`mean`, `initial`, `final`) — do not encode the type only in the `name` field.
 
 **Zone classification**:
 | Zone | Description | Temperature dependency |
@@ -201,7 +205,7 @@ When extracting CP data, validate against known ranges:
 | Current density | 0.001 – 1.0 A/m² | Warning |
 | Anode capacity (Al) | 1500 – 2500 Ah/kg | Warning |
 | Anode capacity (Zn) | 700 – 900 Ah/kg | Warning |
-| Protection potential | -1.2 to -0.7 V | Warning |
+| Protection potential (vs Ag/AgCl) | -1.2 to -0.7 V | Warning |
 
 ## Standards Reference
 

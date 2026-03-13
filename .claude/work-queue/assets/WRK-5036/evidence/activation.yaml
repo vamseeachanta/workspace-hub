@@ -1,0 +1,6 @@
+wrk_id: WRK-5036
+activated: true
+set_active_wrk: true
+activated_at: "2026-03-12T22:30:00Z"
+provider: claude
+workstation: ace-linux-1

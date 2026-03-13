@@ -1,0 +1,33 @@
+executed_at: "2026-03-12T22:40:00Z"
+provider: claude
+workstation: ace-linux-1
+artifacts_created:
+  - ".claude/skills/engineering/doc-extraction/SKILL.md"
+  - ".claude/skills/engineering/doc-extraction/cp/SKILL.md"
+  - ".claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
+  - "tests/skills/test_doc_extraction_skill.py"
+integrated_repo_tests:
+  - name: "doc-extraction skill tests"
+    repo: workspace-hub
+    scope: "tests/skills/test_doc_extraction_skill.py"
+    command: "uv run --no-project python -m pytest tests/skills/test_doc_extraction_skill.py -v"
+    result: pass
+    passed: 14
+    failed: 0
+    artifact_ref: "tests/skills/test_doc_extraction_skill.py"
+  - name: "all skill tests"
+    repo: workspace-hub
+    scope: "tests/skills/"
+    command: "uv run --no-project python -m pytest tests/skills/ -v"
+    result: pass
+    passed: 14
+    failed: 0
+    artifact_ref: "tests/skills/"
+  - name: "line count verification"
+    repo: workspace-hub
+    scope: ".claude/skills/engineering/doc-extraction/"
+    command: "wc -l .claude/skills/engineering/doc-extraction/SKILL.md .claude/skills/engineering/doc-extraction/cp/SKILL.md .claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
+    result: pass
+    passed: 3
+    failed: 0
+    artifact_ref: ".claude/skills/engineering/doc-extraction/"

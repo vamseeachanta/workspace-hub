@@ -1,0 +1,12 @@
+updated: true
+timestamp: "2026-03-13T03:55:00Z"
+additions:
+  - type: skill
+    path: ".claude/skills/engineering/doc-extraction/SKILL.md"
+    description: "3-layer doc-extraction taxonomy skill"
+  - type: skill
+    path: ".claude/skills/engineering/doc-extraction/cp/SKILL.md"
+    description: "CP domain extraction sub-skill"
+  - type: skill
+    path: ".claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
+    description: "Drilling-riser domain extraction sub-skill"

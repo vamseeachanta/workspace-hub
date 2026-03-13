@@ -1,0 +1,19 @@
+red_phase:
+  test_file: "tests/skills/test_doc_extraction_skill.py"
+  tests_written: 14
+  all_failed: true
+  timestamp: "2026-03-12T22:40:00Z"
+green_phase:
+  files_created:
+    - ".claude/skills/engineering/doc-extraction/SKILL.md"
+    - ".claude/skills/engineering/doc-extraction/cp/SKILL.md"
+    - ".claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md"
+  tests_passed: 14
+  tests_failed: 0
+  timestamp: "2026-03-12T22:50:00Z"
+refactor_phase:
+  changes: "Addressed Codex cross-review P2 findings"
+  tests_passed: 14
+  tests_failed: 0
+  timestamp: "2026-03-13T03:55:00Z"
+command: "uv run --no-project python -m pytest tests/skills/test_doc_extraction_skill.py -v"

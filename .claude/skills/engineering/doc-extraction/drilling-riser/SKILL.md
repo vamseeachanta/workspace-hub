@@ -44,10 +44,10 @@ with `typical_riser_stack_up_calculations.py` and the VIV analysis skill.
 
 Extracted data should align with existing module structures:
 
-| Module | Relevant data |
-|--------|---------------|
-| `typical_riser_stack_up_calculations.py` | Joint dimensions, weights, stack-up sequence |
-| VIV analysis skill | Strouhal number, reduced velocity, mode shapes |
+| Module | Path | Relevant data |
+|--------|------|---------------|
+| Riser stack-up | `digitalmodel/src/digitalmodel/infrastructure/base_solvers/marine/typical_riser_stack_up_calculations.py` | Joint dimensions, weights, stack-up sequence |
+| VIV analysis skill | `.claude/skills/engineering/marine-offshore/viv-analysis/SKILL.md` | Strouhal number, reduced velocity, mode shapes |
 
 ## Drilling Riser Content Types
 
@@ -86,7 +86,7 @@ Vortex-induced vibration parameters for riser fatigue assessment.
 | Cross-flow VIV onset V_r | 4–8 | DNV-RP-C205 |
 | In-line VIV onset V_r | 1–3.5 | DNV-RP-C205 |
 | Lock-in V_r range | 5–7 | DNV-RP-C205 |
-| Max cross-flow A/D | 1.0–1.5 | Empirical |
+| Max cross-flow A/D (screening heuristic) | 1.0–1.5 | Empirical, non-normative |
 
 **Mode shape extraction**:
 - Detect mode number, natural frequency, wavelength
@@ -102,6 +102,7 @@ Auxiliary line properties for well control.
 - Pattern: table with ID, OD, pressure rating, material grade columns
 - Units: inches (ID/OD), psi or MPa (pressure), ksi (yield)
 - Often in riser stack-up tables or well control equipment specs
+- Note: values are edition- and vendor-dependent; always capture source edition
 
 **Key extraction fields**:
 ```yaml
@@ -156,7 +157,7 @@ Blowout preventer stack layout and component specifications.
       - {position: 6, type: "casing shear ram", bore: "18.75 in", rating: "15,000 psi"}
     stack_height: {value: 35, units: feet}
     dry_weight: {value: 400, units: tons}
-    source: "API RP 16Q Section 5"
+    source: "API STD 53 Section 5"  # BOP config authority is API STD 53, not API RP 16Q
 ```
 
 **BOP component types**:
