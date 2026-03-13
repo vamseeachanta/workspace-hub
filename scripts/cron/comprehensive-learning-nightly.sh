@@ -47,11 +47,15 @@ echo "--- Release notes scan $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/automation/nightly-release-scan.sh || \
   echo "WARNING: release notes scan failed — see above"
 
-# Auto-commit any WRK items created by the release scan
+# Auto-commit any WRK items created by the release scan (best-effort — must not abort nightly)
 if ! git diff --quiet .claude/work-queue/ config/ai-tools/release-scan-state.yaml 2>/dev/null; then
-  git add -A .claude/work-queue/pending/ .claude/work-queue/INDEX.md config/ai-tools/release-scan-state.yaml
-  git commit -m "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
-  git push
+  {
+    git add config/ai-tools/release-scan-state.yaml .claude/work-queue/INDEX.md
+    # Stage only WRK files modified/created in the last 2 minutes (this scan run)
+    find .claude/work-queue/pending/ -name 'WRK-*.md' -mmin -2 -exec git add {} +
+    git commit -m "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
+    git push
+  } || echo "WARNING: release-scan auto-commit/push failed — changes remain local"
 fi
 
 # Step 4: validate skill frontmatter (best-effort — WRK-308)
