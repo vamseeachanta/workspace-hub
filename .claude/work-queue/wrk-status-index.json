@@ -5353,5 +5353,23 @@
     "title": "chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold",
     "priority": "high",
     "category": "document-intelligence"
+  },
+  "WRK-1159": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T08:29:53.170364+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Auto-open lifecycle HTML in browser at human-gate stages",
+    "priority": "high",
+    "category": "work-queue"
+  },
+  "WRK-5037": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T08:30:20.975502+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "feat(doc-intel): extract-document.py + document parse layer",
+    "priority": "high",
+    "category": "document-intelligence"
   }
 }

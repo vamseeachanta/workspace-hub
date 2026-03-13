@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T08:27:07Z by generate-index.py -->
+<!-- Generated: 2026-03-13T08:30:22Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T08:27:07Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T08:30:22Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 597
+**Total items:** 599
 
 ### By Status
 
@@ -16,13 +16,13 @@
 | pending | 224 |
 | working | 6 |
 | blocked | 10 |
-| archived | 357 |
+| archived | 359 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 263 |
+| high | 265 |
 | medium | 281 |
 | low | 52 |
 
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 143 |
-| medium | 280 |
-| complex | 106 |
+| medium | 281 |
+| complex | 107 |
 
 ### By Category
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 253 |
+| workspace-hub | 255 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 247 / 597 |
-| Plans cross-reviewed | 180 |
-| Plans approved | 203 |
+| Plans exist | 248 / 599 |
+| Plans cross-reviewed | 183 |
+| Plans approved | 206 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 597 |
-| Total archived | 357 |
-| Completion rate | 357/597 (60%) |
-| Monthly rate (current month) | 119 archived |
+| Total captured | 599 |
+| Total archived | 359 |
+| Completion rate | 359/599 (60%) |
+| Monthly rate (current month) | 121 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1147,7 +1147,8 @@
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1163,6 +1164,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5036 |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037 |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
@@ -1787,8 +1789,10 @@
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | high | medium | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | medium | simple | workspace-hub | - |
 
 ## By Repository
@@ -2437,6 +2441,7 @@
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | - |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | - |
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | high | medium | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | working | medium | simple | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
@@ -2449,6 +2454,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | - |
@@ -2830,8 +2836,10 @@
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | simple | workspace-hub | - |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | medium | workspace-hub | - |
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | complex | workspace-hub | - |
 
@@ -3603,6 +3611,7 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | working | medium | workspace-hub | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | workspace-hub | - |
 | WRK-1153 | Extract doc-research-download patterns from WRK-1151 into reusable skill + lib | archived | medium | workspace-hub | - |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | workspace-hub | - |
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
@@ -3719,6 +3728,7 @@
 | WRK-1126 | Add maritime law domain: skill, data, public cases, liabilities | pending | medium | workspace-hub | - |
 | WRK-1127 | Feature-first planning with AI agent chunking | archived | high | workspace-hub | - |
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | digitalmodel | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | workspace-hub, digitalmodel | - |
@@ -3726,7 +3736,7 @@
 
 ## By Computer
 
-### ace-linux-1 (176 active / 317 total)
+### ace-linux-1 (176 active / 319 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4026,6 +4036,7 @@
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | workspace-hub |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | workspace-hub |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | simple | workspace-hub |
+| WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | workspace-hub |
 | WRK-1160 | Gate verification retry noise — add diagnostics and cap retries | working | high | medium | workspace-hub |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | working | medium | simple | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
@@ -4039,6 +4050,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | workspace-hub |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | workspace-hub |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | workspace-hub |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | workspace-hub |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | pending | high | complex | workspace-hub |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | pending | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | workspace-hub, digitalmodel |
@@ -4429,6 +4441,7 @@
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | - | - | WRK-1144 |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | - | - | WRK-1144 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
+| WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5038 | feat(doc-intel): build-doc-intelligence.py + federated content indexes | WRK-5037 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | WRK-5038 | - | - |
