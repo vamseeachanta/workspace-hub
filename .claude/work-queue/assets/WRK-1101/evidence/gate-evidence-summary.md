@@ -15,14 +15,14 @@
 | Integrated test gate | FAIL | execute.yaml: integrated_repo_tests must be a list |
 | Legal gate | FAIL | artifact=missing, none |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
-| Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
-| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
+| Future-work gate | FAIL | future-work.yaml: empty recommendations and no_follow_ups_rationale missing |
+| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml: add additions[] or no_additions_rationale |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
-| Approval ordering gate | FAIL | timestamp ordering violation: claim-evidence.claimed_at (2026-03-12T20:08:00Z) >= execute.executed_at (2026-03-12T00:00:00Z) |
+| Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | user-review-browser-open.yaml absent — skip elapsed check |
-| Sentinel values gate | FAIL | claim-evidence.yaml: route='' (empty) |
+| Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | no review files found — skip codex keyword check (handled by cross-review gate) |

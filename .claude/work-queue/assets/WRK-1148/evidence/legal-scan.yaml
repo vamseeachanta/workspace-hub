@@ -1,0 +1,6 @@
+wrk_id: WRK-1148
+stage: 14
+scan_tool: scripts/legal/legal-sanity-scan.sh
+result: PASS
+scanned_at: "2026-03-12T20:25:00Z"
+notes: "No violations found in workspace-hub root scan"

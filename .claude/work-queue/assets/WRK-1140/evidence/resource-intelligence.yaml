@@ -1,0 +1,25 @@
+---
+wrk_id: WRK-1140
+stage: 2
+generated_at: 2026-03-12T00:00:00Z
+key_resources:
+  - path: config/ai-tools/release-scan-state.yaml
+    note: "Already exists with last_seen_version schema (claude: 2.1.74)"
+  - path: scripts/cron/comprehensive-learning-nightly.sh
+    note: "Nightly orchestrator — insert new step for release scan"
+  - path: scripts/work-queue/next-id.sh
+    note: "Atomic WRK ID generation with machine-range awareness"
+  - path: .claude/work-queue/scripts/generate-index.py
+    note: "INDEX.md regeneration after WRK creation"
+  - path: .claude/skills/workspace-hub/release-notes-adoption/SKILL.md
+    note: "Manual workflow — nightly script automates this"
+  - path: scripts/cron/setup-cron.sh
+    note: "Idempotent cron installer with hostname-aware variants"
+reusable_patterns:
+  - "best-effort steps (|| true) in nightly pipeline"
+  - "next-id.sh for atomic WRK creation"
+  - "release-scan-state.yaml for version diffing"
+  - "dated log files in logs/ directory"
+gaps:
+  - "No existing nightly-release-scan.sh — must create"
+  - "No /loop mechanism — cron is canonical path"

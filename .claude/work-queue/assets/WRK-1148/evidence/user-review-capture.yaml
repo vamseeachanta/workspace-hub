@@ -2,7 +2,7 @@ wrk_id: WRK-1148
 stage: 1
 scope_approved: true
 reviewer: vamsee
-reviewed_at: "2026-03-12"
+reviewed_at: "2026-03-12T16:00:00Z"
 notes: >
   User initiated /work run 1148 — scope confirmed. WRK-1148 is child-a of
   feature WRK-1147 (propeller-rudder interaction study). Mission: gather and

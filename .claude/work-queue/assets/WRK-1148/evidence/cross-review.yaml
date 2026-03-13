@@ -1,0 +1,12 @@
+wrk_id: WRK-1148
+route: B
+verdict: APPROVE
+reviewer: claude
+codex_verdict: REQUEST_CHANGES
+codex_iterations: 3
+codex_findings_resolved: true
+reviewed_at: "2026-03-12T20:30:00Z"
+notes: >
+  Claude: APPROVE (iteration 1). Codex: REQUEST_CHANGES across 3 iterations —
+  all findings resolved (ITTC formula attribution, axis decomposition fix,
+  F_prop terminology, RANS subsection normalization, submodule commit).

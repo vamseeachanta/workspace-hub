@@ -1,0 +1,19 @@
+wrk_id: WRK-1148
+stage: 16
+completion_status: complete
+additions:
+  - "digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md (665 lines)"
+updates:
+  - path: digitalmodel/docs/domains/hydrodynamics/propeller-rudder-literature.md
+    action: created
+    lines: 665
+    notes: >
+      Literature survey covering 8 source families (19 references),
+      parameter table, applicability ranges, and method selection
+      recommendations for WRK-1149.
+  - path: digitalmodel/docs/domains/hydrodynamics/
+    action: extended
+    notes: >
+      Hydrodynamics domain docs now include propeller-rudder literature
+      alongside existing morison-elements and reference material.
+completed_at: "2026-03-12T20:35:00Z"

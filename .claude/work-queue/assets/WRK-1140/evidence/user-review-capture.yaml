@@ -1,0 +1,8 @@
+---
+wrk_id: WRK-1140
+stage: 1
+gate: capture-review
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-12T00:00:00Z
+notes: "User approved scope as-is. Blocker WRK-1139 resolved (archived)."

@@ -1,0 +1,29 @@
+wrk_id: WRK-1148
+stage: 13
+iterations: 3
+providers:
+  claude:
+    verdict: APPROVE
+    iteration: 1
+  codex:
+    iteration_1: REQUEST_CHANGES
+    iteration_1_findings:
+      - "HIGH: ITTC wake-fraction formula underspecified — FIXED (proper attribution + note)"
+      - "MEDIUM: RANS subsections inconsistent metadata — FIXED (added authors, formulae, ranges)"
+      - "LOW: Mehdipour heading mismatch — FIXED"
+    iteration_2: REQUEST_CHANGES
+    iteration_2_findings:
+      - "BLOCKING: submodule not committed — FIXED (committed + pushed)"
+      - "MEDIUM: SST k-ω misattributed to Molland & Turnock — FIXED (moved to Shen 8.2)"
+      - "MEDIUM: Missing authors in 8.2 — FIXED"
+    iteration_3: REQUEST_CHANGES
+    iteration_3_findings:
+      - "HIGH: Rudder axis decomposition sin/cos swap — FIXED (cos(Gamma) for sway)"
+      - "MEDIUM: F_prop terminology inconsistency — FIXED (clarified as net hull thrust)"
+      - "MEDIUM: No diff in review packet — tooling limitation, not content issue"
+    all_content_findings_resolved: true
+    remaining_tooling_note: >
+      Review packet shows 'no changes detected' because generate-review-input.sh
+      diffs against HEAD which already contains the committed fixes. This is a
+      review-input tooling limitation, not a content gap.
+completed_at: "2026-03-12"

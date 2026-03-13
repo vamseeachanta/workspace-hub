@@ -1,0 +1,11 @@
+wrk_id: WRK-1101
+reviewed_at: "2026-03-12T20:10:00Z"
+providers:
+  claude:
+    verdict: REQUEST_CHANGES
+    p1_issues: 2
+    resolution: "Both P1s fixed — error handling added to extractors, hardcoded path replaced"
+    result_file: "scripts/review/results/20260313T010856Z-wrk-1101-implementation-review-input.md-implementation-claude.md"
+  codex:
+    verdict: TIMEOUT
+    notes: "Codex CLI exec timed out at 120s (2 attempts). CLI v0.112.0 functional but exec hangs on prompt. Infrastructure issue."

@@ -1,7 +1,7 @@
 {
-  "wrk_id": "WRK-1101",
+  "wrk_id": "WRK-1148",
   "phase": "close",
-  "summary_file": "assets/WRK-1101/evidence/gate-evidence-summary.json",
+  "summary_file": "assets/WRK-1148/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
@@ -22,42 +22,42 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage_evidence_ref missing in WRK frontmatter"
+      "details": "stage evidence file missing: assets/WRK-1148/evidence/stage-evidence.yaml"
     },
     {
       "name": "Resource-intelligence gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence.yaml: skills.core_used must include at least 3 core skills"
+      "details": "resource-intelligence.yaml: invalid completion_status"
     },
     {
       "name": "Activation gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml: set_active_wrk must be true"
+      "details": "activation.yaml: session_id missing"
     },
     {
       "name": "Agent log gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "details": "routing:missing-actions=['work_queue_skill', 'work_wrapper_complete'] ; plan:missing-actions=['plan_draft_complete', 'plan_wrapper_complete'] ; execute:missing-actions=['execute_wrapper_complete', 'tdd_eval'] ; cross-review:missing-actions=['agent_cross_review', 'review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "User-review publish gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "Cross-review gate",
@@ -68,17 +68,17 @@
     },
     {
       "name": "TDD gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "none"
+      "details": "test files=['ac-test-matrix.md']"
     },
     {
       "name": "Integrated test gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
+      "details": "execute.yaml: integrated_repo_tests count must be 3-5 (found 1)"
     },
     {
       "name": "Legal gate",
@@ -99,14 +99,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
+      "details": "future-work.yaml: recommendations[1] must be an object"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml: add additions[] or no_additions_rationale"
+      "details": "resource-intelligence-update.yaml: additions=1"
     },
     {
       "name": "User-review close gate",
@@ -141,14 +141,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no sentinel values found"
+      "details": "claim-evidence.yaml: route='' (empty)"
     },
     {
       "name": "Claim artifact path gate",
@@ -176,14 +176,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "insufficient commit data \u2014 skip uniqueness check"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "all stage evidence paths verified"
+      "details": "stages not a list \u2014 skip"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan_draft publish event not found \u2014 skip"
     },
     {
       "name": "Workstation contract (strict) gate",

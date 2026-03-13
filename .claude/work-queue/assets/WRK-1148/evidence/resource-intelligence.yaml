@@ -1,47 +1,21 @@
 wrk_id: WRK-1148
 stage: 2
-completion_status: complete
-domain: hydrodynamics
-complexity_confirmed: medium
-
-existing_infrastructure:
-  - path: digitalmodel/src/digitalmodel/hydrodynamics/
-    notes: >
-      Hydrodynamics module exists with subdirectories for aqwa, bemrosetta,
-      diffraction, hull_library, passing_ship, planing_hull, rao_analysis,
-      wave_spectra. No propeller-rudder module yet.
-  - path: digitalmodel/docs/domains/hydrodynamics/
-    notes: >
-      Hydrodynamics domain docs exist: literature/, references.md,
-      morison-elements-assessment.md. No propeller-rudder literature yet.
-  - path: digitalmodel/docs/domains/hydrodynamics/literature/
-    notes: One existing literature PDF (planing hull); pattern established for adding papers.
-
-gaps_identified:
-  - No propeller-rudder module in digitalmodel/src/digitalmodel/hydrodynamics/
-  - No docs/hydrodynamics/propeller-rudder-literature.md (target output)
-  - No existing propeller or rudder force calculation code in the repo
-
-output_path: digitalmodel/docs/hydrodynamics/propeller-rudder-literature.md
-  # Note: spec says docs/hydrodynamics/ at repo root in digitalmodel;
-  # digitalmodel uses docs/domains/hydrodynamics/ — confirm at Stage 4 planning.
-
+completion_status: continue_to_planning
+assessed_at: "2026-03-12T16:10:00Z"
+user_decision: proceed
+top_p1_resources: []
 skills:
   core_used:
-    - workspace-hub/work-queue
-    - workspace-hub/work-queue-workflow
-    - engineering/naval-architecture-knowledge
-  referenced_docs:
-    - specs/modules/propeller-rudder-interaction.md
-    - .claude/work-queue/pending/WRK-1147.md
-
-constraints:
-  - Literature synthesis only (no implementation) — WRK-1149 and WRK-1150 are downstream
-  - Output must cover ≥8 references per AC
-  - No client-specific content (legal compliance)
-  - uv run for any Python scripts
-
-notes: >
-  This WRK is Route B (medium). Primary deliverable is a structured literature summary
-  markdown file. No code execution required. Stage 4 plan should confirm the output
-  path (docs/hydrodynamics/ vs docs/domains/hydrodynamics/).
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+key_files:
+  - digitalmodel/docs/domains/hydrodynamics/
+  - digitalmodel/docs/domains/ship-design/maneuvering_ship.pdf
+  - digitalmodel/docs/domains/openfoam/naval_architecture/propeller_hull_interaction.pdf
+approach: >
+  Route B medium — literature synthesis. Survey 8 source families covering
+  actuator-disk, Holtrop-Mennen, Söding/Brix, Molland & Turnock, ITTC, and
+  RANS validation. Output: structured markdown literature summary.
+risks:
+  - Source attribution accuracy (mitigated by cross-review)

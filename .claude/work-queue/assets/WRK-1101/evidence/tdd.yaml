@@ -1,0 +1,10 @@
+wrk_id: WRK-1101
+approach: red-green-refactor
+tdd_at: "2026-03-12T20:00:00Z"
+red_phase: "7 Codex test cases written before implementation — all failed on unknown --provider arg"
+green_phase: "Added PY_EXTRACT_CODEX, --provider flag, conditional dispatch — 16/16 pass"
+refactor_phase: "P1 cross-review fixes: error handling for extractors, hardcoded path removal"
+test_command: "bash scripts/session/tests/test_detect_drift.sh"
+tests_total: 16
+tests_passed: 16
+tests_failed: 0

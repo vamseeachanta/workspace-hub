@@ -1,0 +1,9 @@
+wrk_id: WRK-1148
+stage: 4
+plan_location: inline
+plan_type: Route B inline
+approved: true
+approved_at: "2026-03-12T16:15:00Z"
+notes: >
+  Route B medium — plan is inline in WRK body (Mission + What + AC sections).
+  Literature synthesis only, no code implementation.

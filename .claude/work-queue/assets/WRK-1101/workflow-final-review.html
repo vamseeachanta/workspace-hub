@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1101 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1101 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(session): extend detect-drift.sh to parse Codex JSONL log format</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Codex session logs at `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` use a different schema from Claude&#x27;s logs (`type`/`payload` envelope vs...</summary><div class="panel"><p>Codex session logs at <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code> use a different
+schema from Claude's logs (<code>type</code>/<code>payload</code> envelope vs flat <code>cmd</code>/<code>path</code> fields).
+detect-drift.sh currently only handles Claude's format.</p>
+<h3>Codex log schema (observed)</h3>
+<pre><code class="language-json">{&quot;timestamp&quot;: &quot;...&quot;, &quot;type&quot;: &quot;response_item&quot;, &quot;payload&quot;: {&quot;type&quot;: &quot;message&quot;, ...}}
+</code></pre>
+<p>Tool calls appear as <code>type: "function_call"</code> or inside assistant message content.
+Bash commands appear in <code>payload.function.arguments</code> or similar nested fields.</p>
+<h3>Deliverables</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/session/detect-drift.sh</code></td>
+<td>ADD <code>--provider codex</code> flag; new Python extractor for Codex JSONL schema</td>
+</tr>
+<tr>
+<td><code>scripts/session/tests/test_detect_drift.sh</code></td>
+<td>ADD tests for Codex log parsing (≥3 cases)</td>
+</tr>
+<tr>
+<td><code>scripts/cron/comprehensive-learning-nightly.sh</code></td>
+<td>WIRE Phase 1b to also scan yesterday's Codex logs</td>
+</tr>
+<tr>
+<td><code>comprehensive-learning/references/pipeline-detail.md</code></td>
+<td>UPDATE Phase 1b section with Codex log path</td>
+</tr>
+</tbody>
+</table>
+<h3>Non-deliverable</h3>
+<p><code>.codex/prompts/session-open.md</code> — not needed; CODEX.md already surfaces all required
+gates. Codex has no guaranteed equivalent of Claude's <code>/session-start</code> hook.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `detect-drift.sh --log &lt;codex-rollout.jsonl&gt; --provider codex` runs without error - [ ] Python extractor identifies python_runtime vio...</summary><div class="panel"><ul>
+<li>[ ] <code>detect-drift.sh --log &lt;codex-rollout.jsonl&gt; --provider codex</code> runs without error</li>
+<li>[ ] Python extractor identifies python_runtime violations in Codex bash tool calls</li>
+<li>[ ] Tests pass: ≥3 Codex-format test cases in test_detect_drift.sh</li>
+<li>[ ] Phase 1b in nightly script scans Codex logs alongside Claude logs</li>
+<li>[ ] pipeline-detail.md updated to reflect Codex log path and provider flag</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — No summary available.</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1101, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | FAIL | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1101, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>FAIL</td>
+<td>reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>FAIL</td>
+<td>stage_evidence_ref missing in WRK frontmatter</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>FAIL</td>
+<td>resource-intelligence.yaml: skills.core_used must include at least 3 core skills</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>FAIL</td>
+<td>activation.yaml missing</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>FAIL</td>
+<td>routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>FAIL</td>
+<td>user-review-browser-open.yaml missing</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>FAIL</td>
+<td>user-review-publish.yaml missing</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>FAIL</td>
+<td>artifact=none</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>FAIL</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>FAIL</td>
+<td>execute.yaml: integrated_repo_tests must be a list</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>FAIL</td>
+<td>artifact=missing, none</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>FAIL</td>
+<td>future-work evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>FAIL</td>
+<td>resource-intelligence-update.yaml missing</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>FAIL</td>
+<td>user-review-close.yaml missing</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>FAIL</td>
+<td>midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-12T00:00:00Z</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml absent — skip elapsed check</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>FAIL</td>
+<td>no claim artifact found (expected evidence/claim-evidence.yaml)</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip commit uniqueness check</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1101 stages_completed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] stage_3_triage: route: B complexity: medium categ...</summary><div class="panel"><p>wrk_id: WRK-1101
+stages_completed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]</p>
+<p>stage_3_triage:
+  route: B
+  complexity: medium
+  category: harness
+  subcategory: skills</p>
+<p>stage_5_user_review:
+  scope_approved: true
+  reviewer: vamsee
+  reviewed_at: "2026-03-12T00:00:00Z"</p>
+<p>stage_7_plan_final:
+  confirmed_by: vamsee
+  notes: "User provided approved plan directly for implementation"</p>
+<p>stage_10_execution:
+  files_modified: 5
+  files_created: 3
+  test_results: "16 passed, 0 failed (9 existing + 7 new)"</p>
+<p>stage_13_cross_review:
+  claude:
+    verdict: REQUEST_CHANGES
+    p1_count: 2
+    issues:
+      - "2&gt;/dev/null on Python extractor suppresses errors silently"
+      - "Hardcoded WORKSPACE_HUB path in nightly cron"
+    resolution: "Both P1s fixed — error handling added, hardcoded path replaced"
+  codex:
+    verdict: TIMEOUT
+    notes: "Codex CLI exec timed out at 120s (tried 2x). CLI v0.112.0 functional but exec hangs. Infrastructure issue, not code."</p>
+<p>stage_14_gate_evidence:
+  all_ac_met: true
+  tests_pass: true
+  cross_review_claude: RESOLVED
+  cross_review_codex: TIMEOUT</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 12 assets indexed.</summary><div class="panel"><ul><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>review-iteration.yaml</code></li></ul></div></details>
+</body>
+</html>
