@@ -1,0 +1,16 @@
+stage: 13
+wrk_id: WRK-5038
+reviews:
+  claude:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260313T085456Z-wrk-5038-phase-1-review-input.md-implementation-claude.md
+    issues:
+      - id: P1
+        severity: critical
+        description: "Path traversal via unsanitized manifest_ref (doc_ref/filename) in CSV write paths"
+        resolution: "Added _sanitize_ref() helper + test_malicious_doc_ref_sanitized test"
+        status: FIXED
+  codex:
+    verdict: pending
+    notes: "Codex submission timed out during cross-review.sh; Claude P1 finding was the only blocker and has been fixed"
+iteration: 1

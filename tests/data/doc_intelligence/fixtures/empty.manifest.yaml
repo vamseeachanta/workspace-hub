@@ -1,0 +1,19 @@
+version: "1.0"
+tool: test-generator
+domain: general
+metadata:
+  filename: empty.pdf
+  format: pdf
+  size_bytes: 1000
+  pages: 1
+  checksum: empty000hash
+  extraction_timestamp: "2026-03-10T02:00:00Z"
+doc_ref: empty-doc
+sections: []
+tables: []
+figure_refs: []
+extraction_stats:
+  sections: 0
+  tables: 0
+  figure_refs: 0
+errors: []

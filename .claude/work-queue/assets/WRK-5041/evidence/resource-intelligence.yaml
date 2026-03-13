@@ -30,3 +30,8 @@ findings:
   output_path: data/doc-intelligence/manifests/{domain}/
   index_integration: phase-a-index.py auto-discovers manifests
   reuse_estimate: "~80% of existing schema, serialization, orchestration"
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass

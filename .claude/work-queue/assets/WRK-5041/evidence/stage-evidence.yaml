@@ -1,0 +1,50 @@
+wrk_id: WRK-5041
+stages_completed:
+  - stage: 1
+    status: done
+    artifact: evidence/user-review-capture.yaml
+  - stage: 2
+    status: done
+    artifact: evidence/resource-intelligence.yaml
+  - stage: 3
+    status: done
+    artifact: evidence/triage.yaml
+  - stage: 4
+    status: done
+    artifact: evidence/plan.yaml
+  - stage: 5
+    status: done
+    artifact: evidence/user-review-plan-draft.yaml
+  - stage: 6
+    status: done
+    artifact: evidence/cross-review.yaml
+  - stage: 7
+    status: done
+    artifact: evidence/user-review-plan-final.yaml
+  - stage: 8
+    status: done
+    artifact: evidence/activation.yaml
+  - stage: 9
+    status: done
+    artifact: evidence/routing.yaml
+  - stage: 10
+    status: done
+    artifact: evidence/execute.yaml
+  - stage: 11
+    status: done
+    artifact: WRK-5041-lifecycle.html
+  - stage: 12
+    status: done
+    artifact: ac-test-matrix.md
+  - stage: 13
+    status: pending
+    artifact: evidence/cross-review.yaml
+  - stage: 14
+    status: pending
+    artifact: evidence/gate-evidence-summary.json
+  - stage: 15
+    status: pending
+    artifact: evidence/future-work.yaml
+  - stage: 16
+    status: pending
+    artifact: evidence/resource-intelligence-update.yaml

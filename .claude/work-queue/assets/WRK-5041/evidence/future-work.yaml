@@ -1,0 +1,32 @@
+wrk_id: WRK-5041
+stage: 15
+gate: future-work
+completed_at: "2026-03-13T10:30:00Z"
+items:
+  - id: FW-1
+    priority: medium
+    title: "Add list/blockquote extraction to HtmlParser"
+    description: >
+      HtmlParser currently extracts h1-h6, p, div, and table. Add support for
+      ol/ul lists and blockquote elements for more complete coverage of
+      academic lecture notes.
+  - id: FW-2
+    priority: low
+    title: "Cache robots.txt per domain"
+    description: >
+      Currently robots.txt is fetched on every URL fetch. Cache the parsed
+      RobotFileParser per domain with a TTL to reduce redundant network calls
+      when batch-processing multiple URLs from the same domain.
+  - id: FW-3
+    priority: medium
+    title: "Batch URL extraction from naval-architecture-resources.yaml"
+    description: >
+      Create a batch runner that reads URLs from
+      knowledge/seeds/naval-architecture-resources.yaml and runs extract-url.py
+      for each, producing manifests under data/doc-intelligence/manifests/naval-architecture/.
+  - id: FW-4
+    priority: low
+    title: "Async rate limiting for concurrent fetches"
+    description: >
+      Current rate limiting uses time.sleep (blocking). For batch processing,
+      consider asyncio-based fetcher with per-domain semaphores.

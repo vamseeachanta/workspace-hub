@@ -1,0 +1,20 @@
+wrk_id: WRK-5041
+stage: 16
+gate: resource-intelligence-update
+completed_at: "2026-03-13T10:30:00Z"
+new_infrastructure:
+  - scripts/data/doc_intelligence/fetcher.py (UrlFetcher — reusable for any URL fetch+cache)
+  - scripts/data/doc_intelligence/parsers/html.py (HtmlParser — registered in PARSERS)
+  - scripts/data/doc_intelligence/extract_url.py (module-importable main())
+  - scripts/data/doc-intelligence/extract-url.py (CLI entry)
+  - scripts/data/doc-intelligence/run-extract-url.sh (shell wrapper)
+new_utilities:
+  - generate_doc_ref_from_url(url, title) in utils.py
+new_deps_runtime:
+  - requests (HTTP fetching, injected via --with)
+  - beautifulsoup4 (HTML parsing, injected via --with)
+test_coverage_delta: "+33 tests (10 fetcher + 15 html + 8 cli)"
+patterns_established:
+  - URL→tempfile→existing parser delegation pattern
+  - source_url override on HtmlParser for provenance tracking
+  - CLI script delegates to module for testability (same pattern as extract-document.py)

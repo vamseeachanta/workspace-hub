@@ -4,8 +4,9 @@ from scripts.data.doc_intelligence.parsers.base import BaseParser
 from scripts.data.doc_intelligence.parsers.pdf import PdfParser
 from scripts.data.doc_intelligence.parsers.docx_parser import DocxParser
 from scripts.data.doc_intelligence.parsers.xlsx import XlsxParser
+from scripts.data.doc_intelligence.parsers.html import HtmlParser
 
-PARSERS = [PdfParser, DocxParser, XlsxParser]
+PARSERS = [PdfParser, DocxParser, XlsxParser, HtmlParser]
 
 
 def get_parser(filepath: str) -> BaseParser | None:

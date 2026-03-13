@@ -35,3 +35,35 @@
 {"event": "stage_exit", "wrk": "WRK-1113", "stage": 13, "date": "2026-03-12", "timestamp": "2026-03-12T21:16:25.143905Z"}
 {"event": "stage_exit", "wrk": "WRK-1072", "stage": 2, "date": "2026-03-12", "timestamp": "2026-03-12T21:46:42.170894Z"}
 {"event": "stage_exit", "wrk": "WRK-1072", "stage": 3, "date": "2026-03-12", "timestamp": "2026-03-12T21:47:05.191053Z"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-30-14-019ce206-ae6e-7931-affe-a85a69544685","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-34-39-019ce20a-b728-7363-8a83-c43ce43d9b99","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-35-49-019ce20b-caa5-7df3-af84-5137c84cf478","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-38-17-019ce20e-0b34-7d31-aa38-f12b2f0cd87a","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-42-21-019ce211-c68b-76a2-b608-dd595c207d80","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T07-59-09-019ce221-2900-7501-9bb6-5c20dba9c97e","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T08-01-06-019ce222-f01f-70e0-a8c6-7ace10e66b07","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T08-02-49-019ce224-8479-7ff2-b715-1ed5d53bdb67","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T10-52-39-019ce2bf-fe4d-71c1-ac98-981a448a605f","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T11-22-43-019ce2db-846e-7280-86ab-95df9b5fcb20","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T11-22-43-019ce2db-84a9-7011-b0eb-3cd531424985","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T15-25-40-019ce3b9-f3c9-7b20-8d9f-cb5998a79bd0","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T15-32-12-019ce3bf-ef69-7f11-9ea3-fc490bbc157d","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T15-33-11-019ce3c0-d529-7d11-b423-3f93e84fdeeb","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T15-38-00-019ce3c5-3d32-78a3-a8a6-bc5a64f8b11b","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T16-01-16-019ce3da-8a16-7541-af08-e016245e6227","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T16-07-09-019ce3df-ef68-7f31-8c7c-6b82613da823","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T19-57-34-019ce4b2-e382-79a3-900d-30f857a1eec8","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T20-15-24-019ce4c3-368f-7f12-987a-59a85387e464","turns":3,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T20-17-05-019ce4c4-c14e-7f90-a266-f488f796c7b5","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T20-23-34-019ce4ca-b03d-79f0-9fa6-c5335808bb95","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T20-28-02-019ce4ce-c7d1-75b1-bd77-b2af4fd99d4e","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T20-31-42-019ce4d2-2307-7631-80c8-77bdb3d6b1b3","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-00-48-019ce523-b51d-7cb3-9a6d-a11222e25705","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-00-48-019ce523-b55a-7c31-a445-9c7048312479","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-19-27-019ce534-c94c-7160-8da0-a5c5cff5b5f1","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-22-10-019ce537-4656-7341-b654-560e6c6ab774","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-47-11-019ce54e-2a42-7480-af69-be95a816eb96","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-49-13-019ce550-0909-7ce0-b727-b0c9c6bf8cec","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-51-11-019ce551-d752-7603-b685-c18d13088d76","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T22-52-33-019ce553-15fa-7462-9c90-218a1ccd1085","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-12","session_id":"rollout-2026-03-12T23-09-02-019ce562-2c39-7803-a50d-4ffd8d4b4bbf","turns":4,"source":"codex"}

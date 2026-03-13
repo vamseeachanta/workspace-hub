@@ -1,0 +1,97 @@
+version: "1.0"
+tool: test-generator
+domain: offshore
+metadata:
+  filename: mixed-content.pdf
+  format: pdf
+  size_bytes: 50000
+  pages: 10
+  checksum: abc123def456
+  extraction_timestamp: "2026-03-10T00:00:00Z"
+doc_ref: mixed-content
+sections:
+  - heading: "Design Constants"
+    level: 1
+    text: "The following constants are used: GM = 1.5 m, safety factor SF = 2.0, yield strength Fy = 350 MPa"
+    source:
+      document: mixed-content.pdf
+      section: "Design Constants"
+      page: 1
+  - heading: "Governing Equations"
+    level: 1
+    text: "The total resistance is given by R_T = R_f + R_r + R_w where R_f is frictional resistance"
+    source:
+      document: mixed-content.pdf
+      section: "Governing Equations"
+      page: 2
+  - heading: "Definitions"
+    level: 1
+    text: "Riser means a vertical conduit connecting the subsea wellhead to the surface facility. Mooring is defined as the system that holds the vessel in position."
+    source:
+      document: mixed-content.pdf
+      section: "Definitions"
+      page: 3
+  - heading: "Safety Requirements"
+    level: 1
+    text: "The system shall withstand 100-year return period conditions. All equipment must be certified by a recognized classification society."
+    source:
+      document: mixed-content.pdf
+      section: "Safety Requirements"
+      page: 4
+  - heading: "Installation Procedure"
+    level: 1
+    text: "Step 1: Mobilize the installation vessel. Step 2: Deploy the riser from the moonpool. Step 3: Connect the riser to the subsea wellhead."
+    source:
+      document: mixed-content.pdf
+      section: "Installation Procedure"
+      page: 5
+  - heading: "Worked Example 1"
+    level: 1
+    text: "Example: Calculate the wall thickness. Given: OD = 12 inch, design pressure = 5000 psi. Find: minimum wall thickness. Solution: t = P * D / (2 * S * E)"
+    source:
+      document: mixed-content.pdf
+      section: "Worked Example 1"
+      page: 6
+  - heading: "General Notes"
+    level: 1
+    text: "This section contains general notes about the project timeline and milestones."
+    source:
+      document: mixed-content.pdf
+      section: "General Notes"
+      page: 7
+tables:
+  - title: "Material Properties"
+    columns: ["Material", "Yield (MPa)", "UTS (MPa)"]
+    rows:
+      - ["X65", "450", "535"]
+      - ["X70", "485", "570"]
+    source:
+      document: mixed-content.pdf
+      section: "Materials"
+      page: 3
+  - title: "Load Cases"
+    columns: ["Case", "Hs (m)", "Tp (s)"]
+    rows:
+      - ["Operating", "3.5", "8.0"]
+      - ["Storm", "8.0", "12.0"]
+      - ["Survival", "12.0", "15.0"]
+    source:
+      document: mixed-content.pdf
+      section: "Loads"
+      page: 4
+figure_refs:
+  - caption: "General Arrangement Drawing"
+    figure_id: "Fig-1"
+    source:
+      document: mixed-content.pdf
+      page: 2
+  - caption: "Fatigue S-N Curve for X65 Steel"
+    figure_id: "Fig-5"
+    source:
+      document: mixed-content.pdf
+      page: 8
+extraction_stats:
+  sections: 7
+  tables: 2
+  figure_refs: 2
+errors: []

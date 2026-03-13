@@ -1,13 +1,13 @@
-generated: '2026-03-12'
-total_specs: 1620
+generated: '2026-03-13'
+total_specs: 1654
 by_category:
   archive: 10
   data-sources: 13
-  modules: 137
+  modules: 153
   other: 31
   repos: 1344
   templates: 20
-  wrk: 65
+  wrk: 83
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 259
+  workspace-hub: 293
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -235,7 +235,7 @@ by_wrk:
   WRK-656: 3
   WRK-657: 1
   WRK-658: 1
-  WRK-660: 1
+  WRK-660: 2
   WRK-663: 2
   WRK-664: 1
   WRK-668: 1
@@ -289,6 +289,7 @@ by_wrk:
   WRK-1062: 2
   WRK-1066: 1
   WRK-1069: 3
+  WRK-1072: 2
   WRK-1073: 2
   WRK-1074: 1
   WRK-1077: 1
@@ -298,13 +299,16 @@ by_wrk:
   WRK-1084: 1
   WRK-1085: 1
   WRK-1087: 2
+  WRK-1088: 1
   WRK-1090: 1
   WRK-1098: 1
   WRK-1100: 1
+  WRK-1101: 1
   WRK-1102: 1
   WRK-1105: 1
   WRK-1111: 1
   WRK-1112: 2
+  WRK-1113: 15
   WRK-1115: 1
   WRK-1117: 1
   WRK-1119: 1
@@ -314,7 +318,25 @@ by_wrk:
   WRK-1125: 1
   WRK-1126: 1
   WRK-1127: 1
+  WRK-1131: 1
   WRK-1132: 1
+  WRK-1140: 1
+  WRK-1142: 1
+  WRK-1143: 2
+  WRK-1144: 1
+  WRK-1147: 2
+  WRK-1148: 3
+  WRK-1149: 2
+  WRK-1150: 1
+  WRK-1151: 2
+  WRK-1152: 1
+  WRK-1153: 1
+  WRK-1159: 1
+  WRK-5036: 3
+  WRK-5037: 2
+  WRK-5038: 1
+  WRK-5039: 1
+  WRK-5040: 1
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -900,6 +922,29 @@ specs:
   - claude-reflect-skill-implementation
   wrk_refs: []
   mtime: '2026-01-21'
+- path: specs/modules/clever-pondering-pelican.md
+  title: 'WRK-5037: extract-document.py + document parse layer'
+  description: WRK-5036 (doc-extraction skill) established a 3-layer extraction taxonomy with 8 content types. WRK-5037 builds
+    the **runtime parse layer** — a CLI tool that converts raw documents (PDF, DOCX, XLSX...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - clever-pondering-pelican
+  wrk_refs:
+  - WRK-5036
+  - WRK-5037
+  mtime: '2026-03-13'
+- path: specs/modules/composed-squishing-hedgehog.md
+  title: 'WRK-1072 Plan: Fast-Forward to Close'
+  description: WRK-1072 (release management — SemVer + CHANGELOG) was **already implemented** in commit `94ad72bb`. All 5
+    ACs are met. The WRK lifecycle stalled at Stage 4. User chose fast-forward to close.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - composed-squishing-hedgehog
+  wrk_refs:
+  - WRK-1072
+  mtime: '2026-03-13'
 - path: specs/modules/compound-engineering-skill.md
   title: Compound Engineering Skill
   description: Implement Every.to's compound engineering methodology as a new workspace-hub skill
@@ -1008,6 +1053,28 @@ specs:
   wrk_refs:
   - WRK-95
   mtime: '2026-02-09'
+- path: specs/modules/foamy-conjuring-hollerith.md
+  title: 'Plan: WRK-1143 — Centralized WRK Status Index'
+  description: 'WRK-1143 targets a single source of truth (`wrk-status-index.json`) for WRK status across parallel sessions.
+    Investigation reveals most infrastructure is **already implemented**:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - foamy-conjuring-hollerith
+  wrk_refs:
+  - WRK-1143
+  mtime: '2026-03-12'
+- path: specs/modules/foamy-scribbling-valley.md
+  title: 'WRK-1113 Plan: Document Corpus Parametric Extraction'
+  description: 'The workspace document corpus exists to serve one purpose: eliminate re-reading source documents by integrating
+    their data and calculations directly into the codebase. This WRK formalises the extra...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - foamy-scribbling-valley
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
 - path: specs/modules/glittery-sprouting-island.md
   title: 'WRK-1111 Plan: @ File Reference Pipeline'
   description: Claude Code's `@file` syntax in CLAUDE.md causes a file's contents to be auto-included in every session context
@@ -1053,6 +1120,17 @@ specs:
   wrk_refs:
   - WRK-357
   mtime: '2026-02-23'
+- path: specs/modules/happy-foraging-star.md
+  title: 'WRK-1143 Plan: Centralized WRK Status Index'
+  description: '`whats-next.sh` and related tools derive WRK state by scanning file locations (`pending/`, `working/`) and
+    re-parsing frontmatter on every call. When a parallel session updates a WRK file''s `status...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - happy-foraging-star
+  wrk_refs:
+  - WRK-1143
+  mtime: '2026-03-12'
 - path: specs/modules/hobbies-long-term-plan.md
   title: Hobbies Repo Long-Term Plan
   description: Define the purpose, structure, and content roadmap for the Hobbies personal knowledge-management repository,
@@ -1105,6 +1183,21 @@ specs:
   - improve-skill-autonomous-ecosystem
   wrk_refs: []
   mtime: '2026-02-16'
+- path: specs/modules/indexed-yawning-gem.md
+  title: 'WRK-5037: extract-document.py + Document Parse Layer'
+  description: The doc-intelligence platform needs a parse layer that converts raw documents (PDF, DOCX, XLSX) into extraction
+    manifest YAML files. This is the foundation — downstream tools (indexer WRK-5038, que...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - indexed-yawning-gem
+  wrk_refs:
+  - WRK-5036
+  - WRK-5037
+  - WRK-5038
+  - WRK-5039
+  - WRK-5040
+  mtime: '2026-03-13'
 - path: specs/modules/integrate-engineering-units-into-diffraction-analysis.md
   title: Add semantic score column to validation summary and refresh data from benchmark JSONs
   description: Enhance the master validation_summary.html to show semantic equivalence scores per case, and read DOF correlations
@@ -1156,6 +1249,17 @@ specs:
   wrk_refs:
   - WRK-318
   mtime: '2026-02-24'
+- path: specs/modules/linked-floating-volcano.md
+  title: Extend detect-drift.sh to parse Codex JSONL log format
+  description: '`detect-drift.sh` scans session logs for rule violations (python_runtime, file_placement, git_workflow). It
+    currently only handles Claude''s flat JSONL format (`{"cmd": "...", "path": "..."}`). Code...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - linked-floating-volcano
+  wrk_refs:
+  - WRK-1101
+  mtime: '2026-03-13'
 - path: specs/modules/linked-pondering-toucan.md
   title: 'WRK-1084 Plan: Integrate skills.sh as Canonical Reference'
   description: skills.sh (https://skills.sh/) is an open ecosystem for reusable AI agent skills. The workspace-hub already
@@ -1176,6 +1280,17 @@ specs:
   - md-to-pdf-skill-via-chrome-headless
   wrk_refs: []
   mtime: '2026-02-16'
+- path: specs/modules/moonlit-foraging-kurzweil.md
+  title: WRK-1151 Plan — Naval Architecture Resource Collection
+  description: Build an offline naval architecture reference library to support digitalmodel engineering work. 7 seed URLs
+    provided. Downloads and catalogue already completed in prior stages — remaining work is v...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - moonlit-foraging-kurzweil
+  wrk_refs:
+  - WRK-1151
+  mtime: '2026-03-13'
 - path: specs/modules/multi-agent-provider-assignment-in-work-queue.md
   title: Multi-Agent Provider Assignment in Work Queue
   description: Claude orchestrates, Codex/Gemini execute — decided during planning
@@ -1200,6 +1315,17 @@ specs:
   - WRK-310
   - WRK-313
   mtime: '2026-02-25'
+- path: specs/modules/noble-toasting-wolf.md
+  title: 'Plan: WRK-1072 — Release Management (SemVer + Changelog)'
+  description: Engineering reports reference calculation modules without version traceability. Without tagged releases, there
+    is no way to reproduce a historic calculation or confirm which version of assetutiliti...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - noble-toasting-wolf
+  wrk_refs:
+  - WRK-1072
+  mtime: '2026-03-12'
 - path: specs/modules/optimized-gathering-tome.md
   title: 'WRK-391: Online Resources Research — Implementation Plan'
   description: Phased web research across 8 categories to discover and catalog online resources for workspace-hub
@@ -1301,6 +1427,20 @@ specs:
   - propagate-hooks-and-skills-ecosystem
   wrk_refs: []
   mtime: '2026-02-13'
+- path: specs/modules/propeller-rudder-interaction.md
+  title: Propeller-Rudder Interaction Study
+  description: 'Model the hydrodynamic interaction between a ship''s propeller and rudder across the full engine operating
+    envelope: engine-off (locked/free-wheeling propeller) through RPM-driven drive-off to rated...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - propeller-rudder-interaction
+  wrk_refs:
+  - WRK-1147
+  - WRK-1148
+  - WRK-1149
+  - WRK-1150
+  mtime: '2026-03-12'
 - path: specs/modules/proud-toasting-sunrise.md
   title: Fix diff.headings empty-after-Calculate() bug and regenerate affected reports
   description: Pass owr_path through the validation pipeline so reports use LoadResults() for correct headings
@@ -1380,6 +1520,19 @@ specs:
   - remove-claude-flow-references
   wrk_refs: []
   mtime: '2026-02-12'
+- path: specs/modules/replicated-whistling-sparkle.md
+  title: 'Plan: WRK-1153 — Extract doc-research-download patterns into reusable skill + lib'
+  description: 'WRK-1151 (naval architecture doc research) produced three artifacts that will be needed verbatim by WRK-1152
+    (electrical engineering) and all future domain download WRKs:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - replicated-whistling-sparkle
+  wrk_refs:
+  - WRK-1151
+  - WRK-1152
+  - WRK-1153
+  mtime: '2026-03-12'
 - path: specs/modules/repo-capability-map-skill.md
   title: 'Plan: `repo-capability-map` Skill'
   description: Create a skill that analyzes repository modules for current capabilities, groups them by domain, and identifies
@@ -1549,6 +1702,17 @@ specs:
   - WRK-304
   - WRK-308
   mtime: '2026-02-23'
+- path: specs/modules/sunny-stargazing-moonbeam.md
+  title: 'WRK-5036: Doc-Extraction Skill — Implementation Plan'
+  description: The workspace lacks a centralized content classification framework for engineering documents. Extraction is
+    ad-hoc — `phase-b-extract.py` routes by file extension, `doc_to_context.py` provides form...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - sunny-stargazing-moonbeam
+  wrk_refs:
+  - WRK-5036
+  mtime: '2026-03-13'
 - path: specs/modules/technical-safety-analysis-module-for-worldenergydata.md
   title: Technical Safety Analysis Module for WorldEnergyData
   description: Port and generalize ENIGMA safety analysis codebase into worldenergydata as a configurable safety_analysis
@@ -1567,6 +1731,30 @@ specs:
   wrk_refs:
   - WRK-72
   mtime: '2026-02-03'
+- path: specs/modules/tender-hatching-matsumoto.md
+  title: 'WRK-1140: Nightly Release-Notes Scan and WRK Capture'
+  description: 'The `release-notes-adoption` skill is manual — someone must remember to check for new AI tool versions and
+    run analysis. WRK-1140 automates the detection half: a nightly cron step compares installe...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tender-hatching-matsumoto
+  wrk_refs:
+  - WRK-1140
+  mtime: '2026-03-13'
+- path: specs/modules/tender-tickling-hickey.md
+  title: 'WRK-1148 Plan: Propeller-Rudder Interaction — Literature Survey'
+  description: WRK-1148 is child-a of feature WRK-1147 (propeller-rudder hydrodynamic interaction study). The goal is to gather
+    and synthesise the key naval architecture literature on propeller-rudder interaction...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tender-tickling-hickey
+  wrk_refs:
+  - WRK-1147
+  - WRK-1148
+  - WRK-1149
+  mtime: '2026-03-12'
 - path: specs/modules/ticklish-riding-wozniak.md
   title: 'WRK-1126 Plan: Maritime Law Knowledge Data Layer'
   description: Offshore engineering work (OrcaFlex, ANSYS, CFD) operates within maritime legal and regulatory frameworks.
@@ -1767,6 +1955,17 @@ specs:
   wrk_refs:
   - WRK-98
   mtime: '2026-02-08'
+- path: specs/modules/wrk-1088-data-pipeline-framework.md
+  title: Data Pipeline Framework — Consistent ETL for EIA, BSEE, yfinance
+  description: worldenergydata has one-off patterns for EIA ingestion (client + incremental JSONL) and BSEE loading (router
+    + strategy + Pydantic schemas). assethold uses yfinance directly with a dual-cache fetch...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1088-data-pipeline-framework
+  wrk_refs:
+  - WRK-1088
+  mtime: '2026-03-13'
 - path: specs/modules/wrk-1115-unified-plan-lifecycle-html.md
   title: 'WRK-1115 Plan: Unified Plan+Lifecycle HTML'
   description: Currently `generate-html-review.py` emits only one HTML file per WRK (`WRK-NNN-lifecycle.html`). Several stages
@@ -1981,6 +2180,18 @@ specs:
   - yaml-state-file-schema-validation
   wrk_refs: []
   mtime: '2026-02-03'
+- path: specs/modules/zesty-enchanting-trinket.md
+  title: 'WRK-1159: Auto-open lifecycle HTML in browser at human-gate stages'
+  description: '`start_stage.py` generates lifecycle HTML at every stage entry but never opens it in a browser. The existing
+    `log-user-review-browser-open.sh` handles cross-platform browser opening + evidence logg...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - zesty-enchanting-trinket
+  wrk_refs:
+  - WRK-1148
+  - WRK-1159
+  mtime: '2026-03-13'
 - path: specs/modules/zippy-gathering-piglet.md
   title: 'Plan: Document Intelligence Agent Team (WRK-561..567, WRK-572..573)'
   description: 'The document index has 1,033,789 records but the linkage layer is thin:'
@@ -2099,6 +2310,33 @@ specs:
   - plan
   wrk_refs: []
   mtime: '2026-01-19'
+- path: specs/modules/skill-eval/plan.md
+  title: Skill Eval - Test/Evaluate All Skills
+  description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
+    cross-reference integrity, and registry consistency
+  category: modules
+  repo: workspace-hub
+  tags:
+  - evaluation
+  - plan
+  - quality
+  - skill-eval
+  - skills
+  - verification
+  wrk_refs: []
+  mtime: '2026-01-29'
+- path: specs/modules/skills/enhancement/plan.md
+  title: 'Plan: Add Comprehensive Claude Skills for Everyday Work'
+  description: Add ~43 new skills across 8 categories to `/mnt/github/workspace-hub/skills/` following existing patterns (comprehensive
+    ~500-1000 lines, YAML frontmatter, code examples, scripts).
+  category: modules
+  repo: workspace-hub
+  tags:
+  - enhancement
+  - plan
+  - skills
+  wrk_refs: []
+  mtime: '2026-01-19'
 - path: specs/modules/hardware-inventory/aceengineer-01.md
   title: AceEngineer-01 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2x Intel Xeon E5-2630 v3 @ 2.40 GHz (8C/16T
@@ -2215,33 +2453,6 @@ specs:
   - vamsee-linux1
   wrk_refs: []
   mtime: '2026-02-24'
-- path: specs/modules/skill-eval/plan.md
-  title: Skill Eval - Test/Evaluate All Skills
-  description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
-    cross-reference integrity, and registry consistency
-  category: modules
-  repo: workspace-hub
-  tags:
-  - evaluation
-  - plan
-  - quality
-  - skill-eval
-  - skills
-  - verification
-  wrk_refs: []
-  mtime: '2026-01-29'
-- path: specs/modules/skills/enhancement/plan.md
-  title: 'Plan: Add Comprehensive Claude Skills for Everyday Work'
-  description: Add ~43 new skills across 8 categories to `/mnt/github/workspace-hub/skills/` following existing patterns (comprehensive
-    ~500-1000 lines, YAML frontmatter, code examples, scripts).
-  category: modules
-  repo: workspace-hub
-  tags:
-  - enhancement
-  - plan
-  - skills
-  wrk_refs: []
-  mtime: '2026-01-19'
 - path: specs/online-resources/catalog.yaml
   title: Catalog
   description: ''
@@ -20067,14 +20278,14 @@ specs:
   mtime: '2026-03-11'
 - path: specs/skills/script-conversion-candidates.md
   title: Skill Script Conversion Candidates
-  description: 'Generated: 2026-03-10T19:44:48Z Total skills scanned: 393'
+  description: 'Generated: 2026-03-12T12:27:18Z Total skills scanned: 395'
   category: other
   repo: workspace-hub
   tags:
   - script-conversion-candidates
   - skills
   wrk_refs: []
-  mtime: '2026-03-10'
+  mtime: '2026-03-12'
 - path: specs/skills/skill-eval-framework.md
   title: Skill Eval Framework
   description: Provide a deterministic, schema-validated mechanism to verify that SKILL.md files meet documented capability
@@ -20734,6 +20945,173 @@ specs:
   wrk_refs:
   - WRK-1105
   mtime: '2026-03-10'
+- path: specs/wrk/WRK-1113/improvements-log.md
+  title: WRK-1113 Improvements Log
+  description: '| Doc Ref | Finding | Status | WRK | |---------|---------|--------|-----| | example | Found missing edge-case
+    for coated vs bare structure | pending | — |'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - improvements-log
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/selection-matrix.md
+  title: WRK-1113 — 10/10/10 Selection Matrix
+  description: 'Source folder: `/mnt/remote/ace-linux-2/dde/Personal/Ace Drilling Riser/`'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - selection-matrix
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
+  title: 'WRK-1113 Plan: Document Corpus Parametric Extraction'
+  description: 'The workspace document corpus exists to serve one purpose: eliminate re-reading source documents by integrating
+    their data and calculations directly into the codebase. This WRK formalises the extra...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1113
+  - wrk-1113-doc-corpus-extraction
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/2h-tne-0050-03-analysis-guidelines.yaml
+  title: Drilling Riser Analysis Guidelines
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - 2h-tne-0050-03-analysis-guidelines
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/_template.yaml
+  title: Template
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - _template
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/anode-arrangement-drawing.yaml
+  title: Anode Arrangement Drawing
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - anode-arrangement-drawing
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/api-spec-16f-addendum-2.yaml
+  title: Specification for Marine Drilling Riser Equipment
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - api-spec-16f-addendum-2
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/deepstar-structural-damping.yaml
+  title: DeepStar Drilling Riser Structural Damping Test
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - deepstar-structural-damping
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/dnv-rp-b401.yaml
+  title: Dnv Rp B401
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - dnv-rp-b401
+  - doc-extracts
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/impressed-current-spec.yaml
+  title: Impressed Current Spec
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - doc-extracts
+  - impressed-current-spec
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/materials-selection-cp-philosophy.yaml
+  title: Materials Selection Cp Philosophy
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - doc-extracts
+  - materials-selection-cp-philosophy
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/riser-modification-cp-design.yaml
+  title: Riser Modification Cp Design
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - doc-extracts
+  - riser-modification-cp-design
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/slhr-cp-design-report.yaml
+  title: Slhr Cp Design Report
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - doc-extracts
+  - slhr-cp-design-report
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1113/doc-extracts/spaceout-tool-passage.yaml
+  title: Drilling Riser SpaceOut - Tool Passage
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - doc-extracts
+  - spaceout-tool-passage
+  - wrk-1113
+  wrk_refs:
+  - WRK-1113
+  mtime: '2026-03-12'
 - path: specs/wrk/WRK-1120/plan.md
   title: 'WRK-1120 Plan: Atomic ID Reservation in next-id.sh'
   description: Use bash `set -C` (noclobber) to atomically create `pending/WRK-NNN.md` sentinel before returning the ID. Retry
@@ -20782,6 +21160,42 @@ specs:
   wrk_refs:
   - WRK-1127
   mtime: '2026-03-11'
+- path: specs/wrk/WRK-1131/plan.md
+  title: WRK-1131 Plan — Feature Layer Process
+  description: 'Implement the feature WRK lifecycle process: stage contracts, workflow skill updates, validate-queue-state.sh,
+    close-item.sh guard, whats-next.sh bypass, and new-feature.sh coordinating status rewr...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1131
+  wrk_refs:
+  - WRK-1131
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1142/plan.md
+  title: WRK-1142 Plan — Migrate Stage Rules into Stage Micro-Skills
+  description: Move all stage-specific rules from `work-queue-workflow/SKILL.md` into the 20 per-stage micro-skill files,
+    and wire `start_stage.py` to auto-load the relevant micro-skill at entry.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1142
+  wrk_refs:
+  - WRK-1142
+  mtime: '2026-03-12'
+- path: specs/wrk/WRK-1144/plan.md
+  title: WRK-1144 Plan — Micro-Skill → Script Extraction Audit
+  description: Audit all 20 stage micro-skills to identify checklist items promotable from Level 1 (prose micro-skill) to
+    Level 2 (deterministic script) per the enforcement gradient in `.claude/rules/patterns.md`.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1144
+  wrk_refs:
+  - WRK-1144
+  mtime: '2026-03-12'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
@@ -20985,6 +21399,18 @@ specs:
   - WRK-658
   - WRK-700
   mtime: '2026-03-10'
+- path: specs/wrk/WRK-660/test-coverage-gap-plan-calculations.md
+  title: 'Barlow: 0.875 * 2 * 80000 * 0.472 / 9.625 = 6865.4545'
+  description: YOLO mode is enabled. All tool calls will be automatically approved. Loaded cached credentials. YOLO mode is
+    enabled. All tool calls will be automatically approved. Here are the complete pytest mod...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - test-coverage-gap-plan-calculations
+  - wrk-660
+  wrk_refs:
+  - WRK-660
+  mtime: '2026-03-12'
 - path: specs/wrk/WRK-663/plan.md
   title: 'Plan: WRK-663 — Queue Triage'
   description: Classify the 160+ pending work items into actionable categories and identify the top 10 immediate implementation

@@ -1,0 +1,8 @@
+wrk_id: WRK-5041
+stage: 14
+gate: legal
+scanned_at: "2026-03-13T10:30:00Z"
+tool: scripts/legal/legal-sanity-scan.sh
+result: PASS
+violations: 0
+repos_scanned: [workspace-hub]
