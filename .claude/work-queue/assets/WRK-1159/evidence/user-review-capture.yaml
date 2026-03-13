@@ -1,0 +1,9 @@
+wrk_id: WRK-1159
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-13T02:50:00Z"
+confirmed_at: "2026-03-13T02:50:00Z"
+notes: >
+  User initiated WRK-1159 — auto-open lifecycle HTML at human-gate stages.
+  Scope: 3 changes to start_stage.py + TDD test file.

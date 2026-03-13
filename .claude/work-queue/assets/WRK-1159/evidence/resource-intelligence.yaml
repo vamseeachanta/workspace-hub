@@ -1,29 +1,21 @@
-completion_status: complete
-domain: work-queue-workflow-automation
+wrk_id: WRK-1159
+stage: 2
+completion_status: continue_to_planning
+assessed_at: "2026-03-13T02:55:00Z"
+user_decision: proceed
+top_p1_resources: []
 skills:
   core_used:
     - workspace-hub/work-queue
     - workspace-hub/work-queue-workflow
     - workspace-hub/workflow-gatepass
-  supporting:
     - workspace-hub/workflow-html
-existing_infrastructure:
-  scripts:
-    - scripts/work-queue/start_stage.py: Stage entry orchestrator — generates HTML but never opens browser
-    - scripts/work-queue/log-user-review-browser-open.sh: Cross-platform browser open + evidence logging (exists, never auto-called)
-    - scripts/work-queue/generate-html-review.py: Generates lifecycle and plan HTML (--lifecycle, --plan flags)
-    - scripts/work-queue/is-human-gate.sh: Returns exit 0 for stages 5, 7, 17
-  micro_skills:
-    - stages/stage-05-user-review-plan-draft.md: Says "open lifecycle HTML" in prose — no script call
-    - stages/stage-07-user-review-plan-final.md: Says "Human reviews lifecycle HTML" — no auto-open
-    - stages/stage-17-user-review-implementation.md: Says "Human reviews lifecycle HTML" — no auto-open
-  html_model: Two-file (v2.3.0) — WRK-NNN-lifecycle.html + WRK-NNN-plan.html per item
-  auto_refresh: 30s via meta http-equiv="refresh" in generated HTML
-constraints:
-  - start_stage.py already calls _regenerate_lifecycle_html() at every stage entry
-  - log-user-review-browser-open.sh supports --stage plan_draft|plan_final|close_review and --html <path>
-  - Browser open is cross-platform (xdg-open / open / cmd.exe start) in existing script
-  - Must open BOTH lifecycle and plan HTML at human-gate stages
-  - Open once per stage entry — auto-refresh handles updates
-complexity_assessment: medium
-rationale: Single integration point (start_stage.py) needs a conditional call to log-user-review-browser-open.sh for two HTML files at three specific stages. All building blocks exist — this is wiring, not creation.
+key_files:
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/log-user-review-browser-open.sh
+  - scripts/work-queue/generate-html-review.py
+approach: >
+  Route B medium — wire auto-open of lifecycle + plan HTML at human-gate stages
+  (5, 7, 17) in start_stage.py. All building blocks exist; this is integration.
+risks:
+  - Double-open if evidence already logged (mitigated by evidence YAML check)

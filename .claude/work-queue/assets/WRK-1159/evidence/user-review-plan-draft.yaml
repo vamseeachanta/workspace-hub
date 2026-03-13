@@ -1,0 +1,8 @@
+wrk_id: WRK-1159
+stage: 5
+decision: approved
+approval_decision: approve_as_is
+reviewer: vamsee
+reviewed_at: "2026-03-13T03:15:00Z"
+plan_ref: specs/modules/WRK-1159-plan.md
+notes: "3-change plan to start_stage.py: extend _regenerate_lifecycle_html for --plan, add _auto_open_html_for_human_gates, wire call in _main. TDD: 6 test cases (9 runs), all passing."

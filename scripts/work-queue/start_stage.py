@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
 import textwrap
 from pathlib import Path
@@ -325,19 +326,75 @@ def route_stage(
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
-    """Regenerate lifecycle HTML as a standard stage-start action."""
-    import subprocess
+    """Regenerate lifecycle + plan HTML as a standard stage-start action."""
     script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
     if not os.path.exists(script):
         return
-    result = subprocess.run(
-        ["uv", "run", "--no-project", "python", script, wrk_id, "--lifecycle"],
-        capture_output=True, text=True, cwd=repo_root,
+    for mode in ("--lifecycle", "--plan"):
+        label = "Lifecycle" if mode == "--lifecycle" else "Plan"
+        result = subprocess.run(
+            ["uv", "run", "--no-project", "python", script, wrk_id, mode],
+            capture_output=True, text=True, cwd=repo_root,
+        )
+        if result.returncode == 0:
+            print(f"✔ {label} HTML updated ({wrk_id})")
+        else:
+            print(f"⚠ {label} HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+
+
+# ── auto-open HTML for human-gate stages ─────────────────────────────────────
+
+_HUMAN_GATE_STAGE_MAP = {
+    5: "plan_draft",
+    7: "plan_final",
+    17: "close_review",
+}
+
+
+def _auto_open_html_for_human_gates(wrk_id: str, stage: int, repo_root: str) -> None:
+    """Open lifecycle + plan HTML in browser at human-gate stages (5, 7, 17).
+
+    Skips if the stage is not a human gate, if evidence shows the stage was
+    already opened, or if the HTML files do not exist.
+    """
+    gate_label = _HUMAN_GATE_STAGE_MAP.get(stage)
+    if gate_label is None:
+        return
+
+    assets_dir = os.path.join(
+        repo_root, ".claude", "work-queue", "assets", wrk_id,
     )
-    if result.returncode == 0:
-        print(f"✔ Lifecycle HTML updated ({wrk_id})")
-    else:
-        print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    evidence_path = os.path.join(assets_dir, "evidence", "user-review-browser-open.yaml")
+
+    # Double-open prevention: skip if this stage already has an event
+    if os.path.exists(evidence_path):
+        try:
+            raw = Path(evidence_path).read_text(encoding="utf-8")
+            if f"stage: {gate_label}" in raw:
+                return
+        except OSError:
+            pass
+
+    browser_script = os.path.join(
+        repo_root, "scripts", "work-queue", "log-user-review-browser-open.sh",
+    )
+    if not os.path.exists(browser_script):
+        print(f"⚠ Browser-open script not found: {browser_script}", file=sys.stderr)
+        return
+
+    html_files = [
+        os.path.join(assets_dir, f"{wrk_id}-lifecycle.html"),
+        os.path.join(assets_dir, f"{wrk_id}-plan.html"),
+    ]
+
+    for html_path in html_files:
+        if not os.path.exists(html_path):
+            print(f"⚠ HTML not found, skipping browser open: {html_path}", file=sys.stderr)
+            continue
+        subprocess.run(
+            ["bash", browser_script, wrk_id, "--stage", gate_label, "--html", html_path],
+            capture_output=True, text=True, cwd=repo_root,
+        )
 
 
 # ── Stage 1 guard helpers ─────────────────────────────────────────────────────
@@ -482,6 +539,9 @@ def _main() -> None:
 
     # Auto-regenerate lifecycle HTML so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)
+
+    # Auto-open HTML in browser at human-gate stages
+    _auto_open_html_for_human_gates(wrk_id, stage, repo_root)
 
 
 if __name__ == "__main__":

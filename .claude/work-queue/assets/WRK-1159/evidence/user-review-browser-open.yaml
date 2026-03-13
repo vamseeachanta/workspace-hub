@@ -1,0 +1,25 @@
+events:
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-lifecycle.html
+  opened_at: '2026-03-13T03:05:00Z'
+  reviewer: vamsee
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-plan.html
+  opened_at: '2026-03-13T03:05:01Z'
+  reviewer: vamsee
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-lifecycle.html
+  opened_at: '2026-03-13T03:12:00Z'
+  reviewer: vamsee
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-plan.html
+  opened_at: '2026-03-13T03:12:01Z'
+  reviewer: vamsee

@@ -1,0 +1,14 @@
+wrk_id: WRK-1159
+route: B
+verdict: APPROVE
+reviewer: claude
+codex_verdict: REQUEST_CHANGES
+codex_iterations: 1
+codex_findings_resolved: true
+reviewed_at: "2026-03-13T03:20:00Z"
+notes: >
+  Codex: REQUEST_CHANGES — flagged dead _load_yaml call in _auto_open_html_for_human_gates
+  (resolved: removed unused ev_data variable). Other findings (fallback YAML parser,
+  deprecated utcnow, scattered imports) are pre-existing issues out of WRK-1159 scope.
+  Claude: REQUEST_CHANGES — same pre-existing issues plus dead code (resolved).
+  All in-scope findings resolved; pre-existing issues captured as future work.

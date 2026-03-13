@@ -1,0 +1,9 @@
+wrk_id: WRK-1159
+stage: 4
+plan_location: inline
+plan_type: Route B inline
+approved: true
+approved_at: "2026-03-13T03:00:00Z"
+notes: >
+  Route B medium — plan provided by user as structured implementation spec.
+  3 changes to start_stage.py + 6-test TDD file.
