@@ -1,0 +1,6 @@
+wrk_id: WRK-1160
+test_file: scripts/work-queue/tests/test_retry_diagnostics.py
+tests_passed: 6
+tests_failed: 0
+regression_tests_passed: 25
+regression_file: scripts/work-queue/tests/test_gate_verifier_hardening.py

@@ -1,0 +1,8 @@
+wrk_id: WRK-1160
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - workflow-gatepass
+    - work-queue-workflow

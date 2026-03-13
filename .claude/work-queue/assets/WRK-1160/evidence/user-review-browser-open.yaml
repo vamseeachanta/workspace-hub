@@ -1,0 +1,22 @@
+wrk_id: WRK-1160
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1160/review.md
+    opened_at: "2026-03-12T09:50:00Z"
+    reviewer: vamsee
+    review_bypass_reason: "Batch pre-approval — user approved stages 1,5,7,17 together"
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1160/review.md
+    opened_at: "2026-03-12T09:51:00Z"
+    reviewer: vamsee
+    review_bypass_reason: "Batch pre-approval — user approved stages 1,5,7,17 together"
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1160/review.md
+    opened_at: "2026-03-13T08:00:00Z"
+    reviewer: vamsee

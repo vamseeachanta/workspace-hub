@@ -1,0 +1,29 @@
+wrk_id: WRK-1160
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 779682a8
+    documents:
+      - .claude/work-queue/working/WRK-1160.md
+    published_at: "2026-03-13T08:15:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 779682a9
+    documents:
+      - .claude/work-queue/working/WRK-1160.md
+    published_at: "2026-03-13T08:16:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 779682aa
+    documents:
+      - .claude/work-queue/working/WRK-1160.md
+    published_at: "2026-03-13T08:31:00Z"
+    reviewer: vamsee

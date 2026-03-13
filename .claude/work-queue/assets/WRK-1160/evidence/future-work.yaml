@@ -1,0 +1,6 @@
+wrk_id: WRK-1160
+no_follow_ups_rationale: >
+  All 5 ACs met. The retry diagnostics are self-contained within
+  verify-gate-evidence.py and close-item.sh. No architectural debt
+  introduced. The GATE_ATTEMPTS marker is a stable contract between
+  the Python script and shell caller.

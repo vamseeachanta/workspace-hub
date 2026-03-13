@@ -1,0 +1,8 @@
+wrk_id: WRK-1160
+reviewer: codex
+verdict: APPROVE
+reviewed_at: "2026-03-13T08:25:00Z"
+findings:
+  - severity: P3
+    description: "GATE_ATTEMPTS marker printed on single-attempt failure too; harmless"
+    status: accepted

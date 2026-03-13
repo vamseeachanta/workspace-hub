@@ -5371,5 +5371,14 @@
     "title": "feat(doc-intel): extract-document.py + document parse layer",
     "priority": "high",
     "category": "document-intelligence"
+  },
+  "WRK-1160": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T08:35:11.677535+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Gate verification retry noise \u2014 add diagnostics and cap retries",
+    "priority": "high",
+    "category": "work-queue"
   }
 }

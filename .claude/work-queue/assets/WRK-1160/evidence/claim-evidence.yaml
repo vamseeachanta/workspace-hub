@@ -1,0 +1,12 @@
+wrk_id: WRK-1160
+stage: claim
+session_owner: claude
+best_fit_provider: claude
+route: B
+claim_expires_at: "2026-03-13T18:00:00Z"
+quota_snapshot:
+  status: available
+  pct_remaining: 85
+  timestamp: "2026-03-13T08:10:00Z"
+blocking_state:
+  blocked: false

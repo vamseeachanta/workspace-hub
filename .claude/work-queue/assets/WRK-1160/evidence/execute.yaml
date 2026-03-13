@@ -1,0 +1,29 @@
+wrk_id: WRK-1160
+stage: 10
+executed_at: "2026-03-13T08:20:00Z"
+commit: 779682a8
+changes:
+  - file: scripts/work-queue/verify-gate-evidence.py
+    change: "Added GATE_ATTEMPTS=N machine-parseable marker to run_checks_with_retry on failure"
+  - file: scripts/work-queue/close-item.sh
+    change: "Captures gate output, parses GATE_ATTEMPTS, includes attempt count in log signal"
+  - file: scripts/work-queue/tests/test_retry_diagnostics.py
+    change: "6 TDD tests covering all 5 acceptance criteria"
+tests_passed: 31
+tests_failed: 0
+integrated_repo_tests:
+  - name: "retry diagnostics unit tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_retry_diagnostics.py"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_retry_diagnostics.py
+  - name: "gate verifier hardening regression"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_gate_verifier_hardening.py
+  - name: "close-item.sh gate output capture"
+    scope: integrated
+    command: "bash -n scripts/work-queue/close-item.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/close-item.sh
