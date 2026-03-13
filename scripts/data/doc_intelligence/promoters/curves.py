@@ -37,8 +37,8 @@ def _render_scaffold(domain: str, entries: list[dict]) -> str:
     lines.append("")
 
     for entry in entries:
-        caption = entry["caption"]
-        figure_id = entry["figure_id"]
+        caption = entry.get("caption") or entry.get("figure_id") or "unknown"
+        figure_id = entry.get("figure_id") or ""
         citation = source_citation(entry["source"])
         curve_id = sanitize_identifier(caption)
         csv_rel = (
@@ -95,7 +95,8 @@ def promote_curves(
 
         # Placeholder CSVs — one per curve
         for entry in entries:
-            curve_id = sanitize_identifier(entry["caption"])
+            caption = entry.get("caption") or entry.get("figure_id") or "unknown"
+            curve_id = sanitize_identifier(caption)
             csv_out = (
                 project_root
                 / "data"

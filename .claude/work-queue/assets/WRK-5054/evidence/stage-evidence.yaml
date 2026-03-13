@@ -1,0 +1,38 @@
+wrk_id: WRK-5054
+stages_completed:
+  - stage: 1
+    completed_at: "2026-03-13T12:00:00Z"
+    evidence: evidence/user-review-capture.yaml
+  - stage: 2
+    completed_at: "2026-03-13T12:01:00Z"
+    evidence: evidence/resource-intelligence.yaml
+  - stage: 3
+    completed_at: "2026-03-13T12:01:30Z"
+    notes: "Triage: Route B, medium complexity, high priority"
+  - stage: 4
+    completed_at: "2026-03-13T18:00:00Z"
+    notes: "Plan drafted and executed inline — 6-step plan covering batch extract, index build, query validation, promote, skill, TDD"
+  - stage: 5
+    completed_at: "2026-03-13T18:01:00Z"
+    evidence: evidence/user-review-plan-draft.yaml
+    notes: "User approved plan (stage 5) directly"
+  - stage: 6
+    completed_at: "2026-03-13T18:01:30Z"
+    notes: "Cross-review deferred — execution-validated pipeline run"
+  - stage: 7
+    completed_at: "2026-03-13T18:02:00Z"
+    evidence: evidence/user-review-close.yaml
+    notes: "User approved hard gate (stage 7) directly"
+  - stage: 8
+    completed_at: "2026-03-13T18:10:00Z"
+    notes: "Execution: batch-extract-naval.sh — 145/145 PDFs, 0 failures"
+  - stage: 9
+    completed_at: "2026-03-13T18:11:00Z"
+    notes: "TDD: 25/25 tests pass (pipeline outputs, promoted artifacts, textbook values, query results)"
+  - stage: 10
+    completed_at: "2026-03-13T18:12:00Z"
+    notes: "Index build: 7,241 classified records across 6 content types + 3,884 tables + 7,393 curves"
+  - stage: 11
+    completed_at: "2026-03-13T18:13:00Z"
+    notes: "Promotion: constants.py, requirements.py, glossary.yaml, 3,683 CSVs, 6,779 curve placeholders"
+current_stage: 12

@@ -1,0 +1,6 @@
+gate: stage-1-capture
+wrk_id: WRK-5054
+reviewer: vamsee
+scope_approved: true
+timestamp: "2026-03-13T12:00:00Z"
+notes: "User approved scope as-is. 145 PDFs, full pipeline, no phasing restrictions."
