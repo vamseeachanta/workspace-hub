@@ -1,0 +1,5 @@
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-12"
+notes: "Scope approved as-is. Route A simple."

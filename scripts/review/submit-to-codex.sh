@@ -101,20 +101,19 @@ if [[ -n "$COMMIT_SHA" ]]; then
     echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2
     exit 1
   fi
-  commit_exit=0
-  if command -v timeout >/dev/null 2>&1; then
-    timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
-  elif command -v perl >/dev/null 2>&1; then
-    perl -e 'alarm shift; exec @ARGV' "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
-  else
-    "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  # Convert commit to diff text and route through structured codex exec pipeline
+  # (codex review --commit produces free-form output that fails format validation)
+  COMMIT_DIFF="$(git show --stat --unified=80 "$COMMIT_SHA" 2>/dev/null)"
+  if [[ -z "$COMMIT_DIFF" ]]; then
+    echo "# Codex review --commit failed: could not read commit $COMMIT_SHA" >&2
+    exit 1
   fi
-  if [[ "$commit_exit" -ne 0 ]]; then
-    echo "# Codex review --commit failed (exit $commit_exit)"
-    echo "# Commit: $COMMIT_SHA"
-    exit "$commit_exit"
-  fi
-else
+  CONTENT_FILE="$(mktemp)"
+  echo "$COMMIT_DIFF" > "$CONTENT_FILE"
+  # Fall through to the file-based structured review path below
+fi
+
+if [[ -n "$CONTENT_FILE" ]]; then
   if [[ ! -f "$CONTENT_FILE" ]]; then
     echo "ERROR: file not found: $CONTENT_FILE" >&2
     exit 1
