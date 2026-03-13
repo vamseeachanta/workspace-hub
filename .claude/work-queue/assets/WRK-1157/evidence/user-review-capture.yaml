@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-1157
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-12T11:00:00Z
+notes: "Scope approved — single script + checklist integration"

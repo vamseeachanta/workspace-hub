@@ -11,6 +11,10 @@ skills_required:
   - workspace-hub/work-queue-workflow
 entry_reads:
   - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10-s16
+pre_checks:
+  - script: scripts/work-queue/check-acs-pass.sh WRK-NNN
+    description: "Verify all acceptance criteria are marked [x] before user review"
+    required: true
 exit_artifacts:
   - assets/WRK-NNN/evidence/user-review-close.yaml
 blocking_condition: "user-review-close.yaml missing or decision != approved"
