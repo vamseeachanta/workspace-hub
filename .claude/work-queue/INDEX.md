@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T09:47:18Z by generate-index.py -->
+<!-- Generated: 2026-03-13T09:49:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T09:47:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T09:49:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 220 |
+| pending | 219 |
 | working | 4 |
 | blocked | 10 |
 | done | 2 |
-| archived | 364 |
+| archived | 365 |
 
 ### By Priority
 
@@ -81,8 +81,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 251 / 600 |
-| Plans cross-reviewed | 188 |
-| Plans approved | 210 |
+| Plans cross-reviewed | 190 |
+| Plans approved | 212 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -93,16 +93,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 600 |
-| Total archived | 364 |
-| Completion rate | 364/600 (61%) |
-| Monthly rate (current month) | 125 archived |
+| Total archived | 365 |
+| Completion rate | 365/600 (61%) |
+| Monthly rate (current month) | 126 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 220 | 27% |
+| Pending items with plans | 60 / 219 | 27% |
 | Plans cross-reviewed | 9 | 13% |
 | Plans user-approved | 9 | 13% |
 
@@ -120,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 86 | 3 | 8 |
-| Medium   | 99  | 1  | 1  |
+| Medium   | 98  | 1  | 1  |
 | Low      | 35  | 0  | 1  |
 
 ## By Category
@@ -1141,7 +1141,7 @@
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-1153 |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1154 |
-| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1154 |
+| WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-1154 |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1153 |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -1164,7 +1164,7 @@
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5036 |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | WRK-5038 |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5038 |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1400,7 +1400,6 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | medium | complex | workspace-hub, digitalmodel | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | low | complex | workspace-hub | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
@@ -1795,6 +1794,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | medium | complex | workspace-hub, digitalmodel | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | medium | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | medium | medium | workspace-hub | - |
 
@@ -2142,7 +2142,7 @@
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | complex | - |
 | WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | - |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | - |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 
 ### doris
 
@@ -2461,7 +2461,7 @@
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | - |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | - |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | - |
@@ -3128,7 +3128,7 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | simple | workspace-hub | - |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | simple | workspace-hub | - |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | simple | workspace-hub | - |
@@ -3737,12 +3737,12 @@
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | digitalmodel | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | workspace-hub | - |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (172 active / 320 total)
+### ace-linux-1 (171 active / 320 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4060,7 +4060,7 @@
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | workspace-hub |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | workspace-hub |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | workspace-hub |
-| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | pending | medium | complex | workspace-hub, digitalmodel |
+| WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | workspace-hub, digitalmodel |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | workspace-hub |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | workspace-hub |
