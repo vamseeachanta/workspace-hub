@@ -1,0 +1,83 @@
+---
+wrk_id: WRK-1128
+stages:
+  - order: 1
+    stage: "Capture"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 2
+    stage: "Resource Intelligence"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 3
+    stage: "Triage"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 4
+    stage: "Plan Draft"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 5
+    stage: "User Review Plan Draft"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 6
+    stage: "Cross-Review"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 7
+    stage: "User Review Plan Final"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 8
+    stage: "Claim/Activation"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 9
+    stage: "Work-Queue Routing"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 10
+    stage: "Work Execution"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 11
+    stage: "Artifact Generation"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 12
+    stage: "TDD / Eval"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 13
+    stage: "Agent Cross-Review"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 14
+    stage: "Verify Gate Evidence"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 15
+    stage: "Future Work Synthesis"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 16
+    stage: "Resource Intelligence Update"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 17
+    stage: "User Review Implementation"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 18
+    stage: "Reclaim"
+    status: n/a
+  - order: 19
+    stage: "Close"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+  - order: 20
+    stage: "Archive"
+    status: done
+    completed_at: "2026-03-13T00:00:00Z"
+---
