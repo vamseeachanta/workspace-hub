@@ -19,10 +19,10 @@
     },
     {
       "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage order 17 must be done|n/a before close (found pending)"
+      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
     },
     {
       "name": "Resource-intelligence gate",
@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -180,10 +180,10 @@
     },
     {
       "name": "Stage evidence paths gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[17] evidence path not found: .claude/work-queue/assets/WRK-5039/evidence/user-review-close.yaml"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",

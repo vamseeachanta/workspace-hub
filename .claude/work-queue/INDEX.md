@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T09:49:38Z by generate-index.py -->
+<!-- Generated: 2026-03-13T09:51:03Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T09:49:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T09:51:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 219 |
-| working | 4 |
+| pending | 218 |
+| working | 3 |
 | blocked | 10 |
 | done | 2 |
-| archived | 365 |
+| archived | 367 |
 
 ### By Priority
 
@@ -93,18 +93,18 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 600 |
-| Total archived | 365 |
-| Completion rate | 365/600 (61%) |
-| Monthly rate (current month) | 126 archived |
+| Total archived | 367 |
+| Completion rate | 367/600 (61%) |
+| Monthly rate (current month) | 127 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 219 | 27% |
-| Plans cross-reviewed | 9 | 13% |
-| Plans user-approved | 9 | 13% |
+| Pending items with plans | 60 / 218 | 28% |
+| Plans cross-reviewed | 8 | 12% |
+| Plans user-approved | 8 | 12% |
 
 ### Aging
 
@@ -119,7 +119,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 86 | 3 | 8 |
+| High     | 85 | 2 | 8 |
 | Medium   | 98  | 1  | 1  |
 | Low      | 35  | 0  | 1  |
 
@@ -1140,7 +1140,7 @@
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-1153 |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1154 |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-1154 |
 | WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-1154 |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1153 |
@@ -1163,7 +1163,7 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5036 |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | WRK-5038 |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5037, WRK-5038 |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -1387,7 +1387,6 @@
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | medium | medium | digitalmodel | - |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | medium | medium | digitalmodel | - |
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | medium | medium | workspace-hub | - |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | high | complex | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1411,7 +1410,6 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | high | simple | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | high | complex | workspace-hub | - |
 
 ### Blocked
 
@@ -1786,6 +1784,7 @@
 | WRK-1151 | Collect and download naval architecture resources to document-intelligence | medium | medium | workspace-hub | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | high | complex | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | high | complex | digitalmodel | - |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | high | complex | digitalmodel | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | high | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | high | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
@@ -1794,6 +1793,7 @@
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | high | complex | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | medium | complex | workspace-hub, digitalmodel | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | medium | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | medium | medium | workspace-hub | - |
@@ -2139,7 +2139,7 @@
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | pending | medium | medium | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | - |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | complex | - |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | - |
 | WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | - |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
@@ -2460,7 +2460,7 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | - |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | - |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
@@ -2838,14 +2838,14 @@
 | WRK-1143 | feat(work-queue): centralized WRK status index — updated at source by workflow scripts | archived | medium | workspace-hub | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | complex | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | complex | digitalmodel | - |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | complex | digitalmodel | - |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | complex | digitalmodel | - |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | simple | workspace-hub | - |
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | simple | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | simple | workspace-hub | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | complex | workspace-hub | - |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
 
 ### Medium
 
@@ -3734,15 +3734,15 @@
 | WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | medium | digitalmodel | - |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | digitalmodel | - |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | digitalmodel | - |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | digitalmodel | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | workspace-hub | - |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (171 active / 320 total)
+### ace-linux-1 (169 active / 320 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4039,7 +4039,7 @@
 | WRK-1152 | Collect and download electrical engineering resources to document-intelligence | pending | medium | medium | workspace-hub |
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | complex | digitalmodel |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | complex | digitalmodel |
-| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | pending | high | complex | digitalmodel |
+| WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | complex | digitalmodel |
 | WRK-1156 | Commissioning validator — FAT/SAT/IST test sequence generator and results checker | done | medium | medium | digitalmodel |
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | simple | workspace-hub |
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | done | medium | medium | digitalmodel |
@@ -4059,7 +4059,7 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | workspace-hub |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | workspace-hub |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | complex | workspace-hub |
-| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | working | high | complex | workspace-hub |
+| WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | workspace-hub, digitalmodel |
 | WRK-5042 | feat(doc-intel): batch extraction pipeline — 1M doc queue with cost tracking | pending | low | complex | workspace-hub |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |

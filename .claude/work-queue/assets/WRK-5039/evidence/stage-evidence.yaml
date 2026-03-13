@@ -1,82 +1,84 @@
 wrk_id: WRK-5039
 stages:
-  - order: 1
-    stage: capture
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-capture.yaml
-  - order: 2
-    stage: resource-intelligence
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/resource-intelligence.yaml
-  - order: 3
-    stage: triage
-    status: done
-    evidence: .claude/work-queue/working/WRK-5039.md
-  - order: 4
-    stage: plan-draft
-    status: done
-    evidence: specs/wrk/WRK-5039/wrk-5039-query-doc-intelligence.md
-  - order: 5
-    stage: user-review-plan-draft
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-plan-draft.yaml
-  - order: 6
-    stage: cross-review
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/cross-review.yaml
-  - order: 7
-    stage: plan-final-review
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/plan-final-review.yaml
-  - order: 8
-    stage: claim-activation
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/claim-evidence.yaml
-  - order: 9
-    stage: routing
-    status: done
-    evidence: .claude/work-queue/logs/WRK-5039-routing.log
-  - order: 10
-    stage: work-execution
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/execute.yaml
-  - order: 11
-    stage: artifact-generation
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/plan-html-review-final.md
-  - order: 12
-    stage: tdd-eval
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/tdd.yaml
-  - order: 13
-    stage: agent-cross-review
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/legal-scan.yaml
-  - order: 14
-    stage: verify-gate-evidence
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/stage-evidence.yaml
-  - order: 15
-    stage: future-work
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/future-work.yaml
-  - order: 16
-    stage: resource-intelligence-update
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/resource-intelligence-update.yaml
-  - order: 17
-    stage: user-review-close
-    status: done
-    evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-close.yaml
-  - order: 18
-    stage: reclaim
-    status: n/a
-    evidence: n/a
-  - order: 19
-    stage: close
-    status: pending
-    evidence: pending
-  - order: 20
-    stage: archive
-    status: pending
-    evidence: pending
+- order: 1
+  stage: capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-capture.yaml
+- order: 2
+  stage: resource-intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/resource-intelligence.yaml
+- order: 3
+  stage: triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-5039.md
+- order: 4
+  stage: plan-draft
+  status: done
+  evidence: specs/wrk/WRK-5039/wrk-5039-query-doc-intelligence.md
+- order: 5
+  stage: user-review-plan-draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: cross-review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/cross-review.yaml
+- order: 7
+  stage: plan-final-review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/plan-final-review.yaml
+- order: 8
+  stage: claim-activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/claim-evidence.yaml
+- order: 9
+  stage: routing
+  status: done
+  evidence: .claude/work-queue/logs/WRK-5039-routing.log
+- order: 10
+  stage: work-execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/execute.yaml
+- order: 11
+  stage: artifact-generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/plan-html-review-final.md
+- order: 12
+  stage: tdd-eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/tdd.yaml
+- order: 13
+  stage: agent-cross-review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/legal-scan.yaml
+- order: 14
+  stage: verify-gate-evidence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/stage-evidence.yaml
+- order: 15
+  stage: future-work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/future-work.yaml
+- order: 16
+  stage: resource-intelligence-update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: user-review-close
+  status: done
+  evidence: .claude/work-queue/assets/WRK-5039/evidence/user-review-close.yaml
+- order: 18
+  stage: reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: close
+  status: done
+  evidence: pending
+- order: 20
+  stage: archive
+  status: pending
+  evidence: pending
+generated_at: '2026-03-13T09:50:49Z'
+reviewed_by: orchestrator

@@ -5407,5 +5407,14 @@
     "title": "feat(doc-intel): build-doc-intelligence.py + federated content indexes",
     "priority": "high",
     "category": "document-intelligence"
+  },
+  "WRK-5039": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-13T09:50:49.830401+00:00",
+    "updated_by": "close-item.sh",
+    "title": "feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration",
+    "priority": "high",
+    "category": "document-intelligence"
   }
 }
