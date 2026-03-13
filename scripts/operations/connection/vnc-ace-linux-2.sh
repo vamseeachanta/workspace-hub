@@ -36,18 +36,18 @@ if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
     XOWNER=$(echo "${XINFO}" | awk '{print $1}')
     if [ "${XOWNER}" = "vamsee" ]; then
         ssh "${ACE2_HOST}" \
-            "x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /tmp/x11vnc-vamsee.log && echo 'x11vnc launched'"
+            "x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
     else
         echo "Display owned by ${XOWNER} — enter sudo password for ace-linux-2:"
         ssh -t "${ACE2_HOST}" \
-            "sudo x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /tmp/x11vnc-vamsee.log && echo 'x11vnc launched'"
+            "sudo x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
     fi
 
     # Give x11vnc a moment to bind the port
     sleep 2
     if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
         echo "ERROR: x11vnc still not listening on port ${REMOTE_PORT}."
-        echo "  Check log: ssh ace-linux-2 'cat /tmp/x11vnc-vamsee.log'"
+        echo "  Try manually: ssh ace-linux-2 then run x11vnc with -o /tmp/x11vnc.log to debug"
         exit 1
     fi
     echo "x11vnc is up."

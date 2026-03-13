@@ -32,11 +32,15 @@ maintenance_date: 2026-02-02
 
 ## Storage
 
-| Device | Size | Model | Serial | Transport | SMART |
-|--------|------|-------|--------|-----------|-------|
-| /dev/sda | 7.3 TB | ST8000DM004-2U9188 | ZR15GL5E | SATA | Unavailable (smartmontools not installed) |
-| /dev/sdb | 232.9 GB | CT250BX100SSD1 | 1532F00A7EF4 | SATA | Unavailable (smartmontools not installed) |
-| /dev/sdc | 931.5 GB | WDC WD10EZEX-00BN5A0 | WD-WCC3F7PV7H4U | SATA | Unavailable (smartmontools not installed) |
+| Device | Size | Model | Serial | Transport | Mount Point | Usage |
+|--------|------|-------|--------|-----------|-------------|-------|
+| /dev/sda | 7.3 TB | ST8000DM004-2U9188 | ZR15GL5E | SATA | /mnt/ace | Bulk data — documents, O&G standards, production files |
+| /dev/sdb | 232.9 GB | CT250BX100SSD1 | 1532F00A7EF4 | SATA | / (root) | OS, boot |
+| /dev/sdc | 931.5 GB | WDC WD10EZEX-00BN5A0 | WD-WCC3F7PV7H4U | SATA | /mnt/local-analysis | workspace-hub, repos, active work |
+
+> **Symlink:** `/mnt/ace-data` → `/mnt/ace` (descriptive alias for discoverability).
+> **Note:** `/mnt/ace` is referenced by 378K+ data files — do NOT rename; use symlink for clarity.
+> SMART data unavailable (smartmontools not installed).
 
 ## Network
 

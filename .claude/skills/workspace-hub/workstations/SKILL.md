@@ -51,9 +51,9 @@ Every WRK item **should** set `computer:` in frontmatter. Leave blank only for m
 
 | Device | Size | Type | Model | Notes |
 |--------|------|------|-------|-------|
-| sda | 7.3 TB | HDD | Seagate ST8000DM004 | Primary data drive |
-| sdb | 233 GB | SSD | Crucial CT250BX100 | OS / fast drive |
-| sdc | 932 GB | HDD | WD WD10EZEX | Secondary storage |
+| sda | 7.3 TB | HDD | Seagate ST8000DM004 | /mnt/ace (bulk data); symlink /mnt/ace-data |
+| sdb | 233 GB | SSD | Crucial CT250BX100 | / (OS, boot) |
+| sdc | 932 GB | HDD | WD WD10EZEX | /mnt/local-analysis (workspace-hub, repos) |
 
 ### ace-linux-2 Storage
 
