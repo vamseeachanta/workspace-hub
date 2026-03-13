@@ -6,16 +6,26 @@ events:
   commit: 94ad72bb
   documents:
   - .claude/work-queue/assets/WRK-1072/WRK-1072-plan.html
-  published_at: '2026-03-12T23:01:00Z'
+  published_at: '2026-03-12T23:00:30Z'
   reviewer: user
   notes: "Fast-forward close — plan reviewed inline"
-- stage: close_review
+- stage: plan_final
   pushed_to_origin: true
   remote: origin
   branch: main
   commit: 94ad72bb
   documents:
+  - .claude/work-queue/assets/WRK-1072/plan-html-review-final.md
+  published_at: '2026-03-12T23:01:30Z'
+  reviewer: user
+  notes: "Fast-forward close — plan approved, implementation at 94ad72bb"
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: b8276774
+  documents:
   - .claude/work-queue/assets/WRK-1072/workflow-final-review.html
-  published_at: '2026-03-12T23:06:00Z'
+  published_at: '2026-03-12T23:16:00Z'
   reviewer: user
   notes: "Stage 17 close review — all ACs met, fast-forward close"

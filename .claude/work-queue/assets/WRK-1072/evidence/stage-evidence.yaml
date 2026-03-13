@@ -1,5 +1,5 @@
 wrk_id: WRK-1072
-generated_at: '2026-03-12T23:06:00Z'
+generated_at: '2026-03-13T01:05:22Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -50,7 +50,7 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Fast-forward close — codex timed out, Claude self-review pass.
+  comment: "Fast-forward close \u2014 codex timed out, Claude self-review pass."
   evidence: .claude/work-queue/assets/WRK-1072/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)
@@ -106,7 +106,7 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Fast-forward close — Claude self-review pass, codex unavailable.
+  comment: "Fast-forward close \u2014 Claude self-review pass, codex unavailable."
   evidence: .claude/work-queue/assets/WRK-1072/evidence/cross-review.yaml
 - order: 14
   stage: Verify Gate Evidence
@@ -138,7 +138,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Close package reviewed — all ACs met, fast-forward close.
+  comment: "Close package reviewed \u2014 all ACs met, fast-forward close."
   evidence: .claude/work-queue/assets/WRK-1072/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
@@ -154,7 +154,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Fast-forward close — implementation at 94ad72bb.
+  comment: "Fast-forward close \u2014 implementation at 94ad72bb."
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive

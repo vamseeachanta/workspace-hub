@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-13T01:02:12Z by generate-index.py -->
+<!-- Generated: 2026-03-13T01:05:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-13T01:02:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-13T01:05:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 594
+**Total items:** 593
 
 ### By Status
 
@@ -16,7 +16,7 @@
 | pending | 227 |
 | working | 4 |
 | blocked | 10 |
-| done | 2 |
+| done | 1 |
 | archived | 351 |
 
 ### By Priority
@@ -24,7 +24,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 264 |
-| medium | 277 |
+| medium | 276 |
 | low | 52 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 139 |
-| medium | 280 |
+| medium | 279 |
 | complex | 107 |
 
 ### By Category
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 246 / 594 |
+| Plans exist | 246 / 593 |
 | Plans cross-reviewed | 175 |
 | Plans approved | 198 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 594 |
+| Total captured | 593 |
 | Total archived | 351 |
-| Completion rate | 351/594 (59%) |
+| Completion rate | 351/593 (59%) |
 | Monthly rate (current month) | 114 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -1069,7 +1069,6 @@
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assethold, assetutilities, digitalmodel, OGManufacturing, worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assetutilities, digitalmodel, worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -1178,7 +1177,6 @@
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
-| WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | medium | medium | - | - |
 | WRK-1139 | chore(cc-adoption): adopt CC 2.1.72-2.1.74 ecosystem improvements | medium | simple | workspace-hub | - |
 
 ### Pending
@@ -3058,7 +3056,6 @@
 | WRK-1068 | feat(harness): WRK dependency graph — visualise blocked_by chains for sequencing | archived | simple | workspace-hub | - |
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | archived | medium | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | archived | medium | assetutilities, digitalmodel, worldenergydata | - |
-| WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | done | medium | - | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | simple | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | archived | simple | workspace-hub | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | archived | medium | workspace-hub | - |
@@ -3555,7 +3552,6 @@
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | workspace-hub, assetutilities, assethold, digitalmodel, worldenergydata | - |
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | archived | medium | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | archived | medium | assetutilities, digitalmodel, worldenergydata | - |
-| WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | done | medium | - | - |
 | WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | archived | high | - | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | archived | medium | workspace-hub | - |
 | WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | archived | medium | - | - |
@@ -3719,7 +3715,7 @@
 
 ## By Computer
 
-### ace-linux-1 (179 active / 314 total)
+### ace-linux-1 (178 active / 313 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3940,7 +3936,6 @@
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | workspace-hub, assethold, assetutilities, digitalmodel, OGManufacturing, worldenergydata |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | archived | medium | medium | assetutilities, digitalmodel, worldenergydata |
-| WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | done | medium | medium | - |
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | high | simple | - |
 | WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | archived | high | medium | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | medium | simple | - |

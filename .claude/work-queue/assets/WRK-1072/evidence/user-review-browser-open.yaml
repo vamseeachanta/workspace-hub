@@ -3,7 +3,13 @@ events:
   opened_in_default_browser: true
   browser: system-default
   html_ref: .claude/work-queue/assets/WRK-1072/WRK-1072-plan.html
-  opened_at: '2026-03-12T23:00:00Z'
+  opened_at: '2026-03-12T22:50:00Z'
+  reviewer: user
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1072/plan-html-review-final.md
+  opened_at: '2026-03-12T22:51:00Z'
   reviewer: user
 - stage: close_review
   opened_in_default_browser: true

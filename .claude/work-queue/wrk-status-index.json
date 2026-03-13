@@ -216,10 +216,10 @@
     "category": "harness"
   },
   "WRK-1072": {
-    "status": "pending",
+    "status": "done",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-12T15:04:27.704348+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-13T01:05:23.222757+00:00",
+    "updated_by": "close-item.sh",
     "title": "feat(harness): release management \u2014 semantic versioning + changelog for tier-1 repos",
     "priority": "medium",
     "category": "harness"
@@ -5319,10 +5319,10 @@
     "category": "harness"
   },
   "WRK-1158": {
-    "status": "working",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-13T00:18:28.325315+00:00",
-    "updated_by": "claim-item.sh",
+    "last_updated": "2026-03-13T01:02:10.463552+00:00",
+    "updated_by": "archive-item.sh",
     "title": "chore(harness): stage-17 gate-evidence green checker \u2014 all gates OK before close",
     "priority": "high",
     "category": "harness"

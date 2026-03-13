@@ -1,34 +1,21 @@
-# Gate Evidence Summary (WRK-1072, phase=close)
+# Gate Evidence Summary (WRK-1072, phase=archive)
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
-| Stage evidence gate | FAIL | stage_evidence_ref missing in WRK frontmatter |
-| Resource-intelligence gate | FAIL | resource-intelligence.yaml: invalid completion_status |
-| Activation gate | FAIL | activation.yaml missing |
-| Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |
-| User-review HTML-open gate | FAIL | user-review-browser-open.yaml missing |
-| User-review publish gate | FAIL | user-review-publish.yaml missing |
-| Cross-review gate | FAIL | artifact=none |
-| TDD gate | FAIL | none |
-| Integrated test gate | FAIL | execute.yaml: integrated_repo_tests[3] missing fields: ['artifact_ref'] |
-| Legal gate | FAIL | artifact=missing, none |
+| Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4 |
+| Activation gate | PASS | activation.yaml: activation evidence OK |
+| Agent log gate | PASS | matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'] |
+| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1072/review.md |
 | Claim gate | WARN | claim evidence absent (legacy item — WARN) |
-| Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
-| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
-| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
-| Approval ordering gate | PASS | approval ordering OK (phase=close) |
+| Approval ordering gate | PASS | approval ordering OK (phase=archive) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
-| Browser open elapsed time gate | PASS | user-review-browser-open.yaml absent — skip elapsed check |
+| Browser open elapsed time gate | PASS | browser open elapsed time OK |
 | Sentinel values gate | PASS | no sentinel values found |
-| Claim artifact path gate | FAIL | no claim artifact found (expected evidence/claim-evidence.yaml) |
-| ISO datetime format gate | FAIL | user-review-capture.yaml.reviewed_at: date-only value '2026-03-12' — time component required |
-| Codex keyword in review gate | PASS | no review files found — skip codex keyword check (handled by cross-review gate) |
-| Publish commit uniqueness gate | PASS | user-review-publish.yaml absent — skip commit uniqueness check |
-| Stage evidence paths gate | PASS | stage-evidence.yaml absent — skip path existence check |
-| Done/pending contradiction gate | PASS | stage-evidence.yaml absent — skip done/pending check |
-| Plan publish predates approval gate | PASS | user-review-publish.yaml absent — skip |
-| Workstation contract (strict) gate | PASS | workstation contract fields present |
-| Reclaim n/a gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
+| ISO datetime format gate | PASS | all timestamp fields have time components |
+| Archive readiness gate | FAIL | archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1072/evidence/archive-tooling.yaml |
