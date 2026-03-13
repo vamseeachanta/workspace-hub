@@ -1,0 +1,82 @@
+wrk_id: WRK-1161
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: evidence/user-review-capture.yaml
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: WRK-1161.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: plan-html-review-final.md
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: evidence/user-review-browser-open.yaml
+  - order: 6
+    stage: Cross-Review
+    status: n/a
+    evidence: evidence/cross-review.yaml
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: plan-html-review-final.md
+  - order: 8
+    stage: Claim/Activation
+    status: done
+    evidence: evidence/claim-evidence.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: done
+    evidence: logs/WRK-1161-routing.log
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: WRK-1161-lifecycle.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: evidence/tdd.yaml
+  - order: 13
+    stage: Agent Cross-Review
+    status: n/a
+    evidence: evidence/cross-review.yaml
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: evidence/gate-evidence-summary.md
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    evidence: evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review Implementation
+    status: done
+    evidence: evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: n/a
+  - order: 19
+    stage: Close
+    status: pending
+    evidence: pending
+  - order: 20
+    stage: Archive
+    status: pending
+    evidence: pending

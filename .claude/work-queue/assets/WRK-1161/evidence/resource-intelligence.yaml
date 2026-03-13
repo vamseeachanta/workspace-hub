@@ -1,0 +1,25 @@
+wrk_id: WRK-1161
+stage: 2
+completion_status: continue_to_planning
+domain: work-queue
+complexity_assessment: simple
+assessed_at: "2026-03-12"
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  supporting: []
+
+infrastructure:
+  target_scripts:
+    - scripts/work-queue/exit_stage.py
+    - scripts/work-queue/stage_dispatch.py
+    - scripts/work-queue/archive-item.sh
+    - scripts/work-queue/claim-item.sh
+
+constraints:
+  - Changes must not alter script logic — only stderr routing and message formatting
+  - No suppression of actionable errors

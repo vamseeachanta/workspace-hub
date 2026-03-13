@@ -1,0 +1,7 @@
+wrk_id: WRK-1161
+stage: 15
+items: []
+no_follow_ups_rationale: >
+  Simple stderr cleanup with no architectural implications. The 5th original AC
+  (comprehensive-learning-nightly.sh || true) was descoped as it requires deeper
+  investigation of detect-drift.sh failure modes — if needed, capture as separate WRK.

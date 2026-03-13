@@ -1,0 +1,41 @@
+wrk_id: WRK-1161
+stage: 10
+completed_at: "2026-03-12T22:06:00Z"
+commit_ref: cab4cb5a
+
+changes:
+  - file: scripts/work-queue/exit_stage.py
+    change: "Silent return on ImportError instead of printing WARN"
+  - file: scripts/work-queue/stage_dispatch.py
+    change: "Prefix D-item messages with [ERROR]/[WARN] severity"
+  - file: scripts/work-queue/archive-item.sh
+    change: "Redirect HTML gen errors to html-gen.log instead of /dev/null"
+  - file: scripts/work-queue/claim-item.sh
+    change: "Route quota warning to stderr instead of stdout"
+
+integrated_repo_tests:
+  - name: stderr-cleanup-unit-tests
+    scope: repo
+    command: uv run --no-project python -m pytest tests/work-queue/test_stderr_cleanup.py
+    result: pass
+    artifact_ref: tests/work-queue/test_stderr_cleanup.py
+    notes: 6 TDD tests all passing
+  - name: exit-stage-smoke
+    scope: integrated
+    command: uv run --no-project python scripts/work-queue/exit_stage.py WRK-1161 10
+    result: pass
+    artifact_ref: scripts/work-queue/exit_stage.py
+    notes: No spurious stderr output on clean run
+  - name: legal-sanity-scan
+    scope: integrated
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: pass
+    artifact_ref: legal-scan.md
+    notes: No legal violations
+
+acceptance_criteria:
+  exit_stage_suppressed: true
+  stage_dispatch_severity: true
+  archive_log_redirect: true
+  claim_stderr_redirect: true
+  clean_work_run: true

@@ -1,0 +1,29 @@
+wrk_id: WRK-1161
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: cab4cb5a
+    documents:
+      - WRK-1161-lifecycle.html
+    published_at: "2026-03-12T22:06:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: cab4cb5a
+    documents:
+      - WRK-1161-lifecycle.html
+    published_at: "2026-03-12T22:06:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: cab4cb5a
+    documents:
+      - WRK-1161-lifecycle.html
+    published_at: "2026-03-13T04:01:00Z"
+    reviewer: vamsee

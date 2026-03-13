@@ -1,0 +1,6 @@
+wrk_id: WRK-1161
+stage: 1
+scope_approved: true
+reviewed_by: vamsee
+reviewed_at: "2026-03-12T22:00:00Z"
+notes: "User identified CLI stderr noise during /work run sessions. Scope: suppress non-actionable warnings in 5 work-queue scripts."

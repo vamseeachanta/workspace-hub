@@ -1,0 +1,11 @@
+wrk_id: WRK-1161
+stage: 12
+tdd_applied: true
+test_file: tests/work-queue/test_stderr_cleanup.py
+test_count: 6
+pass_count: 6
+fail_count: 0
+command: uv run --no-project python -m pytest tests/work-queue/test_stderr_cleanup.py
+notes: >
+  Tests cover: exit_stage ImportError suppression, stage_dispatch severity prefixes,
+  archive-item log redirect, claim-item stderr routing, clean /work run output.
