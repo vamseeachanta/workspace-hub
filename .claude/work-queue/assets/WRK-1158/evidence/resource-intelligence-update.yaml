@@ -1,0 +1,12 @@
+wrk_id: WRK-1158
+generated_at: "2026-03-12T23:50:00Z"
+additions:
+  - path: scripts/work-queue/check-gates-green.sh
+    role: "Stage 17 pre-close gate checker — calls verify-gate-evidence.py and exits 0/1 based on MISSING count"
+  - path: scripts/work-queue/print-gate-passed.sh
+    role: "Stage 7/17 gate-pass printer — reads plan-final-review.yaml or user-review-close.yaml"
+  - path: tests/work-queue/test-check-gates-green.sh
+    role: "TDD test suite for check-gates-green.sh (8 tests)"
+  - path: tests/work-queue/test-print-gate-passed.sh
+    role: "TDD test suite for print-gate-passed.sh (14 tests)"
+notes: "Level 2 enforcement gradient scripts for Stage 17 close gate"

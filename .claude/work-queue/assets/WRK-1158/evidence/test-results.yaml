@@ -1,0 +1,9 @@
+wrk_id: WRK-1158
+tdd_pass: true
+test_command: "bash tests/work-queue/test-check-gates-green.sh && bash tests/work-queue/test-print-gate-passed.sh"
+test_count: 22
+pass_count: 22
+fail_count: 0
+executed_at: "2026-03-12T23:50:00Z"
+test_file: tests/work-queue/test-check-gates-green.sh tests/work-queue/test-print-gate-passed.sh
+notes: "8 tests for check-gates-green.sh + 14 tests for print-gate-passed.sh; all pass"

@@ -1,0 +1,23 @@
+wrk_id: WRK-1158
+scope: repo
+executed_at: "2026-03-12T11:30:00Z"
+commit: pending
+integrated_repo_tests:
+  - name: check-gates-green.sh all-OK exits 0
+    scope: repo
+    command: "bash tests/work-queue/test-check-gates-green.sh"
+    result: pass
+    artifact_ref: tests/work-queue/test-check-gates-green.sh
+    notes: "8 TDD tests all pass"
+  - name: print-gate-passed.sh stage 7/17 exits 0
+    scope: repo
+    command: "bash tests/work-queue/test-print-gate-passed.sh"
+    result: pass
+    artifact_ref: tests/work-queue/test-print-gate-passed.sh
+    notes: "14 TDD tests all pass"
+  - name: legal-sanity-scan passes
+    scope: repo
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: scripts/legal/legal-sanity-scan.sh
+    notes: "No violations found"

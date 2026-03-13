@@ -1,0 +1,29 @@
+wrk_id: WRK-1158
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: uncommitted-draft
+    documents:
+      - .claude/work-queue/assets/WRK-1158/plan-html-review-draft.html
+    published_at: "2026-03-12T10:41:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: uncommitted-final
+    documents:
+      - .claude/work-queue/assets/WRK-1158/plan-html-review-final.html
+    published_at: "2026-03-12T10:37:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: uncommitted-close
+    documents:
+      - .claude/work-queue/assets/WRK-1158/WRK-1158-lifecycle.html
+    published_at: "2026-03-12T23:50:00Z"
+    reviewer: vamsee

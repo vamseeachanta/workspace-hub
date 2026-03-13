@@ -1,0 +1,5 @@
+wrk_id: WRK-1139
+stage: 17
+browser_opened: false
+exemption: "Route A simple — no lifecycle HTML generated for single-line config change"
+recorded_at: "2026-03-13T00:55:49Z"

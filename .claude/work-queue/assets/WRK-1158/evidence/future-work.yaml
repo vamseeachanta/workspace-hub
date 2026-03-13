@@ -1,0 +1,4 @@
+wrk_id: WRK-1158
+generated_at: "2026-03-12T23:50:00Z"
+items: []
+no_follow_ups_rationale: "Self-contained bash scripts with 22 tests. check-gates-green.sh wraps verify-gate-evidence.py; print-gate-passed.sh reads evidence yaml. No extensions needed."

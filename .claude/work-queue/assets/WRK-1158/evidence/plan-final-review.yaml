@@ -1,0 +1,10 @@
+wrk_id: WRK-1158
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-12T10:45:00Z"
+cross_review_verdict: APPROVE
+cross_review_provider: claude
+notes: >
+  Plan finalized with infra-exit-code distinction (exit 2 passthrough).
+  Integration: stage-17 yaml + close-item.sh comment.

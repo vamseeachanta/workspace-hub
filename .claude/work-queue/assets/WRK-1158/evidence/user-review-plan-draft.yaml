@@ -1,0 +1,11 @@
+wrk_id: WRK-1158
+stage: 5
+decision: approved
+approval_decision: approve_as_is
+review_cycle_id: rc-1158-1
+reviewer: vamsee
+confirmed_at: "2026-03-12T10:40:00Z"
+plan_summary: >
+  check-gates-green.sh wraps verify-gate-evidence.py, counts MISSING/WARN/OK lines,
+  exits 1 if any MISSING, exits 0 otherwise. ~30 lines, no new deps.
+  TDD: 3 bash tests. Integrated into stage-17 checklist.

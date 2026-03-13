@@ -1,0 +1,11 @@
+wrk_id: WRK-1139
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: ""
+html_verification_exemption: "Route A simple — no lifecycle HTML for config-only change"
+legal_scan_ref: ""
+legal_scan_exemption: "No code changes — single settings.json key addition"
+archive_readiness: "pass"
+document_index_ref: ""
+document_index_exemption: "hub-only config change — no document-index entries affected"
+spin_off_wrks: []

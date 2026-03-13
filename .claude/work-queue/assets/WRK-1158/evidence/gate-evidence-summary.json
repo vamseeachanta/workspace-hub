@@ -1,0 +1,146 @@
+Gate evidence for WRK-1158 (phase=close, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1158):
+  - Plan gate: OK (reviewed=True, approved=True, artifact=plan-html-review-final.html, confirmation=confirmed_by=present, confirmed_at=present, decision=passed)
+  - Workstation contract gate: OK (plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1])
+  - Stage evidence gate: OK (stage-evidence.yaml: stages=20, contract=20-stage)
+  - Resource-intelligence gate: OK (resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3)
+  - Activation gate: OK (activation.yaml: activation evidence OK)
+  - Agent log gate: OK (matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review', 'review_wrapper_complete'])
+  - User-review HTML-open gate: OK (user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'])
+  - User-review publish gate: OK (user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'])
+  - Cross-review gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1158/review.md)
+  - TDD gate: OK (test files=['test-results.md'])
+  - Integrated test gate: OK (execute.yaml: integrated_repo_tests=3 (all passing))
+  - Legal gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1158/legal-scan.md, result=PASS)
+  - Claim gate: OK (claim-evidence.yaml: version=1, owner=claude, quota=available(null))
+  - Future-work gate: OK (future-work.yaml: no_follow_ups_rationale=present)
+  - Resource-intelligence update gate: OK (resource-intelligence-update.yaml: additions=4)
+  - User-review close gate: OK (user-review-close.yaml: decision=approved)
+  - Reclaim gate: WARN (reclaim.yaml: status=n/a (Stage 18 not triggered — WARN))
+  - Approval ordering gate: OK (approval ordering OK (phase=close))
+  - Midnight UTC sentinel gate: OK (no midnight UTC sentinel found)
+  - Browser open elapsed time gate: OK (browser open elapsed time OK)
+  - Sentinel values gate: OK (no sentinel values found)
+  - Claim artifact path gate: OK (canonical claim artifact found: claim-evidence.yaml)
+  - ISO datetime format gate: OK (all timestamp fields have time components)
+  - Codex keyword in review gate: OK (no review files found — skip codex keyword check (handled by cross-review gate))
+  - Publish commit uniqueness gate: OK (publish commits appear unique across stages)
+  - Stage evidence paths gate: OK (all stage evidence paths verified)
+  - Done/pending contradiction gate: OK (no done/pending contradictions found)
+  - Plan publish predates approval gate: OK (plan publish ordering OK (published=2026-03-12T10:41:00Z, reviewed=2026-03-12T10:40:00Z))
+  - Workstation contract (strict) gate: OK (workstation contract fields present)
+  - Reclaim n/a gate: WARN (n/a: Stage 18 is n/a; reclaim.yaml is placeholder)
+→ All orchestrator gates have documented evidence.
+{"wrk_id": "WRK-1158", "phase": "close", "pass": true, "missing": [], "warn": ["Reclaim gate", "Reclaim n/a gate"]}
+,
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence-update.yaml: additions=4"
+    },
+    {
+      "name": "User-review close gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-close.yaml: decision=approved"
+    },
+    {
+      "name": "Reclaim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=close)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Browser open elapsed time gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "browser open elapsed time OK"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no sentinel values found"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Codex keyword in review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+    },
+    {
+      "name": "Publish commit uniqueness gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "publish commits appear unique across stages"
+    },
+    {
+      "name": "Stage evidence paths gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all stage evidence paths verified"
+    },
+    {
+      "name": "Done/pending contradiction gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no done/pending contradictions found"
+    },
+    {
+      "name": "Plan publish predates approval gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan publish ordering OK (published=2026-03-12T10:41:00Z, reviewed=2026-03-12T10:40:00Z)"
+    },
+    {
+      "name": "Workstation contract (strict) gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "workstation contract fields present"
+    },
+    {
+      "name": "Reclaim n/a gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "n/a: Stage 18 is n/a; reclaim.yaml is placeholder"
+    }
+  ]
+}

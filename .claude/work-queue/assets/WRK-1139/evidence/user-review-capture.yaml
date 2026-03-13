@@ -3,7 +3,7 @@ stage: 1
 gate: HARD
 scope_approved: true
 reviewer: vamsee
-reviewed_at: "2026-03-12T00:00:00Z"
+reviewed_at: "2026-03-13T00:55:49Z"
 notes: |
   AC1 (HTML comments in CLAUDE.md) likely no-op — CLAUDE.md already 17 lines.
   User approved proceeding with AC1 as-is (mark compliant if nothing to hide).

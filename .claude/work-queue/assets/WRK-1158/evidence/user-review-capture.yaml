@@ -1,0 +1,8 @@
+wrk_id: WRK-1158
+stage: 1
+n/a: true
+n/a_reason: "Child of WRK-1144 — scope approved in parent feature Stage 7"
+scope_approved: true
+reviewer: vamsee
+confirmed_at: "2026-03-12T10:30:00Z"
+notes: "Script check-gates-green.sh to wrap verify-gate-evidence.py with MISSING gate detection"

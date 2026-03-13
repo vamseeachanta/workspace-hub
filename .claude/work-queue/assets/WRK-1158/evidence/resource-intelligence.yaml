@@ -1,0 +1,21 @@
+wrk_id: WRK-1158
+stage: 2
+completion_status: continue_to_planning
+assessed_at: "2026-03-12T10:35:00Z"
+user_decision: proceed
+top_p1_resources: []
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+key_files:
+  - scripts/work-queue/verify-gate-evidence.py
+  - scripts/work-queue/stages/stage-17-user-review-implementation.yaml
+  - scripts/work-queue/close-item.sh
+  - scripts/work-queue/check-claude-md-limits.sh
+approach: >
+  Single bash script ~35 lines. Call verify-gate-evidence.py, count OK/WARN/MISSING lines
+  from stdout, exit 0 only when no MISSING. Infra failures (exit 2) propagated.
+risks:
+  - verify-gate-evidence.py output format change could break parsing (low probability)
