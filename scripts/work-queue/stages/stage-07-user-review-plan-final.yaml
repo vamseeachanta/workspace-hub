@@ -14,7 +14,11 @@ entry_reads:
   - assets/WRK-NNN/evidence/cross-review.yaml
 exit_artifacts:
   - assets/WRK-NNN/evidence/plan-final-review.yaml
-blocking_condition: "plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed"
+pre_checks:
+  - script: scripts/work-queue/check-p1-resolved.sh WRK-NNN
+    description: "All P1 cross-review findings must be resolved before Stage 7 exit"
+    gate: hard
+blocking_condition: "plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed OR check-p1-resolved.sh exits 1"
 log_action: plan_final_reviewed
 context_budget_kb: 16
 feature_notes:
