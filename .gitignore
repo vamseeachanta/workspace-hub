@@ -425,3 +425,10 @@ knowledge-base/*.tmp
 # Standards search index (built locally, not committed)
 data/standards-index/chunks.jsonl
 data/standards-index/bm25.pkl
+
+# Promoted standards artifacts — runtime CSVs/tables from promote-to-code.py (WRK-5035/5040)
+data/standards/promoted/*
+!data/standards/promoted/.gitkeep
+
+# Pipeline state (runtime, regenerable)
+config/data/pipeline-state/*.json

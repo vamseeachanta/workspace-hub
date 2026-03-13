@@ -1,0 +1,20 @@
+wrk_id: WRK-5035
+future_work:
+  - id: FW-1
+    title: "skill(doc-intel): gitignore-scaffold skill for doc-intel directory setup"
+    priority: medium
+    description: |
+      Codify the gitignore pattern + directory scaffold process into a reusable skill.
+      Covers: when to use directory/* vs directory/ patterns, .gitkeep negation,
+      regression testing with git check-ignore, and the bash (( ++ )) set -e gotcha.
+    rationale: "WRK-5035 discovered gitignore negation nuance (directory/ vs directory/*)
+      and bash arithmetic under set -e. A skill prevents re-learning these patterns."
+  - id: FW-2
+    title: "skill(tdd-shell): shell TDD test harness patterns"
+    priority: medium
+    description: |
+      Codify the shell-based TDD test pattern used in WRK-5035: pass/fail counters,
+      git check-ignore assertions, scaffold existence checks, regression guards.
+      Avoid (( var++ )) under set -e (use var=$((var + 1)) instead).
+    rationale: "Shell test scripts recur across WRK items (gitignore, scaffold, hook tests).
+      A skill captures the counter pattern, common assertions, and known gotchas."

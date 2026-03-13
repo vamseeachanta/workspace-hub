@@ -1,0 +1,27 @@
+wrk_id: "WRK-5036"
+gathered_at: "2026-03-12T00:00:00Z"
+skill_format:
+  reference_skills:
+    - ".claude/skills/engineering/asset-integrity/fitness-for-service/SKILL.md"
+    - ".claude/skills/engineering/cad/cad-engineering/SKILL.md"
+  structure: "YAML frontmatter (name, description, version, category, triggers, capabilities) + Markdown body (When to Use, domain sections, standards, related skills)"
+  typical_length: "200-385 lines"
+existing_extraction:
+  phase_b_extract: "scripts/data/document-index/phase-b-extract.py — routes by source+extension (PDF/DOCX/XLSX/MD), outputs summaries with SHA256 keys"
+  doc_to_context: "scripts/utilities/doc-to-context/src/doc_to_context.py — DocumentContent dataclass with tables, formulas, images, links, structure fields"
+  content_types_gap: "No explicit 8-type content classification exists yet — this skill fills that gap"
+cp_domain:
+  module: "digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cathodic_protection.py"
+  config: "digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml"
+  standards: ["DNV-RP-B401", "DNV-RP-F103", "ABS GN ships 2018", "ABS GN offshore 2018"]
+  parameters: ["anode requirements", "coating breakdown factors", "current densities", "design life", "surface areas", "anode resistance"]
+  functions: ["_b401_anode_requirements", "_b401_coating_breakdown", "_b401_current_demand", "_b401_current_densities"]
+drilling_riser_domain:
+  riser_modules:
+    - "digitalmodel/src/digitalmodel/infrastructure/base_solvers/marine/typical_riser_stack_up_calculations.py"
+    - "digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/catenary/"
+  viv_skill: ".claude/skills/engineering/marine-offshore/viv-analysis/SKILL.md"
+  drilling_skill_stub: ".claude/skills/engineering/drilling/SKILL.md"
+  parameters: ["stack components", "elevations", "stress OD/ID", "drag/buoyancy diameters", "EI/EA/GJ", "effective tension"]
+  bop_kill_choke: "Referenced in drilling domain but not yet detailed in codebase"
+  naval_arch_kb: "knowledge/seeds/naval-architecture-resources.yaml — 17 textbooks, DNV-RP-C205/H103"
