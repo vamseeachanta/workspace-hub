@@ -2154,6 +2154,8 @@ def run_checks_with_retry(
             f"Unmet gates: {missing}",
             file=sys.stderr,
         )
+    # Machine-parseable marker for callers (e.g. close-item.sh log signal)
+    print(f"GATE_ATTEMPTS={max_retries}")
 
     return 1, max_retries
 

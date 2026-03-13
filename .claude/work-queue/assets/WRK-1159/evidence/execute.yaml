@@ -1,0 +1,27 @@
+wrk_id: WRK-1159
+stage: 10
+status: done
+commit: 9eae797bb1bcc4f63a5413c977e792a4e4e6ef4c
+executed_at: "2026-03-13T03:27:00Z"
+files_changed:
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/tests/test_auto_open_html.py
+tests_passed: 9
+tests_failed: 0
+integrated_repo_tests:
+  - name: "auto-open-html-unit-tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_auto_open_html.py"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_auto_open_html.py
+  - name: "start-stage-smoke-test"
+    scope: repo
+    command: "uv run --no-project python scripts/work-queue/start_stage.py WRK-1159 4"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1159/evidence/execute.yaml
+  - name: "browser-open-script-validation"
+    scope: repo
+    command: "bash scripts/work-queue/log-user-review-browser-open.sh WRK-1159 --stage plan_draft --html .claude/work-queue/assets/WRK-1159/WRK-1159-lifecycle.html --no-open"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1159/evidence/user-review-browser-open.yaml
+notes: "Auto-open lifecycle HTML at human-gate stages (5, 7, 17). Cross-review finding resolved."

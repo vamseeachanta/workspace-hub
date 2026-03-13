@@ -230,9 +230,13 @@ echo "Running gate evidence validator for ${WRK_ID} before close..."
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_start" "orchestrator" "phase=close"
 fi
-if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close --retry 3; then
+GATE_OUTPUT=$(uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close --retry 3 2>&1)
+GATE_EXIT=$?
+echo "$GATE_OUTPUT"
+if [[ $GATE_EXIT -ne 0 ]]; then
+  GATE_ATTEMPTS=$(echo "$GATE_OUTPUT" | grep -oP 'GATE_ATTEMPTS=\K[0-9]+' || echo "1")
   if [[ -x "$GATE_LOGGER" ]]; then
-    bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_fail" "orchestrator" "phase=close"
+    bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_fail[attempt=${GATE_ATTEMPTS}/3]" "orchestrator" "phase=close"
   fi
   echo "✖ Gate evidence verification failed for ${WRK_ID}; gather the missing artifacts before closing." >&2
   exit 1

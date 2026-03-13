@@ -23,3 +23,15 @@ events:
   html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-plan.html
   opened_at: '2026-03-13T03:12:01Z'
   reviewer: vamsee
+- stage: close_review
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-lifecycle.html
+  opened_at: '2026-03-13T08:21:44Z'
+  reviewer: vamsee
+- stage: close_review
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1159/WRK-1159-plan.html
+  opened_at: '2026-03-13T08:21:45Z'
+  reviewer: vamsee

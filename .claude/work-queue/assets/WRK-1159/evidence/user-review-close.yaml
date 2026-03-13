@@ -1,5 +1,5 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+reviewer: "vamsee"
+reviewed_at: "2026-03-13T16:00:00Z"
+confirmed_at: "2026-03-13T16:00:00Z"
+decision: approved
+notes: "User approved close. All ACs met — auto-open HTML at human-gate stages working."
