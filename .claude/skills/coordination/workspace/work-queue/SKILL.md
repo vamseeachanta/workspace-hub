@@ -192,6 +192,12 @@ Required frontmatter fields: `id`, `title`, `status` (pending|working|blocked|do
 
 ## Workstation Routing
 
+> **Linux-first policy**: all non-licensed work runs on Ace Linux machines.
+> Licensed machines (acma-ansys05, acma-ws014) are shared/budget-constrained — use only
+> when licensed software is strictly required. Features spanning both must be decomposed
+> so the majority of stages run on Linux.
+> Full policy: `config/work-queue/workstation-routing-policy.yaml`
+
 | Keyword / pattern | Machine |
 |-------------------|---------|
 | `orcaflex`, `ansys`, `aqwa` | `acma-ansys05` |

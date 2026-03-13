@@ -1,0 +1,50 @@
+# Workstation Routing Policy
+#
+# Canonical policy for assigning WRK items to machines.
+# Referenced by: .claude/skills/coordination/workspace/work-queue/SKILL.md
+# Enforced by: scripts/work-queue/assign-workstations.py
+
+policy:
+  linux_first:
+    rule: >
+      All non-licensed work MUST run on Ace Linux machines (ace-linux-1,
+      ace-linux-2). Licensed machines (acma-ansys05, acma-ws014) are shared
+      and budget-constrained — use ONLY when the task requires licensed
+      software (OrcaFlex, ANSYS, AQWA, SolidWorks, Excel macros).
+    rationale: >
+      Licensed machines are shared by multiple users and operate under a
+      limited budget. Over-use crowds out colleagues and drives up cost.
+      Maximising Linux utilisation is economical and gives agents a larger
+      resource pool.
+
+  decomposition:
+    rule: >
+      Features that span licensed and non-licensed work MUST be decomposed
+      so the majority of stages run on Linux. Only the stages that strictly
+      require licensed software should be routed to a licensed machine.
+    example: >
+      A feature needing OrcaFlex post-processing: plan, code, test, review
+      stages run on ace-linux-1; only the OrcaFlex execution stage runs on
+      acma-ansys05.
+
+  routing_keywords:
+    licensed:
+      - keyword: [orcaflex, ansys, aqwa]
+        machine: acma-ansys05
+        reason: License-locked engineering software
+      - keyword: [solidworks, excel-macro]
+        machine: acma-ws014
+        reason: Windows-only licensed software
+    linux:
+      - keyword: [openfoam, blender, gmsh, calculix, fenics]
+        machine: ace-linux-2
+        reason: Open-source simulation / meshing
+      - keyword: [heavy-compute, cfd-hpc, fea-hpc]
+        machine: gali-linux-compute-1
+        reason: HPC workloads
+      - keyword: [worldenergydata, workspace-hub, digitalmodel, assetutilities, assethold]
+        machine: ace-linux-1
+        reason: Primary development
+    default:
+      machine: ace-linux-1
+      reason: Linux-first policy — default for all unmatched work

@@ -1,0 +1,18 @@
+stage: 10
+executed_at: "2026-03-13"
+changes:
+  - file: config/work-queue/workstation-routing-policy.yaml
+    action: created
+    description: "Canonical Linux-first routing policy with decomposition requirement"
+  - file: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    action: updated
+    description: "Added Linux-first policy summary and link above routing table"
+scan_results:
+  total_licensed_machine_wrks: 13
+  flagged_for_reassignment: 0
+  reviewed_but_valid:
+    - id: WRK-5013
+      reason: "Windows bug fix — needs acma-ansys05 for testing"
+verification:
+  yaml_valid: true
+  assign_workstations_dry_run: "0 errors"

@@ -1,0 +1,10 @@
+stage: 2
+files_reviewed:
+  - ".claude/skills/coordination/workspace/work-queue/SKILL.md (§Workstation Routing, lines 193-225)"
+  - "config/work-queue/machine-ranges.yaml"
+  - "scripts/work-queue/assign-workstations.py"
+findings:
+  - "Routing table exists in SKILL.md but has no Linux-first policy statement"
+  - "assign-workstations.py does keyword-based routing but no Linux-preference enforcement"
+  - "No standalone workstation routing policy doc exists"
+  - "machine-ranges.yaml defines 4 machines but no policy on when to use each"
