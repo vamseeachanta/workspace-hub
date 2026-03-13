@@ -20,6 +20,7 @@ triggers:
 related_skills:
   - engineering/doc-extraction/cp
   - engineering/doc-extraction/drilling-riser
+  - engineering/doc-extraction/naval-architecture
   - engineering/asset-integrity/fitness-for-service
 capabilities:
   - content-type-classification
@@ -48,9 +49,10 @@ pattern recognition, and domain sub-skills for specialized heuristics.
 
 ```
 doc-extraction/
-  SKILL.md                  # Layers 1+2: generic + engineering (this file)
-  cp/SKILL.md               # Layer 3: cathodic protection domain
-  drilling-riser/SKILL.md   # Layer 3: drilling riser domain
+  SKILL.md                       # Layers 1+2: generic + engineering (this file)
+  cp/SKILL.md                    # Layer 3: cathodic protection domain
+  drilling-riser/SKILL.md        # Layer 3: drilling riser domain
+  naval-architecture/SKILL.md    # Layer 3: naval architecture domain
 ```
 
 ## Layer 1: Content Type Classification
@@ -308,6 +310,7 @@ For domain-specific extraction heuristics, delegate to Layer 3 sub-skills:
 |--------|-----------|-------------|
 | Cathodic protection | [cp/SKILL.md](cp/SKILL.md) | DNV-RP-B401, F103, CP design documents |
 | Drilling riser | [drilling-riser/SKILL.md](drilling-riser/SKILL.md) | API RP 16Q, riser analysis reports |
+| Naval architecture | [naval-architecture/SKILL.md](naval-architecture/SKILL.md) | SNAME PNA, IMO stability, classification rules |
 
 ## Related Skills
 

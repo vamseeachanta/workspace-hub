@@ -4,6 +4,7 @@ Validates:
 - Main SKILL.md structure and content types
 - CP sub-skill domain heuristics
 - Drilling-riser sub-skill domain heuristics
+- Naval-architecture sub-skill domain heuristics
 - File size constraints (400-line limit)
 """
 
@@ -15,6 +16,7 @@ SKILL_ROOT = Path(__file__).resolve().parents[2] / ".claude" / "skills" / "engin
 MAIN_SKILL = SKILL_ROOT / "SKILL.md"
 CP_SKILL = SKILL_ROOT / "cp" / "SKILL.md"
 RISER_SKILL = SKILL_ROOT / "drilling-riser" / "SKILL.md"
+NAVAL_SKILL = SKILL_ROOT / "naval-architecture" / "SKILL.md"
 
 MAX_LINES = 400
 
@@ -70,6 +72,9 @@ class TestMainSkill:
         assert "drilling-riser" in text.lower() or "drilling riser" in text.lower(), (
             "Main SKILL.md must reference drilling-riser sub-skill"
         )
+        assert "naval-architecture" in text.lower() or "naval architecture" in text.lower(), (
+            "Main SKILL.md must reference naval-architecture sub-skill"
+        )
 
     def test_under_line_limit(self):
         count = _line_count(MAIN_SKILL)
@@ -119,3 +124,43 @@ class TestDrillingRiserSubSkill:
     def test_under_line_limit(self):
         count = _line_count(RISER_SKILL)
         assert count <= MAX_LINES, f"Drilling-riser SKILL.md is {count} lines (max {MAX_LINES})"
+
+
+class TestNavalArchitectureSubSkill:
+    """Tests for the naval-architecture domain sub-skill."""
+
+    def test_file_exists(self):
+        assert NAVAL_SKILL.is_file(), f"Missing {NAVAL_SKILL}"
+
+    def test_stability_keywords_present(self):
+        text = _read(NAVAL_SKILL).lower()
+        for kw in ["gm", "gz", "kb", "bm"]:
+            assert kw in text, f"Naval-arch sub-skill missing stability keyword: '{kw}'"
+
+    def test_resistance_keywords_present(self):
+        text = _read(NAVAL_SKILL).lower()
+        assert "holtrop" in text, "Naval-arch sub-skill missing 'holtrop'"
+        assert "ittc" in text, "Naval-arch sub-skill missing 'ittc'"
+
+    def test_hull_form_coefficients_present(self):
+        text = _read(NAVAL_SKILL)
+        for coeff in ["Cb", "Cp", "Cm", "Cwp"]:
+            assert coeff in text, f"Naval-arch sub-skill missing hull form coefficient: '{coeff}'"
+
+    def test_imo_stability_criteria(self):
+        text = _read(NAVAL_SKILL)
+        assert "IMO" in text, "Naval-arch sub-skill must reference IMO stability criteria"
+
+    def test_scantling_keyword(self):
+        text = _read(NAVAL_SKILL).lower()
+        assert "scantling" in text, "Naval-arch sub-skill missing 'scantling'"
+
+    def test_references_standards(self):
+        text = _read(NAVAL_SKILL)
+        assert "SOLAS" in text or "IMO" in text or "IACS" in text, (
+            "Naval-arch sub-skill must reference SOLAS, IMO, or IACS"
+        )
+
+    def test_under_line_limit(self):
+        count = _line_count(NAVAL_SKILL)
+        assert count <= MAX_LINES, f"Naval-arch SKILL.md is {count} lines (max {MAX_LINES})"
