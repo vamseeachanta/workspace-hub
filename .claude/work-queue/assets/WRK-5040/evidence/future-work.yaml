@@ -1,0 +1,17 @@
+items:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Wire promoted equations to digitalmodel test suite"
+    description: "When equations.jsonl has real data, the promoted equations.py module should be importable by digitalmodel tests"
+  - id: FW-2
+    priority: MEDIUM
+    title: "Populate section-based indexes via improved classifiers"
+    description: "Currently all section indexes are empty (0 records). Improve classifiers.py to populate constants, equations, etc."
+  - id: FW-3
+    priority: LOW
+    title: "Curve digitization pipeline"
+    description: "curves promoter creates scaffolds only. Need digitization tool to extract x,y data from figure images"
+  - id: FW-4
+    priority: LOW
+    title: "Cross-domain promotion support"
+    description: "Currently only naval-architecture domain has data. Test with additional domains when available"

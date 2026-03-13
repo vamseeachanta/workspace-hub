@@ -1,0 +1,2 @@
+{"text": "Steel yield strength = 355 MPa for Grade S355 structural steel per EN 10025.", "source": {"document": "EN-10025-Material-Properties.pdf", "section": "Table 3.1", "page": 12}, "domain": "naval-architecture", "manifest": "EN-10025-Material-Properties.pdf"}
+{"text": "Seawater density = 1025 kg/m³ at standard conditions (15°C, 35‰ salinity).", "source": {"document": "DNV-RP-C205.pdf", "section": "2.3", "page": 8}, "domain": "naval-architecture", "manifest": "DNV-RP-C205.pdf"}

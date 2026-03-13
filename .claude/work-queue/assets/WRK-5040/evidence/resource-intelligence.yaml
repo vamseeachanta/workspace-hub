@@ -1,0 +1,29 @@
+completed_at: "2026-03-13T10:05:00Z"
+findings:
+  input_indexes:
+    - constants.jsonl (0 records)
+    - equations.jsonl (0 records)
+    - definitions.jsonl (0 records)
+    - procedures.jsonl (0 records)
+    - requirements.jsonl (0 records)
+    - worked_examples.jsonl (0 records)
+    - tables/index.jsonl (6 records)
+    - curves/index.jsonl (0 records)
+  input_schema:
+    section_types: "text, source{document,section,page}, domain, manifest"
+    table_type: "title, columns, row_count, csv_path, source, domain, manifest"
+    curve_type: "caption, figure_id, source, domain, manifest"
+  existing_modules:
+    - scripts/data/doc_intelligence/schema.py
+    - scripts/data/doc_intelligence/classifiers.py
+    - scripts/data/doc_intelligence/index_builder.py
+  output_targets:
+    constants: "digitalmodel/src/digitalmodel/naval_architecture/ Python module"
+    tables: "data/standards/promoted/naval-architecture/ CSV"
+    equations: "digitalmodel/src/digitalmodel/naval_architecture/ Python functions"
+    worked_examples: "pytest parametrized test cases"
+    curves: "CSV + scipy interpolation wrapper"
+    procedures: ".claude/skills/engineering/naval-architecture/ YAML"
+    requirements: "docstring annotations"
+    definitions: "glossary YAML"
+  predecessor: "WRK-5038 (done) — build-doc-intelligence.py + federated content indexes"

@@ -1,0 +1,10 @@
+completed_at: "2026-03-13T11:08:00Z"
+new_modules:
+  - scripts/data/doc_intelligence/promoters/ (8 promoter modules + coordinator + text_utils)
+  - scripts/data/doc-intelligence/promote-to-code.py (CLI)
+  - tests/data/doc_intelligence/test_promoter_*.py (9 test files, 175 tests)
+  - tests/data/doc_intelligence/fixtures/promote/ (10 fixture files)
+patterns_established:
+  - "register_promoter() registry pattern for extensible content-type promotion"
+  - "write_atomic() idempotency via byte-comparison"
+  - "Parallel subagent dispatch for independent module implementation"

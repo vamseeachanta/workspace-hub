@@ -1,0 +1,2 @@
+{"title": "Material Properties", "columns": ["Material", "Yield (MPa)", "UTS (MPa)"], "row_count": 2, "csv_path": "tables/EN-10025-table-0.csv", "source": {"document": "EN-10025-Material-Properties.pdf", "page": 12}, "domain": "naval-architecture", "manifest": "EN-10025-Material-Properties.pdf"}
+{"title": "Coating Breakdown Factors", "columns": ["Category", "a_initial", "b_rate"], "row_count": 3, "csv_path": "tables/DNV-RP-B401-table-0.csv", "source": {"document": "DNV-RP-B401.pdf", "page": 45}, "domain": "naval-architecture", "manifest": "DNV-RP-B401.pdf"}
