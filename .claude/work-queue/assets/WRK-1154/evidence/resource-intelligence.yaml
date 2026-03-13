@@ -1,0 +1,21 @@
+stage: 2
+wrk_id: WRK-1154
+generated_at: 2026-03-12T11:00:00Z
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+key_files:
+  - path: scripts/work-queue/claim-item.sh
+    role: reference for awk-based frontmatter extraction pattern
+  - path: scripts/work-queue/checkpoint.sh
+    role: reference for frontmatter field reading
+  - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    role: source of truth for required frontmatter fields (line 191)
+risks: []
+blockers: []
+notes: >
+  Route A simple item. All files local to workspace-hub on ace-linux-1.
+  No external dependencies. Pure bash script with awk field extraction.

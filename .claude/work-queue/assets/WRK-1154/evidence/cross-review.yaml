@@ -1,0 +1,8 @@
+wrk_id: WRK-1154
+route: A
+reviews:
+  - provider: claude
+    verdict: APPROVE
+    date: "2026-03-12T11:01:00Z"
+    artifact: .claude/work-queue/assets/WRK-1154/evidence/cross-review-claude.md
+notes: "Route A — single Claude self-review pass"

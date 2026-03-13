@@ -5308,5 +5308,14 @@
     "title": "Extract doc-research-download patterns from WRK-1151 into reusable skill + lib",
     "priority": "medium",
     "category": "tooling"
+  },
+  "WRK-1154": {
+    "status": "working",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-12T22:11:57.078805+00:00",
+    "updated_by": "claim-item.sh",
+    "title": "chore(harness): stage-01 frontmatter validator script \u2014 confirm WRK-NNN.md has all required fields",
+    "priority": "high",
+    "category": "harness"
   }
 }

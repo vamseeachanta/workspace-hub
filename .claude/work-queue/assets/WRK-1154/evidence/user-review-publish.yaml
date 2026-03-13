@@ -1,0 +1,21 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: pending
+  documents:
+  - .claude/work-queue/assets/WRK-1154/plan-html-review-final.md
+  published_at: '2026-03-12T10:55:00Z'
+  reviewer: user
+  notes: "Route A — plan reviewed inline before implementation"
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: pending
+  documents:
+  - .claude/work-queue/assets/WRK-1154/plan-html-review-final.md
+  published_at: '2026-03-12T11:01:00Z'
+  reviewer: user
+  notes: "Route A — plan and approval done before code"
