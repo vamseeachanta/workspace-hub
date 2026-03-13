@@ -1,6 +1,21 @@
-wrk_id: WRK-1139
-claimed_by: claude
-claimed_at: "2026-03-13T00:55:49Z"
-session_id: current
-route: A
-notes: "Route A simple claim"
+claim_date: "2026-03-13T00:55:49Z"
+wrk_id: "WRK-1139"
+route: "A"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "claude"
+agent_fit:
+  capability_match: "matched"
+  rationale: "Route A / execution_workstations=[ace-linux-1] / provider=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-13T00:55:49Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 80
+  source: "config/ai-tools/agent-quota-latest.json"

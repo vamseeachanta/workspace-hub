@@ -1,1 +1,7 @@
-[2026-03-13T00:57:53Z] WRK-1139 routing: Route A simple — completed in single session
+timestamp: 2026-03-13T00:55:49Z
+wrk_id: WRK-1139
+stage: routing
+action: work_queue_skill
+signal: work_queue_skill
+provider: claude
+notes: WRK-1139 selected for processing via /work run 1139

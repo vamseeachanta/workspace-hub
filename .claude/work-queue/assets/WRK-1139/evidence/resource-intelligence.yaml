@@ -1,13 +1,20 @@
 wrk_id: WRK-1139
 stage: 2
-completed_at: "2026-03-13T00:55:49Z"
-resources_consulted:
-  - .claude/settings.json
-  - CLAUDE.md
-  - scripts/hooks/ (SessionEnd hook timing)
+completion_status: continue_to_planning
+assessed_at: "2026-03-13T00:55:49Z"
+user_decision: proceed
+top_p1_resources: []
 skills:
   core_used:
     - work-queue
     - work-queue-workflow
     - workflow-gatepass
-notes: "Route A simple — direct file inspection sufficient"
+key_files:
+  - .claude/settings.json
+  - CLAUDE.md
+  - scripts/hooks/
+approach: >
+  Route A simple — audit CLAUDE.md (already minimal), add autoMemoryDirectory
+  to settings.json, measure SessionEnd hook runtimes.
+risks:
+  - None significant for config-only change

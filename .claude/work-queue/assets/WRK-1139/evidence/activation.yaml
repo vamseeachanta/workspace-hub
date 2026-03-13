@@ -1,7 +1,6 @@
-wrk_id: WRK-1139
-stage: 8
-claimed_by: claude
-claimed_at: "2026-03-13T00:55:49Z"
-activation_type: direct
+wrk_id: "WRK-1139"
 set_active_wrk: true
-notes: "Route A simple — single session execution"
+active_wrk_ref: ".claude/state/active-wrk"
+session_id: "session-20260313-005549"
+orchestrator_agent: "claude"
+activated_at: "2026-03-13T00:55:49Z"

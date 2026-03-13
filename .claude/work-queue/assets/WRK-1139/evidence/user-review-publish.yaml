@@ -1,6 +1,28 @@
 wrk_id: WRK-1139
-stage: 17
-published: true
-method: "direct commit to main + push"
-commit: 788505d8
-recorded_at: "2026-03-13T00:55:49Z"
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 788505d8
+    documents: []
+    published_at: "2026-03-13T00:55:49Z"
+    reviewer: vamsee
+    exemption: "Route A simple — inline plan, no separate HTML"
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 788505d8
+    documents: []
+    published_at: "2026-03-13T00:55:49Z"
+    reviewer: vamsee
+    exemption: "Route A simple — inline plan, no separate HTML"
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f04f613b
+    documents: []
+    published_at: "2026-03-13T00:55:49Z"
+    reviewer: vamsee
