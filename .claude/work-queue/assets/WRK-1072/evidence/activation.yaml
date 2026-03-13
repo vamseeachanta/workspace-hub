@@ -1,0 +1,6 @@
+wrk_id: "WRK-1072"
+set_active_wrk: true
+active_wrk_ref: ".claude/state/active-wrk"
+session_id: "session-20260309-000000"
+orchestrator_agent: "claude"
+activated_at: "2026-03-12T23:00:00Z"

@@ -1,0 +1,4 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-12T00:00:00Z"
+notes: "Stage 1 scope approved — extend detect-drift.sh for Codex JSONL parsing"

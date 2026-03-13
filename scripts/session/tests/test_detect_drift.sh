@@ -11,8 +11,9 @@ PASS=0; FAIL=0
 run_test() {
     local name="$1" expected_key="$2" expected_val="$3"
     local fixture="$4"
+    local extra_flags="${5:-}"
     local out
-    out=$(bash "$DETECT" --log "$fixture" --no-git 2>/dev/null) || true
+    out=$(bash "$DETECT" --log "$fixture" --no-git $extra_flags 2>/dev/null) || true
     local actual
     actual=$(echo "$out" | grep "^${expected_key}:" | awk '{print $2}')
     if [[ "$actual" == "$expected_val" ]]; then
@@ -71,6 +72,32 @@ run_test "git_exempt_type: exempt commit"     "git_exempt_type" "0" "${FIXTURES}
 
 # Compound command: uv run on same line but python3 in separate sub-command
 run_test "python_runtime: compound cmd violation" "python_runtime" "1" "${FIXTURES}/session-compound-cmd.jsonl"
+
+# ── Codex provider tests ─────────────────────────────────────────────────────
+echo ""
+echo "=== Codex provider tests ==="
+
+# Pattern 1: python_runtime violations (Codex)
+run_test "codex python_runtime: violation present" "python_runtime" "1" \
+    "${FIXTURES}/codex-session-with-violations.jsonl" "--provider codex"
+run_test "codex python_runtime: no violation" "python_runtime" "0" \
+    "${FIXTURES}/codex-session-clean.jsonl" "--provider codex"
+
+# Pattern 2: file_placement violations (Codex)
+run_test "codex file_placement: violation present" "file_placement" "1" \
+    "${FIXTURES}/codex-session-with-violations.jsonl" "--provider codex"
+run_test "codex file_placement: no violation" "file_placement" "0" \
+    "${FIXTURES}/codex-session-clean.jsonl" "--provider codex"
+
+# Pattern 3: git_workflow violations (Codex)
+run_test "codex git_workflow: violation present" "git_workflow" "1" \
+    "${FIXTURES}/codex-session-with-violations.jsonl" "--provider codex"
+run_test "codex git_workflow: no violation" "git_workflow" "0" \
+    "${FIXTURES}/codex-session-clean.jsonl" "--provider codex"
+
+# Compound command (Codex)
+run_test "codex python_runtime: compound cmd violation" "python_runtime" "1" \
+    "${FIXTURES}/codex-session-compound-cmd.jsonl" "--provider codex"
 
 echo ""
 echo "Results: ${PASS} passed, ${FAIL} failed"

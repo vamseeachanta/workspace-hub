@@ -1,0 +1,7 @@
+stage: 1
+gate: hard
+decision: approved
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-12T10:35:00Z
+notes: "User approved scope as captured via /work run 1156"

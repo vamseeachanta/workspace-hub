@@ -1,0 +1,59 @@
+---
+wrk_id: WRK-1088
+stage: 2
+generated_at: "2026-03-12"
+---
+
+existing_patterns:
+  eia_ingestion:
+    files:
+      - worldenergydata/src/worldenergydata/eia/client.py  # 240 lines, HTTP+pagination
+      - worldenergydata/src/worldenergydata/eia/ingestion.py  # 274 lines, incremental JSONL
+      - worldenergydata/src/worldenergydata/eia/ingestion_runner.py  # 87 lines, CLI entry
+    pattern: "Client + state-tracked incremental JSONL sync"
+    state: "JSON state file (eia_ingestion_state.json) tracking last_fetch per feed"
+    output: "JSONL (one JSON per line) with schema_version"
+    deps: [requests, pathlib, json, datetime]
+
+  bsee_loaders:
+    files:
+      - worldenergydata/src/worldenergydata/bsee/data/loaders/block/router.py
+      - worldenergydata/src/worldenergydata/bsee/data/loaders/block/local_files.py
+      - worldenergydata/src/worldenergydata/bsee/data/schemas/platform.py
+    pattern: "Router + data-source strategy (config dict passed through)"
+    validation: "Pydantic BaseModel with field_validators"
+    deps: [pandas, pydantic, pathlib]
+
+  yfinance_fetcher:
+    files:
+      - assethold/src/assethold/analysis/daily_strategy/fetcher.py  # 269 lines
+      - assethold/tests/fixtures/builders.py  # 63 lines
+      - assethold/tests/unit/analysis/daily_strategy/test_fetcher.py
+    pattern: "Dual-cache (CSV OHLCV + JSON fundamentals) with TTL"
+    fixture_strategy: "sys.modules mock + builders.py factory functions"
+    deps: [yfinance (optional), pandas, dataclasses, json]
+
+  wrk_1062_fixture_pattern:
+    key_learnings:
+      - "tests/fixtures/data/ with JSON sample files"
+      - "builders.py with factory functions"
+      - "sys.modules[lib] = MagicMock() for optional deps"
+      - "@pytest.mark.live_data for integration tests"
+      - "Cache validity: mtime + TTL"
+
+available_libraries:
+  - {name: requests, purpose: HTTP client}
+  - {name: pandas, purpose: DataFrame ops}
+  - {name: pydantic, purpose: data validation}
+  - {name: tenacity, purpose: retry logic}
+  - {name: pathlib, purpose: path handling (stdlib)}
+
+constraints:
+  - "Large regenerable data must be gitignored (Tier 1 data-residence-compliance)"
+  - "Committed files < 10MB"
+  - "All Python via uv run"
+  - "Tests must not depend on live data"
+  - "EIA_API_KEY from env var (no hardcoding)"
+  - "worldenergydata runs with --noconftest"
+
+data_residence_tier: "Tier 1 (Collection Data) — outputs gitignored, config committed"

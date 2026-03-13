@@ -1,14 +1,14 @@
 {
-  "wrk_id": "WRK-1139",
+  "wrk_id": "WRK-1157",
   "phase": "archive",
-  "summary_file": "assets/WRK-1139/evidence/gate-evidence-summary.json",
+  "summary_file": "assets/WRK-1157/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
     },
     {
       "name": "Workstation contract gate",
@@ -22,35 +22,35 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence.yaml: invalid completion_status"
+      "details": "resource-intelligence evidence absent (legacy item \u2014 WARN)"
     },
     {
       "name": "Activation gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml: session_id missing"
+      "details": "activation.yaml missing"
     },
     {
       "name": "Agent log gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "routing:missing-provider ; plan:missing-provider ; execute:missing-provider ; cross-review:missing-provider"
+      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml missing"
     },
     {
       "name": "User-review publish gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml missing"
     },
     {
       "name": "Cross-review gate",
@@ -92,7 +92,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "browser open elapsed time OK"
+      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
     },
     {
       "name": "Sentinel values gate",
@@ -103,10 +103,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "canonical claim artifact found: claim-evidence.yaml"
+      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
     },
     {
       "name": "ISO datetime format gate",
@@ -120,7 +120,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "archive-tooling.yaml: html_verification_ref is empty \u2014 must point to lifecycle HTML file"
+      "details": "archive-tooling.yaml: html_verification_ref='n/a' not found on disk"
     }
   ]
 }

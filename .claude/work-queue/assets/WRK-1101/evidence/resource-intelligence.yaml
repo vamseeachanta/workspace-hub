@@ -1,0 +1,29 @@
+wrk_id: WRK-1101
+stage: 2
+completed_at: "2026-03-12T00:00:00Z"
+
+codex_jsonl_schema:
+  top_level_fields: [timestamp, type, payload]
+  payload_types: [message, task_started, user_message, token_count, reasoning, function_call, function_call_output]
+  shell_function: exec_command
+  shell_args_format: '{"cmd": "...", "workdir": "...", "max_output_tokens": N}'
+  file_write_function: null  # Codex uses exec_command for file writes too
+  log_path: "~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl"
+
+extraction_strategy: |
+  For python_runtime detection:
+    - Filter payload.type == "function_call" AND payload.name == "exec_command"
+    - Parse payload.arguments (JSON string) to extract "cmd" field
+    - Apply same is_python3_violation() check as Claude path
+  For file_placement detection:
+    - Extract file paths from cmd field content (cat/write/edit targets)
+    - Check for src/**/tests/ pattern
+  For git_workflow detection:
+    - Extract git commit -m messages from cmd field (same as Claude path)
+
+existing_files:
+  detect_drift: scripts/session/detect-drift.sh
+  test_file: scripts/session/tests/test_detect_drift.sh
+  fixtures_dir: scripts/session/tests/fixtures/
+  nightly_cron: scripts/cron/comprehensive-learning-nightly.sh
+  pipeline_detail: .claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md

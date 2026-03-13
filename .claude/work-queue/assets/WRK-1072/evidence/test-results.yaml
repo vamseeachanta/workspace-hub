@@ -1,0 +1,9 @@
+wrk_id: WRK-1072
+tdd_pass: true
+test_command: "bash scripts/release/tests/test-cut-release.sh"
+test_count: 12
+pass_count: 12
+fail_count: 0
+executed_at: "2026-03-12T23:03:00Z"
+test_file: scripts/release/tests/test-cut-release.sh
+notes: "12 TDD tests cover dry-run, version bump, changelog generation, tagging, manifest update, and error cases"

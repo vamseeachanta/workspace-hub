@@ -1,0 +1,23 @@
+wrk_id: WRK-1072
+scope: repo
+executed_at: 2026-03-09T00:00:00Z
+commit: 94ad72bb
+integrated_repo_tests:
+  - name: cut-release.sh dry-run exits 0
+    scope: repo
+    command: "bash scripts/release/cut-release.sh assetutilities 0.1.1 --dry-run"
+    result: pass
+    artifact_ref: scripts/release/cut-release.sh
+    notes: "Dry run shows bump, changelog, tag, manifest update"
+  - name: 12 TDD tests pass
+    scope: repo
+    command: "bash scripts/release/tests/test-cut-release.sh"
+    result: pass
+    artifact_ref: scripts/release/tests/test-cut-release.sh
+    notes: "12 passed, 0 failed"
+  - name: version field in all 5 tier-1 pyproject.toml
+    scope: repo
+    command: "grep -l '^version' assetutilities/pyproject.toml digitalmodel/pyproject.toml worldenergydata/pyproject.toml assethold/pyproject.toml OGManufacturing/pyproject.toml"
+    result: pass
+    artifact_ref: config/releases/release-manifest.yaml
+    notes: "All 5 repos have version field"

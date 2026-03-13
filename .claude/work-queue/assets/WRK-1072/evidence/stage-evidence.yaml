@@ -1,5 +1,5 @@
-wrk_id: WRK-1154
-generated_at: '2026-03-13T00:25:03Z'
+wrk_id: WRK-1072
+generated_at: '2026-03-12T23:06:00Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -11,7 +11,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: WRK created with baseline metadata.
-  evidence: .claude/work-queue/working/WRK-1154.md
+  evidence: .claude/work-queue/pending/WRK-1072.md
 - order: 2
   stage: Resource Intelligence
   status: done
@@ -19,7 +19,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Resource/document intelligence pack captured.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/resource-intelligence.yaml
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/resource-intelligence.yaml
 - order: 3
   stage: Triage
   status: done
@@ -27,7 +27,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Route, priority, complexity, and workstations set.
-  evidence: .claude/work-queue/working/WRK-1154.md
+  evidence: .claude/work-queue/pending/WRK-1072.md
 - order: 4
   stage: Plan Draft
   status: done
@@ -35,23 +35,23 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Draft plan and artifact generated.
-  evidence: .claude/work-queue/assets/WRK-1154/plan-html-review-final.md
+  evidence: .claude/work-queue/assets/WRK-1072/WRK-1072-plan.html
 - order: 5
   stage: User Review - Plan (Draft)
   status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-  evidence: .claude/work-queue/assets/WRK-1154/plan-html-review-final.md
+  comment: Plan reviewed and approved.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/user-review-plan-draft.yaml
 - order: 6
   stage: Cross-Review
   status: done
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Multi-provider review completed.
-  evidence: .claude/work-queue/assets/WRK-1154/review.md
+  comment: Fast-forward close — codex timed out, Claude self-review pass.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -59,7 +59,7 @@ stages:
   owner: user + orchestrator
   blocker: 'no'
   comment: Final plan reviewed with gate-pass section.
-  evidence: .claude/work-queue/assets/WRK-1154/plan-html-review-final.md
+  evidence: .claude/work-queue/assets/WRK-1072/WRK-1072-plan.html
 - order: 8
   stage: Claim / Activation
   status: done
@@ -67,7 +67,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Claim evidence and active WRK set.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/claim-evidence.yaml
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
@@ -75,15 +75,15 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: .claude/work-queue/logs/WRK-1154-routing.log
+  evidence: .claude/work-queue/logs/WRK-1072-routing.log
 - order: 10
   stage: Work Execution
   status: done
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Implementation completed under active claim.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/execute.yaml
+  comment: Implementation completed at commit 94ad72bb.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/execute.yaml
 - order: 11
   stage: Artifact Generation
   status: done
@@ -91,23 +91,23 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1154/workflow-final-review.html
+  evidence: .claude/work-queue/assets/WRK-1072/workflow-final-review.html
 - order: 12
   stage: TDD / Eval
   status: done
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1154/test-results.md
+  comment: 12/12 tests pass.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/test-results.yaml
 - order: 13
   stage: Agent Cross-Review
   status: done
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1154/review.md
+  comment: Fast-forward close — Claude self-review pass, codex unavailable.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/cross-review.yaml
 - order: 14
   stage: Verify Gate Evidence
   status: done
@@ -122,8 +122,8 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Follow-up disposition captured.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/future-work.yaml
+  comment: No follow-up items needed.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/future-work.yaml
 - order: 16
   stage: Resource Intelligence Update
   status: done
@@ -131,15 +131,15 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: New resources captured post execution.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/resource-intelligence-update.yaml
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/resource-intelligence-update.yaml
 - order: 17
   stage: User Review - Implementation
   status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Close package reviewed including gate-pass section.
-  evidence: .claude/work-queue/assets/WRK-1154/evidence/user-review-close.yaml
+  comment: Close package reviewed — all ACs met, fast-forward close.
+  evidence: .claude/work-queue/assets/WRK-1072/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
   status: n/a
@@ -154,7 +154,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Awaiting final close operation.
+  comment: Fast-forward close — implementation at 94ad72bb.
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive

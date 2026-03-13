@@ -1,0 +1,6 @@
+{"timestamp":"2026-03-10T10:00:00Z","type":"session_meta","payload":{"id":"test-codex-violations","cwd":"/mnt/local-analysis/workspace-hub"}}
+{"timestamp":"2026-03-10T10:01:00Z","type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":"{\"cmd\":\"python3 scripts/foo.py\",\"workdir\":\"/mnt/local-analysis/workspace-hub\"}"}}
+{"timestamp":"2026-03-10T10:02:00Z","type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":"{\"cmd\":\"cat > src/digitalmodel/tests/test_bar.py << 'EOF'\\nimport pytest\\nEOF\",\"workdir\":\"/mnt/local-analysis/workspace-hub\"}"}}
+{"timestamp":"2026-03-10T10:03:00Z","type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":"{\"cmd\":\"git commit -m 'updated stuff'\",\"workdir\":\"/mnt/local-analysis/workspace-hub\"}"}}
+{"timestamp":"2026-03-10T10:04:00Z","type":"response_item","payload":{"type":"message","text":"Here is what I found in the logs."}}
+{"timestamp":"2026-03-10T10:05:00Z","type":"event_msg","payload":{"msg":"user input received"}}

@@ -1,0 +1,12 @@
+wrk_id: WRK-1072
+generated_at: "2026-03-12T23:05:00Z"
+additions:
+  - path: scripts/release/cut-release.sh
+    role: "Release cut script — bumps version, generates changelog, tags repo, updates manifest"
+  - path: scripts/release/generate-changelog.sh
+    role: "Changelog generator — parses conventional commits into CHANGELOG.md format"
+  - path: scripts/release/tests/test-cut-release.sh
+    role: "TDD test suite for release management (12 tests)"
+  - path: config/releases/release-manifest.yaml
+    role: "Single source of truth for current version of every tier-1 repo"
+notes: "Release management harness scripts for 5 tier-1 repos"

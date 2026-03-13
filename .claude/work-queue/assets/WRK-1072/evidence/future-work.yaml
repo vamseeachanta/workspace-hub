@@ -1,0 +1,4 @@
+wrk_id: WRK-1072
+generated_at: "2026-03-12T23:05:00Z"
+items: []
+no_follow_ups_rationale: "Self-contained release management scripts with 12 TDD tests. cut-release.sh and generate-changelog.sh cover all 5 tier-1 repos. No extensions needed — release-manifest.yaml tracks versions centrally."

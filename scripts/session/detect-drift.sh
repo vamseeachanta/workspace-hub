@@ -15,15 +15,21 @@ SUMMARY_FILE="${STATE_DIR}/drift-summary.yaml"
 LOG_FILE=""
 SINCE_DATE="$(date +%Y%m%d)"
 NO_GIT=false
+PROVIDER="claude"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --log)    LOG_FILE="$2";   shift 2 ;;
-    --since)  SINCE_DATE="$2"; shift 2 ;;
-    --no-git) NO_GIT=true;     shift ;;
+    --log)      LOG_FILE="$2";   shift 2 ;;
+    --since)    SINCE_DATE="$2"; shift 2 ;;
+    --no-git)   NO_GIT=true;     shift ;;
+    --provider) PROVIDER="$2";   shift 2 ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
+
+if [[ "$PROVIDER" != "claude" && "$PROVIDER" != "codex" ]]; then
+  echo "Error: --provider must be 'claude' or 'codex'" >&2; exit 1
+fi
 
 [[ -z "$LOG_FILE" ]] && { echo "Error: --log required" >&2; exit 1; }
 [[ -f "$LOG_FILE" ]] || { echo "Error: log file not found: $LOG_FILE" >&2; exit 1; }
