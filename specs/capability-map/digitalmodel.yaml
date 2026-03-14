@@ -57,7 +57,7 @@ modules:
     discipline: structural
     summary: Since issued in print (August 2005), this booklet has been amended, latest in April 2006. See the reference to
       “Amendments and Corrections” on the next page.
-    status: gap
+    status: done
   - id: DNV_RP_C203_(2000)_Fatigue_Strength_Analysis_of_Offshore_Steel_Structures
     title: DNV RP C203 (2000) Fatigue Strength Analysis of Offshore Steel Structures
     org: DNV
@@ -65,7 +65,7 @@ modules:
     discipline: structural
     summary: Introduction .............................................................. 4 General ...................................................................
       4
-    status: gap
+    status: done
   - id: DNV_RP_F204_(2005)_Riser_Fatigue
     title: DNV RP F204 (2005) Riser Fatigue
     org: DNV
@@ -489,14 +489,14 @@ modules:
     discipline: structural
     summary: Structural engineering standard for offshore or onshore structures. Includes design criteria, load analysis,
       structural integrity, and fitness-for-service assessment.
-    status: gap
+    status: done
   - id: API RP 2A WSD Offshore Platforms (21th 2000 242p)
     title: API RP 2A WSD Offshore Platforms (21th 2000 242p)
     org: API
     sha: sha256:81beca39915192ce788164d473cb8d6f16d3a264d2ce4a7e55f8b022a65c9b7b
     discipline: marine
     summary: Planning, Designing and Constructing Fixed Offshore Platforms-Working
-    status: gap
+    status: done
   - id: API RP 2A-WSD 3rd Ed (1997) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
       Stress Design
     title: Recommended Practice for
@@ -504,14 +504,14 @@ modules:
     sha: sha256:fd7a838c6a31871801951e23639cfbf6295e0018b3f6122d93f6b5b9f07fc84e
     discipline: marine
     summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Recommended Practice for.
-    status: gap
+    status: done
   - id: API RP 2A-LRFD - Offshore platform Loading
     title: api_rp_2a-lrfd_-_offshore_platform_loading.pdf
     org: API
     sha: sha256:c3dbb1f55f8555111913c785adc9ec0edcda1967bfe5fe392962b30a0cba46c5
     discipline: other
     summary: ''
-    status: gap
+    status: done
   - id: 1-api-rp2a-2007 (searchable)
     title: Recommended Practice for
     org: API
@@ -525,14 +525,14 @@ modules:
     sha: sha256:32aca310c3cc1ddcca748645a3226e25cf3ff4a7442bb7727579bdf9cb5bb11e
     discipline: other
     summary: ''
-    status: gap
+    status: done
   - id: API RP 2A-WSD 22nd Edition Nov 2014
     title: api_rp_2a-wsd_22nd_edition_nov_2014.pdf
     org: API
     sha: sha256:0ab7437f5b651d69a60691f817556f9e42571ee769328a8553c2597137e200c9
     discipline: other
     summary: ''
-    status: gap
+    status: done
   - id: API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
       Fixed Offshore Platforms-Working Stress Design
     title: API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
@@ -542,7 +542,7 @@ modules:
     discipline: marine
     summary: 'Date of Issue: October 2007 Affected Publication: API Recommended Practice 2A-WSD, Recommended Practice for
       Planning, Designing and Constructing Fixed Offshore Platforms—Working Stress Design, Twenty-'
-    status: gap
+    status: done
   - id: API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
       Stress Design
     title: API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
@@ -552,7 +552,7 @@ modules:
     discipline: marine
     summary: 'Document ''API_RP_2A-WSD_21st_Ed_(2000)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design''
       classified as marine. Full text extraction was not '
-    status: gap
+    status: done
   - id: API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
       Platforms - Load and Resistance Factor Design
     title: API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
@@ -562,7 +562,7 @@ modules:
     discipline: marine
     summary: '3 * Supplement 1 February 1997 ~ o· CD :::J U> CD n. o EFFECTIVE DATE: April 1, 1997 <CD :::J ~ (f) :T o ~ o
       :::J o-...j Recommended Practice for Planning, Designing, and Constructing Fixed Offshore P'
-    status: gap
+    status: done
   - id: API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
       - Load and Resistance Factor Design
     title: API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
@@ -572,7 +572,7 @@ modules:
     discipline: marine
     summary: 'o ''<D ::> Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms - Load and
       Resistance Factor Design ~ (j) :::r o ;::l. o ::> o --l 6<D \'' IV o ~ IV Q ~;r ::> ''"<D<D ~ '
-    status: gap
+    status: done
   - id: New Microsoft Word Document
     title: New Microsoft Word Document.docx
     org: ''
@@ -1139,14 +1139,14 @@ modules:
     sha: sha256:38efe9621efa8b94a9a1fea7e1a3c454a6293cac8f8735f91684bfa5730637d2
     discipline: structural
     summary: API 579-1/ASME FFS-1, JUNE 5, 2007 API 579-1/ASME FFS-1 2007 Fitness-For-Service
-    status: gap
+    status: done
   - id: API 579-1／ASME FFS-1 Fitness-for-Service Evaluation - 2016
     title: API 579-1／ASME FFS-1 Fitness-for-Service Evaluation - 2016
     org: API
     sha: sha256:0f1f56fb3a063ab16fb1522cba585a41bb36e3b174905ea2f32ebf1350ec3a40
     discipline: structural
     summary: ''
-    status: gap
+    status: done
   - id: ASME_FFS-1_2nd_Ed_(2007)_Fitness_for_Service
     title: ASME FFS 1 2nd Ed (2007) Fitness for Service
     org: ''
@@ -1968,7 +1968,7 @@ modules:
     sha: sha256:927eda99c2727ce81ec5ba9b81cd9b5b05f5f3c9d3be785500ebd61a9dc5fc16
     discipline: pipeline
     summary: API document covering pipeline design, integrity, or pressure containment. Design, Construction, Operation,.
-    status: gap
+    status: done
   - id: API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
       State Design)
     title: API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
@@ -1977,14 +1977,14 @@ modules:
     sha: sha256:24659655308d3c71ad07eab8124f32bc87b44d5880bf798d85b192d13e6d4a51
     discipline: pipeline
     summary: Design, Construction, Operation,
-    status: gap
+    status: done
   - id: API RP 1111 (1999)
     title: Design, Construction, Operation,
     org: API
     sha: sha256:533709f66abfa9eca61790a546b19c36de3a186b7a1626bd9483e113109f7d08
     discipline: regulatory
     summary: API document covering codes, standards, or regulatory compliance requirements. Design, Construction, Operation,.
-    status: gap
+    status: done
   - id: API-RP-1111
     title: Design, Construction, Operation,
     org: API
@@ -2002,7 +2002,7 @@ modules:
     discipline: marine
     summary: 'Date of Issue: May 2011 Affected Publication: API Recommended Practice 1111, Recommended Practice for the Design,
       Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limited St'
-    status: gap
+    status: done
   - id: API RP 1111
     title: API RP 1111.PDF
     org: raw
@@ -2017,7 +2017,7 @@ modules:
     sha: sha256:d7705d592fdff049ba1e8d42ce54de34bb5fe9ee1c482201c237c13786a27fbf
     discipline: production
     summary: Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines
-    status: gap
+    status: done
   - id: MSS_SP-69_(1969)_Pipe_Hangers_&_Supports_(Selection_&_Application)
     title: MSS SP 69 (1969) Pipe Hangers & Supports (Selection & Application)
     org: API
@@ -2141,28 +2141,28 @@ modules:
     sha: sha256:daee8e7cd30c6fabada4070574159b8738d93d67e4eccbf06ac3e2ddc21281e1
     discipline: pipeline
     summary: DNV document covering pipeline design, integrity, or pressure containment. SUBMARINE PIPELINE SYSTEMS.
-    status: gap
+    status: done
   - id: DNV_OS_F101_(2007)_Submarine_Pipeline_Systems
     title: SUBMARINE PIPELINE SYSTEMS
     org: DNV
     sha: sha256:0a4a8983eacff0ddba373e1d1816c59c510ac4976b287163cc1b07b956768cf3
     discipline: pipeline
     summary: DNV document covering pipeline design, integrity, or pressure containment. SUBMARINE PIPELINE SYSTEMS.
-    status: gap
+    status: done
   - id: DNV_OS_F101_(2013)_Submarine_Pipeline_Systems
     title: DNV OS F101 (2013) Submarine Pipeline Systems
     org: DNV
     sha: sha256:c0612bd8d8b44005ec3a07d73fad16e2f6131dcbf449e6c50a7f7baad5ab9890
     discipline: pipeline
     summary: The electronic pdf version of this document found through http://www.dnv.com is the officially binding version
-    status: gap
+    status: done
   - id: DNV_RP_F110_(2007)_Global_buckling_of_submarine_pipelines
     title: OF SUBMARINE PIPELINES
     org: DNV
     sha: sha256:bbd495003db15ca49c4ab5b6669a308a635fd8cab4bb23e08fa285efef6baa06
     discipline: pipeline
     summary: DNV document covering pipeline design, integrity, or pressure containment. OF SUBMARINE PIPELINES.
-    status: gap
+    status: done
   - id: DNV_RP_F106_(2003)_Factory_Applied_External_Pipeline_Coating_for_Corrosion_Control
     title: DNV RP F106 (2003) Factory Applied External Pipeline Coating for Corrosion Control
     org: DNV
@@ -2170,14 +2170,14 @@ modules:
     discipline: pipeline
     summary: Since issued in print (October 2003), this booklet has been amended, latest in April 2006. See the reference
       to “Amendments and Corrections” on the next page.
-    status: gap
+    status: done
   - id: DNV_RP_F106_(2011)_Factory_Applied_External_Pipeline_Coating_for_Corrosion_Control
     title: DNV RP F106 (2011) Factory Applied External Pipeline Coating for Corrosion Control
     org: DNV
     sha: sha256:a2dc37bb3164cd36b96622c37a0b956be4df324f21e05e093aba844eea55a703
     discipline: pipeline
     summary: DET NORSKE VERITAS (DNV) is an autonomous and independent foundation with the objectives of safeguarding life,
-    status: gap
+    status: done
   - id: DNV_RP_F102_(2003)_Pipeline_Field_Joint_Coating_and_Field_Repairs_of_Line_Pipe_Coating
     title: RECOMMENDED PRACTICE
     org: DNV
@@ -2327,7 +2327,7 @@ modules:
     discipline: pipeline
     summary: OFFSHORE STANDARD DNV-OS-F101 SUBMARINE PIPELINE SYSTEMS OCTOBER 2010 DET NORSKE VERITAS FOREWORD DET NORSKE
       VERITAS (DNV) is an autonomous and independent foundation with the objectives of safeguardi
-    status: gap
+    status: done
   - id: api- 1104 errata 2001
     title: Nineteenth Edition, September 1999
     org: ''
@@ -2361,14 +2361,14 @@ modules:
     discipline: marine
     summary: With respect to particular circumstances, local, state, and federal laws and regulations should be reviewed.
       API is not undertaking to meet the duties of employers, manufacturers, or suppliers to warn
-    status: gap
+    status: done
   - id: API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs
     title: RECOMMENDED PRACTICE 2RD
     org: API
     sha: sha256:28c45088878cf690155f2dcd566ea824e131bb47211535c6c1773bbf0dea1158
     discipline: marine
     summary: RECOMMENDED PRACTICE 2RD FIRST EDITION, JUNE 1998 Copyright American Petroleum Institute
-    status: gap
+    status: done
   - id: DnV-OS-F201_-_Dynamic_Risers
     title: DNV-OS-F201.ps
     org: DNV
@@ -2376,7 +2376,7 @@ modules:
     discipline: marine
     summary: 1 Design Philosophy and Design Principles ....................................................................
       12 Loads.................................................................................
-    status: gap
+    status: done
   - id: DNV_OS_F201_(2001)_Dynamic_Risers
     title: DNV_OS_F201_(2001)_Dynamic_Risers.pdf
     org: ''
@@ -2384,7 +2384,7 @@ modules:
     discipline: marine
     summary: 'DNV-OS-F201.ps 29.01.01 09:52 Page 2 (Black/Process Black plate) OFFSHORE STANDARD DNV-OS-F201 DYNAMIC RISERS
       2001 DET NORSKE VERITAS OFFSHORE STANDARD DNV-OS-F201 DYNAMIC RISERS JANUARY 2001 SECTION '
-    status: gap
+    status: done
   - id: DnV-OS-F201_-_Dynamic_Risers_-2
     title: DnV OS F201   Dynamic Risers  2
     org: ''
@@ -2392,7 +2392,7 @@ modules:
     discipline: structural
     summary: (Black/Process Black plate) OFFSHORE STANDARD DNV-OS-F201 General............................................................................................................................
       1
-    status: gap
+    status: done
   - id: API RP 2RD
     title: API RP 2RD.pdf
     org: ''
@@ -2422,7 +2422,7 @@ modules:
     discipline: marine
     summary: Nothing contained in any API publication is to be construed as granting any right, by implication or otherwise,
       for the
-    status: gap
+    status: done
   - id: DNV_OS_F201_(2010)_Dynamic_Risers
     title: DET NORSKE VERITAS (DNV) is an autonomous and independent foundation with the objectives of safeguarding life,
     org: DNV
@@ -2430,7 +2430,7 @@ modules:
     discipline: marine
     summary: DNV document covering offshore structures, mooring systems, or hydrodynamic loading. DET NORSKE VERITAS (DNV)
       is an autonomous and independent foundation with the objectives of safeguar.
-    status: gap
+    status: done
   - id: DNV_RP_F204_(2010)_Riser_Fatigue
     title: DET NORSKE VERITAS (DNV) is an autonomous and independent foundation with the objectives of safeguarding life,
     org: DNV
@@ -2798,7 +2798,7 @@ modules:
     sha: sha256:7267c6d7a2dfeb4b3c6709a723c7d80995a5cbe3473be4adf18f9df2af5da175
     discipline: pipeline
     summary: FREE SPANNING PIPELINES Recommended Practice DNV-RP-FI05, March 2002
-    status: gap
+    status: done
   unlinked_doc_count: 0
 - module: subsea/mooring_analysis
   standards_count: 73
@@ -2818,7 +2818,7 @@ modules:
     discipline: marine
     summary: OFFSHORE STANDARD DNV-OS-E301 POSITION MOORING OCTOBER 2010 DET NORSKE VERITAS FOREWORD DET NORSKE VERITAS (DNV)
       is an autonomous and independent foundation with the objectives of safeguarding life, p
-    status: gap
+    status: done
   - id: 2SK_Add
     title: API RP 2SK 3rd Ed Addendum 1 (2007) Design and Analysis of Stationkeeping Systems for Floating Structures
     org: ''
@@ -2916,7 +2916,7 @@ modules:
     discipline: marine
     summary: Recommended Practice for Design, Manufacture, Installation, and Maintenance of Synthetic Fiber Ropes for Offshore
       Mooring API RECOMMENDED PRACTICE 2SM FIRST EDITION, MARCH 2001 ADDENDUM, MAY 2007 1]?
-    status: gap
+    status: done
   - id: API RP 2T 2nd Ed (1997) Planning, Designing, and Constructing Tension Leg Platforms
     title: API RP 2T 2nd Ed (1997) Planning, Designing, and Constructing Tension Leg Platforms
     org: API
@@ -3058,14 +3058,14 @@ modules:
     sha: sha256:1b70daba2ee14f9ecab60c85e78691b2ee8844bdce5a0127200de98458674146
     discipline: marine
     summary: In-service Inspection of Mooring Hardware for Floating Structures API RECOMMENDED PRACTICE 21
-    status: gap
+    status: done
   - id: API RP 2SM-2001
     title: API RP 2SM 2001
     org: ''
     sha: sha256:5a8efea47a04e640b7992829631962ded6bc691c2a95e4b5260afc01d24b37d2
     discipline: marine
     summary: Recommended Practice for Design, Manufacture, Installation, and Maintenance of Synthetic Fiber
-    status: gap
+    status: done
   - id: Pawsey, S.F., et al, 1983 - Improved Wave Kinematics From W
     title: Pawsey, S.F., et al, 1983   Improved Wave Kinematics From W
     org: NEMA
@@ -3206,7 +3206,7 @@ modules:
     discipline: regulatory
     summary: DNV standard or recommended practice covering regulatory requirements, safety management, or inspection codes
       for oil and gas facilities.
-    status: gap
+    status: done
   unlinked_doc_count: 0
 - module: hydrodynamics/rao_analysis
   standards_count: 0
@@ -3314,7 +3314,7 @@ modules:
     sha: sha256:0941d67e95e383ec8cb2efe2a58189ff75a6415e453d0dc74ad9a4918ff5b2b5
     discipline: installation
     summary: ''
-    status: gap
+    status: done
   - id: DNV_SfC_No.2.22_(2011)_Lifting_Appliances
     title: DNV SfC No.2.22 (2011) Lifting Appliances
     org: DNV
@@ -3939,7 +3939,7 @@ modules:
     sha: sha256:cd43fba17b436421e2ca73563d88950c827be5f2178de8bf412e6f6ca45a943c
     discipline: drilling
     summary: Analysis of Spread Mooring Systems API RECOMMENDED PRACTICE 2P (RP 2P)
-    status: gap
+    status: done
   - id: API RP 941 Steels for Hydrogen Service at Elevated Temperatures
     title: STD.API/PETRO RF 742-ENGL 2 9 7 7 m U732270 G b 0 7 8 5 7 T 9 U m
     org: API
@@ -4148,17 +4148,21 @@ modules:
     title: API RP 2GEO Geotechnical and Foundation Design Considerations
     org: API
     discipline: geotechnical
-    summary: |
-      Soil characterisation, CPT correlation (Sec 3-5), pile capacity
+    summary: 'Soil characterisation, CPT correlation (Sec 3-5), pile capacity
+
       (Sec 6-8), foundation design. Planned: WRK-618 (Phase 1), WRK-619 (Phase 2).
+
+      '
     status: gap
   - id: DNV_RP_C212_Offshore_Soil_Mechanics
     title: DNV-RP-C212 Offshore Soil Mechanics and Geotechnical Engineering
     org: DNV
     discipline: geotechnical
-    summary: |
-      Soil mechanics for offshore structures. Sec 5 bearing capacity,
+    summary: 'Soil mechanics for offshore structures. Sec 5 bearing capacity,
+
       Sec 6 pile design. Planned: WRK-618 (Phase 1), WRK-621 (Phase 4).
+
+      '
     status: gap
   unlinked_doc_count: 0
 - module: geotechnical/piles
@@ -4168,9 +4172,11 @@ modules:
     title: API RP 2GEO Pile Design (Sections 6-8)
     org: API
     discipline: geotechnical
-    summary: |
-      Driven pile capacity in clay (alpha method) and sand (beta method),
+    summary: 'Driven pile capacity in clay (alpha method) and sand (beta method),
+
       p-y/t-z/q-z curves. Planned: WRK-619 (Phase 2).
+
+      '
     status: gap
   unlinked_doc_count: 0
 - module: geotechnical/on_bottom_stability
@@ -4180,10 +4186,12 @@ modules:
     title: DNV-RP-F109 On-Bottom Stability Design of Submarine Pipelines
     org: DNV
     discipline: pipeline
-    summary: |
-      Absolute stability (Sec 3.3), generalized method (Sec 3.4),
+    summary: 'Absolute stability (Sec 3.3), generalized method (Sec 3.4),
+
       soil resistance, hydrodynamic loads. Planned: WRK-620 (Phase 3).
-    status: gap
+
+      '
+    status: done
   unlinked_doc_count: 0
 - module: geotechnical/foundations
   standards_count: 2
@@ -4192,17 +4200,21 @@ modules:
     title: DNV-RP-C212 Bearing Capacity (Section 5)
     org: DNV
     discipline: geotechnical
-    summary: |
-      Shallow foundation bearing capacity for gravity base and mudmat.
+    summary: 'Shallow foundation bearing capacity for gravity base and mudmat.
+
       Brinch Hansen undrained, Terzaghi/Meyerhof drained. Planned: WRK-621 (Phase 4).
+
+      '
     status: gap
   - id: ISO_19901_4_Geotechnical_Foundation_Design
     title: ISO 19901-4 Geotechnical and Foundation Design Considerations
     org: ISO
     discipline: geotechnical
-    summary: |
-      Foundation design for offshore structures. Bearing capacity,
+    summary: 'Foundation design for offshore structures. Bearing capacity,
+
       settlement, pile design. Planned: WRK-621 (Phase 4).
+
+      '
     status: gap
   unlinked_doc_count: 0
 - module: geotechnical/anchors
@@ -4212,25 +4224,31 @@ modules:
     title: DNVGL-RP-E301 Design and Installation of Fluke Anchors
     org: DNV
     discipline: marine
-    summary: |
-      Drag/fluke anchor design and installation. Neubecker-Randolph
+    summary: 'Drag/fluke anchor design and installation. Neubecker-Randolph
+
       method, anchor efficiency. Planned: WRK-622 (Phase 5).
+
+      '
     status: gap
   - id: DNV_RP_E303_Suction_Anchors
     title: DNV-RP-E303 Geotechnical Design and Installation of Suction Anchors
     org: DNV
     discipline: geotechnical
-    summary: |
-      Suction caisson capacity (vertical, horizontal, inclined),
+    summary: 'Suction caisson capacity (vertical, horizontal, inclined),
+
       installation penetration analysis. Planned: WRK-622 (Phase 5).
+
+      '
     status: gap
   - id: API_RP_2SK_Anchor_Sections
     title: API RP 2SK Station Keeping (Anchor Sections)
     org: API
     discipline: marine
-    summary: |
-      Mooring anchor requirements and station keeping criteria.
+    summary: 'Mooring anchor requirements and station keeping criteria.
+
       Anchor capacity verification. Planned: WRK-622 (Phase 5).
+
+      '
     status: gap
   unlinked_doc_count: 0
 - module: geotechnical/scour
@@ -4240,8 +4258,10 @@ modules:
     title: DNV-RP-F107 Risk Assessment of Pipeline Protection
     org: DNV
     discipline: pipeline
-    summary: |
-      Scour depth prediction for pipelines and structures,
+    summary: 'Scour depth prediction for pipelines and structures,
+
       scour protection (rock dumping) design. Planned: WRK-623 (Phase 6).
+
+      '
     status: gap
   unlinked_doc_count: 0
