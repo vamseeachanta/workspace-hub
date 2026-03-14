@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1200 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1200 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Strategic prioritization skill — balance harness vs engineering vs market readiness</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — A strategic prioritization skill that replaces ad-hoc &quot;what&#x27;s next?&quot; decisions with a structured framework. It should: 1. **Classify work in...</summary><div class="panel"><p>A strategic prioritization skill that replaces ad-hoc "what's next?" decisions with a structured framework. It should:</p>
+<ol>
+<li><strong>Classify work into tracks</strong>:</li>
+<li><strong>Harness</strong> — work-queue, skills, CI/CD, agent tooling, ecosystem plumbing</li>
+<li><strong>Engineering</strong> — digitalmodel, assetutilities, worldenergydata, assethold, OGManufacturing calculations/features</li>
+<li>
+<p><strong>Market readiness</strong> — demos, documentation, aceengineer-website, presentation artifacts, industry-facing outputs</p>
+</li>
+<li>
+<p><strong>Score and rank</strong> pending WRK items against:</p>
+</li>
+<li>Market impact (does this move us closer to presenting to O&amp;G industry?)</li>
+<li>Engineering value (does this build reusable calculation capability?)</li>
+<li>Harness necessity (is this blocking engineering or market work?)</li>
+<li>Dependency chain (what does this unblock?)</li>
+<li>
+<p>Effort vs payoff ratio</p>
+</li>
+<li>
+<p><strong>Enforce a healthy balance</strong> — harness work is necessary but should not dominate; the skill should flag when harness WRKs exceed a configurable threshold (e.g. &gt;40% of active work) and redirect toward engineering/market items</p>
+</li>
+<li>
+<p><strong>Race-to-market lens</strong> — every recommendation should answer: "How does this help us present our engineering tools to the oil and gas industry sooner?"</p>
+</li>
+<li>
+<p><strong>Output a prioritized shortlist</strong> — top 3-5 items across all tracks with rationale, not just a sorted list</p>
+</li>
+<li>
+<p><strong>Visionary filter</strong> — apply product visionary principles to every recommendation:</p>
+</li>
+<li><strong>Jobs: "Focus is about saying no"</strong> — actively recommend WRK items to defer, descope, or kill. A 450-item queue is a symptom of saying yes to everything. The skill should trim ruthlessly.</li>
+<li><strong>Jobs: "Start with the customer experience and work backwards"</strong> — an O&amp;G engineer using our tools should feel delight, not see our internal plumbing. Prioritize what the user touches.</li>
+<li><strong>Musk: "First principles thinking"</strong> — when scoring, ask "does this need to exist at all?" before asking "how important is it?" Eliminate before prioritizing.</li>
+<li><strong>Ive: "Simplicity is the ultimate sophistication"</strong> — prefer one polished, demo-ready module over five half-finished ones. Depth over breadth.</li>
+<li><strong>Grove: "Only the paranoid survive"</strong> — identify the strategic inflection point: what is the one capability that, if we ship it now, changes how the industry sees us?</li>
+<li>
+<p><strong>Bezos: "Work backwards from the press release"</strong> — for market-track items, frame the recommendation as "what would the announcement say?" If there's no compelling announcement, it's not market-ready work.</p>
+</li>
+<li>
+<p><strong>The "demo in 30 seconds" test</strong> — every top recommendation must pass: "Can an O&amp;G engineer see the value of this in a 30-second demo?" If not, it's infrastructure, not product.</p>
+</li>
+</ol></div></details>
+
+  <details open><summary><strong>Why</strong> — - The workspace has ~450 WRK items; without strategic filtering, harness/tooling work absorbs all capacity - The actual value is in engineer...</summary><div class="panel"><ul>
+<li>The workspace has ~450 WRK items; without strategic filtering, harness/tooling work absorbs all capacity</li>
+<li>The actual value is in engineering modules (CP, fatigue, hydrodynamics, energy data, asset analysis) — these are what the O&amp;G industry cares about</li>
+<li>A marketing milestone (conference, demo, website launch) creates a forcing function that aligns all work streams</li>
+<li>The skill encodes product management discipline so every session starts with "what moves the needle most?" rather than "what's next in the queue?"</li>
+<li>Great products are built by people who say no more than they say yes — this skill is the mechanism for saying no to harness work that doesn't serve the end user</li>
+<li>The O&amp;G industry judges tools by what they do, not how they're built — our internal sophistication means nothing if the demo isn't compelling</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] Skill file at `.claude/skills/workspace-hub/strategic-prioritization/SKILL.md` - [ ] Reads pending/working WRK items and classifies in...</summary><div class="panel"><ul>
+<li>[ ] Skill file at <code>.claude/skills/workspace-hub/strategic-prioritization/SKILL.md</code></li>
+<li>[ ] Reads pending/working WRK items and classifies into harness/engineering/market tracks</li>
+<li>[ ] Scoring model with configurable weights (market bias by default)</li>
+<li>[ ] Harness ratio alert when tooling work exceeds threshold</li>
+<li>[ ] Integrates with <code>/whats-next</code> as an optional strategic overlay</li>
+<li>[ ] Considers repo maturity from <code>config/onboarding/repo-map.yaml</code> (stable vs beta vs alpha)</li>
+<li>[ ] Considers dependency graph from <code>config/deps/cross-repo-graph.yaml</code></li>
+<li>[ ] Output includes: top 5 recommendations, track balance report, market-readiness gap analysis</li>
+<li>[ ] Can be invoked as <code>/prioritize</code> or integrated into session-start</li>
+<li>[ ] Wired into session-start as final step (strategic brief)</li>
+<li>[ ] Wired into <code>/whats-next</code> as strategic overlay</li>
+<li>[ ] Wired into <code>/work run</code> for WRK selection ordering</li>
+<li>[ ] Wired into <code>/work add</code> for capture-time track classification</li>
+<li>[ ] Wired into Stage 3 (triage) for full scoring</li>
+<li>[ ] Wired into <code>/today</code> and <code>/reflect</code> for track balance reporting</li>
+<li>[ ] Wired into Stage 15 (future work) to kill low-value follow-ups</li>
+<li>[ ] Wired into Feature WRK decomposition to front-load demo-able children</li>
+<li>[ ] Visionary filter: each recommendation includes a "say no" list (items to defer/kill) alongside the "do now" list</li>
+<li>[ ] "Demo in 30 seconds" test applied to market-track recommendations</li>
+<li>[ ] "Work backwards from the press release" framing for top market items</li>
+<li>[ ] First-principles check: flags items that shouldn't exist at all</li>
+<li>[ ] TDD: tests for classification logic, scoring, threshold alerting, and visionary filter logic</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — No summary available.</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1200, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | FAIL | reviewed=False, approved=Fals...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1200, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>FAIL</td>
+<td>reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>FAIL</td>
+<td>stage_evidence_ref missing in WRK frontmatter</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>FAIL</td>
+<td>resource-intelligence.yaml: skills.core_used must include at least 3 core skills</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>FAIL</td>
+<td>activation.yaml missing</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>FAIL</td>
+<td>routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>FAIL</td>
+<td>user-review-browser-open.yaml missing</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>FAIL</td>
+<td>user-review-publish.yaml missing</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>FAIL</td>
+<td>artifact=none</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>FAIL</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>FAIL</td>
+<td>execute evidence missing (required: evidence/execute.yaml)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>FAIL</td>
+<td>artifact=missing, none</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>FAIL</td>
+<td>future-work evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>FAIL</td>
+<td>resource-intelligence-update.yaml missing</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>FAIL</td>
+<td>user-review-close.yaml missing</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml absent — skip elapsed check</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>FAIL</td>
+<td>no claim artifact found (expected evidence/claim-evidence.yaml)</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>FAIL</td>
+<td>user-review-capture.yaml.reviewed_at: date-only value '2026-03-14' — time component required</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip commit uniqueness check</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip path existence check</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip done/pending check</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — --- wrk_id: WRK-1200 future_work: - title: &quot;Wire strategic-brief into session-start Step 4b&quot; priority: medium track: harness note: &quot;Call str...</summary><div class="panel"><hr>
+<p>wrk_id: WRK-1200
+future_work:
+  - title: "Wire strategic-brief into session-start Step 4b"
+    priority: medium
+    track: harness
+    note: "Call strategic-brief.sh --top 3 after whats-next in session-start"
+  - title: "Add --sort-by strategic flag to whats-next.sh"
+    priority: medium
+    track: harness
+    note: "Reorder MED_UNBLOCKED by strategic score"
+  - title: "Wire strategic-classify.py into /work add post-capture"
+    priority: medium
+    track: harness
+    note: "Auto-set track: field on new WRK items"
+  - title: "Track balance reporting in /today --eod"
+    priority: low
+    track: harness
+    note: "Add track balance section to daily wrap-up"</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — --- wrk_id: WRK-1200 stages: stage_1: {status: done, note: &quot;Plan created in plan mode&quot;} stage_5: {status: done, note: &quot;Plan approved by user...</summary><div class="panel"><hr>
+<p>wrk_id: WRK-1200
+stages:
+  stage_1: {status: done, note: "Plan created in plan mode"}
+  stage_5: {status: done, note: "Plan approved by user"}
+  stage_7: {status: done, note: "User approved implementation"}
+  stage_8: {status: done, note: "TDD: 26 tests written RED"}
+  stage_9: {status: done, note: "Implementation: strategic_score.py, strategic_classify.py, strategic-brief.sh"}
+  stage_10: {status: done, note: "26/26 tests GREEN in 0.32s"}
+  stage_11: {status: done, note: "Legal scan PASS"}
+  stage_12: {status: done, note: "E2E verification on ~270 real WRKs"}
+  stage_15: {status: done, note: "Future work captured"}
+  stage_17: {status: done, note: "User approved close"}</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 12 assets indexed.</summary><div class="panel"><ul><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/tdd.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li></ul></div></details>
+</body>
+</html>

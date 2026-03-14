@@ -8,7 +8,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
     },
     {
       "name": "Workstation contract gate",
@@ -22,7 +22,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage_evidence_ref missing in WRK frontmatter"
+      "details": "stage-evidence.yaml: stages must be a list"
     },
     {
       "name": "Resource-intelligence gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
+      "details": "execute.yaml: integrated_repo_tests must be a list"
     },
     {
       "name": "Legal gate",
@@ -99,7 +99,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
     },
     {
       "name": "Resource-intelligence update gate",
@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -183,14 +183,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip path existence check"
+      "details": "stages not a list \u2014 skip"
     },
     {
       "name": "Done/pending contradiction gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip done/pending check"
+      "details": "no done/pending contradictions found"
     },
     {
       "name": "Plan publish predates approval gate",
