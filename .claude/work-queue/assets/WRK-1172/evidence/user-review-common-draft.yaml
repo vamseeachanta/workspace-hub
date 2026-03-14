@@ -1,0 +1,6 @@
+wrk_id: WRK-1172
+stage: 5
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: "2026-03-14T11:00:00Z"
+notes: "Plan approved — nightly batch approach, integrated as R12 in nightly-readiness.sh"

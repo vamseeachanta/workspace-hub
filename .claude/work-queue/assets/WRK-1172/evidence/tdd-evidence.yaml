@@ -1,0 +1,24 @@
+---
+wrk_id: WRK-1172
+stage: 12
+gate: tdd_eval
+test_file: scripts/cron/tests/test_nightly_smoke_tests.sh
+test_count: 22
+passed: 22
+failed: 0
+coverage_notes: |
+  Test 1: Script exists
+  Test 2: YAML output format (required fields)
+  Test 3: All-pass scenario → all_healthy: true
+  Test 4: Failing repo → all_healthy: false
+  Test 5: JSONL signal emission (valid JSON)
+  Test 6: Per-repo YAML fields (passed/failed/duration_s)
+  Test 7: Exit code 5 (no tests collected) → pass
+  Test 8: Exit code 124 (timeout) → timeout status, still healthy
+  Test 9: Script returns 0 always (best-effort)
+real_world_validation: |
+  Ran against 5 tier-1 repos: 33s total (< 60s budget)
+  assetutilities: pass (0s), digitalmodel: pass (2s), assethold: pass (0s)
+  OGManufacturing: pass (0s), worldenergydata: timeout (31s)
+  all_healthy: true
+run_at: "2026-03-14"

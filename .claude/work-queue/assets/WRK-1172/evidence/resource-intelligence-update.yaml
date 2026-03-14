@@ -1,0 +1,16 @@
+wrk_id: WRK-1172
+stage: 16
+updates:
+  - type: new_script
+    path: scripts/cron/nightly-smoke-tests.sh
+    purpose: "Nightly smoke test runner for tier-1 repos"
+  - type: new_test
+    path: scripts/cron/tests/test_nightly_smoke_tests.sh
+    purpose: "22 TDD tests for smoke test script"
+  - type: integration
+    path: scripts/readiness/nightly-readiness.sh
+    detail: "R12 check added"
+  - type: skill_update
+    path: .claude/skills/workspace-hub/session-start/SKILL.md
+    detail: "Step 1b added for repo health surfacing"
+updated_at: "2026-03-14"

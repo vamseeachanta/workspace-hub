@@ -23,3 +23,8 @@ findings:
   state_directory: ".claude/state/"
   output_file: ".claude/state/session-health.yaml"
   design_decision: "Nightly cron batch (not inline session-start) per user feedback — keep session-start lightweight"
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/session-start
+    - workspace-hub/workflow-gatepass

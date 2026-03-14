@@ -1,0 +1,6 @@
+wrk_id: WRK-1172
+stage: 14
+scan_result: pass
+scanned_at: "2026-03-14T13:20:00Z"
+command: "bash scripts/legal/legal-sanity-scan.sh"
+violations: 0

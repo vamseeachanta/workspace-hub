@@ -1,0 +1,32 @@
+---
+wrk_id: WRK-1172
+stage: 15
+items:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Add @pytest.mark.smoke markers to tier-1 repos"
+    description: >
+      No repos currently have smoke-marked tests. Add 5-10 fast, critical-path
+      tests per repo with @pytest.mark.smoke so the health check validates
+      real functionality rather than just confirming collection works.
+    target_repos:
+      - assetutilities
+      - digitalmodel
+      - worldenergydata
+      - assethold
+  - id: FW-2
+    priority: LOW
+    title: "Fix worldenergydata sklearn import errors"
+    description: >
+      worldenergydata collection fails with ModuleNotFoundError: sklearn.
+      Smoke tests timeout at 31s partly due to bytecode compilation (22s).
+      Add scikit-learn to dev dependencies or gate the import.
+    target_repos:
+      - worldenergydata
+  - id: FW-3
+    priority: LOW
+    title: "Parallel repo smoke execution"
+    description: >
+      Running repos sequentially takes 33s. Background execution with wait
+      could cut to ~15s. Low priority since 33s is within 60s budget.
+synthesized_at: "2026-03-14"

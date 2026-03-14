@@ -1,0 +1,22 @@
+---
+wrk_id: WRK-1172
+stage: 10
+commits:
+  - hash: 5b3b49e5
+    message: "chore(sync): auto-sync 2026-03-14 (initial WRK-1172 files)"
+  - hash: f2d82fdb
+    message: "fix(WRK-1172): harden smoke tests for real-world repo conditions"
+files_created:
+  - scripts/cron/nightly-smoke-tests.sh
+  - scripts/cron/tests/test_nightly_smoke_tests.sh
+files_modified:
+  - scripts/readiness/nightly-readiness.sh
+  - scripts/cron/crontab-template.sh
+  - .claude/skills/workspace-hub/session-start/SKILL.md
+executed_at: "2026-03-14T11:47:00Z"
+computer: ace-linux-1
+integrated_repo_tests:
+  - repo: workspace-hub
+    command: "bash scripts/cron/tests/test_nightly_smoke_tests.sh"
+    passed: 22
+    failed: 0
