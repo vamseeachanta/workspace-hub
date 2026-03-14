@@ -1,13 +1,13 @@
-generated: '2026-03-13'
-total_specs: 1654
+generated: '2026-03-14'
+total_specs: 1686
 by_category:
   archive: 10
   data-sources: 13
-  modules: 153
-  other: 31
+  modules: 178
+  other: 36
   repos: 1344
   templates: 20
-  wrk: 83
+  wrk: 85
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -17,7 +17,7 @@ by_repo:
   assethold: 24
   assetutilities: 52
   client_projects: 7
-  digitalmodel: 904
+  digitalmodel: 905
   doris: 9
   frontierdeepwater: 11
   hobbies: 7
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 293
+  workspace-hub: 324
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -169,7 +169,8 @@ by_wrk:
   WRK-310: 1
   WRK-313: 1
   WRK-316: 1
-  WRK-318: 1
+  WRK-318: 2
+  WRK-321: 1
   WRK-329: 2
   WRK-341: 2
   WRK-344: 1
@@ -214,6 +215,8 @@ by_wrk:
   WRK-573: 2
   WRK-577: 2
   WRK-597: 1
+  WRK-601: 1
+  WRK-602: 1
   WRK-607: 1
   WRK-610: 1
   WRK-611: 1
@@ -278,6 +281,7 @@ by_wrk:
   WRK-1042: 1
   WRK-1044: 1
   WRK-1045: 1
+  WRK-1048: 2
   WRK-1052: 1
   WRK-1054: 1
   WRK-1056: 1
@@ -318,25 +322,51 @@ by_wrk:
   WRK-1125: 1
   WRK-1126: 1
   WRK-1127: 1
+  WRK-1128: 1
   WRK-1131: 1
   WRK-1132: 1
   WRK-1140: 1
   WRK-1142: 1
   WRK-1143: 2
   WRK-1144: 1
-  WRK-1147: 2
+  WRK-1147: 13
   WRK-1148: 3
   WRK-1149: 2
   WRK-1150: 1
-  WRK-1151: 2
+  WRK-1151: 3
   WRK-1152: 1
   WRK-1153: 1
+  WRK-1154: 1
+  WRK-1155: 1
+  WRK-1156: 1
   WRK-1159: 1
+  WRK-1169: 1
+  WRK-1178: 1
+  WRK-1179: 4
+  WRK-5035: 1
   WRK-5036: 3
-  WRK-5037: 2
-  WRK-5038: 1
-  WRK-5039: 1
-  WRK-5040: 1
+  WRK-5037: 5
+  WRK-5038: 5
+  WRK-5039: 2
+  WRK-5040: 2
+  WRK-5041: 1
+  WRK-5042: 1
+  WRK-5048: 1
+  WRK-5054: 1
+  WRK-5058: 1
+  WRK-5059: 1
+  WRK-5060: 1
+  WRK-5062: 1
+  WRK-5063: 1
+  WRK-5064: 1
+  WRK-5065: 1
+  WRK-5066: 1
+  WRK-5067: 1
+  WRK-5068: 1
+  WRK-5069: 1
+  WRK-5070: 1
+  WRK-5071: 1
+  WRK-5072: 1
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -560,6 +590,57 @@ specs:
   - worldenergydata
   wrk_refs: []
   mtime: '2026-02-25'
+- path: specs/capability-map/audit/assethold-calc-audit.md
+  title: assethold Calculation Audit
+  description: '| Gap | Priority | Notes | |-----|----------|-------| | Portfolio beta vs energy benchmark (XLE, XOP) | HIGH
+    | No beta calculation exists anywhere; needed for energy-sector portfolio context | | Di...'
+  category: other
+  repo: workspace-hub
+  tags:
+  - assethold-calc-audit
+  - audit
+  - capability-map
+  wrk_refs:
+  - WRK-1179
+  mtime: '2026-03-14'
+- path: specs/capability-map/audit/assetutilities-calc-audit.md
+  title: assetutilities Calculation Audit
+  description: 'Generated: 2026-03-13 | WRK-1179 Stream B Task 3'
+  category: other
+  repo: workspace-hub
+  tags:
+  - assetutilities-calc-audit
+  - audit
+  - capability-map
+  wrk_refs:
+  - WRK-1179
+  mtime: '2026-03-14'
+- path: specs/capability-map/audit/digitalmodel-calc-audit.md
+  title: digitalmodel Calculation Audit
+  description: 'Generated: 2026-03-13 | WRK-1179 Stream B Task 1'
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - capability-map
+  - digitalmodel-calc-audit
+  wrk_refs:
+  - WRK-1179
+  mtime: '2026-03-14'
+- path: specs/capability-map/audit/worldenergydata-calc-audit.md
+  title: worldenergydata Calculation Audit
+  description: 'Generated: 2026-03-13 | WRK-1179 Stream B Task 4'
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - capability-map
+  - worldenergydata-calc-audit
+  wrk_refs:
+  - WRK-318
+  - WRK-321
+  - WRK-1179
+  mtime: '2026-03-14'
 - path: specs/client-demos/brochure-client1-rigid-jumper-pipeline.md
   title: Engineering AI Assistant
   description: '*Powered by large language model technology with deep offshore engineering context*'
@@ -836,6 +917,28 @@ specs:
   - agents-md-assessment-workspace-hub
   wrk_refs: []
   mtime: '2026-01-29'
+- path: specs/modules/artificial-lift-study.md
+  title: artificial lift study
+  description: Rod pump diagnostics, ESP, gas lift per API 11L, Gibbs wave equation.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - artificial-lift-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5072
+  mtime: '2026-03-13'
+- path: specs/modules/asset-integrity-ffs-study.md
+  title: asset integrity ffs study
+  description: Fitness-for-service per API 579-1, BS 7910 — metal loss, cracks, creep, FAD.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - asset-integrity-ffs-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5064
+  mtime: '2026-03-13'
 - path: specs/modules/best-practices-integration-everything-claude-code.md
   title: 'Best Practices Integration: everything-claude-code → workspace-hub'
   description: '**Version:** 1.0.0 **Module:** claude-infrastructure **Session ID:** curious-moseying-minsky **Agent:** Claude
@@ -893,6 +996,17 @@ specs:
   - bsee-offshore-infrastructure-data-acquisition
   wrk_refs: []
   mtime: '2026-02-03'
+- path: specs/modules/cathodic-protection-study.md
+  title: cathodic protection study
+  description: CP electrochemistry, sacrificial/ICCP design per DNV-RP-B401, ISO 15589.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - cathodic-protection-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5068
+  mtime: '2026-03-13'
 - path: specs/modules/cicd-notification-triage-resolution-plan.md
   title: CI/CD Notification Triage & Resolution Plan
   description: All unread GitHub notifications are CI/CD failures across 3 repositories. There are also 2 pending Dependabot
@@ -933,6 +1047,29 @@ specs:
   wrk_refs:
   - WRK-5036
   - WRK-5037
+  mtime: '2026-03-13'
+- path: specs/modules/coiled-tubing-study.md
+  title: coiled tubing study
+  description: CT hydraulics, fatigue, buckling per ICoTA, API 5ST.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - coiled-tubing-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5071
+  mtime: '2026-03-13'
+- path: specs/modules/compiled-crafting-conway.md
+  title: 'WRK-5040: promote-to-code.py — Promote All 8 Content Types'
+  description: 'WRK-5038 built `build-doc-intelligence.py` which extracts document content into 8 JSONL indexes under `data/doc-intelligence/`.
+    This script closes the loop: promoting those indexes into executable,...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - compiled-crafting-conway
+  wrk_refs:
+  - WRK-5038
+  - WRK-5040
   mtime: '2026-03-13'
 - path: specs/modules/composed-squishing-hedgehog.md
   title: 'WRK-1072 Plan: Fast-Forward to Close'
@@ -1000,6 +1137,18 @@ specs:
   - WRK-683
   - WRK-687
   mtime: '2026-03-02'
+- path: specs/modules/delightful-orbiting-hammock.md
+  title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
+  description: 'WRK-5037 delivered a document extraction pipeline that produces YAML manifests with raw sections, tables,
+    and figure_refs. WRK-5038 builds the next layer: a federated index builder that reads all m...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - delightful-orbiting-hammock
+  wrk_refs:
+  - WRK-5037
+  - WRK-5038
+  mtime: '2026-03-13'
 - path: specs/modules/diffraction-spec-converter.md
   title: Unified Input Data Format Converter for Diffraction Solvers
   description: 'Cross-solver spec converter: spec.yml <-> AQWA .dat <-> OrcaWave .yml'
@@ -1033,6 +1182,28 @@ specs:
   - discipline-refactor-skill
   wrk_refs: []
   mtime: '2026-01-24'
+- path: specs/modules/drilling-engineering-study.md
+  title: Drilling Engineering Study
+  description: 'Model core drilling engineering calculations: torque and drag, hydraulics, well control, casing design, and
+    drill string mechanics — for fast-running Python assessment tools.'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - drilling-engineering-study
+  wrk_refs:
+  - WRK-5059
+  mtime: '2026-03-13'
+- path: specs/modules/drilling-riser-engineering-study.md
+  title: Drilling Riser Engineering Study
+  description: 'Model drilling riser analysis across key engineering disciplines: stackup/tension, operability envelopes,
+    VIV fatigue, structural damping, and tool passage — for fast-running Python assessment tools.'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - drilling-riser-engineering-study
+  wrk_refs:
+  - WRK-5058
+  mtime: '2026-03-13'
 - path: specs/modules/dynacard-svg-diagnostic-charts.md
   title: Dynacard SVG Diagnostic Charts
   description: Engineering-quality SVG schematics and diagnostic card gallery for the dynacard marketing brochure
@@ -1053,6 +1224,19 @@ specs:
   wrk_refs:
   - WRK-95
   mtime: '2026-02-09'
+- path: specs/modules/expressive-percolating-dolphin.md
+  title: 'WRK-5042: Batch Extraction Pipeline'
+  description: WRK-5037 delivered `extract-document.py` (single-doc extraction) and WRK-5038 delivered federated content indexes.
+    Scaling to a 1M-document corpus requires queue management, rate limiting, cost vis...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - expressive-percolating-dolphin
+  wrk_refs:
+  - WRK-5037
+  - WRK-5038
+  - WRK-5042
+  mtime: '2026-03-13'
 - path: specs/modules/foamy-conjuring-hollerith.md
   title: 'Plan: WRK-1143 — Centralized WRK Status Index'
   description: 'WRK-1143 targets a single source of truth (`wrk-status-index.json`) for WRK status across parallel sessions.
@@ -1075,6 +1259,18 @@ specs:
   wrk_refs:
   - WRK-1113
   mtime: '2026-03-12'
+- path: specs/modules/gleaming-cooking-milner.md
+  title: 'WRK-5054: Run Doc-Intel Pipeline on Naval Architecture Collection'
+  description: The doc-intelligence pipeline (WRK-5035–5041) is built and tested on a single introductory PDF. The 145 SNAME
+    naval architecture PDFs are the first real corpus. This WRK validates the pipeline end-...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - gleaming-cooking-milner
+  wrk_refs:
+  - WRK-5035
+  - WRK-5054
+  mtime: '2026-03-13'
 - path: specs/modules/glittery-sprouting-island.md
   title: 'WRK-1111 Plan: @ File Reference Pipeline'
   description: Claude Code's `@file` syntax in CLAUDE.md causes a file's contents to be auto-included in every session context
@@ -1163,6 +1359,17 @@ specs:
   - WRK-1034
   - WRK-1035
   mtime: '2026-03-08'
+- path: specs/modules/hydrodynamics-wave-study.md
+  title: hydrodynamics wave study
+  description: Wave spectra, Morison loading, RAO, hull resistance per DNV-RP-C205.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - hydrodynamics-wave-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5067
+  mtime: '2026-03-13'
 - path: specs/modules/import-anthropic-knowledge-work-plugins.md
   title: Import Anthropic Knowledge-Work-Plugins into Workspace-Hub
   description: Import 55+ skills and 40+ commands from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins)
@@ -1280,6 +1487,17 @@ specs:
   - md-to-pdf-skill-via-chrome-headless
   wrk_refs: []
   mtime: '2026-02-16'
+- path: specs/modules/metocean-study.md
+  title: metocean study
+  description: Wave statistics, EVA, joint probability, wind/current per API RP 2MET, ISO 19901-1.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - metocean-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5070
+  mtime: '2026-03-13'
 - path: specs/modules/moonlit-foraging-kurzweil.md
   title: WRK-1151 Plan — Naval Architecture Resource Collection
   description: Build an offline naval architecture reference library to support digitalmodel engineering work. 7 seed URLs
@@ -1290,6 +1508,17 @@ specs:
   - moonlit-foraging-kurzweil
   wrk_refs:
   - WRK-1151
+  mtime: '2026-03-13'
+- path: specs/modules/mooring-analysis-study.md
+  title: mooring analysis study
+  description: Mooring system catenary, quasi-static/dynamic, fatigue, line sizing per API RP 2SK and DNV-OS-E301.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - mooring-analysis-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5062
   mtime: '2026-03-13'
 - path: specs/modules/multi-agent-provider-assignment-in-work-queue.md
   title: Multi-Agent Provider Assignment in Work Queue
@@ -1384,6 +1613,17 @@ specs:
   - piped-splashing-peacock
   wrk_refs: []
   mtime: '2026-02-20'
+- path: specs/modules/pipeline-engineering-study.md
+  title: Pipeline Engineering Study
+  description: 'Model subsea/offshore pipeline engineering calculations: wall thickness design, on-bottom stability, free
+    span analysis, lateral buckling, installation mechanics, and expansion/walking — for fast-r...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - pipeline-engineering-study
+  wrk_refs:
+  - WRK-5060
+  mtime: '2026-03-13'
 - path: specs/modules/plan-reassess-and-improve-workspace-hub-workflow.md
   title: Plan, reassess, and improve the workspace-hub workflow
   description: 'Comprehensive workflow overhaul: fix queue health, build cross-review tooling, improve throughput, clean skill
@@ -1417,6 +1657,17 @@ specs:
   - WRK-173
   - WRK-182
   mtime: '2026-02-24'
+- path: specs/modules/production-engineering-study.md
+  title: production engineering study
+  description: VLP correlations, IPR models, nodal analysis, multiphase flow.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - production-engineering-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5066
+  mtime: '2026-03-13'
 - path: specs/modules/propagate-hooks-and-skills-ecosystem.md
   title: 'Plan: Propagate Hooks & Skills Across Workspace-Hub Ecosystem'
   description: The `post-task-review.sh` Stop hook exists only in workspace-hub and digitalmodel (1 of 21 repos). Skills are
@@ -1441,6 +1692,18 @@ specs:
   - WRK-1149
   - WRK-1150
   mtime: '2026-03-12'
+- path: specs/modules/proud-snacking-origami.md
+  title: 'WRK-1155: Microgrid Controller — DER Dispatch, Island Detection, BESS Management'
+  description: WRK-1155 is a child of WRK-1048 (power systems portfolio). It builds a rule-based microgrid energy management
+    controller as a greenfield `power/microgrid/` subpackage in digitalmodel. This covers D...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - proud-snacking-origami
+  wrk_refs:
+  - WRK-1048
+  - WRK-1155
+  mtime: '2026-03-13'
 - path: specs/modules/proud-toasting-sunrise.md
   title: Fix diff.headings empty-after-Calculate() bug and regenerate affected reports
   description: Pass owr_path through the validation pipeline so reports use LoadResults() for correct headings
@@ -1475,6 +1738,18 @@ specs:
   - WRK-1069
   - WRK-1123
   mtime: '2026-03-11'
+- path: specs/modules/quiet-pondering-owl.md
+  title: 'WRK-1169: Fix WRK Lifecycle Discipline'
+  description: 'Audit of 22 WRK items and all stage scripts revealed 9 enforcement gaps. The most user-visible bug: HTML stage
+    chips show the wrong active stage (e.g., stage 4 active while CLI is at stage 5) becau...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - quiet-pondering-owl
+  wrk_refs:
+  - WRK-1151
+  - WRK-1169
+  mtime: '2026-03-14'
 - path: specs/modules/quiet-soaring-truffle.md
   title: WRK-309 Implementation Plan — Document Intelligence
   description: Thousands of engineering standards, reports, and reference documents exist across three drives (`/mnt/ace`,
@@ -1520,6 +1795,17 @@ specs:
   - remove-claude-flow-references
   wrk_refs: []
   mtime: '2026-02-12'
+- path: specs/modules/replicated-singing-turing.md
+  title: 'WRK-1128: Observed-Exposure Tracker'
+  description: Anthropic's labor market research introduces "observed exposure" — the fraction of tasks AI *actually* automates
+    vs what it theoretically could. We have a 20-stage WRK lifecycle where 4 stages (1, ...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - replicated-singing-turing
+  wrk_refs:
+  - WRK-1128
+  mtime: '2026-03-13'
 - path: specs/modules/replicated-whistling-sparkle.md
   title: 'Plan: WRK-1153 — Extract doc-research-download patterns into reusable skill + lib'
   description: 'WRK-1151 (naval architecture doc research) produced three artifacts that will be needed verbatim by WRK-1152
@@ -1676,6 +1962,19 @@ specs:
   - WRK-285
   - WRK-286
   mtime: '2026-02-22'
+- path: specs/modules/smooth-fluttering-summit.md
+  title: 'WRK-5048: Uniform Box-Drawing Table Format for whats-next.sh'
+  description: '`scripts/work-queue/whats-next.sh` (377 lines) renders 8 section types using hand-crafted `printf %-Ns` alignment.
+    Column widths vary by section, titles get truncated inconsistently, and the output...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - smooth-fluttering-summit
+  wrk_refs:
+  - WRK-601
+  - WRK-602
+  - WRK-5048
+  mtime: '2026-03-13'
 - path: specs/modules/snappy-hopping-sifakis.md
   title: 'Plan: File-Structure Skill Hardening + Repo Structural Remediation'
   description: '**WRK scope**: New WRK items to be captured (no duplicates — WRK-368 done, file-taxonomy v1.1.0 exists) **Repos
@@ -1702,6 +2001,28 @@ specs:
   - WRK-304
   - WRK-308
   mtime: '2026-02-23'
+- path: specs/modules/structural-analysis-study.md
+  title: structural analysis study
+  description: Offshore structural — tubular joints, fatigue, member capacity per API RP 2A, ISO 19902, DNV-RP-C203.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - structural-analysis-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5065
+  mtime: '2026-03-13'
+- path: specs/modules/subsea-risers-flowlines-study.md
+  title: subsea risers flowlines study
+  description: SCR, flexible, hybrid risers and flowlines per API RP 2RD, API 17J, DNV-OS-F201.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - subsea-risers-flowlines-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5069
+  mtime: '2026-03-13'
 - path: specs/modules/sunny-stargazing-moonbeam.md
   title: 'WRK-5036: Doc-Extraction Skill — Implementation Plan'
   description: The workspace lacks a centralized content classification framework for engineering documents. Extraction is
@@ -1811,6 +2132,41 @@ specs:
   - v30-financial-benchmark-tests
   wrk_refs: []
   mtime: '2026-02-03'
+- path: specs/modules/validated-sprouting-volcano.md
+  title: 'WRK-1156: Commissioning Validator — FAT/SAT/IST Test Sequence Generator'
+  description: WRK-1156 is a child of feature WRK-1048, building the commissioning module under `digitalmodel/src/digitalmodel/power/commissioning/`.
+    The `power/` module does not exist yet. WRK-1154 (sibling bloc...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - validated-sprouting-volcano
+  wrk_refs:
+  - WRK-1048
+  - WRK-1154
+  - WRK-1156
+  mtime: '2026-03-13'
+- path: specs/modules/vast-wondering-neumann.md
+  title: 'WRK-5041: extract-url.py — Internet Document Extraction Pipeline'
+  description: The doc-intelligence pipeline (`extract-document.py`) currently handles local files only. Engineering references
+    exist online (MIT OCW lectures, classification society rules, Aalto CC BY notes) cat...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - vast-wondering-neumann
+  wrk_refs:
+  - WRK-5041
+  mtime: '2026-03-13'
+- path: specs/modules/vectorized-greeting-pearl.md
+  title: 'WRK-1178: Calculation Report Skill'
+  description: Engineering calculations across digitalmodel/assetutilities lack a consistent reporting format. Formulas, units,
+    and methodology are embedded in code but never rendered into reviewable documents. T...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - vectorized-greeting-pearl
+  wrk_refs:
+  - WRK-1178
+  mtime: '2026-03-14'
 - path: specs/modules/vectorized-rolling-horizon.md
   title: Regenerate Passing Ship Benchmark Report (WRK-131)
   description: The benchmark report at `docs/modules/passing_ship/wang_benchmark/benchmark_report.html` is stale — generated
@@ -1834,6 +2190,17 @@ specs:
   - WRK-1035
   - WRK-1036
   mtime: '2026-03-08'
+- path: specs/modules/viv-analysis-study.md
+  title: viv analysis study
+  description: VIV response prediction, fatigue, screening per DNV-RP-F105, Vandiver, Blevins.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - viv-analysis-study
+  wrk_refs:
+  - WRK-1147
+  - WRK-5063
+  mtime: '2026-03-13'
 - path: specs/modules/wild-squishing-cloud.md
   title: 'WRK-1085 Plan: Cross-Repo Search Indexing'
   description: Agents repeatedly run 3–5 Glob/Grep rounds to answer "where is X implemented?" across tier-1 repos. A pre-built
@@ -2348,7 +2715,7 @@ specs:
   - hardware-inventory
   wrk_refs:
   - WRK-50
-  mtime: '2026-02-22'
+  mtime: '2026-03-13'
 - path: specs/modules/hardware-inventory/aceengineer-02.md
   title: AceEngineer-02 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2x Intel Xeon E5-2630 v3 @ 2.40 GHz (8C/16T
@@ -2361,7 +2728,7 @@ specs:
   wrk_refs:
   - WRK-50
   - WRK-293
-  mtime: '2026-02-24'
+  mtime: '2026-03-13'
 - path: specs/modules/hardware-inventory/acma-ansys05.md
   title: ACMA-ANSYS05 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2× Intel Xeon Platinum 8562Y+ (Sapphire
@@ -20552,6 +20919,18 @@ specs:
   wrk_refs:
   - WRK-1081
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-205/step1-schema.md
+  title: WRK-205 Step 1 — Approved Schema Definition
+  description: '**Status:** Approved by user 2026-02-19. Agent B may proceed. **Index strategy:** Option 3 — one INDEX.md
+    per second-level subdirectory (natural, follows existing structure).'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - step1-schema
+  - wrk-205
+  wrk_refs:
+  - WRK-205
+  mtime: '2026-02-19'
 - path: specs/wrk/WRK-1003/plan.md
   title: WRK-1003 Execution Plan
   description: ''
@@ -21275,18 +21654,6 @@ specs:
   wrk_refs:
   - WRK-204
   mtime: '2026-02-19'
-- path: specs/wrk/WRK-205/step1-schema.md
-  title: WRK-205 Step 1 — Approved Schema Definition
-  description: '**Status:** Approved by user 2026-02-19. Agent B may proceed. **Index strategy:** Option 3 — one INDEX.md
-    per second-level subdirectory (natural, follows existing structure).'
-  category: wrk
-  repo: workspace-hub
-  tags:
-  - step1-schema
-  - wrk-205
-  wrk_refs:
-  - WRK-205
-  mtime: '2026-02-19'
 - path: specs/wrk/WRK-373/wrk-373-repo-vision.md
   title: 'WRK-373 — Repo Vision: Bridge Current Mission to Autonomous-Production Future'
   description: Plan for writing docs/vision/VISION.md — a strategic north star document for the ACE Engineering ecosystem
@@ -21304,6 +21671,29 @@ specs:
   wrk_refs:
   - WRK-373
   mtime: '2026-02-24'
+- path: specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
+  title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
+  description: Build federated index builder that reads all WRK-5037 manifests and produces 8 content-type JSONL indexes.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-5038
+  - wrk-5038-federated-content-indexes
+  wrk_refs:
+  - WRK-5037
+  - WRK-5038
+  mtime: '2026-03-13'
+- path: specs/wrk/WRK-5039/wrk-5039-query-doc-intelligence.md
+  title: 'WRK-5039: query-doc-intelligence.py + Stage 2 Integration'
+  description: Query CLI for federated content indexes + Stage 2 resource-intelligence integration.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-5039
+  - wrk-5039-query-doc-intelligence
+  wrk_refs:
+  - WRK-5039
+  mtime: '2026-03-13'
 - path: specs/wrk/WRK-577/plan.md
   title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
   description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
@@ -21580,6 +21970,17 @@ specs:
   wrk_refs:
   - WRK-693
   mtime: '2026-03-10'
+- path: digitalmodel/specs/data-needs.yaml
+  title: digitalmodel
+  description: Data needs registry — tracks what data, calculations, standards, and analysis capabilities are needed to complete
+    digitalmodel modules. Each entry defines what is needed, why, what module it unblocks,
+  category: other
+  repo: digitalmodel
+  tags:
+  - data-needs
+  - digitalmodel
+  wrk_refs: []
+  mtime: '2026-03-13'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

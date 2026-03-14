@@ -2608,3 +2608,27 @@
   "wrk": "WRK-1072",
   "stage": 3
 }
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1159",
+  "stage": 2
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1159",
+  "stage": 3
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1155",
+  "stage": 2
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1155",
+  "stage": 3
+}
