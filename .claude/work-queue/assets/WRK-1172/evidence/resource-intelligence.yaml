@@ -1,0 +1,25 @@
+---
+wrk_id: WRK-1172
+stage: 2
+findings:
+  session_init:
+    file: scripts/agents/session.sh
+    flow: "init → set orchestrator → register pipeline → check quota → done"
+    integration_point: "After quota check, read cached health results"
+  cron_infrastructure:
+    template: scripts/cron/crontab-template.sh
+    setup: scripts/cron/setup-cron.sh
+    existing_nightly_slots:
+      - "01:30 benchmarks"
+      - "02:00 comprehensive-learning"
+      - "02:30 doc-drift"
+      - "03:00 session-analysis"
+    available_slot: "01:00 — before benchmarks"
+  tier1_test_commands:
+    assetutilities: "uv run python -m pytest tests/ --noconftest"
+    digitalmodel: "PYTHONPATH=src uv run python -m pytest"
+    worldenergydata: "PYTHONPATH='src:../assetutilities/src' uv run python -m pytest --noconftest"
+    assethold: "uv run python -m pytest tests/ --noconftest --tb=short -q"
+  state_directory: ".claude/state/"
+  output_file: ".claude/state/session-health.yaml"
+  design_decision: "Nightly cron batch (not inline session-start) per user feedback — keep session-start lightweight"

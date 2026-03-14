@@ -1,0 +1,6 @@
+stage: 1
+gate: hard
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-14T00:00:00Z"
+summary: "Approved scope: hookify rule for second-WRK warning, wrk_started_at tracking, session-start reminder"

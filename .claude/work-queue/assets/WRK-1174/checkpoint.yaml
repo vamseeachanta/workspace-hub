@@ -1,0 +1,13 @@
+wrk_id: WRK-1174
+current_stage: 4
+stage_name: Plan Draft
+completed_stage: 3
+next_action: Execute stage 4: Plan Draft
+context_summary: Stage 3 complete. Next: stage 4 (Plan Draft).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1174/checkpoint.yaml
+  - pending/WRK-1174.md
+  - assets/WRK-1174/evidence/resource-intelligence.yaml
+checkpointed_at: 2026-03-14T11:42:40Z
+human_gate: false
+chained_stages: [[2, 3, 4]]

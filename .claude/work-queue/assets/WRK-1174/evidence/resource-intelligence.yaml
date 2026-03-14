@@ -1,0 +1,35 @@
+completion_status: complete
+domain: ai-orchestration
+complexity_confirmed: simple
+
+skills:
+  core_used:
+    - work-queue
+    - session-start
+    - hookify
+  secondary:
+    - work-queue-workflow
+
+existing_infrastructure:
+  active_wrk_state: ".claude/state/active-wrk"  # plain-text WRK ID only
+  set_active_wrk: "scripts/work-queue/set-active-wrk.sh"
+  claim_item: "scripts/work-queue/claim-item.sh"  # has concurrent guard, no multi-WRK guard
+  active_sessions: "scripts/work-queue/active-sessions.sh"
+  session_start_skill: ".claude/skills/workspace-hub/session-start/SKILL.md"
+
+gaps:
+  - "active-wrk has no wrk_started_at timestamp"
+  - "claim-item.sh allows second WRK activation while first is working"
+  - "no hookify rules configured in workspace yet"
+  - "session-start has no scope discipline reminder"
+  - "no .claude/rules/scope-discipline.md exists"
+
+implementation_targets:
+  - file: ".claude/state/active-wrk"
+    change: "extend to YAML with wrk_id + wrk_started_at"
+  - file: "scripts/work-queue/set-active-wrk.sh"
+    change: "add second-WRK detection + wrk_started_at timestamp"
+  - file: ".claude/hooks/"
+    change: "add hookify rule for scope guard warning"
+  - file: ".claude/skills/workspace-hub/session-start/SKILL.md"
+    change: "add scope discipline reminder step"
