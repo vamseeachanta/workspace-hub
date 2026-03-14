@@ -260,16 +260,24 @@ DISPATCHER_LIB="$(cd "$AGENTS_DIR/../coordination/routing/lib" && pwd)/agent_dis
 source "$DISPATCHER_LIB"
 
 # check_provider_available: claude should be available (running inside claude)
-result="$(check_provider_available claude && echo "OK" || echo "UNAVAILABLE")"
-assert_eq "health: claude CLI check returns OK when claude is in PATH" "OK" "$result"
+if command -v claude &>/dev/null; then
+  result="$(check_provider_available claude && echo "OK" || echo "UNAVAILABLE")"
+  assert_eq "health: claude CLI check returns OK when claude is in PATH" "OK" "$result"
+else
+  echo "  SKIP: health: claude CLI not in PATH (CI environment)"
+fi
 
 # check_provider_available: nonsense provider → false
 check_provider_available "__no_such_provider__" 2>/dev/null && r="OK" || r="UNAVAILABLE"
 assert_eq "health: unknown provider returns UNAVAILABLE" "UNAVAILABLE" "$r"
 
 # find_available_provider: prefers preferred when available
-result="$(find_available_provider claude)"
-assert_eq "fallback: find_available prefers claude when present" "claude" "$result"
+if command -v claude &>/dev/null; then
+  result="$(find_available_provider claude)"
+  assert_eq "fallback: find_available prefers claude when present" "claude" "$result"
+else
+  echo "  SKIP: fallback: claude CLI not in PATH (CI environment)"
+fi
 
 # find_available_provider: skips unavailable preferred, returns next available
 # Simulate by overriding check_provider_available for this test
