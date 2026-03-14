@@ -78,7 +78,7 @@ stages:
   evidence: closing
 - order: 20
   stage: archive
-  status: pending
+  status: done
   evidence: pending-archive
-generated_at: '2026-03-14T04:20:19Z'
+generated_at: '2026-03-14T04:33:06Z'
 reviewed_by: orchestrator

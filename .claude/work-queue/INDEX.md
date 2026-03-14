@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-14T04:20:21Z by generate-index.py -->
+<!-- Generated: 2026-03-14T04:33:08Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-14T04:20:21Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-14T04:33:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 635
+**Total items:** 636
 
 ### By Status
 
@@ -17,13 +17,13 @@
 | working | 3 |
 | blocked | 10 |
 | done | 3 |
-| archived | 370 |
+| archived | 371 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 280 |
+| high | 281 |
 | medium | 299 |
 | low | 55 |
 
@@ -33,7 +33,7 @@
 |------------|-------|
 | simple | 145 |
 | medium | 295 |
-| complex | 125 |
+| complex | 126 |
 
 ### By Category
 
@@ -65,14 +65,14 @@
 | assethold | 17 |
 | assetutilities | 19 |
 | client_projects | 1 |
-| digitalmodel | 214 |
+| digitalmodel | 215 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 265 |
+| workspace-hub | 266 |
 | worldenergydata | 104 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 266 / 635 |
-| Plans cross-reviewed | 190 |
-| Plans approved | 213 |
+| Plans exist | 267 / 636 |
+| Plans cross-reviewed | 191 |
+| Plans approved | 214 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,10 +92,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 635 |
-| Total archived | 370 |
-| Completion rate | 370/635 (58%) |
-| Monthly rate (current month) | 128 archived |
+| Total captured | 636 |
+| Total archived | 371 |
+| Completion rate | 371/636 (58%) |
+| Monthly rate (current month) | 129 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1260,7 +1260,6 @@
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1268,7 +1267,9 @@
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1172, WRK-1174 |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1173 |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2 | - | digitalmodel, worldenergydata, assethold, assetutilities, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1316,8 +1317,8 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | medium | medium | digitalmodel | - |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | high | medium | digitalmodel | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | medium | simple | workspace-hub | - |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | high | medium | digitalmodel | - |
 
 ### Pending
 
@@ -1963,6 +1964,7 @@
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | high | medium | workspace-hub | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | medium | simple | workspace-hub | - |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | high | complex | workspace-hub, digitalmodel | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
@@ -2322,8 +2324,9 @@
 | WRK-1165 | Droop control simulator | pending | medium | medium | - |
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | high | medium | - |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | - |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | complex | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | pending | high | high | - |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -2659,6 +2662,7 @@
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | medium | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | complex | - |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | medium | - |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | complex | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | pending | high | high | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
@@ -3063,10 +3067,11 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | medium | workspace-hub | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | complex | workspace-hub | - |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | medium | digitalmodel | - |
 | WRK-1172 | Session startup e2e health check before work begins | pending | medium | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | pending | simple | workspace-hub | - |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | pending | high | digitalmodel, worldenergydata, assethold, assetutilities, workspace-hub | - |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | medium | digitalmodel | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3876,11 +3881,11 @@
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | pending | high | digitalmodel, workspace-hub | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | workspace-hub | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | workspace-hub | - |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | digitalmodel | - |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | workspace-hub | - |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | workspace-hub | - |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -4003,6 +4008,7 @@
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | digitalmodel | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | workspace-hub | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | workspace-hub | - |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | workspace-hub, digitalmodel | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
@@ -4024,7 +4030,7 @@
 
 ## By Computer
 
-### ace-linux-1 (201 active / 354 total)
+### ace-linux-1 (201 active / 355 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4338,7 +4344,6 @@
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | workspace-hub |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | workspace-hub |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | workspace-hub |
-| WRK-1171 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | digitalmodel |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | simple | workspace-hub |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | medium | workspace-hub |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | workspace-hub |
@@ -4346,7 +4351,9 @@
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | medium | workspace-hub |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | complex | workspace-hub |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | medium | workspace-hub |
+| WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | complex | workspace-hub, digitalmodel |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | pending | high | high | digitalmodel, worldenergydata, assethold, assetutilities, workspace-hub |
+| WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | digitalmodel |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
