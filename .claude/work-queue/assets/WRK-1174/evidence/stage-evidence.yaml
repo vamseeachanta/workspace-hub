@@ -1,0 +1,13 @@
+wrk_id: WRK-1174
+stages:
+  1: {status: done, completed_at: 2026-03-14T11:30:00Z}
+  2: {status: done, completed_at: 2026-03-14T11:35:00Z}
+  3: {status: done, completed_at: 2026-03-14T11:40:00Z}
+  4: {status: done, completed_at: 2026-03-14T11:42:00Z, note: "Plan provided by user in session prompt"}
+  5: {status: done, completed_at: 2026-03-14T12:30:00Z}
+  7: {status: done, completed_at: 2026-03-14T12:30:00Z}
+  8: {status: done, completed_at: 2026-03-14T12:00:00Z}
+  10: {status: done, completed_at: 2026-03-14T12:45:00Z}
+  12: {status: done, completed_at: 2026-03-14T12:50:00Z}
+  13: {status: done, completed_at: 2026-03-14T12:55:00Z}
+  17: {status: done, completed_at: 2026-03-14T13:05:00Z}

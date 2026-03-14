@@ -16,3 +16,7 @@ deliverables:
   - file: scripts/work-queue/tests/test-scope-guard.sh
     action: created
     description: "12 assertions across 7 scenarios testing scope guard"
+integrated_repo_tests:
+  - repo: workspace-hub
+    command: "bash scripts/work-queue/tests/test-scope-guard.sh"
+    result: "12 passed, 0 failed"
