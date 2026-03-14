@@ -1,0 +1,62 @@
+metadata:
+  title: "Pile Axial Capacity — API RP 2GEO"
+  doc_id: "CALC-GEO-001"
+  revision: "A"
+  date: "2026-03-14"
+  author: "ACE Engineering"
+  status: draft
+inputs:
+  - name: "Pile diameter"
+    symbol: "D"
+    value: 1.0
+    unit: "m"
+  - name: "Pile length"
+    symbol: "L"
+    value: 30.0
+    unit: "m"
+  - name: "Undrained shear strength"
+    symbol: "S_u"
+    value: 60.0
+    unit: "kPa"
+    source: "Site investigation"
+  - name: "Effective overburden"
+    symbol: "\\sigma'_v"
+    value: 150.0
+    unit: "kPa"
+methodology:
+  description: "Axial pile capacity in clay using alpha method per API RP 2GEO"
+  standard: "API RP 2GEO"
+  equations:
+    - id: eq1
+      name: "Alpha factor"
+      latex: "\\alpha = 0.5 \\left(\\frac{S_u}{\\sigma'_v}\\right)^{-0.5}"
+      description: "Adhesion factor for clay"
+    - id: eq2
+      name: "Unit skin friction"
+      latex: "f = \\alpha \\cdot S_u"
+      description: "Unit skin friction capacity"
+    - id: eq3
+      name: "Total axial capacity"
+      latex: "Q = \\pi D \\sum f_i L_i + N_c S_u A_p"
+      description: "Sum of skin friction + end bearing"
+outputs:
+  - name: "Total axial capacity"
+    symbol: "Q"
+    value: 4894.68
+    unit: "kN"
+    notes: "Computed via digitalmodel.geotechnical.piles.axial_capacity"
+  - name: "Skin friction"
+    symbol: "Q_f"
+    value: 4470.56
+    unit: "kN"
+  - name: "End bearing"
+    symbol: "Q_p"
+    value: 424.12
+    unit: "kN"
+assumptions:
+  - "Single soil layer (clay)"
+  - "Pile is driven, not drilled"
+  - "No group effects considered"
+  - "Alpha method per API RP 2GEO Sec 7.3 (Su/sigma_v' <= 1.0 branch)"
+references:
+  - "API RP 2GEO, 1st Edition, April 2011 — Geotechnical and Foundation Design Considerations"
