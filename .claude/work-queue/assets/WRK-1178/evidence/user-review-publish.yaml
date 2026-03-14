@@ -1,0 +1,33 @@
+---
+wrk_id: WRK-1178
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b357900a
+    documents:
+      - scripts/review/results/wrk-1178-plan-review-input.md
+    published_at: "2026-03-13T19:10:00Z"
+    reviewer: vamsee
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: dad91a2b
+    documents:
+      - scripts/review/results/wrk-1178-plan-review-input.md
+    published_at: "2026-03-13T19:15:00Z"
+    reviewer: vamsee
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d5cf83dc
+    documents:
+      - examples/reporting/fatigue-pipeline-girth-weld.html
+      - examples/reporting/fatigue-scr-touchdown.html
+    published_at: "2026-03-14T03:55:00Z"
+    reviewer: vamsee

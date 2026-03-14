@@ -1,0 +1,17 @@
+---
+wrk_id: WRK-1178
+stage: 4
+type: plan
+created_at: "2026-03-13T19:00:00Z"
+plan_source: user_authored
+plan_artifacts:
+  - scripts/review/results/wrk-1178-plan-review-input.md
+plan_approved: true
+plan_reviewed: true
+approved_by: vamsee
+approved_at: "2026-03-13T19:00:00Z"
+notes: |
+  User authored the plan directly (YAML schema, HTML design, build sequence,
+  file manifest, example YAML structure). Plan covers: 3-file generator split,
+  warm-parchment CSS reuse, KaTeX math, Chart.js charts, 44 TDD tests,
+  2 fatigue worked examples.

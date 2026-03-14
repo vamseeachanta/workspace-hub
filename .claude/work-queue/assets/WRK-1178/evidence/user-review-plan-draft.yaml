@@ -4,7 +4,7 @@ stage: 5
 gate: user_review_combined_plan
 approval_decision: approve_as_is
 reviewer: vamsee
-reviewed_at: "2026-03-13"
+reviewed_at: "2026-03-13T19:00:00Z"
 review_cycle_id: "WRK-1178-cycle-1"
 plan_artifacts:
   - scripts/review/results/wrk-1178-plan-review-input.md

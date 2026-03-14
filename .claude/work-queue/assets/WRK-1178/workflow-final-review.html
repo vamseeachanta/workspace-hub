@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1178 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1178 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Calculation report skill — rich formula templates with HTML output</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — - Single source of truth in YAML (all metadata, inputs, methodology, outputs self-contained) - Markdown report generation from YAML with LaT...</summary><div class="panel"><ul>
+<li>Single source of truth in YAML (all metadata, inputs, methodology, outputs self-contained)</li>
+<li>Markdown report generation from YAML with LaTeX math (<code>$$...$$</code>)</li>
+<li>HTML report with interactive charts, inspired by workflow-html warm-parchment design</li>
+<li>Sections: Inputs (with units), Methodology (with numbered equations), Outputs (with units), Assumptions, References</li>
+<li>Calculation versioning (revision tracking, change log)</li>
+<li>Consistent template across every calculation in the repo ecosystem</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — - Engineering calculations lack a consistent reporting format - Formulas, units, and methodology need professional, reviewable presentation ...</summary><div class="panel"><ul>
+<li>Engineering calculations lack a consistent reporting format</li>
+<li>Formulas, units, and methodology need professional, reviewable presentation</li>
+<li>Interactive HTML enables stakeholder review without specialised tooling</li>
+<li>YAML source of truth enables programmatic generation and validation</li>
+<li>Standardisation reduces cognitive load across repos</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — 1. Skill produces markdown with LaTeX math blocks for formulas 2. Template includes: title, revision, inputs table (name/symbol/value/unit),...</summary><div class="panel"><ol>
+<li>Skill produces markdown with LaTeX math blocks for formulas</li>
+<li>Template includes: title, revision, inputs table (name/symbol/value/unit), methodology with numbered equations, outputs table, assumptions, references</li>
+<li>HTML output with interactive charts using workflow-html warm-parchment design system; pipeline: YAML → Markdown → HTML</li>
+<li>Existing digitalmodel fatigue analysis calculations (e.g. pipeline_girth_weld, scr_touchdown, mooring_chain) used as example structured inputs</li>
+<li>Reusable function/script that accepts structured YAML input and emits markdown then HTML</li>
+</ol></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — --- wrk_id: WRK-1178 stage: 7 --- # WRK-1178 Plan Final Review confirmed_by: vamsee confirmed_at: 2026-03-13T19:00:00Z decision: passed Plan...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><hr>
+<p>wrk_id: WRK-1178
+stage: 7</p>
+<hr>
+<h1>WRK-1178 Plan Final Review</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-13T19:00:00Z
+decision: passed</p>
+<p>Plan reviewed and approved. YAML→MD→HTML pipeline with 3-file generator split,
+warm-parchment CSS, KaTeX math, Chart.js charts, 44 TDD tests, 2 fatigue examples.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>calc-report-schema-validation</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/reporting/ -k schema -q</code></td><td>tests/reporting/test_generate_calc_report.py</td></tr><tr><td>2</td><td>calc-report-markdown-generation</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/reporting/ -k markdown -q</code></td><td>tests/reporting/test_generate_calc_report.py</td></tr><tr><td>3</td><td>calc-report-html-generation</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/reporting/ -k html -q</code></td><td>tests/reporting/test_generate_calc_report.py</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1178, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1178, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=5</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['execute_wrapper_complete'], cross-review:['review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1178/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1178/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=6</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (4 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-13T19:10:00Z, reviewed=2026-03-13T19:00:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — --- wrk_id: WRK-1178 stage: 15 recommendations: - id: FW-1 title: &quot;Offline/self-contained HTML mode&quot; description: &quot;Add --self-contained flag...</summary><div class="panel"><hr>
+<p>wrk_id: WRK-1178
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Offline/self-contained HTML mode"
+    description: "Add --self-contained flag that inlines KaTeX + Chart.js assets for offline/air-gapped viewing"
+    priority: HIGH
+    source: "Claude P2, Codex P1, Gemini Medium — unanimous across all reviewers"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+<ul>
+<li>
+<p>id: FW-2
+    title: "Shared warm-parchment CSS module"
+    description: "Extract CSS into shared module consumed by both workflow-html and calculation-report to prevent drift"
+    priority: MEDIUM
+    source: "Codex P1"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-3
+    title: "Adoption contract for digitalmodel/assetutilities"
+    description: "Define CLI invocation contract so repos can call generate-calc-report.py; consider packaging"
+    priority: MEDIUM
+    source: "Codex P2"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-4
+    title: "Machine-enforceable schema validation"
+    description: "Promote calculation-report-schema.yaml to jsonschema or pydantic model"
+    priority: LOW
+    source: "Claude P3, Codex P2, Gemini Low"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-5
+    title: "SRI hashes for CDN assets"
+    description: "Add subresource integrity attributes to KaTeX/Chart.js script tags"
+    priority: LOW
+    source: "Codex P3"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-6
+    title: "Pipe character escaping in Markdown tables"
+    description: "Escape | chars in cell values to prevent Markdown table corruption"
+    priority: LOW
+    source: "Claude P3"
+    disposition: spun-off-new
+    status: captured
+    captured: true</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — --- wrk_id: WRK-1178 stages: - order: 1 stage: capture status: done evidence: capture-approved - order: 2 stage: resource-intelligence statu...</summary><div class="panel"><hr>
+<p>wrk_id: WRK-1178
+stages:
+  - order: 1
+    stage: capture
+    status: done
+    evidence: capture-approved
+  - order: 2
+    stage: resource-intelligence
+    status: done
+    evidence: ri-complete
+  - order: 3
+    stage: triage
+    status: done
+    evidence: triage-complete
+  - order: 4
+    stage: plan-draft
+    status: done
+    evidence: plan-authored
+  - order: 5
+    stage: user-review-plan-draft
+    status: done
+    evidence: plan-approved
+  - order: 6
+    stage: cross-review
+    status: done
+    evidence: cross-review-complete
+  - order: 7
+    stage: user-review-plan-final
+    status: done
+    evidence: plan-final-approved
+  - order: 8
+    stage: activation
+    status: done
+    evidence: activated
+  - order: 9
+    stage: routing
+    status: done
+    evidence: routed
+  - order: 10
+    stage: execution
+    status: done
+    evidence: executed
+  - order: 11
+    stage: artifact-generation
+    status: done
+    evidence: artifacts-generated
+  - order: 12
+    stage: tdd-eval
+    status: done
+    evidence: tdd-passed
+  - order: 13
+    stage: agent-cross-review
+    status: done
+    evidence: agent-review-complete
+  - order: 14
+    stage: verify-gate-evidence
+    status: done
+    evidence: gates-verified
+  - order: 15
+    stage: future-work
+    status: done
+    evidence: fw-captured
+  - order: 16
+    stage: resource-intelligence-update
+    status: done
+    evidence: ri-updated
+  - order: 17
+    stage: user-review-implementation
+    status: done
+    evidence: implementation-approved
+  - order: 18
+    stage: reclaim
+    status: n/a
+    evidence: no-reclaim-needed
+  - order: 19
+    stage: close
+    status: done
+    evidence: closing
+  - order: 20
+    stage: archive
+    status: pending
+    evidence: pending-archive</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 27 assets indexed.</summary><div class="panel"><ul><li><code>ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review-codex.md</code></li><li><code>evidence/cross-review-gemini.md</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/plan-artifact.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/tdd-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review.md</code></li></ul></div></details>
+</body>
+</html>

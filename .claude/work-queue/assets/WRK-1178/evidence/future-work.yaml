@@ -1,39 +1,57 @@
 ---
 wrk_id: WRK-1178
 stage: 15
-items:
+recommendations:
   - id: FW-1
-    priority: HIGH
     title: "Offline/self-contained HTML mode"
     description: "Add --self-contained flag that inlines KaTeX + Chart.js assets for offline/air-gapped viewing"
+    priority: HIGH
     source: "Claude P2, Codex P1, Gemini Medium — unanimous across all reviewers"
+    disposition: spun-off-new
+    status: captured
+    captured: true
 
   - id: FW-2
-    priority: MEDIUM
     title: "Shared warm-parchment CSS module"
     description: "Extract CSS into shared module consumed by both workflow-html and calculation-report to prevent drift"
+    priority: MEDIUM
     source: "Codex P1"
+    disposition: spun-off-new
+    status: captured
+    captured: true
 
   - id: FW-3
-    priority: MEDIUM
     title: "Adoption contract for digitalmodel/assetutilities"
     description: "Define CLI invocation contract so repos can call generate-calc-report.py; consider packaging"
+    priority: MEDIUM
     source: "Codex P2"
+    disposition: spun-off-new
+    status: captured
+    captured: true
 
   - id: FW-4
-    priority: LOW
     title: "Machine-enforceable schema validation"
     description: "Promote calculation-report-schema.yaml to jsonschema or pydantic model"
+    priority: LOW
     source: "Claude P3, Codex P2, Gemini Low"
+    disposition: spun-off-new
+    status: captured
+    captured: true
 
   - id: FW-5
-    priority: LOW
     title: "SRI hashes for CDN assets"
     description: "Add subresource integrity attributes to KaTeX/Chart.js script tags"
+    priority: LOW
     source: "Codex P3"
+    disposition: spun-off-new
+    status: captured
+    captured: true
 
   - id: FW-6
-    priority: LOW
     title: "Pipe character escaping in Markdown tables"
     description: "Escape | chars in cell values to prevent Markdown table corruption"
+    priority: LOW
     source: "Claude P3"
+    disposition: spun-off-new
+    status: captured
+    captured: true

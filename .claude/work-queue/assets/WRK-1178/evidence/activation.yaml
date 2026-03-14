@@ -1,0 +1,14 @@
+---
+wrk_id: WRK-1178
+stage: 8
+claimed_by: claude
+claimed_at: "2026-03-13T20:00:00Z"
+activation_method: direct
+set_active_wrk: true
+session_id: "WRK-1178-session-1"
+orchestrator_agent: claude
+workstation: ace-linux-1
+route: C
+notes: |
+  Complex route — YAML→MD→HTML pipeline with 3-file generator split,
+  44 TDD tests, cross-reviewed by Claude/Codex/Gemini.

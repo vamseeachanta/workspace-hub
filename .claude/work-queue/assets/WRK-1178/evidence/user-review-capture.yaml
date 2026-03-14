@@ -4,7 +4,7 @@ stage: 1
 gate: capture_review
 scope_approved: true
 reviewer: vamsee
-reviewed_at: 2026-03-13
+reviewed_at: "2026-03-13T18:00:00Z"
 notes: |
   User refined scope:
   - AC3 changed from PDF to HTML with interactive charts, inspired by workflow-html design

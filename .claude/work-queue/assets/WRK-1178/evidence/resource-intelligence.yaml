@@ -54,6 +54,17 @@ templates_to_create:
     location: config/reporting/calculation-report-template.yaml
     reason: "Schema/template for calculation YAML input files"
 
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - workflow-html
+    - wrk-lifecycle-testpack
+
 reuse_opportunities:
   - source: workflow-html SHARED_CSS
     target: calculation-report HTML

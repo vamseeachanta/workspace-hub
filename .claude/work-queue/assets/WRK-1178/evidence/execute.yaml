@@ -1,0 +1,43 @@
+---
+wrk_id: WRK-1178
+stage: 10
+executed_at: "2026-03-13T22:00:00Z"
+executor: claude
+commit: d5cf83dc
+files_created:
+  - scripts/reporting/generate-calc-report.py
+  - scripts/reporting/calc_report_html.py
+  - scripts/reporting/calc_report_css.py
+  - config/reporting/calculation-report-schema.yaml
+  - .claude/skills/data/calculation-report/SKILL.md
+  - tests/reporting/test_generate_calc_report.py
+  - tests/reporting/conftest.py
+  - examples/reporting/fatigue-pipeline-girth-weld.yaml
+  - examples/reporting/fatigue-pipeline-girth-weld.html
+  - examples/reporting/fatigue-scr-touchdown.yaml
+  - examples/reporting/fatigue-scr-touchdown.html
+test_results:
+  total: 44
+  passed: 44
+  failed: 0
+  framework: pytest
+integrated_repo_tests:
+  - name: "calc-report-schema-validation"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/reporting/ -k schema -q"
+    result: pass
+    artifact_ref: tests/reporting/test_generate_calc_report.py
+  - name: "calc-report-markdown-generation"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/reporting/ -k markdown -q"
+    result: pass
+    artifact_ref: tests/reporting/test_generate_calc_report.py
+  - name: "calc-report-html-generation"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/reporting/ -k html -q"
+    result: pass
+    artifact_ref: tests/reporting/test_generate_calc_report.py
+notes: |
+  3-file generator split (340+318+139 lines). Two fatigue worked examples
+  with KaTeX math and Chart.js interactive charts. XSS fix applied per
+  cross-review feedback.

@@ -4,7 +4,7 @@ stage: 5
 gate: user_review_plan_draft
 approval_decision: approve_as_is
 reviewer: vamsee
-reviewed_at: "2026-03-13"
+reviewed_at: "2026-03-13T19:00:00Z"
 review_cycle_id: "WRK-1178-cycle-1"
 notes: |
   User provided detailed implementation plan directly (YAML schema, HTML design,

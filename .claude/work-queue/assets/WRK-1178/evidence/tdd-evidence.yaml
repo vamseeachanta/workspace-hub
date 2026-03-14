@@ -1,0 +1,17 @@
+---
+wrk_id: WRK-1178
+stage: 12
+test_framework: pytest
+test_file: tests/reporting/test_generate_calc_report.py
+conftest: tests/reporting/conftest.py
+total: 44
+passed: 44
+failed: 0
+skipped: 0
+command: "uv run --no-project python -m pytest tests/reporting/ -q"
+commit: d5cf83dc
+notes: |
+  44 TDD tests covering: schema validation, markdown generation (inputs tables,
+  methodology equations, outputs tables, assumptions, references), HTML generation
+  (KaTeX rendering, Chart.js charts, warm-parchment CSS), edge cases (missing
+  fields, empty charts), and end-to-end YAML→MD→HTML pipeline.

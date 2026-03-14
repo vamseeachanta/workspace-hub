@@ -1,0 +1,34 @@
+---
+wrk_id: WRK-1178
+stage: 16
+updated_at: "2026-03-14T04:00:00Z"
+new_assets:
+  - path: scripts/reporting/generate-calc-report.py
+    type: script
+    reusable: true
+    description: "YAML→MD→HTML calculation report generator"
+  - path: config/reporting/calculation-report-schema.yaml
+    type: schema
+    reusable: true
+    description: "Calculation report YAML schema definition"
+  - path: .claude/skills/data/calculation-report/SKILL.md
+    type: skill
+    reusable: true
+    description: "Calculation report skill definition"
+additions:
+  - type: script
+    path: scripts/reporting/generate-calc-report.py
+    description: "YAML→MD→HTML calculation report generator"
+  - type: schema
+    path: config/reporting/calculation-report-schema.yaml
+    description: "Calculation report YAML schema"
+  - type: skill
+    path: .claude/skills/data/calculation-report/SKILL.md
+    description: "Calculation report skill"
+skills_updated: []
+skills_created:
+  - calculation-report
+patterns_learned:
+  - "3-file generator split keeps each module under 400-line limit"
+  - "json.dumps() for all chart data interpolation prevents XSS"
+  - "Warm-parchment CSS reuse from workflow-html design system"
