@@ -1,0 +1,47 @@
+# Strategic track mapping: category → track
+# Tracks group WRK categories into strategic investment buckets.
+# WRKs can override with explicit `track:` in frontmatter.
+version: "1"
+
+tracks:
+  engineering:
+    description: "O&G engineering modules — the core product value"
+    categories:
+      - engineering
+      - engineering-models
+      - knowledge-domain
+
+  market:
+    description: "Market/energy data, business, career — external value"
+    categories:
+      - data
+      - business
+      - career
+      - marketing
+      - research
+      - resources
+      - analysis
+      - strategy
+
+  harness:
+    description: "AI tooling, skills, orchestration — internal enablement"
+    categories:
+      - harness
+      - harness/skills
+      - skills
+      - ai-orchestration
+      - tooling
+      - automation
+      - developer-experience
+      - document-intelligence
+
+  other:
+    description: "Maintenance, infra, platform, uncategorized"
+    categories:
+      - maintenance
+      - platform
+      - infrastructure
+      - ci
+      - development
+      - personal
+      - uncategorised

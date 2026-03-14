@@ -1,0 +1,26 @@
+---
+wrk_id: WRK-1200
+gate: execute
+status: pass
+timestamp: "2026-03-14T20:30:00Z"
+files_created:
+  - config/strategic-prioritization/track-mapping.yaml
+  - config/strategic-prioritization/scoring-weights.yaml
+  - scripts/strategic/strategic_score.py
+  - scripts/strategic/strategic_classify.py
+  - scripts/strategic/strategic-brief.sh
+  - .claude/skills/workspace-hub/strategic-prioritization/SKILL.md
+  - tests/strategic/__init__.py
+  - tests/strategic/test_strategic_score.py
+  - tests/strategic/fixtures/WRK-TEST-001.md
+  - tests/strategic/fixtures/WRK-TEST-002.md
+  - tests/strategic/fixtures/WRK-TEST-003.md
+  - tests/strategic/fixtures/WRK-TEST-004.md
+  - tests/strategic/fixtures/WRK-TEST-005.md
+  - tests/strategic/fixtures/WRK-TEST-006.md
+files_modified: []
+verification:
+  tdd: "26/26 pass"
+  legal_scan: "PASS — no violations"
+  e2e_brief: "strategic-brief.sh --top 5 renders track balance + table on ~270 real WRKs"
+  e2e_classify: "strategic_classify.py works on real WRK items"

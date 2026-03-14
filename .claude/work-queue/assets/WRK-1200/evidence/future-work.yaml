@@ -1,0 +1,19 @@
+---
+wrk_id: WRK-1200
+future_work:
+  - title: "Wire strategic-brief into session-start Step 4b"
+    priority: medium
+    track: harness
+    note: "Call strategic-brief.sh --top 3 after whats-next in session-start"
+  - title: "Add --sort-by strategic flag to whats-next.sh"
+    priority: medium
+    track: harness
+    note: "Reorder MED_UNBLOCKED by strategic score"
+  - title: "Wire strategic-classify.py into /work add post-capture"
+    priority: medium
+    track: harness
+    note: "Auto-set track: field on new WRK items"
+  - title: "Track balance reporting in /today --eod"
+    priority: low
+    track: harness
+    note: "Add track balance section to daily wrap-up"

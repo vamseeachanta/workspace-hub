@@ -1,0 +1,13 @@
+---
+wrk_id: WRK-1200
+stages:
+  stage_1: {status: done, note: "Plan created in plan mode"}
+  stage_5: {status: done, note: "Plan approved by user"}
+  stage_7: {status: done, note: "User approved implementation"}
+  stage_8: {status: done, note: "TDD: 26 tests written RED"}
+  stage_9: {status: done, note: "Implementation: strategic_score.py, strategic_classify.py, strategic-brief.sh"}
+  stage_10: {status: done, note: "26/26 tests GREEN in 0.32s"}
+  stage_11: {status: done, note: "Legal scan PASS"}
+  stage_12: {status: done, note: "E2E verification on ~270 real WRKs"}
+  stage_15: {status: done, note: "Future work captured"}
+  stage_17: {status: done, note: "User approved close"}

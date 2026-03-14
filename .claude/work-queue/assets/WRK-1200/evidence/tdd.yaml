@@ -1,0 +1,25 @@
+---
+wrk_id: WRK-1200
+gate: tdd
+status: pass
+timestamp: "2026-03-14T20:30:00Z"
+test_file: tests/strategic/test_strategic_score.py
+test_count: 26
+passed: 26
+failed: 0
+errors: 0
+duration_seconds: 0.32
+command: "uv run --no-project python -m pytest tests/strategic/test_strategic_score.py -v"
+tdd_sequence:
+  red: "All 26 tests failed with ModuleNotFoundError (strategic_score not yet created)"
+  green: "Implemented strategic_score.py — all 26 tests pass"
+  refactor: "None needed — clean first pass"
+test_classes:
+  - TestParseWrkFrontmatter (4 tests)
+  - TestClassifyTrack (6 tests)
+  - TestScoreRice (3 tests)
+  - TestScoreWsjf (2 tests)
+  - TestCalculateEnablement (2 tests)
+  - TestCalculateTrackBalance (2 tests)
+  - TestApplyBonuses (4 tests)
+  - TestRankWrks (3 tests)
