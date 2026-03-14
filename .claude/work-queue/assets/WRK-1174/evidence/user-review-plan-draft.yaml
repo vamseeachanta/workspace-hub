@@ -5,4 +5,5 @@ reviewed_at: 2026-03-14T12:30:00Z
 scope_approved: true
 verdict: approved
 plan_location: "User-provided plan in session prompt"
+approval_decision: approve_as_is
 notes: "Route A simple — plan reviewed inline"
