@@ -92,14 +92,37 @@ may span repos.
 Save as `specs/capability-map/research-briefs/<category>-<subcategory>.yaml`
 using the template below.
 
-### Step 5 — Document Download Tasks
+### Step 5 — Search University & Academic Resources
+
+University coursework and textbooks are high-value sources — they contain **worked examples
+with verified answers**, ideal for TDD test assertions and calculation-report YAML examples.
+
+1. Search the doc index for university/academic materials:
+   - Keywords: course name, textbook author, university, lecture, homework, example problem
+   - Sources: `ace_project`, `dde_project` (may contain archived coursework)
+2. Search for relevant textbook chapters and problem sets:
+   - Structural: Roark's Formulas, Shigley, Timoshenko
+   - Geotechnical: Das, Coduto, API RP 2GEO worked examples
+   - Hydrodynamics: DNV-RP-C205 examples, Faltinsen, Chakrabarti
+   - Pipeline: Bai & Bai, Mousselli, Palmer & King
+   - Financial: Hull (Options), Bodie/Kane/Marcus (Investments)
+3. Archive all coursework material as **dark intelligence**:
+   - Save to `knowledge/dark-intelligence/<category>/<subcategory>/`
+   - These are private resources not publicly shared
+   - Used to inform implementations, generate test data, validate calculations
+   - Include: problem statements, known inputs/outputs, solution methodology
+
+Add to the research brief under `university_resources` and `worked_examples`.
+
+### Step 6 — Document Download Tasks
 
 For each standard not yet available locally:
 
 1. **First**: check doc index for existing copies (`og_standards`, `ace_standards`)
 2. **Second**: check O&G Standards SQLite at `/mnt/ace/O&G-Standards/_inventory.db`
-3. **Third**: search public sources (standard body websites, university repos)
-4. **Fourth**: flag as `paywalled — manual download required` if not freely available
+3. **Third**: search public sources (standard body websites, university repos, OpenCourseWare)
+4. **Fourth**: search university digital libraries (MIT OCW, Stanford, TU Delft open access)
+5. **Fifth**: flag as `paywalled — manual download required` if not freely available
 
 Hand off actual downloads to the `doc-research-download` skill.
 
@@ -137,12 +160,22 @@ key_equations:
     latex: "<LaTeX if known>"
     description: "<what it computes>"
 
+university_resources:
+  - source: "<textbook/course/lecture>"
+    title: "<title>"
+    author: "<author or institution>"
+    relevance: "high|medium|low"
+    archived_at: "knowledge/dark-intelligence/<category>/<subcategory>/<filename>"
+    worked_examples_count: N
+    notes: "<what makes this useful>"
+
 worked_examples:
-  - standard: "<STANDARD-ID>"
-    section: "<Sec X.Y>"
+  - source: "<STANDARD-ID or textbook>"
+    section: "<Sec X.Y or Ch N>"
     description: "<example problem description>"
     inputs: {}
     expected_output: {}
+    use_as_test: true  # flag for TDD test generation
 
 implementation_target:
   repo: "<digitalmodel|worldenergydata|etc>"
@@ -156,6 +189,9 @@ implementation_target:
 - [ ] Standards ledger queried for domain
 - [ ] Doc index searched with category and subcategory keywords
 - [ ] Capability map cross-referenced for implementation status
+- [ ] University/academic resources searched (textbooks, coursework, OCW)
+- [ ] Worked examples with known answers identified for TDD tests
+- [ ] Coursework materials archived in `knowledge/dark-intelligence/<category>/`
 - [ ] Research brief YAML saved to `specs/capability-map/research-briefs/`
 - [ ] Download tasks identified with availability status
 - [ ] Brief reviewed for completeness before handing off to implementation WRK
