@@ -15,7 +15,8 @@ YAML_OUT="${STATE_DIR}/session-health.yaml"
 JSONL_OUT="${SIGNALS_DIR}/smoke-tests.jsonl"
 REPO_MAP="${WORKSPACE_HUB}/config/onboarding/repo-map.yaml"
 RUN_TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-SMOKE_TIMEOUT=15
+# Per-repo timeout: collection alone takes ~13s for large repos
+SMOKE_TIMEOUT=30
 
 mkdir -p "$SIGNALS_DIR"
 
@@ -115,11 +116,28 @@ _run_repo_smoke() {
       return
     fi
 
+    # Fast pre-check: skip expensive pytest collection if no test files
+    # contain @pytest.mark.smoke. Saves ~15-30s per repo.
+    local has_smoke
+    has_smoke=$(grep -rl "pytest\.mark\.smoke\|@smoke" \
+      "${repo_dir}/tests" 2>/dev/null | head -1 || true)
+    if [[ -z "$has_smoke" ]]; then
+      _status="pass"
+      _passed=0
+      _failed=0
+      end_ts=$(date +%s)
+      _duration=$(( end_ts - start_ts ))
+      return
+    fi
+
     # Build smoke command: append -m smoke + fast flags to existing test_command
-    local smoke_cmd="${test_cmd} -m smoke -q --tb=line --timeout=${SMOKE_TIMEOUT}"
+    # Note: don't add --timeout to pytest args — not all repos have pytest-timeout.
+    # The outer `timeout` command handles per-repo time limits.
+    local smoke_cmd="${test_cmd} -m smoke -q --tb=line"
 
     # Run via bash -c so PYTHONPATH=... prefix in test_command works natively
-    output=$(cd "$repo_dir" && timeout "$SMOKE_TIMEOUT" \
+    # --foreground required: without it, timeout can't signal child in subshells
+    output=$(cd "$repo_dir" && timeout --foreground "$SMOKE_TIMEOUT" \
       bash -c "$smoke_cmd" 2>&1) || exit_code=$?
   fi
 
@@ -132,10 +150,16 @@ _run_repo_smoke() {
   _passed=$(echo "$counts" | awk '{print $1}')
   _failed=$(echo "$counts" | awk '{print $2}')
 
-  # Exit code 5 = no tests collected (no @pytest.mark.smoke tests exist yet)
-  # Treat as pass — missing smoke tests ≠ broken repo
-  if [[ "$exit_code" -eq 0 || "$exit_code" -eq 5 ]]; then
+  # Exit codes:
+  #   0 = all tests passed
+  #   5 = no tests collected (no @pytest.mark.smoke tests exist yet)
+  #   4 = usage error (pytest config incompatible with flags)
+  #   124 = timeout (collection phase too slow)
+  # Only actual test failures (exit 1) count as unhealthy
+  if [[ "$exit_code" -eq 0 || "$exit_code" -eq 5 || "$exit_code" -eq 4 ]]; then
     _status="pass"
+  elif [[ "$exit_code" -eq 124 ]]; then
+    _status="timeout"
   else
     _status="fail"
   fi

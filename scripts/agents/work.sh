@@ -24,7 +24,7 @@ case "$subcmd" in
         # Fallback: read from state file written by set-active-wrk.sh
         if [[ -z "$active_wrk" ]]; then
             _state_file="${WS_HUB}/.claude/state/active-wrk"
-            [[ -f "$_state_file" ]] && active_wrk="$(cat "$_state_file" | tr -d '[:space:]')"
+            [[ -f "$_state_file" ]] && active_wrk="$(head -n1 "$_state_file" | tr -d '[:space:]')"
         fi
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_start" "$provider" "/work routing invoked"
         log_gate_event_if_available "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"

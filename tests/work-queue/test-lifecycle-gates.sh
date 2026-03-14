@@ -82,7 +82,7 @@ WORKSPACE_HUB="$TMP_REPO" bash scripts/work-queue/claim-item.sh WRK-900 >/tmp/te
 [[ -f ".claude/work-queue/assets/WRK-900/evidence/user-review-close.yaml" ]] && pass "T4 close user-review template bootstrapped" || fail "T4 close user-review template bootstrapped"
 [[ -f ".claude/work-queue/assets/WRK-900/evidence/user-review-browser-open.yaml" ]] && pass "T5 browser-open template bootstrapped" || fail "T5 browser-open template bootstrapped"
 [[ -f ".claude/work-queue/assets/WRK-900/evidence/stage-evidence.yaml" ]] && pass "T6 stage evidence bootstrapped" || fail "T6 stage evidence bootstrapped"
-[[ "$(cat .claude/state/active-wrk)" == "WRK-900" ]] && pass "T7 active WRK state written" || fail "T7 active WRK state written"
+[[ "$(head -n1 .claude/state/active-wrk)" == "WRK-900" ]] && pass "T7 active WRK state written" || fail "T7 active WRK state written"
 
 echo "── close-item.sh gate block ────────────────────────"
 mkdir -p .claude/work-queue/assets/WRK-900

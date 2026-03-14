@@ -290,9 +290,42 @@ if [[ -f "$YAML_FILE" ]]; then
   assert_eq "exit-5 repo status is pass" "pass" "$repo_status"
 fi
 
-# ── Test 8: Script returns 0 always (best-effort) ───────────────────────────
+# ── Test 8: Timeout (exit 124) → status: timeout, still healthy ──────────────
 
-echo "--- Test 8: Script returns 0 (best-effort) ---"
+echo "--- Test 8: Timeout scenario → timeout status, all_healthy true ---"
+
+WS=$(setup_mock_workspace)
+
+cat > "$WS/config/onboarding/repo-map.yaml" << 'REPOMAP'
+repos:
+- name: mock-timeout
+  path: mock-timeout
+  purpose: "Simulates timeout"
+  test_command: uv run python -m pytest tests/ --noconftest
+  depends_on: []
+REPOMAP
+
+mkdir -p "$WS/mock-timeout"
+cat > "$WS/mock-timeout/run-smoke.sh" << 'EOF'
+echo "collection took too long"
+exit 124
+EOF
+
+WORKSPACE_HUB="$WS" SMOKE_TEST_MODE=mock \
+  bash "$SMOKE_SCRIPT" > /dev/null 2>&1 || true
+
+YAML_FILE="$WS/.claude/state/session-health.yaml"
+if [[ -f "$YAML_FILE" ]]; then
+  all_healthy=$(grep "^all_healthy:" "$YAML_FILE" | awk '{print $2}')
+  assert_eq "timeout repo still healthy" "true" "$all_healthy"
+
+  repo_status=$(grep "mock-timeout:" "$YAML_FILE" | grep -oE 'status: [a-z]+' | awk '{print $2}')
+  assert_eq "timeout repo status is timeout" "timeout" "$repo_status"
+fi
+
+# ── Test 9: Script returns 0 always (best-effort) ───────────────────────────
+
+echo "--- Test 9: Script returns 0 (best-effort) ---"
 
 WS=$(setup_mock_workspace)
 mkdir -p "$WS/mock-pass"

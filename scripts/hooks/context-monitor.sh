@@ -37,11 +37,11 @@ NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # Read active WRK
 ACTIVE_WRK_FILE="$REPO_ROOT/.claude/state/active-wrk"
-if [[ ! -f "$ACTIVE_WRK_FILE" ]] || [[ -z "$(cat "$ACTIVE_WRK_FILE" 2>/dev/null | tr -d '[:space:]')" ]]; then
+if [[ ! -f "$ACTIVE_WRK_FILE" ]] || [[ -z "$(head -n1 "$ACTIVE_WRK_FILE" 2>/dev/null | tr -d '[:space:]')" ]]; then
   echo "LEVEL=SKIP ts=$NOW msg=no_active_wrk action=exit0" >> "$LOG_FILE"
   exit 0
 fi
-WRK_ID="$(cat "$ACTIVE_WRK_FILE" | tr -d '[:space:]')"
+WRK_ID="$(head -n1 "$ACTIVE_WRK_FILE" | tr -d '[:space:]')"
 
 # Validate WRK ID format
 if ! [[ "$WRK_ID" =~ ^WRK-[0-9]+$ ]]; then

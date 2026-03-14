@@ -17,7 +17,7 @@ if [[ $# -gt 0 ]]; then
 else
   # Auto-detect: active-wrk + all items currently in working/
   [[ -f "$ACTIVE_WRK_FILE" ]] && {
-    active="$(cat "$ACTIVE_WRK_FILE" | tr -d '[:space:]')"
+    active="$(head -n1 "$ACTIVE_WRK_FILE" | tr -d '[:space:]')"
     [[ -n "$active" ]] && WRK_IDS+=("$active")
   }
   for f in "$QUEUE_DIR/working"/WRK-*.md; do

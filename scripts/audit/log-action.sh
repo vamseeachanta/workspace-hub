@@ -28,7 +28,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$wrk_id" && -f "$ACTIVE_WRK_FILE" ]]; then
-  wrk_id="$(tr -d '[:space:]' < "$ACTIVE_WRK_FILE" 2>/dev/null)"
+  wrk_id="$(head -n1 "$ACTIVE_WRK_FILE" 2>/dev/null | tr -d '[:space:]')"
 fi
 wrk_id="${wrk_id:-unknown}"
 

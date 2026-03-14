@@ -24,7 +24,7 @@ echo "── set-active-wrk.sh ────────────────�
 
 # T1: valid WRK id writes state file
 out="$(bash "$SET_SCRIPT" WRK-285 2>&1)"
-[[ "$(cat "${FAKE_HUB}/.claude/state/active-wrk")" == "WRK-285" ]] \
+[[ "$(head -n1 "${FAKE_HUB}/.claude/state/active-wrk")" == "WRK-285" ]] \
     && pass "T1 valid id writes state file" || fail "T1 valid id writes state file"
 
 # T2: output contains "Active: WRK-285"
@@ -40,7 +40,7 @@ rm -f "${FAKE_HUB}/.claude/work-queue/working/WRK-285.md"
 warn_out="$(bash "$SET_SCRIPT" WRK-285 2>&1)"
 [[ "$warn_out" == *"WARN"* ]] \
     && pass "T4 missing WRK file emits WARN" || fail "T4 missing WRK file emits WARN"
-[[ "$(cat "${FAKE_HUB}/.claude/state/active-wrk")" == "WRK-285" ]] \
+[[ "$(head -n1 "${FAKE_HUB}/.claude/state/active-wrk")" == "WRK-285" ]] \
     && pass "T4 state file still written despite WARN" || fail "T4 state file written despite WARN"
 
 echo "── clear-active-wrk.sh ──────────────────────────────"
