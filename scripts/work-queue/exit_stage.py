@@ -220,6 +220,21 @@ def _load_checkpoint_writer():
     return write_checkpoint, print_stage_gate, log_stage_complete
 
 
+# ── stage-evidence updater ────────────────────────────────────────────────────
+
+def _update_stage_ev(wrk_id: str, stage: int, status: str, repo_root: str) -> None:
+    """Call update-stage-evidence.py to mark a stage status (done/in_progress)."""
+    import subprocess
+    script = os.path.join(repo_root, "scripts", "work-queue", "update-stage-evidence.py")
+    if not os.path.exists(script):
+        return
+    subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id,
+         "--order", str(stage), "--status", status],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+
+
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
@@ -326,7 +341,10 @@ def _main() -> None:
     if human_gate:
         print(f"GATE PASSED — Stage {stage + 1} unlocked.")
 
-    # Regenerate lifecycle HTML to reflect this stage as done
+    # Update stage-evidence.yaml: mark current stage as done
+    _update_stage_ev(wrk_id, stage, "done", repo_root)
+
+    # THEN regenerate HTML (now reads correct stage state)
     _regenerate_lifecycle_html(wrk_id, repo_root)
 
     # Write rich checkpoint and emit STAGE_GATE signal

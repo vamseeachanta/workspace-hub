@@ -1,0 +1,41 @@
+stage: 10
+wrk_id: WRK-1169
+status: complete
+files_modified:
+  - scripts/work-queue/exit_stage.py
+  - scripts/work-queue/start_stage.py
+files_created:
+  - scripts/work-queue/tests/test_wrk1169_lifecycle_discipline.py
+test_count: 11
+test_files:
+  - scripts/work-queue/tests/test_wrk1169_lifecycle_discipline.py
+integrated_repo_tests:
+  - name: wrk1169-lifecycle-tests
+    repo: workspace-hub
+    scope: scripts/work-queue/tests/test_wrk1169_lifecycle_discipline.py
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_wrk1169_lifecycle_discipline.py -v"
+    result: pass
+    pass_count: 11
+    fail_count: 0
+    artifact_ref: scripts/work-queue/tests/test_wrk1169_lifecycle_discipline.py
+  - name: existing-guard-tests
+    repo: workspace-hub
+    scope: scripts/work-queue/tests/test_start_stage_guards.py
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_start_stage_guards.py -v"
+    result: pass
+    pass_count: 7
+    fail_count: 0
+    artifact_ref: scripts/work-queue/tests/test_start_stage_guards.py
+  - name: full-work-queue-suite
+    repo: workspace-hub
+    scope: scripts/work-queue/tests/
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/ --noconftest -q"
+    result: pass
+    pass_count: 214
+    fail_count: 12
+    artifact_ref: scripts/work-queue/tests/
+    notes: "12 failures are pre-existing, unrelated to WRK-1169 changes"
+summary: |
+  Implemented 4 changes: _update_stage_ev helper wired into both exit_stage.py
+  and start_stage.py, _stage1_pending_or_working_guard for Stage 1, and
+  _stage_progression_guard to prevent stage skipping.

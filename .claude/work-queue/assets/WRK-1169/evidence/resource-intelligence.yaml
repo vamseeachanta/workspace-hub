@@ -1,0 +1,63 @@
+wrk_id: WRK-1169
+stage: 2
+completion_status: complete
+domain: harness/workflow-compliance
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  secondary:
+    - comprehensive-learning
+
+findings:
+  critical:
+    - id: F1
+      title: "stage-evidence.yaml updated AFTER HTML regeneration in exit_stage.py"
+      detail: "exit_stage.py regenerates HTML before updating stage-evidence.yaml, causing stale stage chips (e.g. stage 4 active while CLI at stage 5)"
+      fix: "Update stage-evidence.yaml BEFORE calling generate-html-review.py in exit_stage.py"
+    - id: F2
+      title: "Stage 1 working/ guard contradicts stage 1 exit artifact pending/WRK-NNN.md"
+      detail: "start_stage.py requires working/ for stage 1 but stage-01-capture.yaml exit artifact is pending/WRK-NNN.md — circular dependency"
+      fix: "Remove working/ guard for stage 1 (stages 2-8 already have no guard)"
+    - id: F3
+      title: "3 WRKs skipped Stage 1 entirely (WRK-1151, WRK-1159, WRK-1155)"
+      detail: "No enforcement prevents starting stage 2+ without stage 1 completion"
+      fix: "Add stage-progression guard: start_stage.py should verify previous stage evidence exists"
+
+  high:
+    - id: F4
+      title: "Pre-check scripts for stages 7, 17 declared but never called"
+      detail: "Stage YAML specs list check-p1-resolved.sh and check-acs-pass.sh as hard gate pre-checks but exit_stage.py doesn't invoke them"
+      fix: "Wire pre-check scripts into exit_stage.py validation"
+    - id: F5
+      title: "Route-conditional Stage 5 artifacts treated as required for all routes"
+      detail: "exit_stage.py requires plan_claude.md etc. even for Route A which doesn't need them"
+      fix: "Read route from WRK frontmatter and conditionally check artifacts"
+    - id: F6
+      title: "Stage 14 artifact extension mismatch — YAML says .yaml, code checks .json"
+      detail: "stage-14 spec says gate-evidence-summary.yaml but exit checks gate-evidence-summary.json"
+      fix: "Align spec and code to .json (which is what verify-gate-evidence.py produces)"
+
+  medium:
+    - id: F7
+      title: "WRK-1021 has stage 5 marked done in stage-evidence.yaml without actual evidence file"
+      detail: "Ghost stage progression — stage recorded as done but user-review-plan-draft.yaml absent"
+      fix: "Stage evidence writer should verify artifact exists before marking done"
+    - id: F8
+      title: "Stage 10 test count blocking is warn-only, not enforced until stage 19"
+      detail: "YAML says block on integrated_repo_tests < 3, code only warns"
+      fix: "Promote to hard block in _heavy_stage_check"
+    - id: F9
+      title: "Stage 19 feature-close-check.sh not called by exit_stage.py"
+      detail: "Spec documents feature close check but it's external responsibility, undocumented"
+      fix: "Wire into exit_stage.py for type:feature items"
+
+  compliance_stats:
+    items_audited: 22
+    complete_evidence_chains: 12
+    compliance_rate_percent: 55
+    recent_items_compliance: 90
+    checkpoint_quality: 100
+
+  key_pattern: "Self-contained stage scripts with shared core + per-stage YAML contract will unify enforcement. Current system has 3-layer validation (artifact presence, heavy-stage, D-items) but gaps between layers allow violations."

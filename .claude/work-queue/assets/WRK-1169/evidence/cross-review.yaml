@@ -1,0 +1,11 @@
+stage: 6
+wrk_id: WRK-1169
+reviewers:
+  - provider: claude
+    verdict: approved
+  - provider: codex
+    verdict: approved
+  - provider: gemini
+    verdict: approved
+decision: approved
+reviewed_at: "2026-03-14T06:00:00Z"

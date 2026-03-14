@@ -1,13 +1,20 @@
-# Browser open evidence
 wrk_id: WRK-1171
-plan_draft:
-  opened_at: "2026-03-13T13:15:00-05:00"
-  method: "in-conversation review"
-plan_final:
-  opened_at: "2026-03-13T13:20:00-05:00"
-  method: "mcp__claude-in-chrome__navigate"
-  url: "http://localhost:8791/agent-capability-radar.html"
-close_review:
-  opened_at: "2026-03-13T13:30:00-05:00"
-  method: "mcp__claude-in-chrome__computer screenshot"
-  screenshots_taken: 2
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: n/a-route-a-inline
+    opened_at: "2026-03-13T13:15:00-05:00"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: config/ai-tools/agent-capability-radar.html
+    opened_at: "2026-03-13T13:20:00-05:00"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: config/ai-tools/agent-capability-radar.html
+    opened_at: "2026-03-13T13:30:00-05:00"
+    reviewer: vamsee

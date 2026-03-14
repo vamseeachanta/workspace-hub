@@ -1,0 +1,14 @@
+stage: 5
+wrk_id: WRK-1169
+reviewer: vamsee
+confirmed_at: "2026-03-14T06:00:00Z"
+decision: approved
+approval_decision: approve_as_is
+review_cycle_id: "rc-2026-03-14-001"
+scope_approved: true
+notes: "Plan approved — 4 changes to exit_stage.py and start_stage.py"
+decision_log:
+  - "Change 1: Wire update-stage-evidence.py into exit_stage.py — approved"
+  - "Change 2: Wire update-stage-evidence.py into start_stage.py — approved"
+  - "Change 3: Fix Stage 1 working/ guard to accept pending/ — approved"
+  - "Change 4: Add stage-progression guard — approved"

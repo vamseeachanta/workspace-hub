@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-14T04:33:08Z by generate-index.py -->
+<!-- Generated: 2026-03-14T04:38:22Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-14T04:33:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-14T04:38:22Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -16,8 +16,8 @@
 | pending | 249 |
 | working | 3 |
 | blocked | 10 |
-| done | 3 |
-| archived | 371 |
+| done | 2 |
+| archived | 372 |
 
 ### By Priority
 
@@ -93,9 +93,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 636 |
-| Total archived | 371 |
-| Completion rate | 371/636 (58%) |
-| Monthly rate (current month) | 129 archived |
+| Total archived | 372 |
+| Completion rate | 372/636 (58%) |
+| Monthly rate (current month) | 130 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1260,7 +1260,7 @@
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1317,7 +1317,6 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-1157 | Data center power topology — UPS/STS/N+1 redundancy modeling | medium | medium | digitalmodel | - |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | medium | simple | workspace-hub | - |
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | high | medium | digitalmodel | - |
 
 ### Pending
@@ -1964,6 +1963,7 @@
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | high | simple | workspace-hub | - |
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | high | medium | workspace-hub | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | medium | simple | workspace-hub | - |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | medium | simple | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | high | complex | workspace-hub, digitalmodel | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
@@ -2655,7 +2655,7 @@
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | - |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | - |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | simple | - |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | - |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | medium | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | pending | high | simple | - |
@@ -3354,7 +3354,7 @@
 | WRK-1165 | Droop control simulator | pending | medium | digitalmodel | - |
 | WRK-1166 | Generator fuel system CP design | pending | medium | digitalmodel | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | workspace-hub | - |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | simple | workspace-hub | - |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | simple | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | workspace-hub | - |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | workspace-hub | - |
@@ -3584,7 +3584,7 @@
 | WRK-1157 | chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close | archived | high | workspace-hub | - |
 | WRK-1158 | chore(harness): stage-17 gate-evidence green checker — all gates OK before close | archived | high | workspace-hub | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | workspace-hub | - |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | workspace-hub | - |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | pending | high | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
@@ -4030,7 +4030,7 @@
 
 ## By Computer
 
-### ace-linux-1 (201 active / 355 total)
+### ace-linux-1 (200 active / 355 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4344,7 +4344,7 @@
 | WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | workspace-hub |
 | WRK-1169 | Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance | pending | high | medium | workspace-hub |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | workspace-hub |
-| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | done | medium | simple | workspace-hub |
+| WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | workspace-hub |
 | WRK-1172 | Session startup e2e health check before work begins | pending | high | medium | workspace-hub |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | workspace-hub |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | pending | high | simple | workspace-hub |

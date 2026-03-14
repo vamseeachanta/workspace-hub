@@ -5443,5 +5443,23 @@
     "title": "feat(doc-intel): run extraction pipeline on naval architecture collection",
     "priority": "high",
     "category": "document-intelligence"
+  },
+  "WRK-1178": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-14T04:33:06.744616+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Calculation report skill \u2014 rich formula templates with HTML output",
+    "priority": "high",
+    "category": "skills"
+  },
+  "WRK-1171": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-14T04:38:20.864307+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "AI Agent Capability Radar \u2014 data-driven visualization with daily cron",
+    "priority": "medium",
+    "category": "ai-orchestration"
   }
 }

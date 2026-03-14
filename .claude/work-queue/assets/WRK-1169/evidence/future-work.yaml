@@ -1,0 +1,18 @@
+wrk_id: WRK-1169
+recommendations:
+  - id: FW-1
+    priority: medium
+    title: "Pre-check script wiring for stages 7 and 17"
+    description: "Wire check-p1-resolved.sh into stage exit as hard gate"
+  - id: FW-2
+    priority: medium
+    title: "Route-conditional artifact checks in exit_stage.py"
+    description: "Stage 5 currently requires plan_claude/codex/gemini.md for all routes"
+  - id: FW-3
+    priority: low
+    title: "Stage 14 .yaml/.json evidence format mismatch"
+    description: "gate-evidence-summary can be .yaml or .json — standardize"
+  - id: FW-4
+    priority: low
+    title: "Stage 10 test count blocking promotion"
+    description: "Consider making test_count a hard gate instead of warning"

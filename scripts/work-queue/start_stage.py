@@ -447,6 +447,68 @@ def _stage1_working_guard(wrk_id: str, queue_dir: str) -> None:
         sys.exit(1)
 
 
+# ── stage-evidence updater ────────────────────────────────────────────────────
+
+def _update_stage_ev(wrk_id: str, stage: int, status: str, repo_root: str) -> None:
+    """Call update-stage-evidence.py to mark a stage status (in_progress/done)."""
+    script = os.path.join(repo_root, "scripts", "work-queue", "update-stage-evidence.py")
+    if not os.path.exists(script):
+        return
+    subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id,
+         "--order", str(stage), "--status", status],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+
+
+# ── Stage 1 pending-or-working guard ─────────────────────────────────────────
+
+def _stage1_pending_or_working_guard(wrk_id: str, queue_dir: str) -> None:
+    """Exit 1 if wrk_id is in neither pending/ nor working/."""
+    working = Path(queue_dir) / "working" / f"{wrk_id}.md"
+    pending = Path(queue_dir) / "pending" / f"{wrk_id}.md"
+    if not working.exists() and not pending.exists():
+        print(
+            f"\u2716 {wrk_id} not found in pending/ or working/",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+
+# ── Stage progression guard ──────────────────────────────────────────────────
+
+def _stage_progression_guard(wrk_id: str, stage: int, repo_root: str) -> None:
+    """Verify previous stage evidence exists before allowing entry."""
+    if stage <= 1:
+        return
+    prev_stage = stage - 1
+    assets_dir = Path(repo_root) / ".claude" / "work-queue" / "assets" / wrk_id
+    ev_path = assets_dir / "evidence" / "stage-evidence.yaml"
+    if not ev_path.exists():
+        return
+    if _HAS_YAML:
+        data = yaml.safe_load(ev_path.read_text(encoding="utf-8")) or {}
+    else:
+        data = _load_yaml(str(ev_path))
+    for entry in data.get("stages", []):
+        order = entry.get("order", entry.get("stage"))
+        try:
+            order = int(order)
+        except (TypeError, ValueError):
+            continue
+        if order == prev_stage:
+            status = str(entry.get("status", "")).lower()
+            if status not in ("done", "n/a"):
+                print(
+                    f"\u26a0 Stage {prev_stage} is '{status}' \u2014 "
+                    f"complete it before stage {stage}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+            return
+    # Previous stage not in evidence — allow (backcompat)
+
+
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
 
 def _main() -> None:
@@ -498,12 +560,15 @@ def _main() -> None:
                 print(f"  Removed stale checkpoint for {wrk_id}.", file=sys.stderr)
             sys.exit(0)
 
-    # Stage guard: stage 1 and stages ≥9 require item to be in working/ (claimed)
+    # Stage guard: stage 1 accepts pending/ or working/; stages >=9 require working/
     if stage == 1:
         _maybe_purge_stale_lock(Path(output_dir) / "evidence" / "session-lock.yaml")
-        _stage1_working_guard(wrk_id, queue_dir)
+        _stage1_pending_or_working_guard(wrk_id, queue_dir)
     elif stage >= 9:
         _stage1_working_guard(wrk_id, queue_dir)
+
+    # Stage progression guard: previous stage must be done before entry
+    _stage_progression_guard(wrk_id, stage, repo_root)
 
     # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:
@@ -536,6 +601,9 @@ def _main() -> None:
         )
 
     route_stage(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
+
+    # Mark current stage as in_progress in stage-evidence
+    _update_stage_ev(wrk_id, stage, "in_progress", repo_root)
 
     # Auto-regenerate lifecycle HTML so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)

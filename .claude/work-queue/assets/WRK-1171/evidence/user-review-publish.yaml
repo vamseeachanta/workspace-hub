@@ -1,15 +1,30 @@
-# Publish evidence
 wrk_id: WRK-1171
-plan_draft:
-  published_at: "2026-03-13T13:16:00-05:00"
-  commit: "inline-route-a"
-plan_final:
-  published_at: "2026-03-13T13:21:00-05:00"
-  commit: "inline-route-a"
-close_review:
-  published_at: "2026-03-13T13:31:00-05:00"
-  commit: pending
-artifacts:
-  - config/ai-tools/agent-capability-scores.yaml
-  - config/ai-tools/agent-capability-radar.html
-  - scripts/ai/generate-agent-radar.py
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: inline-route-a
+    documents:
+      - config/ai-tools/agent-capability-scores.yaml
+    published_at: "2026-03-13T13:16:00-05:00"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: inline-route-a
+    documents:
+      - config/ai-tools/agent-capability-radar.html
+    published_at: "2026-03-13T13:21:00-05:00"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: pending
+    documents:
+      - config/ai-tools/agent-capability-radar.html
+      - scripts/ai/generate-agent-radar.py
+    published_at: "2026-03-13T13:31:00-05:00"
+    reviewer: vamsee

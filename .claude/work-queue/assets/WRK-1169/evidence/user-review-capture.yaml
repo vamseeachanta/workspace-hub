@@ -1,0 +1,10 @@
+wrk_id: WRK-1169
+stage: 1
+reviewer: vamsee
+scope_approved: true
+reviewed_at: "2026-03-13T00:00:00Z"
+notes: |
+  Scope approved with refinements:
+  1. Audit ~20 WRK items (expanded from 5-10)
+  2. Stage scripts must be self-contained — shared core + per-stage YAML contract
+  3. HTML stage chip shows wrong active stage (e.g. stage 4 active while CLI at stage 5)

@@ -1,0 +1,7 @@
+stage: 9
+wrk_id: WRK-1169
+route: A
+orchestrator: claude
+target_repos:
+  - workspace-hub
+routed_at: "2026-03-14T06:00:00Z"

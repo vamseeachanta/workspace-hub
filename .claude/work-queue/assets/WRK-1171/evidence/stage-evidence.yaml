@@ -1,23 +1,84 @@
-# Stage Evidence Tracker
 wrk_id: WRK-1171
 stages:
-  1:  { status: done, evidence: evidence/user-review-capture.yaml }
-  2:  { status: done, evidence: evidence/resource-intelligence.yaml }
-  3:  { status: done, evidence: n/a }
-  4:  { status: done, evidence: n/a }
-  5:  { status: done, evidence: evidence/user-review-plan-draft.yaml }
-  6:  { status: n/a, evidence: n/a }
-  7:  { status: done, evidence: evidence/plan-final-review.yaml }
-  8:  { status: done, evidence: evidence/activation.yaml }
-  9:  { status: n/a, evidence: n/a }
-  10: { status: done, evidence: evidence/execute.yaml }
-  11: { status: n/a, evidence: n/a }
-  12: { status: done, evidence: evidence/execute.yaml }
-  13: { status: n/a, evidence: n/a }
-  14: { status: done, evidence: evidence/legal-scan.yaml }
-  15: { status: done, evidence: evidence/future-work.yaml }
-  16: { status: done, evidence: evidence/resource-intelligence-update.yaml }
-  17: { status: done, evidence: evidence/user-review-close.yaml }
-  18: { status: n/a, evidence: n/a }
-  19: { status: pending, evidence: n/a }
-  20: { status: pending, evidence: n/a }
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: n/a
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: inline-route-a
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: n/a
+  evidence: n/a
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim/Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing
+  status: n/a
+  evidence: n/a
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: config/ai-tools/agent-capability-radar.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/execute.yaml
+- order: 13
+  stage: Agent Cross-Review
+  status: n/a
+  evidence: n/a
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/legal-scan.yaml
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1171/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  evidence: n/a
+- order: 20
+  stage: Archive
+  status: done
+  evidence: n/a
+generated_at: '2026-03-14T04:38:20Z'
+reviewed_by: orchestrator
