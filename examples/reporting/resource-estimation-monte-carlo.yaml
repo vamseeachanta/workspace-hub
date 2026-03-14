@@ -1,0 +1,150 @@
+metadata:
+  title: "Monte Carlo Resource Estimation — P10/P50/P90"
+  doc_id: "CALC-005"
+  revision: 1
+  date: "2026-03-14"
+  author: "Vamsee Achanta"
+  reviewer: "Independent Reviewer"
+  status: draft
+  project: "Generic Volumetric Resource Estimation"
+  change_log:
+    - rev: 1
+      date: "2026-03-14"
+      description: "Initial calculation"
+
+inputs:
+  - name: "Drainage Area"
+    symbol: "A"
+    distribution: {type: "triangular", min: 500, mode: 640, max: 800}
+    unit: "acres"
+    source: "Lease boundary + spacing unit estimate"
+  - name: "Net Pay Thickness"
+    symbol: "h"
+    distribution: {type: "normal", mean: 50, std: 10}
+    unit: "ft"
+    source: "Well log interpretation (3-well average)"
+  - name: "Porosity"
+    symbol: "\\phi"
+    distribution: {type: "uniform", min: 0.15, max: 0.25}
+    unit: "fraction"
+    source: "Core analysis + log-derived porosity"
+  - name: "Water Saturation"
+    symbol: "S_w"
+    distribution: {type: "uniform", min: 0.20, max: 0.35}
+    unit: "fraction"
+    source: "Resistivity log interpretation"
+  - name: "Oil Formation Volume Factor"
+    symbol: "B_{oi}"
+    distribution: {type: "triangular", min: 1.1, mode: 1.2, max: 1.4}
+    unit: "rb/stb"
+    source: "PVT analysis"
+  - name: "Recovery Factor"
+    symbol: "RF"
+    distribution: {type: "triangular", min: 0.10, mode: 0.15, max: 0.25}
+    unit: "fraction"
+    source: "Analog field performance"
+
+methodology:
+  description: |
+    Volumetric Monte Carlo simulation for Original Oil In Place (OOIP)
+    and Estimated Ultimate Recovery (EUR). Each input parameter is
+    sampled from its probability distribution for 10,000 iterations.
+    Results are reported as P10 (high), P50 (best), and P90 (low)
+    estimates per SPE PRMS convention.
+  standard: "SPE PRMS (Petroleum Resources Management System)"
+  equations:
+    - id: 1
+      name: "Original Oil In Place"
+      latex: "\\text{OOIP} = 7758 \\cdot A \\cdot h \\cdot \\phi \\cdot (1 - S_w) / B_{oi}"
+      description: "Volumetric OOIP in stock-tank barrels."
+      variables:
+        - symbol: "A"
+          description: "Drainage area"
+          unit: "acres"
+        - symbol: "h"
+          description: "Net pay thickness"
+          unit: "ft"
+        - symbol: "\\phi"
+          description: "Porosity"
+          unit: "fraction"
+        - symbol: "S_w"
+          description: "Water saturation"
+          unit: "fraction"
+        - symbol: "B_{oi}"
+          description: "Oil formation volume factor"
+          unit: "rb/stb"
+    - id: 2
+      name: "Estimated Ultimate Recovery"
+      latex: "\\text{EUR} = \\text{OOIP} \\times RF"
+      description: "Recoverable reserves."
+      variables:
+        - symbol: "RF"
+          description: "Recovery factor"
+          unit: "fraction"
+
+outputs:
+  - name: "P10 (High Estimate)"
+    symbol: "P10"
+    value: 7200315
+    unit: "STB"
+    notes: "90th percentile of EUR distribution"
+  - name: "P50 (Best Estimate)"
+    symbol: "P50"
+    value: 4721133
+    unit: "STB"
+    notes: "50th percentile of EUR distribution"
+  - name: "P90 (Low Estimate)"
+    symbol: "P90"
+    value: 2995627
+    unit: "STB"
+    notes: "10th percentile of EUR distribution"
+  - name: "Mean EUR"
+    symbol: "\\mu"
+    value: 4945061
+    unit: "STB"
+  - name: "Deterministic EUR"
+    symbol: "EUR_{det}"
+    value: 4654800
+    unit: "STB"
+    notes: "Single-point estimate using modal/mean inputs"
+
+assumptions:
+  - "Single-phase oil; no free gas cap"
+  - "Homogeneous reservoir within drainage area"
+  - "Input distributions independent (no correlation)"
+  - "Recovery factor includes primary + secondary recovery"
+  - "10,000 Monte Carlo iterations with seed=42 for reproducibility"
+
+references:
+  - "SPE/WPC/AAPG/SPEE/SEG, Petroleum Resources Management System (PRMS), 2018."
+  - "Capen, E.C. (1976). The Difficulty of Assessing Uncertainty. JPT."
+
+charts:
+  - id: "eur_histogram"
+    title: "EUR Distribution (10,000 iterations)"
+    type: bar
+    x_label: "EUR"
+    y_label: "Frequency"
+    x_unit: "STB"
+    y_unit: "count"
+    datasets:
+      - label: "EUR Histogram"
+        data: [[2000000, 150], [3000000, 950], [4000000, 2800],
+               [5000000, 2900], [6000000, 1800], [7000000, 900],
+               [8000000, 350], [9000000, 100], [10000000, 50]]
+        color: "#0f766e"
+
+data_tables:
+  - id: "percentile_summary"
+    title: "Resource Estimate Summary"
+    columns:
+      - name: "Percentile"
+        unit: "-"
+      - name: "EUR"
+        unit: "STB"
+    rows:
+      - ["P90 (Low)", 2995627]
+      - ["P50 (Best)", 4721133]
+      - ["P10 (High)", 7200315]
+      - ["Mean", 4945061]
+      - ["Deterministic", 4654800]
