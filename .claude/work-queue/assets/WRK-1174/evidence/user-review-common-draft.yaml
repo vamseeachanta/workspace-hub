@@ -4,4 +4,5 @@ reviewer: vamsee
 reviewed_at: 2026-03-14T12:30:00Z
 scope_approved: true
 verdict: approved
+approval_decision: approve_as_is
 notes: "Plan provided directly by user in session prompt — reviewed and approved inline before implementation"
