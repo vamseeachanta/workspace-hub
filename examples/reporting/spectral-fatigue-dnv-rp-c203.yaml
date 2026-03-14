@@ -70,18 +70,22 @@ methodology:
   standard: "DNV-RP-C203 (2021) Section 5 -- Simplified fatigue analysis"
   equations:
     - id: "spectral_moments"
+      name: "Spectral Moment"
       description: "Spectral moment of order n"
       latex: "m_n = \\int_0^\\infty (2\\pi f)^n \\, S_{\\sigma}(f) \\, df"
       source: "DNV-RP-C203 Eq. 5.1"
     - id: "zero_crossing_rate"
+      name: "Zero-Crossing Rate"
       description: "Expected zero-crossing rate"
       latex: "\\nu_0 = \\frac{1}{2\\pi} \\sqrt{\\frac{m_2}{m_0}}"
       source: "DNV-RP-C203 Eq. 5.2"
     - id: "narrowband_damage"
+      name: "Narrow-Band Damage Rate"
       description: "Narrow-band damage rate per unit time"
       latex: "\\dot{D}_{NB} = \\frac{\\nu_0}{A} (2\\sqrt{2} \\sigma)^m \\, \\Gamma\\left(1 + \\frac{m}{2}\\right)"
       source: "DNV-RP-C203 Eq. 5.4"
     - id: "miners_rule"
+      name: "Palmgren-Miner Rule"
       description: "Palmgren-Miner cumulative damage"
       latex: "D = \\sum_{i=1}^{k} \\frac{n_i}{N_i} \\leq \\eta"
       source: "DNV-RP-C203 Eq. 2.1"
@@ -145,6 +149,40 @@ calculations:
         - Narrow-band: quick screening or narrow-banded response
         - Dirlik: general broadband spectral fatigue
         - Time-domain rainflow: definitive validation
+
+outputs:
+  - name: "D-curve cycles at 100 MPa"
+    symbol: "N_{100}"
+    value: 573000
+    unit: "cycles"
+    notes: "Matches N = A/S^m hand calc"
+  - name: "Miner's damage (3-block example)"
+    symbol: "D_{3block}"
+    value: 5.25e-3
+    unit: "-"
+    notes: "Sum of individual D_i agrees to 6 significant figures"
+  - name: "Narrow-band damage rate"
+    symbol: "\\dot{D}_{NB}"
+    value: 8.94e-8
+    unit: "per second"
+    notes: "sigma=40 MPa; consistent with analytical formula"
+  - name: "SW+CP reduction factor"
+    symbol: "k_{CP}"
+    value: 0.87
+    unit: "-"
+    notes: "Per DNV-RP-C203 Table 2-2"
+  - name: "SW free-corrosion factor"
+    symbol: "k_{FC}"
+    value: 0.72
+    unit: "-"
+    notes: "Per DNV-RP-C203 Cl. 2.4.3"
+
+assumptions:
+  - "Stress PSD is Gaussian narrow-band (conservative upper bound)"
+  - "Single-slope S-N curve (DNV D class, in-air basis)"
+  - "No thickness correction applied"
+  - "Zero-crossing rate derived from spectral moments m0 and m2"
+  - "Seawater correction factors per DNV-RP-C203 Table 2-2"
 
 results:
   - name: "D-curve cycles at 100 MPa"
