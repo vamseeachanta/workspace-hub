@@ -1,0 +1,125 @@
+# Resource Intelligence — WRK-1200
+# Strategic prioritization skill
+
+researched_at: "2026-03-14"
+
+codebase_assets:
+  existing_scoring_frameworks:
+    - name: task_classifier.sh
+      path: scripts/coordination/routing/lib/task_classifier.sh
+      relevance: "10-dimension weighted scoring (reasoning_depth, code_density, architecture_scope, etc.) — reusable for complexity scoring"
+    - name: reflect pattern scoring
+      path: .claude/skills/coordination/workspace/claude-reflect/SKILL.md
+      relevance: "4-factor weighted model (frequency 0.3, cross-repo 0.3, complexity 0.2, time-savings 0.2) — reusable pattern"
+    - name: improve decision logic
+      path: .claude/skills/workspace-hub/improve/SKILL.md
+      relevance: "4-factor scoring (recurrence 40%, severity 30%, freshness 15%, specificity 15%)"
+
+  integration_targets:
+    - skill: session-start
+      path: .claude/skills/workspace-hub/session-start/SKILL.md
+      hook: "Step 4 — currently shows top unblocked items via whats-next.sh --all; insert Step 4b for strategic brief"
+    - skill: whats-next
+      path: .claude/skills/workspace-hub/whats-next/SKILL.md
+      hook: "whats-next.sh outputs 8 buckets (WORKING, HIGH_UNBLOCKED, NEWLY_UNBLOCKED, etc.); add --sort-by strategic flag"
+      script: scripts/work-queue/whats-next.sh
+    - skill: work-queue capture
+      path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+      hook: "Post-capture inline classification; add track: field to frontmatter"
+    - stage: triage (Stage 3)
+      path: scripts/work-queue/stages/stage-03-triage.yaml
+      hook: "New exit artifact: triage-scoring.yaml with strategic score"
+    - skill: today
+      path: .claude/skills/business/productivity/today/SKILL.md
+      hook: "Track balance report in morning/evening modes"
+    - skill: reflect
+      path: .claude/skills/coordination/workspace/claude-reflect/SKILL.md
+      hook: "Phase 5 GENERALIZE: add WRK bottleneck analysis"
+    - stage: future-work (Stage 15)
+      hook: "Pre-score follow-up items; kill low-value at birth"
+    - stage: feature-decomposition (Stage 7 exit)
+      hook: "Score child WRKs; front-load demo-able children"
+
+  existing_taxonomy:
+    categories: [harness, engineering, business, data, platform, maintenance, personal]
+    engineering_subcategories: [pipeline, structural, marine, drilling, hydrodynamics, asset-integrity, cathodic-protection]
+    business_subcategories: [cre-finance, portfolio-analysis, market-analytics]
+
+  roadmap_reference:
+    path: .claude/docs/roadmap-2026-h1.md
+    top_themes:
+      - "Self-improving session loop"
+      - "Engineering module agent-callability (99 pending digitalmodel items)"
+      - "Data queryability (worldenergydata BSEE/EIA)"
+      - "Agentic workflow infrastructure (~90% complete, diminishing returns)"
+
+  human_gate_stages: [1, 5, 7, 17]
+  human_gate_script: scripts/work-queue/is-human-gate.sh
+
+visionary_frameworks:
+  quantitative:
+    - name: RICE
+      source: "Sean McBride, Intercom (2016)"
+      formula: "(Reach x Impact x Confidence) / Effort"
+      scales:
+        reach: "absolute number per quarter"
+        impact: "Massive=3, High=2, Medium=1, Low=0.5, Minimal=0.25"
+        confidence: "High=100%, Medium=80%, Low=50%"
+        effort: "person-months"
+      fit: "Good for feature-level scoring without time pressure"
+
+    - name: WSJF
+      source: "Don Reinertsen / SAFe"
+      formula: "Cost of Delay / Job Size"
+      cost_of_delay: "Business Value + Time Criticality + Risk Reduction/Opportunity Enablement"
+      scales: "Fibonacci relative (1-21)"
+      fit: "Best for backlog with deadlines and dependencies — captures time criticality and enablement"
+
+    - name: OKRs
+      source: "Andy Grove, Intel"
+      structure: "Objective (qualitative) + Key Results (0.0-1.0 scale)"
+      committed_target: 1.0
+      aspirational_target: 0.7
+      fit: "Quarterly goal-setting per track"
+
+  qualitative:
+    - name: "Jobs 100-to-3"
+      source: "Steve Jobs, Apple"
+      principle: "Force-rank everything, delete bottom 70%"
+      method: "100 ideas → 10 → slash to 3. If it doesn't fit the 2x2 product grid, kill it."
+      key_rule: "Infrastructure only justified if it directly unblocks one of top 3"
+
+    - name: "Working Backwards PR/FAQ"
+      source: "Jeff Bezos, Amazon"
+      principle: "Write the press release before building. If no compelling announcement, not market-ready."
+      steps: ["Write 1-page press release", "Write 5-page FAQ (external + internal)", "20-min silent read review", "Iterate until crisp"]
+
+    - name: "First Principles"
+      source: "Elon Musk, SpaceX/Tesla"
+      principle: "Decompose to fundamentals, ask 'does this need to exist?' before 'how important?'"
+      steps: ["Identify assumptions", "Decompose to fundamentals (physics/economics)", "Reconstruct from scratch"]
+
+    - name: "Strategic Inflection Points"
+      source: "Andy Grove, Intel"
+      signals: ["Middle-management whispers", "Cognitive dissonance at top", "Silver bullet test", "New rules test"]
+      decision_rule: "If replaced, what would new CEO do? Then do that."
+
+  portfolio_balancing:
+    - name: "70/20/10"
+      source: "Eric Schmidt/Google; Nagji & Tuff (HBR 2012)"
+      allocation:
+        core: "70% — incremental improvements"
+        adjacent: "20% — new capabilities leveraging strengths"
+        transformational: "10% — entirely new offerings"
+      key_insight: "Returns are INVERTED: core=10% of long-term returns, transformational=70%"
+      mapping:
+        harness: "Core horizon — keeps engine running"
+        engineering: "Core + Adjacent — existing modules + new capabilities"
+        market: "Adjacent + Transformational — expansion + new products"
+
+  recommended_layered_application:
+    portfolio_quarterly: "70/20/10 for track allocation + Grove OKRs per track"
+    initiative_selection: "Jobs 100-to-3 within each track + PR/FAQ for big bets"
+    backlog_ordering: "WSJF for items with deadlines/deps; RICE for items without time pressure"
+    technical_decisions: "First Principles when costs/timelines seem unreasonable"
+    validation_gate: "Demo Test — every item must produce demoable outcome"
