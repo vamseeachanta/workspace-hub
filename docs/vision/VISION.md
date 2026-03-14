@@ -9,6 +9,38 @@ Every WRK item should be scored against it before priority is assigned.*
 
 ---
 
+## Guiding Theme: Tethering Timeless Engineering to a Single Source of Truth
+
+Engineering principles are timeless — Archimedes' buoyancy, Euler's buckling, Miner's
+fatigue damage rule. But implementations fragment across spreadsheets, projects, and
+people. The ACE Engineering ecosystem tethers these timeless principles to a single
+authoritative, traceable, agent-callable source.
+
+**The traceability chain:**
+
+```
+Standard clause → Implementation (code) → Test (worked example) → Report (validated output)
+```
+
+Every calculation in this ecosystem must trace back to its standard. Every standard must
+trace to its implementation. The document index (1M+ records), capability map (425+
+standards), and calculation reports form the chain of traceability.
+
+This theme drives three design decisions:
+
+1. **Standards-first implementation** — no calculation exists without a standard reference.
+   The capability map is the single source of truth for what is implemented and what is gap.
+
+2. **Dark intelligence extraction** — legacy calculations are extracted from Excel/files
+   into clean, client-free methodology archives. The engineering knowledge persists; the
+   client context does not.
+
+3. **Calculation report standard** — every calculation produces a structured YAML report
+   (metadata, inputs, methodology with LaTeX equations, outputs with pass/fail, references)
+   that is both machine-readable and human-auditable.
+
+---
+
 ## Where We Are: Current Repository Missions
 
 Each repository's mission, and its position on the autonomy ladder (see Section 3):
