@@ -47,7 +47,7 @@ jobs:
       - name: Install test dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov pyyaml
 
       - name: Run shell tests (task-agents routing)
         run: |
