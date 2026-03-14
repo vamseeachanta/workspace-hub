@@ -1,3 +1,5 @@
+> **Location convention**: Specs and plans reside in `.claude/work-queue/assets/WRK-<ID>/` alongside their work item.
+
 # Ecosystem 15-Day Sprint — Data Completeness + Calculation Coverage
 
 > **WRK-1179** | Created: 2026-03-13 | Status: Design
