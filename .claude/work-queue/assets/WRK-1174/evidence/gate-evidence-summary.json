@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-1174",
-  "phase": "close",
+  "phase": "archive",
   "summary_file": "assets/WRK-1174/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -18,13 +18,6 @@
       "details": "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
     },
     {
-      "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "stage evidence file missing: assets/WRK-1174/evidence"
-    },
-    {
       "name": "Resource-intelligence gate",
       "status": "FAIL",
       "ok": false,
@@ -36,7 +29,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: set_active_wrk must be true"
     },
     {
       "name": "Agent log gate",
@@ -67,53 +60,11 @@
       "details": "artifact=none"
     },
     {
-      "name": "TDD gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "none"
-    },
-    {
-      "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
-    },
-    {
-      "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "artifact=missing, none"
-    },
-    {
       "name": "Claim gate",
       "status": "WARN",
       "ok": false,
       "warn": true,
       "details": "claim evidence absent (legacy item \u2014 WARN)"
-    },
-    {
-      "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
-    },
-    {
-      "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
-    },
-    {
-      "name": "User-review close gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -124,10 +75,10 @@
     },
     {
       "name": "Approval ordering gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "approval ordering OK (phase=close)"
+      "details": "timestamp ordering violation: claim-evidence.claimed_at (2026-03-14 12:00:00+00:00) >= execute.executed_at (2026-03-14 12:00:00+00:00)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -145,17 +96,17 @@
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no sentinel values found"
-    },
-    {
-      "name": "Claim artifact path gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "claim-evidence.yaml: route='' (empty)"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -165,53 +116,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Codex keyword in review gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
-    },
-    {
-      "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
-    },
-    {
-      "name": "Stage evidence paths gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip path existence check"
-    },
-    {
-      "name": "Done/pending contradiction gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "stage-evidence.yaml absent \u2014 skip done/pending check"
-    },
-    {
-      "name": "Plan publish predates approval gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
-    },
-    {
-      "name": "Workstation contract (strict) gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "workstation contract fields present"
-    },
-    {
-      "name": "Reclaim n/a gate",
-      "status": "WARN",
+      "name": "Archive readiness gate",
+      "status": "FAIL",
       "ok": false,
-      "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "warn": false,
+      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1174/evidence/archive-tooling.yaml"
     }
   ]
 }
