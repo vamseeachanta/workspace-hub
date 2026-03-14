@@ -1,0 +1,39 @@
+---
+wrk_id: WRK-1178
+stage: 15
+items:
+  - id: FW-1
+    priority: HIGH
+    title: "Offline/self-contained HTML mode"
+    description: "Add --self-contained flag that inlines KaTeX + Chart.js assets for offline/air-gapped viewing"
+    source: "Claude P2, Codex P1, Gemini Medium — unanimous across all reviewers"
+
+  - id: FW-2
+    priority: MEDIUM
+    title: "Shared warm-parchment CSS module"
+    description: "Extract CSS into shared module consumed by both workflow-html and calculation-report to prevent drift"
+    source: "Codex P1"
+
+  - id: FW-3
+    priority: MEDIUM
+    title: "Adoption contract for digitalmodel/assetutilities"
+    description: "Define CLI invocation contract so repos can call generate-calc-report.py; consider packaging"
+    source: "Codex P2"
+
+  - id: FW-4
+    priority: LOW
+    title: "Machine-enforceable schema validation"
+    description: "Promote calculation-report-schema.yaml to jsonschema or pydantic model"
+    source: "Claude P3, Codex P2, Gemini Low"
+
+  - id: FW-5
+    priority: LOW
+    title: "SRI hashes for CDN assets"
+    description: "Add subresource integrity attributes to KaTeX/Chart.js script tags"
+    source: "Codex P3"
+
+  - id: FW-6
+    priority: LOW
+    title: "Pipe character escaping in Markdown tables"
+    description: "Escape | chars in cell values to prevent Markdown table corruption"
+    source: "Claude P3"

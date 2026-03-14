@@ -1,3 +1,9 @@
+---
+name: remote-desktop
+description: Connect to ace-linux-2 graphical desktop from ace-linux-1 via VNC over SSH tunnel
+version: "1.0.0"
+---
+
 # Remote Desktop — ace-linux-2
 
 Connect to ace-linux-2 graphical desktop from ace-linux-1 via VNC over SSH tunnel.

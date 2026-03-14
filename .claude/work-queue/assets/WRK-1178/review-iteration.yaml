@@ -1,0 +1,5 @@
+wrk_id: "WRK-1178"
+iteration: 0
+first_review_at: "2026-03-14T02:39:16Z"
+last_review_at: "2026-03-14T02:39:16Z"
+# Reset: previous 3 iterations were wasted on Codex timeouts (malformed SKILL.md)

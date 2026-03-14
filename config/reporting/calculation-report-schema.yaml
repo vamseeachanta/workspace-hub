@@ -1,0 +1,55 @@
+# Calculation Report Schema v1.0
+# Every calculation YAML must conform to this structure.
+# Validated by scripts/reporting/generate-calc-report.py
+
+required_fields:
+  metadata:
+    required: [title, doc_id, revision, date, author, status]
+    optional: [reviewer, project, change_log]
+    types:
+      title: str
+      doc_id: str
+      revision: int
+      date: str
+      author: str
+      reviewer: str
+      status:
+        enum: [draft, reviewed, approved]
+      project: str
+    change_log_entry:
+      required: [rev, date, description]
+
+  inputs:
+    item_required: [name, symbol, value, unit]
+    item_optional: [source, notes]
+
+  methodology:
+    required: [description, standard, equations]
+    optional: []
+    equation_required: [id, name, latex, description]
+    equation_optional: [variables]
+    variable_fields: [symbol, description, unit]
+
+  outputs:
+    item_required: [name, symbol, value, unit]
+    item_optional: [pass_fail, limit, notes]
+    pass_fail_enum: [pass, fail, null]
+
+  assumptions:
+    type: list_of_strings
+
+  references:
+    type: list_of_strings
+
+optional_sections:
+  charts:
+    item_required: [id, title, type, x_label, y_label, datasets]
+    item_optional: [x_unit, y_unit, x_scale, y_scale]
+    type_enum: [line, bar, scatter, log_log]
+    scale_enum: [linear, log]
+    dataset_required: [label, data]
+    dataset_optional: [color]
+
+  data_tables:
+    item_required: [id, title, columns, rows]
+    column_fields: [name, unit]

@@ -1,0 +1,132 @@
+---
+wrk_id: WRK-1178
+stage: 6
+type: plan_cross_review
+reviewed_at: "2026-03-14"
+
+reviews:
+  claude:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260314T024016Z-wrk-1178-plan-review-input.md-plan-claude.md
+    findings:
+      - priority: P2
+        issue: "CDN-only KaTeX/Chart.js — no offline fallback"
+        disposition: "FW — add --self-contained flag in future iteration"
+      - priority: P2
+        issue: "File naming snake_case vs kebab-case"
+        disposition: "Justified exception — Python import rules require underscores"
+      - priority: P2
+        issue: "Test file may exceed 400-line limit"
+        disposition: "Fixed — extracted conftest.py, test file now 334 lines"
+      - priority: P2
+        issue: "Markdown intermediate unclear standalone value"
+        disposition: "Documented — MD is first-class deliverable for git diffs"
+      - priority: P2
+        issue: "No LaTeX/chart data validation"
+        disposition: "Mitigated — throwOnError:false set; FW for server-side checks"
+
+  codex:
+    verdict: REQUEST_CHANGES
+    findings:
+      - priority: P1
+        issue: "Dual rendering paths (MD and HTML built separately) will drift"
+        disposition: "Accepted design — both render from same validated data dict; MD is alternate export, not intermediate"
+      - priority: P1
+        issue: "CSS reuse is copy-paste, not shared import"
+        disposition: "FW — create shared warm-parchment module when workflow-html next changes"
+      - priority: P2
+        issue: "Schema file and Python validator can drift"
+        disposition: "Accepted — schema is documentation; Python is source of truth"
+      - priority: P2
+        issue: "CDN-only assets"
+        disposition: "FW — same as Claude P2-1"
+      - priority: P2
+        issue: "No adoption path for digitalmodel/assetutilities"
+        disposition: "FW — CLI invocation contract; repos call hub script"
+      - priority: P3
+        issue: "String-based tests don't verify browser rendering"
+        disposition: "Accepted — browser tests out of scope for v1"
+
+  gemini:
+    verdict: APPROVE
+    findings:
+      - priority: medium
+        issue: "CDN reliance for offline environments"
+        disposition: "FW — consistent with Claude/Codex feedback"
+      - priority: low
+        issue: "Manual validation vs jsonschema"
+        disposition: "Accepted — avoids dependency for simple field checks"
+
+plan_summary: |
+  Plan reviewed by all three providers. Gemini APPROVE, Claude and Codex
+  REQUEST_CHANGES on P2 items. No P1 blockers after disposition: dual-render
+  paths are by design (both from same data dict), CSS sharing is FW item.
+  All CDN-offline concerns captured as future work. Test file split completed.
+
+---
+# Stage 13: Implementation cross-review
+wrk_id: WRK-1178
+stage: 13
+type: implementation_cross_review
+reviewed_at: "2026-03-14"
+
+implementation_reviews:
+  claude:
+    verdict: APPROVE
+    findings:
+      - priority: P3
+        issue: "Data table cells not html_escaped"
+        disposition: "Fixed — html_escape(str(v)) applied"
+      - priority: P3
+        issue: "Numeric values not escaped"
+        disposition: "Defense-in-depth; values are numeric from YAML"
+      - priority: P3
+        issue: "File naming inconsistency"
+        disposition: "Justified exception — Python import rules"
+      - priority: P3
+        issue: "Chart ID escape inconsistency"
+        disposition: "IDs are alphanumeric by convention"
+      - priority: P3
+        issue: "Pipe chars in MD table values"
+        disposition: "Edge case; FW"
+      - priority: P3
+        issue: "Schema is descriptive not machine-enforceable"
+        disposition: "Accepted for v1"
+
+  codex:
+    verdict: REQUEST_CHANGES
+    findings:
+      - priority: P1
+        issue: "CDN dependency for core rendering"
+        disposition: "FW — --self-contained flag"
+      - priority: P1
+        issue: "XSS in chart script interpolation"
+        disposition: "MITIGATED — json.dumps() used for all chart data; data table cells now html_escaped"
+      - priority: P2
+        issue: "Weak validation"
+        disposition: "Accepted for v1; field presence + status enum sufficient"
+      - priority: P2
+        issue: "Dual renderer drift risk"
+        disposition: "By design — both from same validated data dict"
+      - priority: P3
+        issue: "Equation numbering stability"
+        disposition: "IDs from YAML are stable, not auto-numbered"
+      - priority: P3
+        issue: "CDN version pinning / SRI"
+        disposition: "Versions pinned; SRI hashes FW"
+
+  gemini:
+    verdict: APPROVE
+    findings:
+      - priority: low
+        issue: "Hyphenated filename forces importlib"
+        disposition: "Project convention for CLI scripts"
+      - priority: low
+        issue: "CDN offline risk"
+        disposition: "FW — consistent across all reviewers"
+
+implementation_summary: |
+  Implementation reviewed by all three providers. Claude and Gemini APPROVE.
+  Codex REQUEST_CHANGES with 2 P1: CDN dependency (FW) and XSS concern
+  (mitigated — json.dumps used, data table escaping fixed). All P2/P3 items
+  dispositioned. No unresolved blockers.

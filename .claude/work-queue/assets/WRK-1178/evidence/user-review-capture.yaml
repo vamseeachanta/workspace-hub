@@ -1,0 +1,25 @@
+---
+wrk_id: WRK-1178
+stage: 1
+gate: capture_review
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-13
+notes: |
+  User refined scope:
+  - AC3 changed from PDF to HTML with interactive charts, inspired by workflow-html design
+  - AC4 uses existing fatigue analysis calculations from digitalmodel (pipeline_girth_weld, scr_touchdown, mooring_chain)
+  - Pipeline: YAML (single source of truth) → Markdown report → HTML report
+  - Versioning confirmed (revision tracking, change log)
+  - Start with fatigue analysis worked examples as initial templates
+refinements:
+  - field: ac3
+    from: "PDF output via md-to-pdf"
+    to: "HTML output with interactive charts using workflow-html design system"
+  - field: ac4
+    from: "2 example calculations (digitalmodel + assetutilities)"
+    to: "Existing digitalmodel fatigue analysis worked examples as structured inputs"
+  - field: pipeline
+    added: "YAML → Markdown → HTML (single source of truth in YAML)"
+  - field: versioning
+    added: "Revision tracking and change log in template"

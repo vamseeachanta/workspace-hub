@@ -1,0 +1,63 @@
+---
+wrk_id: WRK-1178
+stage: 2
+generated_at: 2026-03-13
+
+existing_assets:
+  fatigue_module:
+    path: digitalmodel/src/digitalmodel/structural/fatigue/
+    files:
+      - analysis.py          # FatigueAnalysisEngine, FatigueAnalysisConfig
+      - sn_curves.py          # SNCurveBase, PowerLaw, Bilinear, Multislope
+      - damage_accumulation.py # LinearDamage, ModifiedMiners, NonlinearDamage
+      - rainflow.py           # ASTM E1049-85 RainflowCounter, RainflowBatch
+      - frequency_domain.py   # NarrowBand, Dirlik, TovoBenasciutti
+      - parametric_sweep.py   # run_sweep(), compute_sensitivity(), generate_sweep_report()
+      - worked_examples.py    # pipeline_girth_weld(), scr_touchdown(), mooring_chain()
+    notes: "Worked examples return structured dicts with inputs, methodology, results — ideal for YAML serialisation"
+
+  fatigue_config_example:
+    path: digitalmodel/examples/domains/input_files/fatigue_analysis/offshore_structure_fatigue.yml
+    sections: [fatigue_data, inputs, stress_analysis, analysis_options, output]
+
+  workflow_html:
+    skill: .claude/skills/workspace-hub/workflow-html/SKILL.md
+    generator: scripts/work-queue/generate-html-review.py
+    design_system: warm-parchment
+    css_vars: [--bg:#f3efe6, --panel:#fffdf8, --ink:#172126, --accent:#0f766e, --accent-2:#8a5a2b]
+    features: [sticky-stage-strip, hero-chips, auto-refresh, inline-css-js, no-external-deps]
+
+  md_to_pdf_skill:
+    path: .claude/skills/data/md-to-pdf/SKILL.md
+    notes: "Existing skill for markdown→PDF; HTML output replaces this for AC3 but skill pattern is reusable"
+
+  signal_processing:
+    path: digitalmodel/src/digitalmodel/signal_processing/
+    modules: [rainflow.py, spectral.py, timeseries.py, time_series_components.py]
+
+  orcaflex_post_process:
+    path: digitalmodel/src/digitalmodel/solvers/orcaflex/
+    modules: [opp.py, opp_time_series.py, opp_linked_statistics.py, operability_analysis.py]
+
+skills_to_create:
+  - name: calculation-report
+    location: .claude/skills/data/calculation-report/SKILL.md
+    reason: "New skill — YAML→Markdown→HTML pipeline for engineering calculations"
+
+scripts_to_create:
+  - name: generate-calc-report.py
+    location: scripts/reporting/generate-calc-report.py
+    reason: "Generator script: reads calculation YAML, emits markdown + HTML"
+
+templates_to_create:
+  - name: calculation-report-template.yaml
+    location: config/reporting/calculation-report-template.yaml
+    reason: "Schema/template for calculation YAML input files"
+
+reuse_opportunities:
+  - source: workflow-html SHARED_CSS
+    target: calculation-report HTML
+    what: "Warm-parchment design system, hero section, table styling"
+  - source: fatigue worked_examples.py
+    target: example calculation YAMLs
+    what: "Serialise existing worked examples to YAML for template validation"
