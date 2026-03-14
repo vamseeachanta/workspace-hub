@@ -46,14 +46,59 @@ uv run --no-project python scripts/reporting/generate-calc-report.py <input.yaml
 - **data_tables**: tabular data with column headers and units
 - **change_log**: revision history in metadata
 
-## Examples
+## Examples (13 calc reports)
 
-- `examples/reporting/fatigue-pipeline-girth-weld.yaml` — pipeline girth weld fatigue
+- `examples/reporting/fatigue-pipeline-girth-weld.yaml` — pipeline girth weld fatigue (DNV-RP-C203)
 - `examples/reporting/fatigue-scr-touchdown.yaml` — SCR touchdown zone fatigue
+- `examples/reporting/spectral-fatigue-dnv-rp-c203.yaml` — spectral fatigue (DNV-RP-C203)
+- `examples/reporting/geotechnical-pile-axial-capacity.yaml` — pile capacity (API RP 2GEO)
+- `examples/reporting/geotechnical-anchor-capacity.yaml` — anchor capacity (DNV-RP-E302/E303)
+- `examples/reporting/geotechnical-scour-assessment.yaml` — scour depth (DNV-RP-F107)
+- `examples/reporting/on-bottom-stability-pipeline.yaml` — pipeline stability (DNV-RP-F109)
+- `examples/reporting/on-bottom-stability-dnv-rp-f109.yaml` — detailed stability check
+- `examples/reporting/sepd-decline-unconventional.yaml` — SEPD decline curve
+- `examples/reporting/type-curve-matching-fetkovich.yaml` — Fetkovich type curves
+- `examples/reporting/resource-estimation-monte-carlo.yaml` — P10/P50/P90 resources (SPE PRMS)
+- `examples/reporting/portfolio-beta-energy-benchmark.yaml` — portfolio beta (CAPM)
+- `examples/reporting/dividend-yield-forecast.yaml` — Gordon growth model
 
-## Schema
+## Schema Validation Gate (mandatory before report generation)
 
 Full schema at `config/reporting/calculation-report-schema.yaml`.
+
+Validate EVERY YAML before generating the report:
+```bash
+uv run --no-project python -c "
+import yaml
+with open('config/reporting/calculation-report-schema.yaml') as f:
+    schema = yaml.safe_load(f)
+with open('<your-calc>.yaml') as f:
+    report = yaml.safe_load(f)
+# Required sections
+for s in ['metadata', 'inputs', 'methodology', 'outputs', 'assumptions', 'references']:
+    assert s in report, f'Missing: {s}'
+# Metadata fields
+for f in ['title', 'doc_id', 'revision', 'date', 'author', 'status']:
+    assert f in report['metadata'], f'Missing metadata.{f}'
+# Standard traceability
+assert 'standard' in report['methodology'], 'Missing methodology.standard'
+assert 'equations' in report['methodology'], 'Missing methodology.equations'
+for eq in report['methodology']['equations']:
+    assert 'name' in eq and 'latex' in eq, f'Equation missing name or latex'
+print('PASS')
+"
+```
+
+## Compliance Audit
+
+Run periodically to catch missing reports across all implementations:
+```bash
+# List all calc report YAMLs and validate each
+for f in examples/reporting/*.yaml; do
+  echo -n "$f: "
+  uv run --no-project python -c "import yaml; d=yaml.safe_load(open('$f')); [d[s] for s in ['metadata','inputs','methodology','outputs','assumptions','references']]; print('PASS')" 2>&1 || echo "FAIL"
+done
+```
 
 ## Tests
 

@@ -45,6 +45,20 @@
 - Test doubles allowed for: external APIs, slow operations, non-deterministic behavior
 - When mocking is necessary, mock at the boundary
 
+## Verified Test Data Sources
+
+### Standards & Textbooks First
+- Use worked examples from engineering standards (API RP, DNV-RP, ISO) as test assertions
+- Textbook problems with known solutions are ideal TDD inputs (verified, peer-reviewed)
+- Dark intelligence archives (`knowledge/dark-intelligence/`) contain extracted inputs/outputs from legacy calculations — use `use_as_test: true` entries
+- Research briefs (`specs/capability-map/research-briefs/`) list worked examples per discipline
+
+### Sourcing Priority
+1. Standard worked examples (highest confidence — published, peer-reviewed)
+2. University coursework solutions (verified by instructor)
+3. Dark intelligence extractions (verified against original Excel/tool output)
+4. Hand-derived examples (lowest confidence — use only as last resort)
+
 ## Test Organization
 
 ### Naming Conventions
