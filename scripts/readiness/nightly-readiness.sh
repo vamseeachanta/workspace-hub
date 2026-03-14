@@ -680,6 +680,30 @@ check_r_skills_extended() {
 } ; check_r_skills_extended || true
 
 # ─────────────────────────────────────────────────────────────────────────────
+# R12: Nightly smoke tests — tier-1 repo pytest -m smoke (WRK-1172)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r12() {
+  local smoke_script="${WORKSPACE_HUB}/scripts/cron/nightly-smoke-tests.sh"
+  [[ -f "$smoke_script" ]] || { log_pass "R12: nightly-smoke-tests.sh absent — skip"; return; }
+
+  bash "$smoke_script" >/dev/null 2>&1 || true
+
+  local yaml="${STATE_DIR}/session-health.yaml"
+  [[ -f "$yaml" ]] || { log_fail "R12: session-health.yaml not generated"; return; }
+
+  local all_healthy
+  all_healthy=$(grep "^all_healthy:" "$yaml" 2>/dev/null | awk '{print $2}')
+  if [[ "$all_healthy" == "true" ]]; then
+    log_pass "R12: all tier-1 repo smoke tests pass"
+  else
+    local failed_repos
+    failed_repos=$(grep "status: fail" "$yaml" 2>/dev/null \
+      | sed 's/.*\(  [a-z].*\):.*/\1/' | tr -d ' ' | tr '\n' ' ')
+    log_fail "R12: smoke test failures — ${failed_repos:-see session-health.yaml}"
+  fi
+} ; check_r12 || true
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Phase B: emit harness-readiness-report.yaml (host-qualified, structured)
 # ─────────────────────────────────────────────────────────────────────────────
 _emit_harness_report() {

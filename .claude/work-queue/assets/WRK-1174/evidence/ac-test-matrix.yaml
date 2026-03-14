@@ -1,0 +1,54 @@
+wrk_id: WRK-1174
+stage: 12
+tested_at: 2026-03-14T12:00:00Z
+test_script: scripts/work-queue/tests/test-scope-guard.sh
+total: 12
+passed: 12
+failed: 0
+tests:
+  - id: T1a
+    description: "Empty active-wrk → exit 0"
+    result: PASS
+  - id: T1b
+    description: "WRK-999 written to active-wrk"
+    result: PASS
+  - id: T1c
+    description: "started_at timestamp written"
+    result: PASS
+  - id: T2a
+    description: "Active WRK-888 (working) blocks WRK-999 → exit 1"
+    result: PASS
+  - id: T2b
+    description: "SCOPE_GUARD_WARNING in stderr"
+    result: PASS
+  - id: T3a
+    description: "--force bypasses guard → exit 0"
+    result: PASS
+  - id: T3b
+    description: "WRK-999 written after --force"
+    result: PASS
+  - id: T4a
+    description: "Active WRK-888 (done) allows WRK-999 → exit 0"
+    result: PASS
+  - id: T4b
+    description: "WRK-999 written when prior WRK done"
+    result: PASS
+  - id: T5a
+    description: "Active WRK-888 (archived) allows WRK-999 → exit 0"
+    result: PASS
+  - id: T6a
+    description: "Same WRK re-activation → exit 0 (idempotent)"
+    result: PASS
+  - id: T7a
+    description: "No .md file for active WRK → blocks conservatively"
+    result: PASS
+acceptance_criteria:
+  - criterion: "Scope guard fires warning on second WRK activation without first WRK completion"
+    covered_by: [T2a, T2b, T7a]
+    status: PASS
+  - criterion: "Session-start displays active WRK reminder if one exists"
+    covered_by: "Step 3d added to session-start/SKILL.md — informational display"
+    status: PASS
+  - criterion: "Documentation added to work-queue SKILL.md"
+    covered_by: "## Scope Discipline section added with behavior table"
+    status: PASS

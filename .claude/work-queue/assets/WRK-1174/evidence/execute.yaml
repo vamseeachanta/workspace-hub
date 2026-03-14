@@ -1,0 +1,18 @@
+wrk_id: WRK-1174
+stage: 10
+executed_at: 2026-03-14T12:00:00Z
+orchestrator: claude
+computer: ace-linux-1
+deliverables:
+  - file: scripts/work-queue/set-active-wrk.sh
+    action: enhanced
+    description: "Scope guard blocks new WRK when another is active; --force bypass; started_at timestamp"
+  - file: .claude/skills/workspace-hub/session-start/SKILL.md
+    action: modified
+    description: "Added step 3d — Scope Discipline Check (informational reminder)"
+  - file: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    action: modified
+    description: "Added ## Scope Discipline section documenting guard behavior"
+  - file: scripts/work-queue/tests/test-scope-guard.sh
+    action: created
+    description: "12 assertions across 7 scenarios testing scope guard"

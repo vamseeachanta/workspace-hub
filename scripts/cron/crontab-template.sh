@@ -49,6 +49,10 @@
 # Exits 1 on >20% regression; results written to scripts/testing/benchmark-results/.
 # CRON: 30 1  * * *  PATH=$HOME/.local/bin:$PATH; cd $WORKSPACE_HUB && bash scripts/testing/run-benchmarks.sh >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
 
+# Nightly smoke tests for tier-1 repos (WRK-1172); runs as R12 inside
+# nightly-readiness.sh (Step 5 of comprehensive-learning-nightly.sh).
+# No separate cron entry — results cached to .claude/state/session-health.yaml.
+
 # Repository sync every 4 hours; pulls from remotes, pushes derived state.
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 

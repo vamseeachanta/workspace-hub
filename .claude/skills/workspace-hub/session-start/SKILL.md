@@ -62,6 +62,22 @@ echo "{\"event\":\"drift_rules_loaded\",\"ts\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\
 Read `.claude/state/readiness-report.md`. If it contains `## Warnings`, surface each
 warning to the user with the suggested fix. If "All Clear", note it briefly.
 
+### 1b. Repo Health Check (from nightly smoke tests)
+
+Read `.claude/state/session-health.yaml`. Check freshness and health:
+
+```bash
+# Determine age of health check
+if [[ -f .claude/state/session-health.yaml ]]; then
+  age_hours=$(( ($(date +%s) - $(stat -c %Y .claude/state/session-health.yaml)) / 3600 ))
+  all_healthy=$(grep "^all_healthy:" .claude/state/session-health.yaml | awk '{print $2}')
+fi
+```
+
+- If `all_healthy: true` and age < 36h → display "All repos healthy" (one line)
+- If any repo failed → display warning with failed repo names and suggest investigating before selecting WRK work in that repo
+- If file missing or stale (>36h) → display "Health check stale — consider: `bash scripts/cron/nightly-smoke-tests.sh`"
+
 ### 2. Session Snapshot (from /save before last /clear)
 
 Check snapshot freshness (deterministic, no inline date math):
@@ -104,6 +120,17 @@ bash scripts/hooks/tidy-agent-teams.sh --dry-run
 If teams exist that belong to archived WRKs, note that they will be auto-removed at next
 stage-gate. If you need to spawn a new team for the current WRK, use:
 `bash scripts/work-queue/spawn-team.sh WRK-NNN <slug>` — prints the recipe, does not auto-create.
+
+### 3d. Scope Discipline Check
+
+Read `.claude/state/active-wrk`. If line 1 contains a WRK ID:
+
+```
+**Active WRK:** WRK-NNN (started: <timestamp from line 2>)
+⚠ One-feature-per-session: complete or checkpoint this WRK before starting another.
+```
+
+This is informational only (the hard block is in `set-active-wrk.sh --force` to bypass).
 
 ### 3c. Active Session Audit (when starting work)
 
