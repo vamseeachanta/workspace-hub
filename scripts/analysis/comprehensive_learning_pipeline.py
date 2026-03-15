@@ -69,11 +69,47 @@ def sanitize_multiline(s):
     s = s.replace("---", "--- ")
     return s
 
+def title_already_exists(candidate_title, pending_dir=None):
+    """Check if a WRK with a matching title already exists in pending/.
+
+    Uses case-insensitive substring matching: returns True if the candidate
+    title is contained in an existing title or vice versa.
+    """
+    if pending_dir is None:
+        pending_dir = PENDING_WRK_DIR
+    candidate_lower = candidate_title.lower().strip()
+    if not candidate_lower:
+        return False
+    for f in glob.glob(os.path.join(pending_dir, "WRK-*.md")):
+        try:
+            with open(f) as fh:
+                for line in fh:
+                    line = line.strip()
+                    if line.startswith("title:"):
+                        existing = line[6:].strip().strip('"').strip("'").lower()
+                        if candidate_lower in existing or existing in candidate_lower:
+                            return True
+                        break
+                    if line == "---" and not line.startswith("title"):
+                        continue
+                    # Stop after frontmatter
+                    if line == "---":
+                        break
+        except OSError:
+            continue
+    return False
+
+
 def create_wrk_item(title, description, priority="low", source="comprehensive-learning"):
+    # Dedup: skip if a WRK with matching title already exists
+    if title_already_exists(title):
+        print(f"    SKIP (dedup): '{title[:60]}' already exists in pending/")
+        return None
+
     # Ensure lock file exists
     if not os.path.exists(NEXT_ID_LOCK):
         open(NEXT_ID_LOCK, 'w').close()
-        
+
     with open(NEXT_ID_LOCK, 'w') as lock_file:
         try:
             fcntl.flock(lock_file, fcntl.LOCK_EX)

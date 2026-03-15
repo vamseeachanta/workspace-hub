@@ -140,6 +140,22 @@ automatically when sourced.
 
 ---
 
+### 4b. Linux System Tuning (one-time, requires sudo)
+
+**inotify watch limit** — default (65536) is too low for Node.js dev servers
+(Next.js/Turbopack, Vite) and large monorepos. Increase to 524288:
+
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
+**Verify:** `cat /proc/sys/fs/inotify/max_user_watches` → should show `524288`
+
+> This is a one-time manual step (requires sudo). Without it, `npm run dev`
+> panics with "OS file watch limit reached" on projects with many files.
+
+---
+
 ### 5. Cron Jobs
 
 #### Machine Roles

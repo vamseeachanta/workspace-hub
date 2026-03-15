@@ -368,7 +368,10 @@ ssh-copy-id vamsee@ace-linux-1
 bash scripts/cron/setup-cron.sh --dry-run
 bash scripts/cron/setup-cron.sh
 
-# 4. Smoke-test readiness
+# 4. Linux system tuning (one-time, requires sudo)
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+# 5. Smoke-test readiness
 bash scripts/readiness/nightly-readiness.sh
 ```
 
