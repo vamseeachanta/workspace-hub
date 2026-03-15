@@ -1,0 +1,25 @@
+generated_at: '2026-03-15T09:52:21'
+label: wrk-1188-batch-final
+total: 25834
+discipline_distribution:
+  materials: 25189
+  other: 89
+  marine: 78
+  cathodic-protection: 327
+  drilling: 31
+  pipeline: 67
+  structural: 18
+  regulatory: 31
+  installation: 1
+  workspace-spec: 2
+  energy-economics: 1
+other_rate_pct: 0.3
+method_breakdown:
+  astm_deterministic: 25535
+  og_sqlite: 242
+  astm_deterministic_ambiguous: 2
+  metadata_only: 52
+  pdftotext_p3: 3
+org_breakdown:
+  ASTM: 25537
+  Unknown: 297

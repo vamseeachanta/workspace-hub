@@ -1,0 +1,58 @@
+wrk_id: WRK-1188
+generated_at: "2026-03-15T09:55:00Z"
+status: batch_complete
+
+corpus:
+  total_documents: 27,343
+  processed: 25,834
+  remaining: 189
+  remaining_status: "LLM batch in progress (Unknown org docs)"
+  success_rate_pct: 94.5
+
+discipline_distribution:
+  materials: 25,189
+  cathodic-protection: 327
+  other: 89
+  marine: 78
+  pipeline: 67
+  drilling: 31
+  regulatory: 31
+  structural: 18
+  installation: 1
+  workspace-spec: 2
+  energy-economics: 1
+
+extraction_methods:
+  astm_deterministic: 25,535
+  og_sqlite: 242
+  metadata_only: 52
+  pdftotext_p3: 3
+  astm_deterministic_ambiguous: 2
+
+org_breakdown:
+  ASTM: 25,537
+  Unknown: 297
+
+validation:
+  astm_deterministic_vs_llm:
+    sample_size: 100
+    agreement_pct: 86.0
+    target_pct: 90.0
+    status: BELOW_TARGET
+    primary_disagreement: "materials vs pipeline for dual-use steel specs (A694, A707, A131)"
+    recommendation: "Add pipeline/marine context rules for forged steel ASTM specs"
+
+error_rate:
+  other_discipline_pct: 0.3
+  status: PASS
+
+checkpoint_file: data/document-index/checkpoints/checkpoint-wrk-1188-batch-final-20260315-095221.yaml
+
+acceptance_criteria:
+  ac1_90pct_success: true
+  ac2_summaries_written: true
+  ac3_deep_extraction: false
+  ac4_learnings_captured: true
+  ac5_skills_improved: false
+  ac6_tdd_tests: true
+  ac7_report_yaml: true
