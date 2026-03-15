@@ -18,23 +18,31 @@ LOG_DIR="$HUB_ROOT/data/document-index/logs"
 
 TOTAL="${1:-10}"
 SOURCE="${2:-all}"
+ORG="${3:-}"
 
 mkdir -p "$LOG_DIR"
 
 echo "=== Phase B Claude batch launch ==="
 echo "  Shards : $TOTAL"
 echo "  Source : $SOURCE"
+echo "  Org    : ${ORG:-all}"
 echo "  Worker : $WORKER"
 echo "  Logs   : $LOG_DIR"
 echo "  Start  : $(date)"
 echo ""
 
 PIDS=()
+ORG_ARGS=()
+if [[ -n "$ORG" ]]; then
+    ORG_ARGS=(--org "$ORG")
+fi
+
 for ((i=0; i<TOTAL; i++)); do
     STAMP="$(date +%Y%m%d-%H%M%S)"
     LOG="$LOG_DIR/claude-shard-${i}-${STAMP}.log"
     nohup python3 "$WORKER" \
         --shard "$i" --total "$TOTAL" --source "$SOURCE" \
+        "${ORG_ARGS[@]}" \
         >"$LOG" 2>&1 &
     PID=$!
     PIDS+=("$PID")

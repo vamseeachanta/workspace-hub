@@ -5461,5 +5461,23 @@
     "title": "AI Agent Capability Radar \u2014 data-driven visualization with daily cron",
     "priority": "medium",
     "category": "ai-orchestration"
+  },
+  "WRK-5047": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-15T03:13:22.751691+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "feat(skill): shell-tdd skill \u2014 bash test harness patterns and gotchas",
+    "priority": "medium",
+    "category": "development"
+  },
+  "WRK-5046": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-15T03:13:26.340058+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "feat(skill): gitignore-scaffold skill \u2014 gitignore patterns, negation, and directory setup",
+    "priority": "medium",
+    "category": "development"
   }
 }

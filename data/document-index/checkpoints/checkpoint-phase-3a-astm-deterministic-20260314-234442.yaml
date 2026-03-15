@@ -1,0 +1,13 @@
+generated_at: '2026-03-14T23:44:42'
+label: phase-3a-astm-deterministic
+total: 25537
+discipline_distribution:
+  materials: 25165
+  other: 49
+  cathodic-protection: 323
+other_rate_pct: 0.2
+method_breakdown:
+  astm_deterministic: 25535
+  astm_deterministic_ambiguous: 2
+org_breakdown:
+  ASTM: 25537

@@ -169,20 +169,36 @@ def write_summary(sha: str, data: dict) -> None:
 
 # ── Source loaders ─────────────────────────────────────────────────────────────
 
-def load_og_standards(shard: int, total: int) -> list:
+def load_og_standards(
+    shard: int, total: int,
+    org_filter: Optional[str] = None,
+    include_all: bool = False,
+) -> list:
     conn = sqlite3.connect(str(DB_PATH), timeout=30)
-    rows = conn.execute("""
-        SELECT d.id, d.organization, d.doc_number, d.title,
-               d.target_path, d.content_hash, d.file_size,
-               dt.full_text, dt.word_count
-        FROM documents d
-        LEFT JOIN document_text dt ON d.id = dt.document_id
-        WHERE d.is_duplicate = 0
-          AND d.organization NOT IN ('ASTM', 'Unknown')
-          AND d.target_path IS NOT NULL
-          AND d.extension IN ('.pdf', '.PDF', '.docx', '.DOCX')
-        ORDER BY d.id
-    """).fetchall()
+
+    where_clauses = [
+        "d.is_duplicate = 0",
+        "d.target_path IS NOT NULL",
+        "d.extension IN ('.pdf', '.PDF', '.docx', '.DOCX')",
+    ]
+    params: list = []
+
+    if org_filter:
+        where_clauses.append("d.organization = ?")
+        params.append(org_filter)
+    elif not include_all:
+        where_clauses.append("d.organization NOT IN ('ASTM', 'Unknown')")
+
+    sql = (
+        "SELECT d.id, d.organization, d.doc_number, d.title,"
+        "       d.target_path, d.content_hash, d.file_size,"
+        "       dt.full_text, dt.word_count "
+        "FROM documents d "
+        "LEFT JOIN document_text dt ON d.id = dt.document_id "
+        f"WHERE {' AND '.join(where_clauses)} "
+        "ORDER BY d.id"
+    )
+    rows = conn.execute(sql, params).fetchall()
     conn.close()
     return [r for i, r in enumerate(rows) if i % total == shard]
 
@@ -299,6 +315,10 @@ def main() -> int:
     parser.add_argument("--source",
                         choices=["og_standards", "ace_standards", "workspace_spec", "all"],
                         default="all")
+    parser.add_argument("--org", default=None,
+                        help="Process only this organization (e.g. API, DNV, ISO)")
+    parser.add_argument("--include-all", action="store_true",
+                        help="Include ASTM/Unknown orgs (normally excluded)")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Cap docs per source (0=unlimited)")
     args = parser.parse_args()
@@ -313,14 +333,18 @@ def main() -> int:
     logging.setLogRecordFactory(record_factory)
     logger = logging.getLogger()
 
-    logger.info("shard %d/%d  source=%s  dry_run=%s", args.shard, args.total,
-                args.source, args.dry_run)
+    logger.info("shard %d/%d  source=%s  org=%s  include_all=%s  dry_run=%s",
+                args.shard, args.total, args.source, args.org,
+                args.include_all, args.dry_run)
 
     done = skipped = errors = 0
 
     def run_og():
         nonlocal done, skipped, errors
-        rows = load_og_standards(args.shard, args.total)
+        rows = load_og_standards(
+            args.shard, args.total,
+            org_filter=args.org, include_all=args.include_all,
+        )
         if args.limit:
             rows = rows[:args.limit]
         logger.info("og_standards: %d rows in shard", len(rows))

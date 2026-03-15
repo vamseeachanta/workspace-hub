@@ -1,0 +1,10 @@
+stage: 1
+gate: capture
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-14T22:30:00Z"
+notes: |
+  Scope approved with expanded ACs:
+  - Deep extraction (tables, worked examples, charts) added alongside Phase B
+  - Iterative learning loop: process 20-30 docs → capture learnings → improve skills → repeat
+  - WRK-1202 (skill-to-script conversion) and WRK-1203 (deep extraction pipeline) completed as prerequisites

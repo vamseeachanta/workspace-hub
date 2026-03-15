@@ -1,0 +1,78 @@
+stage: 2
+gate: resource-intelligence
+assessed_at: "2026-03-14T22:35:00Z"
+
+corpus:
+  total_documents: 27980
+  with_text_extracted: 26667
+  without_text: 998
+  format_distribution:
+    pdf: 27504
+    doc: 305
+    docx: 101
+    xls: 44
+    xlsx: 26
+  organization_distribution:
+    ASTM: 25572
+    API: 850
+    Unknown: 831
+    ISO: 395
+    DNV: 117
+    OnePetro: 102
+    BSI: 84
+    MIL: 11
+    Norsok: 11
+    NEMA: 6
+
+current_state:
+  index_records: 1033933
+  og_standards_records: 27980
+  already_summarized: 0
+  summaries_dir_count: 639585  # from other sources
+  database_path: /mnt/ace/O&G-Standards/_inventory.db
+  database_size_gb: 6.4
+
+scripts_available:
+  phase_b_extraction: scripts/data/document-index/phase-b-extract.py
+  phase_b_worker: scripts/data/document-index/phase-b-claude-worker.py
+  batch_launcher: scripts/data/document-index/launch-batch.sh
+  deep_extract: scripts/data/doc-intelligence/deep-extract.py
+  extraction_learner: scripts/data/doc_intelligence/extraction_learner.py
+  config: scripts/data/document-index/config.yaml
+
+budget:
+  llm_model: claude-haiku-4-5-20251001
+  daily_budget_usd: 20.0
+  total_budget_usd: 200.0
+  estimated_cost_per_doc: 0.002  # ~500 input + 200 output tokens at Haiku rates
+  estimated_total_cost: 55.96  # 27980 * 0.002
+
+execution_plan:
+  strategy: iterative_learning_loop
+  batch_size: 25
+  learning_checkpoint_interval: 25
+  phases:
+    - name: "Batch 1 — API standards (high-value)"
+      filter: "organization = 'API'"
+      count: 850
+      priority: 1
+    - name: "Batch 2 — DNV + Norsok + ISO"
+      filter: "organization IN ('DNV','Norsok','ISO')"
+      count: 523
+      priority: 2
+    - name: "Batch 3 — ASTM (bulk)"
+      filter: "organization = 'ASTM'"
+      count: 25572
+      priority: 3
+    - name: "Batch 4 — Remaining"
+      filter: "organization NOT IN ('API','DNV','Norsok','ISO','ASTM')"
+      count: 1035
+      priority: 4
+
+risks:
+  - risk: "6.4GB SQLite may have slow queries for bulk reads"
+    mitigation: "Batch processing with LIMIT/OFFSET; sharded workers"
+  - risk: "998 documents have no text extraction yet"
+    mitigation: "pdftotext fallback in phase-b-extract.py; skip and log failures"
+  - risk: "LLM budget may be exceeded before all docs processed"
+    mitigation: "$200 total budget; ASTM batch can run with --no-llm for text-only"
