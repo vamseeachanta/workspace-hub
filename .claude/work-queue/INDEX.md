@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T03:32:48Z by generate-index.py -->
+<!-- Generated: 2026-03-15T03:36:42Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T03:32:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T03:36:42Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 264 |
+| pending | 263 |
 | working | 3 |
 | blocked | 10 |
 | done | 3 |
-| archived | 379 |
+| archived | 380 |
 
 ### By Priority
 
@@ -93,8 +93,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 661 |
-| Total archived | 379 |
-| Completion rate | 379/661 (57%) |
+| Total archived | 380 |
+| Completion rate | 380/661 (57%) |
 | Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 73 / 264 | 28% |
+| Pending items with plans | 73 / 263 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -121,7 +121,7 @@
 |----------|---------|---------|---------|
 | High     | 101 | 2 | 8 |
 | Medium   | 122  | 1  | 1  |
-| Low      | 41  | 0  | 1  |
+| Low      | 40  | 0  | 1  |
 
 ## By Category
 
@@ -1368,7 +1368,7 @@
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-5086 |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5086 |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-5086 |
 
 ## By Status
 
@@ -1647,7 +1647,6 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | high | medium | achantas-data | - |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | low | medium | workspace-hub | - |
 
 ### Working
 
@@ -2055,6 +2054,7 @@
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | medium | medium | workspace-hub | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | medium | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | medium | medium | workspace-hub | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | low | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -2785,7 +2785,7 @@
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | medium | - |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | medium | - |
 
 ### worldenergydata
 
@@ -3578,7 +3578,7 @@
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | medium | workspace-hub | - |
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | complex | digitalmodel | - |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | medium | workspace-hub | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | medium | workspace-hub | - |
 
 ## By Complexity
 
@@ -4047,7 +4047,7 @@
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | workspace-hub | - |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | workspace-hub | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | workspace-hub | - |
 
 ### Complex
 
@@ -4182,7 +4182,7 @@
 
 ## By Computer
 
-### ace-linux-1 (219 active / 380 total)
+### ace-linux-1 (218 active / 380 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4565,7 +4565,7 @@
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | workspace-hub |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | workspace-hub |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | medium | workspace-hub |
-| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | workspace-hub |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

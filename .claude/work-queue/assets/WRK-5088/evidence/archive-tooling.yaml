@@ -1,0 +1,9 @@
+wrk_id: WRK-5088
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: n/a
+legal_scan_ref: n/a
+archive_readiness: pass
+document_index_ref: ""
+document_index_exemption: "hub-only script — no document-index entries"
+spin_off_wrks: []
