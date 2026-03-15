@@ -1,0 +1,30 @@
+wrk_id: WRK-1190
+generated_at: "2026-03-15"
+status: initial_implementation
+module_path: worldenergydata/src/worldenergydata/baker_hughes/
+files_created:
+  - baker_hughes/__init__.py
+  - baker_hughes/loader.py
+  - baker_hughes/report.py
+test_file: tests/test_baker_hughes_loader.py
+test_results:
+  total: 13
+  passed: 13
+  failed: 0
+fixtures:
+  - tests/fixtures/baker_hughes/na_pivot_sample.xlsx
+  - tests/fixtures/baker_hughes/na_summary_sample.xlsx
+data_source_status:
+  baker_hughes_website: "timeout from ace-linux-1 — fixture-based testing only"
+  note: "Live download will need retry or browser-based download"
+supported_formats:
+  - name: "NA Pivot Table"
+    function: load_pivot_table
+    columns: [date, country, state, county, basin, drill_for, location, trajectory, well_type, well_depth_ft, water_depth_ft, rig_count]
+  - name: "NA Summary (Rigs by State)"
+    function: load_summary
+    columns: [state, date, rig_count]
+future_work:
+  - id: WRK-1204
+    title: "Ingest rig metadata from state railroad commissions"
+    reason: "Baker Hughes free data lacks individual rig names/contractors"
