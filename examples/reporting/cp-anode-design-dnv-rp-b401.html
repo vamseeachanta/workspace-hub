@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pile Axial Capacity — API RP 2GEO — CALC-GEO-001</title>
+<title>Cathodic Protection Anode Design — DNV-RP-B401 (2011) — CALC-CP-001</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
@@ -108,49 +108,22 @@ details[open] summary{margin-bottom:8px;}
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">CALC-GEO-001</div>
-    <h1 class="report-title">Pile Axial Capacity — API RP 2GEO</h1>
+    <div class="eyebrow">CALC-CP-001</div>
+    <h1 class="report-title">Cathodic Protection Anode Design — DNV-RP-B401 (2011)</h1>
     <div class="meta-chips">
       <div class="meta-chip"><strong>Status</strong><span class="badge badge-draft">DRAFT</span></div>
-      <div class="meta-chip"><strong>Revision</strong>A</div>
-      <div class="meta-chip"><strong>Date</strong>2026-03-14</div>
-      <div class="meta-chip"><strong>Author</strong>ACE Engineering</div>
-      <div class="meta-chip"><strong>Standard</strong>API RP 2GEO</div>
+      <div class="meta-chip"><strong>Revision</strong>0</div>
+      <div class="meta-chip"><strong>Date</strong>2026-03-15</div>
+      <div class="meta-chip"><strong>Author</strong>workspace-hub/digitalmodel</div>
+      <div class="meta-chip"><strong>Standard</strong>DNV-RP-B401 (2011) Cathodic Protection Design</div>
     </div>
   </div>
 </div>
 
 <div class="content">
-<div class="card">
-  <h2>Scope</h2>
-  <p><strong>Objective:</strong> Determine axial pile capacity in clay using alpha method per API RP 2GEO</p>
-  <h3>Inclusions</h3>
-  <ul>
-    <li>Skin friction capacity (alpha method)</li>
-    <li>End bearing capacity (Nc method)</li>
-    <li>Total axial compression capacity</li>
-  </ul>
-  <h3>Exclusions</h3>
-  <ul>
-    <li>Pile group effects</li>
-    <li>Lateral capacity</li>
-    <li>Cyclic degradation</li>
-  </ul>
-  <h3>Limitations</h3>
-  <ul>
-    <li>Single homogeneous clay layer assumed</li>
-    <li>Valid for Su/sigma_v&#x27; ratio &lt;= 1.0</li>
-  </ul>
-</div>
 
-<div class="card">
-  <h2>Design Basis</h2>
-  <ul>
-    <li>API RP 2GEO, 1st Edition, April 2011</li>
-  </ul>
-  <p><strong>Design Life:</strong> 25 years</p>
-  <p><strong>Safety Class:</strong> high</p>
-</div>
+
+
 
 <div class="card">
   <h2>Inputs</h2>
@@ -158,122 +131,137 @@ details[open] summary{margin-bottom:8px;}
     <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Source</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>Pile diameter</strong></td>
-        <td class="katex-inline">$D$</td>
-        <td>1.0</td>
-        <td>m</td>
-        <td>—</td>
+        <td><strong>Surface area</strong></td>
+        <td class="katex-inline">$A_c$</td>
+        <td>5000</td>
+        <td>m²</td>
+        <td>Project-specific jacket surface area</td>
       </tr>
       <tr>
-        <td><strong>Pile length</strong></td>
-        <td class="katex-inline">$L$</td>
-        <td>30.0</td>
-        <td>m</td>
-        <td>—</td>
+        <td><strong>Design life</strong></td>
+        <td class="katex-inline">$t_f$</td>
+        <td>25</td>
+        <td>years</td>
+        <td>Design basis</td>
       </tr>
       <tr>
-        <td><strong>Undrained shear strength</strong></td>
-        <td class="katex-inline">$S_u$</td>
-        <td>60.0</td>
-        <td>kPa</td>
-        <td>Site investigation</td>
+        <td><strong>Mean current density</strong></td>
+        <td class="katex-inline">$i_cm$</td>
+        <td>0.07</td>
+        <td>A/m²</td>
+        <td>DNV-RP-B401 Table 10-2, Tropical, 0-30m</td>
       </tr>
       <tr>
-        <td><strong>Effective overburden</strong></td>
-        <td class="katex-inline">$\sigma&#x27;_v$</td>
-        <td>150.0</td>
-        <td>kPa</td>
-        <td>—</td>
+        <td><strong>Initial current density</strong></td>
+        <td class="katex-inline">$i_ci$</td>
+        <td>0.15</td>
+        <td>A/m²</td>
+        <td>DNV-RP-B401 Table 10-1, Tropical, 0-30m, initial</td>
+      </tr>
+      <tr>
+        <td><strong>Final current density</strong></td>
+        <td class="katex-inline">$i_cf$</td>
+        <td>0.1</td>
+        <td>A/m²</td>
+        <td>DNV-RP-B401 Table 10-1, Tropical, 0-30m, final</td>
+      </tr>
+      <tr>
+        <td><strong>Coating breakdown factor (initial)</strong></td>
+        <td class="katex-inline">$f_ci$</td>
+        <td>0.02</td>
+        <td>-</td>
+        <td>DNV-RP-B401 Table 10-4, Category III, 0-30m: a=0.02, b=0.012 → f_ci = a + 0*b = 0.02</td>
+      </tr>
+      <tr>
+        <td><strong>Coating breakdown factor (mean)</strong></td>
+        <td class="katex-inline">$f_cm$</td>
+        <td>0.17</td>
+        <td>-</td>
+        <td>DNV-RP-B401 §7.3: f_cm = a + b*(t_f/2) = 0.02 + 0.012*(25/2) = 0.17</td>
+      </tr>
+      <tr>
+        <td><strong>Coating breakdown factor (final)</strong></td>
+        <td class="katex-inline">$f_cf$</td>
+        <td>0.32</td>
+        <td>-</td>
+        <td>DNV-RP-B401 §7.3: f_cf = a + b*t_f = 0.02 + 0.012*25 = 0.32</td>
+      </tr>
+      <tr>
+        <td><strong>Anode electrochemical capacity</strong></td>
+        <td class="katex-inline">$epsilon$</td>
+        <td>2000</td>
+        <td>Ah/kg</td>
+        <td>DNV-RP-B401 Table 10-6, Al-based, seawater</td>
+      </tr>
+      <tr>
+        <td><strong>Anode utilisation factor</strong></td>
+        <td class="katex-inline">$u_f$</td>
+        <td>0.9</td>
+        <td>-</td>
+        <td>DNV-RP-B401 Table 10-8, Long slender stand-off (L ≥ 4r)</td>
+      </tr>
+      <tr>
+        <td><strong>Anode closed circuit potential</strong></td>
+        <td class="katex-inline">$E_a$</td>
+        <td>-1.05</td>
+        <td>V</td>
+        <td>DNV-RP-B401 Table 10-6, Al-based, seawater</td>
+      </tr>
+      <tr>
+        <td><strong>Protection potential</strong></td>
+        <td class="katex-inline">$E_p$</td>
+        <td>-0.8</td>
+        <td>V</td>
+        <td>DNV-RP-B401 §5.4.1 vs Ag/AgCl</td>
+      </tr>
+      <tr>
+        <td><strong>Seawater resistivity</strong></td>
+        <td class="katex-inline">$rho$</td>
+        <td>0.3</td>
+        <td>Ω·m</td>
+        <td>DNV-RP-B401 Figure 10-1, ~20°C</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="card">
-  <h2>Materials</h2>
-  <table>
-    <thead><tr><th>Name</th><th>Grade</th><th>Value</th><th>Unit</th><th>Source</th><th>Partial Factor</th></tr></thead>
-    <tbody>
-      <tr>
-        <td>Steel Pile</td>
-        <td>API 5L X52</td>
-        <td>359</td>
-        <td>MPa</td>
-        <td>API 5L</td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <td>Clay Soil</td>
-        <td>Firm to stiff</td>
-        <td>60</td>
-        <td>kPa</td>
-        <td>Site investigation CPT/vane</td>
-        <td>—</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
 
 <div class="card">
   <h2>Methodology</h2>
-  <p>Axial pile capacity in clay using alpha method per API RP 2GEO</p>
-  <p><strong>Standard:</strong> API RP 2GEO</p>
+  <p>Sacrificial anode CP design for an offshore jacket in tropical waters. Calculates current demand at initial, mean, and final conditions, then sizes anodes to meet the total charge requirement over design life.</p>
+  <p><strong>Standard:</strong> DNV-RP-B401 (2011) Cathodic Protection Design</p>
   <div class="equation-block">
-    <div class="equation-name">Equation eq1: Alpha factor</div>
-    <div class="katex-display">$$\alpha = 0.5 \left(\frac{S_u}{\sigma&#x27;_v}\right)^{-0.5}$$</div>
-    <div class="equation-desc">Adhesion factor for clay</div>
+    <div class="equation-name">Equation eq1: Current demand</div>
+    <div class="katex-display">$$I_c = A_c \cdot i_c \cdot f_c$$</div>
+    <div class="equation-desc">Current demand for coated structure (§7.4.1)</div>
     <span class="eq-number">(eq1)</span>
     
   </div>
   <div class="equation-block">
-    <div class="equation-name">Equation eq2: Unit skin friction</div>
-    <div class="katex-display">$$f = \alpha \cdot S_u$$</div>
-    <div class="equation-desc">Unit skin friction capacity</div>
+    <div class="equation-name">Equation eq2: Total anode mass</div>
+    <div class="katex-display">$$M_a = \frac{I_{cm} \cdot t_f \cdot 8760}{u_f \cdot \varepsilon}$$</div>
+    <div class="equation-desc">Net anode mass requirement (§7.7.1)</div>
     <span class="eq-number">(eq2)</span>
     
   </div>
   <div class="equation-block">
-    <div class="equation-name">Equation eq3: Total axial capacity</div>
-    <div class="katex-display">$$Q = \pi D \sum f_i L_i + N_c S_u A_p$$</div>
-    <div class="equation-desc">Sum of skin friction + end bearing</div>
+    <div class="equation-name">Equation eq3: Coating breakdown factor</div>
+    <div class="katex-display">$$f_c(t) = a + b \cdot t$$</div>
+    <div class="equation-desc">Linear coating breakdown model (§7.3)</div>
     <span class="eq-number">(eq3)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq4: Driving voltage</div>
+    <div class="katex-display">$$\Delta V = |E_p - E_a|$$</div>
+    <div class="equation-desc">Design driving voltage (§5.4.1)</div>
+    <span class="eq-number">(eq4)</span>
     
   </div>
 </div>
 
-<div class="card">
-  <h2>Calculations</h2>
-  <div class="calc-step">
-    <h3>Step 1: Alpha factor calculation</h3>
-    <div class="calc-detail">Su/sigma_v&#x27; = 60/150 = 0.4
-alpha = 0.5 * (0.4)^(-0.5) = 0.5 * 1.581 = 0.791
-</div>
-    <div class="calc-clause"><em>Ref: API RP 2GEO Sec 7.3</em></div>
-  </div>
-  <div class="calc-step">
-    <h3>Step 2: Unit skin friction</h3>
-    <div class="calc-detail">f = alpha * Su = 0.791 * 60 = 47.43 kPa
-</div>
-  </div>
-  <div class="calc-step">
-    <h3>Step 3: Total skin friction capacity</h3>
-    <div class="calc-detail">Qf = pi * D * f * L = pi * 1.0 * 47.43 * 30 = 4470.56 kN
-</div>
-  </div>
-  <div class="calc-step">
-    <h3>Step 4: End bearing capacity</h3>
-    <div class="calc-detail">Nc = 9.0 (API RP 2GEO for deep piles)
-Ap = pi/4 * D^2 = 0.785 m^2
-Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
-</div>
-  </div>
-  <div class="calc-step">
-    <h3>Step 5: Total axial capacity</h3>
-    <div class="calc-detail">Q = Qf + Qp = 4470.56 + 424.12 = 4894.68 kN
-</div>
-    <div class="calc-clause"><em>Ref: API RP 2GEO Eq. 7.3-1</em></div>
-  </div>
-</div>
+
 
 <div class="card">
   <h2>Outputs</h2>
@@ -281,26 +269,42 @@ Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
     <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Pass/Fail</th><th>Limit</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>Total axial capacity</strong></td>
-        <td class="katex-inline">$Q$</td>
-        <td>4894.68</td>
-        <td>kN</td>
+        <td><strong>Initial current demand</strong></td>
+        <td class="katex-inline">$I_ci$</td>
+        <td>15.0</td>
+        <td>A</td>
         <td>—</td>
         <td>—</td>
       </tr>
       <tr>
-        <td><strong>Skin friction</strong></td>
-        <td class="katex-inline">$Q_f$</td>
-        <td>4470.56</td>
-        <td>kN</td>
+        <td><strong>Mean current demand</strong></td>
+        <td class="katex-inline">$I_cm$</td>
+        <td>59.5</td>
+        <td>A</td>
         <td>—</td>
         <td>—</td>
       </tr>
       <tr>
-        <td><strong>End bearing</strong></td>
-        <td class="katex-inline">$Q_p$</td>
-        <td>424.12</td>
-        <td>kN</td>
+        <td><strong>Final current demand</strong></td>
+        <td class="katex-inline">$I_cf$</td>
+        <td>160.0</td>
+        <td>A</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Design driving voltage</strong></td>
+        <td class="katex-inline">$delta_V$</td>
+        <td>0.25</td>
+        <td>V</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Total anode mass</strong></td>
+        <td class="katex-inline">$M_a$</td>
+        <td>7236.7</td>
+        <td>kg</td>
         <td>—</td>
         <td>—</td>
       </tr>
@@ -314,11 +318,7 @@ Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
 
 
 
-<div class="card">
-  <h2>Conclusions</h2>
-  <p><strong>Adequacy:</strong> Pile axial capacity of 4894.68 kN exceeds design load with adequate safety factor</p>
-  <p><strong>Governing Check:</strong> Skin friction governs at 91.3% of total capacity</p>
-</div>
+
 
 
 
@@ -328,10 +328,13 @@ Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
   <details open>
     <summary>Assumptions</summary>
     <ol>
-    <li>Single soil layer (clay)</li>
-    <li>Pile is driven, not drilled</li>
-    <li>No group effects considered</li>
-    <li>Alpha method per API RP 2GEO Sec 7.3 (Su/sigma_v&#x27; &lt;= 1.0 branch)</li>
+    <li>Jacket in tropical waters (surface temperature &gt; 20°C)</li>
+    <li>Water depth 0-30m (single zone)</li>
+    <li>Coating Category III (high-quality marine coating)</li>
+    <li>Al-Zn-In anode alloy (seawater environment)</li>
+    <li>Long slender stand-off anode geometry (L ≥ 4r)</li>
+    <li>Uniform current density distribution over jacket surface</li>
+    <li>Linear coating breakdown model (conservative for high-quality coatings)</li>
     </ol>
   </details>
 </div>
@@ -339,7 +342,12 @@ Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
   <details open>
     <summary>References</summary>
     <ol>
-    <li>API RP 2GEO, 1st Edition, April 2011 — Geotechnical and Foundation Design Considerations</li>
+    <li>DNV-RP-B401 (2011) Cathodic Protection Design</li>
+    <li>DNV-RP-B401 Table 10-1: Design current densities</li>
+    <li>DNV-RP-B401 Table 10-2: Mean design current densities</li>
+    <li>DNV-RP-B401 Table 10-4: Coating breakdown constants</li>
+    <li>DNV-RP-B401 Table 10-6: Anode electrochemical properties</li>
+    <li>DNV-RP-B401 Table 10-8: Anode utilisation factors</li>
     </ol>
   </details>
 </div>
@@ -347,7 +355,7 @@ Qp = Nc * Su * Ap = 9.0 * 60 * 0.785 = 424.12 kN
 
 
 <div class="report-footer">
-  Generated by calculation-report skill &middot; CALC-GEO-001 Rev A
+  Generated by calculation-report skill &middot; CALC-CP-001 Rev 0
 </div>
 </div>
 

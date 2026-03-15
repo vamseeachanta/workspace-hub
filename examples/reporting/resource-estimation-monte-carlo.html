@@ -69,6 +69,8 @@ tbody tr:hover>td{background:rgba(15,118,110,.03);}
 .badge-pass{background:#dcfce7;color:var(--good);}
 .badge-fail{background:#fee2e2;color:var(--bad);}
 .badge-draft{background:#fef3c7;color:var(--warn);}
+.badge-reviewed{background:#dbeafe;color:#1d4ed8;}
+.badge-approved{background:#dcfce7;color:var(--good);}
 
 .equation-block{background:#f8f9fa;border:1px solid var(--line);border-radius:10px;
   padding:16px 20px;margin:12px 0;position:relative;}
@@ -93,8 +95,6 @@ details[open] summary{margin-bottom:8px;}
 .report-footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);
   border-top:1px solid var(--line);margin-top:40px;}
 
-.highlight-row td{font-weight:700;color:var(--ink) !important;}
-
 @media print{
   body{background:#fff;}
   .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
@@ -109,64 +109,95 @@ details[open] summary{margin-bottom:8px;}
 <div class="hero">
   <div class="hero-inner">
     <div class="eyebrow">CALC-005</div>
-    <h1 class="report-title">Monte Carlo Resource Estimation &mdash; P10/P50/P90</h1>
+    <h1 class="report-title">Monte Carlo Resource Estimation — P10/P50/P90</h1>
     <div class="meta-chips">
       <div class="meta-chip"><strong>Status</strong><span class="badge badge-draft">DRAFT</span></div>
       <div class="meta-chip"><strong>Revision</strong>1</div>
       <div class="meta-chip"><strong>Date</strong>2026-03-14</div>
       <div class="meta-chip"><strong>Author</strong>Vamsee Achanta</div>
-      <div class="meta-chip"><strong>Reviewer</strong>Independent Reviewer</div>
-      <div class="meta-chip"><strong>Project</strong>Generic Volumetric Resource Estimation</div>
-      <div class="meta-chip"><strong>Standard</strong>SPE PRMS</div>
+        <div class="meta-chip"><strong>Reviewer</strong>Independent Reviewer</div>
+        <div class="meta-chip"><strong>Project</strong>Generic Volumetric Resource Estimation</div>
+      <div class="meta-chip"><strong>Standard</strong>SPE PRMS (Petroleum Resources Management System)</div>
     </div>
   </div>
 </div>
 
 <div class="content">
 <div class="card">
+  <h2>Scope</h2>
+  <p><strong>Objective:</strong> Estimate recoverable oil resources (EUR) using Monte Carlo volumetric simulation with probabilistic inputs</p>
+  <h3>Inclusions</h3>
+  <ul>
+    <li>Original Oil In Place (OOIP) volumetric calculation</li>
+    <li>Estimated Ultimate Recovery (EUR) with recovery factor</li>
+    <li>P10/P50/P90 probabilistic outcomes</li>
+    <li>Deterministic single-point comparison</li>
+  </ul>
+  <h3>Exclusions</h3>
+  <ul>
+    <li>Gas resources and condensate</li>
+    <li>Enhanced oil recovery (EOR) methods</li>
+    <li>Economic cut-off analysis</li>
+  </ul>
+  <h3>Limitations</h3>
+  <ul>
+    <li>Single-phase oil reservoir assumed</li>
+    <li>No inter-parameter correlations modeled</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Design Basis</h2>
+  <ul>
+    <li>SPE/WPC/AAPG/SPEE/SEG PRMS (2018)</li>
+  </ul>
+  <p><strong>Design Life:</strong> 30 years field life</p>
+</div>
+
+<div class="card">
   <h2>Inputs</h2>
   <table>
-    <thead><tr><th>Name</th><th>Symbol</th><th>Distribution</th><th>Unit</th><th>Source</th></tr></thead>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Source</th></tr></thead>
     <tbody>
       <tr>
         <td><strong>Drainage Area</strong></td>
         <td class="katex-inline">$A$</td>
-        <td>Triangular(500, 640, 800)</td>
+        <td>640</td>
         <td>acres</td>
         <td>Lease boundary + spacing unit estimate</td>
       </tr>
       <tr>
         <td><strong>Net Pay Thickness</strong></td>
         <td class="katex-inline">$h$</td>
-        <td>Normal(50, 10)</td>
+        <td>50</td>
         <td>ft</td>
         <td>Well log interpretation (3-well average)</td>
       </tr>
       <tr>
         <td><strong>Porosity</strong></td>
         <td class="katex-inline">$\phi$</td>
-        <td>Uniform(0.15, 0.25)</td>
+        <td>0.2</td>
         <td>fraction</td>
         <td>Core analysis + log-derived porosity</td>
       </tr>
       <tr>
         <td><strong>Water Saturation</strong></td>
         <td class="katex-inline">$S_w$</td>
-        <td>Uniform(0.20, 0.35)</td>
+        <td>0.275</td>
         <td>fraction</td>
         <td>Resistivity log interpretation</td>
       </tr>
       <tr>
-        <td><strong>Oil FVF</strong></td>
+        <td><strong>Oil Formation Volume Factor</strong></td>
         <td class="katex-inline">$B_{oi}$</td>
-        <td>Triangular(1.1, 1.2, 1.4)</td>
+        <td>1.2</td>
         <td>rb/stb</td>
         <td>PVT analysis</td>
       </tr>
       <tr>
         <td><strong>Recovery Factor</strong></td>
         <td class="katex-inline">$RF$</td>
-        <td>Triangular(0.10, 0.15, 0.25)</td>
+        <td>0.15</td>
         <td>fraction</td>
         <td>Analog field performance</td>
       </tr>
@@ -174,13 +205,15 @@ details[open] summary{margin-bottom:8px;}
   </table>
 </div>
 
+
+
 <div class="card">
   <h2>Methodology</h2>
   <p>Volumetric Monte Carlo simulation for Original Oil In Place (OOIP)
-  and Estimated Ultimate Recovery (EUR). Each input parameter is
-  sampled from its probability distribution for 10,000 iterations.
-  Results are reported as P10 (high), P50 (best), and P90 (low)
-  estimates per SPE PRMS convention.</p>
+and Estimated Ultimate Recovery (EUR). Each input parameter is
+sampled from its probability distribution for 10,000 iterations.
+Results are reported as P10 (high), P50 (best), and P90 (low)
+estimates per SPE PRMS convention.</p>
   <p><strong>Standard:</strong> SPE PRMS (Petroleum Resources Management System)</p>
   <div class="equation-block">
     <div class="equation-name">Equation 1: Original Oil In Place</div>
@@ -188,11 +221,11 @@ details[open] summary{margin-bottom:8px;}
     <div class="equation-desc">Volumetric OOIP in stock-tank barrels.</div>
     <span class="eq-number">(1)</span>
     <ul class="variable-list">
-<li><span class="var-sym">$A$</span> &mdash; Drainage area [acres]</li>
-<li><span class="var-sym">$h$</span> &mdash; Net pay thickness [ft]</li>
-<li><span class="var-sym">$\phi$</span> &mdash; Porosity [fraction]</li>
-<li><span class="var-sym">$S_w$</span> &mdash; Water saturation [fraction]</li>
-<li><span class="var-sym">$B_{oi}$</span> &mdash; Oil formation volume factor [rb/stb]</li>
+<li><span class="var-sym">$A$</span> — Drainage area [acres]</li>
+<li><span class="var-sym">$h$</span> — Net pay thickness [ft]</li>
+<li><span class="var-sym">$\phi$</span> — Porosity [fraction]</li>
+<li><span class="var-sym">$S_w$</span> — Water saturation [fraction]</li>
+<li><span class="var-sym">$B_{oi}$</span> — Oil formation volume factor [rb/stb]</li>
 </ul>
   </div>
   <div class="equation-block">
@@ -201,48 +234,104 @@ details[open] summary{margin-bottom:8px;}
     <div class="equation-desc">Recoverable reserves.</div>
     <span class="eq-number">(2)</span>
     <ul class="variable-list">
-<li><span class="var-sym">$RF$</span> &mdash; Recovery factor [fraction]</li>
+<li><span class="var-sym">$RF$</span> — Recovery factor [fraction]</li>
 </ul>
   </div>
 </div>
 
+
+
 <div class="card">
   <h2>Outputs</h2>
   <table>
-    <thead><tr><th>Estimate</th><th>Symbol</th><th>Value (STB)</th><th>Notes</th></tr></thead>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Pass/Fail</th><th>Limit</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>P90 (Low)</strong></td>
-        <td class="katex-inline">$P_{90}$</td>
-        <td>2,995,627</td>
-        <td>10th percentile of EUR distribution</td>
-      </tr>
-      <tr class="highlight-row">
-        <td><strong>P50 (Best)</strong></td>
-        <td class="katex-inline">$P_{50}$</td>
-        <td>4,721,133</td>
-        <td>50th percentile of EUR distribution</td>
+        <td><strong>P10 (High Estimate)</strong></td>
+        <td class="katex-inline">$P10$</td>
+        <td>7200315</td>
+        <td>STB</td>
+        <td>—</td>
+        <td>—</td>
       </tr>
       <tr>
-        <td><strong>P10 (High)</strong></td>
-        <td class="katex-inline">$P_{10}$</td>
-        <td>7,200,315</td>
-        <td>90th percentile of EUR distribution</td>
+        <td><strong>P50 (Best Estimate)</strong></td>
+        <td class="katex-inline">$P50$</td>
+        <td>4721133</td>
+        <td>STB</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P90 (Low Estimate)</strong></td>
+        <td class="katex-inline">$P90$</td>
+        <td>2995627</td>
+        <td>STB</td>
+        <td>—</td>
+        <td>—</td>
       </tr>
       <tr>
         <td><strong>Mean EUR</strong></td>
         <td class="katex-inline">$\mu$</td>
-        <td>4,945,061</td>
-        <td>&mdash;</td>
+        <td>4945061</td>
+        <td>STB</td>
+        <td>—</td>
+        <td>—</td>
       </tr>
       <tr>
         <td><strong>Deterministic EUR</strong></td>
         <td class="katex-inline">$EUR_{det}$</td>
-        <td>4,654,800</td>
-        <td>Single-point estimate using modal/mean inputs</td>
+        <td>4654800</td>
+        <td>STB</td>
+        <td>—</td>
+        <td>—</td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="card">
+  <h2>Sensitivity Analysis</h2>
+  <table>
+    <thead><tr><th>Parameter</th><th>Range</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Recovery Factor</td>
+        <td>0.10 - 0.25</td>
+        <td>EUR range 2.0 - 8.5 MMSTB; highest sensitivity parameter</td>
+      </tr>
+      <tr>
+        <td>Drainage Area</td>
+        <td>500 - 800 acres</td>
+        <td>EUR range 3.2 - 6.8 MMSTB</td>
+      </tr>
+      <tr>
+        <td>Porosity</td>
+        <td>0.15 - 0.25</td>
+        <td>EUR range 3.0 - 6.5 MMSTB</td>
+      </tr>
+      <tr>
+        <td>Net Pay Thickness</td>
+        <td>30 - 70 ft (mean ± 2σ)</td>
+        <td>EUR range 2.8 - 7.0 MMSTB</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<div class="card">
+  <h2>Conclusions</h2>
+  <p><strong>Adequacy:</strong> P50 EUR of 4.72 MMSTB supports commercial development at current oil price</p>
+  <p><strong>Governing Check:</strong> Recovery factor is the dominant uncertainty parameter</p>
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Drill appraisal well to reduce area and pay uncertainty</li>
+    <li>Conduct core flood to narrow recovery factor range</li>
+  </ul>
 </div>
 
 <div class="card">
@@ -257,13 +346,13 @@ details[open] summary{margin-bottom:8px;}
   <h2>Data Tables</h2>
   <h3>Resource Estimate Summary</h3>
   <table>
-    <thead><tr><th>Percentile</th><th>EUR (STB)</th></tr></thead>
+    <thead><tr><th>Percentile (-)</th><th>EUR (STB)</th></tr></thead>
     <tbody>
-      <tr><td>P90 (Low)</td><td>2,995,627</td></tr>
-      <tr class="highlight-row"><td>P50 (Best)</td><td>4,721,133</td></tr>
-      <tr><td>P10 (High)</td><td>7,200,315</td></tr>
-      <tr><td>Mean</td><td>4,945,061</td></tr>
-      <tr><td>Deterministic</td><td>4,654,800</td></tr>
+      <tr><td>P90 (Low)</td><td>2995627</td></tr>
+      <tr><td>P50 (Best)</td><td>4721133</td></tr>
+      <tr><td>P10 (High)</td><td>7200315</td></tr>
+      <tr><td>Mean</td><td>4945061</td></tr>
+      <tr><td>Deterministic</td><td>4654800</td></tr>
     </tbody>
   </table>
 </div>
@@ -318,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-new Chart(document.getElementById("chart-eur_histogram"), {"type":"bar","data":{"labels":["2M","3M","4M","5M","6M","7M","8M","9M","10M"],"datasets":[{"label":"EUR Frequency","data":[150,950,2800,2900,1800,900,350,100,50],"backgroundColor":"rgba(15,118,110,0.6)","borderColor":"#0f766e","borderWidth":1}]},"options":{"responsive":true,"scales":{"x":{"title":{"display":true,"text":"EUR (STB)"}},"y":{"title":{"display":true,"text":"Frequency"}}},"plugins":{"annotation":{"annotations":{"p90":{"type":"line","xMin":1,"xMax":1,"borderColor":"#b91c1c","borderWidth":2,"borderDash":[5,3],"label":{"display":true,"content":"P90","position":"start","backgroundColor":"#b91c1c"}},"p50":{"type":"line","xMin":3,"xMax":3,"borderColor":"#0f766e","borderWidth":2,"borderDash":[5,3],"label":{"display":true,"content":"P50","position":"start","backgroundColor":"#0f766e"}},"p10":{"type":"line","xMin":6,"xMax":6,"borderColor":"#1d4ed8","borderWidth":2,"borderDash":[5,3],"label":{"display":true,"content":"P10","position":"start","backgroundColor":"#1d4ed8"}}}}}}});
+new Chart(document.getElementById("chart-eur_histogram"), {"type":"bar","data":{"labels":[2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000],"datasets":[{"label":"EUR Histogram","data":[150, 950, 2800, 2900, 1800, 900, 350, 100, 50],"backgroundColor":"#0f766ecc","borderColor":"#0f766e","borderWidth":1}]},"options":{"responsive":true,"scales":{"x":{"title":{"display":true,"text":"EUR"}},"y":{"title":{"display":true,"text":"Frequency"}}}}}});
 });
 </script>
 </body>

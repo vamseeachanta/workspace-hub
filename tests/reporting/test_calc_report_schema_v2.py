@@ -1,12 +1,25 @@
 """TDD tests for calculation report schema v2 — new optional sections.
 
 Tests cover: backwards compatibility, new section validation,
-HTML builders for v2 sections, and integration rendering.
+HTML builders for v2 sections, integration rendering, and
+exemplar E2E rendering with real engineering data.
 Run: uv run --no-project python -m pytest tests/reporting/ -v
 """
+import os
+
 import pytest
 
 from conftest import REPO_ROOT
+
+EXAMPLE_SPECTRAL = os.path.join(
+    REPO_ROOT, "examples", "reporting", "spectral-fatigue-dnv-rp-c203.yaml"
+)
+EXAMPLE_GEO = os.path.join(
+    REPO_ROOT, "examples", "reporting", "geotechnical-pile-axial-capacity.yaml"
+)
+EXAMPLE_MC = os.path.join(
+    REPO_ROOT, "examples", "reporting", "resource-estimation-monte-carlo.yaml"
+)
 
 
 # ── v2 fixture ────────────────────────────────────────────────────────────
@@ -585,3 +598,330 @@ class TestSchemaV2Integration:
         html = render_html(data, md)
         assert "&lt;b&gt;" in html
         assert "&amp;" in html
+
+
+# ── Phase 4: Exemplar E2E — upgraded reports with v2 sections ──────────
+
+class TestExemplarE2E:
+    """End-to-end tests for the 3 upgraded exemplar reports."""
+
+    def test_spectral_fatigue_v2_generates_html(self, tmp_path):
+        """Spectral fatigue (most complete) generates with all v2 sections."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "spectral.html")
+        generate_report(EXAMPLE_SPECTRAL, fmt="html", output_path=out)
+        assert os.path.exists(out)
+        content = open(out).read()
+        # v1 sections still present
+        assert "Spectral Fatigue" in content
+        assert "CALC-007" in content
+        assert "Inputs" in content
+        # v2 sections rendered
+        assert "Scope" in content
+        assert "Design Basis" in content
+        assert "Materials" in content
+        assert "Verification" in content
+        assert "Conclusions" in content
+        assert "Validation" in content
+
+    def test_spectral_fatigue_scope_content(self, tmp_path):
+        """Spectral fatigue scope shows objective and inclusions."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "spectral.html")
+        generate_report(EXAMPLE_SPECTRAL, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "wave-induced spectral loading" in content
+        assert "S-N curve verification" in content
+        assert "Time-domain rainflow" in content  # exclusion
+
+    def test_spectral_fatigue_design_basis_string_codes(self, tmp_path):
+        """Design basis with string-format codes renders as list (not table)."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "spectral.html")
+        generate_report(EXAMPLE_SPECTRAL, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "DNV-RP-C203 (2021)" in content
+        # string codes render as <ul> not <table>
+        assert "Design Basis" in content
+
+    def test_spectral_fatigue_verification_record(self, tmp_path):
+        """Spectral fatigue verification shows checker and findings."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "spectral.html")
+        generate_report(EXAMPLE_SPECTRAL, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Independent Reviewer" in content
+        assert "Independent spreadsheet" in content
+        assert "0.1%" in content  # findings
+
+    def test_spectral_fatigue_conclusions_with_compliance(self, tmp_path):
+        """Spectral fatigue conclusions show adequacy + compliance."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "spectral.html")
+        generate_report(EXAMPLE_SPECTRAL, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "25-year design life" in content
+        assert "DNV-RP-C203 (2021) Section 5" in content
+
+    def test_geotechnical_v2_generates_html(self, tmp_path):
+        """Geotechnical pile generates with calculations + conclusions."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "geo.html")
+        generate_report(EXAMPLE_GEO, fmt="html", output_path=out)
+        assert os.path.exists(out)
+        content = open(out).read()
+        assert "Pile Axial Capacity" in content
+        assert "Scope" in content
+        assert "Calculations" in content
+        assert "Conclusions" in content
+
+    def test_geotechnical_calculations_with_code_clause(self, tmp_path):
+        """Geotechnical calculations render code_clause references."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "geo.html")
+        generate_report(EXAMPLE_GEO, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Step 1" in content
+        assert "Alpha factor" in content
+        assert "API RP 2GEO Sec 7.3" in content  # code_clause
+
+    def test_geotechnical_calculations_with_detail(self, tmp_path):
+        """Geotechnical calculations render step detail blocks."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "geo.html")
+        generate_report(EXAMPLE_GEO, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Su/sigma_v" in content  # detail text
+        assert "4470.56" in content  # intermediate value in detail
+
+    def test_geotechnical_conclusions_governing_check(self, tmp_path):
+        """Geotechnical conclusions identify governing check."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "geo.html")
+        generate_report(EXAMPLE_GEO, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Skin friction governs" in content
+        assert "91.3%" in content
+
+    def test_monte_carlo_v2_generates_html(self, tmp_path):
+        """Monte Carlo generates with sensitivity + conclusions."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "mc.html")
+        generate_report(EXAMPLE_MC, fmt="html", output_path=out)
+        assert os.path.exists(out)
+        content = open(out).read()
+        assert "Monte Carlo" in content
+        assert "Scope" in content
+        assert "Sensitivity" in content
+        assert "Conclusions" in content
+
+    def test_monte_carlo_sensitivity_table(self, tmp_path):
+        """Monte Carlo sensitivity renders parameter sweep table."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "mc.html")
+        generate_report(EXAMPLE_MC, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Recovery Factor" in content
+        assert "Drainage Area" in content
+        assert "Porosity" in content
+        assert "highest sensitivity" in content
+
+    def test_monte_carlo_conclusions_with_recommendations(self, tmp_path):
+        """Monte Carlo conclusions render recommendations list."""
+        from generate_calc_report import generate_report
+        out = str(tmp_path / "mc.html")
+        generate_report(EXAMPLE_MC, fmt="html", output_path=out)
+        content = open(out).read()
+        assert "Recommendations" in content
+        assert "appraisal well" in content
+        assert "core flood" in content
+        assert "<li>" in content
+
+
+# ── Phase 5: Rich section patterns from section reference files ────────
+
+class TestRichSectionPatterns:
+    """Test richer data patterns documented in the section reference files."""
+
+    def test_design_basis_dict_format_codes(self, minimal_valid):
+        """Design basis with dict-format codes produces a table."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["design_basis"] = {
+            "codes": [
+                {"code": "DNV-ST-F101", "edition": "2021-08", "clause": "Sec 5"},
+                {"code": "DNV-RP-F105", "edition": "2017-06"},
+            ],
+            "design_life": 25,
+        }
+        data = load_and_validate(minimal_valid)
+        md = render_markdown(data)
+        html = render_html(data, md)
+        # dict codes render as table
+        assert "<table" in html
+        assert "DNV-ST-F101" in html
+        assert "2021-08" in html
+        assert "Sec 5" in html
+        # markdown should have table
+        assert "DNV-ST-F101" in md
+        assert "Edition" in md
+
+    def test_design_basis_string_format_codes(self, minimal_valid):
+        """Design basis with string-format codes produces a list."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["design_basis"] = {
+            "codes": [
+                "DNV-ST-F101 (2021-08)",
+                "DNV-RP-F105 (2017-06)",
+            ],
+            "design_life": "25 years",
+        }
+        data = load_and_validate(minimal_valid)
+        md = render_markdown(data)
+        html = render_html(data, md)
+        # string codes render as <ul>
+        assert "<ul>" in html
+        assert "DNV-ST-F101 (2021-08)" in html
+        # markdown should have list items
+        assert "- DNV-ST-F101" in md
+
+    def test_scope_with_list_limitations(self, minimal_valid):
+        """Scope with list-format limitations renders each as <li>."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["scope"] = {
+            "objective": "Check wall thickness",
+            "inclusions": ["Burst", "Collapse"],
+            "exclusions": ["Fatigue"],
+            "limitations": [
+                "Single S-N curve slope assumed",
+                "No thickness correction applied",
+            ],
+        }
+        data = load_and_validate(minimal_valid)
+        html = render_html(data, render_markdown(data))
+        assert "Limitations" in html
+        assert "Single S-N curve" in html
+        assert "thickness correction" in html
+        # each limitation as <li>
+        li_count = html.count("Single S-N curve")
+        assert li_count >= 1
+
+    def test_scope_with_string_limitations(self, minimal_valid):
+        """Scope with string-format limitations renders as paragraph."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["scope"] = {
+            "objective": "Simple check",
+            "inclusions": ["Item A"],
+            "exclusions": ["Item B"],
+            "limitations": "Valid for water depths 50-200 m only",
+        }
+        data = load_and_validate(minimal_valid)
+        html = render_html(data, render_markdown(data))
+        assert "50-200 m" in html
+
+    def test_calculations_with_intermediate_results(self, minimal_valid):
+        """Calculations render intermediate results as sub-list."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["calculations"] = [
+            {
+                "step": 1,
+                "description": "Corroded wall thickness",
+                "detail": "t_1 = t_nom - t_fab - t_corr = 20.6 - 1.0 - 3.0",
+                "code_clause": "DNV-ST-F101 Sec. 5.4.2",
+                "intermediate_results": [
+                    {"name": "t_nom", "value": 20.6, "unit": "mm"},
+                    {"name": "t_fab", "value": 1.0, "unit": "mm"},
+                    {"name": "t_corr", "value": 3.0, "unit": "mm"},
+                ],
+            },
+        ]
+        data = load_and_validate(minimal_valid)
+        md = render_markdown(data)
+        html = render_html(data, md)
+        # HTML: intermediate results rendered
+        assert "t_nom" in html
+        assert "20.6" in html
+        assert "mm" in html
+        assert "intermediate-results" in html or "<li>" in html
+        # Markdown: intermediate results
+        assert "t_nom = 20.6" in md
+        assert "**Intermediate Results:**" in md
+
+    def test_verification_with_string_findings(self, minimal_valid):
+        """Verification with string findings renders as paragraph."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["verification"] = {
+            "checker": "A. Johnson, CEng",
+            "date": "2026-03-16",
+            "method": "Independent hand calculation",
+            "findings": "Fabrication tolerance was 0.5 mm, corrected to 1.0 mm",
+            "status": "verified",
+        }
+        data = load_and_validate(minimal_valid)
+        html = render_html(data, render_markdown(data))
+        assert "A. Johnson, CEng" in html
+        assert "Fabrication tolerance" in html
+        assert "verified" in html.lower()
+
+    def test_conclusions_recommendations_as_list(self, minimal_valid):
+        """Conclusions render recommendations as bulleted list."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["conclusions"] = {
+            "adequacy": "Pipeline wall thickness is adequate for 25-year design life",
+            "governing_check": "Burst utilization at corroded condition: UC = 0.72",
+            "recommendations": [
+                "Re-assess at 15-year survey if corrosion rate exceeds prediction",
+                "Install sacrificial anodes per CP design",
+            ],
+            "compliance_statement": "Compliant with DNV-ST-F101 (2021) Sec 5",
+        }
+        data = load_and_validate(minimal_valid)
+        md = render_markdown(data)
+        html = render_html(data, md)
+        # HTML: recommendations as <li>
+        assert "Recommendations" in html
+        assert "sacrificial anodes" in html
+        rec_lis = [l for l in html.split("\n") if "sacrificial anodes" in l]
+        assert any("<li>" in l for l in rec_lis)
+        # Markdown: recommendations as bullet list
+        assert "- Re-assess at 15-year" in md
+        # Compliance in both
+        assert "DNV-ST-F101 (2021)" in html
+        assert "DNV-ST-F101 (2021)" in md
+
+    def test_validation_without_method_renders(self, minimal_valid):
+        """Validation section without method still renders (backwards compat)."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["validation"] = {
+            "test_file": "tests/test_spectral_fatigue.py",
+            "test_count": 35,
+            "test_categories": ["S-N curves", "Miner sum", "Spectral methods"],
+        }
+        data = load_and_validate(minimal_valid)
+        html = render_html(data, render_markdown(data))
+        assert "Validation" in html
+        assert "35" in html
+        assert "S-N curves" in html
+
+    def test_materials_with_partial_factor_and_certificate(self, minimal_valid):
+        """Materials render partial factor and certificate fields."""
+        from generate_calc_report import load_and_validate, render_markdown, render_html
+        minimal_valid["materials"] = [
+            {
+                "name": "Structural Steel",
+                "grade": "S355",
+                "value": 355,
+                "unit": "MPa",
+                "source": "EN 10025-2",
+                "partial_factor": 1.15,
+                "certificate": "MTR-2026-001",
+            },
+        ]
+        data = load_and_validate(minimal_valid)
+        md = render_markdown(data)
+        html = render_html(data, md)
+        assert "S355" in html
+        assert "1.15" in html
+        assert "Partial Factor" in html
+        # Markdown
+        assert "S355" in md
+        assert "1.15" in md
