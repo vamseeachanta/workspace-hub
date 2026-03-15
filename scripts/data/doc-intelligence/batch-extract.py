@@ -36,6 +36,32 @@ EXTRACT_SCRIPT = str(
 )
 
 
+def _deep_postprocess(manifest_path: str, doc: dict, args) -> None:
+    """Run deep extraction on a completed manifest."""
+    import yaml as _yaml
+    from scripts.data.doc_intelligence.deep_extract import (
+        deep_extract_manifest,
+        generate_extraction_report,
+    )
+    manifest_file = Path(manifest_path)
+    if not manifest_file.exists():
+        return
+    with open(manifest_file) as f:
+        manifest_dict = _yaml.safe_load(f)
+    if not manifest_dict:
+        return
+
+    pdf_path = Path(doc["path"]) if Path(doc["path"]).suffix.lower() == ".pdf" else None
+    deep_dir = Path(args.deep_output_dir)
+    result = deep_extract_manifest(manifest_dict, deep_dir, pdf_path=pdf_path)
+
+    if args.verbose:
+        t = result["tables"]["count"]
+        w = result["worked_examples"]["count"]
+        c = result["charts"]["count"]
+        print(f"  DEEP: {t} tables, {w} examples, {c} charts")
+
+
 def _extract_one(doc: dict, output_dir: str, verbose: bool) -> tuple[bool, str]:
     """Run extract-document.py for a single doc. Returns (success, detail)."""
     input_path = doc["path"]
@@ -97,6 +123,10 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="Preview without processing")
     parser.add_argument("--verbose", action="store_true", help="Verbose output")
     parser.add_argument("--wrk", default="WRK-5042", help="WRK ID for cost tracking")
+    parser.add_argument("--deep", action="store_true",
+                        help="Run deep post-processing (tables, worked examples, charts)")
+    parser.add_argument("--deep-output-dir", default="data/doc-intelligence/deep",
+                        help="Output dir for deep extraction artifacts")
     args = parser.parse_args()
 
     queue_path = Path(args.queue)
@@ -139,6 +169,13 @@ def main() -> int:
             processed_count += 1
             if args.verbose:
                 print(f"  OK: {doc['path']} -> {detail}")
+            # Deep post-processing: tables, worked examples, charts
+            if args.deep and detail:
+                try:
+                    _deep_postprocess(detail, doc, args)
+                except Exception as exc:
+                    if args.verbose:
+                        print(f"  DEEP-WARN: {exc}")
         else:
             mark_failed(doc, detail)
             failed_count += 1
