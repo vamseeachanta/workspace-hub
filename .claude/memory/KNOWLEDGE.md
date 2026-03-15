@@ -50,7 +50,7 @@
 ## Skill Registration
 
 - Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *stale: 2026-03-11*
-- `.claude/skills/` holds the detailed SKILL.md implementation
+- `.claude/skills/` holds the detailed SKILL.md implementation *verified: 2026-03-15*
 - Command file references SKILL.md via `@.claude/skills/<path>/SKILL.md`
 - Command file needs YAML frontmatter: `name`, `description`, `category`
 - Skill appears in `/skills` list as `<category>:<name>` (e.g., `workspace-hub:repo-sync`)
@@ -69,7 +69,7 @@
 - **mawk vs gawk**: `match($0, /regex/, arr)` with capture groups is **gawk-only** — fails on mawk (Ubuntu/Debian default) *stale: 2026-03-11*
 - Portable JSON extraction in awk: use `index()` + `substr()` + `sub()` instead of regex capture groups
 - `sed -i` follows symlinks — replaces symlink with regular file. Check `git diff --diff-filter=T` after bulk sed
-- Shell scripts: `#!/usr/bin/env bash`, LF line endings (`dos2unix` if needed)
+- Shell scripts: `#!/usr/bin/env bash`, LF line endings (`dos2unix` if needed) *stale: 2026-03-15*
 
 ## Git Credential & Auth
 
@@ -80,12 +80,12 @@
 
 ## Smart Agent Router (v2.0)
 
-- **Entry point**: `scripts/coordination/routing/route.sh`
+- **Entry point**: `scripts/coordination/routing/route.sh` *verified: 2026-03-15*
 - **Model registry**: `config/agents/model-registry.yaml` (5 models across 3 providers)
 - **EWMA engine**: `scripts/coordination/routing/lib/model_registry.sh`
-- **Config**: `config/agents/routing-config.yaml`
+- **Config**: `config/agents/routing-config.yaml` *verified: 2026-03-15*
 - Adaptive routing: EWMA alpha=0.3, seed=3.0, min_ratings=3, poor_threshold=2.5
-- Rate with model: `route.sh --rate 4 claude/sonnet-4-5`
+- Rate with model: `route.sh --rate 4 claude/sonnet-4-5` *stale: 2026-03-15*
 - Stats with EWMA: `route.sh --stats`
 - Optimizer: `scripts/coordination/routing/optimize_weights.sh`
 

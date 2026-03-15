@@ -1,0 +1,35 @@
+stage: 2
+wrk_id: WRK-1242
+completed_at: "2026-03-15"
+
+key_resources:
+  calculation_report_skill: .claude/skills/data/calculation-report/SKILL.md
+  html_generator: scripts/reporting/generate-calc-report.py
+  html_builder: scripts/reporting/calc_report_html.py
+  css: scripts/reporting/calc_report_css.py
+  schema: config/reporting/calculation-report-schema.yaml
+  examples: examples/reporting/*.yaml  # 12 files
+  validation_infra: digitalmodel/src/digitalmodel/infrastructure/validation/
+
+existing_schema_sections:
+  required: [metadata, inputs, methodology, outputs, assumptions, references]
+  optional: [charts, data_tables, change_log]
+
+new_sections_planned:
+  required: [scope, design_basis, materials, calculations]
+  optional: [sensitivity, validation, verification, conclusions]
+
+chunk_sizing:
+  max_files_changed: 5
+  implication: "16 section micro-skills + SKILL.md + schema + generator = exceeds limit; needs Feature WRK or phased approach"
+
+skill_pattern:
+  convention: "Single SKILL.md per skill, no sections/ subdirectory precedent in codebase"
+  alternative: "sections/ as reference files (not skills) loaded by main SKILL.md"
+  max_lines: 400
+  target_lines: 200-300
+
+risks:
+  - "chunk-sizing exceeded (>5 files) — must phase deliverables or use Feature WRK"
+  - "backwards compatibility — existing 12 examples must still validate against updated schema"
+  - "HTML generator needs new build_* functions for each new section"

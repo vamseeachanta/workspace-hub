@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T05:05:25Z by generate-index.py -->
+<!-- Generated: 2026-03-15T16:50:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T05:05:25Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T16:50:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 663
+**Total items:** 667
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 265 |
-| working | 2 |
+| pending | 264 |
+| working | 5 |
 | blocked | 10 |
-| done | 2 |
+| done | 5 |
 | archived | 382 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 292 |
-| medium | 312 |
-| low | 58 |
+| high | 291 |
+| medium | 314 |
+| low | 61 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
 | simple | 146 |
-| medium | 313 |
+| medium | 317 |
 | complex | 126 |
 
 ### By Category
@@ -41,14 +41,14 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 28 |
-| engineering | 149 |
+| harness | 25 |
+| engineering | 153 |
 | data | 25 |
 | platform | 11 |
 | business | 6 |
 | maintenance | 5 |
 | personal | 4 |
-| uncategorised | 10 |
+| uncategorised | 11 |
 
 ### By Repository
 
@@ -63,9 +63,9 @@
 | achantas-data | 10 |
 | acma-projects | 5 |
 | assethold | 19 |
-| assetutilities | 20 |
+| assetutilities | 19 |
 | client_projects | 1 |
-| digitalmodel | 219 |
+| digitalmodel | 218 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 2 |
@@ -73,14 +73,14 @@
 | scripts/review | 1 |
 | tests/testing | 1 |
 | workspace-hub | 277 |
-| worldenergydata | 111 |
+| worldenergydata | 116 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 267 / 663 |
+| Plans exist | 268 / 667 |
 | Plans cross-reviewed | 194 |
 | Plans approved | 218 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 663 |
+| Total captured | 667 |
 | Total archived | 382 |
-| Completion rate | 382/663 (58%) |
+| Completion rate | 382/667 (57%) |
 | Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 73 / 265 | 28% |
+| Pending items with plans | 74 / 264 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -111,7 +111,7 @@
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 18 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137 |
-| Pending > 14 days | 157 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-639, WRK-TEST-ENSEMBLE |
+| Pending > 14 days | 156 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-TEST-ENSEMBLE |
 | Working > 7 days | 2 | WRK-129, WRK-1022 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
@@ -119,15 +119,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 102 | 1 | 8 |
-| Medium   | 123  | 1  | 1  |
-| Low      | 40  | 0  | 1  |
+| High     | 100 | 3 | 8 |
+| Medium   | 123  | 2  | 1  |
+| Low      | 41  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (28 items — 3 high, 18 medium, 7 low)
+### harness (25 items — 3 high, 17 medium, 5 low)
 
 #### harness / agent-teams
 
@@ -168,12 +168,6 @@
 |----|----------|-------|--------|
 | WRK-180 | LOW | Stop Hook: Cross-Agent Learning Sync | pending |
 
-#### harness / onboarding
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-5026 | LOW | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending |
-
 #### harness / session
 
 | ID | Priority | Title | Status |
@@ -181,12 +175,6 @@
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
 | WRK-1107 | MEDIUM | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending |
 | WRK-182 | LOW | Predictive Session Planning | pending |
-
-#### harness / session-health
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1168 | MEDIUM | Review session logs and eliminate recurring errors | pending |
 
 #### harness / skills
 
@@ -199,7 +187,6 @@
 | WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
-| WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
 #### harness / training
 
@@ -227,7 +214,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (149 items — 78 high, 56 medium, 15 low)
+### engineering (153 items — 79 high, 59 medium, 15 low)
 
 #### engineering / artificial-lift
 
@@ -266,16 +253,29 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1188 | HIGH | Phase B extraction on og_standards | pending |
+| WRK-1188 | HIGH | Phase B extraction on og_standards | working |
 
 #### engineering / data-ingestion
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1189 | HIGH | Ingest BOEM lease data | pending |
-| WRK-1190 | HIGH | Ingest Baker Hughes rig count | pending |
+| WRK-1190 | HIGH | Ingest Baker Hughes rig count | working |
 | WRK-1191 | MEDIUM | Ingest ERA5 reanalysis metocean | pending |
 | WRK-1192 | MEDIUM | Ingest CMEMS ocean physics | pending |
+| WRK-1204 | MEDIUM | Ingest rig metadata from state railroad commissions and industry sources | pending |
+
+#### engineering / data-loader
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1231 | HIGH | Implement CompanyLoader for BOEM company/operator hierarchy | pending |
+| WRK-1232 | HIGH | Complete production data download and conversion pipeline | pending |
+
+#### engineering / data-pipeline
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1234 | MEDIUM | BOEM/BSEE data refresh CLI script | pending |
 
 #### engineering / drilling
 
@@ -496,6 +496,12 @@
 |----|----------|-------|--------|
 | WRK-5069 | MEDIUM | Subsea risers and flowlines study — literature, methods and implementation [feature] | pending |
 
+#### engineering / testing
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1233 | MEDIUM | Add test coverage for platform and pipeline loaders | pending |
+
 #### engineering / uncategorised
 
 | ID | Priority | Title | Status |
@@ -664,7 +670,7 @@
 | WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
 | WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
 
-### uncategorised (10 items — 2 high, 6 medium, 2 low)
+### uncategorised (11 items — 2 high, 4 medium, 5 low)
 
 #### uncategorised / uncategorised
 
@@ -674,12 +680,13 @@
 | WRK-634 | HIGH | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending |
 | WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
 | WRK-1089 | MEDIUM | Split check-all.sh by responsibility (400L hard limit violated) | pending |
-| WRK-5020 | MEDIUM | fix: recurring correction correction pattern on Write | pending |
-| WRK-5021 | MEDIUM | fix: recurring correction correction pattern on Edit | pending |
-| WRK-5022 | MEDIUM | fix: recurring correction correction pattern on Write | pending |
-| WRK-5023 | MEDIUM | fix: recurring correction correction pattern on Edit | pending |
+| WRK-1205 | MEDIUM | fix: recurring correction correction pattern on Write | pending |
+| WRK-1206 | MEDIUM | fix: recurring correction correction pattern on Edit | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
+| WRK-1208 | LOW | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending |
+| WRK-1209 | LOW | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending |
+| WRK-1227 | LOW | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending |
 
 ## By Feature
 
@@ -687,7 +694,8 @@
 |----|-------|--------|----------|
 | [WRK-1048](pending/WRK-1048.md) | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | 4/10 archived (40%) |
 | [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
-| [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 0/18 archived (0%) |
+| [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 2/18 archived (11%) |
+| [WRK-1187](pending/WRK-1187.md) | Robust script-based workflow engine — codify all ecosystem workflows | pending | 0/0 |
 | [WRK-5058](pending/WRK-5058.md) | Drilling riser engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5059](pending/WRK-5059.md) | Drilling engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5060](pending/WRK-5060.md) | Pipeline engineering study — literature, methods and implementation | pending | 0/0 |
@@ -1110,7 +1118,7 @@
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-638 | Memory quality eval harness | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | done | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1290,7 +1298,7 @@
 | WRK-1165 | Droop control simulator | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
-| WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1305,12 +1313,10 @@
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-website, digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | done | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1188 | Phase B extraction on og_standards | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1189 | Ingest BOEM lease data | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1190 | Ingest Baker Hughes rig count | pending | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 20% | - | - |
+| WRK-1188 | Phase B extraction on og_standards | working | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1189 | Ingest BOEM lease data | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1190 | Ingest Baker Hughes rig count | working | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1321,19 +1327,25 @@
 | WRK-1198 | Dividend yield forecasting | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1199 | Fama-French factor model | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1190 |
+| WRK-1205 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1206 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1208 | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1231, WRK-1232 |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1128 |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05, ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -1377,8 +1389,11 @@
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
+| WRK-1168 | Review session logs and eliminate recurring errors | medium | medium | workspace-hub | - |
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | high | medium | digitalmodel | - |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | high | simple | assetutilities | - |
+| WRK-1189 | Ingest BOEM lease data | high | medium | worldenergydata | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 
 ### Pending
 
@@ -1542,7 +1557,6 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | medium | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | medium | small | workspace-hub | - |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | medium | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | medium | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | medium | medium | workspace-hub | - |
@@ -1589,7 +1603,6 @@
 | WRK-1164 | Power flow / load flow calculator | medium | medium | digitalmodel | - |
 | WRK-1165 | Droop control simulator | medium | medium | digitalmodel | - |
 | WRK-1166 | Generator fuel system CP design | medium | medium | digitalmodel | - |
-| WRK-1168 | Review session logs and eliminate recurring errors | medium | medium | workspace-hub | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | high | complex | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | medium | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | medium | medium | workspace-hub | - |
@@ -1599,11 +1612,7 @@
 | WRK-1182 | Work-queue-workflow interactive stage menu | medium | medium | workspace-hub | - |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | high | medium | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | high | medium | aceengineer-website, digitalmodel, workspace-hub | - |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | high | medium | workspace-hub | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | high | high | workspace-hub | - |
-| WRK-1188 | Phase B extraction on og_standards | high | high | workspace-hub | - |
-| WRK-1189 | Ingest BOEM lease data | high | medium | worldenergydata | - |
-| WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | medium | high | worldenergydata | - |
 | WRK-1192 | Ingest CMEMS ocean physics | medium | high | worldenergydata | - |
 | WRK-1193 | Geotechnical anchor holding capacity | medium | medium | digitalmodel | - |
@@ -1614,18 +1623,23 @@
 | WRK-1198 | Dividend yield forecasting | medium | medium | assethold | - |
 | WRK-1199 | Fama-French factor model | low | medium | assethold | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | medium | medium | workspace-hub | - |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | medium | medium | digitalmodel | - |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | medium | medium | worldenergydata | - |
+| WRK-1205 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
+| WRK-1206 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
+| WRK-1208 | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | low | medium | - | - |
+| WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | low | medium | - | - |
+| WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | low | medium | - | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | high | medium | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | high | medium | worldenergydata | - |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | medium | simple | worldenergydata | - |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | medium | medium | worldenergydata | - |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | medium | simple | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | medium | simple | workspace-hub | - |
-| WRK-5020 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
-| WRK-5021 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
-| WRK-5022 | fix: recurring correction correction pattern on Write | medium | medium | - | - |
-| WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | medium | high | workspace-hub | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | medium | medium | digitalmodel | - |
@@ -1656,6 +1670,9 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1188 | Phase B extraction on og_standards | high | high | workspace-hub | - |
+| WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2209,7 +2226,6 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | high | - |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | done | high | simple | - |
 
 ### client_projects
 
@@ -2421,7 +2437,6 @@
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | - |
 | WRK-1194 | Geotechnical scour assessment | pending | medium | low | - |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | pending | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -2617,7 +2632,7 @@
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | - |
 | WRK-638 | Memory quality eval harness | archived | medium | simple | - |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | done | low | medium | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | - |
@@ -2749,7 +2764,7 @@
 | WRK-1159 | Auto-open lifecycle HTML in browser at human-gate stages | archived | high | medium | - |
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | simple | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | - |
-| WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | - |
+| WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | - |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | - |
@@ -2763,18 +2778,18 @@
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | - |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | pending | high | medium | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | - |
-| WRK-1188 | Phase B extraction on og_standards | pending | high | high | - |
+| WRK-1188 | Phase B extraction on og_standards | working | high | high | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | - |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | - |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | low | simple | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | - |
@@ -2899,13 +2914,18 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | high | - |
-| WRK-1189 | Ingest BOEM lease data | pending | high | medium | - |
-| WRK-1190 | Ingest Baker Hughes rig count | pending | high | low | - |
+| WRK-1189 | Ingest BOEM lease data | done | high | medium | - |
+| WRK-1190 | Ingest Baker Hughes rig count | working | high | low | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | - |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | - |
 | WRK-1195 | Type curve matching (Blasingame/Fetkovich) | pending | medium | high | - |
 | WRK-1196 | P10/P50/P90 resource estimation | pending | medium | high | - |
 | WRK-1197 | Decline/NPV duplicate consolidation | pending | low | medium | - |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | medium | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | - |
+| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | - |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | - |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | - |
 | WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | - |
 
 ## By Priority
@@ -3188,13 +3208,12 @@
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | medium | workspace-hub | - |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | medium | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | medium | aceengineer-website, digitalmodel, workspace-hub | - |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | done | simple | assetutilities | - |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | pending | medium | workspace-hub | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | workspace-hub | - |
-| WRK-1188 | Phase B extraction on og_standards | pending | high | workspace-hub | - |
-| WRK-1189 | Ingest BOEM lease data | pending | medium | worldenergydata | - |
-| WRK-1190 | Ingest Baker Hughes rig count | pending | low | worldenergydata | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | medium | workspace-hub | - |
+| WRK-1188 | Phase B extraction on og_standards | working | high | workspace-hub | - |
+| WRK-1189 | Ingest BOEM lease data | done | medium | worldenergydata | - |
+| WRK-1190 | Ingest Baker Hughes rig count | working | low | worldenergydata | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | medium | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | pending | medium | worldenergydata | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3478,7 +3497,7 @@
 | WRK-1164 | Power flow / load flow calculator | pending | medium | digitalmodel | - |
 | WRK-1165 | Droop control simulator | pending | medium | digitalmodel | - |
 | WRK-1166 | Generator fuel system CP design | pending | medium | digitalmodel | - |
-| WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | workspace-hub | - |
+| WRK-1168 | Review session logs and eliminate recurring errors | done | medium | workspace-hub | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | simple | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | workspace-hub | - |
@@ -3492,16 +3511,18 @@
 | WRK-1196 | P10/P50/P90 resource estimation | pending | high | worldenergydata | - |
 | WRK-1198 | Dividend yield forecasting | pending | medium | assethold | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | workspace-hub | - |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | pending | medium | digitalmodel | - |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | worldenergydata | - |
+| WRK-1205 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-1206 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | pending | simple | worldenergydata | - |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | simple | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | simple | workspace-hub | - |
-| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
-| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
-| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
-| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | simple | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | complex | workspace-hub, digitalmodel | - |
@@ -3567,7 +3588,7 @@
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | workspace-hub | - |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | medium | digitalmodel | - |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | medium | workspace-hub | - |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | done | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | simple | workspace-hub | - |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | archived | simple | workspace-hub | - |
@@ -3580,8 +3601,11 @@
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | complex | workspace-hub | - |
 | WRK-1197 | Decline/NPV duplicate consolidation | pending | medium | worldenergydata | - |
 | WRK-1199 | Fama-French factor model | pending | medium | assethold | - |
+| WRK-1208 | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending | medium | - | - |
+| WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | medium | - | - |
+| WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | medium | - | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | simple | workspace-hub | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | simple | workspace-hub | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | medium | workspace-hub | - |
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | complex | digitalmodel | - |
@@ -3728,12 +3752,12 @@
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | workspace-hub | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | workspace-hub | - |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | done | high | assetutilities | - |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | worldenergydata | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | workspace-hub | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | workspace-hub | - |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | low | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | workspace-hub | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | workspace-hub | - |
@@ -3922,7 +3946,7 @@
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | archived | high | workspace-hub | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | workspace-hub | - |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | done | low | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | assetutilities | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
@@ -4021,7 +4045,7 @@
 | WRK-1165 | Droop control simulator | pending | medium | digitalmodel | - |
 | WRK-1166 | Generator fuel system CP design | pending | medium | digitalmodel | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | digitalmodel, workspace-hub | - |
-| WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | workspace-hub | - |
+| WRK-1168 | Review session logs and eliminate recurring errors | done | medium | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | pending | medium | workspace-hub | - |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | pending | medium | workspace-hub | - |
@@ -4030,21 +4054,25 @@
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | workspace-hub | - |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | aceengineer-website, digitalmodel, workspace-hub | - |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | pending | high | workspace-hub | - |
-| WRK-1189 | Ingest BOEM lease data | pending | high | worldenergydata | - |
+| WRK-1189 | Ingest BOEM lease data | done | high | worldenergydata | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | digitalmodel | - |
 | WRK-1197 | Decline/NPV duplicate consolidation | pending | low | worldenergydata | - |
 | WRK-1198 | Dividend yield forecasting | pending | medium | assethold | - |
 | WRK-1199 | Fama-French factor model | pending | low | assethold | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | workspace-hub | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | workspace-hub | - |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | pending | medium | digitalmodel | - |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | worldenergydata | - |
+| WRK-1205 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
+| WRK-1206 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
+| WRK-1208 | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending | low | - | - |
+| WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | - | - |
+| WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | - | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | pending | high | worldenergydata | - |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
-| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
-| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
-| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
-| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | - | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | workspace-hub | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
@@ -4191,7 +4219,7 @@
 
 ## By Computer
 
-### ace-linux-1 (218 active / 382 total)
+### ace-linux-1 (222 active / 386 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4331,7 +4359,7 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | workspace-hub |
 | WRK-638 | Memory quality eval harness | archived | medium | simple | workspace-hub |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | done | low | medium | workspace-hub |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | archived | high | medium | workspace-hub |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | archived | high | medium | assetutilities |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | worldenergydata |
@@ -4501,7 +4529,7 @@
 | WRK-1165 | Droop control simulator | pending | medium | medium | digitalmodel |
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | digitalmodel |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | digitalmodel, workspace-hub |
-| WRK-1168 | Review session logs and eliminate recurring errors | pending | medium | medium | workspace-hub |
+| WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | workspace-hub |
 | WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | workspace-hub |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | workspace-hub |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | workspace-hub |
@@ -4516,12 +4544,10 @@
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | workspace-hub |
 | WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | workspace-hub |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | aceengineer-website, digitalmodel, workspace-hub |
-| WRK-1185 | Publish assetutilities 0.0.9 to PyPI — unblock digitalmodel Quality Gates CI | done | high | simple | assetutilities |
-| WRK-1186 | Fix next-id.sh cross-machine ID contamination | pending | high | medium | workspace-hub |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | workspace-hub |
-| WRK-1188 | Phase B extraction on og_standards | pending | high | high | workspace-hub |
-| WRK-1189 | Ingest BOEM lease data | pending | high | medium | worldenergydata |
-| WRK-1190 | Ingest Baker Hughes rig count | pending | high | low | worldenergydata |
+| WRK-1188 | Phase B extraction on og_standards | working | high | high | workspace-hub |
+| WRK-1189 | Ingest BOEM lease data | done | high | medium | worldenergydata |
+| WRK-1190 | Ingest Baker Hughes rig count | working | high | low | worldenergydata |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | worldenergydata |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | worldenergydata |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | digitalmodel |
@@ -4532,16 +4558,22 @@
 | WRK-1198 | Dividend yield forecasting | pending | medium | medium | assethold |
 | WRK-1199 | Fama-French factor model | pending | low | medium | assethold |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | workspace-hub |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | workspace-hub |
-| WRK-1203 | Fix pre-existing digitalmodel test failures for green CI | pending | medium | medium | digitalmodel |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | medium | worldenergydata |
+| WRK-1205 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
+| WRK-1206 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
+| WRK-1208 | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending | low | medium | - |
+| WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | - |
+| WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | - |
+| WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | worldenergydata |
+| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | worldenergydata |
+| WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | worldenergydata |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | worldenergydata |
+| WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | workspace-hub |
+| WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
-| WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
-| WRK-5021 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
-| WRK-5022 | fix: recurring correction correction pattern on Write | pending | medium | medium | - |
-| WRK-5023 | fix: recurring correction correction pattern on Edit | pending | medium | medium | - |
-| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | pending | low | simple | workspace-hub |
+| WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | low | simple | workspace-hub |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | medium | workspace-hub |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | simple | workspace-hub |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | simple | workspace-hub |
@@ -4985,7 +5017,8 @@
 | WRK-1197 | Decline/NPV duplicate consolidation | - | - | WRK-1179 |
 | WRK-1198 | Dividend yield forecasting | - | - | WRK-1179 |
 | WRK-1199 | Fama-French factor model | - | - | WRK-1179 |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | - | - | WRK-1179 |
+| WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | WRK-1190 | - | WRK-1179 |
+| WRK-1234 | BOEM/BSEE data refresh CLI script | WRK-1231, WRK-1232 | - | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |

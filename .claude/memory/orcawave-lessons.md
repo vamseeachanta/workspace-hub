@@ -114,4 +114,4 @@ raos_deg = np.degrees(np.abs(raos[:, :, 3:6]))  # rad/m → deg/m
 
 ### OrcaFlex Python API Reference
 - Online: https://www.orcina.com/webhelp/OrcaFlex/ → Python scripting section
-- Local (if installed): `C:/Program Files/Orcina/OrcaFlex/Help/OrcaFlex.chm`
+- Local (if installed): `C:/Program Files/Orcina/OrcaFlex/Help/OrcaFlex.chm` *stale: 2026-03-15*

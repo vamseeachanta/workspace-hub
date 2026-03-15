@@ -1,9 +1,9 @@
 # Skill Script Conversion Candidates
 
-Generated: 2026-03-12T12:27:18Z  
-Total skills scanned: 395
+Generated: 2026-03-15T14:38:23Z  
+Total skills scanned: 409
 
-## Candidates (131)
+## Candidates (140)
 
 Skills with purely deterministic content (bash commands only, no reasoning).
 
@@ -43,6 +43,9 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | data-management | `.claude/skills/data/analysis/data-management/SKILL.md` |
 | excel-translation | `.claude/skills/data/analysis/excel-translation/SKILL.md` |
 | streamlit | `.claude/skills/data/analysis/streamlit/SKILL.md` |
+| calculation-report | `.claude/skills/data/calculation-report/SKILL.md` |
+| dark-intelligence-workflow | `.claude/skills/data/dark-intelligence-workflow/SKILL.md` |
+| doc-intelligence-promotion | `.claude/skills/data/doc-intelligence-promotion/SKILL.md` |
 | document-inventory | `.claude/skills/data/documents/document-inventory/SKILL.md` |
 | document-rag-pipeline | `.claude/skills/data/documents/document-rag-pipeline/SKILL.md` |
 | docx | `.claude/skills/data/documents/docx/SKILL.md` |
@@ -84,6 +87,9 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | blender-interface | `.claude/skills/engineering/cad/blender/SKILL.md` |
 | freecad-automation | `.claude/skills/engineering/cad/freecad-automation/SKILL.md` |
 | paraview-interface | `.claude/skills/engineering/cfd/paraview/SKILL.md` |
+| doc-extraction-cp | `.claude/skills/engineering/doc-extraction/cp/SKILL.md` |
+| doc-extraction-drilling-riser | `.claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md` |
+| doc-extraction-naval-architecture | `.claude/skills/engineering/doc-extraction/naval-architecture/SKILL.md` |
 | drillbotics | `.claude/skills/engineering/drilling/drillbotics/SKILL.md` |
 | gis-informed-workflow | `.claude/skills/engineering/gis/gis-informed-workflow/SKILL.md` |
 | google-earth-engine | `.claude/skills/engineering/gis/google-earth-engine/SKILL.md` |
@@ -132,16 +138,19 @@ Skills with purely deterministic content (bash commands only, no reasoning).
 | ecosystem-health | `.claude/skills/workspace-hub/ecosystem-health/SKILL.md` |
 | qa-closure | `.claude/skills/workspace-hub/qa-closure/SKILL.md` |
 | release-notes-adoption | `.claude/skills/workspace-hub/release-notes-adoption/SKILL.md` |
+| remote-desktop | `.claude/skills/workspace-hub/remote-desktop/SKILL.md` |
 | repo-portfolio-steering | `.claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md` |
 | repo-structure | `.claude/skills/workspace-hub/repo-structure/SKILL.md` |
 | repo-sync | `.claude/skills/workspace-hub/repo-sync/SKILL.md` |
 | save | `.claude/skills/workspace-hub/save/SKILL.md` |
 | session-end | `.claude/skills/workspace-hub/session-end/SKILL.md` |
+| strategic-prioritization | `.claude/skills/workspace-hub/strategic-prioritization/SKILL.md` |
 | tool-readiness | `.claude/skills/workspace-hub/tool-readiness/SKILL.md` |
+| work-queue-workflow | `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` |
 | workflow-html | `.claude/skills/workspace-hub/workflow-html/SKILL.md` |
 | wrk-lifecycle-testpack | `.claude/skills/workspace-hub/wrk-lifecycle-testpack/SKILL.md` |
 
-## Needs Human Review (198)
+## Needs Human Review (204)
 
 Mixed signals — may be convertible with refactoring.
 
@@ -216,7 +225,7 @@ Mixed signals — may be convertible with refactoring.
 | repo-capability-map | `.claude/skills/coordination/workspace/repo-capability-map/SKILL.md` | 2 | 22 |
 | repo-readiness | `.claude/skills/coordination/workspace/repo-readiness/SKILL.md` | 2 | 18 |
 | skills-researcher | `.claude/skills/coordination/workspace/skills-researcher/SKILL.md` | 0 | 7 |
-| work-queue | `.claude/skills/coordination/workspace/work-queue/SKILL.md` | 0 | 83 |
+| work-queue | `.claude/skills/coordination/workspace/work-queue/SKILL.md` | 0 | 89 |
 | bsee-sodir-extraction | `.claude/skills/data/analysis/bsee-sodir-extraction/SKILL.md` | 0 | 1 |
 | data-analysis | `.claude/skills/data/analysis/data-analysis/SKILL.md` | 2 | 1 |
 | great-tables | `.claude/skills/data/analysis/great-tables/SKILL.md` | 0 | 1 |
@@ -228,6 +237,7 @@ Mixed signals — may be convertible with refactoring.
 | data-visualization | `.claude/skills/data/analytics/data-visualization/SKILL.md` | 1 | 1 |
 | interactive-dashboard-builder | `.claude/skills/data/analytics/interactive-dashboard-builder/SKILL.md` | 0 | 1 |
 | sql-queries | `.claude/skills/data/analytics/sql-queries/SKILL.md` | 2 | 13 |
+| doc-research-download | `.claude/skills/data/doc-research-download/SKILL.md` | 1 | 17 |
 | md-to-pdf | `.claude/skills/data/documents/md-to-pdf/SKILL.md` | 0 | 9 |
 | pdf-large-reader | `.claude/skills/data/documents/pdf-large-reader/SKILL.md` | 1 | 4 |
 | pptx | `.claude/skills/data/documents/pptx/SKILL.md` | 1 | 5 |
@@ -237,12 +247,13 @@ Mixed signals — may be convertible with refactoring.
 | energy-data-visualizer | `.claude/skills/data/energy/energy-data-visualizer/SKILL.md` | 0 | 0 |
 | metocean-visualizer | `.claude/skills/data/energy/metocean-visualizer/SKILL.md` | 1 | 8 |
 | sodir-data-extractor | `.claude/skills/data/energy/sodir-data-extractor/SKILL.md` | 0 | 1 |
-| web-scraper-energy | `.claude/skills/data/energy/web-scraper-energy/SKILL.md` | 0 | 1 |
+| web-scraper-energy | `.claude/skills/data/energy/web-scraper-energy/SKILL.md` | 0 | 5 |
 | office-docs | `.claude/skills/data/office/office-docs/SKILL.md` | 0 | 1 |
 | openpyxl | `.claude/skills/data/office/openpyxl/SKILL.md` | 0 | 1 |
 | pypdf | `.claude/skills/data/office/pypdf/SKILL.md` | 0 | 1 |
 | python-docx | `.claude/skills/data/office/python-docx/SKILL.md` | 0 | 1 |
 | python-pptx | `.claude/skills/data/office/python-pptx/SKILL.md` | 0 | 1 |
+| research-literature | `.claude/skills/data/research-literature/SKILL.md` | 0 | 17 |
 | api-integration | `.claude/skills/data/scientific/api-integration/SKILL.md` | 0 | 0 |
 | cad-mesh-generation | `.claude/skills/data/scientific/cad-mesh-generation/SKILL.md` | 2 | 0 |
 | numpy-numerical-analysis | `.claude/skills/data/scientific/numpy-numerical-analysis/SKILL.md` | 2 | 0 |
@@ -266,16 +277,19 @@ Mixed signals — may be convertible with refactoring.
 | github-pr-manager | `.claude/skills/development/github/github-pr-manager/SKILL.md` | 1 | 10 |
 | github-project-board | `.claude/skills/development/github/github-project-board/SKILL.md` | 2 | 11 |
 | github-release-swarm | `.claude/skills/development/github/github-release-swarm/SKILL.md` | 2 | 7 |
+| gitignore-scaffold | `.claude/skills/development/gitignore-scaffold/SKILL.md` | 0 | 13 |
 | mcp-builder | `.claude/skills/development/mcp-builder/SKILL.md` | 1 | 21 |
 | parallel-file-processor | `.claude/skills/development/parallel-file-processor/SKILL.md` | 2 | 9 |
 | planning-code-goal | `.claude/skills/development/planning/planning-code-goal/SKILL.md` | 2 | 4 |
 | cowork-plugin-customizer | `.claude/skills/development/plugin-management/cowork-plugin-customizer/SKILL.md` | 1 | 18 |
+| shell-tdd | `.claude/skills/development/shell-tdd/SKILL.md` | 0 | 20 |
 | subagent-driven | `.claude/skills/development/subagent-driven/SKILL.md` | 1 | 0 |
 | tdd-obra | `.claude/skills/development/tdd-obra/SKILL.md` | 1 | 0 |
 | yaml-workflow-executor | `.claude/skills/development/yaml-workflow-executor/SKILL.md` | 2 | 9 |
 | fitness-for-service | `.claude/skills/engineering/asset-integrity/fitness-for-service/SKILL.md` | 0 | 0 |
 | gmsh-meshing | `.claude/skills/engineering/cad/gmsh-meshing/SKILL.md` | 0 | 27 |
 | openfoam | `.claude/skills/engineering/cfd/openfoam/SKILL.md` | 0 | 63 |
+| doc-extraction | `.claude/skills/engineering/doc-extraction/SKILL.md` | 0 | 65 |
 | drilling | `.claude/skills/engineering/drilling/SKILL.md` | 1 | 0 |
 | financial-analysis | `.claude/skills/engineering/financial-analysis/SKILL.md` | 0 | 0 |
 | bemrosetta | `.claude/skills/engineering/marine-offshore/bemrosetta/SKILL.md` | 0 | 15 |
@@ -339,14 +353,15 @@ Mixed signals — may be convertible with refactoring.
 | file-taxonomy | `.claude/skills/workspace-hub/file-taxonomy/SKILL.md` | 1 | 83 |
 | infrastructure-layout | `.claude/skills/workspace-hub/infrastructure-layout/SKILL.md` | 0 | 107 |
 | interoperability | `.claude/skills/workspace-hub/interoperability/SKILL.md` | 0 | 25 |
+| mcp-registry-audit | `.claude/skills/workspace-hub/mcp-registry-audit/SKILL.md` | 1 | 2 |
 | plan-mode | `.claude/skills/workspace-hub/plan-mode/SKILL.md` | 2 | 4 |
-| session-start | `.claude/skills/workspace-hub/session-start/SKILL.md` | 0 | 16 |
+| session-start | `.claude/skills/workspace-hub/session-start/SKILL.md` | 1 | 19 |
 | skill-sync | `.claude/skills/workspace-hub/skill-sync/SKILL.md` | 1 | 21 |
 | sync | `.claude/skills/workspace-hub/sync/SKILL.md` | 0 | 25 |
 | work-document-exit | `.claude/skills/workspace-hub/work-document-exit/SKILL.md` | 2 | 15 |
 | workstations | `.claude/skills/workspace-hub/workstations/SKILL.md` | 0 | 62 |
 
-## Not Candidates (66)
+## Not Candidates (65)
 
 Requires LLM judgment — keep as skill.
 
@@ -416,5 +431,4 @@ Requires LLM judgment — keep as skill.
 | improve | `.claude/skills/workspace-hub/improve/SKILL.md` |
 | resource-intelligence | `.claude/skills/workspace-hub/resource-intelligence/SKILL.md` |
 | whats-next | `.claude/skills/workspace-hub/whats-next/SKILL.md` |
-| work-queue-workflow | `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` |
 | workflow-gatepass | `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` |

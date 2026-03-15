@@ -175,7 +175,7 @@ CTX_MAP = {
     # Gemini
     "gemini-3.1-pro-preview": ("gemini-3.1-pro-preview", 1000),
     "gemini-2.5-pro":    ("gemini-2.5-pro",      1000),
-    "gemini-2.0-flash":  ("gemini-2.0-flash",     1000),
+    "gemini-2.5-flash":  ("gemini-2.5-flash",     1000),
 }
 
 def ctx_label(model_alias):

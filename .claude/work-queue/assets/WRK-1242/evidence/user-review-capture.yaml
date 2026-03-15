@@ -1,0 +1,11 @@
+stage: 1
+wrk_id: WRK-1242
+scope_approved: true
+reviewed_by: vamsee
+reviewed_at: "2026-03-15"
+notes: |
+  Approved 16-section calculation methodology skill with per-section micro-skills.
+  Key additions from research: scope, materials, verification, conclusions.
+  Structure: SKILL.md orchestrator + sections/01..16 micro-skills.
+  Schema update to calculation-report-schema.yaml (4 new required, 4 new optional).
+  Audit of existing 12 examples + upgrade 2-3 exemplars.
