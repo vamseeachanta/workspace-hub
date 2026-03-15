@@ -1,0 +1,9 @@
+wrk_id: WRK-5047
+loaded_at: "2026-03-12T15:36:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - shell-tdd

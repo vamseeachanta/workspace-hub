@@ -1,0 +1,17 @@
+wrk_id: WRK-5046
+events:
+  - stage: plan_draft
+    opened_at: "2026-03-12T15:05:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5046/WRK-5046-lifecycle.html"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_at: "2026-03-12T15:07:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5046/WRK-5046-lifecycle.html"
+    reviewer: vamsee
+  - stage: close_review
+    opened_at: "2026-03-12T15:32:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-5046/WRK-5046-lifecycle.html"
+    reviewer: vamsee

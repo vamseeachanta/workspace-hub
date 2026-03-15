@@ -1,0 +1,95 @@
+audit_date: 2026-03-15
+sources:
+  - registry.modelcontextprotocol.io
+  - github.com/punkpeye/awesome-mcp-servers
+candidates:
+  - name: blender-mcp
+    github: ahujasid/blender-mcp
+    stars: 17735
+    domain: CAD/3D
+    relevance: 3D visualization of engineering models
+    trust: high (17K+ stars, very active, multiple contributors)
+    install: "npx @anthropic-ai/mcp install blender-mcp"
+    notes: Already relevant to digitalmodel Blender integration
+  - name: mcp-google-map
+    github: cablate/mcp-google-map
+    stars: 193
+    domain: GIS
+    relevance: Geocode, elevation, directions for site surveys
+    trust: medium (193 stars, active)
+    install: "npx @anthropic-ai/mcp install mcp-google-map"
+    notes: Requires Google Maps API key
+  - name: isaac-sim-mcp
+    github: omni-mcp/isaac-sim-mcp
+    stars: 136
+    domain: Simulation
+    relevance: Physics sim, digital twins (NVIDIA)
+    trust: medium (136 stars, corporate maintainer)
+    install: "pip install isaac-sim-mcp"
+    notes: Requires NVIDIA Isaac Sim license
+  - name: jupytercad-mcp
+    github: asmith26/jupytercad-mcp
+    stars: 17
+    domain: CAD
+    relevance: Parametric CAD modeling via natural language
+    trust: low (17 stars, single maintainer)
+    install: "pip install jupytercad-mcp"
+    notes: Python-native, JupyterCAD integration
+  - name: math-mcp
+    github: andylbrummer/math-mcp
+    stars: 1
+    domain: Scientific Computing
+    relevance: GPU-accelerated FFT, optimization, linear algebra
+    trust: low (1 star, early stage)
+    install: "pip install math-mcp"
+    notes: Most relevant for engineering numerical work
+  - name: weather-mcp
+    github: dgahagan/weather-mcp
+    stars: 0
+    domain: Marine/Weather
+    relevance: Marine conditions data for offshore engineering
+    trust: low (new, single maintainer)
+    install: via registry
+    notes: NOAA + Open-Meteo; marine conditions directly relevant
+  - name: IO-Aerospace-mcp
+    github: IO-Aerospace-software-engineering/mcp-server
+    stars: 15
+    domain: Aerospace Engineering
+    relevance: Only true engineering-discipline MCP server; unit conversion
+    trust: low-medium (15 stars, .NET)
+    install: dotnet tool install
+    notes: Orbital mechanics, coordinate conversions
+  - name: excalidraw-architect-mcp
+    github: BV-Venky/excalidraw-architect-mcp
+    stars: 73
+    domain: Architecture/Diagrams
+    relevance: System architecture diagrams with auto-layout
+    trust: medium (73 stars)
+    install: "npx excalidraw-architect-mcp"
+    notes: Design documentation
+  - name: mermaid-mcp
+    github: Narasimhaponnada/mermaid-mcp
+    stars: 0
+    domain: Diagrams
+    relevance: 22+ diagram types, SVG/PNG/PDF export
+    trust: low
+    install: via registry
+    notes: Flowcharts, sequence, ER diagrams
+  - name: zoo-mcp
+    github: KittyCAD/zoo-mcp
+    stars: 3
+    domain: CAD
+    relevance: Programmatic CAD via Zoo/KittyCAD API
+    trust: low (3 stars but corporate maintainer KittyCAD)
+    install: via npm
+    notes: Cloud-based CAD operations
+key_gaps:
+  - FEA (no servers)
+  - CFD (no servers)
+  - Structural analysis (no servers)
+  - Marine/offshore engineering (no servers)
+  - Corrosion/cathodic protection (no servers)
+  - Pipeline engineering (no servers)
+  - Oil & gas (no servers)
+  - Energy market data (no servers)
+opportunity: "Publish assetutilities or digitalmodel capabilities as MCP servers to fill these gaps"

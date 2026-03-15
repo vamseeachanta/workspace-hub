@@ -1,0 +1,8 @@
+wrk_id: WRK-5046
+route: A
+plan_type: inline
+approved_at: "2026-03-12T15:05:00Z"
+approved_by: vamsee
+summary: |
+  Create gitignore-scaffold skill documenting directory/ vs directory/* negation,
+  .gitkeep patterns, git check-ignore verification, and regression testing.

@@ -1,30 +1,30 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-14T23:04:43Z by generate-index.py -->
+<!-- Generated: 2026-03-15T03:13:58Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-14T23:04:43Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T03:13:58Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 656
+**Total items:** 658
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 266 |
+| pending | 265 |
 | working | 3 |
 | blocked | 10 |
 | done | 3 |
-| archived | 373 |
+| archived | 375 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 289 |
-| medium | 309 |
+| high | 290 |
+| medium | 310 |
 | low | 57 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 146 |
-| medium | 306 |
+| medium | 308 |
 | complex | 126 |
 
 ### By Category
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 29 |
-| engineering | 150 |
+| engineering | 149 |
 | data | 25 |
 | platform | 12 |
 | business | 6 |
@@ -60,7 +60,7 @@
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 15 |
-| achantas-data | 9 |
+| achantas-data | 10 |
 | acma-projects | 5 |
 | assethold | 19 |
 | assetutilities | 20 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 273 |
+| workspace-hub | 274 |
 | worldenergydata | 111 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 267 / 656 |
-| Plans cross-reviewed | 192 |
-| Plans approved | 216 |
+| Plans exist | 267 / 658 |
+| Plans cross-reviewed | 194 |
+| Plans approved | 218 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,17 +92,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 656 |
-| Total archived | 373 |
-| Completion rate | 373/656 (57%) |
-| Monthly rate (current month) | 130 archived |
+| Total captured | 658 |
+| Total archived | 375 |
+| Completion rate | 375/658 (57%) |
+| Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 74 / 266 | 28% |
+| Pending items with plans | 74 / 265 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -120,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 101 | 2 | 8 |
-| Medium   | 125  | 1  | 1  |
+| Medium   | 124  | 1  | 1  |
 | Low      | 40  | 0  | 1  |
 
 ## By Category
@@ -228,7 +228,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (150 items — 79 high, 56 medium, 15 low)
+### engineering (149 items — 78 high, 56 medium, 15 low)
 
 #### engineering / artificial-lift
 
@@ -268,7 +268,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1188 | HIGH | Phase B extraction on og_standards | pending |
-| WRK-1202 | HIGH | Convert doc-extraction skills to reusable scripts | pending |
 
 #### engineering / data-ingestion
 
@@ -1325,7 +1324,7 @@
 | WRK-1198 | Dividend yield forecasting | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1199 | Fama-French factor model | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1344,8 +1343,8 @@
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | WRK-5038 |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | ace-linux-2 | ace-linux-1 | ace-linux-2 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5054 |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5054 |
@@ -1366,6 +1365,8 @@
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1613,7 +1614,6 @@
 | WRK-1198 | Dividend yield forecasting | medium | medium | assethold | - |
 | WRK-1199 | Fama-French factor model | low | medium | assethold | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | medium | medium | workspace-hub | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | high | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1626,8 +1626,6 @@
 | WRK-5023 | fix: recurring correction correction pattern on Edit | medium | medium | - | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | medium | simple | workspace-hub | - |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | medium | high | workspace-hub | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | medium | medium | digitalmodel | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | low | medium | workspace-hub | - |
@@ -1647,6 +1645,8 @@
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | low | complex | digitalmodel | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | high | medium | achantas-data | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -2047,6 +2047,8 @@
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | high | complex | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | medium | complex | workspace-hub, digitalmodel | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | medium | simple | workspace-hub | - |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | medium | medium | workspace-hub | - |
 
 ## By Repository
@@ -2139,6 +2141,7 @@
 | WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | simple | - |
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | - |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | - |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | - |
 
 ### acma-projects
 
@@ -2754,7 +2757,7 @@
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | - |
 | WRK-1188 | Phase B extraction on og_standards | pending | high | high | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | pending | high | medium | - |
+| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2769,11 +2772,12 @@
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | - |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | - |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | - |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | archived | medium | simple | - |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | simple | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | medium | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -3177,7 +3181,7 @@
 | WRK-1188 | Phase B extraction on og_standards | pending | high | workspace-hub | - |
 | WRK-1189 | Ingest BOEM lease data | pending | medium | worldenergydata | - |
 | WRK-1190 | Ingest Baker Hughes rig count | pending | low | worldenergydata | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | pending | medium | workspace-hub | - |
+| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3186,6 +3190,7 @@
 | WRK-5064 | Asset integrity and fitness-for-service study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5065 | Structural analysis study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5066 | Production engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | medium | achantas-data | - |
 
 ### Medium
 
@@ -3486,8 +3491,8 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | simple | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | simple | workspace-hub | - |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | simple | workspace-hub | - |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | simple | workspace-hub | - |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | archived | simple | workspace-hub | - |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | workspace-hub | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | high | workspace-hub | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
@@ -3500,6 +3505,7 @@
 | WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | complex | digitalmodel, worldenergydata | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3713,8 +3719,8 @@
 | WRK-5030 | Research speech-to-text tool similar to Whisper-flow for Linux | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | high | workspace-hub | - |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | workspace-hub | - |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | workspace-hub | - |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | workspace-hub | - |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | archived | medium | workspace-hub | - |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -4014,7 +4020,7 @@
 | WRK-1198 | Dividend yield forecasting | pending | medium | assethold | - |
 | WRK-1199 | Fama-French factor model | pending | low | assethold | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | workspace-hub | - |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | pending | high | workspace-hub | - |
+| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5020 | fix: recurring correction correction pattern on Write | pending | medium | - | - |
@@ -4026,6 +4032,8 @@
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | workspace-hub | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | achantas-data | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -4160,7 +4168,7 @@
 
 ## By Computer
 
-### ace-linux-1 (219 active / 375 total)
+### ace-linux-1 (219 active / 377 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4502,7 +4510,7 @@
 | WRK-1198 | Dividend yield forecasting | pending | medium | medium | assethold |
 | WRK-1199 | Fama-French factor model | pending | low | medium | assethold |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | workspace-hub |
-| WRK-1202 | Convert doc-extraction skills to reusable scripts | pending | high | medium | workspace-hub |
+| WRK-1202 | Convert doc-extraction skills to reusable scripts | completed | high | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4518,8 +4526,8 @@
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | complex | workspace-hub |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | workspace-hub, digitalmodel |
 | WRK-5044 | fix(cross-review): Codex output format compliance — structured headings | archived | medium | simple | workspace-hub |
-| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | pending | medium | simple | workspace-hub |
-| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | pending | medium | simple | workspace-hub |
+| WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | archived | medium | simple | workspace-hub |
+| WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | simple | workspace-hub |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | workspace-hub |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | digitalmodel |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | medium | workspace-hub |
@@ -4539,6 +4547,8 @@
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | digitalmodel |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | digitalmodel |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | digitalmodel |
+| WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | achantas-data |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
