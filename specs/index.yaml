@@ -1,10 +1,10 @@
-generated: '2026-03-14'
-total_specs: 1686
+generated: '2026-03-15'
+total_specs: 1693
 by_category:
   archive: 10
   data-sources: 13
-  modules: 178
-  other: 36
+  modules: 183
+  other: 38
   repos: 1344
   templates: 20
   wrk: 85
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 324
+  workspace-hub: 331
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -169,7 +169,7 @@ by_wrk:
   WRK-310: 1
   WRK-313: 1
   WRK-316: 1
-  WRK-318: 2
+  WRK-318: 3
   WRK-321: 1
   WRK-329: 2
   WRK-341: 2
@@ -179,9 +179,10 @@ by_wrk:
   WRK-368: 1
   WRK-372: 1
   WRK-373: 1
+  WRK-376: 1
   WRK-377: 2
   WRK-378: 1
-  WRK-379: 1
+  WRK-379: 2
   WRK-380: 1
   WRK-383: 5
   WRK-384: 2
@@ -258,7 +259,8 @@ by_wrk:
   WRK-690: 1
   WRK-693: 1
   WRK-700: 1
-  WRK-999: 1
+  WRK-888: 1
+  WRK-999: 2
   WRK-1000: 1
   WRK-1002: 2
   WRK-1003: 2
@@ -341,8 +343,15 @@ by_wrk:
   WRK-1156: 1
   WRK-1159: 1
   WRK-1169: 1
+  WRK-1172: 1
+  WRK-1174: 1
   WRK-1178: 1
-  WRK-1179: 4
+  WRK-1179: 5
+  WRK-1181: 1
+  WRK-1185: 1
+  WRK-1188: 1
+  WRK-1200: 1
+  WRK-1203: 1
   WRK-5035: 1
   WRK-5036: 3
   WRK-5037: 5
@@ -579,7 +588,7 @@ specs:
   - capability-map
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-02-26'
+  mtime: '2026-03-14'
 - path: specs/capability-map/worldenergydata.yaml
   title: worldenergydata
   description: ''
@@ -615,6 +624,20 @@ specs:
   wrk_refs:
   - WRK-1179
   mtime: '2026-03-14'
+- path: specs/capability-map/audit/consolidated-gap-priority.md
+  title: Consolidated Gap Priority Map
+  description: '| Metric | Value | |--------|------:| | Total standards gaps (capability map) | 455 (digitalmodel) + 235 (doc
+    index) | | Calculation gaps identified | 29 across 4 repos | | Public data sources not ...'
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - capability-map
+  - consolidated-gap-priority
+  wrk_refs:
+  - WRK-318
+  - WRK-1179
+  mtime: '2026-03-14'
 - path: specs/capability-map/audit/digitalmodel-calc-audit.md
   title: digitalmodel Calculation Audit
   description: 'Generated: 2026-03-13 | WRK-1179 Stream B Task 1'
@@ -640,6 +663,18 @@ specs:
   - WRK-318
   - WRK-321
   - WRK-1179
+  mtime: '2026-03-14'
+- path: specs/capability-map/research-briefs/geotechnical-pile-capacity.yaml
+  title: Geotechnical Pile Capacity
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - geotechnical-pile-capacity
+  - research-briefs
+  wrk_refs:
+  - WRK-1181
   mtime: '2026-03-14'
 - path: specs/client-demos/brochure-client1-rigid-jumper-pipeline.md
   title: Engineering AI Assistant
@@ -917,6 +952,17 @@ specs:
   - agents-md-assessment-workspace-hub
   wrk_refs: []
   mtime: '2026-01-29'
+- path: specs/modules/ancient-zooming-meteor.md
+  title: 'WRK-1172: Session Startup E2E Health Check'
+  description: Agents inherit broken state from prior sessions and waste time debugging carry-over issues. Anthropic's "Effective
+    Harnesses for Long-Running Agents" recommends running a basic e2e test at startup....
+  category: modules
+  repo: workspace-hub
+  tags:
+  - ancient-zooming-meteor
+  wrk_refs:
+  - WRK-1172
+  mtime: '2026-03-14'
 - path: specs/modules/artificial-lift-study.md
   title: artificial lift study
   description: Rod pump diagnostics, ESP, gas lift per API 11L, Gibbs wave equation.
@@ -1137,6 +1183,19 @@ specs:
   - WRK-683
   - WRK-687
   mtime: '2026-03-02'
+- path: specs/modules/declarative-petting-starlight.md
+  title: 'WRK-1200: Strategic Prioritization Skill'
+  description: The workspace has ~450 WRK items. Without strategic filtering, harness/tooling work absorbs all capacity while
+    engineering modules (CP, fatigue, hydrodynamics, energy data) — the actual O&G industr...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - declarative-petting-starlight
+  wrk_refs:
+  - WRK-376
+  - WRK-379
+  - WRK-1200
+  mtime: '2026-03-14'
 - path: specs/modules/delightful-orbiting-hammock.md
   title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
   description: 'WRK-5037 delivered a document extraction pipeline that produces YAML manifests with raw sections, tables,
@@ -1259,6 +1318,17 @@ specs:
   wrk_refs:
   - WRK-1113
   mtime: '2026-03-12'
+- path: specs/modules/fuzzy-scribbling-fog.md
+  title: 'WRK-1188: Phase B Extraction on og_standards — Implementation Plan'
+  description: 27,980 og_standards documents have zero LLM summaries or discipline classifications. This blocks semantic search,
+    gap triage, and downstream calculations. The extraction pipeline (`phase-b-claude-w...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - fuzzy-scribbling-fog
+  wrk_refs:
+  - WRK-1188
+  mtime: '2026-03-15'
 - path: specs/modules/gleaming-cooking-milner.md
   title: 'WRK-5054: Run Doc-Intel Pipeline on Naval Architecture Collection'
   description: The doc-intelligence pipeline (WRK-5035–5041) is built and tested on a single introductory PDF. The 145 SNAME
@@ -2012,6 +2082,18 @@ specs:
   - WRK-1147
   - WRK-5065
   mtime: '2026-03-13'
+- path: specs/modules/structured-beaming-swing.md
+  title: 'WRK-1203: Fix Pre-Existing digitalmodel Test Failures'
+  description: WRK-1185 got digitalmodel CI from "0 tests run" to "1232 passed, 9 failed" by excluding 10 broken test directories
+    via `--ignore` flags. This WRK fixes root causes so all directories can be re-incl...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - structured-beaming-swing
+  wrk_refs:
+  - WRK-1185
+  - WRK-1203
+  mtime: '2026-03-15'
 - path: specs/modules/subsea-risers-flowlines-study.md
   title: subsea risers flowlines study
   description: SCR, flexible, hybrid risers and flowlines per API RP 2RD, API 17J, DNV-OS-F201.
@@ -2063,6 +2145,19 @@ specs:
   wrk_refs:
   - WRK-1140
   mtime: '2026-03-13'
+- path: specs/modules/tender-scribbling-pony.md
+  title: 'WRK-1174: Agent Scope Guard — One-Feature-Per-Session Discipline'
+  description: Anthropic identifies "the agent's tendency to do too much at once" as the core failure mode for long-running
+    agents. Workspace-hub tracks active WRK via `.claude/state/active-wrk` (plain-text file)...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tender-scribbling-pony
+  wrk_refs:
+  - WRK-888
+  - WRK-999
+  - WRK-1174
+  mtime: '2026-03-14'
 - path: specs/modules/tender-tickling-hickey.md
   title: 'WRK-1148 Plan: Propeller-Rudder Interaction — Literature Survey'
   description: WRK-1148 is child-a of feature WRK-1147 (propeller-rudder hydrodynamic interaction study). The goal is to gather

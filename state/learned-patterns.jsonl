@@ -2632,3 +2632,129 @@
   "wrk": "WRK-1155",
   "stage": 3
 }
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 3
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 4
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 7
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 10
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 11
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 12
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 5
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 9
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 6
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 8
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 17
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 13
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 15
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 16
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 3
+}

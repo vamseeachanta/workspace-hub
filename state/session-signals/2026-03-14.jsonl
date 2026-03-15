@@ -19,3 +19,6 @@
 {"event": "stage_exit", "wrk": "WRK-1174", "stage": 1, "date": "2026-03-14", "timestamp": "2026-03-14T11:36:32.943953Z"}
 {"event": "stage_exit", "wrk": "WRK-1174", "stage": 2, "date": "2026-03-14", "timestamp": "2026-03-14T11:42:30.164152Z"}
 {"event": "stage_exit", "wrk": "WRK-1174", "stage": 3, "date": "2026-03-14", "timestamp": "2026-03-14T11:42:40.395055Z"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T07-59-56-019cec6e-94eb-7a03-9452-0dca67bcddcf","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T09-43-15-019ceccd-2c02-7f82-8244-30500b1cc0dd","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T15-41-58-019cee15-98be-7930-bdd1-c3e4d8bdc8dc","turns":4,"source":"codex"}
