@@ -20,8 +20,6 @@ Usage:
 import argparse
 import json
 import logging
-import random
-import sqlite3
 import sys
 from pathlib import Path
 
@@ -33,26 +31,23 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 HUB_ROOT = Path(__file__).resolve().parents[3]
-DB_PATH = Path("/mnt/ace/O&G-Standards/_inventory.db")
 SUMMARIES_DIR = HUB_ROOT / "data/document-index/summaries"
 
 
-def load_astm_hashes(limit: int = 0) -> list[str]:
-    """Load content_hash values for non-duplicate ASTM docs."""
-    conn = sqlite3.connect(str(DB_PATH), timeout=30)
-    rows = conn.execute("""
-        SELECT d.content_hash
-        FROM documents d
-        WHERE d.is_duplicate = 0
-          AND d.organization = 'ASTM'
-          AND d.content_hash IS NOT NULL
-        ORDER BY d.id
-    """).fetchall()
-    conn.close()
-    hashes = [r[0] for r in rows if r[0]]
-    if limit:
-        random.seed(42)  # deterministic sample
-        hashes = random.sample(hashes, min(limit, len(hashes)))
+def load_astm_hashes_with_llm(
+    summaries_dir: Path = SUMMARIES_DIR,
+) -> list[str]:
+    """Find ASTM summaries that have both discipline and llm_discipline."""
+    hashes = []
+    for p in summaries_dir.iterdir():
+        if p.suffix != ".json":
+            continue
+        try:
+            data = json.loads(p.read_text())
+        except (json.JSONDecodeError, OSError):
+            continue
+        if data.get("org") == "ASTM" and data.get("llm_discipline"):
+            hashes.append(p.stem)
     return hashes
 
 
@@ -117,14 +112,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="ASTM deterministic vs LLM validation (WRK-1188 Phase 3b)",
     )
-    parser.add_argument(
-        "--sample", type=int, default=100,
-        help="Number of docs to sample (0=all with LLM results)",
-    )
     args = parser.parse_args()
 
-    hashes = load_astm_hashes(limit=args.sample)
-    logger.info("Sampled %d ASTM hashes", len(hashes))
+    hashes = load_astm_hashes_with_llm()
+    logger.info("Found %d ASTM docs with llm_discipline", len(hashes))
 
     result = compare_disciplines(hashes)
     logger.info(
