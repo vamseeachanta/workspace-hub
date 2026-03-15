@@ -1,0 +1,286 @@
+audit:
+  date: "2026-03-15"
+  examples_count: 12
+  sections_count: 16
+
+matrix:
+  - example: "fatigue-pipeline-girth-weld"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: present
+      data_tables: present
+      references: present
+
+  - example: "fatigue-scr-touchdown"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: present
+      data_tables: absent
+      references: present
+
+  - example: "geotechnical-anchor-capacity"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "geotechnical-pile-axial-capacity"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "geotechnical-scour-assessment"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "on-bottom-stability-dnv-rp-f109"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "on-bottom-stability-pipeline"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "portfolio-beta-energy-benchmark"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "resource-estimation-monte-carlo"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: present
+      data_tables: present
+      references: present
+
+  - example: "sepd-decline-unconventional"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: present
+      data_tables: present
+      references: present
+
+  - example: "spectral-fatigue-dnv-rp-c203"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: present
+      outputs: present
+      sensitivity: absent
+      validation: present
+      verification: absent
+      conclusions: partial  # has 'results' section with acceptance criteria but no explicit adequacy statement
+      charts: absent
+      data_tables: absent
+      references: present
+
+  - example: "type-curve-matching-fetkovich"
+    sections:
+      metadata: present
+      scope: absent
+      design_basis: absent
+      materials: absent
+      inputs: present
+      assumptions: present
+      methodology: present
+      calculations: absent
+      outputs: present
+      sensitivity: absent
+      validation: absent
+      verification: absent
+      conclusions: absent
+      charts: present
+      data_tables: present
+      references: present
+
+summary:
+  most_commonly_missing:
+    - section: scope
+      absent_count: 12
+    - section: design_basis
+      absent_count: 12
+    - section: materials
+      absent_count: 12
+    - section: sensitivity
+      absent_count: 12
+    - section: verification
+      absent_count: 12
+    - section: conclusions
+      absent_count: 11  # 1 partial in spectral-fatigue
+    - section: validation
+      absent_count: 11  # 1 present in spectral-fatigue
+    - section: calculations
+      absent_count: 11  # 1 present in spectral-fatigue
+    - section: charts
+      absent_count: 7
+    - section: data_tables
+      absent_count: 8
+
+  most_commonly_present:
+    - section: metadata
+      present_count: 12
+    - section: inputs
+      present_count: 12
+    - section: assumptions
+      present_count: 12
+    - section: methodology
+      present_count: 12
+    - section: outputs
+      present_count: 12
+    - section: references
+      present_count: 12
+    - section: charts
+      present_count: 5
+    - section: data_tables
+      present_count: 4
+    - section: calculations
+      present_count: 1
+    - section: validation
+      present_count: 1
+
+  priority_upgrades:
+    - example: "spectral-fatigue-dnv-rp-c203"
+      reason: "Most complete example (9/16 sections including calculations, validation, and partial conclusions); best candidate for v2 exemplar to demonstrate all 16 sections"
+    - example: "fatigue-pipeline-girth-weld"
+      reason: "8/16 sections present with charts and data_tables; detailed equation variables; strong foundation to add scope, design_basis, calculations, and validation"
+    - example: "resource-estimation-monte-carlo"
+      reason: "8/16 sections present with rich probabilistic inputs (distributions), charts, and data_tables; ideal candidate to add sensitivity analysis and validation sections"

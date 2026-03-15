@@ -25,10 +25,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from calc_report_css import FULL_CSS  # noqa: E402
 from calc_report_html import (  # noqa: E402
     CHARTJS_CDN, KATEX_AUTO_CDN, KATEX_CSS_CDN, KATEX_JS_CDN,
-    build_assumptions_references, build_changelog_card,
-    build_chart_scripts, build_charts_card, build_data_tables_card,
-    build_hero, build_inputs_card, build_methodology_card,
-    build_outputs_card,
+    build_assumptions_references, build_calculations_card,
+    build_changelog_card, build_chart_scripts, build_charts_card,
+    build_conclusions_card, build_data_tables_card,
+    build_design_basis_card, build_hero, build_inputs_card,
+    build_materials_card, build_methodology_card, build_outputs_card,
+    build_scope_card, build_sensitivity_card, build_validation_card,
+    build_verification_card,
 )
 
 # ── Validation constants ───────────────────────────────────────────────────
@@ -39,6 +42,14 @@ EQUATION_REQUIRED = {"id", "name", "latex", "description"}
 OUTPUT_REQUIRED = {"name", "symbol", "value", "unit"}
 CHART_REQUIRED = {"id", "title", "type", "x_label", "y_label", "datasets"}
 DATASET_REQUIRED = {"label", "data"}
+SCOPE_REQUIRED = {"objective", "inclusions", "exclusions"}
+DESIGN_BASIS_REQUIRED = {"codes", "design_life"}
+MATERIAL_REQUIRED = {"name", "grade", "value", "unit"}
+CALCULATION_REQUIRED = {"step", "description"}
+SENSITIVITY_REQUIRED = {"parameter", "range", "result"}
+VALIDATION_REQUIRED = set()  # all fields optional for backwards compat
+VERIFICATION_REQUIRED = {"checker", "date", "method"}
+CONCLUSIONS_REQUIRED = {"adequacy", "governing_check"}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -90,6 +101,64 @@ def load_and_validate(data):
             if field not in out:
                 raise ValueError(f"Output #{k+1} missing required field: {field}")
 
+    # ── Optional v2 sections ─────────────────────────────────────────────
+    if "scope" in data:
+        for field in SCOPE_REQUIRED:
+            if field not in data["scope"]:
+                raise ValueError(f"Scope missing required field: {field}")
+
+    if "design_basis" in data:
+        for field in DESIGN_BASIS_REQUIRED:
+            if field not in data["design_basis"]:
+                raise ValueError(
+                    f"Design basis missing required field: {field}"
+                )
+
+    if "materials" in data:
+        for m, mat in enumerate(data["materials"]):
+            for field in MATERIAL_REQUIRED:
+                if field not in mat:
+                    raise ValueError(
+                        f"Material #{m+1} missing required field: {field}"
+                    )
+
+    if "calculations" in data:
+        for c, calc in enumerate(data["calculations"]):
+            for field in CALCULATION_REQUIRED:
+                if field not in calc:
+                    raise ValueError(
+                        f"Calculation #{c+1} missing required field: {field}"
+                    )
+
+    if "sensitivity" in data:
+        for s, sens in enumerate(data["sensitivity"]):
+            for field in SENSITIVITY_REQUIRED:
+                if field not in sens:
+                    raise ValueError(
+                        f"Sensitivity #{s+1} missing required field: {field}"
+                    )
+
+    if "validation" in data:
+        for field in VALIDATION_REQUIRED:
+            if field not in data["validation"]:
+                raise ValueError(
+                    f"Validation missing required field: {field}"
+                )
+
+    if "verification" in data:
+        for field in VERIFICATION_REQUIRED:
+            if field not in data["verification"]:
+                raise ValueError(
+                    f"Verification missing required field: {field}"
+                )
+
+    if "conclusions" in data:
+        for field in CONCLUSIONS_REQUIRED:
+            if field not in data["conclusions"]:
+                raise ValueError(
+                    f"Conclusions missing required field: {field}"
+                )
+
     if "charts" in data:
         for c, chart in enumerate(data["charts"]):
             for field in CHART_REQUIRED:
@@ -138,6 +207,48 @@ def render_markdown(data):
         lines.append(f"**Standard:** {std}")
     lines.append("")
 
+    # Scope (v2 optional)
+    if data.get("scope"):
+        scope = data["scope"]
+        lines.append("## Scope")
+        lines.append(f"**Objective:** {scope['objective']}")
+        lines.append("\n**Inclusions:**\n")
+        for item in scope["inclusions"]:
+            lines.append(f"- {item}")
+        lines.append("\n**Exclusions:**\n")
+        for item in scope["exclusions"]:
+            lines.append(f"- {item}")
+        if scope.get("limitations"):
+            lines.append(f"\n**Limitations:** {scope['limitations']}")
+        if scope.get("validity_range"):
+            lines.append(f"\n**Validity Range:** {scope['validity_range']}")
+        lines.append("")
+
+    # Design Basis (v2 optional)
+    if data.get("design_basis"):
+        db = data["design_basis"]
+        lines.append("## Design Basis")
+        if db["codes"] and isinstance(db["codes"][0], dict):
+            code_rows = []
+            for c in db["codes"]:
+                code_rows.append([
+                    c["code"], str(c["edition"]), c.get("clause", "\u2014")
+                ])
+            lines.append(_md_table(["Code", "Edition", "Clause"], code_rows))
+        else:
+            for c in db["codes"]:
+                lines.append(f"- {c}")
+        lines.append(f"\n**Design Life:** {db['design_life']}")
+        if db.get("safety_class"):
+            lines.append(f"\n**Safety Class:** {db['safety_class']}")
+        if db.get("load_combinations"):
+            lines.append("\n**Load Combinations:**\n")
+            for lc in db["load_combinations"]:
+                lines.append(f"- {lc}")
+        if db.get("environment"):
+            lines.append(f"\n**Environment:** {db['environment']}")
+        lines.append("")
+
     # Inputs
     lines.append("## Inputs")
     rows = []
@@ -146,6 +257,22 @@ def render_markdown(data):
                      inp["unit"], inp.get("source", "\u2014")])
     lines.append(_md_table(["Name", "Symbol", "Value", "Unit", "Source"], rows))
     lines.append("")
+
+    # Materials (v2 optional)
+    if data.get("materials"):
+        lines.append("## Materials")
+        mat_rows = []
+        for mat in data["materials"]:
+            mat_rows.append([
+                mat["name"], str(mat["grade"]), str(mat["value"]),
+                mat["unit"], mat.get("source", "\u2014"),
+                str(mat.get("partial_factor", "\u2014")),
+            ])
+        lines.append(_md_table(
+            ["Name", "Grade", "Value", "Unit", "Source", "Partial Factor"],
+            mat_rows,
+        ))
+        lines.append("")
 
     # Methodology
     meth = data["methodology"]
@@ -163,6 +290,22 @@ def render_markdown(data):
                 lines.append(f"- ${var['symbol']}$ \u2014 {var['description']}{unit}")
         lines.append("")
 
+    # Calculations (v2 optional)
+    if data.get("calculations"):
+        lines.append("## Calculations")
+        for calc in data["calculations"]:
+            lines.append(f"### Step {calc['step']}: {calc['description']}")
+            if calc.get("detail"):
+                lines.append(f"\n{calc['detail']}")
+            if calc.get("code_clause"):
+                lines.append(f"\n*Ref: {calc['code_clause']}*")
+            if calc.get("intermediate_results"):
+                lines.append("\n**Intermediate Results:**\n")
+                for ir in calc["intermediate_results"]:
+                    unit = ir.get("unit", "")
+                    lines.append(f"- {ir['name']} = {ir['value']} {unit}")
+            lines.append("")
+
     # Outputs
     lines.append("## Outputs")
     rows = []
@@ -177,6 +320,60 @@ def render_markdown(data):
     lines.append(_md_table(
         ["Name", "Symbol", "Value", "Unit", "Status", "Limit"], rows))
     lines.append("")
+
+    # Sensitivity (v2 optional)
+    if data.get("sensitivity"):
+        lines.append("## Sensitivity")
+        sens_rows = []
+        for s in data["sensitivity"]:
+            sens_rows.append([s["parameter"], str(s["range"]), str(s["result"])])
+        lines.append(_md_table(["Parameter", "Range", "Result"], sens_rows))
+        lines.append("")
+
+    # Validation (v2 optional)
+    if data.get("validation"):
+        val = data["validation"]
+        lines.append("## Validation")
+        if val.get("method"):
+            lines.append(f"**Method:** {val['method']}")
+        if val.get("test_file"):
+            lines.append(f"\n**Test File:** `{val['test_file']}`")
+        if val.get("test_count"):
+            lines.append(f"\n**Test Count:** {val['test_count']}")
+        if val.get("test_categories"):
+            lines.append("\n**Test Categories:**\n")
+            for cat in val["test_categories"]:
+                lines.append(f"- {cat}")
+        if val.get("benchmark_source"):
+            lines.append(f"\n**Benchmark Source:** {val['benchmark_source']}")
+        lines.append("")
+
+    # Verification (v2 optional)
+    if data.get("verification"):
+        ver = data["verification"]
+        lines.append("## Verification")
+        lines.append(f"**Checker:** {ver['checker']}")
+        lines.append(f"\n**Date:** {ver['date']}")
+        lines.append(f"\n**Method:** {ver['method']}")
+        if ver.get("findings"):
+            lines.append(f"\n**Findings:** {ver['findings']}")
+        if ver.get("status"):
+            lines.append(f"\n**Status:** {ver['status']}")
+        lines.append("")
+
+    # Conclusions (v2 optional)
+    if data.get("conclusions"):
+        conc = data["conclusions"]
+        lines.append("## Conclusions")
+        lines.append(f"**Adequacy:** {conc['adequacy']}")
+        lines.append(f"\n**Governing Check:** {conc['governing_check']}")
+        if conc.get("recommendations"):
+            lines.append("\n**Recommendations:**\n")
+            for rec in conc["recommendations"]:
+                lines.append(f"- {rec}")
+        if conc.get("compliance_statement"):
+            lines.append(f"\n**Compliance:** {conc['compliance_statement']}")
+        lines.append("")
 
     # Assumptions
     if data.get("assumptions"):
@@ -214,9 +411,38 @@ def render_html(data, markdown_str):
     charts = data.get("charts", [])
 
     hero = build_hero(meta, standard)
+    scope_card = build_scope_card(data["scope"]) if data.get("scope") else ""
+    design_basis_card = (
+        build_design_basis_card(data["design_basis"])
+        if data.get("design_basis") else ""
+    )
     inputs_card = build_inputs_card(data["inputs"])
+    materials_card = (
+        build_materials_card(data["materials"])
+        if data.get("materials") else ""
+    )
     meth_card = build_methodology_card(data["methodology"])
+    calculations_card = (
+        build_calculations_card(data["calculations"])
+        if data.get("calculations") else ""
+    )
     outputs_card = build_outputs_card(data["outputs"])
+    sensitivity_card = (
+        build_sensitivity_card(data["sensitivity"])
+        if data.get("sensitivity") else ""
+    )
+    validation_card = (
+        build_validation_card(data["validation"])
+        if data.get("validation") else ""
+    )
+    verification_card = (
+        build_verification_card(data["verification"])
+        if data.get("verification") else ""
+    )
+    conclusions_card = (
+        build_conclusions_card(data["conclusions"])
+        if data.get("conclusions") else ""
+    )
     charts_card = build_charts_card(charts)
     data_tables_card = build_data_tables_card(data.get("data_tables", []))
     assumptions_refs = build_assumptions_references(data)
@@ -253,11 +479,27 @@ def render_html(data, markdown_str):
 {hero}
 
 <div class="content">
+{scope_card}
+
+{design_basis_card}
+
 {inputs_card}
+
+{materials_card}
 
 {meth_card}
 
+{calculations_card}
+
 {outputs_card}
+
+{sensitivity_card}
+
+{validation_card}
+
+{verification_card}
+
+{conclusions_card}
 
 {charts_card}
 

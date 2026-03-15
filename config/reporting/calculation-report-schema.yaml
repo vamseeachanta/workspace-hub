@@ -1,6 +1,7 @@
-# Calculation Report Schema v1.0
+# Calculation Report Schema v2.0
 # Every calculation YAML must conform to this structure.
 # Validated by scripts/reporting/generate-calc-report.py
+# schema_version: 1 (default) or 2 — v1 data validates unchanged
 
 required_fields:
   metadata:
@@ -53,3 +54,34 @@ optional_sections:
   data_tables:
     item_required: [id, title, columns, rows]
     column_fields: [name, unit]
+
+  scope:
+    required: [objective, inclusions, exclusions]
+    optional: [limitations, validity_range]
+
+  design_basis:
+    required: [codes, design_life]
+    optional: [safety_class, load_combinations, environment]
+
+  materials:
+    item_required: [name, grade, value, unit]
+    item_optional: [source, partial_factor, certificate]
+
+  calculations:
+    item_required: [step, description]
+    item_optional: [detail, code_clause, intermediate_results]
+
+  sensitivity:
+    item_required: [parameter, range, result]
+
+  validation:
+    required: []
+    optional: [method, test_file, test_count, test_categories, benchmark_source]
+
+  verification:
+    required: [checker, date, method]
+    optional: [findings, status]
+
+  conclusions:
+    required: [adequacy, governing_check]
+    optional: [recommendations, compliance_statement]

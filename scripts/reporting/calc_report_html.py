@@ -276,6 +276,274 @@ def build_data_tables_card(data_tables):
     return f'<div class="card">\n  <h2>Data Tables</h2>\n{tables_html}</div>'
 
 
+def build_scope_card(scope):
+    """Build scope card with objective and inclusions/exclusions."""
+    obj = html_escape(scope["objective"])
+    incl = "\n".join(
+        f"    <li>{html_escape(i)}</li>" for i in scope["inclusions"]
+    )
+    excl = "\n".join(
+        f"    <li>{html_escape(e)}</li>" for e in scope["exclusions"]
+    )
+    optional = ""
+    if scope.get("limitations"):
+        lims = scope["limitations"]
+        if isinstance(lims, list):
+            lim_items = "\n".join(
+                f"    <li>{html_escape(l)}</li>" for l in lims
+            )
+            optional += f'\n  <h3>Limitations</h3>\n  <ul>\n{lim_items}\n  </ul>'
+        else:
+            optional += (
+                f'\n  <p><strong>Limitations:</strong> '
+                f'{html_escape(str(lims))}</p>'
+            )
+    if scope.get("validity_range"):
+        optional += (
+            f'\n  <p><strong>Validity Range:</strong> '
+            f'{html_escape(scope["validity_range"])}</p>'
+        )
+    return f"""\
+<div class="card">
+  <h2>Scope</h2>
+  <p><strong>Objective:</strong> {obj}</p>
+  <h3>Inclusions</h3>
+  <ul>
+{incl}
+  </ul>
+  <h3>Exclusions</h3>
+  <ul>
+{excl}
+  </ul>{optional}
+</div>"""
+
+
+def build_design_basis_card(design_basis):
+    """Build design basis card with codes table."""
+    codes = design_basis["codes"]
+    if codes and isinstance(codes[0], dict):
+        code_rows = ""
+        for c in codes:
+            clause = html_escape(str(c.get("clause", "—")))
+            code_rows += (
+                f'      <tr>\n'
+                f'        <td>{html_escape(c["code"])}</td>\n'
+                f'        <td>{html_escape(str(c["edition"]))}</td>\n'
+                f'        <td>{clause}</td>\n'
+                f'      </tr>\n'
+            )
+        codes_html = (
+            '  <table>\n'
+            '    <thead><tr><th>Code</th><th>Edition</th><th>Clause</th></tr></thead>\n'
+            '    <tbody>\n'
+            f'{code_rows}    </tbody>\n'
+            '  </table>'
+        )
+    else:
+        items = "\n".join(
+            f"    <li>{html_escape(str(c))}</li>" for c in codes
+        )
+        codes_html = f'  <ul>\n{items}\n  </ul>'
+    dl = design_basis["design_life"]
+    optional = ""
+    if design_basis.get("safety_class"):
+        optional += (
+            f'\n  <p><strong>Safety Class:</strong> '
+            f'{html_escape(str(design_basis["safety_class"]))}</p>'
+        )
+    if design_basis.get("load_combinations"):
+        lc_items = "\n".join(
+            f"    <li>{html_escape(lc)}</li>"
+            for lc in design_basis["load_combinations"]
+        )
+        optional += f'\n  <h3>Load Combinations</h3>\n  <ul>\n{lc_items}\n  </ul>'
+    if design_basis.get("environment"):
+        optional += (
+            f'\n  <p><strong>Environment:</strong> '
+            f'{html_escape(design_basis["environment"])}</p>'
+        )
+    return f"""\
+<div class="card">
+  <h2>Design Basis</h2>
+{codes_html}
+  <p><strong>Design Life:</strong> {dl}</p>{optional}
+</div>"""
+
+
+def build_materials_card(materials):
+    """Build materials table card."""
+    rows = ""
+    for mat in materials:
+        src = html_escape(str(mat.get("source", "—")))
+        pf = mat.get("partial_factor", "—")
+        rows += (
+            f'      <tr>\n'
+            f'        <td>{html_escape(mat["name"])}</td>\n'
+            f'        <td>{html_escape(str(mat["grade"]))}</td>\n'
+            f'        <td>{mat["value"]}</td>\n'
+            f'        <td>{html_escape(mat["unit"])}</td>\n'
+            f'        <td>{src}</td>\n'
+            f'        <td>{pf}</td>\n'
+            f'      </tr>\n'
+        )
+    return f"""\
+<div class="card">
+  <h2>Materials</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Grade</th><th>Value</th><th>Unit</th><th>Source</th><th>Partial Factor</th></tr></thead>
+    <tbody>
+{rows}    </tbody>
+  </table>
+</div>"""
+
+
+def build_calculations_card(calculations):
+    """Build calculations card with numbered steps."""
+    steps_html = ""
+    for calc in calculations:
+        step_num = calc["step"]
+        desc = html_escape(calc["description"])
+        detail_html = ""
+        if calc.get("detail"):
+            detail_html = (
+                f'\n    <div class="calc-detail">'
+                f'{html_escape(calc["detail"])}</div>'
+            )
+        clause_html = ""
+        if calc.get("code_clause"):
+            clause_html = (
+                f'\n    <div class="calc-clause"><em>Ref: '
+                f'{html_escape(calc["code_clause"])}</em></div>'
+            )
+        intermediate_html = ""
+        if calc.get("intermediate_results"):
+            ir_items = ""
+            for ir in calc["intermediate_results"]:
+                ir_items += (
+                    f'      <li>{html_escape(ir["name"])} = '
+                    f'{ir["value"]} {html_escape(str(ir.get("unit", "")))}</li>\n'
+                )
+            intermediate_html = (
+                f'\n    <ul class="intermediate-results">\n{ir_items}    </ul>'
+            )
+        steps_html += (
+            f'  <div class="calc-step">\n'
+            f'    <h3>Step {step_num}: {desc}</h3>'
+            f'{detail_html}{clause_html}{intermediate_html}\n'
+            f'  </div>\n'
+        )
+    return f"""\
+<div class="card">
+  <h2>Calculations</h2>
+{steps_html}</div>"""
+
+
+def build_sensitivity_card(sensitivity):
+    """Build sensitivity analysis table card."""
+    rows = ""
+    for s in sensitivity:
+        rows += (
+            f'      <tr>\n'
+            f'        <td>{html_escape(s["parameter"])}</td>\n'
+            f'        <td>{html_escape(str(s["range"]))}</td>\n'
+            f'        <td>{html_escape(str(s["result"]))}</td>\n'
+            f'      </tr>\n'
+        )
+    return f"""\
+<div class="card">
+  <h2>Sensitivity Analysis</h2>
+  <table>
+    <thead><tr><th>Parameter</th><th>Range</th><th>Result</th></tr></thead>
+    <tbody>
+{rows}    </tbody>
+  </table>
+</div>"""
+
+
+def build_validation_card(validation):
+    """Build validation card with test summary."""
+    method = html_escape(validation.get("method", ""))
+    optional = ""
+    if validation.get("test_file"):
+        optional += (
+            f'\n  <p><strong>Test File:</strong> '
+            f'<code>{html_escape(validation["test_file"])}</code></p>'
+        )
+    if validation.get("test_count"):
+        optional += (
+            f'\n  <p><strong>Test Count:</strong> {validation["test_count"]}</p>'
+        )
+    if validation.get("test_categories"):
+        cat_items = "\n".join(
+            f"    <li>{html_escape(c)}</li>"
+            for c in validation["test_categories"]
+        )
+        optional += (
+            f'\n  <h3>Test Categories</h3>\n  <ul>\n{cat_items}\n  </ul>'
+        )
+    if validation.get("benchmark_source"):
+        optional += (
+            f'\n  <p><strong>Benchmark Source:</strong> '
+            f'{html_escape(validation["benchmark_source"])}</p>'
+        )
+    return f"""\
+<div class="card">
+  <h2>Validation</h2>
+  <p><strong>Method:</strong> {method}</p>{optional}
+</div>"""
+
+
+def build_verification_card(verification):
+    """Build verification card with checker record."""
+    checker = html_escape(verification["checker"])
+    date = html_escape(verification["date"])
+    method = html_escape(verification["method"])
+    optional = ""
+    if verification.get("findings"):
+        optional += (
+            f'\n  <p><strong>Findings:</strong> '
+            f'{html_escape(verification["findings"])}</p>'
+        )
+    if verification.get("status"):
+        optional += (
+            f'\n  <p><strong>Status:</strong> '
+            f'{html_escape(verification["status"])}</p>'
+        )
+    return f"""\
+<div class="card">
+  <h2>Verification</h2>
+  <p><strong>Checker:</strong> {checker}</p>
+  <p><strong>Date:</strong> {date}</p>
+  <p><strong>Method:</strong> {method}</p>{optional}
+</div>"""
+
+
+def build_conclusions_card(conclusions):
+    """Build conclusions card with adequacy statement."""
+    adequacy = html_escape(conclusions["adequacy"])
+    governing = html_escape(conclusions["governing_check"])
+    optional = ""
+    if conclusions.get("recommendations"):
+        rec_items = "\n".join(
+            f"    <li>{html_escape(r)}</li>"
+            for r in conclusions["recommendations"]
+        )
+        optional += (
+            f'\n  <h3>Recommendations</h3>\n  <ul>\n{rec_items}\n  </ul>'
+        )
+    if conclusions.get("compliance_statement"):
+        optional += (
+            f'\n  <p><strong>Compliance:</strong> '
+            f'{html_escape(conclusions["compliance_statement"])}</p>'
+        )
+    return f"""\
+<div class="card">
+  <h2>Conclusions</h2>
+  <p><strong>Adequacy:</strong> {adequacy}</p>
+  <p><strong>Governing Check:</strong> {governing}</p>{optional}
+</div>"""
+
+
 def build_assumptions_references(data):
     """Build assumptions and references sections."""
     parts = []
