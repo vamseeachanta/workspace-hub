@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T03:22:11Z by generate-index.py -->
+<!-- Generated: 2026-03-15T03:26:17Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T03:22:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T03:26:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 266 |
+| pending | 265 |
 | working | 3 |
 | blocked | 10 |
 | done | 3 |
-| archived | 377 |
+| archived | 378 |
 
 ### By Priority
 
@@ -93,8 +93,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 661 |
-| Total archived | 377 |
-| Completion rate | 377/661 (57%) |
+| Total archived | 378 |
+| Completion rate | 378/661 (57%) |
 | Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 73 / 266 | 27% |
+| Pending items with plans | 73 / 265 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -120,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 101 | 2 | 8 |
-| Medium   | 124  | 1  | 1  |
+| Medium   | 123  | 1  | 1  |
 | Low      | 41  | 0  | 1  |
 
 ## By Category
@@ -1366,7 +1366,7 @@
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5086 |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5086 |
 
@@ -1647,7 +1647,6 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | high | medium | achantas-data | - |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | medium | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | medium | medium | workspace-hub | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | low | medium | workspace-hub | - |
 
@@ -2055,6 +2054,7 @@
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | medium | medium | workspace-hub | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | medium | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | medium | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -2783,7 +2783,7 @@
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | medium | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | - |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | - |
 
@@ -3514,7 +3514,7 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | workspace-hub | - |
 
 ### Low
@@ -4045,7 +4045,7 @@
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | achantas-data | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | workspace-hub | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | workspace-hub | - |
 
@@ -4182,7 +4182,7 @@
 
 ## By Computer
 
-### ace-linux-1 (221 active / 380 total)
+### ace-linux-1 (220 active / 380 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4563,7 +4563,7 @@
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | digitalmodel |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | achantas-data |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | workspace-hub |
-| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | workspace-hub |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | workspace-hub |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | workspace-hub |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | workspace-hub |
 
