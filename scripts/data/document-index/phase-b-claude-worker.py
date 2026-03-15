@@ -234,9 +234,11 @@ def load_index_source(source: str, shard: int, total: int) -> list:
 
 # ── Per-source processing ──────────────────────────────────────────────────────
 
-def process_og_row(row: tuple) -> bool:
+def process_og_row(row: tuple, validate: bool = False) -> bool:
     doc_id, org, doc_num, title, target_path, sha, _, full_text, wc = row
-    if not sha or not needs_llm(sha):
+    if not sha:
+        return False
+    if not validate and not needs_llm(sha):
         return False
 
     text, method = get_og_text(row)
@@ -248,18 +250,28 @@ def process_og_row(row: tuple) -> bool:
     if not result:
         result = {"discipline": "other", "summary": f"{org} {doc_num}: {title}", "keywords": [org]}
 
-    write_summary(sha, {
-        "path": target_path or "",
-        "sha256": sha,
-        "source": "og_standards",
-        "org": org,
-        "doc_number": doc_num or "",
-        "title": title or "",
-        "discipline": result.get("discipline", "other"),
-        "summary": result.get("summary", ""),
-        "keywords": result.get("keywords", []),
-        "extraction_method": method,
-    })
+    llm_disc = result.get("discipline", "other")
+
+    if validate:
+        # Validation mode: write LLM result to llm_discipline, preserve discipline
+        write_summary(sha, {
+            "llm_discipline": llm_disc,
+            "llm_summary": result.get("summary", ""),
+            "llm_keywords": result.get("keywords", []),
+        })
+    else:
+        write_summary(sha, {
+            "path": target_path or "",
+            "sha256": sha,
+            "source": "og_standards",
+            "org": org,
+            "doc_number": doc_num or "",
+            "title": title or "",
+            "discipline": llm_disc,
+            "summary": result.get("summary", ""),
+            "keywords": result.get("keywords", []),
+            "extraction_method": method,
+        })
     return True
 
 
@@ -319,6 +331,8 @@ def main() -> int:
                         help="Process only this organization (e.g. API, DNV, ISO)")
     parser.add_argument("--include-all", action="store_true",
                         help="Include ASTM/Unknown orgs (normally excluded)")
+    parser.add_argument("--validate", action="store_true",
+                        help="Validation mode: bypass needs_llm, write to llm_discipline")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Cap docs per source (0=unlimited)")
     args = parser.parse_args()
@@ -333,9 +347,9 @@ def main() -> int:
     logging.setLogRecordFactory(record_factory)
     logger = logging.getLogger()
 
-    logger.info("shard %d/%d  source=%s  org=%s  include_all=%s  dry_run=%s",
+    logger.info("shard %d/%d  source=%s  org=%s  include_all=%s  validate=%s  dry_run=%s",
                 args.shard, args.total, args.source, args.org,
-                args.include_all, args.dry_run)
+                args.include_all, args.validate, args.dry_run)
 
     done = skipped = errors = 0
 
@@ -350,14 +364,17 @@ def main() -> int:
         logger.info("og_standards: %d rows in shard", len(rows))
         for i, row in enumerate(rows):
             sha = row[5]
-            if not sha or not needs_llm(sha):
+            if not sha:
+                skipped += 1
+                continue
+            if not args.validate and not needs_llm(sha):
                 skipped += 1
                 continue
             if args.dry_run:
                 logger.info("[DRY] og %s %s", row[1], row[2])
                 done += 1
                 continue
-            ok = process_og_row(row)
+            ok = process_og_row(row, validate=args.validate)
             if ok:
                 done += 1
             else:
