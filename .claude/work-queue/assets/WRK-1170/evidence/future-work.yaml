@@ -1,0 +1,35 @@
+wrk_id: WRK-1170
+stage: 15
+generated: "2026-03-15T23:10:00Z"
+recommendations:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Further refine remaining 44.7k 'other' records with content-based classification"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: |
+      The remaining "other" records (4.3%) are in SKIP_PATH_FRAGMENTS or genuinely
+      unclassifiable by path alone. Content-based LLM classification on summaries
+      could reduce this further.
+    blocked_by: []
+  - id: FW-2
+    priority: LOW
+    title: "Add repo mapping for project-management domain"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: |
+      43,922 records now classified as project-management have empty target_repos.
+      Consider adding acma-projects or a new repo to repo_domain_map for this domain.
+    blocked_by: []
+  - id: FW-3
+    priority: LOW
+    title: "Periodic reclassification cron job"
+    disposition: existing-updated
+    captured: true
+    status: captured
+    description: |
+      phase-e2-remap.py can be added to the quarterly document-index-refresh cron
+      to automatically reclassify new documents after each scan.
+    blocked_by: []

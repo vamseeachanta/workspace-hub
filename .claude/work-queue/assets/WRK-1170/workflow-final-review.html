@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1170 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1170 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Reclassify 101k &#x27;other&#x27; domain documents and validate classification accuracy</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Resource intelligence (Stage 2) revealed that AC1 is already met — no null domains exist. The real gap is 101,471 records (9.8%) classified ...</summary><div class="panel"><p>Resource intelligence (Stage 2) revealed that AC1 is already met — no null domains exist. The real gap is 101,471 records (9.8%) classified as "other" that likely belong to specific engineering domains. Work focuses on: improving classification rules in phase-e2-remap.py, potentially extending the taxonomy, validating accuracy on ≥50 samples, and updating registry.yaml.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — 101k &quot;other&quot; records hide documents from domain-specific extraction pipelines. Proper classification enables targeted document-intelligence ...</summary><div class="panel"><p>101k "other" records hide documents from domain-specific extraction pipelines. Proper classification enables targeted document-intelligence workflows per discipline.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [x] AC1: All records in index.jsonl have a non-null `domain` field (ALREADY MET — 0 nulls) - [x] AC2: Classification accuracy validated on...</summary><div class="panel"><ul>
+<li>[x] AC1: All records in index.jsonl have a non-null <code>domain</code> field (ALREADY MET — 0 nulls)</li>
+<li>[x] AC2: Classification accuracy validated on 60 samples via validate-classification.py</li>
+<li>[x] AC3: Updated domain counts published to registry.yaml (14 domains)</li>
+<li>[x] AC4: project-management added to config.yaml taxonomy</li>
+<li>[x] AC5: phase-e2-remap.py serves as incremental reclassification script</li>
+<li>[x] AC6: "other" reduced from 101,471 (9.8%) to 44,705 (4.3%)</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — --- wrk: WRK-1170 --- # Plan Review — WRK-1170 ## Plan Summary Reclassify 101k &quot;other&quot; domain documents by adding path/filename rules to pha...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><hr>
+<h2>wrk: WRK-1170</h2>
+<h1>Plan Review — WRK-1170</h1>
+<h2>Plan Summary</h2>
+<p>Reclassify 101k "other" domain documents by adding path/filename rules to phase-e2-remap.py,
+running the live remap, validating accuracy on 60 samples, and updating registry.yaml.</p>
+<h2>Review</h2>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-15T17:30:00Z
+decision: passed
+notes: "User authored and approved the plan directly in plan mode"</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>TDD path rules</td><td>repo</td><td>pass</td><td><code>uv run --no-project python -m pytest tests/data/document-index/test_phase_e2_rules.py -v</code></td><td>tests/data/document-index/test_phase_e2_rules.py</td></tr><tr><td>2</td><td>Dry-run validation</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python scripts/data/document-index/phase-e2-remap.py --dry-run</code></td><td>scripts/data/document-index/phase-e2-remap.py</td></tr><tr><td>3</td><td>Classification accuracy validation</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python scripts/data/document-index/validate-classification.py --approve</code></td><td>.claude/work-queue/assets/WRK-1170/evidence/classification-validation.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1170, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1170, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1170/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1170/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-plan-draft.yaml absent — skip ordering check</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1170 stage: 15 generated: &quot;2026-03-15T23:10:00Z&quot; recommendations: - id: FW-1 priority: MEDIUM title: &quot;Further refine remaining 4...</summary><div class="panel"><p>wrk_id: WRK-1170
+stage: 15
+generated: "2026-03-15T23:10:00Z"
+recommendations:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Further refine remaining 44.7k 'other' records with content-based classification"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: |
+      The remaining "other" records (4.3%) are in SKIP_PATH_FRAGMENTS or genuinely
+      unclassifiable by path alone. Content-based LLM classification on summaries
+      could reduce this further.
+    blocked_by: []
+  - id: FW-2
+    priority: LOW
+    title: "Add repo mapping for project-management domain"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: |
+      43,922 records now classified as project-management have empty target_repos.
+      Consider adding acma-projects or a new repo to repo_domain_map for this domain.
+    blocked_by: []
+  - id: FW-3
+    priority: LOW
+    title: "Periodic reclassification cron job"
+    disposition: existing-updated
+    captured: true
+    status: captured
+    description: |
+      phase-e2-remap.py can be added to the quarterly document-index-refresh cron
+      to automatically reclassify new documents after each scan.
+    blocked_by: []</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1170 stages: - order: 1 stage: Capture status: done evidence: &quot;.claude/work-queue/working/WRK-1170.md&quot; - order: 2 stage: Resourc...</summary><div class="panel"><p>wrk_id: WRK-1170
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: ".claude/work-queue/working/WRK-1170.md"
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/resource-intelligence.yaml"
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: ".claude/work-queue/working/WRK-1170.md"
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/plan-html-review-final.md"
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/user-review-capture.yaml"
+  - order: 6
+    stage: Cross-Review Plan
+    status: n/a
+    evidence: ".claude/work-queue/assets/WRK-1170/review.md"
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/plan-html-review-final.md"
+  - order: 8
+    stage: Claim Activation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/activation.yaml"
+  - order: 9
+    stage: Routing
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/routing.yaml"
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/execute.yaml"
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/WRK-1170-lifecycle.html"
+  - order: 12
+    stage: TDD Eval
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/ac-test-matrix.md"
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/review.md"
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/legal-scan.yaml"
+  - order: 15
+    stage: Future Work
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/future-work.yaml"
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/resource-intelligence-update.yaml"
+  - order: 17
+    stage: User Review Implementation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/user-review-close.yaml"
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: ".claude/work-queue/assets/WRK-1170/evidence/activation.yaml"
+  - order: 19
+    stage: Close
+    status: pending
+    evidence: ".claude/work-queue/working/WRK-1170.md"
+  - order: 20
+    stage: Archive
+    status: pending
+    evidence: ".claude/work-queue/working/WRK-1170.md"</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 24 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1170-lifecycle.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/classification-validation.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li></ul></div></details>
+</body>
+</html>

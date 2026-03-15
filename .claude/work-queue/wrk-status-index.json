@@ -5488,5 +5488,14 @@
     "title": "Create dark intelligence workflow skill \u2014 Excel extraction to clean implementation",
     "priority": "high",
     "category": "skills"
+  },
+  "WRK-1170": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-15T23:15:36.567938+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Reclassify 101k 'other' domain documents and validate classification accuracy",
+    "priority": "high",
+    "category": "data"
   }
 }

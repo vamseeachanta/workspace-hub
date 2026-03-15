@@ -1,0 +1,6 @@
+wrk: WRK-1170
+stage: 9
+routed_at: "2026-03-15T22:00:00Z"
+orchestrator: claude
+workstation: ace-linux-1
+rationale: "Data pipeline work on ace-linux-1 where index.jsonl is locally mounted"

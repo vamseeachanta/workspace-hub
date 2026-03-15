@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T22:58:01Z by generate-index.py -->
+<!-- Generated: 2026-03-15T23:15:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T22:58:01Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T23:15:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 667
+**Total items:** 666
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 263 |
-| working | 6 |
+| working | 5 |
 | blocked | 10 |
 | done | 5 |
 | archived | 382 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 291 |
+| high | 290 |
 | medium | 314 |
 | low | 61 |
 
@@ -33,7 +33,7 @@
 |------------|-------|
 | simple | 146 |
 | medium | 317 |
-| complex | 126 |
+| complex | 125 |
 
 ### By Category
 
@@ -43,7 +43,7 @@
 |----------|-------------|
 | harness | 26 |
 | engineering | 153 |
-| data | 25 |
+| data | 24 |
 | platform | 11 |
 | business | 6 |
 | maintenance | 5 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 277 |
+| workspace-hub | 276 |
 | worldenergydata | 116 |
 
 ### Plan Tracking
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 269 / 667 |
+| Plans exist | 268 / 666 |
 | Plans cross-reviewed | 194 |
 | Plans approved | 218 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 667 |
+| Total captured | 666 |
 | Total archived | 382 |
-| Completion rate | 382/667 (57%) |
+| Completion rate | 382/666 (57%) |
 | Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -119,7 +119,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 99 | 4 | 8 |
+| High     | 99 | 3 | 8 |
 | Medium   | 123  | 2  | 1  |
 | Low      | 41  | 0  | 1  |
 
@@ -525,7 +525,7 @@
 |----|----------|-------|--------|
 | WRK-688 | MEDIUM | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending |
 
-### data (25 items — 12 high, 12 medium, 1 low)
+### data (24 items — 11 high, 12 medium, 1 low)
 
 #### data / document-intelligence
 
@@ -533,7 +533,6 @@
 |----|----------|-------|--------|
 | WRK-547 | HIGH | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
 | WRK-548 | HIGH | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
-| WRK-1170 | HIGH | Reclassify 101k 'other' domain documents and validate classification accuracy | working |
 | WRK-541 | MEDIUM | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-542 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-545 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending |
@@ -1300,7 +1299,6 @@
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -1670,7 +1668,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | high | complex | workspace-hub | - |
 | WRK-1188 | Phase B extraction on og_standards | high | high | workspace-hub | - |
 | WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | medium | medium | workspace-hub | - |
@@ -2766,7 +2763,6 @@
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | simple | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | - |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | - |
@@ -3201,7 +3197,6 @@
 | WRK-1162 | Protection relay coordination module | pending | medium | digitalmodel | - |
 | WRK-1163 | IEC 61850 GOOSE messaging model | pending | medium | digitalmodel | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | medium | digitalmodel, workspace-hub | - |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | complex | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | simple | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | digitalmodel, worldenergydata, assethold, assetutilities, workspace-hub | - |
@@ -4196,7 +4191,6 @@
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | digitalmodel | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | digitalmodel | - |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | workspace-hub | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | workspace-hub, digitalmodel | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
@@ -4220,7 +4214,7 @@
 
 ## By Computer
 
-### ace-linux-1 (222 active / 386 total)
+### ace-linux-1 (221 active / 385 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4531,7 +4525,6 @@
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | digitalmodel |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | digitalmodel, workspace-hub |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | workspace-hub |
-| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | workspace-hub |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | workspace-hub |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | workspace-hub |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | workspace-hub |

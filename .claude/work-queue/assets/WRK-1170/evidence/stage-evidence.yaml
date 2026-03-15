@@ -1,0 +1,84 @@
+wrk_id: WRK-1170
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/working/WRK-1170.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-1170.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/plan-html-review-final.md
+- order: 5
+  stage: User Review Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/user-review-capture.yaml
+- order: 6
+  stage: Cross-Review Plan
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-1170/review.md
+- order: 7
+  stage: User Review Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/plan-html-review-final.md
+- order: 8
+  stage: Claim Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/activation.yaml
+- order: 9
+  stage: Routing
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/routing.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/WRK-1170-lifecycle.html
+- order: 12
+  stage: TDD Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/legal-scan.yaml
+- order: 15
+  stage: Future Work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-1170/evidence/activation.yaml
+- order: 19
+  stage: Close
+  status: done
+  evidence: .claude/work-queue/working/WRK-1170.md
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: .claude/work-queue/working/WRK-1170.md
+generated_at: '2026-03-15T23:15:36Z'
+reviewed_by: orchestrator

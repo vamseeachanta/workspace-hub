@@ -1,0 +1,14 @@
+wrk_id: WRK-1170
+stage: 16
+generated: "2026-03-15T23:10:00Z"
+additions:
+  - field: other_domain_count
+    before: 101471
+    after: 44705
+  - field: domains_count
+    before: 13
+    after: 14
+  - field: project_management_in_taxonomy
+    before: false
+    after: true
+notes: "project-management domain added to taxonomy. Registry updated with post-remap counts."

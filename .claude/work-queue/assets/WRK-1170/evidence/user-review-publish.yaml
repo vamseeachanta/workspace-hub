@@ -1,0 +1,29 @@
+wrk_id: WRK-1170
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 32209069
+    documents:
+      - ".claude/work-queue/assets/WRK-1170/WRK-1170-lifecycle.html"
+    published_at: "2026-03-15T17:00:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 95cfeaae
+    documents:
+      - ".claude/work-queue/assets/WRK-1170/plan-html-review-final.md"
+    published_at: "2026-03-15T22:40:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: e3d1e70a
+    documents:
+      - ".claude/work-queue/assets/WRK-1170/WRK-1170-lifecycle.html"
+    published_at: "2026-03-15T23:15:00Z"
+    reviewer: vamsee

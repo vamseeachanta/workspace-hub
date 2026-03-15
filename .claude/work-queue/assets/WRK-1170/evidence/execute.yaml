@@ -1,0 +1,34 @@
+wrk_id: WRK-1170
+stage: 10
+generated: "2026-03-15T22:39:08Z"
+status: complete
+commit_sha: 95cfeaae
+summary: |
+  Added 12 PATH_RULES, 2 FILENAME_RULES to phase-e2-remap.py.
+  Fixed remap() to preserve existing domains when filling repos.
+  Ran live remap: 59,827 records reclassified.
+  "other" reduced from 101,471 (9.8%) to 44,705 (4.3%).
+files_changed:
+  - scripts/data/document-index/phase-e2-remap.py
+  - scripts/data/document-index/config.yaml
+  - scripts/data/document-index/validate-classification.py
+  - tests/data/document-index/test_phase_e2_rules.py
+  - data/document-index/registry.yaml
+tests_passed: 26
+tests_failed: 0
+integrated_repo_tests:
+  - name: "TDD path rules"
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/data/document-index/test_phase_e2_rules.py -v"
+    result: pass
+    artifact_ref: "tests/data/document-index/test_phase_e2_rules.py"
+  - name: "Dry-run validation"
+    scope: integrated
+    command: "uv run --no-project python scripts/data/document-index/phase-e2-remap.py --dry-run"
+    result: pass
+    artifact_ref: "scripts/data/document-index/phase-e2-remap.py"
+  - name: "Classification accuracy validation"
+    scope: integrated
+    command: "uv run --no-project python scripts/data/document-index/validate-classification.py --approve"
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-1170/evidence/classification-validation.yaml"
