@@ -1,0 +1,4 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-15"
+notes: "Scope confirmed: Baker Hughes rig count ingestion + metadata from pivot table. Add FW for railroad commission data."

@@ -383,6 +383,14 @@ def _main() -> None:
     checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")
     _validate_checkpoint(checkpoint_path)
 
+    # Append to event-sourced run log (WRK-1187 Enhancement 1)
+    try:
+        from run_log import append_stage_event  # type: ignore[import]
+        run_log_path = os.path.join(stage_dir, "run-log.jsonl")
+        append_stage_event(run_log_path, stage=stage, status="done")
+    except ImportError:
+        pass  # non-blocking
+
 
 if __name__ == "__main__":
     _main()

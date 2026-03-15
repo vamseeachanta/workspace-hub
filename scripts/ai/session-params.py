@@ -28,7 +28,7 @@ CTX_MAP: dict[str, int] = {
     # Gemini
     "gemini-3.1-pro-preview": 1000,
     "gemini-2.5-pro": 1000,
-    "gemini-2.0-flash": 1000,
+    "gemini-2.5-flash": 1000,
 }
 
 DEFAULT_CTX = 128

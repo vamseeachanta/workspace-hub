@@ -1,0 +1,139 @@
+# Auto-generated transition table — do not edit manually
+# Source: scripts/work-queue/stages/stage-NN-*.yaml
+# WRK-1187 Enhancement 2
+
+transitions:
+  - from: 1
+    to: 2
+    from_name: "Capture"
+    to_name: "Resource Intelligence"
+    human_gate: false
+    guard: "pending/WRK-NNN.md missing or invalid frontmatter"
+    rollback_to: 1
+  - from: 2
+    to: 3
+    from_name: "Resource Intelligence"
+    to_name: "Triage"
+    human_gate: false
+    guard: "resource-intelligence.yaml missing completion_status or skills.core_used"
+    rollback_to: 1
+  - from: 3
+    to: 4
+    from_name: "Triage"
+    to_name: "Plan Draft"
+    human_gate: false
+    guard: "pending/WRK-NNN.md missing route/workstations/orchestrator fields"
+    rollback_to: 1
+  - from: 4
+    to: 5
+    from_name: "Plan Draft"
+    to_name: "User Review - Plan Draft"
+    human_gate: false
+    guard: "lifecycle HTML Stage 4 section absent"
+    rollback_to: 1
+  - from: 5
+    to: 6
+    from_name: "User Review - Plan Draft"
+    to_name: "Cross-Review"
+    human_gate: true
+    guard: "human_gate: evidence/user-review-plan-draft.yaml; user-review-plan-draft.yaml missing or decision != approved"
+    rollback_to: 1
+  - from: 6
+    to: 7
+    from_name: "Cross-Review"
+    to_name: "User Review - Plan Final"
+    human_gate: false
+    guard: "cross-review.yaml missing or not all 3 providers reviewed"
+    rollback_to: 5
+  - from: 7
+    to: 8
+    from_name: "User Review - Plan Final"
+    to_name: "Claim / Activation"
+    human_gate: true
+    guard: "human_gate: evidence/plan-final-review.yaml; plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed OR check-p1-resolved.sh exits 1"
+    rollback_to: 5
+  - from: 8
+    to: 9
+    from_name: "Claim / Activation"
+    to_name: "Work-Queue Routing"
+    human_gate: false
+    guard: "claim-evidence.yaml or activation.yaml missing"
+    rollback_to: 7
+  - from: 9
+    to: 10
+    from_name: "Work-Queue Routing"
+    to_name: "Work Execution"
+    human_gate: false
+    guard: "routing.yaml missing"
+    rollback_to: 7
+  - from: 10
+    to: 11
+    from_name: "Work Execution"
+    to_name: "Artifact Generation"
+    human_gate: false
+    guard: "execute.yaml missing or integrated_repo_tests < 3 entries"
+    rollback_to: 7
+  - from: 11
+    to: 12
+    from_name: "Artifact Generation"
+    to_name: "TDD / Eval"
+    human_gate: false
+    guard: "lifecycle HTML Stage 11 section absent"
+    rollback_to: 7
+  - from: 12
+    to: 13
+    from_name: "TDD / Eval"
+    to_name: "Agent Cross-Review"
+    human_gate: false
+    guard: "ac-test-matrix.md missing or any AC in FAIL state"
+    rollback_to: 7
+  - from: 13
+    to: 14
+    from_name: "Agent Cross-Review"
+    to_name: "Verify Gate Evidence"
+    human_gate: false
+    guard: "review.md missing or not all 3 providers reviewed"
+    rollback_to: 7
+  - from: 14
+    to: 15
+    from_name: "Verify Gate Evidence"
+    to_name: "Future Work Synthesis"
+    human_gate: false
+    guard: "verify-gate-evidence.py exits non-zero (any gate FAIL)"
+    rollback_to: 7
+  - from: 15
+    to: 16
+    from_name: "Future Work Synthesis"
+    to_name: "Resource Intelligence Update"
+    human_gate: false
+    guard: "future-work.yaml missing or spun-off-new items with captured:false"
+    rollback_to: 7
+  - from: 16
+    to: 17
+    from_name: "Resource Intelligence Update"
+    to_name: "User Review - Implementation"
+    human_gate: false
+    guard: "resource-intelligence-update.yaml missing additions[] and no_additions_rationale"
+    rollback_to: 7
+  - from: 17
+    to: 18
+    from_name: "User Review - Implementation"
+    to_name: "Reclaim"
+    human_gate: true
+    guard: "human_gate: evidence/user-review-close.yaml; user-review-close.yaml missing or decision != approved"
+    rollback_to: 7
+  - from: 18
+    to: 19
+    from_name: "Reclaim"
+    to_name: "Close"
+    human_gate: false
+    guard: "reclaim.yaml missing"
+    rollback_to: 17
+  - from: 19
+    to: 20
+    from_name: "Close"
+    to_name: "Archive"
+    human_gate: false
+    guard: "done/WRK-NNN.md missing after close-item.sh; for type:feature, feature-close-check.sh WRK-NNN must exit 0 (enforced in close-item.sh)"
+    rollback_to: 17
+

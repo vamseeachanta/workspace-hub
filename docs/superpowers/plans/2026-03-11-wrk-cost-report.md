@@ -59,7 +59,7 @@ models:
     provider: gemini
     input_per_1m: 0.075
     output_per_1m: 0.30
-  gemini-2.0-flash:
+  gemini-2.5-flash:
     provider: gemini
     input_per_1m: 0.075
     output_per_1m: 0.30
