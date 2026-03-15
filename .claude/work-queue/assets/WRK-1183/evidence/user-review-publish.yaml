@@ -1,0 +1,30 @@
+type: user-review-publish
+wrk_id: WRK-1183
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    published_at: "2026-03-15T16:06:00Z"
+    reviewer: vamsee
+    remote: origin
+    branch: main
+    commit: 7eaef1af
+    documents:
+      - WRK-1183-plan.html
+  - stage: plan_final
+    pushed_to_origin: true
+    published_at: "2026-03-15T16:11:00Z"
+    reviewer: vamsee
+    remote: origin
+    branch: main
+    commit: 54745197
+    documents:
+      - WRK-1183-lifecycle.html
+  - stage: close_review
+    pushed_to_origin: true
+    published_at: "2026-03-15T16:31:00Z"
+    reviewer: vamsee
+    remote: origin
+    branch: main
+    commit: 54745197
+    documents:
+      - WRK-1183-lifecycle.html

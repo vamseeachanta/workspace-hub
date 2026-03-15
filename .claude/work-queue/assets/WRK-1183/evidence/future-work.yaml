@@ -1,0 +1,15 @@
+type: future-work
+wrk_id: WRK-1183
+recommendations:
+  - title: "Add more dark intelligence archive entries from university coursework"
+    priority: medium
+    category: skills
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - title: "Create validate-dark-intelligence.py script for CI schema validation"
+    priority: low
+    category: automation
+    disposition: spun-off-new
+    status: captured
+    captured: true

@@ -1,0 +1,8 @@
+type: cross-review
+wrk_id: WRK-1183
+route: A
+providers:
+  claude:
+    verdict: APPROVE
+    file: cross-review-claude.md
+completed_at: "2026-03-15T16:10:00Z"

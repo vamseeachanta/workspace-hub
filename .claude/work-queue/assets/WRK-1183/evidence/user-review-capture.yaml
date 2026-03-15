@@ -1,0 +1,8 @@
+stage: 1
+type: user-review-capture
+wrk_id: WRK-1183
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-15T16:00:00Z"
+confirmed_at: "2026-03-15T16:00:00Z"
+notes: "User approved scope as captured"

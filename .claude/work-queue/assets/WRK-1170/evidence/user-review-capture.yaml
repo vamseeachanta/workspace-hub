@@ -1,0 +1,5 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-15"
+scope_hash: "classify-all-docs-domain-taxonomy-index-jsonl"
+notes: "User approved scope as written in WRK-1170.md"

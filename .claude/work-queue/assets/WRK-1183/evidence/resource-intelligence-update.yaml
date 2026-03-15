@@ -1,0 +1,7 @@
+type: resource-intelligence-update
+wrk_id: WRK-1183
+updated_at: "2026-03-15T16:25:00Z"
+additions:
+  - config/schemas/dark-intelligence-archive.yaml
+  - scripts/calculations/pile_axial_capacity.py
+  - knowledge/dark-intelligence/geotechnical/pile_capacity/

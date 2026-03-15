@@ -1,0 +1,37 @@
+wrk_id: WRK-1170
+stage: 2
+completed_at: "2026-03-15"
+findings:
+  index_location: data/document-index/index.jsonl
+  index_size_mb: 486
+  total_records: 1033933
+  null_domain_count: 0  # all records already classified
+  other_domain_count: 101471  # 9.8% — primary reclassification target
+  domains_count: 13  # 14 including "other"
+  taxonomy_config: scripts/data/document-index/config.yaml  # lines 164-177
+  registry: data/document-index/registry.yaml
+  summaries_count: 639585
+  classification_scripts:
+    - scripts/data/document-index/phase-c-classify.py  # keyword heuristics + LLM
+    - scripts/data/document-index/phase-e-backpopulate.py  # path-based fast classify
+    - scripts/data/document-index/phase-e2-remap.py  # 3-tier remap (path→filename→ext)
+    - scripts/data/document-index/reclassify-audit.py  # weighted keyword scoring V2
+  mounted_sources:
+    - /mnt/ace  # 7.3T primary doc store
+    - /mnt/remote/ace-linux-2/dde  # remote SSHFS
+  domain_distribution:
+    cad: 275445
+    marine: 266155
+    pipeline: 187860
+    other: 101471
+    materials: 72206
+    portfolio: 55942
+    structural: 49999
+    installation: 13390
+    project-management: 5029
+    energy-economics: 2918
+    cathodic-protection: 1714
+    workspace-spec: 1587
+    regulatory: 73
+    naval-architecture: 144
+  key_insight: "AC1 (no null domains) is already met. Real work is reclassifying 101k 'other' records and validating accuracy."

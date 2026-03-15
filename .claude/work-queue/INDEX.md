@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T16:50:48Z by generate-index.py -->
+<!-- Generated: 2026-03-15T22:58:01Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T16:50:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T22:58:01Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 264 |
-| working | 5 |
+| pending | 263 |
+| working | 6 |
 | blocked | 10 |
 | done | 5 |
 | archived | 382 |
@@ -41,7 +41,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 25 |
+| harness | 26 |
 | engineering | 153 |
 | data | 25 |
 | platform | 11 |
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 268 / 667 |
+| Plans exist | 269 / 667 |
 | Plans cross-reviewed | 194 |
 | Plans approved | 218 |
 | Brochure pending | 8 |
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 74 / 264 | 28% |
+| Pending items with plans | 74 / 263 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -119,7 +119,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 100 | 3 | 8 |
+| High     | 99 | 4 | 8 |
 | Medium   | 123  | 2  | 1  |
 | Low      | 41  | 0  | 1  |
 
@@ -127,7 +127,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (25 items — 3 high, 17 medium, 5 low)
+### harness (26 items — 4 high, 17 medium, 5 low)
 
 #### harness / agent-teams
 
@@ -181,6 +181,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
+| WRK-1244 | HIGH | Evaluate canonical skill ecosystem quality using skill-creator eval | pending |
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
 | WRK-597 | MEDIUM | feat(digitalmodel): geotechnical module — umbrella tracker | pending |
 | WRK-681 | MEDIUM | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending |
@@ -532,7 +533,7 @@
 |----|----------|-------|--------|
 | WRK-547 | HIGH | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
 | WRK-548 | HIGH | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
-| WRK-1170 | HIGH | Analyze mounted-drive documents and establish domain classification for each | pending |
+| WRK-1170 | HIGH | Reclassify 101k 'other' domain documents and validate classification accuracy | working |
 | WRK-541 | MEDIUM | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-542 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
 | WRK-545 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending |
@@ -1299,7 +1300,7 @@
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -1311,7 +1312,6 @@
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-website, digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 20% | - | - |
 | WRK-1188 | Phase B extraction on og_standards | working | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1339,6 +1339,7 @@
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1231, WRK-1232 |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1603,14 +1604,12 @@
 | WRK-1164 | Power flow / load flow calculator | medium | medium | digitalmodel | - |
 | WRK-1165 | Droop control simulator | medium | medium | digitalmodel | - |
 | WRK-1166 | Generator fuel system CP design | medium | medium | digitalmodel | - |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | high | complex | workspace-hub | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | medium | medium | workspace-hub | - |
 | WRK-1175 | Structured progress log for cross-session WRK continuity | medium | medium | workspace-hub | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | low | complex | workspace-hub | - |
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | medium | medium | workspace-hub | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | high | medium | workspace-hub | - |
 | WRK-1182 | Work-queue-workflow interactive stage menu | medium | medium | workspace-hub | - |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | high | medium | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | high | medium | aceengineer-website, digitalmodel, workspace-hub | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | high | high | workspace-hub | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | medium | high | worldenergydata | - |
@@ -1634,6 +1633,7 @@
 | WRK-1233 | Add test coverage for platform and pipeline loaders | medium | simple | worldenergydata | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | medium | medium | worldenergydata | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | medium | medium | workspace-hub | - |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | high | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1670,6 +1670,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | high | complex | workspace-hub | - |
 | WRK-1188 | Phase B extraction on og_standards | high | high | workspace-hub | - |
 | WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | medium | medium | workspace-hub | - |
@@ -2765,7 +2766,7 @@
 | WRK-1161 | Suppress non-actionable CLI stderr noise in work-queue scripts | archived | medium | simple | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | - |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | - |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | - |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | - |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | - |
@@ -2776,13 +2777,13 @@
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | high | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | high | medium | - |
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | - |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | - |
 | WRK-1188 | Phase B extraction on og_standards | working | high | high | - |
 | WRK-1201 | Create calculation-implementation-workflow orchestration skill | pending | medium | medium | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | - |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3200,13 +3201,12 @@
 | WRK-1162 | Protection relay coordination module | pending | medium | digitalmodel | - |
 | WRK-1163 | IEC 61850 GOOSE messaging model | pending | medium | digitalmodel | - |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | medium | digitalmodel, workspace-hub | - |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | complex | workspace-hub | - |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | complex | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | simple | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | digitalmodel, worldenergydata, assethold, assetutilities, workspace-hub | - |
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | medium | digitalmodel | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | medium | workspace-hub | - |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | medium | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | medium | aceengineer-website, digitalmodel, workspace-hub | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | workspace-hub | - |
 | WRK-1188 | Phase B extraction on og_standards | working | high | workspace-hub | - |
@@ -3214,6 +3214,7 @@
 | WRK-1190 | Ingest Baker Hughes rig count | working | low | worldenergydata | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | medium | worldenergydata | - |
 | WRK-1232 | Complete production data download and conversion pipeline | pending | medium | worldenergydata | - |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -4052,7 +4053,6 @@
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | digitalmodel | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | high | workspace-hub | - |
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | workspace-hub | - |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | workspace-hub | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | aceengineer-website, digitalmodel, workspace-hub | - |
 | WRK-1189 | Ingest BOEM lease data | done | high | worldenergydata | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | digitalmodel | - |
@@ -4071,6 +4071,7 @@
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4195,7 +4196,7 @@
 | WRK-1153 | SCADA/protocols toolkit — Modbus, DNP3, OPC UA, EPMS data model | archived | high | digitalmodel | - |
 | WRK-1154 | Generator sequencing — paralleling, load-shed, black-start state machine | archived | high | digitalmodel | - |
 | WRK-1155 | Microgrid controller — DER dispatch, island detection, BESS management | archived | high | digitalmodel | - |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | workspace-hub | - |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | workspace-hub | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | workspace-hub, digitalmodel | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
@@ -4530,7 +4531,7 @@
 | WRK-1166 | Generator fuel system CP design | pending | medium | medium | digitalmodel |
 | WRK-1167 | Fix CI workflow failures — digitalmodel Quality Gates + docs.yml and workspace-hub Baseline Testing | archived | high | medium | digitalmodel, workspace-hub |
 | WRK-1168 | Review session logs and eliminate recurring errors | done | medium | medium | workspace-hub |
-| WRK-1170 | Analyze mounted-drive documents and establish domain classification for each | pending | high | complex | workspace-hub |
+| WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | working | high | complex | workspace-hub |
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | archived | medium | simple | workspace-hub |
 | WRK-1173 | Schema-validated YAML verification checklist for feature WRKs | pending | medium | medium | workspace-hub |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | simple | workspace-hub |
@@ -4542,7 +4543,6 @@
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | done | high | medium | digitalmodel |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | pending | high | medium | workspace-hub |
 | WRK-1182 | Work-queue-workflow interactive stage menu | pending | medium | medium | workspace-hub |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | pending | high | medium | workspace-hub |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | aceengineer-website, digitalmodel, workspace-hub |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | workspace-hub |
 | WRK-1188 | Phase B extraction on og_standards | working | high | high | workspace-hub |
@@ -4570,6 +4570,7 @@
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | worldenergydata |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | workspace-hub |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | workspace-hub |
+| WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -5004,7 +5005,6 @@
 | WRK-1177 | Migrate agent-written structured markdown to YAML/JSON | WRK-1173 | - | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | - | WRK-1181, WRK-1183, WRK-1184, WRK-1187, WRK-1188, WRK-1189, WRK-1190, WRK-1191, WRK-1192, WRK-1193, WRK-1194, WRK-1195, WRK-1196, WRK-1197, WRK-1198, WRK-1199, WRK-1202, WRK-1203 | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | - | - | WRK-1179 |
-| WRK-1183 | Create dark intelligence workflow skill — Excel extraction to clean implementation | - | - | WRK-1179 |
 | WRK-1188 | Phase B extraction on og_standards | - | - | WRK-1179 |
 | WRK-1189 | Ingest BOEM lease data | - | - | WRK-1179 |
 | WRK-1190 | Ingest Baker Hughes rig count | - | - | WRK-1179 |

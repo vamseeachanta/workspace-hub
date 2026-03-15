@@ -1,0 +1,15 @@
+stage: 2
+type: resource-intelligence
+wrk_id: WRK-1183
+completion_status: continue_to_planning
+domain: skills/data
+complexity_assessment: simple
+route: A
+
+skills:
+  core_used:
+    - data/dark-intelligence-workflow
+    - data/research-literature
+    - data/calculation-report
+    - engineering/calculation-methodology
+    - coordination/workspace/legal-sanity-scan

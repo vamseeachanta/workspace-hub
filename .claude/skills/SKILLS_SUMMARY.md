@@ -1,6 +1,6 @@
 # Skills Summary
 
-Generated: 2026-03-15T20:41:33Z
+Generated: 2026-03-15T23:03:22Z
 
 > AUTO-GENERATED. Do not edit manually.
 > Sync command: `uv run --no-project python scripts/skills/generate-skill-summary.py`
@@ -166,7 +166,7 @@ Generated: 2026-03-15T20:41:33Z
 | 148 | [statistical-analysis](data/analytics/statistical-analysis/SKILL.md) | active | [data/analytics/statistical-analysis/SKILL.md](data/analytics/statistical-analysis/SKILL.md) | Apply statistical methods including descriptive stats, trend analysis, outlier detection, and hypothesis testing | Descriptive statistics, trend analysis, outlier detection, hypothesis testing, and guidance on when to be cautious about statistical claims. |
 | 149 | [calculation-report](data/calculation-report/SKILL.md) | active | [data/calculation-report/SKILL.md](data/calculation-report/SKILL.md) | Generate professional engineering calculation reports from YAML — renders LaTeX formulas, interactive charts, and pass/fail outputs as HTML using the warm-parchment design system | calculation.yaml → generate-calc-report.py → report.html (default) / report.md |
 | 150 | [dark-intelligence-workflow](data/dark-intelligence-workflow/SKILL.md) | active | [data/dark-intelligence-workflow/SKILL.md](data/dark-intelligence-workflow/SKILL.md) | > | Extract calculation methodology from legacy Excel/files into clean, client-free |
-| 151 | [doc-intelligence-promotion](data/doc-intelligence-promotion/SKILL.md) | active | [data/doc-intelligence-promotion/SKILL.md](data/doc-intelligence-promotion/SKILL.md) | Post-processing pipeline for document extraction — tables to CSV, worked examples to pytest, charts to calibration metadata | Single-pass extraction + multi-stage post-processing pipeline. |
+| 151 | [doc-intelligence-promotion](data/doc-intelligence-promotion/SKILL.md) | active | [data/doc-intelligence-promotion/SKILL.md](data/doc-intelligence-promotion/SKILL.md) | Post-processing pipeline for document extraction — tables to CSV, calc reports from extracted data, charts to calibration metadata. Includes table→YAML→code→calc-report workflow. | Single-pass extraction + multi-stage post-processing pipeline. |
 | 152 | [doc-research-download](data/doc-research-download/SKILL.md) | active | [data/doc-research-download/SKILL.md](data/doc-research-download/SKILL.md) | > | Repeatable workflow for domain documentation research WRKs: search for freely-available |
 | 153 | [document-index-pipeline](data/document-index-pipeline/SKILL.md) | active | [data/document-index-pipeline/SKILL.md](data/document-index-pipeline/SKILL.md) | > | 7-phase pipeline: Index → Extract → Classify → Data-Sources → Backpopulate → Gaps → Ledger |
 | 154 | [document-inventory](data/documents/document-inventory/SKILL.md) | active | [data/documents/document-inventory/SKILL.md](data/documents/document-inventory/SKILL.md) | Scan and catalog document collections with metadata extraction, categorization, and statistics. Use for auditing document libraries, preparing for knowledge base creation, or understanding large file collections. | This skill scans document collections (PDFs, Word docs, text files) and creates a structured inventory with metadata, automatic categorization, and collection statistics. Essential first step before building knowledge bases. |

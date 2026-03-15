@@ -5479,5 +5479,14 @@
     "title": "feat(skill): gitignore-scaffold skill \u2014 gitignore patterns, negation, and directory setup",
     "priority": "medium",
     "category": "development"
+  },
+  "WRK-1183": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-15T22:57:59.718466+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Create dark intelligence workflow skill \u2014 Excel extraction to clean implementation",
+    "priority": "high",
+    "category": "skills"
   }
 }

@@ -1,0 +1,10 @@
+type: claim-evidence
+version: 1
+wrk_id: WRK-1183
+owner: claude
+session_id: wrk-1183-session
+session_owner: claude
+best_fit_provider: claude
+claimed_at: "2026-03-15T16:15:00Z"
+quota: available
+route: A

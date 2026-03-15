@@ -1,0 +1,21 @@
+type: user-review-browser-open
+wrk_id: WRK-1183
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: default
+    html_ref: WRK-1183-plan.html
+    opened_at: "2026-03-15T15:50:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: default
+    html_ref: WRK-1183-lifecycle.html
+    opened_at: "2026-03-15T16:00:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: WRK-1183-lifecycle.html
+    opened_at: "2026-03-15T16:25:00Z"
+    reviewer: vamsee

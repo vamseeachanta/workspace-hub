@@ -1,7 +1,7 @@
 ---
 name: doc-intelligence-promotion
-description: Post-processing pipeline for document extraction — tables to CSV, worked examples to pytest, charts to calibration metadata
-version: 1.0.0
+description: Post-processing pipeline for document extraction — tables to CSV, calc reports from extracted data, charts to calibration metadata. Includes table→YAML→code→calc-report workflow.
+version: 1.1.0
 category: data
 type: skill
 trigger: manual
@@ -63,12 +63,61 @@ uv run --no-project python scripts/data/doc-intelligence/promote-to-code.py \
 - Links images to figure references by page number
 - Generates calibration metadata YAML for manual digitization
 
+## Table → YAML → Code → Calc Report (WRK-1188 Learning)
+
+**Primary workflow for engineering standards** (not textbook example parsing):
+
+```
+Extracted tables (CSV)
+    ↓ promote to data/standards/promoted/<standard>/
+YAML calc report inputs (from table data)
+    ↓ validate against existing Python code
+Code-validated outputs
+    ↓ generate-calc-report.py
+HTML calculation report
+```
+
+### Steps
+
+1. **Deep-extract** the PDF: `deep-extract.py --input <pdf> --domain <domain> --report`
+2. **Review tables**: identify high-value reference data (constants, coefficients, safety factors)
+3. **Promote tables**: copy to `data/standards/promoted/<standard>/` with clean names
+4. **Check existing code**: does `digitalmodel/` or `assetutilities/` already implement this?
+5. **Create calc report YAML**: map extracted table values to inputs, compute outputs
+6. **Validate**: run Python code with same inputs, compare outputs
+7. **Generate HTML**: `generate-calc-report.py <calc-report>.yaml`
+
+### Proven Examples
+
+| Calc Report | Standard | Tables Used |
+|-------------|----------|-------------|
+| `cp-anode-design-dnv-rp-b401.yaml` | DNV-RP-B401 | Tables 10-1 to 10-8 |
+| `pipeline-stability-dnv-rp-f109.yaml` | DNV-RP-F109 | Table 3-5 |
+| `fatigue-sn-curve-dnv-rp-c203.yaml` | DNV-RP-C203 | Table 2-1 (14 S-N curves) |
+
+### Why Not Worked Examples?
+
+Engineering standards don't use textbook "Example N.N: Given: Solution:" format.
+Calculation procedures are inline in numbered sections. The table→YAML→code pipeline
+extracts the reference data and validates against implemented code — more reliable
+than text parsing.
+
 ## Key Scripts
 
 | Script | Purpose |
 |--------|---------|
 | `scripts/data/doc_intelligence/deep_extract.py` | Post-processing orchestrator |
 | `scripts/data/doc_intelligence/table_exporter.py` | Manifest tables → CSV |
-| `scripts/data/doc_intelligence/worked_example_parser.py` | Enhanced example parsing |
+| `scripts/data/doc_intelligence/worked_example_parser.py` | Enhanced example parsing (textbooks) |
 | `scripts/data/doc_intelligence/chart_extractor.py` | PDF image extraction + metadata |
 | `scripts/data/doc-intelligence/deep-extract.py` | CLI entry point |
+| `scripts/reporting/generate-calc-report.py` | YAML → HTML calc report |
+
+## Promoted Table Locations
+
+```
+data/standards/promoted/
+├── dnv-rp-b401/    # 8 CP design tables
+├── dnv-rp-c203/    # 2 S-N curve tables (air + seawater)
+└── dnv-rp-f109/    # 3 stability tables
+```

@@ -1,0 +1,31 @@
+type: execute
+wrk_id: WRK-1183
+executed_at: "2026-03-15T16:20:00Z"
+provider: claude
+commits: []
+files_created:
+  - config/schemas/dark-intelligence-archive.yaml
+  - knowledge/dark-intelligence/geotechnical/pile_capacity/dark-intelligence-api-rp-2geo-alpha-method.yaml
+  - tests/skills/test_dark_intelligence_schema.py
+  - scripts/calculations/__init__.py
+  - scripts/calculations/pile_axial_capacity.py
+test_results:
+  total: 25
+  passed: 25
+  failed: 0
+integrated_repo_tests:
+  - name: "Schema validation suite"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/skills/test_dark_intelligence_schema.py -v"
+    result: pass
+    artifact_ref: tests/skills/test_dark_intelligence_schema.py
+  - name: "Skill structure tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/skills/test_dark_intelligence_workflow.py -v"
+    result: pass
+    artifact_ref: tests/skills/test_dark_intelligence_workflow.py
+  - name: "Calculation verification from archive"
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/skills/test_dark_intelligence_schema.py::TestPileAxialCapacityFromArchive -v"
+    result: pass
+    artifact_ref: scripts/calculations/pile_axial_capacity.py
