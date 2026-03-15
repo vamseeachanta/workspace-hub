@@ -1,5 +1,5 @@
-generated: '2026-02-27T11:42:09'
-total_docs: 1033789
+generated: '2026-03-15T22:39:08'
+total_docs: 1033933
 total_summaries: 639585
 by_source:
   og_standards: 27980
@@ -9,18 +9,19 @@ by_source:
   workspace_spec: 1587
   api_metadata: 8
 by_domain:
+  marine: 283451
   cad: 275445
-  marine: 266155
-  pipeline: 187860
-  other: 101471
-  materials: 72206
+  pipeline: 188173
+  materials: 72344
   portfolio: 55942
-  structural: 49999
-  installation: 13390
-  project-management: 5029
-  energy-economics: 2918
+  structural: 50001
+  other: 44705
+  project-management: 43922
+  installation: 13502
+  energy-economics: 2930
   cathodic-protection: 1714
   workspace-spec: 1587
+  naval-architecture: 144
   regulatory: 73
 repos:
   acma-projects:

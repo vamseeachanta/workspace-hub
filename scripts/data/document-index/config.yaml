@@ -173,6 +173,7 @@ domains:
   - materials
   - regulatory
   - cad
+  - project-management
   - workspace-spec
   - other
 

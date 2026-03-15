@@ -137,6 +137,11 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
     # All remaining numbered ACMA project folders (0NNN prefix handled below by regex in apply_path_rules)
     # Fallback: any remaining dde/documents/ → acma-projects
     ("dde/documents/",                  None,   "project-management",   ["acma-projects"],                      "dde_acma_projects"),
+    # ── knowledge_skills/projects — engineering project archives (WRK-1170) ──
+    ("knowledge_skills/projects/halliburton",    None, "installation",       ["digitalmodel", "OGManufacturing"], "ks_halliburton"),
+    ("knowledge_skills/projects",                None, "project-management", [],                                  "ks_projects_fallback"),
+    # ── 2H Projects — offshore riser/subsea engineering (WRK-1170) ─────────
+    ("2H Projects",                              None, "marine",            ["digitalmodel"],                     "dde_2h_projects"),
     # ── ace/docs/disciplines sub-directories ────────────────────────────
     ("disciplines/production",   {"py", "csv"},         "energy-economics",  ["worldenergydata"],               "disciplines_production_scripts"),
     ("disciplines/production",   None,                  "energy-economics",  ["worldenergydata", "digitalmodel"],"disciplines_production_docs"),
@@ -144,9 +149,19 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
     ("disciplines/completion",   None,                  "structural",        ["digitalmodel", "OGManufacturing"],"disciplines_completion_docs"),
     ("disciplines/drilling",     {"m", "py", "dat"},    "installation",      ["digitalmodel"],                  "disciplines_drilling_scripts"),
     ("disciplines/drilling",     None,                  "installation",      ["digitalmodel"],                  "disciplines_drilling_docs"),
+    # ── disciplines/misc/projects — mixed project archives (WRK-1170) ──────
+    ("disciplines/misc/projects/gis",            None, "energy-economics",  ["worldenergydata"],                "misc_gis"),
+    ("disciplines/misc/projects",                None, "project-management",[],                                 "misc_projects_fallback"),
     ("disciplines/misc",         {"m", "bas", "mac"},   "structural",        ["digitalmodel", "OGManufacturing"],"disciplines_misc_scripts"),
     ("disciplines/misc",         None,                  "other",             [],                                 "disciplines_misc_docs"),
     ("disciplines/knowledge",    None,                  "other",             [],                                 "disciplines_knowledge"),
+    # ── Spare directory refinement (WRK-1170) ──────────────────────────────
+    ("Spare/Papers/Guidelines",                  None, "pipeline",          ["digitalmodel"],                    "spare_guidelines"),
+    ("Spare/Papers/Offshore Technology",         None, "marine",            ["digitalmodel"],                    "spare_otc"),
+    ("Spare/Papers/Reference",                   None, "materials",         ["digitalmodel"],                    "spare_reference"),
+    ("Spare/Papers",                             None, "pipeline",          ["digitalmodel"],                    "spare_papers"),
+    ("Spare/MIL",                                None, "structural",        ["digitalmodel"],                    "spare_mil"),
+    ("Spare/",                                   None, "pipeline",          ["digitalmodel"],                    "spare_fallback"),
     # ── workspace specs ──────────────────────────────────────────────────
     ("workspace-hub/specs",      None,                  "workspace-spec",    ["workspace-hub"],                  "workspace_specs"),
 ]
@@ -190,6 +205,11 @@ FILENAME_RULES: list[tuple[tuple[str, ...], str, list[str]]] = [
      "regulatory",          ["digitalmodel"]),
     (("API 579", "API 578", "API 570", "API 580"),
      "structural",          ["digitalmodel", "OGManufacturing"]),
+    # OTC papers and company reports (WRK-1170)
+    (("OTC ", "OTC-"),
+     "marine",              ["digitalmodel"]),
+    (("TNE", "TNE-"),
+     "pipeline",            ["digitalmodel"]),
 ]
 
 # Script extension rules: (ext_set, path_contains_any, new_domain, new_repos, rule_name)
@@ -210,7 +230,7 @@ SCRIPT_RULES: list[tuple[set[str], list[str], str, list[str], str]] = [
 WELL_CLASSIFIED_DOMAINS = {
     "structural", "cathodic-protection", "pipeline", "marine",
     "installation", "energy-economics", "portfolio", "materials",
-    "regulatory",
+    "regulatory", "project-management",
 }
 
 # Skip path fragments — don't apply any rules to these
@@ -312,8 +332,13 @@ def remap(rec: dict, repo_domain_map: dict) -> Optional[tuple[str, list[str], st
         # For skip-intent rules (domain=other, repos=[]) — clear only if domain was other
         if new_domain == "other" and not new_repos:
             return None  # leave as-is
-        if new_domain != domain or new_repos != current_repos:
-            return new_domain, new_repos, rule_name
+        if needs_domain:
+            # Record is domain=other — apply full reclassification
+            if new_domain != domain or new_repos != current_repos:
+                return new_domain, new_repos, rule_name
+        elif needs_repos and new_repos:
+            # Record has good domain but needs repos — only fill repos, keep domain
+            return domain, list(new_repos), rule_name
         return None
 
     # --- Tier 2: filename prefix rules ---

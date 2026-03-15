@@ -1,0 +1,287 @@
+wrk: WRK-1170
+validation_type: classification_accuracy
+total_samples: 60
+approved: true
+samples:
+- path: r Analysis/Drawings/ACAD/Pipe in Pipe/Superseded/3824-DDL-3212-5 (Upper Assembly
+    Kick-off Spool).dwg
+  domain: cad
+  repos:
+  - digitalmodel
+- path: DL-3204 - SLHR Buoyancy Tank Bottom Compartment Detail/Rev 01 (For Information)/2100-DDL-3204-01.DWG
+  domain: cad
+  repos:
+  - digitalmodel
+- path: er Analysis/Drawings/Draft/AutoCAD/Single Pipe/Superseded/3824-DGA-2001 (Upper
+    Offtake Assembly).dwg
+  domain: cad
+  repos:
+  - digitalmodel
+- path: t Structural Details/REV 00 (STARTED)/2100-DDL-3336-00 - SLHR URA STRONGPOINT
+    STRUCTURAL DETAILS.DWG
+  domain: cad
+  repos:
+  - digitalmodel
+- path: ments/DGA/2100-DGA-3513 SLHR Flexible Support Frame Profiled Blocks/Rev 01
+    (DC)/2100-DGA-3513-01.DWG
+  domain: cad
+  repos:
+  - digitalmodel
+- path: NACE MR 0175 Pt 1 2nd Ed (2009) General principles for selection of cracking-resistant
+    materials.pdf
+  domain: cathodic-protection
+  repos:
+  - digitalmodel
+- path: es & Standards/NACE/NACE Paper No 04022/04022 Experiences on TSA Coating for
+    Offshore Structures.pdf
+  domain: cathodic-protection
+  repos:
+  - digitalmodel
+- path: 0175_Pt_2_2nd_Ed_(2009)_Cracking-resistant_carbon_and_low-alloy_steels,and_the_use_of_cast_irons.pdf
+  domain: cathodic-protection
+  repos:
+  - digitalmodel
+- path: NACE MR 0175 Pt 1 2nd Ed (2009) General principles for selection of cracking-resistant
+    materials.pdf
+  domain: cathodic-protection
+  repos:
+  - digitalmodel
+- path: 0175 Pt 2 2nd Ed (2009) Cracking-resistant carbon and low-alloy steels,and
+    the use of cast irons.pdf
+  domain: cathodic-protection
+  repos:
+  - digitalmodel
+- path: /Current events/Surging Earnings Estimates Signal Good News for Transocean
+    (RIG) - Yahoo Finance.pdf
+  domain: energy-economics
+  repos:
+  - worldenergydata
+- path: ents/0163 FDAS Support/2018-11 OneDrive/REFERENCES/Rig info/DDI/DD1-A013 Hull
+    Deck Plan Helideck.pdf
+  domain: energy-economics
+  repos:
+  - worldenergydata
+- path: ts/0163 FDAS Support/2018-11 OneDrive/Mktg/OTC 2019/Draft_Abstract_1 with
+    HD Comments July 28th.docx
+  domain: energy-economics
+  repos:
+  - worldenergydata
+- path: ive/Mktg/Total/Oct2017 Mtg/Nov 8 Follow Up Info/backup/Shenandoah Dry Tree
+    Design and Technology.pdf
+  domain: energy-economics
+  repos:
+  - worldenergydata
+- path: /2018-11 OneDrive/Mktg/Schlumberger/DRAFTS/High Pressure, High Temperature
+    (HPHT) _ Schlumberger.pdf
+  domain: energy-economics
+  repos:
+  - worldenergydata
+- path: IoT Deployment/superseded/dynacard/iotsimplemodel/dynaCard/lib/calculations/dyna_PumpDisplacement.py
+  domain: installation
+  repos:
+  - digitalmodel
+- path: box/0168_Python_Support/010 IoT Deployment/superseded/dynacard/dynaCard/modules/dynacard/dynaCard.py
+  domain: installation
+  repos:
+  - digitalmodel
+- path: hnical Notes/2H-TNE-0022/Supporting/Analysis/Case 1 - Alpha Sensitivity/Alpha
+    8/500m WD/2hkeygen.dat
+  domain: installation
+  repos:
+  - digitalmodel
+- path: Projects/31245 - Shell West Boreas BOP on Tree Assessment/ANL/VIV/BTW/BTWNormal_Current_40Ccurve.dat
+  domain: installation
+  repos:
+  - digitalmodel
+- path: ge_skills/projects/halliburton_procedures/04_models/Halliburton Procedures/Frontier/~$36a2_plan1.INP
+  domain: installation
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: GB Thumb Drive/A L L   D R A W I N G   V A R I O U S/S H A F F E R   D W G  V
+    A R I O U S/225673.dwg
+  domain: marine
+  repos:
+  - digitalmodel
+- path: nts/ri/ALL - RD Related Drawings Information and Data/b-   RD-Riser Dwgs/RI-1600-06
+    C-K PIN.0004.dwg
+  domain: marine
+  repos:
+  - digitalmodel
+- path: /remote/ace-linux-2/dde/documents/ri/b-   All AutoCad Dwgs/Copy of Clip Riser
+    Dwg -4   1-20-2011.DWG
+  domain: marine
+  repos:
+  - digitalmodel
+- path: emote/ace-linux-2/dde/0000 O&G/2H Projects/Training/New Hire Training brainstorm
+    (JAM Comments).docx
+  domain: marine
+  repos:
+  - digitalmodel
+- path: rojects/2100 BLK31 SLOR Design/Documents/CSH/IDC Comment Sheets/2100-CSH-0232
+    - 2100-RPT-4005-04.doc
+  domain: marine
+  repos:
+  - digitalmodel
+- path: Pigments, Drying Oils, Polymers, Resins, Naval Stores, Cellulosic Est/D 4368
+    - 89 R96  _RDQZNJG_.pdf
+  domain: materials
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/ASTM/BS/E/E1134.PDF
+  domain: materials
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: S/ASTM_2004_Standards/ASTM 2004 PART IIB/ASTM 2004 Volume 11.01 Water (I)/D
+    1886 - 03  _RDE4ODY_.pdf
+  domain: materials
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: on (I) D 69 - D 2484/Volume 10.01 Electrical Insulation (I) D 69 - D 2484/D
+    2307 - 01  _RDIZMDC_.pdf
+  domain: materials
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: /mnt/ace/docs/_standards/ASTM/B_828_-_00_QJGYOC1SRUQ_.pdf
+  domain: materials
+  repos:
+  - digitalmodel
+  - OGManufacturing
+- path: /mnt/ace/docs/_standards/SNAME/ship-plans/cv7.pdf
+  domain: naval-architecture
+  repos:
+  - digitalmodel
+- path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/PNA-GZ-Curves.pdf
+  domain: naval-architecture
+  repos:
+  - digitalmodel
+- path: /mnt/ace/docs/_standards/SNAME/ship-plans/de701.pdf
+  domain: naval-architecture
+  repos:
+  - digitalmodel
+- path: /mnt/ace/docs/_standards/SNAME/ship-plans/lst983.pdf
+  domain: naval-architecture
+  repos:
+  - digitalmodel
+- path: /mnt/ace/docs/_standards/SNAME/ship-plans/cv2.pdf
+  domain: naval-architecture
+  repos:
+  - digitalmodel
+- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/A
+    275-98.pdf
+  domain: pipeline
+  repos:
+  - digitalmodel
+- path: ' & Standards/Spare/API Standards/API 5l OCR/API 5L - Metric Tables/Page 68
+    Metric Table 6.2 cont.pdf'
+  domain: pipeline
+  repos:
+  - digitalmodel
+- path: ards/raw/0000 Codes & Standards/ISO/ISO Misc/ISO/ISO_19901-2_E_Submitted_for_FDIS
+    Seismic Design.pdf
+  domain: pipeline
+  repos:
+  - digitalmodel
+- path: /mnt/ace/docs/_standards/raw/0000 Codes & Standards/Spare/API Stds/API/API
+    RP 686 (1996).pdf
+  domain: pipeline
+  repos:
+  - digitalmodel
+- path: /ace/docs/_standards/API/API_Standard_1163,_1st_Ed_(2005)_In-line_Systems_Qualification_Standard.pdf
+  domain: pipeline
+  repos:
+  - digitalmodel
+  - doris
+- path: /mnt/ace/docs/disciplines/knowledge_skills/projects/ri/05_reports/ri/RI-1293-14/20.
+    COATING.PDF
+  domain: project-management
+  repos: []
+- path: edge_skills/projects/ri/05_reports/ri/One Big Folders for all items/Desktop
+    Folders/MTR's/T-4955.pdf
+  domain: project-management
+  repos: []
+- path: ri/Maj Bassey - Backup Old Hard drive - 102218/My Passport/LORD-FOLDER/RI
+    1300 FT-H/FTH - Manual.pdf
+  domain: project-management
+  repos: []
+- path: 5 SLHR 10in Gas Injection Piping Materials Map/REV 02 (IDC)/IDC Comments/BLK31-NE-HM-RI-GAS-2026.pdf
+  domain: project-management
+  repos: []
+- path: -128GB-flushdrive-FILES/Auto-Cad Names/Folders Genral/RI 206 Running Tool/206-01Test
+    Plug COL-FM.pdf
+  domain: project-management
+  repos: []
+- path: shipboard and offshore units, power, control, instrumentation, telecommunication
+    and data cables.pdf
+  domain: regulatory
+  repos:
+  - digitalmodel
+- path: 2/dde/0000 O&G/0000 Codes & Standards/IEC/IEC 60228 3rd Ed (2004) Conductors
+    of insulated cables.pdf
+  domain: regulatory
+  repos:
+  - digitalmodel
+- path: te/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/IEC/IEC 60038 6th Ed (1983)
+    Standard Voltages.pdf
+  domain: regulatory
+  repos:
+  - digitalmodel
+- path: t/ace/0000 O&G/0000 Codes & Standards/IEC/IEC 60228 3rd Ed (2004) Conductors
+    of insulated cables.pdf
+  domain: regulatory
+  repos:
+  - digitalmodel
+- path: s/IEC/IEC 60304 3rd Ed (1982) Standard colours for insulation for low-frequency
+    cables and wires.pdf
+  domain: regulatory
+  repos:
+  - digitalmodel
+- path: /ASTM 2004 Volume 01.05 Steel--Bars, Forgings, Bearing, Chain, Springs/A 471
+    - 02  _QTQ3MS1SRUQ_.pdf
+  domain: structural
+  repos:
+  - digitalmodel
+- path: 04 PART IIB/ASTM 2004 Volume 08.04 Plastic Pipe and Building Products/D 3754
+    - 03  _RDM3NTQTUKVE.pdf
+  domain: structural
+  repos:
+  - digitalmodel
+- path: ' Volume 04.07 Building Seals and Sealants_ Fire Standards_ Dimension Stone/E
+    535 - 00  _RTUZNQ__.pdf'
+  domain: structural
+  repos:
+  - digitalmodel
+- path: M 2004 PART IA/ASTM 2004 Volume 03.04 Magnetic Properties/A 720 - A 720M -
+    02  _QTCYMC9BNZIWTQ__.pdf
+  domain: structural
+  repos:
+  - digitalmodel
+- path: est Methods_ Forensic Psychophysiology_ Forensic Sciences_ Terminolog/E 1618
+    - 97  _RTE2MTGTUKVE.pdf
+  domain: structural
+  repos:
+  - digitalmodel
+- path: sis/workspace-hub/specs/repos/digitalmodel/modules/signal-analysis/orcaflex-tension-analysis/spec.md
+  domain: workspace-spec
+  repos:
+  - workspace-hub
+- path: /specs/repos/digitalmodel/modules/orcaflex/orcaflex-examples-integration/sub-specs/technical-spec.md
+  domain: workspace-spec
+  repos:
+  - workspace-hub
+- path: /mnt/local-analysis/workspace-hub/specs/modules/improve-skill-autonomous-ecosystem.md
+  domain: workspace-spec
+  repos:
+  - workspace-hub
+- path: n/run_files/yml/includefile_fsts_l095_hwl_125km3_l000_pb_vessel_statics_6dof_mooring_line_length.yml
+  domain: workspace-spec
+  repos:
+  - workspace-hub
+- path: /digitalmodel/modules/orcaflex/browser-interface/backup_20250813_055543/implementation/test_steps.md
+  domain: workspace-spec
+  repos:
+  - workspace-hub
