@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-15T03:13:58Z by generate-index.py -->
+<!-- Generated: 2026-03-15T03:22:11Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-15T03:13:58Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-15T03:22:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 658
+**Total items:** 661
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 265 |
+| pending | 266 |
 | working | 3 |
 | blocked | 10 |
 | done | 3 |
-| archived | 375 |
+| archived | 377 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 290 |
-| medium | 310 |
-| low | 57 |
+| medium | 312 |
+| low | 58 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
 | simple | 146 |
-| medium | 308 |
+| medium | 311 |
 | complex | 126 |
 
 ### By Category
@@ -41,7 +41,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 29 |
+| harness | 28 |
 | engineering | 149 |
 | data | 25 |
 | platform | 12 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 274 |
+| workspace-hub | 277 |
 | worldenergydata | 111 |
 
 ### Plan Tracking
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 267 / 658 |
+| Plans exist | 267 / 661 |
 | Plans cross-reviewed | 194 |
 | Plans approved | 218 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 658 |
-| Total archived | 375 |
-| Completion rate | 375/658 (57%) |
+| Total captured | 661 |
+| Total archived | 377 |
+| Completion rate | 377/661 (57%) |
 | Monthly rate (current month) | 132 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 74 / 265 | 28% |
+| Pending items with plans | 73 / 266 | 27% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -111,7 +111,7 @@
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 17 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126 |
-| Pending > 14 days | 158 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-578, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-639, WRK-TEST-ENSEMBLE |
+| Pending > 14 days | 157 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-639, WRK-TEST-ENSEMBLE |
 | Working > 7 days | 3 | WRK-129, WRK-1012, WRK-1022 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
@@ -121,13 +121,13 @@
 |----------|---------|---------|---------|
 | High     | 101 | 2 | 8 |
 | Medium   | 124  | 1  | 1  |
-| Low      | 40  | 0  | 1  |
+| Low      | 41  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (29 items — 3 high, 19 medium, 7 low)
+### harness (28 items — 3 high, 18 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -193,7 +193,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
-| WRK-578 | MEDIUM | feat(skills): audit MCP registry for engineering-domain servers | pending |
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
 | WRK-597 | MEDIUM | feat(digitalmodel): geotechnical module — umbrella tracker | pending |
 | WRK-681 | MEDIUM | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending |
@@ -1069,7 +1068,7 @@
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | archived | medium | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
@@ -1366,7 +1365,10 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5086 |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5086 |
 
 ## By Status
 
@@ -1504,7 +1506,6 @@
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | medium | large | digitalmodel | - |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | medium | simple | digitalmodel | - |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | low | simple | digitalmodel | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | medium | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | medium | simple | workspace-hub | - |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | low | simple | worldenergydata, workspace-hub | - |
 | WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | low | simple | worldenergydata | - |
@@ -1646,7 +1647,9 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | high | medium | achantas-data | - |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | medium | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | medium | medium | workspace-hub | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | medium | medium | workspace-hub | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | low | medium | workspace-hub | - |
 
 ### Working
 
@@ -1904,6 +1907,7 @@
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | high | simple | workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | high | large | digitalmodel | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | high | medium | workspace-hub | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | medium | simple | workspace-hub | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | high | complex | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | high | simple | CAD-DEVELOPMENTS | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | high | complex | workspace-hub | - |
@@ -2050,6 +2054,7 @@
 | WRK-5046 | feat(skill): gitignore-scaffold skill — gitignore patterns, negation, and directory setup | medium | simple | workspace-hub | - |
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | medium | simple | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | medium | medium | workspace-hub | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | medium | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -2589,7 +2594,7 @@
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | archived | high | medium | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | archived | medium | simple | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | - |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | - |
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | - |
@@ -2777,7 +2782,10 @@
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | medium | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | medium | - |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | - |
 
 ### worldenergydata
 
@@ -3351,7 +3359,7 @@
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | OGManufacturing | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | large | digitalmodel | - |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending | simple | digitalmodel | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | simple | workspace-hub | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | archived | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
 | WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | complex | digitalmodel | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
@@ -3505,7 +3513,9 @@
 | WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | complex | digitalmodel, worldenergydata | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | workspace-hub | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | workspace-hub | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3568,6 +3578,7 @@
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | medium | workspace-hub | - |
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | complex | digitalmodel | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | medium | workspace-hub | - |
 
 ## By Complexity
 
@@ -3632,7 +3643,7 @@
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | worldenergydata | safety_analysis/geohazard |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending | medium | digitalmodel | - |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | pending | low | digitalmodel | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | workspace-hub | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | archived | medium | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | workspace-hub | - |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | worldenergydata, workspace-hub | - |
 | WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | worldenergydata | - |
@@ -4033,7 +4044,10 @@
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | workspace-hub | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | achantas-data | - |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | workspace-hub | - |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | workspace-hub | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | workspace-hub | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | workspace-hub | - |
 
 ### Complex
 
@@ -4168,7 +4182,7 @@
 
 ## By Computer
 
-### ace-linux-1 (219 active / 377 total)
+### ace-linux-1 (221 active / 380 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4548,7 +4562,10 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | digitalmodel |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | digitalmodel |
 | WRK-5084 | 2025 tax preparation — personal, AceEngineer Inc, SKEstates Inc | pending | high | medium | achantas-data |
-| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | pending | medium | medium | workspace-hub |
+| WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | workspace-hub |
+| WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | pending | medium | medium | workspace-hub |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | pending | medium | medium | workspace-hub |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | pending | low | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -4822,12 +4839,12 @@
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | workspace-hub |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - |
 
-### ace-linux-1, ace-linux-2 (19 active / 20 total)
+### ace-linux-1, ace-linux-2 (18 active / 20 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
 | WRK-294 | Standardize mount paths — fstab entries for HDDs with clean paths (both machines) | archived | high | simple | workspace-hub |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | workspace-hub |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | archived | medium | simple | workspace-hub |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | workspace-hub |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | worldenergydata, workspace-hub |
 | WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | worldenergydata |
@@ -4965,4 +4982,6 @@
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | WRK-5038 | - | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | WRK-5054 | - | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | WRK-5054 | - | - |
+| WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | WRK-5086 | - | - |
+| WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | WRK-5086 | - | - |
 

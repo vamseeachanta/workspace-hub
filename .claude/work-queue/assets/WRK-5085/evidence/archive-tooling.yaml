@@ -1,0 +1,9 @@
+wrk_id: WRK-5085
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: n/a
+legal_scan_ref: n/a
+archive_readiness: pass
+document_index_ref: ""
+document_index_exemption: "research-only item — findings written to WRK body, follow-on WRKs captured"
+spin_off_wrks: [WRK-5086, WRK-5087, WRK-5088]
