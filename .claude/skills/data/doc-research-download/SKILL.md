@@ -123,3 +123,23 @@ pending_manual:
 | IEEE Xplore full-text | Paywalled unless institution login | Only download confirmed open-access items |
 
 These patterns were identified during WRK-1151 (naval architecture).
+
+## Web Crawling & MCP Assessment (2026-03-14)
+
+**Decision: No external MCP needed. Use Python scripts (httpx + beautifulsoup4).**
+
+Available built-in tools for web content:
+- `WebFetch` — single URL fetch (adequate for known pages)
+- `WebSearch` — web search + results
+- `claude-in-chrome` — full browser automation for JS-rendered pages
+
+Assessed and rejected (cost or unnecessary complexity):
+- Firecrawl MCP — paid service, rejected
+- Crawl4AI MCP — free but adds unnecessary dependency layer
+- Playwright MCP — only useful for JS-rendered pages (already covered by claude-in-chrome)
+- Fetch MCP (Anthropic) — minimal gain over WebFetch
+
+**For WRK-1202 Tier 3 scripts**, use `httpx` + `beautifulsoup4` + `robotsparser` directly.
+BSEE/EIA/IMO are standard REST APIs and static HTML — no MCP needed.
+
+See also: `web-scraper-energy` skill for existing BOEM/BSEE scraping patterns.

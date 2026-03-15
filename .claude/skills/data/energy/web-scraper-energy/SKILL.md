@@ -295,3 +295,12 @@ python -m worldenergydata.scraper \
 4. **Handle errors** - Implement retries with exponential backoff
 5. **User agent** - Identify your scraper appropriately
 6. **Check robots.txt** - Respect site crawling policies
+
+## Web Crawling & MCP Assessment (2026-03-14)
+
+**No external MCP or paid service needed for energy data scraping.**
+
+This skill's `requests` + `BeautifulSoup` pattern is sufficient for BSEE/BOEM/EIA targets.
+For async fetching at scale (WRK-1202 Tier 3), upgrade to `httpx` (async) + `beautifulsoup4`.
+For JS-rendered pages, use `claude-in-chrome` browser automation (already available).
+See `doc-research-download` skill for the full assessment.
