@@ -10,3 +10,17 @@
 {"event": "stage_exit", "wrk": "WRK-1244", "stage": 5, "date": "2026-03-16", "timestamp": "2026-03-16T20:55:43.342622Z"}
 {"event": "stage_exit", "wrk": "WRK-1272", "stage": 6, "date": "2026-03-16", "timestamp": "2026-03-16T20:56:23.243870Z"}
 {"event": "stage_exit", "wrk": "WRK-1272", "stage": 7, "date": "2026-03-16", "timestamp": "2026-03-16T20:56:35.540706Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 6, "date": "2026-03-16", "timestamp": "2026-03-16T21:02:16.181055Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 7, "date": "2026-03-16", "timestamp": "2026-03-16T21:03:53.047773Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 10, "date": "2026-03-16", "timestamp": "2026-03-16T21:17:28.549180Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 9, "date": "2026-03-16", "timestamp": "2026-03-16T21:17:50.507658Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 8, "date": "2026-03-16", "timestamp": "2026-03-16T21:18:08.764469Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 11, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:32.521513Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 12, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:33.725894Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 13, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:34.951717Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 16, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:36.632277Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 15, "date": "2026-03-16", "timestamp": "2026-03-16T21:20:04.467818Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 14, "date": "2026-03-16", "timestamp": "2026-03-16T21:21:44.832248Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 17, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:01.022403Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 20, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:11.760727Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 18, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:26.057057Z"}
