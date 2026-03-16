@@ -4,7 +4,7 @@
 #
 # Checks per SKILL.md:
 #   1. README.md presence in skill dir (v2 anti-pattern)
-#   2. SKILL.md word count > 5000
+#   2. SKILL.md word count > 1500 (≈200 lines)
 #   3. description: field > 1024 chars
 #   4. XML/HTML tags in SKILL.md body
 #
@@ -67,13 +67,13 @@ for SKILL_FILE in "${SKILL_FILES[@]}"; do
     VIOLATIONS+=("    detail: \"README.md found in skill dir (v2 anti-pattern)\"")
   fi
 
-  # Check 2: word count > 5000
+  # Check 2: word count > 1500 (≈200 lines)
   WORD_COUNT=$(wc -w < "$SKILL_FILE")
-  if [[ "$WORD_COUNT" -gt 5000 ]]; then
+  if [[ "$WORD_COUNT" -gt 1500 ]]; then
     VIOLATIONS+=("  - file: ${SKILL_FILE}")
     VIOLATIONS+=("    check: word_count_exceeded")
     VIOLATIONS+=("    severity: warn")
-    VIOLATIONS+=("    detail: \"SKILL.md has ${WORD_COUNT} words (limit: 5000)\"")
+    VIOLATIONS+=("    detail: \"SKILL.md has ${WORD_COUNT} words (limit: 1500)\"")
   fi
 
   # Check 3: description: field > 1024 chars (safe YAML parse via Python)

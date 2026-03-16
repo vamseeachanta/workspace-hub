@@ -65,6 +65,9 @@ TODO_RE = re.compile(
 DESC_MIN_WORDS = 10
 DESC_MAX_WORDS = 200
 
+LINE_LIMIT_WARN = 200
+LINE_LIMIT_CRITICAL = 400
+
 SEVERITY_ORDER = {"critical": 0, "warning": 1, "info": 2}
 
 
@@ -420,6 +423,24 @@ def check_todo_fixme(content: str) -> list[Issue]:
     return []
 
 
+def check_line_count(content: str) -> list[Issue]:
+    """Flag SKILL.md files exceeding 200-line (warn) or 400-line (critical) limits."""
+    line_count = len(content.splitlines())
+    if line_count > LINE_LIMIT_CRITICAL:
+        return [Issue(
+            "critical", "line_count_exceeded",
+            f"SKILL.md has {line_count} lines (limit: {LINE_LIMIT_WARN}, critical: {LINE_LIMIT_CRITICAL})",
+            f"Split or reduce skill to under {LINE_LIMIT_WARN} lines"
+        )]
+    if line_count > LINE_LIMIT_WARN:
+        return [Issue(
+            "warning", "line_count_exceeded",
+            f"SKILL.md has {line_count} lines (limit: {LINE_LIMIT_WARN})",
+            f"Reduce skill to under {LINE_LIMIT_WARN} lines"
+        )]
+    return []
+
+
 def check_related_skills(meta: dict, name_index: dict[str, Path]) -> list[Issue]:
     related = meta.get("related_skills", [])
     if not related or not isinstance(related, list):
@@ -542,6 +563,7 @@ def evaluate_skill(path: Path, root: Path, name_index: dict[str, Path]) -> Skill
     all_issues.extend(check_required_sections(body, skill_type=skill_type))
     all_issues.extend(check_sections_have_code(body))
     all_issues.extend(check_todo_fixme(content))
+    all_issues.extend(check_line_count(content))
     all_issues.extend(check_optional_sections(body))
 
     has_critical = any(i.severity == "critical" for i in all_issues)

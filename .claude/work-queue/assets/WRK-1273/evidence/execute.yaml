@@ -1,0 +1,25 @@
+---
+stage: 10
+wrk_id: WRK-1273
+completed_at: "2026-03-16"
+changes:
+  - file: .claude/skills/development/skill-eval/scripts/eval-skills.py
+    action: added check_line_count() function + LINE_LIMIT_WARN/CRITICAL constants
+    lines_changed: 18
+  - file: .claude/skills/development/skill-eval/scripts/test_eval_skills.py
+    action: added TestCheckLineCount class with 6 TDD tests
+    lines_changed: 42
+  - file: scripts/skills/audit-skill-violations.sh
+    action: updated word count threshold from 5000 to 1500
+    lines_changed: 3
+tdd_results:
+  total: 35
+  passed: 35
+  failed: 0
+  new_tests: 6
+baseline:
+  total_skills: 408
+  exceeding_200_lines: 293
+  critical_over_400: 179
+  warning_201_to_400: 114
+---

@@ -1,0 +1,8 @@
+---
+stage: 1
+wrk_id: WRK-1273
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-16"
+notes: "Scope approved as written — add line count check to eval-skills.py"
+---

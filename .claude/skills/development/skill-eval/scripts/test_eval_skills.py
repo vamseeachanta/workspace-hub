@@ -217,3 +217,50 @@ class TestEvaluateSkillUsesInferredType:
 
         section_issues = [i for i in result.issues if i.check == "section_missing"]
         assert len(section_issues) == 0, f"Got unexpected section_missing: {[i.message for i in section_issues]}"
+
+
+# ---------------------------------------------------------------------------
+# check_line_count tests (WRK-1273)
+# ---------------------------------------------------------------------------
+
+check_line_count = eval_mod.check_line_count
+
+
+class TestCheckLineCount:
+    """check_line_count enforces 200-line warning and 400-line critical."""
+
+    def test_under_limit_no_issues(self):
+        content = "line\n" * 100
+        issues = check_line_count(content)
+        assert len(issues) == 0
+
+    def test_exactly_200_no_issues(self):
+        content = "line\n" * 200
+        issues = check_line_count(content)
+        assert len(issues) == 0
+
+    def test_201_lines_warning(self):
+        content = "line\n" * 201
+        issues = check_line_count(content)
+        assert len(issues) == 1
+        assert issues[0].severity == "warning"
+        assert issues[0].check == "line_count_exceeded"
+        assert "201" in issues[0].message
+
+    def test_400_lines_warning(self):
+        content = "line\n" * 400
+        issues = check_line_count(content)
+        assert len(issues) == 1
+        assert issues[0].severity == "warning"
+
+    def test_401_lines_critical(self):
+        content = "line\n" * 401
+        issues = check_line_count(content)
+        assert len(issues) == 1
+        assert issues[0].severity == "critical"
+        assert issues[0].check == "line_count_exceeded"
+        assert "401" in issues[0].message
+
+    def test_empty_content(self):
+        issues = check_line_count("")
+        assert len(issues) == 0
