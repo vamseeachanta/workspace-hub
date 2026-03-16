@@ -22,9 +22,9 @@
 ## Size Limits
 
 ### File Length
-- **Maximum**: 400 lines (hard limit)
-- **Target**: 200 lines (soft target)
-- If a file exceeds limits, split by responsibility
+- **Maximum**: 200 lines (hard limit)
+- **Target**: 100 lines (soft target)
+- If a file exceeds limits, split by responsibility — smaller files force clearer subtask/subutility boundaries
 
 ### Function Length
 - **Maximum**: 50 lines
