@@ -1,24 +1,18 @@
 ---
 name: document-index-pipeline
-description: >
-  Orchestrate the 7-phase document indexing pipeline (A→G) for the 1M+ document
-  corpus. Use when running batch extraction, classification, or gap analysis on
-  og_standards, ace_standards, or workspace_spec sources.
+description: "Orchestrate the 7-phase document indexing pipeline (A\u2192G) for the 1M+ document corpus. Use when running\
+  \ batch extraction, classification, or gap analysis on og_standards, ace_standards, or workspace_spec sources.\n"
 version: 1.0.0
 updated: 2026-03-15
 category: data
 triggers:
-  - document index
-  - phase b extraction
-  - phase c classify
-  - batch extraction
-  - og_standards
-  - run extraction pipeline
-  - document classification
-related_skills:
-  - data/doc-intelligence-promotion
-  - engineering/doc-extraction
-  - data/calculation-report
+- document index
+- phase b extraction
+- phase c classify
+- batch extraction
+- og_standards
+- run extraction pipeline
+- document classification
 ---
 
 # Document Index Pipeline
@@ -46,6 +40,25 @@ uv run --no-project python scripts/data/document-index/phase-a-index.py
 - **Input**: Filesystem paths + og_standards SQLite (`/mnt/ace/O&G-Standards/_inventory.db`)
 - **Output**: `data/document-index/index.jsonl` (1,033,933 records)
 - **Resume-safe**: skips existing entries by path
+
+### Phase 1.5 — Readability Enrichment (prerequisite for Phase 2)
+
+Before deep extraction, classify every PDF as machine-readable, ocr-needed, mixed, or error:
+```bash
+uv run --no-project python scripts/data/document-index/enrich-readability.py \
+    --workers 10 --resume
+```
+- **Output**: updates index.jsonl records with `readability` field
+- **Resume-safe**: `--resume` skips already-classified entries
+- **Key finding**: 27-30% of project PDFs are scanned with no text layer (ocr-needed)
+- **Why it matters**: deep extraction (Phase 2) only works on machine-readable PDFs; OCR docs need a separate pipeline (tesseract/doctr/azure-doc-intelligence)
+
+### Phase 2 — Readability-Aware Deep Extraction
+
+Deep extraction is split by readability classification:
+- **Phase 2a**: machine-readable docs first (direct pdfplumber extraction) — ~330K docs
+- **Phase 2b**: OCR docs later (~94K docs) — requires OCR preprocessing before extraction
+- Yield assessment script: `assess-deep-extraction-yield.py` evaluates extraction quality across strata
 
 ### Phase B — Extract + classify (LLM)
 
@@ -166,8 +179,10 @@ print(f'{done}/{len(rows)} classified')
 | phase-d-data-sources.py | Yes | 283 | Per-repo data source specs |
 | phase-e-backpopulate.py | Yes | 222 | Backfill index.jsonl fields |
 | phase-e2-remap.py | Yes | 506 | Targeted reclassification |
+| enrich-readability.py | Yes | — | PDF readability classification (machine/ocr/mixed/error) |
+| assess-deep-extraction-yield.py | Yes | — | Evaluate deep extraction quality across strata |
 | phase-f-gap-wrk-generator.py | Yes | 398 | Gap → WRK items |
 | build-ledger.py | Yes | 380 | Standards transfer ledger |
 | query-ledger.py | Yes | 125 | Ledger query tool |
 
-**Deterministic: 12/14 scripts (86%). LLM-dependent: 2/14 (14%).**
+**Deterministic: 14/16 scripts (88%). LLM-dependent: 2/16 (12%).**

@@ -1,32 +1,27 @@
 ---
 name: doc-extraction
-description: >
-  Classify and extract structured content from engineering documents using a
-  3-layer taxonomy: generic content types, engineering patterns, and domain
-  sub-skills. Use when ingesting standards, reports, or technical manuals into
-  structured data for downstream analysis.
+description: 'Classify and extract structured content from engineering documents using a 3-layer taxonomy: generic content
+  types, engineering patterns, and domain sub-skills. Use when ingesting standards, reports, or technical manuals into structured
+  data for downstream analysis.
+
+  '
 version: 1.0.0
 updated: 2026-03-12
 category: engineering
 triggers:
-  - document extraction
-  - content classification
-  - extract constants
-  - extract equations
-  - extract tables
-  - parse engineering document
-  - ingest standard
-  - technical manual extraction
-related_skills:
-  - engineering/doc-extraction/cp
-  - engineering/doc-extraction/drilling-riser
-  - engineering/doc-extraction/naval-architecture
-  - engineering/asset-integrity/fitness-for-service
+- document extraction
+- content classification
+- extract constants
+- extract equations
+- extract tables
+- parse engineering document
+- ingest standard
+- technical manual extraction
 capabilities:
-  - content-type-classification
-  - engineering-pattern-extraction
-  - standards-reference-parsing
-  - unit-normalization
+- content-type-classification
+- engineering-pattern-extraction
+- standards-reference-parsing
+- unit-normalization
 requires: []
 tags: []
 ---
@@ -36,6 +31,24 @@ tags: []
 Classify and extract structured content from engineering documents. The skill
 operates in three layers: generic content classification, engineering-specific
 pattern recognition, and domain sub-skills for specialized heuristics.
+
+## Yield Reality (WRK-1246 Corpus Assessment)
+
+WRK-1246 assessed deep extraction yield across 420K+ text-extractable documents.
+Only two content types have proven extraction yield from the current parsers:
+
+| Content type | Yield | Status |
+|-------------|-------|--------|
+| tables | 69-93% | **Production-ready** — primary extraction target |
+| figure_refs | 1-52% | **Partial** — metadata only, varies by stratum |
+| equations | 0% | Not yet implemented — parsers do not reliably detect |
+| constants | 0% | Not yet implemented — parsers do not reliably detect |
+| procedures | 0% | Not yet implemented — parsers do not reliably detect |
+| worked_examples | 0% | Not yet implemented — parsers do not reliably detect |
+
+These content types are NOT currently extractable from the corpus — they exist in the
+manifest schema (documented below) but the parsers do not reliably detect them. The
+schema is retained for future parser development.
 
 ## When to Use
 
@@ -59,7 +72,7 @@ doc-extraction/
 
 Eight content types cover the structural building blocks of engineering documents.
 
-### 1. `constants`
+### 1. `constants` (0% yield — not yet implemented)
 
 Named values with units that remain fixed within a standard or design context.
 
@@ -76,7 +89,7 @@ brackets, appears in tables or definition lists, often prefixed with a symbol
 | `units` | SI or field units |
 | `source_standard` | Standard reference (e.g. DNV-RP-B401 Sec 3.4) |
 
-### 2. `equations`
+### 2. `equations` (0% yield — not yet implemented)
 
 Mathematical relationships between variables.
 
@@ -125,7 +138,7 @@ data series legends, often accompanied by a caption describing the relationship.
 | `data_points` | Digitized x-y pairs |
 | `source` | Standard and figure number |
 
-### 5. `procedures`
+### 5. `procedures` (0% yield — not yet implemented)
 
 Sequential steps for performing an operation or assessment.
 
@@ -180,7 +193,7 @@ definitions section; term followed by colon or em-dash and explanation.
 | `synonyms` | Alternative terms |
 | `domain` | Engineering sub-domain |
 
-### 8. `worked_examples`
+### 8. `worked_examples` (0% yield — not yet implemented)
 
 Step-by-step calculations demonstrating application of equations or procedures.
 

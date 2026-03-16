@@ -16,19 +16,19 @@ Usage:
     # Dry run — report stats without modifying index
     uv run --no-project python scripts/data/document-index/enrich-readability.py --dry-run
 
-    # Full enrichment (writes enriched index)
-    uv run --no-project python scripts/data/document-index/enrich-readability.py
+    # Full enrichment with 10 parallel workers
+    uv run --no-project python scripts/data/document-index/enrich-readability.py --workers 10
 
     # Resume from a partial run (skips already-classified docs)
-    uv run --no-project python scripts/data/document-index/enrich-readability.py --resume
+    uv run --no-project python scripts/data/document-index/enrich-readability.py --resume --workers 10
 """
 
 import argparse
 import json
 import os
-import signal
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 
@@ -72,6 +72,24 @@ def classify_pdf_readability(path: str, max_pages: int = 5) -> str:
         return "error"
 
 
+def _classify_record(rec: dict) -> dict:
+    """Worker function: classify one record and return it enriched."""
+    ext = rec.get("ext", "")
+    if ext != "pdf":
+        rec["readability"] = "native"
+        return rec
+
+    path = rec["path"]
+    size_mb = rec.get("size_mb", 0)
+
+    if size_mb > 50:
+        rec["readability"] = "skipped-large"
+    else:
+        rec["readability"] = classify_pdf_readability(path)
+
+    return rec
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Enrich document index with readability classification"
@@ -93,10 +111,16 @@ def main() -> int:
         help="Skip docs that already have readability field",
     )
     parser.add_argument(
-        "--batch-size",
+        "--workers",
         type=int,
-        default=10000,
-        help="Write checkpoint every N records",
+        default=10,
+        help="Number of parallel workers (default: 10)",
+    )
+    parser.add_argument(
+        "--chunk-size",
+        type=int,
+        default=200,
+        help="Records per worker batch (default: 200)",
     )
     args = parser.parse_args()
 
@@ -122,80 +146,95 @@ def main() -> int:
                 if "readability" in rec:
                     stats["already_classified"] += 1
 
-        need_classification = stats["pdf"] - stats["already_classified"]
+        need = stats["pdf"] - stats["already_classified"]
         print(f"Index: {stats['total']:,} records")
         print(f"  PDFs: {stats['pdf']:,}")
         print(f"  Non-PDF: {stats['non_pdf']:,} (will be 'native')")
         print(f"  Already classified: {stats['already_classified']:,}")
-        print(f"  Need classification: {need_classification:,}")
-        # Estimate time: ~1s per PDF (conservative)
-        est_hours = need_classification / 3600
-        print(f"  Estimated time: {est_hours:.1f} hours")
+        print(f"  Need classification: {need:,}")
+        est_hours = need / (args.workers * 3600)
+        print(f"  Estimated time ({args.workers} workers): {est_hours:.1f} hours")
         return 0
 
-    # Enrichment pass
-    def _timeout_handler(signum, frame):
-        raise TimeoutError()
-
-    t0 = time.time()
-    processed = 0
-    classified = 0
+    # Phase 1: Read all records, separate into needs-work vs already-done
+    print(f"Loading index from {index_path}...", flush=True)
+    all_records = []
+    need_classify = []  # (index, record) tuples
     skipped = 0
-    readability_stats = {}
 
-    with open(index_path) as fin, open(tmp_path, "w") as fout:
-        for line in fin:
+    with open(index_path) as f:
+        for i, line in enumerate(f):
             rec = json.loads(line.strip())
-            processed += 1
-
-            # Skip if already classified and resuming
+            all_records.append(rec)
             if args.resume and "readability" in rec:
                 skipped += 1
-                fout.write(json.dumps(rec, separators=(",", ":")) + "\n")
-                rd = rec["readability"]
-                readability_stats[rd] = readability_stats.get(rd, 0) + 1
-                continue
-
-            ext = rec.get("ext", "")
-            if ext != "pdf":
-                rec["readability"] = "native"
             else:
-                path = rec["path"]
-                size_mb = rec.get("size_mb", 0)
+                need_classify.append((i, rec))
 
-                if size_mb > 50:
-                    rec["readability"] = "skipped-large"
-                else:
-                    # Timeout protection per file
-                    old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
-                    signal.alarm(15)
-                    try:
-                        rec["readability"] = classify_pdf_readability(path)
-                    except TimeoutError:
-                        rec["readability"] = "timeout"
-                    finally:
-                        signal.alarm(0)
-                        signal.signal(signal.SIGALRM, old_handler)
+    total = len(all_records)
+    print(
+        f"  Total: {total:,} | Need classification: {len(need_classify):,} | "
+        f"Already done: {skipped:,}",
+        flush=True,
+    )
 
-                classified += 1
+    if not need_classify:
+        print("Nothing to classify — all records already have readability field.")
+        return 0
 
+    # Phase 2: Parallel classification
+    t0 = time.time()
+    classified = 0
+    readability_stats = {}
+
+    # Count already-classified stats
+    for rec in all_records:
+        if "readability" in rec:
             rd = rec["readability"]
             readability_stats[rd] = readability_stats.get(rd, 0) + 1
 
-            fout.write(json.dumps(rec, separators=(",", ":")) + "\n")
+    print(f"Classifying {len(need_classify):,} records with {args.workers} workers...", flush=True)
 
-            if processed % 5000 == 0:
+    with ProcessPoolExecutor(max_workers=args.workers) as pool:
+        # Submit in chunks to maintain order
+        futures = {}
+        for idx, rec in need_classify:
+            fut = pool.submit(_classify_record, rec)
+            futures[fut] = idx
+
+        for fut in as_completed(futures):
+            idx = futures[fut]
+            try:
+                result = fut.result(timeout=30)
+                all_records[idx] = result
+                rd = result.get("readability", "error")
+            except Exception:
+                all_records[idx]["readability"] = "error"
+                rd = "error"
+
+            readability_stats[rd] = readability_stats.get(rd, 0) + 1
+            classified += 1
+
+            if classified % 1000 == 0:
                 elapsed = time.time() - t0
-                rate = processed / elapsed if elapsed > 0 else 0
+                rate = classified / elapsed if elapsed > 0 else 0
+                pct = classified / len(need_classify) * 100
                 print(
-                    f"  [{processed:,}] {elapsed:.0f}s ({rate:.0f}/s) "
-                    f"classified={classified} skipped={skipped}",
+                    f"  [{classified:,}/{len(need_classify):,}] {pct:.1f}% "
+                    f"{elapsed:.0f}s ({rate:.0f}/s)",
                     flush=True,
                 )
 
-    # Replace original with enriched version
+    # Phase 3: Write output
+    print("Writing enriched index...", flush=True)
+    with open(tmp_path, "w") as fout:
+        for rec in all_records:
+            fout.write(json.dumps(rec, separators=(",", ":")) + "\n")
+
     if output_path == index_path:
         backup = index_path.with_suffix(".jsonl.bak")
+        if backup.exists():
+            backup.unlink()
         os.rename(index_path, backup)
         os.rename(tmp_path, index_path)
         print(f"Backup: {backup}")
@@ -203,10 +242,11 @@ def main() -> int:
         os.rename(tmp_path, output_path)
 
     elapsed = time.time() - t0
-    print(f"\nEnrichment complete in {elapsed:.0f}s")
-    print(f"  Processed: {processed:,}")
+    print(f"\nEnrichment complete in {elapsed:.0f}s ({elapsed/3600:.1f}h)")
+    print(f"  Processed: {total:,}")
     print(f"  Classified: {classified:,}")
     print(f"  Skipped (resume): {skipped:,}")
+    print(f"  Workers: {args.workers}")
     print(f"\nReadability breakdown:")
     for rd, cnt in sorted(readability_stats.items(), key=lambda x: -x[1]):
         print(f"  {rd}: {cnt:,}")

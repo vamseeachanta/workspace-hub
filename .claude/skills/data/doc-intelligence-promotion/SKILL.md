@@ -63,6 +63,41 @@ uv run --no-project python scripts/data/doc-intelligence/promote-to-code.py \
 - Links images to figure references by page number
 - Generates calibration metadata YAML for manual digitization
 
+## Extraction Yield Reality (WRK-1246 Assessment)
+
+Proven yield across 420K+ corpus:
+
+| Content type | Yield | Notes |
+|-------------|-------|-------|
+| tables | 69-93% | Primary extraction target |
+| figure_refs | 1-52% | Metadata only; varies by stratum |
+| equations | 0% | Not reliably detectable by current parsers |
+| constants | 0% | Not reliably detectable by current parsers |
+| procedures | 0% | Not reliably detectable by current parsers |
+| worked_examples | 0% | Not reliably detectable by current parsers |
+
+Focus extraction effort on tables. Other content types exist in the manifest schema but
+produce no usable output from the current pipeline.
+
+## Table Quality Gate
+
+Before promoting extracted tables, apply three quality filters:
+
+1. **Content-hash dedup**: Remove identical repeated tables. IHS watermark tables and
+   repeated header/footer tables appear across many pages — hash each table's content
+   (header + rows) and deduplicate.
+2. **Min-content threshold**: Skip tables with fewer than 3 data rows or fewer than 2
+   numeric columns. These are typically formatting artifacts, not engineering data.
+3. **LLM quality rating**: Rate each surviving table as `usable` / `partial` / `junk`
+   via Haiku. Usable tables have clear headers, consistent units, and meaningful data.
+   Partial tables may need manual cleanup. Junk tables are formatting noise.
+
+## Chart Extraction Note
+
+Chart extraction is metadata-only — the pipeline captures figure references, captions,
+and page locations but does not extract the image content itself. Image extraction
+requires PyMuPDF (fitz) and is tracked under WRK-1257.
+
 ## Table → YAML → Code → Calc Report (WRK-1188 Learning)
 
 **Primary workflow for engineering standards** (not textbook example parsing):
@@ -101,6 +136,10 @@ Engineering standards don't use textbook "Example N.N: Given: Solution:" format.
 Calculation procedures are inline in numbered sections. The table→YAML→code pipeline
 extracts the reference data and validates against implemented code — more reliable
 than text parsing.
+
+**WRK-1188 finding**: 0 worked examples found across 9 major engineering standards
+(DNV-RP-B401, C203, F109, API RP 2A, 579-1, etc.). Deprioritize worked_example
+extraction for standards; focus extraction effort on tables.
 
 ## Key Scripts
 

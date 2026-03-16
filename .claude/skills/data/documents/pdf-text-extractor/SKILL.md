@@ -26,6 +26,10 @@ This skill extracts text from PDF files using PyMuPDF (fitz), with intelligent c
 - Legacy workflows requiring direct PDF extraction
 - Cases where raw text is sufficient
 
+**Note:** The doc-intelligence pipeline uses pdfplumber directly, not Codex conversion.
+For bulk extraction across the 420K+ corpus, use
+`scripts/data/doc-intelligence/extract-document.py` instead of the Codex workflow.
+
 ## Quick Start
 
 **Recommended Approach (with Codex conversion):**
@@ -359,6 +363,30 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+## Readability Classification
+
+Before extracting text from a large PDF collection, classify each PDF's readability
+using `enrich-readability.py`. This determines which extraction strategy to use:
+
+| Classification | Meaning | Extraction strategy |
+|---------------|---------|-------------------|
+| `machine` | Text layer present, directly extractable | pdfplumber / PyMuPDF |
+| `ocr-needed` | Scanned image, no text layer | tesseract / doctr / azure-doc-intelligence |
+| `mixed` | Some pages machine-readable, some scanned | Hybrid — extract text pages, OCR image pages |
+| `error` | Corrupted or unreadable | Skip; log for manual review |
+
+**Key finding**: 27-30% of project PDFs are scanned with no text layer. Attempting
+direct text extraction on these returns empty strings — always classify first.
+
+```bash
+# Classify all PDFs with parallel workers (resume-safe)
+uv run --no-project python scripts/data/document-index/enrich-readability.py \
+    --workers 10 --resume
+```
+
+Use `--workers 10` for bulk enrichment to parallelize across CPU cores. The `--resume`
+flag skips already-classified entries, making it safe to restart after interruption.
 
 ## Handling Edge Cases
 
