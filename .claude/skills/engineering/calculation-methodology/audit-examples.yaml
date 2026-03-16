@@ -1,0 +1,235 @@
+# Audit: 15 calc report examples against 16-section methodology
+# Generated: 2026-03-16 | WRK-1242
+# Sections: 01-metadata, 02-scope, 03-design_basis, 04-materials, 05-inputs,
+#   06-assumptions, 07-methodology, 08-calculations, 09-outputs, 10-sensitivity,
+#   11-validation, 12-verification, 13-conclusions, 14-charts, 15-data_tables,
+#   16-references
+
+audit_metadata:
+  total_files: 15
+  audit_date: "2026-03-16"
+  wrk: WRK-1242
+  sections_total: 16
+  # Sections always present in all files (core):
+  universal_sections: [1, 5, 6, 7, 9, 16]  # metadata, inputs, assumptions, methodology, outputs, references
+
+files:
+  - filename: cp-anode-design-dnv-rp-b401.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: fatigue-pipeline-girth-weld.yaml
+    present: [1, 5, 6, 7, 9, 14, 15, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13]
+    score: 8
+    generation: gen1
+
+  - filename: fatigue-scr-touchdown.yaml
+    present: [1, 5, 6, 7, 9, 14, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 15]
+    score: 7
+    generation: gen1
+
+  - filename: fatigue-sn-curve-dnv-rp-c203.yaml
+    present: [1, 5, 6, 7, 9, 15, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14]
+    score: 7
+    generation: gen1
+
+  - filename: geotechnical-anchor-capacity.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: geotechnical-pile-axial-capacity.yaml
+    present: [1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 16]
+    missing: [10, 11, 12, 14, 15]
+    score: 11
+    generation: gen2
+
+  - filename: geotechnical-scour-assessment.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: on-bottom-stability-dnv-rp-f109.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: on-bottom-stability-pipeline.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: pipeline-stability-dnv-rp-f109.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: portfolio-beta-energy-benchmark.yaml
+    present: [1, 5, 6, 7, 9, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13, 14, 15]
+    score: 6
+    generation: gen1
+
+  - filename: resource-estimation-monte-carlo.yaml
+    present: [1, 2, 3, 5, 6, 7, 9, 10, 13, 14, 15, 16]
+    missing: [4, 8, 11, 12]
+    score: 12
+    generation: gen2
+
+  - filename: sepd-decline-unconventional.yaml
+    present: [1, 5, 6, 7, 9, 14, 15, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13]
+    score: 8
+    generation: gen1
+
+  - filename: spectral-fatigue-dnv-rp-c203.yaml
+    present: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 16]
+    missing: [10, 14, 15]
+    score: 13
+    generation: gen2
+
+  - filename: type-curve-matching-fetkovich.yaml
+    present: [1, 5, 6, 7, 9, 14, 15, 16]
+    missing: [2, 3, 4, 8, 10, 11, 12, 13]
+    score: 8
+    generation: gen1
+
+# Section coverage across all 15 files
+section_coverage:
+  - section: 1
+    name: metadata
+    present_count: 15
+    coverage_pct: 100
+  - section: 2
+    name: scope
+    present_count: 3
+    coverage_pct: 20
+  - section: 3
+    name: design_basis
+    present_count: 3
+    coverage_pct: 20
+  - section: 4
+    name: materials
+    present_count: 2
+    coverage_pct: 13
+  - section: 5
+    name: inputs
+    present_count: 15
+    coverage_pct: 100
+  - section: 6
+    name: assumptions
+    present_count: 15
+    coverage_pct: 100
+  - section: 7
+    name: methodology
+    present_count: 15
+    coverage_pct: 100
+  - section: 8
+    name: calculations
+    present_count: 2
+    coverage_pct: 13
+  - section: 9
+    name: outputs
+    present_count: 15
+    coverage_pct: 100
+  - section: 10
+    name: sensitivity
+    present_count: 1
+    coverage_pct: 7
+  - section: 11
+    name: validation
+    present_count: 1
+    coverage_pct: 7
+  - section: 12
+    name: verification
+    present_count: 1
+    coverage_pct: 7
+  - section: 13
+    name: conclusions
+    present_count: 3
+    coverage_pct: 20
+  - section: 14
+    name: charts
+    present_count: 5
+    coverage_pct: 33
+  - section: 15
+    name: data_tables
+    present_count: 5
+    coverage_pct: 33
+  - section: 16
+    name: references
+    present_count: 15
+    coverage_pct: 100
+
+# Priority gaps — ranked by coverage deficit × engineering impact
+priority_gaps:
+  - rank: 1
+    section: 10
+    name: sensitivity
+    coverage_pct: 7
+    impact: critical
+    reason: "Sensitivity analysis reveals which inputs drive the result. Without it, no confidence in margin adequacy."
+    files_needing: 14
+
+  - rank: 2
+    section: 11
+    name: validation
+    coverage_pct: 7
+    impact: critical
+    reason: "Independent validation (benchmark or alternative method) catches systematic errors. Only 1 file has it."
+    files_needing: 14
+
+  - rank: 3
+    section: 12
+    name: verification
+    coverage_pct: 7
+    impact: critical
+    reason: "Independent checker sign-off is required by most engineering QA systems. Only 1 file has it."
+    files_needing: 14
+
+  - rank: 4
+    section: 8
+    name: calculations
+    coverage_pct: 13
+    impact: high
+    reason: "Step-by-step calculations with clause refs make review possible. Most files jump from inputs to outputs."
+    files_needing: 13
+
+  - rank: 5
+    section: 2
+    name: scope
+    coverage_pct: 20
+    impact: high
+    reason: "Scope defines inclusions, exclusions, and limitations — prevents scope creep and reviewer confusion."
+    files_needing: 12
+
+generation_summary:
+  gen1:
+    count: 12
+    avg_score: 6.7
+    description: "Core sections only (metadata, inputs, assumptions, methodology, outputs, references). Missing upstream (scope/design_basis) and downstream (validation/verification/conclusions)."
+  gen2:
+    count: 3
+    avg_score: 12.0
+    description: "Extended sections including scope, design_basis, calculations, conclusions. Best: spectral-fatigue at 13/16."
+
+role_models:
+  - filename: spectral-fatigue-dnv-rp-c203.yaml
+    score: 13
+    note: "Best practice — has validation + verification blocks. Missing only sensitivity, charts, data_tables."
+  - filename: resource-estimation-monte-carlo.yaml
+    score: 12
+    note: "Excellent on sensitivity + conclusions. Missing materials, calculations, validation, verification."
+  - filename: geotechnical-pile-axial-capacity.yaml
+    score: 11
+    note: "Strong on scope + design_basis + materials + step-by-step calcs. Missing validation phase entirely."
