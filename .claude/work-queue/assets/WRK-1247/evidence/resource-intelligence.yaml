@@ -1,0 +1,51 @@
+wrk_id: WRK-1247
+stage: 2
+completed_at: "2026-03-15"
+
+existing_code:
+  xlsx_parser:
+    path: scripts/data/doc_intelligence/parsers/xlsx.py
+    lines: 90
+    gap: "data_only=True — discards formulas, reads only computed values"
+    key_line: 46
+  deep_extract:
+    path: scripts/data/doc_intelligence/deep_extract.py
+    lines: 131
+    note: "PDF-focused orchestration; XLSX path exists but limited"
+  legacy_formula_examples:
+    - digitalmodel/scripts/python/digitalmodel/legacy/analyze_marine_excel.py
+    - digitalmodel/scripts/python/digitalmodel/legacy/extract_hydro_coefficients.py
+
+dependencies:
+  openpyxl:
+    declared_in: digitalmodel/pyproject.toml
+    version: ">=3.1.0,<4.0.0"
+    hub_level: false
+
+corpus_stats:
+  total_xlsx_xls: 38565
+  calc_related_files: 13396
+  sources:
+    dde_project: 26702
+    ace_project: 11741
+    og_standards: 70
+
+skills:
+  core_used:
+    - .claude/skills/data/dark-intelligence-workflow/SKILL.md
+    - .claude/skills/data/doc-intelligence-promotion/SKILL.md
+    - .claude/skills/data/document-index-pipeline/SKILL.md
+    - .claude/skills/data/office/openpyxl/SKILL.md
+    - .claude/skills/data/calculation-report/SKILL.md
+    - .claude/skills/data/office/xlsx-to-python/SKILL.md
+
+calc_report_format:
+  schema_location: .claude/skills/data/calculation-report/SKILL.md
+  proven_examples: examples/reporting/
+  generator: scripts/reporting/generate-calc-report.py
+
+key_enhancement:
+  description: "Switch xlsx.py from data_only=True to data_only=False + formula chain mapping"
+  complexity: medium
+  files_to_modify:
+    - scripts/data/doc_intelligence/parsers/xlsx.py

@@ -1,0 +1,14 @@
+wrk_id: WRK-1247
+stage: 10
+next_action: "Run formula extraction on 10 selected files (Phase 3 Step 11)"
+context_summary: >
+  Stages 1-9 complete. Phase 1-2 TDD done: 18/18 tests pass. 6 new files created
+  (formula_reference_parser.py, formula_chain_builder.py, vba_extractor.py,
+  parsers/formula_xlsx.py, tests/test_formula_xlsx_parser.py, select_poc_xlsx.py).
+  schema.py extended with FormulaPayload. 10 XLSX files selected across 10 domains.
+  No .xlsm files in corpus (all xlsx). Ready for extraction run on 10 files.
+updated_at: "2026-03-16"
+entry_reads:
+  - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+  - scripts/data/doc_intelligence/parsers/formula_xlsx.py
+  - knowledge/dark-intelligence/xlsx-poc/poc-file-list.yaml

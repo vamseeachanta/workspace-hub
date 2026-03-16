@@ -1,0 +1,24 @@
+wrk_id: WRK-1247
+stage: 4
+completed_at: "2026-03-15"
+plan_location: specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+skill_created: .claude/skills/data/office/xlsx-to-python/SKILL.md
+key_decisions:
+  - "Separate FormulaXlsxParser (don't modify existing XlsxParser)"
+  - "Two-pass strategy: data_only=True for values, data_only=False for formulas"
+  - "Excel cell values = pytest assertions (no separate test data needed)"
+  - "Use formulas library for complex workbooks (VLOOKUP, INDEX/MATCH)"
+  - "Use networkx for dependency graph topological sort"
+libraries_evaluated:
+  primary:
+    - openpyxl: "cell values + formula strings + named ranges"
+    - formulas: "formula parsing, AST, dependency graph, evaluation (v1.3.3)"
+    - networkx: "dependency graph analysis, topological sort"
+  evaluated_not_selected:
+    - pycel: "too broad scope; heavier dependency"
+    - xlcalculator: "inactive maintenance (no releases 12+ months)"
+    - graphedexcel: "visualization only; no formula parsing"
+    - excel-dependency-graph: "lightweight but limited"
+files_to_create: 7
+files_to_modify: 3
+tdd_tests: 12

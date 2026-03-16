@@ -3,7 +3,7 @@
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import yaml
 
@@ -74,6 +74,51 @@ class DocumentManifest:
     figure_refs: List[ExtractedFigureRef] = field(default_factory=list)
     extraction_stats: Dict[str, int] = field(default_factory=dict)
     errors: List[str] = field(default_factory=list)
+    formula_payload: Optional["FormulaPayload"] = None
+
+
+@dataclass
+class CellFormula:
+    """A formula cell with both formula text and cached computed value."""
+
+    cell_ref: str
+    sheet: str
+    formula: str
+    cached_value: Any = None
+    cache_status: str = "cached_missing"  # cached_ok | cached_missing | cached_suspect
+    references: List[str] = field(default_factory=list)
+
+
+@dataclass
+class NamedRange:
+    """A named range definition from the workbook."""
+
+    name: str
+    cell_ref: str
+    scope: Optional[str] = None
+
+
+@dataclass
+class VbaModule:
+    """Extracted VBA module (untrusted — never eval/exec)."""
+
+    filename: str
+    code: str
+    block_type: str  # function | subroutine | module
+    signatures: List[str] = field(default_factory=list)
+
+
+@dataclass
+class FormulaPayload:
+    """Optional formula-layer extension for DocumentManifest."""
+
+    formulas: List[CellFormula] = field(default_factory=list)
+    named_ranges: List[NamedRange] = field(default_factory=list)
+    input_cells: List[CellFormula] = field(default_factory=list)
+    output_cells: List[CellFormula] = field(default_factory=list)
+    calculation_chain: List[str] = field(default_factory=list)
+    vba_modules: List[VbaModule] = field(default_factory=list)
+    cache_quality: Dict[str, Any] = field(default_factory=dict)
 
 
 # -- Serialization helpers --------------------------------------------------

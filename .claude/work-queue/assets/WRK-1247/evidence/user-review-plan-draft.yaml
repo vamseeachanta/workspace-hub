@@ -1,0 +1,16 @@
+wrk_id: WRK-1247
+stage: 5
+gate: plan_draft_review
+plan_approved: true
+approval_decision: approve_as_is
+review_cycle_id: "wrk1247-20260315T223804"
+reviewer: vamsee
+reviewed_at: "2026-03-15T22:38:04Z"
+plan_location: specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+skill_location: .claude/skills/data/office/xlsx-to-python/SKILL.md
+amendments:
+  - "Added VBA macro extraction via oletools/olevba for .xlsm files"
+  - "Excel cell values serve as test assertions"
+  - "Include at least 2 .xlsm files in POC set"
+  - "17 TDD tests, 8 new files + 3 modified"
+notes: "User approved after two amendments"

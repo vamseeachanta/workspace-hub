@@ -1,0 +1,31 @@
+wrk_id: WRK-1247
+stage: 6
+completed_at: "2026-03-15"
+reviews:
+  claude:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260316T032933Z-wrk-1247-plan-review-input.md-implementation-claude.md
+    p1_issues:
+      - "Cache quality gate: data_only=True returns None for uncalculated files"
+      - "VBA safety boundary: never exec/eval VBA strings"
+      - "Legal: ace_project/dde_project path references in committed code"
+    resolved: true
+  codex:
+    verdict: REQUEST_CHANGES
+    p1_issues:
+      - "Cache quality: same concern as Claude — vacuous test assertions"
+    suggestions_adopted:
+      - "Extend DocumentManifest with optional FormulaPayload (not separate type)"
+      - "Use committed fixture workbooks for cached-value test scenarios"
+      - "Cache quality classification: cached_ok / cached_missing / cached_suspect"
+      - "Keep two-pass; formulas lib as diagnostic fallback only"
+    resolved: true
+
+amendments_made:
+  - "Added Cache Quality Gate section with cell classification"
+  - "Added Safety Boundaries section (VBA untrusted, stubs raise NotImplementedError)"
+  - "Changed FormulaManifest → FormulaPayload attached to DocumentManifest"
+  - "Added CellFormula.cache_status and VbaModule dataclass"
+  - "Added 3 cache quality tests (17 total, was 14)"
+  - "FormulaXlsxParser.can_handle() accepts both .xlsx and .xlsm"
+  - "Path references use env vars / config mapping, not hardcoded project names"
