@@ -3,7 +3,7 @@
 name: excel-translation
 version: "1.0.0"
 category: data
-description: "Excel Translation Skill"
+description: "Batch translate engineering Excel calculation files from Spanish to English preserving formulas"
 capabilities: []
 requires: []
 see_also: []

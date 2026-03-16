@@ -3,7 +3,7 @@
 name: norsok
 version: "1.0.0"
 category: engineering
-description: "NORSOK Standards Specialist"
+description: "Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design"
 capabilities: []
 requires: []
 see_also: []

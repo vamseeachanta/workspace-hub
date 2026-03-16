@@ -1,10 +1,14 @@
 ---
+
+
 name: github-issue-tracker
 description: Intelligent issue management and project coordination with automated tracking, progress monitoring, and team coordination. Use for issue creation with smart templates, progress tracking with swarm coordination, multi-agent collaboration, and cross-repository synchronization.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub Issue Tracker Skill

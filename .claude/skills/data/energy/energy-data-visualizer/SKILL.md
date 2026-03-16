@@ -1,10 +1,14 @@
 ---
+
+
 name: energy-data-visualizer
-description: Energy Data Visualizer (user)
+description: Interactive visualization for oil and gas production data analysis using Plotly dashboards
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # Energy Data Visualizer Skill

@@ -1,6 +1,6 @@
 ---
 name: contract-review
-description: "Analyze commercial agreements against organizational standards with clause-by-clause review"
+description: "Analyze commercial agreements against organizational standards with clause-by-clause review and risk flagging"
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -2,7 +2,7 @@
 name: product-roadmap
 version: "1.1.0"
 category: business
-description: "Product Roadmap Skill"
+description: "Plan and track product capabilities, phases, and feature priorities across workspace repositories"
 last_updated: 2026-02-03
 capabilities: []
 requires: []

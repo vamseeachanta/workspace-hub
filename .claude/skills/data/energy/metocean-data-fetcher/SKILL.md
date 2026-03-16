@@ -1,10 +1,14 @@
 ---
+
+
 name: metocean-data-fetcher
 description: Fetch real-time and historical metocean data from NDBC, CO-OPS, Open-Meteo, ERDDAP, and MET Norway. Use for buoy data retrieval, tidal observations, marine forecasts, and multi-source data fusion.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # Metocean Data Fetcher Skill

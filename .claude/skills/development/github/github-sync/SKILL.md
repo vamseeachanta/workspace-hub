@@ -1,10 +1,14 @@
 ---
+
+
 name: github-sync
 description: Multi-repository synchronization coordinator for version alignment, dependency sync, and cross-package integration. Use for package synchronization, version management, documentation alignment, and coordinated releases across multiple repositories.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub Sync Coordinator Skill

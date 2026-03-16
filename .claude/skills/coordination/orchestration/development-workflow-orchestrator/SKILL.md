@@ -2,7 +2,7 @@
 name: development-workflow-orchestrator
 version: "1.0.0"
 category: coordination
-description: "Development Workflow Orchestrator"
+description: "Orchestrate the six-phase development workflow from user requirements through TDD to execution"
 capabilities: []
 requires: []
 see_also: []

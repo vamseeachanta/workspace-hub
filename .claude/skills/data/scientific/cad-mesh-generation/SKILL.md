@@ -2,7 +2,7 @@
 name: cad-mesh-generation
 version: "1.0.0"
 category: data
-description: "CAD and Mesh Generation Skill"
+description: "Generate parametric CAD geometry and finite element meshes using FreeCAD and GMSH"
 capabilities: []
 requires: []
 see_also: []

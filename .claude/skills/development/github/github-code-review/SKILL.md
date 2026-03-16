@@ -1,10 +1,14 @@
 ---
+
+
 name: github-code-review
 description: Deploy specialized AI agents to perform comprehensive, intelligent code reviews that go beyond traditional static analysis. Use for automated multi-agent review, security vulnerability analysis, performance bottleneck detection, and architecture pattern validation.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub Code Review Skill

@@ -1,7 +1,7 @@
 ---
 name: docker
 version: 1.0.0
-description: Complete Docker containerization patterns for development and production
+description: Complete Docker containerization patterns with multi-stage builds for development and production
   workflows
 author: workspace-hub
 category: operations

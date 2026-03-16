@@ -1,10 +1,14 @@
 ---
+
+
 name: metocean-visualizer
 description: Create interactive metocean visualizations including time series plots, wave roses, scatter plots, geographic maps, and dashboards. Use for data exploration, reporting, and operational monitoring.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # Metocean Visualizer Skill

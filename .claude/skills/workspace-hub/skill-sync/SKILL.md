@@ -1,6 +1,6 @@
 ---
 name: skill-sync
-description: "Synchronize skills from anthropics/knowledge-work-plugins into workspace-hub skill system"
+description: "Synchronize upstream skills from anthropics/knowledge-work-plugins into workspace-hub local skill system directories"
 version: 1.0.0
 category: workspace-hub
 last_updated: 2026-02-03

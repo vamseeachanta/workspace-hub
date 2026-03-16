@@ -1,7 +1,7 @@
 ---
 name: state-directory-manager
 version: 1.0.0
-description: Manage persistent state directories for bash scripts
+description: Manage persistent state directories with XDG-compliant paths and cleanup for bash scripts
 author: workspace-hub
 category: _core
 tags: [bash, state, persistence, config, directory, xdg]

@@ -2,7 +2,7 @@
 
 name: chartjs
 version: 1.0.0
-description: Create simple, responsive charts quickly with Chart.js
+description: Create simple, responsive charts quickly with Chart.js using canvas-based rendering
 author: workspace-hub
 category: data-visualization
 tags: [charts, chartjs, simple, quick, responsive, canvas]

@@ -2,7 +2,7 @@
 name: core-context-management
 version: 1.0.0
 category: _core
-description: Context Management Skill
+description: Manage agent context files, enforce size limits, and optimize token budget allocation
 tags: []
 ---
 

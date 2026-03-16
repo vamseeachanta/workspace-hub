@@ -3,7 +3,7 @@
 name: marine-safety
 version: "1.0.0"
 category: engineering
-description: "Marine Safety & Integrity Specialist"
+description: "Assess offshore asset integrity, corrosion management, and life extension for aging marine structures"
 capabilities: []
 requires: []
 see_also: []

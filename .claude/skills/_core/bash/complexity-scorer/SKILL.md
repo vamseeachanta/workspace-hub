@@ -1,7 +1,7 @@
 ---
 name: complexity-scorer
 version: 1.0.0
-description: Score task complexity using keyword matching and heuristics
+description: Score task complexity using keyword matching, heuristic analysis, and configurable threshold rules
 author: workspace-hub
 category: _core
 tags: [bash, complexity, scoring, keywords, analysis, classification]

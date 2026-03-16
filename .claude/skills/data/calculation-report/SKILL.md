@@ -1,4 +1,5 @@
 ---
+
 name: calculation-report
 description: Generate professional engineering calculation reports from YAML — renders LaTeX formulas, interactive charts, and pass/fail outputs as HTML using the warm-parchment design system
 version: "1.0.0"
@@ -8,6 +9,7 @@ triggers:
   - engineering report
   - fatigue report
   - generate report from YAML
+category: data
 ---
 
 # Calculation Report Skill

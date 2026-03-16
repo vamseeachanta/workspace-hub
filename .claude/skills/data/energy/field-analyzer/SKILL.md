@@ -1,10 +1,14 @@
 ---
+
+
 name: field-analyzer
-description: Field Analyzer (user)
+description: Deepwater field-specific analysis for major Gulf of Mexico developments and production aggregation
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # Field Analyzer Skill

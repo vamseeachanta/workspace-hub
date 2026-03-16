@@ -2,7 +2,7 @@
 name: api-integration
 version: "1.0.0"
 category: data
-description: "API Integration Skill"
+description: "Integrate offshore engineering software APIs with mock testing for OrcaFlex, AQWA, and WAMIT"
 capabilities: []
 requires: []
 see_also: []

@@ -3,7 +3,7 @@
 name: model-selection
 version: "1.0.0"
 category: ai
-description: "Model Selection Skill"
+description: "Guide AI model selection based on task complexity, cost constraints, and latency requirements"
 capabilities: []
 requires: []
 see_also: []

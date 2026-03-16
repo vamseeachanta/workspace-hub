@@ -3,7 +3,7 @@
 name: dnv
 version: "1.0.0"
 category: engineering
-description: "DNV Standards Specialist"
+description: "Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification"
 capabilities: []
 requires: []
 see_also: []

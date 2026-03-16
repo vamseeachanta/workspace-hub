@@ -2,7 +2,7 @@
 name: pdf-large-reader
 version: "1.0.0"
 category: data
-description: "pdf-large-reader Skill"
+description: "Memory-efficient PDF processing library for large files exceeding 100MB and 1000 pages"
 capabilities: []
 requires: []
 see_also: []

@@ -3,7 +3,7 @@
 name: usage-optimization
 version: "1.0.0"
 category: ai
-description: "Usage Optimization Skill"
+description: "Optimize AI usage efficiency through script-first patterns, batch operations, and input preparation"
 capabilities: []
 requires: []
 see_also: []

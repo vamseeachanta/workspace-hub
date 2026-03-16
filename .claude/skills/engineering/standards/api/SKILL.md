@@ -3,7 +3,7 @@
 name: api
 version: "1.0.0"
 category: engineering
-description: "API Standards Specialist"
+description: "Apply American Petroleum Institute codes and standards for offshore structures and production systems"
 capabilities: []
 requires: []
 see_also: []

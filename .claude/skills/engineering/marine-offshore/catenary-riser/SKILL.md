@@ -1,5 +1,7 @@
 ---
 
+
+
 name: catenary-riser
 description: Analyze catenary and lazy wave riser configurations for static shape,
   forces, and OrcaFlex model generation. Use for riser static configuration analysis,
@@ -11,6 +13,8 @@ requires: []
 see_also: []
 tags: []
 scripts_exempt: true
+category: engineering
+version: 1.0.0
 ---
 # Catenary Riser Analysis Skill
 

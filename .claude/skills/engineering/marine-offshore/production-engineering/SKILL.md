@@ -3,7 +3,7 @@
 name: production-engineering
 version: "1.0.0"
 category: engineering
-description: "Production Engineering Skill"
+description: "Monitor and optimize well performance, production surveillance, and enhanced oil recovery operations"
 capabilities: []
 requires: []
 see_also: []

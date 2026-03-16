@@ -1,10 +1,14 @@
 ---
+
+
 name: github-pr-manager
 description: Comprehensive pull request management with swarm coordination for automated reviews, testing, and merge workflows. Use for PR lifecycle management, multi-reviewer coordination, conflict resolution, and intelligent branch management.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub PR Manager Skill

@@ -1,7 +1,7 @@
 ---
 name: usage-tracker
 version: 1.0.0
-description: Track and analyze usage metrics with timestamped logging
+description: Track and analyze usage metrics with timestamped logging, reporting, and trend detection
 author: workspace-hub
 category: _core
 tags: [bash, metrics, logging, analytics, tracking, reporting]

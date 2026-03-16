@@ -1,10 +1,14 @@
 ---
+
+
 name: github-modes
 description: Comprehensive GitHub integration modes for workflow orchestration, PR management, and repository coordination. Use for GitHub CLI operations, automated workflows, PR reviews, issue tracking, release management, and CI/CD coordination.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub Integration Modes Skill

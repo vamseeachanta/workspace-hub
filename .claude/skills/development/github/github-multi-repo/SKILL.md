@@ -1,10 +1,14 @@
 ---
+
+
 name: github-multi-repo
 description: Cross-repository swarm orchestration for organization-wide automation and intelligent collaboration. Use for multi-repo coordination, synchronized operations, dependency management, and organization-wide policy changes.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: development
+version: 1.0.0
 ---
 
 # GitHub Multi-Repo Skill

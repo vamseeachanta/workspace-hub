@@ -1,10 +1,14 @@
 ---
+
+
 name: hse-risk-analyzer
 description: Analyze BSEE HSE (Health, Safety, Environment) incident data for risk assessment. Use for operator safety scoring, incident trend analysis, compliance tracking, and ESG-integrated economic evaluation.
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # HSE Risk Analyzer

@@ -1,7 +1,7 @@
 ---
 name: interactive-menu-builder
 version: 1.0.0
-description: Build multi-level interactive CLI menus for bash scripts
+description: Build multi-level interactive CLI menus with navigation and selection for bash scripts
 author: workspace-hub
 category: _core
 tags: [bash, menu, cli, interactive, tui, navigation]

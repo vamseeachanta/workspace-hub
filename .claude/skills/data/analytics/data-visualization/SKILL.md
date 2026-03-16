@@ -1,6 +1,6 @@
 ---
 name: data-visualization
-description: "Create effective data visualizations with Python (matplotlib, seaborn, plotly)"
+description: "Create effective data visualizations with Python using matplotlib, seaborn, and plotly libraries"
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

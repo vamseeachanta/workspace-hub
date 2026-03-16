@@ -3,7 +3,7 @@
 name: astm
 version: "1.0.0"
 category: engineering
-description: "ASTM Standards Specialist"
+description: "Reference ASTM standards for material properties, testing methods, and design code compliance"
 capabilities: []
 requires: []
 see_also: []

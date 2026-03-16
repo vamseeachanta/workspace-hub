@@ -1,7 +1,7 @@
 ---
 name: git-sync-manager
 version: 1.0.0
-description: Multi-repository git synchronization patterns for batch operations
+description: Multi-repository git synchronization and fetch-pull-push patterns for batch operations across workspaces
 author: workspace-hub
 category: _core
 tags: [bash, git, sync, multi-repo, batch, automation]

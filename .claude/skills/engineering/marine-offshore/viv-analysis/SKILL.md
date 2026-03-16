@@ -1,5 +1,7 @@
 ---
 
+
+
 name: viv-analysis
 description: Assess vortex-induced vibration (VIV) for risers and tubular members
   with natural frequency and safety factor calculations. Use for VIV susceptibility
@@ -11,6 +13,8 @@ requires: []
 see_also: []
 tags: []
 scripts_exempt: true
+category: engineering
+version: 1.0.0
 ---
 # VIV Analysis Skill
 

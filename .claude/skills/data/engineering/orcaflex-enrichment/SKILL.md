@@ -1,4 +1,5 @@
 ---
+
 name: orcaflex-enrichment
 version: 1.0.0
 description: >
@@ -14,6 +15,7 @@ computer: acma-ansys05
 repos: [workspace-hub, worldenergydata, digitalmodel, client_projects]
 related_wrk: [WRK-589, WRK-593, WRK-594, WRK-595]
 tags: []
+category: data
 ---
 
 # OrcaFlex Enrichment Skill

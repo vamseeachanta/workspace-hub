@@ -1,6 +1,6 @@
 ---
 name: search-strategy
-description: "Query decomposition and multi-source search orchestration for enterprise search."
+description: "Query decomposition and multi-source search orchestration for enterprise knowledge retrieval workflows"
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

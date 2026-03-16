@@ -1,10 +1,14 @@
 ---
+
+
 name: web-scraper-energy
-description: Web Scraper Energy (user)
+description: Web scraping workflows for energy data collection from BSEE and BOEM using Scrapy
 capabilities: []
 requires: []
 see_also: []
 tags: []
+category: data
+version: 1.0.0
 ---
 
 # Web Scraper Energy Skill

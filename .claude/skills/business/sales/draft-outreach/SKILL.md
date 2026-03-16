@@ -1,6 +1,6 @@
 ---
 name: draft-outreach
-description: "Create personalized outreach messages by researching prospects before drafting"
+description: "Create personalized outreach messages by researching prospects and tailoring content before drafting"
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

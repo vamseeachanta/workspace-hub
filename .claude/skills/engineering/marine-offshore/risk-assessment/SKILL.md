@@ -3,7 +3,7 @@
 name: risk-assessment
 version: "1.0.0"
 category: engineering
-description: "Risk Assessment Skill"
+description: "Perform probabilistic risk assessment with Monte Carlo simulations for offshore marine operations"
 see_also:
   - engineering/asset-integrity/fitness-for-service  # WRK-206: FFS uses RSF as risk-based acceptance criterion
   - engineering/marine-offshore/cathodic-protection

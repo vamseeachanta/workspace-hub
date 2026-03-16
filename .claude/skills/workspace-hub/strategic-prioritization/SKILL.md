@@ -1,7 +1,11 @@
 ---
+
+
 name: strategic-prioritization
 description: Rank WRK items by strategic value using hybrid WSJF+RICE scoring with track balance
 invocation: /strategic-brief
+category: workspace-hub
+version: 1.0.0
 ---
 
 # Strategic Prioritization

@@ -3,7 +3,7 @@
 name: orcaflex-specialist
 version: "1.0.0"
 category: engineering
-description: "OrcaFlex Specialist Skill"
+description: "Automate OrcaFlex marine simulations via Python API for mooring, riser, and installation analysis"
 capabilities: []
 requires: []
 see_also: []
