@@ -1,17 +1,19 @@
 ---
-
-
 name: github-workflow
-description: GitHub Actions workflow automation for intelligent CI/CD pipelines with adaptive optimization. Use for workflow creation, pipeline optimization, security scanning, failure analysis, and automated deployment strategies.
+description: GitHub Actions workflow automation for intelligent CI/CD pipelines with
+  adaptive optimization. Use for workflow creation, pipeline optimization, security
+  scanning, failure analysis, and automated deployment strategies.
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- github-workflow-best-practices
+- github-workflow-error-handling
 tags: []
 category: development
 version: 1.0.0
 ---
 
-# GitHub Workflow Automation Skill
+# Github Workflow
 
 ## Overview
 
@@ -71,40 +73,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.detect.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Detect Languages
-        id: detect
-        run: |
-          # Detect project languages
-          LANGUAGES=()
-          [ -f "package.json" ] && LANGUAGES+=("node")
-          [ -f "requirements.txt" ] && LANGUAGES+=("python")
-          [ -f "go.mod" ] && LANGUAGES+=("go")
-          [ -f "Cargo.toml" ] && LANGUAGES+=("rust")
-
-          # Build matrix JSON
-          MATRIX=$(printf '%s\n' "${LANGUAGES[@]}" | jq -R . | jq -s '{language: .}')
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
-
-  build:
-    needs: detect-and-build
-    strategy:
-      matrix: ${{ fromJson(needs.detect-and-build.outputs.matrix) }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build ${{ matrix.language }}
-        run: |
-          case "${{ matrix.language }}" in
-            node) npm ci && npm test ;;
-            python) pip install -r requirements.txt && pytest ;;
-            go) go build ./... && go test ./... ;;
-            rust) cargo build && cargo test ;;
-          esac
-```
-
+*See sub-skills for full details.*
 ### 2. Adaptive Security Scanning
 
 ```yaml
@@ -117,42 +87,8 @@ on:
 
 jobs:
   security-analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Run Security Scans
-        id: security
-        run: |
-          # Initialize results
-          echo '{"issues": []}' > security-results.json
-
-          # npm audit for Node.js
-          if [ -f "package-lock.json" ]; then
-            npm audit --json >> security-results.json || true
-          fi
-
-          # pip audit for Python
-          if [ -f "requirements.txt" ]; then
-            pip install pip-audit
-            pip-audit --format=json >> security-results.json || true
-          fi
-
-      - name: Create Security Issues
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Parse and create issues for critical findings
-          jq -r '.issues[]? | select(.severity == "critical")' security-results.json | \
-          while read -r issue; do
-            gh issue create \
-              --title "Security: $(echo "$issue" | jq -r '.title')" \
-              --body "$(echo "$issue" | jq -r '.description')" \
-              --label "security,critical"
-          done
-```
-
+*See sub-skills for full details.*
 ### 3. Self-Healing Pipeline
 
 ```yaml
@@ -165,44 +101,8 @@ on:
 
 jobs:
   heal-pipeline:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Diagnose Failure
-        id: diagnose
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Get failed jobs
-          FAILED_JOBS=$(gh run view ${{ github.event.workflow_run.id }} \
-            --json jobs --jq '.jobs[] | select(.conclusion == "failure")')
-
-          echo "Failed jobs: $FAILED_JOBS"
-
-          # Common auto-fixes
-          LOGS=$(gh run view ${{ github.event.workflow_run.id }} --log)
-
-          if echo "$LOGS" | grep -q "npm ERR! peer dep"; then
-            echo "fix=npm-peer-deps" >> $GITHUB_OUTPUT
-          elif echo "$LOGS" | grep -q "ENOSPC"; then
-            echo "fix=disk-space" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Apply Auto-Fix
-        if: steps.diagnose.outputs.fix != ''
-        run: |
-          case "${{ steps.diagnose.outputs.fix }}" in
-            npm-peer-deps)
-              npm install --legacy-peer-deps
-              ;;
-            disk-space)
-              npm cache clean --force
-              ;;
-          esac
-```
-
+*See sub-skills for full details.*
 ### 4. Progressive Deployment
 
 ```yaml
@@ -215,49 +115,8 @@ on:
 jobs:
   analyze-risk:
     runs-on: ubuntu-latest
-    outputs:
-      risk: ${{ steps.risk.outputs.level }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Analyze Risk
-        id: risk
-        run: |
-          # Count changed files
-          CHANGED=$(git diff --name-only HEAD~1 | wc -l)
-
-          # Determine risk level
-          if [ "$CHANGED" -gt 50 ]; then
-            echo "level=high" >> $GITHUB_OUTPUT
-          elif [ "$CHANGED" -gt 10 ]; then
-            echo "level=medium" >> $GITHUB_OUTPUT
-          else
-            echo "level=low" >> $GITHUB_OUTPUT
-          fi
-
-  deploy:
-    needs: analyze-risk
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy Strategy
-        run: |
-          case "${{ needs.analyze-risk.outputs.risk }}" in
-            low)
-              echo "Direct deployment"
-              # Deploy immediately
-              ;;
-            medium)
-              echo "Canary deployment - 10%"
-              # Deploy to 10% of traffic
-              ;;
-            high)
-              echo "Blue-green deployment with rollback"
-              # Full blue-green with auto-rollback
-              ;;
-          esac
-```
+*See sub-skills for full details.*
 
 ## MCP Tool Integration
 
@@ -273,21 +132,8 @@ jobs:
       conditions: ["files_changed > 10", "complexity_high"],
       actions: ["spawn_review_swarm", "parallel_testing", "security_scan"]
     },
-    {
-      trigger: "push_to_main",
-      conditions: ["all_tests_pass", "security_cleared"],
-      actions: ["deploy_staging", "performance_test", "notify_stakeholders"]
-    }
-  ]
-}
 
-// Orchestrate workflow management
-  task: "Manage intelligent CI/CD pipeline with continuous optimization",
-  strategy: "adaptive",
-  priority: "high"
-}
-```
-
+*See sub-skills for full details.*
 ### Performance Monitoring
 
 ```javascript
@@ -301,16 +147,7 @@ jobs:
   metrics: ["build_time", "test_duration", "deployment_latency"]
 }
 
-// Store insights
-  action: "store",
-  key: "workflow/performance/analysis",
-  value: {
-    bottlenecks_identified: ["slow_test_suite", "inefficient_caching"],
-    optimization_opportunities: ["parallel_matrix", "smart_caching"],
-    cost_optimization_potential: "23%"
-  }
-}
-```
+*See sub-skills for full details.*
 
 ## Workflow Optimization Commands
 
@@ -324,7 +161,6 @@ gh run list --workflow=ci.yml --limit=20 --json databaseId,conclusion,startedAt,
 # Identify slow steps
 gh run view $RUN_ID --json jobs --jq '.jobs[] | {name: .name, duration: .steps | map(.completedAt | fromdateiso8601) | max - (.steps | map(.startedAt | fromdateiso8601) | min)}'
 ```
-
 ### Failure Analysis
 
 ```bash
@@ -336,32 +172,6 @@ gh run list --status=failure --limit=10 --json databaseId,name,headBranch | \
 gh run view $RUN_ID --log-failed
 ```
 
-## Best Practices
-
-### 1. Workflow Organization
-- Use reusable workflows for common operations
-- Implement proper caching strategies
-- Set appropriate timeouts for each job
-- Use workflow dependencies wisely
-
-### 2. Security
-- Store secrets in GitHub Secrets
-- Use OIDC for cloud authentication
-- Implement least-privilege principles
-- Audit workflow permissions regularly
-
-### 3. Performance
-- Cache dependencies between runs
-- Use appropriate runner sizes
-- Implement early termination for failures
-- Optimize parallel execution
-
-### 4. Cost Management
-- Use self-hosted runners for heavy workloads
-- Implement concurrency controls
-- Cache Docker layers
-- Skip redundant workflow runs
-
 ## Configuration Options
 
 | Option | Type | Default | Description |
@@ -370,22 +180,6 @@ gh run view $RUN_ID --log-failed
 | timeout-minutes | number | 30 | Job timeout |
 | retry-on-failure | boolean | false | Auto-retry failed jobs |
 | cache-strategy | string | "npm" | Dependency caching |
-
-## Error Handling
-
-### Common Errors
-
-**Error: ENOSPC (No space left)**
-- Cause: Disk space exhausted
-- Solution: Clear caches, use smaller runners
-
-**Error: Rate limit exceeded**
-- Cause: Too many API calls
-- Solution: Add delays, use caching
-
-**Error: Timeout exceeded**
-- Cause: Long-running job
-- Solution: Increase timeout or optimize job
 
 ## Related Skills
 
@@ -398,3 +192,8 @@ gh run view $RUN_ID --log-failed
 ## Version History
 
 - **1.0.0** (2026-01-02): Initial skill conversion from workflow-automation agent
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)

@@ -1,21 +1,26 @@
 ---
 name: systematic-debugging
-description: Four-phase debugging methodology emphasizing root cause analysis before fixes. Use for bug investigation, preventing random fixes, and systematic problem-solving. Based on obra/superpowers.
+description: Four-phase debugging methodology emphasizing root cause analysis before
+  fixes. Use for bug investigation, preventing random fixes, and systematic problem-solving.
+  Based on obra/superpowers.
 version: 1.0.0
 category: development
 last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:
-  - tdd-obra
-  - writing-plans
-  - code-reviewer
+- tdd-obra
+- writing-plans
+- code-reviewer
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- systematic-debugging-best-practices
+- systematic-debugging-error-handling
+- systematic-debugging-metrics
 tags: []
 ---
 
-# Systematic Debugging Skill
+# Systematic Debugging
 
 ## Overview
 
@@ -55,7 +60,6 @@ Steps:
 - When did it start failing?
 - What changed recently?
 - Can I reproduce it reliably?
-
 ### Phase 2: Pattern Analysis
 
 **Objective:** Find working examples and understand differences.
@@ -70,7 +74,6 @@ Steps:
 - Working vs. broken code paths
 - Expected vs. actual behavior
 - Known good state vs. current state
-
 ### Phase 3: Hypothesis and Testing
 
 **Objective:** Form and validate theories before changing code.
@@ -83,7 +86,6 @@ Steps:
 
 **Hypothesis format:**
 "The bug occurs because [condition] when [trigger], which causes [symptom]."
-
 ### Phase 4: Implementation
 
 **Objective:** Fix the root cause with proper verification.
@@ -102,7 +104,6 @@ Steps:
 **If >= 3 fixes fail: STOP and question the architecture.**
 
 When multiple fixes fail, the issue indicates deeper structural problems requiring discussion rather than continued symptom-patching.
-
 ### Red Flags (Restart Process)
 
 - Proposing solutions before investigation
@@ -131,7 +132,6 @@ When multiple fixes fail, the issue indicates deeper structural problems requiri
 3. State changes at key points
 4. Timing information for performance issues
 ```
-
 ### Boundary Tracing
 
 For multi-component systems:
@@ -143,44 +143,6 @@ For multi-component systems:
 ```
 
 Add verification at each boundary to isolate failure point.
-
-## Best Practices
-
-### Do
-
-1. Reproduce before investigating
-2. Document investigation steps
-3. Test one hypothesis at a time
-4. Write regression test for every bug fix
-5. Share findings with team
-6. Update documentation when environment-related
-
-### Don't
-
-1. Jump to conclusions
-2. Make multiple changes at once
-3. Fix symptoms instead of causes
-4. Skip the hypothesis step
-5. Merge fixes without tests
-6. Ignore intermittent failures
-
-## Error Handling
-
-| Situation | Action |
-|-----------|--------|
-| Cannot reproduce | Gather more context, check environment differences |
-| Multiple potential causes | Isolate and test each separately |
-| Fix breaks other things | Revert, investigate dependencies |
-| Root cause unclear after investigation | Escalate, add more instrumentation |
-
-## Metrics
-
-| Metric | Target | Description |
-|--------|--------|-------------|
-| First-fix success rate | >80% | Fixes that resolve issue first time |
-| Regression rate | <5% | Bug fixes causing new bugs |
-| Investigation time ratio | >60% | Time spent investigating vs. coding |
-| Documentation rate | 100% | Bugs documented with root cause |
 
 ## Debugging Checklist
 
@@ -207,3 +169,9 @@ Add verification at each boundary to isolate failure point.
 ## Version History
 
 - **1.0.0** (2026-01-19): Initial release adapted from obra/superpowers
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)

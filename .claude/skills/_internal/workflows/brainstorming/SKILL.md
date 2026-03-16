@@ -1,18 +1,24 @@
 ---
 name: brainstorming
-description: Collaborative design refinement through iterative questioning. Use for transforming ideas into detailed specifications before implementation. Based on obra/superpowers.
+description: Collaborative design refinement through iterative questioning. Use for
+  transforming ideas into detailed specifications before implementation. Based on
+  obra/superpowers.
 version: 1.0.0
 category: _internal
 last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:
-  - writing-plans
-  - sparc-workflow
-  - product-roadmap
+- writing-plans
+- sparc-workflow
+- product-roadmap
 tags: []
+see_also:
+- brainstorming-best-practices
+- brainstorming-error-handling
+- brainstorming-metrics
 ---
 
-# Brainstorming Skill
+# Brainstorming
 
 ## Overview
 
@@ -53,7 +59,6 @@ This skill guides collaborative dialogue to transform ideas into detailed design
 - What are the constraints?
 - How will success be measured?
 - What already exists?
-
 ### Phase 2: Exploration
 
 **Goal:** Identify and evaluate solution approaches.
@@ -67,12 +72,12 @@ This skill guides collaborative dialogue to transform ideas into detailed design
 **Option template:**
 ```
 ### Option A: [Name]
+
 - Approach: [Description]
 - Pros: [Benefits]
 - Cons: [Drawbacks]
 - Best for: [Scenarios]
 ```
-
 ### Phase 3: Design Presentation
 
 **Goal:** Create validated design specification.
@@ -85,13 +90,8 @@ This skill guides collaborative dialogue to transform ideas into detailed design
 
 **Section checklist:**
 - [ ] Architecture overview
-- [ ] Component breakdown
-- [ ] Data flow description
-- [ ] API/Interface design
-- [ ] Error handling strategy
-- [ ] Testing approach
-- [ ] Security considerations
-- [ ] Performance requirements
+
+*See sub-skills for full details.*
 
 ## Key Principles
 
@@ -102,14 +102,12 @@ Apply ruthlessly:
 - Avoid speculative features
 - Question every "nice to have"
 - Defer complexity until required
-
 ### Single Question Per Message
 
 - Prevents overwhelming stakeholders
 - Ensures each point is addressed
 - Maintains conversation flow
 - Allows for course correction
-
 ### Incremental Validation
 
 - Validate section by section
@@ -120,17 +118,18 @@ Apply ruthlessly:
 ## Question Templates
 
 ### Clarification
+
 - "To clarify: [summary of understanding]. Is that correct?"
 - "When you say [term], do you mean (a) [option1], (b) [option2], or (c) something else?"
-
 ### Trade-off Exploration
-- "We could either [A] or [B]. [A] gives us [benefit] but [drawback]. [B] gives us [benefit] but [drawback]. Which matters more for this project?"
 
+- "We could either [A] or [B]. [A] gives us [benefit] but [drawback]. [B] gives us [benefit] but [drawback]. Which matters more for this project?"
 ### Priority Assessment
+
 - "Which is more important: [quality A] or [quality B]?"
 - "If we had to choose between [option 1] and [option 2], which would you prefer?"
-
 ### Validation
+
 - "Here's my understanding of [section]. Does this match your expectations?"
 - "Before we move on, let me confirm: [summary]"
 
@@ -153,44 +152,6 @@ After validation:
    - Gather additional feedback
    - Incorporate changes
 
-## Best Practices
-
-### Do
-
-1. Start with user needs, not solutions
-2. Ask questions in order of importance
-3. Summarize understanding frequently
-4. Document decisions and rationale
-5. Keep options open until validated
-6. Use concrete examples
-
-### Don't
-
-1. Jump to solutions before understanding
-2. Ask multiple questions at once
-3. Assume requirements
-4. Over-design upfront
-5. Skip validation steps
-6. Ignore constraints
-
-## Error Handling
-
-| Situation | Action |
-|-----------|--------|
-| Conflicting requirements | Surface conflict explicitly, ask for priority |
-| Unclear response | Rephrase question, provide examples |
-| Scope creep | Reference original goals, ask if scope changed |
-| Analysis paralysis | Propose default, ask for objections |
-
-## Metrics
-
-| Metric | Target | Description |
-|--------|--------|-------------|
-| Questions per design | 10-30 | Thorough but focused |
-| Section validation rate | 100% | All sections confirmed |
-| Rework rate | <20% | Changes during implementation |
-| Stakeholder alignment | High | Shared understanding achieved |
-
 ## Related Skills
 
 - [writing-plans](../development/planning/writing-plans/SKILL.md) - Create implementation plans
@@ -202,3 +163,9 @@ After validation:
 ## Version History
 
 - **1.0.0** (2026-01-19): Initial release adapted from obra/superpowers
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)

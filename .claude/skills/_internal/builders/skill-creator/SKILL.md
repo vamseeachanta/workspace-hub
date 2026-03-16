@@ -14,36 +14,41 @@ related_skills:
 - skill-learner
 - improve
 tags: []
+see_also:
+- skill-creator-official-plugin-reference
+- skill-creator-canonical-reference
+- skill-creator-instructions
+- skill-creator-file-structure
+- skill-creator-error-handling
+- skill-creator-metrics
+- skill-creator-1-clear-triggering
+- skill-creator-detailed-instructions
+- skill-creator-3-multi-stage-workflow-architecture
+- skill-creator-step-1-define-the-skill-scope
+- skill-creator-technical-skill-template
+- skill-creator-creative-skill-template
+- skill-creator-quality-checklist
+- skill-creator-execution-checklist
+- skill-creator-content-quality
+- skill-creator-common-errors
+- skill-creator-versioning
+- skill-creator-metrics
+- skill-creator-skill-discovery
 ---
 
-# Skill Creator Skill
-
-## Official Plugin Reference
-
-This custom skill **extends** the official Anthropic `skill-creator` plugin:
-- Install: `/plugin install skill-creator@claude-plugin-directory`
-- Repo: `anthropics/claude-plugins-official/plugins/skill-creator`
-- Capabilities: create skills, improve existing skills, run evals, benchmark performance with variance analysis
-
-**Composition pattern**: invoke the official plugin for core skill creation mechanics.
-This custom skill adds **workspace-specific conventions** on top:
-- WRK linkage (every skill tied to a WRK item)
-- Category taxonomy (`category:` / `subcategory:` fields)
-- Gate compliance (verify-gate-evidence.py integration)
-- Workspace-hub folder conventions and naming rules
-
-**When the official plugin releases a new version**: update `official_plugin:` field above,
-review the changelog, and adjust only the workspace-specific sections below that conflict.
-Do NOT copy official plugin logic into this file — reference it.
-
-## Canonical Reference
-
-See `references/anthropic-complete-guide-building-skills.pdf` for the official Anthropic guide.
-Key chapters: Fundamentals (p4), Planning & Design (p7), Testing & Iteration (p14), Patterns (p21).
+# Skill Creator
 
 ## Overview
 
 This skill guides the creation of new Claude Code skills. Skills are specialized instruction sets that enhance Claude's capabilities for specific domains, tasks, or workflows.
+
+## When to Use
+
+- Building custom skills for specific domains
+- Creating reusable workflow templates
+- Standardizing organizational processes
+- Extending Claude Code capabilities
+- Documenting specialized knowledge
 
 ## Quick Start
 
@@ -71,573 +76,24 @@ category: [builders|tools|content-design|communication|meta]
 ## Overview
 [1-2 sentences explaining purpose]
 
-## Instructions
-[Step-by-step guidance]
-
-## Examples
-[Concrete examples]
-EOF
-```
-
-## When to Use
-
-- Building custom skills for specific domains
-- Creating reusable workflow templates
-- Standardizing organizational processes
-- Extending Claude Code capabilities
-- Documenting specialized knowledge
-
-## Skill Anatomy
-
-### File Structure
-
-```
-.claude/skills/
-└── skill-name/            # kebab-case only (no underscores, spaces, capitals)
-    ├── SKILL.md           # Required: exactly "SKILL.md" (case-sensitive)
-    ├── scripts/           # Optional: executable code (Python, Bash, etc.)
-    ├── references/        # Optional: documentation loaded as needed
-    └── assets/            # Optional: templates, fonts, icons used in output
-```
-
-**Critical rules (from Anthropic guide):**
-- `SKILL.md` must be named exactly `SKILL.md` — no variations (SKILL.MD, skill.md, etc.)
-- NO `README.md` inside the skill folder — all docs go in SKILL.md or references/
-- Folder name must be kebab-case only (no underscores, no capitals, no spaces)
-- Keep SKILL.md under 5,000 words — move detailed docs to references/ and link to them
-- Do NOT use "claude" or "anthropic" in skill name (reserved)
-
-### SKILL.md Structure
-
-```markdown
----
-name: skill-name
-description: One-line description of what this skill does and when to use it.
-version: 1.0.0
-category: builders
-last_updated: 2026-01-02
-related_skills:
-  - related-skill-1
-  - related-skill-2
----
-
-# Skill Title
-
-## Overview
-Brief explanation of the skill's purpose and capabilities.
-
-## Quick Start
-Fastest path to value.
-
 ## When to Use
 - Scenario 1
 - Scenario 2
-- Scenario 3
-
-## Instructions
-Detailed instructions for how to apply the skill.
-
-## Examples
-Concrete examples of the skill in action.
-
-## Best Practices
-Guidelines for effective use.
-
-## Error Handling
-Common issues and solutions.
-
-## Metrics
-How to measure success.
-
-## Related Skills
-Links to complementary skills.
-
-## Version History
-- **1.0.0** (YYYY-MM-DD): Initial release
-```
-
-## Skill Design Principles
-
-### 1. Clear Triggering
-
-The `description` field is crucial--it determines when the skill activates:
-
-**Good descriptions:**
-```yaml
-description: Create professional presentations with python-pptx. Use for slide decks, pitch presentations, and visual reports.
-```
-
-**Bad descriptions:**
-```yaml
-description: A skill for presentations.  # Too vague
-description: This skill helps you...     # Starts with filler
-```
-
-**Description formula (Anthropic guide):** `[What it does] + [When to use it] + [Key capabilities]`
-
-**Tips for descriptions:**
-- Start with an action verb
-- Include specific trigger phrases users would actually say
-- Mention key technologies/tools and relevant file types
-- Keep under 1,024 characters (hard limit); no XML angle brackets
-- Too generic ("Helps with projects") = won't trigger; add negative triggers if overtriggering
-
-### 2. Progressive Disclosure
-
-Structure content from general to specific:
-
-```markdown
-## Overview
-High-level purpose (always loaded)
-
-## Quick Start
-Fastest path to value
-
-## Detailed Instructions
-Comprehensive guidance
-
-## Advanced Usage
-Edge cases and optimization
-
-## Reference
-Complete API/options reference
-```
-
-### 3. Multi-Stage Workflow Architecture
-
-**Problem:** A monolithic SKILL.md for a workflow with N stages is only loaded when explicitly invoked — NOT at the moment each stage executes. Rules written there won't fire at execution time.
-
-**Pattern: per-stage micro-skills auto-loaded at entry**
-
-```
-skills/my-workflow/
-  SKILL.md                    ← index + cross-cutting rules only (≤150 lines)
-  stages/
-    stage-01-intake.md        ← complete rules for stage 1
-    stage-02-planning.md      ← complete rules for stage 2
-    stage-NN-<name>.md        ← one file per stage
-```
-
-The orchestrating script (`start_stage.py` / `start_stage.sh`) resolves the micro-skill
-glob and prints its content into context at stage entry — mechanical, not LLM memory.
-
-**Design rules:**
-- SKILL.md = index + terminology + gate policy table only. No stage-specific content.
-- Each micro-skill: entry reads, checklist, scripts-over-LLM audit (where applicable), exit gate, hard-gate flag
-- Minimum 15 lines per micro-skill — stubs < 15 lines provide no useful guidance
-- Loader script uses glob: `stage-{N:02d}-*.md` → read → inject as entry_reads block
-
-**When to use this pattern:** Any skill with 3+ sequential stages where different rules apply at different stages (e.g., work-queue-workflow, SPARC, release pipelines).
-
-**Anti-pattern:** Adding stage-specific rules to the top-level SKILL.md — they won't load at stage entry unless the skill happens to be explicitly invoked that session.
-
-### 4. Actionable Content
-
-Every section should guide action:
-
-```markdown
-## Bad: Conceptual only
-CSS is a styling language for web pages.
-
-## Good: Actionable
-To style a button with hover effects:
-\`\`\`css
-.button {
-    background: #007bff;
-    transition: background 0.2s;
-}
-.button:hover {
-    background: #0056b3;
-}
-\`\`\`
-```
-
-## Creating a New Skill
-
-### Step 1: Define the Skill Scope
-
-Answer these questions:
-1. What specific problem does this skill solve?
-2. Who is the target user?
-3. What inputs does it expect?
-4. What outputs does it produce?
-5. What tools/technologies does it use?
-
-### Step 2: Write the Frontmatter
-
-```yaml
----
-name: lowercase-kebab-case
-description: Action-oriented description with use cases. Use for X, Y, and Z.
-version: 1.0.0
-category: builders
-last_updated: 2026-01-02
-related_skills:
-  - related-skill-1
----
-```
-
-**Naming conventions:**
-- Use lowercase with hyphens: `api-testing`, `data-viz`
-- Be descriptive but concise
-- Avoid generic names like `helper` or `utils`
-
-### Step 3: Structure the Content
-
-#### Overview Section
-
-```markdown
-## Overview
-
-[1-2 sentences explaining what this skill enables]
-
-**Key Capabilities:**
-- Capability 1
-- Capability 2
-- Capability 3
-```
-
-#### Instructions Section
-
-```markdown
-## Instructions
-
-### [Task Category 1]
-
-[Step-by-step instructions]
-
-\`\`\`language
-// Code example
-\`\`\`
-
-### [Task Category 2]
-
-[More instructions with examples]
-```
-
-#### Examples Section
-
-```markdown
-## Examples
-
-### Example 1: [Scenario Name]
-
-**Input:** [What user provides]
-
-**Process:** [What skill does]
-
-**Output:** [What user receives]
-
-\`\`\`
-// Complete working example
-\`\`\`
-```
-
-### Step 4: Add Supporting Materials
-
-If needed, create supporting directories:
-
-```
-skill-name/
-├── SKILL.md
-├── references/            # documentation, guides, API references
-│   └── api-patterns.md
-├── scripts/               # executable scripts
-│   └── validate.sh
-└── assets/                # templates, fonts, icons
-    └── report-template.md
-```
-
-Reference them in SKILL.md:
-```markdown
-Before writing queries, consult `references/api-patterns.md` for:
-- Rate limiting guidance
-- Pagination patterns
-```
-
-## Skill Templates
-
-### Technical Skill Template
-
-```markdown
----
-name: tech-skill-name
-description: Technical capability description. Use for specific technical tasks.
-version: 1.0.0
-category: builders
----
-
-# Technical Skill Name
-
-## Overview
-
-This skill provides [capability] using [technology/tool].
 
 ## Prerequisites
-
 - Dependency 1
 - Dependency 2
 
-## Installation
-
-\`\`\`bash
-# Installation commands
-\`\`\`
-
-## Quick Start
-
-\`\`\`language
-// Minimal working example
-\`\`\`
-
-## Core Operations
-
-### Operation 1
-
-\`\`\`language
-// Code
-\`\`\`
-
-### Operation 2
-
-\`\`\`language
-// Code
-\`\`\`
-
-## Configuration Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| option1 | string | "default" | Description |
-
-## Error Handling
-
-### Common Errors
-
-**Error: [Error Name]**
-- Cause: [Why it happens]
-- Solution: [How to fix]
-
-## Best Practices
-
-1. Practice 1
-2. Practice 2
-3. Practice 3
-```
-
-### Process Skill Template
-
-```markdown
----
-name: process-skill-name
-description: Process/workflow description. Use for organizational tasks.
-version: 1.0.0
-category: communication
----
-
-# Process Skill Name
-
-## Overview
-
-This skill guides [process type] for [outcome].
-
-## When to Use
-
-- Situation 1
-- Situation 2
-- Situation 3
-
-## Process Steps
-
-### Step 1: [Name]
-
-[Instructions]
-
-**Checklist:**
-- [ ] Item 1
-- [ ] Item 2
-
-### Step 2: [Name]
-
-[Instructions]
-
-**Template:**
-\`\`\`
-[Template content]
-\`\`\`
-
-### Step 3: [Name]
-
-[Instructions]
-
-## Templates
-
-### [Template Name]
-
-\`\`\`
-[Full template]
-\`\`\`
-
-## Examples
-
-### [Scenario]
-
-[Complete worked example]
-
-## Tips
-
-- Tip 1
-- Tip 2
-- Tip 3
-```
-
-### Creative Skill Template
-
-```markdown
----
-name: creative-skill-name
-description: Creative capability description. Use for design/content creation.
-version: 1.0.0
-category: content-design
----
-
-# Creative Skill Name
-
-## Overview
-
-This skill enables creation of [output type] with [characteristics].
-
-## Design Principles
-
-### Principle 1: [Name]
-[Explanation]
-
-### Principle 2: [Name]
-[Explanation]
-
-## Styles & Variations
-
-### Style 1: [Name]
-[Description and examples]
-
-### Style 2: [Name]
-[Description and examples]
-
-## Creation Process
-
-### Phase 1: [Name]
-[Instructions]
-
-### Phase 2: [Name]
-[Instructions]
-
-## Technical Implementation
-
-\`\`\`language
-// Code for creating the output
-\`\`\`
-
-## Quality Checklist
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
-
-## Inspiration & Examples
-
-[Gallery of examples with explanations]
-```
-
-## Execution Checklist
-
-Before creating a skill:
-- [ ] Scope clearly defined (problem, users, inputs, outputs)
-- [ ] Name follows kebab-case convention
-- [ ] Description is action-oriented with use cases
-
-During creation:
-- [ ] Frontmatter complete (name, description, version, category)
-- [ ] Overview explains value in 2-3 sentences
-- [ ] Quick Start provides immediate value
-- [ ] Instructions are actionable, not conceptual
-- [ ] Examples are complete and runnable
-
-After creation:
-- [ ] Skill triggers correctly when invoked
-- [ ] Code examples tested and working
-- [ ] Related skills referenced in new skill's frontmatter
-- [ ] **Existing related skills updated** — search for skills that overlap or compose with this one; add this skill to their `related_skills:` frontmatter (bidirectional linking is mandatory)
-- [ ] Version history added
-
-## Skill Quality Checklist
-
-### Content Quality
-
-- [ ] Description clearly states purpose and trigger conditions
-- [ ] Overview explains value proposition in 2-3 sentences
-- [ ] Instructions are actionable, not just conceptual
-- [ ] Examples are complete and runnable
-- [ ] Best practices are specific and justified
-
-### Structure Quality
-
-- [ ] Follows progressive disclosure (general -> specific)
-- [ ] Uses consistent heading hierarchy
-- [ ] Code blocks have language tags
-- [ ] Tables are properly formatted
-- [ ] Lists are parallel in structure
-
-### Usability
-
-- [ ] Can be used without reading entire document
-- [ ] Quick start enables immediate value
-- [ ] Error scenarios are addressed
-- [ ] Edge cases are documented
-- [ ] Related skills are referenced
-
-### Technical Accuracy
-
-- [ ] Code examples are tested and work
-- [ ] Dependencies are listed
-- [ ] Version requirements are specified
-- [ ] Installation steps are complete
-
-## Error Handling
-
-### Common Errors
-
-**Error: Skill not triggering**
-- Cause: Description too vague or doesn't match user intent
-- Solution: Rewrite description with specific use cases and action verbs
-
-**Error: Skill content too large**
-- Cause: Too much content in single SKILL.md
-- Solution: Move large examples to resources/ folder, keep SKILL.md under 500 lines
-
-**Error: Circular skill references**
-- Cause: Skills reference each other in loops
-- Solution: Review related_skills, ensure DAG structure
-
-**Error: Outdated code examples**
-- Cause: Dependencies or APIs changed
-- Solution: Test examples regularly, update version history
-
-## Skill Maintenance
-
-### Versioning
-
-Track significant changes:
-
-```markdown
-<!-- At end of SKILL.md -->
-
----
 ## Version History
-
-- **1.2.0** (2025-01-15): Added new feature X
-- **1.1.0** (2024-12-01): Updated examples for tool v2
-- **1.0.0** (2024-10-15): Initial release
+- **1.0.0** (YYYY-MM-DD): Initial release
+EOF
 ```
+
+## Prerequisites
+
+- Familiarity with YAML frontmatter
+- Understanding of markdown structure
+- Knowledge of the skill category taxonomy
 
 ### Deprecation
 
@@ -653,49 +109,54 @@ replacement: new-skill-name
 ---
 ```
 
-## Metrics
-
-Track skill effectiveness:
-
-| Metric | Target | How to Measure |
-|--------|--------|----------------|
-| Trigger accuracy | >90% | Skill activates when intended |
-| Completion rate | >85% | Users complete skill workflow |
-| Error rate | <10% | Failed executions / total |
-| Update frequency | Monthly | Last update within 30 days |
-| User satisfaction | >4/5 | Feedback ratings |
-
-## Integration with Claude Code
-
-### Skill Discovery
-
-Skills are discovered from:
-1. `.claude/skills/` in project directory
-2. `~/.claude/skills/` for user-level skills
-
-### Skill Loading
-
-- **Metadata**: Always loaded (name, description)
-- **Body**: Loaded when skill is triggered
-- **Resources**: Loaded on demand
-
-### Best Practices for Performance
-
-1. Keep SKILL.md focused (under 500 lines ideal)
-2. Move large examples to resources/
-3. Reference external documentation for comprehensive APIs
-4. Use code blocks sparingly--quality over quantity
-
 ## Related Skills
 
 - [session-start-routine](../../meta/session-start-routine/SKILL.md) - Skill library maintenance
 - [sparc-workflow](../../development/sparc-workflow/SKILL.md) - Development methodology
 - [mcp-builder](../mcp-builder/SKILL.md) - MCP server creation
 
----
-
 ## Version History
 
-- **2.1.0** (2026-03-04): Synced critical rules with Anthropic official guide (references/ instead of resources/, no README.md in skill folder, SKILL.md <5000 words, description formula, folder naming); added canonical reference PDF
-- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; enhanced frontmatter with version, category, related_skills
-- **1.0.0** (2024-10-15): Initial release with skill anatomy, design principles, templates, quality checklist
+- **2.2.0** (2026-03-05): Deduplicated hub SKILL.md; trimmed to <200 lines
+- **2.1.0** (2026-03-04): Synced critical rules with Anthropic official guide
+- **2.0.0** (2026-01-02): Upgraded to v2 template
+- **1.0.0** (2024-10-15): Initial release
+
+## Sub-Skills
+
+- [Official Plugin Reference](official-plugin-reference/SKILL.md)
+- [Canonical Reference](canonical-reference/SKILL.md)
+- [Instructions](instructions/SKILL.md)
+- [File Structure (+1)](file-structure/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)
+- [1. Clear Triggering (+1)](1-clear-triggering/SKILL.md)
+- [Detailed Instructions](detailed-instructions/SKILL.md)
+- [3. Multi-Stage Workflow Architecture (+1)](3-multi-stage-workflow-architecture/SKILL.md)
+- [Bad: Conceptual only](bad-conceptual-only/SKILL.md)
+- [Good: Actionable](good-actionable/SKILL.md)
+- [Step 1: Define the Skill Scope (+2)](step-1-define-the-skill-scope/SKILL.md)
+- [[Task Category 1] (+1)](task-category-1/SKILL.md)
+- [Technical Skill Template](technical-skill-template/SKILL.md)
+- [Installation](installation/SKILL.md)
+- [Operation 1 (+1)](operation-1/SKILL.md)
+- [Configuration Options](configuration-options/SKILL.md)
+- [Common Errors](common-errors/SKILL.md)
+- [Step 1: [Name] (+2)](step-1-name/SKILL.md)
+- [[Template Name]](template-name/SKILL.md)
+- [Creative Skill Template](creative-skill-template/SKILL.md)
+- [Principle 1: [Name] (+1)](principle-1-name/SKILL.md)
+- [Style 1: [Name] (+1)](style-1-name/SKILL.md)
+- [Phase 1: [Name] (+1)](phase-1-name/SKILL.md)
+- [Technical Implementation](technical-implementation/SKILL.md)
+- [Quality Checklist](quality-checklist/SKILL.md)
+- [Inspiration & Examples](inspiration-examples/SKILL.md)
+- [Examples](examples/SKILL.md)
+- [Best Practices](best-practices/SKILL.md)
+- [Advanced Usage](advanced-usage/SKILL.md)
+- [Execution Checklist](execution-checklist/SKILL.md)
+- [Content Quality (+3)](content-quality/SKILL.md)
+- [Versioning](versioning/SKILL.md)
+- [Skill Discovery (+2)](skill-discovery/SKILL.md)
+- [Process Skill Template](process-skill-template/SKILL.md)
+- [[Scenario]](scenario/SKILL.md)

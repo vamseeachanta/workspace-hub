@@ -1,17 +1,19 @@
 ---
-
-
 name: github-pr-manager
-description: Comprehensive pull request management with swarm coordination for automated reviews, testing, and merge workflows. Use for PR lifecycle management, multi-reviewer coordination, conflict resolution, and intelligent branch management.
+description: Comprehensive pull request management with swarm coordination for automated
+  reviews, testing, and merge workflows. Use for PR lifecycle management, multi-reviewer
+  coordination, conflict resolution, and intelligent branch management.
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- github-pr-manager-best-practices
+- github-pr-manager-error-handling
 tags: []
 category: development
 version: 1.0.0
 ---
 
-# GitHub PR Manager Skill
+# Github Pr Manager
 
 ## Overview
 
@@ -65,7 +67,6 @@ gh pr list --state open
   priority: "high"
 })
 ```
-
 ### 2. Create and Manage PR with gh CLI
 
 ```bash
@@ -78,18 +79,8 @@ gh pr create \
   --body "## Summary
 - Added new integration
 - Updated dependencies
-- Fixed compatibility issues"
 
-# View PR details
-gh pr view 54 --json files,additions,deletions,title,body
-
-# Add reviewers
-gh pr edit 54 --add-reviewer user1,user2
-
-# Check PR status
-gh pr checks 54
-```
-
+*See sub-skills for full details.*
 ### 3. Review and Approve PR
 
 ```bash
@@ -105,7 +96,6 @@ gh pr review 54 --request-changes --body "Please address the following..."
 # Comment on PR
 gh pr comment 54 --body "Consider refactoring this section."
 ```
-
 ### 4. Merge PR with Validation
 
 ```bash
@@ -120,7 +110,6 @@ gh pr merge 54 --squash --delete-branch \
 # Merge with rebase
 gh pr merge 54 --rebase --delete-branch
 ```
-
 ### 5. Batch PR Operations
 
 ```javascript
@@ -133,15 +122,8 @@ gh pr merge 54 --rebase --delete-branch
   Bash("gh pr review 54 --repo owner/repo --approve --body '...'")
 
   // Execute tests and validation
-  Bash("npm test && npm run lint && npm run build")
 
-  // Track progress
-  TodoWrite({ todos: [
-    { id: "review", content: "Complete code review", status: "completed" },
-    { id: "test", content: "Run test suite", status: "completed" },
-    { id: "merge", content: "Merge when ready", status: "pending" }
-  ]})
-```
+*See sub-skills for full details.*
 
 ## MCP Tool Integration
 
@@ -153,7 +135,6 @@ gh pr merge 54 --rebase --delete-branch
     strategy: "balanced"
 })
 ```
-
 ### Agent Spawning
 
 ```javascript
@@ -162,7 +143,6 @@ gh pr merge 54 --rebase --delete-branch
     capabilities: ["code-review", "security-audit", "performance-check"]
 })
 ```
-
 ### Memory Coordination
 
 ```javascript
@@ -176,47 +156,7 @@ gh pr merge 54 --rebase --delete-branch
     })
 })
 
-// Retrieve PR state
-    action: "retrieve",
-    key: "pr/54/status"
-})
-```
-
-## Best Practices
-
-### 1. Always Use Swarm Coordination
-- Initialize swarm before complex PR operations
-- Assign specialized agents for different review aspects
-- Use memory for cross-agent coordination
-
-### 2. Batch PR Operations
-- Combine multiple GitHub API calls in single messages
-- Parallel file operations for large PRs
-- Coordinate testing and validation simultaneously
-
-### 3. Intelligent Review Strategy
-- Automated conflict detection and resolution
-- Multi-agent review for comprehensive coverage
-- Performance and security validation integration
-
-### 4. Progress Tracking
-- Use TodoWrite for PR milestone tracking
-- GitHub issue integration for project coordination
-- Real-time status updates through swarm memory
-
-## Error Handling
-
-### Automatic retry logic for:
-- Network failures during GitHub API calls
-- Merge conflicts with intelligent resolution
-- Test failures with automatic re-runs
-- Review bottlenecks with load balancing
-
-### Swarm coordination ensures:
-- No single point of failure
-- Automatic agent failover
-- Progress preservation across interruptions
-- Comprehensive error reporting and recovery
+*See sub-skills for full details.*
 
 ## Integration with Other Skills
 
@@ -230,14 +170,15 @@ gh pr merge 54 --rebase --delete-branch
 ## Hooks
 
 ### Pre-Task Hooks
+
 ```bash
 gh auth status || (echo 'GitHub CLI not authenticated' && exit 1)
 git status --porcelain
 gh pr list --state open --limit 1 >/dev/null || echo 'No open PRs'
 npm test --silent || echo 'Tests may need attention'
 ```
-
 ### Post-Task Hooks
+
 ```bash
 gh pr status || echo 'No active PR in current branch'
 git branch --show-current
@@ -250,3 +191,8 @@ git log --oneline -3
 ## Version History
 
 - **1.0.0** (2025-01-02): Initial release - converted from pr-manager agent
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)

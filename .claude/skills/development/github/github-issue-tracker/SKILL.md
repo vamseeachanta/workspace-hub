@@ -1,17 +1,28 @@
 ---
-
-
 name: github-issue-tracker
-description: Intelligent issue management and project coordination with automated tracking, progress monitoring, and team coordination. Use for issue creation with smart templates, progress tracking with swarm coordination, multi-agent collaboration, and cross-repository synchronization.
+description: Intelligent issue management and project coordination with automated
+  tracking, progress monitoring, and team coordination. Use for issue creation with
+  smart templates, progress tracking with swarm coordination, multi-agent collaboration,
+  and cross-repository synchronization.
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- github-issue-tracker-core-capabilities
+- github-issue-tracker-1-create-issue-with-swarm-tracking
+- github-issue-tracker-objectives
+- github-issue-tracker-3-automated-progress-updates
+- github-issue-tracker-integration-issue-template
+- github-issue-tracker-overview
+- github-issue-tracker-problem-description
+- github-issue-tracker-swarm-coordination
+- github-issue-tracker-integration-with-other-skills
+- github-issue-tracker-automatic-tracking-of
 tags: []
 category: development
 version: 1.0.0
 ---
 
-# GitHub Issue Tracker Skill
+# Github Issue Tracker
 
 ## Overview
 
@@ -45,295 +56,23 @@ gh issue close 54 --reason completed
 - Cross-repository issue synchronization
 - Automated issue labeling and organization
 
-## Core Capabilities
-
-| Capability | Description |
-|------------|-------------|
-| Smart templates | Automated issue creation with templates |
-| Progress tracking | Swarm-coordinated updates |
-| Multi-agent collaboration | Complex issue resolution |
-| Milestone coordination | Project workflow integration |
-| Cross-repo sync | Monorepo issue management |
-
-## Usage Examples
-
-### 1. Create Issue with Swarm Tracking
-
-```javascript
-// Initialize issue management swarm
-
-// Set up automated tracking
-    task: "Monitor and coordinate issue progress with automated updates",
-    strategy: "adaptive",
-    priority: "medium"
-})
-```
-
-### 2. Create Comprehensive Issue with gh CLI
-
-```bash
-gh issue create \
-  --repo owner/repo \
-  --title "Integration Review: claude-code-flow and ruv-swarm" \
-  --body "## Overview
-Comprehensive review and integration between packages.
-
-## Objectives
-- [ ] Verify dependencies and imports
-- [ ] Ensure MCP tools integration
-- [ ] Check hook system integration
-- [ ] Validate memory systems alignment
-
-## Swarm Coordination
-This issue will be managed by coordinated swarm agents." \
-  --label "integration,review,enhancement" \
-  --assignee username
-```
-
-### 3. Automated Progress Updates
-
-```javascript
-// Update issue with progress from swarm memory
-    action: "retrieve",
-    key: "issue/54/progress"
-})
-
-// Store progress
-    action: "store",
-    key: "issue/54/latest_update",
-    value: JSON.stringify({
-        timestamp: Date.now(),
-        progress: "89%",
-        status: "near_completion"
-    })
-})
-```
-
-```bash
-# Add progress comment
-gh issue comment 54 --body "## Progress Update
-
-### Completed Tasks
-- Architecture review completed
-- Dependency analysis finished
-- Integration testing verified
-
-### Current Status
-- Documentation review in progress
-- Integration score: 89% (Excellent)
-
-### Next Steps
-- Final validation and merge preparation"
-```
-
-### 4. Search and Coordinate Related Issues
-
-```bash
-# Search related issues
-gh issue list --repo owner/repo --label "integration" --state open --json number,title,labels
-
-# Update issue with milestone
-gh issue edit 54 --milestone "v1.0.0"
-
-# Add labels
-gh issue edit 54 --add-label "in-progress"
-
-# Transfer issue
-gh issue transfer 54 owner/new-repo
-```
-
-### 5. Batch Issue Operations
-
-```javascript
-[Single Message - Issue Lifecycle Management]:
-    // Initialize issue coordination swarm
-
-    // Create multiple related issues
-    Bash(`gh issue create --repo owner/repo \
-      --title "Feature: Advanced GitHub Integration" \
-      --body "Implement comprehensive GitHub workflow automation..." \
-      --label "feature,github,high-priority"`)
-
-    Bash(`gh issue create --repo owner/repo \
-      --title "Bug: PR merge conflicts" \
-      --body "Resolve merge conflicts in integration branch..." \
-      --label "bug,integration,urgent"`)
-
-    Bash(`gh issue create --repo owner/repo \
-      --title "Documentation: Update integration guides" \
-      --body "Update all documentation for new workflows..." \
-      --label "documentation,integration"`)
-
-    // Track in todos
-    TodoWrite({ todos: [
-      { id: "github-feature", content: "Implement GitHub integration", status: "pending", priority: "high" },
-      { id: "merge-conflicts", content: "Resolve PR conflicts", status: "pending", priority: "critical" },
-      { id: "docs-update", content: "Update documentation", status: "pending", priority: "medium" }
-    ]})
-
-    // Store coordination state
-        action: "store",
-        key: "project/github_integration/issues",
-        value: JSON.stringify({ created: Date.now(), total_issues: 3, status: "initialized" })
-    })
-```
-
-## Smart Issue Templates
-
-### Integration Issue Template
-
-```markdown
-## Integration Task
-
-### Overview
-[Brief description of integration requirements]
-
-### Objectives
-- [ ] Component A integration
-- [ ] Component B validation
-- [ ] Testing and verification
-- [ ] Documentation updates
-
-### Integration Areas
-
-#### Dependencies
-- [ ] Package.json updates
-- [ ] Version compatibility
-- [ ] Import statements
-
-#### Functionality
-- [ ] Core feature integration
-- [ ] API compatibility
-- [ ] Performance validation
-
-#### Testing
-- [ ] Unit tests
-- [ ] Integration tests
-- [ ] End-to-end validation
-
-### Swarm Coordination
-- **Coordinator**: Overall progress tracking
-- **Analyst**: Technical validation
-- **Tester**: Quality assurance
-- **Documenter**: Documentation updates
-```
-
-### Bug Report Template
-
-```markdown
-## Bug Report
-
-### Problem Description
-[Clear description of the issue]
-
-### Expected Behavior
-[What should happen]
-
-### Actual Behavior
-[What actually happens]
-
-### Reproduction Steps
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
-### Environment
-- Package: [package name and version]
-- Node.js: [version]
-- OS: [operating system]
-
-### Investigation Plan
-- [ ] Root cause analysis
-- [ ] Fix implementation
-- [ ] Testing and validation
-- [ ] Regression testing
-
-### Swarm Assignment
-- **Debugger**: Issue investigation
-- **Coder**: Fix implementation
-- **Tester**: Validation and testing
-```
-
-## MCP Tool Integration
-
-### Swarm Coordination
-
-```javascript
-    topology: "star",  // Central coordinator with peripheral agents
-    maxAgents: 3,
-    strategy: "adaptive"
-})
-```
-
-### Memory Management
-
-```javascript
-// Store issue state
-    action: "store",
-    key: "issue/54/state",
-    namespace: "issues",
-    value: JSON.stringify({
-        status: "in-progress",
-        assignees: ["user1"],
-        labels: ["bug", "high-priority"],
-        lastUpdate: Date.now()
-    })
-})
-
-// Search issues in memory
-    pattern: "issue/*",
-    namespace: "issues",
-    limit: 20
-})
-```
-
-## Best Practices
-
-### 1. Swarm-Coordinated Issue Management
-- Always initialize swarm for complex issues
-- Assign specialized agents based on issue type
-- Use memory for progress coordination
-
-### 2. Automated Progress Tracking
-- Regular automated updates with swarm coordination
-- Progress metrics and completion tracking
-- Cross-issue dependency management
-
-### 3. Smart Labeling and Organization
-- Consistent labeling strategy across repositories
-- Priority-based issue sorting and assignment
-- Milestone integration for project coordination
-
-### 4. Batch Issue Operations
-- Create multiple related issues simultaneously
-- Bulk updates for project-wide changes
-- Coordinated cross-repository issue management
-
-## Integration with Other Skills
-
-| Skill | Integration |
-|-------|-------------|
-| `github-pr-manager` | Link issues to pull requests |
-| `github-release-manager` | Coordinate release issues |
-| `sparc-workflow` | Complex project coordination |
-| `agent-orchestration` | Multi-agent issue resolution |
-
-## Metrics and Analytics
-
-### Automatic tracking of:
-- Issue creation and resolution times
-- Agent productivity metrics
-- Project milestone progress
-- Cross-repository coordination efficiency
-
-### Reporting features:
-- Weekly progress summaries
-- Agent performance analytics
-- Project health metrics
-- Integration success rates
-
----
-
 ## Version History
 
 - **1.0.0** (2025-01-02): Initial release - converted from issue-tracker agent
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+
+## Sub-Skills
+
+- [Core Capabilities](core-capabilities/SKILL.md)
+- [1. Create Issue with Swarm Tracking (+1)](1-create-issue-with-swarm-tracking/SKILL.md)
+- [Objectives](objectives/SKILL.md)
+- [3. Automated Progress Updates (+5)](3-automated-progress-updates/SKILL.md)
+- [Integration Issue Template](integration-issue-template/SKILL.md)
+- [Overview (+4)](overview/SKILL.md)
+- [Problem Description (+6)](problem-description/SKILL.md)
+- [Swarm Coordination (+1)](swarm-coordination/SKILL.md)
+- [Integration with Other Skills](integration-with-other-skills/SKILL.md)
+- [Automatic tracking of: (+1)](automatic-tracking-of/SKILL.md)

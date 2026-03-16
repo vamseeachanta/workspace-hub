@@ -1,5 +1,4 @@
 ---
-
 name: freecad-automation
 description: AI-powered automation agent for FreeCAD CAD operations including natural
   language processing, batch processing, parametric design, and marine engineering
@@ -26,57 +25,24 @@ capabilities:
 - failure_diagnosis
 - validation
 requires: []
-see_also: []
+see_also:
+- freecad-automation-version-metadata
+- freecad-automation-200-2026-03-16
+- freecad-automation-core-capabilities
+- freecad-automation-command-line-interface
+- freecad-automation-batch-processing-patterns
+- freecad-automation-output-formats
+- freecad-automation-swarm-coordination
+- freecad-automation-performance-metrics
+- freecad-automation-freecad-import-error
+- freecad-automation-extract-geometry-properties
+- freecad-automation-common-failures
+- freecad-automation-geometry-validation-checks
 tags: []
 scripts_exempt: true
 ---
-# FreeCAD Automation Skill
 
-AI-powered automation for FreeCAD CAD operations with natural language processing, batch processing, and marine engineering specialization.
-
-## Version Metadata
-
-```yaml
-version: 1.0.0
-python_min_version: '3.10'
-dependencies:
-  cad-engineering: '>=1.0.0,<2.0.0'
-  gmsh-meshing: '>=1.0.0,<2.0.0'
-compatibility:
-  tested_python:
-  - '3.10'
-  - '3.11'
-  - '3.12'
-  - '3.13'
-  os:
-  - Windows
-  - Linux
-  - macOS
-```
-
-## Changelog
-
-### [2.0.0] - 2026-03-16
-
-**Added:**
-- Parametric hull NURBS generation (`FreeCADHullGenerator`) with scipy fallback
-- Analytical hydrostatics via section integration (`HullHydrostatics`)
-- CalculiX FEM chain: INP writer, result parser, end-to-end pipeline (`FEMChain`)
-- STEP import and INP export in gmsh meshing module
-- Design table batch studies with multiprocessing parallelism (`DesignTable`)
-- Manifold validation for hull surfaces (`ManifoldChecker`)
-- Full round-trip: HullProfile → NURBS → STEP → gmsh → INP → CalculiX
-
-### [1.0.0] - 2026-01-07
-
-**Added:**
-- Initial version metadata and dependency management
-- Semantic versioning support
-- Compatibility information for Python 3.10-3.13
-
-**Changed:**
-- Enhanced skill documentation structure
-
+# FreeCAD Automation
 
 ## When to Use
 
@@ -88,91 +54,17 @@ compatibility:
 - Drawing generation with automatic dimensioning
 - Marine engineering hull design and hydrostatics
 - NURBS hull generation from HullProfile stations
-- CalculiX FEM structural analysis (plate-with-hole, stress concentration)
-- STEP import → volume mesh → INP export pipeline
-- Design table batch parametric studies with parallel execution
-- Manifold validation of generated hull geometry
+- CalculiX FEM structural analysis
+- STEP import / volume mesh / INP export pipeline
+- Design table batch parametric studies
 - Natural language CAD commands
 - Integration with OrcaFlex/AQWA workflows
-
-## Agent Capabilities
-
-This skill integrates agent capabilities from `/agents/freecad/`:
-
-### Core Capabilities
-- **CAD Automation**: Script-based FreeCAD operations
-- **Batch Processing**: Parallel file processing with pattern matching
-- **Parametric Design**: Design tables and parameter variations
-- **Assembly Management**: Constraint solving and assembly creation
-- **FEM Preprocessing**: Mesh generation and boundary conditions
-- **Drawing Generation**: Automatic dimensioning and views
-- **Natural Language Processing**: Convert commands to CAD operations
-- **Script Generation**: Auto-generate Python scripts from prompts
-
-### Marine Engineering Specialization
-- Hull NURBS generation from HullProfile stations (scipy fallback without FreeCAD)
-- Hydrostatic analysis: displaced volume, waterplane area, KB, BM via section integration
-- Stability calculations
-- Mooring system configuration
-- Structural analysis preprocessing
-
-### FEM Analysis (v2.0)
-- CalculiX INP file generation from gmsh mesh data
-- FRD/DAT result parsing (displacements, von Mises stress)
-- End-to-end FEM chain: geometry → mesh → solve → extract
-- Plate-with-hole Kt validation (Kt ≈ 3.0)
-
-### Design Table Studies (v2.0)
-- YAML-driven parametric sweeps (cartesian product of parameters)
-- Process-level parallelism via multiprocessing (FreeCAD not thread-safe)
-- Comparison YAML output for all variations
-- Manifold validation: watertight check, self-intersection, normal consistency
-
-### Integration Points
-- **OrcaFlex**: Data exchange for hydrodynamic analysis
-- **AQWA**: Diffraction analysis geometry
-- **Signal Analysis**: Module connectivity
-- **REST API**: External system integration
 
 ## Prerequisites
 
 - Python 3.8+
 - FreeCAD 1.0+ (November 2024 release)
 - `digitalmodel` package installed
-
-## Configuration
-
-### Agent Settings
-
-```json
-{
-  "settings": {
-    "parallel_workers": 4,
-    "max_workers": 8,
-    "cache_enabled": true,
-    "cache_size_mb": 500,
-    "auto_save": true,
-    "auto_save_interval": 300,
-    "validation_level": "strict",
-    "error_recovery": true,
-    "retry_attempts": 3,
-    "timeout_seconds": 600
-  }
-}
-```
-
-### Marine Engineering Settings
-
-```json
-{
-  "marine_engineering": {
-    "units": "metric",
-    "standards": ["DNV", "ABS", "API"],
-    "vessel_types": ["FPSO", "FSO", "FLNG", "Semi-sub", "TLP", "Spar"],
-    "analysis_types": ["stability", "mooring", "structural", "hydrodynamic"]
-  }
-}
-```
 
 ## Python API
 
@@ -181,13 +73,8 @@ This skill integrates agent capabilities from `/agents/freecad/`:
 ```python
 from digitalmodel.agents.freecad import FreeCADAgent
 
-# Initialize agent
 agent = FreeCADAgent()
-
-# Natural language operation
 result = agent.execute_prompt("Create a box 100x50x25mm with chamfered edges")
-
-# Check result
 print(f"Created: {result['object_name']}")
 print(f"Volume: {result['properties']['volume']} mm3")
 ```
@@ -195,26 +82,19 @@ print(f"Volume: {result['properties']['volume']} mm3")
 ### Batch Processing
 
 ```python
-# Batch processing with pattern matching
 results = agent.batch_process(
     pattern="*.FCStd",
     input_directory="./models",
     operation="export_step",
     parallel_workers=4
 )
-
-# Process results
-for file_name, result in results.items():
-    if result["success"]:
-        print(f"Exported: {file_name}")
-    else:
-        print(f"Failed: {file_name} - {result['error']}")
 ```
+
+*See sub-skills for full details.*
 
 ### Parametric Design
 
 ```python
-# Generate parametric variations
 agent.parametric_study(
     base_model="hull_template.FCStd",
     parameters={
@@ -227,24 +107,7 @@ agent.parametric_study(
 )
 ```
 
-### Script Generation
-
-```python
-# Generate Python script from natural language
-script = agent.generate_script(
-    "Create parametric gear with 20 teeth, module 2mm,
-     pressure angle 20 degrees, exportable to STEP"
-)
-
-# Save script
-with open("gear_generator.py", "w") as f:
-    f.write(script)
-
-# Execute script
-exec(script)
-```
-
-### Hull Generation + Hydrostatics (WRK-1251 Child A)
+### Hull Generation + Hydrostatics
 
 ```python
 from digitalmodel.hydrodynamics.hull_library.profile_schema import (
@@ -252,443 +115,31 @@ from digitalmodel.hydrodynamics.hull_library.profile_schema import (
 )
 from digitalmodel.visualization.design_tools.freecad_hull import FreeCADHullGenerator
 from digitalmodel.visualization.design_tools.hull_hydrostatics import HullHydrostatics
-
-# Define hull from stations (or load from YAML)
-profile = HullProfile(
-    name="tanker_100m", hull_type=HullType.TANKER,
-    length_bp=100.0, beam=20.0, draft=8.0, depth=12.0,
-    block_coefficient=0.7, source="parametric",
-    stations=[...],  # HullStation list
-)
-
-# Generate NURBS surface (scipy fallback if FreeCAD unavailable)
-gen = FreeCADHullGenerator(profile)
-surface = gen.generate_nurbs_surface()
-# surface['surface_points'] = np.ndarray (n_stations × n_waterlines × 3)
-
-# Compute hydrostatics via section integration
-hydro = HullHydrostatics(profile)
-results = hydro.compute_all()
-# results = {'displaced_volume': 11200.0, 'displacement': 11480.0,
-#   'waterplane_area': 1700.0, 'kb': 4.8, 'bm_transverse': 5.06, ...}
 ```
 
-### FEM Analysis Chain — CalculiX (WRK-1251 Child B)
+*See sub-skills for full details.*
+
+### FEM Analysis Chain (CalculiX)
 
 ```python
 from digitalmodel.solvers.calculix import FEMChain, INPWriter
 
-# Quick validation: plate-with-hole Kt ≈ 3.0
 chain = FEMChain(work_dir=Path("/tmp/fem"))
 result = chain.run_plate_validation(sigma_applied=100.0)
-# result['kt'] ≈ 3.0 within 5%
-
-# Manual INP writing for custom geometry
-import numpy as np
-nodes = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
-elements = {'Tetrahedron 4': {'connectivity': np.array([[0,1,2,3]]), 'dimension': 3}}
-writer = INPWriter(nodes, elements)
-writer.add_material("STEEL", youngs_modulus=210000.0, poissons_ratio=0.3)
-writer.add_step(step_type="static")
-writer.write(Path("analysis.inp"))
-# Run: ccx analysis
+# result['kt'] ~ 3.0 within 5%
 ```
 
-### STEP Import → Mesh → INP Export (WRK-1251 Child C)
+*See sub-skills for full details.*
+
+### STEP Import / Mesh / INP Export
 
 ```python
 from digitalmodel.solvers.gmsh_meshing import GMSHMeshGenerator
 
 with GMSHMeshGenerator() as gen:
-    # Import STEP, mesh, export INP — one pipeline
     mesh = gen.generate_mesh_from_step("hull.step", element_size=0.5)
     gen.export_mesh_inp("hull.inp", title="Hull FEM model")
-
-    # Or create test geometry directly
-    gen.create_step_geometry("box", "test.step", dimensions=(10, 5, 2))
 ```
-
-### Design Table Batch Studies (WRK-1251 Child D)
-
-```python
-from digitalmodel.visualization.design_tools.design_table import DesignTable
-from digitalmodel.visualization.design_tools.manifold_check import ManifoldChecker
-
-# Parametric sweep from YAML config
-table = DesignTable.from_yaml(Path("study.yaml"), base_profile=profile)
-# study.yaml: parameters: {length_bp: [90,100,110], beam: [18,20,22]}
-
-# Or add parameters programmatically
-table = DesignTable(base_profile=profile)
-table.add_parameter("length_bp", [90.0, 100.0, 110.0])
-table.add_parameter("beam", [18.0, 20.0, 22.0])
-
-# Generate all variations and run hydrostatics (parallel via multiprocessing)
-variations = table.generate_variations()  # 9 HullProfile instances
-results = table.run_batch_hydrostatics(parallel=True)
-table.export_results_yaml(Path("comparison.yaml"))
-
-# Round-trip manifold validation
-gen = FreeCADHullGenerator(profile)
-surface = gen.generate_nurbs_surface()
-checker = ManifoldChecker(surface['surface_points'])
-report = checker.run_all_checks()
-# report = {'watertight': True, 'no_self_intersection': True, 'normals_consistent': True, 'passed': True}
-```
-
-## Command Line Interface
-
-```bash
-# Show capabilities
-python run_freecad_agent.py --show-capabilities
-
-# Process single file
-python run_freecad_agent.py --file model.FCStd --operation "add fillet radius 5mm"
-
-# Batch processing
-python run_freecad_agent.py \
-    --pattern "*.FCStd" \
-    --input-directory ./models \
-    --output-directory ./exports \
-    --parallel 4
-
-# Natural language command
-python run_freecad_agent.py \
-    --prompt "Create a hull with 150m length and 25m beam"
-```
-
-## Batch Processing Patterns
-
-| Pattern | Description |
-|---------|-------------|
-| `*.FCStd` | All FreeCAD files |
-| `*_asm.FCStd` | Assembly files |
-| `*_part.FCStd` | Part files |
-| `*_drw.FCStd` | Drawing files |
-
-## Output Formats
-
-Supported export formats:
-- **STEP** - Standard for CAD exchange
-- **IGES** - Legacy CAD exchange
-- **STL** - 3D printing, mesh applications
-- **DXF** - 2D drawings
-- **PDF** - Technical documentation
-
-## MCP Tool Integration
-
-### Swarm Coordination
-```javascript
-// Initialize CAD processing swarm
-mcp__claude-flow__swarm_init { topology: "star", maxAgents: 4 }
-
-// Spawn specialized agents
-mcp__claude-flow__agent_spawn { type: "coder", name: "freecad-automator" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "geometry-validator" }
-```
-
-### Memory Coordination
-```javascript
-// Store CAD operation status
-mcp__claude-flow__memory_usage {
-  action: "store",
-  key: "freecad/batch/status",
-  namespace: "cad",
-  value: JSON.stringify({
-    operation: "batch_export",
-    files_processed: 45,
-    files_total: 100,
-    format: "STEP"
-  })
-}
-
-// Share geometry with analysis agents
-mcp__claude-flow__memory_usage {
-  action: "store",
-  key: "freecad/geometry/hull",
-  namespace: "shared",
-  value: JSON.stringify({
-    file: "hull_panels.dat",
-    panels: 5000,
-    ready_for_analysis: true
-  })
-}
-```
-
-## Performance Metrics
-
-| Metric | Value |
-|--------|-------|
-| Batch Processing | Up to 5x faster than sequential |
-| Memory Optimization | Efficient large assembly handling |
-| Error Recovery | Automatic retry with exponential backoff |
-| Caching | Intelligent operation caching |
-
-## Error Handling
-
-### FreeCAD Import Error
-```python
-# Add FreeCAD to Python path
-import sys
-sys.path.append('/path/to/FreeCAD/lib')
-```
-
-### Memory Issues
-```python
-# Reduce parallel workers for large files
-agent = FreeCADAgent(config={
-    "settings": {
-        "parallel_workers": 2,
-        "memory_limit_mb": 2048
-    }
-})
-```
-
-## Output Parsing
-
-### Extract Geometry Properties
-
-```python
-import FreeCAD
-import Part
-
-def extract_geometry_properties(doc_path):
-    """Extract geometric properties from FreeCAD document."""
-    doc = FreeCAD.openDocument(doc_path)
-    results = {}
-
-    for obj in doc.Objects:
-        if hasattr(obj, 'Shape') and obj.Shape:
-            shape = obj.Shape
-            results[obj.Name] = {
-                "type": obj.TypeId,
-                "volume_mm3": shape.Volume if hasattr(shape, 'Volume') else None,
-                "area_mm2": shape.Area if hasattr(shape, 'Area') else None,
-                "center_of_mass": tuple(shape.CenterOfMass) if shape.Volume > 0 else None,
-                "bounding_box": {
-                    "min": (shape.BoundBox.XMin, shape.BoundBox.YMin, shape.BoundBox.ZMin),
-                    "max": (shape.BoundBox.XMax, shape.BoundBox.YMax, shape.BoundBox.ZMax),
-                },
-                "is_valid": shape.isValid(),
-            }
-
-    FreeCAD.closeDocument(doc.Name)
-    return results
-```
-
-### Export Formats and CLI
-
-```bash
-# Export STEP from command line
-freecadcmd -c "
-import FreeCAD, Part
-doc = FreeCAD.openDocument('model.FCStd')
-Part.export(doc.Objects, 'output.step')
-"
-
-# Export STL
-freecadcmd -c "
-import FreeCAD, Mesh
-doc = FreeCAD.openDocument('model.FCStd')
-Mesh.export(doc.Objects, 'output.stl')
-"
-```
-
-### Parse STEP/IGES Output Metadata
-
-```python
-import Part
-
-def parse_export_stats(export_path):
-    """Parse exported file and return statistics."""
-    shape = Part.read(export_path)
-    return {
-        "solids": len(shape.Solids),
-        "shells": len(shape.Shells),
-        "faces": len(shape.Faces),
-        "edges": len(shape.Edges),
-        "vertices": len(shape.Vertexes),
-        "volume_mm3": shape.Volume,
-        "bounding_box_mm": {
-            "x": shape.BoundBox.XLength,
-            "y": shape.BoundBox.YLength,
-            "z": shape.BoundBox.ZLength,
-        },
-    }
-```
-
-## Failure Diagnosis
-
-### Common Failures
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `ModuleNotFoundError: No module named 'FreeCAD'` | FreeCAD not in Python path | Add to path: `sys.path.append('/usr/lib/freecad-daily/lib')` or use `freecadcmd` |
-| `FreeCAD.openDocument(): file not found` | Wrong path or .FCStd corrupted | Check path; try opening in GUI first |
-| `Part.BRepBuilderAPI: shape is not valid` | Invalid geometry (self-intersection) | Run `shape.fix(0.1, 0.1, 0.1)` or simplify geometry |
-| `Mesh export produces 0-byte STL` | No mesh-compatible objects | Ensure objects have Shape; use Part before Mesh export |
-| `Boolean operation failed` | Overlapping/touching geometry | Add small offset (0.01mm) between bodies; check geometry validity |
-| `Recompute failed` | Sketches over-/under-constrained | Check `obj.Shape.isValid()` and sketch DOF count |
-| `ImportError: No module named 'FreeCADGui'` | Running headless without GUI module (FreeCAD < 0.21) | FreeCAD ≥ 0.21: `freecadcmd` includes FreeCADGui (no-op window); safe to import. FreeCAD < 0.21: use `freecadcmd` and avoid Gui-dependent operations |
-
-### Diagnostic Function
-
-```python
-import FreeCAD
-
-def diagnose_freecad_model(doc_path):
-    """Diagnose common FreeCAD model issues."""
-    diag = {"issues": [], "warnings": [], "info": []}
-
-    try:
-        doc = FreeCAD.openDocument(doc_path)
-    except Exception as e:
-        diag["issues"].append(f"Cannot open document: {e}")
-        return diag
-
-    diag["info"].append(f"FreeCAD {FreeCAD.Version()[0]}.{FreeCAD.Version()[1]}")
-    diag["info"].append(f"Objects: {len(doc.Objects)}")
-
-    for obj in doc.Objects:
-        # Check for invalid shapes
-        if hasattr(obj, 'Shape'):
-            if not obj.Shape.isValid():
-                diag["issues"].append(f"{obj.Name}: invalid shape (self-intersection or gap)")
-
-            if obj.Shape.Volume < 0:
-                diag["warnings"].append(f"{obj.Name}: negative volume (inverted normals)")
-
-        # Check for failed features
-        if hasattr(obj, 'isValid') and not obj.isValid():
-            diag["issues"].append(f"{obj.Name}: feature marked invalid — needs recompute")
-
-        # Check sketches
-        if obj.TypeId == 'Sketcher::SketchObject':
-            dof = obj.solve()
-            if dof > 0:
-                diag["warnings"].append(f"{obj.Name}: {dof} unconstrained DOF")
-            elif dof < 0:
-                diag["issues"].append(f"{obj.Name}: over-constrained sketch")
-
-    FreeCAD.closeDocument(doc.Name)
-    return diag
-```
-
-### Headless Execution Troubleshooting
-
-```bash
-# FreeCAD headless (no GUI)
-freecadcmd script.py
-
-# If freecadcmd not found, use full path
-/usr/bin/freecadcmd script.py
-
-# Alternative: use FreeCAD with -c flag
-freecad -c "exec(open('script.py').read())"
-
-# Check FreeCAD Python path
-python3 -c "import sys; sys.path.append('/usr/lib/freecad-daily/lib'); import FreeCAD; print(FreeCAD.Version())"
-```
-
-> **Note (FreeCAD ≥ 0.21):** `freecadcmd` includes `FreeCADGui` as a no-op stub — `import FreeCADGui` succeeds but GUI operations are non-functional. Safe to use in scripts that conditionally check for GUI availability.
-
-## Validation
-
-### Geometry Validation Checks
-
-```python
-def validate_geometry(doc_path, expected=None):
-    """Validate FreeCAD geometry against expected parameters."""
-    import FreeCAD
-    import Part
-
-    checks = {"passed": True, "issues": []}
-    doc = FreeCAD.openDocument(doc_path)
-
-    for obj in doc.Objects:
-        if not hasattr(obj, 'Shape'):
-            continue
-
-        shape = obj.Shape
-
-        # Shape validity
-        if not shape.isValid():
-            checks["issues"].append(f"{obj.Name}: invalid shape")
-            checks["passed"] = False
-
-        # Check for zero-volume solids
-        if shape.ShapeType == 'Solid' and shape.Volume < 1e-6:
-            checks["issues"].append(f"{obj.Name}: zero-volume solid")
-            checks["passed"] = False
-
-        # Check for degenerate faces
-        for i, face in enumerate(shape.Faces):
-            if face.Area < 1e-8:
-                checks["issues"].append(f"{obj.Name}: degenerate face #{i}")
-
-    # Compare against expected values
-    if expected:
-        total_volume = sum(
-            obj.Shape.Volume for obj in doc.Objects
-            if hasattr(obj, 'Shape') and obj.Shape.Volume > 0
-        )
-        if expected.get('volume_mm3'):
-            ratio = total_volume / expected['volume_mm3']
-            if abs(ratio - 1.0) > 0.05:
-                checks["issues"].append(
-                    f"Volume {total_volume:.1f} mm3 vs expected {expected['volume_mm3']:.1f} "
-                    f"(diff {abs(ratio-1)*100:.1f}%)"
-                )
-                checks["passed"] = False
-
-    FreeCAD.closeDocument(doc.Name)
-    return checks
-```
-
-### Export Round-Trip Validation
-
-```python
-def validate_step_export(original_fcstd, exported_step):
-    """Validate STEP export by comparing with original."""
-    import FreeCAD
-    import Part
-
-    # Read original
-    doc = FreeCAD.openDocument(original_fcstd)
-    original_volume = sum(
-        o.Shape.Volume for o in doc.Objects if hasattr(o, 'Shape') and o.Shape.Volume > 0
-    )
-    original_faces = sum(
-        len(o.Shape.Faces) for o in doc.Objects if hasattr(o, 'Shape')
-    )
-    FreeCAD.closeDocument(doc.Name)
-
-    # Read exported
-    exported_shape = Part.read(exported_step)
-    exported_volume = exported_shape.Volume
-    exported_faces = len(exported_shape.Faces)
-
-    checks = {"passed": True, "issues": []}
-
-    vol_diff = abs(original_volume - exported_volume) / max(original_volume, 1e-10)
-    if vol_diff > 0.01:
-        checks["issues"].append(f"Volume diff {vol_diff*100:.2f}% (original={original_volume:.1f}, exported={exported_volume:.1f})")
-        checks["passed"] = False
-
-    checks["original_volume"] = original_volume
-    checks["exported_volume"] = exported_volume
-    checks["original_faces"] = original_faces
-    checks["exported_faces"] = exported_faces
-    return checks
-```
-
-| Check | Threshold | Action |
-|-------|-----------|--------|
-| Shape validity | `isValid() == True` | Fix with `shape.fix()` or rebuild |
-| Volume | Non-zero for solids | Check boolean operations |
-| Export volume match | < 1% difference | Check export settings (tolerance) |
-| Sketch constraints | DOF == 0 | Add missing constraints |
-| Bounding box | Within expected range | Check units (mm vs m) |
 
 ## Related Skills
 
@@ -701,12 +152,25 @@ def validate_step_export(original_fcstd, exported_step):
 
 - FreeCAD Documentation: https://wiki.freecad.org/
 - FreeCAD Python API: https://wiki.freecad.org/Python_scripting_tutorial
-- Agent Configuration: `agents/freecad/agent_config.json`
-
----
 
 ## Version History
 
-- **2.0.0** (2026-03-16): Added parametric hull NURBS generation, hydrostatic analysis, CalculiX FEM chain, STEP/INP pipeline, design table batch studies, manifold validation (WRK-1251)
-- **1.1.0** (2026-02-24): Added output parsing, failure diagnosis, and validation sections; fixed FreeCADGui availability in freecadcmd ≥ 0.21 (WRK-372 P2-ENHANCE, validated 35/36→36/36)
-- **1.0.0** (2025-01-02): Initial release from agents/freecad/ configuration
+- **2.0.0** (2026-03-16): Hull NURBS generation, hydrostatics, CalculiX FEM, STEP/INP pipeline, design tables (WRK-1251)
+- **1.1.0** (2026-02-24): Output parsing, failure diagnosis, validation (WRK-372)
+- **1.0.0** (2025-01-02): Initial release
+
+## Sub-Skills
+
+- [Agent Settings (+1)](agent-settings/SKILL.md)
+- [Version Metadata](version-metadata/SKILL.md)
+- [[2.0.0] - 2026-03-16 (+1)](200-2026-03-16/SKILL.md)
+- [Core Capabilities (+4)](core-capabilities/SKILL.md)
+- [Command Line Interface](command-line-interface/SKILL.md)
+- [Batch Processing Patterns](batch-processing-patterns/SKILL.md)
+- [Output Formats](output-formats/SKILL.md)
+- [Swarm Coordination (+1)](swarm-coordination/SKILL.md)
+- [Performance Metrics](performance-metrics/SKILL.md)
+- [FreeCAD Import Error (+1)](freecad-import-error/SKILL.md)
+- [Extract Geometry Properties (+2)](extract-geometry-properties/SKILL.md)
+- [Common Failures (+2)](common-failures/SKILL.md)
+- [Geometry Validation Checks (+1)](geometry-validation-checks/SKILL.md)

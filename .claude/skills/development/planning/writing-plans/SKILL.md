@@ -13,11 +13,14 @@ related_skills:
 - subagent-driven
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- writing-plans-best-practices
+- writing-plans-error-handling
+- writing-plans-metrics
 tags: []
 ---
 
-# Writing Plans Skill
+# Writing Plans
 
 ## Overview
 
@@ -47,7 +50,6 @@ This skill guides creating detailed implementation plans for multi-step developm
 - **YAGNI** - You Aren't Gonna Need It: only what's needed now
 - **TDD** - Test-Driven Development: tests before code
 - **Frequent Commits** - Checkpoint progress regularly
-
 ### Assumptions
 
 - Developer is skilled but unfamiliar with specific toolset
@@ -63,20 +65,23 @@ This skill guides creating detailed implementation plans for multi-step developm
 # Implementation Plan: [Feature Name]
 
 ## Goal
+
 [One sentence describing the outcome]
 
 ## Architecture
+
 [Brief description of how this fits into the system]
 
 ## Tech Stack
+
 - Language: [language]
 - Framework: [framework]
 - Testing: [test framework]
 - Dependencies: [key dependencies]
 
 ## Tasks
-```
 
+```
 ### Task Format
 
 Each task specifies:
@@ -87,7 +92,6 @@ Each task specifies:
    - Implement minimal code
    - Verify test passes
    - Commit changes
-
 ### Task Template
 
 ```markdown
@@ -103,35 +107,8 @@ Each task specifies:
 // path/to/test/file.test.ts
 describe('FeatureName', () => {
   it('should do expected behavior', () => {
-    // Complete test code
-  });
-});
-\`\`\`
 
-**Step 2: Verify test failure**
-\`\`\`bash
-npm test -- --grep "should do expected behavior"
-# Expected: FAIL - Cannot find module 'path/to/file'
-\`\`\`
-
-**Step 3: Implement minimal code**
-\`\`\`typescript
-// path/to/file.ts
-// Complete implementation code
-\`\`\`
-
-**Step 4: Verify test passes**
-\`\`\`bash
-npm test -- --grep "should do expected behavior"
-# Expected: PASS
-\`\`\`
-
-**Step 5: Commit**
-\`\`\`bash
-git add .
-git commit -m "feat: add expected behavior for FeatureName"
-\`\`\`
-```
+*See sub-skills for full details.*
 
 ## Task Granularity
 
@@ -142,7 +119,6 @@ git commit -m "feat: add expected behavior for FeatureName"
 | "Implement authentication" | "Add password validation function" | "Add semicolon" |
 | "Build API endpoints" | "Create POST /users endpoint" | "Import express" |
 | "Write tests" | "Test user creation happy path" | "Add describe block" |
-
 ### Splitting Large Tasks
 
 If a task takes longer than 5 minutes:
@@ -160,7 +136,6 @@ If a task takes longer than 5 minutes:
 - Type definitions (if TypeScript)
 - Error handling
 - Comments for non-obvious logic
-
 ### Don't Include
 
 - Placeholder comments (`// TODO: implement`)
@@ -171,13 +146,11 @@ If a task takes longer than 5 minutes:
 ## Execution Handoff
 
 After completing the plan, offer two approaches:
-
 ### Option 1: Subagent-Driven
 
 Fresh subagent per task in current session.
 - Best for: Independent tasks, staying in context
 - Uses: subagent-driven skill
-
 ### Option 2: Parallel Session
 
 Separate session using executing-plans skill.
@@ -195,44 +168,6 @@ Before presenting plan:
 - [ ] Commits are atomic and descriptive
 - [ ] Dependencies between tasks are clear
 
-## Best Practices
-
-### Do
-
-1. Start with the goal, not the tasks
-2. Order tasks by dependency
-3. Include rollback strategies for risky changes
-4. Reference existing patterns in codebase
-5. Use consistent naming conventions
-6. Group related tasks logically
-
-### Don't
-
-1. Write vague task descriptions
-2. Skip the test-first steps
-3. Combine unrelated changes
-4. Assume prior knowledge
-5. Leave out error scenarios
-6. Make tasks too big or too small
-
-## Error Handling
-
-| Situation | Action |
-|-----------|--------|
-| Unclear requirements | Return to brainstorming skill |
-| Task too complex | Split into smaller tasks |
-| Dependency discovered | Add prerequisite task |
-| Plan exceeds scope | Document out-of-scope items |
-
-## Metrics
-
-| Metric | Target | Description |
-|--------|--------|-------------|
-| Task completion rate | >95% | Tasks completable as written |
-| Average task time | 2-5 min | Granular but meaningful |
-| Rework rate | <10% | Tasks needing revision |
-| Test coverage | 100% | Every task has tests |
-
 ## Related Skills
 
 - [tdd-obra](../tdd-obra/SKILL.md) - Test-first methodology
@@ -245,3 +180,9 @@ Before presenting plan:
 ## Version History
 
 - **1.0.0** (2026-01-19): Initial release adapted from obra/superpowers
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)

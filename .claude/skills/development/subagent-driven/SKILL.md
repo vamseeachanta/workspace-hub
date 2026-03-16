@@ -12,11 +12,14 @@ related_skills:
 - code-reviewer
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- subagent-driven-best-practices
+- subagent-driven-error-handling
+- subagent-driven-metrics
 tags: []
 ---
 
-# Subagent-Driven Development Skill
+# Subagent Driven
 
 ## Overview
 
@@ -63,6 +66,7 @@ Plan → [Task 1] → Implement → Spec Review → Quality Review → ✓
 Extract all tasks with full context:
 
 ```markdown
+
 ## Task Extraction
 
 From plan, create TodoWrite entries:
@@ -72,7 +76,6 @@ From plan, create TodoWrite entries:
 ```
 
 **Important:** Provide extracted text to subagents, don't make them read plan files.
-
 ### Step 2: Per-Task Execution
 
 For each task:
@@ -86,80 +89,7 @@ Implement the following task:
 
 [Complete task text from plan]
 
-Requirements:
-- Follow TDD: write test first, verify failure, implement, verify pass
-- Make atomic commits
-- Self-review before signaling completion
-- Ask clarifying questions if needed
-
-Signal completion with summary of:
-- Files changed
-- Tests added/modified
-- Any deviations from plan
-```
-
-#### 2b. Handle Clarifications
-
-If implementer asks questions:
-- Answer before implementation begins
-- Don't let implementer proceed with assumptions
-- Document answers for future reference
-
-#### 2c. Spec Compliance Review
-
-```markdown
-**Spec Reviewer Subagent Prompt:**
-
-Review the implementation for specification compliance:
-
-**Original task spec:**
-[Task text from plan]
-
-**Changes made:**
-[Summary from implementer]
-
-Verify:
-- [ ] All requirements from spec implemented
-- [ ] No requirements missed
-- [ ] No extra features added (YAGNI)
-- [ ] Implementation matches described approach
-
-Report: PASS or FAIL with specific issues
-```
-
-If FAIL: Fix issues, re-run spec review.
-
-#### 2d. Code Quality Review
-
-Only after spec review passes:
-
-```markdown
-**Quality Reviewer Subagent Prompt:**
-
-Review the implementation for code quality:
-
-**Files changed:**
-[List of files]
-
-Review for:
-- [ ] Code clarity and readability
-- [ ] Error handling
-- [ ] Test coverage and quality
-- [ ] Performance considerations
-- [ ] Security implications
-- [ ] Adherence to project conventions
-
-Report: PASS or FAIL with specific issues
-```
-
-If FAIL: Fix issues, re-run quality review.
-
-#### 2e. Mark Complete
-
-After both reviews pass:
-- Mark task as complete in TodoWrite
-- Move to next task
-
+*See sub-skills for full details.*
 ### Step 3: Final Review
 
 After all tasks complete:
@@ -172,19 +102,8 @@ Conduct comprehensive code review of all changes:
 **Tasks completed:**
 [List of all tasks]
 
-**Files modified:**
-[Complete file list]
 
-Review for:
-- [ ] Overall architectural coherence
-- [ ] Cross-task consistency
-- [ ] Integration correctness
-- [ ] Complete test coverage
-- [ ] Documentation completeness
-
-Report: PASS or specific issues to address
-```
-
+*See sub-skills for full details.*
 ### Step 4: Completion
 
 Use finishing-a-development-branch skill:
@@ -202,7 +121,6 @@ Use finishing-a-development-branch skill:
 - Make subagents read plan files directly
 - Accept reviews with unresolved issues
 - Continue to next task before current passes both reviews
-
 ### Always
 
 - Provide extracted text to subagents
@@ -224,45 +142,6 @@ Spec first because:
 - Requirements drive design decisions
 - Quality review assumes correct functionality
 
-## Best Practices
-
-### Do
-
-1. Extract complete task context
-2. Include expected outcomes in implementer prompt
-3. Be specific in review criteria
-4. Fix issues immediately when found
-5. Keep TodoWrite updated
-6. Document any plan deviations
-
-### Don't
-
-1. Rush through reviews
-2. Batch multiple tasks before review
-3. Skip re-review after fixes
-4. Let implementer guess at requirements
-5. Accept "mostly passing" reviews
-6. Proceed with unresolved questions
-
-## Error Handling
-
-| Situation | Action |
-|-----------|--------|
-| Implementer asks question | Answer fully, then proceed |
-| Spec review fails | Fix specific issues, re-review |
-| Quality review fails | Fix specific issues, re-review |
-| Task blocked by dependency | Complete dependency first |
-| Plan needs revision | Update plan, re-extract tasks |
-
-## Metrics
-
-| Metric | Target | Description |
-|--------|--------|-------------|
-| First-pass spec compliance | >80% | Tasks passing spec review first time |
-| First-pass quality | >70% | Tasks passing quality review first time |
-| Re-review cycles | <2 | Average re-reviews per task |
-| Task completion rate | 100% | Tasks completed as planned |
-
 ## Related Skills
 
 - [writing-plans](../planning/writing-plans/SKILL.md) - Create implementation plans
@@ -275,3 +154,9 @@ Spec first because:
 ## Version History
 
 - **1.0.0** (2026-01-19): Initial release adapted from obra/superpowers
+
+## Sub-Skills
+
+- [Best Practices](best-practices/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)

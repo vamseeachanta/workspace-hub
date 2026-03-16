@@ -1,35 +1,15 @@
 ---
 name: context-management
-version: "2.0.0"
+version: 2.0.0
 category: coordination
-description: "Manage Claude context files, enforce size limits, and continuously improve workspace CLAUDE.md files based on work patterns."
+description: Manage Claude context files, enforce size limits, and continuously improve
+  workspace CLAUDE.md files based on work patterns.
 tags: []
+see_also:
+- context-management-quick-reference
 ---
 
-# Context Management Skill
-
-> Version: 2.0.0
-> Created: 2026-01-14
-> Updated: 2026-01-18
-> Purpose: Manage context files, enforce limits, and continuously improve based on work patterns
-
-## Quick Reference
-
-```
-CLAUDE.md Limits:
-- Global (~/.claude/CLAUDE.md): 2KB max
-- Workspace CLAUDE.md: 4KB max
-- Project CLAUDE.md: 8KB max
-- CLAUDE.local.md: 2KB max
-- Total Active: 16KB (~4K tokens)
-
-Runtime Context:
-- %ctx = (current_tokens / 200000) * 100
-- Alert: >60% = archive older exchanges
-- Critical: >80% = trim to essentials only
-```
-
----
+# Context Management
 
 ## Part 1: Context File Management
 
@@ -41,7 +21,6 @@ Runtime Context:
 | Workspace `CLAUDE.md` | 4KB | 100 | Delegation patterns |
 | Project `CLAUDE.md` | 8KB | 200 | Project rules |
 | `CLAUDE.local.md` | 2KB | 50 | User overrides |
-
 ### Validation Command
 
 ```bash
@@ -51,7 +30,6 @@ Runtime Context:
 # Check single repo
 ./scripts/context/validate_context.sh digitalmodel
 ```
-
 ### Content Categories
 
 **MUST be in CLAUDE.md:**
@@ -67,7 +45,6 @@ Runtime Context:
 - Execution workflow diagrams
 - Code examples and patterns
 - Memory namespace details
-
 ### Automated Improvement
 
 The skill analyzes past work to suggest improvements:
@@ -93,7 +70,6 @@ The skill analyzes past work to suggest improvements:
 ```
 STATUS: [complete|in_progress|blocked] | NEXT: [action] | KEY: [metrics]
 ```
-
 ### Prohibited Actions
 
 1. **No Echo**: Never repeat input data back
@@ -101,7 +77,6 @@ STATUS: [complete|in_progress|blocked] | NEXT: [action] | KEY: [metrics]
 3. **No Over-Explanation**: Keep explanations ≤3 sentences
 4. **No Raw Content**: Use file paths instead of pasting
 5. **No Unbounded Lists**: Always cap with "and N more..."
-
 ### Context Health Indicators
 
 | %ctx | Status | Action |
@@ -110,7 +85,6 @@ STATUS: [complete|in_progress|blocked] | NEXT: [action] | KEY: [metrics]
 | 40-60% | 🟡 Elevated | Consider summarizing |
 | 60-80% | 🟠 High | Archive older exchanges |
 | 80-100% | 🔴 Critical | Trim to essentials |
-
 ### Recovery Patterns
 
 When context exceeds threshold:
@@ -135,13 +109,8 @@ patterns:
     - ".claude/docs/execution-patterns.md"  # 32 loads
   rarely_used:
     - "verbose section X"  # 0 references in 30 days
-  suggested_additions:
-    - "Add shortcut for OrcaFlex batch processing"
-improvement_suggestions:
-  - "Move agent list to reference doc (saves 1.5KB)"
-  - "Consolidate duplicate file org rules"
-```
 
+*See sub-skills for full details.*
 ### Daily Analysis Tasks
 
 1. **Size Check**: Validate all CLAUDE.md files against limits
@@ -149,7 +118,6 @@ improvement_suggestions:
 3. **Usage Tracking**: Check which docs were loaded
 4. **Suggestion Generation**: Create improvement proposals
 5. **Report Generation**: Output daily health report
-
 ### Improvement Workflow
 
 ```
@@ -170,19 +138,16 @@ improvement_suggestions:
 Location: `scripts/context/validate_context.sh`
 
 Validates context file sizes and generates report.
-
 ### analyze_patterns.sh
 
 Location: `scripts/context/analyze_patterns.sh`
 
 Analyzes git history to identify instruction patterns.
-
 ### improve_context.sh
 
 Location: `scripts/context/improve_context.sh`
 
 Applies approved improvements to context files.
-
 ### daily_context_check.sh
 
 Location: `scripts/context/daily_context_check.sh`
@@ -199,7 +164,6 @@ Task: `ContextManagementDaily`
 Schedule: Daily at 6:00 AM
 Action: `scripts/context/daily_context_check.sh`
 Output: `.claude/reports/context-health-YYYY-MM-DD.md`
-
 ### Setup Command
 
 ```powershell
@@ -214,3 +178,7 @@ schtasks /create /tn "ContextManagementDaily" /tr "D:\workspace-hub\scripts\cont
 - **2.0.0** (2026-01-18): Add file management, continuous improvement, scheduled tasks
 - **1.1.0** (2026-01-17): Add recovery patterns, auto-archive triggers
 - **1.0.0** (2026-01-14): Initial context management skill
+
+## Sub-Skills
+
+- [Quick Reference](quick-reference/SKILL.md)

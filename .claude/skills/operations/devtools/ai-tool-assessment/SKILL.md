@@ -10,14 +10,16 @@ related_skills:
 - session-start
 capabilities: []
 requires: []
-see_also: []
+see_also:
+- ai-tool-assessment-execution-checklist
+- ai-tool-assessment-error-handling
+- ai-tool-assessment-metrics
+- ai-tool-assessment-best-practices
 tags: []
 scripts_exempt: true
 ---
 
-# AI Tool Usage Assessment
-
-Assess and report on AI tool subscriptions, usage patterns, and cost-effectiveness.
+# Ai Tool Assessment
 
 ## Overview
 
@@ -54,7 +56,6 @@ User asks to assess AI tools, review AI subscriptions, or analyze AI tool usage.
 ## Instructions
 
 When triggered, perform the following assessment:
-
 ### 1. Subscription Inventory
 
 Review current paid memberships from `docs/AI_development_tools.md`:
@@ -66,7 +67,6 @@ Review current paid memberships from `docs/AI_development_tools.md`:
 | Google AI | Pro | $19.99 | $239.88 |
 | GitHub Copilot | Pro | $8.88/mo | $106.60 |
 | **TOTAL** | | **$156.75** | **$1,881.04** |
-
 ### 2. Tool Usage Analysis
 
 Assess each tool category:
@@ -81,7 +81,6 @@ Assess each tool category:
 - Claude-flow: Multi-agent orchestration
 - Factory.ai: Automated droids for CI/CD
 - Google Antigravity: Agent-first IDE (in evaluation)
-
 ### 3. Generate Assessment Report
 
 Create report at `reports/ai-tool-assessment/assessment-YYYYMMDD.md` with:
@@ -90,34 +89,40 @@ Create report at `reports/ai-tool-assessment/assessment-YYYYMMDD.md` with:
 # AI Tool Usage Assessment - [DATE]
 
 ## Executive Summary
+
 - Total monthly spend: $X
 - Primary tools in active use: [list]
 - Tools underutilized: [list]
 - Recommended actions: [list]
 
 ## Subscription Status
+
 [Table of all subscriptions with renewal dates if known]
 
 ## Usage Patterns
+
 [Analysis of which tools are used for what purposes]
 
 ## Cost-Effectiveness Analysis
+
 | Tool | Cost/Month | Usage Level | Value Rating |
 |------|------------|-------------|--------------|
 | ... | ... | High/Medium/Low | 1-5 stars |
 
 ## Overlap Analysis
+
 [Identify redundant capabilities across tools]
 
 ## Recommendations
+
 1. [Keep/Cancel/Downgrade recommendations]
 2. [Usage optimization suggestions]
 3. [New tools to consider]
 
 ## Next Review Date
+
 [Set quarterly review schedule]
 ```
-
 ### 4. Questions to Ask User
 
 Before generating report, ask:
@@ -126,90 +131,41 @@ Before generating report, ask:
 3. Any tools you haven't used in 30+ days?
 4. New capabilities you need that current tools lack?
 
-## Execution Checklist
-
-Before assessment:
-- [ ] Access to subscription documentation
-- [ ] User available for questions
-- [ ] Previous assessments reviewed (if any)
-
-During assessment:
-- [ ] All subscriptions inventoried
-- [ ] Usage patterns documented
-- [ ] Cost-effectiveness analyzed
-- [ ] Overlap identified
-- [ ] User questions asked
-
-After assessment:
-- [ ] Report generated in correct location
-- [ ] Recommendations prioritized
-- [ ] Next review date set
-- [ ] Source docs updated if needed
-
-## Error Handling
-
-### Common Issues
-
-**Error: Missing subscription data**
-- Cause: `docs/AI_development_tools.md` not found or outdated
-- Solution: Ask user for current subscription list, create/update doc
-
-**Error: Incomplete usage data**
-- Cause: User unsure about usage patterns
-- Solution: Suggest tracking usage for 2 weeks before full assessment
-
-**Error: Can't determine value**
-- Cause: Tool usage overlaps with others
-- Solution: Run overlap analysis first, identify unique value per tool
-
-**Error: Outdated pricing**
-- Cause: Subscription costs changed
-- Solution: Verify current pricing on vendor websites
-
 ## Output
 
 - Assessment report in `reports/ai-tool-assessment/`
 - Updated `docs/AI_development_tools.md` if status changes
 - Summary printed to console
 
-## Metrics
-
-| Metric | Target | How to Measure |
-|--------|--------|----------------|
-| Cost per active tool | <$50/mo | Total spend / tools used weekly |
-| Utilization rate | >70% | Tools used / tools subscribed |
-| Value rating average | >3.5/5 | Average across all tools |
-| Overlap reduction | <20% | Redundant capabilities identified |
-| Assessment frequency | Quarterly | Days since last assessment |
-
 ## Report Templates
 
 ### Executive Summary Template
 
 ```markdown
+
 ## Executive Summary
 
 **Assessment Date:** YYYY-MM-DD
 **Review Period:** [Month/Quarter]
 **Total Monthly Spend:** $XXX.XX
-
 ### Key Findings
+
 1. [Primary finding]
 2. [Secondary finding]
 3. [Tertiary finding]
-
 ### Immediate Actions Required
+
 - [ ] [Action 1]
 - [ ] [Action 2]
-
 ### Long-term Recommendations
+
 1. [Recommendation with timeline]
 2. [Recommendation with timeline]
 ```
-
 ### Tool Comparison Template
 
 ```markdown
+
 ## Tool Comparison Matrix
 
 | Capability | Claude | OpenAI | Google | Copilot |
@@ -219,15 +175,6 @@ After assessment:
 | IDE Integration | ★★★★☆ | ★★☆☆☆ | ★★★☆☆ | ★★★★★ |
 | Cost Value | ★★★☆☆ | ★★★★☆ | ★★★★★ | ★★★★★ |
 ```
-
-## Best Practices
-
-1. **Regular cadence** - Assess quarterly at minimum
-2. **Track trends** - Compare assessments over time
-3. **User feedback** - Include qualitative input
-4. **Trial before commit** - Use free tiers to evaluate
-5. **Document decisions** - Record why tools kept/cancelled
-6. **Consider switching costs** - Factor in workflow disruption
 
 ## Related Skills
 
@@ -240,3 +187,10 @@ After assessment:
 
 - **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; enhanced frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with subscription inventory, usage analysis, cost-effectiveness reporting, recommendation framework
+
+## Sub-Skills
+
+- [Execution Checklist](execution-checklist/SKILL.md)
+- [Error Handling](error-handling/SKILL.md)
+- [Metrics](metrics/SKILL.md)
+- [Best Practices](best-practices/SKILL.md)
