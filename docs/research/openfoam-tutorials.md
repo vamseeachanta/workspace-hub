@@ -81,7 +81,7 @@ pitzDaily/
 
 ## Tutorial 2: cavity (icoFoam — laminar, transient)
 
-**Status: PENDING** (scheduled for next ace-linux-2 session)
+**Status: COMPLETED** (run headlessly 2026-03-15, ace-linux-2)
 
 ### What this tutorial tests
 - laminar transient incompressible solver (icoFoam)
@@ -118,7 +118,7 @@ paraFoam &   # or foamToVTK for headless
 
 ## Tutorial 3: damBreak (interFoam — VOF multiphase)
 
-**Status: PENDING** (scheduled for next ace-linux-2 session)
+**Status: COMPLETED** (run headlessly 2026-03-15, ace-linux-2)
 
 ### What this tutorial tests
 - Volume-of-fluid (VOF) free surface solver (interFoam)
@@ -161,7 +161,7 @@ foamToVTK         # For headless post-processing
 
 ## Tutorial 4: motorBike (simpleFoam + snappyHexMesh — external aero)
 
-**Status: PENDING** (requires more disk space — ~2GB)
+**Status: DEFERRED** (optional — pitzDaily+cavity+damBreak satisfy the 3-tutorial AC)
 
 ### What this tutorial tests
 - Complex surface meshing via snappyHexMesh

@@ -1,0 +1,27 @@
+# OpenFOAM Tutorial Verification — WRK-343
+generated_at: "2026-03-15T00:00:00Z"
+machine: ace-linux-2
+openfoam_version: v2312
+openfoam_path: /usr/lib/openfoam/openfoam2312
+overall_verdict: PASS
+tutorials:
+  - name: pitzDaily
+    solver: simpleFoam
+    status: PASS
+    note: "Run during WRK-290 (2026-02-21), converged in 281 iterations"
+  - name: cavity
+    solver: icoFoam
+    status: PASS
+    time_directories: 6
+    execution_time_s: 0.13
+    note: "Laminar lid-driven cavity, transient, continuity error ~1e-09"
+  - name: damBreak
+    solver: interFoam
+    status: PASS
+    time_directories: 21
+    execution_time_s: 6.32
+    note: "VOF multiphase, requires 0.orig → 0 copy before run"
+lessons_learned:
+  - "OpenFOAM bashrc has unbound variables — cannot use bash strict mode (set -u)"
+  - "Many tutorials use 0.orig/ instead of 0/ — must cp -r 0.orig 0 before running"
+  - "No interactive session needed — all tutorials run headlessly via CLI"
