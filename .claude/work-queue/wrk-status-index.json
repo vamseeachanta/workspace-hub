@@ -5542,5 +5542,14 @@
     "title": "POC \u2014 Deep extraction on 10 XLSX calculation spreadsheets",
     "priority": "high",
     "category": "engineering"
+  },
+  "WRK-1242": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T23:57:05.168206+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Calculation methodology skill \u2014 structured engineering analysis workflow",
+    "priority": "medium",
+    "category": "engineering-methodology"
   }
 }

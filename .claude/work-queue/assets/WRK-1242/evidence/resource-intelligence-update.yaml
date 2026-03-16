@@ -1,0 +1,19 @@
+wrk_id: WRK-1242
+stage: 16
+generated_at: "2026-03-16T22:00:00Z"
+additions:
+  - type: skill
+    path: .claude/skills/engineering/calculation-methodology/SKILL.md
+    description: >
+      174-line calculation methodology skill with 6 phases and 16 sections
+      covering problem definition through verification and reporting.
+  - type: reference
+    path: .claude/skills/engineering/calculation-methodology/sections/
+    description: >
+      16 section reference files (68-100 lines each) for structured
+      engineering calculation methodology.
+  - type: audit
+    path: .claude/skills/engineering/calculation-methodology/audit-examples.yaml
+    description: >
+      Ground-truth audit of all 15 existing calc report examples scored
+      against 16-section methodology checklist.

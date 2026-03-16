@@ -109,6 +109,16 @@ replacement: new-skill-name
 ---
 ```
 
+## Quality Tiers
+
+Skills are classified into quality tiers (A/B/C/D) based on enforcement level:
+- **Tier A** — Script-wired: frontmatter `scripts:` list with >=1 entry
+- **Tier B** — Exec-pattern: body contains `bash scripts/`, `uv run`, or `bash .claude/skills/`
+- **Tier D** — Decomposition candidate: >500 words with no script refs (split recommended)
+- **Tier C** — Focused prose: everything else
+
+Target Tier A or B for new skills. See `config/skills/quality-tiers.yaml`.
+
 ## Related Skills
 
 - [session-start-routine](../../meta/session-start-routine/SKILL.md) - Skill library maintenance

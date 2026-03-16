@@ -1,0 +1,31 @@
+wrk_id: WRK-1242
+stage: 15
+generated_at: "2026-03-16T22:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Upgrade Gen 1 examples to include scope + design_basis + calculations sections"
+    description: >
+      12 Gen 1 examples average 6.7/16 sections — missing scope, design_basis,
+      calculations, and validation sections. Upgrade to match Gen 2 quality.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-2
+    title: "Add sensitivity/validation/verification to ALL examples"
+    description: >
+      0-7% coverage on sensitivity, validation, and verification sections across
+      all 15 audited examples. These are critical for engineering quality assurance.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-3
+    title: "Create audit script to auto-score examples against methodology (25% rule)"
+    description: >
+      Currently the audit is manual YAML. A deterministic script should score
+      examples and flag those below threshold automatically.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low

@@ -1,0 +1,5 @@
+wrk_id: WRK-1242
+action: plan_draft_complete
+provider: claude
+timestamp: 2026-03-15T20:20:00Z
+stage: plan

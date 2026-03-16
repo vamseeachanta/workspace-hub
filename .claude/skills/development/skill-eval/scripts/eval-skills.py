@@ -25,6 +25,9 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[5] / "scripts" / "skills"))
+from skill_tier_lib import classify_tier, tier_distribution as _tier_distribution
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -96,6 +99,7 @@ class SkillResult:
     category_dir: str
     passed: bool = True
     issues: list[Issue] = field(default_factory=list)
+    quality_tier: str = "C"
 
 
 @dataclass
@@ -580,12 +584,14 @@ def evaluate_skill(path: Path, root: Path, name_index: dict[str, Path]) -> Skill
     all_issues.extend(check_optional_sections(body))
 
     has_critical = any(i.severity == "critical" for i in all_issues)
+    tier = classify_tier(meta, body)
     return SkillResult(
         path=rel_path,
         name=skill_name if skill_name else None,
         category_dir=cat_dir,
         passed=not has_critical,
         issues=all_issues,
+        quality_tier=tier,
     )
 
 
@@ -781,8 +787,11 @@ def format_json(report: EvalReport, severity_filter: str) -> str:
                 "name": r.name,
                 "category": r.category_dir,
                 "status": "fail" if has_critical else "pass",
+                "quality_tier": r.quality_tier,
                 "issues": filtered_issues,
             })
+
+    tier_dist = _tier_distribution([r.quality_tier for r in report.results])
 
     data = {
         "timestamp": report.timestamp,
@@ -792,6 +801,7 @@ def format_json(report: EvalReport, severity_filter: str) -> str:
             "failed_critical": report.failed_critical,
             "failed_warning_only": report.failed_warning,
             "issues": report.issues_by_severity,
+            "tier_distribution": tier_dist,
         },
         "by_category": report.by_category,
         "top_issues": report.top_issues,

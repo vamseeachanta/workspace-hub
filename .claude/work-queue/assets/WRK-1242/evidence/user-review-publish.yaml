@@ -1,0 +1,32 @@
+wrk_id: WRK-1242
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 0403941d
+    documents:
+      - .claude/work-queue/assets/WRK-1242/WRK-1242-lifecycle.html
+      - .claude/work-queue/pending/WRK-1242.md
+    published_at: 2026-03-15T20:25:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d44d42b6
+    documents:
+      - .claude/work-queue/assets/WRK-1242/WRK-1242-lifecycle.html
+      - .claude/work-queue/pending/WRK-1242.md
+    published_at: 2026-03-16T20:40:00Z
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: e7d300e8
+    documents:
+      - .claude/work-queue/assets/WRK-1242/WRK-1242-lifecycle.html
+      - .claude/work-queue/assets/WRK-1242/evidence/gate-evidence-summary.json
+    published_at: 2026-03-16T22:05:00Z
+    reviewer: vamsee

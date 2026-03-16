@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1242 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1242 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Calculation methodology skill — structured engineering analysis workflow</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Existing engineering calculations (geotechnical, CP, fatigue, pipeline stability) are well-implemented but lack a unified **calculation meth...</summary><div class="panel"><p>Existing engineering calculations (geotechnical, CP, fatigue, pipeline stability) are well-implemented
+but lack a unified <strong>calculation methodology skill</strong> that enforces the structured calculation approach:</p>
+<ol>
+<li><strong>Problem definition</strong> — scope, boundary conditions, design criteria</li>
+<li><strong>Input gathering</strong> — measured vs assumed, units, sources, validation ranges</li>
+<li><strong>Methodology selection</strong> — standard/code selection, applicability check, method comparison</li>
+<li><strong>Computation</strong> — step-by-step with intermediate results, hand-check points</li>
+<li><strong>Validation</strong> — sensitivity analysis, benchmark against known solutions, limit checks</li>
+<li><strong>Reporting</strong> — calculation-report skill integration, traceability to standard sections</li>
+</ol>
+<p>The <code>calculation-report</code> skill handles rendering (step 6) but does not guide steps 1–5.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [x] Skill created with structured methodology stages - [x] Checklist covers: problem definition, input validation, method selection, compu...</summary><div class="panel"><ul>
+<li>[x] Skill created with structured methodology stages</li>
+<li>[x] Checklist covers: problem definition, input validation, method selection, computation, validation, reporting</li>
+<li>[x] Audit of existing 15 calc report examples against methodology checklist</li>
+<li>[x] Gap list: which existing calculations are missing validation/sensitivity steps</li>
+<li>[x] Integration point with calculation-report skill documented</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — wrk_id: WRK-1242 stage: 7 decision: passed confirmed_by: vamsee confirmed_at: 2026-03-15T20:30:00Z notes: &quot;Plan approved — 16-section calc m...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p>wrk_id: WRK-1242
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: 2026-03-15T20:30:00Z
+notes: "Plan approved — 16-section calc methodology skill with per-section reference files"</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>SKILL.md structure validation</td><td>repo</td><td>pass</td><td><code>grep -c &#x27;## Phase&#x27; .claude/skills/engineering/calculation-methodology/SKILL.md</code></td><td>.claude/work-queue/assets/WRK-1242/evidence/execute.yaml</td></tr><tr><td>2</td><td>Section file count verification (16 files)</td><td>repo</td><td>pass</td><td><code>ls .claude/skills/engineering/calculation-methodology/sections/ | wc -l</code></td><td>.claude/work-queue/assets/WRK-1242/evidence/execute.yaml</td></tr><tr><td>3</td><td>Audit YAML valid parse</td><td>repo</td><td>pass</td><td><code>uv run --no-project python -c &quot;import yaml; yaml.safe_load(open(&#x27;.claude/skills/engineering/calculation-methodology/audit-examples.yaml&#x27;))&quot;</code></td><td>.claude/work-queue/assets/WRK-1242/evidence/execute.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1242, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1242, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=ace-linux-1, execution_workstations=ace-linux-1</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['tdd_eval'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1242/review-results.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-evidence.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1242/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (1 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-plan-draft.yaml absent — skip ordering check</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1242 stage: 15 generated_at: &quot;2026-03-16T22:00:00Z&quot; recommendations: - id: FW-1 title: &quot;Upgrade Gen 1 examples to include scope ...</summary><div class="panel"><p>wrk_id: WRK-1242
+stage: 15
+generated_at: "2026-03-16T22:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Upgrade Gen 1 examples to include scope + design_basis + calculations sections"
+    description: &gt;
+      12 Gen 1 examples average 6.7/16 sections — missing scope, design_basis,
+      calculations, and validation sections. Upgrade to match Gen 2 quality.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-2
+    title: "Add sensitivity/validation/verification to ALL examples"
+    description: &gt;
+      0-7% coverage on sensitivity, validation, and verification sections across
+      all 15 audited examples. These are critical for engineering quality assurance.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+  - id: FW-3
+    title: "Create audit script to auto-score examples against methodology (25% rule)"
+    description: &gt;
+      Currently the audit is manual YAML. A deterministic script should score
+      examples and flag those below threshold automatically.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1242 generated_at: &#x27;2026-03-16T22:00:00Z&#x27; stages: - order: 1 stage: Capture status: done human_decision_required: &#x27;yes&#x27; owner: o...</summary><div class="panel"><p>wrk_id: WRK-1242
+generated_at: '2026-03-16T22:00:00Z'
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created and scope approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence pack captured; continue_to_planning.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route B, medium complexity, category engineering-methodology confirmed.
+  evidence: .claude/work-queue/pending/WRK-1242.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan produced with 6 phases and 16-section methodology.
+  evidence: .claude/work-queue/pending/WRK-1242.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Plan draft reviewed and approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/user-review-capture.yaml
+- order: 6
+  stage: Cross-Review Plan
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Claude APPROVE + Opus-as-Codex APPROVE.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed and approved by vamsee.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Item claimed; routing set to claude.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/claim-evidence.yaml
+- order: 9
+  stage: Routing
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Routed to claude as orchestrator; complexity=medium.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/claim-evidence.yaml
+- order: 10
+  stage: Execute
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: "All phases complete — SKILL.md, 16 sections, audit examples created."
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/execute.yaml
+- order: 11
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Docs-only WRK — integration tests via structure validation.
+  evidence: .claude/work-queue/assets/WRK-1242/test-evidence.md
+- order: 12
+  stage: Scope Alignment
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: All 5 ACs met; no scope changes.
+  evidence: .claude/work-queue/pending/WRK-1242.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Claude APPROVE + Opus-as-Codex APPROVE; fixes in e7d300e8.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/cross-review.yaml
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed; all close-phase gates satisfied.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/gate-evidence-summary.json
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: 3 follow-up recommendations captured (FW-1, FW-2, FW-3).
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Close package reviewed and approved.
+  evidence: .claude/work-queue/assets/WRK-1242/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: "Not needed — no agent resources reclaimed."
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Item closed.
+  evidence: .claude/work-queue/pending/WRK-1242.md
+- order: 20
+  stage: Archive
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final archive operation.
+  evidence: .claude/work-queue/pending/WRK-1242.md
+reviewed_by: orchestrator</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 21 assets indexed.</summary><div class="panel"><ul><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review-results.md</code></li><li><code>test-evidence.md</code></li></ul></div></details>
+</body>
+</html>

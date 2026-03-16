@@ -1,0 +1,29 @@
+# Skill Quality Tier Hierarchy
+# Maps to enforcement gradient in .claude/rules/patterns.md (Level 0–3)
+#
+# Priority order: first match wins (A before B before D before C)
+
+tiers:
+  A:
+    label: "Script-wired"
+    description: "Frontmatter scripts: list with >=1 entry"
+    enforcement_level: 2
+    criteria: "frontmatter_scripts"
+
+  B:
+    label: "Exec-pattern"
+    description: "Body contains executable command patterns (bash/uv run)"
+    enforcement_level: 1
+    criteria: "body_exec_pattern"
+
+  D:
+    label: "Decomposition candidate"
+    description: "Body >500 words with no script references — split recommended"
+    enforcement_level: 0
+    criteria: "oversized_prose"
+
+  C:
+    label: "Focused prose"
+    description: "Everything else — focused guidance, typically <=200 lines"
+    enforcement_level: 0
+    criteria: "default"

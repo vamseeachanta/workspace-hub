@@ -1,0 +1,41 @@
+wrk_id: WRK-1242
+stage: 10
+executed_at: 2026-03-16T20:30:00Z
+phases:
+  - phase: 1
+    description: "Create SKILL.md and 16 section reference files"
+    artifacts:
+      - .claude/skills/engineering/calculation-methodology/SKILL.md
+      - .claude/skills/engineering/calculation-methodology/sections/
+    status: complete
+  - phase: 2
+    description: "Align section schemas with renderer contract"
+    artifacts:
+      - .claude/skills/engineering/calculation-methodology/sections/
+    status: complete
+  - phase: 3
+    description: "Audit 15 existing calc report examples"
+    artifacts:
+      - .claude/skills/engineering/calculation-methodology/audit-examples.yaml
+    status: complete
+integrated_repo_tests:
+  - name: "SKILL.md structure validation"
+    scope: repo
+    command: "grep -c '## Phase' .claude/skills/engineering/calculation-methodology/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1242/evidence/execute.yaml
+  - name: "Section file count verification (16 files)"
+    scope: repo
+    command: "ls .claude/skills/engineering/calculation-methodology/sections/ | wc -l"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1242/evidence/execute.yaml
+  - name: "Audit YAML valid parse"
+    scope: repo
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('.claude/skills/engineering/calculation-methodology/audit-examples.yaml'))\""
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1242/evidence/execute.yaml
+notes: >
+  Docs-only WRK — no code changes. Created 174-line SKILL.md with 6 phases
+  and 16 section reference files (68-100 lines each). Audited 15 existing
+  calc report examples against 16-section methodology. Commits: d44d42b6
+  (main fix, 16 files), e7d300e8 (Codex review fixes, 3 files).
