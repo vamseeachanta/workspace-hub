@@ -1,0 +1,13 @@
+wrk_id: WRK-1256
+routing:
+  logged_at: "2026-03-16T09:00:00Z"
+  provider: claude
+plan:
+  logged_at: "2026-03-16T09:30:00Z"
+  provider: claude
+execute:
+  logged_at: "2026-03-16T10:00:00Z"
+  provider: claude
+cross-review:
+  logged_at: "2026-03-16T10:30:00Z"
+  provider: claude

@@ -1,0 +1,33 @@
+wrk_id: WRK-1256
+executed_at: "2026-03-16T10:30:00Z"
+commit: 48e796f1
+executor: claude
+summary: >
+  Table quality filter implemented: dedup, watermark regex, min-content gate,
+  deterministic quality rating. 20 TDD tests pass. Retroactive audit of 664 tables
+  completed (93 usable, 11 partial, 560 junk). Filter wired into table_exporter.py.
+integrated_repo_tests:
+  - name: "test_watermark_detection"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_table_quality.py -k watermark"
+    result: pass
+    artifact_ref: "scripts/data/doc_intelligence/tests/test_table_quality.py"
+  - name: "test_content_hash_dedup"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_table_quality.py -k dedup"
+    result: pass
+    artifact_ref: "scripts/data/doc_intelligence/tests/test_table_quality.py"
+  - name: "test_quality_classification"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_table_quality.py -k quality"
+    result: pass
+    artifact_ref: "scripts/data/doc_intelligence/tests/test_table_quality.py"
+acceptance_criteria_met:
+  - dedup_filter: true
+  - watermark_regex: true
+  - min_content_gate: true
+  - quality_rating: true
+  - retroactive_audit: true
+  - quality_filter_stats: true
+  - tdd_tests: true
+  - wired_into_exporter: true

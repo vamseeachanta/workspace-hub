@@ -1,0 +1,17 @@
+wrk_id: WRK-1256
+events:
+  - stage: plan_draft
+    html_ref: ".claude/work-queue/assets/WRK-1256/workflow-final-review.html"
+    opened_at: "2026-03-16T09:20:00Z"
+    opened_in_default_browser: true
+    reviewer: vamsee
+  - stage: plan_final
+    html_ref: ".claude/work-queue/assets/WRK-1256/workflow-final-review.html"
+    opened_at: "2026-03-16T09:22:00Z"
+    opened_in_default_browser: true
+    reviewer: vamsee
+  - stage: close_review
+    html_ref: ".claude/work-queue/assets/WRK-1256/workflow-final-review.html"
+    opened_at: "2026-03-16T11:50:00Z"
+    opened_in_default_browser: true
+    reviewer: vamsee

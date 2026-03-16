@@ -1,0 +1,10 @@
+wrk_id: WRK-1256
+exemption_type: pre-gate-implementation
+approved_by: vamsee
+approved_at: "2026-03-16T00:00:00Z"
+approval_scope: full
+reason: >
+  WRK-1256 was implemented and committed (48e796f1) in a prior session
+  before gate evidence artifacts were scaffolded. All 8 acceptance criteria
+  met, 20 TDD tests pass, code committed to main. Post-hoc evidence creation
+  for closure.

@@ -1,0 +1,84 @@
+wrk_id: WRK-1256
+stages:
+- order: 1
+  stage: Capture & Scope
+  status: done
+  evidence: .claude/work-queue/pending/WRK-1256.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/activation.yaml
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/pending/WRK-1256.md
+- order: 5
+  stage: User Review - Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/plan.yaml
+- order: 6
+  stage: Cross-Review - Plan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan Final
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/claim-evidence.yaml
+- order: 9
+  stage: TDD - Red
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/tdd.yaml
+- order: 10
+  stage: TDD - Green
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/tdd.yaml
+- order: 11
+  stage: TDD - Refactor
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/tdd.yaml
+- order: 12
+  stage: Execute
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/execute.yaml
+- order: 13
+  stage: Legal Scan
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/legal.yaml
+- order: 14
+  stage: Cross-Review - Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/cross-review.yaml
+- order: 15
+  stage: Future Work
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1256/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Archive
+  status: done
+  evidence: pending
+- order: 20
+  stage: Close
+  status: pending
+  evidence: pending
+generated_at: '2026-03-16T15:02:25Z'
+reviewed_by: orchestrator

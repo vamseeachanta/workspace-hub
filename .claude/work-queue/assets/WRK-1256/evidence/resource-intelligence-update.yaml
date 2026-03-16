@@ -1,0 +1,14 @@
+wrk_id: WRK-1256
+updated_at: "2026-03-16T11:00:00Z"
+additions:
+  - type: script
+    path: scripts/data/doc_intelligence/table_quality.py
+    description: "Table quality filter module — watermark dedup, content threshold, deterministic quality rating"
+  - type: test
+    path: scripts/data/doc_intelligence/tests/test_table_quality.py
+    description: "20 TDD tests for table quality filter"
+  - type: script
+    path: scripts/data/doc-intelligence/rate-table-quality.py
+    description: "Retroactive table quality audit script"
+files_modified:
+  - scripts/data/doc_intelligence/table_exporter.py

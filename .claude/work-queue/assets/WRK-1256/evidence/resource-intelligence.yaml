@@ -1,0 +1,12 @@
+wrk_id: WRK-1256
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - data/doc-intelligence-promotion/SKILL.md
+    - data/document-index-pipeline/SKILL.md
+    - coordination/workspace/work-queue/SKILL.md
+entry_reads:
+  - scripts/data/doc_intelligence/table_exporter.py
+  - scripts/data/doc_intelligence/deep_extract.py
+completed_at: "2026-03-16T09:00:00Z"

@@ -1,0 +1,8 @@
+wrk_id: WRK-1256
+claimed_at: "2026-03-16T09:45:00Z"
+claimed_by: claude
+commit: 48e796f1
+route: B
+claim: >
+  All 8 acceptance criteria met. 20 TDD tests pass. Table quality filter
+  wired into table_exporter.py. Retroactive audit complete.

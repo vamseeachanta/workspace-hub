@@ -1,0 +1,16 @@
+wrk_id: WRK-1256
+recommendations:
+  - id: FW-1
+    title: "LLM quality rating via Haiku for ambiguous tables"
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Deferred — deterministic classification sufficient for current corpus"
+  - id: FW-2
+    title: "Expand watermark pattern list for other publishers"
+    priority: medium
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: "Add patterns as new standards are extracted"
