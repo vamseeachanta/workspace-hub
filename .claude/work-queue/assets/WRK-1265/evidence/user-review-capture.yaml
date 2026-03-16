@@ -1,0 +1,4 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-16"
+notes: "Scope approved as-is — single Python rewrite of two audit shell scripts"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# DEPRECATED: Use audit-skills.py --mode coverage instead (single-pass, ~400x faster).
 # skill-coverage-audit.sh — Report which SKILL.md files lack any script call reference.
 #
 # For each SKILL.md, checks if it has a script call via:

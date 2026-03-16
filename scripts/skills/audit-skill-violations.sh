@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# DEPRECATED: Use audit-skills.py --mode violations instead (single-pass, ~400x faster).
 # audit-skill-violations.sh — Check SKILL.md files for structural violations.
 #
 # Checks per SKILL.md:

@@ -3,8 +3,8 @@
 #
 # Tools run:
 #   1. eval-skills.py (18 structural checks)
-#   2. audit-skill-violations.sh (4 hard constraints)
-#   3. skill-coverage-audit.sh (script-wiring gaps)
+#   2. audit-skills.py --mode violations (4 hard constraints)
+#   3. audit-skills.py --mode coverage (script-wiring gaps)
 #
 # Output: specs/audit/skill-eval-<date>.yaml (collated report)
 # Exit: 0 = success, 1 = tools found issues, 2 = script error
@@ -36,17 +36,17 @@ uv run --no-project python \
   --format json --output "$EVAL_JSON" 2>&1 || EVAL_EXIT=$?
 echo "  eval-skills.py exit: ${EVAL_EXIT}" >&2
 
-# --- Tool 2: audit-skill-violations.sh ---
-echo "[2/3] Running audit-skill-violations.sh ..." >&2
+# --- Tool 2: audit-skills.py --mode violations (replaces audit-skill-violations.sh) ---
+echo "[2/3] Running audit-skills.py --mode violations ..." >&2
 VIOLATIONS_EXIT=0
-bash scripts/skills/audit-skill-violations.sh > "$VIOLATIONS_YAML" 2>/dev/null || VIOLATIONS_EXIT=$?
-echo "  audit-skill-violations.sh exit: ${VIOLATIONS_EXIT}" >&2
+uv run --no-project python scripts/skills/audit-skills.py --mode violations > "$VIOLATIONS_YAML" 2>/dev/null || VIOLATIONS_EXIT=$?
+echo "  audit-skills.py violations exit: ${VIOLATIONS_EXIT}" >&2
 
-# --- Tool 3: skill-coverage-audit.sh ---
-echo "[3/3] Running skill-coverage-audit.sh ..." >&2
+# --- Tool 3: audit-skills.py --mode coverage (replaces skill-coverage-audit.sh) ---
+echo "[3/3] Running audit-skills.py --mode coverage ..." >&2
 COVERAGE_EXIT=0
-bash scripts/skills/skill-coverage-audit.sh > "$COVERAGE_YAML" 2>/dev/null || COVERAGE_EXIT=$?
-echo "  skill-coverage-audit.sh exit: ${COVERAGE_EXIT}" >&2
+uv run --no-project python scripts/skills/audit-skills.py --mode coverage > "$COVERAGE_YAML" 2>/dev/null || COVERAGE_EXIT=$?
+echo "  audit-skills.py coverage exit: ${COVERAGE_EXIT}" >&2
 
 # --- Collate ---
 echo "" >&2
