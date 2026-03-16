@@ -1,0 +1,38 @@
+wrk_id: WRK-1251
+stage: 2
+resource_intelligence:
+  skills_loaded:
+    - engineering/cad/freecad-automation
+    - engineering/cad/gmsh-meshing
+    - engineering/workflows/gmsh-openfoam-orcaflex
+    - engineering/marine-offshore/fe-analyst
+  existing_code:
+    freecad_integration:
+      path: digitalmodel/src/digitalmodel/visualization/design_tools/freecad_integration.py
+      lines: 441
+      gap: "no hull generation, no FEM chain"
+    hull_library:
+      path: digitalmodel/src/digitalmodel/hydrodynamics/hull_library/
+      tests: 62
+      gap: "panel mesh only, no CAD solids"
+    gmsh_meshing:
+      path: digitalmodel/src/digitalmodel/solvers/gmsh_meshing/
+      tests: 15
+      gap: "no CalculiX INP export, no FEM BC abstraction"
+    naval_architecture:
+      path: digitalmodel/src/digitalmodel/naval_architecture/
+      gap: "manual hydrostatics, not integrated with FreeCAD"
+  software:
+    freecad: {version: "0.21.2", binary: "freecadcmd", headless: true}
+    gmsh: {version_pip: "4.15.1", version_system: "4.12.1"}
+    calculix: {installed: false, required: true}
+    openfoam: {version: "v2312", path: "/usr/lib/openfoam/openfoam2312/"}
+  blockers:
+    - "CalculiX (ccx) not installed — must install before FEM chain"
+  related_wrks:
+    - {id: WRK-048, status: pending, relevance: "complementary Blender configs"}
+    - {id: WRK-611, status: done, relevance: "FCStd parser — read FreeCAD files"}
+    - {id: WRK-612, status: done, relevance: "gmsh hull mesh pipeline"}
+    - {id: WRK-614, status: done, relevance: "FreeCAD FEM workbench eval (36/36)"}
+    - {id: WRK-1249, status: pending, relevance: "gmsh deep meshing"}
+    - {id: WRK-1252, status: pending, relevance: "CAD-to-CFD pipeline, blocked by WRK-1251"}

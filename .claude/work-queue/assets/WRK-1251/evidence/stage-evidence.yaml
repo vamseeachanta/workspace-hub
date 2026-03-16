@@ -6,3 +6,27 @@ stages:
     approved_at: "2026-03-15"
     scope_approved: true
     notes: "User approved capture scope — 4 components: hull gen, FEM chain, design tables, round-trip validation"
+  stage_2_resource_intelligence:
+    status: passed
+    artifacts:
+      - assets/WRK-1251/resource-pack.md
+      - assets/WRK-1251/sources.md
+      - assets/WRK-1251/constraints.md
+      - assets/WRK-1251/domain-notes.md
+      - assets/WRK-1251/open-questions.md
+      - assets/WRK-1251/resources.yaml
+    key_findings:
+      - "CalculiX NOT installed — blocker for FEM chain"
+      - "Existing hull_library has 62 tests but panel mesh only, not CAD solids"
+      - "FreeCAD 0.21.2 headless available, existing integration code lacks hull gen"
+      - "Gmsh fully active (15 tests), can export to multiple FEM formats"
+      - "WRK-1252 (CAD-to-CFD) blocked by this WRK"
+  stage_3_triage:
+    status: passed
+    triage_result:
+      priority: medium
+      complexity: complex
+      type: feature
+      reason: "Exceeds chunk-sizing on 3 dimensions: 2 repos (max 1), 10+ files (max 5), 4 components (max 3 phases)"
+      blocker: "CalculiX (ccx) not installed on ace-linux-2"
+      decomposition_needed: true

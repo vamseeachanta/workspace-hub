@@ -17,3 +17,4 @@
 {"event": "stage_exit", "wrk": "WRK-1183", "stage": 16, "date": "2026-03-15", "timestamp": "2026-03-15T22:42:07.509301Z"}
 {"event": "stage_exit", "wrk": "WRK-1183", "stage": 17, "date": "2026-03-15", "timestamp": "2026-03-15T22:53:01.935516Z"}
 {"event": "stage_exit", "wrk": "WRK-1183", "stage": 18, "date": "2026-03-15", "timestamp": "2026-03-15T22:53:20.707354Z"}
+{"event":"codex_session","date":"2026-03-15","session_id":"rollout-2026-03-15T22-32-35-019cf4b3-e365-7d02-8541-0ff3dfd0e648","turns":4,"source":"codex"}

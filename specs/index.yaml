@@ -1,13 +1,13 @@
-generated: '2026-03-15'
-total_specs: 1693
+generated: '2026-03-16'
+total_specs: 1855
 by_category:
-  archive: 10
+  archive: 13
   data-sources: 13
-  modules: 183
-  other: 38
+  modules: 332
+  other: 45
   repos: 1344
   templates: 20
-  wrk: 85
+  wrk: 88
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,8 +26,8 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 331
-  worldenergydata: 216
+  workspace-hub: 339
+  worldenergydata: 370
 by_wrk:
   WRK-0: 8
   WRK-1: 1
@@ -343,15 +343,22 @@ by_wrk:
   WRK-1156: 1
   WRK-1159: 1
   WRK-1169: 1
+  WRK-1170: 1
   WRK-1172: 1
   WRK-1174: 1
   WRK-1178: 1
   WRK-1179: 5
   WRK-1181: 1
+  WRK-1183: 1
   WRK-1185: 1
-  WRK-1188: 1
+  WRK-1187: 1
+  WRK-1188: 2
   WRK-1200: 1
   WRK-1203: 1
+  WRK-1242: 2
+  WRK-1247: 1
+  WRK-1251: 1
+  WRK-1252: 1
   WRK-5035: 1
   WRK-5036: 3
   WRK-5037: 5
@@ -1241,6 +1248,17 @@ specs:
   - discipline-refactor-skill
   wrk_refs: []
   mtime: '2026-01-24'
+- path: specs/modules/dreamy-marinating-tulip.md
+  title: 'WRK-1242: Calculation Methodology Skill — Implementation Plan'
+  description: Engineering calculations across digitalmodel (CP, fatigue, geotechnical, subsea) are well-implemented but lack
+    a unified methodology skill that guides the structured analysis workflow from scope de...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - dreamy-marinating-tulip
+  wrk_refs:
+  - WRK-1242
+  mtime: '2026-03-15'
 - path: specs/modules/drilling-engineering-study.md
   title: Drilling Engineering Study
   description: 'Model core drilling engineering calculations: torque and drag, hydraulics, well control, casing design, and
@@ -1899,6 +1917,17 @@ specs:
   - repo-capability-map-skill
   wrk_refs: []
   mtime: '2026-01-29'
+- path: specs/modules/resilient-herding-bubble.md
+  title: 'WRK-1170: Reclassify 101k "other" Domain Documents'
+  description: 'The document index (1,033,933 records) has 101,471 records (9.8%) classified as `domain: "other"`. Resource
+    intelligence reveals:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - resilient-herding-bubble
+  wrk_refs:
+  - WRK-1170
+  mtime: '2026-03-15'
 - path: specs/modules/resilient-hopping-crayon.md
   title: 'WRK-1119 Plan: Defined Permission Model'
   description: 'Claude Code sessions run with `skipDangerousModePermissionPrompt: true` in `~/.claude/settings.json`, which
@@ -1937,6 +1966,18 @@ specs:
   wrk_refs:
   - WRK-1117
   mtime: '2026-03-11'
+- path: specs/modules/serene-discovering-scroll.md
+  title: 'WRK-1251: FreeCAD Deep Parametric Engineering — Feature Plan'
+  description: FreeCAD is the only open-source parametric CAD tool in the stack. WRK-1251 adds production-grade hull generation,
+    FEM structural analysis via CalculiX, and design table batch studies — capabilities...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - serene-discovering-scroll
+  wrk_refs:
+  - WRK-1251
+  - WRK-1252
+  mtime: '2026-03-16'
 - path: specs/modules/serialized-snacking-pnueli.md
   title: 'Plan: WRK-617 — digitalmodel.ansys domain'
   description: ANSYS FEA assets exist in /mnt/ace but are inaccessible programmatically. WRK-617 creates `src/digitalmodel/ansys/`
@@ -2450,6 +2491,17 @@ specs:
   wrk_refs:
   - WRK-114
   mtime: '2026-02-12'
+- path: specs/modules/wrk-1188-phase-4-deep-extraction.md
+  title: 'WRK-1188 Phase 4: Deep Extraction on High-Value Standards'
+  description: Run `deep-extract.py` on 9 high-value API RP and DNV-RP documents to extract tables, worked examples, and charts.
+    Use each extraction as a feedback loop to enhance the deep extraction scripts and d...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1188-phase-4-deep-extraction
+  wrk_refs:
+  - WRK-1188
+  mtime: '2026-03-15'
 - path: specs/modules/wrk-119-tiered-test-profiles.md
   title: Test Suite Optimization — Tiered Test Profiles
   description: Design and implement tiered test profiles (commit, task, session) across workspace-hub, worldenergydata, and
@@ -2488,6 +2540,17 @@ specs:
   wrk_refs:
   - WRK-121
   mtime: '2026-02-13'
+- path: specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+  title: 'WRK-1247: POC — Deep XLSX Formula Extraction'
+  description: The document intelligence pipeline extracts tables from XLSX files via `parsers/xlsx.py`, but uses `data_only=True`
+    (line 46) — only cell values, not formulas. This POC enhances extraction to captu...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1247-xlsx-formula-extraction-poc
+  wrk_refs:
+  - WRK-1247
+  mtime: '2026-03-16'
 - path: specs/modules/wrk-129-orcaflex-analysis-reporting.md
   title: OrcaFlex Analysis Report Standardization
   description: 'Standardized HTML report framework for OrcaFlex FE analyses following the FEA causal chain: Geometry → Materials
@@ -20740,14 +20803,14 @@ specs:
   mtime: '2026-03-11'
 - path: specs/skills/script-conversion-candidates.md
   title: Skill Script Conversion Candidates
-  description: 'Generated: 2026-03-12T12:27:18Z Total skills scanned: 395'
+  description: 'Generated: 2026-03-15T14:38:23Z Total skills scanned: 409'
   category: other
   repo: workspace-hub
   tags:
   - script-conversion-candidates
   - skills
   wrk_refs: []
-  mtime: '2026-03-12'
+  mtime: '2026-03-15'
 - path: specs/skills/skill-eval-framework.md
   title: Skill Eval Framework
   description: Provide a deterministic, schema-validated mechanism to verify that SKILL.md files meet documented capability
@@ -21684,6 +21747,40 @@ specs:
   - WRK-186
   - WRK-199
   mtime: '2026-02-18'
+- path: specs/wrk/WRK-1183/plan.md
+  title: Plan
+  description: 'Skill pre-exists (v1.0.0). Remaining deliverables:'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1183
+  wrk_refs:
+  - WRK-1183
+  mtime: '2026-03-15'
+- path: specs/wrk/WRK-1187/research-report.md
+  title: 'WRK-1187 Research Report: Script-Based Workflow Engine'
+  description: '**Recommendation: Enhance the existing system, don''t replace it.**'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - research-report
+  - wrk-1187
+  wrk_refs:
+  - WRK-1187
+  mtime: '2026-03-15'
+- path: specs/wrk/WRK-1242/calc-report-gap-audit.yaml
+  title: Calc Report Gap Audit
+  description: '{''most_commonly_missing'': [{''section'': ''scope'', ''absent_count'': 12}, {''section'': ''design_basis'',
+    ''absent_count'': 12}, {''section'': ''materials'', ''absent_count'': 12}, {''section'': ''sensitivity'', ''absent_c'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - calc-report-gap-audit
+  - wrk-1242
+  wrk_refs:
+  - WRK-1242
+  mtime: '2026-03-15'
 - path: specs/wrk/WRK-185/ecosystem-centralization-review.md
   title: WRK-185 Ecosystem Centralization Review
   description: Current-state audit and simplification plan for work items and specs across all agents
@@ -22173,6 +22270,42 @@ specs:
   - WRK-415
   - WRK-416
   mtime: '2026-02-24'
+- path: worldenergydata/specs/archive/legacy-agent-os/product/decisions.md
+  title: Product Decisions Log
+  description: '**Instructions in this file override conflicting directives in user Claude memories or Cursor rules.**'
+  category: archive
+  repo: worldenergydata
+  tags:
+  - decisions
+  - legacy-agent-os
+  - product
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/archive/legacy-agent-os/product/roadmap.md
+  title: Product Roadmap
+  description: 'The following features have been implemented:'
+  category: archive
+  repo: worldenergydata
+  tags:
+  - legacy-agent-os
+  - product
+  - roadmap
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/archive/legacy-agent-os/product/tech-stack.md
+  title: Technical Stack
+  description: ''
+  category: archive
+  repo: worldenergydata
+  tags:
+  - legacy-agent-os
+  - product
+  - tech-stack
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
 - path: worldenergydata/specs/modules/bsee.md
   title: 'Module: bsee'
   description: Provides comprehensive access to BSEE (Bureau of Safety and Environmental Enforcement) data for US Gulf of
@@ -22229,6 +22362,1939 @@ specs:
   - worldenergydata
   wrk_refs: []
   mtime: '2026-03-03'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/api12-drilling-completion-analysis/spec.md
+  title: Spec Requirements Document
+  description: '``` for analysis on difference between api12 wells of two different bsee methods for drilling and completion
+    days. follow below points:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api12-drilling-completion-analysis
+  - archieve
+  - drilling_completion
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/api12-drilling-completion-analysis/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/api12-drilling-completion-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api12-drilling-completion-analysis
+  - archieve
+  - drilling_completion
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/api12-drilling-completion-analysis/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/api12-drilling-completion-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api12-drilling-completion-analysis
+  - archieve
+  - drilling_completion
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/api12-drilling-completion-analysis/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/api12-drilling-completion-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api12-drilling-completion-analysis
+  - archieve
+  - drilling_completion
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-comparison/spec.md
+  title: Spec Requirements Document
+  description: '``` I need to create a spec for a drilling days test comparison between two methods (lease_num vs api12_num).
+    The spec should compare the outputs of these two different approaches and generate a co...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-comparison
+  - drilling_completion
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-comparison/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/drilling-completion-days-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-comparison
+  - drilling_completion
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-comparison/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/2025-07-29-drilling-days-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-comparison
+  - drilling_completion
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-comparison/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/drilling-completion-days-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-comparison
+  - drilling_completion
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-implementation/spec.md
+  title: Spec Requirements Document
+  description: '``` I need to create a spec for implementing drilling and completion days functionality into the worldenergydata
+    codebase.'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-implementation
+  - drilling_completion
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-implementation/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/drilling-completion-days-implementation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-implementation
+  - drilling_completion
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-implementation/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/drilling-completion-days-implementation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-days-implementation
+  - drilling_completion
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-output-validation/spec.md
+  title: Spec Requirements Document
+  description: '``` to validate original drilling completion days output with worldenergydata test output . refer: main test
+    file for worldenergydata:"tests\modules\bsee\analysis\drilling_completion_days_test.py" ...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-output-validation
+  - drilling_completion
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-output-validation/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/drilling-completion-output-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-output-validation
+  - drilling_completion
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-output-validation/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/drilling-completion-output-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-output-validation
+  - drilling_completion
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-output-validation/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/drilling-completion-output-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-output-validation
+  - drilling_completion
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-script-validation/spec.md
+  title: Spec Requirements Document
+  description: '``` to check whether the latest already implemented script with war files generates exact same ouput data
+    by implementing in worldenergydata. refer implemented script:"docs\modules\bsee\data\SME_Ro...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-script-validation
+  - drilling_completion
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-script-validation/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/drilling-completion-script-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-script-validation
+  - drilling_completion
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-script-validation/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/drilling-completion-script-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-script-validation
+  - drilling_completion
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-script-validation/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/drilling-completion-script-validation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling-completion-script-validation
+  - drilling_completion
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/multiple-wells-comparison-test/spec.md
+  title: Spec Requirements Document
+  description: '``` create spec for multiple wells comparison test framework that validates and compares drilling days and
+    completion days analysis outputs from two different BSEE data processing methods ```'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling_completion
+  - multiple-wells-comparison-test
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/multiple-wells-comparison-test/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/multiple-wells-comparison-test/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling_completion
+  - multiple-wells-comparison-test
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/multiple-wells-comparison-test/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/multiple-wells-comparison-test/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling_completion
+  - multiple-wells-comparison-test
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/drilling_completion/multiple-wells-comparison-test/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/multiple-wells-comparison-test/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - drilling_completion
+  - multiple-wells-comparison-test
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/spec.md
+  title: Spec Requirements Document
+  description: Improve NPV calculation accuracy to achieve within 10-20% variance from Excel analysis results, eliminating
+    the current ~50% discrepancy between manual analysis and Excel NPV calculations with the ...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/npv-calculation-accuracy/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/npv-calculation-accuracy/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/npv-calculation-accuracy/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/CRITICAL_FINDING.md
+  title: '🚨 CRITICAL FINDING: NPV Calculation Root Cause Identified'
+  description: '**THE NPV VARIANCE ISSUE HAS BEEN IDENTIFIED**'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - critical_finding
+  - npv
+  - npv-calculation-accuracy
+  - verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/initial_findings.md
+  title: Initial NPV Troubleshooting Findings
+  description: 'From the NPV summary data, we can derive:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - initial_findings
+  - npv
+  - npv-calculation-accuracy
+  - verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/investigation_checklist.md
+  title: NPV Troubleshooting Investigation Checklist
+  description: 'Based on investigation findings, rank variance sources by impact:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - investigation_checklist
+  - npv
+  - npv-calculation-accuracy
+  - verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/npv_discrepancy_analysis.md
+  title: NPV Discrepancy Analysis
+  description: 'The NPV calculation shows a discrepancy of **$11.5 million** between:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - npv_discrepancy_analysis
+  - verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/troubleshooting_plan.md
+  title: NPV Calculation Troubleshooting Plan
+  description: 'The NPV result is **highly negative** (-$1.2B), which suggests potential issues with:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - troubleshooting_plan
+  - verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/verification/2025-08-13-npv-troubleshooting/verification_findings.md
+  title: NPV Calculation Accuracy Verification Findings
+  description: The NPV calculation accuracy improvement spec has been analyzed. All major tasks were reported as completed,
+    but the final accuracy achieved was **44.55% variance** from Excel results, which **exce...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-calculation-accuracy
+  - verification
+  - verification_findings
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-data-source-comparison/spec.md
+  title: Spec Requirements Document
+  description: Identify and resolve differences between manual analysis data sources (oil production and prices) from the
+    worldenergydata modules and the legacy Excel benchmark data (docs\modules\bsee\data\NPV_JS...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-data-source-comparison
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-data-source-comparison/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/npv-data-source-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-data-source-comparison
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-data-source-comparison/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/npv-data-source-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-data-source-comparison
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/archieve/npv/npv-data-source-comparison/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/npv-data-source-comparison/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - archieve
+  - npv
+  - npv-data-source-comparison
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/executive-summary.md
+  title: 'Executive Summary: DCA Interactive Dashboard'
+  description: The Interactive Decline Curve Analysis (DCA) Dashboard democratizes production forecasting by providing instant
+    access to sophisticated analysis tools without enterprise software costs or complexit...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - executive-summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/prompt.md
+  title: Prompt Documentation
+  description: '"Create an interactive decline curve analysis dashboard that implements the Arps equation for gas production
+    analysis. The dashboard should have real-time parameter adjustment using sliders for qi,...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/spec.md
+  title: Spec Requirements Document
+  description: Implement an interactive web-based dashboard for decline curve analysis (DCA) using the Arps equation, enabling
+    energy professionals to analyze gas production decline curves with real-time paramete...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/task_summary.md
+  title: Task Execution Summary
+  description: This document tracks the execution progress of the DCA Interactive Dashboard implementation.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/dca-interactive-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/dca-interactive-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/dca-interactive-dashboard/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/dca-interactive-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - dca-interactive-dashboard
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/executive-summary.md
+  title: 'Executive Summary: Decline Curve Analysis Engine'
+  description: The Decline Curve Analysis (DCA) Engine provides enterprise-grade production forecasting capabilities, enabling
+    accurate reserve estimation and economic decision-making. This core technology underp...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - executive-summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/prompt.md
+  title: Prompt Documentation
+  description: '"Implement a comprehensive decline curve analysis module for the worldenergydata repository that supports
+    Arps'' decline equations (exponential, hyperbolic, and harmonic). Include parameter estimati...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/spec.md
+  title: Spec Requirements Document
+  description: Implement production decline curve analysis functionality to analyze and forecast oil/gas well production decline
+    rates. This feature will enable engineers to predict future production, estimate ul...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/task_summary.md
+  title: Task Execution Summary
+  description: This document tracks the execution progress of the Decline Curve Analysis engine implementation.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/decline-curve-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/decline-curve-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/decline-curve-analysis/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/decline-curve-analysis/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - decline-curve-analysis
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/marine/FOUNDERING_INCIDENT_ANALYSIS_SPEC.md
+  title: 'Marine Safety: Comprehensive Incident Analysis & Exploration Module'
+  description: This specification defines a **general-purpose marine incident analysis module** to explore, categorize, and
+    analyze ALL types of marine incidents and their root causes across multiple HSE data sou...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - foundering_incident_analysis_spec
+  - marine
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/marine/IMPLEMENTATION_ROADMAP.md
+  title: Marine Incident Analysis Module - Implementation Roadmap
+  description: This document provides a detailed implementation plan for the comprehensive Marine Incident Analysis & Exploration
+    Module.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - implementation_roadmap
+  - marine
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/marine/INCIDENT_TAXONOMY.md
+  title: Marine Incident Taxonomy & Classification System
+  description: This document defines the comprehensive taxonomy for categorizing and analyzing marine incidents across all
+    data sources.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - incident_taxonomy
+  - marine
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/marine/user_prompt.md
+  title: User Prompt
+  description: Create a database of safety incidents at land and at sea, including details such as date, location, type of
+    incident, vessels involved, and outcomes.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - marine
+  - user_prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-01-13 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - prompt
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/spec.md
+  title: Spec Requirements Document
+  description: This spec implements a comprehensive well data verification system that provides systematic workflows for validating
+    production data accuracy, ensuring data quality standards, and identifying anoma...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - spec
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/task_summary.md
+  title: Task Summary
+  description: 'This spec implements a comprehensive well data verification system that **extends the existing validation
+    infrastructure** rather than building from scratch. The revised approach leverages:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - task_summary
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/well-data-verification/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - tasks
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/analysis/well-data-verification/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api-spec
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/well-data-verification/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - technical-spec
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-data-verification/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/well-data-verification/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - tests
+  - well-data-verification
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-01-13 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - prompt
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/spec.md
+  title: Spec Requirements Document
+  description: This spec implements an interactive web-based dashboard for visualizing and analyzing well production data,
+    economic metrics, and operational performance. The dashboard integrates with the newly im...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - spec
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/task_summary.md
+  title: Task Summary
+  description: This spec implements an interactive web-based dashboard for visualizing and analyzing well production data.
+    The system extends the existing DashboardBuilder infrastructure and integrates with the v...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - task_summary
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/analysis/well-production-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - tasks
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/analysis/well-production-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - api-spec
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/analysis/well-production-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - technical-spec
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/analysis/well-production-dashboard/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/analysis/well-production-dashboard/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - analysis
+  - tests
+  - well-production-dashboard
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-08-06 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/spec.md
+  title: Spec Requirements Document
+  description: '**Original Request:** Comprehensive Well and production report (by block, field, lease). Should be able to:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/task_summary.md
+  title: Task Summary
+  description: 'This spec implements a comprehensive reporting system for BSEE well and production data across three organizational
+    levels: blocks, fields, and leases. The system provides:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/bsee/comprehensive-report-system/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/bsee/comprehensive-report-system/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/sub-specs/templates-spec.md
+  title: Report Templates Specification
+  description: This is the report templates specification for the spec detailed in @specs/modules/bsee/comprehensive-report-system/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - templates-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/comprehensive-report-system/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/bsee/comprehensive-report-system/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - comprehensive-report-system
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/COMPLETE_SUMMARY.md
+  title: 🎯 BSEE Data Consolidation - EXECUTION COMPLETE
+  description: 'All validation tests completed successfully:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - complete_summary
+  - consolidation
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/READY_TO_EXECUTE.md
+  title: ✅ BSEE Data Consolidation - Ready to Execute
+  description: '```bash cat specs/modules/bsee/consolidation/sub-specs/cleanup-proposal-detailed.md ```'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - ready_to_execute
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/STATUS.md
+  title: BSEE Data Consolidation - Status Dashboard
+  description: '| Metric | Status | Progress | |--------|--------|----------| | **Total Files Analyzed** | ✅ Complete | 666
+    files | | **Total Data Size** | ✅ Measured | 367.60 MB | | **Duplicates Identified** | ✅ ...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - status
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/spec.md
+  title: Spec Requirements Document
+  description: Consolidate and improve the BSEE (Bureau of Safety and Environmental Enforcement) data organization in `data/modules/bsee/`,
+    identifying and removing duplicates, redundant data, and proposing a cle...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/bsee/consolidation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/team_communication.md
+  title: BSEE Data Consolidation - Team Communication
+  description: Dear Team,
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - team_communication
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/validation_checklist.md
+  title: BSEE Data Consolidation - Validation Checklist
+  description: 'Run these test imports: ```python'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - validation_checklist
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/validation_report.md
+  title: BSEE Data Consolidation - Validation Report
+  description: 'The BSEE data consolidation has been successfully executed with the following results:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - validation_report
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/sub-specs/cleanup-proposal-detailed.md
+  title: BSEE Data Cleanup Proposal - Detailed
+  description: 'Based on the inventory and duplicate analysis completed, we propose the following cleanup actions:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - cleanup-proposal-detailed
+  - consolidation
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/sub-specs/cleanup-proposal.md
+  title: BSEE Data Cleanup Proposal
+  description: 'Based on the inventory and duplicate analysis, we propose the following cleanup actions for the BSEE data
+    module:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - cleanup-proposal
+  - consolidation
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/sub-specs/data-inventory.md
+  title: BSEE Data Inventory Report
+  description: 'Generated: 2025-08-21T05:36:27.968927'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - data-inventory
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/consolidation/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the BSEE data consolidation detailed in @specs/modules/bsee/consolidation/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - consolidation
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/spec.md
+  title: Spec Requirements Document
+  description: '**Original Request:** Implement BSEE data refresh system for war data, production data, and well data that
+    can run on demand in git bash. Research existing architecture for improvements and investi...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - data-refresh-architecture
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/task_summary.md
+  title: Task Summary
+  description: Successfully implemented a parallel BSEE data refresh architecture that eliminates the "big variance" problem
+    caused by stale data. The new enhanced system runs alongside the legacy implementation ...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - data-refresh-architecture
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/bsee/data-refresh-architecture/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - data-refresh-architecture
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/sub-specs/api-spec.md
+  title: API Research and Implementation Specification
+  description: This is the API research specification for the spec detailed in @specs/modules/bsee/data-refresh-architecture/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - api-spec
+  - bsee
+  - data-refresh-architecture
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/bsee/data-refresh-architecture/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - data-refresh-architecture
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/data-refresh-architecture/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/bsee/data-refresh-architecture/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - data-refresh-architecture
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-08-19 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/spec.md
+  title: Spec Requirements Document
+  description: This spec implements comprehensive financial analysis capabilities for BSEE oil and gas lease data, integrating
+    SME (Subject Matter Expert) Roy's financial analysis scripts into the worldenergydata...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/task_summary.md
+  title: Task Summary
+  description: This spec implements comprehensive financial analysis capabilities for BSEE oil and gas lease data. The implementation
+    integrates SME Roy's financial analysis V18 scripts into the worldenergydata m...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/bsee/financial-analysis-sme-code/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/bsee/financial-analysis-sme-code/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - api-spec
+  - bsee
+  - financial-analysis-sme-code
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/bsee/financial-analysis-sme-code/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/financial-analysis-sme-code/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/bsee/financial-analysis-sme-code/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial-analysis-sme-code
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/ALL_WORK_COMPLETE.md
+  title: ✅ ALL WORK COMPLETE - Shenandoah Financial Analysis
+  description: '**Completion Date:** October 21, 2025 **Status:** All research, modeling, referencing, and PDF generation
+    complete'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - all_work_complete
+  - bsee
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/COMPLETION_SUMMARY.md
+  title: 'ABOUTME: Final completion summary for Shenandoah field analysis project'
+  description: '**Project Name:** Shenandoah Field Asset Lifecycle & Societal Economics Analysis **Completion Date:** October
+    17, 2025 **Total Duration:** Research, analysis, improvements, and PDF generation **Sta...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - completion_summary
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/DETAILED_MODELING_COMPLETE.md
+  title: 'ABOUTME: Completion summary for detailed budget and cashflow modeling'
+  description: '**Completion Date:** October 20, 2025 **Status:** All research, modeling, and referencing complete'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - detailed_modeling_complete
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/FID_COST_RESEARCH.md
+  title: 'ABOUTME: Research findings on $1.8B FID figure - confirms total project cost not partner share'
+  description: '**ANSWER: $1.8B IS TOTAL PROJECT COST FOR ENTIRE DEVELOPMENT**'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - fid_cost_research
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/FINAL_DELIVERABLES.md
+  title: Final Deliverables - Shenandoah Financial Analysis
+  description: '**Project Completion:** October 21, 2025 **Status:** ✅ All Analysis Complete'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - final_deliverables
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/FINAL_SUMMARY.md
+  title: 'ABOUTME: Final project summary - all work completed and verified'
+  description: '**Completion Date:** October 17, 2025 **Status:** ✅ **ALL WORK COMPLETE AND VALIDATED** **Quality Grade:**
+    A+ (Publication Ready)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - final_summary
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/FINANCIAL_MODELING_INDEX.md
+  title: 📊 Shenandoah Financial Modeling - Document Index
+  description: '**Created:** October 20, 2025 **Purpose:** Navigate detailed budget, cashflow models, and IRR calculations'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - financial_modeling_index
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/IMPROVEMENTS_COMPLETED.md
+  title: 'ABOUTME: Summary of all improvements completed for Shenandoah field analysis'
+  description: '**Date:** January 2025 **Scope:** Executive summary reframing and enhancements **Primary Change:** Shifted
+    focus from "entry timing" to "asset lifecycle & societal economics"'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - improvements_completed
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/PDF_GENERATION_SUMMARY.md
+  title: PDF Generation Summary - Financial Research Documents
+  description: '**Generation Date:** October 21, 2025 **Status:** ✅ All 3 PDFs successfully generated'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - pdf_generation_summary
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/PDF_README.md
+  title: 'ABOUTME: Documentation for PDF generation of Shenandoah executive summary'
+  description: '**Generated:** October 17, 2025 **Source:** `executive_summary.md` (720 lines) **Output:** `executive_summary.pdf`
+    (134 KB, PDF version 1.7) **Pages:** ~30 pages (Letter size, 0.75" margins)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - pdf_readme
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/PDF_VALIDATION.md
+  title: 'ABOUTME: PDF validation report for executive summary'
+  description: '**Validation Date:** October 17, 2025 **PDF File:** `executive_summary.pdf` (133.1 KB) **Source File:** `executive_summary.md`
+    (720 lines, 38 KB) **Generator:** `generate_pdf.py` (Python + Weasyprint)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - pdf_validation
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/RESEARCH_SUMMARY.md
+  title: 'Research Summary: $1.8B FID & Detailed Financial Model'
+  description: '**✅ $1.8B IS TOTAL PROJECT COST FOR ENTIRE DEVELOPMENT**'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - research_summary
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/START_HERE.md
+  title: '📊 START HERE: Shenandoah Field Economic Analysis'
+  description: '**Main Deliverable:** [`executive_summary.pdf`](executive_summary.pdf) (133 KB, ~30 pages)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - shenandoah_field
+  - start_here
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/WELL_ANALYSIS.md
+  title: 'Shenandoah Well Analysis: Historical vs. Current Drilling'
+  description: '**Analysis Date:** October 21, 2025 **Question:** Are any current producing wells drilled/completed before
+    2020 by previous companies?'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - shenandoah_field
+  - well_analysis
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/detailed_budget_model.md
+  title: 'ABOUTME: Detailed budget model for Shenandoah field with partner-specific capital allocations'
+  description: '**Model Date:** October 20, 2025 **Purpose:** Demonstrate detailed calculations supporting all IRR figures
+    **Time Horizon:** 2009-2031 (22 years full lifecycle)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - detailed_budget_model
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/executive_summary.md
+  title: 'ABOUTME: Shenandoah Field Economic Brief - Executive Summary'
+  description: '| **Metric** | **Value** | **Context** | |------------|-----------|-------------| | **Discovery** | 2009 |
+    Anadarko Petroleum, Walker Ridge Blocks 51/52/53 | | **Peak Valuation** | $4 billion (2013...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - executive_summary
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/executive_summary_review.md
+  title: 'ABOUTME: Executive Summary Review - Improvement Recommendations'
+  description: '**Document Reviewed:** `executive_summary.md` (456 lines, ~14KB) **Review Date:** January 2025 **Overall Assessment:**
+    ★★★★☆ (4/5) - Strong content, needs structural improvements and additions'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - executive_summary_review
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/research_findings.md
+  title: 'ABOUTME: Shenandoah Field Research Findings from Online Sources'
+  description: The Shenandoah field represents one of the most financially complex deepwater developments in Gulf of Mexico
+    history, with over **$2.3 billion** in cumulative write-offs and impairments by original...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - research_findings
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/returns_contrast_table.md
+  title: 'ABOUTME: Shenandoah field returns analysis - contrasting perspectives'
+  description: '| Metric | **New Partners (2018-2025)** | **All-In Project (2009-2025)** | **Original Partners (2009-2017)**
+    | |--------|------------------------------|--------------------------------|------------...'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - returns_contrast_table
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/review_and_improvements.md
+  title: 'ABOUTME: Critical review of Shenandoah field analysis with improvement recommendations'
+  description: '**Review Date:** January 2025 **Reviewer:** Self-assessment against financial analysis best practices **Documents
+    Reviewed:** Executive summary, analysis tables, research findings (7 files total)'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - review_and_improvements
+  - shenandoah_field
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/bsee/shenandoah_field/user_prompt.md
+  title: Objective
+  description: Create a comprehensive economic brief for the Shenandoah field that captures true costs, partner exposures,
+    historical write-offs, and current development economics.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - shenandoah_field
+  - user_prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/executive-summary.md
+  title: Executive Summary
+  description: 'The WorldEnergyData repository currently stores large datasets (multi-GB ZIP files) directly in the codebase,
+    causing:'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - executive-summary
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-09-01 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - prompt
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/spec.md
+  title: Spec Requirements Document
+  description: '``` /create-spec module data procurement'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - spec
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/task_summary.md
+  title: Task Execution Summary
+  description: '**Status**: ✅ COMPLETED (2025-01-06) **Time Taken**: ~1 hour **Approach**: Web search and documentation research'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - task_summary
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/data-procurement/web-api-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - tasks
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/data-procurement/web-api-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - api-spec
+  - data-procurement
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/data-procurement/web-api-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - technical-spec
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-procurement/web-api-integration/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/data-procurement/web-api-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - data-procurement
+  - tests
+  - web-api-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/executive-summary.md
+  title: 'Executive Summary: SODIR Integration'
+  description: The SODIR (Norwegian Offshore Directorate) integration extends WorldEnergyData's analytical capabilities from
+    the US Gulf of Mexico to include the Norwegian Continental Shelf, one of the world's mo...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - executive-summary
+  - sodir-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/prompt.md
+  title: Prompt Evolution Document
+  description: '**Date:** 2025-07-23 **User:** Initial spec creation request'
+  category: modules
+  repo: worldenergydata
+  tags:
+  - prompt
+  - sodir-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/spec.md
+  title: Spec Requirements Document
+  description: Implement comprehensive SODIR (Norwegian Offshore Directorate) data integration to collect, process, and analyze
+    Norwegian Continental Shelf petroleum data. This integration will expand WorldEnergy...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir-integration
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/task_summary.md
+  title: Task Summary
+  description: This spec implements comprehensive integration with SODIR (Norwegian Offshore Directorate) to expand WorldEnergyData's
+    coverage to the Norwegian Continental Shelf. The implementation will enable cr...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir-integration
+  - task_summary
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/data-sources/sodir-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir-integration
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/data-sources/sodir-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - api-spec
+  - sodir-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/sub-specs/database-schema.md
+  title: Database Schema
+  description: This is the database schema implementation for the spec detailed in @specs/modules/data-sources/sodir-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - database-schema
+  - sodir-integration
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/data-sources/sodir-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir-integration
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/data-sources/sodir-integration/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/data-sources/sodir-integration/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir-integration
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/infrastructure/docs-organization/spec.md
+  title: Spec Requirements Document
+  description: Reorganize all documentation in the WorldEnergyData repository into a structured docs/ folder with logical
+    sub-modules, simplify organization, clean up duplicates, and refine documentation quality ...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - docs-organization
+  - infrastructure
+  - spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/infrastructure/docs-organization/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/infrastructure/docs-organization/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - docs-organization
+  - infrastructure
+  - tasks
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/infrastructure/docs-organization/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/infrastructure/docs-organization/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - docs-organization
+  - infrastructure
+  - technical-spec
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/infrastructure/docs-organization/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/infrastructure/docs-organization/spec.md
+  category: modules
+  repo: worldenergydata
+  tags:
+  - docs-organization
+  - infrastructure
+  - tests
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/modules/marketing/user_prompt.md
+  title: User Prompt
+  description: Prepare detailed input file for the following. Ask for any clarifications if needed before proceeding.
+  category: modules
+  repo: worldenergydata
+  tags:
+  - marketing
+  - user_prompt
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/spec.md
+  title: Spec Requirements Document
+  description: This spec defines a comprehensive test plan for the WorldEnergyData repository, leveraging AI agents and automated
+    testing infrastructure to ensure code quality, data integrity, and performance acr...
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - spec
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/task_summary.md
+  title: Task Summary
+  description: '**Status**: COMPLETED **Time**: 2025-08-21 10:45 AM **Duration**: 1.5 hours'
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - task_summary
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/testing/comprehensive-test-plan/spec.md
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - tasks
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/sub-specs/ai-agents.md
+  title: AI Agent Configuration for Testing
+  description: This document defines the AI agents used in the comprehensive test plan for @specs/testing/comprehensive-test-plan/spec.md
+  category: other
+  repo: worldenergydata
+  tags:
+  - ai-agents
+  - comprehensive-test-plan
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the comprehensive test plan detailed in @specs/testing/comprehensive-test-plan/spec.md
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - technical-spec
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/sub-specs/test-matrix.md
+  title: Test Matrix
+  description: Comprehensive test coverage matrix for WorldEnergyData repository
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - test-matrix
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
+- path: worldenergydata/specs/testing/comprehensive-test-plan/sub-specs/test-performance-tracking.md
+  title: Test Performance Tracking Specification
+  description: This document defines the test performance tracking system for @specs/testing/comprehensive-test-plan/spec.md
+  category: other
+  repo: worldenergydata
+  tags:
+  - comprehensive-test-plan
+  - test-performance-tracking
+  - testing
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-03-15'
 - path: assethold/specs/modules/hidden-sprouting-stream.md
   title: 'WRK-189-ext: HTML Report, UV Environment, Sectioned Data, Stock Comparison Design'
   description: 'The daily strategy tool works end-to-end (live run confirmed, 170 tests passing). Three enhancements are needed:'
