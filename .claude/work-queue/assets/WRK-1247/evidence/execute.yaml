@@ -1,0 +1,19 @@
+wrk_id: WRK-1247
+stage: 10
+date: "2026-03-16"
+executor: claude
+execution_summary: |
+  XLSX formula extraction POC — 3 phases completed:
+  Phase 1 (Foundation): FormulaXlsxParser, schema extensions, formula reference parser,
+    chain builder, VBA extractor — 18 TDD tests pass.
+  Phase 2 (Integration): formula_to_archive converter, deep_extract.py wired, parser registered.
+  Phase 3 (POC Execution): 10 files selected, 6 processed (4 >15MB skipped),
+    656K formulas extracted, 187K test stubs generated, 100% cache hit rate.
+  Phase 4 (Translation): formula_to_python.py translator — 68.4% auto-translation yield,
+    30 TDD tests pass, eval tests verify numeric correctness against Excel cached values.
+commits:
+  - 908047ef
+  - 8f4a6148
+  - 24e62927
+tests_passed: 373
+test_command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/ -v"

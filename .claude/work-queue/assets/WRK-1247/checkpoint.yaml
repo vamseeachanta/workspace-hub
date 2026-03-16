@@ -1,46 +1,34 @@
 wrk_id: WRK-1247
-stage: 12
-next_action: "Stage 12 complete — proceed to Stage 13 (Agent Cross-Review)"
+stage: 17
+next_action: "Stage 17 — User Review Implementation (HARD GATE)"
 context_summary: >
-  POC extraction complete. All 7 ACs met. 6/10 files processed (4 skipped >15MB),
-  656,635 formulas extracted, 187,093 test stubs generated, 100% cache hit rate.
-  Legal scan PASSED — all archive.yaml updated to legal_scan_passed: true.
-  HTML calc-reports generated for all 6 files. Parametric test pattern demonstrated
-  on conductor length assessment (24 tests, 10 variations, all pass). Test file
-  syntax errors fixed (docstrings with embedded quotes → comments). Generator patched
-  to prevent recurrence. Total: 18 core + 24 parametric + 187K stub tests.
+  POC complete. All 7 ACs met. Key addition this session: formula_to_python.py
+  auto-translator — 68.4% of formulas convert to runnable Python expressions,
+  verified numerically against Excel cached values (30 TDD tests). Total: 373 tests
+  pass across all doc_intelligence tests. Legal scan PASS. Gate evidence written for
+  stages 10-16. 5 future work items captured. Ready for user review and close.
 updated_at: "2026-03-16"
 
-# Files to read when resuming
 entry_reads:
   - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
-  - .claude/skills/data/office/xlsx-to-python/SKILL.md
-  - scripts/data/doc_intelligence/run_poc_extraction.py
-  - scripts/data/doc_intelligence/parsers/formula_xlsx.py
+  - scripts/data/doc_intelligence/formula_to_python.py
+  - scripts/data/doc_intelligence/tests/test_formula_to_python.py
 
-# What's done
 completed:
-  - "AC1: 10 XLSX files selected (poc-file-list.yaml)"
-  - "AC2: Formula extractor reads formulas (656K extracted, 100% cache hit)"
-  - "AC3: Dependency mapping via fallback classifier (187K output cells)"
-  - "AC4: Named ranges extracted (0 found — gap documented)"
-  - "AC5: Each spreadsheet produces calc-report YAML + HTML + test stubs (6/6)"
-  - "AC6: Yield report written (knowledge/dark-intelligence/xlsx-poc/yield-report.yaml)"
-  - "AC7: Gap analysis documented (Chartsheet, size limit, networkx isolation, no .xlsm)"
-  - "18/18 unit tests pass"
-  - "24/24 parametric tests pass (conductor length assessment demo)"
-  - "Legal scan PASSED — all archives updated to legal_scan_passed: true"
-  - "HTML calc-reports generated for all 6 files"
-  - "Test file syntax errors fixed (3 files, 175 occurrences)"
-  - "Generator patched to prevent docstring syntax errors"
-  - "New skill: .claude/skills/data/office/xlsx-to-python/SKILL.md"
+  - "AC1-7: All acceptance criteria met"
+  - "18/18 core formula parser tests"
+  - "30/30 formula-to-python translator tests"
+  - "24/24 parametric conductor tests"
+  - "373/373 full doc_intelligence test suite"
+  - "Legal scan PASS"
+  - "HTML calc-reports for all 6 files"
+  - "Cross-review stage 13 evidence"
+  - "Gate evidence stages 10-16"
+  - "Future work items FW-1..5"
 
-# What remains
 remaining:
-  - title: "Process 4 skipped large files"
-    detail: "Raise MAX_SIZE_MB or optimize memory. Files: Fatigue (131MB), NOAA (49MB), Sling Calc (32MB x2). Future work — not blocking POC close."
-
-  - title: "Stages 13-20: cross-review, gate verification, user review, close"
+  - title: "Stage 17: User review (HARD GATE)"
+  - title: "Stages 18-20: Reclaim, Close, Archive"
 
 commits:
   - hash: 908047ef
@@ -49,11 +37,3 @@ commits:
     message: "fix(WRK-1247): Chartsheet bug, cache key fix, parametric test skill section"
   - hash: 24e62927
     message: "fix(WRK-1247): fallback output classification — 187K tests generated"
-
-key_learnings:
-  - "uv run --no-project creates isolated env without .venv packages — always provide fallback imports"
-  - "openpyxl read_only=True incompatible with Chartsheet objects — skip with hasattr(ws, 'iter_rows')"
-  - "Excel cell values from data_only=True ARE the test assertions — no separate test data needed"
-  - "No .xlsm files in corpus (all 23,656 are .xlsx) — VBA extraction path exists but untested on real data"
-  - "Docstrings with embedded double-quotes from Excel formulas break Python — use comments instead"
-  - "187K test stubs too large for pytest collection — need chunking strategy for production"

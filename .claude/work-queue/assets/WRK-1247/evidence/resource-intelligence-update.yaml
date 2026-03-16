@@ -1,0 +1,23 @@
+wrk_id: WRK-1247
+stage: 16
+date: "2026-03-16"
+updates:
+  - resource: "openpyxl dual-pass extraction"
+    finding: "data_only=True returns cached values; data_only=False returns formula strings. Chartsheet objects crash with read_only=True — skip via hasattr(ws, 'iter_rows')."
+    confidence: high
+
+  - resource: "Excel formula corpus statistics"
+    finding: "23,656 XLSX files (0 XLSM). POC sample: 68.4% formulas are simple arithmetic (auto-translatable), 31.6% use VLOOKUP/IF/CONCATENATE."
+    confidence: medium
+
+  - resource: "formula_to_python translator"
+    finding: "Regex-based cell ref replacement + function mapping handles PI(), SQRT(), trig, ABS. Verified numerically against Excel cached values. 30 TDD tests."
+    confidence: high
+
+  - resource: "formulas library (v1.3.3)"
+    finding: "Can compile entire workbooks to callable Python DispatchPipe. Not used in POC but identified as the path for complex formulas (VLOOKUP, nested IF)."
+    confidence: medium
+
+  - resource: "networkx in --no-project mode"
+    finding: "uv run --no-project creates isolated env. networkx from .venv not available. Fallback classifier (cells not referenced by others = outputs) works but is less accurate."
+    confidence: high
