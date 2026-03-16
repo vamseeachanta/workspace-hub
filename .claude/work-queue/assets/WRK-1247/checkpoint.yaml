@@ -1,14 +1,71 @@
 wrk_id: WRK-1247
-stage: 10
-next_action: "Run formula extraction on 10 selected files (Phase 3 Step 11)"
+stage: 12
+next_action: "Complete remaining ACs: calc-report YAML+HTML, parametric tests, legal scan, close"
 context_summary: >
-  Stages 1-9 complete. Phase 1-2 TDD done: 18/18 tests pass. 6 new files created
-  (formula_reference_parser.py, formula_chain_builder.py, vba_extractor.py,
-  parsers/formula_xlsx.py, tests/test_formula_xlsx_parser.py, select_poc_xlsx.py).
-  schema.py extended with FormulaPayload. 10 XLSX files selected across 10 domains.
-  No .xlsm files in corpus (all xlsx). Ready for extraction run on 10 files.
+  POC extraction complete. 6/10 files processed (4 skipped >15MB), 656,635 formulas
+  extracted, 187,093 test stubs generated, 100% cache hit rate. Three commits on main.
+  Key bug fixed: uv run --no-project isolates networkx — added _get_output_cells() fallback.
+  User feedback captured: (1) parametric 10-variation tests mandatory, (2) follow
+  calculation-report skill for YAML+HTML, (3) this TDD pattern is standard for xlsx-to-python.
 updated_at: "2026-03-16"
+
+# Files to read when resuming (load these into context)
 entry_reads:
   - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+  - .claude/skills/data/office/xlsx-to-python/SKILL.md
+  - .claude/skills/data/calculation-report/SKILL.md
+  - scripts/data/doc_intelligence/run_poc_extraction.py
   - scripts/data/doc_intelligence/parsers/formula_xlsx.py
-  - knowledge/dark-intelligence/xlsx-poc/poc-file-list.yaml
+
+# What's done
+completed:
+  - "AC1: 10 XLSX files selected (poc-file-list.yaml)"
+  - "AC2: Formula extractor reads formulas (656K extracted, 100% cache hit)"
+  - "AC3: Dependency mapping via fallback classifier (187K output cells)"
+  - "AC6: Yield report written (knowledge/dark-intelligence/xlsx-poc/yield-report.yaml)"
+  - "AC7: Gap analysis documented (Chartsheet, size limit, networkx isolation, no .xlsm)"
+  - "18/18 unit tests pass"
+  - "New skill: .claude/skills/data/office/xlsx-to-python/SKILL.md"
+  - "Parametric test variations section added to skill (mandatory 10-variation rule)"
+
+# What remains
+remaining:
+  - title: "Generate calc-report YAMLs following calculation-report skill"
+    detail: >
+      For each of the 6 processed files, generate a calc-report YAML (metadata,
+      inputs, methodology.equations, outputs) from the archive.yaml already
+      produced. Then run scripts/reporting/generate-calc-report.py to produce
+      HTML reports. Follow .claude/skills/data/calculation-report/SKILL.md schema.
+    files:
+      - knowledge/dark-intelligence/xlsx-poc/*/archive.yaml
+      - scripts/reporting/generate-calc-report.py
+
+  - title: "Implement parametric test variations (10 per calculation)"
+    detail: >
+      For each processed file, generate 10 parameter variations using the pattern
+      in xlsx-to-python SKILL.md §Parametric Test Variations. Use formulas library
+      to evaluate at varied inputs if possible, otherwise assert physical bounds.
+      This is the user's key requirement — Excel values are baseline, variations
+      cover the input range.
+
+  - title: "Legal scan on archive YAMLs"
+    detail: "Run scripts/legal/legal-sanity-scan.sh on all knowledge/dark-intelligence/xlsx-poc/*/archive.yaml"
+
+  - title: "Process 4 skipped large files"
+    detail: "Raise MAX_SIZE_MB or optimize memory. Files: Fatigue (131MB), NOAA (49MB), Sling Calc (32MB x2)"
+
+  - title: "Stages 13-20: cross-review, gate verification, user review, close"
+
+commits:
+  - hash: 908047ef
+    message: "feat(WRK-1247): XLSX formula extraction POC — 18 TDD tests + skill + plan"
+  - hash: 8f4a6148
+    message: "fix(WRK-1247): Chartsheet bug, cache key fix, parametric test skill section"
+  - hash: 24e62927
+    message: "fix(WRK-1247): fallback output classification — 187K tests generated"
+
+key_learnings:
+  - "uv run --no-project creates isolated env without .venv packages — always provide fallback imports"
+  - "openpyxl read_only=True incompatible with Chartsheet objects — skip with hasattr(ws, 'iter_rows')"
+  - "Excel cell values from data_only=True ARE the test assertions — no separate test data needed"
+  - "No .xlsm files in corpus (all 23,656 are .xlsx) — VBA extraction path exists but untested on real data"
