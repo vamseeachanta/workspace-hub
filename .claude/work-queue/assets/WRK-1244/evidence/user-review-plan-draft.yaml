@@ -1,0 +1,16 @@
+wrk_id: WRK-1244
+stage: 5
+decision: approved
+approved_by: user
+reviewed_at: "2026-03-16T18:30:00Z"
+decision_log:
+  - section: "Chunk 1 — fix-unresolved-refs.py"
+    status: approved
+    notes: "TDD approach, dry-run/apply pattern matches existing fix-category-mismatch.py"
+  - section: "Chunk 2 — ecosystem eval orchestrator + aqwa-analysis restore"
+    status: approved
+    notes: "Orchestrator chains existing scripts; aqwa-analysis restore from git history"
+  - section: "Chunk 3 — final eval + results"
+    status: approved
+    notes: "AC4 deferral for section_missing documented with rationale"
+plan_path: assets/WRK-1244/plan.md

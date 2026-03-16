@@ -1,0 +1,66 @@
+wrk_id: WRK-1244
+stage: 6
+completed_at: "2026-03-16T21:00:00Z"
+
+reviews:
+  claude:
+    source: scripts/review/results/20260316T205552Z-plan.md-plan-claude.md
+    verdict: REQUEST_CHANGES
+    findings:
+      - id: P1-1
+        severity: P1
+        title: "Shell injection in orchestrator bash script"
+        resolution: "Replaced bash orchestrator with Python (skill_eval_ecosystem.py)"
+      - id: P1-2
+        severity: P1
+        title: "Silent failure via || true on upstream scripts"
+        resolution: "Python orchestrator checks exit codes explicitly, warns on failure"
+      - id: P1-3
+        severity: P1
+        title: "Bare python3 violates hard runtime rule"
+        resolution: "All Python invocations use uv run --no-project python"
+    status: findings_resolved
+
+  codex:
+    source: assets/WRK-1244/plan_codex.md
+    source_type: stage5_plan_dispatch
+    verdict: REQUEST_CHANGES
+    findings:
+      - id: P1-4
+        severity: P1
+        title: "Bash orchestrator is wrong abstraction — brittle, hard to test"
+        resolution: "Rewritten as Python script (skill_eval_ecosystem.py)"
+      - id: P2-1
+        severity: P2
+        title: "Hyphenated filename breaks Python import in tests"
+        resolution: "Renamed to fix_unresolved_refs.py (underscore)"
+      - id: P2-2
+        severity: P2
+        title: "content.split('---', 2) fragile for body containing ---"
+        resolution: "Accepted risk — matches established pattern in fix-category-mismatch.py; round-trip test coverage added"
+      - id: P3-1
+        severity: P3
+        title: "Hardcoded counts ~111 may drift"
+        resolution: "Counts treated as baselines, not hard expectations in tests"
+    status: findings_resolved
+    note: "Formal cross-review.sh dispatch failed (timeout); 1423-line plan review obtained via stage5-plan-dispatch.sh"
+
+  gemini:
+    source: assets/WRK-1244/plan_gemini.md
+    source_type: stage5_plan_dispatch
+    verdict: APPROVE_WITH_NOTES
+    findings:
+      - id: P2-3
+        severity: P2
+        title: "mkdir -p for output directory in orchestrator"
+        resolution: "Python orchestrator uses output_path.parent.mkdir(parents=True, exist_ok=True)"
+      - id: P3-2
+        severity: P3
+        title: "Timeout protection in integration tests"
+        resolution: "subprocess timeout=120 in orchestrator and tests"
+    status: findings_resolved
+    note: "630-line plan review obtained via stage5-plan-dispatch.sh; formal cross-review.sh capped at 3 passes"
+
+all_providers_reviewed: true
+p1_findings_resolved: true
+scope_change_detected: false

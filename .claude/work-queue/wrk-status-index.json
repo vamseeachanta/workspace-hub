@@ -5537,7 +5537,7 @@
   "WRK-1247": {
     "status": "done",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-16T20:11:42.915037+00:00",
+    "last_updated": "2026-03-16T20:44:25.803484+00:00",
     "updated_by": "close-item.sh",
     "title": "POC \u2014 Deep extraction on 10 XLSX calculation spreadsheets",
     "priority": "high",

@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T20:11:44Z by generate-index.py -->
+<!-- Generated: 2026-03-16T20:44:27Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T20:11:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-16T20:44:27Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 279 |
+| pending | 277 |
 | working | 4 |
 | blocked | 10 |
-| done | 11 |
-| archived | 386 |
+| done | 10 |
+| archived | 388 |
 
 ### By Priority
 
@@ -41,8 +41,8 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 33 |
-| engineering | 158 |
+| harness | 32 |
+| engineering | 157 |
 | data | 24 |
 | platform | 11 |
 | business | 6 |
@@ -81,8 +81,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 278 / 691 |
-| Plans cross-reviewed | 198 |
-| Plans approved | 223 |
+| Plans cross-reviewed | 199 |
+| Plans approved | 224 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -93,8 +93,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 691 |
-| Total archived | 386 |
-| Completion rate | 386/691 (56%) |
+| Total archived | 388 |
+| Completion rate | 388/691 (56%) |
 | Monthly rate (current month) | 136 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 81 / 279 | 29% |
+| Pending items with plans | 81 / 277 | 29% |
 | Plans cross-reviewed | 8 | 9% |
 | Plans user-approved | 8 | 9% |
 
@@ -119,15 +119,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 106 | 1 | 8 |
-| Medium   | 131  | 3  | 1  |
+| High     | 105 | 1 | 8 |
+| Medium   | 130  | 3  | 1  |
 | Low      | 42  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (33 items — 9 high, 19 medium, 5 low)
+### harness (32 items — 9 high, 18 medium, 5 low)
 
 #### harness / agent-teams
 
@@ -193,7 +193,6 @@
 | WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-1260 | MEDIUM | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending |
-| WRK-1273 | MEDIUM | Update eval-skills.py line/word limits to match 200-line rule | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 
 #### harness / training
@@ -222,7 +221,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (158 items — 80 high, 63 medium, 15 low)
+### engineering (157 items — 79 high, 63 medium, 15 low)
 
 #### engineering / artificial-lift
 
@@ -264,7 +263,6 @@
 | WRK-1245 | HIGH | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents [feature] | pending |
 | WRK-1253 | HIGH | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending |
 | WRK-1255 | HIGH | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending |
-| WRK-1269 | HIGH | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending |
 | WRK-1254 | MEDIUM | og_standards path remap — fix 27,504 stale index paths | pending |
 | WRK-1257 | MEDIUM | Chart image extraction — extract actual images from PDFs, not just metadata | pending |
 
@@ -1371,14 +1369,14 @@
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | done | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | done | low | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | done | low | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | archived | low | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | done | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1437,9 +1435,8 @@
 | WRK-1189 | Ingest BOEM lease data | high | medium | worldenergydata | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | high | medium | workspace-hub | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | medium | low | workspace-hub | - |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | high | medium | workspace-hub | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | low | low | workspace-hub | - |
-| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | low | low | workspace-hub | - |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | medium | low | workspace-hub | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 
 ### Pending
@@ -1690,11 +1687,9 @@
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | medium | low | workspace-hub | - |
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | high | medium | workspace-hub | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | medium | medium | aceengineer-admin | - |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | high | medium | workspace-hub | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | high | high | workspace-hub | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | high | high | workspace-hub | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | high | high | workspace-hub | - |
-| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | medium | low | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -2127,6 +2122,8 @@
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-1232 | Complete production data download and conversion pipeline | high | medium | worldenergydata | - |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | high | medium | workspace-hub | - |
+| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | low | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
@@ -2870,14 +2867,14 @@
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending | medium | low | - |
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | done | medium | low | - |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | done | high | medium | - |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | done | low | low | - |
-| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | done | low | low | - |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending | high | medium | - |
+| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | archived | low | low | - |
+| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | high | medium | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | pending | high | high | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | high | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | pending | high | high | - |
-| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | pending | medium | low | - |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | done | medium | low | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3316,8 +3313,8 @@
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | medium | workspace-hub | - |
 | WRK-1259 | Tune eval-skills.py required sections by skill type | pending | medium | workspace-hub | - |
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | medium | workspace-hub | - |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | done | medium | workspace-hub | - |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending | medium | workspace-hub | - |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | medium | workspace-hub | - |
+| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | medium | workspace-hub | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | pending | high | workspace-hub | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | workspace-hub | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | pending | high | workspace-hub | - |
@@ -3633,7 +3630,7 @@
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending | low | workspace-hub | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | aceengineer-admin | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | done | low | workspace-hub | - |
-| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | pending | low | workspace-hub | - |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | done | low | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3724,7 +3721,7 @@
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | medium | - | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | simple | workspace-hub | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | done | low | workspace-hub | - |
-| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | done | low | workspace-hub | - |
+| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | archived | low | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | medium | workspace-hub | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | done | simple | workspace-hub | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | medium | workspace-hub | - |
@@ -4201,8 +4198,8 @@
 | WRK-1259 | Tune eval-skills.py required sections by skill type | pending | high | workspace-hub | - |
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | workspace-hub | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | aceengineer-admin | - |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | done | high | workspace-hub | - |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending | high | workspace-hub | - |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | workspace-hub | - |
+| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4357,7 +4354,7 @@
 
 ## By Computer
 
-### ace-linux-1 (239 active / 406 total)
+### ace-linux-1 (237 active / 406 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4719,14 +4716,14 @@
 | WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | workspace-hub |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | medium | aceengineer-admin |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | done | medium | low | workspace-hub |
-| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | done | high | medium | workspace-hub |
+| WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | workspace-hub |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | done | low | low | workspace-hub |
-| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | done | low | low | workspace-hub |
-| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | pending | high | medium | workspace-hub |
+| WRK-1268 | Clean up 10 TODO/FIXME markers in skills | archived | low | low | workspace-hub |
+| WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | high | medium | workspace-hub |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | pending | high | high | workspace-hub |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | high | workspace-hub |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | pending | high | high | workspace-hub |
-| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | pending | medium | low | workspace-hub |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | done | medium | low | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -5188,6 +5185,7 @@
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | - | - | WRK-1245 |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | - | - | WRK-1245 |
 | WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | - | - | WRK-1245 |
+| WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | - | - | WRK-1272 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |

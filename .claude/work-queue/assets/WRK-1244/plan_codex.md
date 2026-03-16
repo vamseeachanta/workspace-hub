@@ -1,0 +1,1423 @@
+2026-03-16T20:53:58.185283Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/ai/agent-usage-optimizer/baseline-route-mapping-quota-agnostic-defaults/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185544Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/development/elite-frontend-ux/phase-0-context-analysis-answer-before-writing-any/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185610Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/development/engineering-report-generator/example-1-production-analysis-report/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185718Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/engineering-context-loader/skills-to-load-read-these-skillmd-files/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185779Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/infrastructure-layout/quick-decision-tree-where-does-this-file-go/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185842Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/workflow-gatepass/stage-15-to-stage-17-rule-next-work-disposition/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185890Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/engineering/gis/python-gis-ecosystem/21-coordinate-reference-system-transforms-pyproj-g/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185933Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/marine-offshore-engineering/application-1-fpso-preliminary-design/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.185971Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-installation-analysis/post-processing-installation-results/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186009Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-monolithic-to-modular/step-1-convert-dat-to-yml-if-needed/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186046Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-analysis/diffractionspec-conventions-specyml-to-orcawave/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186083Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/modular-architecture-documentation/example-3-module-invoicetax-system/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186121Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/modular-architecture-documentation/tech-stackmd-modular-architecture-section/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186158Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/technology-stack-modernization/example-1-complete-tech-stack-modernization/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186196Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/financial-statements/standard-format-classification-of-expenses-by-func/SKILL.md: invalid name: exceeds maximum length of 64 characters
+2026-03-16T20:53:58.186277Z ERROR codex_core::codex: failed to load skill /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/canned-responses/universal-escalation-triggers-apply-to-all-categor/SKILL.md: invalid name: exceeds maximum length of 64 characters
+OpenAI Codex v0.114.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019cf86d-4b3a-7fa2-b694-d3bef4fe9022
+--------
+user
+# Stance: Codex Plan Draft Review
+
+You are a software engineer agent. Your focus is on **implementation correctness, edge cases, and testability**.
+
+You will receive a Claude-authored plan draft. Walk it section-by-section and produce your own refined version.
+
+When reviewing:
+1. Challenge any assumptions about implementation approach — is there a simpler or more robust way?
+2. Identify edge cases not covered (malformed input, missing fields, timezone/date math, quota exhaustion).
+3. Flag AC gaps — things implementable but not covered by the listed tests.
+4. Assess integration risks (nightly cron, file writes, CLI availability).
+5. Verify uv run --no-project python is used wherever Python is called.
+
+Your output must be a complete refined plan (same structure as the input draft).
+Add a "Codex Notes" section at the end with your specific findings.
+
+---
+CLAUDE DRAFT PLAN:
+# WRK-1244: Skill Ecosystem Quality Evaluation — Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Complete the remaining acceptance criteria for WRK-1244 — fix broken cross-references, restore lost aqwa-analysis content, create the ecosystem eval orchestrator script, and produce a final quality report.
+
+**Architecture:** Three scripts (orchestrator + two fixers) following the established `fix-category-mismatch.py` pattern: dry-run by default, `--apply` to write. The orchestrator chains `audit-skills.py` and `eval-skills.py` into a single command with YAML summary output.
+
+**Tech Stack:** Python 3.10+, PyYAML, bash, existing `audit-skills.py` + `eval-skills.py`
+
+---
+
+## Prior Session State
+
+The previous session completed:
+- AC1: `eval-skills.py` run on all 405 skills (12 pass, 2240 warnings, 0 critical)
+- AC3: WRK-639 diverged diff — 9/10 trivial, 1 content lost (aqwa-analysis, 32 lines)
+- AC5: Results saved to `specs/audit/skill-eval-2026-03-16.yaml`
+- `fix-category-mismatch.py` created and applied (204 fixes)
+
+Remaining:
+- AC2 (PARTIAL): 111 `related_skill_unresolved` + 38 `description_too_short` — scriptable
+- AC4 (IDENTIFIED): 158 bottom-quartile skills — top issue is `section_missing` (structural, low-value to bulk-fix on guidance skills) and `related_skill_unresolved` (scriptable)
+- Restore aqwa-analysis lost content (32 lines from WRK-639 cleanup)
+- Create `scripts/skills/skill-eval-ecosystem.sh` orchestrator
+
+## File Structure
+
+| Action | File | Responsibility |
+|--------|------|---------------|
+| Create | `scripts/skills/fix-unresolved-refs.py` | Resolve broken `related_skills:` cross-references in SKILL.md frontmatter |
+| Create | `scripts/skills/tests/test_fix_unresolved_refs.py` | TDD tests for the fixer |
+| Create | `scripts/skills/skill-eval-ecosystem.sh` | Orchestrator: runs audit-skills.py + eval-skills.py + outputs summary |
+| Create | `scripts/skills/tests/test_skill_eval_ecosystem.py` | TDD tests for the orchestrator |
+| Modify | `.claude/skills/engineering/aqwa-analysis/SKILL.md` | Restore 32 lines of AQWA Solver Stages lost in WRK-639 |
+
+---
+
+## Chunk 1: fix-unresolved-refs.py (fixer script + tests)
+
+### Task 1: Write failing tests for fix-unresolved-refs.py
+
+**Files:**
+- Create: `scripts/skills/tests/test_fix_unresolved_refs.py`
+
+- [ ] **Step 1: Write the failing tests**
+
+```python
+#!/usr/bin/env python3
+"""Tests for fix-unresolved-refs.py."""
+import tempfile, textwrap, yaml
+from pathlib import Path
+
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from fix_unresolved_refs import build_skill_index, find_unresolved_refs, fix_ref
+
+
+def _write_skill(tmp: Path, rel_path: str, frontmatter: dict, body: str = "") -> Path:
+    """Helper: write a SKILL.md with given frontmatter under tmp/rel_path."""
+    p = tmp / rel_path / "SKILL.md"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    fm = yaml.dump(frontmatter, default_flow_style=False)
+    p.write_text(f"---\n{fm}---\n{body}")
+    return p
+
+
+def test_build_index_finds_all_skills():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ".claude" / "skills"
+        _write_skill(root, "ai/prompting/foo", {"name": "foo", "description": "Foo skill"})
+        _write_skill(root, "data/bar", {"name": "bar", "description": "Bar skill"})
+        idx = build_skill_index(root)
+        assert "foo" in idx
+        assert "bar" in idx
+        assert idx["foo"].name == "SKILL.md"
+
+
+def test_find_unresolved_refs_detects_broken():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ".claude" / "skills"
+        _write_skill(root, "ai/alpha", {
+            "name": "alpha",
+            "description": "Alpha",
+            "related_skills": ["beta", "nonexistent"],
+        })
+        _write_skill(root, "data/beta", {"name": "beta", "description": "Beta"})
+        idx = build_skill_index(root)
+        unresolved = find_unresolved_refs(root, idx)
+        assert len(unresolved) == 1
+        assert unresolved[0]["skill"] == "alpha"
+        assert "nonexistent" in unresolved[0]["unresolved"]
+        assert "beta" not in unresolved[0]["unresolved"]
+
+
+def test_find_unresolved_refs_clean():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ".claude" / "skills"
+        _write_skill(root, "ai/alpha", {
+            "name": "alpha",
+            "description": "Alpha",
+            "related_skills": ["beta"],
+        })
+        _write_skill(root, "data/beta", {"name": "beta", "description": "Beta"})
+        idx = build_skill_index(root)
+        assert find_unresolved_refs(root, idx) == []
+
+
+def test_fix_ref_removes_broken_ref():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ".claude" / "skills"
+        p = _write_skill(root, "ai/alpha", {
+            "name": "alpha",
+            "description": "Alpha",
+            "related_skills": ["beta", "nonexistent"],
+        })
+        _write_skill(root, "data/beta", {"name": "beta", "description": "Beta"})
+        idx = build_skill_index(root)
+        result = fix_ref(p, ["nonexistent"], apply=True)
+        assert result["removed"] == ["nonexistent"]
+        # Re-read and verify
+        content = p.read_text()
+        meta = yaml.safe_load(content.split("---", 2)[1])
+        assert "nonexistent" not in meta["related_skills"]
+        assert "beta" in meta["related_skills"]
+
+
+def test_fix_ref_dry_run_no_write():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ".claude" / "skills"
+        p = _write_skill(root, "ai/alpha", {
+            "name": "alpha",
+            "description": "Alpha",
+            "related_skills": ["nonexistent"],
+        })
+        original = p.read_text()
+        result = fix_ref(p, ["nonexistent"], apply=False)
+        assert result["removed"] == ["nonexistent"]
+        assert p.read_text() == original  # Not modified
+```
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run: `uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v`
+Expected: FAIL with `ModuleNotFoundError` (fix_unresolved_refs not yet created)
+
+### Task 2: Implement fix-unresolved-refs.py
+
+**Files:**
+- Create: `scripts/skills/fix-unresolved-refs.py`
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+#!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["pyyaml"]
+# ///
+"""Fix unresolved related_skills references in SKILL.md frontmatter.
+
+Builds an index of all skill names, then removes references to skills
+that don't exist. Dry-run by default; pass --apply to write changes.
+"""
+import re, sys, yaml
+from pathlib import Path
+
+SKILLS_ROOT = Path(".claude/skills")
+
+
+def build_skill_index(root: Path) -> dict[str, Path]:
+    """Map skill name -> SKILL.md path for all canonical skills."""
+    index: dict[str, Path] = {}
+    for p in sorted(root.rglob("SKILL.md")):
+        if "/_diverged/" in str(p) or "/_archive/" in str(p):
+            continue
+        content = p.read_text()
+        if not content.lstrip().startswith("---"):
+            continue
+        parts = content.split("---", 2)
+        if len(parts) < 3:
+            continue
+        try:
+            meta = yaml.safe_load(parts[1])
+        except yaml.YAMLError:
+            continue
+        if isinstance(meta, dict) and "name" in meta:
+            index[str(meta["name"])] = p
+    return index
+
+
+def find_unresolved_refs(root: Path, index: dict[str, Path]) -> list[dict]:
+    """Find skills with related_skills entries not in the index."""
+    results = []
+    for p in sorted(root.rglob("SKILL.md")):
+        if "/_diverged/" in str(p) or "/_archive/" in str(p):
+            continue
+        content = p.read_text()
+        if not content.lstrip().startswith("---"):
+            continue
+        parts = content.split("---", 2)
+        if len(parts) < 3:
+            continue
+        try:
+            meta = yaml.safe_load(parts[1])
+        except yaml.YAMLError:
+            continue
+        if not isinstance(meta, dict):
+            continue
+        refs = meta.get("related_skills", [])
+        if not isinstance(refs, list):
+            continue
+        unresolved = [r for r in refs if str(r) not in index]
+        if unresolved:
+            results.append({
+                "skill": meta.get("name", "unknown"),
+                "path": str(p),
+                "unresolved": unresolved,
+                "valid": [r for r in refs if str(r) in index],
+            })
+    return results
+
+
+def fix_ref(path: Path, to_remove: list[str], apply: bool) -> dict:
+    """Remove unresolved refs from a single SKILL.md."""
+    content = path.read_text()
+    parts = content.split("---", 2)
+    fm_text = parts[1]
+    body = parts[2]
+
+    meta = yaml.safe_load(fm_text)
+    old_refs = meta.get("related_skills", [])
+    new_refs = [r for r in old_refs if str(r) not in to_remove]
+    removed = [r for r in old_refs if str(r) in to_remove]
+
+    result = {"path": str(path), "removed": removed, "remaining": new_refs}
+
+    if apply and removed:
+        if new_refs:
+            meta["related_skills"] = new_refs
+        else:
+            del meta["related_skills"]
+        new_fm = yaml.dump(meta, default_flow_style=False, sort_keys=False)
+        path.write_text(f"---\n{new_fm}---{body}")
+        result["applied"] = True
+
+    return result
+
+
+def main():
+    apply = "--apply" in sys.argv
+    root = SKILLS_ROOT
+    if "--skill-dir" in sys.argv:
+        idx = sys.argv.index("--skill-dir")
+        root = Path(sys.argv[idx + 1])
+
+    index = build_skill_index(root)
+    unresolved = find_unresolved_refs(root, index)
+
+    if not unresolved:
+        print("No unresolved related_skills references found.")
+        return
+
+    mode = "APPLIED" if apply else "DRY-RUN"
+    total_removed = 0
+    for entry in unresolved:
+        result = fix_ref(Path(entry["path"]), entry["unresolved"], apply)
+        total_removed += len(result["removed"])
+        print(f"  [{mode}] {entry['skill']:40s} remove: {result['removed']}")
+
+    print(f"\n[{mode}] {len(unresolved)} skills with {total_removed} unresolved refs")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+- [ ] **Step 4: Run tests to verify they pass**
+
+Run: `uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v`
+Expected: 5 PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/skills/fix-unresolved-refs.py scripts/skills/tests/test_fix_unresolved_refs.py
+git commit -m "feat(WRK-1244): add fix-unresolved-refs.py — resolves broken related_skills cross-references"
+```
+
+### Task 3: Run fix-unresolved-refs.py --apply
+
+- [ ] **Step 6: Dry-run first**
+
+Run: `uv run --no-project python scripts/skills/fix-unresolved-refs.py`
+Expected: List of ~111 skills with unresolved refs, DRY-RUN mode
+
+- [ ] **Step 7: Apply fixes**
+
+Run: `uv run --no-project python scripts/skills/fix-unresolved-refs.py --apply`
+Expected: ~111 skills fixed, APPLIED mode
+
+- [ ] **Step 8: Verify Phase 9 coverage gaps resolved**
+
+Run: `uv run --no-project python scripts/skills/audit-skills.py --mode coverage`
+Expected: Coverage gap count should be reduced from the prior baseline. Compare against
+`specs/audit/skill-coverage-gaps-2026-03-16.yaml` to confirm the Phase 9 gaps that were
+caused by broken `related_skills` references are now resolved. If additional gaps remain
+that are not `related_skills`-related, document them in the final results.
+
+- [ ] **Step 9: Commit the SKILL.md fixes**
+
+```bash
+git add .claude/skills/
+git commit -m "fix(WRK-1244): remove 111 unresolved related_skills references from SKILL.md files"
+```
+
+---
+
+## Chunk 2: Ecosystem eval orchestrator + aqwa-analysis restore
+
+### Task 4: Write failing tests for skill-eval-ecosystem.sh
+
+**Files:**
+- Create: `scripts/skills/tests/test_skill_eval_ecosystem.py`
+
+- [ ] **Step 10: Write the failing tests**
+
+```python
+#!/usr/bin/env python3
+"""Tests for skill-eval-ecosystem.sh orchestrator."""
+import subprocess, tempfile, yaml
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+SCRIPT = REPO_ROOT / "scripts" / "skills" / "skill-eval-ecosystem.sh"
+
+
+def test_script_exists_and_executable():
+    assert SCRIPT.exists(), f"{SCRIPT} not found"
+    assert SCRIPT.stat().st_mode & 0o111, f"{SCRIPT} not executable"
+
+
+def test_help_flag():
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--help"],
+        capture_output=True, text=True, cwd=str(REPO_ROOT),
+    )
+    assert result.returncode == 0
+    assert "Usage:" in result.stdout
+
+
+def test_output_is_valid_yaml():
+    """Run ecosystem eval and verify output is parseable YAML."""
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--summary-only"],
+        capture_output=True, text=True, cwd=str(REPO_ROOT),
+        timeout=120,
+    )
+    assert result.returncode in (0, 1), f"Unexpected exit: {result.returncode}\n{result.stderr}"
+    data = yaml.safe_load(result.stdout)
+    assert isinstance(data, dict)
+    assert "total_skills" in data
+    assert "violations" in data
+    assert "eval_summary" in data
+```
+
+- [ ] **Step 11: Run tests to verify they fail**
+
+Run: `uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v -k "not test_output_is_valid_yaml"`
+Expected: FAIL — script does not exist
+
+### Task 5: Implement skill-eval-ecosystem.sh
+
+**Files:**
+- Create: `scripts/skills/skill-eval-ecosystem.sh`
+
+- [ ] **Step 12: Write the orchestrator script**
+
+```bash
+#!/usr/bin/env bash
+# Skill ecosystem quality evaluation orchestrator.
+# Chains audit-skills.py (violations + coverage) and eval-skills.py into
+# a single YAML summary.
+#
+# Usage: skill-eval-ecosystem.sh [--summary-only] [--output <file>]
+
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+SUMMARY_ONLY=false
+OUTPUT=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --summary-only) SUMMARY_ONLY=true; shift ;;
+        --output) OUTPUT="$2"; shift 2 ;;
+        --help)
+            echo "Usage: skill-eval-ecosystem.sh [--summary-only] [--output <file>]"
+            echo ""
+            echo "Runs audit-skills.py (violations + coverage) and eval-skills.py,"
+            echo "then outputs a combined YAML summary."
+            echo ""
+            echo "Options:"
+            echo "  --summary-only   Emit only the YAML summary (no per-skill detail)"
+            echo "  --output <file>  Write summary to file instead of stdout"
+            echo "  --help           Show this help"
+            exit 0 ;;
+        *) echo "Unknown option: $1" >&2; exit 2 ;;
+    esac
+done
+
+AUDIT_SCRIPT="${REPO_ROOT}/scripts/skills/audit-skills.py"
+EVAL_SCRIPT="${REPO_ROOT}/.claude/skills/development/skill-eval/scripts/eval-skills.py"
+
+# --- Step 1: Violations audit ---
+violations_yaml=$(uv run --no-project python "$AUDIT_SCRIPT" --mode violations 2>/dev/null || true)
+violation_count=$(echo "$violations_yaml" | grep -c "^  - file:" || echo 0)
+
+# --- Step 2: Coverage audit ---
+coverage_yaml=$(uv run --no-project python "$AUDIT_SCRIPT" --mode coverage 2>/dev/null || true)
+coverage_gap_count=$(echo "$coverage_yaml" | grep -c "^  - path:" || echo 0)
+
+# --- Step 3: Eval pass ---
+eval_json=$(uv run --no-project python "$EVAL_SCRIPT" --format json --severity warning 2>/dev/null || true)
+total_skills=$(echo "$eval_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('total_skills',0))" 2>/dev/null || echo 0)
+passed=$(echo "$eval_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('passed',0))" 2>/dev/null || echo 0)
+warnings=$(echo "$eval_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('total_warnings',0))" 2>/dev/null || echo 0)
+critical=$(echo "$eval_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('total_critical',0))" 2>/dev/null || echo 0)
+
+# --- Compose YAML summary ---
+summary="total_skills: ${total_skills}
+violations:
+  count: ${violation_count}
+coverage_gaps:
+  count: ${coverage_gap_count}
+eval_summary:
+  passed: ${passed}
+  warnings: ${warnings}
+  critical: ${critical}
+  pass_rate: $(python3 -c "print(f'{int(${passed})/max(int(${total_skills}),1)*100:.1f}%')" 2>/dev/null || echo "0.0%")
+generated_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+if [[ -n "$OUTPUT" ]]; then
+    echo "$summary" > "$OUTPUT"
+    echo "Summary written to ${OUTPUT}" >&2
+else
+    echo "$summary"
+fi
+
+# Exit 1 if critical issues exist
+[[ "$critical" == "0" ]] && exit 0 || exit 1
+```
+
+- [ ] **Step 13: Make executable**
+
+Run: `chmod +x scripts/skills/skill-eval-ecosystem.sh`
+
+- [ ] **Step 14: Run tests to verify they pass**
+
+Run: `uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v`
+Expected: 3 PASS (the integration test may take ~30s)
+
+- [ ] **Step 15: Commit**
+
+```bash
+git add scripts/skills/skill-eval-ecosystem.sh scripts/skills/tests/test_skill_eval_ecosystem.py
+git commit -m "feat(WRK-1244): add skill-eval-ecosystem.sh — orchestrates violations + coverage + eval"
+```
+
+### Task 6: Restore aqwa-analysis lost content
+
+**Files:**
+- Modify: `.claude/skills/engineering/aqwa-analysis/SKILL.md`
+
+- [ ] **Step 16: Check git history for lost content**
+
+Run: `git log --all --diff-filter=M -- ".claude/skills/engineering/aqwa-analysis/SKILL.md" | head -5`
+Then: `git show <commit-before-wrk639>:.claude/skills/engineering/aqwa-analysis/SKILL.md | head -80`
+
+Use the diff to identify the 32 lines of AQWA Solver Stages content that was lost.
+
+- [ ] **Step 17: Restore the section**
+
+Add the AQWA Solver Stages section back to the skill file. The content describes:
+- AQWA solver stages (preprocessing, meshing, hydrodynamic analysis, post-processing)
+- Key parameters and typical workflow
+
+(Exact content depends on git history inspection in Step 15.)
+
+- [ ] **Step 18: Commit**
+
+```bash
+git add .claude/skills/engineering/aqwa-analysis/SKILL.md
+git commit -m "fix(WRK-1244): restore aqwa-analysis AQWA Solver Stages section lost in WRK-639"
+```
+
+---
+
+## Chunk 3: Final evaluation run + results
+
+### Task 7: Run ecosystem eval and save final results
+
+- [ ] **Step 19: Run full ecosystem evaluation**
+
+Run: `bash scripts/skills/skill-eval-ecosystem.sh --output specs/audit/skill-eval-ecosystem-2026-03-16.yaml`
+
+- [ ] **Step 20: Run detailed eval for final snapshot**
+
+Run: `uv run --no-project python .claude/skills/development/skill-eval/scripts/eval-skills.py --format json --output specs/audit/skill-eval-2026-03-16-final.json`
+
+- [ ] **Step 21: Update the summary YAML with final AC status**
+
+Update `specs/audit/skill-eval-2026-03-16.yaml` — set all acceptance criteria to PASS:
+- AC1: PASS (405 skills evaluated)
+- AC2: PASS (category_mismatch 204 fixed + unresolved_refs ~111 fixed; coverage audit re-run in Step 8)
+- AC3: PASS (10 sampled, 9 trivial, 1 restored)
+- AC4: PASS (bottom quartile identified, scriptable issues fixed; 158 skills with `section_missing` explicitly deferred — these are structural v2-template gaps on guidance/reference skills where bulk-adding empty sections adds no value; scheduled for future WRK if skill type reclassification occurs)
+- AC5: PASS (results in specs/audit/)
+
+- [ ] **Step 22: Commit final results**
+
+```bash
+git add specs/audit/
+git commit -m "feat(WRK-1244): final ecosystem eval results — all AC PASS"
+```
+
+---
+
+## Acceptance Criteria Mapping
+
+| AC | Status Before | Plan Action | Expected After |
+|----|--------------|-------------|----------------|
+| AC1: eval run | PASS | Already complete | PASS |
+| AC2: Phase 9 gaps | PARTIAL | Task 3: fix-unresolved-refs --apply (111 refs) | PASS |
+| AC3: WRK-639 diff | PASS (1 lost) | Task 6: restore aqwa-analysis | PASS |
+| AC4: bottom quartile | IDENTIFIED | Tasks 2-3 fix top scriptable issue; structural section_missing documented as low-value | PASS |
+| AC5: results saved | PASS | Task 7: final snapshot | PASS |
+mcp startup: no servers
+codex
+Reviewing the draft as a plan-quality pass, not executing it. I’m loading the minimal planning/review guidance and then I’ll rewrite the plan with tighter implementation and test coverage.
+exec
+/bin/bash -lc "sed -n '1,220p' /mnt/local-analysis/workspace-hub/.claude/skills/development/code-reviewer/SKILL.md" in /mnt/local-analysis/workspace-hubexec
+/bin/bash -lc "sed -n '1,220p' /mnt/local-analysis/workspace-hub/.claude/skills/development/planning/writing-plans/SKILL.md" in /mnt/local-analysis/workspace-hub succeeded in 0ms:
+---
+name: writing-plans
+description: Create detailed implementation plans with granular, actionable tasks
+  (2-5 min each). Use for multi-step development tasks requiring clear guidance. Based
+  on obra/superpowers.
+version: 1.0.0
+category: development
+last_updated: 2026-01-19
+source: https://github.com/obra/superpowers
+related_skills:
+- tdd-obra
+- brainstorming
+- subagent-driven
+capabilities: []
+requires: []
+see_also:
+- writing-plans-best-practices
+- writing-plans-error-handling
+- writing-plans-metrics
+tags: []
+ succeeded in 0ms:
+---
+name: code-reviewer
+description: Comprehensive code review toolkit for evaluating quality across multiple
+  languages. Use for PR analysis, quality checking, and generating review reports.
+  Based on alirezarezvani/claude-skills.
+version: 1.0.0
+category: development
+last_updated: 2026-01-19
+source: https://github.com/alirezarezvani/claude-skills
+related_skills:
+- tdd-obra
+- systematic-debugging
+- subagent-driven
+capabilities: []
+requires: []
+see_also:
+- code-reviewer-1-code-quality
+- code-reviewer-step-1-context-gathering
+- code-reviewer-step-2-high-level-analysis
+- code-reviewer-severity-levels
+codex
+# WRK-1244: Skill Ecosystem Quality Evaluation — Refined Implementation Plan
+
+> **For agentic workers:** REQUIRED: follow WRK gatepass before execution. This review refines the draft only; it is not execution approval. Prefer a small, testable implementation with dry-run defaults, atomic writes, and `uv run --no-project python` for every Python invocation.
+
+**Goal:** Complete the remaining acceptance criteria for WRK-1244 by fixing broken skill cross-references safely, restoring the lost `aqwa-analysis` content from history, adding an ecosystem evaluation orchestrator, and producing reproducible final audit artifacts.
+
+**Architecture:** Keep the two fixers pattern, but make the ecosystem orchestrator a Python script instead of shell. A Python orchestrator is simpler to test, avoids YAML/JSON parsing via `grep`, avoids forbidden bare `python3`, handles subprocess failures deterministically, and can emit valid YAML/JSON without shell quoting bugs. Dry-run by default for any mutating fixer; explicit `--apply` required.
+
+**Tech Stack:** Python 3.10+, PyYAML, pytest, existing `audit-skills.py` + `eval-skills.py`, minimal bash only for thin entrypoints if required
+
+---
+
+## Prior Session State
+
+The previous session completed:
+- AC1: `eval-skills.py` run on all 405 skills
+- AC3: WRK-639 diverged diff reviewed; 1 real content loss identified in `aqwa-analysis`
+- AC5: Initial results saved to `specs/audit/skill-eval-2026-03-16.yaml`
+- `fix-category-mismatch.py` created and applied
+
+Remaining:
+- AC2: unresolved `related_skills` references need safe cleanup and re-audit
+- AC4: bottom-quartile skills need explicit disposition, with only scriptable issues fixed in this WRK
+- Restore `aqwa-analysis` lost section from git history
+- Add ecosystem orchestrator with stable machine-readable output
+- Re-run audits and update final artifacts with clear PASS / DEFERRED / OUT-OF-SCOPE accounting
+
+## File Structure
+
+| Action | File | Responsibility |
+|--------|------|---------------|
+| Create | `scripts/skills/fix_unresolved_refs.py` | Resolve broken `related_skills:` references in SKILL frontmatter with dry-run/apply modes |
+| Create | `scripts/skills/tests/test_fix_unresolved_refs.py` | Unit tests for parsing, detection, dry-run, apply, and malformed-frontmatter handling |
+| Create | `scripts/skills/skill_eval_ecosystem.py` | Orchestrator: runs `audit-skills.py` and `eval-skills.py`, aggregates results, writes YAML/JSON summary |
+| Create | `scripts/skills/tests/test_skill_eval_ecosystem.py` | Tests for CLI behavior, output schema, subprocess failure handling, and output writes |
+| Optional Create | `scripts/skills/skill-eval-ecosystem.sh` | Thin wrapper that only execs `uv run --no-project python scripts/skills/skill_eval_ecosystem.py "$@"` |
+| Modify | `.claude/skills/engineering/aqwa-analysis/SKILL.md` | Restore lost AQWA solver stages content exactly from git history |
+| Modify | `specs/audit/skill-eval-2026-03-16.yaml` | Final AC status with deferred items explicitly called out |
+
+---
+
+## Chunk 1: `fix_unresolved_refs.py` (fixer script + tests)
+
+### Task 1: Write failing tests for `fix_unresolved_refs.py`
+
+**Files:**
+- Create: `scripts/skills/tests/test_fix_unresolved_refs.py`
+
+- [ ] **Step 1: Write failing tests**
+
+Cover the draft cases, plus these missing cases:
+- malformed frontmatter is skipped, not crashed
+- `related_skills` missing or non-list is ignored safely
+- duplicate unresolved refs are removed without duplicating writes
+- skill names are matched exactly, not by path stem
+- `_archive` / `_diverged` content is excluded
+- file formatting is preserved enough to keep valid frontmatter and body separation
+- apply mode is atomic: rewritten content is complete and parseable after write
+
+Prefer fixtures that create a temp skills tree and import the module by filename-safe package name. Rename the script to `fix_unresolved_refs.py` to avoid import friction.
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v
+```
+
+Expected:
+- import failure or missing symbol failure before implementation exists
+
+### Task 2: Implement `fix_unresolved_refs.py`
+
+**Files:**
+- Create: `scripts/skills/fix_unresolved_refs.py`
+
+- [ ] **Step 3: Write minimal implementation**
+
+Implementation requirements:
+- expose pure functions:
+  - `parse_skill_frontmatter(path)`
+  - `build_skill_index(root)`
+  - `find_unresolved_refs(root, index)`
+  - `fix_refs(path, unresolved_refs, apply)`
+- use `yaml.safe_load`
+- skip invalid / non-canonical files without crashing
+- treat `related_skills` as invalid unless it is a list of strings
+- preserve body content exactly
+- write atomically via temp file + replace
+- support `--skill-dir`
+- support `--output` for machine-readable summary
+- dry-run by default
+- return non-zero only for operational failure, not for “found unresolved refs”
+
+Do not use regex for YAML mutation. Parse frontmatter, mutate the dict, re-emit YAML, and preserve the body delimiter correctly:
+```text
+---
+<yaml>
+---
+<body>
+```
+
+- [ ] **Step 4: Run tests to verify they pass**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v
+```
+
+Expected:
+- all tests pass
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/skills/fix_unresolved_refs.py scripts/skills/tests/test_fix_unresolved_refs.py
+git commit -m "feat(WRK-1244): add unresolved related_skills fixer"
+```
+
+### Task 3: Run `fix_unresolved_refs.py --apply`
+
+- [ ] **Step 6: Dry-run first**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/fix_unresolved_refs.py
+```
+
+Expected:
+- summary of affected skills
+- no file writes
+- optional YAML/JSON summary if `--output` is provided
+
+- [ ] **Step 7: Apply fixes**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/fix_unresolved_refs.py --apply --output specs/audit/skill-unresolved-refs-fix-2026-03-16.yaml
+```
+
+Expected:
+- only valid unresolved refs removed
+- audit artifact written with touched files and removed refs
+
+- [ ] **Step 8: Verify Phase 9 coverage gaps resolved**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/audit-skills.py --mode coverage > /tmp/skill-coverage-gaps-after.yaml
+```
+
+Also compare against the prior artifact and confirm:
+- `related_skills`-driven gaps decreased
+- any remaining gaps are categorized as non-scriptable, malformed-source, or deferred structural issues
+
+Do not assert a specific count reduction unless the baseline is reproducible from artifacts.
+
+- [ ] **Step 9: Commit the `SKILL.md` fixes**
+
+```bash
+git add .claude/skills/ specs/audit/skill-unresolved-refs-fix-2026-03-16.yaml
+git commit -m "fix(WRK-1244): remove unresolved related_skills references"
+```
+
+---
+
+## Chunk 2: Ecosystem eval orchestrator + `aqwa-analysis` restore
+
+### Task 4: Write failing tests for ecosystem orchestrator
+
+**Files:**
+- Create: `scripts/skills/tests/test_skill_eval_ecosystem.py`
+
+- [ ] **Step 10: Write the failing tests**
+
+Target the Python orchestrator, not a shell-heavy implementation. Test:
+- `--help` returns 0
+- `--summary-only` prints valid YAML
+- `--output` writes the summary file
+- subprocess failures are captured in summary and produce deterministic exit code
+- missing CLI/script path fails cleanly with actionable stderr
+- output schema includes:
+  - `generated_at`
+  - `tool_status`
+  - `violations`
+  - `coverage_gaps`
+  - `eval_summary`
+  - `artifacts`
+- if evaluation output is malformed JSON/YAML, orchestrator reports parse failure instead of silently returning zeros
+
+Use monkeypatch or temp helper scripts instead of invoking the real long-running tools for most tests. Keep one integration test separately marked, not default-heavy.
+
+- [ ] **Step 11: Run tests to verify they fail**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v -k "not integration"
+```
+
+Expected:
+- missing module / missing script failure
+
+### Task 5: Implement ecosystem orchestrator
+
+**Files:**
+- Create: `scripts/skills/skill_eval_ecosystem.py`
+- Optional Create: `scripts/skills/skill-eval-ecosystem.sh`
+
+- [ ] **Step 12: Write the orchestrator script**
+
+Implementation requirements:
+- Python CLI, not shell parsing logic
+- invoke child tools with `subprocess.run([...], text=True, capture_output=True)`
+- invoke Python only via:
+```bash
+uv run --no-project python <script> ...
+```
+- no bare `python3`
+- parse outputs structurally, not with `grep`
+- include stdout/stderr snippets on failures
+- produce valid YAML to stdout by default
+- support `--output`
+- support `--summary-only`
+- support `--timeout-seconds`
+- exit code policy:
+  - `0` for successful orchestration with no critical eval issues
+  - `1` for successful orchestration with critical eval issues
+  - `2` for orchestrator/runtime failure such as missing child script or parse failure
+
+Recommended schema:
+```yaml
+generated_at: ...
+tool_status:
+  audit_violations: success|failed|timed_out
+  audit_coverage: success|failed|timed_out
+  eval: success|failed|timed_out
+violations:
+  count: ...
+coverage_gaps:
+  count: ...
+eval_summary:
+  total_skills: ...
+  passed: ...
+  warnings: ...
+  critical: ...
+  pass_rate: ...
+artifacts:
+  summary_file: ...
+errors: []
+```
+
+If a shell wrapper is kept, it must be a one-liner exec wrapper only:
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+exec uv run --no-project python scripts/skills/skill_eval_ecosystem.py "$@"
+```
+
+- [ ] **Step 13: Make wrapper executable if present**
+
+Run:
+```bash
+chmod +x scripts/skills/skill-eval-ecosystem.sh
+```
+
+- [ ] **Step 14: Run tests to verify they pass**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v
+```
+
+Expected:
+- unit tests pass
+- any real integration test either passes or is explicitly skipped when external tool assumptions are unavailable
+
+- [ ] **Step 15: Commit**
+
+```bash
+git add scripts/skills/skill_eval_ecosystem.py scripts/skills/tests/test_skill_eval_ecosystem.py scripts/skills/skill-eval-ecosystem.sh
+git commit -m "feat(WRK-1244): add skill ecosystem evaluation orchestrator"
+```
+
+### Task 6: Restore `aqwa-analysis` lost content
+
+**Files:**
+- Modify: `.claude/skills/engineering/aqwa-analysis/SKILL.md`
+
+- [ ] **Step 16: Check git history for lost content**
+
+Run non-interactively:
+```bash
+git log --all --follow -- ".claude/skills/engineering/aqwa-analysis/SKILL.md"
+```
+
+Then inspect the exact pre-WRK-639 version:
+```bash
+git show <commit>:.claude/skills/engineering/aqwa-analysis/SKILL.md
+```
+
+Identify the exact missing block and restore it verbatim unless there is an intentional later edit that supersedes it.
+
+- [ ] **Step 17: Restore the section**
+
+Requirements:
+- restore exact lost content, not a paraphrase
+- place it in the original section order if recoverable
+- verify frontmatter still parses
+- verify no duplicate section is introduced
+- if the recovered content references stale paths or skill names, restore first, then separately document follow-up fixes rather than silently rewriting meaning
+
+- [ ] **Step 18: Commit**
+
+```bash
+git add .claude/skills/engineering/aqwa-analysis/SKILL.md
+git commit -m "fix(WRK-1244): restore lost aqwa-analysis solver stages content"
+```
+
+---
+
+## Chunk 3: Final evaluation run + results
+
+### Task 7: Run ecosystem eval and save final results
+
+- [ ] **Step 19: Run full ecosystem evaluation**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/skill_eval_ecosystem.py --output specs/audit/skill-eval-ecosystem-2026-03-16.yaml
+```
+
+If a wrapper exists, optionally verify parity:
+```bash
+bash scripts/skills/skill-eval-ecosystem.sh --output specs/audit/skill-eval-ecosystem-2026-03-16.yaml
+```
+
+- [ ] **Step 20: Run detailed eval for final snapshot**
+
+Run:
+```bash
+uv run --no-project python .claude/skills/development/skill-eval/scripts/eval-skills.py --format json --output specs/audit/skill-eval-2026-03-16-final.json
+```
+
+Also capture fresh coverage / violations artifacts if they are part of AC evidence:
+```bash
+uv run --no-project python scripts/skills/audit-skills.py --mode violations > specs/audit/skill-violations-2026-03-16-final.yaml
+uv run --no-project python scripts/skills/audit-skills.py --mode coverage > specs/audit/skill-coverage-gaps-2026-03-16-final.yaml
+```
+
+- [ ] **Step 21: Update the summary YAML with final AC status**
+
+Update `specs/audit/skill-eval-2026-03-16.yaml` with evidence-backed status only:
+- AC1: PASS if final eval snapshot completed successfully
+- AC2: PASS only if broken refs and prior category mismatch fixes are both reflected in fresh audits
+- AC3: PASS if git-verified lost content was restored
+- AC4: PASS only if acceptance criteria explicitly allow deferred structural issues; otherwise mark PARTIAL with deferred backlog item
+- AC5: PASS if all required artifacts exist in `specs/audit/`
+
+For AC4, do not overstate. If 158 bottom-quartile skills still remain structurally weak and only their scriptable issues were fixed, record:
+- fixed-now issues
+- deferred issues
+- rationale
+- follow-up WRK needed if acceptance criteria require actual improvement rather than identification
+
+- [ ] **Step 22: Commit final results**
+
+```bash
+git add specs/audit/
+git commit -m "feat(WRK-1244): publish final skill ecosystem evaluation artifacts"
+```
+
+---
+
+## Acceptance Criteria Mapping
+
+| AC | Status Before | Plan Action | Expected After |
+|----|--------------|-------------|----------------|
+| AC1: eval run | PASS | Task 7 refreshes final evidence | PASS |
+| AC2: Phase 9 gaps | PARTIAL | Chunk 1 removes unresolved refs and re-runs audits | PASS if fresh audits confirm reduction and no remaining scriptable blockers |
+| AC3: WRK-639 diff | PARTIAL | Chunk 2 restores exact lost `aqwa-analysis` content | PASS |
+| AC4: bottom quartile | IDENTIFIED | Chunk 1 fixes scriptable issues; Chunk 3 must record deferred structural issues honestly | PASS only if AC allows deferred structural items; otherwise PARTIAL |
+| AC5: results saved | PASS | Chunk 3 writes final summary and detailed artifacts | PASS |
+
+## Codex Notes
+
+- The shell orchestrator in the draft is the wrong abstraction. It is brittle, hard to test, parses structured output with `grep`, and violates the workspace rule by using bare `python3`.
+- Rename `fix-unresolved-refs.py` to `fix_unresolved_refs.py`. The draft test imports the module directly, which will fail for a hyphenated filename.
+- The fixer needs malformed-frontmatter and non-list `related_skills` handling. The draft silently assumes clean YAML.
+- The draft’s write path is not atomic and risks corrupting `SKILL.md` on interruption.
+- `content.split("---", 2)` is fragile if the body contains `---` early or if newline placement is inconsistent. Keep strict frontmatter parsing and round-trip tests.
+- The draft assumes counts like “~111” and “158” remain stable. Treat them as baselines from prior artifacts, not hard expectations in tests.
+- AC4 is overstated in the draft. Fixing one scriptable issue class does not automatically mean the bottom quartile acceptance criterion passes unless the WRK explicitly permits deferral of structural gaps.
+- The orchestrator tests should mock subprocess output for most cases. Running the full real toolchain in default tests creates flaky runtime and CI risk.
+- Add timeout and subprocess parse-failure cases. Without them, nightly cron or unattended runs can hang or silently emit zeroed summaries.
+- All Python invocations should use `uv run --no-project python ...`, including any helper parsing done inside the orchestrator.
+tokens used
+126,491
+# WRK-1244: Skill Ecosystem Quality Evaluation — Refined Implementation Plan
+
+> **For agentic workers:** REQUIRED: follow WRK gatepass before execution. This review refines the draft only; it is not execution approval. Prefer a small, testable implementation with dry-run defaults, atomic writes, and `uv run --no-project python` for every Python invocation.
+
+**Goal:** Complete the remaining acceptance criteria for WRK-1244 by fixing broken skill cross-references safely, restoring the lost `aqwa-analysis` content from history, adding an ecosystem evaluation orchestrator, and producing reproducible final audit artifacts.
+
+**Architecture:** Keep the two fixers pattern, but make the ecosystem orchestrator a Python script instead of shell. A Python orchestrator is simpler to test, avoids YAML/JSON parsing via `grep`, avoids forbidden bare `python3`, handles subprocess failures deterministically, and can emit valid YAML/JSON without shell quoting bugs. Dry-run by default for any mutating fixer; explicit `--apply` required.
+
+**Tech Stack:** Python 3.10+, PyYAML, pytest, existing `audit-skills.py` + `eval-skills.py`, minimal bash only for thin entrypoints if required
+
+---
+
+## Prior Session State
+
+The previous session completed:
+- AC1: `eval-skills.py` run on all 405 skills
+- AC3: WRK-639 diverged diff reviewed; 1 real content loss identified in `aqwa-analysis`
+- AC5: Initial results saved to `specs/audit/skill-eval-2026-03-16.yaml`
+- `fix-category-mismatch.py` created and applied
+
+Remaining:
+- AC2: unresolved `related_skills` references need safe cleanup and re-audit
+- AC4: bottom-quartile skills need explicit disposition, with only scriptable issues fixed in this WRK
+- Restore `aqwa-analysis` lost section from git history
+- Add ecosystem orchestrator with stable machine-readable output
+- Re-run audits and update final artifacts with clear PASS / DEFERRED / OUT-OF-SCOPE accounting
+
+## File Structure
+
+| Action | File | Responsibility |
+|--------|------|---------------|
+| Create | `scripts/skills/fix_unresolved_refs.py` | Resolve broken `related_skills:` references in SKILL frontmatter with dry-run/apply modes |
+| Create | `scripts/skills/tests/test_fix_unresolved_refs.py` | Unit tests for parsing, detection, dry-run, apply, and malformed-frontmatter handling |
+| Create | `scripts/skills/skill_eval_ecosystem.py` | Orchestrator: runs `audit-skills.py` and `eval-skills.py`, aggregates results, writes YAML/JSON summary |
+| Create | `scripts/skills/tests/test_skill_eval_ecosystem.py` | Tests for CLI behavior, output schema, subprocess failure handling, and output writes |
+| Optional Create | `scripts/skills/skill-eval-ecosystem.sh` | Thin wrapper that only execs `uv run --no-project python scripts/skills/skill_eval_ecosystem.py "$@"` |
+| Modify | `.claude/skills/engineering/aqwa-analysis/SKILL.md` | Restore lost AQWA solver stages content exactly from git history |
+| Modify | `specs/audit/skill-eval-2026-03-16.yaml` | Final AC status with deferred items explicitly called out |
+
+---
+
+## Chunk 1: `fix_unresolved_refs.py` (fixer script + tests)
+
+### Task 1: Write failing tests for `fix_unresolved_refs.py`
+
+**Files:**
+- Create: `scripts/skills/tests/test_fix_unresolved_refs.py`
+
+- [ ] **Step 1: Write failing tests**
+
+Cover the draft cases, plus these missing cases:
+- malformed frontmatter is skipped, not crashed
+- `related_skills` missing or non-list is ignored safely
+- duplicate unresolved refs are removed without duplicating writes
+- skill names are matched exactly, not by path stem
+- `_archive` / `_diverged` content is excluded
+- file formatting is preserved enough to keep valid frontmatter and body separation
+- apply mode is atomic: rewritten content is complete and parseable after write
+
+Prefer fixtures that create a temp skills tree and import the module by filename-safe package name. Rename the script to `fix_unresolved_refs.py` to avoid import friction.
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v
+```
+
+Expected:
+- import failure or missing symbol failure before implementation exists
+
+### Task 2: Implement `fix_unresolved_refs.py`
+
+**Files:**
+- Create: `scripts/skills/fix_unresolved_refs.py`
+
+- [ ] **Step 3: Write minimal implementation**
+
+Implementation requirements:
+- expose pure functions:
+  - `parse_skill_frontmatter(path)`
+  - `build_skill_index(root)`
+  - `find_unresolved_refs(root, index)`
+  - `fix_refs(path, unresolved_refs, apply)`
+- use `yaml.safe_load`
+- skip invalid / non-canonical files without crashing
+- treat `related_skills` as invalid unless it is a list of strings
+- preserve body content exactly
+- write atomically via temp file + replace
+- support `--skill-dir`
+- support `--output` for machine-readable summary
+- dry-run by default
+- return non-zero only for operational failure, not for “found unresolved refs”
+
+Do not use regex for YAML mutation. Parse frontmatter, mutate the dict, re-emit YAML, and preserve the body delimiter correctly:
+```text
+---
+<yaml>
+---
+<body>
+```
+
+- [ ] **Step 4: Run tests to verify they pass**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_fix_unresolved_refs.py -v
+```
+
+Expected:
+- all tests pass
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/skills/fix_unresolved_refs.py scripts/skills/tests/test_fix_unresolved_refs.py
+git commit -m "feat(WRK-1244): add unresolved related_skills fixer"
+```
+
+### Task 3: Run `fix_unresolved_refs.py --apply`
+
+- [ ] **Step 6: Dry-run first**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/fix_unresolved_refs.py
+```
+
+Expected:
+- summary of affected skills
+- no file writes
+- optional YAML/JSON summary if `--output` is provided
+
+- [ ] **Step 7: Apply fixes**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/fix_unresolved_refs.py --apply --output specs/audit/skill-unresolved-refs-fix-2026-03-16.yaml
+```
+
+Expected:
+- only valid unresolved refs removed
+- audit artifact written with touched files and removed refs
+
+- [ ] **Step 8: Verify Phase 9 coverage gaps resolved**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/audit-skills.py --mode coverage > /tmp/skill-coverage-gaps-after.yaml
+```
+
+Also compare against the prior artifact and confirm:
+- `related_skills`-driven gaps decreased
+- any remaining gaps are categorized as non-scriptable, malformed-source, or deferred structural issues
+
+Do not assert a specific count reduction unless the baseline is reproducible from artifacts.
+
+- [ ] **Step 9: Commit the `SKILL.md` fixes**
+
+```bash
+git add .claude/skills/ specs/audit/skill-unresolved-refs-fix-2026-03-16.yaml
+git commit -m "fix(WRK-1244): remove unresolved related_skills references"
+```
+
+---
+
+## Chunk 2: Ecosystem eval orchestrator + `aqwa-analysis` restore
+
+### Task 4: Write failing tests for ecosystem orchestrator
+
+**Files:**
+- Create: `scripts/skills/tests/test_skill_eval_ecosystem.py`
+
+- [ ] **Step 10: Write the failing tests**
+
+Target the Python orchestrator, not a shell-heavy implementation. Test:
+- `--help` returns 0
+- `--summary-only` prints valid YAML
+- `--output` writes the summary file
+- subprocess failures are captured in summary and produce deterministic exit code
+- missing CLI/script path fails cleanly with actionable stderr
+- output schema includes:
+  - `generated_at`
+  - `tool_status`
+  - `violations`
+  - `coverage_gaps`
+  - `eval_summary`
+  - `artifacts`
+- if evaluation output is malformed JSON/YAML, orchestrator reports parse failure instead of silently returning zeros
+
+Use monkeypatch or temp helper scripts instead of invoking the real long-running tools for most tests. Keep one integration test separately marked, not default-heavy.
+
+- [ ] **Step 11: Run tests to verify they fail**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v -k "not integration"
+```
+
+Expected:
+- missing module / missing script failure
+
+### Task 5: Implement ecosystem orchestrator
+
+**Files:**
+- Create: `scripts/skills/skill_eval_ecosystem.py`
+- Optional Create: `scripts/skills/skill-eval-ecosystem.sh`
+
+- [ ] **Step 12: Write the orchestrator script**
+
+Implementation requirements:
+- Python CLI, not shell parsing logic
+- invoke child tools with `subprocess.run([...], text=True, capture_output=True)`
+- invoke Python only via:
+```bash
+uv run --no-project python <script> ...
+```
+- no bare `python3`
+- parse outputs structurally, not with `grep`
+- include stdout/stderr snippets on failures
+- produce valid YAML to stdout by default
+- support `--output`
+- support `--summary-only`
+- support `--timeout-seconds`
+- exit code policy:
+  - `0` for successful orchestration with no critical eval issues
+  - `1` for successful orchestration with critical eval issues
+  - `2` for orchestrator/runtime failure such as missing child script or parse failure
+
+Recommended schema:
+```yaml
+generated_at: ...
+tool_status:
+  audit_violations: success|failed|timed_out
+  audit_coverage: success|failed|timed_out
+  eval: success|failed|timed_out
+violations:
+  count: ...
+coverage_gaps:
+  count: ...
+eval_summary:
+  total_skills: ...
+  passed: ...
+  warnings: ...
+  critical: ...
+  pass_rate: ...
+artifacts:
+  summary_file: ...
+errors: []
+```
+
+If a shell wrapper is kept, it must be a one-liner exec wrapper only:
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+exec uv run --no-project python scripts/skills/skill_eval_ecosystem.py "$@"
+```
+
+- [ ] **Step 13: Make wrapper executable if present**
+
+Run:
+```bash
+chmod +x scripts/skills/skill-eval-ecosystem.sh
+```
+
+- [ ] **Step 14: Run tests to verify they pass**
+
+Run:
+```bash
+uv run --no-project python -m pytest scripts/skills/tests/test_skill_eval_ecosystem.py -v
+```
+
+Expected:
+- unit tests pass
+- any real integration test either passes or is explicitly skipped when external tool assumptions are unavailable
+
+- [ ] **Step 15: Commit**
+
+```bash
+git add scripts/skills/skill_eval_ecosystem.py scripts/skills/tests/test_skill_eval_ecosystem.py scripts/skills/skill-eval-ecosystem.sh
+git commit -m "feat(WRK-1244): add skill ecosystem evaluation orchestrator"
+```
+
+### Task 6: Restore `aqwa-analysis` lost content
+
+**Files:**
+- Modify: `.claude/skills/engineering/aqwa-analysis/SKILL.md`
+
+- [ ] **Step 16: Check git history for lost content**
+
+Run non-interactively:
+```bash
+git log --all --follow -- ".claude/skills/engineering/aqwa-analysis/SKILL.md"
+```
+
+Then inspect the exact pre-WRK-639 version:
+```bash
+git show <commit>:.claude/skills/engineering/aqwa-analysis/SKILL.md
+```
+
+Identify the exact missing block and restore it verbatim unless there is an intentional later edit that supersedes it.
+
+- [ ] **Step 17: Restore the section**
+
+Requirements:
+- restore exact lost content, not a paraphrase
+- place it in the original section order if recoverable
+- verify frontmatter still parses
+- verify no duplicate section is introduced
+- if the recovered content references stale paths or skill names, restore first, then separately document follow-up fixes rather than silently rewriting meaning
+
+- [ ] **Step 18: Commit**
+
+```bash
+git add .claude/skills/engineering/aqwa-analysis/SKILL.md
+git commit -m "fix(WRK-1244): restore lost aqwa-analysis solver stages content"
+```
+
+---
+
+## Chunk 3: Final evaluation run + results
+
+### Task 7: Run ecosystem eval and save final results
+
+- [ ] **Step 19: Run full ecosystem evaluation**
+
+Run:
+```bash
+uv run --no-project python scripts/skills/skill_eval_ecosystem.py --output specs/audit/skill-eval-ecosystem-2026-03-16.yaml
+```
+
+If a wrapper exists, optionally verify parity:
+```bash
+bash scripts/skills/skill-eval-ecosystem.sh --output specs/audit/skill-eval-ecosystem-2026-03-16.yaml
+```
+
+- [ ] **Step 20: Run detailed eval for final snapshot**
+
+Run:
+```bash
+uv run --no-project python .claude/skills/development/skill-eval/scripts/eval-skills.py --format json --output specs/audit/skill-eval-2026-03-16-final.json
+```
+
+Also capture fresh coverage / violations artifacts if they are part of AC evidence:
+```bash
+uv run --no-project python scripts/skills/audit-skills.py --mode violations > specs/audit/skill-violations-2026-03-16-final.yaml
+uv run --no-project python scripts/skills/audit-skills.py --mode coverage > specs/audit/skill-coverage-gaps-2026-03-16-final.yaml
+```
+
+- [ ] **Step 21: Update the summary YAML with final AC status**
+
+Update `specs/audit/skill-eval-2026-03-16.yaml` with evidence-backed status only:
+- AC1: PASS if final eval snapshot completed successfully
+- AC2: PASS only if broken refs and prior category mismatch fixes are both reflected in fresh audits
+- AC3: PASS if git-verified lost content was restored
+- AC4: PASS only if acceptance criteria explicitly allow deferred structural issues; otherwise mark PARTIAL with deferred backlog item
+- AC5: PASS if all required artifacts exist in `specs/audit/`
+
+For AC4, do not overstate. If 158 bottom-quartile skills still remain structurally weak and only their scriptable issues were fixed, record:
+- fixed-now issues
+- deferred issues
+- rationale
+- follow-up WRK needed if acceptance criteria require actual improvement rather than identification
+
+- [ ] **Step 22: Commit final results**
+
+```bash
+git add specs/audit/
+git commit -m "feat(WRK-1244): publish final skill ecosystem evaluation artifacts"
+```
+
+---
+
+## Acceptance Criteria Mapping
+
+| AC | Status Before | Plan Action | Expected After |
+|----|--------------|-------------|----------------|
+| AC1: eval run | PASS | Task 7 refreshes final evidence | PASS |
+| AC2: Phase 9 gaps | PARTIAL | Chunk 1 removes unresolved refs and re-runs audits | PASS if fresh audits confirm reduction and no remaining scriptable blockers |
+| AC3: WRK-639 diff | PARTIAL | Chunk 2 restores exact lost `aqwa-analysis` content | PASS |
+| AC4: bottom quartile | IDENTIFIED | Chunk 1 fixes scriptable issues; Chunk 3 must record deferred structural issues honestly | PASS only if AC allows deferred structural items; otherwise PARTIAL |
+| AC5: results saved | PASS | Chunk 3 writes final summary and detailed artifacts | PASS |
+
+## Codex Notes
+
+- The shell orchestrator in the draft is the wrong abstraction. It is brittle, hard to test, parses structured output with `grep`, and violates the workspace rule by using bare `python3`.
+- Rename `fix-unresolved-refs.py` to `fix_unresolved_refs.py`. The draft test imports the module directly, which will fail for a hyphenated filename.
+- The fixer needs malformed-frontmatter and non-list `related_skills` handling. The draft silently assumes clean YAML.
+- The draft’s write path is not atomic and risks corrupting `SKILL.md` on interruption.
+- `content.split("---", 2)` is fragile if the body contains `---` early or if newline placement is inconsistent. Keep strict frontmatter parsing and round-trip tests.
+- The draft assumes counts like “~111” and “158” remain stable. Treat them as baselines from prior artifacts, not hard expectations in tests.
+- AC4 is overstated in the draft. Fixing one scriptable issue class does not automatically mean the bottom quartile acceptance criterion passes unless the WRK explicitly permits deferral of structural gaps.
+- The orchestrator tests should mock subprocess output for most cases. Running the full real toolchain in default tests creates flaky runtime and CI risk.
+- Add timeout and subprocess parse-failure cases. Without them, nightly cron or unattended runs can hang or silently emit zeroed summaries.
+- All Python invocations should use `uv run --no-project python ...`, including any helper parsing done inside the orchestrator.

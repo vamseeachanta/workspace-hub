@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculation Report: spotfire-formulas-for-calc-variables — XLSX-POC-V2-spotfire-formulas-for-calc-variables</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root {
+  --bg:         #f3efe6;
+  --panel:      #fffdf8;
+  --ink:        #172126;
+  --muted:      #55636b;
+  --accent:     #0f766e;
+  --accent-2:   #8a5a2b;
+  --line:       #d9d0c0;
+  --shadow:     0 16px 40px rgba(20,33,38,0.08);
+  --good:       #166534;
+  --warn:       #b45309;
+  --bad:        #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;padding:0;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.2em .4em;border-radius:3px;font-size:.88em;}
+
+.hero{padding:28px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1.report-title{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;}
+.meta-chip{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.meta-chip strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+.card h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:0;
+  color:var(--accent-2);letter-spacing:.02em;font-size:1.2rem;}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+thead th{background:var(--panel);border-bottom:2px solid var(--accent);
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.78rem;padding:8px 10px;text-align:left;color:var(--ink);}
+tbody td{border-bottom:1px solid var(--line);padding:7px 10px;
+  color:var(--muted);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td strong,tbody td code{color:var(--ink);}
+tbody tr:hover>td{background:rgba(15,118,110,.03);}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-draft{background:#fef3c7;color:var(--warn);}
+.badge-reviewed{background:#dbeafe;color:#1d4ed8;}
+.badge-approved{background:#dcfce7;color:var(--good);}
+
+.equation-block{background:#f8f9fa;border:1px solid var(--line);border-radius:10px;
+  padding:16px 20px;margin:12px 0;position:relative;}
+.equation-block .eq-number{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:.82rem;color:var(--muted);font-weight:700;}
+.equation-name{font-size:.85rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.equation-desc{font-size:.85rem;color:var(--muted);margin-top:8px;}
+.variable-list{margin:8px 0 0;padding:0 0 0 18px;font-size:.82rem;}
+.variable-list li{margin:2px 0;color:var(--muted);}
+.variable-list li .var-sym{color:var(--ink);font-weight:600;}
+
+.chart-container{margin:16px 0;position:relative;}
+.chart-container canvas{max-height:400px;width:100%;}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--accent-2);margin-bottom:8px;}
+
+details{margin:8px 0;}
+details summary{cursor:pointer;font-weight:700;color:var(--accent);
+  font-size:.9rem;padding:4px 0;}
+details summary:hover{text-decoration:underline;}
+details[open] summary{margin-bottom:8px;}
+
+.report-footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);margin-top:40px;}
+
+@media print{
+  body{background:#fff;}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  .hero{background:#f8f8f8;border-bottom:2px solid #333;}
+  .chart-container canvas{max-height:300px;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">XLSX-POC-V2-spotfire-formulas-for-calc-variables</div>
+    <h1 class="report-title">Calculation Report: spotfire-formulas-for-calc-variables</h1>
+    <div class="meta-chips">
+      <div class="meta-chip"><strong>Status</strong><span class="badge badge-draft">DRAFT</span></div>
+      <div class="meta-chip"><strong>Revision</strong>1</div>
+      <div class="meta-chip"><strong>Date</strong>2026-03-16</div>
+      <div class="meta-chip"><strong>Author</strong>xlsx-poc-v2 pipeline</div>
+      <div class="meta-chip"><strong>Standard</strong>Workbook-derived calculations</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+
+
+
+<div class="card">
+  <h2>Inputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>A118</strong></td>
+        <td class="katex-inline">$a118$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>A119</strong></td>
+        <td class="katex-inline">$a119$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>B117</strong></td>
+        <td class="katex-inline">$b117$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C10</strong></td>
+        <td class="katex-inline">$c10$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C100</strong></td>
+        <td class="katex-inline">$c100$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C101</strong></td>
+        <td class="katex-inline">$c101$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C102</strong></td>
+        <td class="katex-inline">$c102$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C103</strong></td>
+        <td class="katex-inline">$c103$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C104</strong></td>
+        <td class="katex-inline">$c104$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C105</strong></td>
+        <td class="katex-inline">$c105$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C106</strong></td>
+        <td class="katex-inline">$c106$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C107</strong></td>
+        <td class="katex-inline">$c107$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C108</strong></td>
+        <td class="katex-inline">$c108$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C109</strong></td>
+        <td class="katex-inline">$c109$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C11</strong></td>
+        <td class="katex-inline">$c11$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C110</strong></td>
+        <td class="katex-inline">$c110$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C12</strong></td>
+        <td class="katex-inline">$c12$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C13</strong></td>
+        <td class="katex-inline">$c13$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C14</strong></td>
+        <td class="katex-inline">$c14$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>C15</strong></td>
+        <td class="katex-inline">$c15$</td>
+        <td>from workbook</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="card">
+  <h2>Methodology</h2>
+  <p>Auto-extracted from spotfire-formulas-for-calc-variables workbook. Pattern compression: 44.4x (222 cells → 5 patterns).</p>
+  <p><strong>Standard:</strong> Workbook-derived calculations</p>
+  <div class="equation-block">
+    <div class="equation-name">Equation EQ-001: Pattern 1 (109 cells)</div>
+    <div class="katex-display">$$N1-M1$$</div>
+    <div class="equation-desc">Excel: =N1-M1 — applied to 109 cells in Sheet3</div>
+    <span class="eq-number">(EQ-001)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation EQ-002: Pattern 2 (109 cells)</div>
+    <div class="katex-display">$$IF(O1=C1,0,1}$$</div>
+    <div class="equation-desc">Excel: =IF(O1=C1,0,1) — applied to 109 cells in Sheet3</div>
+    <span class="eq-number">(EQ-002)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation EQ-003: Pattern 3 (2 cells)</div>
+    <div class="katex-display">$$A1 \times $B$117$$</div>
+    <div class="equation-desc">Excel: =A1*$B$117 — applied to 2 cells in Sheet3</div>
+    <span class="eq-number">(EQ-003)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation EQ-004: Pattern 4 (1 cells)</div>
+    <div class="katex-display">$$B119-B118$$</div>
+    <div class="equation-desc">Excel: =B119-B118 — applied to 1 cells in Sheet3</div>
+    <span class="eq-number">(EQ-004)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation EQ-005: Pattern 5 (1 cells)</div>
+    <div class="katex-display">$$A119-A118$$</div>
+    <div class="equation-desc">Excel: =A119-A118 — applied to 1 cells in Sheet3</div>
+    <span class="eq-number">(EQ-005)</span>
+    
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h2>Outputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Pass/Fail</th><th>Limit</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>B120</strong></td>
+        <td class="katex-inline">$b120$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>B122</strong></td>
+        <td class="katex-inline">$b122$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P10</strong></td>
+        <td class="katex-inline">$p10$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P100</strong></td>
+        <td class="katex-inline">$p100$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P101</strong></td>
+        <td class="katex-inline">$p101$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P102</strong></td>
+        <td class="katex-inline">$p102$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P103</strong></td>
+        <td class="katex-inline">$p103$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P104</strong></td>
+        <td class="katex-inline">$p104$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P105</strong></td>
+        <td class="katex-inline">$p105$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P106</strong></td>
+        <td class="katex-inline">$p106$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P107</strong></td>
+        <td class="katex-inline">$p107$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P108</strong></td>
+        <td class="katex-inline">$p108$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P109</strong></td>
+        <td class="katex-inline">$p109$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P11</strong></td>
+        <td class="katex-inline">$p11$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P110</strong></td>
+        <td class="katex-inline">$p110$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P12</strong></td>
+        <td class="katex-inline">$p12$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P13</strong></td>
+        <td class="katex-inline">$p13$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P14</strong></td>
+        <td class="katex-inline">$p14$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P15</strong></td>
+        <td class="katex-inline">$p15$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P16</strong></td>
+        <td class="katex-inline">$p16$</td>
+        <td>computed</td>
+        <td>-</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+  <details open>
+    <summary>Assumptions</summary>
+    <ol>
+    <li>All formulas extracted from cached Excel workbook values.</li>
+    <li>Domain: portfolio.</li>
+    <li>Compression ratio: 44.4x.</li>
+    </ol>
+  </details>
+</div>
+<div class="card">
+  <details open>
+    <summary>References</summary>
+    <ol>
+    <li>Source workbook: spotfire-formulas-for-calc-variables</li>
+    <li>Extraction pipeline: xlsx-poc-v2</li>
+    </ol>
+  </details>
+</div>
+
+
+
+<div class="report-footer">
+  Generated by calculation-report skill &middot; XLSX-POC-V2-spotfire-formulas-for-calc-variables Rev 1
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+</body>
+</html>
