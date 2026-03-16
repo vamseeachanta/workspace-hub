@@ -264,3 +264,95 @@ class TestCheckLineCount:
     def test_empty_content(self):
         issues = check_line_count("")
         assert len(issues) == 0
+
+
+# ---------------------------------------------------------------------------
+# Type-aware description checks (WRK-1259)
+# ---------------------------------------------------------------------------
+
+check_description_quality = eval_mod.check_description_quality
+DESC_MIN_WORDS_BY_TYPE = eval_mod.DESC_MIN_WORDS_BY_TYPE
+
+
+class TestDescMinWordsByType:
+    """DESC_MIN_WORDS_BY_TYPE defines per-type thresholds."""
+
+    def test_workflow_threshold_is_10(self):
+        assert DESC_MIN_WORDS_BY_TYPE["workflow"] == 10
+
+    def test_tool_threshold_is_8(self):
+        assert DESC_MIN_WORDS_BY_TYPE["tool"] == 8
+
+    def test_guidance_threshold_is_5(self):
+        assert DESC_MIN_WORDS_BY_TYPE["guidance"] == 5
+
+    def test_reference_threshold_is_3(self):
+        assert DESC_MIN_WORDS_BY_TYPE["reference"] == 3
+
+
+class TestCheckDescriptionQualityTypeAware:
+    """check_description_quality uses skill_type for threshold."""
+
+    def test_6_word_desc_fails_workflow(self):
+        meta = {"description": "A short skill description here now"}
+        issues = check_description_quality(meta, skill_type="workflow")
+        assert any(i.check == "description_too_short" for i in issues)
+
+    def test_6_word_desc_passes_guidance(self):
+        meta = {"description": "A short skill description here now"}
+        issues = check_description_quality(meta, skill_type="guidance")
+        assert not any(i.check == "description_too_short" for i in issues)
+
+    def test_4_word_desc_passes_reference(self):
+        meta = {"description": "Reference skill overview data"}
+        issues = check_description_quality(meta, skill_type="reference")
+        assert not any(i.check == "description_too_short" for i in issues)
+
+    def test_4_word_desc_fails_tool(self):
+        meta = {"description": "Reference skill overview data"}
+        issues = check_description_quality(meta, skill_type="tool")
+        assert any(i.check == "description_too_short" for i in issues)
+
+    def test_2_word_desc_fails_reference(self):
+        meta = {"description": "Too short"}
+        issues = check_description_quality(meta, skill_type="reference")
+        assert any(i.check == "description_too_short" for i in issues)
+
+    def test_default_type_uses_guidance_threshold(self):
+        """No skill_type → guidance threshold (5 words)."""
+        meta = {"description": "Five word description is fine"}
+        issues = check_description_quality(meta)
+        assert not any(i.check == "description_too_short" for i in issues)
+
+    def test_reference_desc_too_short_is_info_severity(self):
+        """Reference type description warnings should be info, not warning."""
+        meta = {"description": "Ab"}
+        issues = check_description_quality(meta, skill_type="reference")
+        short_issues = [i for i in issues if i.check == "description_too_short"]
+        assert len(short_issues) == 1
+        assert short_issues[0].severity == "info"
+
+
+class TestEvaluateSkillDescTypeAware:
+    """evaluate_skill passes inferred type to check_description_quality."""
+
+    def test_reference_skill_short_desc_no_warning(self, tmp_path):
+        """A reference-type skill with 5-word desc should not get warning."""
+        skill_dir = tmp_path / ".claude" / "skills" / "engineering" / "test"
+        skill_dir.mkdir(parents=True)
+        skill_file = skill_dir / "SKILL.md"
+        skill_file.write_text(
+            "---\n"
+            "name: test-ref\n"
+            "description: Engineering reference for testing\n"
+            "version: 1.0.0\n"
+            "category: engineering\n"
+            "---\n\n# Test Reference\n\nSome content.\n"
+        )
+        root = tmp_path / ".claude" / "skills"
+        result = eval_mod.evaluate_skill(skill_file, root, {"test-ref": skill_file})
+        desc_warnings = [
+            i for i in result.issues
+            if i.check == "description_too_short" and i.severity == "warning"
+        ]
+        assert len(desc_warnings) == 0

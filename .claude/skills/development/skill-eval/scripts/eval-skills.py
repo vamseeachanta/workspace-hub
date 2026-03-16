@@ -64,6 +64,12 @@ TODO_RE = re.compile(
 
 DESC_MIN_WORDS = 10
 DESC_MAX_WORDS = 200
+DESC_MIN_WORDS_BY_TYPE = {
+    "workflow": 10,
+    "tool": 8,
+    "guidance": 5,
+    "reference": 3,
+}
 
 LINE_LIMIT_WARN = 200
 LINE_LIMIT_CRITICAL = 400
@@ -384,16 +390,20 @@ def check_sections_have_code(body: str) -> list[Issue]:
     return issues
 
 
-def check_description_quality(meta: dict) -> list[Issue]:
+def check_description_quality(
+    meta: dict, skill_type: str = "guidance",
+) -> list[Issue]:
     desc = meta.get("description", "")
     if not desc:
         return []
     words = str(desc).split()
-    if len(words) < DESC_MIN_WORDS:
+    min_words = DESC_MIN_WORDS_BY_TYPE.get(skill_type, DESC_MIN_WORDS_BY_TYPE["guidance"])
+    if len(words) < min_words:
+        sev = "info" if skill_type == "reference" else "warning"
         return [Issue(
-            "warning", "description_too_short",
-            f"Description has {len(words)} words (min {DESC_MIN_WORDS})",
-            f"Expand description to at least {DESC_MIN_WORDS} words"
+            sev, "description_too_short",
+            f"Description has {len(words)} words (min {min_words} for {skill_type})",
+            f"Expand description to at least {min_words} words"
         )]
     if len(words) > DESC_MAX_WORDS:
         return [Issue(
@@ -550,14 +560,17 @@ def evaluate_skill(path: Path, root: Path, name_index: dict[str, Path]) -> Skill
         all_issues.extend(check_required_fields(meta))
         all_issues.extend(check_semver(meta))
         all_issues.extend(check_category_matches_dir(meta, cat_dir))
-        all_issues.extend(check_description_quality(meta))
         all_issues.extend(check_related_skills(meta, name_index))
     else:
         skill_name = extract_heading_name(content)
         body = content
 
-    # Infer skill type for section requirements
+    # Infer skill type for type-aware checks
     skill_type = infer_skill_type(meta, body, path, skills_root=root)
+
+    # Type-aware frontmatter checks
+    if meta:
+        all_issues.extend(check_description_quality(meta, skill_type=skill_type))
 
     # Content checks
     all_issues.extend(check_required_sections(body, skill_type=skill_type))
