@@ -1,0 +1,5 @@
+scope_approved: true
+approval_decision: approve_as_is
+reviewer: vamsee
+reviewed_at: "2026-03-16T11:30:00Z"
+notes: "Plan approved inline — single-pass Python rewrite of two audit shell scripts"

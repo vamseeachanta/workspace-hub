@@ -1,0 +1,31 @@
+wrk_id: WRK-1265
+status: complete
+commit: 3e89941e
+executed_at: "2026-03-16T12:15:00Z"
+integrated_repo_tests:
+  - name: "Violation checks TDD"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/skills/tests/test_audit_violations.py -v"
+    result: pass
+    artifact_ref: scripts/skills/tests/test_audit_violations.py
+  - name: "Coverage checks + CLI TDD"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/skills/tests/test_audit_coverage.py -v"
+    result: pass
+    artifact_ref: scripts/skills/tests/test_audit_coverage.py
+  - name: "Full ecosystem violations run"
+    scope: integrated
+    command: "uv run --no-project python scripts/skills/audit-skills.py --mode violations"
+    result: pass
+    artifact_ref: scripts/skills/audit-skills.py
+artifacts:
+  - scripts/skills/audit-skills.py
+  - scripts/skills/audit_skill_lib.py
+  - scripts/skills/tests/test_audit_violations.py
+  - scripts/skills/tests/test_audit_coverage.py
+  - scripts/skills/ecosystem-eval-report.sh
+tests:
+  total: 18
+  passed: 18
+  failed: 0
+  duration_s: 0.30

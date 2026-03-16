@@ -1,0 +1,7 @@
+wrk_id: WRK-1265
+scanned_at: "2026-03-16T12:20:00Z"
+scan_tool: "scripts/legal/legal-sanity-scan.sh"
+result: pass
+exit_code: 0
+violations: []
+notes: "No external code ported — internal refactor only"

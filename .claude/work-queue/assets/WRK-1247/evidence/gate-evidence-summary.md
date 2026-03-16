@@ -12,11 +12,11 @@
 | User-review publish gate | FAIL | user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review'] |
 | Cross-review gate | FAIL | artifact=none |
 | TDD gate | FAIL | none |
-| Integrated test gate | FAIL | execute evidence missing (required: evidence/execute.yaml) |
+| Integrated test gate | FAIL | execute.yaml: integrated_repo_tests must be a list |
 | Legal gate | FAIL | artifact=missing, none |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
-| Future-work gate | FAIL | future-work evidence absent (legacy item — WARN) |
-| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml missing |
+| Future-work gate | FAIL | future-work.yaml: empty recommendations and no_follow_ups_rationale missing |
+| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml: add additions[] or no_additions_rationale |
 | User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |

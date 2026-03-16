@@ -1,0 +1,26 @@
+wrk_id: WRK-1265
+tests:
+  - id: AC1
+    description: "audit-skills.py created"
+    result: PASS
+    evidence: "scripts/skills/audit-skills.py exists (72 lines)"
+  - id: AC2
+    description: "Same output schema as shell scripts"
+    result: PASS
+    evidence: "YAML output matches audit-skill-violations.sh and skill-coverage-audit.sh schemas"
+  - id: AC3
+    description: "Runs in <10s for full ecosystem"
+    result: PASS
+    evidence: "~2s for full ecosystem (was 10+ min)"
+  - id: AC4
+    description: "ecosystem-eval-report.sh updated"
+    result: PASS
+    evidence: "Tools 2 and 3 now call audit-skills.py"
+  - id: AC5
+    description: "TDD tests for each check type"
+    result: PASS
+    evidence: "18 tests across 2 files, all passing in 0.30s"
+summary:
+  total: 5
+  passed: 5
+  failed: 0

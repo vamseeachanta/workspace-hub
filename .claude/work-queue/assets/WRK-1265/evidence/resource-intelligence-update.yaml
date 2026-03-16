@@ -1,0 +1,20 @@
+wrk_id: WRK-1265
+stage: 16
+generated_at: "2026-03-16T12:25:00Z"
+additions:
+  - type: script
+    path: scripts/skills/audit-skills.py
+    description: >
+      Single-pass CLI auditor for SKILL.md files. Modes: violations, coverage, all.
+      Replaces audit-skill-violations.sh + skill-coverage-audit.sh (~400x speedup).
+  - type: script
+    path: scripts/skills/audit_skill_lib.py
+    description: >
+      Library module for audit-skills.py — parsing, violation checks, coverage checks,
+      YAML formatters.
+  - type: test
+    path: scripts/skills/tests/test_audit_violations.py
+    description: 9 tests for violation checks (readme, word count, description, XML tags).
+  - type: test
+    path: scripts/skills/tests/test_audit_coverage.py
+    description: 9 tests for coverage checks, YAML output schema, and CLI integration.

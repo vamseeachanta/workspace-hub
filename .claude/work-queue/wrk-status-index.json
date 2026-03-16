@@ -5524,5 +5524,14 @@
     "title": "Table extractor quality filter \u2014 watermark dedup, content threshold, LLM quality rating",
     "priority": "high",
     "category": "engineering"
+  },
+  "WRK-1265": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T18:56:53.695865+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Optimize audit shell scripts \u2014 single-pass Python rewrite",
+    "priority": "medium",
+    "category": "harness"
   }
 }

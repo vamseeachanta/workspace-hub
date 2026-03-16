@@ -1,0 +1,5 @@
+wrk_id: WRK-1265
+provider: claude
+verdict: APPROVE
+reviewed_at: "2026-03-16T12:20:00Z"
+notes: "Route B single-session — self-review with TDD verification"
