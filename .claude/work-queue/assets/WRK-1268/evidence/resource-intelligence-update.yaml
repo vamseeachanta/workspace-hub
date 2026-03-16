@@ -1,0 +1,5 @@
+wrk_id: WRK-1268
+generated_at: "2026-03-16T19:10:00Z"
+additions:
+  - topic: skill-eval
+    note: "TODO_RE regex refined; _strip_code_blocks now strips fenced + inline code"

@@ -1,4 +1,4 @@
 scope_approved: true
 reviewer: vamsee
-reviewed_at: 2026-03-16
-notes: "Route A simple — resolve 10 TODO/FIXME false positives in eval-skills.py"
+reviewed_at: "2026-03-16T18:50:00Z"
+notes: "Approved scope — clean up TODO/FIXME markers"

@@ -1,0 +1,9 @@
+wrk_id: WRK-1268
+generated_at: "2026-03-16T19:10:00Z"
+recommendations:
+  - id: FW-1
+    title: "Add TDD tests for check_todo_fixme with code-block and inline-code edge cases"
+    rationale: "The regex refinement and code-stripping logic should have dedicated unit tests"
+    disposition: deferred
+    status: deferred
+    captured: false

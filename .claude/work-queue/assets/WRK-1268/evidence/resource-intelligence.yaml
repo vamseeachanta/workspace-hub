@@ -1,0 +1,10 @@
+wrk_id: WRK-1268
+generated_at: "2026-03-16T18:55:00Z"
+completion_status: continue_to_planning
+summary: >
+  Route A simple — internal eval-skills.py regex fix. No external resources needed.
+skills:
+  core_used:
+    - work-queue
+    - skill-eval
+    - work-queue-workflow

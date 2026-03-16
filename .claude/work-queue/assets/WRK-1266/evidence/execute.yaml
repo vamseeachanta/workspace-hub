@@ -1,0 +1,12 @@
+executed: true
+commit: d66f30cc
+executed_at: "2026-03-16T19:00:00Z"
+integrated_repo_tests:
+  - repo: workspace-hub
+    command: "uv run --no-project python -m pytest .claude/skills/development/skill-eval/scripts/test_eval_skills.py"
+    result: pass
+    count: 29
+summary: |
+  Fixed 3 bugs in eval-skills.py: evaluate_skill never called infer_skill_type,
+  path resolution mismatch, domain categories over-classified.
+  section_missing 2024 → 272 (86.6% reduction). 29 TDD tests pass.

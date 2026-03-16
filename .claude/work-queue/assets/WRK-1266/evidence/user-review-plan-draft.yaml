@@ -1,0 +1,5 @@
+plan_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-16
+approval_decision: approve_as_is
+notes: "Inline plan approved — fix infer_skill_type, wire into evaluate_skill, TDD"

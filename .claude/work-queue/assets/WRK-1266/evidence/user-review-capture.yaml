@@ -1,0 +1,4 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-16T18:30:00Z"
+notes: "Approved scope — fix type inference in eval-skills.py"

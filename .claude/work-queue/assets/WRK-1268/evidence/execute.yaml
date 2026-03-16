@@ -1,0 +1,12 @@
+executed: true
+executed_at: "2026-03-16T19:05:00Z"
+commit: 18447995
+integrated_repo_tests:
+  - repo: workspace-hub
+    command: "uv run --no-project python -m pytest .claude/skills/development/skill-eval/scripts/test_eval_skills.py"
+    result: pass
+    count: 29
+summary: |
+  Refined TODO_RE regex and added code-block stripping in eval-skills.py.
+  All 10 TODO/FIXME hits were false positives (code examples, grep patterns).
+  Eval now shows 0 todo_fixme_present. 29 tests pass.
