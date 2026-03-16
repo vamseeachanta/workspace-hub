@@ -541,3 +541,186 @@ class TestArchiveSerialization:
         # Cache quality has all required fields
         cq_keys = {"total_formulas", "cached_ok", "cached_missing", "quality_pct"}
         assert set(d["cache_quality"].keys()) == cq_keys
+
+
+# ---------------------------------------------------------------------------
+# Test 18-25: cache-miss validation (WRK-1247)
+# ---------------------------------------------------------------------------
+
+class TestCacheMissValidation:
+    """Validate that cache-miss detection catches unrecalculated workbooks."""
+
+    def test_validate_all_cached_ok(self):
+        """100% cache hit rate passes validation."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        cells = [
+            CellFormula(
+                cell_ref="A1", sheet="S1", formula="=B1+C1",
+                cached_value=30, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A2", sheet="S1", formula="=B2*2",
+                cached_value=10, cache_status="cached_ok",
+            ),
+        ]
+        result = validate_cache_quality(cells, threshold=0.5)
+        assert result["passed"] is True
+        assert result["total_formulas"] == 2
+        assert result["cache_miss_count"] == 0
+        assert result["cache_miss_rate"] == 0.0
+        assert result["threshold"] == 0.5
+        assert len(result["warnings"]) == 0
+
+    def test_validate_all_missing_fails(self):
+        """100% cache miss rate fails validation."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        cells = [
+            CellFormula(
+                cell_ref="A1", sheet="S1", formula="=B1+C1",
+                cached_value=None, cache_status="cached_missing",
+            ),
+            CellFormula(
+                cell_ref="A2", sheet="S1", formula="=B2*2",
+                cached_value=None, cache_status="cached_missing",
+            ),
+        ]
+        result = validate_cache_quality(cells, threshold=0.5)
+        assert result["passed"] is False
+        assert result["cache_miss_count"] == 2
+        assert result["cache_miss_rate"] == 1.0
+        assert len(result["warnings"]) >= 1
+        assert "cache" in result["warnings"][0].lower()
+
+    def test_validate_partial_miss_below_threshold(self):
+        """Cache miss rate below threshold passes."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        # 1 miss out of 4 = 25%, threshold 50% -> pass
+        cells = [
+            CellFormula(
+                cell_ref="A1", sheet="S1", formula="=B1",
+                cached_value=10, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A2", sheet="S1", formula="=B2",
+                cached_value=20, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A3", sheet="S1", formula="=B3",
+                cached_value=30, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A4", sheet="S1", formula="=B4",
+                cached_value=None, cache_status="cached_missing",
+            ),
+        ]
+        result = validate_cache_quality(cells, threshold=0.5)
+        assert result["passed"] is True
+        assert result["cache_miss_rate"] == 0.25
+
+    def test_validate_partial_miss_above_threshold(self):
+        """Cache miss rate above threshold fails."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        # 3 miss out of 4 = 75%, threshold 50% -> fail
+        cells = [
+            CellFormula(
+                cell_ref="A1", sheet="S1", formula="=B1",
+                cached_value=10, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A2", sheet="S1", formula="=B2",
+                cached_value=None, cache_status="cached_missing",
+            ),
+            CellFormula(
+                cell_ref="A3", sheet="S1", formula="=B3",
+                cached_value=None, cache_status="cached_missing",
+            ),
+            CellFormula(
+                cell_ref="A4", sheet="S1", formula="=B4",
+                cached_value=None, cache_status="cached_missing",
+            ),
+        ]
+        result = validate_cache_quality(cells, threshold=0.5)
+        assert result["passed"] is False
+        assert result["cache_miss_rate"] == 0.75
+        assert len(result["warnings"]) >= 1
+
+    def test_validate_empty_formulas_passes(self):
+        """No formulas at all passes (nothing to validate)."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        result = validate_cache_quality([], threshold=0.5)
+        assert result["passed"] is True
+        assert result["total_formulas"] == 0
+        assert result["cache_miss_rate"] == 0.0
+
+    def test_validate_per_sheet_breakdown(self):
+        """Validation result includes per-sheet cache-miss breakdown."""
+        from scripts.data.doc_intelligence.parsers.formula_xlsx import (
+            validate_cache_quality,
+        )
+        cells = [
+            CellFormula(
+                cell_ref="A1", sheet="Data", formula="=B1",
+                cached_value=10, cache_status="cached_ok",
+            ),
+            CellFormula(
+                cell_ref="A2", sheet="Data", formula="=B2",
+                cached_value=None, cache_status="cached_missing",
+            ),
+            CellFormula(
+                cell_ref="A1", sheet="Calc", formula="=B1",
+                cached_value=None, cache_status="cached_missing",
+            ),
+        ]
+        result = validate_cache_quality(cells, threshold=0.5)
+        assert "per_sheet" in result
+        assert "Data" in result["per_sheet"]
+        assert "Calc" in result["per_sheet"]
+        assert result["per_sheet"]["Data"]["miss_count"] == 1
+        assert result["per_sheet"]["Data"]["total"] == 2
+        assert result["per_sheet"]["Calc"]["miss_count"] == 1
+        assert result["per_sheet"]["Calc"]["total"] == 1
+
+    def test_parser_includes_cache_validation_in_manifest(self):
+        """FormulaXlsxParser.parse() adds cache_validation to payload."""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = _make_xlsx(tmp, formulas={
+                "A1": 10,
+                "B1": 20,
+                "C1": "=A1+B1",
+            })
+            manifest = _parse_file(path)
+            payload = manifest.formula_payload
+            assert payload is not None
+            assert hasattr(payload, "cache_validation")
+            assert payload.cache_validation is not None
+            assert "passed" in payload.cache_validation
+            assert "cache_miss_rate" in payload.cache_validation
+            assert "threshold" in payload.cache_validation
+
+    def test_parser_adds_warning_to_errors_on_high_miss_rate(self):
+        """When cache miss rate exceeds threshold, manifest.errors has warning."""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = _make_xlsx(tmp, formulas={
+                "A1": 10,
+                "B1": 20,
+                "C1": "=A1+B1",
+                "D1": "=A1*B1",
+                "E1": "=C1+D1",
+            })
+            manifest = _parse_file(path)
+            payload = manifest.formula_payload
+            assert payload is not None
+            if payload.cache_validation["cache_miss_rate"] > 0.5:
+                assert any(
+                    "cache" in e.lower() for e in manifest.errors
+                ), "Expected cache-miss warning in manifest.errors"

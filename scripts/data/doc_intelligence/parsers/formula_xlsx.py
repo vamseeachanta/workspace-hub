@@ -27,6 +27,83 @@ from scripts.data.doc_intelligence.schema import (
 
 _EXTENSIONS = {".xlsx", ".xlsm"}
 
+# Default threshold: if >50% of formula cells have no cached value,
+# the workbook was likely never recalculated (e.g., LibreOffice export).
+_DEFAULT_CACHE_MISS_THRESHOLD = 0.5
+
+
+def validate_cache_quality(
+    formula_cells: List[CellFormula],
+    threshold: float = _DEFAULT_CACHE_MISS_THRESHOLD,
+) -> Dict[str, Any]:
+    """Check whether cached-value miss rate exceeds the threshold.
+
+    A workbook saved without recalculation (e.g., LibreOffice export)
+    will have None for ALL formula cells via data_only=True, causing
+    silent test failures when cached values are used as assertions.
+
+    Args:
+        formula_cells: List of CellFormula from the dual-pass extraction.
+        threshold: Maximum acceptable cache-miss rate (0.0-1.0).
+
+    Returns:
+        Dict with keys: passed, total_formulas, cache_miss_count,
+        cache_miss_rate, threshold, warnings, per_sheet.
+    """
+    total = len(formula_cells)
+    if total == 0:
+        return {
+            "passed": True,
+            "total_formulas": 0,
+            "cache_miss_count": 0,
+            "cache_miss_rate": 0.0,
+            "threshold": threshold,
+            "warnings": [],
+            "per_sheet": {},
+        }
+
+    miss_count = sum(
+        1 for c in formula_cells if c.cache_status == "cached_missing"
+    )
+    miss_rate = miss_count / total
+
+    # Per-sheet breakdown
+    per_sheet: Dict[str, Dict[str, Any]] = {}
+    for cell in formula_cells:
+        sheet = cell.sheet
+        if sheet not in per_sheet:
+            per_sheet[sheet] = {"total": 0, "miss_count": 0}
+        per_sheet[sheet]["total"] += 1
+        if cell.cache_status == "cached_missing":
+            per_sheet[sheet]["miss_count"] += 1
+
+    for sheet_stats in per_sheet.values():
+        t = sheet_stats["total"]
+        sheet_stats["miss_rate"] = (
+            round(sheet_stats["miss_count"] / t, 4) if t else 0.0
+        )
+
+    passed = miss_rate <= threshold
+    warnings: List[str] = []
+    if not passed:
+        warnings.append(
+            f"Cache-miss validation failed: {miss_count}/{total} "
+            f"formula cells ({miss_rate:.0%}) have no cached value. "
+            f"Threshold is {threshold:.0%}. The workbook may not have "
+            f"been recalculated before saving — cached values are "
+            f"unreliable for test assertions."
+        )
+
+    return {
+        "passed": passed,
+        "total_formulas": total,
+        "cache_miss_count": miss_count,
+        "cache_miss_rate": round(miss_rate, 4),
+        "threshold": threshold,
+        "warnings": warnings,
+        "per_sheet": per_sheet,
+    }
+
 
 def _compute_checksum(filepath: str) -> str:
     sha = hashlib.sha256()
@@ -205,6 +282,9 @@ class FormulaXlsxParser(BaseParser):
             "quality_pct": round(ok / total * 100, 1) if total else 100.0,
         }
 
+        # Cache-miss validation (WRK-1247)
+        cache_validation = validate_cache_quality(formula_cells)
+
         payload = FormulaPayload(
             formulas=formula_cells,
             named_ranges=named_ranges,
@@ -213,9 +293,11 @@ class FormulaXlsxParser(BaseParser):
             calculation_chain=chain,
             vba_modules=vba_modules,
             cache_quality=cache_quality,
+            cache_validation=cache_validation,
         )
 
         errors: List[str] = []
+        errors.extend(cache_validation.get("warnings", []))
         return DocumentManifest(
             version="1.0.0",
             tool="formula-extract/1.0.0",

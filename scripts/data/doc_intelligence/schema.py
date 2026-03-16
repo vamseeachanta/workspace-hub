@@ -119,6 +119,7 @@ class FormulaPayload:
     calculation_chain: List[str] = field(default_factory=list)
     vba_modules: List[VbaModule] = field(default_factory=list)
     cache_quality: Dict[str, Any] = field(default_factory=dict)
+    cache_validation: Optional[Dict[str, Any]] = None
 
 
 # -- Serialization helpers --------------------------------------------------
