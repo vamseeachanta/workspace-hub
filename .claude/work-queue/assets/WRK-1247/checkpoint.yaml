@@ -1,39 +1,12 @@
 wrk_id: WRK-1247
-stage: 17
-next_action: "Stage 17 — User Review Implementation (HARD GATE)"
-context_summary: >
-  POC complete. All 7 ACs met. Key addition this session: formula_to_python.py
-  auto-translator — 68.4% of formulas convert to runnable Python expressions,
-  verified numerically against Excel cached values (30 TDD tests). Total: 373 tests
-  pass across all doc_intelligence tests. Legal scan PASS. Gate evidence written for
-  stages 10-16. 5 future work items captured. Ready for user review and close.
-updated_at: "2026-03-16"
-
+current_stage: 19
+stage_name: Close
+completed_stage: 18
+next_action: Execute stage 19: Close
+context_summary: Stage 18 complete. Next: stage 19 (Close).
 entry_reads:
-  - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
-  - scripts/data/doc_intelligence/formula_to_python.py
-  - scripts/data/doc_intelligence/tests/test_formula_to_python.py
-
-completed:
-  - "AC1-7: All acceptance criteria met"
-  - "18/18 core formula parser tests"
-  - "30/30 formula-to-python translator tests"
-  - "24/24 parametric conductor tests"
-  - "373/373 full doc_intelligence test suite"
-  - "Legal scan PASS"
-  - "HTML calc-reports for all 6 files"
-  - "Cross-review stage 13 evidence"
-  - "Gate evidence stages 10-16"
-  - "Future work items FW-1..5"
-
-remaining:
-  - title: "Stage 17: User review (HARD GATE)"
-  - title: "Stages 18-20: Reclaim, Close, Archive"
-
-commits:
-  - hash: 908047ef
-    message: "feat(WRK-1247): XLSX formula extraction POC — 18 TDD tests + skill + plan"
-  - hash: 8f4a6148
-    message: "fix(WRK-1247): Chartsheet bug, cache key fix, parametric test skill section"
-  - hash: 24e62927
-    message: "fix(WRK-1247): fallback output classification — 187K tests generated"
+  - .claude/work-queue/assets/WRK-1247/checkpoint.yaml
+  - assets/WRK-1247/evidence/user-review-close.yaml
+  - assets/WRK-1247/evidence/gate-evidence-summary.yaml
+checkpointed_at: 2026-03-16T20:10:13Z
+human_gate: false

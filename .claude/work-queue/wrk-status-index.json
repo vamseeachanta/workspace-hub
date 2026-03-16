@@ -5533,5 +5533,14 @@
     "title": "Optimize audit shell scripts \u2014 single-pass Python rewrite",
     "priority": "medium",
     "category": "harness"
+  },
+  "WRK-1247": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T20:11:42.915037+00:00",
+    "updated_by": "close-item.sh",
+    "title": "POC \u2014 Deep extraction on 10 XLSX calculation spreadsheets",
+    "priority": "high",
+    "category": "engineering"
   }
 }

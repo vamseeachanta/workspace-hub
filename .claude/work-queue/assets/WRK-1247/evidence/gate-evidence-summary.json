@@ -120,7 +120,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     },
     {
       "name": "Approval ordering gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     }
   ]
 }
