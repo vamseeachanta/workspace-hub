@@ -1,0 +1,15 @@
+wrk_id: WRK-1251
+stage: 1
+gate: capture
+scope_approved: true
+approved_by: user
+approved_at: "2026-03-15"
+components:
+  - parametric hull generation with hydrostatics
+  - FEM preprocessing chain (gmsh + CalculiX)
+  - design table driven studies
+  - round-trip validation (FreeCAD → STEP → gmsh → solver)
+target_repos:
+  - digitalmodel
+  - workspace-hub
+complexity: complex

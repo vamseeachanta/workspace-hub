@@ -1,0 +1,24 @@
+wrk_id: WRK-140
+scope: integrated
+executed_at: "2026-02-24T00:00:00Z"
+completed_at: "2026-02-24T00:00:00Z"
+provider: codex
+phases_completed:
+  - phase: 1
+    description: "Fixed 3 pre-existing bugs in solvers/gmsh_meshing/ (quality metrics, gmsh API compat)"
+    status: done
+  - phase: 2
+    description: "Created hydrodynamics/diffraction/gmsh_mesh_builder.py — GmshMeshSpec, GmshMeshBuilder with GDF/DAT/MSH export"
+    status: done
+  - phase: 3
+    description: "Wetted surface extraction, 41 tests (26 new + 15 existing) — all passing"
+    status: done
+integrated_repo_tests:
+  - name: gmsh-mesh-builder-tests
+    scope: integrated
+    command: PYTHONPATH=src uv run python -m pytest tests/test_gmsh_mesh_builder.py
+    result: pass
+  - name: legal-sanity-scan
+    scope: integrated
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: pass

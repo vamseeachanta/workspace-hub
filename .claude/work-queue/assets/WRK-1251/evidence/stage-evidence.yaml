@@ -1,0 +1,8 @@
+wrk_id: WRK-1251
+stages:
+  stage_1_capture:
+    status: passed
+    approved_by: user
+    approved_at: "2026-03-15"
+    scope_approved: true
+    notes: "User approved capture scope — 4 components: hull gen, FEM chain, design tables, round-trip validation"

@@ -73,6 +73,9 @@ class FormulaXlsxParser(BaseParser):
 
         for sheet_name in wb_data.sheetnames:
             ws = wb_data[sheet_name]
+            # Skip chart-only sheets (Chartsheet has no iter_rows)
+            if not hasattr(ws, "iter_rows"):
+                continue
             all_rows: List[List[str]] = []
             for row in ws.iter_rows(values_only=False):
                 str_row: List[str] = []
@@ -104,6 +107,8 @@ class FormulaXlsxParser(BaseParser):
 
         for sheet_name in wb_formula.sheetnames:
             ws = wb_formula[sheet_name]
+            if not hasattr(ws, "iter_rows"):
+                continue
             for row in ws.iter_rows():
                 for cell in row:
                     val = cell.value

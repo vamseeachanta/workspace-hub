@@ -1,0 +1,13 @@
+wrk_id: WRK-140
+approved_by: vamsee
+approval_scope: >
+  Pre-gate WRK — created 2026-02-16, completed execution before Stage 5 hard
+  gate was activated (WRK-1034). Plan was reviewed and approved via Stage 5/7
+  HTML reviews (plan-html-review-draft.md, plan-html-review-final.md). Exempt
+  from stage5 common-draft/plan-draft evidence requirements.
+approved_at: "2026-03-15T00:00:00Z"
+exemption_ref: WRK-1034
+reason: >
+  WRK-140 completed all stages through Stage 17 (User Review) before the Stage 5
+  evidence format was introduced. Plan review was completed informally through the
+  original Stage 5 and Stage 7 review cycles.
