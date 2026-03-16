@@ -28,7 +28,7 @@ fi
 
 # Parse analysis YAML (requires PyYAML)
 parse_yaml() {
-    uv run --no-project python -c "
+    uv run --no-project --with PyYAML python -c "
 import yaml, json, sys
 with open('$ANALYSIS_YAML') as f:
     d = yaml.safe_load(f)
@@ -52,7 +52,7 @@ echo ""
 echo "--- Stage 2: Case Setup ---"
 mkdir -p "$RUN_DIR"/{0,constant,system}
 
-uv run --no-project python -c "
+uv run --no-project --with PyYAML python -c "
 import yaml, json, sys, os
 
 with open('$ANALYSIS_YAML') as f:
@@ -114,13 +114,13 @@ echo "Case setup: OK"
 # Stage 3: Meshing
 echo ""
 echo "--- Stage 3: Meshing ---"
-MESH_METHOD=$(echo "$CONFIG_JSON" | uv run --no-project python -c "import json,sys; print(json.load(sys.stdin).get('mesh',{}).get('method','blockMesh'))")
+MESH_METHOD=$(echo "$CONFIG_JSON" | uv run --no-project --with PyYAML python -c "import json,sys; print(json.load(sys.stdin).get('mesh',{}).get('method','blockMesh'))")
 
 if [[ "$MESH_METHOD" == "blockMesh" ]]; then
     # Generate a basic blockMeshDict if not present
     if [[ ! -f "$RUN_DIR/system/blockMeshDict" ]]; then
         echo "Generating default blockMeshDict..."
-        uv run --no-project python -c "
+        uv run --no-project --with PyYAML python -c "
 import yaml
 with open('$ANALYSIS_YAML') as f:
     cfg = yaml.safe_load(f)
@@ -147,6 +147,35 @@ with open('$RUN_DIR/system/blockMeshDict', 'w') as f:
         cd "$RUN_DIR"
         blockMesh > log.blockMesh 2>&1 && echo "blockMesh: OK" || { echo "blockMesh: FAILED"; exit 1; }
         checkMesh > log.checkMesh 2>&1 && echo "checkMesh: OK" || echo "checkMesh: warnings (check log)"
+        
+        # Generate mesh verdict
+        uv run --no-project --with PyYAML python -c "
+import re, yaml
+from pathlib import Path
+text = Path('$RUN_DIR/log.checkMesh').read_text()
+verdict = {'pass': True, 'issues': []}
+checks = [
+    (r'Max aspect ratio = ([0-9.e+-]+)', 100, 'aspect_ratio'),
+    (r'Max skewness = ([0-9.e+-]+)', 4, 'skewness'),
+    (r'Mesh non-orthogonality Max: ([0-9.e+-]+)', 70, 'non_orthogonality'),
+]
+for pattern, limit, name in checks:
+    m = re.search(pattern, text)
+    if m and float(m.group(1)) > limit:
+        verdict['pass'] = False
+        verdict['issues'].append(f'{name}={m.group(1)} exceeds {limit}')
+if 'negative' in text.lower() and 'volume' in text.lower():
+    neg = re.search(r'(\d+) negative volumes', text.lower())
+    if neg and int(neg.group(1)) > 0:
+        verdict['pass'] = False
+        verdict['issues'].append('negative_volumes')
+with open('$RUN_DIR/mesh-verdict.yaml', 'w') as f:
+    yaml.dump(verdict, f, default_flow_style=False)
+if not verdict['pass']:
+    print(f'MESH GATE FAILED: {verdict["issues"]}')
+    import sys; sys.exit(1)
+print('Mesh verdict: PASS')
+" 2>&1 || { echo "Mesh quality gate FAILED — aborting"; exit 1; }
     else
         echo "DRY RUN: skipping blockMesh"
     fi
@@ -166,7 +195,7 @@ else
     cd "$RUN_DIR"
     # Generate initial fields if not present
     if [[ ! -f "0/U" ]]; then
-        uv run --no-project python -c "
+        uv run --no-project --with PyYAML python -c "
 import yaml
 with open('$ANALYSIS_YAML') as f:
     cfg = yaml.safe_load(f)
@@ -208,7 +237,7 @@ with open('$RUN_DIR/constant/transportProperties', 'w') as f:
     echo "Time directories: $TDIRS"
 
     # Write convergence verdict
-    uv run --no-project python -c "
+    uv run --no-project --with PyYAML python -c "
 import re, yaml
 from pathlib import Path
 

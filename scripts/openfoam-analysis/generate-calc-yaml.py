@@ -55,6 +55,19 @@ def parse_force_coeffs(case_dir: Path) -> dict | None:
 
 def generate_calc_yaml(analysis_path: str, case_dir: str, output_path: str):
     """Generate calculation-report compatible YAML."""
+    # Validation gate — refuse to generate report from invalid results
+    import subprocess
+    validator = Path(__file__).parent / "validate-analysis.py"
+    if validator.exists():
+        result = subprocess.run(
+            ["uv", "run", "--no-project", "python", str(validator), case_dir],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            print("ERROR: Analysis validation failed. Fix issues before generating report:")
+            print(result.stdout)
+            sys.exit(1)
+
     with open(analysis_path) as f:
         cfg = yaml.safe_load(f)
 

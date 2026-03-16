@@ -174,7 +174,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '\ud83d\udcdd Edit: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
+            "command": "echo '📝 Edit: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
           }
         ]
       },
@@ -185,6 +185,16 @@
             "type": "command",
             "command": "cat | uv run --no-project python \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/work-queue/gate_check.py\"",
             "statusMessage": "WRK stage gate check"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/openfoam-workflow-guard.sh\" 2>/dev/null || true",
+            "statusMessage": "OpenFOAM workflow guard"
           }
         ]
       }
@@ -204,7 +214,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '\u2705 Saved: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
+            "command": "echo '✅ Saved: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
           },
           {
             "type": "command",
@@ -228,7 +238,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/bash -c 'echo \"\ud83d\udccb Before compact: Review CLAUDE.md for delegation patterns and agent library\"; echo \"   Agents: .claude/agent-library/{core,devops,github,sparc}/\"; echo \"   Skills: skills/ (77 available)\"; echo \"   TDD mandatory, batch operations\"'"
+            "command": "/bin/bash -c 'echo \"📋 Before compact: Review CLAUDE.md for delegation patterns and agent library\"; echo \"   Agents: .claude/agent-library/{core,devops,github,sparc}/\"; echo \"   Skills: skills/ (77 available)\"; echo \"   TDD mandatory, batch operations\"'"
           }
         ]
       },
@@ -237,7 +247,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/bash -c 'echo \"\ud83d\udd04 Auto-compact: Preserve context of agent-library and skills\"; echo \"   Use Task tool for delegation (Explore, Plan, Bash, general-purpose)\"'"
+            "command": "/bin/bash -c 'echo \"🔄 Auto-compact: Preserve context of agent-library and skills\"; echo \"   Use Task tool for delegation (Explore, Plan, Bash, general-purpose)\"'"
           }
         ]
       }
