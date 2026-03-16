@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1244 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1244 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Evaluate canonical skill ecosystem quality using skill-creator eval</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — 1. **Eval pass**: Run skill-creator eval against all canonical skills — score each on triggering accuracy, content quality, and actionabilit...</summary><div class="panel"><ol>
+<li><strong>Eval pass</strong>: Run skill-creator eval against all canonical skills — score each on
+   triggering accuracy, content quality, and actionability</li>
+<li><strong>Fix Phase 9 gaps</strong>: Address the 18 skill coverage gaps flagged by nightly
+   comprehensive-learning Phase 9 (missing back-links, missing script references)</li>
+<li><strong>Verify WRK-639 cleanup</strong>: Diff a sample of deleted "ahead" diverged copies against
+   their canonical counterparts to confirm no valuable content was lost</li>
+<li><strong>Improve bottom quartile</strong>: For skills scoring below threshold, update content or
+   descriptions using skill-creator optimize workflow</li>
+</ol></div></details>
+
+  <details open><summary><strong>Why</strong> — - WRK-639 deleted 124 skills based on file-level comparison without content evaluation - Phase 9 flags 18 gaps nightly but nobody acts on th...</summary><div class="panel"><ul>
+<li>WRK-639 deleted 124 skills based on file-level comparison without content evaluation</li>
+<li>Phase 9 flags 18 gaps nightly but nobody acts on them — they accumulate</li>
+<li>Skill triggering accuracy directly impacts agent productivity (wrong skill = wasted context)</li>
+<li>The skill-creator eval capability exists but has never been run ecosystem-wide</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] skill-creator eval run on all canonical skills with scores recorded - [ ] 18 Phase 9 coverage gaps resolved (back-links added, scripts...</summary><div class="panel"><ul>
+<li>[ ] skill-creator eval run on all canonical skills with scores recorded</li>
+<li>[ ] 18 Phase 9 coverage gaps resolved (back-links added, scripts referenced)</li>
+<li>[ ] Sample of 10 deleted diverged "ahead" skills diffed against canonical — report on lost content</li>
+<li>[ ] Bottom quartile skills improved or flagged for removal</li>
+<li>[ ] Eval results saved to <code>specs/audit/skill-eval-&lt;date&gt;.yaml</code></li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — No summary available.</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1244, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | FAIL | reviewed=False, approved=Fals...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1244, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>FAIL</td>
+<td>reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>FAIL</td>
+<td>stage_evidence_ref missing in WRK frontmatter</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>FAIL</td>
+<td>resource-intelligence.yaml: invalid completion_status</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>FAIL</td>
+<td>activation.yaml: set_active_wrk must be true</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>FAIL</td>
+<td>routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>FAIL</td>
+<td>user-review-browser-open.yaml missing</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>FAIL</td>
+<td>user-review-publish.yaml missing</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1244/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>FAIL</td>
+<td>execute.yaml: integrated_repo_tests must be a list</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>FAIL</td>
+<td>artifact=missing, none</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>FAIL</td>
+<td>future-work.yaml: empty recommendations and no_follow_ups_rationale missing</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=4</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>FAIL</td>
+<td>user-review-close.yaml missing</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>FAIL</td>
+<td>timestamp ordering violation: plan-final-review.confirmed_at (2026-03-16T21:10:00Z) &gt;= claim-evidence.claimed_at (2026-03-16T21:10:00Z)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml absent — skip elapsed check</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (4 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip commit uniqueness check</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip path existence check</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml absent — skip done/pending check</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml absent — skip</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — future_work: - id: WRK-1259 title: &quot;Tune eval-skills.py required sections by skill type&quot; priority: high impact: &quot;Eliminates ~1700 false-posi...</summary><div class="panel"><p>future_work:
+  - id: WRK-1259
+    title: "Tune eval-skills.py required sections by skill type"
+    priority: high
+    impact: "Eliminates ~1700 false-positive section_missing + 204 category_dir_mismatch warnings"</p>
+<ul>
+<li>
+<p>id: WRK-1260
+    title: "Mechanical skill cleanup — README.md, HTML tags, scripts_exempt"
+    priority: medium
+    impact: "Reduces violations 163→~15, coverage gaps 339→~50"</p>
+</li>
+<li>
+<p>id: WRK-1261
+    title: "Quantify skill curation quality hierarchy"
+    priority: high
+    impact: "Encodes scripts &gt; refs &gt; single &gt; large hierarchy into eval tooling"
+    rationale: &gt;
+      patterns.md enforcement gradient (prose → micro-skill → script → hook)
+      is not measured per-skill. This makes curation subjective. WRK-1261 adds
+      quality_tier scoring so every skill has a measurable position on the gradient,
+      and Tier D skills are flagged for decomposition into script + micro-skill.</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 36 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1244-lifecycle.html</code></li><li><code>WRK-1244-plan.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>checkpoint.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review-codex.md</code></li><li><code>evidence/cross-review-gemini.md</code></li><li><code>evidence/cross-review-p1-override.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/gate-evidence-summary.yaml</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/reclaim.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>future-work.yaml</code></li><li><code>plan.md</code></li><li><code>plan_claude.md</code></li><li><code>plan_codex.md</code></li><li><code>plan_gemini.md</code></li><li><code>review-iteration.yaml</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li><li><code>run-log.jsonl</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li></ul></div></details>
+</body>
+</html>

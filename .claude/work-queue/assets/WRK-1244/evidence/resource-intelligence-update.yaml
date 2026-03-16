@@ -1,0 +1,13 @@
+wrk_id: WRK-1244
+stage: 16
+additions:
+  - type: script
+    path: scripts/skills/fix_unresolved_refs.py
+    purpose: "Fix broken related_skills cross-references in SKILL.md frontmatter"
+  - type: script
+    path: scripts/skills/skill_eval_ecosystem.py
+    purpose: "Orchestrates audit-skills.py + eval-skills.py into single YAML summary"
+  - type: finding
+    content: "Skill ecosystem expanded from 405 to 3127 after WRK-1272 micro-skill split; all related_skills refs now resolve"
+  - type: finding
+    content: "eval-skills.py JSON output nests fields under 'summary' key, not top-level — parsers must use data.get('summary', data)"

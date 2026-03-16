@@ -1,0 +1,14 @@
+wrk_id: WRK-1244
+reviewer: user
+override_reason: "All 3 P1 findings (shell injection, silent failure, bare python3) have been resolved by rewriting the orchestrator from bash to Python. Plan updated to reflect all fixes. No unresolved P1 findings remain."
+overridden_at: "2026-03-16T21:05:00Z"
+p1_findings_resolved:
+  - id: P1-1
+    title: "Shell injection in orchestrator"
+    resolution: "Replaced bash script with Python (skill_eval_ecosystem.py)"
+  - id: P1-2
+    title: "Silent failure via || true"
+    resolution: "Python orchestrator checks exit codes, warns explicitly"
+  - id: P1-3
+    title: "Bare python3 violates runtime rule"
+    resolution: "All invocations use uv run --no-project python"

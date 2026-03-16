@@ -1,0 +1,20 @@
+future_work:
+  - id: WRK-1259
+    title: "Tune eval-skills.py required sections by skill type"
+    priority: high
+    impact: "Eliminates ~1700 false-positive section_missing + 204 category_dir_mismatch warnings"
+
+  - id: WRK-1260
+    title: "Mechanical skill cleanup — README.md, HTML tags, scripts_exempt"
+    priority: medium
+    impact: "Reduces violations 163→~15, coverage gaps 339→~50"
+
+  - id: WRK-1261
+    title: "Quantify skill curation quality hierarchy"
+    priority: high
+    impact: "Encodes scripts > refs > single > large hierarchy into eval tooling"
+    rationale: >
+      patterns.md enforcement gradient (prose → micro-skill → script → hook)
+      is not measured per-skill. This makes curation subjective. WRK-1261 adds
+      quality_tier scoring so every skill has a measurable position on the gradient,
+      and Tier D skills are flagged for decomposition into script + micro-skill.

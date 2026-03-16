@@ -1,0 +1,6 @@
+wrk_id: WRK-1244
+route: B
+provider: claude
+complexity: medium
+target_repos:
+  - workspace-hub
