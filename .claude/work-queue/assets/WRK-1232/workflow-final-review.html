@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1232 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1232 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Complete production data download and conversion pipeline</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — File: `src/worldenergydata/bsee/data/sources/zip/production_data.py` lines 20-24. Binary production data exists on disk but the refresh pipe...</summary><div class="panel"><p>File: <code>src/worldenergydata/bsee/data/sources/zip/production_data.py</code> lines 20-24. Binary production data exists on disk but the refresh pipeline cannot populate it.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — 1. `router()` and `download_zip_data()` implemented 2. Download, extract, convert pipeline works end-to-end 3. TDD tests for download, conve...</summary><div class="panel"><ol>
+<li><code>router()</code> and <code>download_zip_data()</code> implemented</li>
+<li>Download, extract, convert pipeline works end-to-end</li>
+<li>TDD tests for download, conversion, and API12 filtering</li>
+<li>Compatible with url_registry.py specs for production_raw and OGOR-A</li>
+</ol></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — --- wrk: WRK-1232 --- # Plan Review — WRK-1232 ## Summary Complete router() and download_zip_data() stubs using BSEEWebScraper pattern. Fix ...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><hr>
+<h2>wrk: WRK-1232</h2>
+<h1>Plan Review — WRK-1232</h1>
+<h2>Summary</h2>
+<p>Complete router() and download_zip_data() stubs using BSEEWebScraper pattern. Fix save_zip_data_to_binary nrows bug.
+confirmed_by: vamsee
+confirmed_at: 2026-03-15T23:45:00Z
+decision: passed</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Router pipeline tests</td><td>repo</td><td>pass</td><td><code>PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py::TestRouter --noconftest -v</code></td><td>worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py</td></tr><tr><td>2</td><td>Download method tests</td><td>repo</td><td>pass</td><td><code>PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py::TestDownloadZipData --noconftest -v</code></td><td>worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py</td></tr><tr><td>3</td><td>E2E pipeline + URL registry compat</td><td>integrated</td><td>pass</td><td><code>PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py -k &#x27;EndToEnd or UrlRegistry&#x27; --noconftest -v</code></td><td>worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1232, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1232, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=ace-linux-1, execution_workstations=ace-linux-1</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1232/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1232/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>no review files found — skip codex keyword check (handled by cross-review gate)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-15T23:50:00Z, reviewed=2026-03-15T23:40:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1232 stage: 15 generated: &quot;2026-03-16T03:10:00Z&quot; recommendations: - id: FW-1 priority: MEDIUM title: &quot;Implement OGOR-A yearly pr...</summary><div class="panel"><p>wrk_id: WRK-1232
+stage: 15
+generated: "2026-03-16T03:10:00Z"
+recommendations:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Implement OGOR-A yearly production download pipeline"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "url_registry has 30 OGOR-A yearly specs (1996-2024). Router should iterate all yearly URLs."
+  - id: FW-2
+    priority: LOW
+    title: "Add nosec annotation for pickle.load bandit warning"
+    disposition: existing-updated
+    captured: true
+    status: captured
+    description: "Bandit B301 flags pickle.load in get_data_by_api12_array. Data is self-generated — safe to nosec."
+  - id: FW-3
+    priority: LOW
+    title: "Migrate binary storage from pickle to parquet"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "Pickle is fragile across Python versions. Parquet would be more portable and queryable."</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1232 stages: - order: 1 stage: Capture status: done evidence: &quot;.claude/work-queue/pending/WRK-1232.md&quot; - order: 2 stage: Resourc...</summary><div class="panel"><p>wrk_id: WRK-1232
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: ".claude/work-queue/pending/WRK-1232.md"
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/resource-intelligence.yaml"
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: ".claude/work-queue/pending/WRK-1232.md"
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/plan-html-review-final.md"
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/user-review-plan-draft.yaml"
+  - order: 6
+    stage: Cross-Review Plan
+    status: n/a
+    evidence: ".claude/work-queue/assets/WRK-1232/review.md"
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/plan-html-review-final.md"
+  - order: 8
+    stage: Claim Activation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/activation.yaml"
+  - order: 9
+    stage: Routing
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/routing.yaml"
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/execute.yaml"
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/WRK-1232-lifecycle.html"
+  - order: 12
+    stage: TDD Eval
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/ac-test-matrix.md"
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/review.md"
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/legal-scan.yaml"
+  - order: 15
+    stage: Future Work
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/future-work.yaml"
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/resource-intelligence-update.yaml"
+  - order: 17
+    stage: User Review Implementation
+    status: done
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/user-review-close.yaml"
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: ".claude/work-queue/assets/WRK-1232/evidence/activation.yaml"
+  - order: 19
+    stage: Close
+    status: pending
+    evidence: ".claude/work-queue/pending/WRK-1232.md"
+  - order: 20
+    stage: Archive
+    status: pending
+    evidence: ".claude/work-queue/pending/WRK-1232.md"</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 23 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1232-lifecycle.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/archive-tooling.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li></ul></div></details>
+</body>
+</html>

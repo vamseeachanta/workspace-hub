@@ -5506,5 +5506,14 @@
     "title": "Ingest Baker Hughes rig count",
     "priority": "high",
     "category": "engineering"
+  },
+  "WRK-1232": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T03:07:35.165505+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Complete production data download and conversion pipeline",
+    "priority": "high",
+    "category": "engineering"
   }
 }

@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T00:51:48Z by generate-index.py -->
+<!-- Generated: 2026-03-16T03:07:36Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T00:51:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-16T03:07:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 666
+**Total items:** 668
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 263 |
+| pending | 265 |
 | working | 3 |
 | blocked | 10 |
 | done | 5 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 290 |
+| high | 292 |
 | medium | 314 |
 | low | 61 |
 
@@ -32,8 +32,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 146 |
-| medium | 317 |
-| complex | 126 |
+| medium | 318 |
+| complex | 127 |
 
 ### By Category
 
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 26 |
-| engineering | 151 |
+| engineering | 153 |
 | data | 24 |
 | platform | 11 |
 | business | 6 |
@@ -63,16 +63,16 @@
 | achantas-data | 10 |
 | acma-projects | 5 |
 | assethold | 19 |
-| assetutilities | 19 |
+| assetutilities | 20 |
 | client_projects | 1 |
-| digitalmodel | 218 |
+| digitalmodel | 219 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 2 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 276 |
+| workspace-hub | 279 |
 | worldenergydata | 116 |
 
 ### Plan Tracking
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 269 / 666 |
+| Plans exist | 270 / 668 |
 | Plans cross-reviewed | 196 |
 | Plans approved | 220 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 666 |
+| Total captured | 668 |
 | Total archived | 384 |
-| Completion rate | 384/666 (58%) |
+| Completion rate | 384/668 (57%) |
 | Monthly rate (current month) | 134 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 74 / 263 | 28% |
+| Pending items with plans | 75 / 265 | 28% |
 | Plans cross-reviewed | 8 | 10% |
 | Plans user-approved | 8 | 10% |
 
@@ -119,7 +119,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 99 | 1 | 8 |
+| High     | 101 | 1 | 8 |
 | Medium   | 123  | 2  | 1  |
 | Low      | 41  | 0  | 1  |
 
@@ -215,7 +215,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (151 items — 77 high, 59 medium, 15 low)
+### engineering (153 items — 79 high, 59 medium, 15 low)
 
 #### engineering / artificial-lift
 
@@ -250,6 +250,14 @@
 |----|----------|-------|--------|
 | WRK-5077 | MEDIUM | Data needs registry — fill gaps across all digitalmodel domains | pending |
 
+#### engineering / data-extraction
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1245 | HIGH | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents [feature] | pending |
+| WRK-1246 | HIGH | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending |
+| WRK-1247 | HIGH | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending |
+
 #### engineering / data-ingestion
 
 | ID | Priority | Title | Status |
@@ -263,7 +271,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1231 | HIGH | Implement CompanyLoader for BOEM company/operator hierarchy | pending |
-| WRK-1232 | HIGH | Complete production data download and conversion pipeline | pending |
 
 #### engineering / data-pipeline
 
@@ -689,6 +696,7 @@
 | [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
 | [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 3/18 archived (17%) |
 | [WRK-1187](pending/WRK-1187.md) | Robust script-based workflow engine — codify all ecosystem workflows | pending | 0/0 |
+| [WRK-1245](pending/WRK-1245.md) | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | 0/0 |
 | [WRK-5058](pending/WRK-5058.md) | Drilling riser engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5059](pending/WRK-5059.md) | Drilling engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5060](pending/WRK-5060.md) | Pipeline engineering study — literature, methods and implementation | pending | 0/0 |
@@ -1325,12 +1333,14 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1231, WRK-1232 |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2 | - | workspace-hub, digitalmodel, assetutilities, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1620,11 +1630,13 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | low | medium | - | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | low | medium | - | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | high | medium | worldenergydata | - |
-| WRK-1232 | Complete production data download and conversion pipeline | high | medium | worldenergydata | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | medium | simple | worldenergydata | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | medium | medium | worldenergydata | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | medium | medium | workspace-hub | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | high | medium | workspace-hub | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | high | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | high | medium | workspace-hub | - |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | high | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -2217,6 +2229,7 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | high | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
 
 ### client_projects
 
@@ -2428,6 +2441,7 @@
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | - |
 | WRK-1194 | Geotechnical scour assessment | pending | medium | low | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -2773,6 +2787,9 @@
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | - |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending | high | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -2913,9 +2930,9 @@
 | WRK-1197 | Decline/NPV duplicate consolidation | pending | low | medium | - |
 | WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | medium | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | - |
-| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
 | WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | medium | complex | - |
 
 ## By Priority
@@ -3201,8 +3218,10 @@
 | WRK-1189 | Ingest BOEM lease data | done | medium | worldenergydata | - |
 | WRK-1190 | Ingest Baker Hughes rig count | archived | low | worldenergydata | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | medium | worldenergydata | - |
-| WRK-1232 | Complete production data download and conversion pipeline | pending | medium | worldenergydata | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | medium | workspace-hub | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | medium | workspace-hub | - |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -4055,11 +4074,12 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | - | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | - | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | worldenergydata | - |
-| WRK-1232 | Complete production data download and conversion pipeline | pending | high | worldenergydata | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | workspace-hub | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | workspace-hub | - |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending | high | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4187,6 +4207,7 @@
 | WRK-1170 | Reclassify 101k 'other' domain documents and validate classification accuracy | archived | high | workspace-hub | - |
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | workspace-hub, digitalmodel | - |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | workspace-hub, digitalmodel | - |
@@ -4208,7 +4229,7 @@
 
 ## By Computer
 
-### ace-linux-1 (219 active / 385 total)
+### ace-linux-1 (221 active / 387 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4552,12 +4573,14 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | worldenergydata |
-| WRK-1232 | Complete production data download and conversion pipeline | pending | high | medium | worldenergydata |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | worldenergydata |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | worldenergydata |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | workspace-hub |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | workspace-hub |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | workspace-hub |
+| WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | workspace-hub |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | pending | high | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -5005,6 +5028,8 @@
 | WRK-1199 | Fama-French factor model | - | - | WRK-1179 |
 | WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | WRK-1190 | - | WRK-1179 |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | WRK-1231, WRK-1232 | - | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | - | - | WRK-1245 |
+| WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | - | - | WRK-1245 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |
