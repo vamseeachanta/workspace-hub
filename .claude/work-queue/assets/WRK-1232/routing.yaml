@@ -1,0 +1,6 @@
+wrk_id: WRK-1232
+stage: 9
+routed_at: "2026-03-16T02:30:00Z"
+orchestrator: claude
+workstation: ace-linux-1
+rationale: "worldenergydata repo on ace-linux-1"

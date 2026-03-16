@@ -1,0 +1,26 @@
+wrk_id: WRK-1232
+stage: 10
+generated: "2026-03-16T03:00:00Z"
+status: complete
+commit_sha: adb74cd
+files_changed:
+  - worldenergydata/src/worldenergydata/bsee/data/sources/zip/production_data.py
+  - worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py
+tests_passed: 9
+tests_failed: 0
+integrated_repo_tests:
+  - name: "Router pipeline tests"
+    scope: repo
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py::TestRouter --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py"
+  - name: "Download method tests"
+    scope: repo
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py::TestDownloadZipData --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py"
+  - name: "E2E pipeline + URL registry compat"
+    scope: integrated
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/unit/bsee/test_production_zip_pipeline.py -k 'EndToEnd or UrlRegistry' --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/unit/bsee/test_production_zip_pipeline.py"

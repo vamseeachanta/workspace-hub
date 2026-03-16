@@ -1,0 +1,8 @@
+wrk_id: WRK-1232
+stage: 8
+claimed_at: "2026-03-16T02:30:00Z"
+claimed_by: claude
+workstation: ace-linux-1
+complexity: medium
+estimated_effort: medium
+route: ace-linux-1

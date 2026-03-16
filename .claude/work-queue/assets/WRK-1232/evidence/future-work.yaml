@@ -1,0 +1,25 @@
+wrk_id: WRK-1232
+stage: 15
+generated: "2026-03-16T03:10:00Z"
+recommendations:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Implement OGOR-A yearly production download pipeline"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "url_registry has 30 OGOR-A yearly specs (1996-2024). Router should iterate all yearly URLs."
+  - id: FW-2
+    priority: LOW
+    title: "Add nosec annotation for pickle.load bandit warning"
+    disposition: existing-updated
+    captured: true
+    status: captured
+    description: "Bandit B301 flags pickle.load in get_data_by_api12_array. Data is self-generated — safe to nosec."
+  - id: FW-3
+    priority: LOW
+    title: "Migrate binary storage from pickle to parquet"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "Pickle is fragile across Python versions. Parquet would be more portable and queryable."

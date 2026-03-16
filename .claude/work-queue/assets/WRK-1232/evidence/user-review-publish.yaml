@@ -1,0 +1,29 @@
+wrk_id: WRK-1232
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 7602e876
+    documents:
+      - ".claude/work-queue/assets/WRK-1232/WRK-1232-lifecycle.html"
+    published_at: "2026-03-15T23:50:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b27b7c49
+    documents:
+      - ".claude/work-queue/assets/WRK-1232/plan-html-review-final.md"
+    published_at: "2026-03-16T03:05:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b27b7c49
+    documents:
+      - ".claude/work-queue/assets/WRK-1232/WRK-1232-lifecycle.html"
+    published_at: "2026-03-16T03:15:00Z"
+    reviewer: vamsee

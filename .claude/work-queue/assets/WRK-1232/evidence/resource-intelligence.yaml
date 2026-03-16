@@ -1,0 +1,17 @@
+wrk_id: WRK-1232
+stage: 2
+completed_at: "2026-03-15T23:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - superpowers/test-driven-development
+existing_code:
+  - path: worldenergydata/src/worldenergydata/bsee/data/sources/zip/production_data.py
+    relevance: "Target file — router() and download_zip_data() are stubs"
+  - path: worldenergydata/src/worldenergydata/bsee/data/scrapers/bsee_web.py
+    relevance: "BSEEWebScraper with download_zip_to_memory() for streaming download"
+  - path: worldenergydata/src/worldenergydata/bsee/data/refresh/url_registry.py
+    relevance: "DatasetSpec for production_raw and OGOR-A URLs"
