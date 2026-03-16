@@ -88,24 +88,58 @@ def export_tables_to_csv(
 def export_tables_from_manifest(
     manifest_dict: dict,
     output_dir: Path,
+    apply_quality_filter: bool = True,
 ) -> dict:
     """Export all tables from a manifest dict to CSV files.
 
-    Returns a summary dict with tables_exported, csv_paths, domain.
+    When apply_quality_filter=True (default), tables are deduped, watermarks
+    removed, and each table is quality-classified (usable/partial/junk).
+    Junk tables are still exported but flagged in the result.
+
+    Returns a summary dict with tables_exported, csv_paths, domain, quality.
     """
+    from scripts.data.doc_intelligence.table_quality import (
+        classify_table_quality,
+        dedup_tables,
+    )
+
     tables = manifest_dict.get("tables", [])
     domain = manifest_dict.get("domain", "general")
     doc_name = Path(manifest_dict["metadata"]["filename"]).stem
 
+    quality_stats = {
+        "total_input": len(tables),
+        "duplicates_removed": 0,
+        "usable": 0,
+        "partial": 0,
+        "junk": 0,
+    }
+
+    if apply_quality_filter:
+        deduped = dedup_tables(tables)
+        quality_stats["duplicates_removed"] = len(tables) - len(deduped)
+        tables_to_export = deduped
+    else:
+        tables_to_export = tables
+
+    # Classify each table
+    table_qualities = []
+    for table in tables_to_export:
+        q = classify_table_quality(table)
+        table_qualities.append(q)
+        quality_stats[q] = quality_stats.get(q, 0) + 1
+
     # Export to domain-specific subdirectory
     domain_dir = Path(output_dir) / domain
-    csv_paths = export_tables_to_csv(tables, domain_dir, doc_name)
+    csv_paths = export_tables_to_csv(tables_to_export, domain_dir, doc_name)
 
     return {
         "tables_exported": len(csv_paths),
         "csv_paths": [str(p) for p in csv_paths],
         "domain": domain,
         "doc_name": doc_name,
+        "quality": quality_stats,
+        "table_qualities": table_qualities,
     }
 
 
