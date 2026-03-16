@@ -54,7 +54,13 @@ REQUIRED_SECTIONS = SECTIONS_BY_TYPE["workflow"]
 SECTIONS_WITH_CODE = ["Quick Start", "Usage Examples"]
 
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
-TODO_RE = re.compile(r"\bTODO\b|\bFIXME\b", re.IGNORECASE)
+# Match actual TODO/FIXME markers: preceded by comment chars or at line start,
+# followed by colon/whitespace/EOL.  Excludes conceptual references like
+# "TODO files", "no TODO/FIXME markers", grep examples, etc.
+TODO_RE = re.compile(
+    r"(?:^|#|//|<!--|;)\s*\b(TODO|FIXME)\b\s*[:!]",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 DESC_MIN_WORDS = 10
 DESC_MAX_WORDS = 200
@@ -396,8 +402,10 @@ def check_description_quality(meta: dict) -> list[Issue]:
 
 
 def _strip_code_blocks(text: str) -> str:
-    """Remove fenced code blocks so TODO/FIXME inside examples aren't flagged."""
-    return re.sub(r"```[\s\S]*?```", "", text)
+    """Remove fenced and inline code so TODO/FIXME in examples aren't flagged."""
+    text = re.sub(r"```[\s\S]*?```", "", text)
+    text = re.sub(r"`[^`]+`", "", text)
+    return text
 
 
 def check_todo_fixme(content: str) -> list[Issue]:
