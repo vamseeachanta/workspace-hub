@@ -1,0 +1,30 @@
+wrk_id: WRK-1190
+stage: 10
+generated: "2026-03-15T20:00:00Z"
+status: complete
+commit_sha: 54745197
+files_changed:
+  - worldenergydata/src/worldenergydata/baker_hughes/__init__.py
+  - worldenergydata/src/worldenergydata/baker_hughes/loader.py
+  - worldenergydata/src/worldenergydata/baker_hughes/report.py
+  - worldenergydata/tests/test_baker_hughes_loader.py
+  - worldenergydata/tests/fixtures/baker_hughes/na_pivot_sample.xlsx
+  - worldenergydata/tests/fixtures/baker_hughes/na_summary_sample.xlsx
+tests_passed: 13
+tests_failed: 0
+integrated_repo_tests:
+  - name: "Baker Hughes pivot table tests"
+    scope: repo
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/test_baker_hughes_loader.py --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/test_baker_hughes_loader.py"
+  - name: "Baker Hughes summary tests"
+    scope: repo
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/test_baker_hughes_loader.py::TestSummaryLoader --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/test_baker_hughes_loader.py"
+  - name: "Baker Hughes ingestion report test"
+    scope: integrated
+    command: "PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/test_baker_hughes_loader.py::TestIngestionReport --noconftest -v"
+    result: pass
+    artifact_ref: "worldenergydata/tests/test_baker_hughes_loader.py"

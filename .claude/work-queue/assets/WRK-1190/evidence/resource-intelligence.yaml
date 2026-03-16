@@ -1,32 +1,24 @@
 wrk_id: WRK-1190
 stage: 2
-assessed_at: "2026-03-15"
+completed_at: "2026-03-15T18:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - superpowers/test-driven-development
 existing_code:
   - path: worldenergydata/src/worldenergydata/vessel_fleet/collectors/baker_hughes_collector.py
-    relevance: "Raw Excel downloader — reuse BaseCollector pattern, but create proper module"
-  - path: worldenergydata/src/worldenergydata/vessel_fleet/collectors/base.py
-    relevance: "BaseCollector ABC with rate limiting, retry, caching"
+    relevance: "Raw Excel downloader — reuse BaseCollector pattern"
   - path: worldenergydata/src/worldenergydata/eia_us/production/drilling_productivity.py
-    relevance: "EIA DPR rig count summary — separate source, similar output schema"
-  - path: worldenergydata/src/worldenergydata/eia/client.py
-    relevance: "Reference pattern for API client structure"
-existing_data:
-  on_disk: false
-  in_document_index: false
-  notes: "No Baker Hughes data files found on disk or in document index"
+    relevance: "EIA DPR rig count — similar output schema"
 data_sources:
   - name: "Baker Hughes NA Rig Count Pivot Table"
     url: "https://rigcount.bakerhughes.com/na-rig-count"
     format: Excel
-    fields: [country, state, county, basin, drill_for, location, trajectory, well_type, well_depth, water_depth]
     history: "Feb 2011 to present"
-  - name: "Baker Hughes NA Rig Count Summary"
-    url: "https://rigcount.bakerhughes.com/na-rig-count"
-    format: "Excel (7 tabs)"
-    history: "Jan 2000 to present"
   - name: "Baker Hughes International Rig Count"
     url: "https://rigcount.bakerhughes.com/intl-rig-count"
     format: Excel
     history: "1975 to present"
-rig_names_available: false
-rig_names_note: "Individual rig names/contractors NOT in free data — premium/licensed feed only"

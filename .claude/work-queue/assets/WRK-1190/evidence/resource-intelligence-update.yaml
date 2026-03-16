@@ -1,0 +1,13 @@
+wrk_id: WRK-1190
+stage: 16
+generated: "2026-03-15T23:30:00Z"
+additions:
+  - field: baker_hughes_module
+    before: absent
+    after: "worldenergydata/src/worldenergydata/baker_hughes/"
+  - field: test_count
+    before: 0
+    after: 13
+  - field: fixture_files
+    before: 0
+    after: 2

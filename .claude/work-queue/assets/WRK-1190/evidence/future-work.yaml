@@ -1,0 +1,28 @@
+wrk_id: WRK-1190
+stage: 15
+generated: "2026-03-15T23:30:00Z"
+recommendations:
+  - id: FW-1
+    priority: MEDIUM
+    title: "Add international rig count loader"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "Baker Hughes also publishes international rig count (1975-present). Same Excel format, different URL."
+    blocked_by: []
+  - id: FW-2
+    priority: LOW
+    title: "Live download with retry/browser fallback"
+    disposition: spun-off-new
+    captured: true
+    status: captured
+    description: "Website timed out from ace-linux-1. May need headless browser or manual download workflow."
+    blocked_by: []
+  - id: FW-3
+    priority: LOW
+    title: "Ingest rig metadata from state railroad commissions"
+    disposition: existing-updated
+    captured: true
+    status: captured
+    description: "WRK-1204 already captured. Baker Hughes free data lacks individual rig names/contractors."
+    blocked_by: []
