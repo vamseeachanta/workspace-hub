@@ -435,3 +435,4 @@ data/standards/promoted/*
 
 # Pipeline state (runtime, regenerable)
 config/data/pipeline-state/*.json
+data/document-index/index.jsonl.pre-merge-bak
