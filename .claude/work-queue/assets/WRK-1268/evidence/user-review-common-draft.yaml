@@ -1,6 +1,5 @@
-reviewed: true
+wrk_id: WRK-1268
+approved_by: user
+reviewed_at: "2026-03-16T18:56:00Z"
 approval_decision: approve_as_is
-reviewer: vamsee
-reviewed_at: 2026-03-16
-verdict: approved
-notes: "Route A simple — investigate and resolve TODO/FIXME markers"
+notes: "Route A plan approved — scope is inline in WRK body"

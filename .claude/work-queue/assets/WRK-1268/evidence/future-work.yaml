@@ -4,6 +4,6 @@ recommendations:
   - id: FW-1
     title: "Add TDD tests for check_todo_fixme with code-block and inline-code edge cases"
     rationale: "The regex refinement and code-stripping logic should have dedicated unit tests"
-    disposition: deferred
+    disposition: spun-off-new
     status: deferred
     captured: false

@@ -1,5 +1,7 @@
+wrk_id: WRK-1268
 provider: claude
 reviewed_at: "2026-03-16T19:05:00Z"
 verdict: APPROVE
 findings: []
+iteration: 1
 notes: "Route A single cross-review pass — self-review sufficient"

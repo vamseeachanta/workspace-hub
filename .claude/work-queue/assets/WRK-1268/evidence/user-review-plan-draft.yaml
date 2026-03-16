@@ -1,5 +1,5 @@
-scope_approved: true
+wrk_id: WRK-1268
+approved_by: user
+reviewed_at: "2026-03-16T18:55:00Z"
 approval_decision: approve_as_is
-reviewer: vamsee
-reviewed_at: 2026-03-16
-notes: "Route A simple — inline plan approved"
+notes: "Route A plan approved — inline plan in WRK body"
