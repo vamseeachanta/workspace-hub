@@ -1,0 +1,46 @@
+# Cavity Benchmark Template — validation case
+analysis:
+  title: "Lid-Driven Cavity Benchmark"
+  objective: "Validate OpenFOAM icoFoam against Ghia et al. (1982)"
+  type: laminar
+  standard: "Ghia, Ghia & Shin (1982) J. Comp. Physics 48:387-411"
+
+geometry:
+  source: blockMesh
+  description: "2D square cavity with moving lid"
+  width: 1.0
+  height: 1.0
+
+flow:
+  fluid: custom
+  kinematic_viscosity: 0.01  # Re = U*L/nu = 1*1/0.01 = 100
+  velocity: 1.0
+
+mesh:
+  method: blockMesh
+  target_cells: 400    # 20x20
+  cells_x: 20
+  cells_y: 20
+
+solver:
+  application: icoFoam
+  end_time: 0.5
+  delta_t: 0.001
+
+acceptance:
+  convergence: {}
+  validation:
+    method: "Compare centerline velocity with Ghia et al. (1982) Table I"
+    tolerance_percent: 5
+
+outputs_required:
+  - {name: "Max U on vertical centerline", symbol: "U_max", unit: "m/s"}
+  - {name: "Vortex center location", symbol: "x_c, y_c", unit: "m"}
+
+assumptions:
+  - "2D flow (empty boundary condition on front/back)"
+  - "Laminar flow at Re = 100"
+
+references:
+  - "Ghia, U., Ghia, K.N. & Shin, C.T. (1982) High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method"
+  - "OpenFOAM v2312 ESI Group"
