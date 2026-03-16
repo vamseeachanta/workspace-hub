@@ -1,3 +1,29 @@
 wrk_id: WRK-1247
-published_at: "2026-03-16T03:40:22Z"
-method: "terminal_review"
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 908047ef
+    documents:
+      - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+    published_at: "2026-03-15T22:38:04Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 908047ef
+    documents:
+      - specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
+    published_at: "2026-03-16T03:39:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 64974863
+    documents:
+      - .claude/work-queue/assets/WRK-1247/evidence/stage-evidence.yaml
+    published_at: "2026-03-16T12:02:00Z"
+    reviewer: vamsee

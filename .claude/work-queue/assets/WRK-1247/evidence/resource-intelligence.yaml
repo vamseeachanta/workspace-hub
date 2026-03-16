@@ -1,6 +1,8 @@
 wrk_id: WRK-1247
 stage: 2
 completed_at: "2026-03-15"
+completion_status: continue_to_planning
+top_p1_gaps: []
 
 existing_code:
   xlsx_parser:

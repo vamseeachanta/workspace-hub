@@ -1,0 +1,13 @@
+wrk_id: WRK-1247
+stage: 14
+date: "2026-03-16"
+scan_command: bash scripts/legal/legal-sanity-scan.sh
+result: PASS
+violations: 0
+files_scanned:
+  - knowledge/dark-intelligence/xlsx-poc/*/archive.yaml
+  - scripts/data/doc_intelligence/formula_to_python.py
+  - scripts/data/doc_intelligence/run_poc_extraction.py
+notes: >
+  All 6 archive YAMLs updated to legal_scan_passed: true.
+  ace_project/dde_project confirmed as internal workspace names, not client identifiers.

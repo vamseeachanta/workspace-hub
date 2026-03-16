@@ -2,22 +2,22 @@
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=ace-linux-1, execution_workstations=ace-linux-1 |
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
-| Resource-intelligence gate | FAIL | resource-intelligence.yaml: invalid completion_status |
+| Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=6 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
-| Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |
-| User-review HTML-open gate | FAIL | user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review'] |
-| User-review publish gate | FAIL | user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review'] |
-| Cross-review gate | FAIL | artifact=none |
-| TDD gate | FAIL | none |
-| Integrated test gate | FAIL | execute.yaml: integrated_repo_tests must be a list |
-| Legal gate | FAIL | artifact=missing, none |
+| Agent log gate | PASS | matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'] |
+| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1247/review-synthesis.md |
+| TDD gate | PASS | test files=['test-results.md'] |
+| Integrated test gate | PASS | execute.yaml: integrated_repo_tests=3 (all passing) |
+| Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1247/legal-scan.md, result=PASS |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
-| Future-work gate | FAIL | future-work.yaml: empty recommendations and no_follow_ups_rationale missing |
-| Resource-intelligence update gate | FAIL | resource-intelligence-update.yaml: add additions[] or no_additions_rationale |
-| User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
+| Future-work gate | PASS | future-work.yaml: recommendations=5 |
+| Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=5 |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
@@ -25,10 +25,10 @@
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Codex keyword in review gate | FAIL | cross-review artifacts present but none mention 'codex' |
-| Publish commit uniqueness gate | PASS | insufficient commit data — skip uniqueness check |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[4] evidence path not found: specs/wrk/WRK-1247/plan.md |
+| Codex keyword in review gate | PASS | codex keyword found in review artifacts (2 file(s) checked) |
+| Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '908047ef' — possible placeholder (WARN) |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
-| Plan publish predates approval gate | PASS | plan_draft publish event not found — skip |
+| Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-15T22:38:04Z, reviewed=2026-03-15T22:38:04Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
 | Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |

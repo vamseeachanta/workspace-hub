@@ -1,44 +1,53 @@
 wrk_id: WRK-1247
 stage: 15
 date: "2026-03-16"
-items:
+recommendations:
   - id: FW-1
     title: "Scale XLSX extraction to 23K files"
     priority: high
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1269
     description: >
       Wire formula_to_python.py into the full document intelligence pipeline.
-      Run on all 23,656 XLSX files with chunked test generation (187K stubs
-      per file is too large — need per-sheet or per-calculation-block chunking).
-    blocked_by: []
+      Run on all 23,656 XLSX files with chunked test generation.
 
   - id: FW-2
     title: "Handle large files (>15MB)"
     priority: medium
+    disposition: existing-updated
+    status: captured
+    captured: true
     description: >
       4 files skipped due to 15MB limit. Options: streaming parser,
-      per-sheet extraction, or memory-mapped reading. Fatigue template (131MB)
-      is the hardest case.
+      per-sheet extraction, or memory-mapped reading.
 
   - id: FW-3
     title: "Complex formula translation (VLOOKUP, IF, INDEX/MATCH)"
     priority: medium
+    disposition: existing-updated
+    status: captured
+    captured: true
     description: >
-      31.6% of formulas can't auto-translate. The `formulas` library can
-      compile entire workbooks into callable Python — integrate as fallback
-      for complex formulas. This handles VLOOKUP, nested IF, cross-sheet chains.
+      31.6% of formulas can't auto-translate. The formulas library can
+      compile entire workbooks into callable Python.
 
   - id: FW-4
     title: "Named range extraction improvement"
     priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true
     description: >
-      0 named ranges found in the POC corpus. Either the files don't use them,
-      or the extraction needs to handle scoped names better. Check with a broader
+      0 named ranges found in the POC corpus. Check with a broader
       sample from the 23K files.
 
   - id: FW-5
     title: "Cross-sheet reference context preservation"
     priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true
     description: >
-      The translator strips sheet prefixes ('Raw Data'!D18 → d18). For files with
-      multiple sheets using the same cell references, this creates ambiguity.
-      Need context-aware variable naming (e.g., raw_data_d18).
+      The translator strips sheet prefixes. Need context-aware variable naming.

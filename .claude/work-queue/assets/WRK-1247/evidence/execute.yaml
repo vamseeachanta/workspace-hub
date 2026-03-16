@@ -17,3 +17,19 @@ commits:
   - 24e62927
 tests_passed: 373
 test_command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/ -v"
+integrated_repo_tests:
+  - name: "FormulaXlsxParser unit tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_formula_xlsx_parser.py -v"
+    result: pass
+    artifact_ref: scripts/data/doc_intelligence/tests/test_formula_xlsx_parser.py
+  - name: "Formula-to-Python translator tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_formula_to_python.py -v"
+    result: pass
+    artifact_ref: scripts/data/doc_intelligence/tests/test_formula_to_python.py
+  - name: "Formula chain builder tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/data/doc_intelligence/tests/test_formula_chain_builder.py -v"
+    result: pass
+    artifact_ref: scripts/data/doc_intelligence/tests/test_formula_chain_builder.py
