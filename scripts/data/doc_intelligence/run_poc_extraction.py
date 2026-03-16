@@ -19,7 +19,7 @@ POC_LIST = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc" / "poc-fil
 OUTPUT_DIR = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc"
 
 # Limit file size to avoid memory issues on large files
-MAX_SIZE_MB = 50
+MAX_SIZE_MB = 15
 
 
 def sanitize_stem(filename: str) -> str:

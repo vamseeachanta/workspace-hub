@@ -149,27 +149,29 @@ class FormulaXlsxParser(BaseParser):
         inputs: List[CellFormula] = []
         outputs: List[CellFormula] = []
         chain: List[str] = []
-        try:
-            from scripts.data.doc_intelligence.formula_chain_builder import (
-                build_dependency_graph,
-                classify_cells,
-            )
+        max_graph_cells = 50_000  # Skip graph classification for very large files
+        if len(formula_cells) <= max_graph_cells:
+            try:
+                from scripts.data.doc_intelligence.formula_chain_builder import (
+                    build_dependency_graph,
+                    classify_cells,
+                )
 
-            g = build_dependency_graph(formula_cells)
-            classification = classify_cells(g)
-            chain = classification["chain"]
-            input_refs = set(classification["inputs"])
-            output_refs = set(classification["outputs"])
+                g = build_dependency_graph(formula_cells)
+                classification = classify_cells(g)
+                chain = classification["chain"]
+                input_refs = set(classification["inputs"])
+                output_refs = set(classification["outputs"])
 
-            cell_map = {c.cell_ref: c for c in formula_cells}
-            for ref in input_refs:
-                if ref in cell_map:
-                    inputs.append(cell_map[ref])
-            for ref in output_refs:
-                if ref in cell_map:
-                    outputs.append(cell_map[ref])
-        except ImportError:
-            pass  # networkx not available — skip classification
+                cell_map = {c.cell_ref: c for c in formula_cells}
+                for ref in input_refs:
+                    if ref in cell_map:
+                        inputs.append(cell_map[ref])
+                for ref in output_refs:
+                    if ref in cell_map:
+                        outputs.append(cell_map[ref])
+            except Exception:
+                pass  # networkx not available or graph too complex
 
         # VBA extraction (soft dependency, .xlsm only)
         vba_modules: List[VbaModule] = []
