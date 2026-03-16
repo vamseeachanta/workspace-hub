@@ -170,8 +170,9 @@ class FormulaXlsxParser(BaseParser):
                 for ref in output_refs:
                     if ref in cell_map:
                         outputs.append(cell_map[ref])
-            except Exception:
-                pass  # networkx not available or graph too complex
+            except Exception as _classify_exc:
+                import sys
+                print(f"CLASSIFY ERROR ({len(formula_cells)} cells): {_classify_exc}", file=sys.stderr)
 
         # VBA extraction (soft dependency, .xlsm only)
         vba_modules: List[VbaModule] = []

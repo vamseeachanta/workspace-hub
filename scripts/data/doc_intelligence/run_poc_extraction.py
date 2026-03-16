@@ -1,4 +1,8 @@
-"""Run formula extraction POC on 10 selected XLSX files (WRK-1247 Step 11)."""
+"""Run formula extraction POC on 10 selected XLSX files (WRK-1247 Step 11).
+
+Run with: uv run python scripts/data/doc_intelligence/run_poc_extraction.py
+(from workspace-hub root, NOT --no-project — needs .venv with networkx)
+"""
 
 import json
 import os
@@ -12,8 +16,16 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT))
 
+# Ensure networkx is importable for graph classification
+try:
+    import networkx  # noqa: F401
+    _HAS_NETWORKX = True
+except ImportError:
+    _HAS_NETWORKX = False
+    print("WARNING: networkx not available — graph classification disabled, running manual fallback", file=sys.stderr)
+
 from scripts.data.doc_intelligence.parsers.formula_xlsx import FormulaXlsxParser
-from scripts.data.doc_intelligence.schema import FormulaPayload
+from scripts.data.doc_intelligence.schema import CellFormula, FormulaPayload
 
 POC_LIST = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc" / "poc-file-list.yaml"
 OUTPUT_DIR = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc"
@@ -76,6 +88,18 @@ def formula_payload_to_dict(fp: FormulaPayload) -> dict:
     }
 
 
+def _get_output_cells(fp: FormulaPayload) -> list:
+    """Get output cells — use graph classification if available, else fallback."""
+    if fp.output_cells:
+        return fp.output_cells
+    # Fallback: output cells = formula cells not referenced by any other formula
+    all_refs = set()
+    for cell in fp.formulas:
+        for ref in cell.references:
+            all_refs.add(ref)
+    return [c for c in fp.formulas if c.cell_ref not in all_refs]
+
+
 def generate_test_stubs(fp: FormulaPayload, stem: str) -> str:
     """Generate pytest test stubs from output cells with cached values."""
     lines = [
@@ -88,8 +112,9 @@ def generate_test_stubs(fp: FormulaPayload, stem: str) -> str:
         "",
     ]
 
+    output_cells = _get_output_cells(fp)
     test_count = 0
-    for cell in fp.output_cells:
+    for cell in output_cells:
         if cell.cache_status != "cached_ok" or cell.cached_value is None:
             continue
         safe_ref = cell.cell_ref.replace("$", "").lower()
@@ -166,7 +191,7 @@ def generate_archive_yaml(fp: FormulaPayload, entry: dict, stem: str) -> dict:
             "description": f"Cell {cell.cell_ref} in {cell.sheet}",
         })
 
-    for cell in fp.output_cells:
+    for cell in _get_output_cells(fp):
         if cell.cache_status != "cached_ok" or cell.cached_value is None:
             continue
         name = name_map.get(cell.cell_ref, cell.cell_ref)
@@ -225,7 +250,7 @@ def process_file(entry: dict, parser: FormulaXlsxParser) -> dict:
         result["formulas_found"] = len(fp.formulas)
         result["named_ranges_found"] = len(fp.named_ranges)
         result["input_cells"] = len(fp.input_cells)
-        result["output_cells"] = len(fp.output_cells)
+        result["output_cells"] = len(_get_output_cells(fp))
         result["chain_length"] = len(fp.calculation_chain)
         result["vba_modules"] = len(fp.vba_modules)
 
