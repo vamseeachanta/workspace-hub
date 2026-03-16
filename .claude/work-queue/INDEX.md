@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T00:50:57Z by generate-index.py -->
+<!-- Generated: 2026-03-16T00:51:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T00:50:57Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-16T00:51:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 665
+**Total items:** 666
 
 ### By Status
 
@@ -17,13 +17,13 @@
 | working | 3 |
 | blocked | 10 |
 | done | 5 |
-| archived | 383 |
+| archived | 384 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 289 |
+| high | 290 |
 | medium | 314 |
 | low | 61 |
 
@@ -73,16 +73,16 @@
 | scripts/review | 1 |
 | tests/testing | 1 |
 | workspace-hub | 276 |
-| worldenergydata | 115 |
+| worldenergydata | 116 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 269 / 665 |
-| Plans cross-reviewed | 195 |
-| Plans approved | 219 |
+| Plans exist | 269 / 666 |
+| Plans cross-reviewed | 196 |
+| Plans approved | 220 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,10 +92,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 665 |
-| Total archived | 383 |
-| Completion rate | 383/665 (58%) |
-| Monthly rate (current month) | 133 archived |
+| Total captured | 666 |
+| Total archived | 384 |
+| Completion rate | 384/666 (58%) |
+| Monthly rate (current month) | 134 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -687,7 +687,7 @@
 |----|-------|--------|----------|
 | [WRK-1048](pending/WRK-1048.md) | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | 4/10 archived (40%) |
 | [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
-| [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 2/18 archived (11%) |
+| [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 3/18 archived (17%) |
 | [WRK-1187](pending/WRK-1187.md) | Robust script-based workflow engine — codify all ecosystem workflows | pending | 0/0 |
 | [WRK-5058](pending/WRK-5058.md) | Drilling riser engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5059](pending/WRK-5059.md) | Drilling engineering study — literature, methods and implementation | pending | 0/0 |
@@ -1307,6 +1307,7 @@
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-website, digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 20% | - | - |
 | WRK-1189 | Ingest BOEM lease data | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1190 | Ingest Baker Hughes rig count | archived | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -2051,6 +2052,7 @@
 | WRK-1171 | AI Agent Capability Radar — data-driven visualization with daily cron | medium | simple | workspace-hub | - |
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | high | simple | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | high | complex | workspace-hub, digitalmodel | - |
+| WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
@@ -2903,6 +2905,7 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | archived | medium | medium | - |
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | high | high | - |
 | WRK-1189 | Ingest BOEM lease data | done | high | medium | - |
+| WRK-1190 | Ingest Baker Hughes rig count | archived | high | low | - |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | - |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | - |
 | WRK-1195 | Type curve matching (Blasingame/Fetkovich) | pending | medium | high | - |
@@ -3196,6 +3199,7 @@
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | medium | aceengineer-website, digitalmodel, workspace-hub | - |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | workspace-hub | - |
 | WRK-1189 | Ingest BOEM lease data | done | medium | worldenergydata | - |
+| WRK-1190 | Ingest Baker Hughes rig count | archived | low | worldenergydata | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | medium | worldenergydata | - |
 | WRK-1232 | Complete production data download and conversion pipeline | pending | medium | worldenergydata | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | medium | workspace-hub | - |
@@ -4204,7 +4208,7 @@
 
 ## By Computer
 
-### ace-linux-1 (219 active / 384 total)
+### ace-linux-1 (219 active / 385 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4530,6 +4534,7 @@
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | aceengineer-website, digitalmodel, workspace-hub |
 | WRK-1187 | Robust script-based workflow engine — codify all ecosystem workflows | pending | high | high | workspace-hub |
 | WRK-1189 | Ingest BOEM lease data | done | high | medium | worldenergydata |
+| WRK-1190 | Ingest Baker Hughes rig count | archived | high | low | worldenergydata |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | pending | medium | high | worldenergydata |
 | WRK-1192 | Ingest CMEMS ocean physics | pending | medium | high | worldenergydata |
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | digitalmodel |
@@ -4988,6 +4993,7 @@
 | WRK-1179 | 15-day ecosystem sprint — data completeness + calculation coverage | - | WRK-1181, WRK-1183, WRK-1184, WRK-1187, WRK-1188, WRK-1189, WRK-1190, WRK-1191, WRK-1192, WRK-1193, WRK-1194, WRK-1195, WRK-1196, WRK-1197, WRK-1198, WRK-1199, WRK-1202, WRK-1203 | - |
 | WRK-1181 | Create research-and-literature-gathering skill for engineering categories | - | - | WRK-1179 |
 | WRK-1189 | Ingest BOEM lease data | - | - | WRK-1179 |
+| WRK-1190 | Ingest Baker Hughes rig count | - | - | WRK-1179 |
 | WRK-1191 | Ingest ERA5 reanalysis metocean | - | - | WRK-1179 |
 | WRK-1192 | Ingest CMEMS ocean physics | - | - | WRK-1179 |
 | WRK-1193 | Geotechnical anchor holding capacity | - | - | WRK-1179 |
