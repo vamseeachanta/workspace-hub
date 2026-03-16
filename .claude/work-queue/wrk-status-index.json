@@ -5497,5 +5497,14 @@
     "title": "Reclassify 101k 'other' domain documents and validate classification accuracy",
     "priority": "high",
     "category": "data"
+  },
+  "WRK-1190": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T00:50:55.274496+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Ingest Baker Hughes rig count",
+    "priority": "high",
+    "category": "engineering"
   }
 }
