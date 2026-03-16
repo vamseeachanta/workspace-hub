@@ -1,0 +1,11 @@
+wrk_id: WRK-1246
+stage: 10
+next_action: "Update WRK-1245 plan with yield findings and OCR phase recommendation"
+context_summary: |
+  700-doc stratified yield assessment complete. Script created and run.
+  Key findings: ~2.88M tables, ~1.1M figures extractable. ~94K docs need OCR.
+  High-yield: project PDFs (70-80% tables), XLS (93%), large standards (53%).
+  og_standards all failed extraction (DRM?). Equations detector yielded 0 —
+  may need separate equation-detection pass or the parser doesn't capture them.
+  AC 1-4 done. AC5 pending: update WRK-1245 decomposition.
+updated_at: "2026-03-16T04:20:00Z"
