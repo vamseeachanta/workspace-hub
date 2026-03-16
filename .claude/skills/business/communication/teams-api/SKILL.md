@@ -1,33 +1,44 @@
 ---
-
 name: teams-api
 version: 1.0.0
-description: Microsoft Teams automation using Graph API, Bot Framework, Adaptive Cards, and webhooks for enterprise messaging and collaboration
+description: Microsoft Teams automation using Graph API, Bot Framework, Adaptive Cards,
+  and webhooks for enterprise messaging and collaboration
 author: workspace-hub
 category: business
 type: skill
 capabilities:
-  - graph_api_integration
-  - bot_framework_development
-  - adaptive_cards
-  - messaging_extensions
-  - webhook_connectors
-  - channel_management
-  - meeting_automation
-  - teams_apps
-  - proactive_messaging
-  - notification_workflows
+- graph_api_integration
+- bot_framework_development
+- adaptive_cards
+- messaging_extensions
+- webhook_connectors
+- channel_management
+- meeting_automation
+- teams_apps
+- proactive_messaging
+- notification_workflows
 tools:
-  - microsoft-graph-sdk
-  - botbuilder-python
-  - azure-identity
-  - requests
-tags: [teams, microsoft, graph-api, bot, adaptive-cards, enterprise, messaging, azure]
-platforms: [linux, macos, windows, azure]
+- microsoft-graph-sdk
+- botbuilder-python
+- azure-identity
+- requests
+tags:
+- teams
+- microsoft
+- graph-api
+- bot
+- adaptive-cards
+- enterprise
+- messaging
+- azure
+platforms:
+- linux
+- macos
+- windows
+- azure
 related_skills:
-  - slack-api
-  - github-actions
-  - azure-functions
+- slack-api
+- github-actions
 requires: []
 see_also: []
 scripts_exempt: true

@@ -1,47 +1,48 @@
 ---
 name: pandoc
-description: Universal document converter for transforming Markdown to PDF, DOCX, HTML, LaTeX, and 40+ other formats. Covers templates, filters, citations with BibTeX/CSL, and batch conversion automation scripts.
+description: Universal document converter for transforming Markdown to PDF, DOCX,
+  HTML, LaTeX, and 40+ other formats. Covers templates, filters, citations with BibTeX/CSL,
+  and batch conversion automation scripts.
 version: 1.0.0
 category: development
 type: skill
 capabilities:
-  - Markdown to PDF conversion
-  - Markdown to DOCX (Word) conversion
-  - Markdown to HTML conversion
-  - Markdown to LaTeX conversion
-  - Custom LaTeX templates
-  - Custom DOCX reference documents
-  - Lua filters for content transformation
-  - Citation processing with BibTeX/CSL
-  - Batch conversion scripts
-  - Cross-reference support
-  - Table of contents generation
-  - Syntax highlighting
+- Markdown to PDF conversion
+- Markdown to DOCX (Word) conversion
+- Markdown to HTML conversion
+- Markdown to LaTeX conversion
+- Custom LaTeX templates
+- Custom DOCX reference documents
+- Lua filters for content transformation
+- Citation processing with BibTeX/CSL
+- Batch conversion scripts
+- Cross-reference support
+- Table of contents generation
+- Syntax highlighting
 tools:
-  - pandoc
-  - pandoc-crossref
-  - pandoc-citeproc
-  - latexmk
-  - xelatex
-  - wkhtmltopdf
+- pandoc
+- pandoc-crossref
+- pandoc-citeproc
+- latexmk
+- xelatex
+- wkhtmltopdf
 tags:
-  - documentation
-  - conversion
-  - pdf
-  - docx
-  - latex
-  - markdown
-  - citations
-  - templates
+- documentation
+- conversion
+- pdf
+- docx
+- latex
+- markdown
+- citations
+- templates
 platforms:
-  - linux
-  - macos
-  - windows
+- linux
+- macos
+- windows
 related_skills:
-  - mkdocs
-  - sphinx
-  - marp
-  - latex
+- mkdocs
+- sphinx
+- marp
 ---
 
 # Pandoc Universal Document Converter Skill

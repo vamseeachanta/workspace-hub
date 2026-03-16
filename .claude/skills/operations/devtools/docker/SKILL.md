@@ -1,29 +1,37 @@
 ---
-
 name: docker
 version: 1.0.0
-description: Complete Docker containerization patterns for development and production workflows
+description: Complete Docker containerization patterns for development and production
+  workflows
 author: workspace-hub
 category: operations
 capabilities:
-  - Dockerfile best practices and multi-stage builds
-  - Docker Compose orchestration and networking
-  - Volume management and data persistence
-  - Development vs production configurations
-  - Container debugging and optimization
-  - Registry management and image distribution
+- Dockerfile best practices and multi-stage builds
+- Docker Compose orchestration and networking
+- Volume management and data persistence
+- Development vs production configurations
+- Container debugging and optimization
+- Registry management and image distribution
 tools:
-  - docker
-  - docker-compose
-  - buildx
-  - dive
-  - hadolint
-tags: [docker, containers, devops, orchestration, microservices, compose]
-platforms: [linux, macos, windows]
+- docker
+- docker-compose
+- buildx
+- dive
+- hadolint
+tags:
+- docker
+- containers
+- devops
+- orchestration
+- microservices
+- compose
+platforms:
+- linux
+- macos
+- windows
 related_skills:
-  - cli-productivity
-  - git-advanced
-  - kubernetes
+- cli-productivity
+- git-advanced
 requires: []
 see_also: []
 scripts_exempt: true

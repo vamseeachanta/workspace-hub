@@ -1,14 +1,21 @@
 ---
 name: shell-tdd
-description: Shell-based TDD test harness patterns — pass/fail counters, common assertions, set -e gotchas, and exit code conventions for bash test scripts
+description: Shell-based TDD test harness patterns — pass/fail counters, common assertions,
+  set -e gotchas, and exit code conventions for bash test scripts
 version: 1.0.0
 category: development
 capabilities:
-  - shell_test_harness
-  - bash_assertions
-  - tdd_shell_patterns
-tools: [Bash, Read, Edit]
-related_skills: [tdd-obra, gitignore-scaffold, testing]
+- shell_test_harness
+- bash_assertions
+- tdd_shell_patterns
+tools:
+- Bash
+- Read
+- Edit
+related_skills:
+- tdd-obra
+- gitignore-scaffold
+- testing-tdd-london
 requires: []
 see_also: []
 tags: []

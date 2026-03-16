@@ -1,15 +1,16 @@
 ---
 name: writing-plans
-description: Create detailed implementation plans with granular, actionable tasks (2-5 min each). Use for multi-step development tasks requiring clear guidance. Based on obra/superpowers.
+description: Create detailed implementation plans with granular, actionable tasks
+  (2-5 min each). Use for multi-step development tasks requiring clear guidance. Based
+  on obra/superpowers.
 version: 1.0.0
 category: development
 last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:
-  - tdd-obra
-  - brainstorming
-  - subagent-driven
-  - parallel-dispatch
+- tdd-obra
+- brainstorming
+- subagent-driven
 capabilities: []
 requires: []
 see_also: []

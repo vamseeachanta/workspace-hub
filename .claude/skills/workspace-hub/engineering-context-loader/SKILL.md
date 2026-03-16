@@ -1,37 +1,38 @@
 ---
 name: engineering-context-loader
-description: >
-  Auto-detects the active engineering domain from a WRK item's tags and
-  outputs a focused context: which skills to load, which design codes apply,
-  and which memory/spec files to read. Prevents loading the full 350+ skill
-  catalog when only ~20 domain-relevant skills are needed.
+description: 'Auto-detects the active engineering domain from a WRK item''s tags and
+  outputs a focused context: which skills to load, which design codes apply, and which
+  memory/spec files to read. Prevents loading the full 350+ skill catalog when only
+  ~20 domain-relevant skills are needed.
+
+  '
 version: 1.0.0
 updated: 2026-02-24
 category: workspace-hub
 triggers:
-  - engineering context
-  - load engineering context
-  - context loader
-  - domain context
-  - engineering session start
-  - what skills do I need
-  - domain-aware session start
+- engineering context
+- load engineering context
+- context loader
+- domain context
+- engineering session start
+- what skills do I need
+- domain-aware session start
 related_skills:
-  - workspace-hub/session-start
-  - workspace-hub/workstations
-  - workspace-hub/save
+- session-start
+- workstations
+- save
 capabilities:
-  - domain-detection
-  - skill-subset-selection
-  - design-code-surfacing
-  - memory-file-routing
-  - spec-file-discovery
+- domain-detection
+- skill-subset-selection
+- design-code-surfacing
+- memory-file-routing
+- spec-file-discovery
 requires: []
 tags:
-  - session-lifecycle
-  - engineering
-  - context-optimization
-  - naval-architecture
+- session-lifecycle
+- engineering
+- context-optimization
+- naval-architecture
 invoke: engineering-context-loader
 ---
 

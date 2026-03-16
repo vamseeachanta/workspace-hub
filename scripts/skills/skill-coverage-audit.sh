@@ -57,6 +57,26 @@ SKILL_ENTRIES=()
 GAP_COUNT=0
 
 for SKILL_FILE in "${SKILL_FILES[@]}"; do
+  # Check 0: frontmatter `scripts_exempt: true` — skip guidance-only skills
+  IS_EXEMPT=$(uv run --no-project python -c "
+import re, sys
+try:
+    content = open('${SKILL_FILE}').read()
+    parts = content.split('---', 2)
+    if len(parts) >= 2:
+        fm = parts[1]
+        if re.search(r'^scripts_exempt:\s*true', fm, re.MULTILINE):
+            print('true')
+            sys.exit(0)
+    print('false')
+except Exception:
+    print('false')
+" 2>/dev/null || echo "false")
+
+  if [[ "$IS_EXEMPT" == "true" ]]; then
+    continue
+  fi
+
   # Check 1: frontmatter `scripts:` field (non-empty list)
   HAS_FM_SCRIPTS=$(uv run --no-project python -c "
 import re, sys

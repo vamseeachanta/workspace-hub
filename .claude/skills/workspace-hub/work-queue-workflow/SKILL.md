@@ -1,28 +1,29 @@
 ---
 name: work-queue-workflow
-description: >
-  Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
-  the canonical work-queue process and gatepass enforcement sequence.
+description: 'Explicit entrypoint skill for the WRK work-queue lifecycle workflow.
+  Points to the canonical work-queue process and gatepass enforcement sequence.
+
+  '
 version: 1.8.0
 updated: 2026-03-12
 category: workspace-hub
 triggers:
-  - work-queue workflow
-  - wrk workflow
-  - /work workflow
-  - lifecycle workflow
+- work-queue workflow
+- wrk workflow
+- /work workflow
+- lifecycle workflow
 related_skills:
-  - coordination/workspace/work-queue
-  - workspace-hub/workflow-gatepass
-  - workspace-hub/workflow-html
-  - workspace-hub/session-start
-  - workspace-hub/session-end
+- work-queue
+- workflow-gatepass
+- workflow-html
+- session-start
+- session-end
 capabilities:
-  - workflow-entrypoint
-  - lifecycle-routing
-  - gatepass-handoff
+- workflow-entrypoint
+- lifecycle-routing
+- gatepass-handoff
 requires:
-  - .claude/work-queue/process.md
+- .claude/work-queue/process.md
 invoke: work-queue-workflow
 tags: []
 ---

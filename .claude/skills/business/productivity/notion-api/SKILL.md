@@ -1,32 +1,44 @@
 ---
-
 name: notion-api
 version: 1.0.0
-description: Notion API for workspace automation including databases, pages, blocks, query/filter syntax, and integration patterns
+description: Notion API for workspace automation including databases, pages, blocks,
+  query/filter syntax, and integration patterns
 author: workspace-hub
 category: business
 type: skill
 capabilities:
-  - database_operations
-  - page_management
-  - block_manipulation
-  - query_filtering
-  - property_types
-  - relation_rollups
-  - search_api
-  - integration_patterns
+- database_operations
+- page_management
+- block_manipulation
+- query_filtering
+- property_types
+- relation_rollups
+- search_api
+- integration_patterns
 tools:
-  - notion-api
-  - notion-client
-  - curl
-  - jq
-tags: [notion, api, databases, pages, blocks, automation, productivity, workspace, integration]
-platforms: [rest-api, python, javascript, web]
+- notion-api
+- notion-client
+- curl
+- jq
+tags:
+- notion
+- api
+- databases
+- pages
+- blocks
+- automation
+- productivity
+- workspace
+- integration
+platforms:
+- rest-api
+- python
+- javascript
+- web
 related_skills:
-  - api-integration
-  - todoist-api
-  - obsidian
-  - webhook-automation
+- api-integration
+- todoist-api
+- obsidian
 requires: []
 see_also: []
 scripts_exempt: true

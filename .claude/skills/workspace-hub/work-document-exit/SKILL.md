@@ -1,35 +1,37 @@
 ---
 name: work-document-exit
-description: >
-  Documents the active WRK item's session state — work done, files changed, next steps —
-  writes a Session Handoff section to the WRK file, stages files, and exits cleanly.
-version: "1.0.0"
+description: 'Documents the active WRK item''s session state — work done, files changed,
+  next steps — writes a Session Handoff section to the WRK file, stages files, and
+  exits cleanly.
+
+  '
+version: 1.0.0
 updated: 2026-02-24
 category: workspace-hub
 triggers:
-  - work document exit
-  - document and exit
-  - handoff
-  - exit session
-  - prepare handoff
-  - wrap this WRK
-  - document work
+- work document exit
+- document and exit
+- handoff
+- exit session
+- prepare handoff
+- wrap this WRK
+- document work
 related_skills:
-  - workspace-hub/session-end
-  - workspace-hub/save
-  - workspace-hub/session-start
-  - workspace-hub/workflow-gatepass
+- session-end
+- save
+- session-start
+- workflow-gatepass
 capabilities:
-  - wrk-state-capture
-  - session-handoff
-  - staged-commit-prep
-  - active-wrk-resolution
+- wrk-state-capture
+- session-handoff
+- staged-commit-prep
+- active-wrk-resolution
 requires:
-  - .claude/work-queue/
-  - git
+- .claude/work-queue/
+- git
 see_also:
-  - workspace-hub/session-end
-  - workspace-hub/save
+- workspace-hub/session-end
+- workspace-hub/save
 invoke: work-document-exit
 ---
 

@@ -120,11 +120,26 @@ try:
     content = open('${SKILL_FILE}').read()
     parts = content.split('---', 2)
     body = parts[2] if len(parts) >= 3 else content
-    # Match HTML/XML tags: <word> or </word> or <word attr>
-    # Exclude code block contents to reduce false positives
-    # Simple approach: find tag-like patterns
+    # Strip code blocks to avoid false positives on HTML in examples
+    body = re.sub(r'\x60\x60\x60[^\x60]*\x60\x60\x60', '', body, flags=re.DOTALL)
+    # Match HTML/XML tags
     tags = re.findall(r'<[a-zA-Z][a-zA-Z0-9_:-]*(?:\s[^>]*)?>|</[a-zA-Z][a-zA-Z0-9_:-]*>', body)
-    print(len(tags))
+    # Whitelist: standard HTML tags + template placeholders (lowercase single words)
+    WHITELIST = {'details', 'summary', 'br', 'hr', 'sub', 'sup', 'kbd', 'img', 'a', 'em', 'strong', 'code', 'pre', 'p', 'ul', 'ol', 'li', 'table', 'tr', 'td', 'th', 'thead', 'tbody', 'div', 'span', 'b', 'i', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'dl', 'dt', 'dd', 'head', 'body', 'html', 'meta', 'style', 'script', 'header', 'footer', 'main', 'section', 'nav', 'aside', 'article', 'figure', 'figcaption', 'button', 'input', 'form', 'label', 'select', 'option', 'textarea', 'svg', 'path', 'canvas', 'video', 'audio', 'source', 'link', 'title'}
+    non_whitelisted = []
+    for t in tags:
+        tag_name = re.match(r'</?([a-zA-Z][a-zA-Z0-9_:-]*)', t)
+        if not tag_name:
+            continue
+        name = tag_name.group(1)
+        # Skip whitelisted HTML tags
+        if name.lower() in WHITELIST:
+            continue
+        # Skip template placeholders: lowercase single words like <domain>, <pkg>
+        if re.match(r'^[a-z][a-z0-9_-]*$', name) and len(name) <= 20:
+            continue
+        non_whitelisted.append(t)
+    print(len(non_whitelisted))
 except Exception:
     print(0)
 " 2>/dev/null || echo 0)

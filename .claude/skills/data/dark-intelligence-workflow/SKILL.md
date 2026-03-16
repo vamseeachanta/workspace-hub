@@ -1,18 +1,22 @@
 ---
 name: dark-intelligence-workflow
-description: >
-  Extract calculation methodology from legacy Excel/files into clean, client-free
-  dark intelligence archive — the canonical path for porting legacy calculations
+description: 'Extract calculation methodology from legacy Excel/files into clean,
+  client-free dark intelligence archive — the canonical path for porting legacy calculations
   to public repos while avoiding legal/IP issues.
-version: "1.0.0"
+
+  '
+version: 1.0.0
 category: data
-related_skills: [data/research-literature, data/calculation-report, coordination/workspace/legal-sanity-scan]
+related_skills:
+- research-literature
+- calculation-report
+- legal-sanity-scan
 triggers:
-  - dark intelligence
-  - extract from excel
-  - port legacy calculation
-  - archive calculation
-  - extract methodology
+- dark intelligence
+- extract from excel
+- port legacy calculation
+- archive calculation
+- extract methodology
 ---
 
 # Dark Intelligence Workflow Skill

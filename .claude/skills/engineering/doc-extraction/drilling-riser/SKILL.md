@@ -1,29 +1,29 @@
 ---
-
 name: doc-extraction-drilling-riser
-description: >
-  Layer 3 domain sub-skill for extracting drilling riser data from API RP 16Q,
-  DNV-RP-C205, and riser analysis reports. Provides detection heuristics for
+description: 'Layer 3 domain sub-skill for extracting drilling riser data from API
+  RP 16Q, DNV-RP-C205, and riser analysis reports. Provides detection heuristics for
   VIV parameters, kill/choke line specs, and BOP stack configurations.
+
+  '
 version: 1.0.0
 updated: 2026-03-12
 category: engineering
 parent_skill: engineering/doc-extraction
 triggers:
-  - riser extraction
-  - drilling riser data
-  - BOP extraction
-  - riser stack-up extraction
-  - VIV parameter extraction
+- riser extraction
+- drilling riser data
+- BOP extraction
+- riser stack-up extraction
+- VIV parameter extraction
 related_skills:
-  - engineering/doc-extraction
-  - engineering/marine-offshore/viv-analysis
-  - engineering/marine-offshore/catenary-riser
+- doc-extraction
+- viv-analysis
+- catenary-riser
 capabilities:
-  - viv-parameter-extraction
-  - bop-configuration-extraction
-  - kill-choke-line-extraction
-  - riser-stack-up-extraction
+- viv-parameter-extraction
+- bop-configuration-extraction
+- kill-choke-line-extraction
+- riser-stack-up-extraction
 requires: []
 tags: []
 scripts_exempt: true

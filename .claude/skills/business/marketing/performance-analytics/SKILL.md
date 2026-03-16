@@ -1,14 +1,14 @@
 ---
 name: performance-analytics
-description: "Analyze marketing performance with key metrics, trend analysis, and optimization recommendations"
+description: Analyze marketing performance with key metrics, trend analysis, and optimization
+  recommendations
 version: 1.0.0
 category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
-  - campaign-planning
-  - content-creation
-  - competitive-analysis
+- campaign-planning
+- competitive-analysis
 capabilities: []
 requires: []
 see_also: []

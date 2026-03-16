@@ -1,14 +1,14 @@
 ---
 name: campaign-planning
-description: "Plan marketing campaigns with objectives, audience segmentation, channel strategy, content calendars, and success metrics"
+description: Plan marketing campaigns with objectives, audience segmentation, channel
+  strategy, content calendars, and success metrics
 version: 1.0.0
 category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
-  - performance-analytics
-  - content-creation
-  - brand-voice
+- performance-analytics
+- brand-voice
 capabilities: []
 requires: []
 see_also: []

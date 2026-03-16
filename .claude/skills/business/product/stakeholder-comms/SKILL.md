@@ -1,14 +1,14 @@
 ---
 name: stakeholder-comms
-description: "Draft stakeholder updates tailored to audience -- executives, engineering, customers, or cross-functional partners"
+description: Draft stakeholder updates tailored to audience -- executives, engineering,
+  customers, or cross-functional partners
 version: 1.0.0
 category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
-  - feature-spec
-  - metrics-tracking
-  - roadmap-management
+- feature-spec
+- metrics-tracking
 capabilities: []
 requires: []
 see_also: []

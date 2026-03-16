@@ -1,20 +1,32 @@
 ---
 name: repo-capability-map
-description: Analyzes repository modules for current capabilities, groups them by domain, and identifies strategic gaps against mission objectives
+description: Analyzes repository modules for current capabilities, groups them by
+  domain, and identifies strategic gaps against mission objectives
 version: 1.0.0
 category: coordination
 type: skill
 trigger: manual
 auto_execute: false
 capabilities:
-  - capability_discovery
-  - domain_classification
-  - maturity_assessment
-  - gap_analysis
-  - cross_repo_comparison
-  - capability_reporting
-tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [repository-health-analyzer, work-queue, claude-reflect, compliance-check]
+- capability_discovery
+- domain_classification
+- maturity_assessment
+- gap_analysis
+- cross_repo_comparison
+- capability_reporting
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- Task
+related_skills:
+- repo-capability-map
+- work-queue
+- claude-reflect
+- compliance-check
 requires: []
 see_also: []
 tags: []

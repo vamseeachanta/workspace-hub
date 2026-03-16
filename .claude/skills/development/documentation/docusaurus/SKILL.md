@@ -1,43 +1,44 @@
 ---
 name: docusaurus
-description: Build modern documentation websites with Docusaurus. Covers docs, blog, pages, versioning, i18n, search integration, and deployment patterns. React-based with MDX support for interactive documentation.
+description: Build modern documentation websites with Docusaurus. Covers docs, blog,
+  pages, versioning, i18n, search integration, and deployment patterns. React-based
+  with MDX support for interactive documentation.
 version: 1.0.0
 category: development
 type: skill
 capabilities:
-  - React-based documentation sites
-  - MDX for interactive content
-  - Docs, blog, and pages
-  - Multi-version documentation
-  - Internationalization (i18n)
-  - Algolia DocSearch integration
-  - Plugin ecosystem
-  - Theme customization
-  - SEO optimization
-  - GitHub Pages deployment
+- React-based documentation sites
+- MDX for interactive content
+- Docs, blog, and pages
+- Multi-version documentation
+- Internationalization (i18n)
+- Algolia DocSearch integration
+- Plugin ecosystem
+- Theme customization
+- SEO optimization
+- GitHub Pages deployment
 tools:
-  - docusaurus
-  - node
-  - npm
-  - react
-  - mdx
-  - algolia
+- docusaurus
+- node
+- npm
+- react
+- mdx
+- algolia
 tags:
-  - documentation
-  - react
-  - static-site
-  - mdx
-  - versioning
-  - i18n
-  - search
+- documentation
+- react
+- static-site
+- mdx
+- versioning
+- i18n
+- search
 platforms:
-  - linux
-  - macos
-  - windows
+- linux
+- macos
+- windows
 related_skills:
-  - mkdocs
-  - sphinx
-  - gatsby
+- mkdocs
+- sphinx
 ---
 
 # Docusaurus Documentation Skill

@@ -1,18 +1,21 @@
 ---
 name: research-literature
-description: >
-  Systematize research and literature gathering for engineering categories — queries
-  doc index, capability map, and standards ledger to produce structured research briefs
-  for calculation implementation.
-version: "1.0.0"
+description: 'Systematize research and literature gathering for engineering categories
+  — queries doc index, capability map, and standards ledger to produce structured
+  research briefs for calculation implementation.
+
+  '
+version: 1.0.0
 category: data
-related_skills: [workspace-hub/doc-research-download, workspace-hub/work-queue-workflow]
+related_skills:
+- doc-research-download
+- work-queue-workflow
 triggers:
-  - research literature
-  - gather standards
-  - literature review
-  - research brief
-  - find standards for
+- research literature
+- gather standards
+- literature review
+- research brief
+- find standards for
 ---
 
 # Research & Literature Gathering Skill

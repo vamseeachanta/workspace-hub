@@ -1,0 +1,41 @@
+wrk_id: WRK-1244
+stage: 2
+completion_status: complete
+domain: harness/skills
+complexity_assessment: medium
+route: B
+
+skills:
+  core_used:
+    - skill-creator  # eval, benchmarking, variance analysis
+    - comprehensive-learning  # Phase 9 skill coverage audit
+    - work-queue-workflow  # stage lifecycle
+  supporting:
+    - verify/skill-eval  # wired to audit-skill-violations.sh
+
+scripts:
+  existing:
+    - scripts/skills/audit-skill-violations.sh  # README, word count, XML tags (WRK-1053)
+    - scripts/skills/skill-coverage-audit.sh  # Phase 9 impl, category→skill mapping (WRK-1053)
+  missing:
+    - scripts/skills/skill-eval-ecosystem.sh  # ecosystem-wide eval runner (to be created)
+
+key_findings:
+  canonical_skill_count: 404
+  prior_audits:
+    - agent-performance-audit-2026-02-24.md  # harness audit, not skill eval
+  phase_9_status: "scripted via WRK-1053 but never run ecosystem-wide; no results in specs/audit/"
+  wrk_639_status: "pending — diverged/incoming cleanup; metadata inconsistent (status=done, percent_complete=0)"
+  wrk_1053_status: "archived — created audit-skill-violations.sh + skill-coverage-audit.sh; 10/10 AC"
+  skill_creator_eval: "official plugin v2.2.0; metrics defined (trigger >90%, completion >85%); no prior ecosystem run"
+
+constraints:
+  - 404 skills too many for single-pass eval — need sampling or script-based batch
+  - skill-creator eval is interactive (invokes Skill tool) — cannot batch-run without scripting
+  - Phase 9 audit script exists but output format needs verification
+
+recommendations:
+  - Run audit-skill-violations.sh first (fast, deterministic) to get baseline violations
+  - Run skill-coverage-audit.sh to get Phase 9 gap list
+  - Use skill-creator eval on bottom-quartile skills only (top ~100)
+  - Create ecosystem eval script to orchestrate all three passes

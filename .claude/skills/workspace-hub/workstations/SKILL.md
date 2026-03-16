@@ -1,32 +1,34 @@
 ---
 name: workstations
-description: >
-  Workstation registry for multi-machine workspace-hub usage. Tracks machine nicknames,
-  OS, capabilities, active work assignments, and spare hardware inventory. Reference
-  when creating WRK items, planning hardware consolidation, or routing compute-heavy tasks.
+description: 'Workstation registry for multi-machine workspace-hub usage. Tracks machine
+  nicknames, OS, capabilities, active work assignments, and spare hardware inventory.
+  Reference when creating WRK items, planning hardware consolidation, or routing compute-heavy
+  tasks.
+
+  '
 version: 3.0.0
 updated: 2026-02-22
 category: workspace-hub
 triggers:
-  - which computer
-  - workstation
-  - computer nickname
-  - machine registry
-  - working machine
-  - multi-machine
-  - computer field
-  - spare hardware
-  - hardware consolidation
-  - hardware inventory
+- which computer
+- workstation
+- computer nickname
+- machine registry
+- working machine
+- multi-machine
+- computer field
+- spare hardware
+- hardware consolidation
+- hardware inventory
 related_skills:
-  - workspace-hub/session-start
-  - workspace-hub/comprehensive-learning
+- session-start
+- comprehensive-learning
 capabilities:
-  - machine-registry
-  - computer-routing
-  - software-capability-map
-  - multi-machine-routing
-  - cron-integration
+- machine-registry
+- computer-routing
+- software-capability-map
+- multi-machine-routing
+- cron-integration
 requires: []
 tags: []
 ---

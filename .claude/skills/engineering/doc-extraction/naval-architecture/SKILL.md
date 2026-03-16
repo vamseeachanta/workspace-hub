@@ -1,35 +1,35 @@
 ---
-
 name: doc-extraction-naval-architecture
-description: >
-  Layer 3 domain sub-skill for extracting naval architecture data from
-  SNAME PNA, IMO stability codes, IACS structural rules, and classification
-  society guidelines. Provides detection heuristics for stability constants,
-  resistance equations, hull form coefficients, hydrostatic curves, IMO
-  stability criteria, and structural scantling tables.
+description: 'Layer 3 domain sub-skill for extracting naval architecture data from
+  SNAME PNA, IMO stability codes, IACS structural rules, and classification society
+  guidelines. Provides detection heuristics for stability constants, resistance equations,
+  hull form coefficients, hydrostatic curves, IMO stability criteria, and structural
+  scantling tables.
+
+  '
 version: 1.0.0
 updated: 2026-03-13
 category: engineering
 parent_skill: engineering/doc-extraction
 triggers:
-  - naval architecture extraction
-  - stability data extraction
-  - hull form extraction
-  - resistance equation extraction
-  - hydrostatic extraction
-  - scantling extraction
-  - IMO criteria extraction
+- naval architecture extraction
+- stability data extraction
+- hull form extraction
+- resistance equation extraction
+- hydrostatic extraction
+- scantling extraction
+- IMO criteria extraction
 related_skills:
-  - engineering/doc-extraction
-  - engineering/marine-offshore/hydrodynamics
-  - engineering/marine-offshore/structural-analysis
+- doc-extraction
+- hydrodynamics
+- structural-analysis
 capabilities:
-  - stability-constant-extraction
-  - resistance-equation-extraction
-  - hull-form-coefficient-extraction
-  - hydrostatic-curve-extraction
-  - imo-criteria-extraction
-  - scantling-table-extraction
+- stability-constant-extraction
+- resistance-equation-extraction
+- hull-form-coefficient-extraction
+- hydrostatic-curve-extraction
+- imo-criteria-extraction
+- scantling-table-extraction
 requires: []
 tags: []
 scripts_exempt: true

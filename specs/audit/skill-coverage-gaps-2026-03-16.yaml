@@ -1,0 +1,1697 @@
+skills:
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/optimization/model-selection/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/optimization/usage-optimization/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/agenta/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/ai-prompting/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/dspy/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/langchain/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/pandasai/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/ai/prompting/prompt-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/expense-tracking/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/invoice-automation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/modular-architecture-documentation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/product-documentation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/quantification-metrics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/tax-preparation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/admin/technology-stack-modernization/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/client-demo/engineering-chatbot/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/brand-guidelines/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/calendly-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/communication/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/doc-coauthoring/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/internal-comms/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/miro-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/slack-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/slack-gif-creator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/communication/teams-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/content-design/aceengineer-website-update/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/content-design/algorithmic-art/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/content-design/canvas-design/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/content-design/frontend-design/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/content-design/theme-factory/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/customer-support/customer-research/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/customer-support/escalation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/customer-support/knowledge-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/customer-support/response-drafting/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/customer-support/ticket-triage/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/enterprise-search/knowledge-synthesis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/enterprise-search/search-strategy/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/enterprise-search/source-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/audit-support/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/close-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/financial-statements/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/journal-entry-prep/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/reconciliation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/finance/variance-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/canned-responses/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/compliance/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/contract-review/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/legal-risk-assessment/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/meeting-briefing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/legal/nda-triage/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/brand-voice/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/campaign-planning/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/competitive-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/content-strategy/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/lead-generation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/performance-analytics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/seo-optimizer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/marketing/social-media/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/competitive-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/feature-spec/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/memory-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/notion-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/obsidian/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/task-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/time-tracking/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/today/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/todoist-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/productivity/trello-api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/metrics-tracking/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/product-roadmap/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/stakeholder-comms/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/product/user-research-synthesis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/account-research/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/call-prep/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/competitive-intelligence/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/create-an-asset/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/daily-briefing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/business/sales/draft-outreach/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/core/core-coder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/core/core-researcher/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/core/core-tester/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/orchestration/agent-orchestration/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/orchestration/agent-os-framework/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/orchestration/development-workflow-orchestrator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/orchestration/sparc-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/agentic-horizon/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/commit-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/compliance-check/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/compound-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/context-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/interactive-report-generator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/knowledge-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/repo-capability-map/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/repo-sync/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/skill-learner/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/workspace-cli/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/bash-cli-framework/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/bash-script-framework/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/complexity-scorer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/git-sync-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/interactive-menu-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/json-config-loader/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/parallel-batch-executor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/bash/state-directory-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_core/context-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/autoviz/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/bsee-sodir-extraction/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/dash/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/data-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/data-management/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/excel-translation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/great-tables/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/polars/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/streamlit/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/sweetviz/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analysis/ydata-profiling/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/data-context-extractor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/data-exploration/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/data-validation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/data-visualization/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/interactive-dashboard-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/sql-queries/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/analytics/statistical-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/document-inventory/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/document-rag-pipeline/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/docx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/knowledge-base-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/pdf-large-reader/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/pdf/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/pdf-text-extractor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/pdf-utilities/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/pptx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/rag-system-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/semantic-search-setup/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/documents/xlsx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/api12-drilling-analyzer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/bsee-data-extractor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/energy-data-visualizer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/fdas-economics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/field-analyzer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/hse-risk-analyzer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/marine-safety-incidents/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/metocean-data-fetcher/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/metocean-statistics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/metocean-visualizer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/npv-analyzer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/sodir-data-extractor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/web-scraper-energy/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/energy/well-production-dashboard/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/docx-templates/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/office-docs/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/openpyxl/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/pypdf/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/python-docx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/python-pptx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/office/xlsx-to-python/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/api-integration/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/cad-mesh-generation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/numpy-numerical-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/pandas-data-processing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/python-scientific-computing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/scientific/yaml-configuration/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/chartjs/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/d3js/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/echarts/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/highcharts/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/plotly/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/data/visualization/plotly-visualization/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/automation/automation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/code-reviewer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/devtools/pyproject-toml/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/documentation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/docusaurus/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/gitbook/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/marp/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/pandoc/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/sphinx/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/elite-frontend-ux/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/engineering-package-evaluator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/engineering-report-generator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-code-review/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-issue-tracker/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-modes/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-multi-repo/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-pr-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-project-board/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-release-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-release-swarm/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-repo-architect/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-swarm-issue/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-swarm-pr/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-sync/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/github/github-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/gitignore-scaffold/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/git-worktree-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/mcp-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/parallel-file-processor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/planning/planning-code-goal/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/planning/planning-goal/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/planning/writing-plans/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/plugin-management/cowork-plugin-customizer/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/shell-tdd/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/sparc/sparc-architecture/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/sparc/sparc-pseudocode/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/sparc/sparc-refinement/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/sparc/sparc-specification/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/subagent-driven/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/systematic-debugging/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/tdd-obra/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/testing/pytest-fixture-generator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/testing/testing-production/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/testing/testing-tdd-london/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/tools/devtools/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/verification-loop/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/webapp-testing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/workflows/python-project-template/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/development/yaml-workflow-executor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/asset-integrity/fitness-for-service/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cad/blender/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cad/cad-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cad/freecad-automation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cad/gmsh-meshing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/calculation-methodology/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cfd/openfoam/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cfd/paraview/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/doc-extraction/cp/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/doc-extraction/drilling-riser/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/doc-extraction/naval-architecture/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/doc-extraction/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/drilling/drillbotics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/drilling/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/financial-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/gis/gis-informed-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/gis/google-earth-engine/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/gis/python-gis-ecosystem/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/gis/qgis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/aqwa-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/aqwa-batch-execution/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/bemrosetta/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/catenary-riser/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/cathodic-protection/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/diffraction-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/fatigue-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/fe-analyst/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/geotechnical-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/hydrodynamic-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/hydrodynamics/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/marine-offshore-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/marine-safety/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/mooring-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/mooring-design/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/naval-architecture/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-batch-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-code-check/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-environment-config/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-extreme-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-file-conversion/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-installation-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-line-wizard/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-modal-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-modeling/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-mooring-iteration/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-operability/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-post-processing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-rao-import/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-results-comparison/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-specialist/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-static-debug/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-vessel-setup/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-visualization/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcaflex-yaml-gotchas/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-aqwa-benchmark/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-damping-sweep/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-mesh-generation/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-multi-body/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-qtf-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/orcawave-to-orcaflex/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/production-engineering/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/risk-assessment/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/ship-dynamics-6dof/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/signal-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/structural-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/viv-analysis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/marine-offshore/wave-theory/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/maritime-legal/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/oil-and-gas/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/api/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/astm/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/dnv/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/iso/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/norsok/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/standards/standards-coverage-mapper/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/units/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/workflows/cfd-pipeline/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/workflows/hydrodynamic-pipeline/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/gis/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/builders/skill-creator/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/builders/web-artifacts-builder/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/documentation/mermaid-conventions/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/documentation/mkdocs/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/meta/discipline-refactor/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/meta/hidden-folder-audit/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/meta/repo-cleanup/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/_internal/workflows/brainstorming/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/activepieces/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/airflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/github-actions/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/n8n/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/windmill/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/hardware-assessment/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/ai-tool-assessment/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/background-service-manager/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/cli-productivity/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/docker/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/git-advanced/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/pyproject-toml/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/raycast-alfred/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/vscode-extensions/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/clinical-trial-protocol/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/instrument-data-allotrope/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/nextflow-pipelines/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/scientific-problem-selection/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/scvi-tools/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/science/bio-research/single-cell-rna-qc/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/agent-teams/orchestrator-routing/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/ecosystem-terminology/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/engineering-context-loader/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/improve/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/infrastructure-layout/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/mcp-registry-audit/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/plan-mode/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/qa-closure/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/repo-structure/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/save/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/session-end/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/tool-readiness/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/work-document-exit/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+  - path: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    has_script_ref: false
+    gaps:
+      - no_frontmatter_scripts
+      - no_exec_pattern
+gaps_total: 339

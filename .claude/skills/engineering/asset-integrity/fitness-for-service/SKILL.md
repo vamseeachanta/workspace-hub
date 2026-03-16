@@ -1,44 +1,45 @@
 ---
-
 name: fitness-for-service
-description: >
-  Expert FFS engineer applying API 579-1/ASME FFS-1 methodology to corroded and damaged
-  offshore equipment. Use for RSF calculations, MAWP re-rating, remaining life projection,
-  UT grid inspection data, run-repair-replace decisions, and Level 1/2/3 assessment workflows.
+description: 'Expert FFS engineer applying API 579-1/ASME FFS-1 methodology to corroded
+  and damaged offshore equipment. Use for RSF calculations, MAWP re-rating, remaining
+  life projection, UT grid inspection data, run-repair-replace decisions, and Level
+  1/2/3 assessment workflows.
+
+  '
 version: 1.0.0
 updated: 2026-02-19
 category: engineering
 triggers:
-  - fitness for service
-  - FFS assessment
-  - API 579
-  - ASME FFS-1
-  - remaining strength factor
-  - RSF calculation
-  - MAWP re-rating
-  - metal loss assessment
-  - corrosion damage
-  - run repair replace
-  - remaining life
-  - wall thickness grid
-  - UT thickness measurement
-  - general metal loss
-  - local metal loss
-  - pitting assessment
-  - inspection data
-  - corrosion allowance
-  - CTP critical thickness
+- fitness for service
+- FFS assessment
+- API 579
+- ASME FFS-1
+- remaining strength factor
+- RSF calculation
+- MAWP re-rating
+- metal loss assessment
+- corrosion damage
+- run repair replace
+- remaining life
+- wall thickness grid
+- UT thickness measurement
+- general metal loss
+- local metal loss
+- pitting assessment
+- inspection data
+- corrosion allowance
+- CTP critical thickness
 related_skills:
-  - engineering/marine-offshore/cathodic-protection
-  - engineering/marine-offshore/risk-assessment
-  - engineering/marine-offshore/structural-analysis
+- cathodic-protection
+- risk-assessment
+- structural-analysis
 capabilities:
-  - rsf-calculation
-  - mawp-rereting
-  - remaining-life-projection
-  - ut-grid-ingestion
-  - run-repair-replace-decision
-  - level1-level2-assessment
+- rsf-calculation
+- mawp-rereting
+- remaining-life-projection
+- ut-grid-ingestion
+- run-repair-replace-decision
+- level1-level2-assessment
 requires: []
 tags: []
 scripts_exempt: true

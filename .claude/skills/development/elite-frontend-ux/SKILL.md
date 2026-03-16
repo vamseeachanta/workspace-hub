@@ -1,22 +1,39 @@
 ---
 name: elite-frontend-ux
-description: >
-  Create distinctive, production-grade frontend interfaces with expert-level UX
-  design. Use when building SaaS dashboards, landing pages, marketing sites,
-  React/Vue components, HTML/CSS layouts, or any web UI. Combines bold aesthetic
-  direction with systematic design tokens, WCAG accessibility, conversion
-  optimization, and Tailwind/React best practices. Produces polished, memorable
-  interfaces that avoid generic AI aesthetics while meeting professional standards.
+description: 'Create distinctive, production-grade frontend interfaces with expert-level
+  UX design. Use when building SaaS dashboards, landing pages, marketing sites, React/Vue
+  components, HTML/CSS layouts, or any web UI. Combines bold aesthetic direction with
+  systematic design tokens, WCAG accessibility, conversion optimization, and Tailwind/React
+  best practices. Produces polished, memorable interfaces that avoid generic AI aesthetics
+  while meeting professional standards.
+
+  '
 version: 1.0.0
 category: development
 last_updated: 2026-02-28
-tools: [Read, Write, Edit, Bash]
+tools:
+- Read
+- Write
+- Edit
+- Bash
 related_skills:
-  - html-report-verify
-  - webapp-testing
-  - sparc:designer
-tags: [frontend, ux, ui, tailwind, react, accessibility, wcag, dashboard, landing-page, design-tokens]
-platforms: [linux, macos, windows]
+- html-report-verify
+- webapp-testing
+tags:
+- frontend
+- ux
+- ui
+- tailwind
+- react
+- accessibility
+- wcag
+- dashboard
+- landing-page
+- design-tokens
+platforms:
+- linux
+- macos
+- windows
 ---
 
 # /elite-frontend-ux — Elite Frontend UX Design

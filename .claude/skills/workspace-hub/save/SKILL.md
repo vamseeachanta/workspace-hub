@@ -1,16 +1,25 @@
 ---
 name: save
-description: Capture a session snapshot before /clear — saves active WRK state and conversational context
+description: Capture a session snapshot before /clear — saves active WRK state and
+  conversational context
 version: 1.0.0
 category: workspace-hub
 author: workspace-hub
 type: skill
 trigger: manual
 auto_execute: false
-tools: [Bash, Edit]
-related_skills: [improve, knowledge]
-tags: [session-lifecycle, context-engineering, pre-clear]
-platforms: [all]
+tools:
+- Bash
+- Edit
+related_skills:
+- improve
+- knowledge-management
+tags:
+- session-lifecycle
+- context-engineering
+- pre-clear
+platforms:
+- all
 ---
 
 # /save — Pre-Clear Session Snapshot

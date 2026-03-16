@@ -1,30 +1,48 @@
 ---
 name: comprehensive-learning
-description: >
-  Single fire-and-forget command that runs the full session learning pipeline:
-  insights → reflect → knowledge → improve → action-candidates → report.
-  All machines run local Phases 1–9 against logs/orchestrator/ and commit derived state.
-  ace-linux-1 additionally runs Phase 10a (cross-machine compilation) and Phase 10 (report).
-  Safe for cron scheduling. Use when session ends, nightly cron fires, or you want
-  to harvest learnings from recent sessions. Replaces running 4 skills manually.
+description: 'Single fire-and-forget command that runs the full session learning pipeline:
+  insights → reflect → knowledge → improve → action-candidates → report. All machines
+  run local Phases 1–9 against logs/orchestrator/ and commit derived state. ace-linux-1
+  additionally runs Phase 10a (cross-machine compilation) and Phase 10 (report). Safe
+  for cron scheduling. Use when session ends, nightly cron fires, or you want to harvest
+  learnings from recent sessions. Replaces running 4 skills manually.
+
+  '
 version: 2.5.0
 updated: 2026-03-09
 category: workspace-hub
 type: skill
 invoke: comprehensive-learning
 auto_execute: false
-tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- Task
 related_skills:
-  - workspace-hub/improve
-  - workspace-hub/reflect
-  - workspace-hub/insights
-  - workspace-hub/knowledge
-  - workspace-hub/session-end
-  - workspace-hub/workstations
-capabilities: [session-learning, ecosystem-improvement, candidate-actioning, cron-safe,
-               continual-learning, cross-machine-analysis]
-tags: [learning, meta, session-exit, cron, continual-learning]
-platforms: [linux]
+- improve
+- claude-reflect
+- knowledge-management
+- session-end
+- workstations
+capabilities:
+- session-learning
+- ecosystem-improvement
+- candidate-actioning
+- cron-safe
+- continual-learning
+- cross-machine-analysis
+tags:
+- learning
+- meta
+- session-exit
+- cron
+- continual-learning
+platforms:
+- linux
 wrk_ref: WRK-299
 ---
 # comprehensive-learning — Session Learning Pipeline

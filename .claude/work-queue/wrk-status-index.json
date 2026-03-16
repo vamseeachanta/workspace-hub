@@ -5515,5 +5515,14 @@
     "title": "Complete production data download and conversion pipeline",
     "priority": "high",
     "category": "engineering"
+  },
+  "WRK-1256": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-16T15:02:38.766618+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Table extractor quality filter \u2014 watermark dedup, content threshold, LLM quality rating",
+    "priority": "high",
+    "category": "engineering"
   }
 }

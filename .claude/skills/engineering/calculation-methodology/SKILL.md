@@ -1,34 +1,33 @@
 ---
-
 name: calculation-methodology
-description: >
-  Guides the creation of engineering calculation documents through a 6-phase
-  workflow covering problem definition, input gathering, method selection,
-  computation, validation, and reporting. Produces structured YAML calculation
-  files that the calculation-report skill renders to HTML/PDF.
+description: 'Guides the creation of engineering calculation documents through a 6-phase
+  workflow covering problem definition, input gathering, method selection, computation,
+  validation, and reporting. Produces structured YAML calculation files that the calculation-report
+  skill renders to HTML/PDF.
+
+  '
 version: 1.0.0
 updated: 2026-03-15
 category: engineering
 triggers:
-  - engineering calculation
-  - design calculation
-  - calculation note
-  - calc methodology
-  - structural calculation
-  - pipeline calculation
-  - fatigue calculation
-  - code check
-  - design verification
+- engineering calculation
+- design calculation
+- calculation note
+- calc methodology
+- structural calculation
+- pipeline calculation
+- fatigue calculation
+- code check
+- design verification
 related_skills:
-  - engineering/calculation-report
-  - engineering/standards
-  - engineering/units
+- calculation-report
+- units
 capabilities:
-  - structured_calculation_authoring
-  - code_compliance_checking
-  - sensitivity_analysis_guidance
-  - verification_workflow
-  - calculation_quality_assurance
+- structured_calculation_authoring
+- code_compliance_checking
+- sensitivity_analysis_guidance
+- verification_workflow
+- calculation_quality_assurance
 scripts_exempt: true
 ---
 

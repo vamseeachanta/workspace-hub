@@ -1,32 +1,43 @@
 ---
-
 name: todoist-api
 version: 1.0.0
-description: Task management API integration for Todoist with projects, tasks, labels, filters, webhooks, and Python SDK usage
+description: Task management API integration for Todoist with projects, tasks, labels,
+  filters, webhooks, and Python SDK usage
 author: workspace-hub
 category: business
 type: skill
 capabilities:
-  - task_management
-  - project_organization
-  - label_filtering
-  - natural_language_dates
-  - recurring_tasks
-  - webhook_integration
-  - sync_api
-  - batch_operations
+- task_management
+- project_organization
+- label_filtering
+- natural_language_dates
+- recurring_tasks
+- webhook_integration
+- sync_api
+- batch_operations
 tools:
-  - todoist-api
-  - todoist-python
-  - curl
-  - jq
-tags: [todoist, tasks, api, productivity, gtd, webhooks, automation, project-management]
-platforms: [rest-api, python, web, mobile]
+- todoist-api
+- todoist-python
+- curl
+- jq
+tags:
+- todoist
+- tasks
+- api
+- productivity
+- gtd
+- webhooks
+- automation
+- project-management
+platforms:
+- rest-api
+- python
+- web
+- mobile
 related_skills:
-  - api-integration
-  - webhook-automation
-  - obsidian
-  - notion-api
+- api-integration
+- obsidian
+- notion-api
 requires: []
 see_also: []
 scripts_exempt: true

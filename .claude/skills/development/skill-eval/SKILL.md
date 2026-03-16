@@ -1,24 +1,26 @@
 ---
 name: skill-eval
-description: Evaluate all workspace-hub skills for structural validity, content quality, cross-reference integrity, and registry consistency. Runs 18 checks across critical, warning, and info severity levels with actionable fix suggestions.
+description: Evaluate all workspace-hub skills for structural validity, content quality,
+  cross-reference integrity, and registry consistency. Runs 18 checks across critical,
+  warning, and info severity levels with actionable fix suggestions.
 version: 1.0.0
 category: development
 last_updated: 2026-01-29
 capabilities:
-  - structural_validation
-  - content_quality_analysis
-  - cross_reference_integrity
-  - report_generation
+- structural_validation
+- content_quality_analysis
+- cross_reference_integrity
+- report_generation
 tools:
-  - Bash
-  - Read
-  - Glob
-  - Grep
+- Bash
+- Read
+- Glob
+- Grep
 related_skills:
-  - skill-creator
-  - compliance-check
-  - repository-health-analyzer
-  - verification-loop
+- skill-creator
+- compliance-check
+- repo-capability-map
+- verification-loop
 requires: []
 see_also: []
 tags: []

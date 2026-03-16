@@ -1,19 +1,20 @@
 ---
 name: plan-mode
-description: >
-  Invoke EnterPlanMode at deliberative WRK stages before writing any artifact.
+description: 'Invoke EnterPlanMode at deliberative WRK stages before writing any artifact.
   Prevents premature file writes during analysis and synthesis phases.
+
+  '
 version: 1.0.0
 updated: 2026-03-09
 category: workspace-hub
 triggers:
-  - Stage 4 plan draft
-  - Stage 6 cross-review
-  - Stage 10 work execution
-  - Stage 13 agent cross-review
+- Stage 4 plan draft
+- Stage 6 cross-review
+- Stage 10 work execution
+- Stage 13 agent cross-review
 related_skills:
-  - workspace-hub/work-queue-workflow
-  - superpowers/writing-plans
+- work-queue-workflow
+- writing-plans
 tags: []
 ---
 # Plan-Mode Gates

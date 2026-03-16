@@ -1,31 +1,33 @@
 ---
 name: skill-learner
-description: Post-commit skill that reviews completed work, identifies reusable patterns, and creates/enhances skills for continual learning. Auto-executes after commits to build organizational knowledge.
+description: Post-commit skill that reviews completed work, identifies reusable patterns,
+  and creates/enhances skills for continual learning. Auto-executes after commits
+  to build organizational knowledge.
 version: 1.0.0
 category: coordination
 type: skill
 trigger: post-commit
 auto_execute: true
 capabilities:
-  - commit_analysis
-  - pattern_extraction
-  - skill_identification
-  - skill_enhancement
-  - knowledge_synthesis
-  - continual_learning
+- commit_analysis
+- pattern_extraction
+- skill_identification
+- skill_enhancement
+- knowledge_synthesis
+- continual_learning
 tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
+- Read
+- Write
+- Grep
+- Glob
+- Bash
 related_skills:
-  - skill-creator
-  - claude-reflect
-  - knowledge-manager
-  - improve
-  - session-start-routine
-  - repo-readiness
+- skill-creator
+- claude-reflect
+- knowledge-manager
+- improve
+- session-start
+- repo-readiness
 requires: []
 see_also: []
 tags: []

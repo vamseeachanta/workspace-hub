@@ -2,23 +2,27 @@
 name: ecosystem-terminology
 version: 1.0.0
 category: workspace-hub
-applies-to: [claude, codex, gemini]
+applies-to:
+- claude
+- codex
+- gemini
 invocation: /ecosystem-terminology
-description: >
-  Canonical names, abbreviations, and relationship vocabulary for the
-  workspace-hub ecosystem. Load this when naming repos, modules, machines,
-  files, or expanding acronyms to ensure consistency across humans and agents.
+description: 'Canonical names, abbreviations, and relationship vocabulary for the
+  workspace-hub ecosystem. Load this when naming repos, modules, machines, files,
+  or expanding acronyms to ensure consistency across humans and agents.
+
+  '
 triggers:
-  - ecosystem terminology
-  - canonical name
-  - repo name
-  - what is WRK
-  - abbreviation
-  - what does it mean
-  - naming convention
+- ecosystem terminology
+- canonical name
+- repo name
+- what is WRK
+- abbreviation
+- what does it mean
+- naming convention
 related_skills:
-  - workspace-hub/workstations
-  - workspace-hub/repo-structure
+- workstations
+- repo-structure
 ---
 
 # Ecosystem Terminology

@@ -1,29 +1,30 @@
 ---
 name: session-start
-description: >
-  Session startup briefing — surfaces readiness warnings, last session snapshot,
-  top 3 unblocked pending work items, and quota status. Run at the beginning of
-  every session before starting work.
+description: 'Session startup briefing — surfaces readiness warnings, last session
+  snapshot, top 3 unblocked pending work items, and quota status. Run at the beginning
+  of every session before starting work.
+
+  '
 version: 1.0.0
 updated: 2026-02-19
 category: workspace-hub
 triggers:
-  - session start
-  - start session
-  - morning briefing
-  - what should I work on
-  - session briefing
-  - startup check
+- session start
+- start session
+- morning briefing
+- what should I work on
+- session briefing
+- startup check
 related_skills:
-  - workspace-hub/save
-  - coordination/workspace/work-queue
-  - workspace-hub/workflow-gatepass
-  - workspace-hub/improve
+- save
+- work-queue
+- workflow-gatepass
+- improve
 capabilities:
-  - readiness-surface
-  - snapshot-surface
-  - queue-briefing
-  - quota-check
+- readiness-surface
+- snapshot-surface
+- queue-briefing
+- quota-check
 requires: []
 invoke: session-start
 tags: []

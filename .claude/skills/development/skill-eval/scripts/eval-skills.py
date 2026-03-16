@@ -32,15 +32,28 @@ import yaml
 SKILLS_ROOT = Path(".claude/skills")
 
 REQUIRED_FRONTMATTER = ["name", "description", "version", "category"]
-REQUIRED_SECTIONS = [
-    "Quick Start",
-    "When to Use",
-    "Core Concepts",
-    "Usage Examples",
-    "Best Practices",
-    "Error Handling",
-    "Version History",
-]
+
+# Skill-type-aware required sections
+# workflow/tool skills need all sections; guidance/reference need fewer
+SECTIONS_BY_TYPE = {
+    "workflow": [
+        "Quick Start", "When to Use", "Core Concepts",
+        "Usage Examples", "Best Practices", "Error Handling", "Version History",
+    ],
+    "tool": [
+        "Quick Start", "When to Use", "Usage Examples",
+        "Best Practices", "Error Handling",
+    ],
+    "guidance": [
+        "When to Use", "Core Concepts", "Best Practices",
+    ],
+    "reference": [
+        "When to Use", "Core Concepts",
+    ],
+}
+DEFAULT_SKILL_TYPE = "guidance"
+# Legacy flat list kept for backward compat in reports
+REQUIRED_SECTIONS = SECTIONS_BY_TYPE["workflow"]
 SECTIONS_WITH_CODE = ["Quick Start", "Usage Examples"]
 
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
@@ -161,10 +174,44 @@ def category_from_path(path: Path, root: Path) -> str:
     try:
         rel = path.relative_to(root)
         parts = rel.parts
-        # parts[0] is category dir, e.g. "development", "coordination"
+        # parts[0] is top-level category dir, e.g. "development", "coordination"
         return parts[0] if parts else "unknown"
     except ValueError:
         return "unknown"
+
+
+def infer_skill_type(meta: dict | None, body: str, path: Path) -> str:
+    """Infer skill type from frontmatter or content heuristics.
+
+    Returns one of: workflow, tool, guidance, reference.
+    """
+    # Explicit type in frontmatter takes precedence
+    if meta and "type" in meta:
+        t = str(meta["type"]).lower()
+        if t in SECTIONS_BY_TYPE:
+            return t
+
+    # Heuristic: scripts_exempt guidance skills
+    if meta and meta.get("scripts_exempt"):
+        return "guidance"
+
+    # Heuristic: has scripts field or exec patterns → tool or workflow
+    if meta and meta.get("scripts"):
+        return "tool"
+    if re.search(r"(bash scripts/|uv run|bash \.claude/skills/)", body):
+        return "tool"
+
+    # Heuristic: path-based — workspace-hub/ and _core/ tend to be workflows
+    try:
+        rel = path.relative_to(Path(".claude/skills"))
+    except ValueError:
+        rel = path
+    top_dir = rel.parts[0] if rel.parts else ""
+    if top_dir in ("workspace-hub", "_core", "_internal"):
+        return "workflow"
+
+    # Default: guidance (most common)
+    return DEFAULT_SKILL_TYPE
 
 
 # ---------------------------------------------------------------------------
@@ -258,14 +305,15 @@ def check_category_matches_dir(meta: dict, category_dir: str) -> list[Issue]:
     return []
 
 
-def check_required_sections(body: str) -> list[Issue]:
+def check_required_sections(body: str, skill_type: str = "workflow") -> list[Issue]:
     issues = []
     found = [s.lower() for s in extract_h2_sections(body)]
-    for section in REQUIRED_SECTIONS:
+    required = SECTIONS_BY_TYPE.get(skill_type, SECTIONS_BY_TYPE[DEFAULT_SKILL_TYPE])
+    for section in required:
         if section.lower() not in found:
             issues.append(Issue(
                 "warning", "section_missing",
-                f"Required section '## {section}' not found",
+                f"Required section '## {section}' not found (type={skill_type})",
                 f"Add '## {section}' section"
             ))
     return issues

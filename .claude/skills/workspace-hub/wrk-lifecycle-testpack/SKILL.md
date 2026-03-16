@@ -1,28 +1,29 @@
 ---
 name: wrk-lifecycle-testpack
-description: >
-  Reusable TDD harness for WRK lifecycle compliance. Verifies that close and
-  archive are blocked unless required gate evidence and integrated/repo tests
+description: 'Reusable TDD harness for WRK lifecycle compliance. Verifies that close
+  and archive are blocked unless required gate evidence and integrated/repo tests
   are present.
+
+  '
 version: 1.0.1
 updated: 2026-03-03
 category: workspace-hub
 triggers:
-  - lifecycle testpack
-  - wrk workflow tests
-  - gatepass tests
+- lifecycle testpack
+- wrk workflow tests
+- gatepass tests
 related_skills:
-  - workspace-hub/workflow-gatepass
-  - coordination/workspace/work-queue
-  - workspace-hub/qa-closure
+- workflow-gatepass
+- work-queue
+- qa-closure
 capabilities:
-  - lifecycle-compliance-testing
-  - gate-bypass-negative-tests
-  - close-readiness-tests
+- lifecycle-compliance-testing
+- gate-bypass-negative-tests
+- close-readiness-tests
 requires:
-  - scripts/work-queue/verify-gate-evidence.py
-  - scripts/review/orchestrator-variation-check.sh
-  - scripts/work-queue/parse-session-logs.sh
+- scripts/work-queue/verify-gate-evidence.py
+- scripts/review/orchestrator-variation-check.sh
+- scripts/work-queue/parse-session-logs.sh
 invoke: wrk-lifecycle-testpack
 tags: []
 ---

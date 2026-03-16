@@ -1,16 +1,18 @@
 ---
 name: skill-creator
-description: Create new Claude Code skills with proper structure, documentation, and best practices. Use when building custom skills for specific domains, workflows, or organizational needs.
+description: Create new Claude Code skills with proper structure, documentation, and
+  best practices. Use when building custom skills for specific domains, workflows,
+  or organizational needs.
 version: 2.2.0
 category: _internal
 last_updated: 2026-03-05
 official_plugin: skill-creator@claude-plugin-directory
 related_skills:
-  - session-start-routine
-  - sparc-workflow
-  - mcp-builder
-  - skill-learner
-  - improve
+- session-start
+- sparc-workflow
+- mcp-builder
+- skill-learner
+- improve
 tags: []
 ---
 

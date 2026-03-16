@@ -1,8 +1,10 @@
 ---
 name: checkpoint
-description: >
-  Save or restore WRK session state for zero-context-loss stage handoff across compactions.
-  /checkpoint WRK-NNN snapshots current stage; /resume WRK-NNN reloads it in a fresh session.
+description: 'Save or restore WRK session state for zero-context-loss stage handoff
+  across compactions. /checkpoint WRK-NNN snapshots current stage; /resume WRK-NNN
+  reloads it in a fresh session.
+
+  '
 version: 1.0.0
 updated: 2026-03-07
 category: workspace-hub
@@ -10,15 +12,18 @@ type: skill
 trigger: manual
 auto_execute: false
 capabilities:
-  - session_checkpoint
-  - context_handoff
-  - stage_resume
+- session_checkpoint
+- context_handoff
+- stage_resume
 related_skills:
-  - workspace-hub/session-start
-  - workspace-hub/work-queue-workflow
-tools: [Read, Write, Bash]
+- session-start
+- work-queue-workflow
+tools:
+- Read
+- Write
+- Bash
 see_also:
-  - scripts/work-queue/checkpoint.sh
+- scripts/work-queue/checkpoint.sh
 tags: []
 ---
 

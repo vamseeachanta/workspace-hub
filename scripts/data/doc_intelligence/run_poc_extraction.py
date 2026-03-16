@@ -122,7 +122,12 @@ def generate_test_stubs(fp: FormulaPayload, stem: str) -> str:
         func_name = f"test_{safe_sheet}_{safe_ref}_from_xlsx"
 
         lines.append(f"def {func_name}():")
-        lines.append(f'    """Extracted: {cell.sheet}!{cell.cell_ref} = {cell.formula}"""')
+        extracted_label = f"Extracted: {cell.sheet}!{cell.cell_ref} = {cell.formula}"
+        if '"' in cell.formula:
+            # Use comment to avoid triple-quote docstring breakage
+            lines.append(f"    # {extracted_label}")
+        else:
+            lines.append(f'    """{extracted_label}"""')
 
         if isinstance(cell.cached_value, (int, float)):
             lines.append(f"    expected = {cell.cached_value}")

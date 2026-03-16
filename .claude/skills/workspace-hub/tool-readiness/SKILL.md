@@ -1,9 +1,10 @@
 ---
 name: tool-readiness
-description: >
-  Session-start readiness check for workspace-hub tooling — verifies CLI
-  availability, data source freshness, statusline integrity, cross-OS
-  script compatibility, and work queue accessibility.
+description: 'Session-start readiness check for workspace-hub tooling — verifies CLI
+  availability, data source freshness, statusline integrity, cross-OS script compatibility,
+  and work queue accessibility.
+
+  '
 version: 1.0.0
 category: workspace-hub
 last_updated: 2026-02-19
@@ -12,16 +13,17 @@ invoke: /tool-readiness
 trigger: session-start
 auto_execute: false
 related_skills:
-  - workspace-hub/ecosystem-health
-  - workspace-hub/session-start
-  - workspace-hub/repo-sync
+- ecosystem-health
+- session-start
+- repo-sync
 tags:
-  - readiness
-  - session-lifecycle
-  - tooling
-  - cli
-  - quota
-platforms: [all]
+- readiness
+- session-lifecycle
+- tooling
+- cli
+- quota
+platforms:
+- all
 capabilities: []
 requires: []
 ---

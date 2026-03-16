@@ -1,37 +1,49 @@
 ---
-
 name: xlsx-to-python
-description: >
-  Convert Excel calculation spreadsheets to Python code — extract formulas,
+description: 'Convert Excel calculation spreadsheets to Python code — extract formulas,
   build dependency graphs, generate pytest tests using cell values as assertions,
   and produce dark-intelligence archive YAMLs.
-version: "1.0.0"
+
+  '
+version: 1.0.0
 category: data
 type: skill
 trigger: manual
 auto_execute: false
 capabilities:
-  - formula_extraction
-  - vba_macro_extraction
-  - dependency_graph_building
-  - named_range_mapping
-  - calculation_chain_analysis
-  - test_generation_from_cell_values
-  - dark_intelligence_archive
-  - calc_report_generation
-tools: [Read, Write, Edit, Bash, Grep, Glob]
+- formula_extraction
+- vba_macro_extraction
+- dependency_graph_building
+- named_range_mapping
+- calculation_chain_analysis
+- test_generation_from_cell_values
+- dark_intelligence_archive
+- calc_report_generation
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
 related_skills:
-  - data/office/openpyxl
-  - data/dark-intelligence-workflow
-  - data/calculation-report
-  - data/doc-intelligence-promotion
+- openpyxl
+- dark-intelligence-workflow
+- calculation-report
+- doc-intelligence-promotion
 triggers:
-  - xlsx to python
-  - excel to python
-  - extract formulas from excel
-  - convert spreadsheet to code
-  - xlsx formula extraction
-tags: [excel, xlsx, formulas, python, tdd, dark-intelligence]
+- xlsx to python
+- excel to python
+- extract formulas from excel
+- convert spreadsheet to code
+- xlsx formula extraction
+tags:
+- excel
+- xlsx
+- formulas
+- python
+- tdd
+- dark-intelligence
 scripts_exempt: true
 ---
 

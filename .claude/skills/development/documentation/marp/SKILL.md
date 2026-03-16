@@ -1,39 +1,40 @@
 ---
 name: marp
-description: Create professional Markdown-based slide presentations with Marp. Covers themes, directives, speaker notes, presenter view, and export to PDF, HTML, and PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation.
+description: Create professional Markdown-based slide presentations with Marp. Covers
+  themes, directives, speaker notes, presenter view, and export to PDF, HTML, and
+  PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation.
 version: 1.0.0
 category: development
 type: skill
 capabilities:
-  - Markdown-based slide creation
-  - Built-in and custom themes
-  - Directives for slide control
-  - Speaker notes and presenter view
-  - Export to PDF, HTML, PPTX
-  - VS Code extension integration
-  - CLI for automation and CI/CD
-  - Math equations with KaTeX
-  - Mermaid diagrams
+- Markdown-based slide creation
+- Built-in and custom themes
+- Directives for slide control
+- Speaker notes and presenter view
+- Export to PDF, HTML, PPTX
+- VS Code extension integration
+- CLI for automation and CI/CD
+- Math equations with KaTeX
+- Mermaid diagrams
 tools:
-  - marp-cli
-  - marp-vscode
-  - marp-core
-  - puppeteer
+- marp-cli
+- marp-vscode
+- marp-core
+- puppeteer
 tags:
-  - documentation
-  - presentations
-  - slides
-  - markdown
-  - pdf
-  - pptx
+- documentation
+- presentations
+- slides
+- markdown
+- pdf
+- pptx
 platforms:
-  - linux
-  - macos
-  - windows
+- linux
+- macos
+- windows
 related_skills:
-  - pandoc
-  - mkdocs
-  - reveal-js
+- pandoc
+- mkdocs
 ---
 
 # Marp Presentation Skill

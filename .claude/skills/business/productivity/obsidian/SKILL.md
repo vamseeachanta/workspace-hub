@@ -1,32 +1,47 @@
 ---
-
 name: obsidian
 version: 1.0.0
-description: Local-first knowledge management with markdown vaults, bidirectional linking, plugin ecosystem, and flexible sync strategies
+description: Local-first knowledge management with markdown vaults, bidirectional
+  linking, plugin ecosystem, and flexible sync strategies
 author: workspace-hub
 category: business
 type: skill
 capabilities:
-  - markdown_knowledge_base
-  - bidirectional_linking
-  - graph_visualization
-  - plugin_ecosystem
-  - templating_automation
-  - dataview_queries
-  - sync_strategies
-  - backup_workflows
+- markdown_knowledge_base
+- bidirectional_linking
+- graph_visualization
+- plugin_ecosystem
+- templating_automation
+- dataview_queries
+- sync_strategies
+- backup_workflows
 tools:
-  - obsidian
-  - obsidian-cli
-  - dataview
-  - templater
-  - git
-tags: [obsidian, knowledge-management, markdown, zettelkasten, pkm, second-brain, notes, linking, productivity]
-platforms: [desktop, mobile, linux, macos, windows, ios, android]
+- obsidian
+- obsidian-cli
+- dataview
+- templater
+- git
+tags:
+- obsidian
+- knowledge-management
+- markdown
+- zettelkasten
+- pkm
+- second-brain
+- notes
+- linking
+- productivity
+platforms:
+- desktop
+- mobile
+- linux
+- macos
+- windows
+- ios
+- android
 related_skills:
-  - yaml-configuration
-  - git-sync-manager
-  - markdown-documentation
+- yaml-configuration
+- git-sync-manager
 requires: []
 see_also: []
 scripts_exempt: true

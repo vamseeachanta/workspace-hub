@@ -1,28 +1,41 @@
 ---
 name: knowledge-manager
-description: Capture, organize, and surface institutional knowledge across sessions and repositories
+description: Capture, organize, and surface institutional knowledge across sessions
+  and repositories
 version: 1.0.0
 category: coordination
 type: skill
 trigger: manual
 auto_execute: false
 capabilities:
-  - knowledge-capture
-  - knowledge-search
-  - knowledge-advise
-  - knowledge-review
-  - knowledge-stats
-  - confidence-decay
-  - index-rebuild
-tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, improve, work-queue, repo-capability-map, knowledge-base-system, skills-knowledge-graph]
+- knowledge-capture
+- knowledge-search
+- knowledge-advise
+- knowledge-review
+- knowledge-stats
+- confidence-decay
+- index-rebuild
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- Task
+related_skills:
+- claude-reflect
+- improve
+- work-queue
+- repo-capability-map
+- knowledge-manager
 scripts:
-  - scripts/knowledge-index.sh
-  - scripts/knowledge-capture.sh
-  - scripts/knowledge-search.sh
-  - scripts/knowledge-advise.sh
-  - scripts/knowledge-review.sh
-  - scripts/knowledge-stats.sh
+- scripts/knowledge-index.sh
+- scripts/knowledge-capture.sh
+- scripts/knowledge-search.sh
+- scripts/knowledge-advise.sh
+- scripts/knowledge-review.sh
+- scripts/knowledge-stats.sh
 requires: []
 see_also: []
 tags: []

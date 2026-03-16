@@ -1,23 +1,40 @@
 ---
 name: improve
-description: Autonomous session-exit skill that improves all ecosystem files from session learnings
+description: Autonomous session-exit skill that improves all ecosystem files from
+  session learnings
 version: 1.4.0
 category: workspace-hub
 author: workspace-hub
 type: skill
 trigger: session-exit
 auto_execute: false
-tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, insights, knowledge, skill-learner, skill-creator]
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- Task
+related_skills:
+- claude-reflect
+- knowledge-management
+- skill-learner
+- skill-creator
 capabilities:
-  - config_improvement
-  - skill_lifecycle
-  - memory_management
-  - rule_enhancement
-  - doc_updates
-  - ecosystem_review
-tags: [self-improvement, ecosystem, session-exit, meta]
-platforms: [all]
+- config_improvement
+- skill_lifecycle
+- memory_management
+- rule_enhancement
+- doc_updates
+- ecosystem_review
+tags:
+- self-improvement
+- ecosystem
+- session-exit
+- meta
+platforms:
+- all
 requires: []
 see_also: []
 ---

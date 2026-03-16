@@ -1,30 +1,34 @@
 ---
 name: release-notes-adoption
-description: >
-  Use when new Claude Code, Codex, or Gemini release notes are available and
-  you need to identify ecosystem improvements, capture WRK items, and keep
-  config/ai-tools/release-scan-state.yaml current. Start with Claude provider.
+description: 'Use when new Claude Code, Codex, or Gemini release notes are available
+  and you need to identify ecosystem improvements, capture WRK items, and keep config/ai-tools/release-scan-state.yaml
+  current. Start with Claude provider.
+
+  '
 version: 1.0.0
 updated: 2026-03-12
 category: workspace-hub
 triggers:
-  - release notes
-  - new cc version
-  - claude code update
-  - codex update
-  - gemini update
-  - what's new in claude
-  - adopt release improvements
+- release notes
+- new cc version
+- claude code update
+- codex update
+- gemini update
+- what's new in claude
+- adopt release improvements
 related_skills:
-  - coordination/workspace/work-queue/SKILL
-  - workspace-hub/work-queue-workflow
+- work-queue
+- work-queue-workflow
 capabilities:
-  - release-notes-analysis
-  - wrk-capture
-  - version-state-tracking
+- release-notes-analysis
+- wrk-capture
+- version-state-tracking
 requires: []
 invoke: release-notes-adoption
-tags: [automation, release, work-queue]
+tags:
+- automation
+- release
+- work-queue
 ---
 
 # Release Notes Adoption

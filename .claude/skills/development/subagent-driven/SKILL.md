@@ -1,15 +1,15 @@
 ---
 name: subagent-driven
-description: Execute implementation plans with structured subagent dispatch and two-stage review (spec compliance, then code quality). Based on obra/superpowers.
+description: Execute implementation plans with structured subagent dispatch and two-stage
+  review (spec compliance, then code quality). Based on obra/superpowers.
 version: 1.0.0
 category: development
 last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:
-  - writing-plans
-  - tdd-obra
-  - code-reviewer
-  - parallel-dispatch
+- writing-plans
+- tdd-obra
+- code-reviewer
 capabilities: []
 requires: []
 see_also: []

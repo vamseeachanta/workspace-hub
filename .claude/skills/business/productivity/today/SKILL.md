@@ -1,13 +1,13 @@
 ---
-
 name: today
-description: Interactive daily productivity review with guided priority setting. Supports morning planning, midday check-ins, and end-of-day wrap-ups. Use for daily ritual or cron automation.
+description: Interactive daily productivity review with guided priority setting. Supports
+  morning planning, midday check-ins, and end-of-day wrap-ups. Use for daily ritual
+  or cron automation.
 version: 1.1.0
 category: business
 last_updated: 2026-01-21
 related_skills:
-  - context-management
-  - planning
+- context-management
 capabilities: []
 requires: []
 see_also: []

@@ -1,29 +1,37 @@
 ---
-
 name: pypdf
-description: Manipulate PDF documents programmatically. Merge, split, rotate, and watermark PDFs. Extract text and metadata. Handle form filling and encryption/decryption.
+description: Manipulate PDF documents programmatically. Merge, split, rotate, and
+  watermark PDFs. Extract text and metadata. Handle form filling and encryption/decryption.
 version: 1.0.0
 category: data
 type: skill
 capabilities:
-  - pdf_merging
-  - pdf_splitting
-  - page_rotation
-  - watermarking
-  - text_extraction
-  - metadata_handling
-  - form_filling
-  - encryption_decryption
+- pdf_merging
+- pdf_splitting
+- page_rotation
+- watermarking
+- text_extraction
+- metadata_handling
+- form_filling
+- encryption_decryption
 tools:
-  - python
-  - pypdf
-  - reportlab
-tags: [pdf, document-manipulation, merge, split, watermark, encryption, office-automation]
-platforms: [windows, macos, linux]
+- python
+- pypdf
+- reportlab
+tags:
+- pdf
+- document-manipulation
+- merge
+- split
+- watermark
+- encryption
+- office-automation
+platforms:
+- windows
+- macos
+- linux
 related_skills:
-  - python-docx
-  - reportlab
-  - pillow
+- python-docx
 requires: []
 see_also: []
 scripts_exempt: true

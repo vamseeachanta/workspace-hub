@@ -1,10 +1,11 @@
 ---
 name: qa-closure
-description: >
-  Automated QA closure for AI agent work items — generates paired HTML reports
-  (input → process → output → QA verdict), invokes SME verification skills,
-  runs data quality checks (unit validation, range checks), and emits a final
-  PASS / WARN / FAIL verdict before a WRK item may be marked complete.
+description: 'Automated QA closure for AI agent work items — generates paired HTML
+  reports (input → process → output → QA verdict), invokes SME verification skills,
+  runs data quality checks (unit validation, range checks), and emits a final PASS
+  / WARN / FAIL verdict before a WRK item may be marked complete.
+
+  '
 version: 1.0.0
 category: workspace-hub
 last_updated: 2026-02-24
@@ -13,20 +14,21 @@ invoke: /qa-closure
 trigger: pre-complete
 auto_execute: false
 related_skills:
-  - workspace-hub/ecosystem-health
-  - workspace-hub/tool-readiness
-  - engineering/marine-offshore/orcaflex-specialist
-  - engineering/marine-offshore/hydrodynamic-analysis
-  - engineering/marine-offshore/mooring-analysis
-  - engineering/marine-offshore/orcawave-analysis
+- ecosystem-health
+- tool-readiness
+- orcaflex-specialist
+- hydrodynamic-analysis
+- mooring-analysis
+- orcawave-analysis
 tags:
-  - qa
-  - verification
-  - html-report
-  - sme
-  - data-quality
-  - work-item-lifecycle
-platforms: [all]
+- qa
+- verification
+- html-report
+- sme
+- data-quality
+- work-item-lifecycle
+platforms:
+- all
 capabilities: []
 requires: []
 ---

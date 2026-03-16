@@ -1,27 +1,28 @@
 ---
 name: session-end
-description: >
-  Session close checklist — ensures all work is properly documented, archived,
+description: 'Session close checklist — ensures all work is properly documented, archived,
   or forwarded before clearing context. Run before every /clear or end of session.
+
+  '
 version: 1.0.0
 updated: 2026-02-19
 category: workspace-hub
 triggers:
-  - end session
-  - close session
-  - before clear
-  - session wrap up
-  - wrap up
-  - finish session
+- end session
+- close session
+- before clear
+- session wrap up
+- wrap up
+- finish session
 related_skills:
-  - workspace-hub/save
-  - workspace-hub/improve
-  - workspace-hub/session-start
-  - workspace-hub/workflow-gatepass
+- save
+- improve
+- session-start
+- workflow-gatepass
 capabilities:
-  - session-close-checklist
-  - work-item-update
-  - learning-capture
+- session-close-checklist
+- work-item-update
+- learning-capture
 requires: []
 invoke: session-end
 tags: []

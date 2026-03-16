@@ -1,34 +1,35 @@
 ---
 name: workflow-gatepass
-description: >
-  Enforce WRK lifecycle gatepass from session start through close/archive with
-  machine-checkable evidence requirements and explicit no-bypass rules.
+description: 'Enforce WRK lifecycle gatepass from session start through close/archive
+  with machine-checkable evidence requirements and explicit no-bypass rules.
+
+  '
 version: 1.0.6
 updated: 2026-03-07
 category: workspace-hub
 triggers:
-  - workflow gatepass
-  - wrk gate enforcement
-  - lifecycle gate
-  - close gate evidence
+- workflow gatepass
+- wrk gate enforcement
+- lifecycle gate
+- close gate evidence
 related_skills:
-  - workspace-hub/session-start
-  - coordination/workspace/work-queue
-  - workspace-hub/session-end
-  - workspace-hub/wrk-lifecycle-testpack
+- session-start
+- work-queue
+- session-end
+- wrk-lifecycle-testpack
 capabilities:
-  - lifecycle-gate-enforcement
-  - evidence-contract
-  - close-readiness-audit
+- lifecycle-gate-enforcement
+- evidence-contract
+- close-readiness-audit
 requires:
-  - .claude/work-queue/process.md
-  - scripts/work-queue/verify-gate-evidence.py
-  - scripts/work-queue/parse-session-logs.sh
-  - scripts/review/orchestrator-variation-check.sh
-  - scripts/work-queue/start_stage.py
-  - scripts/work-queue/exit_stage.py
-  - scripts/work-queue/gate_check.py
-  - scripts/work-queue/stages/stage-NN-*.yaml
+- .claude/work-queue/process.md
+- scripts/work-queue/verify-gate-evidence.py
+- scripts/work-queue/parse-session-logs.sh
+- scripts/review/orchestrator-variation-check.sh
+- scripts/work-queue/start_stage.py
+- scripts/work-queue/exit_stage.py
+- scripts/work-queue/gate_check.py
+- scripts/work-queue/stages/stage-NN-*.yaml
 invoke: workflow-gatepass
 tags: []
 ---
