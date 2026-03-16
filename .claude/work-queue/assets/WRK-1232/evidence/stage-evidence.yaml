@@ -78,7 +78,7 @@ stages:
   evidence: .claude/work-queue/pending/WRK-1232.md
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: .claude/work-queue/pending/WRK-1232.md
-generated_at: '2026-03-16T03:07:34Z'
+generated_at: '2026-03-16T03:08:14Z'
 reviewed_by: orchestrator

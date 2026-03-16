@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T03:07:36Z by generate-index.py -->
+<!-- Generated: 2026-03-16T03:08:36Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T03:07:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-16T03:08:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 668
+**Total items:** 669
 
 ### By Status
 
@@ -17,13 +17,13 @@
 | working | 3 |
 | blocked | 10 |
 | done | 5 |
-| archived | 384 |
+| archived | 385 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 292 |
+| high | 293 |
 | medium | 314 |
 | low | 61 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 146 |
-| medium | 318 |
+| medium | 319 |
 | complex | 127 |
 
 ### By Category
@@ -73,16 +73,16 @@
 | scripts/review | 1 |
 | tests/testing | 1 |
 | workspace-hub | 279 |
-| worldenergydata | 116 |
+| worldenergydata | 117 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 270 / 668 |
-| Plans cross-reviewed | 196 |
-| Plans approved | 220 |
+| Plans exist | 270 / 669 |
+| Plans cross-reviewed | 197 |
+| Plans approved | 221 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,10 +92,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 668 |
-| Total archived | 384 |
-| Completion rate | 384/668 (57%) |
-| Monthly rate (current month) | 134 archived |
+| Total captured | 669 |
+| Total archived | 385 |
+| Completion rate | 385/669 (58%) |
+| Monthly rate (current month) | 135 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1333,6 +1333,7 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1232 | Complete production data download and conversion pipeline | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1231, WRK-1232 |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -2065,6 +2066,7 @@
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | high | simple | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | high | medium | worldenergydata | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | high | complex | workspace-hub | - |
@@ -2930,6 +2932,7 @@
 | WRK-1197 | Decline/NPV duplicate consolidation | pending | low | medium | - |
 | WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | pending | medium | medium | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | - |
+| WRK-1232 | Complete production data download and conversion pipeline | archived | high | medium | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
@@ -3218,6 +3221,7 @@
 | WRK-1189 | Ingest BOEM lease data | done | medium | worldenergydata | - |
 | WRK-1190 | Ingest Baker Hughes rig count | archived | low | worldenergydata | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | medium | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | archived | medium | worldenergydata | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | medium | workspace-hub | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | medium | workspace-hub | - |
@@ -4074,6 +4078,7 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | - | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | - | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | worldenergydata | - |
+| WRK-1232 | Complete production data download and conversion pipeline | archived | high | worldenergydata | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
@@ -4229,7 +4234,7 @@
 
 ## By Computer
 
-### ace-linux-1 (221 active / 387 total)
+### ace-linux-1 (221 active / 388 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4573,6 +4578,7 @@
 | WRK-1209 | [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo | pending | low | medium | - |
 | WRK-1227 | [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/ | pending | low | medium | - |
 | WRK-1231 | Implement CompanyLoader for BOEM company/operator hierarchy | pending | high | medium | worldenergydata |
+| WRK-1232 | Complete production data download and conversion pipeline | archived | high | medium | worldenergydata |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | simple | worldenergydata |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | medium | worldenergydata |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | medium | workspace-hub |
