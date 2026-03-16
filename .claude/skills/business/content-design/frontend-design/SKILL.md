@@ -2,7 +2,7 @@
 name: frontend-design
 description: Create distinctive, production-grade web interfaces with high design quality. Use for components, pages, dashboards, and full applications that need to stand out from generic AI aesthetics.
 version: 2.0.0
-category: content-design
+category: business
 last_updated: 2026-01-02
 related_skills:
   - theme-factory

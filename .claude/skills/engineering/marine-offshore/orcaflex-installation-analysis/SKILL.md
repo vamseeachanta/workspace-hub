@@ -1,4 +1,5 @@
 ---
+
 name: orcaflex-installation-analysis
 description: Create and analyze OrcaFlex models for offshore installation sequences
   including subsea structure lowering, pipeline installation, and crane operations.
@@ -6,7 +7,7 @@ description: Create and analyze OrcaFlex models for offshore installation sequen
   studies.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - installation analysis
 - subsea installation
@@ -21,6 +22,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Installation Analysis Skill
 

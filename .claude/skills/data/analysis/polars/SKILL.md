@@ -1,4 +1,5 @@
 ---
+
 name: polars
 version: 1.0.0
 description: High-performance DataFrame library for fast data processing with lazy evaluation, parallel execution, and memory efficiency
@@ -24,6 +25,7 @@ related_skills:
   - dash
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Polars High-Performance DataFrame Skill

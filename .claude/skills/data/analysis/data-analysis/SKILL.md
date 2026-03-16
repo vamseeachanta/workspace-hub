@@ -1,9 +1,11 @@
 ---
+
 name: data-analysis
 version: "1.0.0"
 category: data
 description: "Data processing, visualization, exploratory data analysis, and dashboard patterns using Polars, Pandas, and Plotly."
 tags: []
+scripts_exempt: true
 ---
 
 # Data Analysis Skills Library

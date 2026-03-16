@@ -1,8 +1,8 @@
 ---
-name: context-management
-version: "1.0.0"
+name: core-context-management
+version: 1.0.0
 category: _core
-description: "Context Management Skill"
+description: Context Management Skill
 tags: []
 ---
 

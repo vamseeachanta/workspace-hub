@@ -1,4 +1,5 @@
 ---
+
 name: prompt-engineering
 description: Comprehensive prompting techniques including chain-of-thought, few-shot, zero-shot, system prompts, persona design, and evaluation patterns
 version: 1.0.0
@@ -29,6 +30,7 @@ related_skills:
   - dspy
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Prompt Engineering Skill

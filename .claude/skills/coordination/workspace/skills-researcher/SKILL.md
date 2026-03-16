@@ -2,7 +2,7 @@
 name: skills-researcher
 description: Periodic skills curation agent — research online developments, review knowledge graph against WRK demand, identify gaps, create/update skills, and log yield for dynamic cadence adjustment
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: scheduled
 cadence: dynamic  # starts daily; steps down to weekly then monthly based on yield

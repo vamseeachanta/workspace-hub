@@ -1,8 +1,9 @@
 ---
+
 name: pypdf
 description: Manipulate PDF documents programmatically. Merge, split, rotate, and watermark PDFs. Extract text and metadata. Handle form filling and encryption/decryption.
 version: 1.0.0
-category: office-docs
+category: data
 type: skill
 capabilities:
   - pdf_merging
@@ -25,6 +26,7 @@ related_skills:
   - pillow
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # PyPDF PDF Manipulation Skill

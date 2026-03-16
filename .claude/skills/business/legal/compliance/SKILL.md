@@ -2,7 +2,7 @@
 name: compliance
 description: "Assist with privacy regulation compliance, DPA reviews, data subject requests, and regulatory monitoring"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

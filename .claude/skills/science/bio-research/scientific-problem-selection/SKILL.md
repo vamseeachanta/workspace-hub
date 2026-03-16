@@ -1,8 +1,9 @@
 ---
+
 name: scientific-problem-selection
 description: "Systematic framework for scientific problem selection, project ideation, troubleshooting stuck projects, and strategic research decisions."
 version: 1.0.0
-category: bio-research
+category: science
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -15,6 +16,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Scientific Problem Selection Skills

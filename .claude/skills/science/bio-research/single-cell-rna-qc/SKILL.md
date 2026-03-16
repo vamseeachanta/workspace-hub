@@ -1,8 +1,9 @@
 ---
+
 name: single-cell-rna-qc
 description: "Performs quality control on single-cell RNA-seq data (.h5ad or .h5 files) using scverse best practices with MAD-based filtering and comprehensive visualizations."
 version: 1.0.0
-category: bio-research
+category: science
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -15,6 +16,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Single-Cell RNA-seq Quality Control

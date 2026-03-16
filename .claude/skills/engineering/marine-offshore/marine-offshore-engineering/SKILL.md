@@ -1,14 +1,16 @@
 ---
+
 name: marine-offshore-engineering
 version: 1.0.0
 description: Marine and offshore engineering fundamentals for platform design, subsea systems, and regulatory compliance
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [marine-engineering, offshore, fpso, platforms, subsea, regulations, dnv, api]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Marine and Offshore Engineering SME Skill

@@ -3,7 +3,7 @@ name: semantic-search-setup
 description: Setup vector embeddings and semantic search for document collections. Use for AI-powered similarity search, finding related documents, and preparing knowledge bases for RAG systems.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - knowledge-base-builder
   - rag-system-builder

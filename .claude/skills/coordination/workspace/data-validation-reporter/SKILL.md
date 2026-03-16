@@ -2,7 +2,7 @@
 name: data-validation-reporter
 description: Generate interactive validation reports with quality scoring, missing data analysis, and type checking. Combines Pandas validation, Plotly visualization, and YAML configuration for comprehensive data quality reporting.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 tags: [data-validation, plotly, reporting, quality-assurance, pandas]
 discovered: 2026-01-07

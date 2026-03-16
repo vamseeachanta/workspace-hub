@@ -1,9 +1,10 @@
 ---
+
 name: github-actions
 version: 1.0.0
 description: CI/CD automation and workflow orchestration using GitHub Actions for builds, tests, deployments, and repository automation
 author: workspace-hub
-category: automation
+category: operations
 type: skill
 capabilities:
   - ci_cd_pipelines
@@ -26,6 +27,7 @@ related_skills:
   - git-sync-manager
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # GitHub Actions Skill

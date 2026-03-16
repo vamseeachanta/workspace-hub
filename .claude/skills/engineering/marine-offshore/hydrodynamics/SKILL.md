@@ -1,4 +1,5 @@
 ---
+
 name: hydrodynamics
 description: "Manage hydrodynamic coefficients, wave spectra, and environmental loading\
   \ for vessel response analysis. Use for 6\xD76 matrix management, wave spectrum\
@@ -8,6 +9,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # Hydrodynamics Skill
 

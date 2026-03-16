@@ -2,7 +2,7 @@
 name: core-tester
 description: Comprehensive testing and quality assurance specialist for ensuring code quality through testing strategies
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: agent
 capabilities:
   - unit_testing

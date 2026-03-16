@@ -1,9 +1,10 @@
 ---
+
 name: activepieces
 version: 1.0.0
 description: Self-hosted no-code automation platform with visual flow builder, type-safe custom pieces, API integrations, and event-driven triggers
 author: workspace-hub
-category: automation
+category: operations
 type: skill
 capabilities:
   - visual_flow_builder
@@ -28,6 +29,7 @@ related_skills:
   - yaml-configuration
   - api-integration
   - windmill
+scripts_exempt: true
 ---
 
 # Activepieces Workflow Automation Skill

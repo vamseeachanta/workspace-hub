@@ -1,4 +1,5 @@
 ---
+
 name: risk-assessment
 version: "1.0.0"
 category: engineering
@@ -9,6 +10,7 @@ see_also:
 capabilities: []
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 # Risk Assessment Skill

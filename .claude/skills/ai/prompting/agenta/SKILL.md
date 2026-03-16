@@ -1,4 +1,5 @@
 ---
+
 name: agenta
 description: LLM prompt management and evaluation platform. Version prompts, run A/B tests, evaluate with metrics, and deploy with confidence using Agenta's self-hosted solution.
 version: 1.0.0
@@ -27,6 +28,7 @@ related_skills:
   - langchain
   - dspy
   - prompt-engineering
+scripts_exempt: true
 ---
 
 # Agenta Skill

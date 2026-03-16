@@ -1,4 +1,5 @@
 ---
+
 name: langchain
 description: Build production-ready LLM applications with chains, agents, memory, tools, and RAG pipelines using the LangChain framework
 version: 1.0.0
@@ -27,6 +28,7 @@ related_skills:
   - prompt-engineering
   - dspy
   - pandasai
+scripts_exempt: true
 ---
 
 # LangChain Skill

@@ -1,4 +1,5 @@
 ---
+
 name: orcawave-analysis
 description: Expert agent for OrcaWave diffraction/radiation analysis with deep expertise
   in marine hydrodynamics and panel method computations. Use for wave-structure interaction,
@@ -6,7 +7,7 @@ description: Expert agent for OrcaWave diffraction/radiation analysis with deep 
   generation.
 version: 1.0.0
 updated: 2025-01-02
-category: offshore-engineering
+category: engineering
 triggers:
 - OrcaWave analysis
 - diffraction analysis
@@ -22,6 +23,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaWave Analysis Skill
 

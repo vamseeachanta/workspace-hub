@@ -3,7 +3,7 @@ name: repo-cleanup
 description: Systematic cleanup of repository clutter including build artifacts, duplicates, temp files, and consolidation of scattered directories. Use for repository maintenance, artifact removal, directory consolidation, and gitignore updates.
 version: 2.2.0
 updated: 2026-01-20
-category: meta
+category: _internal
 triggers:
 - repository cleanup
 - artifact removal

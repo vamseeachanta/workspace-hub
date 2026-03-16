@@ -2,7 +2,7 @@
 name: core-coder
 description: Implementation specialist for writing clean, efficient code following best practices and design patterns
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: agent
 capabilities:
   - code_generation

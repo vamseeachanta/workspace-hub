@@ -1,0 +1,149 @@
+wrk_id: WRK-1244
+generated_at: '2026-03-16T15:10:20Z'
+eval_tool: eval-skills.py (deterministic, no LLM)
+pre_fix:
+  total_skills: 405
+  passed: 7
+  warnings: 2444
+  critical: 0
+post_fix:
+  total_skills: 405
+  passed: 12
+  warnings: 2240
+  critical: 0
+improvements:
+  category_mismatch_fixed: 204
+  warnings_reduced: 204
+  pass_rate_change: 1.7% -> 3.0%
+top_issues_remaining:
+- check: section_missing
+  count: 2002
+  severity: warning
+- check: metrics_section_missing
+  count: 405
+  severity: info
+- check: related_skill_unresolved
+  count: 111
+  severity: warning
+- check: description_too_short
+  count: 38
+  severity: warning
+- check: category_missing
+  count: 35
+  severity: warning
+- check: version_missing
+  count: 32
+  severity: warning
+- check: quick_start_no_code
+  count: 12
+  severity: warning
+- check: todo_fixme_present
+  count: 10
+  severity: warning
+bottom_quartile:
+  threshold: '>=7 warnings'
+  count: 158
+  top_10:
+  - name: comprehensive-learning
+    warning_count: 13
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: qa-closure
+    warning_count: 13
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: work-queue-workflow
+    warning_count: 12
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: xlsx-to-python
+    warning_count: 11
+    top_issues:
+    - related_skill_unresolved
+    - todo_fixme_present
+    - section_missing
+  - name: workflow-gatepass
+    warning_count: 11
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: dark-intelligence-workflow
+    warning_count: 10
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: calculation-methodology
+    warning_count: 10
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: session-end
+    warning_count: 10
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: session-start
+    warning_count: 10
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+  - name: tool-readiness
+    warning_count: 10
+    top_issues:
+    - related_skill_unresolved
+    - section_missing
+wrk639_diverged_diff:
+  total_diverged_deleted: 115
+  unique_canonical_paths: 61
+  sample_size: 10
+  findings:
+  - path: optimization/model-selection
+    result: TRIVIAL_DIFF
+    unique_lines: 5
+  - path: optimization/usage-optimization
+    result: TRIVIAL_DIFF
+    unique_lines: 3
+  - path: product/product-roadmap
+    result: TRIVIAL_DIFF
+    unique_lines: 4
+  - path: ai-prompting/agenta
+    result: TRIVIAL_DIFF
+    unique_lines: 1
+  - path: ai-prompting/dspy
+    result: TRIVIAL_DIFF
+    unique_lines: 1
+  - path: ai-prompting/langchain
+    result: TRIVIAL_DIFF
+    unique_lines: 1
+  - path: ai-prompting/pandasai
+    result: TRIVIAL_DIFF
+    unique_lines: 2
+  - path: ai-prompting/prompt-engineering
+    result: TRIVIAL_DIFF
+    unique_lines: 1
+  - path: aqwa-analysis
+    result: CONTENT_LOST
+    unique_lines: 32
+  - path: automation/activepieces
+    result: TRIVIAL_DIFF
+    unique_lines: 1
+  verdict: "9/10 trivial (metadata only). 1/10 (aqwa-analysis) lost 32 lines of AQWA solver stages reference \u2014 recommend\
+    \ restoring."
+recommendations:
+- Restore aqwa-analysis AQWA Solver Stages section (32 lines lost in WRK-639)
+- "section_missing (2002) is structural \u2014 most skills lack v2 template sections; low-value to bulk-fix guidance skills"
+- "related_skill_unresolved (111) \u2014 broken cross-references; scriptable fix"
+- "description_too_short (38) \u2014 under 10 words; quick manual fixes"
+- "Bottom quartile are workspace-hub workflow skills \u2014 high-use, warrant targeted improvement"
+scripts_created:
+- scripts/skills/fix-category-mismatch.py (204 fixes applied)
+acceptance_criteria:
+  AC1_eval_run: "PASS \u2014 405 skills evaluated, scores in skill-eval-2026-03-16-full.json"
+  AC2_phase9_gaps: "PARTIAL \u2014 category_mismatch (204) fixed; coverage audit scripts too slow for batch run (spawn uv\
+    \ per file); recommend optimizing audit scripts"
+  AC3_wrk639_diff: "PASS \u2014 10 sampled: 9 trivial, 1 content lost (aqwa-analysis 32 lines)"
+  AC4_bottom_quartile: "IDENTIFIED \u2014 158 skills with >=7 warnings; top issue is section_missing (v2 template compliance)"
+  AC5_results_saved: "PASS \u2014 specs/audit/skill-eval-2026-03-16.yaml"

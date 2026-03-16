@@ -3,7 +3,7 @@ name: hardware-assessment
 version: 1.1.0
 description: Cross-platform hardware assessment and system maintenance — assess hardware, update OS/tools/custom software, and track changes over time via JSON changelogs
 author: workspace-hub
-category: devops
+category: operations
 capabilities:
   - Collect full hardware inventory on Linux (Bash) and Windows (PowerShell)
   - Update OS packages, common tools, and custom software lists

@@ -3,7 +3,7 @@ name: knowledge-base-builder
 description: Build searchable knowledge bases from document collections (PDFs, Word, text files). Use for creating technical libraries, standards repositories, research databases, or any large document collection requiring full-text search.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - pdf-text-extractor
   - semantic-search-setup

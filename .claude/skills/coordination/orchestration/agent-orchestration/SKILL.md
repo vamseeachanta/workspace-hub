@@ -2,7 +2,7 @@
 name: agent-orchestration
 description: Orchestrate AI agents using Claude Flow, swarm coordination, and multi-agent workflows. Use for complex tasks requiring multiple specialized agents, parallel execution, or coordinated problem-solving.
 version: 1.1.0
-category: workspace-hub
+category: coordination
 type: skill
 capabilities:
   - swarm_coordination

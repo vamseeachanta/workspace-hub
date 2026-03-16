@@ -2,7 +2,7 @@
 name: docusaurus
 description: Build modern documentation websites with Docusaurus. Covers docs, blog, pages, versioning, i18n, search integration, and deployment patterns. React-based with MDX support for interactive documentation.
 version: 1.0.0
-category: documentation
+category: development
 type: skill
 capabilities:
   - React-based documentation sites

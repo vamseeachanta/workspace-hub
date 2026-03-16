@@ -2,7 +2,7 @@
 name: reconciliation
 description: "Reconcile accounts by comparing GL balances to subledgers, bank statements, or third-party data."
 version: 1.0.0
-category: finance
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

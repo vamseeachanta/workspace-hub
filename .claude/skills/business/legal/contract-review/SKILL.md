@@ -2,7 +2,7 @@
 name: contract-review
 description: "Analyze commercial agreements against organizational standards with clause-by-clause review"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

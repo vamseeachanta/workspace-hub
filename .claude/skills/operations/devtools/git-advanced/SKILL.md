@@ -1,9 +1,10 @@
 ---
+
 name: git-advanced
 version: 1.0.0
 description: Advanced git workflows including rebase, worktrees, bisect, hooks, and monorepo patterns
 author: workspace-hub
-category: devtools
+category: operations
 capabilities:
   - Interactive rebase and history rewriting
   - Git worktrees for parallel development
@@ -26,6 +27,7 @@ related_skills:
   - github-actions
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Git Advanced Skill

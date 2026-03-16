@@ -1,9 +1,10 @@
 ---
+
 name: airflow
 version: 1.0.0
 description: Python DAG workflow orchestration using Apache Airflow for data pipelines, ETL processes, and scheduled task automation
 author: workspace-hub
-category: automation
+category: operations
 type: skill
 capabilities:
   - dag_authoring
@@ -28,6 +29,7 @@ related_skills:
   - yaml-configuration
   - python-scientific-computing
   - pandas-data-processing
+scripts_exempt: true
 ---
 
 # Apache Airflow Skill

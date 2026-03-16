@@ -3,7 +3,7 @@ name: python-scientific-computing
 version: 1.0.0
 description: Python for engineering analysis, numerical computing, and scientific workflows using NumPy, SciPy, SymPy
 author: workspace-hub
-category: programming
+category: data
 tags: [python, numpy, scipy, sympy, numerical-computing, engineering, scientific-computing]
 platforms: [python]
 capabilities: []

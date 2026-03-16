@@ -1,4 +1,5 @@
 ---
+
 name: autoviz
 version: 1.0.0
 description: Automatic exploratory data analysis and visualization with a single line of code - generates comprehensive charts, detects patterns, and exports to HTML/notebooks
@@ -29,6 +30,7 @@ related_skills:
   - streamlit
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # AutoViz Automatic EDA Skill

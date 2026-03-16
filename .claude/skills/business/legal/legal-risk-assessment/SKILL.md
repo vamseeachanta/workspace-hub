@@ -2,7 +2,7 @@
 name: legal-risk-assessment
 description: "Assess and classify legal risks using a severity-by-likelihood framework with escalation criteria"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

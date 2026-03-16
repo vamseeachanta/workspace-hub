@@ -1,11 +1,12 @@
 ---
+
 name: orcaflex-extreme-analysis
 description: Extract extreme response values with linked statistics from OrcaFlex
   simulations. Use for design load identification, max/min extraction with associated
   values, and extreme event characterization.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - extreme analysis
 - max tension
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Extreme Analysis Skill
 

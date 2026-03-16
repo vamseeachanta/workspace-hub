@@ -1,8 +1,9 @@
 ---
+
 name: brand-guidelines
 description: Create and maintain brand guidelines including visual identity, voice and tone, and usage rules. Use for establishing brand standards, style guides, and ensuring brand consistency across materials.
 version: 2.0.0
-category: communication
+category: business
 last_updated: 2026-01-02
 related_skills:
   - theme-factory
@@ -12,6 +13,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Brand Guidelines Skill

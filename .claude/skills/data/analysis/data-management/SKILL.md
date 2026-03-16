@@ -1,4 +1,5 @@
 ---
+
 name: data-management
 version: "1.0.0"
 category: data
@@ -8,6 +9,7 @@ globs:
   - src/assetutilities/common/data.py
 alwaysApply: false
 tags: []
+scripts_exempt: true
 ---
 
 # Data Management Skill

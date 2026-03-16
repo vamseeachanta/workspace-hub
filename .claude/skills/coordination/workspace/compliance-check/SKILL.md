@@ -2,7 +2,7 @@
 name: compliance-check
 description: Verify and enforce coding standards, AI guidelines, and workspace compliance across repositories. Use for standards propagation, compliance verification, and enforcing development best practices.
 version: 1.1.0
-category: workspace-hub
+category: coordination
 type: skill
 capabilities:
   - standards_verification

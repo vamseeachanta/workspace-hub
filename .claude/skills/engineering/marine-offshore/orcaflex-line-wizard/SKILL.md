@@ -1,11 +1,12 @@
 ---
+
 name: orcaflex-line-wizard
 description: Configure OrcaFlex line properties and use the Line Setup Wizard for
   automatic tension/length calculations. Use for mooring line configuration, riser
   setup, and achieving target line properties.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - line setup wizard
 - line configuration
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Line Wizard Skill
 

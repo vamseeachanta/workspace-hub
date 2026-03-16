@@ -1,4 +1,5 @@
 ---
+
 name: cad-engineering
 description: Expert CAD Engineering Specialist with comprehensive knowledge of CAD
   systems, file formats, and conversion technologies. Use for CAD software guidance,
@@ -6,7 +7,7 @@ description: Expert CAD Engineering Specialist with comprehensive knowledge of C
   and interoperability between open-source and proprietary CAD systems.
 version: 1.0.0
 updated: 2025-01-02
-category: cad-engineering
+category: engineering
 triggers:
 - CAD software
 - file format conversion
@@ -25,6 +26,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # CAD Engineering Skill
 

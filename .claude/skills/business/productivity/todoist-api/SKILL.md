@@ -1,9 +1,10 @@
 ---
+
 name: todoist-api
 version: 1.0.0
 description: Task management API integration for Todoist with projects, tasks, labels, filters, webhooks, and Python SDK usage
 author: workspace-hub
-category: productivity
+category: business
 type: skill
 capabilities:
   - task_management
@@ -28,6 +29,7 @@ related_skills:
   - notion-api
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Todoist API Integration Skill

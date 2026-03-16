@@ -2,7 +2,7 @@
 name: agent-os-framework
 description: Generate standardized .agent-os directory structure with product documentation, mission, tech-stack, roadmap, and decision records. Enables AI-native workflows.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

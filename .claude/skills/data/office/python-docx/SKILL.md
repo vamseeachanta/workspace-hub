@@ -1,8 +1,9 @@
 ---
+
 name: python-docx
 description: Create and manipulate Microsoft Word documents programmatically. Build reports, contracts, and documentation with full control over paragraphs, tables, headers, styles, and images.
 version: 1.0.0
-category: office-docs
+category: data
 type: skill
 capabilities:
   - document_creation
@@ -25,6 +26,7 @@ related_skills:
   - openpyxl
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Python-docx Word Document Automation Skill

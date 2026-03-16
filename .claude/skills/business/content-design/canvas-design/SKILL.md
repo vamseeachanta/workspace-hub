@@ -2,7 +2,7 @@
 name: canvas-design
 description: Create original visual art in PNG and PDF formats using design philosophy principles. Express aesthetic movements visually with minimal text. Use for creating museum-quality visual artifacts, design manifestos, and artistic compositions.
 version: 2.0.0
-category: content-design
+category: business
 last_updated: 2026-01-02
 related_skills:
   - algorithmic-art

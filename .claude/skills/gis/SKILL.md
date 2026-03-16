@@ -1,7 +1,8 @@
 ---
+
 name: gis
 version: "1.0.0"
-category: engineering/gis
+category: gis
 description: "Cross-application GIS skill — CRS reference, data formats, Blender/QGIS integration via digitalmodel.gis"
 tags: [gis, geospatial, crs, geotiff, blender, qgis, wgs84, utm, geojson, shapefile]
 platforms: [linux, windows, macos]
@@ -10,6 +11,7 @@ capabilities: [input-generation, execution, output-parsing, failure-diagnosis, v
 requires: []
 see_also: [python-gis-ecosystem, qgis, gis-informed-workflow, google-earth-engine]
 updated: "2026-02-24"
+scripts_exempt: true
 ---
 
 # GIS Skill — Integration Reference

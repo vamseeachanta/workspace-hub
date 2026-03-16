@@ -3,7 +3,7 @@ name: pyproject-toml
 version: 1.0.0
 description: Configure Python projects with pyproject.toml for modern packaging, tools, and dependency management
 author: workspace-hub
-category: devtools
+category: development
 tags: [python, pyproject, configuration, packaging, build-system]
 platforms: [python]
 capabilities: []

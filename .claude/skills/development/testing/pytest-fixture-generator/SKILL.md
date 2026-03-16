@@ -2,7 +2,7 @@
 name: pytest-fixture-generator
 description: Generate standardized pytest configuration with fixtures, markers, and coverage settings. Creates conftest.py and pytest.ini for workspace-hub compliant testing.
 version: 1.0.0
-category: workspace-hub
+category: development
 type: skill
 trigger: manual
 auto_execute: false

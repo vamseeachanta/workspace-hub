@@ -1,8 +1,9 @@
 ---
+
 name: openpyxl
 description: Create and manipulate Microsoft Excel workbooks programmatically. Build spreadsheets with formulas, charts, conditional formatting, and pivot tables. Handle large datasets efficiently with streaming mode.
 version: 1.0.0
-category: office-docs
+category: data
 type: skill
 capabilities:
   - workbook_creation
@@ -25,6 +26,7 @@ related_skills:
   - plotly
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Openpyxl Excel Automation Skill

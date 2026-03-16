@@ -1,9 +1,11 @@
 ---
+
 name: ai-prompting
 version: "1.0.0"
 category: ai
 description: "LLM application patterns, prompt optimization techniques, and AI-powered data analysis workflows."
 tags: []
+scripts_exempt: true
 ---
 
 # AI Prompting Skills Library

@@ -1,4 +1,5 @@
 ---
+
 name: streamlit
 version: 1.0.0
 description: Build interactive data applications and dashboards with pure Python - no frontend experience required
@@ -26,6 +27,7 @@ related_skills:
   - pandas-data-processing
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Streamlit Data Application Skill

@@ -1,8 +1,9 @@
 ---
+
 name: clinical-trial-protocol
 description: "Generate clinical trial protocols for medical devices or drugs through a modular, waypoint-based architecture with research-only and full protocol modes."
 version: 1.0.0
-category: bio-research
+category: science
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -15,6 +16,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Clinical Trial Protocol Skill

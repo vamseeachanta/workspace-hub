@@ -1,9 +1,10 @@
 ---
+
 name: n8n
 version: 1.0.0
 description: Open-source workflow automation platform with visual node-based editor, 400+ integrations, webhooks, and self-hosted deployment capabilities
 author: workspace-hub
-category: automation
+category: operations
 type: skill
 capabilities:
   - visual_workflow_builder
@@ -29,6 +30,7 @@ related_skills:
   - github-actions
   - activepieces
   - windmill
+scripts_exempt: true
 ---
 
 # n8n Workflow Automation Skill

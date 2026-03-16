@@ -3,7 +3,7 @@ name: git-sync-manager
 version: 1.0.0
 description: Multi-repository git synchronization patterns for batch operations
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, git, sync, multi-repo, batch, automation]
 platforms: [linux, macos]
 ---

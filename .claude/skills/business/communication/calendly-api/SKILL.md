@@ -1,9 +1,10 @@
 ---
+
 name: calendly-api
 version: 1.0.0
 description: Calendly scheduling automation using REST API v2 for managing event types, availability, bookings, webhooks, and scheduling workflows
 author: workspace-hub
-category: communication
+category: business
 type: skill
 capabilities:
   - event_type_management
@@ -29,6 +30,7 @@ related_skills:
   - github-actions
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Calendly API Skill

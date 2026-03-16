@@ -1,4 +1,5 @@
 ---
+
 name: qgis
 version: "1.0.0"
 category: engineering/gis
@@ -11,6 +12,7 @@ capabilities: [input-generation, execution, output-parsing, failure-diagnosis, v
 requires: []
 see_also: [python-gis-ecosystem, google-earth-engine, gis-informed-workflow]
 updated: "2026-02-24"
+scripts_exempt: true
 ---
 
 # QGIS AI Interface Skill

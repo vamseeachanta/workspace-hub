@@ -1,4 +1,5 @@
 ---
+
 name: doc-extraction-naval-architecture
 description: >
   Layer 3 domain sub-skill for extracting naval architecture data from
@@ -31,6 +32,7 @@ capabilities:
   - scantling-table-extraction
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 # Naval Architecture Document Extraction Sub-Skill

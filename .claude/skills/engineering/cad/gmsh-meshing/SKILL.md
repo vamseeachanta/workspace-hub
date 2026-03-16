@@ -1,4 +1,5 @@
 ---
+
 name: gmsh-meshing
 version: "1.0.0"
 category: engineering
@@ -12,6 +13,7 @@ depends_on:
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # gmsh Meshing Skill

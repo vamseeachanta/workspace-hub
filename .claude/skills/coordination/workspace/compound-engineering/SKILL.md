@@ -2,7 +2,7 @@
 name: compound-engineering
 description: "Every.to's compound engineering - 4-phase orchestrator loop (Plan→Work→Review→Compound) where each feature makes the next easier"
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

@@ -1,4 +1,5 @@
 ---
+
 name: d3js
 version: 1.0.0
 description: Create custom, highly interactive data visualizations with D3.js (Data-Driven Documents)
@@ -9,6 +10,7 @@ platforms: [web, javascript]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # D3.js Data Visualization Skill

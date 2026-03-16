@@ -1,9 +1,10 @@
 ---
+
 name: orcaflex-yaml-gotchas
 description: Production-proven OrcaFlex YAML traps and solutions covering dormant properties, boolean mismatches, section ordering, Pydantic integration, and section name aliases.
 version: 1.0.0
 updated: 2026-02-10
-category: offshore-engineering
+category: engineering
 triggers:
 - OrcaFlex YAML error
 - Change not allowed OrcaFlex
@@ -17,6 +18,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex YAML Gotchas
 

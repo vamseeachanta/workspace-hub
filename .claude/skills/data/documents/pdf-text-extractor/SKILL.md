@@ -3,7 +3,7 @@ name: pdf-text-extractor
 description: Extract text from PDF files with intelligent chunking and metadata preservation. IMPORTANT - For best results, first convert PDFs to markdown using OpenAI Codex (see pdf skill), then process the markdown. Also supports direct PDF text extraction for batch processing, technical documents, standards libraries, research papers, or any PDF collection.
 version: 1.2.0
 last_updated: 2026-01-04
-category: document-handling
+category: data
 related_skills:
   - pdf
   - knowledge-base-builder

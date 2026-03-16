@@ -1,4 +1,5 @@
 ---
+
 name: ydata-profiling
 version: 1.0.0
 description: Automated data quality reports with comprehensive variable analysis, missing value detection, correlations, and HTML report generation - formerly pandas-profiling
@@ -30,6 +31,7 @@ related_skills:
   - streamlit
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # YData Profiling Data Quality Skill

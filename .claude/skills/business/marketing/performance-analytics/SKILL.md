@@ -2,7 +2,7 @@
 name: performance-analytics
 description: "Analyze marketing performance with key metrics, trend analysis, and optimization recommendations"
 version: 1.0.0
-category: marketing
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

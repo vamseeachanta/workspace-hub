@@ -1,8 +1,9 @@
 ---
+
 name: internal-comms
 description: Create professional internal communications including memos, announcements, newsletters, and company updates. Use for employee communications, policy announcements, team updates, and organizational messaging.
 version: 2.0.0
-category: communication
+category: business
 last_updated: 2026-01-02
 related_skills:
   - doc-coauthoring
@@ -12,6 +13,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Internal Communications Skill

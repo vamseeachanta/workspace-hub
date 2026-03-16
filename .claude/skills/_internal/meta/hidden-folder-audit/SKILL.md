@@ -3,7 +3,7 @@ name: hidden-folder-audit
 description: Audit and consolidate hidden folders in a repository. Identifies duplicates, dead directories, and consolidation opportunities for .agent-os/, .ai/, .claude/, and other hidden folders.
 version: 1.2.0
 updated: 2026-01-20
-category: meta
+category: _internal
 triggers:
 - hidden folder audit
 - consolidate hidden folders

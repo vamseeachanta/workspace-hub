@@ -2,7 +2,7 @@
 name: session-bootstrap
 description: One-time historical session analysis per machine — mines all sessions to produce initial skill scorecard baseline; run once per machine after WRK-231 is delivered
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 cadence: once-per-machine

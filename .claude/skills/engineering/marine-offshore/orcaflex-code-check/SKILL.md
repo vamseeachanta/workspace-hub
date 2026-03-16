@@ -1,11 +1,12 @@
 ---
+
 name: orcaflex-code-check
 description: Verify OrcaFlex model results against industry standards (DNV, API, ISO).
   Perform capacity checks, safety factor verification, and compliance reporting for
   offshore structures.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - code check
 - standards compliance
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Code Check Skill
 

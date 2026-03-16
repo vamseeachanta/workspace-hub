@@ -2,7 +2,7 @@
 name: skill-creator
 description: Create new Claude Code skills with proper structure, documentation, and best practices. Use when building custom skills for specific domains, workflows, or organizational needs.
 version: 2.2.0
-category: builders
+category: _internal
 last_updated: 2026-03-05
 official_plugin: skill-creator@claude-plugin-directory
 related_skills:

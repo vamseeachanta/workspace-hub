@@ -1,8 +1,9 @@
 ---
+
 name: mkdocs
 description: Build professional project documentation with MkDocs and Material theme. Covers site configuration, navigation, plugins, search optimization, versioning with mike, and deployment to GitHub Pages.
 version: 1.0.0
-category: documentation
+category: _internal
 type: skill
 capabilities:
   - Static site generation from Markdown
@@ -38,6 +39,7 @@ related_skills:
   - docusaurus
   - pandoc
   - marp
+scripts_exempt: true
 ---
 
 # MkDocs Documentation Skill

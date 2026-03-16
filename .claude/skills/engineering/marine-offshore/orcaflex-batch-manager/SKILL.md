@@ -1,11 +1,12 @@
 ---
+
 name: orcaflex-batch-manager
 description: Manage large-scale OrcaFlex batch processing with parallel execution,
   adaptive worker scaling, memory optimization, and progress tracking for efficient
   simulation campaigns.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - batch processing
 - parallel simulations
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Batch Manager Skill
 

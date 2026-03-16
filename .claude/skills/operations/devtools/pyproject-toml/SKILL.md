@@ -1,14 +1,21 @@
 ---
-name: pyproject-toml
+name: ops-pyproject-toml
 version: 1.0.0
 description: Configure Python projects with pyproject.toml for modern packaging, tools, and dependency management
 author: workspace-hub
-category: devtools
-tags: [python, pyproject, configuration, packaging, build-system]
-platforms: [python]
+category: operations
+tags:
+- python
+- pyproject
+- configuration
+- packaging
+- build-system
+platforms:
+- python
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # pyproject.toml Configuration Skill

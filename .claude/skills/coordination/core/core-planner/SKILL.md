@@ -2,7 +2,7 @@
 name: core-planner
 description: Strategic planning and task orchestration agent for breaking down complex tasks into actionable execution plans
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: agent
 capabilities:
   - task_decomposition

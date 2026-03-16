@@ -2,7 +2,7 @@
 name: bash-script-framework
 description: Create organized bash script structure with color output, menu systems, error handling, and cross-platform support. Standardizes CLI tooling.
 version: 1.1.0
-category: workspace-hub
+category: _core
 type: skill
 trigger: manual
 auto_execute: false

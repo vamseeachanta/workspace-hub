@@ -1,11 +1,12 @@
 ---
+
 name: orcawave-mesh-generation
 description: Panel mesh generation and optimization specialist for OrcaWave diffraction analysis.
   Handles CAD-to-panel mesh conversion, mesh quality validation, convergence studies,
   and GDF file generation for hydrodynamic computations.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - panel mesh generation
 - OrcaWave mesh
@@ -21,6 +22,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # OrcaWave Mesh Generation Skill

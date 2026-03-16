@@ -2,7 +2,7 @@
 name: core-researcher
 description: Deep research and information gathering specialist for thorough investigation, pattern analysis, and knowledge synthesis
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: agent
 capabilities:
   - code_analysis

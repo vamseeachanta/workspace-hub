@@ -1,8 +1,9 @@
 ---
+
 name: python-pptx
 description: Create and manipulate PowerPoint presentations programmatically. Build slide decks with layouts, shapes, charts, tables, and images. Generate data-driven presentations from templates.
 version: 1.0.0
-category: office-docs
+category: data
 type: skill
 capabilities:
   - presentation_creation
@@ -25,6 +26,7 @@ related_skills:
   - plotly
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Python-pptx PowerPoint Automation Skill

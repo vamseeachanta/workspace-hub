@@ -1,4 +1,5 @@
 ---
+
 name: orcaflex-post-processing
 description: Post-process OrcaFlex simulation results using OPP (OrcaFlex Post-Process).
   Use for extracting summary statistics, linked statistics, range graphs, time series,
@@ -8,6 +9,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Post-Processing Skill
 

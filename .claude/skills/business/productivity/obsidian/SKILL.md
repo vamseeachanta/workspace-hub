@@ -1,9 +1,10 @@
 ---
+
 name: obsidian
 version: 1.0.0
 description: Local-first knowledge management with markdown vaults, bidirectional linking, plugin ecosystem, and flexible sync strategies
 author: workspace-hub
-category: productivity
+category: business
 type: skill
 capabilities:
   - markdown_knowledge_base
@@ -28,6 +29,7 @@ related_skills:
   - markdown-documentation
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Obsidian Knowledge Management Skill

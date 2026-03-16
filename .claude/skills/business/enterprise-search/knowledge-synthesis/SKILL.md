@@ -2,7 +2,7 @@
 name: knowledge-synthesis
 description: "Combines search results from multiple sources into coherent, deduplicated answers with source attribution and confidence scoring."
 version: 1.0.0
-category: enterprise-search
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

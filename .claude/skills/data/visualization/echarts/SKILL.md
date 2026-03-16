@@ -1,4 +1,5 @@
 ---
+
 name: echarts
 version: 1.0.0
 description: Create powerful interactive charts with Apache ECharts - balanced ease-of-use and customization
@@ -9,6 +10,7 @@ platforms: [web, javascript, typescript]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Apache ECharts Visualization Skill

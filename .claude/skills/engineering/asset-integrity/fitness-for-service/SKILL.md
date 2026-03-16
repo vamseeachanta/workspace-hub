@@ -1,4 +1,5 @@
 ---
+
 name: fitness-for-service
 description: >
   Expert FFS engineer applying API 579-1/ASME FFS-1 methodology to corroded and damaged
@@ -6,7 +7,7 @@ description: >
   UT grid inspection data, run-repair-replace decisions, and Level 1/2/3 assessment workflows.
 version: 1.0.0
 updated: 2026-02-19
-category: asset-integrity
+category: engineering
 triggers:
   - fitness for service
   - FFS assessment
@@ -40,6 +41,7 @@ capabilities:
   - level1-level2-assessment
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 ## When to Use

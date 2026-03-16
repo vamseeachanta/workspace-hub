@@ -1,9 +1,10 @@
 ---
+
 name: diffraction-analysis
 description: Master skill for hydrodynamic diffraction analysis - AQWA, OrcaWave, and BEMRosetta integration
 version: 1.0.0
 updated: 2026-01-27
-category: offshore-engineering
+category: engineering
 triggers:
   - diffraction analysis
   - hydrodynamic analysis
@@ -18,6 +19,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Diffraction Analysis Master Skill

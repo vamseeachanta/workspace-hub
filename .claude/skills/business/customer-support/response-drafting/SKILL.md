@@ -2,7 +2,7 @@
 name: response-drafting
 description: "Draft professional customer communications with empathy-first approach and clear next steps"
 version: 1.0.0
-category: customer-support
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

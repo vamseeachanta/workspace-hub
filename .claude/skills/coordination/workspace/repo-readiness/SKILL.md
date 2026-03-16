@@ -2,7 +2,7 @@
 name: repo-readiness
 description: Prepare any repository for new work by analyzing CLAUDE.md, file structure, mission/objectives, and establishing work readiness state. Auto-executes before new tasks to provide context.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: pre-task
 auto_execute: true

@@ -2,7 +2,7 @@
 name: repo-capability-map
 description: Analyzes repository modules for current capabilities, groups them by domain, and identifies strategic gaps against mission objectives
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

@@ -1,8 +1,9 @@
 ---
+
 name: background-service-manager
 description: Create and manage long-running background processes with start/stop/status controls, logging, and monitoring. Use for batch processing jobs, data pipelines, continuous services, or any long-running tasks.
 version: 2.0.0
-category: tools
+category: operations
 last_updated: 2026-01-02
 related_skills:
   - pdf-text-extractor
@@ -12,6 +13,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Background Service Manager Skill

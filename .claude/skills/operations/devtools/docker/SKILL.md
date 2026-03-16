@@ -1,9 +1,10 @@
 ---
+
 name: docker
 version: 1.0.0
 description: Complete Docker containerization patterns for development and production workflows
 author: workspace-hub
-category: devtools
+category: operations
 capabilities:
   - Dockerfile best practices and multi-stage builds
   - Docker Compose orchestration and networking
@@ -25,6 +26,7 @@ related_skills:
   - kubernetes
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Docker Containerization Skill

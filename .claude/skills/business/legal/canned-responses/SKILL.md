@@ -2,7 +2,7 @@
 name: canned-responses
 description: "Generate templated responses for common legal inquiries and identify when situations require individualized attention"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

@@ -2,7 +2,7 @@
 name: theme-factory
 description: Professional styling toolkit with 10 pre-set themes for slides, documents, reports, and HTML pages. Use when applying consistent colors and fonts to any artifact, or when generating custom themes on-the-fly.
 version: 2.0.0
-category: content-design
+category: business
 last_updated: 2026-01-02
 related_skills:
   - frontend-design

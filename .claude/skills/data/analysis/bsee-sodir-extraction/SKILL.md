@@ -1,4 +1,5 @@
 ---
+
 name: bsee-sodir-extraction
 version: 1.0.0
 description: Extract and process energy data from BSEE (Gulf of Mexico) and SODIR (Norway) regulatory databases
@@ -9,6 +10,7 @@ platforms: [python]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # BSEE/SODIR Data Extraction Skill

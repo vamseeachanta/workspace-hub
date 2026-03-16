@@ -1,14 +1,16 @@
 ---
+
 name: fatigue-analysis
 version: 1.0.0
 description: Fatigue analysis for offshore structures including S-N curves, rainflow counting, Miner's rule, and DNV standards
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [fatigue, s-n-curve, rainflow-counting, miners-rule, dnv, mooring-fatigue, structural-fatigue]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Fatigue Analysis SME Skill

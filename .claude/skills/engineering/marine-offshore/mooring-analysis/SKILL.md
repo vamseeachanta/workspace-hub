@@ -1,14 +1,16 @@
 ---
+
 name: mooring-analysis
 version: 1.0.0
 description: Mooring system design, analysis, and assessment for floating offshore platforms
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [mooring, catenary, taut-mooring, offshore, fpso, station-keeping, api-rp-2sk, dnv]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Mooring Analysis SME Skill

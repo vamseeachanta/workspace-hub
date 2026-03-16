@@ -3,7 +3,7 @@ name: orcaflex-model-generator
 description: Generate OrcaFlex modular models from spec.yml using builder registry pattern with conditional generation and cross-builder context sharing.
 version: 2.0.0
 updated: 2026-02-10
-category: offshore-engineering
+category: engineering
 triggers:
 - generate OrcaFlex model
 - create riser model

@@ -1,4 +1,5 @@
 ---
+
 name: orcaflex-visualization
 description: Generate visualizations from OrcaFlex and OrcaWave simulations using
   the shared OrcFxAPI — model views (SaveModelView), time series plots, range graphs,
@@ -6,7 +7,7 @@ description: Generate visualizations from OrcaFlex and OrcaWave simulations usin
   files via the same API surface.
 version: 1.1.0
 updated: 2026-02-23
-category: offshore-engineering
+category: engineering
 triggers:
 - visualization
 - plot results
@@ -26,6 +27,7 @@ see_also:
 - orcawave-analysis
 - orcawave-mesh-generation
 tags: []
+scripts_exempt: true
 ---
 # OrcaFlex Visualization Skill
 

@@ -10,7 +10,7 @@ description: >
   benchmark fixture separation, 4-phase atomic commit workflow.
 version: 3.2.0
 updated: 2026-01-20
-category: meta
+category: _internal
 triggers:
 - repository reorganization
 - flat to module structure

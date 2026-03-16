@@ -2,7 +2,7 @@
 name: knowledge-management
 description: "Create, organize, and maintain support knowledge base content to reduce ticket volume"
 version: 1.0.0
-category: customer-support
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

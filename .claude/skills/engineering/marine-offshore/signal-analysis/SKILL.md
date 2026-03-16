@@ -1,4 +1,5 @@
 ---
+
 name: signal-analysis
 description: Perform signal processing, rainflow cycle counting, and spectral analysis
   for fatigue and time series data. Use for analyzing stress time histories, computing
@@ -9,6 +10,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # Signal Analysis Skill
 

@@ -3,7 +3,7 @@ name: pptx
 description: PowerPoint presentation toolkit for creating new presentations, editing existing ones, and using templates. Supports HTML-to-PPTX conversion, slide manipulation, and professional design. Use when building presentations, slide decks, or visual reports.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - docx
   - pdf

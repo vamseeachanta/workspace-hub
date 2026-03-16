@@ -2,7 +2,7 @@
 name: agentic-horizon
 description: Weekly scan of all active WRK items to reassess agentic AI horizon notes as the landscape evolves; also mines archived items for newly-relevant follow-up work
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: scheduled
 cadence: weekly

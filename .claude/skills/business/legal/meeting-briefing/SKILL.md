@@ -2,7 +2,7 @@
 name: meeting-briefing
 description: "Prepare structured briefings for meetings with legal relevance and track action items"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

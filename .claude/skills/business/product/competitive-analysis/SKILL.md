@@ -1,14 +1,14 @@
 ---
-name: competitive-analysis
-description: "Analyze competitors with feature comparison matrices, positioning analysis, and strategic implications"
+name: product-competitive-analysis
+description: Analyze competitors with feature comparison matrices, positioning analysis, and strategic implications
 version: 1.0.0
-category: product-management
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
-  - feature-spec
-  - roadmap-management
-  - metrics-tracking
+- feature-spec
+- roadmap-management
+- metrics-tracking
 capabilities: []
 requires: []
 see_also: []

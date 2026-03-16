@@ -2,7 +2,7 @@
 name: marp
 description: Create professional Markdown-based slide presentations with Marp. Covers themes, directives, speaker notes, presenter view, and export to PDF, HTML, and PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation.
 version: 1.0.0
-category: documentation
+category: development
 type: skill
 capabilities:
   - Markdown-based slide creation

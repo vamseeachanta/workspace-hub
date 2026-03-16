@@ -1,14 +1,16 @@
 ---
+
 name: wave-theory
 version: 1.0.0
 description: Ocean wave theory including wave spectra, statistics, irregular seas, and wave transformation for offshore engineering
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [waves, wave-theory, spectra, jonswap, pierson-moskowitz, wave-statistics, irregular-seas]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Wave Theory SME Skill

@@ -1,9 +1,11 @@
 ---
+
 name: mermaid-conventions
 version: "1.0.0"
-category: development
+category: _internal
 description: "Conventions for creating consistent Mermaid diagrams including decision node layout, edge ordering, and flowchart direction rules."
 tags: []
+scripts_exempt: true
 ---
 
 # Mermaid Diagram Conventions

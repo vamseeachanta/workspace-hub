@@ -1,4 +1,5 @@
 ---
+
 name: standards-coverage-mapper
 version: "1.0.0"
 updated: 2026-02-26
@@ -14,6 +15,7 @@ depends_on: []
 requires: []
 see_also:
   - geotechnical-engineering
+scripts_exempt: true
 ---
 
 # Standards Coverage Mapper Skill

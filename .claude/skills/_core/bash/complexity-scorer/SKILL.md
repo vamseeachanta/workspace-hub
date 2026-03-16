@@ -3,7 +3,7 @@ name: complexity-scorer
 version: 1.0.0
 description: Score task complexity using keyword matching and heuristics
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, complexity, scoring, keywords, analysis, classification]
 platforms: [linux, macos]
 ---

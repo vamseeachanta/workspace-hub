@@ -2,7 +2,7 @@
 name: agent-router
 description: Multi-dimensional task classifier and intelligent agent router for Claude, Codex, and Gemini CLI
 version: 2.0.0
-category: workspace-hub
+category: coordination
 type: hybrid
 capabilities:
   - multi_dimension_task_classification

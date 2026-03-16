@@ -1,9 +1,10 @@
 ---
+
 name: hydrodynamic-pipeline
 description: Cross-program workflow for hydrodynamic analysis — mesh generation (Gmsh) to diffraction analysis (OrcaWave/AQWA) to dynamic analysis (OrcaFlex). Covers data flow, format conversion, and validation between programs.
 version: 1.0.1
 updated: 2026-02-24
-category: workflow
+category: engineering
 triggers:
 - hydrodynamic pipeline
 - diffraction to dynamic
@@ -28,6 +29,7 @@ see_also:
 - orcawave-to-orcaflex
 - bemrosetta
 tags: []
+scripts_exempt: true
 ---
 # Hydrodynamic Analysis Pipeline Workflow Skill
 

@@ -2,7 +2,7 @@
 name: create-an-asset
 description: "Generate tailored sales assets including landing pages, decks, one-pagers, and workflow demos"
 version: 1.0.0
-category: sales
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

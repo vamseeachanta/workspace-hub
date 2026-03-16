@@ -1,4 +1,5 @@
 ---
+
 name: google-earth-engine
 version: "1.0.0"
 category: engineering/gis
@@ -12,6 +13,7 @@ capabilities: [input-generation, execution, output-parsing, failure-diagnosis, v
 requires: []
 see_also: [python-gis-ecosystem, qgis, gis-informed-workflow]
 updated: "2026-02-24"
+scripts_exempt: true
 ---
 
 # Google Earth Engine AI Interface Skill

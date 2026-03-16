@@ -1,4 +1,5 @@
 ---
+
 name: doc-extraction
 description: 'Classify and extract structured content from engineering documents using a 3-layer taxonomy: generic content
   types, engineering patterns, and domain sub-skills. Use when ingesting standards, reports, or technical manuals into structured
@@ -24,6 +25,7 @@ capabilities:
 - unit-normalization
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 # Doc-Extraction Skill

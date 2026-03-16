@@ -1,4 +1,5 @@
 ---
+
 name: cathodic-protection
 description: Expert Electrical Engineer specializing in cathodic protection (CP) systems
   for oil and gas industry. Use for CP system design, corrosion prevention, sacrificial
@@ -6,7 +7,7 @@ description: Expert Electrical Engineer specializing in cathodic protection (CP)
   and NACE/ISO standards compliance.
 version: 1.2.0
 updated: 2026-02-20
-category: offshore-engineering
+category: engineering
 triggers:
 - cathodic protection
 - corrosion prevention
@@ -38,6 +39,7 @@ capabilities:
   - DNV_RP_B401_offshore: Offshore fixed platform SACP — jacket/GBS structures, zonal design, DNV-RP-B401 2021
 requires: []
 tags: []
+scripts_exempt: true
 ---
 # Cathodic Protection Skill
 

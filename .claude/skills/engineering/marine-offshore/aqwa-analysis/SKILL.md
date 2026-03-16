@@ -1,11 +1,12 @@
 ---
+
 name: aqwa-analysis
 description: Integrate with AQWA hydrodynamic software for RAO computation, damping
   analysis, and coefficient extraction. Use for AQWA file processing, RAO calculation,
   hydrodynamic coefficient extraction, and pre/post processing workflows.
 version: 3.0.0
 updated: 2025-01-02
-category: offshore-engineering
+category: engineering
 triggers:
 - AQWA analysis
 - RAO extraction
@@ -24,6 +25,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # AQWA Analysis Skill
 

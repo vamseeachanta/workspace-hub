@@ -1,8 +1,9 @@
 ---
+
 name: instrument-data-allotrope
 description: "Convert laboratory instrument output files (PDF, CSV, Excel, TXT) to Allotrope Simple Model (ASM) JSON format or flattened 2D CSV for LIMS systems and data lakes."
 version: 1.0.0
-category: bio-research
+category: science
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -15,6 +16,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Instrument Data to Allotrope Converter

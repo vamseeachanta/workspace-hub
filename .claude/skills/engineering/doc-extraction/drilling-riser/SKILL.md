@@ -1,4 +1,5 @@
 ---
+
 name: doc-extraction-drilling-riser
 description: >
   Layer 3 domain sub-skill for extracting drilling riser data from API RP 16Q,
@@ -25,6 +26,7 @@ capabilities:
   - riser-stack-up-extraction
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 # Drilling Riser Document Extraction Sub-Skill

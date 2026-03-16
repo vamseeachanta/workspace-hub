@@ -1,9 +1,10 @@
 ---
+
 name: windmill
 version: 1.0.0
 description: Developer-first workflow engine that turns scripts into workflows and UIs, supporting Python, TypeScript, Go, and Bash with approval flows, schedule management, and self-hosted deployment
 author: workspace-hub
-category: automation
+category: operations
 type: skill
 capabilities:
   - script_to_workflow
@@ -29,6 +30,7 @@ related_skills:
   - activepieces
   - airflow
   - yaml-configuration
+scripts_exempt: true
 ---
 
 # Windmill Workflow Automation Skill

@@ -3,7 +3,7 @@ name: bash-cli-framework
 version: 1.0.0
 description: Universal bash CLI patterns for colors, logging, headers, and error handling
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, cli, colors, logging, framework, scripting]
 platforms: [linux, macos]
 ---

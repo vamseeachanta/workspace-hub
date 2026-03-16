@@ -2,7 +2,7 @@
 name: session-analysis
 description: First-class session mining — analyses every session's signals at 3AM to surface skill gaps, candidates, anti-patterns, and knowledge gaps; the foundation of the self-improving agent loop
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: scheduled
 cadence: per-session  # signal capture at session end; analysis at 3AM

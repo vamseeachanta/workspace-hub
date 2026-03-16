@@ -1,9 +1,10 @@
 ---
+
 name: raycast-alfred
 version: 1.0.0
 description: macOS launcher automation with Raycast extensions (TypeScript/React) and Alfred workflows (AppleScript/Python) for keyboard-driven productivity
 author: workspace-hub
-category: devtools
+category: operations
 type: skill
 capabilities:
   - raycast_extensions
@@ -31,6 +32,7 @@ related_skills:
   - git-advanced
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Raycast & Alfred Skill

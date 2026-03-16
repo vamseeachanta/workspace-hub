@@ -2,7 +2,7 @@
 name: user-research-synthesis
 description: "Synthesize qualitative and quantitative user research into structured insights and opportunity areas"
 version: 1.0.0
-category: product-management
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

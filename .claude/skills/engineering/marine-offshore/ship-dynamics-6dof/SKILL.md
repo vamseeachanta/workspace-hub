@@ -1,14 +1,16 @@
 ---
+
 name: ship-dynamics-6dof
 version: 1.0.0
 description: 6DOF ship dynamics, equations of motion, seakeeping analysis, and natural frequency calculations
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [6dof, ship-dynamics, seakeeping, equations-of-motion, natural-frequency, vessel-motions]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Ship Dynamics (6DOF) SME Skill

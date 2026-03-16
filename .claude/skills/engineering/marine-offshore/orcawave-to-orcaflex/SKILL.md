@@ -1,11 +1,12 @@
 ---
+
 name: orcawave-to-orcaflex
 description: Integration specialist for converting OrcaWave diffraction results to
   OrcaFlex vessel types. Handles hydrodynamic database generation, RAO import, viscous
   damping addition, and coordinate system transformations.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - OrcaWave to OrcaFlex
 - hydrodynamic database
@@ -18,6 +19,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # OrcaWave to OrcaFlex Integration Skill

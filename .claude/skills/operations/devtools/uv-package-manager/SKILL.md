@@ -1,11 +1,20 @@
 ---
-name: uv-package-manager
+name: ops-uv-package-manager
 version: 1.0.0
 description: UV for fast Python package management, virtual environments, and project workflows
 author: workspace-hub
-category: devtools
-tags: [uv, python, package-manager, virtual-environment, dependency-management]
-platforms: [python, linux, macos, windows]
+category: operations
+tags:
+- uv
+- python
+- package-manager
+- virtual-environment
+- dependency-management
+platforms:
+- python
+- linux
+- macos
+- windows
 capabilities: []
 requires: []
 see_also: []

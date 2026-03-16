@@ -1,4 +1,5 @@
 ---
+
 name: excel-translation
 version: "1.0.0"
 category: data
@@ -7,6 +8,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Excel Translation Skill

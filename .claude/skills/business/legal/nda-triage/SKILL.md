@@ -2,7 +2,7 @@
 name: nda-triage
 description: "Screen incoming NDAs using a 10-point evaluation checklist with GREEN/YELLOW/RED classification"
 version: 1.0.0
-category: legal
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

@@ -8,7 +8,7 @@ description: >
   fallbacks for environments without solver licenses.
 version: 1.0.0
 updated: 2026-02-24
-category: workflow
+category: engineering
 triggers:
   - multi-physics pipeline
   - Gmsh OpenFOAM OrcaFlex

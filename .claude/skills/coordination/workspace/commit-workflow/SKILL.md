@@ -2,7 +2,7 @@
 name: commit-workflow
 description: Standardized commit-and-push workflow with change summary, conventional commit messages, and safety checks. Prevents autonomous commits and ensures user approval.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

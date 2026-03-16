@@ -2,7 +2,7 @@
 name: metrics-tracking
 description: "Define, track, and analyze product metrics with frameworks for goal setting and dashboard design"
 version: 1.0.0
-category: product-management
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

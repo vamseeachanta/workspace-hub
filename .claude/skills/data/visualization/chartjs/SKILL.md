@@ -1,4 +1,5 @@
 ---
+
 name: chartjs
 version: 1.0.0
 description: Create simple, responsive charts quickly with Chart.js
@@ -9,6 +10,7 @@ platforms: [web, javascript]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Chart.js Quick Charting Skill

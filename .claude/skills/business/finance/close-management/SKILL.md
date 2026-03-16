@@ -2,7 +2,7 @@
 name: close-management
 description: "Manage the month-end close process with task sequencing, dependencies, and status tracking."
 version: 1.0.0
-category: finance
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

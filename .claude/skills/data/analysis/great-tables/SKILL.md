@@ -1,4 +1,5 @@
 ---
+
 name: great-tables
 version: 1.0.0
 description: Publication-quality tables in Python with rich styling, formatting, conditional formatting, and export to HTML/images - inspired by R's gt package
@@ -28,6 +29,7 @@ related_skills:
   - plotly
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Great Tables Publication-Quality Tables Skill

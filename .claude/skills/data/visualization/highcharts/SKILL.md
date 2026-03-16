@@ -1,4 +1,5 @@
 ---
+
 name: highcharts
 version: 1.0.0
 description: Create enterprise-grade interactive charts with Highcharts
@@ -9,6 +10,7 @@ platforms: [web, javascript, typescript]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Highcharts Enterprise Charting Skill

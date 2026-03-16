@@ -2,7 +2,7 @@
 name: skills-curation
 description: Periodic skills library maintenance — online research for new/stale skills, knowledge graph review against active WRK items, session-input health check, and autonomous skill creation or WRK spin-off for deep gaps.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: scheduled
 cadence: dynamic  # starts weekly; auto-adjusts based on signal yield

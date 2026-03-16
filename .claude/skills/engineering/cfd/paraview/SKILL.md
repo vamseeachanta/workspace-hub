@@ -1,9 +1,10 @@
 ---
+
 name: paraview-interface
 description: AI interface skill for ParaView scientific visualization — pvpython/pvbatch CLI execution, paraview.simple API, filter pipelines, OpenFOAM integration, and automated image/data export.
 version: 1.1.0
 updated: 2026-02-24
-category: cfd-engineering
+category: engineering
 triggers:
 - ParaView automation
 - pvpython
@@ -26,6 +27,7 @@ see_also:
 - openfoam
 - blender-interface
 tags: []
+scripts_exempt: true
 ---
 # ParaView AI Interface Skill
 

@@ -3,7 +3,7 @@ name: json-config-loader
 version: 1.0.0
 description: Configuration file parsing patterns for bash scripts (INI, key=value, JSON)
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, config, json, yaml, parsing, jq, configuration]
 platforms: [linux, macos]
 ---

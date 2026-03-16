@@ -1,4 +1,5 @@
 ---
+
 name: gis-informed-workflow
 version: "1.0.0"
 category: engineering/gis
@@ -15,6 +16,7 @@ requires:
   - google-earth-engine
 see_also: [qgis, orcaflex-modeling, cfd-pipeline]
 updated: "2026-02-24"
+scripts_exempt: true
 ---
 
 # GIS-Informed Engineering Workflow Skill

@@ -2,7 +2,7 @@
 name: workspace-cli
 description: Use the workspace-hub unified CLI for repository management, compliance, development tools, and system configuration. Use for navigating workspace tools and executing common operations.
 version: 1.1.0
-category: workspace-hub
+category: coordination
 type: skill
 capabilities:
   - interactive_menu_navigation

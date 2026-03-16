@@ -1,4 +1,5 @@
 ---
+
 name: model-selection
 version: "1.0.0"
 category: ai
@@ -7,6 +8,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Model Selection Skill

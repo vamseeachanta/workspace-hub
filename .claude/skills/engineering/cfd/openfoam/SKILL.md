@@ -1,4 +1,5 @@
 ---
+
 name: openfoam
 version: "1.0.0"
 category: engineering
@@ -11,6 +12,7 @@ depends_on:
 capabilities: [input-generation, execution, output-parsing, failure-diagnosis, validation]
 requires: []
 see_also: [gmsh-meshing, mesh-utilities]
+scripts_exempt: true
 ---
 
 # OpenFOAM AI Interface Skill

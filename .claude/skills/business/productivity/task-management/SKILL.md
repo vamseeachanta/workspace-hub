@@ -1,8 +1,9 @@
 ---
+
 name: task-management
 description: "Simple task management using a shared TASKS.md file for tracking commitments and action items."
 version: 1.0.0
-category: productivity
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -11,6 +12,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Task Management

@@ -1,4 +1,5 @@
 ---
+
 name: drillbotics
 description: SPE Drillbotics Mode V (virtual track) reference — competition requirements, module architecture, controller patterns, ROP models, D-WIS interoperability, and ACE Engineering capability mapping
 version: 1.1.0
@@ -22,6 +23,7 @@ see_also:
   - docs/strategy/drillbotics-engagement.md
   - docs/vision/VISION.md
 tags: []
+scripts_exempt: true
 ---
 
 # SPE Drillbotics — Mode V (Virtual Track) Skill

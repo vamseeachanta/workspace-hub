@@ -1,4 +1,5 @@
 ---
+
 name: fe-analyst
 version: "1.0.0"
 category: engineering
@@ -14,6 +15,7 @@ related_skills: [orcaflex-specialist, structural-analysis, mooring-analysis, hyd
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # FE Analyst Skill — Slender Structure Analysis

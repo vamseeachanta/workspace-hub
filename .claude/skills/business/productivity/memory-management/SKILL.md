@@ -1,8 +1,9 @@
 ---
+
 name: memory-management
 description: "Two-tier memory system for decoding workplace shorthand, acronyms, nicknames, and internal language."
 version: 1.0.0
-category: productivity
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -11,6 +12,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # Memory Management

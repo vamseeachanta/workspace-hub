@@ -2,7 +2,7 @@
 name: brainstorming
 description: Collaborative design refinement through iterative questioning. Use for transforming ideas into detailed specifications before implementation. Based on obra/superpowers.
 version: 1.0.0
-category: workflows
+category: _internal
 last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:

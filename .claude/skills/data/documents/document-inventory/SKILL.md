@@ -3,7 +3,7 @@ name: document-inventory
 description: Scan and catalog document collections with metadata extraction, categorization, and statistics. Use for auditing document libraries, preparing for knowledge base creation, or understanding large file collections.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - knowledge-base-builder
   - pdf-text-extractor

@@ -4,7 +4,7 @@ description: Reorganize any repository by discipline/domain with module-based
   structure. Code in src/<pkg>/modules/, documents in <folder>/modules/.
   Orchestrates Explore, Plan, and general-purpose subagents. Works standalone.
 version: 2.0.0
-category: refactoring
+category: _internal
 triggers:
   - "refactor by discipline"
   - "organize by domain"

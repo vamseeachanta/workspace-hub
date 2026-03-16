@@ -2,7 +2,7 @@
 name: skill-learner
 description: Post-commit skill that reviews completed work, identifies reusable patterns, and creates/enhances skills for continual learning. Auto-executes after commits to build organizational knowledge.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: post-commit
 auto_execute: true

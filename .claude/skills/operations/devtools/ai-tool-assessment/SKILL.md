@@ -1,8 +1,9 @@
 ---
+
 name: ai-tool-assessment
 description: Assess and report on AI tool subscriptions, usage patterns, and cost-effectiveness. Use for reviewing AI subscriptions, analyzing tool usage, optimizing AI spend.
 version: 2.0.0
-category: tools
+category: operations
 last_updated: 2026-01-02
 related_skills:
   - background-service-manager
@@ -11,6 +12,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # AI Tool Usage Assessment

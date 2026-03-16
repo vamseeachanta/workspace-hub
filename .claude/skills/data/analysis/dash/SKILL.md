@@ -1,4 +1,5 @@
 ---
+
 name: dash
 version: 1.0.0
 description: Build production-grade interactive dashboards with Plotly Dash - enterprise features, callbacks, and scalable deployment
@@ -26,6 +27,7 @@ related_skills:
   - pandas-data-processing
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Dash Production Dashboard Skill

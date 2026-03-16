@@ -1,9 +1,10 @@
 ---
+
 name: notion-api
 version: 1.0.0
 description: Notion API for workspace automation including databases, pages, blocks, query/filter syntax, and integration patterns
 author: workspace-hub
-category: productivity
+category: business
 type: skill
 capabilities:
   - database_operations
@@ -28,6 +29,7 @@ related_skills:
   - webhook-automation
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Notion API Integration Skill

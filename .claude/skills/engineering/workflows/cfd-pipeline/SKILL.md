@@ -1,9 +1,10 @@
 ---
+
 name: cfd-pipeline
 description: Cross-program workflow for CFD analysis — geometry (FreeCAD/Gmsh) to meshing (Gmsh/snappyHexMesh) to solving (OpenFOAM) to visualization (ParaView/Blender). Covers data flow, format conversion, and validation between programs.
 version: 1.0.1
 updated: 2026-02-24
-category: workflow
+category: engineering
 triggers:
 - CFD pipeline
 - CFD workflow
@@ -25,6 +26,7 @@ see_also:
 - freecad-automation
 - blender-interface
 tags: []
+scripts_exempt: true
 ---
 # CFD Pipeline Workflow Skill
 

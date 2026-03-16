@@ -2,7 +2,7 @@
 name: call-prep
 description: "Prepare sales professionals for meetings with structured briefings and discovery questions"
 version: 1.0.0
-category: sales
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

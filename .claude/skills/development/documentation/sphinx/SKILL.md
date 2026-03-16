@@ -2,7 +2,7 @@
 name: sphinx
 description: Generate comprehensive Python documentation with Sphinx. Covers autodoc for API extraction, Napoleon for Google/NumPy docstrings, intersphinx for cross-references, and multiple output formats including HTML, PDF, and ePub.
 version: 1.0.0
-category: documentation
+category: development
 type: skill
 capabilities:
   - Automatic API documentation from docstrings

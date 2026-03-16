@@ -1,4 +1,5 @@
 ---
+
 name: calculation-methodology
 description: >
   Guides the creation of engineering calculation documents through a 6-phase
@@ -28,6 +29,7 @@ capabilities:
   - sensitivity_analysis_guidance
   - verification_workflow
   - calculation_quality_assurance
+scripts_exempt: true
 ---
 
 # Calculation Methodology

@@ -1,4 +1,5 @@
 ---
+
 name: structural-analysis
 version: "1.1.0"
 category: engineering
@@ -24,6 +25,7 @@ updated: 2026-03-08
 requires: []
 see_also:
   - ../fatigue-analysis/SKILL.md
+scripts_exempt: true
 ---
 
 # Structural Analysis Skill

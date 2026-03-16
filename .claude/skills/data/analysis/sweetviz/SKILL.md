@@ -1,4 +1,5 @@
 ---
+
 name: sweetviz
 version: 1.0.0
 description: Automated EDA comparison reports with target analysis, feature comparison, and HTML report generation for pandas DataFrames
@@ -31,6 +32,7 @@ related_skills:
   - great-tables
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Sweetviz EDA Comparison Skill

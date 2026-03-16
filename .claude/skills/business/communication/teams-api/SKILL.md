@@ -1,9 +1,10 @@
 ---
+
 name: teams-api
 version: 1.0.0
 description: Microsoft Teams automation using Graph API, Bot Framework, Adaptive Cards, and webhooks for enterprise messaging and collaboration
 author: workspace-hub
-category: communication
+category: business
 type: skill
 capabilities:
   - graph_api_integration
@@ -29,6 +30,7 @@ related_skills:
   - azure-functions
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Microsoft Teams API Skill

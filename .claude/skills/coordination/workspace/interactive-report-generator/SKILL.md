@@ -2,7 +2,7 @@
 name: interactive-report-generator
 description: Generate interactive HTML reports with Plotly visualizations from data analysis results. Supports dashboards, charts, and professional styling.
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

@@ -2,7 +2,7 @@
 name: sparc-workflow
 description: Apply SPARC methodology (Specification, Pseudocode, Architecture, Refinement, Completion) for systematic development. Use for feature development, TDD workflows, and structured problem-solving.
 version: 1.1.0
-category: workspace-hub
+category: coordination
 type: skill
 capabilities:
   - specification_analysis

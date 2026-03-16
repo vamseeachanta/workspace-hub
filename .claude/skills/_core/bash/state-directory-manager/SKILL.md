@@ -3,7 +3,7 @@ name: state-directory-manager
 version: 1.0.0
 description: Manage persistent state directories for bash scripts
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, state, persistence, config, directory, xdg]
 platforms: [linux, macos]
 ---

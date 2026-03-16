@@ -2,7 +2,7 @@
 name: core-reviewer
 description: Code review and quality assurance specialist for ensuring code quality, security, and maintainability
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: agent
 capabilities:
   - code_review

@@ -1,4 +1,5 @@
 ---
+
 name: doc-extraction-cp
 description: >
   Layer 3 domain sub-skill for extracting cathodic protection data from
@@ -25,6 +26,7 @@ capabilities:
   - current-density-extraction
 requires: []
 tags: []
+scripts_exempt: true
 ---
 
 # CP Document Extraction Sub-Skill

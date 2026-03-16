@@ -1,9 +1,10 @@
 ---
+
 name: trello-api
 version: 1.0.0
 description: Kanban board automation with Trello API including boards, lists, cards, members, webhooks, power-ups, and Python SDK (py-trello) integration
 author: workspace-hub
-category: productivity
+category: business
 type: skill
 capabilities:
   - Board creation and management
@@ -30,6 +31,7 @@ related_skills:
   - github-actions
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Trello API Integration Skill

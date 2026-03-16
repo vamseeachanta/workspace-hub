@@ -1,4 +1,5 @@
 ---
+
 name: iso
 version: "1.0.0"
 category: engineering
@@ -7,6 +8,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # ISO Standards Specialist

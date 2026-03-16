@@ -1,9 +1,10 @@
 ---
+
 name: blender-interface
 description: AI interface skill for Blender 3D — headless CLI execution, Python bpy API, mesh import/export, rendering, and integration with engineering analysis workflows.
 version: 1.1.0
 updated: 2026-02-24
-category: cad-engineering
+category: engineering
 triggers:
 - Blender automation
 - Blender Python
@@ -25,6 +26,7 @@ see_also:
 - freecad-automation
 - gmsh-meshing
 tags: []
+scripts_exempt: true
 ---
 # Blender AI Interface Skill
 

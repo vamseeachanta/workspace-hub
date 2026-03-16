@@ -3,7 +3,7 @@ name: rag-system-builder
 description: Build Retrieval-Augmented Generation (RAG) Q&A systems with Claude or OpenAI. Use for creating AI assistants that answer questions from document collections, technical libraries, or knowledge bases.
 version: 1.2.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - knowledge-base-builder
   - semantic-search-setup

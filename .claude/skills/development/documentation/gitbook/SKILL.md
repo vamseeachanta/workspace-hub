@@ -3,7 +3,7 @@ name: gitbook
 version: 1.0.0
 description: Publish documentation and books with GitBook including spaces, collections, variants, Git sync, collaboration, and API integration
 author: workspace-hub
-category: documentation
+category: development
 type: skill
 capabilities:
   - Documentation publishing

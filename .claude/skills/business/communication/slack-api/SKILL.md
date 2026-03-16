@@ -1,9 +1,10 @@
 ---
+
 name: slack-api
 version: 1.0.0
 description: Slack bot development and workspace automation using Web API, Events API, Socket Mode, and Block Kit for building interactive messaging applications
 author: workspace-hub
-category: communication
+category: business
 type: skill
 capabilities:
   - web_api_integration
@@ -29,6 +30,7 @@ related_skills:
   - python-scientific-computing
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Slack API Skill

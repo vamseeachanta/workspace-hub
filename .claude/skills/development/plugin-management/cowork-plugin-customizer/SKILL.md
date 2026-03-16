@@ -2,7 +2,7 @@
 name: cowork-plugin-customizer
 description: "Customize or personalize a Claude Code plugin for a specific organization's tools and workflows by replacing placeholders and configuring MCP servers."
 version: 1.0.0
-category: plugin-management
+category: development
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills: []

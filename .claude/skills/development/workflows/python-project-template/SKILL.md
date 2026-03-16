@@ -2,7 +2,7 @@
 name: python-project-template
 description: Generate standardized Python project structure with pyproject.toml, UV environment, pytest configuration, and workspace-hub compliance. Creates production-ready project scaffolding.
 version: 1.0.0
-category: workspace-hub
+category: development
 type: skill
 trigger: manual
 auto_execute: false

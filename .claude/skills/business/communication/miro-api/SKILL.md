@@ -1,9 +1,10 @@
 ---
+
 name: miro-api
 version: 1.0.0
 description: Miro whiteboard automation using REST API v2 and Python SDK for creating boards, frames, shapes, connectors, and collaborative visual workflows
 author: workspace-hub
-category: communication
+category: business
 type: skill
 capabilities:
   - board_management
@@ -29,6 +30,7 @@ related_skills:
   - github-actions
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Miro API Skill

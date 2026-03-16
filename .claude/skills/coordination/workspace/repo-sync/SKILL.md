@@ -1,23 +1,24 @@
 ---
-name: repo-sync
-description: Manage and synchronize multiple Git repositories across workspace-hub. Use for bulk git operations, repository status checks, branch management, and coordinated commits across 26+ repositories.
+name: workspace-repo-sync
+description: Manage and synchronize multiple Git repositories across workspace-hub. Use for bulk git operations, repository
+  status checks, branch management, and coordinated commits across 26+ repositories.
 version: 1.2.0
-category: workspace-hub
+category: coordination
 type: skill
 capabilities:
-  - bulk_git_operations
-  - repository_status_monitoring
-  - branch_management
-  - coordinated_commits
-  - multi_repo_sync
+- bulk_git_operations
+- repository_status_monitoring
+- branch_management
+- coordinated_commits
+- multi_repo_sync
 tools:
-  - Bash
-  - Read
-  - Write
+- Bash
+- Read
+- Write
 related_skills:
-  - workspace-cli
-  - compliance-check
-  - sparc-workflow
+- workspace-cli
+- compliance-check
+- sparc-workflow
 requires: []
 see_also: []
 tags: []

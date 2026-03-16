@@ -2,7 +2,7 @@
 name: feature-spec
 description: "Write structured product requirements documents (PRDs) with problem statements, user stories, requirements, and success metrics"
 version: 1.0.0
-category: product-management
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

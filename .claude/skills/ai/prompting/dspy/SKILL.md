@@ -1,4 +1,5 @@
 ---
+
 name: dspy
 description: Compile prompts into self-improving pipelines with signatures, modules, optimizers, and programmatic prompt engineering
 version: 1.0.0
@@ -26,6 +27,7 @@ platforms: [python]
 related_skills:
   - langchain
   - prompt-engineering
+scripts_exempt: true
 ---
 
 # DSPy Skill

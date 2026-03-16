@@ -1,4 +1,5 @@
 ---
+
 name: mooring-design
 description: Design and analyze mooring systems including CALM and SALM buoys, catenary
   moorings, and spread mooring configurations. Covers mooring line design, safety
@@ -8,6 +9,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # Mooring Design Skill
 

@@ -1,4 +1,5 @@
 ---
+
 name: pandasai
 description: >
   Conversational data analysis using natural language queries on pandas DataFrames.
@@ -33,6 +34,7 @@ related_skills:
   - pandas-data-processing
   - plotly
   - streamlit
+scripts_exempt: true
 ---
 
 # PandasAI Skill

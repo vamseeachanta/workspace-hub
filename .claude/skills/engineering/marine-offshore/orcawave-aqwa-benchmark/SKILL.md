@@ -1,11 +1,12 @@
 ---
+
 name: orcawave-aqwa-benchmark
 description: Cross-validation specialist for comparing OrcaWave and AQWA diffraction
   analysis results. Provides statistical comparison, peak value validation, and automated
   benchmark reporting for hydrodynamic coefficient verification.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - AQWA OrcaWave comparison
 - diffraction benchmark
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # OrcaWave-AQWA Benchmark Skill

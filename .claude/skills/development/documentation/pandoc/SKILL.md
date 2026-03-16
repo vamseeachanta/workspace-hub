@@ -2,7 +2,7 @@
 name: pandoc
 description: Universal document converter for transforming Markdown to PDF, DOCX, HTML, LaTeX, and 40+ other formats. Covers templates, filters, citations with BibTeX/CSL, and batch conversion automation scripts.
 version: 1.0.0
-category: documentation
+category: development
 type: skill
 capabilities:
   - Markdown to PDF conversion

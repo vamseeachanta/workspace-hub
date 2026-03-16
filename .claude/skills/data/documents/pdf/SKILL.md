@@ -3,7 +3,7 @@ name: pdf
 description: Comprehensive PDF manipulation toolkit with OpenAI Codex integration for intelligent PDF-to-Markdown conversion. IMPORTANT - Always convert PDFs to markdown first using Codex, then process the markdown. Also supports text/table extraction, PDF creation, merging/splitting, and forms. Use for all PDF document processing workflows.
 version: 1.2.2
 last_updated: 2026-01-04
-category: document-handling
+category: data
 related_skills:
   - pdf-text-extractor
   - document-rag-pipeline

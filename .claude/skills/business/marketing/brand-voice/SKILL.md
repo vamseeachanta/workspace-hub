@@ -2,7 +2,7 @@
 name: brand-voice
 description: "Apply and enforce brand voice, style guide, and messaging pillars across content. Use for brand consistency, tone guidance, and terminology management."
 version: 1.0.0
-category: marketing
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

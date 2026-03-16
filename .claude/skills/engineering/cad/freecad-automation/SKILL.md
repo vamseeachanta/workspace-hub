@@ -1,12 +1,13 @@
 ---
+
 name: freecad-automation
 description: AI-powered automation agent for FreeCAD CAD operations including natural
   language processing, batch processing, parametric design, and marine engineering
   applications. Use for CAD automation, drawing generation, FEM preprocessing, and
   integration with offshore analysis tools.
-version: 1.0.0
-updated: 2025-01-02
-category: cad-engineering
+version: 2.0.0
+updated: 2026-03-16
+category: engineering
 triggers:
 - FreeCAD automation
 - parametric modeling
@@ -27,6 +28,7 @@ capabilities:
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 # FreeCAD Automation Skill
 
@@ -54,6 +56,17 @@ compatibility:
 
 ## Changelog
 
+### [2.0.0] - 2026-03-16
+
+**Added:**
+- Parametric hull NURBS generation (`FreeCADHullGenerator`) with scipy fallback
+- Analytical hydrostatics via section integration (`HullHydrostatics`)
+- CalculiX FEM chain: INP writer, result parser, end-to-end pipeline (`FEMChain`)
+- STEP import and INP export in gmsh meshing module
+- Design table batch studies with multiprocessing parallelism (`DesignTable`)
+- Manifold validation for hull surfaces (`ManifoldChecker`)
+- Full round-trip: HullProfile → NURBS → STEP → gmsh → INP → CalculiX
+
 ### [1.0.0] - 2026-01-07
 
 **Added:**
@@ -71,9 +84,14 @@ compatibility:
 - Batch processing of FreeCAD files
 - Parametric design and design tables
 - Assembly management and constraint solving
-- FEM preprocessing and mesh generation
+- FEM preprocessing and mesh generation (CalculiX / gmsh)
 - Drawing generation with automatic dimensioning
-- Marine engineering hull design
+- Marine engineering hull design and hydrostatics
+- NURBS hull generation from HullProfile stations
+- CalculiX FEM structural analysis (plate-with-hole, stress concentration)
+- STEP import → volume mesh → INP export pipeline
+- Design table batch parametric studies with parallel execution
+- Manifold validation of generated hull geometry
 - Natural language CAD commands
 - Integration with OrcaFlex/AQWA workflows
 
@@ -92,10 +110,23 @@ This skill integrates agent capabilities from `/agents/freecad/`:
 - **Script Generation**: Auto-generate Python scripts from prompts
 
 ### Marine Engineering Specialization
-- Hull design automation
+- Hull NURBS generation from HullProfile stations (scipy fallback without FreeCAD)
+- Hydrostatic analysis: displaced volume, waterplane area, KB, BM via section integration
 - Stability calculations
 - Mooring system configuration
 - Structural analysis preprocessing
+
+### FEM Analysis (v2.0)
+- CalculiX INP file generation from gmsh mesh data
+- FRD/DAT result parsing (displacements, von Mises stress)
+- End-to-end FEM chain: geometry → mesh → solve → extract
+- Plate-with-hole Kt validation (Kt ≈ 3.0)
+
+### Design Table Studies (v2.0)
+- YAML-driven parametric sweeps (cartesian product of parameters)
+- Process-level parallelism via multiprocessing (FreeCAD not thread-safe)
+- Comparison YAML output for all variations
+- Manifold validation: watertight check, self-intersection, normal consistency
 
 ### Integration Points
 - **OrcaFlex**: Data exchange for hydrodynamic analysis
@@ -213,36 +244,96 @@ with open("gear_generator.py", "w") as f:
 exec(script)
 ```
 
-### Hull Design Automation
+### Hull Generation + Hydrostatics (WRK-1251 Child A)
 
 ```python
-from digitalmodel.agents.freecad.marine import HullDesigner
+from digitalmodel.hydrodynamics.hull_library.profile_schema import (
+    HullProfile, HullStation, HullType
+)
+from digitalmodel.visualization.design_tools.freecad_hull import FreeCADHullGenerator
+from digitalmodel.visualization.design_tools.hull_hydrostatics import HullHydrostatics
 
-# Initialize hull designer
-hull = HullDesigner()
-
-# Create hull from parameters
-hull_model = hull.create(
-    length=280.0,
-    beam=48.0,
-    depth=26.0,
-    draft=18.0,
-    block_coefficient=0.85,
-    hull_type="FPSO"
+# Define hull from stations (or load from YAML)
+profile = HullProfile(
+    name="tanker_100m", hull_type=HullType.TANKER,
+    length_bp=100.0, beam=20.0, draft=8.0, depth=12.0,
+    block_coefficient=0.7, source="parametric",
+    stations=[...],  # HullStation list
 )
 
-# Generate panel mesh for hydrodynamics
-hull.generate_panel_mesh(
-    model=hull_model,
-    panel_size=2.0,
-    output_file="hull_panels.dat"
-)
+# Generate NURBS surface (scipy fallback if FreeCAD unavailable)
+gen = FreeCADHullGenerator(profile)
+surface = gen.generate_nurbs_surface()
+# surface['surface_points'] = np.ndarray (n_stations × n_waterlines × 3)
 
-# Export for OrcaFlex
-hull.export_orcaflex(
-    model=hull_model,
-    output_file="orcaflex_models/fpso_hull.yml"
-)
+# Compute hydrostatics via section integration
+hydro = HullHydrostatics(profile)
+results = hydro.compute_all()
+# results = {'displaced_volume': 11200.0, 'displacement': 11480.0,
+#   'waterplane_area': 1700.0, 'kb': 4.8, 'bm_transverse': 5.06, ...}
+```
+
+### FEM Analysis Chain — CalculiX (WRK-1251 Child B)
+
+```python
+from digitalmodel.solvers.calculix import FEMChain, INPWriter
+
+# Quick validation: plate-with-hole Kt ≈ 3.0
+chain = FEMChain(work_dir=Path("/tmp/fem"))
+result = chain.run_plate_validation(sigma_applied=100.0)
+# result['kt'] ≈ 3.0 within 5%
+
+# Manual INP writing for custom geometry
+import numpy as np
+nodes = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
+elements = {'Tetrahedron 4': {'connectivity': np.array([[0,1,2,3]]), 'dimension': 3}}
+writer = INPWriter(nodes, elements)
+writer.add_material("STEEL", youngs_modulus=210000.0, poissons_ratio=0.3)
+writer.add_step(step_type="static")
+writer.write(Path("analysis.inp"))
+# Run: ccx analysis
+```
+
+### STEP Import → Mesh → INP Export (WRK-1251 Child C)
+
+```python
+from digitalmodel.solvers.gmsh_meshing import GMSHMeshGenerator
+
+with GMSHMeshGenerator() as gen:
+    # Import STEP, mesh, export INP — one pipeline
+    mesh = gen.generate_mesh_from_step("hull.step", element_size=0.5)
+    gen.export_mesh_inp("hull.inp", title="Hull FEM model")
+
+    # Or create test geometry directly
+    gen.create_step_geometry("box", "test.step", dimensions=(10, 5, 2))
+```
+
+### Design Table Batch Studies (WRK-1251 Child D)
+
+```python
+from digitalmodel.visualization.design_tools.design_table import DesignTable
+from digitalmodel.visualization.design_tools.manifold_check import ManifoldChecker
+
+# Parametric sweep from YAML config
+table = DesignTable.from_yaml(Path("study.yaml"), base_profile=profile)
+# study.yaml: parameters: {length_bp: [90,100,110], beam: [18,20,22]}
+
+# Or add parameters programmatically
+table = DesignTable(base_profile=profile)
+table.add_parameter("length_bp", [90.0, 100.0, 110.0])
+table.add_parameter("beam", [18.0, 20.0, 22.0])
+
+# Generate all variations and run hydrostatics (parallel via multiprocessing)
+variations = table.generate_variations()  # 9 HullProfile instances
+results = table.run_batch_hydrostatics(parallel=True)
+table.export_results_yaml(Path("comparison.yaml"))
+
+# Round-trip manifold validation
+gen = FreeCADHullGenerator(profile)
+surface = gen.generate_nurbs_surface()
+checker = ManifoldChecker(surface['surface_points'])
+report = checker.run_all_checks()
+# report = {'watertight': True, 'no_self_intersection': True, 'normals_consistent': True, 'passed': True}
 ```
 
 ## Command Line Interface
@@ -616,5 +707,6 @@ def validate_step_export(original_fcstd, exported_step):
 
 ## Version History
 
+- **2.0.0** (2026-03-16): Added parametric hull NURBS generation, hydrostatic analysis, CalculiX FEM chain, STEP/INP pipeline, design table batch studies, manifold validation (WRK-1251)
 - **1.1.0** (2026-02-24): Added output parsing, failure diagnosis, and validation sections; fixed FreeCADGui availability in freecadcmd ≥ 0.21 (WRK-372 P2-ENHANCE, validated 35/36→36/36)
 - **1.0.0** (2025-01-02): Initial release from agents/freecad/ configuration

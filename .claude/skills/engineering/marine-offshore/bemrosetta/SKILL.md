@@ -1,9 +1,10 @@
 ---
+
 name: bemrosetta
 description: BEMRosetta hydrodynamic coefficient converter - AQWA to OrcaFlex workflow with QTF and mesh support
 version: 1.0.0
 updated: 2026-01-27
-category: offshore-engineering
+category: engineering
 triggers:
   - bemrosetta
   - hydrodynamic conversion
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # BEMRosetta Integration Skill

@@ -1,9 +1,10 @@
 ---
+
 name: cli-productivity
 version: 1.0.0
 description: Essential CLI tools and shell productivity patterns for efficient terminal workflows
 author: workspace-hub
-category: devtools
+category: operations
 capabilities:
   - Shell aliases and functions
   - Modern CLI tools (jq, fzf, ripgrep, fd, bat, exa)
@@ -29,6 +30,7 @@ related_skills:
   - bash-cli-framework
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # CLI Productivity Skill

@@ -1,4 +1,5 @@
 ---
+
 name: xlsx-to-python
 description: >
   Convert Excel calculation spreadsheets to Python code — extract formulas,
@@ -31,6 +32,7 @@ triggers:
   - convert spreadsheet to code
   - xlsx formula extraction
 tags: [excel, xlsx, formulas, python, tdd, dark-intelligence]
+scripts_exempt: true
 ---
 
 # XLSX-to-Python Conversion Skill

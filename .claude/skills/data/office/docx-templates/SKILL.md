@@ -1,9 +1,10 @@
 ---
+
 name: docx-templates
 description: Template-based Word document generation using Jinja2 syntax. Create reports, contracts, and documents with loops, conditionals, tables, and mail merge capabilities.
 version: 1.0.0
 author: workspace-hub
-category: office-docs
+category: data
 type: skill
 trigger: manual
 auto_execute: false
@@ -29,6 +30,7 @@ related_skills:
   - pypdf
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Docx-Templates Skill

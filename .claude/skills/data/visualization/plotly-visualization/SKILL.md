@@ -1,4 +1,5 @@
 ---
+
 name: plotly-visualization
 version: "1.0.0"
 category: data
@@ -9,6 +10,7 @@ globs:
   - src/assetutilities/common/visualization.py
 alwaysApply: false
 tags: []
+scripts_exempt: true
 ---
 
 # Plotly Visualization Skill

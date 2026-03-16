@@ -1,9 +1,10 @@
 ---
+
 name: vscode-extensions
 version: 1.0.0
 description: VS Code productivity optimization with essential extensions, settings sync, profiles, keybindings, snippets, and workspace configuration
 author: workspace-hub
-category: devtools
+category: operations
 type: skill
 capabilities:
   - extension_management
@@ -28,6 +29,7 @@ related_skills:
   - docker
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # VS Code Extensions Skill

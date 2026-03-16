@@ -2,7 +2,7 @@
 name: legal-sanity
 description: "Scan code for client project names, proprietary tool references, and legally sensitive content"
 version: 1.0.0
-category: workspace-hub
+category: coordination
 capabilities:
   - legal_reference_scanning
   - client_name_detection

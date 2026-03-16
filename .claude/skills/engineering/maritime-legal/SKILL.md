@@ -1,4 +1,5 @@
 ---
+
 name: maritime-legal
 version: "1.0.0"
 category: engineering/maritime-legal
@@ -17,6 +18,7 @@ see_also:
   - engineering/marine-offshore/risk-assessment
   - business/legal/compliance
 trigger: manual
+scripts_exempt: true
 ---
 
 # Maritime Legal Engineering Skill

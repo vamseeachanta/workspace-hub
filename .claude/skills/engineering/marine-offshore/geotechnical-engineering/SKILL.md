@@ -1,4 +1,5 @@
 ---
+
 name: geotechnical-engineering
 version: "1.0.0"
 updated: 2026-02-26
@@ -16,6 +17,7 @@ see_also:
   - mooring-analysis
   - structural-analysis
   - marine-offshore-engineering
+scripts_exempt: true
 ---
 
 # Geotechnical Engineering Skill

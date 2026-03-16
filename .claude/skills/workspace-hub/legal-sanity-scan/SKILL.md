@@ -1,7 +1,7 @@
 ---
 name: legal-sanity-scan
 version: "1.0.0"
-category: incoming
+category: workspace-hub
 description: "Legal compliance scanning for client identifier leakage in ported code"
 tags: []
 ---

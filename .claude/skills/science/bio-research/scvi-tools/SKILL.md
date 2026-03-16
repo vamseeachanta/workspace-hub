@@ -1,8 +1,9 @@
 ---
+
 name: scvi-tools
 description: "Deep learning for single-cell analysis using scvi-tools: data integration, batch correction, multi-modal analysis, reference mapping, and more."
 version: 1.0.0
-category: bio-research
+category: science
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
@@ -15,6 +16,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # scvi-tools Deep Learning Skill

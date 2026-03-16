@@ -3,7 +3,7 @@ name: parallel-batch-executor
 version: 1.0.0
 description: Parallel task execution patterns for 300% performance gains
 author: workspace-hub
-category: bash
+category: _core
 tags: [bash, parallel, xargs, performance, batch, optimization]
 platforms: [linux, macos]
 ---

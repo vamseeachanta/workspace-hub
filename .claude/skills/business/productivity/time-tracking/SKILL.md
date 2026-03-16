@@ -1,9 +1,10 @@
 ---
+
 name: time-tracking
 version: 1.0.0
 description: Time tracking integration patterns with RescueTime and Toggl APIs for automated time entry, reporting, analytics, and project/task attribution
 author: workspace-hub
-category: productivity
+category: business
 type: skill
 capabilities:
   - Time entry automation
@@ -30,6 +31,7 @@ related_skills:
   - api-integration
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Time Tracking Integration Skill

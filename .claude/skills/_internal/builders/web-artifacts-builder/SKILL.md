@@ -2,7 +2,7 @@
 name: web-artifacts-builder
 description: Build self-contained interactive web applications as single HTML files. Use for creating demos, prototypes, interactive tools, and standalone web experiences that work without external servers.
 version: 2.0.0
-category: builders
+category: _internal
 last_updated: 2026-01-02
 related_skills:
   - frontend-design

@@ -1,11 +1,12 @@
 ---
+
 name: orcawave-damping-sweep
 description: Viscous damping analysis specialist for OrcaWave. Handles parametric
   damping studies, roll damping optimization, critical damping calculations, and
   comparison with model test data for vessel motion tuning.
 version: 1.0.0
 updated: 2026-01-17
-category: offshore-engineering
+category: engineering
 triggers:
 - damping sweep
 - roll damping
@@ -19,6 +20,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+scripts_exempt: true
 ---
 
 # OrcaWave Damping Sweep Skill

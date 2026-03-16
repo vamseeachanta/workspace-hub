@@ -3,7 +3,7 @@ name: xlsx
 description: Excel spreadsheet toolkit for creating, reading, and manipulating .xlsx files. Supports formulas, formatting, charts, and financial modeling with industry-standard conventions. Use for data analysis, financial models, reports, and spreadsheet automation.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - docx
   - pptx

@@ -2,7 +2,7 @@
 name: seo-optimizer
 description: SEO optimization toolkit with scoring, keyword research, and technical SEO auditing. Use for improving search rankings, content optimization, and technical SEO fixes. Based on alirezarezvani/claude-skills.
 version: 1.0.0
-category: marketing
+category: business
 last_updated: 2026-01-19
 source: https://github.com/alirezarezvani/claude-skills
 related_skills:

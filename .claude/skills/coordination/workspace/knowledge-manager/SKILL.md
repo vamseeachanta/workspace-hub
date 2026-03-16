@@ -2,7 +2,7 @@
 name: knowledge-manager
 description: Capture, organize, and surface institutional knowledge across sessions and repositories
 version: 1.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

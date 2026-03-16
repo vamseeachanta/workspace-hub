@@ -3,7 +3,7 @@ name: yaml-configuration
 version: 1.0.0
 description: YAML for configuration-driven engineering workflows, model setup, and analysis parameters
 author: workspace-hub
-category: programming
+category: data
 tags: [yaml, configuration, engineering, orcaflex, automation, data-structures]
 platforms: [yaml, python]
 capabilities: []

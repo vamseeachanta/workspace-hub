@@ -2,7 +2,7 @@
 name: algorithmic-art
 description: Create generative art using p5.js with seeded randomness and interactive exploration. Use for computational aesthetics, parametric design, particle systems, noise fields, and procedural generation.
 version: 2.0.0
-category: content-design
+category: business
 last_updated: 2026-01-02
 related_skills:
   - canvas-design

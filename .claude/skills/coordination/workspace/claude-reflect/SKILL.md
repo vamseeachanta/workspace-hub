@@ -2,7 +2,7 @@
 name: claude-reflect
 description: Periodic cross-repo reflection analyzing 30 days of git history, extracting patterns via RAGS loop, and auto-creating skills
 version: 2.0.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: scheduled
 auto_execute: true

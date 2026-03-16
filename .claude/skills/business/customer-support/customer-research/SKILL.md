@@ -2,7 +2,7 @@
 name: customer-research
 description: "Investigate customer questions through multi-source research with confidence scoring"
 version: 1.0.0
-category: customer-support
+category: business
 last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:

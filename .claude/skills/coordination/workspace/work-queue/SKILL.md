@@ -2,7 +2,7 @@
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
 version: 1.8.0
-category: workspace-hub
+category: coordination
 type: skill
 trigger: manual
 auto_execute: false

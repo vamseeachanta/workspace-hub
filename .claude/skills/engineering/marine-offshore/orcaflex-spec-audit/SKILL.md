@@ -3,7 +3,7 @@ name: orcaflex-spec-audit
 description: Audit, classify, and score OrcaFlex spec.yml files across the model library for quality, schema validity, and structure type categorization.
 version: 1.0.0
 updated: 2026-02-11
-category: offshore-engineering
+category: engineering
 triggers:
 - audit spec library
 - classify OrcaFlex specs

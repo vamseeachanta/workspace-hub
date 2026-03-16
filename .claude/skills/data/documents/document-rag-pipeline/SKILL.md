@@ -3,7 +3,7 @@ name: document-rag-pipeline
 description: Build complete document knowledge bases with PDF text extraction, OCR for scanned documents, vector embeddings, and semantic search. Use this for creating searchable document libraries from folders of PDFs, technical standards, or any document collection.
 version: 1.1.0
 last_updated: 2026-01-02
-category: document-handling
+category: data
 related_skills:
   - pdf-text-extractor
   - semantic-search-setup

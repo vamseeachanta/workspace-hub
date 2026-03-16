@@ -1,14 +1,16 @@
 ---
+
 name: hydrodynamic-analysis
 version: 1.0.0
 description: Hydrodynamic analysis using BEM, RAOs, added mass, damping, and wave loads for offshore structures
 author: workspace-hub
-category: subject-matter-expert
+category: engineering
 tags: [hydrodynamics, bem, rao, added-mass, damping, wave-loads, wamit, aqwa, orcawave]
 platforms: [engineering]
 capabilities: []
 requires: []
 see_also: []
+scripts_exempt: true
 ---
 
 # Hydrodynamic Analysis SME Skill
