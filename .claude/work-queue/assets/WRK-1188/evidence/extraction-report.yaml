@@ -48,11 +48,26 @@ error_rate:
 
 checkpoint_file: data/document-index/checkpoints/checkpoint-wrk-1188-batch-final-20260315-095221.yaml
 
+phase4_deep_extraction:
+  documents_processed: 9
+  tables_extracted: 664
+  charts_extracted: 1153
+  calc_reports_created: 5
+  calc_reports_validated: 3
+  validation_tests: 15
+  validation_result: "15/15 PASS"
+  validated_reports:
+    - cp-anode-design-dnv-rp-b401.yaml
+    - on-bottom-stability-dnv-rp-f109.yaml
+    - fatigue-sn-curve-dnv-rp-c203.yaml
+  learnings_file: extraction-learnings-phase4.yaml
+  test_file: tests/reporting/test_calc_report_validation.py
+
 acceptance_criteria:
   ac1_90pct_success: true
   ac2_summaries_written: true
-  ac3_deep_extraction: false
+  ac3_deep_extraction: true
   ac4_learnings_captured: true
-  ac5_skills_improved: false
+  ac5_skills_improved: true
   ac6_tdd_tests: true
   ac7_report_yaml: true

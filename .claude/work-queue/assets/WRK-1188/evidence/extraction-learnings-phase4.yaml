@@ -1,0 +1,69 @@
+wrk_id: WRK-1188
+phase: 4
+generated_at: "2026-03-15T17:00:00Z"
+
+extraction_results:
+  documents_processed: 9
+  total_tables: 664
+  total_charts: 1153
+  calc_reports_created: 5
+  calc_reports_validated: 3
+
+learnings:
+  - id: L1
+    category: extraction-pattern
+    finding: "Engineering standards don't use textbook 'Example N.N:' format — calculations are inline formulas with reference data in tables"
+    impact: "Deprioritized worked_example_parser.py; table→YAML→code pipeline is the correct approach"
+    applied: true
+
+  - id: L2
+    category: table-extraction
+    finding: "DNV-RP-B401 tables 10-1 through 10-8 extract cleanly with pdfplumber; tables with <3 data rows are empty headers"
+    impact: "Added min-row filter to table_exporter.py"
+    applied: true
+
+  - id: L3
+    category: validation-pattern
+    finding: "Calc report YAML outputs can be validated against existing Python code via TDD tests that load inputs from YAML and compare"
+    impact: "Created test_calc_report_validation.py pattern — 15 tests across 3 standards"
+    applied: true
+
+  - id: L4
+    category: s-n-curves
+    finding: "DNV-RP-C203 Table 2-1 extracted S-N curve parameters match digitalmodel constants exactly (log(a), m, fatigue limit, k)"
+    impact: "Confirmed extraction accuracy for critical fatigue data"
+    applied: true
+
+  - id: L5
+    category: astm-classification
+    finding: "ASTM deterministic classifier has 86% agreement with LLM on discipline — dual-use steel specs (A694, A707, A131) cause disagreement between materials vs pipeline"
+    impact: "Need pipeline/marine context rules for forged steel ASTM specs to reach 90% target"
+    applied: false
+
+  - id: L6
+    category: scanned-pdfs
+    finding: "API 579 (2016) is a scanned PDF — 0 tables and 0 charts extracted; needs OCR fallback"
+    impact: "Tesseract OCR integration needed for scanned standards"
+    applied: false
+
+  - id: L7
+    category: promoted-tables
+    finding: "Promoted CSV tables from DNV-RP-B401/F109/C203 are directly usable as test fixtures and calculation inputs"
+    impact: "data/standards/promoted/ is the canonical location for extracted reference data"
+    applied: true
+
+script_enhancements:
+  completed:
+    - script: table_exporter.py
+      change: "Filter tables with <3 data rows"
+    - script: doc-intelligence-promotion SKILL.md
+      change: "Added table→YAML→code pattern documentation"
+  pending:
+    - script: extract_engineering_constants.py
+      change: "Add Greek symbol regex (ρ, α, σ, ε with units)"
+    - script: chart_extractor.py
+      change: "Add log-log axis detection for S-N and fatigue charts"
+    - script: deep-extract.py
+      change: "Add --batch flag for multiple PDFs"
+    - script: deep-extract.py
+      change: "Add OCR fallback via tesseract for scanned PDFs"
