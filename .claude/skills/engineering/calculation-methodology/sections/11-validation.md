@@ -38,7 +38,7 @@ validation:
 - [ ] Validation method is truly independent (not the same formula re-applied)
 - [ ] Benchmark source is a traceable reference
 - [ ] Test categories help reviewers understand coverage scope
-- [ ] Software validation references a verified benchmark case
+- [ ] Software benchmark details encoded in `method` and `benchmark_source`
 
 ## Example Snippet
 
@@ -62,7 +62,7 @@ validation:
 
 - Using nested `methods[]` with structured `comparison` objects
   (renderer expects flat scalar fields)
-- Including `software_validation` or `conclusion` sub-objects
+- Including `software_validation` or `conclusion` sub-objects (encode in `method`)
 - Using the same formula as validation (that is verification, not validation)
 - Validation skipped because "the method is well-established"
 - Test data comparison without stating test conditions and applicability

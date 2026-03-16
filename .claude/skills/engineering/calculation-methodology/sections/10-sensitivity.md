@@ -20,7 +20,8 @@ sensitivity:
 > a `tornado` chart object, and `conclusions`. The renderer uses a simple flat
 > list where each entry is `{parameter, range, result}` — all strings. Encode
 > sweep details and pass/fail outcomes into the `range` and `result` strings.
-> Use section 14 (charts) for tornado chart visualization.
+> For tornado-style influence ranking, use a `bar` chart in section 14
+> (the renderer does not support a dedicated `tornado` chart type).
 
 ## Required Content
 

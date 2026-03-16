@@ -32,9 +32,9 @@ references:
 
 - [ ] Each entry is a plain string (not a structured dict)
 - [ ] All standards from the design basis (section 03) are listed with edition
-- [ ] No orphan references (every ref is cited somewhere in the document)
-- [ ] No orphan citations (every citation in the body has a matching reference)
-- [ ] Project documents include revision numbers
+- [ ] Reference list is complete — every source cited in the body is listed
+- [ ] Project documents include revision numbers in the string
+- [ ] References are ordered: normative first, then informative, then project docs
 
 ## Example Snippet
 
