@@ -10,72 +10,69 @@ assessment without reading every calculation step.
 
 ```yaml
 outputs:
-  summary:
-    - check: string            # name of the design check
-      reference: string        # code clause
-      capacity: number
-      demand: number
-      unit: string
-      utilization: number      # demand / capacity (0.0 to 1.0+)
-      limit: number            # maximum allowable utilization
-      status: enum             # pass | fail
-      governing: boolean       # is this the governing check?
-  governing_case:
-    check: string
-    utilization: number
-    margin: string             # remaining margin description
-  overall_status: enum         # adequate | inadequate | marginal
+  - name: string              # result description
+    symbol: string            # mathematical symbol
+    value: number             # computed value
+    unit: string              # unit of measurement
+    pass_fail: string         # optional — "pass" or "fail"
+    limit: number             # optional — allowable limit (rendered as "≤ limit")
+    notes: string             # optional — computation trace or clarification
 ```
+
+> **Renderer Mapping Note:** The methodology recommends a nested structure
+> with `summary[]` containing `check`, `reference`, `capacity`, `demand`,
+> `utilization`, `limit`, `status`, `governing` fields, plus a
+> `governing_case` object and `overall_status`. The renderer uses a flat
+> list where each entry is `{name, symbol, value, unit}` with optional
+> `pass_fail`, `limit`, and `notes`. Encode utilization and governing
+> information in `notes`, and use section 13 (conclusions) for the overall
+> adequacy statement and governing check identification.
 
 ## Required Content
 
-- Summary table with all checks, their utilization ratios, and pass/fail
-- Identification of the governing (highest utilization) case
-- Overall adequacy status
-- Units on both capacity and demand values
+- All key results from the calculation
+- Pass/fail status for design checks
+- Units on all values
+- Limit values for checks that have acceptance criteria
 
 ## Quality Checklist
 
-- [ ] Every check from section 08 appears in the output summary
-- [ ] Utilization = demand / capacity (not inverted)
-- [ ] Governing case is explicitly identified
-- [ ] Marginal results (utilization > 0.85) are flagged for attention
-- [ ] Overall status is a clear adequacy statement
+- [ ] Every check from section 08 appears as an output entry
+- [ ] `pass_fail` uses lowercase `"pass"` or `"fail"` (not `"PASS"`)
+- [ ] `limit` is a number (the renderer prepends "≤")
+- [ ] Governing case is identifiable from the utilization values
+- [ ] Each entry has `name`, `symbol`, `value`, and `unit`
 
 ## Example Snippet
 
 ```yaml
 outputs:
-  summary:
-    - check: "Pressure containment (burst)"
-      reference: "DNV-ST-F101 Eq. 5.8"
-      capacity: 55.8
-      demand: 34.5
-      unit: "MPa"
-      utilization: 0.618
-      limit: 1.0
-      status: pass
-      governing: true
-    - check: "External pressure (collapse)"
-      reference: "DNV-ST-F101 Eq. 5.11"
-      capacity: 42.3
-      demand: 12.1
-      unit: "MPa"
-      utilization: 0.286
-      limit: 1.0
-      status: pass
-      governing: false
-  governing_case:
-    check: "Pressure containment (burst)"
-    utilization: 0.618
-    margin: "38.2% remaining capacity"
-  overall_status: adequate
+  - name: "Initial current demand"
+    symbol: "I_ci"
+    value: 15.0
+    unit: "A"
+    notes: "I_ci = 5000 × 0.150 × 0.02 = 15.0 A"
+  - name: "Factored Damage"
+    symbol: "D_{factored}"
+    value: 0.45
+    unit: "-"
+    pass_fail: "pass"
+    limit: 1.0
+    notes: "D * DFF = 0.15 * 3.0"
+  - name: "Burst Utilization"
+    symbol: "U_{burst}"
+    value: 0.618
+    unit: "-"
+    pass_fail: "pass"
+    limit: 1.0
+    notes: "Demand/Capacity = 34.5/55.8 — governing check"
 ```
 
 ## Common Mistakes
 
-- Utilization ratio inverted (capacity / demand instead of demand / capacity)
-- Governing case not identified — reviewer has to scan all rows
-- Missing checks — a limit state computed in section 08 is omitted from summary
-- No overall status — the calculation ends without a clear adequacy statement
-- Units omitted from capacity/demand columns
+- Using nested `summary[]` with `check/capacity/demand/utilization` structure
+  (renderer expects flat `{name, symbol, value, unit}` entries)
+- Including `governing_case` or `overall_status` objects (use section 13 instead)
+- Using uppercase `"PASS"` instead of lowercase `"pass"`
+- Units omitted from output values
+- Missing `symbol` field (required by renderer)

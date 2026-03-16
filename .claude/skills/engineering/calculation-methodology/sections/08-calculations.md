@@ -10,79 +10,65 @@ computational section — every step must be traceable and reproducible.
 
 ```yaml
 calculations:
-  - id: string                # step identifier (e.g., "CALC-01")
-    description: string
-    reference: string         # code clause or equation from section 07
-    formula: string           # symbolic equation
-    substitution: string      # equation with numbers substituted
-    result:
-      value: number
-      unit: string
-    intermediate_results:
+  - step: integer             # step number (e.g., 1, 2, 3)
+    description: string       # what this step computes
+    detail: string            # optional — formula, substitution, or narrative
+    code_clause: string       # optional — code clause or equation reference
+    intermediate_results:     # optional
       - name: string
         value: number
-        unit: string
-    hand_check:
-      method: string          # e.g., "order of magnitude", "simplified formula"
-      expected_range: string
-      status: enum            # consistent | inconsistent
-    notes: string             # clarifications or code interpretation
+        unit: string          # optional
 ```
+
+> **Renderer Mapping Note:** The methodology recommends `id` (string),
+> `reference`, `formula`, `substitution`, `result{value,unit}`, and
+> `hand_check` as separate fields. The renderer uses `step` (integer, not
+> `id`), `code_clause` (not `reference`), and a single `detail` string
+> (not separate `formula`/`substitution`). Combine symbolic formula and
+> numeric substitution into `detail`. Hand-check results can go in
+> `intermediate_results` or the next step's `detail`.
 
 ## Required Content
 
-- Sequential calculation steps with clause references
-- Symbolic formula followed by numeric substitution
+- Sequential calculation steps with `step` number and `description`
+- Code clause references in `code_clause`
 - Intermediate results shown (not just final answer)
-- At least one hand-check or sanity check per major calculation
 
 ## Quality Checklist
 
-- [ ] Each step cites the specific code clause or equation number
-- [ ] Symbolic form precedes numeric substitution (reviewer sees the formula)
+- [ ] Each step uses integer `step` field (not string `id`)
+- [ ] Code clause references use `code_clause` (not `reference`)
+- [ ] Symbolic form and substitution combined in `detail`
 - [ ] Intermediate results are shown and have units
-- [ ] Order-of-magnitude or hand-check confirms the computed result
-- [ ] Unit consistency is maintained throughout (no silent conversions)
+- [ ] Unit consistency is maintained throughout
 
 ## Example Snippet
 
 ```yaml
 calculations:
-  - id: "CALC-01"
+  - step: 1
     description: "Corroded wall thickness"
-    reference: "DNV-ST-F101 Sec. 5.4.2"
-    formula: "t_1 = t_nom - t_fab - t_corr"
-    substitution: "t_1 = 20.6 - 1.0 - 3.0"
-    result:
-      value: 16.6
-      unit: "mm"
-    hand_check:
-      method: "Direct subtraction — trivially verifiable"
-      expected_range: "15–20 mm"
-      status: consistent
+    detail: "t_1 = t_nom - t_fab - t_corr = 20.6 - 1.0 - 3.0 = 16.6 mm"
+    code_clause: "DNV-ST-F101 Sec. 5.4.2"
+    intermediate_results:
+      - name: "Corroded wall thickness"
+        value: 16.6
+        unit: "mm"
 
-  - id: "CALC-02"
+  - step: 2
     description: "Pressure containment resistance"
-    reference: "DNV-ST-F101 Eq. 5.8"
-    formula: "p_b = (2 * t_1) / (D_o - t_1) * f_cb * (2 / sqrt(3))"
-    substitution: "p_b = (2 × 16.6) / (323.9 - 16.6) × 450 × 1.1547"
-    result:
-      value: 55.8
-      unit: "MPa"
+    detail: "p_b = (2 × t_1) / (D_o - t_1) × f_cb × (2/√3) = (2 × 16.6) / (323.9 - 16.6) × 450 × 1.1547 = 55.8 MPa"
+    code_clause: "DNV-ST-F101 Eq. 5.8"
     intermediate_results:
       - name: "Geometry ratio 2t/(D-t)"
         value: 0.1081
-        unit: "dimensionless"
-    hand_check:
-      method: "Barlow approximation: p = 2*SMYS*t/D"
-      expected_range: "40–60 MPa"
-      status: consistent
 ```
 
 ## Common Mistakes
 
+- Using `id` instead of `step` (renderer requires integer `step`)
+- Using `reference` instead of `code_clause`
+- Putting formula and substitution in separate `formula`/`substitution` fields
+  (renderer uses single `detail` string)
+- Including `result` or `hand_check` sub-objects (not consumed by renderer)
 - Showing only final result without intermediate steps
-- Missing code clause reference — reviewer cannot trace the formula
-- No hand-check — a wrong decimal place goes unnoticed
-- Unit conversion done silently mid-calculation (e.g., mm to m without note)
-- Copy-paste errors in substitution not caught because intermediates are hidden

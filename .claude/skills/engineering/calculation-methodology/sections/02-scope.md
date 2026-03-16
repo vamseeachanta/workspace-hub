@@ -15,20 +15,15 @@ scope:
     - string                 # items explicitly covered
   exclusions:
     - string                 # items explicitly not covered
-  limitations:
-    - string                 # known constraints on the analysis
-  validity_range:
-    temperature:
-      min: number
-      max: number
-      unit: string
-    pressure:
-      min: number
-      max: number
-      unit: string
-    geometry:
-      description: string   # applicable geometry range
+  limitations: string        # optional — known constraints (scalar string)
+  validity_range: string     # optional — applicable parameter range (scalar string)
 ```
+
+> **Renderer Mapping Note:** The methodology recommends structured validity
+> ranges (temperature, pressure, geometry with min/max/unit). The renderer
+> treats both `limitations` and `validity_range` as scalar strings. Encode
+> structured range details as a descriptive string, e.g.,
+> `"Temperature: -10 to 80 degC; Pressure: 0 to 345 barg"`.
 
 ## Required Content
 
@@ -59,18 +54,10 @@ scope:
   exclusions:
     - "On-bottom stability (covered in PRJ-CALC-003)"
     - "Free span fatigue (covered in PRJ-CALC-004)"
-  limitations:
-    - "Analysis assumes uniform wall thickness — mill tolerance applied as reduction"
-    - "Dynamic effects from slugging not considered"
-  validity_range:
-    temperature:
-      min: -10
-      max: 80
-      unit: "degC"
-    pressure:
-      min: 0
-      max: 345
-      unit: "barg"
+  limitations: >
+    Analysis assumes uniform wall thickness — mill tolerance applied as
+    reduction. Dynamic effects from slugging not considered.
+  validity_range: "Temperature: -10 to 80 degC; Pressure: 0 to 345 barg"
 ```
 
 ## Common Mistakes
@@ -79,4 +66,5 @@ scope:
 - No exclusions listed — reviewer assumes everything is covered and finds gaps
 - Validity range omitted, making it unclear if the calculation applies at
   extreme operating conditions
+- Using `limitations` as a list instead of a scalar string
 - Scope does not reference which standards govern the checks

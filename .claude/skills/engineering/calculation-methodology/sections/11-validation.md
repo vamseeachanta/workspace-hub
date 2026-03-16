@@ -11,74 +11,58 @@ not just that the method was followed correctly.
 
 ```yaml
 validation:
-  methods:
-    - type: enum               # benchmark | alternative_method | test_data | project_comparison
-      description: string
-      source: string           # reference for the validation data
-      comparison:
-        this_calculation: number
-        validation_value: number
-        unit: string
-        difference_pct: number
-        acceptable_tolerance: number
-        status: enum           # acceptable | unacceptable
-  software_validation:
-    tool: string               # software name if used
-    version: string
-    model_description: string
-    verification_case: string  # reference to a verified benchmark
-  conclusion: string           # overall validation assessment
+  method: string              # optional — validation method description
+  test_file: string           # optional — path to test file
+  test_count: integer         # optional — number of test cases
+  test_categories:            # optional — list of test category names
+    - string
+  benchmark_source: string    # optional — reference for benchmark data
 ```
+
+> **Renderer Mapping Note:** The methodology recommends a `methods[]` array
+> with structured comparison objects (`this_calculation`, `validation_value`,
+> `difference_pct`, `acceptable_tolerance`, `status`) plus
+> `software_validation` and `conclusion`. The renderer uses a flat dict with
+> all fields optional. Encode detailed comparison results in `method`, and
+> reference benchmark sources in `benchmark_source`.
 
 ## Required Content
 
-- At least one independent validation method
-- Quantitative comparison with tolerance and pass/fail
-- Source reference for validation data
-- Conclusion stating whether the calculation is validated
+- At least one validation approach described in `method`
+- Source reference for validation data in `benchmark_source`
+- Test file path if automated tests exist
 
 ## Quality Checklist
 
+- [ ] All fields are scalars or simple lists (no nested comparison objects)
 - [ ] Validation method is truly independent (not the same formula re-applied)
-- [ ] Acceptance tolerance is stated and justified (not arbitrary)
-- [ ] Differences are explained if outside tolerance but still acceptable
+- [ ] Benchmark source is a traceable reference
+- [ ] Test categories help reviewers understand coverage scope
 - [ ] Software validation references a verified benchmark case
-- [ ] Published test data or worked examples are preferred over ad-hoc checks
 
 ## Example Snippet
 
 ```yaml
 validation:
-  methods:
-    - type: alternative_method
-      description: "ASME B31.8 Barlow formula for burst pressure"
-      source: "ASME B31.8-2022, Eq. 841.1.1"
-      comparison:
-        this_calculation: 55.8
-        validation_value: 57.2
-        unit: "MPa"
-        difference_pct: 2.5
-        acceptable_tolerance: 10.0
-        status: acceptable
-    - type: benchmark
-      description: "DNV-ST-F101 worked example in Appendix E"
-      source: "DNV-ST-F101 (2021) Appendix E, Example E-1"
-      comparison:
-        this_calculation: 55.8
-        validation_value: 55.6
-        unit: "MPa"
-        difference_pct: 0.4
-        acceptable_tolerance: 1.0
-        status: acceptable
-  conclusion: >
-    Results are within 2.5% of the ASME alternative method and within 0.4%
-    of the DNV worked example. Calculation is validated.
+  method: >
+    Independent check using ASME B31.8 Barlow formula. Result: 57.2 MPa
+    vs this calculation 55.8 MPa (2.5% difference, within 10% tolerance).
+    Also compared to DNV-ST-F101 Appendix E worked example: 55.6 MPa
+    (0.4% difference).
+  test_file: "tests/test_wall_thickness_burst.py"
+  test_count: 12
+  test_categories:
+    - "Burst pressure — seawater"
+    - "Burst pressure — air"
+    - "Collapse pressure"
+  benchmark_source: "DNV-ST-F101 (2021) Appendix E, Example E-1"
 ```
 
 ## Common Mistakes
 
+- Using nested `methods[]` with structured `comparison` objects
+  (renderer expects flat scalar fields)
+- Including `software_validation` or `conclusion` sub-objects
 - Using the same formula as validation (that is verification, not validation)
-- No tolerance stated — reviewer cannot judge if a 5% difference is acceptable
-- Software results presented without benchmarking the software itself
 - Validation skipped because "the method is well-established"
 - Test data comparison without stating test conditions and applicability

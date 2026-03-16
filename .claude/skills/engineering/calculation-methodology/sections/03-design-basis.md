@@ -10,44 +10,36 @@ anchors every subsequent calculation step to a specific code clause.
 
 ```yaml
 design_basis:
-  codes:
-    - standard: string       # e.g., "DNV-ST-F101"
-      edition: string        # e.g., "2021-08"
-      title: string          # full title of the standard
-      role: enum             # primary | supplementary | informative
-  design_life:
-    value: number
-    unit: string             # years
-  safety_class:
-    class: string            # e.g., "medium", "high"
-    justification: string
-  location_class:
-    class: string
-    justification: string
-  load_combinations:
-    - id: string             # e.g., "LC-01"
-      description: string
-      loads:
-        - type: string
-          value: number
-          unit: string
-          factor: number     # load factor / partial safety factor
-      reference: string      # code clause
+  codes:                       # list of dicts or list of strings
+    - code: string             # standard identifier (e.g., "DNV-ST-F101")
+      edition: string          # edition year (e.g., "2021-08")
+      clause: string           # optional — applicable clause
+  design_life: string          # scalar (e.g., "25 years")
+  safety_class: string         # optional — e.g., "medium"
+  load_combinations:           # optional — list of strings
+    - string
+  environment: string          # optional — environmental description
 ```
+
+> **Renderer Mapping Note:** The methodology recommends richer structures for
+> codes (title, role), design life (value + unit), safety class (class +
+> justification), and load combinations (id, loads with factors). The renderer
+> uses flat structures: `codes[].code` (not `.standard`), no `.title` or
+> `.role`, `design_life` as a scalar string, and `load_combinations` as a
+> simple list of strings. Encode rich details into the string values.
 
 ## Required Content
 
-- At least one primary code with edition year
-- Design life with unit
-- Safety class with justification
-- At least one load combination with partial factors
+- At least one code with edition year
+- Design life
+- Safety class with justification (encode in the string value)
 
 ## Quality Checklist
 
 - [ ] Code edition includes the year or date (not just the standard number)
-- [ ] Primary vs supplementary roles are distinguished
-- [ ] Safety class justification references consequence of failure
-- [ ] Load combination factors match the cited code edition
+- [ ] Code field uses `code` key (not `standard`)
+- [ ] Design life is a scalar string, not a nested object
+- [ ] Load combination factors are embedded in the string descriptions
 - [ ] Load combinations cover all relevant limit states (ULS, SLS, ALS/FLS)
 
 ## Example Snippet
@@ -55,35 +47,24 @@ design_basis:
 ```yaml
 design_basis:
   codes:
-    - standard: "DNV-ST-F101"
+    - code: "DNV-ST-F101"
       edition: "2021-08"
-      title: "Submarine Pipeline Systems"
-      role: primary
-    - standard: "DNV-RP-F105"
+      clause: "Section 5.4.2"
+    - code: "DNV-RP-F105"
       edition: "2017-06"
-      title: "Free Spanning Pipelines"
-      role: supplementary
-  design_life:
-    value: 25
-    unit: "years"
-  safety_class:
-    class: "medium"
-    justification: "Hydrocarbon pipeline in non-populated area"
+      clause: "Section 4"
+  design_life: "25 years"
+  safety_class: "medium — hydrocarbon pipeline in non-populated area"
   load_combinations:
-    - id: "LC-01"
-      description: "System test — mill pressure test"
-      loads:
-        - type: "internal_pressure"
-          value: 517
-          unit: "barg"
-          factor: 1.0
-      reference: "DNV-ST-F101 Sec.5 Table 5-7"
+    - "LC-01: System test — mill pressure test (factor 1.0)"
+    - "LC-02: Operating — max design pressure + functional loads (factor 1.1)"
+  environment: "North Sea, water depth 80-120m, seawater temperature 4-12 degC"
 ```
 
 ## Common Mistakes
 
+- Using `standard` instead of `code` as the key name
+- Nesting `design_life` as `{value: 25, unit: "years"}` instead of scalar string
 - Standard cited without edition year — different editions have different factors
 - Safety class stated without justification for why that class was selected
-- Load factors taken from a different edition than the one cited
-- Missing limit states — e.g., fatigue limit state omitted for cyclic loading
-- Informative references treated as normative requirements
+- Load combinations as dicts with nested load objects instead of simple strings

@@ -10,63 +10,56 @@ checked, and approved the document.
 
 ```yaml
 metadata:
-  doc_number: string       # unique document identifier
   title: string            # descriptive calculation title
+  doc_id: string           # unique document identifier
   revision: string         # revision code (e.g., "A", "0", "P1")
-  status: enum             # draft | issued_for_review | issued_for_use
-  date: date               # issue date (ISO 8601)
-  project:
-    name: string
-    number: string
-  authors:
-    - name: string
-      role: string         # originator | checker | approver
-      date: date
-      signature: string    # name or digital signature ref
-  revision_history:
+  date: string             # issue date (ISO 8601)
+  author: string           # originator name (scalar, not a list)
+  status: enum             # draft | reviewed | approved
+  reviewer: string         # optional — independent reviewer name
+  project: string          # optional — project name or number
+  change_log:              # optional — revision history
     - rev: string
-      date: date
+      date: string
       description: string
-      by: string
 ```
+
+> **Renderer Mapping Note:** The methodology guidance recommends tracking
+> multiple authors with roles (originator, checker, approver) and structured
+> project objects. The renderer accepts only a single `author` scalar and
+> optional `reviewer` scalar. Document additional signatories in the
+> `change_log` descriptions or the verification section (12).
 
 ## Required Content
 
-- Document number following project naming convention
-- At least one author with originator role
+- Document identifier (`doc_id`) following project naming convention
+- Author name
 - Revision code and date
-- Project name and number
 - Status field set to `draft` at creation
 
 ## Quality Checklist
 
-- [ ] Document number is unique within the project
-- [ ] Revision history includes a description of changes (not just "updated")
-- [ ] Checker and approver roles are distinct from originator
+- [ ] `doc_id` is unique within the project
+- [ ] `change_log` entries include a description of changes (not just "updated")
+- [ ] Checker and approver roles recorded in section 12 (verification)
 - [ ] Date format is consistent (ISO 8601 preferred)
-- [ ] Status reflects the actual review state
+- [ ] Status is one of: `draft`, `reviewed`, `approved`
 
 ## Example Snippet
 
 ```yaml
 metadata:
-  doc_number: "PRJ-CALC-001"
   title: "Pipeline Wall Thickness — 12-inch Export Line"
+  doc_id: "PRJ-CALC-001"
   revision: "A"
+  date: "2026-03-15"
+  author: "J. Smith"
   status: draft
-  date: 2026-03-15
-  project:
-    name: "Subsea Tieback Development"
-    number: "PRJ-2026-042"
-  authors:
-    - name: "J. Smith"
-      role: originator
-      date: 2026-03-15
-  revision_history:
+  project: "Subsea Tieback Development"
+  change_log:
     - rev: "A"
-      date: 2026-03-15
+      date: "2026-03-15"
       description: "Initial issue for internal review"
-      by: "J. Smith"
 ```
 
 ## Common Mistakes
@@ -74,4 +67,5 @@ metadata:
 - Missing revision history — every revision must have a change description
 - Checker listed as the same person who originated the calculation
 - Status left as `draft` on a document issued for construction
-- No project number, making the calculation untraceable to a scope of work
+- Using `doc_number` instead of `doc_id` (renderer requires `doc_id`)
+- Providing `authors` as a list instead of `author` as a scalar string

@@ -10,79 +10,80 @@ bridges the "what are we checking" (scope) to "how we check it" (calculations).
 
 ```yaml
 methodology:
+  description: string         # narrative description of the approach
   standard: string            # governing code and clause
-  method_name: string         # descriptive method name
-  applicability:
-    - parameter: string       # e.g., "D/t ratio"
-      required_range: string  # code limit
-      actual_value: string    # value for this problem
-      status: enum            # within_limits | outside_limits
   equations:
-    - id: string              # equation identifier (e.g., "Eq-01")
-      description: string
-      symbolic: string        # equation in symbolic form
-      reference: string       # code clause and equation number
-      variables:
+    - id: string              # equation identifier (e.g., "eq1", "1")
+      name: string            # descriptive equation name
+      latex: string           # equation in LaTeX notation
+      description: string     # what this equation computes
+      variables:              # optional — variable definitions
         - symbol: string
-          name: string
-          defined_in: string  # section reference (e.g., "section 05")
-  alternative_methods:
-    - name: string
-      reason_not_used: string # why this method was not selected
+          description: string
+          unit: string        # optional
 ```
+
+> **Renderer Mapping Note:** The methodology recommends `method_name`,
+> structured `applicability` checks, `symbolic` (not `latex`), `reference`
+> per equation, and `alternative_methods`. The renderer does not consume
+> these fields. Use `latex` (not `symbolic`) for equation notation. Encode
+> applicability checks and method selection rationale in `description`.
+> Each equation needs `id`, `name`, `latex`, and `description`.
 
 ## Required Content
 
-- Governing standard, edition, and specific clause
-- Applicability check with actual values vs code limits
-- At least one equation in symbolic form before numeric substitution
+- Governing standard, edition, and specific clause (in `standard` field)
+- Narrative description of the approach
+- At least one equation with LaTeX notation
 - Variable definitions linking back to inputs (section 05) or materials (section 04)
 
 ## Quality Checklist
 
-- [ ] Applicability check is quantitative (actual vs allowed), not just stated
-- [ ] Equations are shown symbolically before any numbers are substituted
-- [ ] Each equation references its source clause and equation number
-- [ ] All variables in the equation are defined and traceable to earlier sections
-- [ ] Alternative methods are acknowledged with reason for non-selection
+- [ ] Equations use `latex` field (not `symbolic`)
+- [ ] Each equation has `id`, `name`, `latex`, and `description`
+- [ ] All variables in the equation are defined with `symbol` and `description`
+- [ ] `standard` field includes edition year and clause reference
+- [ ] Applicability rationale is included in `description`
 
 ## Example Snippet
 
 ```yaml
 methodology:
-  standard: "DNV-ST-F101 (2021) Section 5.4.2"
-  method_name: "Pressure containment (burst) — LRFD format"
-  applicability:
-    - parameter: "D/t ratio"
-      required_range: "15 ≤ D/t ≤ 45"
-      actual_value: "15.7"
-      status: within_limits
-    - parameter: "Material grade"
-      required_range: "up to X80"
-      actual_value: "X65"
-      status: within_limits
+  description: >
+    Sacrificial anode CP design for an offshore jacket in tropical waters.
+    Calculates current demand at initial, mean, and final conditions, then
+    sizes anodes to meet the total charge requirement over design life.
+    Method is applicable for D/t ratio 15–45 (actual: 15.7) and material
+    grades up to X80 (actual: X65).
+  standard: "DNV-RP-B401 (2011) Cathodic Protection Design"
   equations:
-    - id: "Eq-01"
-      description: "Pressure containment resistance"
-      symbolic: "p_b = (2 * t_1) / (D_o - t_1) * f_cb * (2 / sqrt(3))"
-      reference: "DNV-ST-F101 Eq. 5.8"
+    - id: eq1
+      name: "Current demand"
+      latex: "I_c = A_c \\cdot i_c \\cdot f_c"
+      description: "Current demand for coated structure (§7.4.1)"
+    - id: eq2
+      name: "Total anode mass"
+      latex: "M_a = \\frac{I_{cm} \\cdot t_f \\cdot 8760}{u_f \\cdot \\varepsilon}"
+      description: "Net anode mass requirement (§7.7.1)"
       variables:
-        - symbol: "t_1"
-          name: "Corroded wall thickness"
-          defined_in: "section 05, derived from t_nom - t_corr"
-        - symbol: "f_cb"
-          name: "Characteristic material strength"
-          defined_in: "section 04, min(SMYS, SMTS/1.15)"
-  alternative_methods:
-    - name: "ASME B31.8 Barlow formula"
-      reason_not_used: "Project design basis specifies DNV-ST-F101"
+        - symbol: "I_{cm}"
+          description: "Mean current demand"
+          unit: "A"
+        - symbol: "t_f"
+          description: "Design life"
+          unit: "years"
+        - symbol: "u_f"
+          description: "Anode utilisation factor"
+        - symbol: "\\varepsilon"
+          description: "Anode electrochemical capacity"
+          unit: "Ah/kg"
 ```
 
 ## Common Mistakes
 
-- No applicability check — method applied outside its valid range
+- Using `symbolic` instead of `latex` (renderer requires `latex`)
+- Including `method_name`, `applicability`, or `alternative_methods` fields
+  (not consumed by renderer — silently dropped)
 - Jumping straight to numeric substitution without showing the symbolic equation
 - Variables in the equation not traced back to a defined input
 - Standard cited without the specific clause or equation number
-- Alternative methods not discussed — reviewer may question why this method
-  was chosen over others

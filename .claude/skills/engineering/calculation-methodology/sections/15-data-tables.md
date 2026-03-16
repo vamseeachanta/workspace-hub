@@ -10,78 +10,63 @@ makes calculations reviewable and reduces transcription errors.
 
 ```yaml
 data_tables:
-  - id: string                 # table identifier (e.g., "TBL-01")
-    title: string
-    description: string
+  - id: string                 # optional — table identifier (e.g., "TBL-01")
+    title: string              # descriptive table title
     columns:
-      - header: string
-        unit: string           # unit in header, not in cells
-        format: string         # e.g., "0.000", "integer", "2 d.p."
-        alignment: enum        # left | center | right
+      - name: string           # column header text
+        unit: string           # optional — unit in header, not in cells
     rows:
       - list                   # values matching column order
-    source: string             # data source reference
-    notes:
-      - string                 # footnotes or clarifications
 ```
+
+> **Renderer Mapping Note:** The methodology recommends `columns[].header`
+> (not `.name`), plus `.format`, `.alignment`, `.description`, `.source`,
+> and `.notes` per column. The renderer uses `columns[].name` (not `.header`)
+> and only consumes `.name` and optional `.unit`. The `rows` field is the
+> same: a list of lists matching column order.
 
 ## Required Content
 
-- Table identifier and descriptive title
-- Column headers with units (units in headers, never in cell values)
-- Consistent number formatting within each column
-- Source reference for the data
+- Table title
+- Column headers with units (units in headers via `unit` field, not in cells)
+- Row data matching column order
 
 ## Quality Checklist
 
-- [ ] Units appear in column headers, not repeated in every cell
-- [ ] Number formatting is consistent (same decimal places per column)
-- [ ] Numeric columns are right-aligned for easy comparison
-- [ ] Table has a source reference (section, document, or standard)
+- [ ] Column key is `name` (not `header`)
+- [ ] Units appear in column `unit` field, not repeated in every cell
+- [ ] Numeric columns have consistent precision in the data
+- [ ] Table has a descriptive title
 - [ ] Table is referenced in the calculation text (not orphaned)
 
 ## Example Snippet
 
 ```yaml
 data_tables:
-  - id: "TBL-01"
-    title: "Wall Thickness Check Summary"
-    description: "Summary of all pressure checks with utilization ratios"
+  - id: "damage_contributors"
+    title: "Top Damage Contributors"
     columns:
-      - header: "Check"
-        unit: ""
-        format: "text"
-        alignment: left
-      - header: "Capacity"
+      - name: "Stress Range"
         unit: "MPa"
-        format: "0.0"
-        alignment: right
-      - header: "Demand"
-        unit: "MPa"
-        format: "0.0"
-        alignment: right
-      - header: "Utilization"
-        unit: ""
-        format: "0.000"
-        alignment: right
-      - header: "Status"
-        unit: ""
-        format: "text"
-        alignment: center
+      - name: "Cycles Applied"
+        unit: "-"
+      - name: "Cycles to Failure"
+        unit: "-"
+      - name: "Damage Fraction"
+        unit: "-"
+      - name: "Cumulative Damage"
+        unit: "-"
     rows:
-      - ["Burst", 55.8, 34.5, 0.618, "PASS"]
-      - ["Collapse", 42.3, 12.1, 0.286, "PASS"]
-      - ["Combined", 48.1, 36.2, 0.752, "PASS"]
-    source: "Section 09 output summary"
-    notes:
-      - "Utilization = Demand / Capacity"
-      - "All checks per DNV-ST-F101 (2021)"
+      - [80, 1.0e5, 2.5e6, 0.040, 0.040]
+      - [70, 3.0e5, 4.1e6, 0.073, 0.113]
+      - [60, 8.0e5, 7.2e6, 0.111, 0.224]
 ```
 
 ## Common Mistakes
 
-- Units in every cell instead of in the column header
-- Inconsistent decimal places within a column (e.g., 55.8, 42.31, 48)
-- Numeric data left-aligned, making decimal alignment difficult
+- Using `header` instead of `name` for column key (renderer requires `name`)
+- Including `format`, `alignment`, `description`, `source`, or `notes` per
+  column (not consumed by renderer — silently dropped)
+- Units in every cell instead of in the column `unit` field
+- Inconsistent decimal places within a column
 - Table not referenced from the calculation text
-- Missing title — table cannot be cross-referenced

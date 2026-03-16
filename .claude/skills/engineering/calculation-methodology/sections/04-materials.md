@@ -11,38 +11,33 @@ is critical.
 
 ```yaml
 materials:
-  - id: string                # short identifier (e.g., "pipe_steel")
-    description: string
-    grade: string             # e.g., "API 5L X65 PSL2"
-    specification: string     # governing material standard
-    properties:
-      - name: string          # e.g., "SMYS"
-        symbol: string        # e.g., "fy"
-        characteristic: number
-        design: number        # after applying material factor
-        unit: string
-        source: string        # MTC ref, code table, or test report
-    partial_factors:
-      - name: string
-        symbol: string
-        value: number
-        reference: string     # code clause for the factor
-    certificates:
-      - type: string          # MTC, test_report, qualification_record
-        reference: string
+  - name: string             # material description (e.g., "Line pipe steel")
+    grade: string            # grade designation (e.g., "API 5L X65 PSL2")
+    value: number            # characteristic property value
+    unit: string             # unit of the property value
+    source: string           # optional — MTC ref, code table, or test report
+    partial_factor: number   # optional — material partial safety factor
+    certificate: string      # optional — certificate reference
 ```
+
+> **Renderer Mapping Note:** The methodology recommends rich nested structures
+> with multiple properties per material, separate partial factor lists, and
+> certificate arrays. The renderer uses a flat list where each entry is one
+> material property row: `{name, grade, value, unit}` required, plus optional
+> `source` and `partial_factor` scalars. To document multiple properties for
+> one material, use multiple list entries with the same grade.
 
 ## Required Content
 
-- Material grade and governing specification
-- SMYS and SMTS (or equivalent characteristic strengths)
-- Material partial safety factors with code clause reference
+- Material grade
+- At least SMYS and SMTS (as separate list entries)
 - Source for each property (certificate or code table)
+- Material partial safety factors where applicable
 
 ## Quality Checklist
 
+- [ ] Each entry has `name`, `grade`, `value`, and `unit`
 - [ ] Characteristic values come from certificates or code minima (not assumed)
-- [ ] Design values = characteristic / material factor (show the division)
 - [ ] Partial factors match the safety class from section 03
 - [ ] Temperature derating applied if operating above ambient
 - [ ] Weld strength reduction factors included where applicable
@@ -51,33 +46,23 @@ materials:
 
 ```yaml
 materials:
-  - id: "line_pipe"
-    description: "12-inch export pipeline"
+  - name: "Specified Minimum Yield Strength"
     grade: "API 5L X65 PSL2"
-    specification: "API 5L 46th Edition"
-    properties:
-      - name: "Specified Minimum Yield Strength"
-        symbol: "SMYS"
-        characteristic: 450
-        design: 415
-        unit: "MPa"
-        source: "MTC-2026-0042 / API 5L Table 4"
-      - name: "Specified Minimum Tensile Strength"
-        symbol: "SMTS"
-        characteristic: 535
-        design: 493
-        unit: "MPa"
-        source: "MTC-2026-0042 / API 5L Table 4"
-    partial_factors:
-      - name: "Material resistance factor"
-        symbol: "gamma_m"
-        value: 1.15
-        reference: "DNV-ST-F101 Table 5-5, safety class medium"
+    value: 450
+    unit: "MPa"
+    source: "MTC-2026-0042 / API 5L Table 4"
+    partial_factor: 1.15
+  - name: "Specified Minimum Tensile Strength"
+    grade: "API 5L X65 PSL2"
+    value: 535
+    unit: "MPa"
+    source: "MTC-2026-0042 / API 5L Table 4"
+    partial_factor: 1.15
 ```
 
 ## Common Mistakes
 
-- Using nominal yield strength instead of SMYS from certificate
+- Using nested `properties[]` and `partial_factors[]` sub-objects (renderer expects flat entries)
 - Forgetting temperature derating for elevated service temperatures
 - Partial factor taken from wrong safety class row in the code table
 - No traceability — property listed with no source reference
