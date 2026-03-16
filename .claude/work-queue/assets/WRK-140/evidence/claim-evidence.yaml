@@ -1,0 +1,21 @@
+claim_date: "2026-02-16T04:30:00Z"
+wrk_id: "WRK-140"
+route: "B"
+orchestrator: "codex"
+best_fit_provider: "codex"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "codex"
+agent_fit:
+  capability_match: "matched"
+  rationale: "Route B / execution_workstations=[ace-linux-2] / provider=codex"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-02-16T04:30:00Z"
+  provider: "codex"
+  status: "available"
+  pct_remaining: 100
+  source: "config/ai-tools/agent-quota-latest.json"

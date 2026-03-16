@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T03:53:40Z by generate-index.py -->
+<!-- Generated: 2026-03-16T11:33:34Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T03:53:40Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-16T11:33:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 674
+**Total items:** 677
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 269 |
-| working | 4 |
+| pending | 268 |
+| working | 5 |
 | blocked | 10 |
-| done | 5 |
-| archived | 385 |
+| done | 7 |
+| archived | 386 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 293 |
-| medium | 318 |
+| high | 294 |
+| medium | 320 |
 | low | 62 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 147 |
-| medium | 319 |
+| simple | 148 |
+| medium | 321 |
 | complex | 131 |
 
 ### By Category
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 26 |
-| engineering | 157 |
+| engineering | 159 |
 | data | 24 |
 | platform | 11 |
 | business | 6 |
@@ -57,7 +57,7 @@
 | CAD-DEVELOPMENTS | 2 |
 | OGManufacturing | 18 |
 | TBD-client2-repo | 5 |
-| aceengineer-admin | 5 |
+| aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 15 |
 | achantas-data | 10 |
@@ -68,11 +68,11 @@
 | digitalmodel | 223 |
 | doris | 21 |
 | frontierdeepwater | 11 |
-| sabithaandkrishnaestates | 2 |
+| sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 284 |
+| workspace-hub | 289 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 274 / 674 |
-| Plans cross-reviewed | 197 |
-| Plans approved | 221 |
+| Plans exist | 279 / 677 |
+| Plans cross-reviewed | 198 |
+| Plans approved | 223 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,17 +92,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 674 |
-| Total archived | 385 |
-| Completion rate | 385/674 (57%) |
-| Monthly rate (current month) | 135 archived |
+| Total captured | 677 |
+| Total archived | 386 |
+| Completion rate | 386/677 (57%) |
+| Monthly rate (current month) | 136 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 79 / 269 | 29% |
+| Pending items with plans | 82 / 268 | 31% |
 | Plans cross-reviewed | 8 | 9% |
 | Plans user-approved | 8 | 9% |
 
@@ -111,7 +111,7 @@
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 18 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137 |
-| Pending > 14 days | 156 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-343, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-TEST-ENSEMBLE |
+| Pending > 14 days | 158 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-TEST-ENSEMBLE |
 | Working > 7 days | 2 | WRK-129, WRK-1022 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
@@ -120,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 100 | 2 | 8 |
-| Medium   | 127  | 2  | 1  |
+| Medium   | 126  | 3  | 1  |
 | Low      | 42  | 0  | 1  |
 
 ## By Category
@@ -215,7 +215,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (157 items — 79 high, 63 medium, 15 low)
+### engineering (159 items — 81 high, 63 medium, 15 low)
 
 #### engineering / artificial-lift
 
@@ -255,8 +255,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1245 | HIGH | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents [feature] | pending |
-| WRK-1246 | HIGH | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending |
 | WRK-1247 | HIGH | POC — Deep extraction on 10 XLSX calculation spreadsheets | working |
+| WRK-1253 | HIGH | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending |
+| WRK-1255 | HIGH | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending |
+| WRK-1256 | HIGH | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending |
+| WRK-1254 | MEDIUM | og_standards path remap — fix 27,504 stale index paths | pending |
+| WRK-1257 | MEDIUM | Chart image extraction — extract actual images from PDFs, not just metadata | pending |
 
 #### engineering / data-ingestion
 
@@ -434,9 +438,7 @@
 | WRK-666 | HIGH | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending |
 | WRK-032 | MEDIUM | Modular OrcaFlex pipeline installation input with parametric campaign support | pending |
 | WRK-045 | MEDIUM | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending |
-| WRK-140 | MEDIUM | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending |
 | WRK-162 | MEDIUM | Untitled | pending |
-| WRK-343 | MEDIUM | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending |
 | WRK-479 | MEDIUM | feat(worldenergydata): wire SODIR FactPages OData API | pending |
 | WRK-483 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending |
 | WRK-484 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending |
@@ -452,7 +454,7 @@
 | WRK-694 | MEDIUM | Per-session log files in session-logger.sh | pending |
 | WRK-1249 | MEDIUM | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending |
 | WRK-1250 | MEDIUM | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending |
-| WRK-1251 | MEDIUM | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending |
+| WRK-1251 | MEDIUM | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies [feature] | working |
 | WRK-1252 | MEDIUM | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending |
 | WRK-023 | LOW | Property GIS development timeline with future projection and Google Earth animation | pending |
 | WRK-047 | LOW | OpenFOAM CFD analysis capability for digitalmodel | pending |
@@ -701,6 +703,7 @@
 | [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 3/18 archived (17%) |
 | [WRK-1187](pending/WRK-1187.md) | Robust script-based workflow engine — codify all ecosystem workflows | pending | 0/0 |
 | [WRK-1245](pending/WRK-1245.md) | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | 0/0 |
+| [WRK-1251](working/WRK-1251.md) | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | 0/0 |
 | [WRK-5058](pending/WRK-5058.md) | Drilling riser engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5059](pending/WRK-5059.md) | Drilling engineering study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5060](pending/WRK-5060.md) | Pipeline engineering study — literature, methods and implementation | pending | 0/0 |
@@ -846,7 +849,7 @@
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | asset_integrity | ❌ | ✅ | ✅ | ✅ | ░░░ 40% | ✅ updated | - |
 | WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | agents | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 85% | - | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | digitalmodel, workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ██░ 85% | - | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
@@ -970,7 +973,7 @@
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ❌ | ██░ 85% | n/a | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 95% | n/a | - |
@@ -1344,13 +1347,18 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2 | - | workspace-hub, digitalmodel, assetutilities, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-140 |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-047, WRK-343 |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | medium | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1249, WRK-1250, WRK-1251 |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1388,9 +1396,7 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | sabithaandkrishnaestates | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-5086 |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-5086 |
@@ -1401,10 +1407,12 @@
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
 | WRK-1168 | Review session logs and eliminate recurring errors | medium | medium | workspace-hub | - |
 | WRK-1180 | Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture | high | medium | digitalmodel | - |
 | WRK-1189 | Ingest BOEM lease data | high | medium | worldenergydata | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | high | medium | workspace-hub | - |
 | WRK-5026 | chore(onboarding): add inotify watch limit fix to new-machine-setup | low | simple | workspace-hub | - |
 
 ### Pending
@@ -1429,7 +1437,6 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | high | complex | digitalmodel | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
 | WRK-162 | Untitled | medium | medium | - | - |
 | WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | medium | complex | worldenergydata | cost |
@@ -1443,7 +1450,6 @@
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | medium | medium | aceengineer-website | - |
 | WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | high | simple | workspace-hub | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | high | medium | digitalmodel | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | low | simple | workspace-hub | - |
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | medium | medium | - | - |
 | WRK-416 | Untitled | medium | medium | - | - |
@@ -1645,12 +1651,15 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | medium | medium | workspace-hub | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | high | medium | workspace-hub | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | high | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | high | medium | workspace-hub | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | low | simple | workspace-hub | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | medium | complex | digitalmodel, workspace-hub | - |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | medium | complex | digitalmodel, workspace-hub | - |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | high | medium | workspace-hub | - |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | medium | simple | workspace-hub | - |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | high | medium | workspace-hub | - |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | high | medium | workspace-hub | - |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1678,8 +1687,6 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | high | medium | aceengineer-admin | - |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
 
 ### Working
 
@@ -1689,6 +1696,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | medium | medium | workspace-hub | - |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | high | medium | workspace-hub | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | medium | complex | digitalmodel, workspace-hub | - |
 
 ### Blocked
 
@@ -1809,6 +1817,7 @@
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | medium | complex | digitalmodel | asset_integrity |
 | WRK-139 | Develop gmsh skill and documentation | medium | medium | workspace-hub | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | high | complex | workspace-hub | agents |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | high | medium | workspace-hub | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | medium | simple | digitalmodel | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | medium | complex | digitalmodel | - |
@@ -2145,7 +2154,6 @@
 | WRK-056 | aceengineer-admin test coverage improvement | archived | medium | medium | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked | high | medium | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | medium | - |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | - |
 
 ### aceengineer-strategy
 
@@ -2312,7 +2320,7 @@
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | blocked | high | complex | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | asset_integrity |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | medium | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - |
@@ -2349,7 +2357,7 @@
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | medium | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | - |
@@ -2460,7 +2468,7 @@
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | - |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | medium | complex | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
@@ -2528,7 +2536,6 @@
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple | - |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | - |
 
 ### saipem
 
@@ -2570,7 +2577,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - |
 | WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | agents |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | medium | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | medium | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | - |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | high | medium | - |
@@ -2629,7 +2636,7 @@
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | medium | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
@@ -2808,13 +2815,18 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | medium | - |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | working | high | medium | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | simple | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | - |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | medium | complex | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | - |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending | high | medium | - |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | pending | medium | simple | - |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | - |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending | high | medium | - |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3247,8 +3259,11 @@
 | WRK-1232 | Complete production data download and conversion pipeline | archived | medium | worldenergydata | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | medium | workspace-hub | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | medium | workspace-hub | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | medium | workspace-hub | - |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | working | medium | workspace-hub | - |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending | medium | workspace-hub | - |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | medium | workspace-hub | - |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3258,8 +3273,6 @@
 | WRK-5065 | Structural analysis study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5066 | Production engineering study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | medium | achantas-data | - |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | pending | medium | aceengineer-admin | - |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | pending | medium | sabithaandkrishnaestates | - |
 
 ### Medium
 
@@ -3320,7 +3333,7 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | complex | digitalmodel | asset_integrity |
 | WRK-139 | Develop gmsh skill and documentation | archived | medium | workspace-hub | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | digitalmodel, workspace-hub | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | simple | digitalmodel | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | complex | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
@@ -3384,7 +3397,7 @@
 | WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | archived | medium | - | - |
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | workspace-hub | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | simple | workspace-hub | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | workspace-hub, digitalmodel | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | assetutilities | - |
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | frontierdeepwater | - |
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | high | frontierdeepwater | - |
@@ -3555,8 +3568,10 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | complex | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | complex | digitalmodel, workspace-hub | - |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | complex | digitalmodel, workspace-hub | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | complex | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | complex | digitalmodel, workspace-hub | - |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | pending | simple | workspace-hub | - |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3794,6 +3809,7 @@
 | WRK-1174 | Agent scope guard — one-feature-per-session discipline | archived | high | workspace-hub | - |
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | worldenergydata | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | workspace-hub | - |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -3855,7 +3871,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-139 | Develop gmsh skill and documentation | archived | medium | workspace-hub | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | digitalmodel, workspace-hub | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | workspace-hub | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | worldenergydata | - |
@@ -3915,7 +3931,7 @@
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | workspace-hub | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | workspace-hub | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | digitalmodel | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | workspace-hub, digitalmodel | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | assetutilities | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | workspace-hub | - |
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | frontierdeepwater | - |
@@ -4112,8 +4128,12 @@
 | WRK-1242 | Calculation methodology skill — structured engineering analysis workflow | working | medium | workspace-hub | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | workspace-hub | - |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | workspace-hub | - |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | workspace-hub | - |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | working | high | workspace-hub | - |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending | high | workspace-hub | - |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | workspace-hub | - |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending | high | workspace-hub | - |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4122,9 +4142,7 @@
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | workspace-hub | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | achantas-data | - |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | pending | high | aceengineer-admin | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | pending | high | sabithaandkrishnaestates | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | workspace-hub | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | workspace-hub | - |
@@ -4244,7 +4262,7 @@
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | digitalmodel, workspace-hub | - |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | high | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | high | workspace-hub | - |
@@ -4267,7 +4285,7 @@
 
 ## By Computer
 
-### ace-linux-1 (222 active / 389 total)
+### ace-linux-1 (225 active / 392 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4618,9 +4636,14 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | medium | workspace-hub |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | pending | high | medium | workspace-hub |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata |
-| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | pending | high | medium | workspace-hub |
+| WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | medium | workspace-hub |
 | WRK-1247 | POC — Deep extraction on 10 XLSX calculation spreadsheets | working | high | medium | workspace-hub |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | simple | workspace-hub |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | pending | high | medium | workspace-hub |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | pending | medium | simple | workspace-hub |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | workspace-hub |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | pending | high | medium | workspace-hub |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4654,23 +4677,21 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | digitalmodel |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | digitalmodel |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | medium | achantas-data |
-| WRK-5085 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | aceengineer-admin |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | workspace-hub |
-| WRK-5086 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | pending | high | medium | sabithaandkrishnaestates |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | workspace-hub |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | medium | workspace-hub |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | low | medium | workspace-hub |
 
-### ace-linux-2 (11 active / 18 total)
+### ace-linux-2 (10 active / 18 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | digitalmodel |
 | WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | digitalmodel |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | archived | medium | medium | digitalmodel, workspace-hub |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | workspace-hub |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | workspace-hub |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | workspace-hub, digitalmodel |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | done | medium | medium | workspace-hub, digitalmodel |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | workspace-hub, digitalmodel |
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | workspace-hub |
@@ -4680,7 +4701,7 @@
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | - |
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | digitalmodel, workspace-hub |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | digitalmodel, workspace-hub |
-| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | pending | medium | complex | digitalmodel, workspace-hub |
+| WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | digitalmodel, workspace-hub |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | digitalmodel, workspace-hub |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on ace-linux-2 | pending | medium | high | workspace-hub |
 
@@ -5077,6 +5098,11 @@
 | WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | WRK-140 | - | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | WRK-047, WRK-343 | - | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | WRK-1249, WRK-1250, WRK-1251 | - | - |
+| WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | - | - | WRK-1245 |
+| WRK-1254 | og_standards path remap — fix 27,504 stale index paths | - | - | WRK-1245 |
+| WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | - | - | WRK-1245 |
+| WRK-1256 | Table extractor quality filter — watermark dedup, content threshold, LLM quality rating | - | - | WRK-1245 |
+| WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | - | - | WRK-1245 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |

@@ -1,7 +1,7 @@
 wrk_id: WRK-140
 scope: integrated
-executed_at: "2026-02-24T00:00:00Z"
-completed_at: "2026-02-24T00:00:00Z"
+executed_at: "2026-02-24T16:30:00Z"
+completed_at: "2026-02-24T17:45:00Z"
 provider: codex
 phases_completed:
   - phase: 1
@@ -14,11 +14,18 @@ phases_completed:
     description: "Wetted surface extraction, 41 tests (26 new + 15 existing) — all passing"
     status: done
 integrated_repo_tests:
-  - name: gmsh-mesh-builder-tests
+  - name: gmsh-mesh-builder-unit-tests
     scope: integrated
-    command: PYTHONPATH=src uv run python -m pytest tests/test_gmsh_mesh_builder.py
+    command: "PYTHONPATH=src uv run python -m pytest tests/hydrodynamics/diffraction/test_gmsh_mesh_builder.py"
     result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-140/evidence/test-results.md
+  - name: gmsh-solver-tests
+    scope: integrated
+    command: "PYTHONPATH=src uv run python -m pytest tests/solvers/gmsh_meshing/"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-140/evidence/test-results.md
   - name: legal-sanity-scan
     scope: integrated
     command: bash scripts/legal/legal-sanity-scan.sh
     result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-140/legal-scan.md

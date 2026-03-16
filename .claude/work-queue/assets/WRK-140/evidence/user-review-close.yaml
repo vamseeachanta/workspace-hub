@@ -1,10 +1,10 @@
 wrk_id: WRK-140
 reviewer: vamsee
-reviewed_at: "2026-03-15T00:00:00Z"
-confirmed_at: "2026-03-15T00:00:00Z"
+reviewed_at: "2026-03-15T18:30:00Z"
+confirmed_at: "2026-03-15T18:45:00Z"
 decision: approved
 notes: >
   WRK-140 implementation verified: gmsh meshing integration into digitalmodel
   hydrodynamic/diffraction pipelines. GmshMeshBuilder with GDF/DAT/MSH export,
   wetted surface extraction, 41 tests passing, legal scan PASS. 85% complete —
-  CLI subcommand and __init__ exports deferred. Approved for close.
+  CLI subcommand and __init__ exports deferred to follow-up WRK.

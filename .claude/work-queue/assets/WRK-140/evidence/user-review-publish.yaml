@@ -1,0 +1,29 @@
+wrk_id: WRK-140
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "605e6be2"
+    documents:
+      - .claude/work-queue/assets/WRK-140/workflow-final-review.html
+    published_at: "2026-02-17T10:30:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "94ba6c01"
+    documents:
+      - .claude/work-queue/assets/WRK-140/workflow-final-review.html
+    published_at: "2026-02-17T10:45:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "ff03410c"
+    documents:
+      - .claude/work-queue/assets/WRK-140/workflow-final-review.html
+    published_at: "2026-03-15T18:50:00Z"
+    reviewer: vamsee

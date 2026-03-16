@@ -1,0 +1,21 @@
+wrk_id: WRK-140
+generated_at: "2026-03-03T22:00:00Z"
+
+recommendations:
+  - id: FW-1
+    title: "Add digitalmodel mesh generate CLI subcommand"
+    description: "Click subcommand in hydrodynamics/diffraction/cli.py to invoke GmshMeshBuilder from command line with spec YAML input and format selection (gdf/dat/msh)."
+    priority: medium
+    category: feature
+    status: open
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-2
+    title: "Register GmshMeshBuilder in diffraction __init__.py exports"
+    description: "Add GmshMeshBuilder, GmshMeshSpec, and GMSH_AVAILABLE to hydrodynamics/diffraction/__init__.py with try/except import guard matching existing ORCAWAVE_AVAILABLE pattern."
+    priority: medium
+    category: maintenance
+    status: open
+    captured: true
+    disposition: spun-off-new

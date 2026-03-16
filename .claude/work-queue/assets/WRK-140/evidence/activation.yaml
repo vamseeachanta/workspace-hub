@@ -1,0 +1,6 @@
+wrk_id: "WRK-140"
+set_active_wrk: true
+active_wrk_ref: ".claude/state/active-wrk"
+session_id: "session-20260216-040000"
+orchestrator_agent: "codex"
+activated_at: "2026-02-16T04:30:00Z"
