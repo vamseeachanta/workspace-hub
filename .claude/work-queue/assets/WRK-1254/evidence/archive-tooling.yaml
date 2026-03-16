@@ -1,0 +1,13 @@
+# archive-tooling.yaml — WRK-1254 og_standards path remap
+
+wrk_id: WRK-1254
+
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+html_verification_ref: "n/a"
+legal_scan_ref: "n/a"
+archive_readiness: "pass"
+
+document_index_ref: "scripts/data/document-index/remap_og_standards_paths.py"
+document_index_exemption: ""
+spin_off_wrks: []
