@@ -1,0 +1,8 @@
+stage: 1
+gate: hard
+scope_approved: true
+approved_by: vamsee
+approved_at: "2026-03-16T20:15:00Z"
+title_confirmed: "Enforce 200-line skill limit — split 293 oversized SKILL.md files"
+mission_confirmed: true
+notes: "User approved scope as captured. Route C Feature WRK."

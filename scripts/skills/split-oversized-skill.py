@@ -92,12 +92,18 @@ def parse_frontmatter(content: str) -> tuple[dict | None, str]:
     return meta, body
 
 
-def parse_sections(body: str) -> list[Section]:
-    """Parse body into H2 sections, each with optional H3 children."""
+def parse_sections(body: str) -> tuple[str, list[Section]]:
+    """Parse body into intro text + H2 sections with optional H3 children.
+
+    Returns (intro_text, sections) where intro_text is any content before
+    the first H2 heading (e.g. H1 title and description).
+    """
     sections: list[Section] = []
     current_h2: Section | None = None
     current_h3: Section | None = None
     buffer: list[str] = []
+    intro_lines: list[str] = []
+    seen_first_h2 = False
 
     def flush_buffer(target: Section | None) -> None:
         nonlocal buffer
@@ -109,6 +115,10 @@ def parse_sections(body: str) -> list[Section]:
     for line in body.splitlines():
         stripped = line.strip()
         if stripped.startswith("## ") and not stripped.startswith("### "):
+            if not seen_first_h2:
+                intro_lines = buffer[:]
+                buffer = []
+                seen_first_h2 = True
             # Flush current H3 if any
             if current_h3 is not None:
                 flush_buffer(current_h3)
@@ -120,7 +130,6 @@ def parse_sections(body: str) -> list[Section]:
                 if not current_h2.children:
                     flush_buffer(current_h2)
                 else:
-                    # Buffer has content between last H3 and this H2
                     flush_buffer(None)
                 sections.append(current_h2)
 
@@ -156,7 +165,10 @@ def parse_sections(body: str) -> list[Section]:
     if current_h2 is not None:
         sections.append(current_h2)
 
-    return sections
+    if not seen_first_h2:
+        intro_lines = buffer[:]
+
+    return "\n".join(intro_lines).strip(), sections
 
 
 def slugify(text: str) -> str:
@@ -288,6 +300,7 @@ def render_hub(
     sections: list[Section],
     sub_skills: list[SubSkillPlan],
     hub_section_names: list[str],
+    intro_text: str = "",
 ) -> str:
     """Render the hub SKILL.md with condensed content and see_also."""
     # Update frontmatter
@@ -298,34 +311,26 @@ def render_hub(
     lines.append(yaml.dump(meta, default_flow_style=False, sort_keys=False).rstrip())
     lines.append("---")
 
-    # H1 title
-    name = meta.get("name", "Skill")
-    lines.append(f"\n# {name.replace('-', ' ').title()}")
-    lines.append("")
+    # Preserve intro text (H1 title, description between frontmatter and first H2)
+    if intro_text:
+        lines.append("")
+        lines.extend(intro_text.splitlines())
+        lines.append("")
+    else:
+        name = meta.get("name", "Skill")
+        lines.append(f"\n# {name.replace('-', ' ').title()}")
+        lines.append("")
 
-    # Hub sections (keep content)
+    # Hub sections (keep full content — these are retained sections)
     for section in sections:
         if section.heading in hub_section_names:
             lines.append(f"## {section.heading}")
             lines.append("")
-            # Keep content but truncate if too long
-            sec_lines = section.content.strip().splitlines()
-            if len(sec_lines) > 30:
-                lines.extend(sec_lines[:25])
-                lines.append("")
-                lines.append(f"*See sub-skills for full details.*")
-            else:
-                lines.extend(sec_lines)
+            lines.extend(section.content.strip().splitlines())
             for child in section.children:
                 lines.append(f"### {child.heading}")
                 lines.append("")
-                child_lines = child.content.strip().splitlines()
-                if len(child_lines) > 15:
-                    lines.extend(child_lines[:10])
-                    lines.append("")
-                    lines.append(f"*See sub-skills for full details.*")
-                else:
-                    lines.extend(child_lines)
+                lines.extend(child.content.strip().splitlines())
             lines.append("")
 
     # Sub-skill references
@@ -389,7 +394,7 @@ def split_skill(skill_path: Path, dry_run: bool = False, trim: bool = False) -> 
         logs.append(f"ERROR: {skill_path} has no valid frontmatter, skipping")
         return logs
 
-    sections = parse_sections(body)
+    intro_text, sections = parse_sections(body)
     plan = plan_split(meta, sections, trim_only=trim)
 
     for warning in plan.warnings:
@@ -407,7 +412,7 @@ def split_skill(skill_path: Path, dry_run: bool = False, trim: bool = False) -> 
         return logs
 
     # Write hub
-    hub_content = render_hub(meta, sections, plan.sub_skills, plan.hub_sections)
+    hub_content = render_hub(meta, sections, plan.sub_skills, plan.hub_sections, intro_text)
     skill_path.write_text(hub_content, encoding="utf-8")
     hub_lines = len(hub_content.splitlines())
     logs.append(f"HUB: {skill_path} ({line_count} → {hub_lines} lines)")

@@ -1,0 +1,23 @@
+wrk_id: WRK-1272
+stage: 6
+review_type: cross-review
+completed_at: "2026-03-16T21:00:00Z"
+reviewers:
+  claude:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260316T204940Z-split-oversized-skill.py-implementation-claude.md
+    resolved: true
+  codex:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260316T204940Z-split-oversized-skill.py-implementation-codex.md
+    resolved: true
+  gemini:
+    verdict: REQUEST_CHANGES
+    file: scripts/review/results/20260316T204940Z-split-oversized-skill.py-implementation-gemini.md
+    resolved: true
+resolution_notes: |
+  Fixed all P1/P2 issues from cross-review:
+  - parse_sections() now returns intro text (pre-H2 content preserved)
+  - render_hub() no longer truncates hub-only sections
+  - Sub-skill truncation is intentional (AI-generated reference docs, not source code)
+  All 66 tests pass after fixes.

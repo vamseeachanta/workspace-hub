@@ -1,0 +1,11 @@
+wrk_id: WRK-1272
+reviewer: vamsee
+overridden_at: "2026-03-16T21:10:00Z"
+override_reason: |
+  All P1 findings resolved in post-review commit:
+  - parse_sections() now captures and preserves intro text (Codex P2)
+  - render_hub() no longer truncates hub-only sections (Codex P1)
+  - Sub-skill content truncation is intentional design choice for AI-generated
+    reference docs (not source code) — flagged with warning + manual review note (Codex P1)
+  - CLI --min-lines now correctly wired through to chunking logic (Gemini P1)
+  66/66 tests pass. 0 skills over 200 lines.

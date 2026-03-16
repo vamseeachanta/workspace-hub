@@ -1,0 +1,77 @@
+completion_status: complete
+domain: harness/skills
+complexity_confirmed: complex
+route_confirmed: C
+type_confirmed: feature
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - skill-eval
+  supporting:
+    - comprehensive-learning
+    - skill-learner
+
+existing_infrastructure:
+  eval_skills_py:
+    path: .claude/skills/development/skill-eval/scripts/eval-skills.py
+    capability: "Detects oversized skills (>200 warning, >400 critical)"
+    status: ready
+  new_feature_sh:
+    path: scripts/work-queue/new-feature.sh
+    capability: "Scaffolds child WRKs from spec Decomposition table"
+    status: ready
+  audit_skills_py:
+    path: .claude/skills/audit-skills.py
+    capability: "Single-pass violation/coverage audit"
+    status: ready
+
+precedent:
+  wrk_1263:
+    result: "718-line aqwa-analysis → 5 nested sub-skills, all <200 lines"
+    pattern: "Nested folder structure (not flat prefixes)"
+    status: archived
+
+inventory:
+  total_skills: 408
+  oversized: 293
+  compliant: 115
+  batches:
+    - tier: "1200+"
+      count: 40
+      priority: highest
+    - tier: "801-1200"
+      count: 27
+      priority: high
+    - tier: "401-800"
+      count: 125
+      priority: medium
+    - tier: "201-400"
+      count: 101
+      priority: low
+
+related_wrks:
+  - id: WRK-1273
+    title: "Update eval-skills.py line/word limits"
+    status: done
+    relationship: prerequisite
+  - id: WRK-1263
+    title: "Restore aqwa-analysis content + split"
+    status: archived
+    relationship: proof-of-concept
+  - id: WRK-1244
+    title: "Evaluate skill ecosystem quality"
+    status: pending
+    relationship: related-independent
+
+constraints:
+  - "All SKILL.md must retain YAML frontmatter (name, description, version, category)"
+  - "Nested folder pattern is canonical (per WRK-1263)"
+  - "Sub-skills inherit parent category or specify own"
+  - "Cross-references via related_skills field"
+  - "chunk-sizing.yaml limits apply to each child WRK"
+
+no_new_scripts_needed: true
+notes: "Infrastructure is mature. eval-skills.py detects violations, new-feature.sh scaffolds children, nested folder pattern proved by WRK-1263."
