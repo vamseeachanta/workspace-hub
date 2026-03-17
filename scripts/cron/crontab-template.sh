@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# crontab-template.sh — Reference crontab entries per machine role.
+# crontab-template.sh — LEGACY reference (read-only).
 #
-# PURPOSE: This file is the canonical record of all standard cron jobs.
-#          Do NOT run it directly.  To install, use:
+# CANONICAL SOURCE OF TRUTH: config/scheduled-tasks/schedule-tasks.yaml
+# This file is kept as a human-readable reference only.
+# Do NOT edit cron entries here — edit schedule-tasks.yaml instead.
+# To install crontab entries, use:
 #
 #   bash scripts/cron/setup-cron.sh               # auto-detects machine role
 #   bash scripts/cron/setup-cron.sh --dry-run     # preview without changes

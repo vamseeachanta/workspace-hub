@@ -1,0 +1,168 @@
+# schedule-tasks.yaml — Single source of truth for all scheduled tasks.
+# Read by: scripts/cron/setup-cron.sh, scripts/cron/validate-schedule.py
+# HARD RULE: all cron/task-scheduler entries must be declared here.
+# Do NOT add entries directly to crontab or Windows Task Scheduler.
+
+tasks:
+  # ── ace-linux-1: full variant ─────────────────────────────────────────────
+
+  - id: benchmark-regression
+    label: Performance benchmark regression check
+    schedule: "30 1 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/testing/run-benchmarks.sh
+      >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/benchmark-*.log
+    is_claude_task: false
+    description: Nightly benchmark run; exits 1 on >20% regression vs committed baseline.
+
+  - id: dep-health
+    label: Dependency health check
+    schedule: "0 1 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/quality/dep-health.sh
+      >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+    log: logs/quality/dep-health-cron.log
+    is_claude_task: false
+    description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
+
+  - id: comprehensive-learning
+    label: Comprehensive learning pipeline
+    schedule: "0 2 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/comprehensive-learning-nightly.sh
+      >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+    log: .claude/state/learning-reports/cron.log
+    is_claude_task: false
+    description: Nightly 10-phase learning pipeline; runs at 02:00.
+
+  - id: doc-drift
+    label: Documentation drift baseline refresh
+    schedule: "30 2 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline
+      >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+    log: logs/quality/doc-drift-*.yaml
+    is_claude_task: false
+    description: Detects symbol-to-doc drift across repos.
+
+  - id: agent-radar
+    label: Agent capability radar HTML
+    schedule: "30 2 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      uv run --no-project python $WORKSPACE_HUB/scripts/ai/generate-agent-radar.py
+      >> /tmp/agent-radar.log 2>&1
+    log: /tmp/agent-radar.log
+    is_claude_task: false
+    description: Daily capability radar HTML regeneration.
+
+  - id: ai-tools-status
+    label: AI CLI version check
+    schedule: "15 3 * * 0"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      timeout 60 bash scripts/maintenance/ai-tools-status.sh
+      >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+    log: .claude/state/learning-reports/cron.log
+    is_claude_task: false
+    description: Weekly env parity audit (Sunday 03:15); overwrites ai-tools-status.yaml.
+
+  - id: model-ids
+    label: Model ID refresh
+    schedule: "30 3 * * 0"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/update-model-ids.sh
+      >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+    log: .claude/state/learning-reports/cron.log
+    is_claude_task: false
+    description: Weekly model-ID refresh (Sunday 03:30); updates model-registry.yaml.
+
+  - id: skills-curation
+    label: Skills curation
+    schedule: "0 4 * * 1"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/skills-curation.sh
+      >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+    log: .claude/state/learning-reports/cron.log
+    is_claude_task: true
+    description: Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
+
+  - id: notification-purge
+    label: Notification log 7-day retention
+    schedule: "30 4 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
+    log: null
+    is_claude_task: false
+    description: Daily purge of notification JSONL files older than 7 days.
+
+  - id: claude-memory-backup
+    label: Claude memory backup to ace-linux-2
+    schedule: "0 5 * * *"
+    machines: [ace-linux-1]
+    command: >-
+      rsync -a --delete ~/.claude/projects/
+      ace-linux-2:~/workspace-hub-backup/claude-projects/
+      >> /tmp/claude-memory-backup.log 2>&1
+    log: /tmp/claude-memory-backup.log
+    is_claude_task: false
+    description: Daily backup of claude auto-memory to ace-linux-2.
+
+  # ── ace-linux-1 + ace-linux-2: shared ─────────────────────────────────────
+
+  - id: repository-sync
+    label: Repository sync
+    schedule: "0 */4 * * *"
+    machines: [ace-linux-1, ace-linux-2]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron-repository-sync.sh
+      >> $LOG 2>&1
+    log: .claude/state/learning-reports/cron.log
+    is_claude_task: false
+    description: Pull from remotes, push derived state; every 4 hours.
+    # NOTE: $LOG is set by setup-cron.sh per machine variant
+
+  # ── Windows: contribute-minimal ──────────────────────────────────────────
+
+  - id: win-repository-sync
+    label: Repository sync (Windows)
+    schedule: "every 4 hours"
+    machines: [acma-ansys05, acma-ws014]
+    scheduler: windows-task-scheduler
+    command: >-
+      bash.exe -c "cd /path/to/workspace-hub && bash scripts/cron-repository-sync.sh"
+    log: null
+    is_claude_task: false
+    description: Windows Task Scheduler — repo sync every 4 hours via Git Bash.
+
+  - id: win-session-state-commit
+    label: Session state commit (Windows)
+    schedule: "daily 03:00"
+    machines: [acma-ansys05, acma-ws014]
+    scheduler: windows-task-scheduler
+    command: >-
+      bash.exe -c "cd /path/to/workspace-hub &&
+      git add .claude/state/candidates/ .claude/state/corrections/ &&
+      git diff --staged --quiet ||
+      git commit -m 'chore: session learnings from %COMPUTERNAME%' && git push"
+    log: null
+    is_claude_task: false
+    description: Windows Task Scheduler — daily commit of session-end state.

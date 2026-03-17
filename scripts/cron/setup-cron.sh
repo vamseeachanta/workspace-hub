@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setup-cron.sh — Hostname-aware crontab installer for workspace-hub.
-# Maps hostname → cron_variant; installs the appropriate cron entries.
+# Reads task definitions from config/scheduled-tasks/schedule-tasks.yaml.
 # Idempotent: skips entries already present in crontab.
 # Safe: --dry-run prints what would be installed without modifying crontab.
 #
@@ -20,11 +20,17 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
+SCHEDULE_FILE="${WORKSPACE_HUB}/config/scheduled-tasks/schedule-tasks.yaml"
 
 DRY_RUN=false
 for arg in "$@"; do
   [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
 done
+
+if [[ ! -f "$SCHEDULE_FILE" ]]; then
+  echo "ERROR: ${SCHEDULE_FILE} not found"
+  exit 1
+fi
 
 HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
 HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
@@ -43,56 +49,49 @@ esac
 
 echo "Host: ${HOSTNAME_SHORT} → cron_variant: ${CRON_VARIANT}"
 
-# ── Windows / contribute-minimal: print Task Scheduler instructions and exit ─
+# ── Windows / contribute-minimal: print Task Scheduler instructions from YAML ─
 if [[ "$CRON_VARIANT" == "contribute-minimal" ]]; then
-  cat <<'EOF'
-
-  This machine uses cron_variant: contribute-minimal (Windows or isolated node).
-  Automated cron is not supported. Instead, set up Windows Task Scheduler entries:
-
-  Task 1 — Repository Sync (every 4 hours)
-    Program: bash.exe (Git Bash or WSL)
-    Arguments: -c "cd /path/to/workspace-hub && git pull --no-rebase origin main && git push"
-    Trigger: Every 4 hours
-
-  Task 2 — Commit derived state (daily at 03:00)
-    Program: bash.exe (Git Bash or WSL)
-    Arguments: -c "cd /path/to/workspace-hub && git add .claude/state/candidates/ .claude/state/corrections/ && git diff --staged --quiet || git commit -m 'chore: session learnings from %COMPUTERNAME%' && git push"
-    Trigger: Daily at 03:00
-
-  For WSL, replace paths accordingly. For SSH-based sync, ensure SSH key is
-  authorized on ace-linux-1 (Step 2 of onboarding checklist above).
-
-EOF
+  echo ""
+  echo "  This machine uses cron_variant: contribute-minimal (Windows)."
+  echo "  Automated cron is not supported. Set up Windows Task Scheduler entries"
+  echo "  as documented in: ${SCHEDULE_FILE}"
+  echo "  (look for scheduler: windows-task-scheduler entries)"
+  echo ""
   exit 0
 fi
 
-# ── Build the list of cron entries for this variant ──────────────────────────
+# ── Read cron entries from schedule-tasks.yaml for this hostname ─────────────
+# Uses a small Python one-liner to parse YAML and emit cron lines.
 ENTRIES=()
+while IFS= read -r line; do
+  [[ -n "$line" ]] && ENTRIES+=("$line")
+done < <(
+  uv run --no-project python -c "
+import yaml, sys
+with open('${SCHEDULE_FILE}') as f:
+    data = yaml.safe_load(f)
+hub = '${WORKSPACE_HUB}'
+log_full = hub + '/.claude/state/learning-reports/cron.log'
+log_contrib = '/tmp/workspace-hub-cron.log'
+hostname = '${HOSTNAME_SHORT}'
+for task in data.get('tasks', []):
+    if task.get('scheduler', 'cron') != 'cron':
+        continue
+    if hostname not in task.get('machines', []):
+        continue
+    schedule = task['schedule']
+    command = task['command']
+    # Expand \$WORKSPACE_HUB and \$LOG variables
+    command = command.replace('\$WORKSPACE_HUB', hub)
+    if '${CRON_VARIANT}' == 'full':
+        command = command.replace('\$LOG', log_full)
+    else:
+        command = command.replace('\$LOG', log_contrib)
+    print(f'{schedule}  {command}')
+" 2>&1
+)
 
-# Quote the hub path so spaces in the path don't break cron command parsing
-HUB_Q="\"${WORKSPACE_HUB}\""
-LOG="${WORKSPACE_HUB}/.claude/state/learning-reports/cron.log"
-
-if [[ "$CRON_VARIANT" == "full" ]]; then
-  # ace-linux-1: full 10-phase pipeline + all maintenance crons
-  # NOTE: session-analysis-nightly.sh removed (WRK-1102 Fix 3/FW-3) — analysis is now
-  #       invoked inside comprehensive-learning-nightly.sh; no separate 3AM entry needed.
-  ENTRIES+=(
-    "0  2  * * *  cd ${HUB_Q} && bash scripts/cron/comprehensive-learning-nightly.sh >> \"${LOG}\" 2>&1"
-    "15 3  * * 0  cd ${HUB_Q} && timeout 60 bash scripts/maintenance/ai-tools-status.sh >> \"${LOG}\" 2>&1"
-    "30 3  * * 0  cd ${HUB_Q} && bash scripts/cron/update-model-ids.sh >> \"${LOG}\" 2>&1"
-    "0  4  * * 1  cd ${HUB_Q} && bash scripts/cron/skills-curation.sh >> \"${LOG}\" 2>&1"
-    "0  */4 * * * cd ${HUB_Q} && bash scripts/repository-sync-auto >> \"${LOG}\" 2>&1"
-  )
-fi
-
-if [[ "$CRON_VARIANT" == "contribute" ]]; then
-  # ace-linux-2 and other Linux contributors: repository-sync only
-  ENTRIES+=(
-    "0  */4 * * * cd ${HUB_Q} && bash scripts/repository-sync-auto >> /tmp/workspace-hub-cron.log 2>&1"
-  )
-fi
+echo "Found ${#ENTRIES[@]} task(s) for ${HOSTNAME_SHORT}"
 
 # ── Dry-run: print and exit ───────────────────────────────────────────────────
 if [[ "$DRY_RUN" == "true" ]]; then
@@ -114,12 +113,12 @@ NEW_CRONTAB="$CURRENT_CRONTAB"
 
 for entry in "${ENTRIES[@]}"; do
   # Use schedule + script basename as the unique key.
-  # Schedule: first 5 fields; script: last path component of the scripts/... token.
   schedule=$(printf '%s' "$entry" | awk '{print $1,$2,$3,$4,$5}')
   script_base=$(printf '%s' "$entry" | grep -oE 'scripts/[^ "]+' | head -1 \
     | xargs -I{} basename {} 2>/dev/null || true)
   key="${schedule} ${script_base}"
-  if printf '%s\n' "$CURRENT_CRONTAB" | grep -qF "$script_base" 2>/dev/null \
+  if [[ -n "$script_base" ]] \
+     && printf '%s\n' "$CURRENT_CRONTAB" | grep -qF "$script_base" 2>/dev/null \
      && printf '%s\n' "$CURRENT_CRONTAB" | grep -qF "$schedule" 2>/dev/null; then
     echo "  SKIP (already present): ${key}"
     SKIPPED=$((SKIPPED + 1))
