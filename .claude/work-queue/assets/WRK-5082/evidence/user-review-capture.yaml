@@ -1,0 +1,15 @@
+stage: 1
+wrk_id: WRK-5082
+scope_approved: true
+approved_by: user
+approved_at: "2026-03-16"
+type: feature
+complexity: complex
+children_planned: 5
+notes: |
+  User approved feature decomposition into 5 children:
+  1. CAD drawing (sketch to model)
+  2. Dimensions, material properties, connections
+  3. Chute drag force calculation
+  4. Load distribution through frame
+  5. Member/connection acceptability checks

@@ -1,0 +1,43 @@
+stage: 2
+wrk_id: WRK-5082
+completion_status: complete
+domain: structural-dynamics
+complexity_assessment: complex
+type: feature
+skills:
+  core_used:
+    - structural-analysis
+    - freecad-automation
+    - cad-engineering
+  supporting:
+    - signal-analysis
+    - viv-analysis
+existing_infra:
+  - "vm_stress.py — Von Mises stress, combined stress, principal stress (18 tests)"
+  - "base_solvers/structural/ — StructuralSolver with element/node/BC/load management"
+  - "beam_element.py — 2-node Euler-Bernoulli beam, 4 DOF, local stiffness matrices"
+  - "fea_model/ — FEA nodes, elements, constraints"
+  - "calculix/ — CalculiX FEM solver integration"
+  - "blender_automation/ — Blender CAD automation agent"
+  - "freecad/ — FreeCad automation agent (.claude/agents/freecad/)"
+  - "MaterialProperties dataclass — yield, ultimate, E, nu, density, thermal"
+  - "ASME B31.x / DNV code check frameworks for pipe stress"
+gaps:
+  - "No aerodynamic drag calculation module — implement from F_drag = 0.5*rho*V^2*A*Cd"
+  - "4130 chromoly not in material database — source from ASTM A519/vendor data"
+  - "Parachute Cd values — source from Stroud specs or empirical data"
+  - "Frame solver may need extension of BeamElement or CalculiX integration"
+constraints:
+  - "Tube OD and wall thickness TBD — awaiting manual measurements"
+  - "Chute model confirmation pending (430 vs 450)"
+  - "Bolt sizes at B1 connection TBD"
+integration_path:
+  child_1_cad: "freecad-automation or Blender — stick/frame model from hand sketches"
+  child_2_properties: "Populate MaterialProperties with 4130 data + cross-section geometry"
+  child_3_drag: "Implement drag equation: F = 0.5 * rho * V^2 * A * Cd"
+  child_4_loads: "Extend BeamElement/StructuralSolver or use CalculiX for frame analysis"
+  child_5_checks: "Leverage vm_stress.py + ASME/DNV code check patterns"
+notes: |
+  Rich existing infrastructure in digitalmodel. Primary development effort:
+  parachute aerodynamics (first principles), 4130 material data, and
+  frame load distribution (truss/frame solver extension or CalculiX).
