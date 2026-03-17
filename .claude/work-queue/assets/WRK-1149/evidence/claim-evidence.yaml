@@ -1,0 +1,18 @@
+wrk_id: WRK-1149
+stage: close
+claim: "Method assessment complete — layered architecture recommended"
+evidence:
+  ac1_comparison_table: "5 methods scored on 5 weighted criteria; SB wins at 57/65"
+  ac2_primary_selected: "Söding/Brix for interaction increment"
+  ac3_fallback_identified: "AD + flat-plate for baseline + engine-off + braking quadrant"
+  ac4_limitations_documented: "C^(rp) uncertainty, twin-screw, stall, 5 validation gaps"
+  ac5_output_file: "digitalmodel/docs/domains/hydrodynamics/propeller-rudder-method-selection.md"
+  quantitative_comparison: "J-sweep 0.1-1.0, Esso Osaka parameters, both methods implemented"
+  key_finding: >
+    Methods are complementary, not competing. Soding models interaction increment;
+    AD+flat-plate models total rudder force. Layered: F_total = AD_baseline + Soding_interaction.
+  implementation: "src/digitalmodel/hydrodynamics/propeller_rudder.py (150 lines)"
+  tests_doc: "33/33 pass (AC verification)"
+  tests_impl: "36/36 pass (implementation + comparison)"
+  cross_review: "5 issues found and fixed (arithmetic, sign convention, guard condition)"
+closed_at: "2026-03-17"
