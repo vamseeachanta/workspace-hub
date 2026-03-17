@@ -1,0 +1,7 @@
+wrk_id: WRK-1261
+activated_at: "2026-03-16T20:00:00Z"
+activated_by: claude-opus-4-6
+set_active_wrk: true
+session_id: 78f5ea3e-5eed-4ffd-93c0-ff850ee34728
+orchestrator_agent: claude-opus-4-6
+trigger: "user request — implement WRK-1261 plan"

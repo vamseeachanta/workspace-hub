@@ -1,0 +1,84 @@
+wrk_id: WRK-1261
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/working/WRK-1261.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-1261.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/plan-html-review-final.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/user-review-common-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/review.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/activation.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/workflow-final-review.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-1261/evidence/stage-evidence.yaml
+- order: 19
+  stage: Close
+  status: done
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: done
+  evidence: scripts/work-queue/archive-item.sh
+generated_at: '2026-03-17T03:44:23Z'
+reviewed_by: orchestrator

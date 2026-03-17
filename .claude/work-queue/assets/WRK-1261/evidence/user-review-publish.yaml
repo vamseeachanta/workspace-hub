@@ -1,0 +1,29 @@
+wrk_id: WRK-1261
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 305142eb
+    published_at: "2026-03-16T20:30:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1261/plan-html-review-final.md
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 24195f4f
+    published_at: "2026-03-16T21:30:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1261/plan-html-review-final.md
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 4a72509d
+    published_at: "2026-03-16T21:31:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1261/workflow-final-review.html

@@ -1,0 +1,25 @@
+wrk_id: WRK-1261
+executed_at: "2026-03-16T21:25:00Z"
+commit: 4a72509d
+summary: "Baseline tier distribution committed. All 6 ACs pass. 23/23 TDD tests pass."
+artifacts:
+  - specs/audit/skill-tiers-2026-03-16.yaml
+  - config/skills/quality-tiers.yaml
+  - scripts/skills/skill_tier_lib.py
+  - scripts/skills/tests/test_skill_tier_lib.py
+integrated_repo_tests:
+  - name: "tier classification unit tests"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/skills/tests/test_skill_tier_lib.py -q"
+    result: "passed"
+    artifact_ref: "scripts/skills/tests/test_skill_tier_lib.py"
+  - name: "quality-tiers config validation"
+    scope: repo
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('config/skills/quality-tiers.yaml'))\""
+    result: "passed"
+    artifact_ref: "config/skills/quality-tiers.yaml"
+  - name: "tier distribution baseline verification"
+    scope: integrated
+    command: "uv run --no-project python scripts/skills/skill-tier-report.py --format yaml"
+    result: "passed"
+    artifact_ref: "specs/audit/skill-tiers-2026-03-16.yaml"
