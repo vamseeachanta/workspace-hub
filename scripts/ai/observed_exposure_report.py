@@ -44,6 +44,7 @@ def scan_wrk_files(queue_root: Path | None = None) -> list[dict]:
             results.append({
                 "id": parsed["id"],
                 "category": parsed.get("category", "uncategorized"),
+                "onet_category": parsed.get("onet_category"),
             })
     return results
 
@@ -118,6 +119,25 @@ def aggregate_by_category(wrk_data: list[dict]) -> dict[str, dict]:
     return result
 
 
+def aggregate_by_onet(wrk_data: list[dict]) -> dict[str, dict]:
+    """Group WRK data by onet_category. Items without it go to 'untagged'."""
+    result: dict[str, dict] = {}
+    for wrk in wrk_data:
+        key = wrk.get("onet_category") or "untagged"
+        if key not in result:
+            result[key] = {
+                "wrk_count": 0,
+                "total_stages": 0,
+                "ai_stages": 0,
+                "human_stages": 0,
+            }
+        result[key]["wrk_count"] += 1
+        result[key]["total_stages"] += wrk.get("total", 0)
+        result[key]["ai_stages"] += wrk.get("ai", 0)
+        result[key]["human_stages"] += wrk.get("human", 0)
+    return result
+
+
 def format_table(
     data: dict[str, dict],
     csv_mode: bool = False,
@@ -176,6 +196,10 @@ def main() -> None:
     )
     parser.add_argument("--csv", action="store_true", help="Output as CSV")
     parser.add_argument(
+        "--by-onet", action="store_true",
+        help="Group by onet_category instead of category",
+    )
+    parser.add_argument(
         "--queue-root", default=str(QUEUE_ROOT),
         help="Path to work-queue root",
     )
@@ -194,7 +218,10 @@ def main() -> None:
         wrk["ai"] = ai
         wrk["human"] = human
 
-    agg = aggregate_by_category(wrk_list)
+    if args.by_onet:
+        agg = aggregate_by_onet(wrk_list)
+    else:
+        agg = aggregate_by_category(wrk_list)
     print(format_table(agg, csv_mode=args.csv))
 
 
