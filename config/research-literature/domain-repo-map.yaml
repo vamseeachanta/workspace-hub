@@ -1,0 +1,150 @@
+# ABOUTME: Maps engineering domains to target repos and /mnt/ace/ literature paths
+# ABOUTME: Priority tiers: 1=immediate, 2=next, 3=future
+
+version: "1"
+generated_at: "2026-03-17"
+
+domains:
+  geotechnical:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/geotechnical/literature
+    tier: 1
+    ledger_domain: geotechnical
+    keywords:
+      - pile capacity
+      - soil mechanics
+      - foundation design
+      - bearing capacity
+
+  cathodic_protection:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/cathodic_protection/literature
+    tier: 1
+    ledger_domain: cathodic-protection
+    keywords:
+      - cathodic protection
+      - CP design
+      - anode
+      - sacrificial anode
+
+  structural:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/structural/literature
+    tier: 1
+    ledger_domain: structural
+    keywords:
+      - fatigue
+      - structural analysis
+      - stress concentration
+      - SCF
+
+  hydrodynamics:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/hydrodynamics/literature
+    tier: 1
+    ledger_domain: hydrodynamics
+    keywords:
+      - wave loading
+      - Morison equation
+      - current forces
+      - VIV
+
+  drilling:
+    repo: OGManufacturing
+    ace_path: /mnt/ace/OGManufacturing/docs/domains/drilling/literature
+    tier: 1
+    ledger_domain: drilling
+    keywords:
+      - drilling operations
+      - wellbore
+      - mud weight
+      - pressure management
+    secondary_repo: worldenergydata
+
+  pipeline:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/pipeline/literature
+    tier: 1
+    ledger_domain: pipeline
+    keywords:
+      - pipeline design
+      - pipeline safety
+      - on-bottom stability
+      - free span
+    secondary_repo: worldenergydata
+
+  bsee:
+    repo: worldenergydata
+    ace_path: /mnt/ace/worldenergydata/docs/domains/bsee/literature
+    tier: 1
+    ledger_domain: bsee
+    keywords:
+      - BSEE
+      - regulatory
+      - offshore safety
+      - incident investigation
+
+  metocean:
+    repo: worldenergydata
+    ace_path: /mnt/ace/worldenergydata/docs/domains/metocean/literature
+    tier: 1
+    ledger_domain: metocean
+    keywords:
+      - metocean
+      - environmental loading
+      - wave statistics
+      - extreme values
+
+  subsea:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/subsea/literature
+    tier: 1
+    ledger_domain: subsea
+    keywords:
+      - subsea engineering
+      - umbilical
+      - riser
+      - subsea production
+
+  naval_architecture:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/naval_architecture/literature
+    tier: 1
+    ledger_domain: naval_architecture
+    keywords:
+      - ship design
+      - hull
+      - stability
+      - naval architecture
+
+  mooring:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/mooring/literature
+    tier: 2
+    ledger_domain: mooring
+    keywords:
+      - mooring design
+      - anchor
+      - chain
+      - mooring analysis
+
+  risers:
+    repo: digitalmodel
+    ace_path: /mnt/ace/digitalmodel/docs/domains/risers/literature
+    tier: 2
+    ledger_domain: risers
+    keywords:
+      - riser design
+      - SCR
+      - flexible riser
+      - top-tensioned riser
+
+  economics:
+    repo: worldenergydata
+    ace_path: /mnt/ace/worldenergydata/docs/domains/economics/literature
+    tier: 3
+    ledger_domain: economics
+    keywords:
+      - energy economics
+      - field development
+      - CAPEX OPEX

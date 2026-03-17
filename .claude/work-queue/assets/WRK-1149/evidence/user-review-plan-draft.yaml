@@ -1,0 +1,13 @@
+wrk_id: WRK-1149
+stage: 5
+stage_name: Plan Review
+decision: approved
+approved_at: "2026-03-17"
+approved_by: user
+plan_summary: >
+  Compare 5 candidate methods (AD, HM, Soding/Brix, Molland/Turnock, Hybrid)
+  against 5 weighted criteria. Select primary + fallback method.
+  Output: propeller-rudder-method-selection.md
+notes: >
+  Stage 1 approval implicitly covered the plan since the WRK item itself
+  specifies the comparison criteria and candidate methods.

@@ -31,7 +31,7 @@ existing data sources and produces a structured YAML research brief.
 - **category**: engineering discipline (e.g. `geotechnical`, `structural`, `subsea`)
 - **subcategory**: specific topic (e.g. `pile_capacity`, `fatigue`, `viv_analysis`)
 
-## 5-Step Workflow
+## 8-Step Workflow
 
 ### Step 1 — Query the Standards Ledger
 
@@ -129,6 +129,63 @@ For each standard not yet available locally:
 
 Hand off actual downloads to the `doc-research-download` skill.
 
+### Step 7 — Deep Online Research
+
+Use WebSearch to find freely available PDFs, papers, and technical references
+for standards identified as `needs_download` or `paywalled`:
+
+```bash
+# Generate research brief from existing data sources first
+uv run --no-project python scripts/data/research-literature/research-domain.py \
+  --category <category> --repo <repo>
+```
+
+Then use WebSearch/WebFetch to find:
+- Free PDFs from standard body websites (DNV Veracity, API publications)
+- Open-access papers from OnePetro, ISOPE, OTC archives
+- University lecture notes and textbook chapters
+- Technical guidance documents from BOEM, BSEE, HSE UK
+
+Update the research brief with discovered URLs and availability status.
+
+### Step 8 — Download Script Generation
+
+Generate a curl/wget-based download script for the domain:
+
+```bash
+uv run --no-project python scripts/data/research-literature/research-domain.py \
+  --category <category> --repo <repo> --generate-download-script
+```
+
+This creates `download-literature.sh` at the domain's `/mnt/ace/` literature path.
+The script sources `scripts/lib/download-helpers.sh` and supports `--dry-run`.
+
+After generation, manually curate the script:
+1. Add discovered URLs from Step 7
+2. Set proper filenames: `<author>-<year>-<short-title>.pdf`
+3. Run `--dry-run` to verify
+4. Execute and validate with `file *.pdf` (reject HTML/WAF responses)
+
+## Domain-to-Repo Mapping
+
+See `config/research-literature/domain-repo-map.yaml` for the full mapping.
+
+| Domain | Repo | Tier |
+|--------|------|------|
+| geotechnical | digitalmodel | 1 |
+| cathodic_protection | digitalmodel | 1 |
+| structural | digitalmodel | 1 |
+| hydrodynamics | digitalmodel | 1 |
+| drilling | OGManufacturing | 1 |
+| pipeline | digitalmodel | 1 |
+| bsee | worldenergydata | 1 |
+| metocean | worldenergydata | 1 |
+| subsea | digitalmodel | 1 |
+| naval_architecture | digitalmodel | 1 |
+| mooring | digitalmodel | 2 |
+| risers | digitalmodel | 2 |
+| economics | worldenergydata | 3 |
+
 ## Research Brief Template
 
 ```yaml
@@ -198,3 +255,7 @@ implementation_target:
 - [ ] Research brief YAML saved to `specs/capability-map/research-briefs/`
 - [ ] Download tasks identified with availability status
 - [ ] Brief reviewed for completeness before handing off to implementation WRK
+- [ ] Deep online research performed (WebSearch for free PDFs and papers)
+- [ ] Download script generated via `--generate-download-script`
+- [ ] Download script manually curated with discovered URLs
+- [ ] Downloads validated with `file *.pdf` (no HTML/WAF responses)

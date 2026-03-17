@@ -1,0 +1,17 @@
+wrk_id: WRK-1149
+current_stage: 17
+stage_name: User Review
+completed_stage: 16
+next_action: "HARD GATE: User must review method selection document and confirm"
+context_summary: >
+  All stages complete. Method selection document at
+  digitalmodel/docs/domains/hydrodynamics/propeller-rudder-method-selection.md.
+  5 candidate methods compared, Soding/Brix selected (weighted score 57/65).
+  33/33 TDD tests pass. Cross-review: 5 issues found and fixed.
+  Fallback: AD + flat-plate for engine-off/braking quadrant.
+entry_reads:
+  - .claude/work-queue/working/WRK-1149.md
+  - digitalmodel/docs/domains/hydrodynamics/propeller-rudder-method-selection.md
+  - digitalmodel/tests/docs/test_propeller_rudder_method_selection.py
+checkpointed_at: "2026-03-17"
+human_gate: true

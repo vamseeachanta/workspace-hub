@@ -2872,3 +2872,159 @@
   "wrk": "WRK-1183",
   "stage": 18
 }
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 2
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 3
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1247",
+  "stage": 17
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1247",
+  "stage": 18
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 1
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 2
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 3
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 4
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 5
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 5
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 6
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 7
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 6
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 7
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 10
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 9
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 8
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 11
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 12
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 13
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 16
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 15
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 14
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 17
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 20
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 18
+}

@@ -1,0 +1,11 @@
+wrk_id: WRK-1149
+stage: execute
+deliverable: digitalmodel/docs/domains/hydrodynamics/propeller-rudder-method-selection.md
+test_file: digitalmodel/tests/docs/test_propeller_rudder_method_selection.py
+tests_total: 33
+tests_passed: 33
+tests_failed: 0
+primary_method: "Soding/Brix slipstream-in-rudder (McTaggart 2005)"
+fallback_method: "Actuator-disk + flat-plate rudder (engine-off / braking quadrant)"
+weighted_score_winner: "SB = 57 (next: HM/Hybrid tied at 51)"
+executed_at: "2026-03-17"

@@ -1,0 +1,12 @@
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-17T05:20:00Z"
+scope_notes: |
+  Original AC plus additions:
+  - Deep research each topic online and download/gather online documents
+  - All online documents saved in /mnt/ace/<repo>/docs/domains/<category>/literature/ format
+  - Follow pattern from /mnt/ace/digitalmodel/docs/domains/hydrodynamics/literature/
+additional_ac:
+  - ac7: "Deep research each engineering category/subcategory online for standards, papers, technical references"
+  - ac8: "Download publicly available documents to /mnt/ace/<repo>/docs/domains/<category>/literature/"
+  - ac9: "Generate download-literature.sh scripts per domain (curl-based, following hydrodynamics pattern)"

@@ -1,0 +1,28 @@
+wrk_id: WRK-1149
+stage: cross-review
+reviewer: claude-feature-dev-code-reviewer
+verdict: REVISE (then fixed)
+issues_found: 5
+issues_fixed: 5
+issues:
+  - id: ISSUE-2
+    severity: important
+    description: "AD J-range contradiction (0-1.1 vs 0.3-1.1 in strengths vs matrix)"
+    fix: "Changed strengths text to 0.3-1.1"
+  - id: ISSUE-3
+    severity: important
+    description: "Yaw moment x_R sign convention ambiguous"
+    fix: "Added explicit sign convention comment"
+  - id: ISSUE-4
+    severity: important
+    description: "Three weighted totals arithmetically wrong (AD=46->50, HM=49->51, MT=44->45)"
+    fix: "Corrected all three values"
+  - id: ISSUE-5
+    severity: important
+    description: "sqrt(1+C_th) undefined if C_th < -1 in braking quadrant"
+    fix: "Added guard condition and fallback instruction"
+  - id: ISSUE-6
+    severity: minor
+    description: "Engine-off degrades label misleading"
+    fix: "Revised fallback table entry and added explanatory note"
+reviewed_at: "2026-03-17"

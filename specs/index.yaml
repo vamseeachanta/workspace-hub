@@ -1,13 +1,13 @@
-generated: '2026-03-16'
-total_specs: 1855
+generated: '2026-03-17'
+total_specs: 1884
 by_category:
   archive: 13
   data-sources: 13
-  modules: 332
-  other: 45
+  modules: 344
+  other: 61
   repos: 1344
   templates: 20
-  wrk: 88
+  wrk: 89
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 339
+  workspace-hub: 368
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -112,8 +112,8 @@ by_wrk:
   WRK-133: 1
   WRK-134: 1
   WRK-138: 1
-  WRK-139: 1
-  WRK-140: 1
+  WRK-139: 2
+  WRK-140: 2
   WRK-142: 1
   WRK-146: 2
   WRK-147: 1
@@ -235,6 +235,7 @@ by_wrk:
   WRK-624: 9
   WRK-633: 1
   WRK-637: 1
+  WRK-639: 2
   WRK-655: 2
   WRK-656: 3
   WRK-657: 1
@@ -285,6 +286,7 @@ by_wrk:
   WRK-1045: 1
   WRK-1048: 2
   WRK-1052: 1
+  WRK-1053: 1
   WRK-1054: 1
   WRK-1056: 1
   WRK-1057: 1
@@ -332,7 +334,7 @@ by_wrk:
   WRK-1143: 2
   WRK-1144: 1
   WRK-1147: 13
-  WRK-1148: 3
+  WRK-1148: 4
   WRK-1149: 2
   WRK-1150: 1
   WRK-1151: 3
@@ -347,18 +349,25 @@ by_wrk:
   WRK-1172: 1
   WRK-1174: 1
   WRK-1178: 1
-  WRK-1179: 5
-  WRK-1181: 1
+  WRK-1179: 6
+  WRK-1181: 2
   WRK-1183: 1
   WRK-1185: 1
   WRK-1187: 1
   WRK-1188: 2
   WRK-1200: 1
   WRK-1203: 1
-  WRK-1242: 2
-  WRK-1247: 1
-  WRK-1251: 1
+  WRK-1242: 3
+  WRK-1244: 2
+  WRK-1247: 2
+  WRK-1251: 2
   WRK-1252: 1
+  WRK-1261: 2
+  WRK-1263: 2
+  WRK-1269: 1
+  WRK-1272: 1
+  WRK-1273: 1
+  WRK-1279: 1
   WRK-5035: 1
   WRK-5036: 3
   WRK-5037: 5
@@ -383,6 +392,7 @@ by_wrk:
   WRK-5070: 1
   WRK-5071: 1
   WRK-5072: 1
+  WRK-5082: 1
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -576,6 +586,66 @@ specs:
   wrk_refs:
   - WRK-226
   mtime: '2026-02-24'
+- path: specs/audit/skill-coverage-gaps-2026-03-16.yaml
+  title: Skill Coverage Gaps 2026 03 16
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-coverage-gaps-2026-03-16
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/audit/skill-eval-2026-03-16-phase2.yaml
+  title: Skill Eval 2026 03 16 Phase2
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-eval-2026-03-16-phase2
+  wrk_refs: []
+  mtime: '2026-03-16'
+- path: specs/audit/skill-eval-2026-03-16.yaml
+  title: Skill Eval 2026 03 16
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-eval-2026-03-16
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/audit/skill-eval-ecosystem-2026-03-16.yaml
+  title: Skill Eval Ecosystem 2026 03 16
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-eval-ecosystem-2026-03-16
+  wrk_refs: []
+  mtime: '2026-03-16'
+- path: specs/audit/skill-tiers-2026-03-16.yaml
+  title: Skill Tiers 2026 03 16
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-tiers-2026-03-16
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/audit/skill-violations-2026-03-16.yaml
+  title: Skill Violations 2026 03 16
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - audit
+  - skill-violations-2026-03-16
+  wrk_refs: []
+  mtime: '2026-03-17'
 - path: specs/capability-map/assetutilities.yaml
   title: assetutilities
   description: ''
@@ -671,6 +741,39 @@ specs:
   - WRK-321
   - WRK-1179
   mtime: '2026-03-14'
+- path: specs/capability-map/research-briefs/bsee.yaml
+  title: Bsee
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - bsee
+  - capability-map
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/cathodic_protection.yaml
+  title: Cathodic Protection
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - cathodic_protection
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/drilling.yaml
+  title: Drilling
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - drilling
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
 - path: specs/capability-map/research-briefs/geotechnical-pile-capacity.yaml
   title: Geotechnical Pile Capacity
   description: ''
@@ -683,6 +786,83 @@ specs:
   wrk_refs:
   - WRK-1181
   mtime: '2026-03-14'
+- path: specs/capability-map/research-briefs/geotechnical.yaml
+  title: Geotechnical
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - geotechnical
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/hydrodynamics.yaml
+  title: Hydrodynamics
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - hydrodynamics
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/metocean.yaml
+  title: Metocean
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - metocean
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/naval_architecture.yaml
+  title: Naval Architecture
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - naval_architecture
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/pipeline.yaml
+  title: Pipeline
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - pipeline
+  - research-briefs
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/structural.yaml
+  title: Structural
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - research-briefs
+  - structural
+  wrk_refs: []
+  mtime: '2026-03-17'
+- path: specs/capability-map/research-briefs/subsea.yaml
+  title: Subsea
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-map
+  - research-briefs
+  - subsea
+  wrk_refs: []
+  mtime: '2026-03-17'
 - path: specs/client-demos/brochure-client1-rigid-jumper-pipeline.md
   title: Engineering AI Assistant
   description: '*Powered by large language model technology with deep offshore engineering context*'
@@ -916,6 +1096,17 @@ specs:
   - WRK-613
   - WRK-614
   mtime: '2026-02-26'
+- path: specs/modules/abstract-tinkering-hartmanis.md
+  title: 'WRK-5082: Parachute Frame Force Calculation (Feature Plan)'
+  description: A client has a GT1R Nissan GT-R R35 drag car with a bolt-on parachute kit (4130 chromoly steel frame). They
+    need structural verification of the parachute mounting frame under deployment loads at 20...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - abstract-tinkering-hartmanis
+  wrk_refs:
+  - WRK-5082
+  mtime: '2026-03-17'
 - path: specs/modules/ace-gtm-group-tagging.md
   title: ACE-GTM Group Tagging
   description: 'Created WRK-148 as the parent strategy stream item for the ACE-GTM group. Need to tag existing child items
@@ -992,6 +1183,18 @@ specs:
   - WRK-1147
   - WRK-5064
   mtime: '2026-03-13'
+- path: specs/modules/atomic-floating-glade.md
+  title: 'WRK-1279: Extract Numerical Test Vectors from Naval Architecture Literature'
+  description: The digitalmodel repo has 15+ engineering domains with varying test coverage. Some domains (CP, fatigue, asset
+    integrity) have rich inline test data in Python files but lack standardized YAML fixtu...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - atomic-floating-glade
+  wrk_refs:
+  - WRK-1148
+  - WRK-1279
+  mtime: '2026-03-17'
 - path: specs/modules/best-practices-integration-everything-claude-code.md
   title: 'Best Practices Integration: everything-claude-code → workspace-hub'
   description: '**Version:** 1.0.0 **Module:** claude-infrastructure **Session ID:** curious-moseying-minsky **Agent:** Claude
@@ -1178,6 +1381,29 @@ specs:
   wrk_refs:
   - WRK-162
   mtime: '2026-02-18'
+- path: specs/modules/cuddly-foraging-sloth.md
+  title: 'WRK-1181: Research & Literature Gathering Skill'
+  description: Every calculation implementation starts with literature research — finding applicable standards, gathering
+    reference documents, and identifying worked examples for TDD. Currently this is ad-hoc; ea...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - cuddly-foraging-sloth
+  wrk_refs:
+  - WRK-1179
+  - WRK-1181
+  mtime: '2026-03-17'
+- path: specs/modules/curious-munching-marshmallow.md
+  title: 'WRK-1261: Quantify Skill Curation Quality Hierarchy'
+  description: patterns.md defines an enforcement gradient (prose → micro-skill → script → hook) but skill eval tooling didn't
+    measure where each skill sits. WRK-1261 makes this measurable. All code artifacts wer...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - curious-munching-marshmallow
+  wrk_refs:
+  - WRK-1261
+  mtime: '2026-03-17'
 - path: specs/modules/dapper-stargazing-willow.md
   title: WRK-687 Plan — Per-Workstation comprehensive-learning with ace-linux-1 Compilation
   description: WRK-683 established `logs/orchestrator/` as a unified per-machine log directory for all three AI agents (Claude
@@ -1203,6 +1429,19 @@ specs:
   - WRK-379
   - WRK-1200
   mtime: '2026-03-14'
+- path: specs/modules/deep-snacking-comet.md
+  title: 'WRK-1244: Evaluate Canonical Skill Ecosystem Quality'
+  description: After WRK-639 cleaned out 124 diverged/incoming skills and WRK-1053 scripted the audit loops, we have 403 canonical
+    skills but **no ecosystem-wide quality baseline**. Three eval tools exist but hav...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - deep-snacking-comet
+  wrk_refs:
+  - WRK-639
+  - WRK-1053
+  - WRK-1244
+  mtime: '2026-03-16'
 - path: specs/modules/delightful-orbiting-hammock.md
   title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
   description: 'WRK-5037 delivered a document extraction pipeline that produces YAML manifests with raw sections, tables,
@@ -1314,6 +1553,17 @@ specs:
   - WRK-5038
   - WRK-5042
   mtime: '2026-03-13'
+- path: specs/modules/expressive-swinging-stroustrup.md
+  title: 'WRK-1242 Fix: Align Section Schemas with Renderer Contract'
+  description: Codex cross-review (hard gate) returned REQUEST_CHANGES on WRK-1242. The 16 calculation methodology section
+    reference files define YAML schemas incompatible with the actual `calculation-report` ren...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - expressive-swinging-stroustrup
+  wrk_refs:
+  - WRK-1242
+  mtime: '2026-03-16'
 - path: specs/modules/foamy-conjuring-hollerith.md
   title: 'Plan: WRK-1143 — Centralized WRK Status Index'
   description: 'WRK-1143 targets a single source of truth (`wrk-status-index.json`) for WRK status across parallel sessions.
@@ -1663,6 +1913,18 @@ specs:
   - orcaflex-modular-builder-enhancement
   wrk_refs: []
   mtime: '2026-01-31'
+- path: specs/modules/parsed-cuddling-kahn.md
+  title: 'WRK-1269: POC v2 — Pattern-aware XLSX-to-Python'
+  description: WRK-1247 extracted formulas from 10 XLSX files and produced 187K test stubs (one per cell). This WRK produces
+    **compact Python code** — the conductor workbook's 2,699 formulas become ~132 functions...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - parsed-cuddling-kahn
+  wrk_refs:
+  - WRK-1247
+  - WRK-1269
+  mtime: '2026-03-16'
 - path: specs/modules/per-model-rating-tracking-adaptive-routing.md
   title: Per-Model Rating Tracking & Adaptive Routing
   description: 'title: Per-Model Rating Tracking & Adaptive Routing description: Expand model roster, track per-model EWMA
@@ -1955,6 +2217,17 @@ specs:
   wrk_refs:
   - WRK-66
   mtime: '2026-02-03'
+- path: specs/modules/robust-imagining-cake.md
+  title: 'WRK-1261: Skill Quality Tier Hierarchy'
+  description: '`patterns.md` defines an enforcement gradient (Level 0 Prose → Level 3 Hook) but the skill evaluation tooling
+    doesn''t measure where each skill sits on that gradient. This WRK adds a measurable 4-ti...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - robust-imagining-cake
+  wrk_refs:
+  - WRK-1261
+  mtime: '2026-03-16'
 - path: specs/modules/robust-popping-wadler.md
   title: 'Plan: WRK-1117 — Windows/Git Bash: fix comprehensive-learning push path + signal generation'
   description: 'acma-ansys05 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit but contributes zero learnings
@@ -2026,6 +2299,19 @@ specs:
   - session-to-summary-report-pipeline
   wrk_refs: []
   mtime: '2026-02-09'
+- path: specs/modules/sharded-pondering-dream.md
+  title: 'WRK-1263: Restore aqwa-analysis lost content + split oversized skill'
+  description: WRK-1244 identified that 46 lines of AQWA Solver Stages & Backend Mapping content were lost during WRK-639
+    diverged cleanup. The canonical skill at `.claude/skills/engineering/marine-offshore/aqwa-...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - sharded-pondering-dream
+  wrk_refs:
+  - WRK-639
+  - WRK-1244
+  - WRK-1263
+  mtime: '2026-03-16'
 - path: specs/modules/silly-seeking-thacker.md
   title: 'WRK-1098 Plan: Ecosystem Terminology Skill'
   description: Coding assistants and new humans regularly use inconsistent names for repos, modules, machines, and concepts
@@ -2038,6 +2324,15 @@ specs:
   - WRK-1073
   - WRK-1098
   mtime: '2026-03-10'
+- path: specs/modules/skill-workflow-alignment.md
+  title: Skill-Workflow Alignment
+  description: 'Today, three concerns are split across three directory trees:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - skill-workflow-alignment
+  wrk_refs: []
+  mtime: '2026-03-16'
 - path: specs/modules/skills-migration-plan.md
   title: Skills Migration Plan
   description: '**Created**: 2026-01-21 **Status**: Planning **Total Files**: 294 markdown files across both directories'
@@ -2212,6 +2507,19 @@ specs:
   - WRK-1148
   - WRK-1149
   mtime: '2026-03-12'
+- path: specs/modules/tender-wondering-graham.md
+  title: 'WRK-1272: Enforce 200-line Skill Limit'
+  description: '`coding-style.md` hard limit changed from 400→200 lines. 293 of 408 SKILL.md files (72%) now violate the limit.
+    WRK-1263 proved the nested sub-skill pattern (aqwa-analysis: 718→5 files, all <200 li...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tender-wondering-graham
+  wrk_refs:
+  - WRK-1263
+  - WRK-1272
+  - WRK-1273
+  mtime: '2026-03-16'
 - path: specs/modules/ticklish-riding-wozniak.md
   title: 'WRK-1126 Plan: Maritime Law Knowledge Data Layer'
   description: Offshore engineering work (OrcaFlex, ANSYS, CFD) operates within maritime legal and regulatory frameworks.
@@ -2224,6 +2532,17 @@ specs:
   - WRK-633
   - WRK-1126
   mtime: '2026-03-11'
+- path: specs/modules/tidy-baking-cake.md
+  title: 'WRK-1251 Feature Plan: FreeCAD Deep Parametric Engineering'
+  description: WRK-1251 aims to enable production-grade FreeCAD automation for hull generation, FEM analysis, design table
+    studies, and round-trip validation. **Most of the code already exists** — this plan focus...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - tidy-baking-cake
+  wrk_refs:
+  - WRK-1251
+  mtime: '2026-03-17'
 - path: specs/modules/toasty-painting-kernighan.md
   title: 'Plan: Pre-Clear Session Snapshot'
   description: '`/clear` is a Claude Code built-in CLI command processed at the shell level before messages reach Claude.
@@ -2835,33 +3154,6 @@ specs:
   - plan
   wrk_refs: []
   mtime: '2026-01-19'
-- path: specs/modules/skill-eval/plan.md
-  title: Skill Eval - Test/Evaluate All Skills
-  description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
-    cross-reference integrity, and registry consistency
-  category: modules
-  repo: workspace-hub
-  tags:
-  - evaluation
-  - plan
-  - quality
-  - skill-eval
-  - skills
-  - verification
-  wrk_refs: []
-  mtime: '2026-01-29'
-- path: specs/modules/skills/enhancement/plan.md
-  title: 'Plan: Add Comprehensive Claude Skills for Everyday Work'
-  description: Add ~43 new skills across 8 categories to `/mnt/github/workspace-hub/skills/` following existing patterns (comprehensive
-    ~500-1000 lines, YAML frontmatter, code examples, scripts).
-  category: modules
-  repo: workspace-hub
-  tags:
-  - enhancement
-  - plan
-  - skills
-  wrk_refs: []
-  mtime: '2026-01-19'
 - path: specs/modules/hardware-inventory/aceengineer-01.md
   title: AceEngineer-01 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2x Intel Xeon E5-2630 v3 @ 2.40 GHz (8C/16T
@@ -2978,6 +3270,33 @@ specs:
   - vamsee-linux1
   wrk_refs: []
   mtime: '2026-02-24'
+- path: specs/modules/skill-eval/plan.md
+  title: Skill Eval - Test/Evaluate All Skills
+  description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
+    cross-reference integrity, and registry consistency
+  category: modules
+  repo: workspace-hub
+  tags:
+  - evaluation
+  - plan
+  - quality
+  - skill-eval
+  - skills
+  - verification
+  wrk_refs: []
+  mtime: '2026-01-29'
+- path: specs/modules/skills/enhancement/plan.md
+  title: 'Plan: Add Comprehensive Claude Skills for Everyday Work'
+  description: Add ~43 new skills across 8 categories to `/mnt/github/workspace-hub/skills/` following existing patterns (comprehensive
+    ~500-1000 lines, YAML frontmatter, code examples, scripts).
+  category: modules
+  repo: workspace-hub
+  tags:
+  - enhancement
+  - plan
+  - skills
+  wrk_refs: []
+  mtime: '2026-01-19'
 - path: specs/online-resources/catalog.yaml
   title: Catalog
   description: ''
@@ -21781,6 +22100,18 @@ specs:
   wrk_refs:
   - WRK-1242
   mtime: '2026-03-15'
+- path: specs/wrk/WRK-140/plan.md
+  title: 'WRK-140 Plan: Integrate gmsh Meshing into digitalmodel Pipelines'
+  description: Wire gmsh meshing skill (WRK-139) into digitalmodel hydrodynamic analysis pipelines.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-140
+  wrk_refs:
+  - WRK-139
+  - WRK-140
+  mtime: '2026-03-16'
 - path: specs/wrk/WRK-185/ecosystem-centralization-review.md
   title: WRK-185 Ecosystem Centralization Review
   description: Current-state audit and simplification plan for work items and specs across all agents
