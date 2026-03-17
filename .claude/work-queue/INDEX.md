@@ -1,39 +1,39 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-16T23:57:16Z by generate-index.py -->
+<!-- Generated: 2026-03-17T03:44:25Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-16T23:57:16Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-17T03:44:25Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 692
+**Total items:** 695
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 276 |
-| working | 3 |
+| pending | 275 |
+| working | 6 |
 | blocked | 11 |
 | done | 7 |
-| archived | 393 |
+| archived | 394 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 299 |
-| medium | 326 |
+| high | 301 |
+| medium | 327 |
 | low | 66 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 148 |
-| medium | 328 |
-| complex | 131 |
+| simple | 149 |
+| medium | 329 |
+| complex | 132 |
 
 ### By Category
 
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 29 |
-| engineering | 157 |
+| engineering | 159 |
 | data | 24 |
 | platform | 11 |
 | business | 6 |
@@ -65,14 +65,14 @@
 | assethold | 19 |
 | assetutilities | 20 |
 | client_projects | 1 |
-| digitalmodel | 223 |
+| digitalmodel | 225 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 4 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 298 |
+| workspace-hub | 299 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 278 / 692 |
-| Plans cross-reviewed | 199 |
-| Plans approved | 224 |
+| Plans exist | 277 / 695 |
+| Plans cross-reviewed | 200 |
+| Plans approved | 225 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,17 +92,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 692 |
-| Total archived | 393 |
-| Completion rate | 393/692 (57%) |
-| Monthly rate (current month) | 136 archived |
+| Total captured | 695 |
+| Total archived | 394 |
+| Completion rate | 394/695 (57%) |
+| Monthly rate (current month) | 137 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 80 / 276 | 29% |
+| Pending items with plans | 78 / 275 | 28% |
 | Plans cross-reviewed | 8 | 9% |
 | Plans user-approved | 8 | 9% |
 
@@ -119,8 +119,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 102 | 1 | 8 |
-| Medium   | 131  | 2  | 1  |
+| High     | 101 | 3 | 8 |
+| Medium   | 131  | 3  | 1  |
 | Low      | 43  | 0  | 2  |
 
 ## By Category
@@ -181,7 +181,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
-| WRK-1261 | HIGH | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending |
+| WRK-1259 | HIGH | Tune eval-skills.py required sections by skill type | working |
 | WRK-1270 | HIGH | Skill-workflow alignment — nest tool families, co-locate scripts [feature] | pending |
 | WRK-1271 | HIGH | Enforce 200-line hard limit on all SKILL.md files [feature] | pending |
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
@@ -218,7 +218,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (157 items — 79 high, 62 medium, 16 low)
+### engineering (159 items — 80 high, 63 medium, 16 low)
 
 #### engineering / artificial-lift
 
@@ -259,7 +259,7 @@
 |----|----------|-------|--------|
 | WRK-1245 | HIGH | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents [feature] | pending |
 | WRK-1255 | HIGH | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending |
-| WRK-1277 | HIGH | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending |
+| WRK-1277 | HIGH | Reclassify 324K PDF readability errors — retry with robust timeout handling | working |
 | WRK-1257 | MEDIUM | Chart image extraction — extract actual images from PDFs, not just metadata | pending |
 | WRK-1253 | LOW | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | blocked |
 
@@ -320,9 +320,11 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
+| WRK-1279 | HIGH | Extract numerical test vectors from propeller-rudder literature for TDD | pending |
 | WRK-1147 | MEDIUM | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation [feature] | pending |
 | WRK-1149 | MEDIUM | Method assessment and selection — propeller-rudder interaction models | pending |
 | WRK-1150 | MEDIUM | Python implementation — propeller-rudder interaction with RPM sweep | pending |
+| WRK-1280 | MEDIUM | Add 4-quadrant propeller data to propeller-rudder literature | pending |
 | WRK-5067 | MEDIUM | Hydrodynamics and wave mechanics study — literature, methods and implementation [feature] | pending |
 
 #### engineering / marine
@@ -592,7 +594,7 @@
 | WRK-050 | MEDIUM | Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness | pending |
 | WRK-227 | MEDIUM | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending |
 | WRK-389 | MEDIUM | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending |
-| WRK-1021 | MEDIUM | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending |
+| WRK-1278 | MEDIUM | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending |
 
 #### platform / uncategorised
 
@@ -700,7 +702,7 @@
 | ID | Title | Status | Children |
 |----|-------|--------|----------|
 | [WRK-1048](pending/WRK-1048.md) | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | 4/10 archived (40%) |
-| [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 0/0 |
+| [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 1/5 archived (20%) |
 | [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 3/18 archived (17%) |
 | [WRK-1187](pending/WRK-1187.md) | Robust script-based workflow engine — codify all ecosystem workflows | pending | 0/0 |
 | [WRK-1245](pending/WRK-1245.md) | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | 0/0 |
@@ -721,6 +723,7 @@
 | [WRK-5070](pending/WRK-5070.md) | Metocean and extreme value analysis study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5071](pending/WRK-5071.md) | Coiled tubing hydraulics study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5072](pending/WRK-5072.md) | Artificial lift and rod pump study — literature, methods and implementation | pending | 0/0 |
+| [WRK-5082](pending/WRK-5082.md) | Parachute frame force calculation — drag car parachute deployment | working | 0/0 |
 
 ## Master Table
 
@@ -1169,7 +1172,6 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
@@ -1358,8 +1360,9 @@
 | WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | blocked | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1269 |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | archived | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -1373,7 +1376,10 @@
 | WRK-1274 | Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1275 | Add sensitivity, validation, verification to calc examples | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1274 |
 | WRK-1276 | Create audit-calc-methodology.py — auto-score examples against 16-section checklist | pending | low | simple | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05, acma-ws014 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1409,7 +1415,7 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | working | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -1607,7 +1613,6 @@
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | medium | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | medium | simple | workspace-hub | - |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
@@ -1675,14 +1680,15 @@
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | high | medium | workspace-hub | - |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | medium | medium | workspace-hub | - |
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | medium | low | workspace-hub | - |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | high | medium | workspace-hub | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | medium | medium | aceengineer-admin | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | high | high | workspace-hub | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | high | high | workspace-hub | - |
 | WRK-1274 | Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections | medium | medium | - | - |
 | WRK-1275 | Add sensitivity, validation, verification to calc examples | medium | medium | - | - |
 | WRK-1276 | Create audit-calc-methodology.py — auto-score examples against 16-section checklist | low | simple | - | - |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | high | medium | workspace-hub | - |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | medium | medium | workspace-hub | - |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | high | simple | digitalmodel | - |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | medium | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1708,7 +1714,6 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | low | complex | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | low | complex | digitalmodel | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | medium | complex | digitalmodel | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | medium | digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5092 | sabithaandkrishnaestates repo — document indexing and structure enhancement | medium | medium | sabithaandkrishnaestates | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
@@ -1721,6 +1726,9 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | medium | complex | digitalmodel, workspace-hub | - |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | high | medium | workspace-hub | - |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | high | medium | workspace-hub | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | medium | complex | digitalmodel | - |
 
 ### Blocked
 
@@ -2116,6 +2124,7 @@
 | WRK-1190 | Ingest Baker Hughes rig count | high | low | worldenergydata | - |
 | WRK-1232 | Complete production data download and conversion pipeline | high | medium | worldenergydata | - |
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | high | medium | workspace-hub | - |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | high | medium | workspace-hub | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | medium | low | workspace-hub | - |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | high | medium | workspace-hub | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | low | low | workspace-hub | - |
@@ -2503,6 +2512,8 @@
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | - |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | pending | high | simple | - |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | pending | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -2520,7 +2531,7 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | working | medium | complex | - |
 
 ### doris
 
@@ -2736,7 +2747,6 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | - |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | working | medium | simple | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | archived | medium | simple | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
@@ -2859,8 +2869,9 @@
 | WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | blocked | low | medium | - |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | - |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | - |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | working | high | medium | - |
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending | medium | low | - |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | - |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | archived | high | medium | - |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | archived | medium | low | - |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | - |
 | WRK-1267 | Fix frontmatter gaps — missing category, version, short descriptions (105 skills) | archived | low | low | - |
@@ -2870,7 +2881,8 @@
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | high | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | archived | high | high | - |
 | WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | archived | medium | low | - |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending | high | medium | - |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | working | high | medium | - |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3306,13 +3318,15 @@
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | medium | workspace-hub | - |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | medium | workspace-hub | - |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | medium | workspace-hub | - |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | working | medium | workspace-hub | - |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | archived | medium | workspace-hub | - |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | medium | workspace-hub | - |
 | WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | medium | workspace-hub | - |
 | WRK-1270 | Skill-workflow alignment — nest tool families, co-locate scripts | pending | high | workspace-hub | - |
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | workspace-hub | - |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | archived | high | workspace-hub | - |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending | medium | workspace-hub | - |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | working | medium | workspace-hub | - |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | pending | simple | digitalmodel | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3519,7 +3533,6 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | simple | workspace-hub | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | working | simple | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | archived | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
@@ -3626,6 +3639,8 @@
 | WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | archived | low | workspace-hub | - |
 | WRK-1274 | Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections | pending | medium | - | - |
 | WRK-1275 | Add sensitivity, validation, verification to calc examples | pending | medium | - | - |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending | medium | workspace-hub | - |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | pending | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -3648,7 +3663,7 @@
 | WRK-5069 | Subsea risers and flowlines study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5070 | Metocean and extreme value analysis study — literature, methods and implementation | pending | complex | digitalmodel, worldenergydata | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | complex | digitalmodel | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | working | complex | digitalmodel | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | archived | medium | workspace-hub | - |
@@ -3870,6 +3885,7 @@
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | medium | worldenergydata | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | workspace-hub | - |
 | WRK-1276 | Create audit-calc-methodology.py — auto-score examples against 16-section checklist | pending | low | - | - |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | pending | high | digitalmodel | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -4092,7 +4108,6 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | archived | medium | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | archived | medium | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | workspace-hub | - |
@@ -4191,20 +4206,22 @@
 | WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | blocked | low | workspace-hub | - |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | workspace-hub | - |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | workspace-hub | - |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | workspace-hub | - |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | working | high | workspace-hub | - |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | archived | high | workspace-hub | - |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | aceengineer-admin | - |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | workspace-hub | - |
 | WRK-1269 | POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill | closed | high | workspace-hub | - |
 | WRK-1274 | Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections | pending | medium | - | - |
 | WRK-1275 | Add sensitivity, validation, verification to calc examples | pending | medium | - | - |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending | high | workspace-hub | - |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | working | high | workspace-hub | - |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending | medium | workspace-hub | - |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | pending | medium | digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
 | WRK-5048 | refactor(whats-next): uniform box-drawing table format with status emoji icons | archived | medium | workspace-hub | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | digitalmodel | - |
 | WRK-5057 | feat(doc-intel): dedup + multi-source provenance layer for indexes | pending | low | workspace-hub | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | achantas-data | - |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | workspace-hub | - |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | workspace-hub | - |
@@ -4349,10 +4366,11 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | digitalmodel | - |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | digitalmodel | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | working | medium | digitalmodel | - |
 
 ## By Computer
 
-### ace-linux-1 (230 active / 404 total)
+### ace-linux-1 (232 active / 407 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4526,7 +4544,6 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | workspace-hub |
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | workspace-hub |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | workspace-hub |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | working | medium | simple | workspace-hub |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | archived | medium | simple | workspace-hub |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
@@ -4707,8 +4724,9 @@
 | WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | blocked | low | medium | workspace-hub |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | pending | high | medium | workspace-hub |
 | WRK-1257 | Chart image extraction — extract actual images from PDFs, not just metadata | pending | medium | medium | workspace-hub |
+| WRK-1259 | Tune eval-skills.py required sections by skill type | working | high | medium | workspace-hub |
 | WRK-1260 | Mechanical skill cleanup — README.md, HTML tags, scripts_exempt | pending | medium | low | workspace-hub |
-| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | pending | high | medium | workspace-hub |
+| WRK-1261 | Quantify skill curation quality hierarchy — scripts > refs > single > large | archived | high | medium | workspace-hub |
 | WRK-1262 | aceengineer-admin repo restructure — canonical document taxonomy | pending | medium | medium | aceengineer-admin |
 | WRK-1264 | Fix 111 related_skill_unresolved warnings via script | archived | medium | low | workspace-hub |
 | WRK-1266 | Improve eval-skills.py type inference to reduce false section_missing warnings | archived | high | medium | workspace-hub |
@@ -4719,7 +4737,10 @@
 | WRK-1271 | Enforce 200-line hard limit on all SKILL.md files | pending | high | high | workspace-hub |
 | WRK-1272 | Enforce 200-line skill limit — split 293 oversized SKILL.md files | archived | high | high | workspace-hub |
 | WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | archived | medium | low | workspace-hub |
-| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | pending | high | medium | workspace-hub |
+| WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | working | high | medium | workspace-hub |
+| WRK-1278 | setup-cron.sh --replace mode + deploy canonical crontabs on all workstations | pending | medium | medium | workspace-hub |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | pending | high | simple | digitalmodel |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | pending | medium | medium | digitalmodel |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | pending | low | medium | workspace-hub |
@@ -4751,7 +4772,7 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | low | complex | digitalmodel |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | low | complex | digitalmodel |
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | digitalmodel |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | pending | medium | medium | digitalmodel |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | working | medium | complex | digitalmodel |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | pending | high | medium | achantas-data |
 | WRK-5085 | Research skill-improvement cron additions from autoresearch + tricalt articles | archived | medium | medium | workspace-hub |
 | WRK-5086 | feat(skills): skill-execution-tracker — parse session logs into structured skill-executions.jsonl | archived | medium | medium | workspace-hub |
@@ -5143,6 +5164,7 @@
 | WRK-1130 | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | - | - | WRK-1127 |
 | WRK-1131 | Feature layer process — stage contracts, workflow SKILL.md, whats-next | - | - | WRK-1127 |
 | WRK-1140 | feat(automation): nightly cron job — release-notes scan and WRK capture | WRK-1139 | - | - |
+| WRK-1147 | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | - | WRK-1148, WRK-1149, WRK-1150, WRK-1279, WRK-1280 | - |
 | WRK-1148 | Naval architecture literature gathering — propeller-rudder interaction | - | - | WRK-1147 |
 | WRK-1149 | Method assessment and selection — propeller-rudder interaction models | WRK-1148 | - | WRK-1147 |
 | WRK-1150 | Python implementation — propeller-rudder interaction with RPM sweep | WRK-1149 | - | WRK-1147 |
@@ -5186,6 +5208,8 @@
 | WRK-1273 | Update eval-skills.py line/word limits to match 200-line rule | - | - | WRK-1272 |
 | WRK-1275 | Add sensitivity, validation, verification to calc examples | WRK-1274 | - | - |
 | WRK-1277 | Reclassify 324K PDF readability errors — retry with robust timeout handling | - | - | WRK-1245 |
+| WRK-1279 | Extract numerical test vectors from propeller-rudder literature for TDD | - | - | WRK-1147 |
+| WRK-1280 | Add 4-quadrant propeller data to propeller-rudder literature | - | - | WRK-1147 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |

@@ -5551,5 +5551,14 @@
     "title": "Calculation methodology skill \u2014 structured engineering analysis workflow",
     "priority": "medium",
     "category": "engineering-methodology"
+  },
+  "WRK-1261": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-17T03:44:23.976512+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "Quantify skill curation quality hierarchy \u2014 scripts > refs > single > large",
+    "priority": "high",
+    "category": "harness"
   }
 }

@@ -2,10 +2,11 @@ wrk_id: WRK-1148
 stage: 15
 recommendations:
   - title: "Add 4-quadrant K_T data for crash-stop scenarios"
-    priority: low
+    priority: medium
     disposition: spun-off-new
     status: captured
     captured: true
+    wrk_ref: WRK-1280
     notes: "Current survey covers first-quadrant (forward motion) only."
   - title: "Add twin-screw interaction references"
     priority: low

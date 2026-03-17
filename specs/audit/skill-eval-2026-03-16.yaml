@@ -1,163 +1,97 @@
-wrk_id: WRK-1244
-generated_at: '2026-03-16T15:10:20Z'
-eval_tool: eval-skills.py (deterministic, no LLM)
-pre_fix:
-  total_skills: 405
-  passed: 7
-  warnings: 2444
-  critical: 0
-post_fix:
-  total_skills: 405
-  passed: 12
-  warnings: 2240
-  critical: 0
-improvements:
-  category_mismatch_fixed: 204
-  warnings_reduced: 204
-  pass_rate_change: 1.7% -> 3.0%
-top_issues_remaining:
-- check: section_missing
-  count: 2002
-  severity: warning
+report_date: '2026-03-16'
+generated_at: '2026-03-17T01:45:52.996086+00:00'
+tools_run:
+- eval-skills.py (18 structural checks)
+- audit-skill-violations.sh (4 hard constraints)
+- skill-coverage-audit.sh (script-wiring gaps)
+- skill-tier-report.py (quality tier A/B/C/D)
+eval_summary:
+  total_skills: 3127
+  passed: 2959
+  failed_critical: 0
+  failed_warning_only: 168
+  issues:
+    critical: 0
+    warning: 386
+    info: 3127
+  tier_distribution:
+    A: 8
+    B: 58
+    C: 2957
+    D: 104
+eval_top_issues:
 - check: metrics_section_missing
-  count: 405
+  count: 3127
   severity: info
-- check: related_skill_unresolved
-  count: 111
-  severity: warning
-- check: description_too_short
-  count: 38
-  severity: warning
-- check: category_missing
-  count: 35
-  severity: warning
-- check: version_missing
-  count: 32
+- check: section_missing
+  count: 374
   severity: warning
 - check: quick_start_no_code
   count: 12
   severity: warning
-- check: todo_fixme_present
-  count: 10
-  severity: warning
-bottom_quartile:
-  threshold: '>=7 warnings'
-  count: 158
-  top_10:
-  - name: comprehensive-learning
-    warning_count: 13
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: qa-closure
-    warning_count: 13
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: work-queue-workflow
-    warning_count: 12
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: xlsx-to-python
-    warning_count: 11
-    top_issues:
-    - related_skill_unresolved
-    - todo_fixme_present
-    - section_missing
-  - name: workflow-gatepass
-    warning_count: 11
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: dark-intelligence-workflow
-    warning_count: 10
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: calculation-methodology
-    warning_count: 10
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: session-end
-    warning_count: 10
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: session-start
-    warning_count: 10
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-  - name: tool-readiness
-    warning_count: 10
-    top_issues:
-    - related_skill_unresolved
-    - section_missing
-wrk639_diverged_diff:
-  total_diverged_deleted: 115
-  unique_canonical_paths: 61
-  sample_size: 10
-  findings:
-  - path: optimization/model-selection
-    result: TRIVIAL_DIFF
-    unique_lines: 5
-  - path: optimization/usage-optimization
-    result: TRIVIAL_DIFF
-    unique_lines: 3
-  - path: product/product-roadmap
-    result: TRIVIAL_DIFF
-    unique_lines: 4
-  - path: ai-prompting/agenta
-    result: TRIVIAL_DIFF
-    unique_lines: 1
-  - path: ai-prompting/dspy
-    result: TRIVIAL_DIFF
-    unique_lines: 1
-  - path: ai-prompting/langchain
-    result: TRIVIAL_DIFF
-    unique_lines: 1
-  - path: ai-prompting/pandasai
-    result: TRIVIAL_DIFF
-    unique_lines: 2
-  - path: ai-prompting/prompt-engineering
-    result: TRIVIAL_DIFF
-    unique_lines: 1
-  - path: aqwa-analysis
-    result: CONTENT_LOST
-    unique_lines: 32
-  - path: automation/activepieces
-    result: TRIVIAL_DIFF
-    unique_lines: 1
-  verdict: "9/10 trivial (metadata only). 1/10 (aqwa-analysis) lost 32 lines of AQWA solver stages reference \u2014 recommend\
-    \ restoring."
-recommendations:
-- Restore aqwa-analysis AQWA Solver Stages section (32 lines lost in WRK-639)
-- "section_missing (2002) is structural \u2014 most skills lack v2 template sections; low-value to bulk-fix guidance skills"
-- "related_skill_unresolved (111) \u2014 broken cross-references; scriptable fix"
-- "description_too_short (38) \u2014 under 10 words; quick manual fixes"
-- "Bottom quartile are workspace-hub workflow skills \u2014 high-use, warrant targeted improvement"
-final_eval:
+eval_by_category:
+  _core:
+    total: 53
+    passed: 53
+    failed: 0
+  _internal:
+    total: 128
+    passed: 128
+    failed: 0
+  ai:
+    total: 87
+    passed: 87
+    failed: 0
+  business:
+    total: 618
+    passed: 618
+    failed: 0
+  coordination:
+    total: 328
+    passed: 328
+    failed: 0
+  data:
+    total: 480
+    passed: 480
+    failed: 0
+  development:
+    total: 449
+    passed: 449
+    failed: 0
+  digitalmodel:
+    total: 1
+    passed: 1
+    failed: 0
+  engineering:
+    total: 613
+    passed: 613
+    failed: 0
+  gis:
+    total: 1
+    passed: 1
+    failed: 0
+  operations:
+    total: 128
+    passed: 128
+    failed: 0
+  science:
+    total: 56
+    passed: 56
+    failed: 0
+  workspace-hub:
+    total: 185
+    passed: 185
+    failed: 0
+violations_summary:
+  total_violations: 13
+  by_check:
+    xml_html_tags_in_body: 13
+coverage_summary:
+  gaps_total: 210
   total_skills: 3127
-  passed: 322
-  warnings: 3025
-  critical: 0
-  pass_rate: "10.3%"
-  violations: 13
-  coverage_gaps: 211
-  improvements_from_baseline:
-    skill_count: "405 -> 3127 (WRK-1272 skill split added micro-skills)"
-    pass_rate: "3.0% -> 10.3%"
-    related_skill_unresolved: "111 -> 0 (all refs now resolve after WRK-1272 expansion)"
-    category_mismatch: "204 -> 0 (fixed by fix-category-mismatch.py)"
-scripts_created:
-- scripts/skills/fix-category-mismatch.py (204 fixes applied)
-- scripts/skills/fix_unresolved_refs.py (0 fixes needed — all refs resolve)
-- scripts/skills/skill_eval_ecosystem.py (orchestrator: violations + coverage + eval)
-acceptance_criteria:
-  AC1_eval_run: "PASS — 3127 skills evaluated, scores in skill-eval-2026-03-16-final.json"
-  AC2_phase9_gaps: "PASS — category_mismatch (204) fixed; related_skill_unresolved (111->0) resolved by ecosystem expansion; fix_unresolved_refs.py created for future drift"
-  AC3_wrk639_diff: "PASS — 10 sampled: 9 trivial, 1 content lost (aqwa-analysis) — restored by WRK-1263"
-  AC4_bottom_quartile: "PASS — bottom quartile identified (158 with >=7 warnings); scriptable issues fixed; section_missing (structural v2-template gaps on guidance/reference skills) explicitly deferred — bulk-adding empty sections adds no value"
-  AC5_results_saved: "PASS — specs/audit/skill-eval-2026-03-16.yaml + ecosystem-2026-03-16.yaml + final.json"
+  coverage_pct: 93.3
+tier_summary:
+  A: 8
+  B: 58
+  C: 2957
+  D: 104

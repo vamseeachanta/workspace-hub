@@ -1,0 +1,16 @@
+id: WRK-1279
+stage: 3
+type: triage
+generated_at: "2026-03-17T03:58:00Z"
+
+route: C  # Complex — feature WRK with 12 children
+complexity: complex
+orchestrator: claude
+workstations:
+  - ace-linux-1
+
+rationale: >
+  Feature WRK spanning 15 engineering domains with 12 independent children.
+  Each child extracts test vectors from existing repo documents, dark intelligence,
+  and document index. All children are independent — full parallel execution possible.
+  Route C required for cross-review gate on decomposition plan.

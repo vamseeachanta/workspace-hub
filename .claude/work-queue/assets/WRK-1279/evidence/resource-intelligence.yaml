@@ -1,0 +1,139 @@
+id: WRK-1279
+stage: 2
+type: resource-intelligence
+generated_at: "2026-03-17T03:58:00Z"
+completion_status: complete
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+  supporting:
+    - dark-intelligence-workflow
+    - pytest-fixture-generator
+
+source_domains:
+  cathodic_protection:
+    richness: 5
+    test_files: 19
+    line_count: 4938
+    sources: "DNV-RP-B401, API RP 1632, ISO 15589-2, ABS GN, NACE"
+    key_files:
+      - digitalmodel/tests/cathodic_protection/test_dnv_rp_b401_doc_verified.py
+      - digitalmodel/tests/specialized/cathodic_protection/  # 14 files
+    existing_vectors: 30+
+
+  fatigue:
+    richness: 5
+    test_files: 6
+    line_count: 6310
+    sources: "DNV-RP-C203, DNV-OS-E301, Palmgren-Miner"
+    key_files:
+      - digitalmodel/src/digitalmodel/structural/fatigue/worked_examples.py  # 713 lines, 3 canonical examples
+      - digitalmodel/tests/structural/fatigue/test_worked_examples.py
+    existing_vectors: 15+
+
+  naval_architecture:
+    richness: 5
+    test_files: 1
+    line_count: 327
+    sources: "USNA EN400 Principles of Ship Performance (textbook)"
+    key_files:
+      - digitalmodel/tests/naval_architecture/test_en400_worked_examples.py  # 24 tests
+    existing_vectors: 24
+
+  hydrodynamics_passing_ship:
+    richness: 4
+    test_files: 6
+    line_count: 4782
+    sources: "Wang paper, Mathcad validation"
+    key_files:
+      - digitalmodel/tests/hydrodynamics/passing_ship/test_wang_paper_benchmark.py
+      - digitalmodel/tests/hydrodynamics/passing_ship/test_mathcad_validation.py
+    existing_vectors: 15+
+
+  viv:
+    richness: 4
+    test_files: 1
+    line_count: 1075
+    sources: "DNV-RP-F105"
+    key_files:
+      - digitalmodel/tests/subsea/viv_analysis/
+      - digitalmodel/src/digitalmodel/subsea/viv_analysis/vortex_shedding.py
+    existing_vectors: 10+
+
+  subsea_pipeline:
+    richness: 4
+    test_files: 12
+    sources: "DNV-RP-F105, DNV-OS-F101, API RP 1111"
+    key_files:
+      - digitalmodel/tests/subsea/pipeline/test_free_span_f105.py
+      - digitalmodel/tests/subsea/pipeline/test_on_bottom_stability.py
+      - digitalmodel/tests/subsea/pipeline/test_pipeline_upheaval_buckling.py
+    existing_vectors: 15+
+
+  asset_integrity:
+    richness: 3
+    test_files: 16
+    sources: "API 579, fracture mechanics"
+    key_files:
+      - digitalmodel/tests/asset_integrity/test_data/API579/
+      - digitalmodel/tests/asset_integrity/test_data/fracture_mechanics/  # 28+ YAML configs
+    existing_vectors: 40+
+
+  hydrodynamics_diffraction:
+    richness: 3
+    test_files: 3
+    sources: "AQWA vessel specs"
+    key_files:
+      - digitalmodel/tests/hydrodynamics/diffraction/fixtures/
+    existing_vectors: 3
+
+  structural:
+    richness: 2
+    sources: "DNV CN 30.1, ABS LRFD (to be extracted)"
+    key_files: []
+    existing_vectors: 0
+    note: "Module exists but limited fixture coverage"
+
+  mooring:
+    richness: 2
+    sources: "API RP 2SK, OCIMF, OrcaFlex C05/C06"
+    key_files: []
+    existing_vectors: 0
+    note: "OrcaFlex references found (67 mentions) but no extracted fixtures"
+
+  drilling:
+    richness: 1
+    sources: "API 16Q, torque & drag (to be extracted)"
+    key_files: []
+    existing_vectors: 0
+
+  metocean:
+    richness: 1
+    sources: "JONSWAP, NDBC (to be extracted)"
+    key_files: []
+    existing_vectors: 0
+
+infrastructure:
+  dark_intelligence:
+    schema: config/schemas/dark-intelligence-archive.yaml
+    entries: 34
+    poc_conversions: 3
+    skill: .claude/skills/data/dark-intelligence-workflow/
+  document_index:
+    scripts: scripts/data/document-index/  # Phases A-G pipeline
+    note: "index.jsonl is runtime cache, not committed"
+  fixture_generator:
+    skill: .claude/skills/development/testing/pytest-fixture-generator/
+
+existing_fixture_schema:
+  location: digitalmodel/tests/asset_integrity/test_data/API579/
+  format: YAML with Excel source data
+  pattern: "basename + domain-specific params + io path + lookup tables"
+
+recommendations:
+  - Use dark-intelligence YAML schema (config/schemas/) as canonical fixture format
+  - Richest extraction targets: CP (19 files), fatigue (3 worked examples), naval arch (24 textbook tests)
+  - Leverage pytest-fixture-generator skill for automation
+  - WRK-1148 output (propeller-rudder literature) feeds child-a directly
