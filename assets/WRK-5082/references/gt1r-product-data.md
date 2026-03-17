@@ -24,7 +24,16 @@
 
 ### Parachute (optional, +$541)
 - Chute and flag included
-- Model: likely Stroud 430 or 450 (to confirm with client)
+- Model: **Stroud 430** (confirmed — T1 bundles the 430 with this kit)
+- Available sizes: 24", 26", 28", 30", 32"
+- Sizes 24"–30" = dual-chute application; 32" = single-chute
+- Kit includes: large pilot chute, 430 canopy, bridle cord, deployment bag, 8.75" aluminum plate, pack
+
+### Fully Optioned Price
+- Base frame: $1,600
+- Release handle kit: +$400
+- Parachute & flag: +$541
+- **Total: $2,541**
 
 ### Key Unknowns (to be confirmed via measurement)
 - Tube OD (estimated 1.5" based on photos — **needs measurement**)
@@ -46,7 +55,7 @@
 | Vehicle weight | 3,600 lbs | WRK-5082 design basis |
 | Deployment speed (case 1) | 200 MPH | Analysis requirement |
 | Deployment speed (case 2) | 250 MPH | Analysis requirement |
-| Parachute model | TBD (likely Stroud 430 or 450) | To confirm with client |
+| Parachute model | **Stroud 430** (confirmed from T1 kit bundle) | T1 Race Development |
 | Canopy diameter | 12 ft (interim assumption) | Stroud sizing chart |
 | Frame material | 4130 chromoly (normalized) | T1 Race Development product page |
 
@@ -62,6 +71,19 @@
 **Critical note**: NHRA requires dual chutes above 200 MPH. If the GT1R kit
 is designed for single chute only, the 250 MPH load case represents an
 extreme/conservative scenario.
+
+---
+
+### GT1R Power Levels by Series
+
+| Series | Power (bhp) |
+|---|---|
+| Series 3 | 1,200+ |
+| Series 4 | 1,300+ |
+| Series 5 | 1,400+ |
+| Series 6 | 1,600+ |
+| Series 7 | 1,900+ |
+| Series 8 | 2,300+ |
 
 ---
 

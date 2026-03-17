@@ -124,7 +124,16 @@ Where σ = σ_axial + σ_bending (worst case, same sign) and τ = shear stress.
 | Gussets/tabs | 1.250 | 0.120 | 0.4264 | 0.0720 |
 | Main hoop (SFI 25.1) | 1.750 | 0.134 | 0.6813 | 0.2086 |
 
-**SFI 25.1 minimum**: 1.75" OD × 0.118" wall for roll cage main hoop (4130 normalized).
+### SFI 25.1 Minimum Tube Sizes (4130 Chromoly)
+
+| Component | 4130 Chromoly | Mild Steel Alt. |
+|---|---|---|
+| Main hoop, A-pillar, door bars | 1-5/8" × 0.083" | 1-5/8" × 0.118" |
+| Firewall/lower dash bar | 1-1/4" × 0.058" | 1-1/4" × 0.118" |
+| Rocker/sill bar (rect) | 2" × 2" × 0.058" | 2" × 2" × 0.058" |
+
+**Material requirement**: All structural tubing must be normalized 4130 (4130N)
+per MIL-T-6736B or equivalent. 100% TIG welded.
 
 ---
 

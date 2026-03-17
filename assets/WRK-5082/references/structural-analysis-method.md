@@ -195,7 +195,7 @@ Where n_planes = 1 (single shear) or 2 (double shear).
 | Ref | Author | Title | Use |
 |---|---|---|---|
 | [1] | Przemieniecki, J.S. | *Theory of Matrix Structural Analysis*, Dover, 1985 | Stiffness method theory |
-| [2] | McGuire, Gallagher, Ziemian | *Matrix Structural Analysis*, 2nd Ed., Wiley, 2000 | Frame element derivation |
+| [2] | McGuire, Gallagher, Ziemian | *Matrix Structural Analysis*, 2nd Ed., Wiley, 2000. [**Free PDF**](https://digitalcommons.bucknell.edu/books/7/) | Frame element derivation |
 | [3] | Hibbeler, R.C. | *Structural Analysis*, 10th Ed., Pearson, 2017 | General structural analysis |
 | [4] | Kassimali, A. | *Matrix Analysis of Structures*, 3rd Ed., Cengage, 2021 | Assembly procedure |
 | [5] | Knacke, T.W. | *Parachute Recovery Systems Design Manual*, Para Publishing, 1992 | Parachute aerodynamics |

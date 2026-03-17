@@ -18,7 +18,10 @@ Where:
 - `S₀` = nominal canopy area = π × (D/2)² (ft² or m²)
 - `Cx` = opening shock factor (dimensionless, 1.0 for steady-state)
 
-**Source**: Ewing, Bixby & Knacke, *Recovery Systems Design Guide*, AFFDL-TR-78-151, 1978.
+**Sources**:
+- Knacke, T.W., *Parachute Recovery Systems Design Manual*, NWC TP-6575, 1992. [Full PDF (DTIC ADA247666)](https://apps.dtic.mil/sti/tr/pdf/ADA247666.pdf)
+- Ewing, Bixby & Knacke, *Recovery Systems Design Guide*, AFFDL-TR-78-151, 1978.
+- Pflanz method: F_peak = q₁ × Cd × S₀ × Cx × X₁ (where X₁ = finite mass reduction factor ≤ 1.0)
 
 ---
 
@@ -116,8 +119,8 @@ For a 3,600 lb car at 250 MPH with single 12 ft chute (Cd=1.5, no Cx):
 - Floor must be flat; max 6" extension beyond pack
 
 ### SFI Specifications
-- **SFI 35.1**: Parachute specification (details require SFI Foundation access)
-- **SFI 25.1**: Roll cage specification (tube sizes)
+- **SFI 9.1**: Parachute specification (correct spec — SFI 35.1 does not exist)
+- **SFI 25.1**: Roll cage/chassis tube specification
 
 **Sources**:
 - [DSPORT — Drag Racing Parachutes 101](https://dsportmag.com/the-tech/education/quick-tech-drag-racing-parachutes-101/)
@@ -143,6 +146,13 @@ Material: proprietary UV/heat/water-resistant ripstop fabric, 100% USA made.
 Stroud sizing chart (from WRK-5082 design basis):
 - 3,200–4,000 lb vehicle → **Model 430 Std. 32** (single, up to ~200 mph)
 - 3,500–4,000 lb, 280–320 mph → **Model 450 / 470** (dual)
+
+**Confirmed**: T1 Race Development bundles **Stroud 430** with the GT1R kit (+$541 add-on).
+Available canopy sizes: 24", 26", 28", 30", 32" diameter. Sizes 24"–30" require qty 2 (dual chute); 32" is single-chute.
+
+**Note on Cd**: Stroud does not publish Cd values. Based on the modified circular/conical
+design with deployment bag, engineering estimate is Cd ≈ 0.70–0.80 (ref: S₀). The analysis
+uses Cd = 1.4 (ref: projected area) which is conservative.
 
 **Source**: [Stroud Safety — Parachutes](https://stroudsafety.com/parachutes/)
 
