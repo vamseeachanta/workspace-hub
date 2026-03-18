@@ -1,0 +1,22 @@
+stage: 1
+type: user-review-capture
+wrk_id: WRK-1316
+scope_approved: true
+approved_at: "2026-03-17T00:00:00Z"
+reviewer: vamsee
+title: "Stage transition hardening — hooks, checklists, HTML refresh, tool activation per stage"
+mission: >
+  Harden the 20-stage WRK lifecycle with declarative transition hooks,
+  mandatory per-stage checklists, HTML auto-open/refresh, per-stage
+  tool/skill activation, and user-review gate enforcement.
+category: work-queue-infrastructure
+complexity: C
+route: C
+notes:
+  - User provided 5 core pain points from extensive workflow sessions
+  - 11 documented feedback files mined for research context
+  - 40-60 engineering hours of prior workflow investment reviewed
+  - Stage 2 docu-intel integration requirement added
+  - Per-stage mandatory checklists requirement added
+  - Per-stage flowcharts requested and drafted
+  - Follow-up WRK-1317 captured for generalization to all workflows

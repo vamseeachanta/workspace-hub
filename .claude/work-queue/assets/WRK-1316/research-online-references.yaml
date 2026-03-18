@@ -1,0 +1,93 @@
+# Online references discovered during Stage 2 research for WRK-1316
+# These are documentation URLs — no documents to download to /mnt/ace/
+
+references:
+  - title: "Symfony Workflow Component — Guard Events & TransitionBlocker"
+    url: "https://symfony.com/doc/current/workflow.html"
+    category: workflow-engine
+    relevance: "TransitionBlocker pattern for checklist enforcement"
+
+  - title: "Airflow Sensors & Hooks — Gate Patterns"
+    url: "https://www.getorchestra.io/guides/complete-guide-to-airflow-sensors-and-hooks"
+    category: workflow-engine
+    relevance: "Sensor pattern for human gates — checkpoint + release context"
+
+  - title: "Apache Airflow Task Lifecycle States"
+    url: "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html"
+    category: workflow-engine
+    relevance: "Task state transitions with timestamp logging"
+
+  - title: "AWS Step Functions Choice State + Fail State"
+    url: "https://docs.aws.amazon.com/step-functions/latest/dg/state-choice.html"
+    category: workflow-engine
+    relevance: "Choice + Fail pattern for stage exit branching"
+
+  - title: "Temporal Workflow Definition — Durable Execution"
+    url: "https://docs.temporal.io/workflow-definition"
+    category: workflow-engine
+    relevance: "Checkpoint at every transition boundary"
+
+  - title: "Temporal Workflow Engine Principles"
+    url: "https://temporal.io/blog/workflow-engine-principles"
+    category: workflow-engine
+    relevance: "Replay from last checkpoint on crash"
+
+  - title: "LangGraph Agent State Machine Review 2025"
+    url: "https://neurlcreators.substack.com/p/langgraph-agent-state-machine-review"
+    category: ai-agent-orchestration
+    relevance: "Conditional edges + validators before expensive calls"
+
+  - title: "LangGraph Workflows & Agents"
+    url: "https://docs.langchain.com/oss/python/langgraph/workflows-agents"
+    category: ai-agent-orchestration
+    relevance: "State machine with tool scoping per node"
+
+  - title: "Azure AI Agent Design Patterns"
+    url: "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns"
+    category: ai-agent-orchestration
+    relevance: "Deterministic agent selection + tool routing per stage"
+
+  - title: "Microsoft Agent Framework — Graph-Based Workflows"
+    url: "https://github.com/microsoft/agent-framework"
+    category: ai-agent-orchestration
+    relevance: "Pausing for human input with session-based state"
+
+  - title: "AWS AI-DLC — Collaborative Human-AI Cycle"
+    url: "https://aws.amazon.com/blogs/devops/open-sourcing-adaptive-workflows-for-ai-driven-development-life-cycle-ai-dlc/"
+    category: ai-agent-orchestration
+    relevance: "Human review at every stage — industry validation of our pattern"
+
+  - title: "Claude Code Hooks Guide — PreToolUse/PostToolUse"
+    url: "https://code.claude.com/docs/en/hooks-guide"
+    category: enforcement
+    relevance: "Native hook mechanism — command/prompt/agent handler types"
+
+  - title: "Claude Code Hooks Production Patterns"
+    url: "https://www.pixelmojo.io/blogs/claude-code-hooks-production-quality-ci-cd-patterns"
+    category: enforcement
+    relevance: "CI/CD quality enforcement via hooks"
+
+  - title: "20 Agentic AI Workflow Patterns 2025"
+    url: "https://skywork.ai/blog/agentic-ai-examples-workflow-patterns-2025/"
+    category: ai-agent-orchestration
+    relevance: "State machine + judge-and-checklist pattern after happy path works"
+
+  - title: "Mermaid State Diagrams v2"
+    url: "https://mermaid.ai/open-source/syntax/stateDiagram.html"
+    category: documentation
+    relevance: "stateDiagram-v2 with composite states for lifecycle docs"
+
+  - title: "GitHub Actions Workflow Syntax"
+    url: "https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions"
+    category: yaml-workflow
+    relevance: "needs: pattern for stage ordering; inputs/outputs for artifacts"
+
+  - title: "GitLab CI YAML Reference"
+    url: "https://docs.gitlab.com/ci/yaml/"
+    category: yaml-workflow
+    relevance: "Ordered stages list; rules with if/when conditions"
+
+  - title: "Kestra Declarative Orchestration"
+    url: "https://kestra.io/features/declarative-data-orchestration"
+    category: yaml-workflow
+    relevance: "Pre-execution Checks concept — inline with stage definition"

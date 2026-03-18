@@ -1,0 +1,81 @@
+stage: 2
+type: resource-intelligence
+wrk_id: WRK-1316
+completion_status: complete
+domain: work-queue-infrastructure
+complexity_assessment: complex
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/resource-intelligence
+    - coordination/workspace/work-queue/stage-contracts-summary
+    - coordination/workspace/work-queue/canonical-20-stage-lifecycle
+  domain_specific:
+    - data/document-index-pipeline
+    - workspace-hub/knowledge
+
+codebase_research:
+  files_analyzed:
+    - scripts/work-queue/start_stage.py  # 617 lines — stage entry router, micro-skill loader
+    - scripts/work-queue/exit_stage.py  # 397 lines — artifact validation, gate enforcement
+    - scripts/work-queue/verify-gate-evidence.py  # 2247 lines — 13+ gate checks
+    - scripts/work-queue/generate-html-review.py  # ~2400 lines — HTML generation
+    - scripts/work-queue/claim-item.sh  # 382 lines — Stage 8 claim
+    - scripts/work-queue/close-item.sh  # 384 lines — Stage 19 close
+    - scripts/work-queue/is-human-gate.sh  # 23 lines — gate determination
+    - scripts/work-queue/stages/stage-*.yaml  # 20 stage contracts
+    - .claude/skills/workspace-hub/stages/stage-*.md  # 20 micro-skills
+    - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md  # R-25/26/27 rules
+    - .claude/skills/workspace-hub/workflow-gatepass/SKILL.md  # 9 sub-skills
+
+  key_gaps_found:
+    - pre_checks field exists in stage YAML but not invoked by start_stage.py
+    - no post-exit hook mechanism in exit_stage.py
+    - no transition validation between stage N and N+1
+    - R-27 (conditional pause) defined but not enforced in code
+    - heavy-stage checks hardcoded in exit_stage.py, not delegable
+    - no hook registry — hooks scattered across settings.json
+    - no hook timeout or failure handling
+    - no hook execution logging to evidence directory
+
+online_research:
+  sources_found: 18
+  key_patterns:
+    - name: "Symfony TransitionBlocker"
+      source: "https://symfony.com/doc/current/workflow.html"
+      insight: "Collect all failed checklist items into structured blocker list with reasons, not binary pass/fail"
+    - name: "Airflow Sensor pattern"
+      source: "https://www.getorchestra.io/guides/complete-guide-to-airflow-sensors-and-hooks"
+      insight: "Human gates = sensors — checkpoint and release context, resume on explicit signal"
+    - name: "Temporal durable execution"
+      source: "https://docs.temporal.io/workflow-definition"
+      insight: "Persist state at every transition boundary for crash recovery"
+    - name: "LangGraph state machine agents"
+      source: "https://docs.langchain.com/oss/python/langgraph/workflows-agents"
+      insight: "Add low-cost validators before expensive tool calls; conditional edges per state"
+    - name: "Azure AI Agent deterministic orchestration"
+      source: "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns"
+      insight: "Tool availability must be deterministic per stage, not left to LLM choice"
+    - name: "Claude Code hooks (PreToolUse/PostToolUse)"
+      source: "https://code.claude.com/docs/en/hooks-guide"
+      insight: "Native enforcement mechanism — three handler types map to enforcement gradient"
+    - name: "Kestra Checks concept"
+      source: "https://kestra.io/features/declarative-data-orchestration"
+      insight: "Pre-execution checks inline with stage definition — self-contained config"
+    - name: "Mermaid stateDiagram-v2"
+      source: "https://mermaid.ai/open-source/syntax/stateDiagram.html"
+      insight: "Use composite states for stage groups; <<choice>> at every exit for gate visualization"
+
+  cross_cutting_insights:
+    - "Enforcement gradient confirmed by industry: Symfony guards (script) → Airflow sensors (process) → Claude hooks (agent)"
+    - "Stage transitions must be deterministic — validates scripts-over-LLM rule"
+    - "Checklist as blocker, not suggestion — TransitionBlocker pattern"
+    - "Checkpoint at every boundary — Temporal durable execution"
+    - "Tool scoping per stage is emerging best practice — LangGraph + Azure patterns"
+
+document_intelligence:
+  note: "No new documents to save to /mnt/ace/ — all references are online documentation and blog posts"
+  references_cataloged: true
+  index_update_needed: false
