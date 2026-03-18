@@ -166,6 +166,11 @@
             "type": "command",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/readiness.sh\" 2>/dev/null || true",
             "statusMessage": "Session readiness check"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-active-stage.sh\"",
+            "statusMessage": "WRK-1316: active stage enforcement"
           }
         ]
       },
