@@ -1,0 +1,12 @@
+wrk_id: WRK-1323
+stage: 11
+items:
+  - id: CL-11-1
+    text: "Legal scan passed"
+    completed: true
+  - id: CL-11-2
+    text: "evidence/legal-scan.yaml written"
+    completed: true
+  - id: CL-11-3
+    text: "Lifecycle HTML updated"
+    completed: true

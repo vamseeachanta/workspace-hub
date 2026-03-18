@@ -1,0 +1,15 @@
+wrk_id: WRK-1323
+stage: 8
+items:
+  - id: CL-08-1
+    text: "Agent quota assessed"
+    completed: true
+  - id: CL-08-2
+    text: "evidence/claim-evidence.yaml written"
+    completed: true
+  - id: CL-08-3
+    text: "working/WRK-NNN.md updated (status: working)"
+    completed: true
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    completed: true

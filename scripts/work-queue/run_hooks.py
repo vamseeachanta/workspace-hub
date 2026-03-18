@@ -67,7 +67,7 @@ def run_hooks(hooks, wrk_id, repo_root, phase, stage,
         start = time.monotonic()
         try:
             proc = subprocess.run(
-                ["bash", resolved_script],
+                ["bash", "-c", resolved_script],
                 capture_output=True,
                 text=True,
                 timeout=timeout_s,

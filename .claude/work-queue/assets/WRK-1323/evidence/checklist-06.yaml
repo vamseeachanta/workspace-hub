@@ -1,0 +1,16 @@
+wrk_id: WRK-1323
+stage: 6
+items:
+  - id: CL-06-1
+    text: "Cross-review package sent to all 3 providers"
+    completed: true
+  - id: CL-06-2
+    text: "All 3 verdicts collected (APPROVE/REVISE)"
+    completed: true
+  - id: CL-06-3
+    text: "P1 and P2 findings documented"
+    completed: true
+    notes: "No P1 or P2 findings"
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true

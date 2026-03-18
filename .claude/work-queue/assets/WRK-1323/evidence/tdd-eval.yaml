@@ -1,0 +1,14 @@
+wrk_id: WRK-1323
+stage: 12
+test_file: scripts/work-queue/tests/test_verify_checklist.py
+test_count: 10
+test_results:
+  passed: 10
+  failed: 0
+  errors: 0
+duration_s: 0.71
+ac_coverage:
+  AC-1: covered_by: [test_dry_run_returns_items_without_validation, test_cli_dry_run_exit_code_zero]
+  AC-2: covered_by: [test_dry_run_returns_correct_item_ids, test_cli_dry_run_shows_item_count]
+  AC-3: covered_by: [test_cli_dry_run_exit_code_zero, test_dry_run_ignores_missing_evidence]
+  AC-4: covered_by: [test_normal_mode_blocks_on_missing_evidence, test_normal_mode_passes_with_complete_evidence, test_normal_mode_blocks_human_item_without_approved_by]

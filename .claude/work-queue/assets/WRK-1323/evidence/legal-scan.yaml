@@ -1,0 +1,9 @@
+wrk_id: WRK-1323
+stage: 11
+result: PASS
+scan_result: PASS
+violations: 0
+scanned_files:
+  - scripts/work-queue/verify_checklist.py
+  - scripts/work-queue/tests/test_verify_checklist.py
+  - scripts/work-queue/run_hooks.py

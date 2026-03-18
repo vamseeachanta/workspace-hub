@@ -1,0 +1,16 @@
+wrk_id: WRK-1323
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+  - id: CL-03-2
+    text: "Route confirmed (A), workstations (ace-linux-1), orchestrator (claude)"
+    completed: true
+  - id: CL-03-3
+    text: "Open questions surfaced; WRK frontmatter updated"
+    completed: true
+    notes: "No open questions — straightforward CLI flag addition"
+  - id: CL-03-4
+    text: "Lifecycle HTML Stage 3 section updated"
+    completed: true

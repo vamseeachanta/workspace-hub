@@ -26,6 +26,14 @@ if [[ -z "$WRK_ID" ]]; then
     exit 0  # Not a WRK evidence path — allow
 fi
 
+# WRK-1316: Block direct writes to stage-evidence.yaml — only start_stage.py/exit_stage.py may modify
+BASENAME=$(basename "$FILE_PATH")
+if [[ "$BASENAME" == "stage-evidence.yaml" ]]; then
+    echo "BLOCKED: stage-evidence.yaml is managed by start_stage.py and exit_stage.py only." >&2
+    echo "  Do NOT write or edit this file directly." >&2
+    exit 2
+fi
+
 # Check if stage-evidence.yaml exists with an in_progress stage
 STAGE_EV="$REPO_ROOT/.claude/work-queue/assets/$WRK_ID/evidence/stage-evidence.yaml"
 if [[ ! -f "$STAGE_EV" ]]; then

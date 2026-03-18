@@ -1,0 +1,17 @@
+wrk_id: WRK-1323
+stages:
+- {order: 1, name: Capture, status: done}
+- {order: 2, name: Resource Intelligence, status: done}
+- {order: 3, name: Triage, status: done}
+- {order: 4, name: Plan Draft, status: done}
+- {order: 5, name: User Review - Plan Draft, status: done}
+- {order: 6, name: Cross-Review, status: done}
+- {order: 7, name: User Review - Plan Final, status: done}
+- {order: 8, name: Claim / Activation, status: done}
+- {order: 9, name: Work-Queue Routing, status: done}
+- {order: 10, name: Work Execution, status: done}
+- {order: 11, name: Artifact Generation, status: done}
+- {order: 12, name: TDD / Eval, status: done}
+- {order: 13, name: Agent Cross-Review, status: done}
+- {order: 14, name: Verify Gate Evidence, status: in_progress, started_at: '2026-03-18T21:02:00Z'}
+generated_at: '2026-03-18T21:02:00Z'

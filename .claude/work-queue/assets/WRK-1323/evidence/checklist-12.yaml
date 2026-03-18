@@ -1,0 +1,12 @@
+wrk_id: WRK-1323
+stage: 12
+items:
+  - id: CL-12-1
+    text: "All tests pass"
+    completed: true
+  - id: CL-12-2
+    text: "AC coverage verified"
+    completed: true
+  - id: CL-12-3
+    text: "evidence/tdd-eval.yaml written"
+    completed: true

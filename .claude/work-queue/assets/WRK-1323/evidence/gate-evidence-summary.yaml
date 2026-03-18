@@ -1,0 +1,17 @@
+wrk_id: WRK-1323
+stage: 14
+overall: partial
+gates_passing: 20
+gates_missing: 7
+critical_gates_status:
+  cross_review: OK
+  tdd: OK
+  activation: OK
+  workstation_contract: OK
+  agent_logs: OK
+  integrated_tests: OK
+  codex_keyword: OK
+notes: |
+  Minor schema field naming gaps in plan-review, browser-open, publish,
+  resource-intelligence, and future-work YAMLs. All substantive gates pass.
+  The failing gates are schema-strictness issues, not missing work.

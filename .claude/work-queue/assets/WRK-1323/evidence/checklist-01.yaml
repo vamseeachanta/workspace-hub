@@ -1,0 +1,17 @@
+wrk_id: WRK-1323
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+  - id: CL-01-3
+    text: "Lifecycle + plan HTML opened in browser"
+    completed: true
+  - id: CL-01-4
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: user
+    approval_message: "i approve stage 1"
