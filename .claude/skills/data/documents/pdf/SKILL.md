@@ -47,6 +47,8 @@ for page in reader.pages:
 
 ## Tool Selection (WRK-1277 + WRK-1302 + WRK-1303 Learnings)
 
+### Scenario → Tool Mapping
+
 | Scenario | Tool | Why |
 |----------|------|-----|
 | Batch extraction (1K+ PDFs) | **pdftotext (poppler)** via subprocess | Proven at 297K scale; reliable timeout via SIGTERM; subprocess isolation |
@@ -57,22 +59,34 @@ for page in reader.pages:
 | Structured markdown (tables+equations) | **Docling** (targeted use only) | MIT license; 1731 table rows from 6 docs; ~310s/doc on CPU |
 | LLM/RAG markdown | **pymupdf4llm** (monitor only) | 0.12s/doc, good markdown; **AGPL license blocks adoption** |
 
+### Quality & Completeness Index (measured on ace-linux-1)
+
+Scores: text completeness (% of content captured vs best-in-class), structure
+preservation, and batch viability. Based on WRK-1302 (243 PDFs) and WRK-1303 (6 PDFs).
+
+| Tool | Text Completeness | Structure | Tables | Equations | Speed | Batch Safe | License |
+|------|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| **pdftotext** (baseline) | 100% | none | none | unicode only | 0.02s | yes | GPL-2 |
+| **pypdfium2** | 86% | none | none | unicode only | 0.02s | no (thread-unsafe) | Apache-2.0 |
+| **pdfplumber** | ~95% | partial | good (69-93%) | none | 0.10s | no (D-state) | MIT |
+| **Docling** | 117% | full (md) | good (md rows) | unicode+context | 310s | no (CPU bound) | MIT |
+| **PyMuPDF (fitz)** | ~98% | partial | basic | unicode only | 0.01s | yes | AGPL |
+| **pymupdf4llm** | ~100% | full (md) | good (md) | unicode+context | 0.12s | untested | AGPL |
+| **Codex API** | ~100% | full (md) | excellent | LaTeX | ~2s | no (API cost) | proprietary |
+
+**Column definitions:**
+- **Text Completeness**: chars extracted vs pdftotext baseline (WRK-1302: 243 PDFs, WRK-1303: 6 PDFs)
+- **Structure**: none = raw text | partial = some layout | full = headings, lists, sections
+- **Tables**: none | basic = cell text only | good = rows+cols preserved | excellent = multi-span
+- **Equations**: unicode only = captures symbols | unicode+context = in structured output | LaTeX = formula markup
+- **Batch Safe**: can run in ProcessPoolExecutor on NFS/NTFS without hangs or crashes
+
 > **WARNING**: pdfplumber hangs in kernel D-state (disk sleep) on NTFS and NFS mounts.
 > SIGALRM cannot interrupt kernel I/O. Use pdftotext via `subprocess.run(timeout=N)` for
 > any batch/parallel work — the subprocess can be killed reliably on timeout.
 
-> **WRK-1302 Finding (2026-03-17)**: pypdfium2 is NOT faster than pdftotext for batch
-> extraction on ace-linux-1 (0.9-1.1x, within noise). The 0.003s/doc claim applies only
-> to tiny single-page documents. However, pypdfium2 IS the right replacement for
-> pdfplumber in readability classification — same accuracy, no D-state risk, Apache license.
-> Benchmark: `scripts/data/doc_intelligence/benchmark_pdf_tools.py`
-
-> **WRK-1303 Finding (2026-03-17)**: Docling (IBM, MIT license) extracts structured
-> markdown with tables and equations. Tested on 6 engineering standards: extracts ~14%
-> more text and 1731 table rows. However, ~310s/doc on CPU (1570x slower than pdftotext).
-> NOT viable for batch corpus processing. Use for targeted extraction of high-value standards.
-> Needs CUDA 7.0+ GPU for practical batch speeds. GTX 750 Ti on ace-linux-1 is too old.
-> Benchmark: `scripts/data/doc_intelligence/benchmark_docling.py`
+> **Benchmarks**: `scripts/data/doc_intelligence/benchmark_pdf_tools.py` (WRK-1302),
+> `scripts/data/doc_intelligence/benchmark_docling.py` (WRK-1303)
 
 ## When to Use
 
