@@ -127,6 +127,17 @@ command -v curl &>/dev/null || missing_tools="${missing_tools} curl"
 [[ -n "$missing_tools" ]] && warnings+=("Missing required:${missing_tools}")
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Ghost pending sweep — informational only (WRK-1308)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GHOST_SCAN="${WORKSPACE_HUB}/scripts/work-queue/scan-ghost-pending.sh"
+if [[ -x "$GHOST_SCAN" ]]; then
+    ghost_output=$(bash "$GHOST_SCAN" --quiet 2>/dev/null) || true
+    if [[ -n "$ghost_output" ]]; then
+        warnings+=("Ghost pending items detected. Run: bash scripts/work-queue/scan-ghost-pending.sh --fix")
+    fi
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Output (only if issues found)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 if [[ ${#warnings[@]} -gt 0 ]]; then

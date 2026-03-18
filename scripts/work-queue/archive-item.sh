@@ -135,11 +135,23 @@ if [[ -x "${CAPTURE_SCRIPT}" ]]; then
   bash "${CAPTURE_SCRIPT}" "${ITEM_ID}" || true
 fi
 
+# Auto-unblock items whose dependencies are now resolved
+AUTO_UNBLOCK="${WORKSPACE_ROOT}/scripts/work-queue/auto-unblock.sh"
+if [[ -x "$AUTO_UNBLOCK" ]]; then
+  bash "$AUTO_UNBLOCK" "${ITEM_ID}" || true
+fi
+
 # Remove stale checkpoint so /work run does not try to resume an archived item
 CHECKPOINT="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/checkpoint.yaml"
 if [[ -f "$CHECKPOINT" ]]; then
   rm "$CHECKPOINT"
   echo "✔ Checkpoint removed: ${ITEM_ID}"
+fi
+
+# Auto-close parent feature if all children are now archived
+FEATURE_AUTO_CLOSE="${WORKSPACE_ROOT}/scripts/work-queue/feature-auto-close.sh"
+if [[ -x "$FEATURE_AUTO_CLOSE" ]]; then
+  bash "$FEATURE_AUTO_CLOSE" "${ITEM_ID}" || true
 fi
 
 # Regenerate lifecycle HTML so Stage 20 shows as done (not stale active/pending)
