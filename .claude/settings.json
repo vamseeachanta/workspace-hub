@@ -189,8 +189,28 @@
         ]
       },
       {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-stage-machinery.sh\"",
+            "statusMessage": "WRK-1316: stage machinery enforcement"
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-no-bash-evidence.sh\"",
+            "statusMessage": "WRK-1316: no Bash evidence writes"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-stage-commit.sh\"",
+            "statusMessage": "WRK-1316: stage timing required for commit"
+          },
           {
             "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/openfoam-workflow-guard.sh\" 2>/dev/null || true",
