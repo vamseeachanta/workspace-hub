@@ -45,18 +45,26 @@ for page in reader.pages:
     print(text)
 ```
 
-## Tool Selection (WRK-1277 Learning)
+## Tool Selection (WRK-1277 + WRK-1302 Learnings)
 
 | Scenario | Tool | Why |
 |----------|------|-----|
-| Batch extraction (1K+ PDFs) | **pdftotext (poppler)** via subprocess | 37x faster than pdfplumber; reliable timeout via SIGTERM |
+| Batch extraction (1K+ PDFs) | **pdftotext (poppler)** via subprocess | Proven at 297K scale; reliable timeout via SIGTERM; subprocess isolation |
 | Single-doc understanding | **OpenAI Codex** PDF→Markdown | Best quality; too expensive for bulk |
 | Single-doc text extraction | **PyMuPDF (fitz)** | Fast, good API, in-process |
+| Readability classification | **pypdfium2** | Replaces pdfplumber for page sampling; no D-state hangs; Apache-2.0 license |
 | Table extraction | **pdfplumber** (single doc only) | Best table detection; DO NOT use in multiprocessing pools |
+| LLM/RAG markdown | **pymupdf4llm** (monitor only) | 0.12s/doc, good markdown; **AGPL license blocks adoption** |
 
 > **WARNING**: pdfplumber hangs in kernel D-state (disk sleep) on NTFS and NFS mounts.
 > SIGALRM cannot interrupt kernel I/O. Use pdftotext via `subprocess.run(timeout=N)` for
 > any batch/parallel work — the subprocess can be killed reliably on timeout.
+
+> **WRK-1302 Finding (2026-03-17)**: pypdfium2 is NOT faster than pdftotext for batch
+> extraction on ace-linux-1 (0.9-1.1x, within noise). The 0.003s/doc claim applies only
+> to tiny single-page documents. However, pypdfium2 IS the right replacement for
+> pdfplumber in readability classification — same accuracy, no D-state risk, Apache license.
+> Benchmark: `scripts/data/doc_intelligence/benchmark_pdf_tools.py`
 
 ## When to Use
 

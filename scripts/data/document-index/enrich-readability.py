@@ -3,6 +3,7 @@
 # requires-python = ">=3.10"
 # dependencies = [
 #     "pdfplumber",
+#     "pypdfium2",
 # ]
 # ///
 """Enrich document index with PDF readability classification.
@@ -40,6 +41,50 @@ def classify_pdf_readability(path: str, max_pages: int = 5) -> str:
     if not os.path.exists(path):
         return "missing"
 
+    backend = os.environ.get("READABILITY_BACKEND", "pypdfium2")
+    if backend == "pypdfium2":
+        return _classify_pypdfium2(path, max_pages)
+    return _classify_pdfplumber(path, max_pages)
+
+
+def _classify_pypdfium2(path: str, max_pages: int = 5) -> str:
+    """pypdfium2 backend — no D-state hangs, Apache-2.0 license (WRK-1302)."""
+    import pypdfium2 as pdfium
+
+    try:
+        doc = pdfium.PdfDocument(path)
+        total = len(doc)
+        if total == 0:
+            doc.close()
+            return "empty"
+
+        if total <= max_pages:
+            indices = list(range(total))
+        else:
+            step = total / max_pages
+            indices = [int(i * step) for i in range(max_pages)]
+
+        pages_with_text = 0
+        for idx in indices:
+            tp = doc[idx].get_textpage()
+            text = tp.get_text_range().strip()
+            if len(text) >= 50:
+                pages_with_text += 1
+
+        doc.close()
+        ratio = pages_with_text / len(indices)
+        if ratio >= 0.8:
+            return "machine"
+        elif ratio >= 0.2:
+            return "mixed"
+        else:
+            return "ocr-needed"
+    except Exception:
+        return "error"
+
+
+def _classify_pdfplumber(path: str, max_pages: int = 5) -> str:
+    """pdfplumber backend — original implementation, D-state risk on NFS/NTFS."""
     import pdfplumber
 
     try:
