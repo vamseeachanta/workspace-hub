@@ -38,6 +38,9 @@ see_also:
 - freecad-automation-extract-geometry-properties
 - freecad-automation-common-failures
 - freecad-automation-geometry-validation-checks
+- freecad-automation-parametric-hull-workflow
+- freecad-automation-fem-chain-workflow
+- freecad-automation-design-table-studies
 tags: []
 scripts_exempt: true
 ---
@@ -174,3 +177,6 @@ with GMSHMeshGenerator() as gen:
 - [Extract Geometry Properties (+2)](extract-geometry-properties/SKILL.md)
 - [Common Failures (+2)](common-failures/SKILL.md)
 - [Geometry Validation Checks (+1)](geometry-validation-checks/SKILL.md)
+- [Parametric Hull Workflow](parametric-hull-workflow/SKILL.md)
+- [FEM Chain Workflow](fem-chain-workflow/SKILL.md)
+- [Design Table Studies](design-table-studies/SKILL.md)

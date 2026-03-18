@@ -43,3 +43,8 @@
     active_wrk: 
     last_stage: 
     registered_at: 2026-03-17T18:42:04Z
+  - session_id: session-20260317175947
+    provider: claude
+    active_wrk: 
+    last_stage: 
+    registered_at: 2026-03-17T22:59:52Z
