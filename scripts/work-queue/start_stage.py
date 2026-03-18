@@ -342,6 +342,28 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
             print(f"⚠ {label} HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
 
 
+# ── Stage 1 HTML open (WRK-1316) ─────────────────────────────────────────────
+
+def _open_html_stage1(wrk_id: str, repo_root: str) -> None:
+    """Open lifecycle + plan HTML in browser at Stage 1. Direct xdg-open."""
+    import subprocess
+    assets_dir = os.path.join(
+        repo_root, ".claude", "work-queue", "assets", wrk_id)
+
+    for suffix in ("lifecycle", "plan"):
+        html_path = os.path.join(assets_dir, f"{wrk_id}-{suffix}.html")
+        if os.path.exists(html_path):
+            subprocess.Popen(
+                ["xdg-open", html_path],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            print(f"Opened {suffix} HTML in browser: {html_path}")
+        else:
+            print(f"⚠ {suffix} HTML not found at Stage 1 entry: {html_path}",
+                  file=sys.stderr)
+
+
 # ── gate timing (WRK-1316) ───────────────────────────────────────────────────
 
 def _log_gate_wait_start(wrk_id: str, stage: int, repo_root: str) -> None:
@@ -716,7 +738,10 @@ def _main() -> None:
     # Auto-regenerate lifecycle HTML so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)
 
-    # Auto-open HTML in browser at human-gate stages
+    # Auto-open HTML in browser at Stage 1 (the ONE open — later stages use auto-refresh)
+    if stage == 1:
+        _open_html_stage1(wrk_id, repo_root)
+    # Legacy: also fire for stages in gate map (backward compat)
     _auto_open_html_for_human_gates(wrk_id, stage, repo_root)
 
 

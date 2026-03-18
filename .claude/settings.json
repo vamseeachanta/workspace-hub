@@ -218,6 +218,11 @@
           },
           {
             "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-human-gate.sh\"",
+            "statusMessage": "WRK-1316: human gate approval required"
+          },
+          {
+            "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/openfoam-workflow-guard.sh\" 2>/dev/null || true",
             "statusMessage": "OpenFOAM workflow guard"
           }
