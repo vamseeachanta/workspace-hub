@@ -1,0 +1,56 @@
+stage: 6
+type: cross-review
+wrk_id: WRK-1316
+verdict: APPROVE
+reviewers:
+  - provider: claude
+    verdict: APPROVE
+    source: 20260318T114959Z-hazy-toasting-bee.md-implementation-claude.md
+  - provider: codex-slot-opus-fallback
+    verdict: APPROVE
+    source: 20260318T114959Z-hazy-toasting-bee.md-implementation-codex.md
+  - provider: gemini
+    verdict: REQUEST_CHANGES
+    note: "Gemini reviewed plan as if it were code — no substantive code findings. Suggests proceeding to implementation for proper review."
+    source: 20260318T114959Z-hazy-toasting-bee.md-implementation-gemini.md
+
+p1_findings: []
+
+p2_findings:
+  - id: P2-1
+    provider: claude
+    finding: "exit_stage.py function length may exceed 50-line limit — extract hook/checklist logic"
+    resolution: "Will extract into run_hooks.py module (already planned) — calls from exit_stage.py will be import+invoke only"
+    status: accepted
+
+p3_findings:
+  - id: P3-1
+    finding: "start_stage.py (617 lines) and exit_stage.py (397 lines) exceed 200-line hard limit"
+    resolution: "Pre-existing tech debt — not in scope for WRK-1316. New logic goes into run_hooks.py and verify_checklist.py. Capture file-split as future work."
+  - id: P3-2
+    finding: "Normalize pre_checks vs pre_exit_hooks schema divergence"
+    resolution: "run_hooks.py will normalize at load time — merge pre_checks into pre_exit_hooks format"
+  - id: P3-3
+    finding: "WRK-NNN interpolation mechanism unclear"
+    resolution: "run_hooks.py performs string substitution of WRK-NNN token with actual WRK ID"
+  - id: P3-4
+    finding: "Add schema validator for enhanced stage YAML"
+    resolution: "Good suggestion — add to Phase 1 as companion schema in config/work-queue/schemas/"
+  - id: P3-5
+    finding: "Add --dry-run flag to run_hooks.py"
+    resolution: "Good suggestion — include in Phase 1"
+  - id: P3-6
+    finding: "Phase 6 large blast radius (all 20 YAMLs at once)"
+    resolution: "Will split: human-gate stages first (1,5,7,17), then auto-proceed stages"
+  - id: P3-7
+    finding: "tools_activated is informational only — no enforcement"
+    resolution: "Intentional — surfacing is the first step; enforcement is WRK-1317 scope"
+  - id: P3-8
+    finding: "gate: soft failure behavior unclear"
+    resolution: "Log warning to stderr + evidence file, continue execution. No user prompt."
+
+plan_revisions:
+  - "P2-1: Hook/checklist logic extracted into run_hooks.py, not inlined in exit_stage.py"
+  - "P3-4: Add YAML schema validator to Phase 1"
+  - "P3-5: Add --dry-run flag to run_hooks.py"
+  - "P3-6: Phase 6 split into sub-phases (human-gate first, then auto-proceed)"
