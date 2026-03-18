@@ -782,6 +782,106 @@ class TestIntegrationPreEnterHooksWired:
         _run_pre_enter_hooks("WRK-HOOK", 10, str(tmp_path), assets_dir)
 
 
+class TestDryRun:
+    """--dry-run mode: preview checklist items without validating evidence."""
+
+    def test_dry_run_no_checklist(self, tmp_path):
+        """Stage with no checklist → dry_run passes, returns empty items."""
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-10.yaml"
+        _write(str(stage_yaml), "order: 10\nname: Work Execution\n")
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-DRY",
+            stage=10,
+            evidence_dir=str(tmp_path / "evidence"),
+            dry_run=True,
+        )
+        assert result["passed"] is True
+        assert result["blockers"] == []
+        assert "items" in result
+        assert result["items"] == []
+
+    def test_dry_run_prints_all_items(self, tmp_path):
+        """Stage with 3 checklist items → dry_run returns all items."""
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-10.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 10
+            name: Work Execution
+            checklist:
+              - id: CL-10-1
+                text: "Scripts-over-LLM audit performed"
+              - id: CL-10-2
+                text: "Tests written BEFORE implementation (TDD Red)"
+              - id: CL-10-3
+                text: "Implementation follows TDD Green cycle"
+        """))
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-DRY",
+            stage=10,
+            evidence_dir=str(tmp_path / "evidence"),
+            dry_run=True,
+        )
+        assert result["passed"] is True
+        assert result["blockers"] == []
+        assert "items" in result
+        assert len(result["items"]) == 3
+        assert result["items"][0]["id"] == "CL-10-1"
+        assert result["items"][1]["id"] == "CL-10-2"
+        assert result["items"][2]["id"] == "CL-10-3"
+
+    def test_dry_run_no_evidence_required(self, tmp_path):
+        """Evidence dir does not exist → dry_run still passes (no FileNotFoundError)."""
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-10.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 10
+            name: Work Execution
+            checklist:
+              - id: CL-10-1
+                text: "Item 1"
+        """))
+        # Intentionally don't create evidence dir
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-DRY",
+            stage=10,
+            evidence_dir=str(tmp_path / "nonexistent"),
+            dry_run=True,
+        )
+        assert result["passed"] is True
+        assert len(result["items"]) == 1
+
+    def test_dry_run_does_not_validate(self, tmp_path):
+        """Evidence file absent but dry_run=True → passes (no validation)."""
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-10.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 10
+            name: Work Execution
+            checklist:
+              - id: CL-10-1
+                text: "Item 1"
+              - id: CL-10-2
+                text: "Item 2"
+        """))
+        evidence_dir = tmp_path / "evidence"
+        evidence_dir.mkdir()
+        # Don't create checklist-10.yaml — normal verify would fail
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-DRY",
+            stage=10,
+            evidence_dir=str(evidence_dir),
+            dry_run=True,
+        )
+        assert result["passed"] is True
+        assert result["blockers"] == []
+        assert len(result["items"]) == 2
+
+
 class TestIntegrationStageTiming:
     """Stage timing: started_at written at entry, completed_at + duration at exit."""
 

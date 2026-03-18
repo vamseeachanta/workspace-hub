@@ -1,0 +1,48 @@
+# WRK-1318 Checkpoint
+# 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)
+
+wrk_id: WRK-1318
+stage: 1
+stage_name: Capture
+status: waiting_user_review
+checkpoint_date: "2026-03-18"
+provider: claude
+machine: ace-linux-1
+
+# What was accomplished
+completed:
+  - "Reviewed document-checklist.yaml — revenue FINAL at $300,470"
+  - "Searched for 2024 Form 1120 — NOT FILED (only TX state return exists)"
+  - "Checked aceengineer-va connectivity — reachable, no SMB share mounted"
+  - "Analyzed R&D fund / book loss strategy — documented in S-01..S-04"
+  - "Updated document-checklist.yaml with findings (M-03 status, M-04 split, strategy questions)"
+
+# Key findings
+findings:
+  - id: F-01
+    finding: "2024 Form 1120 never filed — breaks NOL carryforward chain"
+    impact: high
+    action: "File 2024 first or use 2023 NOL directly — CPA decision"
+
+  - id: F-02
+    finding: "Chase bank statements Jan-Jun 2025 on aceengineer-va, need SMB share name"
+    impact: high
+    action: "User to provide share name; mount and copy statements"
+
+  - id: F-03
+    finding: "R&D retention strategy constrained by IRC §174 amortization (post-2022)"
+    impact: medium
+    action: "CPA must advise on R&D + officer comp + loan interaction"
+
+# Blockers before Stage 2
+blockers:
+  - "User approval of Stage 1 scope"
+  - "SMB share name for aceengineer-va bank statements"
+  - "Decision on 2024 Form 1120 (file first? or proceed with 2025?)"
+
+# Entry reads for next session
+entry_reads:
+  - aceengineer-admin/taxes/2025/document-checklist.yaml
+  - aceengineer-admin/Tax/2023/f1120_filled.pdf
+  - .claude/work-queue/working/WRK-1318.md
+  - .claude/work-queue/assets/WRK-1318/checkpoint.yaml

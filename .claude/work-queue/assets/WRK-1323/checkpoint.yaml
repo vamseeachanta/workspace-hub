@@ -1,0 +1,12 @@
+stage: 10
+wrk_id: WRK-1323
+title: "Add --dry-run flag to verify_checklist.py"
+status: in_progress
+entry_reads:
+  - scripts/work-queue/verify_checklist.py
+  - tests/work-queue/test_transition_hardening.py
+work_summary: |
+  Phase 1 (RED): Added 4 failing tests for --dry-run functionality
+  Phase 2 (GREEN): Implemented dry_run parameter in verify_checklist() function
+  Phase 3: Updated CLI with argparse for --dry-run flag support
+checkpoint_at: "2026-03-18T$(date +%H:%M:%S)Z"
