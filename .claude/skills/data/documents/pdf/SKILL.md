@@ -45,7 +45,7 @@ for page in reader.pages:
     print(text)
 ```
 
-## Tool Selection (WRK-1277 + WRK-1302 Learnings)
+## Tool Selection (WRK-1277 + WRK-1302 + WRK-1303 Learnings)
 
 | Scenario | Tool | Why |
 |----------|------|-----|
@@ -54,6 +54,7 @@ for page in reader.pages:
 | Single-doc text extraction | **PyMuPDF (fitz)** | Fast, good API, in-process |
 | Readability classification | **pypdfium2** | Replaces pdfplumber for page sampling; no D-state hangs; Apache-2.0 license |
 | Table extraction | **pdfplumber** (single doc only) | Best table detection; DO NOT use in multiprocessing pools |
+| Structured markdown (tables+equations) | **Docling** (targeted use only) | MIT license; 1731 table rows from 6 docs; ~310s/doc on CPU |
 | LLM/RAG markdown | **pymupdf4llm** (monitor only) | 0.12s/doc, good markdown; **AGPL license blocks adoption** |
 
 > **WARNING**: pdfplumber hangs in kernel D-state (disk sleep) on NTFS and NFS mounts.
@@ -65,6 +66,13 @@ for page in reader.pages:
 > to tiny single-page documents. However, pypdfium2 IS the right replacement for
 > pdfplumber in readability classification — same accuracy, no D-state risk, Apache license.
 > Benchmark: `scripts/data/doc_intelligence/benchmark_pdf_tools.py`
+
+> **WRK-1303 Finding (2026-03-17)**: Docling (IBM, MIT license) extracts structured
+> markdown with tables and equations. Tested on 6 engineering standards: extracts ~14%
+> more text and 1731 table rows. However, ~310s/doc on CPU (1570x slower than pdftotext).
+> NOT viable for batch corpus processing. Use for targeted extraction of high-value standards.
+> Needs CUDA 7.0+ GPU for practical batch speeds. GTX 750 Ti on ace-linux-1 is too old.
+> Benchmark: `scripts/data/doc_intelligence/benchmark_docling.py`
 
 ## When to Use
 
