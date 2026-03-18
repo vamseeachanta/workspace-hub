@@ -1,0 +1,11 @@
+# Urgency scoring weights — used by scripts/work-queue/urgency-score.py
+# Adjust coefficients to tune prioritization behavior.
+priority:
+  high: 6.0
+  medium: 3.9
+  low: 1.8
+blocking_count: 8.0      # per item this WRK blocks
+age_factor: 2.0           # scaled: min(age_days/30, 10) * factor / 10
+blocked_penalty: -5.0     # applied if item has unresolved blockers
+has_checkpoint: 4.0       # work already started
+due_proximity: 12.0       # scaled by days until due (0 at 30+ days, max at overdue)

@@ -112,7 +112,17 @@ derive_status() {
 }
 
 declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED COORDINATING_ITEMS
-declare -A WRK_NOTES WRK_NOT_BEFORE
+declare -A WRK_NOTES WRK_NOT_BEFORE WRK_URGENCY
+
+# ── Pre-compute urgency scores (single Python call) ──────────────────
+_urgency_json=$(uv run --no-project python "$REPO_ROOT/scripts/work-queue/urgency_score.py" --all --json --queue-dir "$QUEUE_DIR" 2>/dev/null || echo "[]")
+while IFS='	' read -r _uid _uscore; do
+  [[ -n "$_uid" ]] && WRK_URGENCY["$_uid"]="$_uscore"
+done < <(python3 -c "
+import json, sys
+for item in json.loads(sys.argv[1]):
+    print(item['id'] + '\t' + str(item['score']))
+" "$_urgency_json" 2>/dev/null)
 
 process_file() {
   local f="$1" loc="$2"
@@ -232,6 +242,26 @@ process_file() {
 for f in "$QUEUE_DIR/working"/*.md;  do [[ -f "$f" ]] && process_file "$f" working;  done
 for f in "$QUEUE_DIR/pending"/*.md;  do [[ -f "$f" ]] && process_file "$f" pending;  done
 for f in "$QUEUE_DIR/blocked"/*.md;  do [[ -f "$f" ]] && process_file "$f" blocked;  done
+
+# ── Sort ready arrays by urgency score (descending) ──────────────────
+sort_by_urgency() {
+  local -n __arr="$1"
+  [[ ${#__arr[@]} -le 1 ]] && return
+  local -a scored=()
+  for row in "${__arr[@]}"; do
+    local _id; _id="${row%%|*}"
+    local _sc="${WRK_URGENCY[$_id]:-0}"
+    scored+=("${_sc}|${row}")
+  done
+  local -a sorted_rows=()
+  while IFS= read -r line; do
+    sorted_rows+=("${line#*|}")  # strip score prefix
+  done < <(printf '%s\n' "${scored[@]}" | sort -t'|' -k1 -rn)
+  __arr=("${sorted_rows[@]}")
+}
+sort_by_urgency HIGH_UNBLOCKED
+sort_by_urgency NEWLY_UNBLOCKED
+sort_by_urgency MED_UNBLOCKED
 
 # ── Render (box-drawing tables) ───────────────────────────────────────────────
 
