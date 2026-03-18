@@ -21,6 +21,19 @@ pre_checks:
 blocking_condition: "plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed OR check-p1-resolved.sh exits 1"
 log_action: plan_final_reviewed
 context_budget_kb: 16
+checklist:
+  - id: CL-07-1
+    text: "Cross-review findings presented to user"
+    requires_human: true
+  - id: CL-07-2
+    text: "All P1 findings resolved"
+    requires_human: false
+  - id: CL-07-3
+    text: "All user-requested changes applied"
+    requires_human: false
+  - id: CL-07-4
+    text: "Explicit user approval received (I approve stage 7)"
+    requires_human: true
 feature_notes:
   - "Feature WRKs: generate evidence/feature-decomposition.yaml before Stage 7 sign-off"
   - "Consumed by: new-feature.sh (scaffold input at Stage 9b)"

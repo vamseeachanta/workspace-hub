@@ -14,3 +14,13 @@ exit_artifacts:
 blocking_condition: "lifecycle HTML Stage 11 section absent"
 log_action: artifacts_generated
 context_budget_kb: 8
+checklist:
+  - id: CL-11-1
+    text: "generate-html-review.py run with --lifecycle"
+    requires_human: false
+  - id: CL-11-2
+    text: "All 20 stage sections present in HTML"
+    requires_human: false
+  - id: CL-11-3
+    text: "Stage 10/11 content visible and correct"
+    requires_human: false

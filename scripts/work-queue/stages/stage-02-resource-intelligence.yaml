@@ -14,3 +14,33 @@ exit_artifacts:
 blocking_condition: "resource-intelligence.yaml missing completion_status or skills.core_used"
 log_action: resource_intelligence_complete
 context_budget_kb: 8
+checklist:
+  - id: CL-02-1
+    text: "Codebase search completed (existing code, skills, tests)"
+    requires_human: false
+  - id: CL-02-2
+    text: "Knowledge base queried"
+    requires_human: false
+  - id: CL-02-3
+    text: "Online research performed (WebSearch)"
+    requires_human: false
+  - id: CL-02-4
+    text: "Discovered documents saved to docu-intel + index updated"
+    requires_human: false
+  - id: CL-02-5
+    text: "Complexity assessed (simple/medium/complex)"
+    requires_human: false
+  - id: CL-02-6
+    text: "evidence/resource-intelligence.yaml written"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: workspace-hub/resource-intelligence
+  - type: skill
+    ref: data/document-index-pipeline
+  - type: skill
+    ref: workspace-hub/knowledge
+  - type: mcp
+    ref: WebSearch
+  - type: mcp
+    ref: WebFetch

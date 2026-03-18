@@ -17,6 +17,32 @@ blocking_condition: "lifecycle HTML Stage 4 section absent"
 log_action: plan_draft_complete
 context_budget_kb: 8
 plan_mode: required
+checklist:
+  - id: CL-04-1
+    text: "Scripts-over-LLM audit performed (25% recurrence check)"
+    requires_human: false
+  - id: CL-04-2
+    text: "EnterPlanMode entered for ideation (4a)"
+    requires_human: false
+  - id: CL-04-3
+    text: "ACs defined (specific, testable)"
+    requires_human: false
+  - id: CL-04-4
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    requires_human: false
+  - id: CL-04-5
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    requires_human: false
+  - id: CL-04-6
+    text: "plan.html generated"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: superpowers/brainstorming
+  - type: skill
+    ref: superpowers/writing-plans
+  - type: skill
+    ref: coordination/workspace/work-queue/scope-discipline
 lm_judgment_required:
   - id: N2
     rule: "Pseudocode is semantically correct for the algorithm described"

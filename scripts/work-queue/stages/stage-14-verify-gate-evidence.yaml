@@ -13,3 +13,15 @@ exit_artifacts:
 blocking_condition: "verify-gate-evidence.py exits non-zero (any gate FAIL)"
 log_action: gate_evidence_verified
 context_budget_kb: 8
+checklist:
+  - id: CL-14-1
+    text: "verify-gate-evidence.py exits 0"
+    requires_human: false
+  - id: CL-14-2
+    text: "evidence/gate-evidence-summary.yaml written"
+    requires_human: false
+pre_exit_hooks:
+  - script: scripts/work-queue/verify-gate-evidence.py WRK-NNN
+    description: "All gates must PASS before proceeding"
+    gate: hard
+    timeout_s: 60

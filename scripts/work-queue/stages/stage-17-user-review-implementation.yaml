@@ -14,9 +14,25 @@ entry_reads:
 pre_checks:
   - script: scripts/work-queue/check-acs-pass.sh WRK-NNN
     description: "Verify all acceptance criteria are marked [x] before user review"
-    required: true
+    gate: hard
 exit_artifacts:
   - assets/WRK-NNN/evidence/user-review-close.yaml
 blocking_condition: "user-review-close.yaml missing or decision != approved"
 log_action: implementation_reviewed
 context_budget_kb: 16
+checklist:
+  - id: CL-17-1
+    text: "Stages 10-16 evidence walked through with user"
+    requires_human: true
+  - id: CL-17-2
+    text: "All user questions answered"
+    requires_human: true
+  - id: CL-17-3
+    text: "All ACs confirmed passing"
+    requires_human: false
+  - id: CL-17-4
+    text: "Explicit user approval received (I approve stage 17)"
+    requires_human: true
+tools_activated:
+  - type: skill
+    ref: superpowers/verification-before-completion

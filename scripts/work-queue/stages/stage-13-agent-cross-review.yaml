@@ -17,6 +17,24 @@ codex_unavailable_action: park_blocked
 log_action: implementation_cross_reviewed
 context_budget_kb: 8
 plan_mode: required
+checklist:
+  - id: CL-13-1
+    text: "Implementation + tests sent to all 3 providers"
+    requires_human: false
+  - id: CL-13-2
+    text: "All 3 verdicts collected"
+    requires_human: false
+  - id: CL-13-3
+    text: "All P1 findings fixed"
+    requires_human: false
+  - id: CL-13-4
+    text: "review.md written with all 3 providers listed"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: coordination/workspace/work-queue/cross-review-route-bc
+  - type: skill
+    ref: workspace-hub/workflow-gatepass
 lm_judgment_required:
   - id: N3
     rule: "Implementation cross-review finding correctly classified P1 vs P2 vs P3"

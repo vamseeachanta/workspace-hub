@@ -14,3 +14,16 @@ exit_artifacts:
 blocking_condition: "pending/WRK-NNN.md missing route/workstations/orchestrator fields"
 log_action: triage_complete
 context_budget_kb: 4
+checklist:
+  - id: CL-03-1
+    text: "Route (A/B/C) determined and justified"
+    requires_human: false
+  - id: CL-03-2
+    text: "Workstations and orchestrator assigned"
+    requires_human: false
+  - id: CL-03-3
+    text: "WRK frontmatter updated with route/workstations/orchestrator"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: coordination/workspace/work-queue/complexity-routing

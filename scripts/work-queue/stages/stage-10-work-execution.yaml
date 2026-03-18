@@ -17,3 +17,31 @@ blocking_condition: "execute.yaml missing or integrated_repo_tests < 3 entries"
 log_action: work_executed
 context_budget_kb: 16
 plan_mode: required
+pre_enter_hooks:
+  - script: scripts/work-queue/verify-log-presence.sh WRK-NNN
+    description: "Verify routing.yaml exists before execution begins"
+    gate: soft
+    timeout_s: 10
+checklist:
+  - id: CL-10-1
+    text: "Scripts-over-LLM audit performed"
+    requires_human: false
+  - id: CL-10-2
+    text: "Tests written BEFORE implementation (TDD Red)"
+    requires_human: false
+  - id: CL-10-3
+    text: "All tests pass (TDD Green)"
+    requires_human: false
+  - id: CL-10-4
+    text: "evidence/execute.yaml written with integrated_repo_tests >= 3"
+    requires_human: false
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: superpowers/test-driven-development
+  - type: skill
+    ref: superpowers/systematic-debugging
+  - type: skill
+    ref: superpowers/executing-plans

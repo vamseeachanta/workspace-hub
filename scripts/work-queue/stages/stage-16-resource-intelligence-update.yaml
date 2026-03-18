@@ -14,3 +14,18 @@ exit_artifacts:
 blocking_condition: "resource-intelligence-update.yaml missing additions[] and no_additions_rationale"
 log_action: resource_intelligence_updated
 context_budget_kb: 8
+checklist:
+  - id: CL-16-1
+    text: ">= 3 lessons learned identified"
+    requires_human: false
+  - id: CL-16-2
+    text: "New tools/patterns/constraints documented"
+    requires_human: false
+  - id: CL-16-3
+    text: "evidence/resource-intelligence-update.yaml written"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: workspace-hub/knowledge
+  - type: skill
+    ref: workspace-hub/resource-intelligence

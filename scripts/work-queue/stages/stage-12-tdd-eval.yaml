@@ -15,3 +15,18 @@ exit_artifacts:
 blocking_condition: "ac-test-matrix.md missing or any AC in FAIL state"
 log_action: tdd_eval_complete
 context_budget_kb: 16
+checklist:
+  - id: CL-12-1
+    text: "Full test suite run with zero failures"
+    requires_human: false
+  - id: CL-12-2
+    text: "Every AC mapped to test result (PASS/N/A+reason, no FAIL)"
+    requires_human: false
+  - id: CL-12-3
+    text: "ac-test-matrix.md written with >= 3 PASS entries"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: superpowers/test-driven-development
+  - type: skill
+    ref: superpowers/verification-before-completion

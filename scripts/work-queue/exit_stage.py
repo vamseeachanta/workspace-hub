@@ -194,6 +194,10 @@ def validate_exit(
             )
             sys.exit(1)
 
+    # WRK-1316: Log stage completion timing (all stages)
+    if stage is not None:
+        _log_stage_completed(stage, stage_dir)
+
     return True
 
 
@@ -258,6 +262,66 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
     )
     if plan_result.returncode != 0:
         print(f"⚠ Plan HTML update failed (non-blocking): {plan_result.stderr.strip()[:120]}", file=sys.stderr)
+
+
+# ── Stage timing (WRK-1316) ───────────────────────────────────────────────────
+
+def _log_stage_completed(stage: int, stage_dir: str) -> None:
+    """Append completed_at + duration to stage-timing-NN.yaml (all stages)."""
+    from datetime import datetime, timezone
+    timing_path = os.path.join(stage_dir, "evidence", f"stage-timing-{stage:02d}.yaml")
+    now = datetime.now(timezone.utc).isoformat()
+
+    if os.path.exists(timing_path):
+        started_at = _read_field(timing_path, "started_at")
+        with open(timing_path, "a") as f:
+            f.write(f"completed_at: \"{now}\"\n")
+            if started_at:
+                try:
+                    from datetime import datetime as _dt
+                    start = _dt.fromisoformat(started_at.replace("Z", "+00:00"))
+                    end = _dt.fromisoformat(now.replace("Z", "+00:00"))
+                    duration_s = round((end - start).total_seconds(), 1)
+                    f.write(f"duration_s: {duration_s}\n")
+                except (ValueError, TypeError):
+                    pass
+    else:
+        os.makedirs(os.path.dirname(timing_path), exist_ok=True)
+        with open(timing_path, "w") as f:
+            f.write(f"stage: {stage}\n")
+            f.write(f"completed_at: \"{now}\"\n")
+
+
+# ── Hook loader (WRK-1316) ────────────────────────────────────────────────────
+
+def _load_pre_exit_hooks(yaml_path: str) -> list:
+    """Load pre_exit_hooks + pre_checks (backward compat) from stage YAML.
+
+    Merges both fields into a single list. Normalizes 'required: true' to 'gate: hard'.
+    """
+    import yaml as _yaml
+    with open(yaml_path) as f:
+        data = _yaml.safe_load(f) or {}
+
+    hooks = list(data.get("pre_exit_hooks", []) or [])
+
+    # Backward compat: merge pre_checks into hooks
+    for check in (data.get("pre_checks", []) or []):
+        hook = {
+            "script": check.get("script", ""),
+            "description": check.get("description", ""),
+            "timeout_s": check.get("timeout_s", 30),
+        }
+        # Normalize: 'required: true' → 'gate: hard'; 'gate: X' takes precedence
+        if "gate" in check:
+            hook["gate"] = check["gate"]
+        elif check.get("required", False):
+            hook["gate"] = "hard"
+        else:
+            hook["gate"] = "hard"  # default for pre_checks
+        hooks.append(hook)
+
+    return hooks
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
@@ -336,6 +400,37 @@ def _main() -> None:
         stage=stage,
         repo_root=repo_root,
     )
+
+    # WRK-1316: Verify checklist completion before exit
+    from verify_checklist import verify_checklist  # type: ignore[import]
+    cl_result = verify_checklist(
+        stage_yaml_path=matches[0],
+        wrk_id=wrk_id,
+        stage=stage,
+        evidence_dir=os.path.join(stage_dir, "evidence"),
+    )
+    if not cl_result["passed"]:
+        print(f"CHECKLIST BLOCKED: {len(cl_result['blockers'])} incomplete items:", file=sys.stderr)
+        for b in cl_result["blockers"]:
+            print(f"  - [{b['id']}] {b['reason']}", file=sys.stderr)
+        sys.exit(1)
+
+    # WRK-1316: Run pre_exit hooks (merges pre_checks for backward compat)
+    pre_exit_hooks = _load_pre_exit_hooks(matches[0])
+    if pre_exit_hooks:
+        from run_hooks import run_hooks  # type: ignore[import]
+        hook_blockers = run_hooks(
+            hooks=pre_exit_hooks,
+            wrk_id=wrk_id,
+            repo_root=repo_root,
+            phase="pre_exit",
+            stage=stage,
+            assets_dir=stage_dir,
+        )
+        if hook_blockers:
+            for b in hook_blockers:
+                print(f"PRE-EXIT BLOCKED: {b['description']} ({b['script']})", file=sys.stderr)
+            sys.exit(1)
 
     print(f"Stage {stage} exit validated. All artifacts present.")
     if human_gate:

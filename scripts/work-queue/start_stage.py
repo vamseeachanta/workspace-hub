@@ -342,12 +342,111 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
             print(f"⚠ {label} HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
 
 
+# ── gate timing (WRK-1316) ───────────────────────────────────────────────────
+
+def _log_gate_wait_start(wrk_id: str, stage: int, repo_root: str) -> None:
+    """Log stage_started_at timestamp for all stages. Marks human gates explicitly."""
+    import subprocess
+    from datetime import datetime, timezone
+
+    is_human_gate = False
+    hg_result = subprocess.run(
+        ["bash", os.path.join(repo_root, "scripts", "work-queue", "is-human-gate.sh"),
+         str(stage)],
+        capture_output=True, cwd=repo_root,
+    )
+    if hg_result.returncode == 0:
+        is_human_gate = True
+
+    assets_dir = os.path.join(
+        repo_root, ".claude", "work-queue", "assets", wrk_id, "evidence")
+    os.makedirs(assets_dir, exist_ok=True)
+    timing_path = os.path.join(assets_dir, f"stage-timing-{stage:02d}.yaml")
+    with open(timing_path, "w") as f:
+        f.write(f"stage: {stage}\n")
+        f.write(f"wrk_id: {wrk_id}\n")
+        f.write(f"human_gate: {str(is_human_gate).lower()}\n")
+        f.write(f"started_at: \"{datetime.now(timezone.utc).isoformat()}\"\n")
+    if is_human_gate:
+        print(f"GATE WAIT: Stage {stage} — waiting for user approval.")
+
+
+# ── pre-enter hooks (WRK-1316) ───────────────────────────────────────────────
+
+def _run_pre_enter_hooks(wrk_id: str, stage: int, repo_root: str, assets_dir: str) -> None:
+    """Load and run pre_enter_hooks from stage YAML. Block entry if any hard hook fails."""
+    import glob as _ag
+    import yaml as _yaml
+
+    contract_glob = os.path.join(
+        repo_root, "scripts", "work-queue", "stages", f"stage-{stage:02d}-*.yaml"
+    )
+    matches = _ag.glob(contract_glob)
+    if not matches:
+        return
+
+    with open(matches[0]) as f:
+        data = _yaml.safe_load(f) or {}
+
+    hooks = data.get("pre_enter_hooks", [])
+    if not hooks:
+        return
+
+    _script_dir = os.path.dirname(os.path.abspath(__file__))
+    if _script_dir not in sys.path:
+        sys.path.insert(0, _script_dir)
+
+    from run_hooks import run_hooks  # type: ignore[import]
+    blockers = run_hooks(
+        hooks=hooks,
+        wrk_id=wrk_id,
+        repo_root=repo_root,
+        phase="pre_enter",
+        stage=stage,
+        assets_dir=assets_dir,
+    )
+    if blockers:
+        for b in blockers:
+            print(f"PRE-ENTER BLOCKED: {b['description']} ({b['script']})", file=sys.stderr)
+        sys.exit(1)
+
+
+# ── tool/skill activation (WRK-1316) ────────────────────────────────────────
+
+def _surface_tools_activated(wrk_id: str, stage: int, repo_root: str) -> None:
+    """Print tools_activated and skills_required for the current stage."""
+    import glob as _ag
+    import yaml as _yaml
+
+    contract_glob = os.path.join(
+        repo_root, "scripts", "work-queue", "stages", f"stage-{stage:02d}-*.yaml"
+    )
+    matches = _ag.glob(contract_glob)
+    if not matches:
+        return
+
+    with open(matches[0]) as f:
+        data = _yaml.safe_load(f) or {}
+
+    tools = data.get("tools_activated", [])
+    skills = data.get("skills_required", [])
+
+    if tools or skills:
+        print(f"\n--- Stage {stage} Active Tools & Skills ---")
+        for skill in skills:
+            print(f"  skill: {skill}")
+        for tool in tools:
+            ref = tool.get("ref", "")
+            ttype = tool.get("type", "")
+            print(f"  {ttype}: {ref}")
+        print("---\n")
+
+
 # ── auto-open HTML for human-gate stages ─────────────────────────────────────
 
+# WRK-1316: HTML opened at Stage 1 only — later stages use 30s auto-refresh
 _HUMAN_GATE_STAGE_MAP = {
-    5: "plan_draft",
-    7: "plan_final",
-    17: "close_review",
+    1: "capture",
 }
 
 
@@ -570,6 +669,9 @@ def _main() -> None:
     # Stage progression guard: previous stage must be done before entry
     _stage_progression_guard(wrk_id, stage, repo_root)
 
+    # WRK-1316: Run pre_enter hooks from stage YAML
+    _run_pre_enter_hooks(wrk_id, stage, repo_root, output_dir)
+
     # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:
         import datetime
@@ -602,8 +704,14 @@ def _main() -> None:
 
     route_stage(contract, wrk_id, stage, output_dir, assets_root, repo_root=repo_root)
 
+    # WRK-1316: Surface activated tools/skills for this stage
+    _surface_tools_activated(wrk_id, stage, repo_root)
+
     # Mark current stage as in_progress in stage-evidence
     _update_stage_ev(wrk_id, stage, "in_progress", repo_root)
+
+    # WRK-1316: Log gate_wait_start for human-gate stages
+    _log_gate_wait_start(wrk_id, stage, repo_root)
 
     # Auto-regenerate lifecycle HTML so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)

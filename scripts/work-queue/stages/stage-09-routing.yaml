@@ -14,6 +14,16 @@ exit_artifacts:
 blocking_condition: "routing.yaml missing"
 log_action: routing_complete
 context_budget_kb: 4
+checklist:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    requires_human: false
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    requires_human: false
+  - id: CL-09-3
+    text: "routing.yaml written"
+    requires_human: false
 feature_routing:
   step: "9b — Feature scaffolding"
   condition: "type: feature"

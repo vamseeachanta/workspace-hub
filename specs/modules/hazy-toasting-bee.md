@@ -106,7 +106,28 @@ items:
 - `exit_stage.py` writes `gate_approved_at` after human approval
 - Duration computed and logged in hook evidence
 
-## Build Sequence (7 phases)
+### Claim at Stage 1, Not Stage 8 (R6)
+
+- Move `claim-item.sh` logic (or a lightweight lock) to Stage 1 entry
+- The moment `/work run WRK-NNN` starts, the WRK is locked — no other process can touch it
+- Stage 8 becomes: validate claim still held + write activation evidence (not the initial claim)
+- Release lock on: explicit pause, session exit, or Stage 20 archive
+
+### Stage Self-Containment (R7)
+
+- Every stage exit: all work persisted, evidence written, HTML updated, checkpoint written
+- A completed stage's work is never lost — even if the session crashes after exit
+- Context handoff is explicit via `checkpoint.yaml` + `stage-evidence.yaml`
+- Any stage boundary is a safe pause/resume point
+
+### HTML Stage Indicator Accuracy (R8)
+
+- `stage-evidence.yaml` is single source of truth for which stage is active
+- `start_stage.py` and `exit_stage.py` MUST be called for every transition
+- Never write evidence files manually and bypass stage machinery
+- HTML generator reads `stage-evidence.yaml` to set active/done/pending chips
+
+## Build Sequence (8 phases)
 
 ### Phase 1: Foundation (no behavior change)
 1. Write `test_transition_hardening.py` — RED tests for run_hooks and verify_checklist

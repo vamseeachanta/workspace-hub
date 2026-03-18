@@ -16,3 +16,16 @@ exit_artifacts:
 blocking_condition: "claim-evidence.yaml or activation.yaml missing"
 log_action: wrk_claimed
 context_budget_kb: 4
+checklist:
+  - id: CL-08-1
+    text: "Agent quota checked"
+    requires_human: false
+  - id: CL-08-2
+    text: "claim-item.sh exits 0 (no collision)"
+    requires_human: false
+  - id: CL-08-3
+    text: "working/WRK-NNN.md exists"
+    requires_human: false
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    requires_human: false

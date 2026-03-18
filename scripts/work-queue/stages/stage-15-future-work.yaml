@@ -14,3 +14,16 @@ exit_artifacts:
 blocking_condition: "future-work.yaml missing or spun-off-new items with captured:false"
 log_action: future_work_synthesized
 context_budget_kb: 8
+checklist:
+  - id: CL-15-1
+    text: "Execution notes reviewed for deferred items"
+    requires_human: false
+  - id: CL-15-2
+    text: "Each item captured as new WRK or deferred with reason"
+    requires_human: false
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    requires_human: false
+tools_activated:
+  - type: skill
+    ref: coordination/workspace/work-queue/scope-discipline

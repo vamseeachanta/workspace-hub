@@ -21,6 +21,22 @@ exit_artifacts:
 blocking_condition: "user-review-plan-draft.yaml missing or decision != approved"
 log_action: plan_draft_reviewed
 context_budget_kb: 16
+checklist:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    requires_human: true
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    requires_human: true
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    requires_human: true
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    requires_human: false
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    requires_human: true
 lm_judgment_required:
   - id: N1
     rule: "Section-by-section plan dialogue was thorough (not drop-and-approve)"

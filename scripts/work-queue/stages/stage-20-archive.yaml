@@ -13,3 +13,19 @@ exit_artifacts:
 blocking_condition: "archive/WRK-NNN.md missing after archive-item.sh"
 log_action: wrk_archived
 context_budget_kb: 4
+checklist:
+  - id: CL-20-1
+    text: "archive-item.sh executed"
+    requires_human: false
+  - id: CL-20-2
+    text: "archive/WRK-NNN.md exists"
+    requires_human: false
+  - id: CL-20-3
+    text: "INDEX.md regenerated"
+    requires_human: false
+  - id: CL-20-4
+    text: "active-wrk cleared"
+    requires_human: false
+  - id: CL-20-5
+    text: "Git committed and pushed"
+    requires_human: false

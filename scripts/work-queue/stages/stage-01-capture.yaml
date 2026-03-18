@@ -13,3 +13,19 @@ exit_artifacts:
 blocking_condition: "pending/WRK-NNN.md missing or invalid frontmatter"
 log_action: wrk_captured
 context_budget_kb: 4
+checklist:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    requires_human: false
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    requires_human: false
+  - id: CL-01-3
+    text: "Lifecycle + plan HTML opened in browser"
+    requires_human: false
+  - id: CL-01-4
+    text: "User explicitly approved scope"
+    requires_human: true
+tools_activated:
+  - type: skill
+    ref: workspace-hub/ecosystem-terminology

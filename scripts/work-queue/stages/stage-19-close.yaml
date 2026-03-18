@@ -14,3 +14,18 @@ exit_artifacts:
 blocking_condition: "done/WRK-NNN.md missing after close-item.sh; for type:feature, feature-close-check.sh WRK-NNN must exit 0 (enforced in close-item.sh)"
 log_action: wrk_closed
 context_budget_kb: 4
+checklist:
+  - id: CL-19-1
+    text: "verify-gate-evidence.py exits 0"
+    requires_human: false
+  - id: CL-19-2
+    text: "close-item.sh executed"
+    requires_human: false
+  - id: CL-19-3
+    text: "done/WRK-NNN.md exists with percent_complete: 100"
+    requires_human: false
+pre_exit_hooks:
+  - script: scripts/work-queue/verify-gate-evidence.py WRK-NNN
+    description: "Final gate verification before close"
+    gate: hard
+    timeout_s: 60

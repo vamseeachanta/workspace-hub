@@ -21,7 +21,8 @@ flowchart TD
     B --> C[Write pending/WRK-NNN.md with frontmatter]
     C --> D[Create assets/WRK-NNN/ directory]
     D --> E[Generate lifecycle HTML - Stage 1 chip done]
-    E --> F[Run validate-wrk-frontmatter.sh]
+    E --> E2[Open lifecycle + plan HTML in browser — xdg-open ONCE]
+    E2 --> F[Run validate-wrk-frontmatter.sh]
     F -->|exit 0| G[Present WRK summary to user]
     F -->|exit 1| H[Fix frontmatter issues] --> F
     G --> I{User approves scope?}
@@ -41,7 +42,9 @@ flowchart TD
 
 **pre_exit hook**: `validate-wrk-frontmatter.sh WRK-NNN` exit 0 + `user-review-capture.yaml` exists with `scope_approved: true`
 
-**pre_enter hook (Stage 2)**: Open lifecycle HTML in browser (`xdg-open`), load resource-intelligence skill
+**pre_enter hook (Stage 1)**: Open BOTH lifecycle HTML + plan HTML in browser (`xdg-open`) — the ONE open for the entire WRK lifecycle
+
+**pre_enter hook (Stage 2)**: Load resource-intelligence skill
 
 ---
 
@@ -194,13 +197,12 @@ flowchart TD
 
 **Skills Activated**: `work-queue-workflow` (R-25 rule)
 
-**Tools**: Read, Write, Bash (xdg-open — first and only HTML open)
+**Tools**: Read, Write
 
 ```mermaid
 flowchart TD
-    A[Enter Stage 5] --> B[Open lifecycle HTML in browser — xdg-open ONCE]
-    B --> C[Open plan.html in browser — xdg-open ONCE]
-    C --> D[Present Plan Draft section-by-section]
+    A[Enter Stage 5] --> B[Regenerate lifecycle + plan HTML — do NOT xdg-open, already open from Stage 1]
+    B --> D[Present Plan Draft section-by-section]
     D --> E{Route A?}
     E -->|yes| F[Walk each AC, pseudocode, test plan with user]
     E -->|no, B/C| G[Dispatch Codex + Gemini via stage5-plan-dispatch.sh]
@@ -219,8 +221,7 @@ flowchart TD
 ```
 
 **Mandatory Checklist**:
-- [ ] Lifecycle HTML opened in browser (xdg-open — this is the ONE open)
-- [ ] Plan.html opened in browser
+- [ ] Lifecycle + plan HTML regenerated (already open from Stage 1)
 - [ ] Every AC walked through with user
 - [ ] Every pseudocode block reviewed
 - [ ] Test plan reviewed
@@ -231,7 +232,7 @@ flowchart TD
 
 **pre_exit hook**: `user-review-plan-draft.yaml` exists with `decision: approved`; `gate-check.py` confirms
 
-**IMPORTANT**: Do NOT `xdg-open` at any later stage — HTML auto-refreshes from here on
+**IMPORTANT**: HTML was opened at Stage 1. Do NOT `xdg-open` at any stage after 1 — 30s auto-refresh handles updates
 
 ---
 
@@ -803,9 +804,9 @@ flowchart TD
 ## Cross-Cutting Rules
 
 ### HTML Behavior
-- **Stage 5**: `xdg-open` lifecycle + plan HTML — **the ONE and only open**
-- **All other stages**: Regenerate HTML file only — 30s auto-refresh picks up changes
-- **Never** call `xdg-open` at Stages 7, 17, or any stage after 5
+- **Stage 1**: `xdg-open` BOTH lifecycle + plan HTML — **the ONE and only open**
+- **All other stages (2–20)**: Regenerate HTML file only — 30s auto-refresh picks up changes
+- **Never** call `xdg-open` after Stage 1
 
 ### Human Gate Protocol
 - Stages 1, 5, 7, 17 are HARD gates

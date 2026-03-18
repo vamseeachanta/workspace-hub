@@ -14,3 +14,10 @@ blocking_condition: "reclaim.yaml missing"
 log_action: reclaim_complete
 context_budget_kb: 4
 notes: "Auto-write status:n/a when no checkpoint.yaml found (common case)."
+checklist:
+  - id: CL-18-1
+    text: "Checkpoint presence checked"
+    requires_human: false
+  - id: CL-18-2
+    text: "evidence/reclaim.yaml written (n/a or reclaimed)"
+    requires_human: false
