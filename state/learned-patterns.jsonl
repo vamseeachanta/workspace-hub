@@ -3028,3 +3028,21 @@
   "wrk": "WRK-1244",
   "stage": 18
 }
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 1
+}
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 2
+}
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 3
+}

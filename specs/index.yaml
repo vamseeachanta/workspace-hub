@@ -1,13 +1,13 @@
-generated: '2026-03-17'
-total_specs: 1884
+generated: '2026-03-18'
+total_specs: 1886
 by_category:
   archive: 13
   data-sources: 13
-  modules: 344
+  modules: 345
   other: 61
   repos: 1344
   templates: 20
-  wrk: 89
+  wrk: 90
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 368
+  workspace-hub: 370
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -368,6 +368,9 @@ by_wrk:
   WRK-1272: 1
   WRK-1273: 1
   WRK-1279: 1
+  WRK-1301: 1
+  WRK-1316: 1
+  WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
   WRK-5037: 5
@@ -1665,6 +1668,17 @@ specs:
   wrk_refs:
   - WRK-1143
   mtime: '2026-03-12'
+- path: specs/modules/hazy-toasting-bee.md
+  title: 'WRK-1316: Stage Transition Hardening — Implementation Plan'
+  description: After 40-60 engineering hours across 20+ WRKs building the 20-stage lifecycle, stage transitions remain the
+    weakest link. Rules exist in prose but aren't enforced by scripts. `pre_checks` is define...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - hazy-toasting-bee
+  wrk_refs:
+  - WRK-1316
+  mtime: '2026-03-18'
 - path: specs/modules/hobbies-long-term-plan.md
   title: Hobbies Repo Long-Term Plan
   description: Define the purpose, structure, and content roadmap for the Hobbies personal knowledge-management repository,
@@ -22100,6 +22114,19 @@ specs:
   wrk_refs:
   - WRK-1242
   mtime: '2026-03-15'
+- path: specs/wrk/WRK-1301/research-brief.md
+  title: 'WRK-1301: /work Queue Enhancement Research Brief'
+  description: '**What it is:** A meta-prompting/context-engineering framework wrapping AI coding agents (Claude Code, Gemini
+    CLI, Codex). 32K+ stars, MIT license, Node.js. Core problem: context rot during long LL...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - research-brief
+  - wrk-1301
+  wrk_refs:
+  - WRK-1301
+  - WRK-5002
+  mtime: '2026-03-18'
 - path: specs/wrk/WRK-140/plan.md
   title: 'WRK-140 Plan: Integrate gmsh Meshing into digitalmodel Pipelines'
   description: Wire gmsh meshing skill (WRK-139) into digitalmodel hydrodynamic analysis pipelines.
