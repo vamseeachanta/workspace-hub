@@ -84,11 +84,14 @@ if ! grep -q "${GATE_FIELD}:.*${GATE_VALUE}" "$GATE_FILE" 2>/dev/null; then
 fi
 
 # Check evidence file is not brand-new (prevent write-then-immediate-exit)
+# 30 seconds minimum — agent cannot trivially sleep past this, and real user
+# interaction always takes longer than 30 seconds.
 FILE_AGE_S=$(( $(date +%s) - $(stat -c %Y "$GATE_FILE" 2>/dev/null || echo "$(date +%s)") ))
-if [[ "$FILE_AGE_S" -lt 5 ]]; then
-    echo "BLOCKED: Stage $STAGE approval evidence written < 5 seconds ago." >&2
-    echo "  This suggests the agent wrote approval without waiting for user." >&2
-    echo "  Wait at least 5 seconds after user approves before calling exit_stage.py." >&2
+if [[ "$FILE_AGE_S" -lt 30 ]]; then
+    REMAINING=$(( 30 - FILE_AGE_S ))
+    echo "BLOCKED: Stage $STAGE approval evidence written only ${FILE_AGE_S}s ago (minimum 30s)." >&2
+    echo "  Real user review takes > 30 seconds. Do NOT use 'sleep' to bypass this." >&2
+    echo "  If user genuinely approved, wait ${REMAINING}s and retry exit_stage.py." >&2
     exit 2
 fi
 
