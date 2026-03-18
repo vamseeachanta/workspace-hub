@@ -882,6 +882,103 @@ class TestDryRun:
         assert len(result["items"]) == 2
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# VERBOSE FLAG TESTS (WRK-1324)
+# ════════════════════════════════════════════════════════════════════════════
+
+class TestRunHooksVerboseOutput:
+    """--verbose flag prints hook execution details to stderr."""
+
+    def test_verbose_prints_hook_info(self, tmp_path, capsys):
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "check.sh"
+        _make_script(str(script), exit_code=0)
+        hooks = [{"script": str(script), "gate": "hard", "timeout_s": 10,
+                  "description": "Verbose test hook"}]
+        run_hooks(
+            hooks=hooks,
+            wrk_id="WRK-TEST",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+            verbose=True,
+        )
+        captured = capsys.readouterr()
+        assert "Verbose test hook" in captured.err
+        assert "PASS" in captured.err
+
+    def test_verbose_shows_duration(self, tmp_path, capsys):
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "check.sh"
+        _make_script(str(script), exit_code=0)
+        hooks = [{"script": str(script), "gate": "hard", "timeout_s": 10,
+                  "description": "Duration hook"}]
+        run_hooks(
+            hooks=hooks,
+            wrk_id="WRK-TEST",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+            verbose=True,
+        )
+        captured = capsys.readouterr()
+        # Should contain duration in seconds
+        assert "s]" in captured.err or "duration" in captured.err.lower()
+
+    def test_verbose_shows_failure(self, tmp_path, capsys):
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "fail.sh"
+        _make_script(str(script), exit_code=1, stderr="broken")
+        hooks = [{"script": str(script), "gate": "hard", "timeout_s": 10,
+                  "description": "Failing hook"}]
+        run_hooks(
+            hooks=hooks,
+            wrk_id="WRK-TEST",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+            verbose=True,
+        )
+        captured = capsys.readouterr()
+        assert "FAIL" in captured.err
+        assert "hard" in captured.err.lower()
+
+    def test_no_verbose_is_silent(self, tmp_path, capsys):
+        """Without verbose, no output to stderr."""
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "check.sh"
+        _make_script(str(script), exit_code=0)
+        hooks = [{"script": str(script), "gate": "hard", "timeout_s": 10,
+                  "description": "Silent hook"}]
+        run_hooks(
+            hooks=hooks,
+            wrk_id="WRK-TEST",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+        )
+        captured = capsys.readouterr()
+        assert captured.err == ""
+
+
+class TestRunHooksCLI:
+    """CLI __main__ block parses args and runs hooks."""
+
+    def test_cli_verbose_flag_accepted(self, tmp_path):
+        """CLI accepts --verbose without error."""
+        import subprocess
+        result = subprocess.run(
+            ["uv", "run", "--no-project", "python",
+             "scripts/work-queue/run_hooks.py",
+             "WRK-TEST", "10", "pre_exit", "--verbose"],
+            capture_output=True, text=True,
+            cwd=REPO,
+            timeout=15,
+        )
+        # Should exit 0 (no hooks configured for test WRK)
+        assert result.returncode == 0
+
+
 class TestIntegrationStageTiming:
     """Stage timing: started_at written at entry, completed_at + duration at exit."""
 

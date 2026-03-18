@@ -51,4 +51,18 @@ if echo "$COMMAND" | grep -qP '(cp|mv)\s.*evidence/' 2>/dev/null; then
     exit 2
 fi
 
+# Block: mv of WRK files between queue directories (pending/working/done/archive)
+# Only claim-item.sh, close-item.sh, archive-item.sh may move WRK files
+if echo "$COMMAND" | grep -qP 'mv\s.*work-queue/(pending|working|done|archive)/WRK-' 2>/dev/null; then
+    echo "BLOCKED: Do NOT manually mv WRK files between queue directories." >&2
+    echo "  Use: claim-item.sh (pending→working), close-item.sh (working→done), archive-item.sh (done→archive)" >&2
+    exit 2
+fi
+
+# Block: sed -i on WRK files in queue directories (agent was changing status directly)
+if echo "$COMMAND" | grep -qP 'sed\s.*work-queue/(pending|working|done|archive)/WRK-' 2>/dev/null; then
+    echo "BLOCKED: Do NOT use sed to modify WRK files in queue directories." >&2
+    exit 2
+fi
+
 exit 0

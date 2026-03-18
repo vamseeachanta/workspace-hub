@@ -22,7 +22,7 @@ import yaml
 
 
 def run_hooks(hooks, wrk_id, repo_root, phase, stage,
-              assets_dir=None, dry_run=False):
+              assets_dir=None, dry_run=False, verbose=False):
     """Execute hooks and return list of hard blockers.
 
     Args:
@@ -54,6 +54,9 @@ def run_hooks(hooks, wrk_id, repo_root, phase, stage,
         resolved_script = script.replace("WRK-NNN", wrk_id)
 
         if dry_run:
+            if verbose:
+                print(f"[dry-run] {description} ({resolved_script})",
+                      file=sys.stderr)
             results.append({
                 "script": resolved_script,
                 "description": description,
@@ -99,6 +102,12 @@ def run_hooks(hooks, wrk_id, repo_root, phase, stage,
 
         results.append(entry)
 
+        if verbose:
+            status = "PASS" if entry["passed"] else "FAIL"
+            dur = entry.get("duration_s", "?")
+            print(f"[{status} {dur}s] {description} (gate={gate})",
+                  file=sys.stderr)
+
         if not entry["passed"] and gate == "hard":
             blockers.append(entry)
 
@@ -138,3 +147,60 @@ def _write_evidence(results, phase, stage, wrk_id, assets_dir):
     path = os.path.join(evidence_dir, f"hooks-{phase}-{stage}.yaml")
     with open(path, "w") as f:
         yaml.dump(evidence, f, default_flow_style=False, sort_keys=False)
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run stage transition hooks")
+    parser.add_argument("wrk_id", help="WRK item ID (e.g. WRK-1234)")
+    parser.add_argument("stage", type=int, help="Stage number")
+    parser.add_argument("phase", choices=["pre_exit", "pre_enter"],
+                        help="Hook phase")
+    parser.add_argument("--verbose", "-v", action="store_true",
+                        help="Print each hook as it executes")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Preview hooks without executing")
+    args = parser.parse_args()
+
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))))
+
+    # Load hooks from stage YAML
+    stages_dir = os.path.join(repo_root, "scripts", "work-queue", "stages")
+    stage_files = [f for f in os.listdir(stages_dir)
+                   if f.startswith(f"stage-{args.stage:02d}")]
+    if not stage_files:
+        sys.exit(0)
+
+    stage_yaml = os.path.join(stages_dir, stage_files[0])
+    with open(stage_yaml) as f:
+        stage_data = yaml.safe_load(f) or {}
+
+    hook_key = "pre_exit_hooks" if args.phase == "pre_exit" else "pre_enter_hooks"
+    hooks = stage_data.get(hook_key, [])
+
+    # Also check pre_checks (legacy key used in some stages)
+    if args.phase == "pre_exit" and not hooks:
+        hooks = stage_data.get("pre_checks", [])
+
+    assets_dir = os.path.join(repo_root, ".claude", "work-queue",
+                              "assets", args.wrk_id)
+
+    blockers = run_hooks(
+        hooks=hooks,
+        wrk_id=args.wrk_id,
+        repo_root=repo_root,
+        phase=args.phase,
+        stage=args.stage,
+        assets_dir=assets_dir if os.path.isdir(assets_dir) else None,
+        dry_run=args.dry_run,
+        verbose=args.verbose,
+    )
+
+    if blockers:
+        print(f"{len(blockers)} hard blocker(s):", file=sys.stderr)
+        for b in blockers:
+            print(f"  - {b['description']}: {b.get('stderr', '')}",
+                  file=sys.stderr)
+        sys.exit(1)

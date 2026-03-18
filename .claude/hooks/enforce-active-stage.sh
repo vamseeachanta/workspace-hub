@@ -46,15 +46,24 @@ if echo "$COMMAND" | grep -qP 'pytest' 2>/dev/null; then
     exit 0
 fi
 
-# Check for active WRK
+# Check for active WRK — either from state file or from the command/file path
 ACTIVE_WRK_FILE="$REPO_ROOT/.claude/state/active-wrk"
-if [[ ! -f "$ACTIVE_WRK_FILE" ]]; then
-    exit 0  # No active WRK — not in a WRK workflow, allow everything
+WRK_ID=""
+if [[ -f "$ACTIVE_WRK_FILE" ]]; then
+    WRK_ID=$(grep -oP 'WRK-\d+' "$ACTIVE_WRK_FILE" 2>/dev/null | head -1)
 fi
 
-WRK_ID=$(grep -oP 'WRK-\d+' "$ACTIVE_WRK_FILE" 2>/dev/null | head -1)
+# Also detect WRK from command or file path — catches agents that skip set-active-wrk
 if [[ -z "$WRK_ID" ]]; then
-    exit 0  # Can't determine WRK — allow
+    # Check if command or file references a WRK in work-queue paths
+    COMBINED="$COMMAND $FILE_PATH"
+    if echo "$COMBINED" | grep -qP 'work-queue.*(pending|working|done|archive|assets)/WRK-\d+' 2>/dev/null; then
+        WRK_ID=$(echo "$COMBINED" | grep -oP 'WRK-\d+' | head -1)
+    fi
+fi
+
+if [[ -z "$WRK_ID" ]]; then
+    exit 0  # Genuinely not WRK-related — allow
 fi
 
 # Check if a stage is in_progress
