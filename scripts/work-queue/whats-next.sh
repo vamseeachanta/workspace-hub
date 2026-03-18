@@ -149,6 +149,9 @@ process_file() {
   _idx_source="scan"
   [[ -n "$_idx_status" ]] && _idx_source="index"
   [[ "$_DEBUG" == "true" ]] && title="${title} (${_idx_source})"
+  if [[ -n "$_idx_status" ]]; then
+    status="$_idx_status"   # index is primary source
+  fi
   blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
 
   local cp_stage item_status item_pid note not_before

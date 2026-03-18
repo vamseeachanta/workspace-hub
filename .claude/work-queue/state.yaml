@@ -1,6 +1,6 @@
 # machine_ranges_ref: config/work-queue/machine-ranges.yaml
 # Each machine owns a non-overlapping ID range. next-id.sh enforces the floor.
-last_id: 1322
+last_id: 5032
 last_processed: WRK-127
 created_at: 2026-01-29T00:00:00Z
 stats:
