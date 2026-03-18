@@ -230,6 +230,10 @@
           {
             "type": "command",
             "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-memory/pre-compact-save.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/context-budget-monitor.sh\" 2>/dev/null || true"
           }
         ]
       },
