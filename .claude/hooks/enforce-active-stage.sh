@@ -27,7 +27,7 @@ case "$TOOL_NAME" in
 esac
 
 # Always allow stage machinery scripts and queue management
-if echo "$COMMAND" | grep -qP '(start_stage\.py|exit_stage\.py|set-active-wrk\.sh|clear-active-wrk\.sh|work\.sh|session\.sh|next-id\.sh|validate-wrk-frontmatter|claim-item\.sh|close-item\.sh|archive-item\.sh|generate-html-review|verify-gate-evidence|is-human-gate|checkpoint|queue-status|whats-next|cross-review)' 2>/dev/null; then
+if echo "$COMMAND" | grep -qP '(start_stage\.py|exit_stage\.py|set-active-wrk\.sh|clear-active-wrk\.sh|work\.sh|session\.sh|next-id\.sh|validate-wrk-frontmatter|claim-item\.sh|close-item\.sh|archive-item\.sh|generate-html-review|verify-gate-evidence|is-human-gate|checkpoint|queue-status|whats-next|cross-review|update-stage-evidence|verify_checklist|run_hooks|log-user-review)' 2>/dev/null; then
     exit 0
 fi
 
