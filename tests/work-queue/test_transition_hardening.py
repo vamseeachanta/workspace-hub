@@ -410,3 +410,201 @@ class TestChecklistNoEvidenceFile:
         )
         assert result["passed"] is False
         assert len(result["blockers"]) == 2
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# SABOTAGE TESTS — deliberately break things and verify enforcement catches it
+# ════════════════════════════════════════════════════════════════════════════
+
+class TestSabotageChecklistBlocksExit:
+    """Incomplete checklist must block exit — even if evidence file exists."""
+
+    def test_one_of_three_incomplete_blocks(self, tmp_path):
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-10.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 10
+            name: Work Execution
+            checklist:
+              - id: CL-10-1
+                text: "TDD red"
+                requires_human: false
+              - id: CL-10-2
+                text: "TDD green"
+                requires_human: false
+              - id: CL-10-3
+                text: "Git pushed"
+                requires_human: false
+        """))
+        evidence_dir = tmp_path / "evidence"
+        _write(str(evidence_dir / "checklist-10.yaml"), textwrap.dedent("""\
+            stage: 10
+            items:
+              - id: CL-10-1
+                completed: true
+                completed_at: "2026-03-18T00:00:00Z"
+                completed_by: agent
+              - id: CL-10-2
+                completed: true
+                completed_at: "2026-03-18T00:01:00Z"
+                completed_by: agent
+        """))
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-SABOTAGE",
+            stage=10,
+            evidence_dir=str(evidence_dir),
+        )
+        assert result["passed"] is False
+        assert len(result["blockers"]) == 1
+        assert result["blockers"][0]["id"] == "CL-10-3"
+
+
+class TestSabotageHumanItemWithoutApprover:
+    """requires_human: true completed by agent but no approved_by → blocked."""
+
+    def test_agent_completes_human_item_without_approval(self, tmp_path):
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-17.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 17
+            name: User Review Close
+            checklist:
+              - id: CL-17-1
+                text: "Walk through stages 10-16"
+                requires_human: true
+              - id: CL-17-2
+                text: "Explicit approval"
+                requires_human: true
+        """))
+        evidence_dir = tmp_path / "evidence"
+        _write(str(evidence_dir / "checklist-17.yaml"), textwrap.dedent("""\
+            stage: 17
+            items:
+              - id: CL-17-1
+                completed: true
+                completed_at: "2026-03-18T00:00:00Z"
+                completed_by: agent
+              - id: CL-17-2
+                completed: true
+                completed_at: "2026-03-18T00:01:00Z"
+                completed_by: agent
+        """))
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-SABOTAGE",
+            stage=17,
+            evidence_dir=str(evidence_dir),
+        )
+        assert result["passed"] is False
+        assert len(result["blockers"]) == 2
+        for b in result["blockers"]:
+            assert "approved_by" in b["reason"]
+
+
+class TestSabotageHookFailureBlocksExit:
+    """Hard hook that exits 1 must appear in blockers."""
+
+    def test_hard_hook_exit_1_blocks(self, tmp_path):
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "fail-hard.sh"
+        _make_script(str(script), exit_code=1, stderr="AC check failed")
+        blockers = run_hooks(
+            hooks=[{"script": str(script), "gate": "hard",
+                    "timeout_s": 10, "description": "AC check"}],
+            wrk_id="WRK-SABOTAGE",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+        )
+        assert len(blockers) == 1
+        assert blockers[0]["returncode"] == 1
+        assert "AC check" in blockers[0]["description"]
+
+
+class TestSabotageHookTimeoutBlocks:
+    """Hook that exceeds timeout must be treated as failure."""
+
+    def test_timeout_is_hard_failure(self, tmp_path):
+        from run_hooks import run_hooks
+        script = tmp_path / "hooks" / "hang.sh"
+        _make_slow_script(str(script), sleep_seconds=10)
+        blockers = run_hooks(
+            hooks=[{"script": str(script), "gate": "hard",
+                    "timeout_s": 1, "description": "Hanging hook"}],
+            wrk_id="WRK-SABOTAGE",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+        )
+        assert len(blockers) == 1
+        assert blockers[0]["returncode"] == -1
+
+
+class TestSabotageMixedHooksOnlyHardBlocks:
+    """Soft fail + hard fail → only hard appears in blockers."""
+
+    def test_mixed_only_hard_in_blockers(self, tmp_path):
+        from run_hooks import run_hooks
+        soft_script = tmp_path / "hooks" / "soft-fail.sh"
+        _make_script(str(soft_script), exit_code=1, stderr="soft warning")
+        hard_script = tmp_path / "hooks" / "hard-fail.sh"
+        _make_script(str(hard_script), exit_code=1, stderr="critical error")
+        blockers = run_hooks(
+            hooks=[
+                {"script": str(soft_script), "gate": "soft",
+                 "timeout_s": 10, "description": "Soft lint"},
+                {"script": str(hard_script), "gate": "hard",
+                 "timeout_s": 10, "description": "Hard gate check"},
+            ],
+            wrk_id="WRK-SABOTAGE",
+            repo_root=str(tmp_path),
+            phase="pre_exit",
+            stage=10,
+        )
+        assert len(blockers) == 1
+        assert blockers[0]["description"] == "Hard gate check"
+
+
+class TestSabotagePartialCompletion:
+    """3 defined, 2 complete → exactly 1 blocker with correct ID."""
+
+    def test_exact_blocker_id(self, tmp_path):
+        from verify_checklist import verify_checklist
+        stage_yaml = tmp_path / "stage-12.yaml"
+        _write(str(stage_yaml), textwrap.dedent("""\
+            order: 12
+            name: TDD Eval
+            checklist:
+              - id: CL-12-1
+                text: "Full suite run"
+                requires_human: false
+              - id: CL-12-2
+                text: "AC mapped"
+                requires_human: false
+              - id: CL-12-3
+                text: "Matrix written"
+                requires_human: false
+        """))
+        evidence_dir = tmp_path / "evidence"
+        _write(str(evidence_dir / "checklist-12.yaml"), textwrap.dedent("""\
+            stage: 12
+            items:
+              - id: CL-12-1
+                completed: true
+                completed_at: "2026-03-18T00:00:00Z"
+                completed_by: agent
+              - id: CL-12-3
+                completed: true
+                completed_at: "2026-03-18T00:01:00Z"
+                completed_by: agent
+        """))
+        result = verify_checklist(
+            stage_yaml_path=str(stage_yaml),
+            wrk_id="WRK-SABOTAGE",
+            stage=12,
+            evidence_dir=str(evidence_dir),
+        )
+        assert result["passed"] is False
+        assert len(result["blockers"]) == 1
+        assert result["blockers"][0]["id"] == "CL-12-2"
