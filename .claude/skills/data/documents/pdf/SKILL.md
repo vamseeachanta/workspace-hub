@@ -1,10 +1,9 @@
 ---
 name: pdf
-description: Comprehensive PDF manipulation toolkit with OpenAI Codex integration
-  for intelligent PDF-to-Markdown conversion. IMPORTANT - Always convert PDFs to markdown
-  first using Codex, then process the markdown. Also supports text/table extraction,
-  PDF creation, merging/splitting, and forms. Use for all PDF document processing
-  workflows.
+description: Comprehensive PDF manipulation toolkit. For batch/bulk extraction (1K+ PDFs),
+  use pdftotext (poppler) via subprocess — fastest and most reliable at scale. For
+  single-document understanding, OpenAI Codex PDF-to-Markdown gives best results.
+  Also supports text/table extraction, PDF creation, merging/splitting, and forms.
 version: 1.2.2
 last_updated: 2026-01-04
 category: data
@@ -46,9 +45,23 @@ for page in reader.pages:
     print(text)
 ```
 
+## Tool Selection (WRK-1277 Learning)
+
+| Scenario | Tool | Why |
+|----------|------|-----|
+| Batch extraction (1K+ PDFs) | **pdftotext (poppler)** via subprocess | 37x faster than pdfplumber; reliable timeout via SIGTERM |
+| Single-doc understanding | **OpenAI Codex** PDF→Markdown | Best quality; too expensive for bulk |
+| Single-doc text extraction | **PyMuPDF (fitz)** | Fast, good API, in-process |
+| Table extraction | **pdfplumber** (single doc only) | Best table detection; DO NOT use in multiprocessing pools |
+
+> **WARNING**: pdfplumber hangs in kernel D-state (disk sleep) on NTFS and NFS mounts.
+> SIGALRM cannot interrupt kernel I/O. Use pdftotext via `subprocess.run(timeout=N)` for
+> any batch/parallel work — the subprocess can be killed reliably on timeout.
+
 ## When to Use
 
-- **Converting PDFs to Markdown** - Use OpenAI Codex for intelligent conversion (RECOMMENDED FIRST STEP)
+- **Batch PDF processing** - Use pdftotext (poppler) via subprocess for bulk extraction
+- **Converting PDFs to Markdown** - Use OpenAI Codex for intelligent conversion (single docs)
 - Extracting text and metadata from PDF files
 - Merging multiple PDFs into a single document
 - Splitting large PDFs into individual pages

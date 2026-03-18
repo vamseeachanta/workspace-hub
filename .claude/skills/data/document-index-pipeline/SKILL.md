@@ -41,23 +41,29 @@ uv run --no-project python scripts/data/document-index/phase-a-index.py
 - **Output**: `data/document-index/index.jsonl` (1,033,933 records)
 - **Resume-safe**: skips existing entries by path
 
-### Phase 1.5 — Readability Enrichment (prerequisite for Phase 2)
+### Phase 1.5 — Readability Enrichment (COMPLETE — WRK-1277)
 
-Before deep extraction, classify every PDF as machine-readable, ocr-needed, mixed, or error:
+Classification of all 1M+ PDFs is complete (96.7% coverage):
+- native: 623,455 (60.3%) | machine: 278,899 (27.0%) | ocr-needed: 92,042 (8.9%)
+- remaining errors: 6,221 (0.6%) — corrupt/missing/timeout edge cases
+
 ```bash
 uv run --no-project python scripts/data/document-index/enrich-readability.py \
     --workers 10 --resume
 ```
 - **Output**: updates index.jsonl records with `readability` field
 - **Resume-safe**: `--resume` skips already-classified entries
-- **Key finding**: 27-30% of project PDFs are scanned with no text layer (ocr-needed)
-- **Why it matters**: deep extraction (Phase 2) only works on machine-readable PDFs; OCR docs need a separate pipeline (tesseract/doctr/azure-doc-intelligence)
+- **Method**: pdftotext (poppler) via subprocess — NOT pdfplumber (see WARNING below)
+
+> **WARNING (WRK-1277)**: pdfplumber in multiprocessing hangs in kernel D-state on
+> NTFS/NFS mounts. Use pdftotext via `subprocess.run(timeout=30)` for batch work.
+> See `pdf/pdftotext-poppler` sub-skill for proven code pattern.
 
 ### Phase 2 — Readability-Aware Deep Extraction
 
 Deep extraction is split by readability classification:
-- **Phase 2a**: machine-readable docs first (direct pdfplumber extraction) — ~330K docs
-- **Phase 2b**: OCR docs later (~94K docs) — requires OCR preprocessing before extraction
+- **Phase 2a**: machine-readable docs (pdftotext for text, pdfplumber for tables on single docs) — ~279K docs
+- **Phase 2b**: OCR docs (~92K docs) — requires OCR preprocessing before extraction
 - Yield assessment script: `assess-deep-extraction-yield.py` evaluates extraction quality across strata
 
 ### Phase B — Extract + classify (LLM)

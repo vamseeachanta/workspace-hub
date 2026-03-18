@@ -30,7 +30,7 @@ Launches 10 parallel Claude Haiku shards covering:
 ## Single shard (test)
 
 ```bash
-python3 scripts/data/document-index/phase-b-claude-worker.py \
+uv run --no-project python scripts/data/document-index/phase-b-claude-worker.py \
   --shard 0 --total 10 --source workspace_spec --dry-run
 ```
 
@@ -64,6 +64,17 @@ uv run --no-project --with pyyaml \
 - Auth: `env -u CLAUDECODE` (unsets nesting guard for subprocess calls)
 - Resume-safe: skips files where `discipline` field already exists
 - Output: `data/document-index/summaries/<sha256>.json`
+
+## Cross-Machine Batch Work (WRK-1277 Learning)
+
+When PDFs live on a different machine (e.g., ace-linux-2 NTFS, ace-linux-1 NFS):
+- **Process locally, aggregate centrally** — copy index to the machine with local disk access
+- NFS mount: ~17h for 297K PDFs; local NTFS: ~1.7h (10x faster)
+- Path remapping: `/mnt/remote/ace-linux-2/dde/` → `/mnt/dde/` (local)
+- After processing: `scp` results back to hub machine, verify line counts match
+
+> **WARNING**: pdfplumber hangs in kernel D-state on NTFS/NFS mounts. Use pdftotext
+> via `subprocess.run(timeout=30)` for any batch text extraction.
 
 ## Tune throughput
 

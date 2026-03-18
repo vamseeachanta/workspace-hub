@@ -13,6 +13,10 @@ related_skills: [doc-extraction, dark-intelligence-workflow, document-batch]
 # Document Intelligence Promotion
 
 > Single-pass extraction + multi-stage post-processing pipeline.
+>
+> **Note**: This pipeline uses pdfplumber for single-document extraction (not batch).
+> For batch text extraction across the corpus, use pdftotext via subprocess — see
+> `pdf/pdftotext-poppler` sub-skill.
 
 ## Architecture
 
