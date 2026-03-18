@@ -345,10 +345,22 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
 # ── Stage 1 HTML open (WRK-1316) ─────────────────────────────────────────────
 
 def _open_html_stage1(wrk_id: str, repo_root: str) -> None:
-    """Open lifecycle + plan HTML in browser at Stage 1. Direct xdg-open."""
+    """Open lifecycle + plan HTML in browser at Stage 1. Direct xdg-open.
+
+    Force-generates HTML if files don't exist yet (brand-new WRK).
+    """
     import subprocess
     assets_dir = os.path.join(
         repo_root, ".claude", "work-queue", "assets", wrk_id)
+
+    # Force-generate both HTMLs if they don't exist
+    gen_script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
+    if os.path.exists(gen_script):
+        for flag in ("--lifecycle", "--plan"):
+            subprocess.run(
+                ["uv", "run", "--no-project", "python", gen_script, wrk_id, flag],
+                capture_output=True, text=True, cwd=repo_root,
+            )
 
     for suffix in ("lifecycle", "plan"):
         html_path = os.path.join(assets_dir, f"{wrk_id}-{suffix}.html")
@@ -622,12 +634,18 @@ def _stage_progression_guard(wrk_id: str, stage: int, repo_root: str) -> None:
             if status not in ("done", "n/a"):
                 print(
                     f"\u26a0 Stage {prev_stage} is '{status}' \u2014 "
-                    f"complete it before stage {stage}",
+                    f"run exit_stage.py {wrk_id} {prev_stage} before starting stage {stage}",
                     file=sys.stderr,
                 )
                 sys.exit(1)
             return
-    # Previous stage not in evidence — allow (backcompat)
+    # WRK-1316: Previous stage not in evidence = NOT done. Block entry.
+    print(
+        f"\u26a0 Stage {prev_stage} has no evidence (never exited). "
+        f"Run exit_stage.py {wrk_id} {prev_stage} before starting stage {stage}.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
