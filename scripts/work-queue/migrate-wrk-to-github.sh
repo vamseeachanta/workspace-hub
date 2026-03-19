@@ -109,6 +109,13 @@ for WRK_FILE in "${FILES[@]}"; do
         DIR_NAME="archive"  # archive/2026-03/ → archive
     fi
 
+    # Skip if already migrated (check log file)
+    if grep -q "\"wrk\":\"$BASENAME\"" "$LOG_FILE" 2>/dev/null; then
+        echo "[$COUNT/$TOTAL] SKIP $BASENAME — already migrated"
+        SKIPPED=$((SKIPPED + 1))
+        continue
+    fi
+
     # Skip if no title
     if [[ -z "$TITLE" ]]; then
         echo "[$COUNT/$TOTAL] SKIP $BASENAME — no title"
