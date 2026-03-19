@@ -133,11 +133,8 @@ for WRK_FILE in "${FILES[@]}"; do
         LABELS="$LABELS,$CAT_LABEL"
     fi
 
-    # Build body — extract content after frontmatter
-    BODY=$(awk '/^---$/{c++; next} c>=2' "$WRK_FILE" | head -50)
-    if [[ -z "$BODY" ]]; then
-        BODY="Migrated from $BASENAME. Category: $CATEGORY. Complexity: $COMPLEXITY."
-    fi
+    # Build body — simple fallback to avoid hangs on malformed YAML
+    BODY="Migrated from $BASENAME. Category: ${CATEGORY:-unknown}. Complexity: ${COMPLEXITY:-unknown}. Priority: ${PRIORITY:-unknown}."
 
     ISSUE_TITLE="$BASENAME: $TITLE"
     # Truncate to GitHub's 256 char limit
