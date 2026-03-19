@@ -323,37 +323,86 @@ def route_stage(
         sys.exit(1)
 
 
+# ── GitHub Issue ref helper ───────────────────────────────────────────────────
+
+def _get_github_issue_ref(wrk_id: str, repo_root: str) -> "Optional[str]":
+    """Read github_issue_ref from WRK frontmatter. Returns URL or None."""
+    queue_dir = os.path.join(repo_root, ".claude", "work-queue")
+    wrk_path = None
+    for folder in ("pending", "working", "done"):
+        candidate = os.path.join(queue_dir, folder, f"{wrk_id}.md")
+        if os.path.exists(candidate):
+            wrk_path = candidate
+            break
+    if wrk_path is None:
+        return None
+    try:
+        with open(wrk_path) as f:
+            in_frontmatter = False
+            for line in f:
+                stripped = line.strip()
+                if stripped == "---":
+                    if in_frontmatter:
+                        break
+                    in_frontmatter = True
+                    continue
+                if in_frontmatter and stripped.startswith("github_issue_ref:"):
+                    val = stripped[len("github_issue_ref:"):].strip()
+                    val = val.strip('"').strip("'")
+                    return val if val else None
+    except OSError:
+        pass
+    return None
+
+
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
-    """Regenerate lifecycle + plan HTML as a standard stage-start action."""
-    script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
+    """Update GitHub Issue for this WRK (replaces HTML generation).
+
+    Falls back silently if no github_issue_ref in frontmatter (backward compat).
+    Non-blocking: failures are logged but do not halt the stage.
+    """
+    issue_ref = _get_github_issue_ref(wrk_id, repo_root)
+    if not issue_ref:
+        return
+    script = os.path.join(repo_root, "scripts", "knowledge", "update-github-issue.py")
     if not os.path.exists(script):
         return
-    for mode in ("--lifecycle", "--plan"):
-        label = "Lifecycle" if mode == "--lifecycle" else "Plan"
+    try:
         result = subprocess.run(
-            ["uv", "run", "--no-project", "python", script, wrk_id, mode],
+            ["uv", "run", "--no-project", "python", script, wrk_id, "--update"],
             capture_output=True, text=True, cwd=repo_root,
         )
         if result.returncode == 0:
-            print(f"✔ {label} HTML updated ({wrk_id})")
+            print(f"✔ GitHub Issue updated ({wrk_id})")
         else:
-            print(f"⚠ {label} HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+            print(f"⚠ GitHub Issue update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    except Exception as exc:
+        print(f"⚠ GitHub Issue update error: {exc}", file=sys.stderr)
 
 
 # ── Stage 1 HTML open (WRK-1316) ─────────────────────────────────────────────
 
 def _open_html_stage1(wrk_id: str, repo_root: str) -> None:
-    """Open lifecycle + plan HTML in browser at Stage 1. Direct xdg-open.
+    """Open GitHub Issue (or fallback HTML) in browser at Stage 1.
 
-    Force-generates HTML if files don't exist yet (brand-new WRK).
+    If github_issue_ref exists in frontmatter, opens the Issue URL.
+    Otherwise falls back to generating and opening HTML files.
     """
-    import subprocess
+    issue_ref = _get_github_issue_ref(wrk_id, repo_root)
+    if issue_ref:
+        subprocess.Popen(
+            ["xdg-open", issue_ref],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        print(f"Opened GitHub Issue in browser: {issue_ref}")
+        return
+
+    # Fallback: generate and open HTML files (backward compat)
     assets_dir = os.path.join(
         repo_root, ".claude", "work-queue", "assets", wrk_id)
-
-    # Force-generate both HTMLs if they don't exist
     gen_script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
     if os.path.exists(gen_script):
         for flag in ("--lifecycle", "--plan"):
@@ -485,10 +534,10 @@ _HUMAN_GATE_STAGE_MAP = {
 
 
 def _auto_open_html_for_human_gates(wrk_id: str, stage: int, repo_root: str) -> None:
-    """Open lifecycle + plan HTML in browser at human-gate stages (5, 7, 17).
+    """Open GitHub Issue (or fallback HTML) at human-gate stages.
 
     Skips if the stage is not a human gate, if evidence shows the stage was
-    already opened, or if the HTML files do not exist.
+    already opened, or if neither issue ref nor HTML files exist.
     """
     gate_label = _HUMAN_GATE_STAGE_MAP.get(stage)
     if gate_label is None:
@@ -508,6 +557,17 @@ def _auto_open_html_for_human_gates(wrk_id: str, stage: int, repo_root: str) -> 
         except OSError:
             pass
 
+    # Try GitHub Issue URL first
+    issue_ref = _get_github_issue_ref(wrk_id, repo_root)
+    if issue_ref:
+        subprocess.Popen(
+            ["xdg-open", issue_ref],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        return
+
+    # Fallback: open HTML files via browser-open script
     browser_script = os.path.join(
         repo_root, "scripts", "work-queue", "log-user-review-browser-open.sh",
     )

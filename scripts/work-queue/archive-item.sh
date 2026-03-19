@@ -154,6 +154,40 @@ if [[ -x "$FEATURE_AUTO_CLOSE" ]]; then
   bash "$FEATURE_AUTO_CLOSE" "${ITEM_ID}" || true
 fi
 
+# Extract category from archived WRK frontmatter
+CATEGORY=$(grep -oP '^category:\s*\K\S+' "$ARCHIVE_PATH" 2>/dev/null || echo "uncategorized")
+
+# Close WRK GitHub Issue (non-blocking)
+ISSUE_UPDATER="${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py"
+if [[ -f "$ISSUE_UPDATER" ]]; then
+  uv run --no-project python "$ISSUE_UPDATER" "$ITEM_ID" --close 2>/dev/null || true
+fi
+
+# Create GitHub Issues for future-work follow-ons (non-blocking)
+ASSETS_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}"
+FW_FILE="${ASSETS_DIR}/evidence/future-work.yaml"
+if [[ -f "$FW_FILE" ]]; then
+  uv run --no-project python -c "
+import sys, re, subprocess
+fw_path = sys.argv[1]
+wrk_id = sys.argv[2]
+category = sys.argv[3] if len(sys.argv) > 3 else 'uncategorized'
+text = open(fw_path).read()
+titles = re.findall(r'title:\s*[\"'\''](.*?)[\"'\'']|title:\s*(.+)', text)
+for match in titles:
+    title = (match[0] or match[1]).strip()
+    if not title:
+        continue
+    label_args = ['--label', 'follow-on', '--label', f'cat:{category}']
+    body = f'Follow-on from {wrk_id} archive.\n\nSource: {fw_path}'
+    subprocess.run(
+        ['gh', 'issue', 'create', '--repo', 'vamseeachanta/workspace-hub',
+         '--title', f'FW ({wrk_id}): {title}'] + label_args + ['--body', body],
+        capture_output=True, text=True, timeout=30
+    )
+" "$FW_FILE" "$ITEM_ID" "$CATEGORY" 2>/dev/null || true
+fi
+
 # Regenerate lifecycle HTML so Stage 20 shows as done (not stale active/pending)
 LIFECYCLE_HTML="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/${ITEM_ID}-lifecycle.html"
 HTML_LOG="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/html-gen.log"

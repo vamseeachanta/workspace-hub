@@ -239,29 +239,64 @@ def _update_stage_ev(wrk_id: str, stage: int, status: str, repo_root: str) -> No
     )
 
 
+# ── GitHub Issue ref helper ───────────────────────────────────────────────────
+
+def _get_github_issue_ref(wrk_id: str, repo_root: str) -> Optional[str]:
+    """Read github_issue_ref from WRK frontmatter. Returns URL or None."""
+    queue_dir = os.path.join(repo_root, ".claude", "work-queue")
+    wrk_path = None
+    for folder in ("pending", "working", "done"):
+        candidate = os.path.join(queue_dir, folder, f"{wrk_id}.md")
+        if os.path.exists(candidate):
+            wrk_path = candidate
+            break
+    if wrk_path is None:
+        return None
+    try:
+        with open(wrk_path) as f:
+            in_frontmatter = False
+            for line in f:
+                stripped = line.strip()
+                if stripped == "---":
+                    if in_frontmatter:
+                        break
+                    in_frontmatter = True
+                    continue
+                if in_frontmatter and stripped.startswith("github_issue_ref:"):
+                    val = stripped[len("github_issue_ref:"):].strip()
+                    val = val.strip('"').strip("'")
+                    return val if val else None
+    except OSError:
+        pass
+    return None
+
+
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
-    """Regenerate both lifecycle and plan HTML after stage exit (two-file contract)."""
+    """Update GitHub Issue for this WRK (replaces HTML generation).
+
+    Falls back silently if no github_issue_ref in frontmatter (backward compat).
+    Non-blocking: failures are logged but do not halt the stage exit.
+    """
     import subprocess
-    script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
+    issue_ref = _get_github_issue_ref(wrk_id, repo_root)
+    if not issue_ref:
+        return
+    script = os.path.join(repo_root, "scripts", "knowledge", "update-github-issue.py")
     if not os.path.exists(script):
         return
-    result = subprocess.run(
-        ["uv", "run", "--no-project", "python", script, wrk_id, "--lifecycle"],
-        capture_output=True, text=True, cwd=repo_root,
-    )
-    if result.returncode == 0:
-        print(f"✔ Lifecycle HTML updated ({wrk_id})")
-    else:
-        print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
-    # Non-blocking: plan.html generation failure does not fail the stage exit
-    plan_result = subprocess.run(
-        ["uv", "run", "--no-project", "python", script, wrk_id, "--plan"],
-        capture_output=True, text=True, cwd=repo_root,
-    )
-    if plan_result.returncode != 0:
-        print(f"⚠ Plan HTML update failed (non-blocking): {plan_result.stderr.strip()[:120]}", file=sys.stderr)
+    try:
+        result = subprocess.run(
+            ["uv", "run", "--no-project", "python", script, wrk_id, "--update"],
+            capture_output=True, text=True, cwd=repo_root,
+        )
+        if result.returncode == 0:
+            print(f"✔ GitHub Issue updated ({wrk_id})")
+        else:
+            print(f"⚠ GitHub Issue update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    except Exception as exc:
+        print(f"⚠ GitHub Issue update error: {exc}", file=sys.stderr)
 
 
 # ── Stage timing (WRK-1316) ───────────────────────────────────────────────────
