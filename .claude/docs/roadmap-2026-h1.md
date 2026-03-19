@@ -13,7 +13,7 @@ net-shrinking. Provider strategy is validated by cost data.
 ## Repo Assessment
 *Pending WRK = items with `status: pending` targeting repo. Archived WRK = completed items.*
 *Strategic value 1–5, Agentic readiness 1–5 (1=low, 5=high). Investment: high/medium/low/defer.*
-*Updated: 2026-03-19 — counts from archive synthesis (410 archived, 363 pending)*
+*Updated: 2026-03-19 — counts from archive synthesis (410 archived, 363 pending, 381 migrated to GitHub Issues)*
 
 | Repo | Strategic Value | Agentic Readiness | Pending WRK | Archived WRK | Priority | August 2026 Target |
 |------|:-:|:-:|:-:|:-:|----------|---------------------|
@@ -106,9 +106,10 @@ cross-review verdicts (tracked via WRK-237), consolidate to Claude + selective C
 
 5. **Agentic workflow infrastructure** — ✅ **COMPLETE for practical purposes.** 155 harness WRKs
    archived (38% of all work). Archive synthesis confirms: skills(41), work-queue(32), session(15),
-   AI-orchestration(7), maintenance(11). Remaining items are incremental. **Repeat spawner warning:**
-   harness WRKs generate follow-ons at the highest rate (WRK-234: 6, WRK-1035/1055: 6 each).
-   Discipline required to avoid infinite infrastructure refinement — shift effort to themes 1–4.
+   AI-orchestration(7), maintenance(11). WRK-1330 deleted 295K lines by replacing HTML with GitHub
+   Issues. 381 WRKs migrated to GitHub Issues across 5 repos. Remaining items are incremental.
+   **Repeat spawner warning:** harness WRKs generate follow-ons at the highest rate (WRK-234: 6,
+   WRK-1035/1055: 6 each). **Target: cap harness at 20% of new work. Shift to 60% engineering.**
 
 ---
 
@@ -145,6 +146,54 @@ August 2026 engineering-AI vision. Park explicitly.
 
 ---
 
+## Archive Synthesis Findings (2026-03-19)
+
+**Source:** `docs/archive-synthesis-report.yaml` — 410 archived WRKs fully categorized.
+
+### Throughput & Capacity
+- **Archived:** 410 WRKs | **Pending:** 363 | **Working:** 8 | **Blocked:** 10
+- **Priority mix (pending):** 133 high, 149 medium, 48 low, 51 unset
+- **Largest pending bucket:** engineering/pipeline (73 items) — biggest single backlog
+
+### Investment Shift: 60/20/20 Target
+Historical allocation was harness-heavy (38%). Infrastructure is now mature.
+
+| Category | Archived (actual) | % of total | H1 target % |
+|----------|:-:|:-:|:-:|
+| Engineering | 100 | 24% | **60%** |
+| Harness/infra | 155 | 38% | **20%** |
+| Data + other | 155 | 38% | **20%** |
+
+### Top 3 Engineering Bets
+1. **Pipeline** — 9 archived + 73 pending. Largest growth opportunity. Priority: wrapping existing code as agent-callable skills, then clearing the backlog.
+2. **Hydrodynamics** — 29 archived (most mature module). Focus: benchmark validation and agent-callability, not new features.
+3. **Drilling** — 15 archived. Wellbore hydraulics (WRK-378) and dysfunction detector (WRK-379) are the critical path items.
+
+Supporting modules: cathodic protection (8 archived + 4 pending), safety (9 archived).
+
+### Harness Simplification Wins
+- WRK-1330: replaced HTML generation with GitHub Issues, removing **295,437 lines**
+- Backfilled 409 archived WRKs to knowledge base
+- Migrated 381 active WRKs to GitHub Issues across 5 repos
+- Issue distribution: workspace-hub (191), digitalmodel (153), worldenergydata (31), OGManufacturing (4), assethold (2)
+
+### Repeat Spawner Warning
+These items each generated 6 follow-ons — signals of over-complexity needing simplification:
+- **WRK-1055, WRK-234** (skills system) — simplify, don't add features
+- **WRK-1035** (work queue) — already addressed by WRK-1330 simplification
+- **WRK-1178** (skills/reporting) — stabilize before extending
+
+### Active GitHub Issues by Repo
+| Repo | Open Issues | Primary category |
+|------|:-:|---|
+| workspace-hub | 197 | harness + misc |
+| digitalmodel | 192 | engineering core |
+| worldenergydata | 40 | data + energy |
+| assethold | 7 | finance |
+| OGManufacturing | 4 | drilling |
+
+---
+
 ## Monthly Review Cadence
 *First Friday of each month.*
 
@@ -155,7 +204,7 @@ August 2026 engineering-AI vision. Park explicitly.
 5. Horizon skill output: any `park` items now `do now`? Any `do now` items now obsolete?
 6. Update this document's `Last updated` date and Investment Themes if landscape has shifted.
 
-*Last reviewed: 2026-03-19 (archive synthesis update) — Next monthly review: 2026-04-03 (first Friday of April)*
+*Last reviewed: 2026-03-19 (archive synthesis findings + 60/20/20 investment shift) — Next monthly review: 2026-04-03 (first Friday of April)*
 
 ---
 
