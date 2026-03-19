@@ -2,7 +2,7 @@
 exit_stage.py — Stage exit validator (P2, WRK-1028)
 
 Validates that all exit artifacts exist and any human gate condition is met,
-then updates lifecycle HTML and stage-state.yaml.
+then updates GitHub Issue and stage-state.yaml.
 
 Usage:
   uv run --no-project python scripts/work-queue/exit_stage.py WRK-NNN N
@@ -271,7 +271,7 @@ def _get_github_issue_ref(wrk_id: str, repo_root: str) -> Optional[str]:
     return None
 
 
-# ── lifecycle HTML helper ─────────────────────────────────────────────────────
+# ── GitHub Issue update helper ────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
     """Update GitHub Issue for this WRK (replaces HTML generation).
@@ -474,7 +474,7 @@ def _main() -> None:
     # Update stage-evidence.yaml: mark current stage as done
     _update_stage_ev(wrk_id, stage, "done", repo_root)
 
-    # THEN regenerate HTML (now reads correct stage state)
+    # Update GitHub Issue (now reads correct stage state)
     _regenerate_lifecycle_html(wrk_id, repo_root)
 
     # Write rich checkpoint and emit STAGE_GATE signal

@@ -58,7 +58,7 @@ def _session_infers_signal(session: dict, signal: str) -> bool:
         return "scripts/agents/execute.sh" in scripts or "scripts/agents/work.sh" in scripts
     if signal == "artifact_generation":
         return (
-            "scripts/work-queue/generate-html-review.py" in scripts
+            "scripts/knowledge/update-github-issue.py" in scripts
             or "scripts/review/render-structured-review.py" in scripts
         )
     if signal == "tdd_eval":

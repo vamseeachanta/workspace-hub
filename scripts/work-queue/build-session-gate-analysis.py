@@ -57,7 +57,7 @@ def infer_gate_signals(text: str, scripts: list[str]) -> dict[str, bool]:
         "html_open_default_browser": ("html_open_default_browser", "xdg-open"),
         "work_queue_skill": ("scripts/agents/work.sh", "/work"),
         "work_execution": ("scripts/agents/execute.sh", "work_execution"),
-        "artifact_generation": ("scripts/work-queue/generate-html-review.py", "scripts/review/render-structured-review.py"),
+        "artifact_generation": ("scripts/knowledge/update-github-issue.py", "scripts/review/render-structured-review.py"),
         "tdd_eval": ("pytest", "test-results", "tdd_eval"),
         "agent_cross_review": ("agent_cross_review", "scripts/review/submit-to-codex.sh", "scripts/review/submit-to-gemini.sh"),
         "verify_gate_evidence": ("scripts/work-queue/verify-gate-evidence.py", "verify_gate_evidence"),

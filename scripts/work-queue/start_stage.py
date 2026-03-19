@@ -69,38 +69,9 @@ def _load_yaml(path: str) -> dict:
     return result
 
 
-# ── section-selector ─────────────────────────────────────────────────────────
-
-def _extract_sections(html_path: str, selector: str) -> str:
-    """
-    Extract stage sections from lifecycle HTML using selector like 's4-s6'.
-    Returns extracted text, or full file content if extraction fails.
-    """
-    try:
-        import re
-        parts = selector.split("-")
-        if len(parts) != 2:
-            return Path(html_path).read_text()
-        start_id = parts[0]  # e.g. 's4'
-        end_id = parts[1]    # e.g. 's6'
-        content = Path(html_path).read_text()
-        pattern = rf'(<section[^>]+id="{start_id}".*?</section>.*?<section[^>]+id="{end_id}".*?</section>)'
-        match = re.search(pattern, content, re.DOTALL)
-        if match:
-            return match.group(1)
-    except Exception:
-        pass
-    return Path(html_path).read_text()
-
-
 def _resolve_entry_read(entry: str, wrk_id: str, assets_root: str) -> str:
-    """Resolve an entry_reads path, applying section-selector if present."""
-    selector = None
+    """Resolve an entry_reads path."""
     path = entry
-
-    # Check for section-selector suffix, e.g. WRK-NNN-lifecycle.html#s4-s6
-    if "#" in entry:
-        path, selector = entry.split("#", 1)
 
     # Resolve relative to assets root
     if not os.path.isabs(path):
@@ -110,8 +81,6 @@ def _resolve_entry_read(entry: str, wrk_id: str, assets_root: str) -> str:
         path = resolved
 
     try:
-        if selector:
-            return _extract_sections(path, selector)
         return Path(path).read_text()
     except OSError:
         return f"[entry_reads: {entry} — file not found]"
@@ -355,7 +324,7 @@ def _get_github_issue_ref(wrk_id: str, repo_root: str) -> "Optional[str]":
     return None
 
 
-# ── lifecycle HTML helper ─────────────────────────────────────────────────────
+# ── GitHub Issue update helper ────────────────────────────────────────────────
 
 def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
     """Update GitHub Issue for this WRK (replaces HTML generation).
@@ -382,13 +351,13 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
         print(f"⚠ GitHub Issue update error: {exc}", file=sys.stderr)
 
 
-# ── Stage 1 HTML open (WRK-1316) ─────────────────────────────────────────────
+# ── Stage 1 browser open (WRK-1316) ──────────────────────────────────────────
 
 def _open_html_stage1(wrk_id: str, repo_root: str) -> None:
-    """Open GitHub Issue (or fallback HTML) in browser at Stage 1.
+    """Open GitHub Issue in browser at Stage 1.
 
     If github_issue_ref exists in frontmatter, opens the Issue URL.
-    Otherwise falls back to generating and opening HTML files.
+    Otherwise skips silently (no HTML fallback).
     """
     issue_ref = _get_github_issue_ref(wrk_id, repo_root)
     if issue_ref:
@@ -398,31 +367,6 @@ def _open_html_stage1(wrk_id: str, repo_root: str) -> None:
             stderr=subprocess.DEVNULL,
         )
         print(f"Opened GitHub Issue in browser: {issue_ref}")
-        return
-
-    # Fallback: generate and open HTML files (backward compat)
-    assets_dir = os.path.join(
-        repo_root, ".claude", "work-queue", "assets", wrk_id)
-    gen_script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
-    if os.path.exists(gen_script):
-        for flag in ("--lifecycle", "--plan"):
-            subprocess.run(
-                ["uv", "run", "--no-project", "python", gen_script, wrk_id, flag],
-                capture_output=True, text=True, cwd=repo_root,
-            )
-
-    for suffix in ("lifecycle", "plan"):
-        html_path = os.path.join(assets_dir, f"{wrk_id}-{suffix}.html")
-        if os.path.exists(html_path):
-            subprocess.Popen(
-                ["xdg-open", html_path],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            print(f"Opened {suffix} HTML in browser: {html_path}")
-        else:
-            print(f"⚠ {suffix} HTML not found at Stage 1 entry: {html_path}",
-                  file=sys.stderr)
 
 
 # ── gate timing (WRK-1316) ───────────────────────────────────────────────────
@@ -525,19 +469,19 @@ def _surface_tools_activated(wrk_id: str, stage: int, repo_root: str) -> None:
         print("---\n")
 
 
-# ── auto-open HTML for human-gate stages ─────────────────────────────────────
+# ── auto-open GitHub Issue for human-gate stages ─────────────────────────────
 
-# WRK-1316: HTML opened at Stage 1 only — later stages use 30s auto-refresh
+# WRK-1316: GitHub Issue opened at Stage 1 only
 _HUMAN_GATE_STAGE_MAP = {
     1: "capture",
 }
 
 
 def _auto_open_html_for_human_gates(wrk_id: str, stage: int, repo_root: str) -> None:
-    """Open GitHub Issue (or fallback HTML) at human-gate stages.
+    """Open GitHub Issue at human-gate stages.
 
     Skips if the stage is not a human gate, if evidence shows the stage was
-    already opened, or if neither issue ref nor HTML files exist.
+    already opened, or if no github_issue_ref exists.
     """
     gate_label = _HUMAN_GATE_STAGE_MAP.get(stage)
     if gate_label is None:
@@ -557,36 +501,12 @@ def _auto_open_html_for_human_gates(wrk_id: str, stage: int, repo_root: str) -> 
         except OSError:
             pass
 
-    # Try GitHub Issue URL first
     issue_ref = _get_github_issue_ref(wrk_id, repo_root)
     if issue_ref:
         subprocess.Popen(
             ["xdg-open", issue_ref],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-        )
-        return
-
-    # Fallback: open HTML files via browser-open script
-    browser_script = os.path.join(
-        repo_root, "scripts", "work-queue", "log-user-review-browser-open.sh",
-    )
-    if not os.path.exists(browser_script):
-        print(f"⚠ Browser-open script not found: {browser_script}", file=sys.stderr)
-        return
-
-    html_files = [
-        os.path.join(assets_dir, f"{wrk_id}-lifecycle.html"),
-        os.path.join(assets_dir, f"{wrk_id}-plan.html"),
-    ]
-
-    for html_path in html_files:
-        if not os.path.exists(html_path):
-            print(f"⚠ HTML not found, skipping browser open: {html_path}", file=sys.stderr)
-            continue
-        subprocess.run(
-            ["bash", browser_script, wrk_id, "--stage", gate_label, "--html", html_path],
-            capture_output=True, text=True, cwd=repo_root,
         )
 
 
@@ -813,13 +733,13 @@ def _main() -> None:
     # WRK-1316: Log gate_wait_start for human-gate stages
     _log_gate_wait_start(wrk_id, stage, repo_root)
 
-    # Auto-regenerate lifecycle HTML so user always sees current state
+    # Update GitHub Issue so user always sees current state
     _regenerate_lifecycle_html(wrk_id, repo_root)
 
-    # Auto-open HTML in browser at Stage 1 (the ONE open — later stages use auto-refresh)
+    # Open GitHub Issue in browser at Stage 1
     if stage == 1:
         _open_html_stage1(wrk_id, repo_root)
-    # Legacy: also fire for stages in gate map (backward compat)
+    # Also fire for stages in human-gate map
     _auto_open_html_for_human_gates(wrk_id, stage, repo_root)
 
 

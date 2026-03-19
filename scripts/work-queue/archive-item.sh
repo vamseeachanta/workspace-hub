@@ -188,9 +188,3 @@ for match in titles:
 " "$FW_FILE" "$ITEM_ID" "$CATEGORY" 2>/dev/null || true
 fi
 
-# Regenerate lifecycle HTML so Stage 20 shows as done (not stale active/pending)
-LIFECYCLE_HTML="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/${ITEM_ID}-lifecycle.html"
-HTML_LOG="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/html-gen.log"
-if uv run --no-project python "${WORKSPACE_ROOT}/scripts/work-queue/generate-html-review.py" "${ITEM_ID}" --lifecycle 2>>"${HTML_LOG}"; then
-  echo "✔ Lifecycle HTML refreshed: ${LIFECYCLE_HTML}"
-fi

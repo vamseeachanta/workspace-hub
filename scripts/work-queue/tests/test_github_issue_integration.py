@@ -135,36 +135,17 @@ def test_open_stage1_uses_issue_url(mock_popen, tmp_path):
     assert cmd[1] == url
 
 
-@patch("start_stage.subprocess.run")
 @patch("start_stage.subprocess.Popen")
-def test_open_stage1_falls_back_to_html(mock_popen, mock_run, tmp_path):
-    """_open_html_stage1 falls back to HTML when no github_issue_ref."""
+def test_open_stage1_skips_when_no_issue_ref(mock_popen, tmp_path):
+    """_open_html_stage1 skips silently when no github_issue_ref (no HTML fallback)."""
     from start_stage import _open_html_stage1
 
     _create_wrk_file(tmp_path, "WRK-301")  # no github_issue_ref
 
-    # Create HTML files for fallback
-    assets_dir = tmp_path / ".claude" / "work-queue" / "assets" / "WRK-301"
-    assets_dir.mkdir(parents=True, exist_ok=True)
-    (assets_dir / "WRK-301-lifecycle.html").write_text("<html>lifecycle</html>")
-    (assets_dir / "WRK-301-plan.html").write_text("<html>plan</html>")
-
-    # generate-html-review.py must exist for fallback path
-    gen_script = tmp_path / "scripts" / "work-queue" / "generate-html-review.py"
-    gen_script.parent.mkdir(parents=True, exist_ok=True)
-    gen_script.write_text("# stub")
-    mock_run.return_value = MagicMock(returncode=0, stdout="", stderr="")
-
     _open_html_stage1("WRK-301", str(tmp_path))
 
-    # Should have opened HTML files (not a URL)
-    assert mock_popen.called
-    opened_paths = [
-        c[0][0][1] if c[0] else c[1].get("args", ["", ""])[1]
-        for c in mock_popen.call_args_list
-    ]
-    assert any("lifecycle.html" in p for p in opened_paths), \
-        f"Expected HTML fallback, opened: {opened_paths}"
+    # Should NOT open anything — no issue ref, no HTML fallback
+    assert not mock_popen.called
 
 
 # ── exit_stage _regenerate_lifecycle_html ────────────────────────────────────

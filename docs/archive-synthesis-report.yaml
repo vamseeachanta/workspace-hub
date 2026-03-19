@@ -1,0 +1,762 @@
+generated_at: '2026-03-19T14:40:24Z'
+total_archived: 410
+total_backfilled: 410
+categories:
+  ai-orchestration:
+    count: 6
+    subcategories:
+      agent-discipline:
+        count: 1
+        repos:
+        - workspace-hub
+      skill-improvement:
+        count: 4
+        repos:
+        - workspace-hub
+      visualization:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1171
+      follow_on_count: 3
+      pattern: ''
+  automation:
+    count: 2
+    subcategories:
+      labor-market:
+        count: 2
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1128
+      follow_on_count: 3
+      pattern: ''
+  business:
+    count: 1
+    subcategories:
+      gtm:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  career:
+    count: 3
+    subcategories:
+      portfolio-project:
+        count: 3
+        repos:
+        - digitalmodel
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  ci:
+    count: 1
+    subcategories:
+      workflow-fix:
+        count: 1
+        repos:
+        - digitalmodel
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  data:
+    count: 2
+    subcategories:
+      document-intelligence:
+        count: 2
+        repos:
+        - digitalmodel
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1170
+      follow_on_count: 3
+      pattern: ''
+  development:
+    count: 2
+    subcategories:
+      skills:
+        count: 2
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  document-intelligence:
+    count: 5
+    subcategories:
+      code-promotion:
+        count: 1
+        repos:
+        - digitalmodel
+        - workspace-hub
+      extraction-pipeline:
+        count: 1
+        repos:
+        - workspace-hub
+      parametric-extraction:
+        count: 1
+        repos:
+        - digitalmodel
+        - workspace-hub
+      platform-infra:
+        count: 1
+        repos:
+        - workspace-hub
+      query-interface:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1113
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-5037
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-5039
+      follow_on_count: 3
+      pattern: ''
+  engineering:
+    count: 8
+    subcategories:
+      data-extraction:
+        count: 1
+        repos:
+        - workspace-hub
+      data-ingestion:
+        count: 1
+        repos:
+        - worldenergydata
+      data-loader:
+        count: 1
+        repos:
+        - worldenergydata
+      document-intelligence:
+        count: 2
+        repos:
+        - workspace-hub
+      hydrodynamics:
+        count: 1
+        repos:
+        - digitalmodel
+      pipeline:
+        count: 1
+        repos:
+        - digitalmodel
+        - workspace-hub
+      skills-maintenance:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1148
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1190
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1232
+      follow_on_count: 3
+      pattern: ''
+  harness:
+    count: 103
+    subcategories:
+      agent-cost-tracking:
+        count: 1
+        repos: []
+      agent-teams:
+        count: 2
+        repos:
+        - workspace-hub
+      ai-config:
+        count: 1
+        repos:
+        - workspace-hub
+      api-contracts:
+        count: 1
+        repos: []
+      audit-trail:
+        count: 1
+        repos: []
+      automation:
+        count: 1
+        repos:
+        - workspace-hub
+      ci-cd:
+        count: 1
+        repos: []
+      code-quality:
+        count: 2
+        repos: []
+      context:
+        count: 1
+        repos:
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
+      context-management:
+        count: 1
+        repos: []
+      cross-review:
+        count: 1
+        repos:
+        - workspace-hub
+      cross-review-automation:
+        count: 1
+        repos:
+        - scripts/review
+        - tests/testing
+      daily-report:
+        count: 1
+        repos:
+        - workspace-hub
+      dependency-graph:
+        count: 1
+        repos:
+        - workspace-hub
+      git:
+        count: 1
+        repos:
+        - workspace-hub
+      knowledge:
+        count: 1
+        repos:
+        - workspace-hub
+      mcp-servers:
+        count: 1
+        repos: []
+      notification:
+        count: 1
+        repos: []
+      patterns:
+        count: 1
+        repos:
+        - workspace-hub
+      performance-profiling:
+        count: 1
+        repos:
+        - assetutilities
+        - digitalmodel
+        - worldenergydata
+      project-management:
+        count: 4
+        repos:
+        - workspace-hub
+      quality:
+        count: 3
+        repos:
+        - OGManufacturing
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
+      release-management:
+        count: 1
+        repos: []
+      repo-health:
+        count: 1
+        repos: []
+      review:
+        count: 1
+        repos:
+        - workspace-hub
+      scaffolding:
+        count: 1
+        repos: []
+      security:
+        count: 1
+        repos:
+        - workspace-hub
+      session:
+        count: 3
+        repos:
+        - workspace-hub
+      session-logging:
+        count: 2
+        repos:
+        - workspace-hub
+      skills:
+        count: 27
+        repos:
+        - OGManufacturing
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
+      spec-templates:
+        count: 1
+        repos: []
+      standards-tooling:
+        count: 1
+        repos: []
+      testing:
+        count: 1
+        repos: []
+      tooling:
+        count: 2
+        repos:
+        - workspace-hub
+      work-queue:
+        count: 22
+        repos:
+        - digitalmodel
+        - workspace-hub
+      workflow:
+        count: 2
+        repos:
+        - workspace-hub
+      workflow-enforcement:
+        count: 1
+        repos:
+        - workspace-hub
+      workflow-gates:
+        count: 4
+        repos:
+        - workspace-hub
+      workflow-html:
+        count: 2
+        repos:
+        - workspace-hub
+      workspace-backup:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1005
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1010
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1014
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1015
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1016
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1020
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1028
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1034
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1035
+      follow_on_count: 6
+      pattern: ''
+    - wrk: WRK-1036
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1039
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1047
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1054
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1055
+      follow_on_count: 6
+      pattern: ''
+    - wrk: WRK-1060
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1061
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1063
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1064
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1065
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1068
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1069
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1071
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1074
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1076
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1086
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1090
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1092
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1095
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1098
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1102
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1105
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1119
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1130
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1132
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1140
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1142
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1144
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-118
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-234
+      follow_on_count: 6
+      pattern: ''
+    - wrk: WRK-5027
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-658
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-667
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-668
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-691
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1029
+      follow_on_count: 3
+      pattern: ''
+  harness/ops:
+    count: 2
+    subcategories:
+      machine-setup:
+        count: 1
+        repos:
+        - workspace-hub
+      platform-compat:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1078
+      follow_on_count: 3
+      pattern: ''
+  harness/session:
+    count: 3
+    subcategories:
+      compliance-audit:
+        count: 1
+        repos:
+        - workspace-hub
+      context-management:
+        count: 1
+        repos:
+        - workspace-hub
+      gate-enforcement:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1044
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1046
+      follow_on_count: 3
+      pattern: ''
+  harness/skills:
+    count: 2
+    subcategories:
+      integrations:
+        count: 1
+        repos:
+        - workspace-hub
+      skill-curation:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1084
+      follow_on_count: 3
+      pattern: ''
+  maintenance:
+    count: 2
+    subcategories:
+      testing:
+        count: 2
+        repos:
+        - assetutilities
+        - digitalmodel
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-149
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-660
+      follow_on_count: 3
+      pattern: ''
+  operations:
+    count: 1
+    subcategories:
+      workstation-policy:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  platform:
+    count: 2
+    subcategories:
+      ai-tools:
+        count: 1
+        repos:
+        - workspace-hub
+      workstations:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+  research:
+    count: 1
+    subcategories:
+      naval-architecture:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1151
+      follow_on_count: 3
+      pattern: ''
+  skills:
+    count: 1
+    subcategories:
+      reporting:
+        count: 1
+        repos:
+        - digitalmodel
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1178
+      follow_on_count: 6
+      pattern: ''
+  tooling:
+    count: 11
+    subcategories:
+      work-queue:
+        count: 10
+        repos:
+        - workspace-hub
+      work-queue-ux:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-1115
+      follow_on_count: 3
+      pattern: ''
+  uncategorized:
+    count: 250
+    subcategories:
+      other:
+        count: 250
+        repos:
+        - CAD-DEVELOPMENTS
+        - OGManufacturing
+        - aceengineer-admin
+        - aceengineer-website
+        - achantas-data
+        - acma-projects
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - frontierdeepwater
+        - sabithaandkrishnaestates
+        - saipem
+        - workspace-hub
+        - worldenergydata
+    unaddressed_follow_ons: []
+    repeat_spawners:
+    - wrk: WRK-637
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1085
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1067
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1081
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1075
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1070
+      follow_on_count: 5
+      pattern: ''
+    - wrk: WRK-1097
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1093
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1094
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1091
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1083
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1079
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1073
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1062
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1066
+      follow_on_count: 3
+      pattern: ''
+    - wrk: WRK-1058
+      follow_on_count: 4
+      pattern: ''
+    - wrk: WRK-1056
+      follow_on_count: 5
+      pattern: ''
+    - wrk: WRK-1009
+      follow_on_count: 5
+      pattern: ''
+    - wrk: WRK-1002
+      follow_on_count: 3
+      pattern: ''
+  work-queue:
+    count: 2
+    subcategories:
+      cli-ux:
+        count: 1
+        repos:
+        - workspace-hub
+      workflow-html:
+        count: 1
+        repos:
+        - workspace-hub
+    unaddressed_follow_ons: []
+    repeat_spawners: []
+cost_summary:
+  total_tokens: 0
+  by_category: {}
+heat_map:
+- category: ai-orchestration
+  unaddressed_count: 0
+  density: 0.0
+- category: automation
+  unaddressed_count: 0
+  density: 0.0
+- category: business
+  unaddressed_count: 0
+  density: 0.0
+- category: career
+  unaddressed_count: 0
+  density: 0.0
+- category: ci
+  unaddressed_count: 0
+  density: 0.0
+- category: data
+  unaddressed_count: 0
+  density: 0.0
+- category: development
+  unaddressed_count: 0
+  density: 0.0
+- category: document-intelligence
+  unaddressed_count: 0
+  density: 0.0
+- category: engineering
+  unaddressed_count: 0
+  density: 0.0
+- category: harness
+  unaddressed_count: 0
+  density: 0.0
+- category: harness/ops
+  unaddressed_count: 0
+  density: 0.0
+- category: harness/session
+  unaddressed_count: 0
+  density: 0.0
+- category: harness/skills
+  unaddressed_count: 0
+  density: 0.0
+- category: maintenance
+  unaddressed_count: 0
+  density: 0.0
+- category: operations
+  unaddressed_count: 0
+  density: 0.0
+- category: platform
+  unaddressed_count: 0
+  density: 0.0
+- category: research
+  unaddressed_count: 0
+  density: 0.0
+- category: skills
+  unaddressed_count: 0
+  density: 0.0
+- category: tooling
+  unaddressed_count: 0
+  density: 0.0
+- category: uncategorized
+  unaddressed_count: 0
+  density: 0.0
+- category: work-queue
+  unaddressed_count: 0
+  density: 0.0

@@ -17,17 +17,15 @@ REPO_ROOT = Path(__file__).parent.parent.parent.parent
 STAGES_DIR = REPO_ROOT / "scripts" / "work-queue" / "stages"
 EXIT_STAGE = REPO_ROOT / "scripts" / "work-queue" / "exit_stage.py"
 START_STAGE = REPO_ROOT / "scripts" / "work-queue" / "start_stage.py"
-GEN_HTML = REPO_ROOT / "scripts" / "work-queue" / "generate-html-review.py"
 
 
 # ── shared setup helpers ───────────────────────────────────────────────────────
 
 def _setup_tmp(tmp: Path) -> None:
-    """Copy real stage contracts + generate-html-review.py into tmp_path."""
+    """Copy real stage contracts into tmp_path."""
     (tmp / "scripts" / "work-queue").mkdir(parents=True, exist_ok=True)
     if not (tmp / "scripts" / "work-queue" / "stages").exists():
         shutil.copytree(STAGES_DIR, tmp / "scripts" / "work-queue" / "stages")
-    shutil.copy(GEN_HTML, tmp / "scripts" / "work-queue" / "generate-html-review.py")
 
 
 def _patch_stage_contract(tmp: Path, stage: int, human_gate: bool = False,
