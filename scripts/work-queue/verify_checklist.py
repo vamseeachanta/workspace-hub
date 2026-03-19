@@ -96,15 +96,64 @@ def verify_checklist(stage_yaml_path, wrk_id, stage, evidence_dir, dry_run=False
     }
 
 
+def summary_all_stages(wrk_id, stages_dir, evidence_dir):
+    """Print one-line PASS/FAIL per stage. Returns list of summary lines.
+
+    Args:
+        wrk_id: e.g. "WRK-1328"
+        stages_dir: path to directory containing stage-NN-*.yaml files
+        evidence_dir: path to assets/WRK-NNN/evidence/
+    """
+    import re
+    matches = sorted(glob.glob(os.path.join(stages_dir, "stage-*-*.yaml")))
+    lines = []
+    for stage_yaml_path in matches:
+        basename = os.path.basename(stage_yaml_path)
+        m = re.match(r"stage-(\d+)-(.+)\.yaml", basename)
+        if not m:
+            continue
+        stage = int(m.group(1))
+        with open(stage_yaml_path) as f:
+            contract = yaml.safe_load(f) or {}
+        name = contract.get("name", m.group(2).replace("-", " ").title())
+        result = verify_checklist(stage_yaml_path, wrk_id, stage, evidence_dir)
+        total = len(result.get("items", []))
+        failed = len(result.get("blockers", []))
+        passed = total - failed
+        if result["passed"]:
+            lines.append(f"Stage {stage:02d} {name}: PASS ({passed}/{total})")
+        else:
+            missing = ", ".join(b["id"] for b in result["blockers"])
+            lines.append(f"Stage {stage:02d} {name}: FAIL ({passed}/{total}) — missing {missing}")
+    return lines
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Verify checklist items for a WRK stage")
     parser.add_argument("--dry-run", action="store_true",
                         help="Preview checklist items without validating evidence")
-    parser.add_argument("wrk_id", help="WRK item ID (e.g., WRK-1323)")
-    parser.add_argument("stage", type=int, help="Stage number")
+    parser.add_argument("--summary", action="store_true",
+                        help="Print one-line PASS/FAIL for all 20 stages")
+    parser.add_argument("wrk_id", help="WRK item ID (e.g., WRK-1328)")
+    parser.add_argument("stage", type=int, nargs="?", default=None,
+                        help="Stage number (required unless --summary)")
 
     args = parser.parse_args()
+
+    if args.summary:
+        repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))))
+        stages_dir = os.path.join(repo_root, "scripts", "work-queue", "stages")
+        evidence_dir = os.path.join(
+            repo_root, ".claude", "work-queue", "assets", args.wrk_id, "evidence")
+        lines = summary_all_stages(args.wrk_id, stages_dir, evidence_dir)
+        for line in lines:
+            print(line)
+        sys.exit(0)
+
+    if args.stage is None:
+        parser.error("stage is required unless --summary is used")
 
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))))

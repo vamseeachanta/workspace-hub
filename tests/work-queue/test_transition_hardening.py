@@ -1030,3 +1030,112 @@ class TestIntegrationStageTiming:
         content = (evidence / "stage-timing-10.yaml").read_text()
         assert "completed_at:" in content
         assert "duration_s:" in content
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# SUMMARY FLAG TESTS (WRK-1328)
+# ════════════════════════════════════════════════════════════════════════════
+
+class TestSummaryAllPass:
+    """--summary with all checklists complete → all PASS."""
+
+    def test_summary_all_stages_pass(self, tmp_path):
+        from verify_checklist import summary_all_stages
+        # Create 3 stage YAMLs with checklists
+        stages_dir = tmp_path / "stages"
+        stages_dir.mkdir()
+        for n, name in [(1, "capture"), (2, "resource-intelligence"), (3, "triage")]:
+            _write(str(stages_dir / f"stage-{n:02d}-{name}.yaml"), textwrap.dedent(f"""\
+                order: {n}
+                name: Stage {n}
+                checklist:
+                  - id: CL-{n:02d}-1
+                    text: "Item 1"
+                    requires_human: false
+            """))
+        # Create evidence for all
+        evidence_dir = tmp_path / "evidence"
+        for n in [1, 2, 3]:
+            _write(str(evidence_dir / f"checklist-{n:02d}.yaml"), textwrap.dedent(f"""\
+                stage: {n}
+                items:
+                  - id: CL-{n:02d}-1
+                    completed: true
+                    completed_at: "2026-03-19T00:00:00Z"
+                    completed_by: agent
+            """))
+        lines = summary_all_stages("WRK-TEST", str(stages_dir), str(evidence_dir))
+        assert len(lines) == 3
+        assert all("PASS" in line for line in lines)
+        assert all("FAIL" not in line for line in lines)
+
+
+class TestSummaryMixed:
+    """--summary with some incomplete → PASS/FAIL mix."""
+
+    def test_summary_mixed_pass_fail(self, tmp_path):
+        from verify_checklist import summary_all_stages
+        stages_dir = tmp_path / "stages"
+        stages_dir.mkdir()
+        # Stage 1: has checklist, complete
+        _write(str(stages_dir / "stage-01-capture.yaml"), textwrap.dedent("""\
+            order: 1
+            name: Capture
+            checklist:
+              - id: CL-01-1
+                text: "Item 1"
+                requires_human: false
+        """))
+        # Stage 2: has checklist, INCOMPLETE
+        _write(str(stages_dir / "stage-02-resource-intelligence.yaml"), textwrap.dedent("""\
+            order: 2
+            name: Resource Intelligence
+            checklist:
+              - id: CL-02-1
+                text: "Codebase search"
+                requires_human: false
+              - id: CL-02-2
+                text: "Online research"
+                requires_human: false
+        """))
+        evidence_dir = tmp_path / "evidence"
+        _write(str(evidence_dir / "checklist-01.yaml"), textwrap.dedent("""\
+            stage: 1
+            items:
+              - id: CL-01-1
+                completed: true
+                completed_at: "2026-03-19T00:00:00Z"
+                completed_by: agent
+        """))
+        # Stage 2: only 1 of 2 complete
+        _write(str(evidence_dir / "checklist-02.yaml"), textwrap.dedent("""\
+            stage: 2
+            items:
+              - id: CL-02-1
+                completed: true
+                completed_at: "2026-03-19T00:00:00Z"
+                completed_by: agent
+        """))
+        lines = summary_all_stages("WRK-TEST", str(stages_dir), str(evidence_dir))
+        assert len(lines) == 2
+        assert "PASS" in lines[0]
+        assert "FAIL" in lines[1]
+        assert "CL-02-2" in lines[1]
+
+
+class TestSummaryNoChecklist:
+    """Stage without checklist → PASS (0/0)."""
+
+    def test_summary_no_checklist_passes(self, tmp_path):
+        from verify_checklist import summary_all_stages
+        stages_dir = tmp_path / "stages"
+        stages_dir.mkdir()
+        _write(str(stages_dir / "stage-18-reclaim.yaml"), textwrap.dedent("""\
+            order: 18
+            name: Reclaim
+        """))
+        evidence_dir = tmp_path / "evidence"
+        lines = summary_all_stages("WRK-TEST", str(stages_dir), str(evidence_dir))
+        assert len(lines) == 1
+        assert "PASS" in lines[0]
+        assert "0/0" in lines[0]
