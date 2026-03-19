@@ -1,56 +1,57 @@
 #!/usr/bin/env bash
 # run-review-plan.sh — Stage Group 2: Review Plan (stages 5-7)
 #
-# Usage: bash scripts/work-queue/run-review-plan.sh WRK-NNN
+# Single-session use. Stages 5 and 7 are human gates.
 #
-# Runs stages 5→6→7 sequentially. Stages 5 and 7 are human gates —
-# the script pauses and waits for user approval at each.
+# Usage:
+#   bash scripts/work-queue/run-review-plan.sh WRK-NNN start N
+#   bash scripts/work-queue/run-review-plan.sh WRK-NNN exit N
+#   bash scripts/work-queue/run-review-plan.sh WRK-NNN status
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-WRK_ID="${1:?Usage: run-review-plan.sh WRK-NNN}"
+WRK_ID="${1:?Usage: run-review-plan.sh WRK-NNN start|exit|status N}"
+ACTION="${2:-status}"
+STAGE="${3:-}"
 
-echo "╔════════════════════════════════════════════════╗"
-echo "║  Stage Group 2: REVIEW PLAN (stages 5-7)       ║"
-echo "║  WRK: $WRK_ID                                  ║"
-echo "╚════════════════════════════════════════════════╝"
+VALID_STAGES="5 6 7"
 
-# Stage 5 — Human gate: User Review Plan Draft
-echo ""
-echo "━━━ Starting Stage 5: User Review - Plan Draft ━━━"
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/start_stage.py" "$WRK_ID" 5
-echo ""
-echo "  HUMAN GATE: Review the plan with the agent."
-echo "  Agent walks through ACs, pseudocode, test plan."
-echo "  When done, press ENTER to confirm stage 5 work complete..."
-read -r
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/exit_stage.py" "$WRK_ID" 5
-
-# Stage 6 — Auto: Cross-Review
-echo ""
-echo "━━━ Starting Stage 6: Cross-Review ━━━"
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/start_stage.py" "$WRK_ID" 6
-echo ""
-echo "  Agent dispatches cross-review to 3 providers."
-echo "  Press ENTER when stage 6 work complete..."
-read -r
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/exit_stage.py" "$WRK_ID" 6
-
-# Stage 7 — Human gate: User Review Plan Final
-echo ""
-echo "━━━ Starting Stage 7: User Review - Plan Final ━━━"
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/start_stage.py" "$WRK_ID" 7
-echo ""
-echo "  HUMAN GATE: Review cross-review findings."
-echo "  All P1 findings must be resolved."
-echo "  When done, press ENTER to confirm stage 7 work complete..."
-read -r
-uv run --no-project python "$REPO_ROOT/scripts/work-queue/exit_stage.py" "$WRK_ID" 7
-
-echo ""
-echo "╔════════════════════════════════════════════════╗"
-echo "║  Group 2 COMPLETE — Plan approved (stages 5-7) ║"
-echo "║                                                 ║"
-echo "║  HUMAN STOP: Plan is final. When ready:         ║"
-echo "║    bash scripts/work-queue/run-execute.sh $WRK_ID ║"
-echo "╚════════════════════════════════════════════════╝"
+case "$ACTION" in
+    start)
+        [[ -z "$STAGE" ]] && { echo "Usage: run-review-plan.sh $WRK_ID start N (N=5-7)" >&2; exit 1; }
+        echo "$VALID_STAGES" | grep -qw "$STAGE" || { echo "Stage $STAGE not in Group 2 (5-7)" >&2; exit 1; }
+        echo "━━━ Group 2 REVIEW PLAN: Starting Stage $STAGE ━━━"
+        if [[ "$STAGE" == "5" || "$STAGE" == "7" ]]; then
+            echo "  *** HUMAN GATE — user approval required before exit ***"
+        fi
+        uv run --no-project python "$REPO_ROOT/scripts/work-queue/start_stage.py" "$WRK_ID" "$STAGE"
+        echo ""
+        echo "━━━ Do stage $STAGE work now. When done: bash scripts/work-queue/run-review-plan.sh $WRK_ID exit $STAGE ━━━"
+        ;;
+    exit)
+        [[ -z "$STAGE" ]] && { echo "Usage: run-review-plan.sh $WRK_ID exit N (N=5-7)" >&2; exit 1; }
+        echo "━━━ Group 2 REVIEW PLAN: Exiting Stage $STAGE ━━━"
+        uv run --no-project python "$REPO_ROOT/scripts/work-queue/exit_stage.py" "$WRK_ID" "$STAGE"
+        NEXT=$((STAGE + 1))
+        if [[ "$NEXT" -le 7 ]]; then
+            echo ""
+            echo "→ Next: bash scripts/work-queue/run-review-plan.sh $WRK_ID start $NEXT"
+        else
+            echo ""
+            echo "╔════════════════════════════════════════════════╗"
+            echo "║  Group 2 COMPLETE — Plan approved (stages 5-7) ║"
+            echo "║  HUMAN STOP: Plan is final.                     ║"
+            echo "║  Next: bash scripts/work-queue/run-execute.sh $WRK_ID start 8 ║"
+            echo "╚════════════════════════════════════════════════╝"
+        fi
+        ;;
+    status)
+        echo "╔════════════════════════════════════════════════╗"
+        echo "║  Stage Group 2: REVIEW PLAN (stages 5-7)       ║"
+        echo "║  WRK: $WRK_ID                                  ║"
+        echo "║  Stages 5,7 = HUMAN GATES                      ║"
+        echo "╚════════════════════════════════════════════════╝"
+        ;;
+    *)
+        echo "Unknown action: $ACTION" >&2; exit 1 ;;
+esac
