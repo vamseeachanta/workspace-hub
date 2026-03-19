@@ -202,9 +202,13 @@ case "$subcmd" in
         echo ""
         pipeline_balance
         ;;
+    find)
+        keyword="${1:-}"
+        "${WS_HUB}/scripts/work-queue/find-items.sh" "$keyword" "$@"
+        ;;
     *)
         echo "Unsupported subcommand for wrapper: $subcmd" >&2
-        echo "Available: run, list, approve-batch, next, status" >&2
+        echo "Available: run, list, find, approve-batch, next, status" >&2
         exit 2
         ;;
 esac
