@@ -1,9 +1,9 @@
-generated: '2026-03-18'
-total_specs: 1886
+generated: '2026-03-19'
+total_specs: 1887
 by_category:
   archive: 13
   data-sources: 13
-  modules: 345
+  modules: 346
   other: 61
   repos: 1344
   templates: 20
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 370
+  workspace-hub: 371
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -370,6 +370,7 @@ by_wrk:
   WRK-1279: 1
   WRK-1301: 1
   WRK-1316: 1
+  WRK-1323: 1
   WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
@@ -2670,6 +2671,17 @@ specs:
   - WRK-1147
   - WRK-5063
   mtime: '2026-03-13'
+- path: specs/modules/wiggly-fluttering-eagle.md
+  title: 'WRK-1323: Add --dry-run flag to verify_checklist.py'
+  description: '`verify_checklist.py` validates whether a WRK item''s checklist evidence exists for a given stage. The CLI
+    requires `WRK-NNN STAGE` and reads `evidence/checklist-{NN}.yaml`. During checklist authori...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wiggly-fluttering-eagle
+  wrk_refs:
+  - WRK-1323
+  mtime: '2026-03-18'
 - path: specs/modules/wild-squishing-cloud.md
   title: 'WRK-1085 Plan: Cross-Repo Search Indexing'
   description: Agents repeatedly run 3–5 Glob/Grep rounds to answer "where is X implemented?" across tier-1 repos. A pre-built
