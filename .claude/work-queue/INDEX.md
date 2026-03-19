@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-19T00:52:08Z by generate-index.py -->
+<!-- Generated: 2026-03-19T01:17:14Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-19T00:52:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-19T01:17:14Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 733
+**Total items:** 734
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 293 |
+| pending | 294 |
 | working | 7 |
 | blocked | 12 |
 | done | 9 |
@@ -24,7 +24,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 319 |
-| medium | 345 |
+| medium | 346 |
 | low | 68 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 158 |
-| medium | 345 |
+| medium | 346 |
 | complex | 138 |
 
 ### By Category
@@ -41,7 +41,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 28 |
+| harness | 29 |
 | engineering | 165 |
 | data | 27 |
 | platform | 11 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 332 |
+| workspace-hub | 333 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 287 / 733 |
+| Plans exist | 287 / 734 |
 | Plans cross-reviewed | 201 |
 | Plans approved | 226 |
 | Brochure pending | 8 |
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 733 |
+| Total captured | 734 |
 | Total archived | 410 |
-| Completion rate | 410/733 (56%) |
+| Completion rate | 410/734 (56%) |
 | Monthly rate (current month) | 138 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,7 +102,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 79 / 293 | 27% |
+| Pending items with plans | 79 / 294 | 27% |
 | Plans cross-reviewed | 8 | 9% |
 | Plans user-approved | 8 | 9% |
 
@@ -120,14 +120,20 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 108 | 4 | 9 |
-| Medium   | 141  | 3  | 1  |
+| Medium   | 142  | 3  | 1  |
 | Low      | 44  | 0  | 2  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (28 items — 5 high, 18 medium, 5 low)
+### harness (29 items — 5 high, 19 medium, 5 low)
+
+#### harness / agent-adapters
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1327 | MEDIUM | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending |
 
 #### harness / agent-teams
 
@@ -727,7 +733,7 @@
 | WRK-1287 | MEDIUM | Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills [feature] | pending |
 | WRK-1288 | MEDIUM | Review article (trq212 thread) — identify skill gaps and honing opportunities for ecosystem | pending |
 | WRK-1289 | MEDIUM | Review Anthropic agent skills course — apply learnings to ecosystem skill design | pending |
-| WRK-1324 | MEDIUM | Fix invalid skill names over 64 chars | pending |
+| WRK-1325 | MEDIUM | Fix invalid skill names over 64 chars | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
 | WRK-1208 | LOW | [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa | pending |
@@ -1456,8 +1462,9 @@
 | WRK-1320 | Benchmark Docling on ace-linux-2 GPU (T400 4GB) and establish machine task routing | blocked | high | medium | ace-linux-2 | ace-linux-1 | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1316 |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1316, WRK-1321 |
-| WRK-1324 | Fix invalid skill names over 64 chars | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1324 | Add --verbose flag to run_hooks.py CLI for debugging hook execution | archived | medium | A | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1789,7 +1796,8 @@
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | high | medium | sabithaandkrishnaestates | - |
 | WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | high | C | workspace-hub | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | high | C | workspace-hub | - |
-| WRK-1324 | Fix invalid skill names over 64 chars | medium | simple | workspace-hub | - |
+| WRK-1325 | Fix invalid skill names over 64 chars | medium | simple | workspace-hub | - |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | medium | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -3034,8 +3042,9 @@
 | WRK-1320 | Benchmark Docling on ace-linux-2 GPU (T400 4GB) and establish machine task routing | blocked | high | medium | - |
 | WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | - |
-| WRK-1324 | Fix invalid skill names over 64 chars | pending | medium | simple | - |
 | WRK-1324 | Add --verbose flag to run_hooks.py CLI for debugging hook execution | archived | medium | A | - |
+| WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | - |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3828,8 +3837,9 @@
 | WRK-1311 | decision-blocker-log: add decisions/blockers arrays to checkpoint schema | archived | simple | workspace-hub | - |
 | WRK-1312 | context-budget-monitor: PreCompact hook warning at context thresholds | archived | simple | workspace-hub | - |
 | WRK-1313 | wrk-progress: single-WRK progress command showing stage, decisions, evidence | archived | medium | workspace-hub | - |
-| WRK-1324 | Fix invalid skill names over 64 chars | pending | simple | workspace-hub | - |
 | WRK-1324 | Add --verbose flag to run_hooks.py CLI for debugging hook execution | archived | A | workspace-hub | - |
+| WRK-1325 | Fix invalid skill names over 64 chars | pending | simple | workspace-hub | - |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -4085,7 +4095,7 @@
 | WRK-1311 | decision-blocker-log: add decisions/blockers arrays to checkpoint schema | archived | medium | workspace-hub | - |
 | WRK-1312 | context-budget-monitor: PreCompact hook warning at context thresholds | archived | medium | workspace-hub | - |
 | WRK-1314 | platform-review: reassess build-later and don't-build items against Claude Code roadmap | pending | low | workspace-hub | - |
-| WRK-1324 | Fix invalid skill names over 64 chars | pending | medium | workspace-hub | - |
+| WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -4432,6 +4442,7 @@
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | working | high | aceengineer-admin | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | pending | high | sabithaandkrishnaestates | - |
 | WRK-1320 | Benchmark Docling on ace-linux-2 GPU (T400 4GB) and establish machine task routing | blocked | high | workspace-hub | - |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | workspace-hub | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4592,7 +4603,7 @@
 
 ## By Computer
 
-### ace-linux-1 (246 active / 437 total)
+### ace-linux-1 (247 active / 438 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -4993,6 +5004,7 @@
 | WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | workspace-hub |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | workspace-hub |
 | WRK-1324 | Add --verbose flag to run_hooks.py CLI for debugging hook execution | archived | medium | A | workspace-hub |
+| WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | workspace-hub |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | medium | workspace-hub |
@@ -5319,7 +5331,7 @@
 | WRK-1288 | Review article (trq212 thread) — identify skill gaps and honing opportunities for ecosystem | pending | medium | medium | workspace-hub |
 | WRK-1289 | Review Anthropic agent skills course — apply learnings to ecosystem skill design | pending | medium | medium | workspace-hub |
 | WRK-1317 | Generalize stage-transition engine to all workspace-hub workflows | pending | high | C | - |
-| WRK-1324 | Fix invalid skill names over 64 chars | pending | medium | simple | workspace-hub |
+| WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | workspace-hub |
 
 ### ace-linux-1, ace-linux-2 (18 active / 20 total)
 
