@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-19T03:54:37-05:00",
+  "timestamp": "2026-03-19T11:53:16-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -16,7 +16,7 @@
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 5,
+      "week_messages": 7,
       "pct_remaining": 100,
       "source": "history.jsonl"
     },

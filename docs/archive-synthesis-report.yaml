@@ -1,4 +1,4 @@
-generated_at: '2026-03-19T14:40:24Z'
+generated_at: '2026-03-19T15:53:03Z'
 total_archived: 410
 total_backfilled: 410
 categories:
@@ -44,17 +44,30 @@ categories:
     unaddressed_follow_ons: []
     repeat_spawners: []
   career:
-    count: 3
+    count: 5
     subcategories:
       portfolio-project:
         count: 3
         repos:
         - digitalmodel
+      strategy:
+        count: 2
+        repos:
+        - workspace-hub
     unaddressed_follow_ons: []
     repeat_spawners: []
   ci:
-    count: 1
+    count: 9
     subcategories:
+      testing:
+        count: 8
+        repos:
+        - aceengineer-admin
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
       workflow-fix:
         count: 1
         repos:
@@ -63,13 +76,47 @@ categories:
     unaddressed_follow_ons: []
     repeat_spawners: []
   data:
-    count: 2
+    count: 49
     subcategories:
+      bsee:
+        count: 14
+        repos:
+        - aceengineer-website
+        - worldenergydata
       document-intelligence:
         count: 2
         repos:
         - digitalmodel
         - workspace-hub
+      fleet:
+        count: 6
+        repos:
+        - aceengineer-admin
+        - frontierdeepwater
+        - worldenergydata
+      ingestion:
+        count: 11
+        repos:
+        - acma-projects
+        - digitalmodel
+        - saipem
+        - workspace-hub
+        - worldenergydata
+      maintenance:
+        count: 3
+        repos:
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
+      production:
+        count: 6
+        repos:
+        - digitalmodel
+        - worldenergydata
+      safety:
+        count: 7
+        repos:
+        - worldenergydata
     unaddressed_follow_ons: []
     repeat_spawners:
     - wrk: WRK-1170
@@ -121,8 +168,20 @@ categories:
       follow_on_count: 3
       pattern: ''
   engineering:
-    count: 8
+    count: 100
     subcategories:
+      cad-fea:
+        count: 2
+        repos:
+        - CAD-DEVELOPMENTS
+        - workspace-hub
+      cathodic-protection:
+        count: 8
+        repos:
+        - acma-projects
+        - digitalmodel
+        - saipem
+        - workspace-hub
       data-extraction:
         count: 1
         repos:
@@ -135,23 +194,79 @@ categories:
         count: 1
         repos:
         - worldenergydata
+      decommissioning:
+        count: 2
+        repos:
+        - aceengineer-website
+        - digitalmodel
+        - worldenergydata
       document-intelligence:
         count: 2
         repos:
         - workspace-hub
-      hydrodynamics:
-        count: 1
-        repos:
-        - digitalmodel
-      pipeline:
-        count: 1
+      drilling:
+        count: 15
         repos:
         - digitalmodel
         - workspace-hub
+        - worldenergydata
+      fatigue:
+        count: 2
+        repos:
+        - digitalmodel
+      general:
+        count: 2
+        repos:
+        - digitalmodel
+      hydrodynamics:
+        count: 29
+        repos:
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
+      lng:
+        count: 3
+        repos:
+        - aceengineer-website
+        - worldenergydata
+      maintenance:
+        count: 1
+        repos: []
+      metocean:
+        count: 3
+        repos:
+        - digitalmodel
+        - worldenergydata
+      orcaflex:
+        count: 4
+        repos:
+        - aceengineer-admin
+        - digitalmodel
+      pipeline:
+        count: 9
+        repos:
+        - digitalmodel
+        - workspace-hub
+      safety:
+        count: 9
+        repos:
+        - aceengineer-website
+        - worldenergydata
       skills-maintenance:
         count: 1
         repos:
         - workspace-hub
+      standards:
+        count: 2
+        repos:
+        - digitalmodel
+        - workspace-hub
+      units:
+        count: 3
+        repos:
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
     unaddressed_follow_ons: []
     repeat_spawners:
     - wrk: WRK-1148
@@ -164,7 +279,7 @@ categories:
       follow_on_count: 3
       pattern: ''
   harness:
-    count: 103
+    count: 155
     subcategories:
       agent-cost-tracking:
         count: 1
@@ -175,6 +290,10 @@ categories:
         - workspace-hub
       ai-config:
         count: 1
+        repos:
+        - workspace-hub
+      ai-orchestration:
+        count: 7
         repos:
         - workspace-hub
       api-contracts:
@@ -229,6 +348,14 @@ categories:
         count: 1
         repos:
         - workspace-hub
+      maintenance:
+        count: 9
+        repos:
+        - acma-projects
+        - digitalmodel
+        - saipem
+        - workspace-hub
+        - worldenergydata
       mcp-servers:
         count: 1
         repos: []
@@ -276,15 +403,17 @@ categories:
         repos:
         - workspace-hub
       session:
-        count: 3
+        count: 15
         repos:
+        - digitalmodel
         - workspace-hub
+        - worldenergydata
       session-logging:
         count: 2
         repos:
         - workspace-hub
       skills:
-        count: 27
+        count: 41
         repos:
         - OGManufacturing
         - assethold
@@ -306,10 +435,11 @@ categories:
         repos:
         - workspace-hub
       work-queue:
-        count: 22
+        count: 32
         repos:
         - digitalmodel
         - workspace-hub
+        - worldenergydata
       workflow:
         count: 2
         repos:
@@ -332,6 +462,9 @@ categories:
         - workspace-hub
     unaddressed_follow_ons: []
     repeat_spawners:
+    - wrk: WRK-1002
+      follow_on_count: 3
+      pattern: ''
     - wrk: WRK-1005
       follow_on_count: 4
       pattern: ''
@@ -523,13 +656,25 @@ categories:
       follow_on_count: 3
       pattern: ''
   maintenance:
-    count: 2
+    count: 9
     subcategories:
+      repo-cleanup:
+        count: 6
+        repos:
+        - assethold
+        - assetutilities
+        - digitalmodel
+        - workspace-hub
+        - worldenergydata
       testing:
         count: 2
         repos:
         - assetutilities
         - digitalmodel
+      tooling:
+        count: 1
+        repos:
+        - workspace-hub
     unaddressed_follow_ons: []
     repeat_spawners:
     - wrk: WRK-149
@@ -547,12 +692,31 @@ categories:
         - workspace-hub
     unaddressed_follow_ons: []
     repeat_spawners: []
+  personal:
+    count: 9
+    subcategories:
+      development:
+        count: 1
+        repos: []
+      household:
+        count: 8
+        repos:
+        - achantas-data
+        - sabithaandkrishnaestates
+    unaddressed_follow_ons: []
+    repeat_spawners: []
   platform:
-    count: 2
+    count: 12
     subcategories:
       ai-tools:
         count: 1
         repos:
+        - workspace-hub
+      ops:
+        count: 10
+        repos:
+        - acma-projects
+        - assetutilities
         - workspace-hub
       workstations:
         count: 1
@@ -602,23 +766,15 @@ categories:
       follow_on_count: 3
       pattern: ''
   uncategorized:
-    count: 250
+    count: 21
     subcategories:
       other:
-        count: 250
+        count: 21
         repos:
-        - CAD-DEVELOPMENTS
         - OGManufacturing
-        - aceengineer-admin
-        - aceengineer-website
-        - achantas-data
-        - acma-projects
         - assethold
         - assetutilities
         - digitalmodel
-        - frontierdeepwater
-        - sabithaandkrishnaestates
-        - saipem
         - workspace-hub
         - worldenergydata
     unaddressed_follow_ons: []
@@ -677,9 +833,15 @@ categories:
     - wrk: WRK-1009
       follow_on_count: 5
       pattern: ''
-    - wrk: WRK-1002
-      follow_on_count: 3
-      pattern: ''
+  website:
+    count: 2
+    subcategories:
+      aceengineer:
+        count: 2
+        repos:
+        - aceengineer-website
+    unaddressed_follow_ons: []
+    repeat_spawners: []
   work-queue:
     count: 2
     subcategories:
@@ -742,6 +904,9 @@ heat_map:
 - category: operations
   unaddressed_count: 0
   density: 0.0
+- category: personal
+  unaddressed_count: 0
+  density: 0.0
 - category: platform
   unaddressed_count: 0
   density: 0.0
@@ -755,6 +920,9 @@ heat_map:
   unaddressed_count: 0
   density: 0.0
 - category: uncategorized
+  unaddressed_count: 0
+  density: 0.0
+- category: website
   unaddressed_count: 0
   density: 0.0
 - category: work-queue

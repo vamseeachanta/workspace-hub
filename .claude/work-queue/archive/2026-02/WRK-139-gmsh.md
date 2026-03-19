@@ -5,6 +5,8 @@ status: archived
 archived_at: 2026-02-16T15:45:00Z
 priority: medium
 complexity: medium
+category: engineering
+subcategory: cad-fea
 compound: false
 created_at: 2026-02-15T00:00:00Z
 target_repos:
