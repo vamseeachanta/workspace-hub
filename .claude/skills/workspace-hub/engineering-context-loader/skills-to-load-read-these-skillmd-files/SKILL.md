@@ -1,5 +1,5 @@
 ---
-name: engineering-context-loader-skills-to-load-read-these-skillmd-files
+name: engineering-context-loader-skills-to-load
 description: 'Sub-skill of engineering-context-loader: Skills to Load (read these
   SKILL.md files) (+4).'
 version: 1.0.0

@@ -1,5 +1,5 @@
 ---
-name: orcaflex-monolithic-to-modular-step-1-convert-dat-to-yml-if-needed
+name: orcaflex-monolithic-to-modular-step-1-convert-dat-yml
 description: 'Sub-skill of orcaflex-monolithic-to-modular: Step 1: Convert .dat to
   .yml (if needed) (+4).'
 version: 2.0.0

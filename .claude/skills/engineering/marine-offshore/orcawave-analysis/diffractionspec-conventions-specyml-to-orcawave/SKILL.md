@@ -1,5 +1,5 @@
 ---
-name: orcawave-analysis-diffractionspec-conventions-specyml-to-orcawave
+name: orcawave-analysis-diffractionspec-specyml-conventions
 description: 'Sub-skill of orcawave-analysis: DiffractionSpec Conventions (spec.yml
   to OrcaWave).'
 version: 1.0.0

@@ -1,5 +1,5 @@
 ---
-name: python-gis-ecosystem-21-coordinate-reference-system-transforms-pyproj-g
+name: python-gis-ecosystem-21-crs-transforms-pyproj
 description: 'Sub-skill of python-gis-ecosystem: 2.1 Coordinate Reference System Transforms
   (pyproj + GeoPandas) (+5).'
 version: 1.0.0

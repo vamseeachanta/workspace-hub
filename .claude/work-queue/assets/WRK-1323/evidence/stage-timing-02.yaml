@@ -1,8 +1,0 @@
-stage: 2
-wrk_id: WRK-1323
-human_gate: false
-started_at: "2026-03-18T20:34:36.588318+00:00"
-completed_at: "2026-03-18T20:35:25.831221+00:00"
-duration_s: 49.2
-completed_at: "2026-03-18T20:35:36.946541+00:00"
-duration_s: 60.4

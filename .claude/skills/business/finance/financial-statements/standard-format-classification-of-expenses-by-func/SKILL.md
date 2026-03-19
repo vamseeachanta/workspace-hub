@@ -1,5 +1,5 @@
 ---
-name: financial-statements-standard-format-classification-of-expenses-by-func
+name: financial-statements-std-format-expenses-by-function
 description: 'Sub-skill of financial-statements: Standard Format (Classification of
   Expenses by Function) (+2).'
 version: 1.0.0

@@ -5560,5 +5560,23 @@
     "title": "Quantify skill curation quality hierarchy \u2014 scripts > refs > single > large",
     "priority": "high",
     "category": "harness"
+  },
+  "WRK-1324": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-19T00:48:59.712564+00:00",
+    "updated_by": "codex",
+    "title": "Fix invalid skill names over 64 chars",
+    "priority": "medium",
+    "category": ""
+  },
+  "WRK-1325": {
+    "status": "pending",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-19T01:08:05.976032+00:00",
+    "updated_by": "codex",
+    "title": "Fix invalid skill names over 64 chars",
+    "priority": "medium",
+    "category": ""
   }
 }

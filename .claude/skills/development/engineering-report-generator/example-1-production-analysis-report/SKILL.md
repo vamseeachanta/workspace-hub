@@ -1,5 +1,5 @@
 ---
-name: engineering-report-generator-example-1-production-analysis-report
+name: engineering-report-generator-ex1-production-report
 description: 'Sub-skill of engineering-report-generator: Example 1: Production Analysis
   Report (+2).'
 version: 1.1.0

@@ -1,5 +1,5 @@
 ---
-name: modular-architecture-documentation-example-3-module-invoicetax-system
+name: modular-architecture-documentation-ex3-invoicetax-system
 description: 'Sub-skill of modular-architecture-documentation: Example: 3-Module Invoice/Tax
   System.'
 version: 1.0.0

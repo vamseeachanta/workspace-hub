@@ -1,5 +1,5 @@
 ---
-name: infrastructure-layout-quick-decision-tree-where-does-this-file-go
+name: infrastructure-layout-quick-decision-tree
 description: "Sub-skill of infrastructure-layout: Quick Decision Tree \u2014 \"Where\
   \ does this file go?\"."
 version: 1.0.0

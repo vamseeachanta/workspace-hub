@@ -1,5 +1,5 @@
 ---
-name: marine-offshore-engineering-application-1-fpso-preliminary-design
+name: marine-offshore-engineering-app-1-fpso-prelim-design
 description: 'Sub-skill of marine-offshore-engineering: Application 1: FPSO Preliminary
   Design (+1).'
 version: 1.0.0

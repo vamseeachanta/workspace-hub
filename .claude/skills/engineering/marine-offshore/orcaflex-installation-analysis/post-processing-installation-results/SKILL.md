@@ -1,5 +1,5 @@
 ---
-name: orcaflex-installation-analysis-post-processing-installation-results
+name: orcaflex-installation-analysis-postproc-results
 description: 'Sub-skill of orcaflex-installation-analysis: Post-Processing Installation
   Results.'
 version: 1.0.0

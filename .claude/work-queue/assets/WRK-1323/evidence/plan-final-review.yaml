@@ -1,8 +1,0 @@
-wrk_id: WRK-1323
-stage: 7
-confirmed_by: user
-confirmed_at: "2026-03-18T20:45:00Z"
-decision: passed
-approval_message: "i approve stage 7"
-p1_findings_resolved: true
-notes: "Cross-review APPROVE with no findings. Plan approved for execution."

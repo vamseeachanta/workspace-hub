@@ -1,8 +1,0 @@
-wrk_id: WRK-1323
-stage: 5
-timestamp: "2026-03-18T20:39:00Z"
-decision: approved
-approved_by: user
-approval_message: "i approve stage 5"
-route: A
-notes: "Plan approved. Implementation already exists — TDD tests to be added."

@@ -1,5 +1,5 @@
 ---
-name: canned-responses-universal-escalation-triggers-apply-to-all-categor
+name: canned-responses-escalation-triggers-all-categories
 description: 'Sub-skill of canned-responses: Universal Escalation Triggers (Apply
   to All Categories) (+2).'
 version: 1.0.0

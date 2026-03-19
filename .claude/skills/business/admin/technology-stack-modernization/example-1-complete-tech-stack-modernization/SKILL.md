@@ -1,5 +1,5 @@
 ---
-name: technology-stack-modernization-example-1-complete-tech-stack-modernization
+name: technology-stack-modernization-ex1-complete-modernization
 description: 'Sub-skill of technology-stack-modernization: Example 1: Complete Tech
   Stack Modernization (+7).'
 version: 1.0.0

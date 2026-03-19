@@ -1,5 +1,5 @@
 ---
-name: workflow-gatepass-stage-15-to-stage-17-rule-next-work-disposition
+name: workflow-gatepass-stage-15-17-next-work-disposition
 description: 'Sub-skill of workflow-gatepass: Stage 15 to Stage 17 Rule (Next-Work
   Disposition).'
 version: 1.0.6

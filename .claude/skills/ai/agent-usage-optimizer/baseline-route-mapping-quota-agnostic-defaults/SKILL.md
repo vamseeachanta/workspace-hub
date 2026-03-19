@@ -1,5 +1,5 @@
 ---
-name: agent-usage-optimizer-baseline-route-mapping-quota-agnostic-defaults
+name: agent-usage-optimizer-baseline-route-defaults
 description: 'Sub-skill of agent-usage-optimizer: Baseline Route Mapping (quota-agnostic
   defaults) (+1).'
 version: 1.0.0
