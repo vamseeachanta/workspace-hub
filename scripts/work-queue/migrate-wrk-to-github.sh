@@ -102,6 +102,7 @@ for WRK_FILE in "${FILES[@]}"; do
     CATEGORY=$(grep -m1 "^category:" "$WRK_FILE" 2>/dev/null | sed 's/^category:[[:space:]]*//' | tr -d '"' | tr -d "'")
     STATUS=$(grep -m1 "^status:" "$WRK_FILE" 2>/dev/null | sed 's/^status:[[:space:]]*//' | tr -d '"' | tr -d "'")
     COMPLEXITY=$(grep -m1 "^complexity:" "$WRK_FILE" 2>/dev/null | sed 's/^complexity:[[:space:]]*//' | tr -d '"' | tr -d "'")
+    SUBCATEGORY=$(grep -m1 "^subcategory:" "$WRK_FILE" 2>/dev/null | sed 's/^subcategory:[[:space:]]*//' | tr -d '"' | tr -d "'")
 
     # Determine directory (for column mapping)
     DIR_NAME=$(basename "$(dirname "$WRK_FILE")")
@@ -132,9 +133,12 @@ for WRK_FILE in "${FILES[@]}"; do
     if [[ -n "$CAT_LABEL" ]]; then
         LABELS="$LABELS,$CAT_LABEL"
     fi
+    if [[ -n "$SUBCATEGORY" ]]; then
+        LABELS="$LABELS,domain:$SUBCATEGORY"
+    fi
 
     # Build body — simple fallback to avoid hangs on malformed YAML
-    BODY="Migrated from $BASENAME. Category: ${CATEGORY:-unknown}. Complexity: ${COMPLEXITY:-unknown}. Priority: ${PRIORITY:-unknown}."
+    BODY="Migrated from $BASENAME. Category: ${CATEGORY:-unknown}. Subcategory: ${SUBCATEGORY:-unknown}. Complexity: ${COMPLEXITY:-unknown}. Priority: ${PRIORITY:-unknown}."
 
     ISSUE_TITLE="$BASENAME: $TITLE"
     # Truncate to GitHub's 256 char limit

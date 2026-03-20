@@ -156,6 +156,7 @@ fi
 
 # Extract category from archived WRK frontmatter
 CATEGORY=$(grep -oP '^category:\s*\K\S+' "$ARCHIVE_PATH" 2>/dev/null || echo "uncategorized")
+SUBCATEGORY=$(grep -oP '^subcategory:\s*\K\S+' "$ARCHIVE_PATH" 2>/dev/null || echo "")
 
 # Close WRK GitHub Issue (non-blocking)
 ISSUE_UPDATER="${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py"
@@ -172,6 +173,7 @@ import sys, re, subprocess
 fw_path = sys.argv[1]
 wrk_id = sys.argv[2]
 category = sys.argv[3] if len(sys.argv) > 3 else 'uncategorized'
+subcategory = sys.argv[4] if len(sys.argv) > 4 else ''
 text = open(fw_path).read()
 titles = re.findall(r'title:\s*[\"'\''](.*?)[\"'\'']|title:\s*(.+)', text)
 for match in titles:
@@ -179,12 +181,14 @@ for match in titles:
     if not title:
         continue
     label_args = ['--label', 'follow-on', '--label', f'cat:{category}']
+    if subcategory:
+        label_args += ['--label', f'domain:{subcategory}']
     body = f'Follow-on from {wrk_id} archive.\n\nSource: {fw_path}'
     subprocess.run(
         ['gh', 'issue', 'create', '--repo', 'vamseeachanta/workspace-hub',
          '--title', f'FW ({wrk_id}): {title}'] + label_args + ['--body', body],
         capture_output=True, text=True, timeout=30
     )
-" "$FW_FILE" "$ITEM_ID" "$CATEGORY" 2>/dev/null || true
+" "$FW_FILE" "$ITEM_ID" "$CATEGORY" "$SUBCATEGORY" 2>/dev/null || true
 fi
 
