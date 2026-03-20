@@ -1,0 +1,8 @@
+wrk_id: WRK-5082
+stage: 8
+version: 1
+claimed_at: "2026-03-19T04:26:00Z"
+decision: proceed
+owner: claude
+route: C
+quota_snapshot: "claude N/A, codex 100%, gemini 100%"

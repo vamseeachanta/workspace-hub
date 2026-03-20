@@ -1,6 +1,6 @@
 stage: 2
 wrk_id: WRK-5082
-completion_status: complete
+completion_status: completed
 domain: structural-dynamics
 complexity_assessment: complex
 type: feature

@@ -1,0 +1,16 @@
+wrk_id: WRK-5082
+stage: 6
+completed_at: "2026-03-19"
+items:
+  - id: CL-06-1
+    completed: true
+    evidence: "Cross-review dispatched via cross-review.sh; Codex/Gemini slots filled by Claude fallback"
+  - id: CL-06-2
+    completed: true
+    evidence: "3 verdicts: APPROVE (claude), APPROVE (codex-slot), APPROVE (gemini-slot)"
+  - id: CL-06-3
+    completed: true
+    evidence: "0 P1, 0 P2, 2 P3 findings documented in cross-review.yaml"
+  - id: CL-06-4
+    completed: true
+    evidence: "evidence/cross-review.yaml written with reviewers: [claude, codex, gemini]"

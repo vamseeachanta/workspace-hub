@@ -2,3 +2,7 @@ stage: 4
 wrk_id: WRK-5082
 human_gate: false
 started_at: "2026-03-19T23:15:04.225913+00:00"
+completed_at: "2026-03-20T03:48:49.884152+00:00"
+duration_s: 16425.7
+completed_at: "2026-03-20T03:51:02.884257+00:00"
+duration_s: 16558.7

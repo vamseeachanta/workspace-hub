@@ -1,0 +1,166 @@
+wrk_id: WRK-5082
+generated_at: '2026-03-20T04:25:00Z'
+reviewed_by: agent
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with full mission, design basis, and decomposition.
+  evidence: .claude/work-queue/pending/WRK-5082.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-5082/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route C, complex, priority medium.
+  evidence: .claude/work-queue/pending/WRK-5082.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Feature plan draft in progress.
+  evidence: specs/modules/warm-stargazing-brook.md
+- order: 5
+  stage: User Review Plan
+  status: done
+  human_decision_required: 'yes'
+  owner: user
+  blocker: 'no'
+  comment: User reviews and approves plan.
+  evidence: .claude/work-queue/assets/WRK-5082/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross Review
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Multi-provider cross-review.
+  evidence: ''
+- order: 7
+  stage: Plan Final Gate
+  status: done
+  human_decision_required: 'yes'
+  owner: user
+  blocker: 'no'
+  comment: Human confirms final plan.
+  evidence: .claude/work-queue/assets/WRK-5082/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim
+  status: in_progress
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 9
+  stage: Route
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 10
+  stage: Execute
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 11
+  stage: Lifecycle HTML
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 12
+  stage: AC Test Matrix
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 13
+  stage: Cross Review Closure
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 14
+  stage: Gate Evidence
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 15
+  stage: Future Work
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 16
+  stage: Resource Intelligence Update
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 17
+  stage: User Review Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: user
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 18
+  stage: Reclaim
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: ''
+  evidence: ''

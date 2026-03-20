@@ -1,0 +1,19 @@
+stage: 3
+wrk_id: WRK-1339
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    note: "20 textbooks need deep extraction, 0 currently deep-extracted"
+  - id: CL-03-2
+    text: "Confirm route, workstations, orchestrator"
+    completed: true
+    note: "Route C, ace-linux-1, Claude orchestrator"
+  - id: CL-03-3
+    text: "Surface open questions; update WRK frontmatter"
+    completed: true
+    note: "No open questions. Frontmatter already has route C, complex, high priority."
+  - id: CL-03-4
+    text: "Update lifecycle HTML"
+    completed: true
+    note: "Stage 3 chip updated"

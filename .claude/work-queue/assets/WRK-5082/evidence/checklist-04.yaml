@@ -1,0 +1,22 @@
+wrk_id: WRK-5082
+stage: 4
+completed_at: "2026-03-19"
+items:
+  - id: CL-04-1
+    completed: true
+    evidence: "Scripts-over-LLM audit in specs/modules/warm-stargazing-brook.md — pipeline.py identified"
+  - id: CL-04-2
+    completed: true
+    evidence: "EnterPlanMode entered; explored existing parachute module (75 tests passing)"
+  - id: CL-04-3
+    completed: true
+    evidence: "5 ACs defined in plan file"
+  - id: CL-04-4
+    completed: true
+    evidence: "6-step pseudocode for pipeline.py in plan file"
+  - id: CL-04-5
+    completed: true
+    evidence: "7-entry test plan in plan file"
+  - id: CL-04-6
+    completed: true
+    evidence: "GitHub Issue #1242 replaces HTML (WRK-1330 migration); redirect at WRK-5082-lifecycle.html"

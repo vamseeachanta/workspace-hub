@@ -21,6 +21,9 @@ from scripts.data.doc_intelligence.chart_extractor import (
 from scripts.data.doc_intelligence.table_exporter import (
     export_tables_from_manifest,
 )
+from scripts.data.doc_intelligence.naval_example_parsers import (
+    parse_examples_multi_format,
+)
 from scripts.data.doc_intelligence.worked_example_parser import (
     parse_enhanced_example,
 )
@@ -49,14 +52,18 @@ def deep_extract_manifest(
     tables_dir = output_dir / "tables"
     table_result = export_tables_from_manifest(manifest_dict, tables_dir)
 
-    # 2. Worked example parsing from section text
+    # 2. Worked example parsing — try multi-format first, fall back to legacy
     examples = []
     for section in manifest_dict.get("sections", []):
         text = section.get("text", "")
         source = section.get("source", {})
-        parsed = parse_enhanced_example(text, domain=domain, source=source)
-        if parsed:
-            examples.append(parsed)
+        multi = parse_examples_multi_format(text, source, domain)
+        if multi:
+            examples.extend(multi)
+        else:
+            parsed = parse_enhanced_example(text, domain=domain, source=source)
+            if parsed:
+                examples.append(parsed)
 
     # 3. Chart metadata (image extraction only if pdf_path provided)
     figure_refs = manifest_dict.get("figure_refs", [])

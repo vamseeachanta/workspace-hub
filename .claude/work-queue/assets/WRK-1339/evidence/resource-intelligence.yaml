@@ -1,0 +1,75 @@
+completion_status: complete
+domain: document-intelligence
+complexity_assessment: complex
+route: C
+
+existing_infrastructure:
+  scripts:
+    - scripts/data/doc-intelligence/batch-extract-naval.sh
+    - scripts/data/doc-intelligence/deep-extract.py
+    - scripts/data/doc-intelligence/build-doc-intelligence.py
+    - scripts/data/doc-intelligence/extract-document.py
+    - scripts/data/document-index/extract-en400-examples.py
+    - scripts/data/document-index/naval-arch-intelligence.py
+    - scripts/data/doc-intelligence/build-ship-plans-index.py
+    - scripts/data/doc-intelligence/query-doc-intelligence.py
+    - scripts/data/doc-intelligence/promote-to-code.py
+  data:
+    manifests: 146  # all naval-arch PDFs have manifests
+    worked_examples: 107  # from 20 docs
+    equations: 815  # from 28 docs
+    definitions: 248  # from 27 docs
+    procedures: 521  # from 29 docs
+    constants: 1826
+    en400_separate: 33  # 8 of 10 chapters
+    deep_extractions_naval: 0  # ZERO textbooks deep-extracted
+
+gap_analysis:
+  deep_extraction_needed:
+    - Ship-Hydrostatics-and-Stability-Biran.pdf  # 351p, ~30+ worked examples
+    - Ship-Hydrostatics-and-Stability-2ndEd.pdf
+    - Marine-Hydrodynamics-Newman-2018.pdf  # MIT classic
+    - Ship-Structural-Analysis-Design-Hughes-Paik.pdf  # structural/FEA
+    - USNA-EN400-Principles-Ship-Performance-2020.pdf  # missing Ch 6,9
+    - Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    - Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    - Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf
+    - Basic-Ship-Theory-Vol1-Rawson-Tupper-2001.pdf
+    - Introduction-to-Naval-Architecture-Tupper-1996.pdf
+    - Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    - Practical-Ship-Hydrodynamics-Bertram-2000.pdf
+    - Offshore-Hydromechanics-2001.pdf
+    - Fluid-Dynamic-Drag-Hoerner-1965.pdf
+    - Theoretical-Naval-Architecture-Attwood-1899.pdf
+    - Design-Principles-Ships-Marine-Structures.pdf
+    - Engineering-Mathematics-Ship-Design.pdf
+    - Ship-Construction-Eyres-2001.pdf
+    - DNV-RP-C205-Environmental-Conditions-Loads-2007.pdf
+    - DNV-RP-H103-Marine-Operations-2010.pdf
+  en400_missing_chapters: [6, 9]
+  ship_plans_dimensional: 0  # 110 plans, zero dimensional data
+  pending_downloads: 6  # ABS, IMO, DTIC, UMich, Gillmer
+  topic_gaps:
+    - stability_gz_curves  # Biran has many, only 8 extracted
+    - trim_calculations
+    - holtrop_mennen_resistance
+    - strip_theory_seakeeping
+    - hull_girder_bending
+    - buckling_analysis
+    - sn_curve_fatigue
+    - morison_equation
+
+prior_wrks:
+  - WRK-1113  # doc-intel squeeze (drilling riser + CP)
+  - WRK-5035  # gitignore + promoted/ scaffold
+  - WRK-5037  # extract-document.py
+  - WRK-5039  # query-doc-intelligence.py
+  - WRK-5040  # promote-to-code.py
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/knowledge
+    - workspace-hub/ecosystem-terminology
+  relevant:
+    - data/document-index-pipeline

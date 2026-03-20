@@ -1,0 +1,16 @@
+wrk_id: WRK-5082
+stage: 8
+completed_at: "2026-03-19"
+items:
+  - id: CL-08-1
+    completed: true
+    evidence: "Quota assessed: proceed"
+  - id: CL-08-2
+    completed: true
+    evidence: "claim-evidence.yaml written"
+  - id: CL-08-3
+    completed: true
+    evidence: "Feature WRK status → coordinating"
+  - id: CL-08-4
+    completed: true
+    evidence: "activation.yaml written with gates confirmed"

@@ -1,0 +1,8 @@
+stage: 5
+wrk_id: WRK-5082
+human_gate: true
+started_at: "2026-03-20T03:51:35.660683+00:00"
+completed_at: "2026-03-20T03:55:40.615576+00:00"
+duration_s: 245.0
+completed_at: "2026-03-20T03:56:00.148071+00:00"
+duration_s: 264.5

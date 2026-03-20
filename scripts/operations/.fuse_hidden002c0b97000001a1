@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Sanitize machine names, IPs, and usernames from repo files.
+# Usage: ./sanitize-machine-names.sh [--dry-run]
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+DRY_RUN=false
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
+
+MEMORY_DIR="/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
+
+# Ordered replacement pairs: pattern|replacement
+# Order matters: longer/more-specific patterns first
+declare -a PAIRS=(
+  # Machine names
+  'aceengineer-va|home-win'
+  'acma-ansys05|licensed-win-1'
+  'ACMA-ANSYS05|licensed-win-1'
+  'acma-ws014|licensed-win-2'
+  'ace-linux-2|dev-secondary'
+  'ace-linux-1|dev-primary'
+  'ace_linux_2|dev_secondary'
+  'ace_linux_1|dev_primary'
+  'MacBook Air|macbook-portable'
+
+  # Tailscale IPs (before local IPs)
+  '100\.107\.64\.76|10.1.0.1'
+  '100\.93\.161\.27|10.1.0.2'
+
+  # Local IPs (most specific first)
+  '192\.168\.1\.100|10.0.0.1'
+  '192\.168\.1\.103|10.0.0.2'
+  '192\.168\.1\.148|10.0.0.3'
+  '192\.168\.1\.166|10.0.0.4'
+
+  # Usernames in common contexts
+  'vamsee\.achanta|devuser'
+  'krishna@192|devuser2@10'
+  'user `vamsee`|user `devuser`'
+  'user: vamsee|user: devuser'
+)
+
+# Collect all search patterns for a single grep pass
+all_patterns=""
+for pair in "${PAIRS[@]}"; do
+  pattern="${pair%%|*}"
+  if [[ -z "$all_patterns" ]]; then
+    all_patterns="$pattern"
+  else
+    all_patterns="$all_patterns|$pattern"
+  fi
+done
+
+echo "Searching for matching files..."
+
+# Use grep -rl with combined pattern (much faster than find+xargs)
+mapfile -t FILES < <(
+  {
+    grep -rlE "$all_patterns" "$REPO_ROOT" \
+      --include='*.md' --include='*.yaml' --include='*.yml' \
+      --include='*.json' --include='*.sh' --include='*.py' \
+      --include='*.txt' --include='*.toml' --include='*.jsonl' \
+      --exclude-dir='.git' \
+      --exclude-dir='assetutilities' --exclude-dir='digitalmodel' \
+      --exclude-dir='worldenergydata' --exclude-dir='assethold' \
+      --exclude-dir='OGManufacturing' --exclude-dir='node_modules' \
+      2>/dev/null || true
+    grep -rlE "$all_patterns" "$MEMORY_DIR" \
+      --include='*.md' 2>/dev/null || true
+  } | sort -u
+)
+
+echo "Found ${#FILES[@]} files with matches."
+
+changed=0
+for fpath in "${FILES[@]}"; do
+  [[ -f "$fpath" ]] || continue
+  [[ -r "$fpath" ]] || continue
+
+  if $DRY_RUN; then
+    echo "  Would modify: $fpath"
+    ((changed++))
+  else
+    for pair in "${PAIRS[@]}"; do
+      pattern="${pair%%|*}"
+      replacement="${pair##*|}"
+      sed -i -E "s/$pattern/$replacement/g" "$fpath"
+    done
+    echo "  Modified: $fpath"
+    ((changed++))
+  fi
+done
+
+echo ""
+echo "Total files modified: $changed"

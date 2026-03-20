@@ -2,7 +2,9 @@ stage: 1
 wrk_id: WRK-5082
 scope_approved: true
 approved_by: user
+reviewer: vamsee
 approved_at: "2026-03-16"
+confirmed_at: "2026-03-16T12:00:00Z"
 type: feature
 complexity: complex
 children_planned: 5

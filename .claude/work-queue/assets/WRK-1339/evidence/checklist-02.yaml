@@ -1,0 +1,27 @@
+stage: 2
+wrk_id: WRK-1339
+items:
+  - id: CL-02-1
+    text: "Codebase search completed (existing code, skills, tests)"
+    completed: true
+    note: "Found 9 scripts, 146 manifests, 1691 extracted records across 5 JSONL files"
+  - id: CL-02-2
+    text: "Knowledge base queried"
+    completed: true
+    note: "query-knowledge.sh --category document-intelligence returned 5 prior WRKs"
+  - id: CL-02-3
+    text: "Online research performed (WebSearch)"
+    completed: true
+    note: "No new documents needed — collection already comprehensive (30 textbooks)"
+  - id: CL-02-4
+    text: "Discovered documents saved to docu-intel + index updated"
+    completed: true
+    note: "No new documents to add. 6 pending manual downloads documented."
+  - id: CL-02-5
+    text: "Complexity assessed (simple/medium/complex)"
+    completed: true
+    note: "Complex — 20 textbooks need deep extraction, new extraction scripts required"
+  - id: CL-02-6
+    text: "evidence/resource-intelligence.yaml written"
+    completed: true
+    note: "Written with gap analysis, prior WRKs, existing infrastructure inventory"
