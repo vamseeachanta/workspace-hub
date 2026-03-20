@@ -28,35 +28,11 @@ case "$subcmd" in
         fi
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_start" "$provider" "/work routing invoked"
         log_gate_event_if_available "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"
-        echo "Workflow orchestrator '$provider' acknowledged /work run contract."
-        echo ""
-        echo "╔══════════════════════════════════════════════════════════════════╗"
-        echo "║  MANDATORY: Stage Machinery Required (WRK-1316)                 ║"
-        echo "║                                                                  ║"
-        echo "║  For EVERY stage, you MUST call:                                 ║"
-        echo "║    1. uv run --no-project python scripts/work-queue/             ║"
-        echo "║       start_stage.py WRK-NNN N                                   ║"
-        echo "║    2. Do the stage work                                          ║"
-        echo "║    3. uv run --no-project python scripts/work-queue/             ║"
-        echo "║       exit_stage.py WRK-NNN N                                    ║"
-        echo "║                                                                  ║"
-        echo "║  Human gates (1, 5, 7, 17): STOP and wait for user to type       ║"
-        echo "║    \"I approve stage N\" — silence is NOT approval.               ║"
-        echo "║                                                                  ║"
-        echo "║  L3 hooks WILL BLOCK: evidence writes without start_stage,       ║"
-        echo "║    Bash cat/echo to evidence/, git commit without stage timing.  ║"
-        echo "║                                                                  ║"
-        echo "║  Do NOT write evidence files directly. Do NOT bypass stages.     ║"
-        echo "╚══════════════════════════════════════════════════════════════════╝"
-        echo ""
-        # Auto-load checkpoint if available for active WRK
+        # Dispatch: read checkpoint, map stage to group runner, print exact command
         if [[ -n "$active_wrk" ]]; then
-            _cp="${WS_HUB}/.claude/work-queue/assets/${active_wrk}/checkpoint.yaml"
-            if [[ -f "$_cp" ]]; then
-                echo ""
-                echo "$(grep -E '^(wrk_id|stage|stage_name|next_action)' "$_cp" | head -4)"
-                echo "  → Checkpoint found. context loaded via start_stage.py"
-            fi
+            bash "${WS_HUB}/scripts/work-queue/dispatch-run.sh" "$active_wrk"
+        else
+            echo "No active WRK. Set one with: bash scripts/work-queue/set-active-wrk.sh WRK-NNN"
         fi
         # Task classifier routing recommendation (WRK-118 Phase 3)
         _classifier="${WS_HUB}/scripts/coordination/routing/lib/task_classifier.sh"
