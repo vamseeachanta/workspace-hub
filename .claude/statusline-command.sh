@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Status line for workspace-hub — portable across machines
-# Shows: model | branch | WRK counts | cost | context usage
+# Shows: model | branch | WRK counts + active | AI usage | cost | context
 set -euo pipefail
 
 input=$(cat)
@@ -20,31 +20,27 @@ branch=$(cd "$ws_root" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/nul
 
 # Work queue counts (fast find, no recursion)
 wq="$ws_root/.claude/work-queue"
-top_wrk=""
 if [[ -d "$wq/pending" ]]; then
     p=$(find "$wq/pending" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
     w=$(find "$wq/working" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
     b=$(find "$wq/blocked" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    
-    # Extract top priority item from INDEX.md (first pending/high item)
-    if [[ -f "$wq/INDEX.md" ]]; then
-        top_line=$(grep "| pending | high" "$wq/INDEX.md" | head -n 1 || true)
-        if [[ -n "$top_line" ]]; then
-            top_id=$(echo "$top_line" | cut -d'|' -f2 | xargs)
-            top_title=$(echo "$top_line" | cut -d'|' -f3 | xargs | cut -c1-30)
-            top_wrk=" [TOP:${top_id}-${top_title}...]"
-        fi
-    fi
 else
     p=0; w=0; b=0
 fi
 
+# Active WRK item (from per-machine state file)
+active_wrk=""
+active_wrk_file="$ws_root/.claude/state/active-wrk"
+if [[ -f "$active_wrk_file" ]]; then
+    active_id=$(head -1 "$active_wrk_file" | tr -d '[:space:]')
+    [[ -n "$active_id" ]] && active_wrk=" >${active_id}"
+fi
+
 # AI usage remaining percentages
-# Primary: agent-quota-latest.json (OAuth API, week_pct = % used → invert to remaining)
-# Fallback: ~/.cache/agent-quota.json (computed from stats-cache, may be stale)
+# C: uses Claude.ai 7-day subscription quota (from statusline JSON) as primary,
+# falls back to agent-quota file. O: and G: from agent-quota files.
 quota_primary="$ws_root/config/ai-tools/agent-quota-latest.json"
 quota_cache="${HOME}/.cache/agent-quota.json"
-ai_usage="C:-|O:-|G:-"
 
 extract_pct() {
     local provider="$1" val
@@ -64,23 +60,29 @@ extract_pct() {
     fi
 }
 
-c_pct=$(extract_pct "claude")
-o_pct=$(extract_pct "codex")
-g_pct=$(extract_pct "gemini")
-
-# Sonnet tracking: show tighter bucket with (S) indicator
-c_display="${c_pct:--}%"
-if [[ -f "$quota_primary" ]]; then
-    s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
-        "$quota_primary" 2>/dev/null)
-    if [[ -n "$s_val" && "$s_val" != "null" && -n "$c_pct" ]]; then
-        s_remaining=$(awk -v s="$s_val" 'BEGIN { printf "%d", 100 - s }')
-        if (( s_remaining < c_pct )); then
-            c_display="${s_remaining}%(S)"
+# Claude: prefer 7-day subscription remaining from API (most accurate)
+week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+if [[ -n "$week_used" ]]; then
+    c_display=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')"%"
+else
+    # Fallback to agent-quota file
+    c_pct=$(extract_pct "claude")
+    c_display="${c_pct:--}%"
+    # Sonnet sub-bucket: show tighter limit with (S) indicator
+    if [[ -f "$quota_primary" ]]; then
+        s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
+            "$quota_primary" 2>/dev/null)
+        if [[ -n "$s_val" && "$s_val" != "null" && -n "$c_pct" ]]; then
+            s_remaining=$(awk -v s="$s_val" 'BEGIN { printf "%d", 100 - s }')
+            if (( s_remaining < c_pct )); then
+                c_display="${s_remaining}%(S)"
+            fi
         fi
     fi
 fi
 
+o_pct=$(extract_pct "codex")
+g_pct=$(extract_pct "gemini")
 ai_usage="C:${c_display}|O:${o_pct:--}%|G:${g_pct:--}%"
 
 # Repo module name (basename of workspace root)
@@ -112,7 +114,7 @@ parts+=("\033[1;33m[${hostname_s}]\033[0m")
 parts+=("\033[1;35m${model}\033[0m")
 parts+=("\033[1;37m${repo_name}\033[0m")
 parts+=("\033[33m${branch}\033[0m")
-parts+=("\033[36mWRK:${p}p/${w}w/${b}b${top_wrk}\033[0m")
+parts+=("\033[36mWRK:${p}p/${w}w/${b}b${active_wrk}\033[0m")
 parts+=("\033[35m${ai_usage}\033[0m")
 parts+=("${cost_fmt}")
 parts+=("ctx:${ctx}")
