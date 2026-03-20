@@ -161,6 +161,9 @@ class TupperBiranParser:
         solution_text = text[sol_match.start():]
         expected, unit = _extract_final_answer(solution_text)
         if expected is None:
+            # Solution keyword at section boundary — try full text
+            expected, unit = _extract_final_answer(text)
+        if expected is None:
             return []
         inputs = parse_prose_inputs(text)
         return [_build_result(
@@ -205,12 +208,63 @@ class AttwoodPNAParser:
         )]
 
 
+# ── Format D: Loose numbered example (no Solution keyword) ────────
+
+_FMT_D_RE = re.compile(
+    r"Example\s+([\d]+(?:\.[\d]+)*)\s*(?:[:\-]\s*(.+?))?$",
+    re.MULTILINE | re.IGNORECASE,
+)
+
+
+class LooseNumberedParser:
+    """Parses ``Example N.N`` with calculations but no ``Solution`` keyword.
+
+    Catches textbooks where section boundaries split example from solution,
+    or where calculations appear inline after the example statement.
+    """
+
+    def can_parse(self, text: str) -> bool:
+        has_example = bool(_FMT_D_RE.search(text))
+        no_solution = not bool(
+            re.search(r"^Solution\s*$", text, re.MULTILINE | re.IGNORECASE)
+        )
+        no_given = not bool(
+            re.search(r"\bGiven\s*:", text, re.IGNORECASE)
+        )
+        has_equals = bool(re.search(r"=\s*[\d,]+(?:\.\d+)?", text))
+        return has_example and no_solution and no_given and has_equals
+
+    def parse(self, text: str, source: dict, domain: str) -> list[dict]:
+        m = _FMT_D_RE.search(text)
+        if not m:
+            return []
+        number = m.group(1)
+        title = (m.group(2) or "").strip()
+        if not title:
+            end = m.end()
+            next_lines = text[end:end + 200].strip().split("\n")
+            prose = " ".join(
+                ln.strip() for ln in next_lines[:3] if ln.strip()
+            )
+            title = prose[:80].rstrip(".")
+
+        expected, unit = _extract_final_answer(text)
+        if expected is None:
+            return []
+        inputs = parse_prose_inputs(text)
+        return [_build_result(
+            number, title, source, domain,
+            expected, unit, inputs, "loose_numbered",
+        )]
+
+
 # ── Dispatcher ──────────────────────────────────────────────────────
 
 _PARSERS: list[ExampleParserStrategy] = [
     EN400Parser(),
     TupperBiranParser(),
     AttwoodPNAParser(),
+    LooseNumberedParser(),
 ]
 
 
