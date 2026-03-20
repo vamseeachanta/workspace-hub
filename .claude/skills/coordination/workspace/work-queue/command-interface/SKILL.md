@@ -19,7 +19,7 @@ scripts_exempt: true
 | `/work list` | Status — read INDEX.md |
 | `/work list --by-category` | Category-grouped view (HIGH first) |
 | `/work list --category <name> [--subcategory <sub>]` | Narrow by category |
-| `/work find <keyword> [--archived]` | Search items by keyword (title + body) |
+| `/work find <keyword> [--archived] [--gh]` | Search items by keyword (local; `--gh` adds GitHub Issues) |
 | `/work status WRK-NNN` | Detail for one item |
 | `/work archive WRK-NNN` | Manually archive |
 | `/work report` | Queue health summary |

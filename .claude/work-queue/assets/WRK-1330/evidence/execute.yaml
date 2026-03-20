@@ -1,0 +1,34 @@
+wrk_id: WRK-1330
+stage: execute
+status: complete
+completed_at: "2026-03-19"
+commits:
+  - hash: 0eea9aff
+    message: "feat(WRK-1330): add GitHub Issue template renderer and archive synthesis scripts"
+    files: [scripts/knowledge/update-github-issue.py, scripts/knowledge/synthesize_archive.py]
+  - hash: 0b7228c9
+    message: "feat(WRK-1330): wire GitHub Issue updates into stage lifecycle and archive"
+    files: [scripts/work-queue/start_stage.py, scripts/work-queue/exit_stage.py, scripts/work-queue/archive-item.sh]
+  - hash: 9003d2de
+    message: "feat(WRK-1330): delete HTML infrastructure + add review-open-issues + backfill knowledge base"
+    files: [scripts/knowledge/review-open-issues.py]
+  - hash: c9fc4868
+    message: "docs: update roadmap with archive synthesis findings and 60/20/20 investment shift"
+    files: [docs/roadmap-2026-h1.md]
+test_count: 26
+test_files:
+  - scripts/knowledge/tests/test_update_github_issue.py
+  - scripts/knowledge/tests/test_synthesize_archive.py
+acceptance_criteria:
+  ac1_knowledge_backfill: PASS  # 410 entries in wrk-completions.jsonl
+  ac2_category_synthesis: PASS  # synthesize_archive.py produces grouped reports
+  ac3_future_work_issues: PASS  # archive-item.sh creates follow-on GitHub Issues
+  ac4_roadmap_updated: PASS     # c9fc4868
+  ac5_auto_issue_creation: PASS # update-github-issue.py wired into lifecycle
+children_archived:
+  - WRK-1331
+  - WRK-1332
+  - WRK-1333
+  - WRK-1334
+  - WRK-1335
+  - WRK-1336
