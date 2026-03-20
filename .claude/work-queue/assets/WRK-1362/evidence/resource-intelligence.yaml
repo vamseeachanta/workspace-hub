@@ -1,0 +1,80 @@
+stage: 2
+wrk_id: WRK-1362
+surveyed_at: "2026-03-20"
+
+existing_code:
+  - path: digitalmodel/src/digitalmodel/structural/parachute/parachute_drag.py
+    status: production
+    capabilities:
+      - Single chute drag force (F = 0.5*rho*V^2*Cd*A*Cx)
+      - DragResult dataclass with lbs/N
+      - Unit conversions (mph_to_fps, chute_area)
+    gaps:
+      - No dual chute support
+      - No Stroud sizing logic
+      - No sensitivity analysis (aero lift, traction)
+
+  - path: digitalmodel/src/digitalmodel/structural/parachute/frame_model.py
+    status: production
+    capabilities:
+      - GT1R frame geometry (6 nodes, 6 members — rear trunk only)
+      - 4130 chromoly material (63 ksi yield, 97 ksi ultimate)
+      - tube_section_properties() for circular hollow sections
+    gaps:
+      - Under-hood frame (Page 2) not modeled
+
+  - path: digitalmodel/src/digitalmodel/structural/parachute/frame_solver.py
+    status: production
+    capabilities:
+      - 2D frame solver (3 DOF/node: ux, uy, theta)
+      - Euler-Bernoulli beam elements
+      - Global stiffness assembly, penalty BC method
+      - Member end forces in local coordinates
+    gaps: []
+
+  - path: digitalmodel/src/digitalmodel/structural/parachute/member_check.py
+    status: production
+    capabilities:
+      - tube_stress, von_mises_tube, unity_ratio
+      - bolt_shear_check, weld_throat_check, pin_shear_check
+      - check_all_members (batch member checks)
+    gaps: []
+
+existing_tests:
+  - path: digitalmodel/tests/structural/parachute/test_parachute_drag.py
+    count: 24
+    coverage: unit conversions, hand-calc drag, Cd sensitivity, ChatGPT cross-validation
+  - path: digitalmodel/tests/structural/parachute/test_frame_model.py
+    count: varies
+    coverage: geometry, section properties, material constants
+  - path: digitalmodel/tests/structural/parachute/test_frame_solver.py
+    count: varies
+    coverage: cantilever, simple frame, reaction equilibrium
+  - path: digitalmodel/tests/structural/parachute/test_member_check.py
+    count: varies
+    coverage: stress calcs, bolt/weld/pin checks, unity ratios
+
+reference_docs:
+  - path: digitalmodel/docs/domains/structural/parachute/parachute-aerodynamics.md
+    content: |
+      Cd by chute type, Cx opening shock factors, NHRA/SFI requirements,
+      Stroud product data (models 400-470), deployment dynamics, canonical refs
+
+  - path: assets/WRK-5082/
+    content: |
+      Client photos (6 JPEGs), hand sketches PDF (2 pages),
+      annotated force diagram, reference links
+
+uncommitted_work:
+  - path: digitalmodel/src/digitalmodel/structural/parachute/chute_assessment.py
+    status: written, 25/25 tests passing, NOT committed
+    capabilities:
+      - DualChuteResult, StroudRecommendation, TractionAssessment, LoadCaseResult
+      - calculate_dual_chute_drag()
+      - recommend_stroud_chute() with Stroud lookup tables
+      - calculate_aero_lift(), calculate_tire_traction()
+      - assess_all_load_cases() — orchestrator for all 3 load cases
+  - path: digitalmodel/tests/structural/parachute/test_chute_assessment.py
+    status: written, 25 tests, all passing
+  - path: .claude/work-queue/assets/WRK-1362/stroud-sizing-chart.py
+    status: written, generates PNG visualization

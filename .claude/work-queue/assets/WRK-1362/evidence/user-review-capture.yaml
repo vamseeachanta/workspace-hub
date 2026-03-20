@@ -1,0 +1,8 @@
+stage: 1
+wrk_id: WRK-1362
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-20"
+notes: |
+  User approved scope. Additional request: add Stroud sizing charts
+  and show where GT1R R35 (3600 lbs, 200/250 MPH) lands on the graph.
