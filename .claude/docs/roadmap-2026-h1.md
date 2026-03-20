@@ -59,7 +59,7 @@ were counted by title heuristic. Corrected counts are from frontmatter `target_r
 ## AI Provider Strategy
 
 ### Current State (March 2026)
-*Tool versions: Claude 2.1.72, Codex CLI 0.112.0, Gemini 0.32.1 (ace-linux-1, verified 2026-03-09)*
+*Tool versions: Claude 2.1.72, Codex CLI 0.112.0, Gemini 0.32.1 (dev-primary, verified 2026-03-09)*
 
 | Provider | Role Today | Unique Capability | Gap vs Claude |
 |----------|-----------|-------------------|---------------|
@@ -135,7 +135,7 @@ Items that directly advance the August 2026 vision. All others are secondary.
 | WRK-148 | ACE-GTM: go-to-market strategy stream | Client-facing | aceengineer-website |
 | WRK-259 | BSEE field economics case study | Client-facing | aceengineer-website |
 | WRK-382 | Marketing follow-up — brochure + website from WRK-373/375 | Client-facing | digitalmodel |
-| WRK-297 | SSHFS mounts — bidirectional file access ace-linux-1/2 | Infra | workspace-hub |
+| WRK-297 | SSHFS mounts — bidirectional file access dev-primary/2 | Infra | workspace-hub |
 | WRK-309 | Document intelligence — index and plan all stored docs | Infra | workspace-hub |
 | WRK-386 | Automated Gap-to-WRK Generator | Infra | workspace-hub |
 | WRK-343 | OpenFOAM technical debt audit | Infra | workspace-hub |

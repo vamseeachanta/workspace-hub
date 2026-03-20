@@ -1,7 +1,7 @@
 wrk_id: "WRK-1077"
 executed_at: "2026-03-09T22:30:00Z"
 executor: "claude"
-execution_host: "acma-ansys05"
+execution_host: "licensed-win-1"
 route: "A"
 steps_completed:
   - step: 1
@@ -12,7 +12,7 @@ steps_completed:
     result: "PASS — WRK-1077 claim succeeded"
   - step: 3
     action: "fix dev-env-check.sh hostname lowercase (CURRENT_HOSTNAME tr pipe)"
-    result: "PASS — manifest acma-ansys05.yml found correctly"
+    result: "PASS — manifest licensed-win-1.yml found correctly"
   - step: 4
     action: "fix verify-setup.sh keybindings Python — uv + cygpath -w"
     result: "PASS — keybindings.json: submitPrompt=ctrl+enter"

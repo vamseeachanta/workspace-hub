@@ -36,7 +36,7 @@ def repo_root(tmp_path):
         complexity: moderate
         category: engineering
         subcategory: cathodic-protection
-        computer: ace-linux-1
+        computer: dev-primary
         stage_evidence_ref: .claude/work-queue/assets/WRK-9999/evidence/stage-evidence.yaml
         spec_ref: specs/wrk/WRK-9999/plan.md
         ---

@@ -1,6 +1,6 @@
 wrk_id: WRK-687
 executed_at: 2026-03-03T00:00:00Z
-machine: ace-linux-1
+machine: dev-primary
 integrated_repo_tests:
   - name: test_wrk687_lifecycle.sh Stage A — log write and verify
     scope: repo
@@ -20,13 +20,13 @@ integrated_repo_tests:
     command: bash tests/test_wrk687_lifecycle.sh
     artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
     notes: git commit --allow-empty --dry-run exits without fatal error
-  - name: test_wrk687_lifecycle.sh Stage D — compilation (ace-linux-1 only)
+  - name: test_wrk687_lifecycle.sh Stage D — compilation (dev-primary only)
     scope: repo
     result: pass
     command: bash tests/test_wrk687_lifecycle.sh
     artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
     notes: Fixture signal file created; compilation report written to session-analysis/
-  - name: verify-log-presence.sh full run (ace-linux-1)
+  - name: verify-log-presence.sh full run (dev-primary)
     scope: repo
     result: pass
     command: bash scripts/work-queue/verify-log-presence.sh

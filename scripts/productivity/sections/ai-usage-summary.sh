@@ -100,7 +100,7 @@ if [[ -f "$STATUS_FILE" ]]; then
     echo ""
     echo "| Machine | Node | Claude | Codex | Gemini | gh | Status |"
     echo "|---------|------|--------|-------|--------|----|--------|"
-    for host in ace-linux-1 ace-linux-2 acma-ansys05; do
+    for host in dev-primary dev-secondary licensed-win-1; do
         hfile="$WORKSPACE_ROOT/config/ai_agents/status/$host.yaml"
         [[ ! -f "$hfile" ]] && continue
         status=$(grep "^status:" "$hfile" | awk '{print $2}')

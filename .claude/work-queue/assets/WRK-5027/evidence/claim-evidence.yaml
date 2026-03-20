@@ -5,4 +5,4 @@ orchestrator: claude
 provider: claude
 session_id: 2026-03-12-patterns-audit
 route: B
-notes: WRK-5027 claimed for execution on ace-linux-1 after Stage 7 approval
+notes: WRK-5027 claimed for execution on dev-primary after Stage 7 approval

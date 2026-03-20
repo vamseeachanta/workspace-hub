@@ -107,7 +107,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
       <div class="pill"><strong>Priority</strong>high</div>
-      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Workstation</strong>dev-primary</div>
       <div class="pill"><strong>Orchestrator</strong>claude</div>
       <div class="pill"><strong>Category</strong>harness</div>
       <div class="pill"><strong>Created</strong>2026-03-09</div>
@@ -175,7 +175,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">dev-primary</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s4">

@@ -5,8 +5,8 @@ gathered_at: 2026-03-09
 
 findings:
   - No existing backup script; scripts/operations/ has no backup-workspace.sh
-  - ace-linux-2 SSH works (passwordless from ace-linux-1)
-  - ace-linux-2 /mnt/ has 402 GB free (well within needs)
+  - dev-secondary SSH works (passwordless from dev-primary)
+  - dev-secondary /mnt/ has 402 GB free (well within needs)
   - Total backup payload today: ~2.4 GB (dominated by ~/.claude/projects/ at 2.0 GB)
   - Existing cron jobs use pattern: "0 H * * * bash <script> >> /tmp/<name>.log 2>&1"
   - No .claude/docs/workspace-recovery.md exists yet
@@ -20,4 +20,4 @@ skills:
 gaps: []
 risks:
   - ~/.claude/projects/ is in $HOME not in the hub repo root; rsync path must use $HOME explicitly
-  - ace-linux-2 /mnt/workspace-hub-backup/ directory must be created on first run
+  - dev-secondary /mnt/workspace-hub-backup/ directory must be created on first run

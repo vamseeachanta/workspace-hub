@@ -35,7 +35,7 @@ gate_evidence:
       - reviewer: "gemini"
         artifact: "scripts/review/results/20260302T045653Z-review-input.md-implementation-gemini.md"
         verdict: "NO_OUTPUT"
-    combined_verdict: "CONDITIONAL_PASS — Codex REQUEST_CHANGES resolved in both rounds; Claude + Gemini NO_OUTPUT per policy (watchdog timeout / not installed on ace-linux-1)."
+    combined_verdict: "CONDITIONAL_PASS — Codex REQUEST_CHANGES resolved in both rounds; Claude + Gemini NO_OUTPUT per policy (watchdog timeout / not installed on dev-primary)."
     synthesis_ref: ".claude/work-queue/assets/WRK-675/review.html"
     fallback: "NO_OUTPUT policy applies; Codex was available and reviewed in both rounds."
   tdd_gate:
@@ -55,5 +55,5 @@ deliverables:
   - path: "assets/WRK-656/wrk-656-orchestrator-comparison.html"
     description: "Updated: Canonical Flow panel, Script Alignment panel, Deviation Notes panel, Review row, fixed links"
 no_output_policy:
-  classification: "NO_OUTPUT from Claude (watchdog) and Gemini (not installed on ace-linux-1) — acceptable per SKILL.md policy."
-  rerun_guidance: "If Codex or Gemini available on ace-linux-2, rerun cross-review.sh all from that machine."
+  classification: "NO_OUTPUT from Claude (watchdog) and Gemini (not installed on dev-primary) — acceptable per SKILL.md policy."
+  rerun_guidance: "If Codex or Gemini available on dev-secondary, rerun cross-review.sh all from that machine."

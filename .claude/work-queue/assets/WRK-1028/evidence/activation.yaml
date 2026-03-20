@@ -7,7 +7,7 @@ set_active_wrk: true
 session_id: session-20260307-wrk1028
 orchestrator_agent: claude-sonnet-4-6
 orchestrator: claude
-workstation: ace-linux-1
+workstation: dev-primary
 plan_final_ref: .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
 gate_passed:
   gate_5_6: true

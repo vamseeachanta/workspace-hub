@@ -344,7 +344,7 @@ Observed indexed source buckets:
 | `ace_project` | `/mnt/ace/docs/K07NL17002-M00-IA-A-REP-00037_1.pdf` | local mounted drive |
 | `ace_standards` | `/mnt/ace/docs/_standards/og_standards_api_search.txt` | local mounted drive |
 | `og_standards` | `/mnt/ace/0000 O&G/0000 Codes & Standards/Codes & Standards Database.xls` | local mounted drive |
-| `dde_project` | `/mnt/remote/ace-linux-2/dde/documents/0000 Personal/11511/11511 Repair Analysis.pptx` | remote mounted drive |
+| `dde_project` | `/mnt/remote/dev-secondary/dde/documents/0000 Personal/11511/11511 Repair Analysis.pptx` | remote mounted drive |
 | `workspace_spec` | `/mnt/local-analysis/workspace-hub/specs/archive/legacy-agent-os/product/decisions.md` | local workspace |
 | `api_metadata` | `api://worldenergydata/BSEE` | API source |
 

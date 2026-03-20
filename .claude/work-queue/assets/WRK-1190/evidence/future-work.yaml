@@ -16,7 +16,7 @@ recommendations:
     disposition: spun-off-new
     captured: true
     status: captured
-    description: "Website timed out from ace-linux-1. May need headless browser or manual download workflow."
+    description: "Website timed out from dev-primary. May need headless browser or manual download workflow."
     blocked_by: []
   - id: FW-3
     priority: LOW

@@ -2,7 +2,7 @@
 # ABOUTME: Quick connect script for Linux/Mac machines to access Linux workspace
 # ABOUTME: Opens SSH connection in Tabby or fallback to terminal
 
-WORKSPACE_HOST="192.168.1.100"
+WORKSPACE_HOST="10.0.0.1"
 WORKSPACE_USER="vamsee"
 WORKSPACE_PORT=22
 

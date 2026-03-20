@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | PASS | reviewed=True, approved=True, artifact=workflow-final-review.html, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
-| Workstation contract gate | PASS | plan_workstations=ace-linux-1, execution_workstations=ace-linux-1 |
+| Workstation contract gate | PASS | plan_workstations=dev-primary, execution_workstations=dev-primary |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=5 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | pre-cutoff backfill (id=1009, created_at=2026-03-04T12:42:00Z) — log gate skipped |

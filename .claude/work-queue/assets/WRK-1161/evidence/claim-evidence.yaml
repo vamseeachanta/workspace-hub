@@ -3,6 +3,6 @@ stage: 8
 claimed_by: claude
 claimed_at: "2026-03-12T22:03:00Z"
 provider: claude
-workstation: ace-linux-1
+workstation: dev-primary
 route: A
 notes: Claimed for execution — Route A simple complexity

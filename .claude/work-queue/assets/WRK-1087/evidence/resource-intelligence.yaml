@@ -38,7 +38,7 @@ risks:
   - Session ID availability: log-action.sh must tolerate absence (use "unknown" fallback)
   - Hook performance: log-action.sh must complete <500ms (append-only jq write is fast)
   - Monthly rotation: cron or on-write check? On-write check is simpler and avoids cron dependency
-  - Compression requires gzip; confirm available on ace-linux-1 (yes, standard)
+  - Compression requires gzip; confirm available on dev-primary (yes, standard)
 
 decisions:
   - Separate from log-gate-event.sh (different format, different purpose)

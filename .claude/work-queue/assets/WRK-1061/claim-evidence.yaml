@@ -4,7 +4,7 @@ claimed_by: claude
 claimed_at: 2026-03-09
 orchestrator_agent: claude
 session_id: session_20260309
-workstation: ace-linux-1
+workstation: dev-primary
 plan_approved: true
 plan_reviewed: true
 route: B

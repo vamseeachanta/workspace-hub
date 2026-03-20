@@ -6,7 +6,7 @@ reviewer: vamsee
 confirmed: true
 decision: approved
 notes: |
-  Stage 17 approved. AC3/AC6 (bypass removal + fresh-session validation on ace-linux-1
-  and acma-ansys05) deferred as future work — captured in future-work.yaml.
+  Stage 17 approved. AC3/AC6 (bypass removal + fresh-session validation on dev-primary
+  and licensed-win-1) deferred as future work — captured in future-work.yaml.
   All other ACs complete: 23 TDD PASS, docs written, deny list covers minimums,
   settings.json committed and travels with the repo.

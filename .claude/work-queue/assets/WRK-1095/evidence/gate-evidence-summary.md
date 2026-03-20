@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['tdd_eval'], cross-review:['agent_cross_review'] |

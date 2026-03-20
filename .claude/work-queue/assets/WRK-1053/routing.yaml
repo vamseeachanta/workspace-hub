@@ -3,10 +3,10 @@ stage: 9
 routed_at: 2026-03-10T00:10:00Z
 route: B
 orchestrator: claude
-computer: ace-linux-1
+computer: dev-primary
 execution_workstations:
-  - ace-linux-1
+  - dev-primary
 rationale: >
   Route B (medium complexity) — 2 new scripts + 3 skill wiring updates.
   Self-contained workspace-hub work; no external compute required.
-  ace-linux-1 is the canonical workspace-hub execution machine.
+  dev-primary is the canonical workspace-hub execution machine.

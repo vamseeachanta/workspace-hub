@@ -2,7 +2,7 @@ wrk_id: WRK-1170
 stage: 8
 claimed_at: "2026-03-15T22:00:00Z"
 claimed_by: claude
-workstation: ace-linux-1
+workstation: dev-primary
 complexity: complex
 estimated_effort: medium
-route: ace-linux-1
+route: dev-primary

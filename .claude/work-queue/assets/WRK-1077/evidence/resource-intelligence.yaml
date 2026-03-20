@@ -10,10 +10,10 @@ skills:
     - dev-env-check
 findings:
   manifest:
-    path: specs/modules/hardware-inventory/manifests/acma-ansys05.yml
+    path: specs/modules/hardware-inventory/manifests/licensed-win-1.yml
     status: EXISTS
     notes: >
-      Already committed. Hostname = acma-ansys05,
+      Already committed. Hostname = licensed-win-1,
       repos: [OGManufacturing], agent_clis: claude>=1.0, codex>=0.1, gemini>=0.1
   scripts:
     install_hooks: "scripts/setup/install-all-hooks.sh (EXISTS — idempotent)"

@@ -5,11 +5,11 @@ next_action: |
   1. Remove "skipDangerousModePermissionPrompt": true from ~/.claude/settings.json
   2. Start a fresh Claude Code session (no bypass flag)
   3. Confirm normal operations (git, uv, bash scripts) work without permission prompts
-  4. Validate on acma-ansys05 (Windows) — same test
+  4. Validate on licensed-win-1 (Windows) — same test
   5. Return and write evidence/user-review-close.yaml (reviewer: vamsee, stage: 17)
 context_summary: |
   Implementation complete (Stage 10): .claude/settings.json has 118 allow + 13 deny patterns
-  derived from session audit across ace-linux-1 and ace-linux-2. TDD: 23 PASS.
+  derived from session audit across dev-primary and dev-secondary. TDD: 23 PASS.
   Docs: .claude/docs/permissions-extend.md. Only AC3/AC6 (bypass removal + validation)
   remain — these require a user action in a fresh session.
 updated_at: "2026-03-11"

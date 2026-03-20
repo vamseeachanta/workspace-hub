@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # compare-harness-state.sh — diff harness readiness across workstations
-# Checks ace-linux-2 via SSH; acma-ansys05 via stale-report detection.
+# Checks dev-secondary via SSH; licensed-win-1 via stale-report detection.
 # Usage: bash scripts/readiness/compare-harness-state.sh [--dry-run] [--force-ssh-fail]
 set -euo pipefail
 
@@ -23,29 +23,29 @@ log_deg()  { echo "  DEGRADED $1"; DEGRADED=1; }
 
 echo "--- compare-harness-state: $(date +%Y-%m-%dT%H:%M:%S) ---"
 
-# ── ace-linux-2: SSH diff ──────────────────────────────────────────────────
+# ── dev-secondary: SSH diff ──────────────────────────────────────────────────
 check_ace2() {
   local ssh_target="ace2"
   local ace2_hub="/mnt/workspace-hub"
-  local ace2_report="${STATE_DIR}/harness-readiness-ace-linux-2.yaml"
+  local ace2_report="${STATE_DIR}/harness-readiness-dev-secondary.yaml"
 
   if [[ "$FORCE_SSH_FAIL" == "1" ]]; then
-    log_deg "ace-linux-2: SSH unreachable (--force-ssh-fail) — skipping diff"
+    log_deg "dev-secondary: SSH unreachable (--force-ssh-fail) — skipping diff"
     return
   fi
 
   if [[ "$DRY_RUN" == "1" ]]; then
-    log_ok "ace-linux-2: dry-run — would SSH to ${ssh_target}"
+    log_ok "dev-secondary: dry-run — would SSH to ${ssh_target}"
     return
   fi
 
   # Attempt to fetch remote report via SSH (5s timeout)
   local remote_report
   remote_report=$(ssh -o ConnectTimeout=5 -o BatchMode=yes "$ssh_target" \
-    "cat ${ace2_hub}/.claude/state/harness-readiness-ace-linux-2.yaml" 2>/dev/null || echo "")
+    "cat ${ace2_hub}/.claude/state/harness-readiness-dev-secondary.yaml" 2>/dev/null || echo "")
 
   if [[ -z "$remote_report" ]]; then
-    log_deg "ace-linux-2: SSH unreachable or report absent — DEGRADED"
+    log_deg "dev-secondary: SSH unreachable or report absent — DEGRADED"
     return
   fi
 
@@ -59,25 +59,25 @@ check_ace2() {
   ace2_fails=${ace2_fails:-0}
 
   if [[ "$ace2_overall" == "pass" ]]; then
-    log_ok "ace-linux-2: overall=pass, fail_count=${ace2_fails}"
+    log_ok "dev-secondary: overall=pass, fail_count=${ace2_fails}"
   else
-    log_warn "ace-linux-2: overall=${ace2_overall}, fail_count=${ace2_fails} — run remediate-harness.sh"
+    log_warn "dev-secondary: overall=${ace2_overall}, fail_count=${ace2_fails} — run remediate-harness.sh"
   fi
 }
 check_ace2
 
-# ── acma-ansys05: stale-report detection (>25h) ───────────────────────────
+# ── licensed-win-1: stale-report detection (>25h) ───────────────────────────
 check_acma() {
-  local report="${STATE_DIR}/harness-readiness-acma-ansys05.yaml"
+  local report="${STATE_DIR}/harness-readiness-licensed-win-1.yaml"
   if [[ ! -f "$report" ]]; then
-    log_warn "acma-ansys05: no report found — Windows Task Scheduler may not have run yet"
+    log_warn "licensed-win-1: no report found — Windows Task Scheduler may not have run yet"
     return
   fi
 
   local gen_at
   gen_at=$(grep "^generated_at:" "$report" | sed 's/generated_at:[[:space:]]*//' | tr -d '"' | head -1)
   if [[ -z "$gen_at" ]]; then
-    log_deg "acma-ansys05: report missing generated_at field — DEGRADED (stale)"
+    log_deg "licensed-win-1: report missing generated_at field — DEGRADED (stale)"
     return
   fi
 
@@ -87,11 +87,11 @@ check_acma() {
   age_hours=$(( (now_epoch - report_epoch) / 3600 ))
 
   if [[ "$age_hours" -gt 25 ]]; then
-    log_deg "acma-ansys05: report is ${age_hours}h old (>25h threshold) — DEGRADED (stale)"
+    log_deg "licensed-win-1: report is ${age_hours}h old (>25h threshold) — DEGRADED (stale)"
   else
     local overall
     overall=$(grep "^overall:" "$report" | awk '{print $2}' | head -1)
-    log_ok "acma-ansys05: report ${age_hours}h old, overall=${overall}"
+    log_ok "licensed-win-1: report ${age_hours}h old, overall=${overall}"
   fi
 }
 check_acma

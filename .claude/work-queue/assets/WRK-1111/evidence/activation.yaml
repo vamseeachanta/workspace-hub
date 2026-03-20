@@ -3,7 +3,7 @@ stage: 8
 session_id: 456f8bf6-01da-4f6e-83f0-d4ab083d407d
 activated_at: 2026-03-12T01:30:00Z
 activated_by: claude
-computer: ace-linux-1
+computer: dev-primary
 orchestrator_agent: claude
 set_active_wrk: true
 status: active

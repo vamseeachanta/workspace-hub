@@ -26,10 +26,10 @@ sources:
     status: available
   - id: dde_project_remote
     source_type: registry
-    origin: /mnt/remote/ace-linux-2/dde
+    origin: /mnt/remote/dev-secondary/dde
     license_access: mounted-remote
     retrieval_date: 2026-02-28
-    canonical_storage_path: /mnt/remote/ace-linux-2/dde
+    canonical_storage_path: /mnt/remote/dev-secondary/dde
     duplicate_status: reference-in-place
     status: available
 routing_overrides: []

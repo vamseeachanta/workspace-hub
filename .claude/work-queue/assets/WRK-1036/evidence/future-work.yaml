@@ -16,10 +16,10 @@ recommendations:
     priority: low
 
   - id: FW-02
-    title: "Add acma-ansys05 / ace-linux-2 Stop hook wiring for tidy"
+    title: "Add licensed-win-1 / dev-secondary Stop hook wiring for tidy"
     description: |
-      The Stop hook was wired in the hub settings.json which covers ace-linux-1.
-      ace-linux-2 and acma-ansys05 use separate settings; tidy should fire there too.
+      The Stop hook was wired in the hub settings.json which covers dev-primary.
+      dev-secondary and licensed-win-1 use separate settings; tidy should fire there too.
     disposition: spun-off-new
     wrk_ref: WRK-1043
     status: captured

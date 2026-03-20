@@ -2,7 +2,7 @@
 stub_orcaflex.py — OrcaFlex solver stub for the multi-physics pipeline.
 
 Provides a drop-in replacement for OrcFxAPI when Orcina's commercial library
-is not installed (CI, ace-linux-1, open-source environments).
+is not installed (CI, dev-primary, open-source environments).
 
 The stub computes simplified structural response using beam theory:
     Static deflection of a fixed-free beam under uniform transverse load:

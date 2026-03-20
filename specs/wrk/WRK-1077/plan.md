@@ -1,7 +1,7 @@
-# WRK-1077 Plan — acma-ansys05 workstation readiness setup
+# WRK-1077 Plan — licensed-win-1 workstation readiness setup
 
 ## Objective
-Get acma-ansys05 to pass workspace-hub readiness checks and participate in the work queue.
+Get licensed-win-1 to pass workspace-hub readiness checks and participate in the work queue.
 
 ## Acceptance Criteria
 - verify-setup.sh: 0 FAIL, minimal WARN
@@ -9,7 +9,7 @@ Get acma-ansys05 to pass workspace-hub readiness checks and participate in the w
 - All git hooks installed and current
 - Claude/Codex/Gemini CLIs functional
 
-## 7-Step Runbook (Route A — execute on acma-ansys05)
+## 7-Step Runbook (Route A — execute on licensed-win-1)
 1. Run baseline: `PYTHONIOENCODING=utf-8 bash scripts/setup/verify-setup.sh`
 2. Fix claim-item.sh re.sub lambda (Windows backslash escape bug)
 3. Fix dev-env-check.sh hostname lowercase

@@ -7,7 +7,7 @@ route: C  # Complex — feature WRK with 12 children
 complexity: complex
 orchestrator: claude
 workstations:
-  - ace-linux-1
+  - dev-primary
 
 rationale: >
   Feature WRK spanning 15 engineering domains with 12 independent children.

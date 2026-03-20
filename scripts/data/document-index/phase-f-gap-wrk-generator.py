@@ -58,7 +58,7 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
+computer: dev-primary
 ---
 
 # feat({module}): implement {standard_id_short}

@@ -8,7 +8,7 @@ additions:
   - path: "scripts/operations/system/dev-env-check.sh"
     type: "modified"
     description: "WH_OS detection, windows_exe_paths probe, hostname lowercase"
-  - path: "specs/modules/hardware-inventory/manifests/acma-ansys05.yml"
+  - path: "specs/modules/hardware-inventory/manifests/licensed-win-1.yml"
     type: "modified"
     description: "workspace_root corrected, windows_exe_paths section added"
   - path: "scripts/work-queue/claim-item.sh"

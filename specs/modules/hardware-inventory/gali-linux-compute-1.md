@@ -63,7 +63,7 @@ sudo smartctl -a /dev/sda
 ## Network / Access
 
 - External machine — access method TBD (SSH, Tailscale VPN, or direct LAN)
-- Not yet confirmed on same LAN as ace-linux-1/ace-linux-2
+- Not yet confirmed on same LAN as dev-primary/dev-secondary
 
 ## Consolidation Status (WRK-050)
 

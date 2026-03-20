@@ -1,7 +1,7 @@
 # OpenFOAM Dict File Patterns
 
 > Status: Research completed 2026-02-24
-> Target: ESI v2312 (installed on ace-linux-2)
+> Target: ESI v2312 (installed on dev-secondary)
 > WRK: WRK-343 (feeds WRK-047 Phase 1 template generation)
 
 ## Overview
@@ -612,8 +612,8 @@ scottCoeffs {}
 ### Notes
 - `scotch` is the recommended default (automatic, no geometry input needed)
 - `simple` (geometric decomposition) and `hierarchical` are alternatives
-- `numberOfSubdomains` should match available CPU cores on ace-linux-2
-- Run `lscpu | grep "^CPU(s)"` on ace-linux-2 to determine core count
+- `numberOfSubdomains` should match available CPU cores on dev-secondary
+- Run `lscpu | grep "^CPU(s)"` on dev-secondary to determine core count
 
 ---
 

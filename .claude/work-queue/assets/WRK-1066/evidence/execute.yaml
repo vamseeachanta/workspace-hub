@@ -6,7 +6,7 @@ provider: claude
 
 deliverables:
   - file: scripts/readiness/harness-config.yaml
-    change: added linux_reachable=false to acma-ansys05
+    change: added linux_reachable=false to licensed-win-1
     status: done
   - file: scripts/maintenance/ai-tools-status.sh
     change: created — reads harness-config.yaml, PATH-explicit SSH, npm list -g version extraction
@@ -22,15 +22,15 @@ deliverables:
     status: done
 
 remediation_note: >
-  ace-linux-1 already has all npm-channel tools at current versions (claude=2.1.71,
+  dev-primary already has all npm-channel tools at current versions (claude=2.1.71,
   codex=0.111.0, gemini=0.32.1, gh=2.86.0). MEMORY.md version data was stale.
-  No remediation required on ace-linux-1.
+  No remediation required on dev-primary.
 
 deferred:
-  - machine: acma-ansys05
-    reason: Windows, no SSH from ace-linux-1
+  - machine: licensed-win-1
+    reason: Windows, no SSH from dev-primary
     action: run ai-tools-status.sh locally in a future Windows session to populate versions
-  - machine: ace-linux-2
+  - machine: dev-secondary
     reason: offline at time of execution (SSH + Tailscale both unreachable)
     action: reachable on next run (weekly cron will auto-collect)
 

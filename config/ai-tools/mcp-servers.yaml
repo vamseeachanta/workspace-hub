@@ -44,7 +44,7 @@ servers:
     rollback_command: claude mcp remove semantic-scholar-mcp
     trust_assessment: pass
     related_wrk: WRK-579
-    machines: [ace-linux-1]
+    machines: [dev-primary]
     notes: >
       No tagged releases — commit SHA pinning mandatory. Read-only network
       access to api.semanticscholar.org. Single-contributor repo (FUJISHIGE TEMMA);
@@ -77,7 +77,7 @@ servers:
       provide safe URLs. Acceptable for workspace-hub use cases.
     rollback_command: claude mcp remove fetch
     trust_assessment: pass
-    machines: [ace-linux-1]
+    machines: [dev-primary]
     notes: >
       Official Anthropic-maintained server. MIT license. 80k+ stars on parent
       repo. v0.6.3 pinned via PyPI. Actively maintained (last push 2026-03-07).
@@ -105,5 +105,5 @@ servers:
   #   permissions_review: pending
   #   rollback_command: claude mcp remove <name>
   #   trust_assessment: pending
-  #   machines: [ace-linux-1]
+  #   machines: [dev-primary]
   #   notes: ""

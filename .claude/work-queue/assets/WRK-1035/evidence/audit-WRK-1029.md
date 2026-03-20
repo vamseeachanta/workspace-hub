@@ -118,7 +118,7 @@ event to a real log entry, making the activation claim unverifiable.
 
 The gate reports PASS even though `plan_workstations` and `execution_workstations` are both
 `missing`. A gate that passes on absent required fields provides false confidence in the evidence
-record. The WRK ran on `ace-linux-1` (per `claim.yaml` and `activation.yaml`) but neither the
+record. The WRK ran on `dev-primary` (per `claim.yaml` and `activation.yaml`) but neither the
 plan nor execution artifacts formally recorded which workstation was targeted.
 
 ---

@@ -2,10 +2,10 @@ wrk_id: WRK-1108
 stage: 15
 recommendations:
   - id: FW-1
-    title: Implement lharries/whatsapp-mcp on ace-linux-1
+    title: Implement lharries/whatsapp-mcp on dev-primary
     description: |
       Install and configure lharries/whatsapp-mcp (5,400+ stars) with Claude Desktop
-      on ace-linux-1. Requires Go + Python + uv. QR-code phone link for auth.
+      on dev-primary. Requires Go + Python + uv. QR-code phone link for auth.
       Test send/receive messages, media, search contacts.
     disposition: spun-off-new
     status: captured

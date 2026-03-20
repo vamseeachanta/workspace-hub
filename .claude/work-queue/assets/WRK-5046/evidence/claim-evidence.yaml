@@ -2,4 +2,4 @@ wrk_id: WRK-5046
 claimed_at: "2026-03-12T15:10:00Z"
 claimed_by: claude
 route: A
-computer: ace-linux-1
+computer: dev-primary

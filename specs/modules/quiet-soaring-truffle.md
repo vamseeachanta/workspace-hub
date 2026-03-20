@@ -3,7 +3,7 @@
 ## Context
 
 Thousands of engineering standards, reports, and reference documents exist across
-three drives (`/mnt/ace`, `/mnt/remote/ace-linux-2/dde`, `/mnt/local-analysis`).
+three drives (`/mnt/ace`, `/mnt/remote/dev-secondary/dde`, `/mnt/local-analysis`).
 They are opaque to agents. This plan builds a living knowledge layer — filesystem
 index → content summaries → domain classification → per-repo data-source specs —
 turning static files into active context that agents can query.
@@ -59,7 +59,7 @@ Structural decisions made during planning session 2026-02-22.
 | Numbered project folders | `/mnt/ace/docs/0000–0200+` | Large | HIGH — client identifiers in paths |
 | Source system repo | `/mnt/ace/_ss_repo/` | 193GB | HIGH |
 | va-hdd-2 archive | `/mnt/ace/data/va-hdd-2/` | 883GB | HIGH — BP/2HDD project data |
-| DDE archive | `/mnt/remote/ace-linux-2/dde/documents/` | ~145 folders | HIGH |
+| DDE archive | `/mnt/remote/dev-secondary/dde/documents/` | ~145 folders | HIGH |
 | 2H projects | `/mnt/ace/2H/` | 42MB | MEDIUM — placeholder data |
 
 ### Type 3 — Live External APIs (dynamic, per-repo)
@@ -137,13 +137,13 @@ SELECT id, file_path, filename, extension, file_size, modified_date,
        content_hash, organization, doc_type, doc_number, title, is_duplicate
 FROM documents
 ```
-Emit records with `source=og_standards`, `og_db_id=<id>`, `host=ace-linux-1`.
+Emit records with `source=og_standards`, `og_db_id=<id>`, `host=dev-primary`.
 
 **Type 1 (non-O&G-Standards standards):** `os.walk()` on `/mnt/ace/docs/_standards/`
 with SHA256 computed on-the-fly.
 
 **Type 2 (project docs):** `os.walk()` on `/mnt/ace/docs/`, `/mnt/ace/data/`,
-`/mnt/ace/_ss_repo/`, `/mnt/remote/ace-linux-2/dde/documents/`.
+`/mnt/ace/_ss_repo/`, `/mnt/remote/dev-secondary/dde/documents/`.
 Include ALL file types (CAD included, marked `is_cad=true`).
 Exclude: `$RECYCLE.BIN`, `.git`, `__pycache__`, `System Volume Information`.
 
@@ -158,7 +158,7 @@ sources are defined in `config.yaml` and emitted as structured records
 ```json
 {
   "path": "/mnt/ace/O&G-Standards/DNV/...",
-  "host": "ace-linux-1",
+  "host": "dev-primary",
   "source": "og_standards|ace_standards|ace_project|dde_project|workspace_spec|api_metadata",
   "ext": "pdf",
   "size_mb": 1.2,

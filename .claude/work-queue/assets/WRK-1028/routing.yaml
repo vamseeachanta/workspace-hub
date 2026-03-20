@@ -3,7 +3,7 @@ stage: 9
 logged_at: "2026-03-07T20:06:00Z"
 log_action: work_queue_routing
 orchestrator: claude
-workstation: ace-linux-1
+workstation: dev-primary
 
 skills_loaded:
   - workspace-hub/work-queue-workflow       # lifecycle protocol (always first)

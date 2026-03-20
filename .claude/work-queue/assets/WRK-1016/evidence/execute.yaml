@@ -63,7 +63,7 @@ improvements_applied:
     description: "OGManufacturing/pyproject.toml: add [tool.ruff] section with line-length=100, target-version=py311"
     file: OGManufacturing/pyproject.toml
     status: deferred
-    note: "OGManufacturing submodule is not checked out on ace-linux-1 (empty dir). pyproject.toml cannot be written. Defer to WRK item when submodule is populated."
+    note: "OGManufacturing submodule is not checked out on dev-primary (empty dir). pyproject.toml cannot be written. Defer to WRK item when submodule is populated."
 
 hook_latency_table:
   - hook: .claude/hooks/check-encoding.sh

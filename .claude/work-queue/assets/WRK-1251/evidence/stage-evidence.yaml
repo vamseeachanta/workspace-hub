@@ -28,5 +28,5 @@ stages:
       complexity: complex
       type: feature
       reason: "Exceeds chunk-sizing on 3 dimensions: 2 repos (max 1), 10+ files (max 5), 4 components (max 3 phases)"
-      blocker: "CalculiX (ccx) not installed on ace-linux-2"
+      blocker: "CalculiX (ccx) not installed on dev-secondary"
       decomposition_needed: true

@@ -49132,8 +49132,8 @@
       ]
     },
     {
-      "path": "workspace-hub/.claude/skills/workspace-hub/workstations/ace-linux-1-storage/SKILL.md",
-      "name": "workstations-ace-linux-1-storage",
+      "path": "workspace-hub/.claude/skills/workspace-hub/workstations/dev-primary-storage/SKILL.md",
+      "name": "workstations-dev-primary-storage",
       "category": "workspace-hub",
       "status": "pass",
       "quality_tier": "C",
@@ -49147,8 +49147,8 @@
       ]
     },
     {
-      "path": "workspace-hub/.claude/skills/workspace-hub/workstations/ace-linux-2-open-source-tools/SKILL.md",
-      "name": "workstations-ace-linux-2-open-source-tools",
+      "path": "workspace-hub/.claude/skills/workspace-hub/workstations/dev-secondary-open-source-tools/SKILL.md",
+      "name": "workstations-dev-secondary-open-source-tools",
       "category": "workspace-hub",
       "status": "pass",
       "quality_tier": "C",

@@ -2,7 +2,7 @@ wrk_id: WRK-1092
 stage: 9
 routed_at: 2026-03-10T04:07:00Z
 route: A
-execution_machine: ace-linux-1
+execution_machine: dev-primary
 orchestrator: claude
 provider: claude
 rationale: Simple complexity (Route A); single machine; hub-quality script; no cross-machine deps

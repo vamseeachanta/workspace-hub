@@ -4,7 +4,7 @@ routed_at: "2026-03-09T08:40:00Z"
 routed_by: claude
 route: B
 orchestrator: claude
-machine: ace-linux-1
-execution_machine: ace-linux-1
-plan_machine: ace-linux-1
-rationale: "Route B, single repo (workspace-hub), medium complexity, all on ace-linux-1"
+machine: dev-primary
+execution_machine: dev-primary
+plan_machine: dev-primary
+rationale: "Route B, single repo (workspace-hub), medium complexity, all on dev-primary"

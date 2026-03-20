@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # ABOUTME: Stage 1 of OrcaFlex dat-to-yaml pipeline (WRK-589)
-# ABOUTME: Runs on acma-ansys05 (Windows, OrcaFlex licensed); extracts model params to YAML
+# ABOUTME: Runs on licensed-win-1 (Windows, OrcaFlex licensed); extracts model params to YAML
 
 """
 Extract engineering parameters from OrcaFlex .dat files to YAML.
 
 Requires OrcaFlex Python API (OrcFxAPI) installed on the machine.
-Designed to run on acma-ansys05 (Windows) where OrcaFlex is licensed.
+Designed to run on licensed-win-1 (Windows) where OrcaFlex is licensed.
 
 Usage:
     python dat-to-yaml.py --input "path/to/orcaflex/models" --output "path/to/staging"
@@ -94,7 +94,7 @@ def extract_model(dat_path: Path) -> dict:
     try:
         import OrcFxAPI as ofx  # noqa: PLC0415 — deferred; only on Windows
     except ImportError:
-        logger.error("OrcFxAPI not installed. Run on acma-ansys05 with OrcaFlex.")
+        logger.error("OrcFxAPI not installed. Run on licensed-win-1 with OrcaFlex.")
         sys.exit(1)
 
     logger.debug("Opening: %s", dat_path)

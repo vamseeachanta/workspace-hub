@@ -1,13 +1,13 @@
-generated: '2026-03-19'
-total_specs: 1887
+generated: '2026-03-20'
+total_specs: 1890
 by_category:
   archive: 13
   data-sources: 13
-  modules: 346
+  modules: 348
   other: 61
   repos: 1344
   templates: 20
-  wrk: 90
+  wrk: 91
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 371
+  workspace-hub: 374
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -371,6 +371,10 @@ by_wrk:
   WRK-1301: 1
   WRK-1316: 1
   WRK-1323: 1
+  WRK-1330: 1
+  WRK-1339: 1
+  WRK-1369: 1
+  WRK-1371: 1
   WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
@@ -396,7 +400,7 @@ by_wrk:
   WRK-5070: 1
   WRK-5071: 1
   WRK-5072: 1
-  WRK-5082: 1
+  WRK-5082: 2
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -639,7 +643,7 @@ specs:
   - audit
   - skill-tiers-2026-03-16
   wrk_refs: []
-  mtime: '2026-03-17'
+  mtime: '2026-03-20'
 - path: specs/audit/skill-violations-2026-03-16.yaml
   title: Skill Violations 2026 03 16
   description: ''
@@ -844,7 +848,7 @@ specs:
   - pipeline
   - research-briefs
   wrk_refs: []
-  mtime: '2026-03-17'
+  mtime: '2026-03-20'
 - path: specs/capability-map/research-briefs/structural.yaml
   title: Structural
   description: ''
@@ -1003,7 +1007,7 @@ specs:
   tags:
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-02-27'
+  mtime: '2026-03-20'
 - path: specs/data-sources/doris.yaml
   title: doris
   description: Data-source index with 92 standard entries for doris
@@ -1012,7 +1016,7 @@ specs:
   tags:
   - doris
   wrk_refs: []
-  mtime: '2026-02-27'
+  mtime: '2026-03-20'
 - path: specs/data-sources/frontierdeepwater.yaml
   title: frontierdeepwater
   description: Data-source index with 0 standard entries for frontierdeepwater
@@ -1040,7 +1044,7 @@ specs:
   tags:
   - rock-oil-field
   wrk_refs: []
-  mtime: '2026-02-27'
+  mtime: '2026-03-20'
 - path: specs/data-sources/saipem.yaml
   title: Saipem
   description: ''
@@ -1049,7 +1053,7 @@ specs:
   tags:
   - saipem
   wrk_refs: []
-  mtime: '2026-02-27'
+  mtime: '2026-03-20'
 - path: specs/data-sources/script-audit.yaml
   title: Script Audit
   description: ''
@@ -1099,7 +1103,7 @@ specs:
   - WRK-612
   - WRK-613
   - WRK-614
-  mtime: '2026-02-26'
+  mtime: '2026-03-20'
 - path: specs/modules/abstract-tinkering-hartmanis.md
   title: 'WRK-5082: Parachute Frame Force Calculation (Feature Plan)'
   description: A client has a GT1R Nissan GT-R R35 drag car with a bolt-on parachute kit (4130 chromoly steel frame). They
@@ -1232,7 +1236,7 @@ specs:
   - WRK-45
   - WRK-528
   - WRK-607
-  mtime: '2026-02-25'
+  mtime: '2026-03-20'
 - path: specs/modules/bsee-all-lease-field-analysis.md
   title: 'WRK-011: BSEE All-Lease Field Analysis with Nicknames and Geological Era Grouping'
   description: 'title: "BSEE All-Lease Field Analysis" description: "Expand BSEE analysis to all leases with field nickname
@@ -1354,15 +1358,15 @@ specs:
   mtime: '2026-01-31'
 - path: specs/modules/cozy-humming-beacon.md
   title: 'Plan: Weekly Engineering Suite Update Script + Cron Job'
-  description: ace-linux-2 now has a full engineering + GIS suite installed (Blender 5.0.1 snap, QGIS 3.40.15, Google Earth
-    Pro, Gmsh, ParaView, OpenFOAM, FreeCAD, meshio, PyFoam). The user wants a weekly cron jo...
+  description: dev-secondary now has a full engineering + GIS suite installed (Blender 5.0.1 snap, QGIS 3.40.15, Google Earth
+    Pro, Gmsh, ParaView, OpenFOAM, FreeCAD, meshio, PyFoam). The user wants a weekly cron ...
   category: modules
   repo: workspace-hub
   tags:
   - cozy-humming-beacon
   wrk_refs:
   - WRK-290
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/modules/cozy-toasting-minsky.md
   title: 'Plan: WRK-1112 — Limit Cross-Review Iterations to 3'
   description: Unbounded review loops waste AI quota and dilute feedback quality. This change caps all cross-review cycles
@@ -1409,7 +1413,7 @@ specs:
   - WRK-1261
   mtime: '2026-03-17'
 - path: specs/modules/dapper-stargazing-willow.md
-  title: WRK-687 Plan — Per-Workstation comprehensive-learning with ace-linux-1 Compilation
+  title: WRK-687 Plan — Per-Workstation comprehensive-learning with dev-primary Compilation
   description: WRK-683 established `logs/orchestrator/` as a unified per-machine log directory for all three AI agents (Claude
     JSONL + Codex/Gemini text logs). The next step is to have every workstation run its o...
   category: modules
@@ -1419,7 +1423,7 @@ specs:
   wrk_refs:
   - WRK-683
   - WRK-687
-  mtime: '2026-03-02'
+  mtime: '2026-03-20'
 - path: specs/modules/declarative-petting-starlight.md
   title: 'WRK-1200: Strategic Prioritization Skill'
   description: The workspace has ~450 WRK items. Without strategic filtering, harness/tooling work absorbs all capacity while
@@ -1446,6 +1450,19 @@ specs:
   - WRK-1053
   - WRK-1244
   mtime: '2026-03-16'
+- path: specs/modules/delightful-fluttering-yao.md
+  title: WRK-1339 Stage 4 Plan — Naval Architecture Expert Agent via Deep Knowledge Extraction
+  description: We have 145 manifests from ~30 naval architecture textbooks/references and 110 ship plans. Today's session
+    built multi-format parsers (EN400/Tupper/Attwood) and batch extraction scripts, but **the ...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - delightful-fluttering-yao
+  wrk_refs:
+  - WRK-1339
+  - WRK-1369
+  - WRK-1371
+  mtime: '2026-03-20'
 - path: specs/modules/delightful-orbiting-hammock.md
   title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
   description: 'WRK-5037 delivered a document extraction pipeline that produces YAML manifests with raw sections, tables,
@@ -1657,7 +1674,7 @@ specs:
   - greedy-weaving-lampson
   wrk_refs:
   - WRK-357
-  mtime: '2026-02-23'
+  mtime: '2026-03-20'
 - path: specs/modules/happy-foraging-star.md
   title: 'WRK-1143 Plan: Centralized WRK Status Index'
   description: '`whats-next.sh` and related tools derive WRK state by scanning file locations (`pending/`, `working/`) and
@@ -1695,7 +1712,7 @@ specs:
   - roadmap
   wrk_refs:
   - WRK-41
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/modules/humming-inventing-pelican.md
   title: WRK-1035 Plan — Beef up user-review stages in work-queue-workflow SKILL
   description: WRK-1034 revealed that Stage 5 and Stage 7 approval artifacts were written with retroactive timestamps before
@@ -1918,7 +1935,7 @@ specs:
   wrk_refs:
   - WRK-383
   - WRK-391
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/modules/orcaflex-modular-builder-enhancement.md
   title: OrcaFlex Modular Builder Enhancement Plan
   description: 'Enhance the modular builder at `digitalmodel/src/digitalmodel/modules/orcaflex/modular_generator/` so that:'
@@ -2118,14 +2135,14 @@ specs:
 - path: specs/modules/quiet-soaring-truffle.md
   title: WRK-309 Implementation Plan — Document Intelligence
   description: Thousands of engineering standards, reports, and reference documents exist across three drives (`/mnt/ace`,
-    `/mnt/remote/ace-linux-2/dde`, `/mnt/local-analysis`). They are opaque to agents. This pl...
+    `/mnt/remote/dev-secondary/dde`, `/mnt/local-analysis`). They are opaque to agents. This ...
   category: modules
   repo: workspace-hub
   tags:
   - quiet-soaring-truffle
   wrk_refs:
   - WRK-309
-  mtime: '2026-02-23'
+  mtime: '2026-03-20'
 - path: specs/modules/recursive-sauteeing-wombat.md
   title: 'Plan: WRK-299 + WRK-300'
   description: 'Sessions currently have fragmented learning overhead: 4 separate skills (/insights, /reflect, /knowledge,
@@ -2137,7 +2154,7 @@ specs:
   wrk_refs:
   - WRK-299
   - WRK-300
-  mtime: '2026-02-22'
+  mtime: '2026-03-20'
 - path: specs/modules/refactored-stargazing-melody.md
   title: 'WRK-1059 Plan Draft: Reference Documentation Quality Checks'
   description: '`check-all.sh` (WRK-1056/1058) already runs ruff + mypy + `--docs` (basic README/docs/ checks). Gap: no check
@@ -2215,7 +2232,7 @@ specs:
   - resilient-hopping-crayon
   wrk_refs:
   - WRK-1119
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/modules/restructure-digitalmodel-into-grouped-module-architecture.md
   title: Restructure digitalmodel into grouped module architecture
   description: Group 68 flat modules into ~11 domain clusters, add backward compat shim, create test/example/doc stubs for
@@ -2245,7 +2262,7 @@ specs:
   mtime: '2026-03-16'
 - path: specs/modules/robust-popping-wadler.md
   title: 'Plan: WRK-1117 — Windows/Git Bash: fix comprehensive-learning push path + signal generation'
-  description: 'acma-ansys05 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit but contributes zero learnings
+  description: 'licensed-win-1 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit but contributes zero learnings
     to the pipeline. Two root causes:'
   category: modules
   repo: workspace-hub
@@ -2253,7 +2270,7 @@ specs:
   - robust-popping-wadler
   wrk_refs:
   - WRK-1117
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/modules/serene-discovering-scroll.md
   title: 'WRK-1251: FreeCAD Deep Parametric Engineering — Feature Plan'
   description: FreeCAD is the only open-source parametric CAD tool in the stack. WRK-1251 adds production-grade hull generation,
@@ -2265,7 +2282,7 @@ specs:
   wrk_refs:
   - WRK-1251
   - WRK-1252
-  mtime: '2026-03-16'
+  mtime: '2026-03-20'
 - path: specs/modules/serialized-snacking-pnueli.md
   title: 'Plan: WRK-617 — digitalmodel.ansys domain'
   description: ANSYS FEA assets exist in /mnt/ace but are inaccessible programmatically. WRK-617 creates `src/digitalmodel/ansys/`
@@ -2410,7 +2427,7 @@ specs:
   - WRK-345
   - WRK-368
   - WRK-377
-  mtime: '2026-02-25'
+  mtime: '2026-03-20'
 - path: specs/modules/staged-floating-gray.md
   title: 'Plan: WRK-308 — Move pre-commit skill validation + readiness checks to nightly cron'
   description: 'Two sets of checks were running synchronously in the commit/session path and causing slowness on Windows/MINGW:'
@@ -2557,7 +2574,7 @@ specs:
   - tidy-baking-cake
   wrk_refs:
   - WRK-1251
-  mtime: '2026-03-17'
+  mtime: '2026-03-20'
 - path: specs/modules/toasty-painting-kernighan.md
   title: 'Plan: Pre-Clear Session Snapshot'
   description: '`/clear` is a Claude Code built-in CLI command processed at the shell level before messages reach Claude.
@@ -2671,6 +2688,17 @@ specs:
   - WRK-1147
   - WRK-5063
   mtime: '2026-03-13'
+- path: specs/modules/warm-stargazing-brook.md
+  title: WRK-5082 Feature Plan — Parachute Frame Force Calculation
+  description: 'GT1R R35 parachute mounting frame — calculate structural loads during deployment at 200 and 250 MPH. Full
+    engineering deliverable: 3D CAD, 2D drawings, 2D and 3D structural analysis, comparison, an...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - warm-stargazing-brook
+  wrk_refs:
+  - WRK-5082
+  mtime: '2026-03-20'
 - path: specs/modules/wiggly-fluttering-eagle.md
   title: 'WRK-1323: Add --dry-run flag to verify_checklist.py'
   description: '`verify_checklist.py` validates whether a WRK item''s checklist evidence exists for a given stage. The CLI
@@ -2884,7 +2912,7 @@ specs:
   - wrk-121-licensed-software-usage-workflow-burden-reduction
   wrk_refs:
   - WRK-121
-  mtime: '2026-02-13'
+  mtime: '2026-03-20'
 - path: specs/modules/wrk-1247-xlsx-formula-extraction-poc.md
   title: 'WRK-1247: POC — Deep XLSX Formula Extraction'
   description: The document intelligence pipeline extracts tables from XLSX files via `parsers/xlsx.py`, but uses `data_only=True`
@@ -3039,7 +3067,7 @@ specs:
   - wrk-380-gmsh-openfoam-orcaflex-pipeline
   wrk_refs:
   - WRK-380
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/modules/yaml-state-file-schema-validation.md
   title: YAML State File Schema Validation
   description: Add Pydantic-based schema validation for the 4 YAML state files in `.claude/state/` and `.claude/work-queue/`.
@@ -3125,8 +3153,8 @@ specs:
   mtime: '2026-01-22'
 - path: specs/modules/terminal-ux/cross-machine-audit.md
   title: Cross-Machine Terminal UX Audit
-  description: '| Machine | OS | Terminal | Role | |---|---|---|---| | ace-linux-1 | Ubuntu 24.04 LTS (Noble) | GNOME Terminal
-    (VTE 7600) | Nightly cron host — **audited** | | ace-linux-2 | Linux | Unknown | Contr...'
+  description: '| Machine | OS | Terminal | Role | |---|---|---|---| | dev-primary | Ubuntu 24.04 LTS (Noble) | GNOME Terminal
+    (VTE 7600) | Nightly cron host — **audited** | | dev-secondary | Linux | Unknown | Con...'
   category: modules
   repo: workspace-hub
   tags:
@@ -3134,31 +3162,7 @@ specs:
   - terminal-ux
   wrk_refs:
   - WRK-228
-  mtime: '2026-02-24'
-- path: specs/modules/website-capability-marketing/plan.md
-  title: Market digitalmodel & worldenergydata capabilities on aceengineer website
-  description: Roll two platform capabilities into the marketing website with new service pages, updated navigation, and lead-generation
-    content
-  category: modules
-  repo: workspace-hub
-  tags:
-  - plan
-  - website-capability-marketing
-  wrk_refs:
-  - WRK-73
-  mtime: '2026-02-03'
-- path: specs/modules/workflow-improvement/workflow-v2.md
-  title: Workflow V2 — Post WRK-094 Improvements
-  description: Revised workspace-hub workflow after queue triage, cross-review tooling, pipeline streamlining, and skill cleanup
-  category: modules
-  repo: workspace-hub
-  tags:
-  - workflow-improvement
-  - workflow-v2
-  wrk_refs:
-  - WRK-93
-  - WRK-94
-  mtime: '2026-02-04'
+  mtime: '2026-03-20'
 - path: specs/modules/knowledge-management/plan.md
   title: O&G Knowledge Management Plan
   description: '**Location:** `/mnt/ace/0000 O&G` **Total Files:** ~49,401 documents **Total Size:** Multi-GB collection'
@@ -3191,7 +3195,7 @@ specs:
   - hardware-inventory
   wrk_refs:
   - WRK-50
-  mtime: '2026-03-13'
+  mtime: '2026-03-20'
 - path: specs/modules/hardware-inventory/aceengineer-02.md
   title: AceEngineer-02 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2x Intel Xeon E5-2630 v3 @ 2.40 GHz (8C/16T
@@ -3204,31 +3208,7 @@ specs:
   wrk_refs:
   - WRK-50
   - WRK-293
-  mtime: '2026-03-13'
-- path: specs/modules/hardware-inventory/acma-ansys05.md
-  title: ACMA-ANSYS05 Hardware Assessment
-  description: '| Component | Specification | |-----------|---------------| | CPU | 2× Intel Xeon Platinum 8562Y+ (Sapphire
-    Rapids), 32 cores/socket, **64 cores / 64 threads** | | Base Clock | 2800 MHz (turbo ~3.6...'
-  category: modules
-  repo: workspace-hub
-  tags:
-  - acma-ansys05
-  - hardware-inventory
-  wrk_refs:
-  - WRK-50
-  mtime: '2026-02-22'
-- path: specs/modules/hardware-inventory/acma-ws014.md
-  title: ACMA-WS014 Hardware Assessment
-  description: '| Component | Specification | |-----------|---------------| | CPU | Intel Core i9-13900 (Raptor Lake), 8 P-cores
-    + 16 E-cores, **24 cores / 32 threads** | | Base Clock | 2000 MHz | | L3 Cache | 72 ...'
-  category: modules
-  repo: workspace-hub
-  tags:
-  - acma-ws014
-  - hardware-inventory
-  wrk_refs:
-  - WRK-50
-  mtime: '2026-02-22'
+  mtime: '2026-03-20'
 - path: specs/modules/hardware-inventory/dev-env-setup.md
   title: Dev Environment Setup Guide
   description: 'Source: WRK-050 Phase 4 — Dev Environment Readiness'
@@ -3239,7 +3219,7 @@ specs:
   - hardware-inventory
   wrk_refs:
   - WRK-50
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/modules/hardware-inventory/gali-linux-compute-1.md
   title: gali-linux-compute-1 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | AMD Ryzen Threadripper PRO 3955WX — 16
@@ -3251,40 +3231,64 @@ specs:
   - hardware-inventory
   wrk_refs:
   - WRK-50
+  mtime: '2026-03-20'
+- path: specs/modules/hardware-inventory/licensed-win-1.md
+  title: licensed-win-1 Hardware Assessment
+  description: '| Component | Specification | |-----------|---------------| | CPU | 2× Intel Xeon Platinum 8562Y+ (Sapphire
+    Rapids), 32 cores/socket, **64 cores / 64 threads** | | Base Clock | 2800 MHz (turbo ~3.6...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - hardware-inventory
+  - licensed-win-1
+  wrk_refs:
+  - WRK-50
+  mtime: '2026-03-20'
+- path: specs/modules/hardware-inventory/licensed-win-2.md
+  title: ACMA-WS014 Hardware Assessment
+  description: '| Component | Specification | |-----------|---------------| | CPU | Intel Core i9-13900 (Raptor Lake), 8 P-cores
+    + 16 E-cores, **24 cores / 32 threads** | | Base Clock | 2000 MHz | | L3 Cache | 72 ...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - hardware-inventory
+  - licensed-win-2
+  wrk_refs:
+  - WRK-50
   mtime: '2026-02-22'
-- path: specs/modules/hardware-inventory/manifests/ace-linux-1.yml
-  title: Ace Linux 1
+- path: specs/modules/hardware-inventory/manifests/dev-primary.yml
+  title: Dev Primary
   description: ''
   category: modules
   repo: workspace-hub
   tags:
-  - ace-linux-1
+  - dev-primary
   - hardware-inventory
   - manifests
   wrk_refs: []
-  mtime: '2026-02-24'
-- path: specs/modules/hardware-inventory/manifests/ace-linux-2.yml
-  title: Ace Linux 2
+  mtime: '2026-03-20'
+- path: specs/modules/hardware-inventory/manifests/dev-secondary.yml
+  title: Dev Secondary
   description: ''
   category: modules
   repo: workspace-hub
   tags:
-  - ace-linux-2
+  - dev-secondary
   - hardware-inventory
   - manifests
   wrk_refs: []
-  mtime: '2026-02-24'
-- path: specs/modules/hardware-inventory/manifests/acma-ansys05.yml
-  title: Acma Ansys05
+  mtime: '2026-03-20'
+- path: specs/modules/hardware-inventory/manifests/licensed-win-1.yml
+  title: Licensed Win 1
   description: ''
   category: modules
   repo: workspace-hub
   tags:
-  - acma-ansys05
   - hardware-inventory
+  - licensed-win-1
   - manifests
   wrk_refs: []
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/modules/hardware-inventory/manifests/vamsee-linux1.yml
   title: Vamsee Linux1
   description: ''
@@ -3323,6 +3327,30 @@ specs:
   - skills
   wrk_refs: []
   mtime: '2026-01-19'
+- path: specs/modules/website-capability-marketing/plan.md
+  title: Market digitalmodel & worldenergydata capabilities on aceengineer website
+  description: Roll two platform capabilities into the marketing website with new service pages, updated navigation, and lead-generation
+    content
+  category: modules
+  repo: workspace-hub
+  tags:
+  - plan
+  - website-capability-marketing
+  wrk_refs:
+  - WRK-73
+  mtime: '2026-02-03'
+- path: specs/modules/workflow-improvement/workflow-v2.md
+  title: Workflow V2 — Post WRK-094 Improvements
+  description: Revised workspace-hub workflow after queue triage, cross-review tooling, pipeline streamlining, and skill cleanup
+  category: modules
+  repo: workspace-hub
+  tags:
+  - workflow-improvement
+  - workflow-v2
+  wrk_refs:
+  - WRK-93
+  - WRK-94
+  mtime: '2026-02-04'
 - path: specs/online-resources/catalog.yaml
   title: Catalog
   description: ''
@@ -3337,7 +3365,7 @@ specs:
   - WRK-417
   - WRK-418
   - WRK-419
-  mtime: '2026-03-03'
+  mtime: '2026-03-20'
 - path: specs/online-resources/follow-on-candidates.md
   title: Follow-On WRK Candidates — WRK-391 Research Outputs
   description: '**Generated:** 2026-02-24 **Source:** WRK-391 Online Resources Research'
@@ -3369,7 +3397,7 @@ specs:
   - WRK-383
   - WRK-391
   - WRK-393
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/repos/aceengineer-admin/automation-implementation-plan.md
   title: Financial Automation Implementation Plan
   description: 'This document provides a comprehensive implementation plan for the three financial automation specifications:'
@@ -5586,7 +5614,7 @@ specs:
   - WRK-126
   - WRK-127
   - WRK-128
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/parallel-nibbling-aho.md
   title: Convert OrcaFlex .dat to .yml - Energy Pipeline Installation MP
   description: Batch convert 189 OrcaFlex binary .dat files to YAML (.yml) format
@@ -10417,7 +10445,7 @@ specs:
   - marketing
   - master_spec
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/marketing/user_prompt.md
   title: User Prompt
   description: Prepare detailed input file for the following. Ask for any clarifications if needed before proceeding.
@@ -11208,7 +11236,7 @@ specs:
   - modular-input-file
   - orcaflex
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcaflex/modular-input-file/input/C06_Discretised_CALM_Buoy.yml
   title: C06 Discretised Calm Buoy
   description: ''
@@ -11221,7 +11249,7 @@ specs:
   - modular-input-file
   - orcaflex
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcaflex/modular-input-file/output/VALIDATION_STATUS.md
   title: OrcaFlex Modular YML Validation Status
   description: '**Generated:** 2025-10-22T22:08:22.238736'
@@ -12053,7 +12081,7 @@ specs:
   - mooring-analysis
   - orcaflex
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/aqwaimport_template_fsts_l015.yml
   title: Aqwaimport Template Fsts L015
   description: ''
@@ -15367,7 +15395,7 @@ specs:
   - results-dashboard
   - technical-specification
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcaflex/results-dashboard/implementation/user-stories.md
   title: User Stories - OrcaFlex Dashboard
   description: '**As an** offshore engineer **I want to** view polar plots of structural responses **So that** I can quickly
@@ -15623,7 +15651,7 @@ specs:
   - orcawave
   - orcawave_001_ship_raos_rev2
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcawave/diffraction-analysis/inputs/orcawave/go-by/orcawave_example_ship_raos.yml
   title: Orcawave Example Ship Raos
   description: ''
@@ -16178,7 +16206,7 @@ specs:
   - outputs
   - prepare-diffraction-analysis-inputs
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcawave/prepare-diffraction-analysis-inputs/outputs/orcawave_configs/go-by/go-by-template_rev2.yml
   title: Go By Template Rev2
   description: ''
@@ -16193,7 +16221,7 @@ specs:
   - outputs
   - prepare-diffraction-analysis-inputs
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcawave/prepare-diffraction-analysis-inputs/outputs/orcawave_configs/merged/orcawave_fuel_oil_to_port.yml
   title: Orcawave Fuel Oil To Port
   description: ''
@@ -16537,7 +16565,7 @@ specs:
   - test-configs
   - working_model
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/digitalmodel/modules/orcawave/test-configs/working_model_fixed.yml
   title: Working Model Fixed
   description: ''
@@ -21003,7 +21031,7 @@ specs:
   - worldenergydata
   - worldenergydata_marketing_config
   wrk_refs: []
-  mtime: '2026-02-17'
+  mtime: '2026-03-20'
 - path: specs/repos/worldenergydata/specs/modules/skills/enhancement/plan.md
   title: WorldEnergyData Skills Enhancement Plan
   description: Review of the worldenergydata repository mission and proposal for additional Claude Code skills to enhance
@@ -21145,7 +21173,7 @@ specs:
   wrk_refs:
   - WRK-624
   - WRK-1010
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/skills/script-conversion-candidates.md
   title: Skill Script Conversion Candidates
   description: 'Generated: 2026-03-15T14:38:23Z Total skills scanned: 409'
@@ -21180,7 +21208,7 @@ specs:
   wrk_refs:
   - WRK-624
   - WRK-1010
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/skills/evals/comprehensive-learning.yaml
   title: Comprehensive Learning
   description: ''
@@ -21459,10 +21487,10 @@ specs:
   - WRK-1003
   - WRK-1004
   - WRK-1005
-  mtime: '2026-03-05'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1009/plan.md
   title: 'WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration'
-  description: '**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**'
+  description: '**Route B — Medium complexity | dev-primary | Orchestrator: Claude**'
   category: wrk
   repo: workspace-hub
   tags:
@@ -21470,7 +21498,7 @@ specs:
   - wrk-1009
   wrk_refs:
   - WRK-1009
-  mtime: '2026-03-10'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1010/plan.md
   title: WRK-1010 Plan — Skill Capability Assessment for WRK-624 Governance Skill Set
   description: '**Route:** B (Medium) **Target repos:** workspace-hub **Orchestrator:** claude (this session) with codex cross-review'
@@ -21530,7 +21558,7 @@ specs:
   wrk_refs:
   - WRK-1019
   - WRK-1020
-  mtime: '2026-03-07'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1020/plan.md
   title: 'WRK-1020 Plan: portfolio-signals.yaml cron'
   description: 'date: 2026-03-07 wrk_id: WRK-1020 route: B complexity: medium orchestrator: claude synthesis: claude+codex
@@ -21543,7 +21571,7 @@ specs:
   wrk_refs:
   - WRK-1019
   - WRK-1020
-  mtime: '2026-03-08'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1035/plan.md
   title: WRK-1035 Plan — Work-Queue Lifecycle Hardening
   description: Harden the work-queue lifecycle against retroactive approval fabrication, stage-skipping, Codex bypass, and
@@ -21555,7 +21583,7 @@ specs:
   - wrk-1035
   wrk_refs:
   - WRK-1035
-  mtime: '2026-03-08'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1036/plan.md
   title: 'WRK-1036 Plan — Agent teams lifecycle: audit, session-start, session-exit tidy'
   description: Audit stale agent teams, expose actionable team state during session start, and add deterministic session-exit
@@ -21594,7 +21622,7 @@ specs:
   wrk_refs:
   - WRK-1044
   - WRK-1045
-  mtime: '2026-03-08'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1052/plan.md
   title: 'WRK-1052 Plan: Log model/context/effort at session start'
   description: '**Route A — Simple**. Two changes:'
@@ -21678,7 +21706,7 @@ specs:
   mtime: '2026-03-09'
 - path: specs/wrk/WRK-1066/plan.md
   title: WRK-1066 Plan — Environment Parity Audit
-  description: 'Route: A (simple) — inline plan, single executor (claude on ace-linux-1). Revised through 12 rounds of Codex
+  description: 'Route: A (simple) — inline plan, single executor (claude on dev-primary). Revised through 12 rounds of Codex
     cross-review.'
   category: wrk
   repo: workspace-hub
@@ -21687,7 +21715,7 @@ specs:
   - wrk-1066
   wrk_refs:
   - WRK-1066
-  mtime: '2026-03-09'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1069/plan.md
   title: 'WRK-1069 Plan: Per-WRK Token Cost Attribution'
   description: Attribute AI token usage to specific WRK items so cost-per-WRK is visible.
@@ -21723,8 +21751,8 @@ specs:
   - WRK-1074
   mtime: '2026-03-09'
 - path: specs/wrk/WRK-1077/plan.md
-  title: WRK-1077 Plan — acma-ansys05 workstation readiness setup
-  description: Get acma-ansys05 to pass workspace-hub readiness checks and participate in the work queue.
+  title: WRK-1077 Plan — licensed-win-1 workstation readiness setup
+  description: Get licensed-win-1 to pass workspace-hub readiness checks and participate in the work queue.
   category: wrk
   repo: workspace-hub
   tags:
@@ -21732,7 +21760,7 @@ specs:
   - wrk-1077
   wrk_refs:
   - WRK-1077
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1079/plan.md
   title: 'WRK-1079 Plan: PEP 561 Type Stubs for assetutilities Public API'
   description: Add PEP 561 inline type annotations to assetutilities contracted public API symbols to enable mypy type checking
@@ -21806,7 +21834,7 @@ specs:
   mtime: '2026-03-10'
 - path: specs/wrk/WRK-1102/plan.md
   title: 'WRK-1102 Plan: fix(comprehensive-learning) — Repair Modular Chain'
-  description: '**Route**: C | **Priority**: HIGH | **Complexity**: medium **Computer**: ace-linux-1 | **Target repo**: workspace-hub'
+  description: '**Route**: C | **Priority**: HIGH | **Complexity**: medium **Computer**: dev-primary | **Target repo**: workspace-hub'
   category: wrk
   repo: workspace-hub
   tags:
@@ -21814,7 +21842,7 @@ specs:
   - wrk-1102
   wrk_refs:
   - WRK-1102
-  mtime: '2026-03-10'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1105/plan.md
   title: Knowledge persistence architecture — work-done summaries, resource-intelligence, career learnings
   description: Design and implement a structured knowledge persistence system that routes WRK completion learnings out of
@@ -21826,7 +21854,7 @@ specs:
   - wrk-1105
   wrk_refs:
   - WRK-1105
-  mtime: '2026-03-10'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1113/improvements-log.md
   title: WRK-1113 Improvements Log
   description: '| Doc Ref | Finding | Status | WRK | |---------|---------|--------|-----| | example | Found missing edge-case
@@ -21841,7 +21869,7 @@ specs:
   mtime: '2026-03-12'
 - path: specs/wrk/WRK-1113/selection-matrix.md
   title: WRK-1113 — 10/10/10 Selection Matrix
-  description: 'Source folder: `/mnt/remote/ace-linux-2/dde/Personal/Ace Drilling Riser/`'
+  description: 'Source folder: `/mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/`'
   category: wrk
   repo: workspace-hub
   tags:
@@ -21849,7 +21877,7 @@ specs:
   - wrk-1113
   wrk_refs:
   - WRK-1113
-  mtime: '2026-03-12'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1113/wrk-1113-doc-corpus-extraction.md
   title: 'WRK-1113 Plan: Document Corpus Parametric Extraction'
   description: 'The workspace document corpus exists to serve one purpose: eliminate re-reading source documents by integrating
@@ -22041,7 +22069,7 @@ specs:
   - wrk-1127-feature-first-planning
   wrk_refs:
   - WRK-1127
-  mtime: '2026-03-11'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-1131/plan.md
   title: WRK-1131 Plan — Feature Layer Process
   description: 'Implement the feature WRK lifecycle process: stage contracts, workflow skill updates, validate-queue-state.sh,
@@ -22139,6 +22167,18 @@ specs:
   - WRK-1301
   - WRK-5002
   mtime: '2026-03-18'
+- path: specs/wrk/WRK-1330/plan.md
+  title: 'WRK-1330: Archive Synthesis Plan'
+  description: '| # | Question | Decision | |---|----------|----------| | 1 | Backfill scope | All 409 archived WRKs | | 2
+    | Output format | New `docs/archive-synthesis-report.yaml` + roadmap delta | | 3 | GitHub ...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1330
+  wrk_refs:
+  - WRK-1330
+  mtime: '2026-03-19'
 - path: specs/wrk/WRK-140/plan.md
   title: 'WRK-140 Plan: Integrate gmsh Meshing into digitalmodel Pipelines'
   description: Wire gmsh meshing skill (WRK-139) into digitalmodel hydrodynamic analysis pipelines.
@@ -22232,7 +22272,7 @@ specs:
   - wrk-373-repo-vision
   wrk_refs:
   - WRK-373
-  mtime: '2026-02-24'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
   title: 'WRK-5038: build-doc-intelligence.py + Federated Content Indexes'
   description: Build federated index builder that reads all WRK-5037 manifests and produces 8 content-type JSONL indexes.
@@ -22294,7 +22334,7 @@ specs:
   - wrk-624
   wrk_refs:
   - WRK-624
-  mtime: '2026-03-02'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-624/review/review-gemini.md
   title: Review Gemini
   description: The plan is exceptionally thorough and addresses the core issues of workflow drift and lack of accountability
@@ -22310,7 +22350,7 @@ specs:
   mtime: '2026-02-27'
 - path: specs/wrk/WRK-637/plan.md
   title: 'WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction'
-  description: '**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-09'
+  description: '**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-09'
   category: wrk
   repo: workspace-hub
   tags:
@@ -22318,7 +22358,7 @@ specs:
   - wrk-637
   wrk_refs:
   - WRK-637
-  mtime: '2026-03-10'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-655/plan.md
   title: WRK-655 Resource Intelligence Skill and Stage Contract
   description: Route C plan to operationalize Resource Intelligence as a first-class skill with a validator-ready artifact
@@ -22336,7 +22376,7 @@ specs:
   wrk_refs:
   - WRK-624
   - WRK-655
-  mtime: '2026-03-01'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-658/plan.md
   title: 'Plan: WRK-658 — Enforce Gate + Logging Contract for Every AI Agent'
   description: Extend the gate+logging contract to Codex and Gemini agents. The infrastructure (`log-gate-event.sh`, `workflow-guards.sh`,
@@ -22378,7 +22418,7 @@ specs:
 - path: specs/wrk/WRK-663/queue-triage-report.md
   title: 'Queue Triage Report: WRK-663'
   description: '| WRK ID | Task Description | Agent | Workstation(s) | | :--- | :--- | :--- | :--- | | **WRK-660** | `assetutilities`
-    coverage audit | Gemini | `ace-linux-1` | | **WRK-389** | Fix Claude install on...'
+    coverage audit | Gemini | `dev-primary` | | **WRK-389** | Fix Claude install on...'
   category: wrk
   repo: workspace-hub
   tags:
@@ -22396,7 +22436,7 @@ specs:
   - WRK-477
   - WRK-660
   - WRK-663
-  mtime: '2026-03-02'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-664/plan.md
   title: WRK-664 Multi-Agent and Multi-Workstation Execution Contract
   description: Route C plan to add deterministic stage-level agent/workstation assignment, machine-readiness gates, and remote
@@ -22415,7 +22455,7 @@ specs:
   - WRK-624
   - WRK-655
   - WRK-664
-  mtime: '2026-03-01'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-668/plan.md
   title: 'WRK-668 Plan: Archive Tooling Contract and Auto Spin-off Workflow'
   description: '**Route**: B | **Complexity**: medium | **Priority**: high **Approved**: pending Stage 5 user review'
@@ -22456,7 +22496,7 @@ specs:
   - WRK-673
   - WRK-675
   - WRK-1000
-  mtime: '2026-03-02'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-677/plan.md
   title: 'WRK-677 Plan: governance(review) — strengthen claim gate metadata'
   description: '**Source WRK:** WRK-677 **Route:** C (complex) **Created:** 2026-03-02 **Status:** final (post cross-review)'
@@ -22468,7 +22508,7 @@ specs:
   wrk_refs:
   - WRK-656
   - WRK-677
-  mtime: '2026-03-02'
+  mtime: '2026-03-20'
 - path: specs/wrk/WRK-682/plan.md
   title: 'Plan: WRK-682 — Cross-Terminal Queue Sync'
   description: Implement automatic, git-aware synchronization of the work queue across all terminal sessions and workstations.

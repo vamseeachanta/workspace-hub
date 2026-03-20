@@ -17,6 +17,6 @@ key_files:
 risks: []
 blockers: []
 notes: >
-  Route A simple item. All files local to workspace-hub on ace-linux-1.
+  Route A simple item. All files local to workspace-hub on dev-primary.
   No external dependencies. next-id.sh is self-contained bash script.
   config/work-queue/ directory does not yet exist — will be created.

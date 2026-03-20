@@ -15,9 +15,9 @@ blocked_by: []
 provider: claude
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # Clean up email using AI (when safe)
@@ -66,9 +66,9 @@ blocked_by: []
 provider: claude
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # Upload photos from Sabitha phone, Vamsee phone, and Doris computer to achantas-media
@@ -128,9 +128,9 @@ task_agents:
 plan_reviewed: true
 plan_approved: true
 percent_complete: 90
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # Stock analysis — trend changes, technical indicators, insider trading benchmarks
 
@@ -182,9 +182,9 @@ task_agents:
   phase_7: codex
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 phases_complete:
   phase_0: true   # gis-tool-research.md delivered 2026-02-24
   phase_1: true   # module scaffold + pyproject.toml deps
@@ -230,9 +230,9 @@ task_agents:
   phase_5d: gemini
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # Modular OrcaFlex Pipeline Installation Input with Parametric Campaign Support
@@ -281,9 +281,9 @@ task_agents:
   phase_5: codex
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # OrcaFlex structure deployment analysis - supply boat side deployment with structural loads
@@ -325,9 +325,9 @@ synced_to: []
 provider: claude
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # SPM project benchmarking - AQWA vs OrcaFlex
@@ -383,9 +383,9 @@ task_agents:
   phase_6: codex
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 70
 ---
 
@@ -434,9 +434,9 @@ task_agents:
   phase_6: codex
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # OrcaFlex rigid jumper analysis - stress and VIV for various configurations
@@ -485,9 +485,9 @@ task_agents:
   phase_5: codex
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # OrcaFlex drilling and completion riser parametric analysis
@@ -535,9 +535,9 @@ task_agents:
   phase_6: claude
 plan_reviewed: true
 plan_approved: true
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
 percent_complete: 85
 ---
 # OpenFOAM CFD analysis capability for digitalmodel
@@ -577,9 +577,9 @@ synced_to: []
 provider: codex
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
 ---
 
 # Blender working configurations for digitalmodel
@@ -629,9 +629,9 @@ synced_to: []
 provider: claude
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 85
 ---
 
@@ -689,9 +689,9 @@ task_agents:
   phase_6: codex
 plan_reviewed: false
 plan_approved: false
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex
@@ -733,9 +733,9 @@ synced_to: []
 provider: claude
 plan_reviewed: true
 plan_approved: true
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 90
 ---
 # Run 3-Way Benchmark on Unit Box Hull
@@ -809,9 +809,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 10
 brochure_status: null
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 tags:
 - roadmap
 === .claude/work-queue/pending/WRK-126.md ===
@@ -835,9 +835,9 @@ plan_reviewed: true
 plan_approved: true
 percent_complete: 75
 brochure_status:
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 provider_alt:
 task_agents:
@@ -887,9 +887,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: gemini
 provider_alt:
 tags: [rig-fleet, pdf-parsing, vessel-fleet, spec-sheets]
@@ -937,9 +937,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 85
 brochure_status:
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
 provider: codex
 provider_alt:
 ---
@@ -990,9 +990,9 @@ plan: inline
 plan_approved: true
 percent_complete: 35
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 provider_alt:
 group: ACE-GTM
@@ -1038,9 +1038,9 @@ plan_reviewed: true
 plan_approved: true
 percent_complete: 70
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 provider_alt: claude,gemini
 task_agents:
@@ -1073,8 +1073,8 @@ task_agents:
 ---
 id: WRK-162
 status: pending
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # WRK-162: Combined Multi-Body Benchmark Report
@@ -1141,9 +1141,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 80
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 provider_alt:
 group:
@@ -1206,9 +1206,9 @@ provider: claude
 provider_alt: gemini
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # WRK-180: Stop Hook — Cross-Agent Learning Sync
 
@@ -1257,9 +1257,9 @@ provider: claude
 provider_alt: null
 plan_reviewed: false
 plan_approved: false
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # WRK-181: Session Replay & Time Travel
 
@@ -1302,9 +1302,9 @@ provider_alt: gemini
 plan_reviewed: false
 plan_approved: false
 percent_complete: 60
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # WRK-182: Predictive Session Planning
 
@@ -1337,8 +1337,8 @@ provider: codex
 provider_alt: claude
 percent_complete: 75
 html_output_ref: .claude/work-queue/assets/WRK-207/review.html
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # WRK-207: Fix query-quota.sh weekly usage reporting for Claude and Codex
@@ -1379,8 +1379,8 @@ authoritative OAuth-backed source.
 ---
 id: WRK-208
 status: pending
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # WRK-208: Fix semantic comparison — dormant QTF check uses spec SolveType
@@ -1448,9 +1448,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 90
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: gemini
 provider_alt: claude
 group: ACE-GTM
@@ -1500,9 +1500,9 @@ plan_approved: false
 auto_execute: true
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum
 
@@ -1532,8 +1532,8 @@ There is a large backlog of meaningful engineering work across repos. Time and a
 ---
 id: WRK-230
 status: pending
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # WRK-230 — Session Handoff: Commit Pending Changes + Submodule Sync
@@ -1602,9 +1602,9 @@ auto_execute: true
 percent_complete: 90
 last_assessed: 2026-02-24
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions
@@ -1653,9 +1653,9 @@ cadence: monthly  # review and update monthly as landscape evolves
 auto_execute: false  # requires user as strategic partner
 percent_complete: 80
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 updated_at: 2026-03-01T14:40:00Z
 ---
 
@@ -1701,9 +1701,9 @@ plan_reviewed: true
 plan_approved: true
 percent_complete: 95
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps
 
@@ -1723,7 +1723,7 @@ Parametric study infrastructure exists across three separate systems (campaign, 
 ## Implementation Notes (2026-02-24)
 - Module: `digitalmodel/src/digitalmodel/structural/parametric_coordinator.py`
 - Tests: `digitalmodel/tests/test_parametric_coordinator.py` — 46 tests, all passing
-- OrcaFlex engine stubbed via `OrcaFlexUnavailableError` on ace-linux-1 (no OrcFxAPI licence)
+- OrcaFlex engine stubbed via `OrcaFlexUnavailableError` on dev-primary (no OrcFxAPI licence)
 - OrcaFlex live path compiled but gated by `ORCAFLEX_AVAILABLE` flag
 - Cross-review: Gemini APPROVE (P3 minor CSS issue addressed in refactor); Codex NO_OUTPUT
 - Legal scan: new file clean; pre-existing `sanitize_s7_models.py` BLOCK violations unchanged
@@ -1752,9 +1752,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 ---
 
@@ -1796,9 +1796,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 provider_alt:
 ---
@@ -1826,15 +1826,15 @@ The original case study used proxy costs; with WRK-019 and WRK-171 complete, the
 === .claude/work-queue/pending/WRK-294.md ===
 ---
 id: WRK-294
-title: "Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths"
+title: "Standardize dev-secondary mount paths — fstab entries for HDDs with clean paths"
 status: pending
 priority: high
 complexity: simple
 compound: false
 created_at: 2026-02-21T00:00:00Z
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
 target_repos:
   - workspace-hub
 commit:
@@ -1847,11 +1847,11 @@ plan_approved: true
 percent_complete: 80
 brochure_status: n/a
 ---
-# Standardize ace-linux-2 mount paths
+# Standardize dev-secondary mount paths
 
 ## What
 
-Add proper fstab entries for the two data HDDs on ace-linux-2 with clean, script-friendly
+Add proper fstab entries for the two data HDDs on dev-secondary with clean, script-friendly
 mount paths. Currently they auto-mount via the desktop environment to paths with spaces
 and inconsistent names.
 
@@ -1877,15 +1877,15 @@ and inconsistent names.
 === .claude/work-queue/pending/WRK-297.md ===
 ---
 id: WRK-297
-title: "SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access"
+title: "SSHFS mounts on dev-primary for dev-secondary drives — bidirectional file access"
 status: pending
 priority: high
 complexity: simple
 compound: false
 created_at: 2026-02-21T00:00:00Z
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 target_repos:
   - workspace-hub
 commit:
@@ -1899,31 +1899,31 @@ percent_complete: 0
 brochure_status: n/a
 ---
 
-# SSHFS mounts on ace-linux-1 for ace-linux-2 drives
+# SSHFS mounts on dev-primary for dev-secondary drives
 
 ## What
 
-Configure SSHFS mounts on ace-linux-1 so it can access ace-linux-2's drives seamlessly.
-This is the reverse direction — ace-linux-2 already mounts ace-linux-1's workspace-hub via
+Configure SSHFS mounts on dev-primary so it can access dev-secondary's drives seamlessly.
+This is the reverse direction — dev-secondary already mounts dev-primary's workspace-hub via
 SSHFS. Both machines should have full bidirectional drive access.
 
 ## Why
 
-- ace-linux-2 already has SSHFS access to ace-linux-1 (workspace-hub mounted at `/mnt/workspace-hub`)
-- ace-linux-1 has **no access** to ace-linux-2's drives
+- dev-secondary already has SSHFS access to dev-primary (workspace-hub mounted at `/mnt/workspace-hub`)
+- dev-primary has **no access** to dev-secondary's drives
 - Bidirectional access needed: work from either seat, access any data from either machine
-- ace-linux-2 has 2.7 TB bulk storage (`/mnt/dde`) not available from ace-linux-1
+- dev-secondary has 2.7 TB bulk storage (`/mnt/dde`) not available from dev-primary
 
 ## Prerequisites (all met)
 
-- [x] SSH key auth ace-linux-1 → ace-linux-2: working (WRK-295)
-- [x] openssh-server on ace-linux-2: installed (this session)
+- [x] SSH key auth dev-primary → dev-secondary: working (WRK-295)
+- [x] openssh-server on dev-secondary: installed (this session)
 - [x] /etc/hosts: both machines know each other
-- [ ] WRK-294 mount paths active on ace-linux-2 (needs reboot)
+- [ ] WRK-294 mount paths active on dev-secondary (needs reboot)
 
 ## Current State
 
-### ace-linux-1 local mounts
+### dev-primary local mounts
 | Mount Point | Device | Size | Type |
 === .claude/work-queue/pending/WRK-310.md ===
 ---
@@ -1948,8 +1948,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 60
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots)
@@ -1998,8 +1998,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth
@@ -2036,9 +2036,9 @@ priority: medium
 complexity: medium
 compound: false
 created_at: 2026-02-23T00:00:00Z
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
 target_repos:
   - workspace-hub
   - digitalmodel
@@ -2057,7 +2057,7 @@ brochure_status: n/a
 
 ## What
 
-Hands-on OpenFOAM exploration and ecosystem audit on ace-linux-2 to build practical
+Hands-on OpenFOAM exploration and ecosystem audit on dev-secondary to build practical
 familiarity, resolve known issues, and refresh the WRK-047 implementation plan before
 starting greenfield development in digitalmodel.
 
@@ -2065,7 +2065,7 @@ starting greenfield development in digitalmodel.
 
 WRK-047 (OpenFOAM CFD capability for digitalmodel) was planned 2026-01-29 and approved
 2026-02-10 — but no implementation has started. Since then, OpenFOAM v2312 was installed
-on ace-linux-2 (WRK-290), PyFoam has a known broken dependency, and the GMSH meshing
+on dev-secondary (WRK-290), PyFoam has a known broken dependency, and the GMSH meshing
 module in digitalmodel has likely evolved. Running tutorials and auditing the ecosystem
 now prevents false starts when WRK-047 kicks off.
 
@@ -2081,7 +2081,7 @@ This work item must review and reconcile these specs with the newer WRK-047 plan
 === .claude/work-queue/pending/WRK-352.md ===
 ---
 id: WRK-352
-title: Set up remote desktop access on ace-linux-2
+title: Set up remote desktop access on dev-secondary
 status: pending
 priority: low
 complexity: simple
@@ -2100,28 +2100,28 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 95
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
-# Set up remote desktop access on ace-linux-2
+# Set up remote desktop access on dev-secondary
 
 ## What
-Install and configure a remote desktop solution on ace-linux-2 so the machine can be accessed via GUI without physical KVM presence. Candidate options: x11vnc (share live session), xrdp (RDP protocol), or NoMachine.
+Install and configure a remote desktop solution on dev-secondary so the machine can be accessed via GUI without physical KVM presence. Candidate options: x11vnc (share live session), xrdp (RDP protocol), or NoMachine.
 
 ## Why
-KVM display drops when switching away (WRK-307). Remote desktop provides an alternative access path and reduces dependency on physical KVM switch for GUI work on ace-linux-2.
+KVM display drops when switching away (WRK-307). Remote desktop provides an alternative access path and reduces dependency on physical KVM switch for GUI work on dev-secondary.
 
 ## Acceptance Criteria
-- [x] Remote desktop solution installed and running on ace-linux-2
-- [x] Can connect from ace-linux-1 (LAN) — SSH tunnel + xtigervncviewer verified
-- [~] Connection works over Tailscale (100.93.161.27) — requires SSH tunnel (x11vnc is localhost-bound); direct bind not configured
+- [x] Remote desktop solution installed and running on dev-secondary
+- [x] Can connect from dev-primary (LAN) — SSH tunnel + xtigervncviewer verified
+- [~] Connection works over Tailscale (10.1.0.2) — requires SSH tunnel (x11vnc is localhost-bound); direct bind not configured
 - [x] Service auto-starts on boot — `~/.config/autostart/x11vnc.desktop` present
 - [x] Connection method documented in `specs/modules/hardware-inventory/aceengineer-02.md`
 
 ## Notes
-- ace-linux-2 already has an Xorg session on `:1` (confirmed) — x11vnc is lowest-friction option
-- Tailscale already configured (100.93.161.27/32)
+- dev-secondary already has an Xorg session on `:1` (confirmed) — x11vnc is lowest-friction option
+- Tailscale already configured (10.1.0.2/32)
 - Related: WRK-307 (KVM display loss — EDID dongle fix)
 
 ## Agentic AI Horizon
@@ -2151,9 +2151,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # Heriberto: Powder Room Sink Caulk for Water Drainage
 
@@ -2197,9 +2197,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # Heriberto: garage fence door repair
@@ -2240,9 +2240,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # Heriberto: powder room faucet tightening
@@ -2263,18 +2263,18 @@ Powder room faucet needs tightening.
 === .claude/work-queue/pending/WRK-389.md ===
 ---
 id: WRK-389
-title: "fix(ace-linux-2): switch Claude install from sudo-npm to native installer"
+title: "fix(dev-secondary): switch Claude install from sudo-npm to native installer"
 status: pending
 priority: medium
-computer: ace-linux-2
-execution_workstations: [ace-linux-2]
-plan_workstations: [ace-linux-2]
-tags: [maintenance, claude, install, ace-linux-2]
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
+tags: [maintenance, claude, install, dev-secondary]
 source: WRK-306-deferred
 ---
 ## Context
 
-During WRK-306, discovered that `claude` on ace-linux-2 was installed via `sudo npm install -g`,
+During WRK-306, discovered that `claude` on dev-secondary was installed via `sudo npm install -g`,
 requiring `sudo claude update` for upgrades. This is fragile and non-standard.
 
 The `install_method: {claude: npm-sudo}` entry in the workstations SKILL.md documents this
@@ -2282,38 +2282,38 @@ pending issue.
 
 ## Goal
 
-Switch Claude CLI install on ace-linux-2 to the native installer (curl-based) or an nvm-managed
+Switch Claude CLI install on dev-secondary to the native installer (curl-based) or an nvm-managed
 npm install (no sudo required). Ensure `claude update` works without sudo.
 
 ## Steps
 
-1. SSH into ace-linux-2
+1. SSH into dev-secondary
 2. Check current install: `which claude && claude --version`
 3. Remove sudo-npm install: `sudo npm uninstall -g @anthropic-ai/claude-code`
 4. Install via native method:
    - Option A: native installer: `curl -fsSL https://claude.ai/install.sh | sh`
    - Option B: nvm-based npm (no sudo): install nvm → `nvm install lts && npm install -g @anthropic-ai/claude-code`
 5. Verify: `claude --version && claude update` (no sudo)
-6. Update workstations SKILL.md `install_method` entry: `ace-linux-2: {claude: native}`
+6. Update workstations SKILL.md `install_method` entry: `dev-secondary: {claude: native}`
 
 ## Acceptance Criteria
 
-- [ ] `claude --version` works on ace-linux-2 without sudo
+- [ ] `claude --version` works on dev-secondary without sudo
 - [ ] `claude update` completes without sudo
 - [ ] workstations SKILL.md `install_method` updated to reflect new method
 === .claude/work-queue/pending/WRK-416.md ===
 ---
 id: WRK-416
 status: pending
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # WRK-416: Populate specs/modules/ in digitalmodel and worldenergydata
 
 **Status**: done
 **Complexity**: medium
-**Computer**: ace-linux-1
+**Computer**: dev-primary
 **Phase**: 5 (Phase D - Long Horizon)
 
 ## Problem
@@ -2353,9 +2353,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: pending
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(gtm): Oil & Gas Practitioner Persona + 1-Month GTM Plan
@@ -2405,8 +2405,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(hydrodynamics): integrate wavespectra library for spectral processing
@@ -2452,8 +2452,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(subsea): integrate MoorDyn + MoorPy for mooring analysis
@@ -2497,8 +2497,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(marine_ops): wire Open-Meteo Marine API into weather-window module
@@ -2541,8 +2541,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(worldenergydata): create ESG/Carbon Emissions module
@@ -2586,8 +2586,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(worldenergydata): create Offshore Geohazard Feed module using USGS API
@@ -2630,8 +2630,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(subsea): create Cathodic Protection module (DNV-RP-B401)
@@ -2674,8 +2674,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(worldenergydata): wire SODIR FactPages OData API
@@ -2717,8 +2717,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(worldenergydata): integrate CMEMS Wave Multi-Year Product
@@ -2760,8 +2760,8 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing
@@ -2802,9 +2802,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho
@@ -2853,9 +2853,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo
@@ -2904,9 +2904,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo
@@ -2955,9 +2955,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo
@@ -3006,9 +3006,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter
@@ -3057,9 +3057,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR
@@ -3108,9 +3108,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al
@@ -3159,9 +3159,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals
@@ -3210,9 +3210,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al
@@ -3261,9 +3261,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli
@@ -3312,9 +3312,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen
@@ -3363,9 +3363,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
   description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
@@ -3414,9 +3414,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
   description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
@@ -3465,9 +3465,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
   description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
@@ -3516,9 +3516,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se
@@ -3567,9 +3567,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se
@@ -3618,9 +3618,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri
@@ -3669,9 +3669,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri
@@ -3720,9 +3720,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0001-01 (Engineering).xlsx
   description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
@@ -3771,9 +3771,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0001-01 (Engineering).xlsx
   description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
@@ -3822,9 +3822,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers
@@ -3873,9 +3873,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers
@@ -3924,9 +3924,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ
@@ -3975,9 +3975,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ
@@ -4026,9 +4026,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float
@@ -4077,9 +4077,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float
@@ -4128,9 +4128,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
   description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
@@ -4179,9 +4179,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
   description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
@@ -4230,9 +4230,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
@@ -4281,9 +4281,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
@@ -4332,9 +4332,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy
@@ -4383,9 +4383,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy
@@ -4434,9 +4434,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0013-07 Riser Analysis (RELEASED).xlsm
   description: Released riser analysis workbook — deepwater production riser, combined load envelopes
@@ -4485,9 +4485,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0013-07 Riser Analysis (RELEASED).xlsm
   description: Released riser analysis workbook — deepwater production riser, combined load envelopes
@@ -4536,9 +4536,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
   description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads (DNV-RP-F110 input data)
@@ -4587,9 +4587,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
   description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads (DNV-RP-F110 input data)
@@ -4638,9 +4638,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr
@@ -4689,9 +4689,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr
@@ -4740,9 +4740,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference
@@ -4791,9 +4791,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference
@@ -4842,9 +4842,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines
@@ -4893,9 +4893,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines
@@ -4944,9 +4944,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an
@@ -4995,9 +4995,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an
@@ -5046,9 +5046,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers
@@ -5097,9 +5097,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers
@@ -5148,9 +5148,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management
@@ -5199,9 +5199,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management
@@ -5250,9 +5250,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
   description: Metocean data workbook — design current profiles, wave heights, and return periods
@@ -5301,9 +5301,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
   description: Metocean data workbook — design current profiles, wave heights, and return periods
@@ -5352,9 +5352,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari
@@ -5403,9 +5403,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari
@@ -5454,9 +5454,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/31245-RPT-0001-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
   description: Conductor system fatigue analysis report — full structural calc with S-N curves
@@ -5505,9 +5505,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/31245-RPT-0001-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
   description: Conductor system fatigue analysis report — full structural calc with S-N curves
@@ -5556,9 +5556,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural 
@@ -5607,9 +5607,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural 
@@ -5658,9 +5658,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C
@@ -5709,9 +5709,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C
@@ -5760,9 +5760,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
@@ -5811,9 +5811,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
@@ -5862,9 +5862,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
@@ -5913,9 +5913,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
@@ -5964,9 +5964,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
@@ -6015,9 +6015,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
@@ -6066,9 +6066,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
@@ -6117,9 +6117,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
@@ -6168,9 +6168,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
@@ -6219,9 +6219,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
@@ -6270,9 +6270,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0003-01 Long Term Wave Scatter Diagram.xlsx
   description: Long-term wave scatter diagram — Hs/Tp joint probability for North Sea location
@@ -6321,9 +6321,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M
@@ -6372,9 +6372,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve
@@ -6423,9 +6423,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design,
@@ -6474,9 +6474,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 test_data:
 - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-1 RAO Data For OrcaFlex.xlsx
   description: RAO data for OrcaFlex — heave/pitch/roll transfer functions
@@ -6527,9 +6527,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel): Port API 579 FFS MATLAB to Python — GML and LML
@@ -6579,9 +6579,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # feat(digitalmodel): Port VIV MATLAB Mode Analysis Scripts to Python
@@ -6617,9 +6617,9 @@ created_at: 2026-02-25T00:00:00Z
 target_repos:
   - digitalmodel
 blocked_by: []
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # WRK-574: Remove legacy setup.py
 
@@ -6638,9 +6638,9 @@ created_at: 2026-02-25T00:00:00Z
 target_repos:
   - digitalmodel
 blocked_by: []
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 # WRK-575: Remove stale docs/modules/references/
 
@@ -6670,9 +6670,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # chore(workspace-hub): Normalize SKILL.md Frontmatter for 9 Skipped Skills
@@ -6720,9 +6720,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Audit Official MCP Registry for Engineering-Domain Servers
@@ -6772,9 +6772,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Install Semantic Scholar MCP Server for Agent Literature Search
@@ -6824,9 +6824,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Map Open-Access Journal Portfolio for Engineering Domains
@@ -6874,9 +6874,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Evaluate IEA Methane Tracker for Upstream O&G ESG Module
@@ -6925,9 +6925,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Geomechanics Module Feasibility Assessment
@@ -6947,7 +6947,7 @@ DOE-backed multiphysics. Both are Python-accessible.
 ## Deliverables
 
 - Feasibility report comparing OpenGeoSys vs MOOSE for target use cases
-- Installation test on ace-linux-1/2
+- Installation test on dev-primary/2
 - Proof-of-concept: simple wellbore integrity calculation
 - Go/no-go recommendation
 
@@ -6975,9 +6975,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Verify ANP Brazil Production Data REST API Availability
@@ -7026,9 +7026,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Index NSTA UK National Data Repository Datasets
@@ -7077,9 +7077,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Add IRENA Offshore Wind Capacity Data to Energy Mix Module
@@ -7128,9 +7128,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Auto-Fetch IACS Blue Book Unified Requirements Updates
@@ -7179,9 +7179,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Evaluate Code_Aster for Large-Scale Topside Structural FEA
@@ -7199,7 +7199,7 @@ structural analysis where commercial FEA is not available.
 
 ## Deliverables
 
-- Installation test on ace-linux-1/2
+- Installation test on dev-primary/2
 - Benchmark: simple structural problem (beam, plate, or frame)
 - Comparison with existing digitalmodel structural solvers
 - Go/no-go recommendation
@@ -7230,9 +7230,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Evaluate OpenTURNS for Fatigue Reliability Module Integration
@@ -7252,7 +7252,7 @@ a natural complement to the existing SALib sensitivity analysis capability.
 
 ## Deliverables
 
-- Installation test on ace-linux-1/2
+- Installation test on dev-primary/2
 - Benchmark: S-N curve reliability problem
 - Comparison with SALib for overlapping functionality
 - Integration recommendation
@@ -7288,9 +7288,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # feat(orcaflex): dat-to-yaml Pipeline — Extract, Legal-Scan, Import to digitalmodel
@@ -7301,21 +7301,21 @@ Three-stage pipeline to convert binary OrcaFlex `.dat` model files into
 portable YAML test fixtures for `digitalmodel`:
 
 ```
-Stage 1 (acma-ansys05):  .dat → OrcFxAPI → raw YAML  → client_projects/data/raw/orcaflex-extracted/
-Stage 2 (ace-linux-1):   pull client_projects → legal scan → anonymize string fields
-Stage 3 (ace-linux-1):   clean YAML → digitalmodel/data/orcaflex/ (test fixtures)
+Stage 1 (licensed-win-1):  .dat → OrcFxAPI → raw YAML  → client_projects/data/raw/orcaflex-extracted/
+Stage 2 (dev-primary):   pull client_projects → legal scan → anonymize string fields
+Stage 3 (dev-primary):   clean YAML → digitalmodel/data/orcaflex/ (test fixtures)
 ```
 
 ## Why
 
 OrcaFlex `.dat` files are binary and require a licensed OrcaFlex install
-to read. acma-ansys05 has OrcaFlex installed. Once extracted to YAML the
+to read. licensed-win-1 has OrcaFlex installed. Once extracted to YAML the
 engineering data (geometry, material properties, load cases, water depth)
 is plain-text and version-controllable.
 === .claude/work-queue/pending/WRK-595.md ===
 ---
 id: WRK-595
-title: "feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05"
+title: "feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on licensed-win-1"
 status: pending
 priority: high
 complexity: medium
@@ -7340,9 +7340,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: acma-ansys05
-execution_workstations: [acma-ansys05]
-plan_workstations: [acma-ansys05]
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
 ---
 
 # feat(orcaflex): Rewrite Enrichment Pipeline — worldenergydata-First
@@ -7351,9 +7351,9 @@ plan_workstations: [acma-ansys05]
 
 Replace the blind string-anonymization approach in `anonymize-import.py`
 with an enrichment-first design. All 3 pipeline stages now run on
-acma-ansys05 (same ecosystem: OrcaFlex + worldenergydata + repo access).
+licensed-win-1 (same ecosystem: OrcaFlex + worldenergydata + repo access).
 
-### Revised Pipeline (all on acma-ansys05)
+### Revised Pipeline (all on licensed-win-1)
 
 ```
 Stage 1: .dat + OrcFxAPI → extract raw model params
@@ -7394,9 +7394,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Geotechnical Module — Umbrella Tracker
@@ -7434,9 +7434,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Engineering Chatbot for Oil & Gas — Product Build
@@ -7480,9 +7480,9 @@ commit:
 related:
   - WRK-309
   - WRK-605
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 0
 ---
 
@@ -7531,9 +7531,9 @@ commit:
 related:
   - WRK-309
   - WRK-605
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 0
 ---
 
@@ -7584,9 +7584,9 @@ related:
   - WRK-309
   - WRK-607
   - WRK-045
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 0
 ---
 
@@ -7635,9 +7635,9 @@ related:
   - WRK-309
   - WRK-607
   - WRK-608
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 percent_complete: 0
 ---
 
@@ -7646,7 +7646,7 @@ percent_complete: 0
 ## What
 
 1,070 ANSYS APDL `.inp` files indexed across `/mnt/ace/docs/disciplines/` and
-`/mnt/remote/ace-linux-2/dde/documents/` implement structural FEA analyses.
+`/mnt/remote/dev-secondary/dde/documents/` implement structural FEA analyses.
 Catalog them, document what each group computes, and port boundary conditions,
 load cases, and result extraction logic to Python/digitalmodel.
 
@@ -7695,9 +7695,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # chore(wrk-309): Convert Document-Intelligence Findings into Structured Data Sources
@@ -7742,9 +7742,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Soil Models & Shared Types (Phase 1)
@@ -7794,9 +7794,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Pile Capacity (Phase 2)
@@ -7845,9 +7845,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # On-Bottom Stability (Phase 3)
@@ -7896,9 +7896,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Shallow Foundations (Phase 4)
@@ -7949,9 +7949,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Anchor Capacity (Phase 5)
@@ -7997,9 +7997,9 @@ synced_to: []
 plan_reviewed: false
 plan_approved: false
 percent_complete: 0
-computer: [ace-linux-1, ace-linux-2]
-execution_workstations: [ace-linux-1, ace-linux-2]
-plan_workstations: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
 ---
 
 # Scour Prediction (Phase 6)
@@ -8050,9 +8050,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 30
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: codex
 ---
@@ -8102,9 +8102,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: codex
 ---
@@ -8153,9 +8153,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8212,9 +8212,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 40
 brochure_status: complete
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8255,9 +8255,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: codex
 ---
@@ -8308,9 +8308,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8362,9 +8362,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8409,9 +8409,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: codex
 ---
@@ -8459,9 +8459,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: codex
 ---
@@ -8508,9 +8508,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: [ace-linux-1, acma-ansys05]
-execution_workstations: [ace-linux-1, acma-ansys05]
-plan_workstations: [ace-linux-1, acma-ansys05]
+computer: [dev-primary, licensed-win-1]
+execution_workstations: [dev-primary, licensed-win-1]
+plan_workstations: [dev-primary, licensed-win-1]
 provider: claude
 orchestrator: claude
 ---
@@ -8524,9 +8524,9 @@ Code session `.jsonl` files from disk and extracts learnings into the auto-memor
 
 ### Session file locations to scan
 
-- **ace-linux-1**: `~/.claude/projects/-mnt-local-analysis-workspace-hub/*.jsonl`
+- **dev-primary**: `~/.claude/projects/-mnt-local-analysis-workspace-hub/*.jsonl`
   — 282 files, up to 121 MB each
-- **acma-ansys05**: equivalent path if Claude Code sessions exist there
+- **licensed-win-1**: equivalent path if Claude Code sessions exist there
   — check `%USERPROFILE%\.claude\projects\` (Windows)
 
 ### Script: `scripts/memory/scan-sessions.py`
@@ -8560,9 +8560,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: [ace-linux-1, acma-ansys05]
-execution_workstations: [ace-linux-1, acma-ansys05]
-plan_workstations: [ace-linux-1, acma-ansys05]
+computer: [dev-primary, licensed-win-1]
+execution_workstations: [dev-primary, licensed-win-1]
+plan_workstations: [dev-primary, licensed-win-1]
 provider: claude
 orchestrator: claude
 ---
@@ -8611,9 +8611,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: [ace-linux-1]
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8662,9 +8662,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: [ace-linux-1]
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8712,9 +8712,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: [ace-linux-1]
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 ---
@@ -8763,9 +8763,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 cross_review: pending
@@ -8816,9 +8816,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 cross_review: pending
@@ -8865,9 +8865,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: gemini
 orchestrator: gemini
 cross_review: pending
@@ -8915,9 +8915,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: gemini
 orchestrator: gemini
 cross_review: pending
@@ -8969,9 +8969,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: gemini
 orchestrator: gemini
 cross_review: pending
@@ -9019,9 +9019,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 5
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: claude
 cross_review: pending
@@ -9069,9 +9069,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: claude
 cross_review: pending
@@ -9120,9 +9120,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: claude
 cross_review: pending
@@ -9170,9 +9170,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: codex
 orchestrator: claude
 cross_review: pending
@@ -9221,9 +9221,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 cross_review: pending
@@ -9272,9 +9272,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 cross_review: pending
@@ -9323,9 +9323,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 provider: claude
 orchestrator: claude
 cross_review: pending
@@ -9374,9 +9374,9 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 brochure_status: n/a
-computer: ace-linux-2
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1, ace-linux-2]
+computer: dev-secondary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary, dev-secondary]
 provider: codex
 orchestrator: codex
 cross_review: pending
@@ -9401,7 +9401,7 @@ Codex is used as a review/orchestration provider in the work-queue contract. If 
 - [ ] Stable Codex-compatible invocation path implemented.
 - [ ] `/work add` and `/work list` (or explicit equivalents) validated in Codex CLI.
 - [ ] Any Codex-specific notes added to adapter docs.
-- [ ] Regression evidence captured on ace-linux-2.
+- [ ] Regression evidence captured on dev-secondary.
 === .claude/work-queue/pending/WRK-TEST-ENSEMBLE.md ===
 ---
 id: WRK-TEST-ENSEMBLE
@@ -9414,9 +9414,9 @@ target_repos:
   - workspace-hub
 plan_ensemble: false
 ensemble_consensus_score: null
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 ---
 
 # Smoke Test

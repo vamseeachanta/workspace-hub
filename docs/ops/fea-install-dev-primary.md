@@ -1,7 +1,7 @@
-# FEA Installation on ace-linux-1 (WRK-291)
+# FEA Installation on dev-primary (WRK-291)
 
 **Date:** 2026-02-24
-**Machine:** ace-linux-1 (Ubuntu 24.04.4 LTS)
+**Machine:** dev-primary (Ubuntu 24.04.4 LTS)
 **User:** vamsee (sudo requires password — user-space install only)
 **Source:** WRK-289 research (top 3 FEA recommendations)
 

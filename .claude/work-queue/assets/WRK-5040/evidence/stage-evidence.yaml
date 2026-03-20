@@ -27,7 +27,7 @@ stage_7_plan_final:
 stage_8_claim:
   completed_at: "2026-03-13T10:35:00Z"
   claimed_by: claude
-  machine: ace-linux-1
+  machine: dev-primary
 
 stage_9_routing:
   completed_at: "2026-03-13T10:36:00Z"

@@ -2,7 +2,7 @@ wrk_id: WRK-1039
 stage: 10
 executed_at: "2026-03-08T20:00:00Z"
 executor: claude
-computer: ace-linux-1
+computer: dev-primary
 
 steps_completed:
   - exit_stage_py_pending_working_path_fix

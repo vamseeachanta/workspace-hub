@@ -4,4 +4,4 @@ set_active_wrk: true
 session_id: "01ad3dff-23b6-492b-a861-1280417fd56a"
 orchestrator_agent: claude
 provider: claude
-computer: ace-linux-1
+computer: dev-primary

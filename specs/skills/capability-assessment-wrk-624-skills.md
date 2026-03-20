@@ -96,7 +96,7 @@
 |---|-----------------|-----------------|-------|
 | 1 | Single fire-and-forget command for full learning pipeline | §intro, §Pipeline Summary | **pass** — phase table with 11 phases, mandatory flags, machine-routing logic; cron-safe stated |
 | 2 | Mode-based routing per machine | §Mode-Based Routing | **pass** — bash snippet with hostname check; `full` vs `contribute` modes defined; which phases each mode runs stated |
-| 3 | Cross-machine data flow | §Cross-Machine Data Flow | **pass** — per-machine commit targets; ace-linux-1 git pull in Phase 10a named |
+| 3 | Cross-machine data flow | §Cross-Machine Data Flow | **pass** — per-machine commit targets; dev-primary git pull in Phase 10a named |
 | 4 | Session design: lean by default (what NOT to run during sessions) | §Session Design: Lean by Default | **pass** — explicit prohibition list of skills that must NOT run standalone during sessions; in-session vs nightly pipeline table |
 | 5 | Cron scheduling | §Scheduling | **pass** — exact crontab entry provided; script name and path; `git pull` hard gate noted |
 

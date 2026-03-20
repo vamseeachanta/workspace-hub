@@ -9498,10 +9498,10 @@ skills:
 - name: workstations
   tier: C
   word_count: 48
-- name: workstations-ace-linux-1-storage
+- name: workstations-dev-primary-storage
   tier: C
   word_count: 127
-- name: workstations-ace-linux-2-open-source-tools
+- name: workstations-dev-secondary-open-source-tools
   tier: C
   word_count: 98
 - name: workstations-comprehensive-learning-integration

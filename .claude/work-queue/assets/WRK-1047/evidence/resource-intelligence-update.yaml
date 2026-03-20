@@ -6,7 +6,7 @@ additions:
     notes: Single source of truth for required plugins, tier-1 repos, hook limits, workstations
   - path: scripts/readiness/compare-harness-state.sh
     type: new_script
-    notes: SSH diff ace-linux-1 ↔ ace-linux-2; acma-ansys05 stale-report detection
+    notes: SSH diff dev-primary ↔ dev-secondary; licensed-win-1 stale-report detection
   - path: scripts/readiness/remediate-harness.sh
     type: new_script
     notes: Print fix commands per FAIL check from harness-readiness report

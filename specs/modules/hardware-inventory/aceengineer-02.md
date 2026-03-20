@@ -1,13 +1,13 @@
 ---
 title: "AceEngineer-02 Hardware Assessment"
 device: AceEngineer-02
-hostname: ace-linux-2
+hostname: dev-secondary
 assessed_date: 2026-02-21
 assessed_by: manual assessment (claude)
 work_item: WRK-050
 ---
 
-# AceEngineer-02 (ace-linux-2) — Hardware Assessment
+# AceEngineer-02 (dev-secondary) — Hardware Assessment
 
 > Last assessed 2026-02-21 via manual system queries
 
@@ -63,9 +63,9 @@ work_item: WRK-050
 
 | Interface | Driver | State | Speed | MAC | IPv4 | Notes |
 |-----------|--------|-------|-------|-----|------|-------|
-| enp4s0f0 | igb | UP | 1000 Mbps | 08:62:66:a2:a0:ce | 192.168.1.103/24 | Primary (DHCP) |
+| enp4s0f0 | igb | UP | 1000 Mbps | 08:62:66:a2:a0:ce | 10.0.0.2/24 | Primary (DHCP) |
 | enp4s0f1 | igb | DOWN | — | 08:62:66:a2:a0:cf | none | Unused |
-| tailscale0 | wireguard | UP | — | — | 100.93.161.27/32 | Tailscale VPN |
+| tailscale0 | wireguard | UP | — | — | 10.1.0.2/32 | Tailscale VPN |
 
 ## Platform Analysis
 
@@ -77,7 +77,7 @@ work_item: WRK-050
 | **Boot SSD** | Samsung 870 EVO 500 GB — 22 power-on hours, 0% wear, SMART Excellent. Essentially brand new. |
 | **Bulk Storage** | 1 TB WDC HDD: **CAUTION** — 140 reallocated sectors, 65,988 hrs (~7.5 yr). Plan replacement. 2.7 TB Seagate HDD: Good — 0 reallocated sectors, 51,248 hrs (~5.8 yr), enterprise-class (Constellation CS). |
 | **Motherboard** | ASUS Z10PE-D16 — identical to AceEngineer-01. BIOS v0601 (newer than AE-01's v0501). |
-| **Network** | 2x GbE (1 active) + Tailscale VPN (100.93.161.27). |
+| **Network** | 2x GbE (1 active) + Tailscale VPN (10.1.0.2). |
 | **OS** | Ubuntu 24.04.4 LTS — previously ran Windows 10 (flagged "Illegal" in WRK-050). Successfully migrated to Ubuntu. |
 
 ## Consolidation Status (from WRK-050)
@@ -86,11 +86,11 @@ work_item: WRK-050
 - [x] Spare NVIDIA T400 4GB installed (per Phase 3 GPU allocation plan)
 - [x] OS changed from Windows 10 to Ubuntu 24.04.4 LTS
 - [x] SMART health check on all drives (WRK-293, via udisks2; smartmontools not yet installed — requires sudo)
-- [x] Tailscale VPN setup (100.93.161.27, matches AceEngineer-01 pattern)
-- [x] DHCP reservation at router (MAC 08:62:66:a2:a0:ce -> 192.168.1.103) — confirmed 2026-02-22
-- [x] SSHFS network mounts configured — fstab entries written for workspace-hub + ace-linux-1 drives (WRK-287, 2026-02-22)
-- [ ] **SSHFS reboot persistence** — mounts fail after reboot (`Connection reset by peer`); root cause: `/root/.ssh/known_hosts` missing for ace-linux-1; fix documented in WRK-287 session log → run `sudo bash /tmp/fix-sshfs-mounts.sh` on ace-linux-2 (or re-create from WRK-287 if /tmp cleared)
-- [x] **KVM display loss fixed (WRK-307, 2026-02-23)** — NVIDIA T400 dropped output on KVM switch (EDID lost). Software fix applied: GDM switched to X11 (`WaylandEnable=false`), EDID captured to `/etc/X11/edid.bin`, Xorg config forces `DFP-5` with `CustomEDID` at `/etc/X11/xorg.conf.d/10-force-display.conf`. Remote desktop fallback: x11vnc on display `:1` with autostart (`~/.config/autostart/x11vnc.desktop`), accessible from ace-linux-1 via SSH tunnel + TigerVNC. Hardware EDID dongle deferred (on hold).
+- [x] Tailscale VPN setup (10.1.0.2, matches AceEngineer-01 pattern)
+- [x] DHCP reservation at router (MAC 08:62:66:a2:a0:ce -> 10.0.0.2) — confirmed 2026-02-22
+- [x] SSHFS network mounts configured — fstab entries written for workspace-hub + dev-primary drives (WRK-287, 2026-02-22)
+- [ ] **SSHFS reboot persistence** — mounts fail after reboot (`Connection reset by peer`); root cause: `/root/.ssh/known_hosts` missing for dev-primary; fix documented in WRK-287 session log → run `sudo bash /tmp/fix-sshfs-mounts.sh` on dev-secondary (or re-create from WRK-287 if /tmp cleared)
+- [x] **KVM display loss fixed (WRK-307, 2026-02-23)** — NVIDIA T400 dropped output on KVM switch (EDID lost). Software fix applied: GDM switched to X11 (`WaylandEnable=false`), EDID captured to `/etc/X11/edid.bin`, Xorg config forces `DFP-5` with `CustomEDID` at `/etc/X11/xorg.conf.d/10-force-display.conf`. Remote desktop fallback: x11vnc on display `:1` with autostart (`~/.config/autostart/x11vnc.desktop`), accessible from dev-primary via SSH tunnel + TigerVNC. Hardware EDID dongle deferred (on hold).
 - [ ] Reboot test — verify SSHFS mounts auto-recover after known_hosts fix (WRK-287)
 
 ## Remote Desktop Access
@@ -103,21 +103,21 @@ work_item: WRK-050
 - Listening on port 5900 (localhost-bound: 127.0.0.1:5900 and [::]:5900)
 - Running as: `x11vnc -display :1 -auth /run/user/1000/gdm/Xauthority -forever -bg -nopw -listen localhost -rfbport 5900`
 
-### Connect from ace-linux-1
+### Connect from dev-primary
 
 ```bash
 # SSH tunnel (LAN or via Tailscale)
-ssh -L 5900:localhost:5900 vamsee@ace-linux-2 -N &
+ssh -L 5900:localhost:5900 vamsee@dev-secondary -N &
 xtigervncviewer localhost:5900
 
 # Via Tailscale (requires SSH tunnel — x11vnc is localhost-bound)
-ssh -L 5900:localhost:5900 vamsee@100.93.161.27 -N &
+ssh -L 5900:localhost:5900 vamsee@10.1.0.2 -N &
 xtigervncviewer localhost:5900
 ```
 
 ### Tailscale remote access
 
-- Tailscale IP: 100.93.161.27
+- Tailscale IP: 10.1.0.2
 - Port: 5900 (VNC), localhost-bound — SSH tunnel required
 - Note: x11vnc starts with `-listen localhost`; direct Tailscale VNC without tunnel
   requires reconfiguring to bind on tailscale0 interface
@@ -130,7 +130,7 @@ xtigervncviewer localhost:5900
 
 ## Cross-Machine Comparison (AE-01 vs AE-02)
 
-| Component | AceEngineer-01 (ace-linux-1) | AceEngineer-02 (ace-linux-2) |
+| Component | AceEngineer-01 (dev-primary) | AceEngineer-02 (dev-secondary) |
 |-----------|------------------------------|------------------------------|
 | CPU | 2x Xeon E5-2630 v3 (identical) | 2x Xeon E5-2630 v3 (identical) |
 | RAM | 32 GB | 32 GB |
@@ -140,5 +140,5 @@ xtigervncviewer localhost:5900
 | Motherboard | Z10PE-D16 (BIOS v0501) | Z10PE-D16 (BIOS v0601) |
 | OS | Ubuntu 24.04.3 LTS | Ubuntu 24.04.4 LTS |
 | Kernel | 6.8.0-90-generic | 6.17.0-14-generic |
-| IP | 192.168.1.100 | 192.168.1.103 |
-| Tailscale | Yes (100.107.64.76) | Yes (100.93.161.27) |
+| IP | 10.0.0.1 | 10.0.0.2 |
+| Tailscale | Yes (10.1.0.1) | Yes (10.1.0.2) |

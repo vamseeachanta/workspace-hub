@@ -4,7 +4,7 @@
 
 ### Local Network (Same WiFi)
 ```
-Host:     192.168.1.100
+Host:     10.0.0.1
 User:     vamsee
 Hostname: vamsee-linux1
 Port:     22
@@ -12,7 +12,7 @@ Port:     22
 
 ### Tailscale VPN (Anywhere on Internet)
 ```
-Host:     100.107.64.76
+Host:     10.1.0.1
 User:     vamsee
 Hostname: vamsee-linux1
 Port:     22
@@ -45,10 +45,10 @@ cd C:\workspace-hub
 ### Method 3: Direct SSH
 ```powershell
 # Local network
-ssh vamsee@192.168.1.100
+ssh vamsee@10.0.0.1
 
 # Tailscale (internet)
-ssh vamsee@100.107.64.76
+ssh vamsee@10.1.0.1
 ```
 
 ## From Linux/Mac Machine
@@ -75,10 +75,10 @@ ssh vamsee@100.107.64.76
 ### Method 3: Direct SSH
 ```bash
 # Local network
-ssh vamsee@192.168.1.100
+ssh vamsee@10.0.0.1
 
 # Tailscale (internet)
-ssh vamsee@100.107.64.76
+ssh vamsee@10.1.0.1
 ```
 
 ## Setup SSH Keys (Passwordless)
@@ -89,10 +89,10 @@ ssh vamsee@100.107.64.76
 ssh-keygen -t ed25519
 
 # Copy to workspace
-ssh-copy-id vamsee@192.168.1.100
+ssh-copy-id vamsee@10.0.0.1
 
 # Test
-ssh vamsee@192.168.1.100
+ssh vamsee@10.0.0.1
 ```
 
 ## Tabby Shortcuts
@@ -110,12 +110,12 @@ ssh vamsee@192.168.1.100
 
 **Upload to workspace:**
 ```bash
-scp file.txt vamsee@192.168.1.100:~/
+scp file.txt vamsee@10.0.0.1:~/
 ```
 
 **Download from workspace:**
 ```bash
-scp vamsee@192.168.1.100:~/file.txt ./
+scp vamsee@10.0.0.1:~/file.txt ./
 ```
 
 **Using Tabby:**
@@ -152,7 +152,7 @@ sudo ufw allow 22
 Add to `~/.ssh/config` on remote machine:
 ```
 Host workspace
-    HostName 192.168.1.100
+    HostName 10.0.0.1
     User vamsee
     ServerAliveInterval 60
 ```

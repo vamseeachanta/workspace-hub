@@ -1,43 +1,43 @@
 #!/usr/bin/env bash
-# WRK-307: Fix KVM display loss on ace-linux-2 (NVIDIA T400 + KVM EDID drop)
+# WRK-307: Fix KVM display loss on dev-secondary (NVIDIA T400 + KVM EDID drop)
 #
-# PROBLEM: After switching KVM away from ace-linux-2 and back, the NVIDIA T400
+# PROBLEM: After switching KVM away from dev-secondary and back, the NVIDIA T400
 #          stops driving display output (EDID signal lost via KVM).
 #
 # THIS SCRIPT APPLIES: Option B/C — Switch GDM to X11 + force EDID via Xorg config
 #
 # PERMANENT FIX: Buy a DisplayPort EDID emulator dongle (~$10) and plug into
-#                the KVM DP output port for ace-linux-2. Hardware-level fix,
+#                the KVM DP output port for dev-secondary. Hardware-level fix,
 #                no script needed. See WRK-307 for details.
 #
-# QUICK RECOVERY (no script): From ace-linux-1 or any SSH terminal:
-#   ssh vamsee@ace-linux-2 "loginctl unlock-session $(loginctl list-sessions | awk '/seat0/{print $1}')"
+# QUICK RECOVERY (no script): From dev-primary or any SSH terminal:
+#   ssh vamsee@dev-secondary "loginctl unlock-session $(loginctl list-sessions | awk '/seat0/{print $1}')"
 #   # If that doesn't work:
-#   ssh vamsee@ace-linux-2 "sudo systemctl restart gdm"
+#   ssh vamsee@dev-secondary "sudo systemctl restart gdm"
 #
-# USAGE (run from ace-linux-1 or any machine with SSH access to ace-linux-2):
-#   bash fix-kvm-display-ace-linux-2.sh [--restart-gdm]
+# USAGE (run from dev-primary or any machine with SSH access to dev-secondary):
+#   bash fix-kvm-display-dev-secondary.sh [--restart-gdm]
 #
 # OPTIONS:
 #   --restart-gdm   Also restart GDM after applying config (kills active session)
 #
 # CONNECTION INFO:
-#   LAN:       ssh vamsee@192.168.1.103  (or ssh vamsee@ace-linux-2)
-#   Tailscale: ssh vamsee@100.93.161.27  (any network)
+#   LAN:       ssh vamsee@10.0.0.2  (or ssh vamsee@dev-secondary)
+#   Tailscale: ssh vamsee@10.1.0.2  (any network)
 #
 # RELATED: WRK-307 (.claude/work-queue/pending/WRK-307.md)
 #          specs/modules/hardware-inventory/aceengineer-02.md
 
 set -euo pipefail
 
-TARGET="ace-linux-2"
+TARGET="dev-secondary"
 RESTART_GDM=false
 
 for arg in "$@"; do
   [[ "$arg" == "--restart-gdm" ]] && RESTART_GDM=true
 done
 
-echo "=== WRK-307: ace-linux-2 KVM display fix ==="
+echo "=== WRK-307: dev-secondary KVM display fix ==="
 echo "Target: $TARGET"
 echo ""
 
@@ -45,8 +45,8 @@ echo ""
 echo "[1] Checking SSH connectivity to $TARGET..."
 if ! ssh -o ConnectTimeout=5 "vamsee@$TARGET" "echo ok" &>/dev/null; then
   echo "ERROR: Cannot reach $TARGET via SSH."
-  echo "  Try: ssh vamsee@192.168.1.103   (LAN)"
-  echo "  Try: ssh vamsee@100.93.161.27   (Tailscale)"
+  echo "  Try: ssh vamsee@10.0.0.2   (LAN)"
+  echo "  Try: ssh vamsee@10.1.0.2   (Tailscale)"
   exit 1
 fi
 echo "    SSH OK"
@@ -110,8 +110,8 @@ echo ""
 echo "NOTE: Permanent fix = DP EDID emulator dongle (~\$10) in KVM DP port."
 echo "      See WRK-307: .claude/work-queue/pending/WRK-307.md"
 echo ""
-echo "REMOTE DESKTOP ALTERNATIVE (view ace-linux-2 display from ace-linux-1):"
-echo "  Start VNC on ace-linux-2:  ssh vamsee@ace-linux-2 'x11vnc -display :1 -auth /run/user/1000/gdm/Xauthority -forever -bg -nopw -listen localhost -rfbport 5900'"
-echo "  Tunnel to ace-linux-1:     ssh -L 5900:localhost:5900 vamsee@ace-linux-2 -N &"
+echo "REMOTE DESKTOP ALTERNATIVE (view dev-secondary display from dev-primary):"
+echo "  Start VNC on dev-secondary:  ssh vamsee@dev-secondary 'x11vnc -display :1 -auth /run/user/1000/gdm/Xauthority -forever -bg -nopw -listen localhost -rfbport 5900'"
+echo "  Tunnel to dev-primary:     ssh -L 5900:localhost:5900 vamsee@dev-secondary -N &"
 echo "  Connect viewer:            vncviewer localhost:5900"
-echo "  (Requires x11vnc: sudo apt install x11vnc on ace-linux-2)"
+echo "  (Requires x11vnc: sudo apt install x11vnc on dev-secondary)"

@@ -122,7 +122,7 @@ constraints:
     knowledge-base/ content must not contain client identifiers. Run legal-sanity-scan.sh
     against all seeded content before commit (especially engineering-modules.md migration).
   - >
-    archive-item.sh runs on ace-linux-1 only. Knowledge extraction hook must be
+    archive-item.sh runs on dev-primary only. Knowledge extraction hook must be
     best-effort (non-blocking) to avoid stalling the archive gate on failure.
   - >
     TDD mandatory: >=5 tests required. scripts/knowledge/ needs tests/ structure following

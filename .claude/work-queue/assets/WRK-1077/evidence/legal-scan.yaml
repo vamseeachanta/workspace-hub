@@ -3,4 +3,4 @@ scanned_at: "2026-03-09T22:40:00Z"
 scanner: "scripts/legal/legal-sanity-scan.sh"
 result: "PASS"
 violations: []
-notes: "Legal scan PASS — no violations found. ripgrep not available on acma-ansys05, fell back to grep."
+notes: "Legal scan PASS — no violations found. ripgrep not available on licensed-win-1, fell back to grep."

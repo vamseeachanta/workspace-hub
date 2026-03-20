@@ -109,7 +109,7 @@ def format_yaml_block(standard: str, domain: str, records: list[dict]) -> str:
         path = rec.get("path", "")
         ext = rec.get("ext", "").lstrip(".")
         title = rec.get("title", "") or Path(path).name
-        host = "ace-linux-1" if "/mnt/ace/" in path else "ace-linux-2"
+        host = "dev-primary" if "/mnt/ace/" in path else "dev-secondary"
         lines.append(f"  - path: {path}")
         lines.append(f"    description: {title}")
         lines.append(f"    type: {ext}")

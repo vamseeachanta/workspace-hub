@@ -94,4 +94,4 @@ All paths are under `.claude/work-queue/assets/WRK-1005/`.
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)

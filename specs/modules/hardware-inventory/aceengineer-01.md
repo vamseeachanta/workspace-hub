@@ -46,11 +46,11 @@ maintenance_date: 2026-02-02
 
 | Interface | Driver | State | Speed | IPv4 | Notes |
 |-----------|--------|-------|-------|------|-------|
-| enp3s0f0 | igb | UP | 1000 Mbps | 192.168.1.100/24 | Primary |
+| enp3s0f0 | igb | UP | 1000 Mbps | 10.0.0.1/24 | Primary |
 | enp3s0f1 | igb | DOWN | — | none | Unused |
 | enp4s0f0 | igb | DOWN | — | none | Unused |
 | enp4s0f1 | igb | DOWN | — | none | Unused |
-| tailscale0 | tun | UNKNOWN | — | 100.107.64.76/32 | VPN |
+| tailscale0 | tun | UNKNOWN | — | 10.1.0.1/32 | VPN |
 
 ## Maintenance Log (2026-02-02)
 

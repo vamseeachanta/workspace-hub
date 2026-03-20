@@ -16,8 +16,8 @@ Tailscale creates a secure, encrypted peer-to-peer VPN network between your devi
 
 Your Linux machine is already configured:
 - **Hostname:** vamsee-linux1
-- **Tailscale IP:** 100.107.64.76
-- **Local IP:** 192.168.1.100
+- **Tailscale IP:** 10.1.0.1
+- **Local IP:** 10.0.0.1
 - **Status:** Connected to Tailscale network
 
 ## Setup on Remote Machines
@@ -43,7 +43,7 @@ tailscale status
 
 # You should see vamsee-linux1 in the list
 # Ping your Linux machine
-ping 100.107.64.76
+ping 10.1.0.1
 ```
 
 **4. Connect via Tabby:**
@@ -80,7 +80,7 @@ tailscale up
 **4. Verify and Connect:**
 ```bash
 tailscale status
-ping 100.107.64.76
+ping 10.1.0.1
 
 # Sync config and use Tabby
 cd /path/to/workspace-hub
@@ -106,8 +106,8 @@ sudo tailscale up
 **3. Verify and Connect:**
 ```bash
 tailscale status
-ping 100.107.64.76
-ssh vamsee@100.107.64.76
+ping 10.1.0.1
+ssh vamsee@10.1.0.1
 ```
 
 ### Mobile Setup (iOS/Android)
@@ -124,7 +124,7 @@ ssh vamsee@100.107.64.76
 **3. Connect:**
 - Install Termius or similar SSH app
 - Add connection:
-  - Host: 100.107.64.76
+  - Host: 10.1.0.1
   - User: vamsee
   - Port: 22
 
@@ -135,12 +135,12 @@ ssh vamsee@100.107.64.76
 After syncing config, you'll see two profiles:
 
 1. **"Linux Workspace (Local Network)"**
-   - IP: 192.168.1.100
+   - IP: 10.0.0.1
    - Use when on same WiFi network
    - Faster connection
 
 2. **"Linux Workspace (Tailscale - Internet)"**
-   - IP: 100.107.64.76
+   - IP: 10.1.0.1
    - Use from anywhere on internet
    - Works through any firewall
 
@@ -148,7 +148,7 @@ After syncing config, you'll see two profiles:
 
 ```bash
 # From any device on Tailscale network
-ssh vamsee@100.107.64.76
+ssh vamsee@10.1.0.1
 
 # Or use hostname (if enabled)
 ssh vamsee@vamsee-linux1
@@ -183,7 +183,7 @@ sudo tailscale up --ssh
 
 **Connect without passwords:**
 ```bash
-ssh vamsee@100.107.64.76
+ssh vamsee@10.1.0.1
 # No password needed if using Tailscale SSH
 ```
 
@@ -192,7 +192,7 @@ ssh vamsee@100.107.64.76
 Enable in Tailscale admin panel to use hostnames instead of IPs:
 
 ```bash
-# Instead of: ssh vamsee@100.107.64.76
+# Instead of: ssh vamsee@10.1.0.1
 ssh vamsee@vamsee-linux1
 
 # Or even: ssh vamsee-linux1 (if user matches)
@@ -333,12 +333,12 @@ sudo systemctl status ssh
 
 **Ping test:**
 ```bash
-ping 100.107.64.76
+ping 10.1.0.1
 ```
 
 **SSH test with verbose:**
 ```bash
-ssh -v vamsee@100.107.64.76
+ssh -v vamsee@10.1.0.1
 ```
 
 ### IP Address Changed
@@ -360,7 +360,7 @@ Update Tabby config if needed.
 | Security | Local network security | Encrypted WireGuard |
 | Setup | No setup | Install Tailscale |
 | Firewall | Not needed | Works through any |
-| IP | 192.168.1.100 | 100.107.64.76 |
+| IP | 10.0.0.1 | 10.1.0.1 |
 
 **Recommendation:** Use local when home, Tailscale when away.
 

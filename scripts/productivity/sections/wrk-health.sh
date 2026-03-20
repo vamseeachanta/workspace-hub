@@ -72,8 +72,8 @@ print(f"| **Total**         | **{total}** |            |")
 print("")
 
 # ── Machine Load ──────────────────────────────────────────────────────────────
-# Normalise aliases: orcaflex-license-machine = acma-ansys05
-aliases = {'orcaflex-license-machine': 'acma-ansys05'}
+# Normalise aliases: orcaflex-license-machine = licensed-win-1
+aliases = {'orcaflex-license-machine': 'licensed-win-1'}
 merged = {}
 for m, c in machine_counts.items():
     canonical = aliases.get(m, m)
@@ -83,7 +83,7 @@ print("### Machine Load")
 print("")
 print("| Machine | Assigned Items |")
 print("|---------|---------------|")
-all_machines = ['ace-linux-1', 'ace-linux-2', 'acma-ansys05', 'any']
+all_machines = ['dev-primary', 'dev-secondary', 'licensed-win-1', 'any']
 for m in all_machines:
     print(f"| {m} | {merged.get(m, 0)} |")
 for m, c in sorted(merged.items(), key=lambda x: -x[1]):

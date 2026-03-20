@@ -8,4 +8,4 @@ All minor findings addressed before Stage 7:
 - Hostname case-sensitivity risk documented in step 7
 - `plan_approved` set to true in frontmatter
 
-No blocking issues remain. Plan is ready for execution on acma-ansys05.
+No blocking issues remain. Plan is ready for execution on licensed-win-1.

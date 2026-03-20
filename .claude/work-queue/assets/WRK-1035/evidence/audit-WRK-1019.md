@@ -1,7 +1,7 @@
 # Audit: WRK-1019
 > Analyzed: 2026-03-08
 > WRK: repo-portfolio-steering skill (SKILL.md + compute-balance.py + portfolio-signals.yaml)
-> Route: C | Workstation: ace-linux-1 | Session: 2026-03-07
+> Route: C | Workstation: dev-primary | Session: 2026-03-07
 
 ---
 

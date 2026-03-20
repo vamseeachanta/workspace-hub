@@ -23,7 +23,7 @@ Mine in this order (cheapest lookup first). Stop a category when no relevant res
 | 5 | **Specs / plans** | `specs/wrk/`, `specs/modules/` | Route B/C — prior design decisions |
 | 6 | **Workspace docs** | `.claude/docs/` | Architecture, orchestration, legal decisions |
 | 7 | **Document index** | `data/document-index/registry.yaml`, `index.jsonl`, `standards-transfer-ledger.yaml` | Engineering / standards WRKs |
-| 8 | **Mounted sources** | `/mnt/ace/`, `/mnt/remote/ace-linux-2/dde` | Engineering domain WRKs |
+| 8 | **Mounted sources** | `/mnt/ace/`, `/mnt/remote/dev-secondary/dde` | Engineering domain WRKs |
 | 9 | **Online / additive** | External URLs | Only when repo sources are insufficient |
 | 10 | **Knowledge base** | `bash scripts/knowledge/query-knowledge.sh --query <keyword> --category <cat>` | Always for harness/knowledge WRKs; check for any WRK when prior work patterns are relevant |
 

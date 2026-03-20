@@ -1,15 +1,15 @@
 ---
-name: workstations-ace-linux-1-storage
-description: 'Sub-skill of workstations: ace-linux-1 Storage (+1).'
+name: workstations-dev-primary-storage
+description: 'Sub-skill of workstations: dev-primary Storage (+1).'
 version: 3.0.0
 category: workspace-hub
 type: reference
 scripts_exempt: true
 ---
 
-# ace-linux-1 Storage (+1)
+# dev-primary Storage (+1)
 
-## ace-linux-1 Storage
+## dev-primary Storage
 
 
 | Device | Size | Type | Model | Notes |
@@ -19,7 +19,7 @@ scripts_exempt: true
 | sdc | 932 GB | HDD | WD WD10EZEX | /mnt/local-analysis (workspace-hub, repos) |
 
 
-## ace-linux-2 Storage
+## dev-secondary Storage
 
 
 | Device | Size | Type | Model | Notes |

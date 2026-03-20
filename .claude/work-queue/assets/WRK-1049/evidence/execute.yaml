@@ -2,7 +2,7 @@ wrk_id: WRK-1049
 stage: 10
 executed_at: "2026-03-08T22:30:00Z"
 executor: claude
-computer: ace-linux-1
+computer: dev-primary
 
 steps_completed:
   - process_md_step4_replaced_with_claim_script_mandate

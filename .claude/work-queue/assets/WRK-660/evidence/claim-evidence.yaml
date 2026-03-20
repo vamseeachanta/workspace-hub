@@ -8,7 +8,7 @@ metadata_version: "1"
 session_owner: "gemini"
 agent_fit:
   capability_match: "matched"
-  rationale: "Route B / execution_workstations=[ace-linux-1] / provider=gemini"
+  rationale: "Route B / execution_workstations=[dev-primary] / provider=gemini"
 blocking_state:
   blocked: false
   blocked_by: []

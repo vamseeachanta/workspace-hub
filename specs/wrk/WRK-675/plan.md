@@ -162,7 +162,7 @@ Capture → Resource Intelligence → Triage → Plan → Claim → Execute → 
 
 ## Risks / Notes
 
-1. Codex not installed on ace-linux-1 → plan cross-review Codex is NO_OUTPUT (per policy).
+1. Codex not installed on dev-primary → plan cross-review Codex is NO_OUTPUT (per policy).
 2. Documentation-only WRK; TDD gate satisfied by verifier smoke tests.
 3. Resource Intelligence (WRK-673) and Codex skill (WRK-1000) are informational follow-ons —
    WRK-675 can close independently.

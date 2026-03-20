@@ -72,7 +72,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Routed to ace-linux-1, claude orchestrator.
+  comment: Routed to dev-primary, claude orchestrator.
   evidence: .claude/work-queue/assets/WRK-1141/routing.yaml
 - order: 10
   stage: Work Execution

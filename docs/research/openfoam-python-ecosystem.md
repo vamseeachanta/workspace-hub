@@ -1,13 +1,13 @@
 # OpenFOAM Python Ecosystem Audit
 
 > Status: Research completed 2026-02-24
-> Machine: ace-linux-2 (Python 3.12.3)
+> Machine: dev-secondary (Python 3.12.3)
 > WRK: WRK-343 (feeds WRK-047, WRK-292)
 
 ## Overview
 
 All five Python packages relevant to OpenFOAM automation have been installed and
-verified on ace-linux-2 as part of WRK-290 (completed 2026-02-24). This document
+verified on dev-secondary as part of WRK-290 (completed 2026-02-24). This document
 records their status, capabilities, integration potential, and any known issues.
 
 ---
@@ -35,7 +35,7 @@ records their status, capabilities, integration potential, and any known issues.
 `PyFoam/ThirdParty/six/six.py`. This bundled version does not include the `six.moves`
 submodule, which Python 3.12 requires for the `urllib.parse` compatibility shims.
 
-**Fix applied on ace-linux-2:**
+**Fix applied on dev-secondary:**
 Replaced the bundled `six.py` with a shim package at `PyFoam/ThirdParty/six/__init__.py`
 and `PyFoam/ThirdParty/six/moves.py` that delegates to system `six` 1.16.0.
 Backup of original at `six.py.bak`.
@@ -165,7 +165,7 @@ pressure = mesh.point_data["p"]
 # Create slice plane
 sliced = mesh.slice(normal="y")
 
-# Offscreen rendering (works on ace-linux-2 without display)
+# Offscreen rendering (works on dev-secondary without display)
 plotter = pv.Plotter(off_screen=True)
 plotter.add_mesh(sliced, scalars="U", cmap="viridis")
 plotter.save_graphic("results/velocity_slice.png")
@@ -178,7 +178,7 @@ cannot address (3D volume field rendering). These are complementary.
 ### Note on ParaView segfault
 ParaView 5.11.2 `pvpython` segfaults when creating rendering pipelines without X display.
 Use `pvpython --force-offscreen-rendering` OR use pyvista instead for scripted
-post-processing. pyvista is the recommended headless path on ace-linux-2.
+post-processing. pyvista is the recommended headless path on dev-secondary.
 
 ---
 
@@ -224,7 +224,7 @@ python -c "import fluidfoam; print(fluidfoam.__version__)"
 ```
 
 ### Recommendation
-Install on ace-linux-2. fluidfoam's direct field reading (no VTK conversion) is
+Install on dev-secondary. fluidfoam's direct field reading (no VTK conversion) is
 simpler than foamToVTK + pyvista for scalar/vector extraction. However, pyvista is
 more capable for 3D visualization. Use both:
 - fluidfoam: extract force coefficients, probe data, scalar fields
@@ -248,7 +248,7 @@ oftest is a pytest-based framework for running and validating OpenFOAM cases:
 **Not needed for WRK-047 immediately.** The WRK-047 testing strategy (from the July
 2025 tests.md spec) uses subprocess mocking and `tmp_path` fixtures — this is adequate
 for CI without OpenFOAM installed. oftest is more useful for integration testing on
-ace-linux-2 with real OpenFOAM runs. Revisit for Phase 6 integration testing.
+dev-secondary with real OpenFOAM runs. Revisit for Phase 6 integration testing.
 
 ```bash
 # When ready to install:

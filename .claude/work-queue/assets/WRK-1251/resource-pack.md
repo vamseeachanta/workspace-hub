@@ -6,7 +6,7 @@
 - `digitalmodel/src/digitalmodel/visualization/design_tools/freecad_integration.py` (441 lines) — FreeCADWorkflow: pressure vessel, piping, export (STEP/STL/OBJ). No hull generation.
 - `digitalmodel/src/digitalmodel/visualization/design_tools/ai_cad_agent.py` (736 lines) — NL-to-CAD agent
 - Skill: `.claude/skills/engineering/cad/freecad-automation/SKILL.md` v1.0.0
-- FreeCAD 0.21.2 installed on ace-linux-2 via `freecadcmd` (headless, FreeCADGui stub)
+- FreeCAD 0.21.2 installed on dev-secondary via `freecadcmd` (headless, FreeCADGui stub)
 
 ### Hull Library (Panel Mesh — NOT CAD solids)
 - `digitalmodel/src/digitalmodel/hydrodynamics/hull_library/` — BSpline surface interpolation → panelization → GDF/OrcaWave/SVG export
@@ -53,7 +53,7 @@
 | WRK-1249 | Gmsh deep meshing workflows | pending | Depends on WRK-140 |
 | WRK-1252 | Full CAD-to-CFD pipeline | pending | Blocked by WRK-1251 |
 
-## Software Versions (ace-linux-2)
+## Software Versions (dev-secondary)
 
 - FreeCAD 0.21.2: `freecadcmd` (headless)
 - Gmsh 4.15.1 (pip) / 4.12.1 (system)

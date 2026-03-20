@@ -2,7 +2,7 @@
 
 ## Gap Ranking
 - **P1**: None. All core orchestration and validation scripts are present and functional.
-- **P2**: Multi-agent redundancy (Codex) partially constrained on `ace-linux-1` (simulated NO_OUTPUT).
+- **P2**: Multi-agent redundancy (Codex) partially constrained on `dev-primary` (simulated NO_OUTPUT).
 - **P3**: Ongoing documentation sync for variation tests and review synthesis (resolved via WRK-672).
 
 ## User Decision

@@ -26,7 +26,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route A, simple, ace-linux-1, orchestrator=claude set in frontmatter.
+  comment: Route A, simple, dev-primary, orchestrator=claude set in frontmatter.
   evidence: .claude/work-queue/pending/WRK-1026.md
 - order: 4
   stage: Plan Draft

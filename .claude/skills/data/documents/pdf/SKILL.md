@@ -59,7 +59,7 @@ for page in reader.pages:
 | Structured markdown (tables+equations) | **Docling** (targeted use only) | MIT license; 1731 table rows from 6 docs; ~310s/doc on CPU |
 | LLM/RAG markdown | **pymupdf4llm** (monitor only) | 0.12s/doc, good markdown; **AGPL license blocks adoption** |
 
-### Quality & Completeness Index (measured on ace-linux-1)
+### Quality & Completeness Index (measured on dev-primary)
 
 Scores: text completeness (% of content captured vs best-in-class), structure
 preservation, and batch viability. Based on WRK-1302 (243 PDFs) and WRK-1303 (6 PDFs).

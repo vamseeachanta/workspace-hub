@@ -21,7 +21,7 @@ findings:
     notes: >
       Records are file-level only. No chunk_id, page_number, or section_id
       fields exist. The og_standards source (27,981 records) covers PDFs
-      from /mnt/ace/O&G-Standards/ on ace-linux-1. Summaries are null for
+      from /mnt/ace/O&G-Standards/ on dev-primary. Summaries are null for
       most records (status: "gap"). A dedicated page-level chunk store must
       be built — the existing index cannot serve semantic search directly.
     sample_schema:
@@ -51,7 +51,7 @@ findings:
       docs/domains/ does NOT exist in the repo. Standards PDFs reside on
       the remote mount at /mnt/ace/O&G-Standards/ (og_standards, 27,981
       index records) and /mnt/ace/docs/_standards (ace_standards). Both
-      accessible only on ace-linux-1.
+      accessible only on dev-primary.
       Code families confirmed in index path structure: DNV, API, ABS,
       ISO, ASTM, BS (British Standards), NORSOK, AMJIG.
 

@@ -67,10 +67,10 @@ uv run --no-project --with pyyaml \
 
 ## Cross-Machine Batch Work (WRK-1277 Learning)
 
-When PDFs live on a different machine (e.g., ace-linux-2 NTFS, ace-linux-1 NFS):
+When PDFs live on a different machine (e.g., dev-secondary NTFS, dev-primary NFS):
 - **Process locally, aggregate centrally** — copy index to the machine with local disk access
 - NFS mount: ~17h for 297K PDFs; local NTFS: ~1.7h (10x faster)
-- Path remapping: `/mnt/remote/ace-linux-2/dde/` → `/mnt/dde/` (local)
+- Path remapping: `/mnt/remote/dev-secondary/dde/` → `/mnt/dde/` (local)
 - After processing: `scp` results back to hub machine, verify line counts match
 
 > **WARNING**: pdfplumber hangs in kernel D-state on NTFS/NFS mounts. Use pdftotext

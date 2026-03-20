@@ -4,4 +4,4 @@ orchestrator_agent: claude
 session_id: session-2026-03-08
 set_active_wrk: true
 route: A
-computer: ace-linux-1
+computer: dev-primary

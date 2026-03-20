@@ -112,7 +112,7 @@ The 118 allow patterns in `.claude/settings.json` were derived empirically, not 
 guesswork:
 
 1. `scripts/permissions/audit-bash-commands.py` scanned 603 session JSONL files from
-   `~/.claude/projects/` — 511 from ace-linux-1, 92 from ace-linux-2.
+   `~/.claude/projects/` — 511 from dev-primary, 92 from dev-secondary.
 2. `scripts/permissions/merge-audit-results.py` merged both outputs and applied a
    threshold of **5 combined uses** — any command used fewer than 5 times across both
    machines was excluded.
@@ -129,8 +129,8 @@ used.
 Because `.claude/settings.json` is version-controlled, updates propagate via normal
 git operations:
 
-- **ace-linux-1 / ace-linux-2 (Linux)**: `git pull` in workspace-hub root.
-- **acma-ansys05 (Windows)**: `git pull` in Git Bash; user settings live at
+- **dev-primary / dev-secondary (Linux)**: `git pull` in workspace-hub root.
+- **licensed-win-1 (Windows)**: `git pull` in Git Bash; user settings live at
   `%APPDATA%\Claude\settings.json` — remove `skipDangerousModePermissionPrompt`
   there if bypass mode was enabled.
 - **New workstation**: `git clone` the repo, then remove

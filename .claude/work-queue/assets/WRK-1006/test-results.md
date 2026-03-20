@@ -3,7 +3,7 @@
 ## Test Suite: tests/review/test-submit-scripts.sh
 
 Run date: 2026-03-04
-Machine: ace-linux-1
+Machine: dev-primary
 Result: **41/41 assertions PASS**
 
 ## Coverage Summary

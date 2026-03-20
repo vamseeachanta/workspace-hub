@@ -103,7 +103,7 @@ category: harness
 subcategory: tooling
 priority: medium          # high for security fixes
 complexity: simple        # medium if script changes needed
-computer: ace-linux-1
+computer: dev-primary
 release_notes_source: claude-X.Y.Z-A.B.C   # version range covered
 ```
 

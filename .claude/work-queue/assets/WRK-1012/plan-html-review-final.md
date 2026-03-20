@@ -2,9 +2,9 @@
 
 ## Plan: Install Claude Code plugins on all 3 workstations
 
-1. ace-linux-1: Already done (12 plugins verified)
-2. ace-linux-2: SSH in, pull workspace-hub, install 9 plugins, verify
-3. acma-ansys05: Windows machine, requires manual access
+1. dev-primary: Already done (12 plugins verified)
+2. dev-secondary: SSH in, pull workspace-hub, install 9 plugins, verify
+3. licensed-win-1: Windows machine, requires manual access
 4. Verify: claude plugin list + claude doctor on each machine
 
 ## Gate Pass

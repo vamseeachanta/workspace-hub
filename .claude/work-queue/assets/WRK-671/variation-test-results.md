@@ -33,13 +33,13 @@ Gate pipeline verifier smoke tests run against `scripts/work-queue/verify-gate-e
 ### Test 6 — Workstation contract gate
 - Checks: `plan_workstations` and `execution_workstations` non-empty
 - Expected: "Workstation contract gate: OK"
-- Result: PASS — both set to [ace-linux-1]
+- Result: PASS — both set to [dev-primary]
 
 ### Full verifier run
 ```
 Gate evidence for WRK-671 (assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671):
   - Plan gate: OK (reviewed=True, approved=True, artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/plan-html-review-final.md)
-  - Workstation contract gate: OK (plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1])
+  - Workstation contract gate: OK (plan_workstations=[dev-primary], execution_workstations=[dev-primary])
   - Cross-review gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/review.html)
   - TDD gate: OK (test files=['variation-test-results.md'])
   - Legal gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/legal-scan.md, result=pass)

@@ -9,4 +9,4 @@ confirmed_by: user
 reviewed_at: "2026-03-09T21:00:00Z"
 notes: >
   User approved Route A inline plan. 7-step manual runbook for physical
-  execution on acma-ansys05 (Windows Git Bash). No code changes needed.
+  execution on licensed-win-1 (Windows Git Bash). No code changes needed.

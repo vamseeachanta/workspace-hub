@@ -5,5 +5,5 @@ no_follow_ups_rationale: >
   All acceptance criteria met in this session. No follow-up WRKs required.
   OrcaFlex absence is a hardware/licensing matter (not a software gap).
   Minor future improvements (agent CLI version probe timeout, SSH key, .env.example)
-  are optional quality items that do not block work queue operations on acma-ansys05.
+  are optional quality items that do not block work queue operations on licensed-win-1.
 recommendations: []

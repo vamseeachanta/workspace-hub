@@ -11,7 +11,7 @@ session_id: "2026-03-10T13:45:00Z-orchestrator"
 orchestrator_agent: "claude"
 agent_fit:
   capability_match: "documented"
-  rationale: "Route B medium complexity / execution_workstations=[ace-linux-1] / provider=claude"
+  rationale: "Route B medium complexity / execution_workstations=[dev-primary] / provider=claude"
 blocking_state:
   blocked: false
   blocked_by: []

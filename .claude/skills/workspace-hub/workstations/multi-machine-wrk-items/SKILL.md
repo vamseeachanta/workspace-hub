@@ -15,11 +15,11 @@ scripts_exempt: true
 For tasks that span machines, `computer:` accepts a list:
 
 ```yaml
-computer: [acma-ansys05, ace-linux-1]
+computer: [licensed-win-1, dev-primary]
 ```
 
 **Handoff conventions:**
 - First machine listed = initiating machine
-- Label each checklist step with the machine: `[ace-linux-1] Run mesh generation`
+- Label each checklist step with the machine: `[dev-primary] Run mesh generation`
 - `/session-start` on the second machine detects `computer:` mismatch and prompts for
   context handoff

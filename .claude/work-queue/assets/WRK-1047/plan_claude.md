@@ -21,14 +21,14 @@ provider workflow failures.
 | R-HOOK-LATENCY runs live hooks with side effects | Claude | P1 | **Replaced** with static analysis: check hook file size <200 lines + grep for blocking patterns (`git commit`, `curl`, `wget`, network calls). |
 | R-PLUGINS count-based too brittle | Codex | P1 | **Fixed**: R-PLUGINS checks required plugin names from `harness-config.yaml`, ignores optional/extra plugins. |
 | Cross-workstation report schema underspecified | Codex | P1 | **Fixed**: host-qualified file naming + explicit schema defined below. |
-| acma-ansys05 manual-only defeats nightly mission | Gemini | P1 | **Fixed**: Windows Task Scheduler job writes YAML report to shared mount; compare-harness-state.sh reads it. |
+| licensed-win-1 manual-only defeats nightly mission | Gemini | P1 | **Fixed**: Windows Task Scheduler job writes YAML report to shared mount; compare-harness-state.sh reads it. |
 | R-SKILLS baseline undefined | Claude | P2 | **Fixed**: baseline stored in `harness-config.yaml`; auto-set on first pass; updated via `--update-baseline` flag only. |
 | No tests for Phase C/E | Claude | P2 | **Fixed**: T13–T16 added. |
 | WRK-SIM non-numeric ID may fail validators | Claude/Codex | P2 | **Fixed**: Use `WRK-9999` (reserved fixture number). Verify-gate-evidence.py confirmed to accept numeric WRK IDs. |
 | SSH failure || true masks real failures | Codex | P2 | **Fixed**: SSH failure → DEGRADED state emitted in report (not silent skip); surfaced in morning readiness output. |
 | Hostnames hardcoded | Gemini | P2 | **Fixed**: all hostnames, paths, and baselines in `harness-config.yaml`. |
 | harness-readiness-report.yaml schema unspecified | Claude/Codex | P3 | **Fixed**: schema defined explicitly below. |
-| jq availability on acma-ansys05 unverified | Claude | P3 | **Fixed**: add R-JQ prerequisite check; graceful skip with install hint if absent. |
+| jq availability on licensed-win-1 unverified | Claude | P3 | **Fixed**: add R-JQ prerequisite check; graceful skip with install hint if absent. |
 | R-PRECOMMIT doesn't verify hook executability | Codex | P3 | **Fixed**: check file is executable in addition to presence. |
 | Phase D architecturally distinct | Claude | P3 | **Retained in WRK-1047** — simulation validates the harness tools end-to-end; bounded as distinct deliverable with clear ACs. |
 
@@ -74,18 +74,18 @@ tier1_repos:
   - worldenergydata
   - assethold
 workstations:
-  ace-linux-1:
+  dev-primary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: null   # local
-    report_path: .claude/state/harness-readiness-ace-linux-1.yaml
-  ace-linux-2:
+    report_path: .claude/state/harness-readiness-dev-primary.yaml
+  dev-secondary:
     ws_hub_path: /mnt/workspace-hub
     ssh_target: ace2
-    report_path: .claude/state/harness-readiness-ace-linux-2.yaml
-  acma-ansys05:
-    ws_hub_path: null   # Windows; scheduled task pushes report to ace-linux-1
+    report_path: .claude/state/harness-readiness-dev-secondary.yaml
+  licensed-win-1:
+    ws_hub_path: null   # Windows; scheduled task pushes report to dev-primary
     ssh_target: null
-    report_path: .claude/state/harness-readiness-acma-ansys05.yaml
+    report_path: .claude/state/harness-readiness-licensed-win-1.yaml
 prerequisites:
   - jq
   - git
@@ -99,7 +99,7 @@ Host-qualified output at `.claude/state/harness-readiness-<hostname>.yaml`:
 
 ```yaml
 schema_version: 1
-host: ace-linux-1
+host: dev-primary
 generated_at: "2026-03-08T02:00:00Z"
 overall: pass|fail|degraded
 pass_count: N
@@ -152,10 +152,10 @@ in `harness-config.yaml` to current counts. Must be run manually after legitimat
 
 `scripts/readiness/compare-harness-state.sh`:
 1. Run `nightly-readiness.sh` locally → local YAML report
-2. SSH to ace-linux-2 (target from harness-config.yaml): run readiness check, `scp` report back
+2. SSH to dev-secondary (target from harness-config.yaml): run readiness check, `scp` report back
    - SSH failure → emit `overall: degraded` for that host; surface in diff output (NOT silent skip)
-3. acma-ansys05: Windows Task Scheduler job runs Git Bash `nightly-readiness.sh` nightly and
-   writes YAML to a path visible from ace-linux-1 (shared mount or scp). compare-harness-state.sh
+3. licensed-win-1: Windows Task Scheduler job runs Git Bash `nightly-readiness.sh` nightly and
+   writes YAML to a path visible from dev-primary (shared mount or scp). compare-harness-state.sh
    reads that file if present; emits `degraded` if stale (>25h old).
 4. Print unified diff table: per check ID, per host, pass/fail/degraded
 
@@ -189,7 +189,7 @@ Added to nightly cron after first successful run.
 - Reads `harness-readiness-<name>.yaml`
 - Per FAIL check, prints exact fix command (does not execute)
 - Covers: plugin install, hook restore from git, settings.json repair, uv install, pre-commit add, baseline update
-- acma-ansys05: Windows fix commands in Git Bash syntax; Task Scheduler setup documented in `scripts/work-queue/templates/acma-ansys05-task-scheduler.xml`
+- licensed-win-1: Windows fix commands in Git Bash syntax; Task Scheduler setup documented in `scripts/work-queue/templates/licensed-win-1-task-scheduler.xml`
 
 ---
 
@@ -209,8 +209,8 @@ Added to nightly cron after first successful run.
 | T10 | pre-commit missing legal entry | R-PRECOMMIT FAIL |
 | T11 | SKILL.md count below baseline | R-SKILLS FAIL |
 | T12 | command count below baseline | R-SKILLS FAIL |
-| T13 | SSH to ace-linux-2 unreachable | compare-harness-state.sh: ace-linux-2 = degraded; no crash |
-| T14 | Stale acma-ansys05 report (>25h old) | compare-harness-state.sh: acma-ansys05 = degraded |
+| T13 | SSH to dev-secondary unreachable | compare-harness-state.sh: dev-secondary = degraded; no crash |
+| T14 | Stale licensed-win-1 report (>25h old) | compare-harness-state.sh: licensed-win-1 = degraded |
 | T15 | remediate-harness.sh reads report with R-PLUGINS FAIL | prints `claude plugin install pyright-lsp` |
 | T16 | harness-readiness-report.yaml schema validation | all required fields present, correct types |
 
@@ -231,9 +231,9 @@ commit harness-config.yaml (before any Phase A tests)
 
 | Phase | Done when |
 |-------|-----------|
-| A | `nightly-readiness.sh` gains 7 new check functions; all T1–T12 pass on ace-linux-1 |
-| B | `harness-readiness-ace-linux-1.yaml` written after nightly run; comprehensive-learning emits signal row |
-| C | `compare-harness-state.sh` produces diff table; T13/T14 pass; acma-ansys05 Task Scheduler template committed |
+| A | `nightly-readiness.sh` gains 7 new check functions; all T1–T12 pass on dev-primary |
+| B | `harness-readiness-dev-primary.yaml` written after nightly run; comprehensive-learning emits signal row |
+| C | `compare-harness-state.sh` produces diff table; T13/T14 pass; licensed-win-1 Task Scheduler template committed |
 | D | `variation-test-results-{claude,codex,gemini}.md` all PASS; simulation in nightly cron |
 | E | `remediate-harness.sh` prints correct fix for ≥3 failure types; T15/T16 pass |
 
@@ -244,9 +244,9 @@ commit harness-config.yaml (before any Phase A tests)
 | Risk | Mitigation |
 |------|-----------|
 | Codex interactive mode unavailable via SSH | Use --scripts flag; documented in Phase D |
-| ace-linux-2 SSH unavailable at cron time | DEGRADED state (not skip); surfaced in diff output |
-| acma-ansys05 no automated SSH | Task Scheduler + shared mount; stale-report detection |
-| jq absent on acma-ansys05 | R-JQ check first; graceful skip with install hint |
+| dev-secondary SSH unavailable at cron time | DEGRADED state (not skip); surfaced in diff output |
+| licensed-win-1 no automated SSH | Task Scheduler + shared mount; stale-report detection |
+| jq absent on licensed-win-1 | R-JQ check first; graceful skip with install hint |
 | Plugin output format may change | Parse by name substring match, not exact line format |
 | WRK-9999 fixture frontmatter must be valid | Build via exit_stage.py scaffolding for each stage |
 

@@ -18,7 +18,7 @@ python3 scripts/pipelines/gmsh_openfoam_orcaflex.py \
     --diameter 1.0 --length 5.0 --velocity 1.5 \
     --work-dir /tmp/pipeline_run
 
-# Stub mode (no solver licenses required — CI / ace-linux-1)
+# Stub mode (no solver licenses required — CI / dev-primary)
 python3 scripts/pipelines/gmsh_openfoam_orcaflex.py \
     --diameter 1.0 --length 5.0 --velocity 1.5 \
     --work-dir /tmp/pipeline_run --stub-mode

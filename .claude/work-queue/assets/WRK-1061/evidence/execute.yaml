@@ -3,7 +3,7 @@ stage: 10
 scope: integrated
 executed_at: 2026-03-09
 executor: claude
-workstation: ace-linux-1
+workstation: dev-primary
 
 artifacts_created:
   - scripts/review/generate-review-input.sh

@@ -1,6 +1,6 @@
 wrk_id: WRK-1095
 session_pid: 3223961
-hostname: ace-linux-1
+hostname: dev-primary
 locked_at: "2026-03-10T18:44:04Z"
 status: in_progress
 status: claimed

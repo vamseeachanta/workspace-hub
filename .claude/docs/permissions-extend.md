@@ -67,6 +67,6 @@ the threshold.  Review `merged-audit.yaml` in the WRK-1119 assets for the initia
 
 - The bypass flag (`skipDangerousModePermissionPrompt`) in user settings overrides the
   entire deny list.  **Never set this on production workstations.**
-- `acma-ansys05` (Windows) needs a separate validation pass; see WRK-1119 AC6.
+- `licensed-win-1` (Windows) needs a separate validation pass; see WRK-1119 AC6.
 - Tool calls other than `Bash` (e.g., `Write`, `Edit`) are governed by hook matchers,
   not the `allow`/`deny` lists.

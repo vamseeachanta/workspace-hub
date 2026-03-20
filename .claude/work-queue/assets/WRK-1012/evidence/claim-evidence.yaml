@@ -9,7 +9,7 @@ metadata_version: "1"
 session_owner: "vamsee"
 agent_fit:
   capability_match: "full"
-  rationale: "Route A / simple chore / execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05] / provider=claude"
+  rationale: "Route A / simple chore / execution_workstations=[dev-primary, dev-secondary, licensed-win-1] / provider=claude"
 blocking_state:
   blocked: false
   blocked_by: []

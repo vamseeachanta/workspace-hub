@@ -3,8 +3,8 @@ stage: 9
 routed_at: "2026-03-09T21:15:00Z"
 route: A
 execution_workstations:
-  - acma-ansys05
+  - licensed-win-1
 notes: >
-  Route A simple item. Physical execution on acma-ansys05 (no SSH).
-  User must run 7-step runbook manually in Git Bash on acma-ansys05.
+  Route A simple item. Physical execution on licensed-win-1 (no SSH).
+  User must run 7-step runbook manually in Git Bash on licensed-win-1.
   Planning complete — item is ready for execution.

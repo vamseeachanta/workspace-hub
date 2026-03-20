@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=19, contract=19-stage |
 | Resource-intelligence gate | FAIL | resource-intelligence evidence absent (legacy item — WARN) |
 | Activation gate | FAIL | activation.yaml missing |

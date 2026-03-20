@@ -3,7 +3,7 @@ Loaded cached credentials.
 YOLO mode is enabled. All tool calls will be automatically approved.
 # WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration (Refined)
 
-**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude | Reviewer: Gemini (Reliability Focus)**
+**Route B — Medium complexity | dev-primary | Orchestrator: Claude | Reviewer: Gemini (Reliability Focus)**
 
 *Plan decisions (Stage 5 user review 2026-03-10):*
 *① Eval defs: central `specs/skills/evals/` (not per-skill)*

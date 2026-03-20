@@ -2,7 +2,7 @@ wrk_id: WRK-1161
 stage: 8
 activated_at: "2026-03-12T22:03:00Z"
 provider: claude
-workstation: ace-linux-1
+workstation: dev-primary
 route: A
 set_active_wrk: true
 session_id: "2026-03-12-cli-stderr-cleanup"

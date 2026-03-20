@@ -2,7 +2,7 @@
 name: comprehensive-learning
 description: 'Single fire-and-forget command that runs the full session learning pipeline:
   insights → reflect → knowledge → improve → action-candidates → report. All machines
-  run local Phases 1–9 against logs/orchestrator/ and commit derived state. ace-linux-1
+  run local Phases 1–9 against logs/orchestrator/ and commit derived state. dev-primary
   additionally runs Phase 10a (cross-machine compilation) and Phase 10 (report). Safe
   for cron scheduling. Use when session ends, nightly cron fires, or you want to harvest
   learnings from recent sessions. Replaces running 4 skills manually.
@@ -48,7 +48,7 @@ wrk_ref: WRK-299
 # comprehensive-learning — Session Learning Pipeline
 
 Single fire-and-forget skill running Phases 1–9 on **all machines** and Phases 10a+10
-(cross-machine compilation + report) on **ace-linux-1 only**.
+(cross-machine compilation + report) on **dev-primary only**.
 
 > **Full phase specs**: `references/pipeline-detail.md` — read it when you need
 > signal sources, extraction rules, candidate formats, or state file details.
@@ -58,9 +58,9 @@ Single fire-and-forget skill running Phases 1–9 on **all machines** and Phases
 ```bash
 MACHINE=$(hostname -s 2>/dev/null || hostname | cut -d. -f1 | tr '[:upper:]' '[:lower:]')
 case "$MACHINE" in
-  ace-linux-1) CL_MODE="full" ;;
-  ace-linux-2) CL_MODE="contribute" ;;
-  acma-ansys05|acma-ws014) CL_MODE="contribute" ;;
+  dev-primary) CL_MODE="full" ;;
+  dev-secondary) CL_MODE="contribute" ;;
+  licensed-win-1|licensed-win-2) CL_MODE="contribute" ;;
   *) CL_MODE="contribute" ;;
 esac
 # All modes run Phases 1–9. Only 'full' runs Phase 10a (compilation) + Phase 10 (report).
@@ -70,11 +70,11 @@ esac
 
 | Machine | Commits | Notes |
 |---------|---------|-------|
-| ace-linux-2 | `candidates/`, `corrections/`, `patterns/`, `session-signals/` | Open-source CFD/dev |
-| acma-ansys05 | `candidates/`, `corrections/`, `session-signals/`, `patterns/` | OrcaFlex/ANSYS |
-| acma-ws014 | `candidates/` | Windows; no AI CLIs |
+| dev-secondary | `candidates/`, `corrections/`, `patterns/`, `session-signals/` | Open-source CFD/dev |
+| licensed-win-1 | `candidates/`, `corrections/`, `session-signals/`, `patterns/` | OrcaFlex/ANSYS |
+| licensed-win-2 | `candidates/` | Windows; no AI CLIs |
 
-ace-linux-1 `git pull` in Phase 10a picks up all machines' committed derived state.
+dev-primary `git pull` in Phase 10a picks up all machines' committed derived state.
 
 ## Pipeline Summary
 
@@ -84,7 +84,7 @@ in Phases 1 or 4 set `_PIPELINE_EXIT=1`. Phase 10 always runs via `trap EXIT`.
 | Phase | Name | Mandatory | Short description |
 |-------|------|:---------:|-------------------|
 | 1 | Insights | ✓ | Extract skill usage, tool patterns, session-quality signals from all log sources |
-| 1b | Drift Detection | ace-linux-1 | Detect python_runtime/file_placement/git_workflow violations in yesterday's log |
+| 1b | Drift Detection | dev-primary | Detect python_runtime/file_placement/git_workflow violations in yesterday's log |
 | 2 | Reflect | — | Invoke /reflect against reflect-history/ and trends/ |
 | 3 | Knowledge | — | Invoke /knowledge; update patterns/ |
 | 3b | Memory Compaction | — | Compact MEMORY.md + topic files |
@@ -123,7 +123,7 @@ Analysis, maintenance, and learning are deferred to the nightly run.
 
 ## Scheduling
 
-Crontab entry (ace-linux-1, 22:00 nightly):
+Crontab entry (dev-primary, 22:00 nightly):
 ```bash
 0 22 * * * cd /mnt/local-analysis/workspace-hub && \
   bash scripts/cron/comprehensive-learning-nightly.sh \

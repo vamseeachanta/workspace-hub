@@ -2,5 +2,5 @@ wrk_id: WRK-1087
 route: B
 routed_at: 2026-03-09T21:50:00Z
 orchestrator: claude
-execution_workstations: [ace-linux-1]
-rationale: "Route B — shell scripts + Python hooks, single repo, ace-linux-1"
+execution_workstations: [dev-primary]
+rationale: "Route B — shell scripts + Python hooks, single repo, dev-primary"

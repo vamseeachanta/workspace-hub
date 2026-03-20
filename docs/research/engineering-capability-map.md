@@ -3,7 +3,7 @@
 
 **Status**: Active reference document
 **Created**: 2026-02-24
-**Scope**: Open-source engineering tools installed on ace-linux-2 (and acma-ansys05 for BemRosetta)
+**Scope**: Open-source engineering tools installed on dev-secondary (and licensed-win-1 for BemRosetta)
 **Related WRK**: WRK-292 (depends on WRK-290, WRK-291)
 
 ---
@@ -23,16 +23,16 @@
 
 | Tool | Role | Host | Version Notes |
 |------|------|------|---------------|
-| FreeCAD | CAD / Geometry | ace-linux-2 | 0.21+; Python 3 scripting built-in |
-| Gmsh | Meshing | ace-linux-2 | 4.x; full Python API |
-| OpenFOAM | CFD Solver | ace-linux-2 | v2312 (ESI) or 11 (Foundation) |
-| ParaView | Post-processing / Vis | ace-linux-2 | 5.x; pvpython scripting |
-| CalculiX | FEA Solver | ace-linux-2 | 2.21; Abaqus-compatible INP format |
-| Blender | 3D Modeling / Vis | ace-linux-2 | 3.x/4.x; Python bpy API |
-| meshio | Format Converter | ace-linux-2 | Python library, 40+ formats |
-| PyFoam | OpenFOAM Python Interface | ace-linux-2 | pip package |
-| pyvista | VTK Python Visualization | ace-linux-2 | pip package, wraps VTK |
-| BemRosetta | Hydrodynamic BEM | acma-ansys05 | U++ based; NOT on ace-linux-2 |
+| FreeCAD | CAD / Geometry | dev-secondary | 0.21+; Python 3 scripting built-in |
+| Gmsh | Meshing | dev-secondary | 4.x; full Python API |
+| OpenFOAM | CFD Solver | dev-secondary | v2312 (ESI) or 11 (Foundation) |
+| ParaView | Post-processing / Vis | dev-secondary | 5.x; pvpython scripting |
+| CalculiX | FEA Solver | dev-secondary | 2.21; Abaqus-compatible INP format |
+| Blender | 3D Modeling / Vis | dev-secondary | 3.x/4.x; Python bpy API |
+| meshio | Format Converter | dev-secondary | Python library, 40+ formats |
+| PyFoam | OpenFOAM Python Interface | dev-secondary | pip package |
+| pyvista | VTK Python Visualization | dev-secondary | pip package, wraps VTK |
+| BemRosetta | Hydrodynamic BEM | licensed-win-1 | U++ based; NOT on dev-secondary |
 
 ---
 
@@ -182,7 +182,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[FreeCAD\nPanel Geometry] -->|Export STL\nwet surface only| B[BemRosetta\nacma-ansys05]
+    A[FreeCAD\nPanel Geometry] -->|Export STL\nwet surface only| B[BemRosetta\nlicensed-win-1]
     C[Blender\nPanel Model] -->|Export STL| B
     B -->|Hydrodynamic\ncoefficients| D[OrcaFlex\n.orcaflex]
     B -->|WAMIT / Hydrostar\nformat| E[Post-processing\nscripts]
@@ -199,11 +199,11 @@ flowchart LR
 **Step-by-step**:
 
 1. **FreeCAD or Blender** — Create hull/platform geometry; model only the wetted surface (below waterline); export as STL panel mesh
-2. **BemRosetta (on acma-ansys05)** — Import STL or proprietary BEM formats (WAMIT, Hydrostar, NEMOH); compute added mass, damping, excitation force RAOs; convert between BEM formats; export to OrcaFlex or AQWA
+2. **BemRosetta (on licensed-win-1)** — Import STL or proprietary BEM formats (WAMIT, Hydrostar, NEMOH); compute added mass, damping, excitation force RAOs; convert between BEM formats; export to OrcaFlex or AQWA
 3. **ParaView** — Visualize pressure distributions, panel geometry
 4. **pyvista / Python** — Post-process hydrodynamic coefficients, generate RAO plots, feed into fatigue or operability workflows
 
-**Host constraint**: BemRosetta is only available on **acma-ansys05**. For BEM workflows, geometry preparation runs on ace-linux-2, then STL transfer to acma-ansys05 for BemRosetta, then results transfer back.
+**Host constraint**: BemRosetta is only available on **licensed-win-1**. For BEM workflows, geometry preparation runs on dev-secondary, then STL transfer to licensed-win-1 for BemRosetta, then results transfer back.
 
 **Key file transitions**:
 ```
@@ -298,8 +298,8 @@ flowchart LR
 - Blender is a dead-end for analysis; use it only for geometry creation or final rendering
 
 **BemRosetta host constraint**:
-- Only on acma-ansys05; this breaks the otherwise ace-linux-2-centric workflow
-- Workaround: prepare geometry on ace-linux-2, `scp` STL to acma-ansys05, run BemRosetta, `scp` results back
+- Only on licensed-win-1; this breaks the otherwise dev-secondary-centric workflow
+- Workaround: prepare geometry on dev-secondary, `scp` STL to licensed-win-1, run BemRosetta, `scp` results back
 - No Python API for BemRosetta; it is GUI-only (U++ framework)
 
 **CalculiX results format**:
@@ -313,7 +313,7 @@ flowchart LR
 - Safer to use Gmsh .msh + `gmshToFoam` for the OpenFOAM path
 
 **Thermal solvers (Elmer, Code_Aster)**:
-- Neither Elmer nor Code_Aster are confirmed installed on ace-linux-2 per WRK-290/291 notes
+- Neither Elmer nor Code_Aster are confirmed installed on dev-secondary per WRK-290/291 notes
 - The thermal pipeline above uses meshio as a bridge but depends on Elmer/Code_Aster being available
 - CalculiX with `*HEAT TRANSFER` is the installed fallback for thermal analysis
 
@@ -508,7 +508,7 @@ FreeCAD ──STEP/BREP──► Gmsh ──.msh──► gmshToFoam ──► O
                          │
                          └──.msh──► meshio ──► any format
 
-Blender ──STL──► BemRosetta (acma-ansys05) ──WAMIT/AQWA──► OrcaFlex
+Blender ──STL──► BemRosetta (licensed-win-1) ──WAMIT/AQWA──► OrcaFlex
 FreeCAD ──STL──►       (same)
 
 pyvista ◄── .vtu/vtk ◄── meshio ◄── all mesh formats

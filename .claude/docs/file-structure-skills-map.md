@@ -72,7 +72,7 @@ then `file-taxonomy` to decide where to put a new file.
 | Database migration files | Not covered by any skill | Add to `file-taxonomy` decision tree |
 | Docker / container files | Not explicitly covered | `repo-structure` mentions root files; expand if needed |
 | Generated protobuf / OpenAPI schemas | Not covered | Add to `file-taxonomy` as "schema/ canonical dir" |
-| acma-ansys05 Windows path conventions | Partially covered | `file-taxonomy` log section has Windows note; may need dedicated section |
+| licensed-win-1 Windows path conventions | Partially covered | `file-taxonomy` log section has Windows note; may need dedicated section |
 
 ---
 

@@ -7,7 +7,7 @@ claimed_at: "2026-03-07T00:00:00Z"
 claim_expires_at: "2026-03-08T00:00:00Z"
 orchestrator: claude
 route: B
-workstation: ace-linux-1
+workstation: dev-primary
 quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
 unblocked: true
 capability_check: pass

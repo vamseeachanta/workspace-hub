@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# WRK-294: Finish standardizing ace-linux-2 mount paths
+# WRK-294: Finish standardizing dev-secondary mount paths
 # Run as: sudo bash scripts/operations/wrk-294-finish.sh
 #
 # What this does:
@@ -27,9 +27,9 @@ fail() { echo -e "${RED}[FAIL]${NC} $1"; }
 echo "=== WRK-294: Finish Mount Standardization ==="
 echo ""
 
-# ── Step 0: Verify we're on ace-linux-2 ──────────────────────────────
-if [[ "$(hostname)" != "ace-linux-2" ]]; then
-    fail "This script must run on ace-linux-2 (current: $(hostname))"
+# ── Step 0: Verify we're on dev-secondary ──────────────────────────────
+if [[ "$(hostname)" != "dev-secondary" ]]; then
+    fail "This script must run on dev-secondary (current: $(hostname))"
     exit 1
 fi
 

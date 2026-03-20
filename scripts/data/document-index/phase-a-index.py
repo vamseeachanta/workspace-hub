@@ -102,7 +102,7 @@ def scan_og_standards(
         logger.warning("OG Standards DB not found: %s", db_path)
         return []
 
-    host = source_cfg.get("host", "ace-linux-1")
+    host = source_cfg.get("host", "dev-primary")
     records: List[Dict] = []
 
     conn = sqlite3.connect(db_path, timeout=30)
@@ -157,7 +157,7 @@ def scan_filesystem_source(
     exclude_patterns: List[str],
 ) -> List[Dict]:
     """Walk filesystem paths and build index records."""
-    host = source_cfg.get("host", "ace-linux-1")
+    host = source_cfg.get("host", "dev-primary")
     valid_exts = set(source_cfg.get("extensions", []))
     records: List[Dict] = []
     count = 0

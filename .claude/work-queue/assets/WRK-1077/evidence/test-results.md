@@ -3,7 +3,7 @@
 ## Scope
 WRK-1077 is a workstation setup and configuration task. It:
 - Modifies shell scripts (verify-setup.sh, dev-env-check.sh)
-- Updates a YAML manifest (acma-ansys05.yml)
+- Updates a YAML manifest (licensed-win-1.yml)
 - Initializes a submodule
 
 These are not application code changes requiring unit tests.

@@ -33,7 +33,7 @@ Gate pipeline verifier smoke tests run against `scripts/work-queue/verify-gate-e
 ### Test 6 — Workstation contract gate
 - Checks: `plan_workstations` and `execution_workstations` non-empty
 - Expected: "Workstation contract gate: OK"
-- Result: PASS — both set to [ace-linux-1]
+- Result: PASS — both set to [dev-primary]
 
 ### Test 7 — Deliverable existence
 - Command: `ls assets/WRK-656/orchestrator-flow.md assets/WRK-656/wrk-656-orchestrator-comparison.html`

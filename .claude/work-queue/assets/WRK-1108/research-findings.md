@@ -64,4 +64,4 @@ Top recommendation for personal use: **`lharries/whatsapp-mcp`** (5,400+ stars, 
 
 ## Conclusion
 
-Integration is available **now** (not in the future). Spinning off WRK-1109 to implement `lharries/whatsapp-mcp` on ace-linux-1 with Claude Desktop.
+Integration is available **now** (not in the future). Spinning off WRK-1109 to implement `lharries/whatsapp-mcp` on dev-primary with Claude Desktop.

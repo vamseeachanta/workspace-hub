@@ -24,7 +24,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B, medium, ace-linux-1, harness/workflow-gates.
+  comment: Route B, medium, dev-primary, harness/workflow-gates.
   evidence: .claude/work-queue/working/WRK-1034.md
 - order: 4
   stage: Plan Draft
@@ -65,7 +65,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Claimed by claude on ace-linux-1.
+  comment: Claimed by claude on dev-primary.
   evidence: .claude/work-queue/assets/WRK-1034/evidence/claim.yaml
 - order: 9
   stage: Work-Queue Routing Skill

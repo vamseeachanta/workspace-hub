@@ -22,7 +22,7 @@ gate_evidence:
       - reviewer: codex
         artifact: N/A
         verdict: NO_OUTPUT
-        notes: Codex not installed on ace-linux-1; documented per SKILL.md NO_OUTPUT policy
+        notes: Codex not installed on dev-primary; documented per SKILL.md NO_OUTPUT policy
       - reviewer: gemini
         artifact: .claude/work-queue/assets/WRK-669/review.html
         verdict: MAJOR → RESOLVED
@@ -70,7 +70,7 @@ resource_intelligence_gate:
       description: Gap ranking (P1/P2/P3) and user decision
   gap_ranking:
     p1: none
-    p2: Codex NO_OUTPUT on ace-linux-1 (accepted per machine-constraint policy)
+    p2: Codex NO_OUTPUT on dev-primary (accepted per machine-constraint policy)
     p3: RI artifacts retroactive; WRK-670/671 packs deferred
   user_decision: continue_to_planning
   legal_scan_ref: .claude/work-queue/assets/WRK-669/legal-scan.md

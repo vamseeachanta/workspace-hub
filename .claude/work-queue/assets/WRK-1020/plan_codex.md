@@ -163,7 +163,7 @@ File: `tests/skills/test_update_portfolio_signals.py`
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)
 mcp startup: no servers
 codex
 # WRK-1020 Plan: portfolio-signals.yaml cron
@@ -377,7 +377,7 @@ File: `tests/skills/test_update_portfolio_signals.py`
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)
 
 ## Codex Notes
 
@@ -601,7 +601,7 @@ File: `tests/skills/test_update_portfolio_signals.py`
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)
 
 ## Codex Notes
 

@@ -31,7 +31,7 @@ findings:
       note: "Warning-only; baseline needed before enabling"
 
   key_decisions:
-    - "Use 'uv tool run' pattern (consistent with ruff); tools installed globally on ace-linux-1"
+    - "Use 'uv tool run' pattern (consistent with ruff); tools installed globally on dev-primary"
     - "Baseline YAML captures existing violations per repo; new violations above baseline = block"
     - "bandit: MEDIUM+ blocks, LOW warns"
     - "radon: warn-only (non-blocking) in initial release"

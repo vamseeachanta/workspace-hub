@@ -1,4 +1,4 @@
-hostname: acma-ansys05
+hostname: licensed-win-1
 alias: orcaflex-license-machine
 os: windows
 role: simulation-license-host

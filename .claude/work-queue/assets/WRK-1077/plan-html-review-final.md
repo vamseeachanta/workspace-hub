@@ -6,5 +6,5 @@ decision: passed
 
 ## Plan approved at Stage 7
 
-7-step manual runbook for acma-ansys05 approved. All Codex findings addressed.
-Execution proceeds on acma-ansys05 physically (no SSH access).
+7-step manual runbook for licensed-win-1 approved. All Codex findings addressed.
+Execution proceeds on licensed-win-1 physically (no SSH access).

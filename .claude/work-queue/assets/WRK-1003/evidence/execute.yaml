@@ -1,6 +1,6 @@
 wrk_id: WRK-1003
 executed_at: "2026-03-04T22:47:50Z"
-machine: ace-linux-2
+machine: dev-secondary
 tdd_note: Codex rerun executed circle tests and gate checks against WRK-624 harness.
 integrated_repo_tests:
   - name: circle unit tests (5/5 pass)

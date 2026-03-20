@@ -2,5 +2,5 @@ wrk_id: WRK-577
 stage: 9
 route: B
 routed_at: "2026-03-10T11:00:00Z"
-execution_workstation: ace-linux-1
+execution_workstation: dev-primary
 rationale: "Medium complexity — workspace-hub skills metadata. Route B standard execution."

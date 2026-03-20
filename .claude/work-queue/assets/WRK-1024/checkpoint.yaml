@@ -1,13 +1,13 @@
 wrk_id: WRK-1024
 stage: 19
 next_action: >
-  Run on acma-ansys05 (Windows Git Bash):
+  Run on licensed-win-1 (Windows Git Bash):
     cat ~/.codex/config.toml
   Verify model = "gpt-5.4" and model_reasoning_effort present.
-  Then update WRK-1024.md checkboxes (acma-ansys05 row) and run close-item.sh.
+  Then update WRK-1024.md checkboxes (licensed-win-1 row) and run close-item.sh.
 context_summary: >
-  Stages 1-17 complete. ace-linux-1 and ace-linux-2 verified.
-  Blocked on acma-ansys05 check (no SSH from hub — requires manual Git Bash session on Windows machine).
-  Do not close until acma-ansys05 checkbox is filled in WRK-1024.md.
-blocking_reason: acma-ansys05 verification pending (manual access required)
+  Stages 1-17 complete. dev-primary and dev-secondary verified.
+  Blocked on licensed-win-1 check (no SSH from hub — requires manual Git Bash session on Windows machine).
+  Do not close until licensed-win-1 checkbox is filled in WRK-1024.md.
+blocking_reason: licensed-win-1 verification pending (manual access required)
 updated_at: "2026-03-12T00:00:00Z"

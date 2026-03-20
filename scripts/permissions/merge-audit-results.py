@@ -3,7 +3,7 @@
 
 Usage:
     uv run --no-project python scripts/permissions/merge-audit-results.py \\
-        --ace-linux-1 PATH --ace-linux-2 PATH --settings PATH \\
+        --dev-primary PATH --dev-secondary PATH --settings PATH \\
         --output PATH [--threshold N]
 """
 
@@ -209,8 +209,8 @@ def write_output(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--ace-linux-1", required=True, metavar="PATH")
-    parser.add_argument("--ace-linux-2", required=True, metavar="PATH")
+    parser.add_argument("--dev-primary", required=True, metavar="PATH")
+    parser.add_argument("--dev-secondary", required=True, metavar="PATH")
     parser.add_argument("--settings", required=True, metavar="PATH")
     parser.add_argument("--output", required=True, metavar="PATH")
     parser.add_argument("--threshold", type=int, default=5, metavar="N")
@@ -220,8 +220,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
 
-    path_1 = Path(args.ace_linux_1)
-    path_2 = Path(args.ace_linux_2)
+    path_1 = Path(args.dev_primary)
+    path_2 = Path(args.dev_secondary)
     settings_path = Path(args.settings)
     output_path = Path(args.output)
 

@@ -6,7 +6,7 @@ module: online-resources
 status: draft
 work_item: WRK-391
 route: C
-computer: [ace-linux-1, ace-linux-2]
+computer: [dev-primary, dev-secondary]
 ---
 
 # WRK-391: Online Resources Research — Plan

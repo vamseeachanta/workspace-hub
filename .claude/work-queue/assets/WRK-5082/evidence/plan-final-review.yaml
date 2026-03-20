@@ -5,10 +5,10 @@ confirmed_by: vamsee
 confirmed_at: "2026-03-19T04:25:00Z"
 notes: |
   9-child decomposition approved. Key decisions:
-  - 3D CAD runs on ace-linux-2 (FreeCAD installed)
+  - 3D CAD runs on dev-secondary (FreeCAD installed)
   - Existing 2D model INCOMPLETE — missing under-hood frame (Page 2 geometry)
   - Child 4 blocked by Child 1 (need full geometry before extending 2D model)
   - CalculiX beam elements needed (WRK-1341)
   - OrcaFlex Child 6 = frame with applied force only (not deployment dynamics)
   - Parachute deployment dynamics → future work (WRK-1342)
-  - WRK-1340 (FreeCAD install) cancelled — already on ace-linux-2
+  - WRK-1340 (FreeCAD install) cancelled — already on dev-secondary

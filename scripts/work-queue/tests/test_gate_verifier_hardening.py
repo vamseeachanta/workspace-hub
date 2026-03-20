@@ -578,19 +578,19 @@ def test_T31_workstation_list_field_shows_first_item():
     """get_list_field returns first list item for multi-line YAML lists, not None."""
     front = (
         "plan_workstations:\n"
-        "  - ace-linux-1\n"
+        "  - dev-primary\n"
         "execution_workstations:\n"
-        "  - ace-linux-1\n"
-        "  - ace-linux-2\n"
+        "  - dev-primary\n"
+        "  - dev-secondary\n"
     )
     plan_ws = get_list_field(front, "plan_workstations")
     exec_ws = get_list_field(front, "execution_workstations")
 
-    assert plan_ws == "ace-linux-1", (
-        f"Expected 'ace-linux-1', got {plan_ws!r} — workstation gate must not show 'missing'"
+    assert plan_ws == "dev-primary", (
+        f"Expected 'dev-primary', got {plan_ws!r} — workstation gate must not show 'missing'"
     )
-    assert exec_ws == "ace-linux-1", (
-        f"Expected 'ace-linux-1', got {exec_ws!r}"
+    assert exec_ws == "dev-primary", (
+        f"Expected 'dev-primary', got {exec_ws!r}"
     )
 
 

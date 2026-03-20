@@ -291,7 +291,7 @@
 ---
 
 ### WRK-223 — Workstations Registry
-**Original delivery**: Hardware inventory, hardware-info.sh, and ace-linux-1 specs registered as a workstation registry.
+**Original delivery**: Hardware inventory, hardware-info.sh, and dev-primary specs registered as a workstation registry.
 **Follow-up signal**: The registry was created but WRK-050 (hardware consolidation, still pending) has not yet been executed. The registry should drive the hardware consolidation plan — agents should query it to identify underutilised machines and recommend repurposing. Currently it's read-only reference data.
 **Suggested action**: Connect to WRK-050 — use the workstations registry as the input for the hardware consolidation plan; agents can query the registry, identify gaps in dev environment readiness, and propose prioritised actions.
 

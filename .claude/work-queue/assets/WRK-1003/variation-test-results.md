@@ -28,7 +28,7 @@ result: PASS
 evidence: |
   Gate evidence for WRK-1003 (phase=claim, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1003):
     - Plan gate: OK (reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed)
-    - Workstation contract gate: OK (plan_workstations=[ace-linux-2], execution_workstations=[ace-linux-2])
+    - Workstation contract gate: OK (plan_workstations=[dev-secondary], execution_workstations=[dev-secondary])
     - Resource-intelligence gate: OK (resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3)
     - Activation gate: OK (activation.yaml: activation evidence OK)
     - User-review HTML-open gate: OK (user-review-browser-open.yaml: stages=['plan_draft', 'plan_final'])

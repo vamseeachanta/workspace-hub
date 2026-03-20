@@ -2,14 +2,14 @@
 
 ## Context
 
-acma-ansys05 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit
+licensed-win-1 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit
 but contributes zero learnings to the pipeline. Two root causes:
 
 1. `git add .claude/state/candidates/ ...` — bare git add fails with `fatal: pathspec
    did not match any files` when dirs are absent (first-run or sparse machine). The
    error is printed but not fatal (set -uo not set -e), so the script continues,
    `git diff --staged --quiet` returns 0, "No new learning state to push" is printed,
-   and nothing reaches ace-linux-1.
+   and nothing reaches dev-primary.
 
 2. `scripts/improve/lib/guard.sh:30` uses `bc -l` which is absent on Git Bash →
    fallback `|| echo "1"` always returns 1 → every improvement is rejected silently.
@@ -51,7 +51,7 @@ Run to confirm all three fail before implementation.
 ### Step 2 — Fix `comprehensive-learning.sh` (Windows push path)
 
 **File:** `scripts/learning/comprehensive-learning.sh`
-**Lines:** 29–52 (the non-ace-linux-1 branch)
+**Lines:** 29–52 (the non-dev-primary branch)
 
 Replace bare `git add` block with guarded loop:
 
@@ -170,7 +170,7 @@ bash scripts/improve/improve.sh --quick --dry-run
 
 # 5. Test Windows push path with missing dirs (simulate)
 mkdir -p /tmp/test-wrk1117 && cd /tmp/test-wrk1117 && git init -q
-# run comprehensive-learning.sh non-ace-linux-1 branch → should print
+# run comprehensive-learning.sh non-dev-primary branch → should print
 # "Learning state: 0 file(s) staged" and "No new learning state to push"
 ```
 
@@ -178,5 +178,5 @@ mkdir -p /tmp/test-wrk1117 && cd /tmp/test-wrk1117 && git init -q
 
 | Machine | Required verification |
 |---------|----------------------|
-| ace-linux-1 | TDD passes + improve dry-run succeeds |
-| acma-ansys05 | `bash comprehensive-learning.sh` exits 0, no fatal error |
+| dev-primary | TDD passes + improve dry-run succeeds |
+| licensed-win-1 | `bash comprehensive-learning.sh` exits 0, no fatal error |

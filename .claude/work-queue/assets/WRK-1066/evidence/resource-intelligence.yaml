@@ -7,15 +7,15 @@ findings:
   - id: F1
     finding: "No config/machines/ directory exists — will be created fresh"
   - id: F2
-    finding: "SSH to ace-linux-2 works via alias or Tailscale IP (100.93.161.27); pattern in scripts/operations/connection/ssh-ace-linux-2.sh"
+    finding: "SSH to dev-secondary works via alias or Tailscale IP (10.1.0.2); pattern in scripts/operations/connection/ssh-dev-secondary.sh"
   - id: F3
-    finding: "acma-ansys05 is Windows — no SSH from ace-linux-1; must be run locally or skipped with a note"
+    finding: "licensed-win-1 is Windows — no SSH from dev-primary; must be run locally or skipped with a note"
   - id: F4
     finding: "Crontab template pattern: weekly Sunday 03:30 for maintenance tasks; setup-cron.sh installs entries"
   - id: F5
-    finding: "Known versions from MEMORY: ace-linux-1: claude=2.1.38, codex=not-installed, gemini=0.27.3, gh=not-installed; ace-linux-2: claude=2.1.56, codex=0.104.0, gemini=0.30.0, gh=2.87.3; acma-ansys05: claude/codex/gemini present (versions unknown)"
+    finding: "Known versions from MEMORY: dev-primary: claude=2.1.38, codex=not-installed, gemini=0.27.3, gh=not-installed; dev-secondary: claude=2.1.56, codex=0.104.0, gemini=0.30.0, gh=2.87.3; licensed-win-1: claude/codex/gemini present (versions unknown)"
   - id: F6
-    finding: "Critical drifts already known: claude 2.1.38 vs 2.1.56 (patch), codex missing on ace-linux-1, gh missing on ace-linux-1 — these need fixing"
+    finding: "Critical drifts already known: claude 2.1.38 vs 2.1.56 (patch), codex missing on dev-primary, gh missing on dev-primary — these need fixing"
   - id: F7
     finding: "scripts/operations/ directory is the right home for env-audit.sh (no audit subdirectory exists yet)"
 
@@ -26,9 +26,9 @@ skills:
     - workflow-gatepass
   relevant_docs:
     - scripts/cron/crontab-template.sh
-    - scripts/operations/connection/ssh-ace-linux-2.sh
-    - MEMORY.md (ace-linux-2 machine state section)
+    - scripts/operations/connection/ssh-dev-secondary.sh
+    - MEMORY.md (dev-secondary machine state section)
 
 risks:
-  - acma-ansys05 SSH not available from ace-linux-1; script must handle gracefully (timeout/skip with note)
+  - licensed-win-1 SSH not available from dev-primary; script must handle gracefully (timeout/skip with note)
   - claude CLI update requires user confirmation (may involve auth re-setup)

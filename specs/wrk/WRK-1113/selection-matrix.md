@@ -3,7 +3,7 @@
 > Mark your selections with ✅ in the "Selected" column. Delete or mark ❌ for rejected items.
 
 ## Domain A: Drilling Riser
-Source folder: `/mnt/remote/ace-linux-2/dde/Personal/Ace Drilling Riser/`
+Source folder: `/mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/`
 
 ### Candidate Standards (select ≤10)
 

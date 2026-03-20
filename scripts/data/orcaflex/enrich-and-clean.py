@@ -13,7 +13,7 @@ Replaces anonymize-import.py (blind string replacement) with enrichment-first:
   4. Keep all numeric dat_properties unchanged
 
 Requires: worldenergydata installed (pip install -e ../../worldenergydata)
-Runs on:  acma-ansys05 (same ecosystem as dat-to-yaml.py)
+Runs on:  licensed-win-1 (same ecosystem as dat-to-yaml.py)
 
 Usage:
     python enrich-and-clean.py --input client_projects/data/raw/orcaflex-extracted/ \\

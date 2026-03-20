@@ -421,8 +421,8 @@ class TestD14JsonFlag:
         fake_wrk = tmp_path / "working" / "WRK-FAKE.md"
         fake_wrk.parent.mkdir(parents=True, exist_ok=True)
         fake_wrk.write_text(
-            "---\nid: WRK-FAKE\nplan_workstations: [ace-linux-1]\n"
-            "execution_workstations: [ace-linux-1]\n---\n",
+            "---\nid: WRK-FAKE\nplan_workstations: [dev-primary]\n"
+            "execution_workstations: [dev-primary]\n---\n",
             encoding="utf-8",
         )
         env = os.environ.copy()

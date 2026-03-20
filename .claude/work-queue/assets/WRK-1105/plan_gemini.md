@@ -199,7 +199,7 @@ function capture_wrk_summary(wrk_id) → exit 0 (strictly best-effort, non-block
 ## Out of Scope
 
 - Vector embeddings or semantic search (not yet needed; JSONL with keyword search is sufficient for Phase 1)
-- Cross-machine knowledge sync (ace-linux-2, acma-ansys05) — knowledge-base/ lives on ace-linux-1 only
+- Cross-machine knowledge sync (dev-secondary, licensed-win-1) — knowledge-base/ lives on dev-primary only
 - Automated career learnings extraction from engineering session logs (manual seed only in this WRK)
 - Retroactive backfill of all archived WRK items from git history (migrate MEMORY.md entries only)
 

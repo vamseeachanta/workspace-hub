@@ -8,5 +8,5 @@ decision: approved
 review_cycle_id: WRK-1119-plan-review-1
 review_bypass_reason: "Plan reviewed in prior session context; scope notes captured in user-review-capture.yaml before session start"
 notes: |
-  Plan steps approved: (1) audit JSONLs, (2) commit settings.json, (3) validate ace-linux-1,
-  (4) validate acma-ansys05. Step 4 deferred as FW-1/FW-2.
+  Plan steps approved: (1) audit JSONLs, (2) commit settings.json, (3) validate dev-primary,
+  (4) validate licensed-win-1. Step 4 deferred as FW-1/FW-2.

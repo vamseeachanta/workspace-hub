@@ -916,7 +916,7 @@ def generate_index(items: list[dict]) -> str:
         computer_items.setdefault(key, []).append(it)
 
     machine_order = [
-        "ace-linux-1", "ace-linux-2", "acma-ansys05", "acma-ws014",
+        "dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2",
         "gali-linux-compute-1",
     ]
     # Emit in preferred order, then any remaining keys alphabetically

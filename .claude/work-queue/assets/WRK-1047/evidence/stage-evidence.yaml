@@ -76,7 +76,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B; ace-linux-1 primary executor.
+  comment: Route B; dev-primary primary executor.
   evidence: .claude/work-queue/assets/WRK-1047/evidence/user-review-capture.yaml
 - order: 10
   stage: Execution

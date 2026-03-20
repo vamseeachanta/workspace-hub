@@ -4,5 +4,5 @@ owner: claude
 session_id: wrk-1120-session-manual
 claimed_at: "2026-03-11T05:35:00Z"
 quota: available
-hostname: ace-linux-1
+hostname: dev-primary
 route: A

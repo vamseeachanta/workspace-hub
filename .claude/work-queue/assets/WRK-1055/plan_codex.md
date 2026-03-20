@@ -6,7 +6,7 @@ Strengths: the plan is phased, maps cleanly to the listed acceptance criteria, a
 ### Issues Found
 - Sequencing bug: Phase 2 installs Semantic Scholar before the plan defines a complete pre-install trust gate. For this WRK, supply-chain review should happen before any `uvx`/`uv tool install` execution, not be partially documented afterward in `mcp-servers.yaml`. Pinning a commit SHA helps, but it is not a substitute for reviewing repo owner/source, permissions, transitive dependencies, and rollback/removal steps first.
 - Cross-review step is incorrect as written. `scripts/review/cross-review.sh wrk-1055-phase-1-review-input.md all` defaults to `--type implementation`, not `plan`, and does not pass `--wrk-id WRK-1055`, so it bypasses the Stage 5 plan-review gate path defined in the script. There is also a likely path bug if the input file is written under `scripts/review/results/` but invoked without that path.
-- Scope mismatch: the WRK body says active servers should be wired into Claude/Codex configs on `ace-linux-1`, but the plan explicitly defers Codex/Gemini wiring and only implements Claude. Either the WRK scope or the plan needs to be narrowed explicitly so acceptance is machine-checkable.
+- Scope mismatch: the WRK body says active servers should be wired into Claude/Codex configs on `dev-primary`, but the plan explicitly defers Codex/Gemini wiring and only implements Claude. Either the WRK scope or the plan needs to be narrowed explicitly so acceptance is machine-checkable.
 - Test adequacy is too thin for an install/configuration change. `claude mcp list` plus one live query proves only partial reachability. It does not verify config persistence across sessions, the actual config file mutation, failure behavior when the server is unavailable, or safe uninstall/rollback.
 - The plan references a `settings.json change` in Phase 5 review input, but no earlier phase specifies which settings file will change, where it lives, or how that file will be validated. That is a scope-clarity gap and makes review evidence ambiguous.
 - Phase 1 asks to create an active catalog entry before Phase 2 gathers final install facts such as exact pinned SHA and possibly final invocation syntax. That creates avoidable churn and increases the chance the catalog is initially wrong.
@@ -24,7 +24,7 @@ Strengths: the plan is phased, maps cleanly to the listed acceptance criteria, a
 - Treat registry/marketplace discovery as advisory only. Require final candidate selection to be validated against the upstream repository directly rather than trusting aggregator metadata.
 
 ### Questions for Author
-- Should WRK-1055 be narrowed to Claude-only on `ace-linux-1`, or is Codex wiring still an acceptance requirement that the current draft is missing?
+- Should WRK-1055 be narrowed to Claude-only on `dev-primary`, or is Codex wiring still an acceptance requirement that the current draft is missing?
 - What exact Claude config file is expected to change for Phase 2, and do you want that file named explicitly in the plan and review bundle?
 - Do you want the additional MCP candidate to remain documentation-only, or should the plan also define what evidence is required before any future installation is allowed?
 codex exit: 0

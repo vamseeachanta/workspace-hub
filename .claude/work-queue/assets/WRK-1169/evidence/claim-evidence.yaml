@@ -2,7 +2,7 @@ stage: 8
 wrk_id: WRK-1169
 claimed_by: claude
 claimed_at: "2026-03-14T05:59:00Z"
-machine: ace-linux-1
+machine: dev-primary
 best_fit_provider: claude
 session_owner: vamsee
 route: A

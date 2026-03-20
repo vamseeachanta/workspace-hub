@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# ABOUTME: Open a VNC desktop session to ace-linux-2 via SSH tunnel
+# ABOUTME: Open a VNC desktop session to dev-secondary via SSH tunnel
 # ABOUTME: Forwards port 5900, then launches xtigervncviewer on localhost
 
-ACE2_HOST="vamsee@ace-linux-2"
+ACE2_HOST="vamsee@dev-secondary"
 LOCAL_PORT=5900
 REMOTE_PORT=5900
 
-echo "=== VNC → ace-linux-2 ==="
+echo "=== VNC → dev-secondary ==="
 
 # Check for viewer
 if ! command -v xtigervncviewer &>/dev/null; then
@@ -14,7 +14,7 @@ if ! command -v xtigervncviewer &>/dev/null; then
     exit 1
 fi
 
-# Check x11vnc is running on ace-linux-2; auto-start if not
+# Check x11vnc is running on dev-secondary; auto-start if not
 echo "Checking x11vnc on ${ACE2_HOST}..."
 if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
     echo "x11vnc not running — attempting to start it via SSH..."
@@ -27,7 +27,7 @@ if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
     XDISP="${XDISP:-:0}"
 
     if [ -z "${XAUTH}" ]; then
-        echo "ERROR: Could not find Xorg process on ace-linux-2. Is a display running?"
+        echo "ERROR: Could not find Xorg process on dev-secondary. Is a display running?"
         exit 1
     fi
     echo "Found display ${XDISP}, auth ${XAUTH}"
@@ -38,7 +38,7 @@ if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
         ssh "${ACE2_HOST}" \
             "x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
     else
-        echo "Display owned by ${XOWNER} — enter sudo password for ace-linux-2:"
+        echo "Display owned by ${XOWNER} — enter sudo password for dev-secondary:"
         ssh -t "${ACE2_HOST}" \
             "sudo x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
     fi
@@ -47,7 +47,7 @@ if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
     sleep 2
     if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
         echo "ERROR: x11vnc still not listening on port ${REMOTE_PORT}."
-        echo "  Try manually: ssh ace-linux-2 then run x11vnc with -o /tmp/x11vnc.log to debug"
+        echo "  Try manually: ssh dev-secondary then run x11vnc with -o /tmp/x11vnc.log to debug"
         exit 1
     fi
     echo "x11vnc is up."
@@ -78,9 +78,9 @@ kill "${TUNNEL_PID}" 2>/dev/null
 echo "Tunnel closed."
 
 # Usage:
-#   ./vnc-ace-linux-2.sh
+#   ./vnc-dev-secondary.sh
 #
-# Prerequisites on ace-linux-2:
+# Prerequisites on dev-secondary:
 #   x11vnc running on port 5900
 #   Quick start: sudo x11vnc -display :0 -auth guess -forever -nopw -listen localhost -rfbport 5900 -bg
 #   Permanent:   sudo systemctl enable --now x11vnc

@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Stage evidence gate | FAIL | stage evidence file missing: .claude/work-queue/assets/WRK-1143/evidence/stage-evidence.yaml |
 | Resource-intelligence gate | FAIL | resource-intelligence.yaml: skills.core_used must include at least 3 core skills |
 | Activation gate | FAIL | activation.yaml missing |

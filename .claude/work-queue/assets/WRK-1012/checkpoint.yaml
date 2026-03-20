@@ -1,11 +1,11 @@
 wrk_id: WRK-1012
 stage: 10
-next_action: "Verify plugins on acma-ansys05 (Windows) — requires manual access or remote desktop session"
+next_action: "Verify plugins on licensed-win-1 (Windows) — requires manual access or remote desktop session"
 context_summary: |
-  ace-linux-1: 12 plugins installed and verified (2026-03-04)
-  ace-linux-2: 10 plugins installed and verified via SSH (2026-03-13)
-  acma-ansys05: PENDING — Windows machine, no SSH access, requires manual verification
-  Remaining AC: run `claude plugin list` on acma-ansys05, confirm all 9 plugins active
+  dev-primary: 12 plugins installed and verified (2026-03-04)
+  dev-secondary: 10 plugins installed and verified via SSH (2026-03-13)
+  licensed-win-1: PENDING — Windows machine, no SSH access, requires manual verification
+  Remaining AC: run `claude plugin list` on licensed-win-1, confirm all 9 plugins active
 updated_at: "2026-03-13T09:10:00Z"
 entry_reads:
   - .claude/work-queue/working/WRK-1012.md

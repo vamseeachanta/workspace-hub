@@ -1,21 +1,21 @@
 # Cross-Machine Terminal UX Audit
 
-> WRK-228 | Phase 1 deliverable | Audited: 2026-02-24 | Machine: ace-linux-1
+> WRK-228 | Phase 1 deliverable | Audited: 2026-02-24 | Machine: dev-primary
 
 ## Scope
 
 | Machine | OS | Terminal | Role |
 |---|---|---|---|
-| ace-linux-1 | Ubuntu 24.04 LTS (Noble) | GNOME Terminal (VTE 7600) | Nightly cron host — **audited** |
-| ace-linux-2 | Linux | Unknown | Contributing machine — TBD |
-| ACMA-ANSYS05 | Windows 11 / MINGW64 | Windows Terminal + Git Bash | Dev workstation — TBD |
-| acma-ws014 | Windows 11 / MINGW64 | Windows Terminal + Git Bash | Dev workstation — TBD |
+| dev-primary | Ubuntu 24.04 LTS (Noble) | GNOME Terminal (VTE 7600) | Nightly cron host — **audited** |
+| dev-secondary | Linux | Unknown | Contributing machine — TBD |
+| licensed-win-1 | Windows 11 / MINGW64 | Windows Terminal + Git Bash | Dev workstation — TBD |
+| licensed-win-2 | Windows 11 / MINGW64 | Windows Terminal + Git Bash | Dev workstation — TBD |
 
 ---
 
 ## 1. Keybindings Audit
 
-### ace-linux-1 (current state)
+### dev-primary (current state)
 
 | Setting | Value | Status |
 |---|---|---|
@@ -23,7 +23,7 @@
 | Submit prompt shortcut | Default: `Alt+Enter` (Linux Claude Code default) | Inconsistent with Windows |
 | Windows Git Bash default | `Ctrl+Enter` | Inconsistent with Linux |
 
-**Finding:** No `~/.claude/keybindings.json` exists on ace-linux-1. Claude Code on Linux defaults
+**Finding:** No `~/.claude/keybindings.json` exists on dev-primary. Claude Code on Linux defaults
 to `Alt+Enter` to submit. Windows Git Bash uses `Ctrl+Enter`. This mismatch is the primary
 friction source when switching between machines.
 
@@ -42,7 +42,7 @@ Install with `new-machine-setup.sh` (Step 3, extended to handle keybindings).
 
 ## 2. Terminal Emulator Config
 
-### ace-linux-1
+### dev-primary
 
 | Item | Value |
 |---|---|
@@ -63,7 +63,7 @@ Install with `new-machine-setup.sh` (Step 3, extended to handle keybindings).
 **GNOME Terminal keybindings** are set via gsettings / dconf. Default tab navigation:
 `Ctrl+PageUp` / `Ctrl+PageDown`. No custom override configured.
 
-### Windows (ACMA-ANSYS05 / acma-ws014) — not yet audited
+### Windows (licensed-win-1 / licensed-win-2) — not yet audited
 
 Pending access. Expected configuration:
 - Windows Terminal with Git Bash (MINGW64) profile
@@ -74,7 +74,7 @@ Pending access. Expected configuration:
 
 ## 3. Screenshot Folder
 
-### ace-linux-1
+### dev-primary
 
 | Item | Value | Status |
 |---|---|---|
@@ -93,7 +93,7 @@ default (Linux: `~/Pictures/Screenshots`, Windows: `%USERPROFILE%\Pictures\Scree
 
 ## 4. Chrome Claude Extension
 
-### ace-linux-1
+### dev-primary
 
 | Item | Value | Status |
 |---|---|---|
@@ -130,12 +130,12 @@ Session signal files reviewed in `.claude/state/session-signals/` (2026-02-20):
 
 | Gap | Severity | Machine(s) | Fix |
 |---|---|---|---|
-| `~/.claude/keybindings.json` absent — submit key inconsistent | High | ace-linux-1, ace-linux-2 | Create keybindings.json via new-machine-setup.sh |
-| `CLAUDE_SCREENSHOT_DIR` unset | High | ace-linux-1, ace-linux-2 | Add to bashrc-snippets.sh |
-| `bashrc-snippets.sh` not sourced in `~/.bashrc` | Medium | ace-linux-1 | Re-run new-machine-setup.sh |
-| Chrome extension auto-start not configured | Low | ace-linux-1 | Document only — user choice |
-| ace-linux-2 / Windows machines not audited | Medium | ace-linux-2, ACMA-ANSYS05 | Run audit on each machine |
-| Keybindings target: `Ctrl+Enter` on Linux | High | ace-linux-1, ace-linux-2 | Deploy keybindings.json |
+| `~/.claude/keybindings.json` absent — submit key inconsistent | High | dev-primary, dev-secondary | Create keybindings.json via new-machine-setup.sh |
+| `CLAUDE_SCREENSHOT_DIR` unset | High | dev-primary, dev-secondary | Add to bashrc-snippets.sh |
+| `bashrc-snippets.sh` not sourced in `~/.bashrc` | Medium | dev-primary | Re-run new-machine-setup.sh |
+| Chrome extension auto-start not configured | Low | dev-primary | Document only — user choice |
+| dev-secondary / Windows machines not audited | Medium | dev-secondary, licensed-win-1 | Run audit on each machine |
+| Keybindings target: `Ctrl+Enter` on Linux | High | dev-primary, dev-secondary | Deploy keybindings.json |
 
 ---
 
@@ -151,7 +151,7 @@ Based on this audit, the following Phase 2 work is required:
    version target (1.0.55+)
 4. **Readiness check** — add `R-UX` check to `scripts/readiness/nightly-readiness.sh`
    flagging: missing keybindings.json, unset CLAUDE_SCREENSHOT_DIR, absent Chrome extension
-5. **Audit remaining machines** — run equivalent audit on ace-linux-2 and ACMA-ANSYS05
+5. **Audit remaining machines** — run equivalent audit on dev-secondary and licensed-win-1
 
 ---
 

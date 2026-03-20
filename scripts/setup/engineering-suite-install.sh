@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 # engineering-suite-install.sh — Repeatable engineering workstation setup
-# Target: Ubuntu 24.04 LTS (ace-linux-2 and future machines)
+# Target: Ubuntu 24.04 LTS (dev-secondary and future machines)
 # Usage: sudo bash scripts/setup/engineering-suite-install.sh [--all | --core | --gis | --fea | --python]
 #
 # History:
-#   2026-02-21  Initial creation from WRK-290 (ace-linux-2 setup)
+#   2026-02-21  Initial creation from WRK-290 (dev-secondary setup)
 #   2026-02-24  WRK-291: added --fea section (CalculiX, Elmer, FEniCSx)
 #
 # Tested on:
-#   ace-linux-2  Ubuntu 24.04  2026-02-21  OpenFOAM OK, FreeCAD OK (PPA)
-#   ace-linux-1  Ubuntu 24.04  2026-02-24  FEA user-space install (no root available)
+#   dev-secondary  Ubuntu 24.04  2026-02-21  OpenFOAM OK, FreeCAD OK (PPA)
+#   dev-primary  Ubuntu 24.04  2026-02-24  FEA user-space install (no root available)
 #
-# NOTE for ace-linux-1 (no-root user-space install):
+# NOTE for dev-primary (no-root user-space install):
 #   CalculiX:  .deb extracted to ~/.local/lib/fea-libs + ~/.local/bin/ccx wrapper
 #   Elmer FEM: built from source using miniforge3 compilers (v26.1)
 #              install at ~/.local/elmer, wrapper at ~/.local/bin/ElmerSolver
 #   FEniCSx:   conda env at ~/miniforge3/envs/fenicsx-env (v0.10.0)
 #              wrapper at ~/.local/bin/fenicsx-python
 #   Gmsh:      pip install --user --break-system-packages gmsh (v4.15.1)
-#   See: docs/ops/fea-install-ace-linux-1.md for full details
+#   See: docs/ops/fea-install-dev-primary.md for full details
 
 set -euo pipefail
 

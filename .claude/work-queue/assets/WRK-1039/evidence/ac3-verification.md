@@ -44,7 +44,7 @@ identifies them. These WRKs pre-date the 14 gap hardening.
 ### Bug 1: DST false positive in `_parse_iso_timestamp`
 
 `strptime` formats with `+00:00` or `Z` created naive datetime objects. On the
-ace-linux-1 machine (CST/CDT, UTC-6), March 8 2026 is DST spring-forward day.
+dev-primary machine (CST/CDT, UTC-6), March 8 2026 is DST spring-forward day.
 Timestamps in the skipped 02:00-03:00 hour were compared as local time, causing
 execute (02:40 CST) to appear AFTER close-review (03:30 CDT) in UTC terms.
 

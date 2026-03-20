@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Resource-intelligence gate | FAIL | resource-intelligence.yaml: skills.core_used must include at least 3 core skills |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |

@@ -9,9 +9,9 @@ target_repos:
   - workspace-hub
 plan_ensemble: false
 ensemble_consensus_score: null
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 stage_evidence_ref: .claude/work-queue/assets/WRK-TEST-ENSEMBLE/evidence/stage-evidence.yaml
 subcategory: uncategorised
 category: uncategorised

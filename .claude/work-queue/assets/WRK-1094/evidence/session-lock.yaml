@@ -1,6 +1,6 @@
 wrk_id: WRK-1094
 session_pid: 0
-hostname: ace-linux-1
+hostname: dev-primary
 locked_at: "2026-03-10T10:45:00Z"
 session_id: "session-20260310-100000"
 status: claimed

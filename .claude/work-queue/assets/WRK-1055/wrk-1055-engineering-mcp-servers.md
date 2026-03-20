@@ -1,6 +1,6 @@
 # WRK-1055 Plan — Engineering MCP Servers
 
-**Route**: B (medium) | **Machine**: ace-linux-1
+**Route**: B (medium) | **Machine**: dev-primary
 **Revision**: v2 — revised per Codex REQUEST_CHANGES findings
 **Status**: Approved (Stage 5)
 
@@ -8,8 +8,8 @@
 
 ## Scope Note
 
-Codex/Gemini MCP wiring is explicitly out of scope for this WRK. Claude-only on ace-linux-1.
-Codex/ace-linux-2 wiring captured as follow-on (WRK-1012 scope).
+Codex/Gemini MCP wiring is explicitly out of scope for this WRK. Claude-only on dev-primary.
+Codex/dev-secondary wiring captured as follow-on (WRK-1012 scope).
 
 ---
 
@@ -135,6 +135,6 @@ Document usage patterns, install procedure, and trust assessment template.
 ## Out of Scope
 
 - Codex/Gemini MCP config wiring (different config format; deferred)
-- ace-linux-2 MCP setup (WRK-1012 scope)
+- dev-secondary MCP setup (WRK-1012 scope)
 - arXiv/BSEE custom MCP wrappers (separate WRKs)
 - WRK-578 registry audit skill (separate WRK)

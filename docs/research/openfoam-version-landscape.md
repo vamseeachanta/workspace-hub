@@ -23,14 +23,14 @@ construction. This document compares the two forks and recommends a target versi
 | Website | openfoam.com |
 | License | GPL v3 |
 | Distribution | `.com` apt repos, Docker images |
-| Installed on ace-linux-2 | **YES — v2312** |
+| Installed on dev-secondary | **YES — v2312** |
 
 **Version timeline (recent):**
 - v2106 (June 2021)
 - v2206 (June 2022)
 - v2212 (December 2022)
 - v2306 (June 2023)
-- v2312 (December 2023) — **installed on ace-linux-2**
+- v2312 (December 2023) — **installed on dev-secondary**
 - v2406 (June 2024)
 - v2412 (December 2024) — latest as of research date
 
@@ -44,7 +44,7 @@ construction. This document compares the two forks and recommends a target versi
 | Website | openfoam.org |
 | License | GPL v3 |
 | Distribution | `.org` apt repos, Docker images |
-| Installed on ace-linux-2 | NO |
+| Installed on dev-secondary | NO |
 
 **Version timeline (recent):**
 - v9 (June 2021)
@@ -60,7 +60,7 @@ These differences directly affect WRK-047 template generation.
 
 ### turbulenceProperties
 
-**ESI v2312 (installed on ace-linux-2):**
+**ESI v2312 (installed on dev-secondary):**
 ```c++
 FoamFile { version 2.0; format ascii; class dictionary; object turbulenceProperties; }
 
@@ -89,7 +89,7 @@ RAS
 ```
 
 **Difference:** Foundation renamed `turbulenceProperties` → `momentumTransport`. The
-`RASModel` key is now `model`. WRK-047 templates must generate ESI syntax for ace-linux-2.
+`RASModel` key is now `model`. WRK-047 templates must generate ESI syntax for dev-secondary.
 
 ---
 
@@ -329,7 +329,7 @@ relaxationFactors
 **Decision: Target ESI v2312 (confirm existing assumption)**
 
 Rationale:
-1. **Installed on ace-linux-2** — the target development machine. No version mismatch.
+1. **Installed on dev-secondary** — the target development machine. No version mismatch.
 2. **ESI v2306+ assumption in WRK-047** — v2312 is a superset; all v2306 features are present.
 3. **Foundation renamed core dict files** — `turbulenceProperties` → `momentumTransport`,
    `transportProperties` → `physicalProperties`. Targeting ESI avoids this complexity.
@@ -348,7 +348,7 @@ Rationale:
 
 ## Upgrade Path Notes
 
-When ace-linux-2 is updated from v2312 to v2406/v2412:
+When dev-secondary is updated from v2312 to v2406/v2412:
 - `blockMeshDict`, `snappyHexMeshDict`, `fvSchemes`, `fvSolution` syntax: unchanged
 - `turbulenceProperties`: unchanged (ESI kept the old name)
 - `transportProperties`: unchanged (ESI kept the old name)

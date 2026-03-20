@@ -91,7 +91,7 @@ key_findings:
   - "Extracts ~14% more text on average than pdftotext"
   - "Captures 1731 markdown table rows across 6 documents"
   - "Output is structured markdown with headings, lists, tables, image placeholders"
-  - "GTX 750 Ti GPU too old for PyTorch CUDA — CPU-only on ace-linux-1"
+  - "GTX 750 Ti GPU too old for PyTorch CUDA — CPU-only on dev-primary"
   - "Dependency conflicts: docling pins hf_hub<1, transformers needs newer"
   - "queue.py name collision in doc_intelligence dir shadows stdlib"
   - "NOT viable for batch processing of 1M+ corpus at 310s/doc"
@@ -102,7 +102,7 @@ recommendations:
   targeted_extraction: "RECOMMENDED — use for high-value engineering standards needing table/equation preservation"
   integration_point: "Phase 2a supplement: run Docling on specific standards identified by domain experts"
   gpu_requirement: "For practical batch use, needs CUDA 7.0+ GPU (RTX 2060 or better)"
-  alternative_path: "Consider running on ace-linux-2 if it has a compatible GPU"
+  alternative_path: "Consider running on dev-secondary if it has a compatible GPU"
 
 sources:
   - title: "IBM Docling - GitHub"

@@ -17,5 +17,5 @@ key_files:
 risks: []
 blockers: []
 notes: >
-  Route A simple item. All files local to workspace-hub on ace-linux-1.
+  Route A simple item. All files local to workspace-hub on dev-primary.
   No external dependencies. Pure bash script with awk field extraction.

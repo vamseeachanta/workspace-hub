@@ -14,14 +14,14 @@
 
 **1. Local Network Profile** (Green icon 🖥️)
 - **Name:** Linux Workspace (Local Network)
-- **IP:** 192.168.1.100
+- **IP:** 10.0.0.1
 - **Use when:** On same WiFi network
 - **Speed:** Fastest (gigabit)
 - **Color:** Green
 
 **2. Tailscale Internet Profile** (Blue globe icon 🌐)
 - **Name:** Linux Workspace (Tailscale - Internet)
-- **IP:** 100.107.64.76
+- **IP:** 10.1.0.1
 - **Use when:** Anywhere on internet
 - **Speed:** Fast (50-200 Mbps)
 - **Color:** Blue
@@ -43,7 +43,7 @@
 **3. Connect**
 - **Option A:** Install Tabby → Sync config → Open profile
 - **Option B:** Use connection script
-- **Option C:** Direct SSH: `ssh vamsee@100.107.64.76`
+- **Option C:** Direct SSH: `ssh vamsee@10.1.0.1`
 
 ## Files Created in workspace-hub
 
@@ -80,7 +80,7 @@ cd C:\workspace-hub
 # Method B: Run script
 .\scripts\connect-workspace-tailscale.ps1
 # Method C: Direct SSH
-ssh vamsee@100.107.64.76
+ssh vamsee@10.1.0.1
 ```
 
 ## Connection Comparison
@@ -92,7 +92,7 @@ ssh vamsee@100.107.64.76
 | **Security** | Local network | WireGuard encryption |
 | **Setup** | None needed | Install Tailscale |
 | **Firewall** | May need config | Works through any |
-| **IP Address** | 192.168.1.100 | 100.107.64.76 |
+| **IP Address** | 10.0.0.1 | 10.1.0.1 |
 | **Best for** | At home | On the go |
 
 **Recommendation:** Tabby shows both profiles - choose based on location!
@@ -132,7 +132,7 @@ ssh vamsee@100.107.64.76
 tailscale status
 
 # Check if devices see each other
-tailscale ping 100.107.64.76
+tailscale ping 10.1.0.1
 
 # Restart Tailscale
 sudo systemctl restart tailscaled  # Linux

@@ -199,7 +199,7 @@ else
     log "No SSH key found. Generating ed25519 key..."
     ssh-keygen -t ed25519 -C "${HOSTNAME_SHORT}" -f "${HOME}/.ssh/id_ed25519" -N ""
     log "Generated ${HOME}/.ssh/id_ed25519"
-    log "Add public key to ace-linux-1 with: ssh-copy-id vamsee@ace-linux-1"
+    log "Add public key to dev-primary with: ssh-copy-id vamsee@dev-primary"
   fi
 fi
 

@@ -1,5 +1,5 @@
 wrk_id: WRK-1109
-title: "Set up WhatsApp MCP for Claude CLI on ace-linux-1"
+title: "Set up WhatsApp MCP for Claude CLI on dev-primary"
 checkpointed_at: "2026-03-10T18:39:54Z"
 current_stage: 1
 stage_name: "Capture"

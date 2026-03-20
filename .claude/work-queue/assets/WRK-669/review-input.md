@@ -33,7 +33,7 @@ WRK-656 and CLAUDE.md demand validator-friendly evidence that Claude acting as o
 
 ### Cross-Review Providers
 - **Claude**: inline review of artifact bundle
-- **Codex**: NO_OUTPUT (not installed on ace-linux-1 per ai-agent-versions.yaml)
+- **Codex**: NO_OUTPUT (not installed on dev-primary per ai-agent-versions.yaml)
 - **Gemini**: submitted via `scripts/review/submit-to-gemini.sh`
 
 ### TDD
@@ -65,7 +65,7 @@ WRK-656 and CLAUDE.md demand validator-friendly evidence that Claude acting as o
 
 ## Risks / Notes
 
-1. Codex not installed on ace-linux-1 — NO_OUTPUT per policy; this is a known machine constraint, not a workflow failure.
+1. Codex not installed on dev-primary — NO_OUTPUT per policy; this is a known machine constraint, not a workflow failure.
 2. This item has no production code changes; TDD gate is satisfied by verifier smoke tests rather than unit tests.
 3. Resource intelligence stage skipped — meta item with no external data dependencies.
 4. User-final-review HTML stage satisfied by summary HTML confirmation button.

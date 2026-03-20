@@ -180,7 +180,7 @@ into WRK-1045 with a cross-reference.
   with live gate self-verification on WRK-1035 itself.
 
 - **Risks section is comprehensive and actionable.** The six risks (retroactive verification of
-  archived WRKs, Codex deadlock on ace-linux-1, sentinel value blocking, SKILL cross-reference
+  archived WRKs, Codex deadlock on dev-primary, sentinel value blocking, SKILL cross-reference
   breakage, Stage 1 gate for existing pending WRKs, verifier file size) are each paired with a
   specific mitigation. No material risk is identified here that is absent from the plan.
 

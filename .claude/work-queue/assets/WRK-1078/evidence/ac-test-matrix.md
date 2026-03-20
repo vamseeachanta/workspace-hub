@@ -13,6 +13,6 @@
 **Total: 7 PASS, 0 FAIL**
 
 ## Notes
-- Tests run on ACMA-ANSYS05 (Windows MINGW64) — primary target platform
-- Final verification on ace-linux-1 deferred (blocked by WRK-1077 machine sync)
-- `dev-env-check.sh` AC deferred — script not yet on acma-ansys05 (WRK-1077 prerequisite)
+- Tests run on licensed-win-1 (Windows MINGW64) — primary target platform
+- Final verification on dev-primary deferred (blocked by WRK-1077 machine sync)
+- `dev-env-check.sh` AC deferred — script not yet on licensed-win-1 (WRK-1077 prerequisite)

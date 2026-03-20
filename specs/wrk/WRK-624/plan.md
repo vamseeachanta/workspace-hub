@@ -286,7 +286,7 @@ Minimum triage contract:
 - `orchestrator`
 
 Field definitions:
-- `computer`: the execution host or named workstation expected to own the primary work, using the workspace workstation registry naming (for example `ace-linux-1`). This is not a generic hardware class field.
+- `computer`: the execution host or named workstation expected to own the primary work, using the workspace workstation registry naming (for example `dev-primary`). This is not a generic hardware class field.
 - `plan_workstations`: one or more named workstations allowed for planning-stage work.
 - `execution_workstations`: one or more named workstations allowed for execution-stage work.
 

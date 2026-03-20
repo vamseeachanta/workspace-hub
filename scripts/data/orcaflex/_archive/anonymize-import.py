@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ABOUTME: Stage 2+3 of OrcaFlex dat-to-yaml pipeline (WRK-589)
-# ABOUTME: Runs on ace-linux-1; anonymizes string fields, legal-scans, imports to digitalmodel
+# ABOUTME: Runs on dev-primary; anonymizes string fields, legal-scans, imports to digitalmodel
 
 """
 Anonymize raw OrcaFlex YAML extracts and import clean versions to digitalmodel.

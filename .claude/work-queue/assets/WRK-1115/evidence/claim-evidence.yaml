@@ -8,7 +8,7 @@ metadata_version: "1"
 session_owner: "claude"
 agent_fit:
   capability_match: "high"
-  rationale: "Route B / ace-linux-1 / provider=claude / HTML generation + Python"
+  rationale: "Route B / dev-primary / provider=claude / HTML generation + Python"
 blocking_state:
   blocked: false
   blocked_by: []

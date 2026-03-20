@@ -26,7 +26,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B, medium complexity, ace-linux-1.
+  comment: Route B, medium complexity, dev-primary.
   evidence: .claude/work-queue/working/WRK-5027.md
 - order: 4
   stage: Plan Draft
@@ -74,7 +74,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Routed to ace-linux-1 for direct execution.
+  comment: Routed to dev-primary for direct execution.
   evidence: .claude/work-queue/logs/WRK-5027-routing.log
 - order: 10
   stage: Work Execution

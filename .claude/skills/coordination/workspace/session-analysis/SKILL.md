@@ -70,12 +70,12 @@ Each session-end hook writes one JSONL line:
 | Time | Job | Machine |
 |------|-----|---------|
 | Session end | `session-signals.sh` | All machines |
-| 3:00 AM | `session-analysis.sh` | `ace-linux-1` (primary aggregator) |
+| 3:00 AM | `session-analysis.sh` | `dev-primary` (primary aggregator) |
 | 5:00 AM | `claude-reflect` | All machines |
 
 ## Cross-Machine
 
-`ace-linux-1` is the primary aggregator. At 3AM it pulls signal files from other machines (git pull). If nothing arrived, analyses local sessions only.
+`dev-primary` is the primary aggregator. At 3AM it pulls signal files from other machines (git pull). If nothing arrived, analyses local sessions only.
 
 ## Quality Metric
 
@@ -85,7 +85,7 @@ Target: >80% of sessions produce at least one actionable output (gap WRK, skill 
 
 This skill is invoked automatically:
 - `session-signals.sh` fires at every session Stop event (configured in Claude Code hooks)
-- `session-analysis.sh` runs at 3AM via cron on ace-linux-1
+- `session-analysis.sh` runs at 3AM via cron on dev-primary
 
 Manual run for a specific date:
 ```bash

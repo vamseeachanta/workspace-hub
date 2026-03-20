@@ -16,10 +16,10 @@ Use when setting `computer:` on a new WRK item:
 
 | Keyword in WRK title / tags | Recommended machine |
 |-----------------------------|---------------------|
-| orcaflex, ansys, aqwa | acma-ansys05 |
-| office, windows, excel | acma-ws014 or acma-ansys05 |
+| orcaflex, ansys, aqwa | licensed-win-1 |
+| office, windows, excel | licensed-win-2 or licensed-win-1 |
 | heavy-compute, large-sim, cfd-hpc, fea-hpc | gali-linux-compute-1 |
-| blender, animation, openfoam, gmsh, calculix, fenics, freecad, elmer | ace-linux-2 |
-| worldenergydata, hub, claude, orchestration | ace-linux-1 |
-| open-source-dev, digitalmodel, assetutilities | ace-linux-1 or ace-linux-2 |
-| everything else | ace-linux-1 |
+| blender, animation, openfoam, gmsh, calculix, fenics, freecad, elmer | dev-secondary |
+| worldenergydata, hub, claude, orchestration | dev-primary |
+| open-source-dev, digitalmodel, assetutilities | dev-primary or dev-secondary |
+| everything else | dev-primary |

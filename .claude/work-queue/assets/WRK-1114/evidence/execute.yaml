@@ -15,27 +15,27 @@ test_results:
   fail: 0
   command: "bash tests/work-queue/test-machine-id-ranges.sh"
 integrated_repo_tests:
-  - name: "ace-linux-1 empty queue → floor ID 001"
+  - name: "dev-primary empty queue → floor ID 001"
     scope: repo
     command: "bash tests/work-queue/test-machine-id-ranges.sh"
     result: pass
     artifact_ref: tests/work-queue/test-machine-id-ranges.sh
-  - name: "acma-ansys05 empty queue → floor ID 5000"
+  - name: "licensed-win-1 empty queue → floor ID 5000"
     scope: repo
     command: "bash tests/work-queue/test-machine-id-ranges.sh"
     result: pass
     artifact_ref: tests/work-queue/test-machine-id-ranges.sh
-  - name: "ace-linux-1 MAX_ID=1113 → next ID 1114"
+  - name: "dev-primary MAX_ID=1113 → next ID 1114"
     scope: repo
     command: "bash tests/work-queue/test-machine-id-ranges.sh"
     result: pass
     artifact_ref: tests/work-queue/test-machine-id-ranges.sh
-  - name: "acma-ansys05 MAX_ID=5001 → next ID 5002"
+  - name: "licensed-win-1 MAX_ID=5001 → next ID 5002"
     scope: repo
     command: "bash tests/work-queue/test-machine-id-ranges.sh"
     result: pass
     artifact_ref: tests/work-queue/test-machine-id-ranges.sh
-  - name: "range non-overlap invariant: ace-linux-1 ceiling < acma-ansys05 floor"
+  - name: "range non-overlap invariant: dev-primary ceiling < licensed-win-1 floor"
     scope: repo
     command: "bash tests/work-queue/test-machine-id-ranges.sh"
     result: pass

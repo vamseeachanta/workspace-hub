@@ -77,7 +77,7 @@ gaps:
   - "awesome_mcp_servers engineering-keyword scan — WRK-578 task"
   - "semantic_scholar_mcp commit SHA pinning — happens at install time in execution"
   - "Trust assessment (source code review) deferred to execution stage"
-  - "Node.js/npx availability on ace-linux-1 not confirmed (uv servers are fine)"
+  - "Node.js/npx availability on dev-primary not confirmed (uv servers are fine)"
 
 risks:
   - id: supply_chain

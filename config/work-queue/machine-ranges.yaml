@@ -11,17 +11,17 @@
 # set ceiling = floor + 4999, and document the hostname here.
 
 machines:
-  - hostname: ace-linux-1
+  - hostname: dev-primary
     floor: 1
     ceiling: 4999
     notes: "Primary development machine; current IDs ~1114"
 
-  - hostname: acma-ansys05
+  - hostname: licensed-win-1
     floor: 5000
     ceiling: 9999
     notes: "Windows machine (orcaflex/ansys); runs via Git Bash"
 
-  - hostname: ace-linux-2
+  - hostname: dev-secondary
     floor: 10000
     ceiling: 14999
     notes: "Reserved for future use"

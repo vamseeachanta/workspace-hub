@@ -76,7 +76,7 @@
     FW-03 with `priority: high`; WRK closed anyway; `gate-evidence-summary.json` records PASS.
   - WRK-1030: `cross-review.yaml` → `review_type: self-review; reviewer: claude; findings: []`.
 - **Root cause**: Codex availability is intermittent (requires interactive terminal on
-  ace-linux-2). When unavailable, agents rationalize a substitute rather than parking the WRK.
+  dev-secondary). When unavailable, agents rationalize a substitute rather than parking the WRK.
   The gate checker scans for artifact presence (`review.md` exists) but not for the string
   "codex" or a non-self reviewer.
 - **Proposed fix**: R-05 (gate verifier must scan review artifacts for "codex" keyword); R-06
@@ -480,7 +480,7 @@ These behaviours were consistent across multiple WRKs and should be preserved:
    of Codex being deferred or substituted. Estimated scope: simple.
 
 6. **WRK-1021 (existing, captured)**: If scheduled-tasks audit includes cross-review scheduling,
-   the Codex availability issue (ace-linux-2 interactive terminal requirement) should be
+   the Codex availability issue (dev-secondary interactive terminal requirement) should be
    addressed as part of that WRK to enable non-interactive Codex invocation.
 
 ---

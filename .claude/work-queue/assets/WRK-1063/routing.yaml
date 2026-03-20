@@ -1,7 +1,7 @@
 wrk_id: WRK-1063
 route: A
 routed_at: "2026-03-09T08:12:00Z"
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: claude
 execution_agent: claude
-notes: Route A — simple complexity; single computer ace-linux-1; Claude orchestrates and executes.
+notes: Route A — simple complexity; single computer dev-primary; Claude orchestrates and executes.

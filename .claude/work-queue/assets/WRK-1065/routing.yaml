@@ -1,8 +1,8 @@
 wrk_id: WRK-1065
 route: A
-assigned_to: ace-linux-1
+assigned_to: dev-primary
 provider: claude
 routed_at: "2026-03-09T11:32:00Z"
 rationale: >
-  Route A (simple). Single machine (ace-linux-1), single provider (claude).
+  Route A (simple). Single machine (dev-primary), single provider (claude).
   No cross-repo changes. All deliverables are scripts/docs on hub.

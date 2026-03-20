@@ -1,6 +1,6 @@
 executed_at: "2026-03-12T22:40:00Z"
 provider: claude
-workstation: ace-linux-1
+workstation: dev-primary
 artifacts_created:
   - ".claude/skills/engineering/doc-extraction/SKILL.md"
   - ".claude/skills/engineering/doc-extraction/cp/SKILL.md"

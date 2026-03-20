@@ -13,7 +13,7 @@
 2. **Supply-chain risk addressed** — commit SHA pinning requirement is explicit in Phase 2.
    Trust assessment checklist in Phase 4 doc is appropriate.
 3. **Scope boundary clear** — out-of-scope section explicitly calls out WRK-578, arXiv/BSEE
-   wrappers, Codex/ace-linux-2. Prevents scope creep.
+   wrappers, Codex/dev-secondary. Prevents scope creep.
 4. **Tests per phase** — each phase has a concrete test condition, not just "verify manually".
 5. **Route B appropriate** — 2 new files + 1 install + Codex cross-review. Not over-engineered.
 

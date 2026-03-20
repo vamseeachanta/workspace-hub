@@ -2,7 +2,7 @@ wrk_id: WRK-1232
 stage: 8
 activated_at: "2026-03-16T02:30:00Z"
 claimed_by: claude
-workstation: ace-linux-1
+workstation: dev-primary
 set_active_wrk: true
-session_id: "2026-03-16T02:30:00Z-ace-linux-1"
+session_id: "2026-03-16T02:30:00Z-dev-primary"
 orchestrator_agent: claude

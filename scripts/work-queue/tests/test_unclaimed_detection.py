@@ -63,7 +63,7 @@ def _make_wrk_md(queue_dir: Path, location: str, wrk_id: str) -> Path:
             priority: high
             category: harness
             subcategory: testing
-            computer: ace-linux-1
+            computer: dev-primary
             blocked_by: []
             ---
             """

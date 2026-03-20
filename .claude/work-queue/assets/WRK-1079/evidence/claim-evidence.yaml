@@ -9,7 +9,7 @@ session_owner: "claude-sonnet-4-6"
 set_active_wrk: true
 agent_fit:
   capability_match: "confirmed"
-  rationale: "Route B / execution_workstations=[ace-linux-1] / provider=claude"
+  rationale: "Route B / execution_workstations=[dev-primary] / provider=claude"
 blocking_state:
   blocked: false
   blocked_by: []

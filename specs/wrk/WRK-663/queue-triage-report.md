@@ -4,16 +4,16 @@
 
 | WRK ID | Task Description | Agent | Workstation(s) |
 | :--- | :--- | :--- | :--- |
-| **WRK-660** | `assetutilities` coverage audit | Gemini | `ace-linux-1` |
-| **WRK-389** | Fix Claude install on `ace-linux-2` | *Default* | `ace-linux-2` |
-| **WRK-473** | Integrate `wavespectra` library | *Default* | `ace-linux-1` |
-| **WRK-475** | Wire Open-Meteo Marine API | *Default* | `ace-linux-1` |
-| **WRK-005** | Clean up email using AI | Claude | `ace-linux-1` |
-| **WRK-294** | Standardize `ace-linux-2` mount paths | *Default* | `ace-linux-2` |
-| **WRK-297** | SSHFS bidirectional mounts | *Default* | `ace-linux-1` |
-| **WRK-140** | Integrate `gmsh` meshing skill | Codex | `ace-linux-2` |
-| **WRK-477** | Offshore Geohazard Feed via USGS API | *Default* | `ace-linux-1` |
-| **WRK-125** | OrcaFlex module roadmap update | Claude | `acma-ansys05` |
+| **WRK-660** | `assetutilities` coverage audit | Gemini | `dev-primary` |
+| **WRK-389** | Fix Claude install on `dev-secondary` | *Default* | `dev-secondary` |
+| **WRK-473** | Integrate `wavespectra` library | *Default* | `dev-primary` |
+| **WRK-475** | Wire Open-Meteo Marine API | *Default* | `dev-primary` |
+| **WRK-005** | Clean up email using AI | Claude | `dev-primary` |
+| **WRK-294** | Standardize `dev-secondary` mount paths | *Default* | `dev-secondary` |
+| **WRK-297** | SSHFS bidirectional mounts | *Default* | `dev-primary` |
+| **WRK-140** | Integrate `gmsh` meshing skill | Codex | `dev-secondary` |
+| **WRK-477** | Offshore Geohazard Feed via USGS API | *Default* | `dev-primary` |
+| **WRK-125** | OrcaFlex module roadmap update | Claude | `licensed-win-1` |
 
 ## Triage Summary
 Full triage of 160+ items completed. Standard classification applied (QUICK-WIN, STALE-BLOCKER, etc).

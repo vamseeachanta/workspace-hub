@@ -4,7 +4,7 @@
   suggested_allow_pattern: "Bash(ls:*)"
 - prefix: ssh
   count: 233
-  example_command: "ssh ace-linux-1 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \"---LOG---\" && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1'"
+  example_command: "ssh dev-primary 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \"---LOG---\" && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1'"
   suggested_allow_pattern: "Bash(ssh:*)"
 - prefix: find
   count: 176
@@ -36,7 +36,7 @@
   suggested_allow_pattern: "Bash(which:*)"
 - prefix: sudo
   count: 24
-  example_command: sudo ssh-keyscan -H ace-linux-1 2>/dev/null | sudo tee -a /root/.ssh/known_hosts
+  example_command: sudo ssh-keyscan -H dev-primary 2>/dev/null | sudo tee -a /root/.ssh/known_hosts
   suggested_allow_pattern: "Bash(sudo:*)"
 - prefix: dpkg
   count: 21
@@ -216,7 +216,7 @@
   suggested_allow_pattern: "Bash(nvidia-smi:*)"
 - prefix: scp
   count: 3
-  example_command: "scp /tmp/ace-linux-1-nvidia-guardrails.sh ace-linux-1:/tmp/nvidia-guardrails.sh 2>&1"
+  example_command: "scp /tmp/dev-primary-nvidia-guardrails.sh dev-primary:/tmp/nvidia-guardrails.sh 2>&1"
   suggested_allow_pattern: "Bash(scp:*)"
 - prefix: git
   count: 3
@@ -244,11 +244,11 @@
   suggested_allow_pattern: "Bash(apt-cache:*)"
 - prefix: sshfs
   count: 2
-  example_command: "sshfs ace-linux-1:/mnt/local-analysis/workspace-hub /mnt/workspace-hub -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3 2>&1"
+  example_command: "sshfs dev-primary:/mnt/local-analysis/workspace-hub /mnt/workspace-hub -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3 2>&1"
   suggested_allow_pattern: "Bash(sshfs:*)"
 - prefix: ssh-keygen
   count: 2
-  example_command: ssh-keygen -F ace-linux-1 2>&1 | head -3
+  example_command: ssh-keygen -F dev-primary 2>&1 | head -3
   suggested_allow_pattern: "Bash(ssh-keygen:*)"
 - prefix: lspci
   count: 2
@@ -380,11 +380,11 @@
   suggested_allow_pattern: "Bash(fusermount3:*)"
 - prefix: ssh-keyscan
   count: 1
-  example_command: "ssh-keyscan -H ace-linux-1 2>/dev/null | head -3; echo \"---\"; sudo cat /root/.ssh/known_hosts 2>&1; echo \"===\"; grep ace-linux-1 /home/vamsee/.ssh/known_hosts 2>&1 | head -3"
+  example_command: "ssh-keyscan -H dev-primary 2>/dev/null | head -3; echo \"---\"; sudo cat /root/.ssh/known_hosts 2>&1; echo \"===\"; grep dev-primary /home/vamsee/.ssh/known_hosts 2>&1 | head -3"
   suggested_allow_pattern: "Bash(ssh-keyscan:*)"
 - prefix: getent
   count: 1
-  example_command: "getent hosts ace-linux-1 2>&1; echo \"---\"; host ace-linux-1 2>&1; echo \"---\"; ping -c1 -W2 ace-linux-1 2>&1"
+  example_command: "getent hosts dev-primary 2>&1; echo \"---\"; host dev-primary 2>&1; echo \"---\"; ping -c1 -W2 dev-primary 2>&1"
   suggested_allow_pattern: "Bash(getent:*)"
 - prefix: if
   count: 1

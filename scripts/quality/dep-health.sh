@@ -169,9 +169,9 @@ priority: high
 complexity: simple
 created_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 target_repos: [${REPOS_STR// /, }]
-computer: ace-linux-1
-execution_workstations: [ace-linux-1]
-plan_workstations: [ace-linux-1]
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
 category: harness
 subcategory: security
 auto_captured: true

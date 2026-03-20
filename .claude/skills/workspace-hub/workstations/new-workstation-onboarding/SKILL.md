@@ -19,9 +19,9 @@ Run these steps on any new machine to wire it into the workspace-hub ecosystem:
 git clone git@github.com:<org>/workspace-hub.git
 cd workspace-hub && git submodule update --init --recursive
 
-# 2. Set up SSH key to ace-linux-1 (for state sync)
+# 2. Set up SSH key to dev-primary (for state sync)
 ssh-keygen -t ed25519 -C "$(hostname)"   # if no key exists
-ssh-copy-id vamsee@ace-linux-1
+ssh-copy-id vamsee@dev-primary
 
 # 3. Install crontab (hostname-aware; --dry-run to preview first)
 bash scripts/cron/setup-cron.sh --dry-run

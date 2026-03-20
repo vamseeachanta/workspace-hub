@@ -23,7 +23,7 @@ findings:
     - scripts/data/document-index/reclassify-audit.py  # weighted keyword scoring V2
   mounted_sources:
     - /mnt/ace  # 7.3T primary doc store
-    - /mnt/remote/ace-linux-2/dde  # remote SSHFS
+    - /mnt/remote/dev-secondary/dde  # remote SSHFS
   domain_distribution:
     cad: 275445
     marine: 266155

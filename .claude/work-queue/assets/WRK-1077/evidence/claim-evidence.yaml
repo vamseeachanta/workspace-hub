@@ -8,7 +8,7 @@ metadata_version: "1"
 session_owner: "claude"
 agent_fit:
   capability_match: "matched"
-  rationale: "Route A / execution_workstations=acma-ansys05 / provider=claude"
+  rationale: "Route A / execution_workstations=licensed-win-1 / provider=claude"
 blocking_state:
   blocked: false
   blocked_by: []

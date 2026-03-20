@@ -68,7 +68,7 @@ reviewers:
   - "claude-opus-4-6"
   - "gemini-cli"
 assignees:
-  - "ace-linux-1"
+  - "dev-primary"
 
 technical:
   language: "markdown"

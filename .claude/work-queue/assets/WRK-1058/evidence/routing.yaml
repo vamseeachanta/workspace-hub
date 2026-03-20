@@ -1,6 +1,6 @@
 wrk_id: WRK-1058
 stage: 9
 route: B
-computer: ace-linux-1
+computer: dev-primary
 rationale: Medium complexity; single repo (workspace-hub scripts + tests); Route B standard execution.
 routed_at: 2026-03-09T10:40:00-05:00

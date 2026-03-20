@@ -33,8 +33,8 @@ Each active session row:
 
 ```
 WRK-ID         STATUS     AGE     HOSTNAME             LOCKED_AT
-WRK-1097       unclaimed  12min   ace-linux-1          2026-03-10T06:00:00Z
-WRK-1085       claimed    45min   ace-linux-1          2026-03-10T05:27:00Z
+WRK-1097       unclaimed  12min   dev-primary          2026-03-10T06:00:00Z
+WRK-1085       claimed    45min   dev-primary          2026-03-10T05:27:00Z
 ```
 
 | Column | Meaning |

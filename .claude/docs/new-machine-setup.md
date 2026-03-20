@@ -162,10 +162,10 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 | Hostname | Role | Variant |
 |----------|------|---------|
-| `ace-linux-1` | Nightly pipeline host | `full` |
-| `ace-linux-2` | Contributing machine | `contribute` |
-| `ACMA-ANSYS05` | Windows dev workstation | `contribute-minimal` |
-| `acma-ws014` | Windows dev workstation | `contribute-minimal` |
+| `dev-primary` | Nightly pipeline host | `full` |
+| `dev-secondary` | Contributing machine | `contribute` |
+| `licensed-win-1` | Windows dev workstation | `contribute-minimal` |
+| `licensed-win-2` | Windows dev workstation | `contribute-minimal` |
 | other | Default | `contribute` |
 
 #### Install (Linux)
@@ -176,7 +176,7 @@ bash scripts/cron/setup-cron.sh
 
 Dry-run preview: `bash scripts/cron/setup-cron.sh --dry-run`
 
-#### Full Schedule (ace-linux-1 only)
+#### Full Schedule (dev-primary only)
 
 | Time | Schedule | Script |
 |------|----------|--------|
@@ -194,8 +194,8 @@ Two tasks required — see `scripts/cron/crontab-template.sh` for the exact
 arguments.  `setup-cron.sh` prints the instructions when run on Windows.
 
 > **Note:** Full nightly automation (comprehensive-learning, session-analysis,
-> repository-sync) runs on **ace-linux-1 only** — it has a cron daemon.
-> Windows machines (ACMA-ANSYS05, acma-ws014) are `contribute-minimal` and
+> repository-sync) runs on **dev-primary only** — it has a cron daemon.
+> Windows machines (licensed-win-1, licensed-win-2) are `contribute-minimal` and
 > use Windows Task Scheduler for two tasks only; cron is not available on
 > Windows/MINGW64.
 
@@ -203,11 +203,11 @@ arguments.  `setup-cron.sh` prints the instructions when run on Windows.
 
 ### 6. SSH Key Setup
 
-Required for `rsync` between machines (ace-linux-1 pulls sessions from others).
+Required for `rsync` between machines (dev-primary pulls sessions from others).
 
 ```bash
 ssh-keygen -t ed25519 -C "$(hostname)"
-ssh-copy-id vamsee@ace-linux-1         # office → home/lab (requires Tailscale)
+ssh-copy-id vamsee@dev-primary         # office → home/lab (requires Tailscale)
 ```
 
 **Cross-network:** office (192.168.0.x) and home/lab (192.168.1.x) are
@@ -244,10 +244,10 @@ The bootstrap script does this automatically.
 
 | Machine | OS | Network | Role |
 |---------|-----|---------|------|
-| ACMA-ANSYS05 | Windows / MINGW64 | 192.168.0.x (office) | Dev workstation |
-| acma-ws014 | Windows / MINGW64 | 192.168.0.x (office) | Dev workstation |
-| ace-linux-1 | Linux | 192.168.1.x (home/lab) | Nightly cron host |
-| ace-linux-2 | Linux | 192.168.1.x (home/lab) | Contributing machine |
+| licensed-win-1 | Windows / MINGW64 | 192.168.0.x (office) | Dev workstation |
+| licensed-win-2 | Windows / MINGW64 | 192.168.0.x (office) | Dev workstation |
+| dev-primary | Linux | 192.168.1.x (home/lab) | Nightly cron host |
+| dev-secondary | Linux | 192.168.1.x (home/lab) | Contributing machine |
 
 ---
 
@@ -291,7 +291,7 @@ crontab entries, SSH key, env vars, Python + PyYAML.
 - The bashrc-snippets file sets `GIT_CONFIG_PARAMETERS` to enforce LF
 - Default workspace path example: `D:/workspace-hub` — adjust alias in
   `config/shell/bashrc-snippets.sh` to match your drive
-- Cron: not available on Windows — use Windows Task Scheduler; full nightly pipeline runs on ace-linux-1 only
+- Cron: not available on Windows — use Windows Task Scheduler; full nightly pipeline runs on dev-primary only
 
 ---
 

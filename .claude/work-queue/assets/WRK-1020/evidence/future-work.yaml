@@ -16,8 +16,8 @@ recommendations:
     captured: true
     captured_wrk: pending-capture
   - id: FW-03
-    title: "ace-linux-2 gemini availability"
-    description: "Verify gemini CLI available on ace-linux-2 for nightly script execution"
+    title: "dev-secondary gemini availability"
+    description: "Verify gemini CLI available on dev-secondary for nightly script execution"
     disposition: existing-updated
     status: deferred
     captured: true

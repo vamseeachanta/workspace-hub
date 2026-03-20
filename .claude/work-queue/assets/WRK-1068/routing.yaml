@@ -1,9 +1,9 @@
 wrk_id: WRK-1068
 stage: 9
 route: A
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: claude
-execution_workstations: [ace-linux-1]
+execution_workstations: [dev-primary]
 decision: proceed_to_execution
-notes: Route A — single script, hub only, ace-linux-1
+notes: Route A — single script, hub only, dev-primary
 logged_at: 2026-03-09T11:15:00Z

@@ -14,7 +14,7 @@ stages:
   stage: Triage
   status: done
   evidence: .claude/work-queue/done/WRK-1015.md
-  notes: priority=medium, complexity=medium, route=B, computer=ace-linux-1
+  notes: priority=medium, complexity=medium, route=B, computer=dev-primary
 - order: 4
   stage: Plan Draft
   status: done

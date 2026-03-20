@@ -1,7 +1,7 @@
 # WRK-1023 Plan — Per-Provider Model/Effort Summary in Daily Cron
 
 ## Route
-A (simple) — single file change, ace-linux-1 only.
+A (simple) — single file change, dev-primary only.
 
 ## Implementation
 Replace hardcoded "Models in Use" section in `scripts/productivity/sections/ai-usage-summary.sh`

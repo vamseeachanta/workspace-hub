@@ -35,19 +35,19 @@ hook_blocking_patterns:
   - 'https://'
 
 workstations:
-  ace-linux-1:
+  dev-primary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: null
-    report_path: .claude/state/harness-readiness-ace-linux-1.yaml
-  ace-linux-2:
+    report_path: .claude/state/harness-readiness-dev-primary.yaml
+  dev-secondary:
     ws_hub_path: /mnt/workspace-hub
     ssh_target: ace2
-    report_path: .claude/state/harness-readiness-ace-linux-2.yaml
-  acma-ansys05:
+    report_path: .claude/state/harness-readiness-dev-secondary.yaml
+  licensed-win-1:
     ws_hub_path: null
     ssh_target: null
     linux_reachable: false
-    report_path: .claude/state/harness-readiness-acma-ansys05.yaml
+    report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
 
 prerequisites:

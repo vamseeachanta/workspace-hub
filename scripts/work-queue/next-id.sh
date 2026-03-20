@@ -2,9 +2,9 @@
 # next-id.sh - Return the next sequential WRK-NNN ID
 #
 # Machine-partitioned ID ranges (config/work-queue/machine-ranges.yaml):
-#   ace-linux-1        1 – 4999   (default; current IDs ~1114)
-#   acma-ansys05    5000 – 9999   (Windows / orcaflex machine)
-#   ace-linux-2    10000 – 14999  (reserved)
+#   dev-primary        1 – 4999   (default; current IDs ~1114)
+#   licensed-win-1    5000 – 9999   (Windows / orcaflex machine)
+#   dev-secondary    10000 – 14999  (reserved)
 #   gali-linux-compute-1  15000 – 19999  (heavy-compute / HPC)
 #
 # Allocation policy: each machine reads its floor AND ceiling from the config

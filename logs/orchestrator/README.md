@@ -52,6 +52,6 @@ Each machine runs `comprehensive-learning` locally against its own `logs/orchest
 1. **Phase 1** reads `logs/orchestrator/<agent>/` for raw tool-call and review data
 2. **Phases 1–9** produce derived state: `session-signals/`, `candidates/`, `skill-scores.yaml`
 3. **Commit step** pushes derived state to git (hooks bypassed: `git -c core.hooksPath=/dev/null`)
-4. **ace-linux-1 Phase 10a** runs `git pull` to aggregate all machines, writes compilation report
+4. **dev-primary Phase 10a** runs `git pull` to aggregate all machines, writes compilation report
 
 Raw logs in `logs/orchestrator/` are local-only (gitignored). Only derived state crosses machines.

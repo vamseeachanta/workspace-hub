@@ -5,13 +5,13 @@ version: 1.0.0
 description: >
   Convert OrcaFlex .dat binary model files to enriched YAML fixtures using
   worldenergydata public databases (vessel fleet, riser components, pipe schedules).
-  All stages run on acma-ansys05. Output committed to digitalmodel as test fixtures.
+  All stages run on licensed-win-1. Output committed to digitalmodel as test fixtures.
 triggers:
   - "orcaflex dat to yaml"
   - "enrich orcaflex"
   - "extract orcaflex model"
   - "orcaflex pipeline fixtures"
-computer: acma-ansys05
+computer: licensed-win-1
 repos: [workspace-hub, worldenergydata, digitalmodel, client_projects]
 related_wrk: [WRK-589, WRK-593, WRK-594, WRK-595]
 tags: []
@@ -23,7 +23,7 @@ category: data
 Converts binary OrcaFlex `.dat` model files to **enriched, client-clean YAML
 test fixtures** using worldenergydata public databases.
 
-## Pipeline (all on acma-ansys05)
+## Pipeline (all on licensed-win-1)
 
 ```
 Stage 1  Extract    .dat + OrcFxAPI → raw YAML params
@@ -35,7 +35,7 @@ Stage 3  Clean      enriched YAML → strip client names → legal scan → digi
 
 ```cmd
 python scripts\data\orcaflex\dat-to-yaml.py ^
-    --input "\\ace-linux-2\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
+    --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
     --output "client_projects\data\raw\orcaflex-extracted\drilling-riser-development" ^
     --project drilling-riser-development
 ```

@@ -47,9 +47,9 @@ complexity: simple
 created_at: 2026-03-12T10:00:00Z
 target_repos:
   - workspace-hub
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: harness
 subcategory: work-queue
 ---
@@ -92,9 +92,9 @@ complexity: simple
 created_at: 2026-03-12T10:00:00Z
 target_repos:
   - workspace-hub
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: harness
 subcategory: work-queue
 ---
@@ -119,9 +119,9 @@ complexity: medium
 created_at: 2026-03-12T10:00:00Z
 target_repos:
   - workspace-hub
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: harness
 subcategory: work-queue
 ---

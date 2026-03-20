@@ -1,6 +1,6 @@
 wrk_id: WRK-1059
 route: B
-workstation: ace-linux-1
+workstation: dev-primary
 execution_agent: claude
 routing_decision: proceed_to_execute
 routed_at: "2026-03-11T11:00:00Z"

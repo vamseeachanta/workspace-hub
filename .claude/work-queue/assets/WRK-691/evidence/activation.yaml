@@ -1,7 +1,7 @@
 wrk_id: WRK-691
 activated_at: '2026-03-06T08:00:00Z'
 set_active_wrk: true
-session_id: 2026-03-06-ace-linux-1-claude
+session_id: 2026-03-06-dev-primary-claude
 orchestrator_agent: claude
-machine: ace-linux-1
-notes: WRK-691 set as active via set-active-wrk.sh; session initiated on ace-linux-1
+machine: dev-primary
+notes: WRK-691 set as active via set-active-wrk.sh; session initiated on dev-primary

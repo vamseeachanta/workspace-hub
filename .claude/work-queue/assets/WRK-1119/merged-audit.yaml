@@ -118,7 +118,7 @@ suggested_additions:  # 193 patterns
   - prefix: ssh
     count: 394
     suggested_allow_pattern: "Bash(ssh:*)"
-    example_command: "ssh ace-linux-1 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \'---LOG---\' && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1"
+    example_command: "ssh dev-primary 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \'---LOG---\' && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1"
   - prefix: echo
     count: 389
     suggested_allow_pattern: "Bash(echo:*)"
@@ -234,7 +234,7 @@ suggested_additions:  # 193 patterns
   - prefix: crontab
     count: 42
     suggested_allow_pattern: "Bash(crontab:*)"
-    example_command: "crontab -l 2>/dev/null | head -30; echo \'---\'; ssh ace-linux-2 \'echo SSH OK; df -h /mnt/ 2>/dev/null | head -5\' 2>&1 | head -10"
+    example_command: "crontab -l 2>/dev/null | head -30; echo \'---\'; ssh dev-secondary \'echo SSH OK; df -h /mnt/ 2>/dev/null | head -5\' 2>&1 | head -10"
   - prefix: scripts/review/submit-to-codex.sh
     count: 41
     suggested_allow_pattern: "Bash(scripts/review/submit-to-codex.sh:*)"
@@ -666,7 +666,7 @@ suggested_additions:  # 193 patterns
   - prefix: ip
     count: 7
     suggested_allow_pattern: "Bash(ip:*)"
-    example_command: "ip addr show | grep \'inet \' && echo \'---\' && hostname && echo \'---\' && ping -c 2 ace-linux-2 2>&1 | tail -5"
+    example_command: "ip addr show | grep \'inet \' && echo \'---\' && hostname && echo \'---\' && ping -c 2 dev-secondary 2>&1 | tail -5"
   - prefix: apt
     count: 7
     suggested_allow_pattern: "Bash(apt:*)"
@@ -746,7 +746,7 @@ suggested_additions:  # 193 patterns
   - prefix: sshfs
     count: 6
     suggested_allow_pattern: "Bash(sshfs:*)"
-    example_command: "sshfs vamsee@ace-linux-2:/mnt/local-analysis /mnt/remote/ace-linux-2/local-analysis -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 && echo \'local-analysis: OK\' && ls /mnt/remote/ace-linux-2/local-analysis | head -5"
+    example_command: "sshfs vamsee@dev-secondary:/mnt/local-analysis /mnt/remote/dev-secondary/local-analysis -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 && echo \'local-analysis: OK\' && ls /mnt/remote/dev-secondary/local-analysis | head -5"
   - prefix: xrandr
     count: 6
     suggested_allow_pattern: "Bash(xrandr:*)"

@@ -2,7 +2,7 @@
 
 1. `workspace_hub_local` -> `/mnt/local-analysis/workspace-hub`
 2. `ace_project_local` -> `/mnt/ace/docs`
-3. `dde_project_remote` -> `/mnt/remote/ace-linux-2/dde`
+3. `dde_project_remote` -> `/mnt/remote/dev-secondary/dde`
 4. `data/document-index/registry.yaml`
 5. `data/document-index/index.jsonl`
 6. `data/document-index/mounted-source-registry.yaml`

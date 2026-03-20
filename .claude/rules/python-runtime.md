@@ -51,9 +51,9 @@ uv add <package>            # add dep to current project (NOT pip install)
 | `python -m venv .venv && pip install -r ...` | Creates disposable env from scratch every time | Let uv manage the venv |
 | `source .venv/bin/activate` (in scripts) | Shell-state dependency; breaks subshells | `uv run` handles activation per command |
 
-## Exception: acma-ansys05 (Windows)
+## Exception: licensed-win-1 (Windows)
 
-On acma-ansys05, use `uv` via Git Bash. If `uv` is not in PATH:
+On licensed-win-1, use `uv` via Git Bash. If `uv` is not in PATH:
 ```bash
 # Locate uv
 $USERPROFILE/.local/bin/uv run python -m pytest

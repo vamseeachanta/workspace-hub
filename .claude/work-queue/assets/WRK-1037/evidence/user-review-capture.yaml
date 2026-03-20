@@ -3,4 +3,4 @@ reviewed_at: "2026-03-08T21:30:00Z"
 scope_approved: true
 notes: >
   P1-A (uv readiness pre-check) and P1-B (Codex-missing user approval gate)
-  from WRK-1008 Feb-27 Codex review. Simple complexity, ace-linux-1.
+  from WRK-1008 Feb-27 Codex review. Simple complexity, dev-primary.

@@ -1,7 +1,7 @@
 # WRK-1102 Plan: fix(comprehensive-learning) — Repair Modular Chain
 
 **Route**: C | **Priority**: HIGH | **Complexity**: medium
-**Computer**: ace-linux-1 | **Target repo**: workspace-hub
+**Computer**: dev-primary | **Target repo**: workspace-hub
 
 ---
 
@@ -225,4 +225,4 @@ Write each test before the corresponding fix. All tests must pass before marking
 
 - WRK-635 (historical session scanner)
 - Semantic/LLM gap analysis
-- acma-ansys05 Codex ingestion
+- licensed-win-1 Codex ingestion

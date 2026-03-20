@@ -3,9 +3,9 @@ completed_at: "2026-03-08T16:30:00Z"
 route: C
 complexity: complex
 priority: high
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 route_rationale: >
   Route C. 16 deterministic checks (D1-D16) spanning 6 existing scripts +
   2 new scripts (validate-stage-gate-policy.py, stage_exit_checks.py).

@@ -194,10 +194,10 @@ priority: high
 created_at: "2026-03-12T00:00:00Z"
 category: harness
 subcategory: test
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: claude
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 spec_ref: ${TMP3}/specs/wrk/WRK-9030/plan.md
 children: []
 ---

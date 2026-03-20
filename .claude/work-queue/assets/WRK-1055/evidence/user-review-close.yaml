@@ -3,5 +3,5 @@ reviewed_at: 2026-03-09T23:00:00Z
 confirmed_at: 2026-03-09T23:00:00Z
 decision: approved
 notes: >
-  Implementation approved. Semantic Scholar MCP active on ace-linux-1 via .mcp.json.
+  Implementation approved. Semantic Scholar MCP active on dev-primary via .mcp.json.
   Trust assessment complete, SHA pinned. Future work captured in 6 follow-up items.

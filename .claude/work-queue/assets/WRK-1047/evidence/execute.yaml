@@ -12,9 +12,9 @@ phases_completed:
   - phase: B
     description: "Emit host-qualified harness-readiness-<hostname>.yaml YAML report"
     artifacts:
-      - .claude/state/harness-readiness-ace-linux-1.yaml
+      - .claude/state/harness-readiness-dev-primary.yaml
   - phase: C
-    description: "compare-harness-state.sh — SSH diff ace-linux-1 ↔ ace-linux-2; stale acma-ansys05 detection"
+    description: "compare-harness-state.sh — SSH diff dev-primary ↔ dev-secondary; stale licensed-win-1 detection"
     artifacts:
       - scripts/readiness/compare-harness-state.sh
   - phase: D

@@ -10,7 +10,7 @@ gates:
     details: "reviewed=True, approved=True, artifact=workflow-final-review.html, confirmation=confirmed_by=present"
   - name: Workstation contract gate
     ok: true
-    details: "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
+    details: "plan_workstations=dev-primary, execution_workstations=dev-primary"
   - name: Stage evidence gate
     ok: true
     details: "stage-evidence.yaml: stages=20, contract=20-stage"

@@ -7,7 +7,7 @@
 ## Executive Summary
 
 Five compatibility gaps prevent the WRK pipeline from running cleanly on
-Windows MINGW64 (acma-ansys05). This plan fixes the four actionable gaps
+Windows MINGW64 (licensed-win-1). This plan fixes the four actionable gaps
 and documents the one non-issue (sed -i).
 
 ## Triage Findings
@@ -82,8 +82,8 @@ This guards against cp1252 crash when printing box-drawing characters from
 Add callout after "Windows Task Scheduler (contribute-minimal)" heading:
 ```
 > **Note:** Full nightly automation (comprehensive-learning, session-analysis,
-> repository-sync) runs on ace-linux-1 only. Windows machines (ACMA-ANSYS05,
-> acma-ws014) are contribute-minimal — no cron daemon; use Windows Task
+> repository-sync) runs on dev-primary only. Windows machines (licensed-win-1,
+> licensed-win-2) are contribute-minimal — no cron daemon; use Windows Task
 > Scheduler for the two scheduled tasks only.
 ```
 

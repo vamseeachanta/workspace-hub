@@ -26,7 +26,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B, complexity=medium, computer=ace-linux-1.
+  comment: Route B, complexity=medium, computer=dev-primary.
   evidence: .claude/work-queue/done/WRK-1046.md
 - order: 4
   stage: Plan Draft
@@ -74,7 +74,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Routed to ace-linux-1; Route B confirmed.
+  comment: Routed to dev-primary; Route B confirmed.
   evidence: .claude/work-queue/assets/WRK-1046/routing.yaml
 - order: 10
   stage: Work Execution

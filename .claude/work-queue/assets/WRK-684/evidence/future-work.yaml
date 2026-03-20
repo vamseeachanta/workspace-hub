@@ -14,8 +14,8 @@ recommendations:
   - id: FW-2
     title: Add cross-machine sync check before learning-outcomes.sh
     description: |
-      If /today runs on ace-linux-2 or acma-ansys05, learning reports from
-      ace-linux-1 may not be synced. Add a sync check or skip gracefully.
+      If /today runs on dev-secondary or licensed-win-1, learning reports from
+      dev-primary may not be synced. Add a sync check or skip gracefully.
     disposition: existing-updated
     status: captured
     captured: true

@@ -1,13 +1,13 @@
 ---
-title: "ACMA-ANSYS05 Hardware Assessment"
-device: ACMA-ANSYS05
-hostname: ACMA-ANSYS05
+title: "licensed-win-1 Hardware Assessment"
+device: licensed-win-1
+hostname: licensed-win-1
 assessed_date: 2026-02-20
 assessed_by: hardware-assess.ps1 v1.0.0 + manual supplementation
 work_item: WRK-050
 ---
 
-# ACMA-ANSYS05 — Hardware Assessment
+# licensed-win-1 — Hardware Assessment
 
 > Assessed 2026-02-20 using `hardware-assess.ps1 v1.0.0` on Windows 11 Pro
 > **Role**: OrcaFlex / OrcaWave / ANSYS / AQWA licensed engineering simulation server
@@ -84,5 +84,5 @@ work_item: WRK-050
 
 - ASPEED GPU detected by script as only GPU — this is normal for Supermicro server boards; it serves the IPMI/BMC remote console only
 - Firmware 2.5 (2025-02-10) is recent — no immediate update needed
-- Machine name pattern: `ACMA-ANSYS05` confirms ACMA ownership; ANSYS suffix indicates its primary role
-- Raw assessment JSON saved to: `pyproject-starter/hardware-assessment-ACMA-ANSYS05-20260220.json` (to be moved)
+- Machine name pattern: `licensed-win-1` confirms ACMA ownership; ANSYS suffix indicates its primary role
+- Raw assessment JSON saved to: `pyproject-starter/hardware-assessment-licensed-win-1-20260220.json` (to be moved)

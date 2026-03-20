@@ -5,14 +5,14 @@ sources:
   og_standards:
     enabled: true
     db_path: /mnt/ace/O&G-Standards/_inventory.db
-    host: ace-linux-1
+    host: dev-primary
     source_type: og_standards
 
   ace_standards:
     enabled: true
     paths:
       - /mnt/ace/docs/_standards
-    host: ace-linux-1
+    host: dev-primary
     source_type: ace_standards
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
 
@@ -24,7 +24,7 @@ sources:
       - /mnt/ace/_ss_repo
       - /mnt/ace/Production
       - /mnt/ace/umbilical
-    host: ace-linux-1
+    host: dev-primary
     source_type: ace_project
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf,
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
@@ -32,16 +32,16 @@ sources:
   dde_project:
     enabled: true
     paths:
-      - /mnt/remote/ace-linux-2/dde/documents
-      - /mnt/remote/ace-linux-2/dde/0000 O&G
-      - /mnt/remote/ace-linux-2/dde/Literature
-      - /mnt/remote/ace-linux-2/dde/Orcaflex
-      - /mnt/remote/ace-linux-2/dde/ABSG
-      - /mnt/remote/ace-linux-2/dde/g-drive
-      - /mnt/remote/ace-linux-2/dde/o-drive
-      - /mnt/remote/ace-linux-2/dde/dropbox_contents
-      - "/mnt/remote/ace-linux-2/dde/Temp - Oil&Gas"
-    host: ace-linux-2
+      - /mnt/remote/dev-secondary/dde/documents
+      - /mnt/remote/dev-secondary/dde/0000 O&G
+      - /mnt/remote/dev-secondary/dde/Literature
+      - /mnt/remote/dev-secondary/dde/Orcaflex
+      - /mnt/remote/dev-secondary/dde/ABSG
+      - /mnt/remote/dev-secondary/dde/g-drive
+      - /mnt/remote/dev-secondary/dde/o-drive
+      - /mnt/remote/dev-secondary/dde/dropbox_contents
+      - "/mnt/remote/dev-secondary/dde/Temp - Oil&Gas"
+    host: dev-secondary
     source_type: dde_project
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
@@ -50,7 +50,7 @@ sources:
     enabled: true
     paths:
       - /mnt/local-analysis/workspace-hub/specs
-    host: ace-linux-1
+    host: dev-primary
     source_type: workspace_spec
     extensions: [.md, .yaml, .yml]
 

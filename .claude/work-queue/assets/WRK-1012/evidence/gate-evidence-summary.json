@@ -15,7 +15,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05]"
+      "details": "plan_workstations=[dev-primary], execution_workstations=[dev-primary, dev-secondary, licensed-win-1]"
     },
     {
       "name": "Resource-intelligence gate",

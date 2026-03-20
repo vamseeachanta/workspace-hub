@@ -2,7 +2,7 @@ wrk_id: WRK-1174
 stage: 10
 executed_at: 2026-03-14T12:00:00Z
 orchestrator: claude
-computer: ace-linux-1
+computer: dev-primary
 deliverables:
   - file: scripts/work-queue/set-active-wrk.sh
     action: enhanced

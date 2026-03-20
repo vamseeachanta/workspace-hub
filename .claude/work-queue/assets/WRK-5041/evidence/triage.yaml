@@ -8,4 +8,4 @@ complexity: medium
 category: document-intelligence
 subcategory: internet-extraction
 target_repos: [workspace-hub]
-computer: ace-linux-1
+computer: dev-primary

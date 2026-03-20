@@ -21,8 +21,8 @@ gate_evidence:
       decision: passed
       notes: Plan accepted — 3-phase implementation correct. Validator extension minimal and targeted.
     workstation_validation:
-      plan_workstations: [ace-linux-1]
-      execution_workstations: [ace-linux-1]
+      plan_workstations: [dev-primary]
+      execution_workstations: [dev-primary]
       validated: true
     notes: Route C inline plan; Phase 1/2/3 completed in session.
 

@@ -108,12 +108,12 @@ samples:
   domain: marine
   repos:
   - digitalmodel
-- path: /remote/ace-linux-2/dde/documents/ri/b-   All AutoCad Dwgs/Copy of Clip Riser
+- path: /remote/dev-secondary/dde/documents/ri/b-   All AutoCad Dwgs/Copy of Clip Riser
     Dwg -4   1-20-2011.DWG
   domain: marine
   repos:
   - digitalmodel
-- path: emote/ace-linux-2/dde/0000 O&G/2H Projects/Training/New Hire Training brainstorm
+- path: emote/dev-secondary/dde/0000 O&G/2H Projects/Training/New Hire Training brainstorm
     (JAM Comments).docx
   domain: marine
   repos:
@@ -129,7 +129,7 @@ samples:
   repos:
   - digitalmodel
   - OGManufacturing
-- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/ASTM/BS/E/E1134.PDF
+- path: /mnt/remote/dev-secondary/dde/0000 O&G/0000 Codes & Standards/ASTM/BS/E/E1134.PDF
   domain: materials
   repos:
   - digitalmodel
@@ -171,7 +171,7 @@ samples:
   domain: naval-architecture
   repos:
   - digitalmodel
-- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/A
+- path: /mnt/remote/dev-secondary/dde/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/A
     275-98.pdf
   domain: pipeline
   repos:
@@ -225,7 +225,7 @@ samples:
   domain: regulatory
   repos:
   - digitalmodel
-- path: te/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/IEC/IEC 60038 6th Ed (1983)
+- path: te/dev-secondary/dde/0000 O&G/0000 Codes & Standards/IEC/IEC 60038 6th Ed (1983)
     Standard Voltages.pdf
   domain: regulatory
   repos:

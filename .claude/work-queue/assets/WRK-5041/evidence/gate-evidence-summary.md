@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Stage evidence gate | FAIL | stage-evidence.yaml: missing stage orders [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] |
 | Resource-intelligence gate | FAIL | resource-intelligence.yaml: invalid completion_status |
 | Activation gate | FAIL | activation.yaml: orchestrator_agent missing |

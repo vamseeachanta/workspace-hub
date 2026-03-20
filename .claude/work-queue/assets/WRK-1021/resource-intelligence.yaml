@@ -12,7 +12,7 @@ skills:
 # ── Actual cron jobs per machine ────────────────────────────────────────────
 
 machines:
-  ace-linux-1:
+  dev-primary:
     variant: full
     actual_jobs:
       - schedule: "0 2 * * *"
@@ -49,7 +49,7 @@ machines:
         matches_template: false
         note: not in crontab-template.sh at all
 
-  ace-linux-2:
+  dev-secondary:
     variant: contribute
     actual_jobs:
       - schedule: "0 3 * * *"
@@ -69,15 +69,15 @@ machines:
         command: bash /mnt/workspace-hub/scripts/maintenance/ai-tools-status.sh --quiet
         label: ai-tools-status
         expected_by_template: false
-      # NOTE: repo-sync (0 */4 * * *) is MISSING from ace-linux-2 actual crontab
+      # NOTE: repo-sync (0 */4 * * *) is MISSING from dev-secondary actual crontab
       # despite being the only expected job for 'contribute' variant
 
-  acma-ansys05:
+  licensed-win-1:
     variant: contribute-minimal
     actual_jobs: unknown  # cannot SSH; Windows Task Scheduler not inspectable remotely
     note: requires manual audit on the machine
 
-  acma-ws014:
+  licensed-win-2:
     variant: contribute-minimal
     actual_jobs: unknown  # cannot SSH; Windows Task Scheduler not inspectable remotely
     note: requires manual audit on the machine
@@ -94,15 +94,15 @@ gaps:
     - scripts/cron/update-model-ids.sh          # referenced in template, doesn't exist
     - scripts/cron/skills-curation.sh           # referenced in template, doesn't exist
 
-  ace_linux_1_extra_jobs_not_in_template:
+  dev_primary_extra_jobs_not_in_template:
     - ai-tools-status (hourly)
 
-  ace_linux_2_missing_from_actual:
+  dev_secondary_missing_from_actual:
     - repository-sync (0 */4 * * *) -- the ONE job the template expects is absent
 
-  ace_linux_2_has_jobs_beyond_contribute_role:
+  dev_secondary_has_jobs_beyond_contribute_role:
     - session-analysis, model-ids, skills-curation, ai-tools-status
-    - These match ace-linux-1's job set minus comprehensive-learning
+    - These match dev-primary's job set minus comprehensive-learning
 
   crontab_template_outdated:
     - setup-cron.sh uses hardcoded ENTRIES arrays

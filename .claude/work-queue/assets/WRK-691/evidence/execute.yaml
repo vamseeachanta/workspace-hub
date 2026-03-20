@@ -1,7 +1,7 @@
 wrk_id: WRK-691
 executed_at: '2026-03-06T12:00:00Z'
 executor: claude
-machine: ace-linux-1
+machine: dev-primary
 deliverables:
   - file: .claude/skills/workspace-hub/session-start/SKILL.md
     action: EDIT

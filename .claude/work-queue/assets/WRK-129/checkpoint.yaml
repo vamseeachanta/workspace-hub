@@ -13,12 +13,12 @@ context_summary:
   - "Spec v1.4 approved (2026-02-21) — authoritative source: specs/modules/wrk-129-orcaflex-analysis-reporting.md"
   - "Planning complete: 17-section HTML report, subsection anchor map, 5 structure-type worked examples"
   - "Phase 1 (models) is next — OrcFxAPI-free Pydantic v2 models; data via model_validate(dict)"
-  - "Phase 4 (OrcFxAPI extractors) deferred to follow-on WRK — needs acma-ansys05 for OrcFxAPI"
+  - "Phase 4 (OrcFxAPI extractors) deferred to follow-on WRK — needs licensed-win-1 for OrcFxAPI"
   - "Key patterns: reuse hydrodynamics/diffraction/report_generator.py and mooring_analysis/comprehensive_analysis/models.py"
-  - "Execution machine: acma-ansys05 (OrcaFlex license)"
+  - "Execution machine: licensed-win-1 (OrcaFlex license)"
 decisions_this_session:
   - "percent_complete corrected from 100 to 25 (planning done, no code written)"
-  - "execution_workstations updated to acma-ansys05"
+  - "execution_workstations updated to licensed-win-1"
 artifacts_written: []
 entry_reads:
   - specs/modules/wrk-129-orcaflex-analysis-reporting.md

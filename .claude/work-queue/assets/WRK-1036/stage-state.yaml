@@ -12,7 +12,7 @@ stage_2:
 stage_3:
   status: done
   completed_at: 2026-03-08T00:06:00Z
-  note: Triage fields set — route B, orchestrator claude, workstations ace-linux-1
+  note: Triage fields set — route B, orchestrator claude, workstations dev-primary
   exit_stage_note: exit_stage.py pending/ path resolution bug (known); fields verified manually
 stage_4:
   status: done
@@ -45,7 +45,7 @@ stage_8:
 stage_9:
   status: done
   completed_at: 2026-03-08T01:15:00Z
-  note: Routing — Route B claude orchestrator, ace-linux-1
+  note: Routing — Route B claude orchestrator, dev-primary
 stage_10:
   status: done
   completed_at: 2026-03-08T02:00:00Z

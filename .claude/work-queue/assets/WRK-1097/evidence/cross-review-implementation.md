@@ -3,7 +3,7 @@
 ## Codex Verdict: MAJOR (findings fixed)
 - MAJOR: start_stage.py guard checked pending/ only → fixed to check working/ exists
   → Now catches blocked/, done/, and any other non-working/ location
-- MINOR: date -d portability (GNU-only) → this workspace is Linux-only (ace-linux-1/ace-linux-2)
+- MINOR: date -d portability (GNU-only) → this workspace is Linux-only (dev-primary/dev-secondary)
   but added future-date skew guard for robustness
 
 ## Gemini Verdict: MAJOR (findings fixed)  

@@ -8,7 +8,7 @@
 - `reviewed_at`: 2026-03-02T14:45:00Z
 - `notes`: Meta gate run plan accepted after Claude inline review (MINOR resolved) and Gemini cross-review.
   Plan structure (Phase 1: Prepare, Phase 2: Orchestrate, Phase 3: Validate) is sound.
-  Codex NO_OUTPUT documented and accepted per SKILL.md policy (ace-linux-1 constraint).
+  Codex NO_OUTPUT documented and accepted per SKILL.md policy (dev-primary constraint).
   All three phases have clear artifact outputs and acceptance criteria.
 
 ## Human Review Gaps

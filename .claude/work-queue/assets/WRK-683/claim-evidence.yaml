@@ -15,5 +15,5 @@ gate_evidence:
     - session-logger.sh JSON encoding bug fixed (unescaped quotes in cmd field)
     - 82/107 pre-fix entries valid; all new entries valid after fix
   log_verification:
-    - logs/orchestrator/claude/session_20260302.jsonl confirmed present on ace-linux-1
+    - logs/orchestrator/claude/session_20260302.jsonl confirmed present on dev-primary
     - 107 entries written during session; valid JSON confirmed via python3 json.loads

@@ -81,7 +81,7 @@ If a signal is absent for a check, skip the check and log
 
 ---
 
-### Phase 1b — Drift Detection  *(non-mandatory, ace-linux-1 only)*
+### Phase 1b — Drift Detection  *(non-mandatory, dev-primary only)*
 
 After Phase 1 completes, run `scripts/session/detect-drift.sh` against the previous
 day's session log to detect rule violations from the prior session.
@@ -446,7 +446,7 @@ title: "docs(<repo>): promote memory § <section> → <destination-class>"
 status: pending
 priority: low
 source: comprehensive-learning/phase-7
-computer: ace-linux-1
+computer: dev-primary
 ---
 ## Context
 Auto-created from memory-promotion-candidates.md.
@@ -473,7 +473,7 @@ Repo: <target repo>
   suggest a missing script; failed patterns suggest missing validation hooks
 - `.claude/state/cc-insights/*.json` (tool_usage) — surface unreached capabilities
 - Tool call sequences repeating across sessions (Read→Edit→Bash) → scriptable workflow
-- Contributions from other machines (committed by ace-linux-2, acma-ansys05, etc.)
+- Contributions from other machines (committed by dev-secondary, licensed-win-1, etc.)
 
 **Code quality signal scan (test · lint · architecture · refactor):**
 
@@ -507,7 +507,7 @@ will make this richer over time.
   fails (PyYAML not installed), log "WARNING: yaml validation skipped — install
   python3-yaml" and continue without validation rather than blocking the pipeline.
 
-**Cron preflight (ace-linux-1):** Before the first cron run, verify the dependency:
+**Cron preflight (dev-primary):** Before the first cron run, verify the dependency:
 ```bash
 python3 -c "import yaml" || { echo "ERROR: install python3-yaml before scheduling cron"; exit 1; }
 ```
@@ -612,7 +612,7 @@ Run trigger: only if `$(date +%u)` == 7 (Sunday) or explicit invocation.
 
 ### Inter-phase: Commit Derived State  *(all modes — runs after Phase 9)*
 
-Commit derived state so ace-linux-1 can pull it in Phase 10a:
+Commit derived state so dev-primary can pull it in Phase 10a:
 
 ```bash
 WS_HUB="$(git rev-parse --show-toplevel)"
@@ -627,11 +627,11 @@ git -C "${WS_HUB}" -c core.hooksPath=/dev/null \
   --allow-empty 2>/dev/null || true
 ```
 
-`contribute` machines stop here. `full` mode (ace-linux-1) continues to Phase 10a.
+`contribute` machines stop here. `full` mode (dev-primary) continues to Phase 10a.
 
 ---
 
-### Phase 10a — Cross-Machine Compilation  *(full mode / ace-linux-1 only)*
+### Phase 10a — Cross-Machine Compilation  *(full mode / dev-primary only)*
 
 Skip if `CL_MODE != "full"` — log `"Phase 10a: SKIPPED (mode=${CL_MODE})"` and continue.
 
@@ -685,7 +685,7 @@ Improvement Trends:
 - [Hook Candidate] <name>: <count> occurrences
 - [Agent Candidate] <name>: <count> occurrences
 
-Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
+Machine: dev-primary | Sources: dev-primary + <N other machines via git>
 ```
 
 **Exit codes:** 0 = all mandatory phases pass; 1 = fatal failure in mandatory phase.
@@ -706,19 +706,19 @@ git pull --no-rebase origin main
 # Step 2: rsync raw sessions — best-effort, each independently
 rsync -az --no-delete --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-  ace-linux-2:.claude/state/sessions/ \
-  .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true
+  dev-secondary:.claude/state/sessions/ \
+  .claude/state/sessions-archive/dev-secondary/ 2>/dev/null || true
 
 rsync -az --no-delete --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-  ACMA-ANSYS05:.claude/state/sessions/ \
-  .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true
+  licensed-win-1:.claude/state/sessions/ \
+  .claude/state/sessions-archive/licensed-win-1/ 2>/dev/null || true
 
 # Step 3: run pipeline
 exec claude --skill comprehensive-learning
 ```
 
-Crontab entry (ace-linux-1):
+Crontab entry (dev-primary):
 ```bash
 0 22 * * * cd /mnt/local-analysis/workspace-hub && bash scripts/cron/comprehensive-learning-nightly.sh \
   >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
@@ -731,7 +731,7 @@ SSH key auth required (see **Session Archive** setup below).
 
 ## Other Machines — End-of-Session Commit
 
-On ace-linux-2, acma-ansys05, acma-ws014 — run at session end:
+On dev-secondary, licensed-win-1, licensed-win-2 — run at session end:
 
 ```bash
 cd /path/to/workspace-hub
@@ -747,17 +747,17 @@ git pull --rebase origin main && git push origin main || {
   git pull --rebase origin main && git push origin main
 }
 
-# 2. Raw sessions are pulled by ace-linux-1 nightly via rsync (no action needed here)
-#    ace-linux-1 rsync: ace-linux-2:.claude/state/sessions/ → sessions-archive/ace-linux-2/
+# 2. Raw sessions are pulled by dev-primary nightly via rsync (no action needed here)
+#    dev-primary rsync: dev-secondary:.claude/state/sessions/ → sessions-archive/dev-secondary/
 ```
 
 **On push conflict:** If `git pull --rebase` produces a conflict in a state file,
 prefer the incoming version from origin/main (`git checkout --ours <file> && git add <file>`)
-since ace-linux-1 is the authoritative analysis machine. Note: in `git rebase` context,
+since dev-primary is the authoritative analysis machine. Note: in `git rebase` context,
 `--ours` = the base branch (origin/main) and `--theirs` = your replayed local commits —
 the opposite of merge semantics. Then `git rebase --continue`.
 
-This is what acma-ansys05 contributes instead of running the full pipeline locally.
+This is what licensed-win-1 contributes instead of running the full pipeline locally.
 
 ## Integration with post-task-review.sh
 
@@ -765,18 +765,18 @@ This is what acma-ansys05 contributes instead of running the full pipeline local
 → Run /comprehensive-learning post-session to process learnings.
 ```
 
-## Session Archive (ace-linux-1 local — not git)
+## Session Archive (dev-primary local — not git)
 
-Raw session transcripts are centralised on ace-linux-1 via rsync. They are never
-committed to git — too large and binary-noisy. The 7.3 TB HDD on ace-linux-1 is
+Raw session transcripts are centralised on dev-primary via rsync. They are never
+committed to git — too large and binary-noisy. The 7.3 TB HDD on dev-primary is
 the long-term store.
 
 ```
 .claude/state/sessions-archive/
-  ace-linux-1/      # local sessions (symlink or copy of .claude/state/sessions/)
-  ace-linux-2/      # rsync'd nightly by ace-linux-1 cron
-  acma-ansys05/     # rsync'd when reachable
-  acma-ws014/       # rsync'd when reachable
+  dev-primary/      # local sessions (symlink or copy of .claude/state/sessions/)
+  dev-secondary/      # rsync'd nightly by dev-primary cron
+  licensed-win-1/     # rsync'd when reachable
+  licensed-win-2/       # rsync'd when reachable
 ```
 
 **Why keep raw sessions:** As agent capabilities improve, re-running analysis on
@@ -784,19 +784,19 @@ full decision traces (tool-call sequences, abandoned paths, correction events)
 surfaces signals that derived files lose. Back-analysis on the archive unlocks this
 retroactively — data collected today becomes more valuable over time.
 
-**Setup (once, on ace-linux-1):**
+**Setup (once, on dev-primary):**
 
-For ace-linux-1 to `rsync` FROM contributor machines, ace-linux-1's SSH public key
+For dev-primary to `rsync` FROM contributor machines, dev-primary's SSH public key
 must be authorised on each contributor:
 
 ```bash
-# Run on ace-linux-1 — push its public key to each contributor host
-ssh-copy-id <user>@ace-linux-2      # authorize ace-linux-1 on ace-linux-2
-ssh-copy-id <user>@ACMA-ANSYS05     # authorize ace-linux-1 on acma-ansys05
-# Test: ssh ace-linux-2 "ls ~/.claude/state/sessions/" should succeed without password
+# Run on dev-primary — push its public key to each contributor host
+ssh-copy-id <user>@dev-secondary      # authorize dev-primary on dev-secondary
+ssh-copy-id <user>@licensed-win-1     # authorize dev-primary on licensed-win-1
+# Test: ssh dev-secondary "ls ~/.claude/state/sessions/" should succeed without password
 ```
 
-**Retention:** no automated purge policy — ace-linux-1 HDD capacity governs.
+**Retention:** no automated purge policy — dev-primary HDD capacity governs.
 Review annually; oldest sessions can be compressed (`gzip *.jsonl`) if space tightens.
 
 ## State Files Committed to Git
@@ -817,7 +817,7 @@ Gitignore exceptions in `.gitignore` (all under `.claude/state/`):
 | `cc-user-insights.yaml` | ~4 KB | Feeds Phase 4 |
 
 Not committed: `sessions/` (13 MB), `archive/` (29 MB), `session-reports/` (5.2 MB),
-`sessions-archive/` (grows unbounded) — raw data stays local on ace-linux-1 HDD.
+`sessions-archive/` (grows unbounded) — raw data stays local on dev-primary HDD.
 
 
 ## Planning Quality Loop

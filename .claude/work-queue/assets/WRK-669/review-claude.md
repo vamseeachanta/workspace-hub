@@ -13,8 +13,8 @@ verdict: MINOR
 ### Approved Aspects
 - Three-phase plan (Prepare → Run → Validate) is clear, executable, and maps directly to acceptance criteria
 - Stage log format matches WRK-657/WRK-659 precedent exactly (timestamp, wrk_id, stage, action, provider, notes)
-- Codex NO_OUTPUT justified — ace-linux-1 ai-agent-versions.yaml confirms Codex not installed; per SKILL.md NO_OUTPUT policy this is acceptable
-- Workstation contract satisfied: plan_workstations and execution_workstations both set to [ace-linux-1] in frontmatter
+- Codex NO_OUTPUT justified — dev-primary ai-agent-versions.yaml confirms Codex not installed; per SKILL.md NO_OUTPUT policy this is acceptable
+- Workstation contract satisfied: plan_workstations and execution_workstations both set to [dev-primary] in frontmatter
 - TDD gate: `variation-test-results.md` documents 4 verifier smoke checks — appropriate for a meta/documentation item
 - Legal scan scope (workspace-hub scripts only; no third-party code) is correct for this item type
 - Summary HTML includes human confirmation button, consistent with WRK-659 pattern

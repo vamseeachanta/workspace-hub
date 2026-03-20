@@ -3,6 +3,6 @@ stage: 8
 stage_name: Claim / Activation
 claimed_at: "2026-03-10T08:00:00Z"
 orchestrator_agent: claude
-computer: ace-linux-1
+computer: dev-primary
 route: B
 notes: Claimed in interactive session at user instruction. No concurrent collision detected.

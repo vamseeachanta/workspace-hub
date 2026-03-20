@@ -5,7 +5,7 @@
 #   scripts/session/refresh-context.sh [--wrk WRK-NNN] [--auto] [--idle-timeout SECS]
 #
 # Options:
-#   --wrk WRK-NNN        Target a specific WRK item (default: all with computer=ace-linux-1)
+#   --wrk WRK-NNN        Target a specific WRK item (default: all with computer=dev-primary)
 #   --auto               Relaunch Claude Code after writing state
 #   --idle-timeout SECS  Trigger only if no git activity for N seconds (0 = always run)
 #   --turns N            Simulate N turns elapsed for testing (overrides detection)
@@ -143,7 +143,7 @@ find_active_wrk_items() {
         while IFS= read -r f; do
             [[ -f "$f" ]] || continue
             # Filter by computer assignment
-            if grep -qE "^computer:[[:space:]]*ace-linux-1" "$f" 2>/dev/null; then
+            if grep -qE "^computer:[[:space:]]*dev-primary" "$f" 2>/dev/null; then
                 results+=("$f")
             fi
         done < <(find "$dir" -name "WRK-*.md" | sort)
@@ -372,7 +372,7 @@ main() {
     fi
 
     if [[ "${#wrk_files[@]}" -eq 0 ]]; then
-        log "No active WRK items found assigned to ace-linux-1. Nothing to persist."
+        log "No active WRK items found assigned to dev-primary. Nothing to persist."
         exit 0
     fi
 

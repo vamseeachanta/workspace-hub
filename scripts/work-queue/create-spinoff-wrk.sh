@@ -16,7 +16,7 @@ SCRIPTS_DIR="${WORKSPACE_ROOT}/scripts/work-queue"
 SOURCE_WRK="${1:-}"
 BLOCKER_DESC="${2:-}"
 OWNER="claude"
-WORKSTATION="ace-linux-1"
+WORKSTATION="dev-primary"
 
 if [[ -z "$SOURCE_WRK" || -z "$BLOCKER_DESC" ]]; then
   echo "Usage: $0 <source-WRK> <blocker-description> [--owner <provider>] [--workstation <machine>]" >&2
@@ -27,7 +27,7 @@ shift 2
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --owner)      OWNER="${2:-claude}";         shift 2 ;;
-    --workstation) WORKSTATION="${2:-ace-linux-1}"; shift 2 ;;
+    --workstation) WORKSTATION="${2:-dev-primary}"; shift 2 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done

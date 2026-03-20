@@ -26,7 +26,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B, medium complexity, ace-linux-1 set.
+  comment: Route B, medium complexity, dev-primary set.
   evidence: .claude/work-queue/pending/WRK-1156.md
 - order: 4
   stage: Plan Draft

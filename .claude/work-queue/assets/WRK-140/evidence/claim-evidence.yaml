@@ -8,7 +8,7 @@ metadata_version: "1"
 session_owner: "codex"
 agent_fit:
   capability_match: "matched"
-  rationale: "Route B / execution_workstations=[ace-linux-2] / provider=codex"
+  rationale: "Route B / execution_workstations=[dev-secondary] / provider=codex"
 blocking_state:
   blocked: false
   blocked_by: []

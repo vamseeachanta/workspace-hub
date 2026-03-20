@@ -2,7 +2,7 @@
 
 ## Context
 
-ace-linux-2 now has a full engineering + GIS suite installed (Blender 5.0.1 snap, QGIS 3.40.15, Google Earth Pro, Gmsh, ParaView, OpenFOAM, FreeCAD, meshio, PyFoam). The user wants a weekly cron job that keeps all these programs updated to their latest stable versions automatically.
+dev-secondary now has a full engineering + GIS suite installed (Blender 5.0.1 snap, QGIS 3.40.15, Google Earth Pro, Gmsh, ParaView, OpenFOAM, FreeCAD, meshio, PyFoam). The user wants a weekly cron job that keeps all these programs updated to their latest stable versions automatically.
 
 ## Approach
 
@@ -38,7 +38,7 @@ Cron installer following exact pattern of `scripts/operations/maintenance/setup_
 
 ### Cron Installation
 
-After creating both scripts, install the cron job on ace-linux-2 (user runs `sudo` commands).
+After creating both scripts, install the cron job on dev-secondary (user runs `sudo` commands).
 
 ## Critical Files
 

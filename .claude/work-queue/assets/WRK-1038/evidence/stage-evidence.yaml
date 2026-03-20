@@ -22,7 +22,7 @@ stages:
   - stage: 3
     name: Triage
     status: done
-    notes: "Route A (simple). Single-question investigation, one skill update, ace-linux-1 only."
+    notes: "Route A (simple). Single-question investigation, one skill update, dev-primary only."
 
   - stage: 4
     name: Plan Draft

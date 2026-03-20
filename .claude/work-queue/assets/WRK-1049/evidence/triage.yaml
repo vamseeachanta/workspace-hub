@@ -3,8 +3,8 @@ route: B
 priority: high
 complexity: simple
 workstations:
-  plan: [ace-linux-1]
-  execution: [ace-linux-1]
+  plan: [dev-primary]
+  execution: [dev-primary]
 category: harness
 subcategory: work-queue
 notes: >

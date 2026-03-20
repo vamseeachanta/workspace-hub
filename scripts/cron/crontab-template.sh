@@ -10,15 +10,15 @@
 #   bash scripts/cron/setup-cron.sh --dry-run     # preview without changes
 #
 # MACHINE ROLES:
-#   full              ace-linux-1  — nightly pipeline + all maintenance
-#   contribute        ace-linux-2  — repo sync only
-#   contribute-minimal ACMA-ANSYS05 / acma-ws014  — Windows Task Scheduler
+#   full              dev-primary  — nightly pipeline + all maintenance
+#   contribute        dev-secondary  — repo sync only
+#   contribute-minimal licensed-win-1 / licensed-win-2  — Windows Task Scheduler
 #
 # FORMAT:  # ROLE: <role>
 #          <cron-schedule>  <command>
 # ─────────────────────────────────────────────────────────────────────────────
 
-# ── ROLE: full (ace-linux-1) ──────────────────────────────────────────────────
+# ── ROLE: full (dev-primary) ──────────────────────────────────────────────────
 
 # Nightly dependency health check (WRK-1090); checks uv.lock freshness, outdated
 # packages, CVE advisories across 5 repos; auto-captures WRK on HIGH/CRITICAL CVEs.
@@ -58,12 +58,12 @@
 # Repository sync every 4 hours; pulls from remotes, pushes derived state.
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 
-# ── ROLE: contribute (ace-linux-2) ───────────────────────────────────────────
+# ── ROLE: contribute (dev-secondary) ───────────────────────────────────────────
 
 # Repository sync every 4 hours; log to /tmp (no persistent .claude/state here).
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> /tmp/workspace-hub-cron.log 2>&1
 
-# ── ROLE: contribute-minimal (Windows / ACMA-ANSYS05, acma-ws014) ────────────
+# ── ROLE: contribute-minimal (Windows / licensed-win-1, licensed-win-2) ────────────
 # Windows does not support cron.  Use Task Scheduler instead:
 #
 #   Task 1 — Repository Sync (every 4 hours)
@@ -78,4 +78,4 @@
 #
 # For WSL, replace paths with WSL mount points (/mnt/d/...).
 # For cross-network sync, ensure Tailscale is running and SSH key is authorised
-# on ace-linux-1 (see .claude/docs/new-machine-setup.md § SSH Setup).
+# on dev-primary (see .claude/docs/new-machine-setup.md § SSH Setup).

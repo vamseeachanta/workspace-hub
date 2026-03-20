@@ -26,7 +26,7 @@ stages:
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
-  comment: Route A, priority=high, complexity=simple, workstations=ace-linux-1.
+  comment: Route A, priority=high, complexity=simple, workstations=dev-primary.
   evidence: .claude/work-queue/pending/WRK-1138.md
 - order: 4
   stage: Plan Draft (Ideation)
@@ -66,7 +66,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Claimed by claude on ace-linux-1.
+  comment: Claimed by claude on dev-primary.
   evidence: .claude/work-queue/assets/WRK-1138/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing
@@ -74,7 +74,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Routed to ace-linux-1; Route A execution path.
+  comment: Routed to dev-primary; Route A execution path.
   evidence: .claude/work-queue/logs/WRK-1138-routing.log
 - order: 10
   stage: Work Execution

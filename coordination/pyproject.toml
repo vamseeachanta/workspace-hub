@@ -9,7 +9,7 @@ description = "Coordination system for multi-agent task management"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-    {name = "Vamsee Achanta", email = "vamsee.achanta@aceengineer.com"}
+    {name = "Vamsee Achanta", email = "devuser@aceengineer.com"}
 ]
 license = {text = "MIT"}
 classifiers = [

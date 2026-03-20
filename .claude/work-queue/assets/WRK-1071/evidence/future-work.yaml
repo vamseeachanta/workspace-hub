@@ -23,7 +23,7 @@ recommendations:
   - id: FW-3
     title: Nightly cron integration test — verify cron entry works end-to-end
     description: >
-      Install cron entry from crontab-template.sh on ace-linux-1 and verify
+      Install cron entry from crontab-template.sh on dev-primary and verify
       the nightly run produces logs in logs/quality/benchmark-*.log.
     disposition: existing-updated
     status: captured

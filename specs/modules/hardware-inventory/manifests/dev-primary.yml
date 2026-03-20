@@ -1,4 +1,4 @@
-hostname: ace-linux-1
+hostname: dev-primary
 alias: eng-primary
 os: ubuntu
 os_version: "24.04"

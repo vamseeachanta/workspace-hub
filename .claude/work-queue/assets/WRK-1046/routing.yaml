@@ -2,6 +2,6 @@ wrk_id: WRK-1046
 routed_at: 2026-03-08T19:46:00Z
 route: B
 orchestrator: claude
-workstations: [ace-linux-1]
+workstations: [dev-primary]
 skill_entry: workspace-hub/work-queue-workflow
 log_action: work_queue_skill

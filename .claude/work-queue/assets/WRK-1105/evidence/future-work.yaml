@@ -25,10 +25,10 @@ recommendations:
     priority: low
 
   - id: FW-3
-    title: "Cross-machine knowledge-base sync (ace-linux-2)"
+    title: "Cross-machine knowledge-base sync (dev-secondary)"
     description: >
-      knowledge-base/ is currently ace-linux-1 only. Add rsync-based sync
-      script to replicate to ace-linux-2 nightly. Out of scope for WRK-1105.
+      knowledge-base/ is currently dev-primary only. Add rsync-based sync
+      script to replicate to dev-secondary nightly. Out of scope for WRK-1105.
     disposition: spun-off-new
     status: captured
     captured: true

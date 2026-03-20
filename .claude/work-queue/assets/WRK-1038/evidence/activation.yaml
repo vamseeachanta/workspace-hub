@@ -4,6 +4,6 @@ orchestrator_agent: claude-sonnet-4-6
 activated_at: "2026-03-08T06:00:00Z"
 provider: claude
 route: A
-workstation: ace-linux-1
+workstation: dev-primary
 claim_type: retroactive
 notes: "Ad-hoc work captured retroactively. Claude is orchestrator for this session."

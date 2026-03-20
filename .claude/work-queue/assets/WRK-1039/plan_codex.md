@@ -12,7 +12,7 @@ Concur with Claude. Gap 1-14 detection layer complete. Three distinct remaining 
 3. AC3 sweep: systematic run with exit-code table. Mark expected exit codes before running.
 
 ## Tests
-- T31: unit test with list-style `plan_workstations:\n  - ace-linux-1` — details must show "ace-linux-1"
+- T31: unit test with list-style `plan_workstations:\n  - dev-primary` — details must show "dev-primary"
 - T32: unit test mocking Stage 1 contract against a tmp pending/ file
 - AC3 matrix documented in evidence/ac3-verification.md
 

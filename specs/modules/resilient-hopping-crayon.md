@@ -9,7 +9,7 @@ is incomplete — it misses many commands used in practice (e.g., `uv`, `bash`, 
 The goal is to make the allow list comprehensive enough that the bypass flag can be removed, giving
 least-privilege security that travels with the repo to every workstation.
 
-**Data available:** 2,231 session JSONL files (2.2 GB) at `~/.claude/projects/` on ace-linux-1,
+**Data available:** 2,231 session JSONL files (2.2 GB) at `~/.claude/projects/` on dev-primary,
 each recording every Bash tool call in `message.content[].input.command`.
 
 ---
@@ -34,21 +34,21 @@ Write `tests/permissions/test_audit_bash_commands.py` first (≥3 tests), then i
 3. `test_suggest_allow_pattern` — `git diff` → `Bash(git diff:*)`, `ls` → `Bash(ls:*)`, `pwd` → `Bash(pwd)`
 4. `test_end_to_end_audit` — run on a temp dir with two synthetic sessions, assert output YAML has correct top entries
 
-### Phase 2 — Run Audit on ace-linux-1
+### Phase 2 — Run Audit on dev-primary
 
 ```bash
 uv run --no-project python scripts/permissions/audit-bash-commands.py \
   --sessions-dir ~/.claude/projects/-mnt-local-analysis-workspace-hub \
-  --output .claude/work-queue/assets/WRK-1119/audit-ace-linux-1.yaml
+  --output .claude/work-queue/assets/WRK-1119/audit-dev-primary.yaml
 ```
 
-### Phase 3 — SSH Audit on ace-linux-2
+### Phase 3 — SSH Audit on dev-secondary
 
 ```bash
-ssh ace-linux-2 "uv run --no-project python /mnt/local-analysis/workspace-hub/scripts/permissions/audit-bash-commands.py \
+ssh dev-secondary "uv run --no-project python /mnt/local-analysis/workspace-hub/scripts/permissions/audit-bash-commands.py \
   --sessions-dir ~/.claude/projects/ \
-  --output /tmp/audit-ace-linux-2.yaml"
-scp ace-linux-2:/tmp/audit-ace-linux-2.yaml .claude/work-queue/assets/WRK-1119/
+  --output /tmp/audit-dev-secondary.yaml"
+scp dev-secondary:/tmp/audit-dev-secondary.yaml .claude/work-queue/assets/WRK-1119/
 ```
 
 ### Phase 4 — Merge + Derive Final Allow List
@@ -81,7 +81,7 @@ Keep existing deny list intact; review against `security.md` to add any missing 
 - `Bash(chmod:*)` — file permissions (chmod 777 already denied)
 - `Bash(scripts/*:*)` — all project scripts (extend beyond `./scripts/*`)
 
-### Phase 6 — Validate on ace-linux-1
+### Phase 6 — Validate on dev-primary
 
 1. Remove `skipDangerousModePermissionPrompt` from `~/.claude/settings.json`
 2. Start a new Claude Code session and run representative commands
@@ -95,9 +95,9 @@ Create `.claude/docs/permission-model.md`:
 - How to add a new allowed command
 - How to add a new deny pattern
 - Cross-machine propagation (repo-committed settings.json)
-- acma-ansys05 Windows path for user settings
+- licensed-win-1 Windows path for user settings
 
-### Phase 8 — acma-ansys05 (deferred, keeps WRK open)
+### Phase 8 — licensed-win-1 (deferred, keeps WRK open)
 
 Run audit script on Windows, validate session works without bypass flag.
 WRK closes only after this step.
@@ -123,7 +123,7 @@ WRK closes only after this step.
 # Run TDD tests
 uv run --no-project python -m pytest tests/permissions/ -v
 
-# Run audit on ace-linux-1
+# Run audit on dev-primary
 uv run --no-project python scripts/permissions/audit-bash-commands.py \
   --sessions-dir ~/.claude/projects/-mnt-local-analysis-workspace-hub \
   --output /tmp/audit-result.yaml
@@ -140,8 +140,8 @@ uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-1119
 |----|-----------|
 | 1. Audit script + candidate allow list | Phase 1+2 |
 | 2. `.claude/settings.json` with allow/deny committed | Phase 5 |
-| 3. `--dangerously-skip-permissions` / bypass flag removed on ace-linux-1 | Phase 6 |
+| 3. `--dangerously-skip-permissions` / bypass flag removed on dev-primary | Phase 6 |
 | 4. Deny list covers rm -rf /, chmod 777, git push --force, security.md patterns | Phase 5 review |
 | 5. Docs in `.claude/docs/` | Phase 7 |
-| 6. Fresh session works on ace-linux-1 AND acma-ansys05 | Phase 6 + 8 |
+| 6. Fresh session works on dev-primary AND licensed-win-1 | Phase 6 + 8 |
 | 7. TDD ≥3 tests | Phase 1 |

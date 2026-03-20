@@ -77,10 +77,10 @@ token from `<tool> --version` output for comparison.
 | File | Hostname | Alias | Role |
 |------|----------|-------|------|
 | `manifests/vamsee-linux1.yml` | vamsee-linux1 | eng-primary | primary-dev |
-| `manifests/ace-linux-1.yml` | ace-linux-1 | eng-primary | primary-dev |
-| `manifests/ace-linux-2.yml` | ace-linux-2 | eng-secondary | sim-node |
+| `manifests/dev-primary.yml` | dev-primary | eng-primary | primary-dev |
+| `manifests/dev-secondary.yml` | dev-secondary | eng-secondary | sim-node |
 
-`vamsee-linux1` and `ace-linux-1` both refer to AceEngineer-01. The duplicate
+`vamsee-linux1` and `dev-primary` both refer to AceEngineer-01. The duplicate
 entries ensure the check works regardless of which hostname the machine reports.
 
 ---

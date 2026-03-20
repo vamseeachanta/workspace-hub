@@ -66,7 +66,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Claimed and activated on ace-linux-1.
+  comment: Claimed and activated on dev-primary.
   evidence: .claude/work-queue/assets/WRK-1140/evidence/activation.yaml
 - order: 9
   stage: Work-Queue Routing
@@ -74,7 +74,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B, ace-linux-1, claude orchestrator.
+  comment: Route B, dev-primary, claude orchestrator.
   evidence: .claude/work-queue/assets/WRK-1140/evidence/activation.yaml
 - order: 10
   stage: Work Execution

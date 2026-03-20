@@ -50,7 +50,7 @@ resources:
       reaction-diffusion, and astrophysics. CC BY 4.0 data license permits commercial
       use with attribution. HF streaming via WellDataset avoids bulk download.
       Pretrained FNO/TFNO/UNet baselines available per dataset on Hugging Face
-      (updated March 2025). Smoke test passed on ace-linux-2 (uv, Python 3.11).
+      (updated March 2025). Smoke test passed on dev-secondary (uv, Python 3.11).
     discovery_status: evaluated
     evaluated_by: WRK-393
     evaluated_at: "2026-02-24"

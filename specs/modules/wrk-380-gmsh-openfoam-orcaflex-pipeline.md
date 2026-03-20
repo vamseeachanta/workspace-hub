@@ -117,7 +117,7 @@ The pipeline accepts geometry parameters (cylinder diameter, length, flow speed)
 generates a mesh, solves for fluid loads, then applies those loads in a structural
 model, reporting pass/fail at each validation gate. All three solvers are wrapped
 with stub/mock fallbacks so the pipeline can run on machines without commercial
-licenses (ace-linux-1 and CI environments).
+licenses (dev-primary and CI environments).
 
 ---
 
@@ -293,7 +293,7 @@ cylinder-in-flow end-to-end test.
 - [x] `scripts/pipelines/test_cylinder_in_flow.py`
 
 **Exit Criteria**:
-- [x] `pytest scripts/pipelines/test_cylinder_in_flow.py -v` passes on ace-linux-1
+- [x] `pytest scripts/pipelines/test_cylinder_in_flow.py -v` passes on dev-primary
 
 ---
 

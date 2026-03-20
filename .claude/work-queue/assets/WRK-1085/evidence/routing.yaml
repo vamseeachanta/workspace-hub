@@ -3,10 +3,10 @@ stage: 9
 routed_at: "2026-03-09T22:58:00Z"
 route: B
 complexity: medium
-workstation: ace-linux-1
+workstation: dev-primary
 orchestrator: claude
 execution_provider: claude
 rationale: >
   Route B (medium): new scripts/search/ tooling in hub; AST symbol indexer +
-  shell wrappers + bash tests. ace-linux-1: workspace-hub hub scripts.
+  shell wrappers + bash tests. dev-primary: workspace-hub hub scripts.
   Claude as orchestrator: standard route B execution.

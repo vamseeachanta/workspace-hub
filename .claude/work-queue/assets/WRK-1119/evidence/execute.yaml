@@ -17,7 +17,7 @@ ac_status:
   AC3: PENDING  # bypass removal pending validation session
   AC4: PASS  # deny list covers rm -rf /, chmod 777, git push --force, eval, sudo
   AC5: PASS  # .claude/docs/permissions-extend.md written (this session)
-  AC6: PENDING  # validation on ace-linux-1 + acma-ansys05 pending
+  AC6: PENDING  # validation on dev-primary + licensed-win-1 pending
   AC7: PASS  # 23 TDD tests, all PASS (tests/unit/test_permissions_model.py)
 integrated_repo_tests:
   - name: "permissions model TDD — deny-list enforcement and allow-list coverage"

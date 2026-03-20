@@ -74,7 +74,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route A, ace-linux-1.
+  comment: Route A, dev-primary.
   evidence: .claude/work-queue/assets/WRK-1037/evidence/activation.yaml
 - order: 10
   stage: Work Execution

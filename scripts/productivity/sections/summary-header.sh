@@ -40,7 +40,7 @@ for f in glob.glob(f'{wrk_dir}/pending/*.md') + glob.glob(f'{wrk_dir}/working/*.
         for m in computer.split(','):
             m = m.strip()
             if m:
-                aliases = {'orcaflex-license-machine': 'acma-ansys05'}
+                aliases = {'orcaflex-license-machine': 'licensed-win-1'}
                 m = aliases.get(m, m)
                 machine_counts[m] = machine_counts.get(m, 0) + 1
         if status in ('in_progress', 'in-progress', 'working'):
@@ -111,7 +111,7 @@ for name, path in repos.items():
 print("| | |")
 print("|---|---|")
 print(f"| **Work Queue** | {done_n} done · {in_prog_n} in progress · {ready_n} ready · {blocked_n} blocked · {total_n} total |")
-all_machines = ['ace-linux-1', 'ace-linux-2', 'acma-ansys05', 'any']
+all_machines = ['dev-primary', 'dev-secondary', 'licensed-win-1', 'any']
 ml_parts = [f"{m}: {machine_counts.get(m, 0)}" for m in all_machines]
 extra = [f"{m}: {c}" for m, c in sorted(machine_counts.items(), key=lambda x: -x[1])
          if m not in all_machines]

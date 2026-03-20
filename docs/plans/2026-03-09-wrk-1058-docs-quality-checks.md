@@ -25,7 +25,7 @@
 | tr | POSIX | existing check-all.sh | system coreutils; present on all Linux targets |
 | python (via uv) | 3.9+ | `uv run --no-project python` in hub scripts | If unavailable: count falls back to '?' |
 
-`run_ruff_docs()` unavailability behavior: if `uv tool run ruff` fails, exit_code≠0 → `docstrings: WARN (? issues)`. Never hard-fails. All 5 target machines are ace-linux-1 (Linux, bash 5.x, uv 0.5+, all tools confirmed present per WRK-1066 env audit).
+`run_ruff_docs()` unavailability behavior: if `uv tool run ruff` fails, exit_code≠0 → `docstrings: WARN (? issues)`. Never hard-fails. All 5 target machines are dev-primary (Linux, bash 5.x, uv 0.5+, all tools confirmed present per WRK-1066 env audit).
 
 **Cross-review amendments applied:**
 - v1 P2: README heading-level grep (not bare text match)

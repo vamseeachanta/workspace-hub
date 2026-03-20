@@ -1,19 +1,19 @@
 ---
 
 name: remote-desktop
-description: Connect to ace-linux-2 graphical desktop from ace-linux-1 via VNC over SSH tunnel
+description: Connect to dev-secondary graphical desktop from dev-primary via VNC over SSH tunnel
 version: "1.0.0"
 category: workspace-hub
 ---
 
-# Remote Desktop — ace-linux-2
+# Remote Desktop — dev-secondary
 
-Connect to ace-linux-2 graphical desktop from ace-linux-1 via VNC over SSH tunnel.
+Connect to dev-secondary graphical desktop from dev-primary via VNC over SSH tunnel.
 
 ## Quick Start
 
 ```bash
-bash scripts/operations/connection/vnc-ace-linux-2.sh
+bash scripts/operations/connection/vnc-dev-secondary.sh
 ```
 
 Script is fully self-contained: detects display+auth, auto-starts x11vnc if needed, opens tunnel, launches viewer.
@@ -23,7 +23,7 @@ Script is fully self-contained: detects display+auth, auto-starts x11vnc if need
 1. Checks if x11vnc is listening on port 5900
 2. If not: parses live Xorg `ps` entry to find display + auth file dynamically
 3. Starts x11vnc (no sudo if vamsee owns display; sudo prompt if GDM/root owns it)
-4. Opens SSH tunnel `localhost:5900 → ace-linux-2:5900`
+4. Opens SSH tunnel `localhost:5900 → dev-secondary:5900`
 5. Launches `xtigervncviewer localhost:5900`
 
 ## Required Flags (Hard-Won)
@@ -44,7 +44,7 @@ Resolved dynamically from `ps wwwaux | grep Xorg`:
 
 ## Persistent Setup (Optional)
 
-To avoid needing to start x11vnc each time, create a systemd service on ace-linux-2:
+To avoid needing to start x11vnc each time, create a systemd service on dev-secondary:
 
 ```bash
 sudo tee /etc/systemd/system/x11vnc.service <<'EOF'

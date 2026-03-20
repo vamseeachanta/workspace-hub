@@ -209,9 +209,9 @@ priority: high
 complexity: complex
 created_at: "YYYY-MM-DD"
 target_repos: []
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: ""
 subcategory: ""
 spec_ref: specs/wrk/WRK-NNN/wrk-NNN-<short-name>.md
@@ -489,10 +489,10 @@ created_at: "$(date +%Y-%m-%d)"
 parent: ${WRK_ID}
 blocked_by: ${BLOCKED_BY}
 target_repos: []
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: ${agent:-claude}
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: ${PARENT_CAT}
 subcategory: ${PARENT_SUB}
 ---

@@ -1,6 +1,6 @@
 wrk_id: WRK-1006
 executed_at: 2026-03-04T00:00:00Z
-machine: ace-linux-1
+machine: dev-primary
 tdd_note: >
   Full test suite created first (TDD), then implementation fixes confirmed each test.
   All 41 assertions pass with no live API calls (mocked via CLAUDE_CMD/GEMINI_CMD/CODEX_BIN).

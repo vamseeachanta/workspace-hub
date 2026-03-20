@@ -2,7 +2,7 @@
 # ABOUTME: Quick connect script to access Linux workspace via Tailscale VPN
 # ABOUTME: Works from anywhere on the internet
 
-WORKSPACE_HOST="100.107.64.76"
+WORKSPACE_HOST="10.1.0.1"
 WORKSPACE_HOSTNAME="vamsee-linux1"
 WORKSPACE_USER="vamsee"
 WORKSPACE_PORT=22

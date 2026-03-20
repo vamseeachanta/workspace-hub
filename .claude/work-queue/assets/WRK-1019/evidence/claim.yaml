@@ -4,7 +4,7 @@ claimed_at: "2026-03-07T22:35:00Z"
 session_owner: claude
 best_fit_provider: claude
 orchestrator: claude
-workstation: ace-linux-1
+workstation: dev-primary
 quota_snapshot:
   timestamp: "2026-03-07T22:35:00Z"
   claude:

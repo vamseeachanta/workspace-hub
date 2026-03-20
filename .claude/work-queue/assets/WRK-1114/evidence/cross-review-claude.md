@@ -16,7 +16,7 @@
 - `next-id.sh`: awk field fix (`$NF` not `$2`) correctly handles YAML `  - hostname: value` format
 - Machine floor enforcement is applied after state reconciliation — correct ordering
 - Falls back gracefully when `RANGES_FILE` missing (MACHINE_FLOOR=0, behavior unchanged)
-- Existing IDs (1–1114 on ace-linux-1) are not renumbered — ceiling check only applies going forward
+- Existing IDs (1–1114 on dev-primary) are not renumbered — ceiling check only applies going forward
 
 ### Test Review
 - 5 test scenarios cover: empty queue per machine, above-floor per machine, ceiling < floor invariant
@@ -29,7 +29,7 @@
 - `next-id.sh` header documents convention + re-allocation policy
 
 ## Minor Notes
-- Future: could add `ace-linux-2` and `gali-linux-compute-1` test scenarios (deferred to FW)
+- Future: could add `dev-secondary` and `gali-linux-compute-1` test scenarios (deferred to FW)
 
 ## Summary
 All 6 acceptance criteria met. Implementation is correct and well-tested.

@@ -24,10 +24,10 @@ scripts_exempt: true
 
 | Use Case | Fit | Target | Notes |
 |----------|-----|--------|-------|
-| SSD upgrade | Good | ace-linux-1 | 500GB SSD → replace/supplement existing 233GB SSD |
-| Extra display output | Good | ace-linux-1 | T400 (4 × mDP) in second PCIe slot if available |
+| SSD upgrade | Good | dev-primary | 500GB SSD → replace/supplement existing 233GB SSD |
+| Extra display output | Good | dev-primary | T400 (4 × mDP) in second PCIe slot if available |
 | GPU upgrade (display) | Good | Windows machine | T400 or GPU 2 as replacement for older card |
 | RAM upgrade | Poor (Linux) | Windows machine | DDR3 ECC ≠ compatible with E5-2630 v3 (DDR4 board) — check Windows machine first |
 | CUDA ML training | Poor | — | T400 = 320 CUDA cores, 4GB — too limited; GPU 2 TBD |
-| Basic ML inference | Fair | ace-linux-1 | T400 can run small GGUF models via llama.cpp alongside GTX 750 Ti |
+| Basic ML inference | Fair | dev-primary | T400 can run small GGUF models via llama.cpp alongside GTX 750 Ti |
 | Standalone build | Poor | — | No spare motherboard — can't build without one |

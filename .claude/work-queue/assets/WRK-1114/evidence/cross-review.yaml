@@ -9,6 +9,6 @@ reviews:
     major_findings: 0
     minor_findings: 1
     deferred_minors:
-      - "Add ace-linux-2 and gali-linux-compute-1 test scenarios"
+      - "Add dev-secondary and gali-linux-compute-1 test scenarios"
 codex_gate: n/a
 notes: "Route A — single Claude cross-review pass. No Codex/Gemini required."

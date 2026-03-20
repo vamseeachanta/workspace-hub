@@ -17,7 +17,7 @@ The slimmed CLAUDE.md explicitly points to these canonical locations.
 Resolved: `verify-gate-evidence.py WRK-1016` run during Stage 14.
 
 ### [P2] OGManufacturing ruff baseline
-Resolved: OGManufacturing is an empty submodule (not checked out on ace-linux-1). Improvement deferred and recorded in execute.yaml with note. Not a regression risk.
+Resolved: OGManufacturing is an empty submodule (not checked out on dev-primary). Improvement deferred and recorded in execute.yaml with note. Not a regression risk.
 
 ## Resolution
 All P2 issues addressed. P3 items noted as future improvements (Chmod -R 777 deny entry, ruff E501 comment).

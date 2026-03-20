@@ -39,7 +39,7 @@ key_findings:
   - "logs/quality/ is net-new; dep-health-{date}.yaml becomes first YAML report in that namespace"
   - "Auto-WRK creation: next-id.sh + markdown write confirmed viable via phase-f-wrk-items.py"
   - "TDD fixture pattern (mktemp + mock uv binary via PATH) well-established in tests/quality/"
-  - "crontab-template.sh CRON: comment format is canonical path for nightly entries on ace-linux-1"
+  - "crontab-template.sh CRON: comment format is canonical path for nightly entries on dev-primary"
 
 risks:
   - "uv audit may not exist in installed uv version; must probe at runtime before relying on it"

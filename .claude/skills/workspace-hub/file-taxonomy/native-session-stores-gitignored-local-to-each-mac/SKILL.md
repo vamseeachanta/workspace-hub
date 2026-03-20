@@ -16,8 +16,8 @@ scripts_exempt: true
 | Agent | Path | Format | Notes |
 |-------|------|--------|-------|
 | Claude | `~/.claude/projects/<encoded-path>/*.jsonl` | JSONL | Full session transcripts; managed by Claude CLI |
-| Codex | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` | JSONL | ~302 sessions on ace-linux-1 (2026-03-03) |
-| Gemini | `~/.gemini/tmp/<project>/chats/session-*.json` | JSON | ~772 sessions on ace-linux-1 (2026-03-03) |
+| Codex | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` | JSONL | ~302 sessions on dev-primary (2026-03-03) |
+| Gemini | `~/.gemini/tmp/<project>/chats/session-*.json` | JSON | ~772 sessions on dev-primary (2026-03-03) |
 
 `<encoded-path>` = repo path with `/` replaced by `-` (e.g. `-mnt-local-analysis-workspace-hub`).
 
@@ -43,7 +43,7 @@ Structure: `logs/orchestrator/{claude,codex,gemini}/` — one dir per agent.
 |------|-----------|--------|
 | `.claude/state/session-signals/*.jsonl` | session-end hook | JSONL |
 | `.claude/state/session-analysis/` | comprehensive-learning Phases 1–9 | Markdown |
-| `.claude/state/session-analysis/compilation-YYYYMMDD.md` | Phase 10a (ace-linux-1 only) | Markdown |
+| `.claude/state/session-analysis/compilation-YYYYMMDD.md` | Phase 10a (dev-primary only) | Markdown |
 | `.claude/state/skill-scores.yaml` | comprehensive-learning Phase 7 | YAML |
 | `.claude/state/candidates/` | comprehensive-learning Phase 6 | YAML |
 | `scripts/review/results/` | `submit-to-{codex,gemini}.sh` | text |
@@ -73,7 +73,7 @@ derived state   → processed analysis output (git-tracked, crosses machines)
 Test method: ran `scripts/review/submit-to-codex.sh` before/after; codex session file count grew 3→4, Claude hook log grew 694→700 lines, both independent of verbose flag.
 
 
-## acma-ansys05 (Windows)
+## licensed-win-1 (Windows)
 
 
 Paths follow the same convention but under `%USERPROFILE%` / `C:\Users\<user>\`:
@@ -81,4 +81,4 @@ Paths follow the same convention but under `%USERPROFILE%` / `C:\Users\<user>\`:
 - Codex: `%USERPROFILE%\.codex\sessions\YYYY\MM\DD\rollout-*.jsonl`
 - Gemini: `%USERPROFILE%\.gemini\tmp\<project>\chats\session-*.json`
 
-Use Git Bash to apply Linux-style path patterns on acma-ansys05.
+Use Git Bash to apply Linux-style path patterns on licensed-win-1.

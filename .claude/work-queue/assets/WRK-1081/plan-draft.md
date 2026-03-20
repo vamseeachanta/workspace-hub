@@ -1,7 +1,7 @@
 # WRK-1081 Plan (Final — post cross-review)
 # feat(harness): extended static analysis — bandit, radon, vulture
 
-## Route: B (Medium) | Workstation: ace-linux-1
+## Route: B (Medium) | Workstation: dev-primary
 
 ## Cross-Review Changes (Codex + Gemini — REQUEST_CHANGES resolved)
 

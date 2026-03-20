@@ -3,5 +3,5 @@ wrk_id: WRK-1128
 activated_at: "2026-03-13T09:32:00Z"
 provider: claude
 set_active_wrk: true
-session_id: "2026-03-13-ace-linux-1-01"
+session_id: "2026-03-13-dev-primary-01"
 orchestrator_agent: claude

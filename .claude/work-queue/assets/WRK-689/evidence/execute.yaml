@@ -1,6 +1,6 @@
 wrk_id: WRK-689
 executed_at: 2026-03-03T00:00:00Z
-machine: ace-linux-1
+machine: dev-primary
 tdd_note: >
   Docs-only WRK (skill files + knowledge map markdown). No Python modules changed.
   Verification via file existence checks and line-count assertions below.

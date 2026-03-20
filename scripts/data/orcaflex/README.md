@@ -2,9 +2,9 @@
 
 Converts binary OrcaFlex `.dat` model files to **enriched, client-clean YAML
 test fixtures** using worldenergydata public databases (vessel fleet, riser
-components, pipe schedules). All stages run on **acma-ansys05**.
+components, pipe schedules). All stages run on **licensed-win-1**.
 
-## Pipeline (all on acma-ansys05)
+## Pipeline (all on licensed-win-1)
 
 ```
 Stage 1  Extract    .dat + OrcFxAPI → raw YAML
@@ -14,16 +14,16 @@ Stage 3  Clean      strip client names → legal scan → digitalmodel/data/orca
 
 ## Stage 1 — Extract
 
-Requires OrcaFlex Python API (`pip install OrcFxAPI` with valid license on acma-ansys05).
+Requires OrcaFlex Python API (`pip install OrcFxAPI` with valid license on licensed-win-1).
 
 ```cmd
 python scripts\data\orcaflex\dat-to-yaml.py ^
-    --input "\\ace-linux-2\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
+    --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
     --output "client_projects\data\raw\orcaflex-extracted\drilling-riser-development" ^
     --project drilling-riser-development
 ```
 
-## Stage 2+3 — Enrich + Clean (also on acma-ansys05)
+## Stage 2+3 — Enrich + Clean (also on licensed-win-1)
 
 Requires `worldenergydata` installed:
 ```cmd

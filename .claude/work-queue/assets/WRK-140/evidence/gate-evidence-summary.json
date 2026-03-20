@@ -15,7 +15,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=[ace-linux-2], execution_workstations=[ace-linux-2]"
+      "details": "plan_workstations=[dev-secondary], execution_workstations=[dev-secondary]"
     },
     {
       "name": "Resource-intelligence gate",

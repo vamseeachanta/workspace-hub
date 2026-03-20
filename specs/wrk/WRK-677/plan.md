@@ -54,7 +54,7 @@ metadata_version: "1"              # discriminator: "1" = hardened; absent = leg
 session_owner: "claude|codex|gemini"
 agent_fit:
   capability_match: "matched|partial|undocumented"
-  rationale: "Route C / execution_workstations=[ace-linux-1] / provider=claude"
+  rationale: "Route C / execution_workstations=[dev-primary] / provider=claude"
 blocking_state:
   blocked: false
   blocked_by: []

@@ -14,22 +14,22 @@ scripts_exempt: true
 
 | Repo / Workload | Machine | Rationale |
 |-----------------|---------|-----------|
-| worldenergydata | ace-linux-1 | Data stack + Python env live here |
-| workspace-hub (orchestration) | ace-linux-1 | Primary hub machine |
-| digitalmodel (Python dev) | ace-linux-1 / ace-linux-2 | Open-source dev, either machine |
-| assetutilities | ace-linux-1 / ace-linux-2 | Open-source dev, either machine |
-| OrcaFlex work (WRK-121, WRK-131) | acma-ansys05 | Node-locked OrcaFlex license |
-| ANSYS / AQWA work | acma-ansys05 | ANSYS license on this machine |
-| Windows-only tools | acma-ws014 | Windows 11, office tools |
+| worldenergydata | dev-primary | Data stack + Python env live here |
+| workspace-hub (orchestration) | dev-primary | Primary hub machine |
+| digitalmodel (Python dev) | dev-primary / dev-secondary | Open-source dev, either machine |
+| assetutilities | dev-primary / dev-secondary | Open-source dev, either machine |
+| OrcaFlex work (WRK-121, WRK-131) | licensed-win-1 | Node-locked OrcaFlex license |
+| ANSYS / AQWA work | licensed-win-1 | ANSYS license on this machine |
+| Windows-only tools | licensed-win-2 | Windows 11, office tools |
 | Heavy compute (CFD, FEA, batch) | gali-linux-compute-1 | 128 cores, 128 GB RAM, 64 GB VRAM |
-| Engineering CAD (SolidWorks etc.) | acma-ws014 | Windows machine; add dedicated CAD node when provisioned |
+| Engineering CAD (SolidWorks etc.) | licensed-win-2 | Windows machine; add dedicated CAD node when provisioned |
 
 
 ## When to set computer:
 
 
 - **Always set `computer:`** — every WRK item must have a machine assigned at Capture
-- Use `ace-linux-1` for hub-only meta work (docs, skills, queue management) where any machine would work
+- Use `dev-primary` for hub-only meta work (docs, skills, queue management) where any machine would work
 - Use the specific machine for tasks that require local tools, licensed software, or hardware
 - Use a list `[machine-a, machine-b]` for tasks spanning multiple machines
 - Never leave blank on `working/` items

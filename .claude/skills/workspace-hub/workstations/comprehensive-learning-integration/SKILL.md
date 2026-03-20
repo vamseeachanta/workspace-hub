@@ -17,6 +17,6 @@ skill. No separate config file needed — the skill reads `hostname` at runtime.
 
 | cron_variant        | Role                                                          | Machine(s)                         |
 |---------------------|---------------------------------------------------------------|------------------------------------|
-| `full`              | Phases 1–9 locally + Phase 10a compilation + Phase 10 report  | ace-linux-1                        |
-| `contribute`        | Phases 1–9 locally + commit derived state                     | ace-linux-2, acma-ansys05, acma-ws014 |
+| `full`              | Phases 1–9 locally + Phase 10a compilation + Phase 10 report  | dev-primary                        |
+| `contribute`        | Phases 1–9 locally + commit derived state                     | dev-secondary, licensed-win-1, licensed-win-2 |
 | `contribute-minimal`| Reserved for machines with no AI CLIs                         | (future machines)                  |

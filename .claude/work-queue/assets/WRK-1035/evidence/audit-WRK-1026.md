@@ -123,7 +123,7 @@ Both Stage 19 and Stage 20 have `status: done` while the `comment` fields descri
 
 6. **Plan-draft approval captures revision cycle.** `user-review-plan-draft.yaml` has both `reviewed_at` and `revision_at` timestamps with notes, showing at least one real iteration occurred.
 
-7. **Workstation contract populated in WRK frontmatter.** `plan_workstations` and `execution_workstations` both set to `[ace-linux-1]`; gate verifier PASS (though it logged `missing` — see below).
+7. **Workstation contract populated in WRK frontmatter.** `plan_workstations` and `execution_workstations` both set to `[dev-primary]`; gate verifier PASS (though it logged `missing` — see below).
 
 ---
 

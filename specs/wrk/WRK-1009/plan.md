@@ -1,6 +1,6 @@
 # WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration
 
-**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**
+**Route B — Medium complexity | dev-primary | Orchestrator: Claude**
 
 *Plan decisions (Stage 5 user review 2026-03-10):*
 *① Eval defs: central `specs/skills/evals/` (not per-skill)*

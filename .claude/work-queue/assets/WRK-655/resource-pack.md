@@ -38,4 +38,4 @@
 - `/mnt/local-analysis/workspace-hub`
 - `/mnt/ace/docs`
 - `/mnt/ace/0000 O&G`
-- `/mnt/remote/ace-linux-2/dde`
+- `/mnt/remote/dev-secondary/dde`

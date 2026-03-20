@@ -3,11 +3,11 @@ stage: 9
 routed_at: "2026-03-09T22:30:00Z"
 route: B
 complexity: medium
-workstation: ace-linux-1
+workstation: dev-primary
 orchestrator: claude
 execution_provider: claude
 rationale: >
   Route B (medium): extends scripts/testing/run-all-tests.sh with --coverage flag,
   new check_coverage_ratchet.py, config/testing/coverage-baseline.yaml, pre-push.sh gate.
-  ace-linux-1: workspace-hub hub scripts + tier-1 repo work.
+  dev-primary: workspace-hub hub scripts + tier-1 repo work.
   Claude as orchestrator: standard route B execution.

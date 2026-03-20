@@ -14,7 +14,7 @@ uv run --no-project python -m pytest scripts/work-queue/tests/ -q --tb=no
 
 | Test | Description | Result |
 |------|-------------|--------|
-| T31 | `get_list_field` returns first list item — workstation display shows "ace-linux-1" not "missing" | PASS |
+| T31 | `get_list_field` returns first list item — workstation display shows "dev-primary" not "missing" | PASS |
 | T32 | exit_stage.py `pending/` path resolution resolves to queue root | PASS |
 | T33 | `--json` on failing WRK produces valid JSON with `pass: false` | PASS |
 

@@ -30,7 +30,7 @@ Add a "Codex Notes" section at the end with your specific findings.
 CLAUDE DRAFT PLAN:
 # WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration
 
-**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**
+**Route B — Medium complexity | dev-primary | Orchestrator: Claude**
 
 *Plan decisions (Stage 5 user review 2026-03-10):*
 *① Eval defs: central `specs/skills/evals/` (not per-skill)*
@@ -248,12 +248,12 @@ scripts/work-queue/exit_stage.py:323:    # Regenerate lifecycle HTML to reflect 
 scripts/work-queue/checkpoint.sh:26:    # Avoid duplicates
 .claude/commands/workspace-hub/repo-sync.md:44:- `/reflect` - Cross-repository reflection
 .claude/commands/workspace-hub/repo-capability-map.md:71:- `/reflect` - Periodic reflection (tracks capability changes)
-.claude/work-queue/pending/WRK-595.md:124:3. Update `scripts/data/orcaflex/README.md` to reflect all-acma-ansys05 pipeline
+.claude/work-queue/pending/WRK-595.md:124:3. Update `scripts/data/orcaflex/README.md` to reflect all-licensed-win-1 pipeline
 .claude/commands/workspace-hub/reflect.md:2:name: reflect
 codex
 # WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration
 
-**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**
+**Route B — Medium complexity | dev-primary | Orchestrator: Claude**
 
 *Plan decisions (Stage 5 user review 2026-03-10):*
 *① Eval defs: central `specs/skills/evals/` (not per-skill)*
@@ -340,7 +340,7 @@ codex
 
 ## Scope Boundary (deferred)
 
-External upstream scan (`openai/skills`, `anthropics/skills`), live A/B model runs, auto-remediation, auto-WRK creation, and cross-machine aggregation beyond `ace-linux-1` are follow-on WRKs.
+External upstream scan (`openai/skills`, `anthropics/skills`), live A/B model runs, auto-remediation, auto-WRK creation, and cross-machine aggregation beyond `dev-primary` are follow-on WRKs.
 
 ## Deliverables
 
@@ -370,7 +370,7 @@ tokens used
 52,730
 # WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration
 
-**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**
+**Route B — Medium complexity | dev-primary | Orchestrator: Claude**
 
 *Plan decisions (Stage 5 user review 2026-03-10):*
 *① Eval defs: central `specs/skills/evals/` (not per-skill)*
@@ -457,7 +457,7 @@ tokens used
 
 ## Scope Boundary (deferred)
 
-External upstream scan (`openai/skills`, `anthropics/skills`), live A/B model runs, auto-remediation, auto-WRK creation, and cross-machine aggregation beyond `ace-linux-1` are follow-on WRKs.
+External upstream scan (`openai/skills`, `anthropics/skills`), live A/B model runs, auto-remediation, auto-WRK creation, and cross-machine aggregation beyond `dev-primary` are follow-on WRKs.
 
 ## Deliverables
 

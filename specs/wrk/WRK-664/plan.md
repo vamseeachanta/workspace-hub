@@ -57,13 +57,13 @@ Every active WRK can carry a machine-readable assignment contract:
 
 | Stage | Primary Agent | Secondary Agent | Workstation Scope | Required Gate |
 |---|---|---|---|---|
-| Resource Intelligence | claude | gemini | `ace-linux-1` | sources + legal + summary contract valid |
-| Plan Draft | codex | claude | `ace-linux-1` | plan schema valid + HTML draft generated |
+| Resource Intelligence | claude | gemini | `dev-primary` | sources + legal + summary contract valid |
+| Plan Draft | codex | claude | `dev-primary` | plan schema valid + HTML draft generated |
 | Plan Cross-Review | claude/codex/gemini | - | any AI-capable host | required seed runs complete |
-| Claim | orchestrator | agent-router + agent-usage-optimizer (advisory) | `ace-linux-1` | quota snapshot + routing evidence recorded |
+| Claim | orchestrator | agent-router + agent-usage-optimizer (advisory) | `dev-primary` | quota snapshot + routing evidence recorded |
 | Execute | stage-assigned best-fit | alternate provider | assigned execution machines | machine capability + readiness pass |
 | Cross-Review (impl) | claude/codex/gemini | - | any AI-capable host | route policy satisfied |
-| Close/Archive | orchestrator | codex | `ace-linux-1` | queue validation + sync checks pass |
+| Close/Archive | orchestrator | codex | `dev-primary` | queue validation + sync checks pass |
 
 ## Workstation Contract (Draft)
 

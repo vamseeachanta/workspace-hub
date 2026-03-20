@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # comprehensive-learning-nightly.sh
-# Nightly cron wrapper for ace-linux-1: pull state, rsync sessions, run pipeline.
+# Nightly cron wrapper for dev-primary: pull state, rsync sessions, run pipeline.
 # set -euo pipefail ensures git pull failure aborts before the pipeline runs.
 set -euo pipefail
 
@@ -20,16 +20,16 @@ mkdir -p "$WORKSPACE_HUB/.claude/state/learning-reports" 2>/dev/null
 git pull --no-rebase origin main
 
 # Step 2: rsync raw sessions from contributor machines — each independently best-effort
-# ace-linux-2: sessions at /mnt/workspace-hub/.claude/state/sessions/ (not ~/.claude/state/)
+# dev-secondary: sessions at /mnt/workspace-hub/.claude/state/sessions/ (not ~/.claude/state/)
 rsync -az --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-  ace-linux-2:/mnt/workspace-hub/.claude/state/sessions/ \
-  "$WORKSPACE_HUB/.claude/state/sessions-archive/ace-linux-2/" 2>/dev/null || true
+  dev-secondary:/mnt/workspace-hub/.claude/state/sessions/ \
+  "$WORKSPACE_HUB/.claude/state/sessions-archive/dev-secondary/" 2>/dev/null || true
 
 rsync -az --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-  ACMA-ANSYS05:.claude/state/sessions/ \
-  "$WORKSPACE_HUB/.claude/state/sessions-archive/acma-ansys05/" 2>/dev/null || true
+  licensed-win-1:.claude/state/sessions/ \
+  "$WORKSPACE_HUB/.claude/state/sessions-archive/licensed-win-1/" 2>/dev/null || true
 
 # Step 3a: portfolio signals update (best-effort — WRK-1020)
 LOG_FILE="logs/portfolio-signals/$(date +%Y-%m-%d).log"

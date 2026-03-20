@@ -14,10 +14,10 @@ VALIDATOR = REPO_ROOT / "scripts" / "cron" / "validate-schedule.py"
 REQUIRED_TASK_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
 VALID_MACHINES = {
-    "ace-linux-1",
-    "ace-linux-2",
-    "acma-ansys05",
-    "acma-ws014",
+    "dev-primary",
+    "dev-secondary",
+    "licensed-win-1",
+    "licensed-win-2",
     "gali-linux-compute-1",
 }
 
@@ -113,7 +113,7 @@ def test_is_claude_task_field(tasks):
 
 def test_linux_tasks_have_cron_scheduler(tasks):
     """Linux machines should use cron scheduler."""
-    linux_machines = {"ace-linux-1", "ace-linux-2", "gali-linux-compute-1"}
+    linux_machines = {"dev-primary", "dev-secondary", "gali-linux-compute-1"}
     for task in tasks:
         if set(task["machines"]) & linux_machines:
             assert task.get("scheduler", "cron") == "cron", (
@@ -123,7 +123,7 @@ def test_linux_tasks_have_cron_scheduler(tasks):
 
 def test_windows_tasks_have_windows_scheduler(tasks):
     """Windows-only tasks should use windows-task-scheduler."""
-    windows_machines = {"acma-ansys05", "acma-ws014"}
+    windows_machines = {"licensed-win-1", "licensed-win-2"}
     for task in tasks:
         if set(task["machines"]) <= windows_machines:
             assert task.get("scheduler", "cron") == "windows-task-scheduler", (
@@ -142,13 +142,13 @@ def test_validator_script_passes():
     assert result.returncode == 0, f"Validator failed:\n{result.stderr}\n{result.stdout}"
 
 
-def test_ace_linux_1_has_comprehensive_learning(tasks):
-    """Comprehensive learning must be scheduled on ace-linux-1."""
+def test_dev_primary_has_comprehensive_learning(tasks):
+    """Comprehensive learning must be scheduled on dev-primary."""
     found = any(
-        t["id"] == "comprehensive-learning" and "ace-linux-1" in t["machines"]
+        t["id"] == "comprehensive-learning" and "dev-primary" in t["machines"]
         for t in tasks
     )
-    assert found, "comprehensive-learning task not found for ace-linux-1"
+    assert found, "comprehensive-learning task not found for dev-primary"
 
 
 def test_repo_sync_on_all_linux(tasks):
@@ -158,5 +158,5 @@ def test_repo_sync_on_all_linux(tasks):
     machines = set()
     for t in sync_tasks:
         machines.update(t["machines"])
-    assert "ace-linux-1" in machines
-    assert "ace-linux-2" in machines
+    assert "dev-primary" in machines
+    assert "dev-secondary" in machines

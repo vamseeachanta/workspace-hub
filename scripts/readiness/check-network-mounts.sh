@@ -2,10 +2,10 @@
 # check-network-mounts.sh — Verify SSHFS network mounts are live; attempt remount if stale.
 # Run daily via cron. Exit 0 = all mounts OK, 1 = one or more failed.
 #
-# Cron (ace-linux-1, as root):
+# Cron (dev-primary, as root):
 #   0 7 * * * /mnt/local-analysis/workspace-hub/scripts/readiness/check-network-mounts.sh
 #
-# Cron (ace-linux-2, as root):
+# Cron (dev-secondary, as root):
 #   0 7 * * * /mnt/local-analysis/workspace-hub/scripts/readiness/check-network-mounts.sh
 set -euo pipefail
 
@@ -20,14 +20,14 @@ mkdir -p "$LOG_DIR"
 # ── Mount definitions per host ────────────────────────────────────────────────
 # Format: "mount_point|remote_host|probe_subpath"
 declare -A HOST_MOUNTS
-HOST_MOUNTS["ace-linux-1"]="
-/mnt/remote/ace-linux-2/local-analysis|ace-linux-2|.
-/mnt/remote/ace-linux-2/dde|ace-linux-2|.
+HOST_MOUNTS["dev-primary"]="
+/mnt/remote/dev-secondary/local-analysis|dev-secondary|.
+/mnt/remote/dev-secondary/dde|dev-secondary|.
 "
-HOST_MOUNTS["ace-linux-2"]="
-/mnt/workspace-hub|ace-linux-1|.git/HEAD
-/mnt/remote/ace-linux-1/local-analysis|ace-linux-1|.
-/mnt/remote/ace-linux-1/ace|ace-linux-1|.
+HOST_MOUNTS["dev-secondary"]="
+/mnt/workspace-hub|dev-primary|.git/HEAD
+/mnt/remote/dev-primary/local-analysis|dev-primary|.
+/mnt/remote/dev-primary/ace|dev-primary|.
 "
 
 if [[ -z "${HOST_MOUNTS[$HOSTNAME]:-}" ]]; then

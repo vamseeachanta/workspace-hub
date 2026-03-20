@@ -321,10 +321,10 @@ created_at: "$(date +%Y-%m-%d)"
 parent: ${WRK_ID}
 blocked_by: ${blocked_by}
 target_repos: [workspace-hub]
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: ${agent:-claude}
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: ${PARENT_CAT}
 subcategory: ${PARENT_SUB}
 ---

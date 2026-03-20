@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
 | Resource-intelligence gate | FAIL | resource-intelligence evidence absent (legacy item — WARN) |
 | Activation gate | FAIL | activation.yaml missing |
 | Agent log gate | PASS | pre-cutoff backfill (id=1025, created_at=2026-03-06T00:00:00Z) — log gate skipped |

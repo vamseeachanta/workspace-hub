@@ -34,7 +34,7 @@ recommendations:
     captured_in: WRK-1057
 
   - id: fw-4
-    title: "Codex/Gemini MCP wiring on ace-linux-1"
+    title: "Codex/Gemini MCP wiring on dev-primary"
     description: >
       Codex uses a different config format (AGENTS.md or codex.json).
       Investigate and wire Semantic Scholar MCP for Codex once format confirmed.
@@ -44,9 +44,9 @@ recommendations:
     captured_in: WRK-1058
 
   - id: fw-5
-    title: "ace-linux-2 MCP setup (WRK-1012 scope)"
+    title: "dev-secondary MCP setup (WRK-1012 scope)"
     description: >
-      Wire same MCP catalog on ace-linux-2 once WRK-1012 completes machine setup.
+      Wire same MCP catalog on dev-secondary once WRK-1012 completes machine setup.
     disposition: spun-off-new
     status: blocked
     blocked_by: WRK-1012

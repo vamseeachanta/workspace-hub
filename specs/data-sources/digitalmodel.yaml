@@ -2684,23 +2684,23 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
     description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
     description: Updated pipeline list with revised wall thicknesses after FEA
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
     description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
     type: xlsm
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
     description: Full DNV-OS-F101 pipe checks — combined loading, installation, operational cases
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
     description: Propagation buckle check per DNV OS F101 and API RP 1111 — transition water depth
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: DNV-OS-F201
   domain: pipeline
@@ -2713,19 +2713,19 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0013-07 Riser Analysis (RELEASED).xlsm
     description: Released riser analysis workbook — deepwater production riser, combined load envelopes
     type: xlsm
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0004-01 Production Riser Analysis.xlsx
     description: Production riser analysis — tensioner stroke, hang-off angle, stress checks
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/0000 Drilling Riser Development/Atwood Condor/0099-CAL-001-01 Drilling Riser Analysis (MP Update10).xlsx
     description: Drilling riser analysis for Atwood Condor — vessel offset, current, combined loading
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/5 - OrcaFlex API Check/31347-CAL-0001-1 Von Mises Stress in Pipe Check.xlsx
     description: Von Mises stress check for riser pipe — OrcaFlex API verification against hand calc
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: DNV-RP-F109
   domain: pipeline
@@ -2740,19 +2740,19 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
     description: Metocean data workbook — design current profiles, wave heights, and return periods
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
     description: Pipeline weight matching — submerged weight per unit length, coating breakdown
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
     description: Weight verification workbook — cross-check of submerged weight against vendor data
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
     description: DNV WT sizing — pipe OD/WT/grade inputs needed for F109 hydrodynamic diameter
     type: xlsm
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: API-RP-1111
   domain: pipeline
@@ -2764,23 +2764,23 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
     description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
     type: xlsm
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
     description: Propagation buckle checks per API RP 1111 and DNV OS F101 — transition water depth
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
     description: Non-linear stress-strain curve — material input for buckle propagation analysis
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0007-01 API-1111 Mecor Pipeline Installation ASME b31.4 WT Sizing.xlsx
     description: ASME B31.4 pipeline WT sizing alongside API-1111 — combined design standard check
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
     description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 # --- Structural domain ---
 - standard: API-RP-2A-WSD-22nd
@@ -2793,19 +2793,19 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/31245-RPT-0001-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
     description: Conductor system fatigue analysis report — full structural calc with S-N curves
     type: pdf
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/0098_mecor_pipeline_installation_analysis/00_inbox/0098 Mecor Pipeline Installation Analysis/Reference/31279-CAL-0008-01 ASME Stress Strain Curve Generation.xlsx
     description: ASME stress-strain curve generation workbook — material non-linearity inputs
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0018-01 SN Curve Definitions for Riser Analysis (BaseMetal- Free Corrosion).xlsx
     description: S-N curve definitions for riser analysis — base metal in free corrosion environment
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
     description: Non-linear stress-strain curve — ASME/API material non-linearity for buckle propagation and structural analysis
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 # --- Marine domain ---
 - standard: DNV-OS-E301
@@ -2818,7 +2818,7 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0003-01 Long Term Wave Scatter Diagram.xlsx
     description: Long-term wave scatter diagram — Hs/Tp joint probability for North Sea location
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: API-RP-2P
   domain: marine
@@ -2830,19 +2830,19 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-1 RAO Data For OrcaFlex.xlsx
     description: RAO data for OrcaFlex — heave/pitch/roll transfer functions
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-2 RAO Data For OrcaFlex.xlsx
     description: RAO data set 2 — alternative heading
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/Wave Analysis/Rev2/31290-CAL-001-01 (Fatigue for BOP on Wellhead Configuration).xlsx
     description: Fatigue for BOP on wellhead — wave loading fatigue damage accumulation
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASCE/COPRI Marine Renewable Energy Committee/OrcaFlex/BUOY CALCS.xlsx
     description: Buoy calculation workbook — mooring and motion analysis template
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 # --- Cathodic-protection domain ---
 - standard: DNV-RP-B401
@@ -2855,11 +2855,11 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 06 (IFA)/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf
     description: CP design report Rev 06 IFA — sacrificial anode design per DNV RP B401; full worked example
     type: pdf
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 05 (CR)/2100-RPT-4005-05 Cathodic Protection Design Report _Approved_.pdf
     description: CP design report Rev 05 CR — earlier revision for comparison
     type: pdf
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: DNV-RP-F103
   domain: cathodic-protection
@@ -2871,15 +2871,15 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0002-02 (Analysis Parameters).xlsx
     description: Corrosion FE analysis parameters — inputs for DNV RP F103 current density calcs
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0005-01 (Tefals Equation).xlsx
     description: Tefals equation workbook — anode current output calculation
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
     description: 2D FE corrosion simulation workbook — Zn/Fe anode model
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: ISO-15589-2
   domain: cathodic-protection
@@ -2893,21 +2893,21 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/MIN/2100-MIN-3042-01 Buoyancy Tank Corrosion Design Review (HMC Issued).pdf
     description: Buoyancy tank corrosion design review — offshore structure CP system notes
     type: pdf
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
     description: 2D FE corrosion simulation (V8) — offshore pipeline anode model
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 # =============================================================================
 # OrcaFlex Model Library
 # Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
-# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# All paths on host: dev-secondary under /mnt/remote/dev-secondary/dde/Orcaflex/
 # =============================================================================
 orcaflex_models:
 
 - project: drilling-riser-development
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/0000 Drilling Riser Development/Latest
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/0000 Drilling Riser Development/Latest
   description: >
     Drilling riser model library — vessel offset sensitivity, current profiles,
     wave loading cases (Rev8: 2,282 load cases). Includes Atwood Condor vessel
@@ -2915,7 +2915,7 @@ orcaflex_models:
     drilling riser design checks (effective tension, bending, VIV screening).
   domain: pipeline
   standards: [DNV-OS-F201, ISO-13624-1]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 3358
   portability: direct
   notes: >
@@ -2924,7 +2924,7 @@ orcaflex_models:
     sensitivity runs. Use Latest/ as the base model for porting.
 
 - project: wellhead-bop-fatigue
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/31290 Shell WellHead Fatigue Assement
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/31290 Shell WellHead Fatigue Assement
   description: >
     BOP-on-wellhead/tree/THS (Tubing Hanger System) fatigue assessment models.
     594 load cases across three BOP configurations. Provides fatigue damage
@@ -2932,7 +2932,7 @@ orcaflex_models:
     Includes VIV subfolder for vortex-induced vibration screening.
   domain: structural
   standards: [API-RP-2A-WSD-22nd, DNV-OS-E301, DNV-RP-F105]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 594
   portability: direct
   notes: >
@@ -2940,27 +2940,27 @@ orcaflex_models:
     BOP on Tree (174). For Verification/ has 6 spot-check models.
 
 - project: riserless-completion-analysis
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/31242
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/31242
   description: >
     Riserless completion analysis — inner string model for deepwater well
     completion operations without a marine riser. Reference model for
     DNV-OS-E301 mooring and completion equipment fatigue checks.
   domain: marine
   standards: [DNV-OS-E301]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 1
   portability: direct
   notes: Single model file InnerString.dat — lightweight reference.
 
 - project: orcaflex-api-stress-check
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/5 - OrcaFlex API Check
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/5 - OrcaFlex API Check
   description: >
     OrcaFlex API stress verification model. Single .dat file used to verify
     the OrcaFlex Python API stress result extraction. Useful as a minimal
     test fixture for the OrcaFlex Python interface.
   domain: marine
   standards: []
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 1
   portability: direct
   notes: OrcaFlexAPIStressCheck.dat — minimal model for API testing.
@@ -3043,53 +3043,53 @@ ansys_assets:
       path: "data/ansys/pipeline_fea/"
       file_types: [".inp", ".wbjn", ".csv", ".dat"]
       analysis_type: structural_static
-      computer: ace-linux-1
+      computer: dev-primary
     - project_id: drilling_riser_fea_001
       domain: drilling_riser
       description: "Drilling riser global analysis with ANSYS parametric study"
       path: "data/ansys/drilling_riser/"
       file_types: [".inp", ".wbjn", ".csv"]
       analysis_type: structural_parametric
-      computer: acma-ansys05
+      computer: licensed-win-1
     - project_id: riser_stress_001
       domain: riser_analysis
       description: "Production riser stress joint FEA — fatigue life assessment"
       path: "data/ansys/riser_stress/"
       file_types: [".inp", ".wbjn"]
       analysis_type: structural_fatigue
-      computer: acma-ansys05
+      computer: licensed-win-1
     - project_id: offshore_structural_001
       domain: offshore_structural
       description: "Offshore jacket tubular joint parametric FEA"
       path: "data/ansys/offshore_structural/"
       file_types: [".inp", ".wbjn", ".csv"]
       analysis_type: structural_parametric
-      computer: acma-ansys05
+      computer: licensed-win-1
     - project_id: thin_wall_fea_001
       domain: structural_mechanics
       description: "Thin-wall pressure vessel — buckling and collapse FEA"
       path: "data/ansys/thin_wall/"
       file_types: [".inp", ".wbjn", ".csv"]
       analysis_type: structural_buckling
-      computer: acma-ansys05
+      computer: licensed-win-1
     - project_id: tutorial_beam_001
       domain: tutorial
       description: "ANSYS beam tutorial — SECTYPE/SECDATA beam section examples"
       path: "data/ansys/tutorials/beam/"
       file_types: [".inp"]
       analysis_type: structural_static
-      computer: ace-linux-1
+      computer: dev-primary
     - project_id: manufacturing_fea_001
       domain: manufacturing
       description: "OG manufacturing component FEA — pressure vessel and piping"
       path: "data/ansys/manufacturing/"
       file_types: [".inp", ".wbjn", ".csv"]
       analysis_type: structural_static
-      computer: acma-ansys05
+      computer: licensed-win-1
 
 # =============================================================================
 # FEA Model Library
-# ANSYS .inp input files — accessible on host: ace-linux-1 under /mnt/ace/
+# ANSYS .inp input files — accessible on host: dev-primary under /mnt/ace/
 # These provide ground-truth geometry, material, and load case parameters
 # for structural/riser module validation (see WRK-571, WRK-528, WRK-530).
 # =============================================================================
@@ -3106,7 +3106,7 @@ fea_models:
   domain: structural
   standards: [API-RP-2A-WSD-22nd, DNV-RP-F105]
   configurations: [BW, BTW, BTTW]
-  host: ace-linux-1
+  host: dev-primary
   representative_paths:
   - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/VIV/MODES/BW/common.inp
   - /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/VIV/BW/common.inp
@@ -3122,7 +3122,7 @@ fea_models:
     Provides expected SCF value for regression tests of the SCF calculation module.
   domain: structural
   standards: [API-RP-2A-WSD-22nd, DNV-RP-C203]
-  host: ace-linux-1
+  host: dev-primary
 
 - type: ansys-wave-fatigue
   path_pattern: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/*/Q_*.inp
@@ -3132,7 +3132,7 @@ fea_models:
     per sea state for wave fatigue damage accumulation (DNV-OS-E301).
   domain: structural
   standards: [DNV-OS-E301, API-RP-2A-WSD-22nd]
-  host: ace-linux-1
+  host: dev-primary
   representative_paths:
   - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/7Day Storm/Q_07_7D.inp
   - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/1Day Operations/Q_01_1D.inp

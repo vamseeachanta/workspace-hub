@@ -20,5 +20,5 @@ After install: run `claude` → prompted to authenticate on first run.
 
 ## Workspace Status
 
-Already installed on ace-linux-1 (claude=2.1.71), ace-linux-2 (claude=2.1.56), acma-ansys05 (Windows).
+Already installed on dev-primary (claude=2.1.71), dev-secondary (claude=2.1.56), licensed-win-1 (Windows).
 Auth via Anthropic direct (not Bedrock/Vertex).

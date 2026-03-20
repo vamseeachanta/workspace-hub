@@ -228,7 +228,7 @@
   suggested_allow_pattern: "Bash(scripts/review/submit-to-codex.sh:*)"
 - prefix: crontab
   count: 40
-  example_command: "crontab -l 2>/dev/null | head -30; echo \"---\"; ssh ace-linux-2 \"echo SSH OK; df -h /mnt/ 2>/dev/null | head -5\" 2>&1 | head -10"
+  example_command: "crontab -l 2>/dev/null | head -30; echo \"---\"; ssh dev-secondary \"echo SSH OK; df -h /mnt/ 2>/dev/null | head -5\" 2>&1 | head -10"
   suggested_allow_pattern: "Bash(crontab:*)"
 - prefix: time
   count: 35
@@ -872,11 +872,11 @@
   suggested_allow_pattern: "Bash(LOG_DIR=/mnt/local-analysis/workspace-hub/.claude/work-queue/logs:*)"
 - prefix: ip
   count: 4
-  example_command: "ip addr show | grep \"inet \" && echo \"---\" && hostname && echo \"---\" && ping -c 2 ace-linux-2 2>&1 | tail -5"
+  example_command: "ip addr show | grep \"inet \" && echo \"---\" && hostname && echo \"---\" && ping -c 2 dev-secondary 2>&1 | tail -5"
   suggested_allow_pattern: "Bash(ip:*)"
 - prefix: sshfs
   count: 4
-  example_command: "sshfs vamsee@ace-linux-2:/mnt/local-analysis /mnt/remote/ace-linux-2/local-analysis -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 && echo \"local-analysis: OK\" && ls /mnt/remote/ace-linux-2/local-analysis | head -5"
+  example_command: "sshfs vamsee@dev-secondary:/mnt/local-analysis /mnt/remote/dev-secondary/local-analysis -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 && echo \"local-analysis: OK\" && ls /mnt/remote/dev-secondary/local-analysis | head -5"
   suggested_allow_pattern: "Bash(sshfs:*)"
 - prefix: "PLAN_FILE=\"/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1062/plan_claude.md\""
   count: 4
@@ -1000,7 +1000,7 @@
   suggested_allow_pattern: "Bash(PLAN=$(cat:*)"
 - prefix: (crontab
   count: 3
-  example_command: "(crontab -l; echo \"# claude-memory: daily backup of auto-memory to ace-linux-2 (5AM)\") | crontab - && (crontab -l; echo \"0 5 * * * rsync -a --delete ~/.claude/projects/ ace-linux-2:/mnt/workspace-hub-backup/claude-projects/ >> /tmp/claude-memory-backup.log 2>&1\") | crontab -"
+  example_command: "(crontab -l; echo \"# claude-memory: daily backup of auto-memory to dev-secondary (5AM)\") | crontab - && (crontab -l; echo \"0 5 * * * rsync -a --delete ~/.claude/projects/ dev-secondary:/mnt/workspace-hub-backup/claude-projects/ >> /tmp/claude-memory-backup.log 2>&1\") | crontab -"
   suggested_allow_pattern: "Bash((crontab:*)"
 - prefix: "NOW=\"2026-03-11T11:00:00Z\""
   count: 3
@@ -1060,7 +1060,7 @@
   suggested_allow_pattern: "Bash(GIT_TERMINAL_PROMPT=0:*)"
 - prefix: pdfinfo
   count: 3
-  example_command: "pdfinfo \"/mnt/remote/ace-linux-2/dde/Temp - Oil&Gas/1111PipelayPoster112711APPads.pdf\""
+  example_command: "pdfinfo \"/mnt/remote/dev-secondary/dde/Temp - Oil&Gas/1111PipelayPoster112711APPads.pdf\""
   suggested_allow_pattern: "Bash(pdfinfo:*)"
 - prefix: "PYTHONPATH=\"src:src/digitalmodel/infrastructure:../assetutilities/src\""
   count: 3
@@ -1204,7 +1204,7 @@
   suggested_allow_pattern: "Bash(COMMIT1=$(git:*)"
 - prefix: ping
   count: 2
-  example_command: ping -c 3 192.168.1.103 2>&1
+  example_command: ping -c 3 10.0.0.2 2>&1
   suggested_allow_pattern: "Bash(ping:*)"
 - prefix: REVIEW_CONTENT=$(cat
   count: 2

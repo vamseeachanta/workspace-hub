@@ -89,7 +89,7 @@ Test cases (TDD first):
 Documents:
 - Source: Offshore Magazine survey posters
 - Dates: November 2010 (heavy lift), November 2011 (pipelay)
-- Original paths on ace-linux-2 (archival reference)
+- Original paths on dev-secondary (archival reference)
 - Schema references to processed CSV files
 - Known limitations (data vintage: 2010/2011; some TBD/N/A fields)
 

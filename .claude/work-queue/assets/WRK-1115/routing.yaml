@@ -4,9 +4,9 @@ route: B
 orchestrator: claude
 provider: claude
 provider_alt: gemini
-workstation: ace-linux-1
+workstation: dev-primary
 execution_workstations:
-  - ace-linux-1
+  - dev-primary
 routed_at: "2026-03-10T12:30:00Z"
 routing_decision: >
   Route B — medium complexity, single repo, 1-2 phases.

@@ -30,7 +30,7 @@ npm run dev
 
 ## Notes
 
-- Node.js required (not Python) — check `node --version` on ace-linux-1
+- Node.js required (not Python) — check `node --version` on dev-primary
 - API key optional; app works without it (static fake output)
 - `.env` file — never commit; already in .gitignore (standard Node practice)
 - Project is self-contained inside `examples/claude-code-course/uigen/`

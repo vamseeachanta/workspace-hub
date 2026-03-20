@@ -14,7 +14,7 @@ files_modified:
   - scripts/cron/crontab-template.sh
   - .claude/skills/workspace-hub/session-start/SKILL.md
 executed_at: "2026-03-14T11:47:00Z"
-computer: ace-linux-1
+computer: dev-primary
 integrated_repo_tests:
   - repo: workspace-hub
     command: "bash scripts/cron/tests/test_nightly_smoke_tests.sh"

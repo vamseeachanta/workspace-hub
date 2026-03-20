@@ -5,8 +5,8 @@ approved_by: vamsee
 reviewed_at: "2026-03-13T09:05:29Z"
 review_method: interactive_conversation
 plan_summary: |
-  1. ace-linux-1: already done (12 plugins verified)
-  2. ace-linux-2: SSH in, pull workspace-hub, install 9 plugins, verify
-  3. acma-ansys05: Windows machine, requires manual access
+  1. dev-primary: already done (12 plugins verified)
+  2. dev-secondary: SSH in, pull workspace-hub, install 9 plugins, verify
+  3. licensed-win-1: Windows machine, requires manual access
   4. Verify: claude plugin list + claude doctor on each machine
 notes: "Simple Route A item — inline plan approved by user"

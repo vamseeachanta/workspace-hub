@@ -6,12 +6,12 @@ route: B
 priority: medium
 category: harness
 subcategory: security
-computer: ace-linux-1
+computer: dev-primary
 plan_workstations:
-  - ace-linux-1
+  - dev-primary
 execution_workstations:
-  - ace-linux-1
+  - dev-primary
 notes: |
   Route B (medium). Single implementation target: .claude/settings.json.
   Audit script derives allow list from session JSONLs.
-  Validation on acma-ansys05 required before close (user-confirmed gate in Stage 1 notes).
+  Validation on licensed-win-1 required before close (user-confirmed gate in Stage 1 notes).

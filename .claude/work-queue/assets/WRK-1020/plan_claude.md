@@ -133,4 +133,4 @@ File: `tests/skills/test_update_portfolio_signals.py`
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)

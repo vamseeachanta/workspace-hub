@@ -570,11 +570,11 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
     description: TJG pipelay analysis — hand calc reference matching OrcaFlex S-lay models
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
     description: Mecor pipeline checks — installation load case reference for Mecor OrcaFlex models
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: DNV-OS-F101
   domain: installation
@@ -584,11 +584,11 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
     description: Pipeline weight matching — submerged weight inputs for OrcaFlex hydrodynamic load model
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
     description: Weight verification — validates submerged weight used in OrcaFlex pipelay models
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 apis: []
 gaps: []
@@ -596,12 +596,12 @@ gaps: []
 # =============================================================================
 # OrcaFlex Model Library
 # Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
-# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# All paths on host: dev-secondary under /mnt/remote/dev-secondary/dde/Orcaflex/
 # =============================================================================
 orcaflex_models:
 
 - project: pipelay-davit-lift-verification
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/Karthik Models verification
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/Karthik Models verification
   description: >
     Pipelay davit lift verification models — two OrcaFlex models for davit
     lift operations with and without load (empty condition). Used for
@@ -609,7 +609,7 @@ orcaflex_models:
     Reference models for lift analysis module validation.
   domain: marine
   standards: [DNV-OS-H205, DNV-RP-H103]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 2
   portability: direct
   notes: >

@@ -2,7 +2,7 @@ wrk_id: WRK-5054
 generated_at: "2026-03-13T11:45:00Z"
 recommendations:
   - id: FW-1
-    title: "Ship plan drawing extraction via CAD pipeline on ace-linux-2"
+    title: "Ship plan drawing extraction via CAD pipeline on dev-secondary"
     rationale: "108/110 ship plans yield zero text -- require CAD/image extraction"
     disposition: spun-off-new
     status: deferred

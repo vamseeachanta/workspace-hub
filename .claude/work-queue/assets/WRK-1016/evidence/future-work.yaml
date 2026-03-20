@@ -7,7 +7,7 @@ recommendations:
   - id: FW-1
     title: "OGManufacturing pyproject.toml: add ruff + pytest canonical baseline"
     description: >
-      OGManufacturing submodule was empty on ace-linux-1. When submodule is populated,
+      OGManufacturing submodule was empty on dev-primary. When submodule is populated,
       apply [tool.ruff] with line-length=100, target-version=py311. Run baseline ruff check
       before enabling select rules to avoid CI failures.
     disposition: spun-off-new

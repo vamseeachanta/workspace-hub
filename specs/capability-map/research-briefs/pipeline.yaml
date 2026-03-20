@@ -465,37 +465,37 @@ available_documents:
   source: ace_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/documents/0116 Thinwall Pipe FEA/References/6-ASle
+- path: /mnt/remote/dev-secondary/dde/documents/0116 Thinwall Pipe FEA/References/6-ASle
     Venas_40 years of offshore pipeline design codes_tcm14-80445.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/documents/0172 STA Drilling Riser Analysis/2018-07-19
+- path: /mnt/remote/dev-secondary/dde/documents/0172 STA Drilling Riser Analysis/2018-07-19
     REPSOL RISER ANALYSIS/CODES/DNVGL/DNVGL-RP-F105 Free spanning pipelines.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/documents/0172 STA Drilling Riser Analysis/2018-07-31
+- path: /mnt/remote/dev-secondary/dde/documents/0172 STA Drilling Riser Analysis/2018-07-31
     REPSOL RISER ANALYSIS/CODES/DNVGL/DNVGL-RP-F105 Free spanning pipelines.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/documents/611 Mecor Pipeline Installation Analysis/Client
+- path: /mnt/remote/dev-secondary/dde/documents/611 Mecor Pipeline Installation Analysis/Client
     Data/Pipeline Design Calculations - machine translation.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/documents/611 Mecor Pipeline Installation Analysis/Codes/EWI
+- path: /mnt/remote/dev-secondary/dde/documents/611 Mecor Pipeline Installation Analysis/Codes/EWI
     Strain Based Pipeline Design.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/DNV/DNV Guidelines/DNV
+- path: /mnt/remote/dev-secondary/dde/0000 O&G/0000 Codes & Standards/DNV/DNV Guidelines/DNV
     GUI 14/DNV GUI 14 (1998) Free Spanning Pipelines.PDF
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended
+- path: /mnt/remote/dev-secondary/dde/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended
     Practices/DNV RP F105/DNV RP F105 (2002) Free Spanning Pipelines.pdf
   source: dde_project
   summary: null

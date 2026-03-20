@@ -3,4 +3,4 @@ stage: 3
 route: A
 complexity: simple
 triaged_at: "2026-03-09T01:30:00Z"
-notes: Single file edit, ace-linux-1 only, no cross-review required.
+notes: Single file edit, dev-primary only, no cross-review required.

@@ -11,6 +11,6 @@ moved_to: working/WRK-1031.md
 orchestrator: claude
 session_id: session-20260307-wrk1031
 orchestrator_agent: claude
-workstation: ace-linux-1
+workstation: dev-primary
 next_stage: 9
 next_stage_name: Work-Queue Routing

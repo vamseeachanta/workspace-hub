@@ -24,7 +24,7 @@ This document is the canonical reference for consistent extension setup across a
 
 ## Installation Steps
 
-### Linux (ace-linux-1, ace-linux-2)
+### Linux (dev-primary, dev-secondary)
 
 1. Open Chrome (must be the profile used for Claude Code sessions — default: `Default` profile)
 2. Navigate to: `https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn`
@@ -32,7 +32,7 @@ This document is the canonical reference for consistent extension setup across a
 4. Verify the extension icon appears in the toolbar (puzzle icon → pin if needed)
 5. Sign in with the same Anthropic account used for Claude Code CLI
 
-### Windows Git Bash (ACMA-ANSYS05, acma-ws014)
+### Windows Git Bash (licensed-win-1, licensed-win-2)
 
 Same steps as Linux — Chrome installation is identical. Use the Chrome profile
 that matches the user session (default profile unless explicitly separated).
@@ -65,10 +65,10 @@ Expected output: `OK  name=Claude version=1.0.55` (or higher)
 
 | Machine | OS | Version | Date Verified | Notes |
 |---|---|---|---|---|
-| ace-linux-1 | Ubuntu 24.04 | 1.0.55 | 2026-02-24 | Default profile |
-| ace-linux-2 | Linux | TBD | — | Pending audit |
-| ACMA-ANSYS05 | Windows 11 | TBD | — | Pending audit |
-| acma-ws014 | Windows 11 | TBD | — | Pending audit |
+| dev-primary | Ubuntu 24.04 | 1.0.55 | 2026-02-24 | Default profile |
+| dev-secondary | Linux | TBD | — | Pending audit |
+| licensed-win-1 | Windows 11 | TBD | — | Pending audit |
+| licensed-win-2 | Windows 11 | TBD | — | Pending audit |
 
 ---
 

@@ -7,7 +7,7 @@
 
 | Module | Repo | Type | Domain | Tools | Computer |
 |--------|------|------|--------|-------|----------|
-| CAD-DEVELOPMENTS | [bakkiprasad5669/CAD-DEVELOPMENTS](https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS) | FEA pipeline | Marine / Structural | FreeCAD, Gmsh, CalculiX, FEniCS, Elmer, Blender | ace-linux-2 |
+| CAD-DEVELOPMENTS | [bakkiprasad5669/CAD-DEVELOPMENTS](https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS) | FEA pipeline | Marine / Structural | FreeCAD, Gmsh, CalculiX, FEniCS, Elmer, Blender | dev-secondary |
 
 ### CAD-DEVELOPMENTS
 

@@ -6,7 +6,7 @@ Access your Linux workspace machine terminal from anywhere using SSH through Tab
 
 **Linux Workspace Machine:**
 - **Hostname:** vamsee-linux1
-- **Local IP:** 192.168.1.100
+- **Local IP:** 10.0.0.1
 - **Username:** vamsee
 - **SSH Port:** 22
 
@@ -23,13 +23,13 @@ Access your Linux workspace machine terminal from anywhere using SSH through Tab
 
 **Using command line:**
 ```bash
-ssh vamsee@192.168.1.100
+ssh vamsee@10.0.0.1
 ```
 
 **Using Tabby manually:**
 1. Open Tabby → New Tab → SSH Connection
 2. Enter:
-   - Host: 192.168.1.100
+   - Host: 10.0.0.1
    - User: vamsee
    - Port: 22
 3. Save profile (optional)
@@ -71,12 +71,12 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 
 **Copy key to Linux workspace:**
 ```bash
-ssh-copy-id vamsee@192.168.1.100
+ssh-copy-id vamsee@10.0.0.1
 ```
 
 **Test connection:**
 ```bash
-ssh vamsee@192.168.1.100
+ssh vamsee@10.0.0.1
 ```
 
 ### Update Tabby Profile:
@@ -89,8 +89,8 @@ profiles:
     type: ssh
     id: workspace-linux-main
     options:
-      host: 192.168.1.100
-      user: vamsee
+      host: 10.0.0.1
+      user: devuser
       port: 22
       privateKey: ~/.ssh/id_ed25519  # Linux/Mac
       # privateKey: C:\Users\YourName\.ssh\id_ed25519  # Windows
@@ -103,7 +103,7 @@ To access from outside your local network:
 ### Option 1: Port Forwarding (Requires Router Access)
 
 1. **Configure router:**
-   - Forward external port (e.g., 2222) to 192.168.1.100:22
+   - Forward external port (e.g., 2222) to 10.0.0.1:22
    - Set up Dynamic DNS (recommended)
 
 2. **Update connection:**
@@ -131,7 +131,7 @@ To access from outside your local network:
 
 Use a cloud server as jump host:
 ```bash
-ssh -J jumphost@cloud-server.com vamsee@192.168.1.100
+ssh -J jumphost@cloud-server.com vamsee@10.0.0.1
 ```
 
 ## Tabby Features for Remote Access
@@ -163,10 +163,10 @@ tmux attach -t workspace
 **Using SCP:**
 ```bash
 # Upload to Linux workspace
-scp file.txt vamsee@192.168.1.100:~/
+scp file.txt vamsee@10.0.0.1:~/
 
 # Download from Linux workspace
-scp vamsee@192.168.1.100:~/file.txt ./
+scp vamsee@10.0.0.1:~/file.txt ./
 ```
 
 **Using Tabby SFTP:**
@@ -201,7 +201,7 @@ hostname -I
 Edit `~/.ssh/config` on remote machine:
 ```
 Host workspace
-    HostName 192.168.1.100
+    HostName 10.0.0.1
     User vamsee
     ServerAliveInterval 60
     ServerAliveCountMax 10
@@ -265,7 +265,7 @@ profiles:
   # Local network
   - name: Workspace (Local)
     options:
-      host: 192.168.1.100
+      host: 10.0.0.1
   
   # Internet (port forwarding)
   - name: Workspace (Internet)

@@ -5,5 +5,5 @@ claimed_by: claude
 claimed_at: "2026-03-13T20:00:00Z"
 plan_approved: true
 plan_reviewed: true
-workstation: ace-linux-1
+workstation: dev-primary
 route: C

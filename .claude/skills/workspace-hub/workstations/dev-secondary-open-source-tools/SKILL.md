@@ -1,15 +1,15 @@
 ---
-name: workstations-ace-linux-2-open-source-tools
-description: 'Sub-skill of workstations: ace-linux-2 open-source tools.'
+name: workstations-dev-secondary-open-source-tools
+description: 'Sub-skill of workstations: dev-secondary open-source tools.'
 version: 3.0.0
 category: workspace-hub
 type: reference
 scripts_exempt: true
 ---
 
-# ace-linux-2 open-source tools
+# dev-secondary open-source tools
 
-## ace-linux-2 open-source tools
+## dev-secondary open-source tools
 
 
 | Tool | Domain | Notes |

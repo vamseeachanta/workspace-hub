@@ -5,9 +5,9 @@ route: B
 orchestrator: claude
 provider: claude
 provider_alt: codex
-execution_workstations: [ace-linux-1]
+execution_workstations: [dev-primary]
 skill_invoked: work-queue-workflow
 routing_decision: >
-  Route B medium — 6-phase plan approved. Execution on ace-linux-1.
+  Route B medium — 6-phase plan approved. Execution on dev-primary.
   Claude orchestrates all phases; Codex hard-gate at Phase 6 cross-review.
   Phases are sequential: catalog → trust assessment → install → registry eval → doc → review.

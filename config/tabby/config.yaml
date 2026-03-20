@@ -4,8 +4,8 @@ profiles:
     type: ssh
     id: workspace-linux-local
     options:
-      host: 192.168.1.100
-      user: vamsee
+      host: 10.0.0.1
+      user: devuser
       port: 22
     group: Workspace Machines
     color: '#00ff00'
@@ -14,8 +14,8 @@ profiles:
     type: ssh
     id: workspace-linux-tailscale
     options:
-      host: 100.107.64.76
-      user: vamsee
+      host: 10.1.0.1
+      user: devuser
       port: 22
     group: Workspace Machines
     color: '#00aaff'

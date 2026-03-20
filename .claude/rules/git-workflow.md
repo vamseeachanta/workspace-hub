@@ -70,7 +70,7 @@ See `.claude/docs/pr-process.md` for PR requirements, review process, merge stra
 
 ## Solo / Multi-Workstation Policy
 
-> Single developer, multiple machines (ace-linux-1, ace-linux-2, acma-ansys05).
+> Single developer, multiple machines (dev-primary, dev-secondary, licensed-win-1).
 
 **Default: commit directly to `main`, push immediately after every commit.**
 Never leave commits unpushed — push is part of the commit step.

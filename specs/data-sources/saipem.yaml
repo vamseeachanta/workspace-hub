@@ -570,11 +570,11 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
     description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis (Clean & Release).xlsx
     description: Released TJG pipelay analysis — final results for installation design basis
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 - standard: ISO 13624-1
   domain: installation
@@ -586,15 +586,15 @@ calc_examples:
   - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0001-01 (Engineering).xlsx
     description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0004-01 SEMI Key Dimensions.xlsx
     description: SEMI key dimensions — tensioner cart geometry and interface dimensions
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
   - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0005-01 FDAS Work Scopes.xlsx
     description: FDAS work scopes — tensioner cart design phases and analysis scope definition
     type: xlsx
-    host: ace-linux-1
+    host: dev-primary
 
 apis: []
 gaps: []
@@ -602,12 +602,12 @@ gaps: []
 # =============================================================================
 # OrcaFlex Model Library
 # Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
-# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# All paths on host: dev-secondary under /mnt/remote/dev-secondary/dde/Orcaflex/
 # =============================================================================
 orcaflex_models:
 
 - project: s-lay-pipeline-installation
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation
   description: >
     S-lay pipelay installation analysis model library for two pipeline projects.
     BigFoot1 (170 files) and Quetzal (436 files) contain vessel-specific S-lay
@@ -616,22 +616,22 @@ orcaflex_models:
     Key inputs for DNV-OS-F101 pipelay stress and buckle initiation checks.
   domain: installation
   standards: [DNV-OS-F101, DNV-RP-F110]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 1514
   portability: direct
   subprojects:
     - name: BigFoot1
-      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/BigFoot1/Latest
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/BigFoot1/Latest
       description: S-lay configuration — Abandonment & Recovery, Pull-in, weight matching
     - name: Quetzal
-      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/Quetzal
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/Quetzal
       description: Quetzal pipeline S-lay — multiple water depths and load cases
     - name: Reference
-      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/Reference
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/Reference
       description: Reference base model — 3 files, clean starting point
 
 - project: sewol-salvage-marine-ops
-  path: /mnt/remote/ace-linux-2/dde/Orcaflex/614 Sewol
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/614 Sewol
   description: >
     Marine salvage operation OrcaFlex models for the Sewol vessel.
     Includes side-lift, detailed hull modelling, and iterative revisions
@@ -639,7 +639,7 @@ orcaflex_models:
     operations analysis and crane/sling load calculations.
   domain: marine
   standards: [DNV-OS-H205]
-  host: ace-linux-2
+  host: dev-secondary
   file_count: 25
   portability: direct
   notes: >

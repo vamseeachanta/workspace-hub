@@ -20,7 +20,7 @@ WRK-1251 aims to enable production-grade FreeCAD automation for hull generation,
 
 ### True Remaining Gaps
 
-1. **CalculiX (`ccx`) not installed** on ace-linux-2 — hard blocker for FEM integration tests
+1. **CalculiX (`ccx`) not installed** on dev-secondary — hard blocker for FEM integration tests
 2. **Hull hydrostatics not validated** against analytical (2% AC tolerance)
 3. **Design table lacks FEM mode** — only does hull hydrostatics, not structural FEM
 4. **No end-to-end round-trip test** — individual pieces untested as a chain
@@ -30,7 +30,7 @@ WRK-1251 aims to enable production-grade FreeCAD automation for hull generation,
 
 | Child key | Title | Scope (one sentence) | Depends on | Agent | wrk_ref |
 |-----------|-------|----------------------|------------|-------|---------|
-| child-a | CalculiX installation and FEM chain validation | Install ccx on ace-linux-2, run existing FEM tests, verify plate-with-hole Kt within 5% of 3.0 | — | claude | |
+| child-a | CalculiX installation and FEM chain validation | Install ccx on dev-secondary, run existing FEM tests, verify plate-with-hole Kt within 5% of 3.0 | — | claude | |
 | child-b | Hull hydrostatics analytical validation | Validate HullHydrostatics against box-barge analytical (V, Awp, KB, BM) within 2% tolerance | — | claude | |
 | child-c | Design table FEM extension | Add batch FEM mode to DesignTable — vary plate/hole params, run FEMChain, export comparison YAML | child-a | claude | |
 | child-d | Round-trip pipeline integration test | Chain FreeCAD hull → STEP → gmsh mesh → STL → ManifoldChecker and verify closed surface | child-b | claude | |
@@ -45,7 +45,7 @@ WRK-1251 aims to enable production-grade FreeCAD automation for hull generation,
 - `digitalmodel/src/digitalmodel/solvers/calculix/result_parser.py`
 
 **Acceptance Criteria:**
-- [ ] `ccx` binary installed and callable on ace-linux-2
+- [ ] `ccx` binary installed and callable on dev-secondary
 - [ ] `test_fem_chain.py` integration tests pass (previously skipped due to no ccx)
 - [ ] Plate-with-hole Kt within 5% of 3.0 (d/W < 0.3)
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# WRK-294: Standardize ace-linux-1 mount path documentation
-# Run as: sudo bash scripts/operations/wrk-294-ace-linux-1.sh
+# WRK-294: Standardize dev-primary mount path documentation
+# Run as: sudo bash scripts/operations/wrk-294-dev-primary.sh
 #
 # What this does:
 #   1. Verifies fstab entries use UUID (not device names)
@@ -19,12 +19,12 @@ ok()   { echo -e "${GREEN}[OK]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 fail() { echo -e "${RED}[FAIL]${NC} $1"; }
 
-echo "=== WRK-294: ace-linux-1 Mount Standardization ==="
+echo "=== WRK-294: dev-primary Mount Standardization ==="
 echo ""
 
-# ── Step 0: Verify we're on ace-linux-1 ──────────────────────────────
-if [[ "$(hostname)" != "ace-linux-1" ]]; then
-    fail "This script must run on ace-linux-1 (current: $(hostname))"
+# ── Step 0: Verify we're on dev-primary ──────────────────────────────
+if [[ "$(hostname)" != "dev-primary" ]]; then
+    fail "This script must run on dev-primary (current: $(hostname))"
     exit 1
 fi
 
@@ -115,7 +115,7 @@ fi
 echo ""
 echo "=== Summary ==="
 if $PASS; then
-    ok "All mounts verified. ace-linux-1 drive naming is standardized."
+    ok "All mounts verified. dev-primary drive naming is standardized."
     echo ""
     echo "  Drive map:"
     echo "    /mnt/ace            — 7.3 TB Seagate (bulk data, documents, O&G standards)"

@@ -12,7 +12,7 @@ scan_results:
   flagged_for_reassignment: 0
   reviewed_but_valid:
     - id: WRK-5013
-      reason: "Windows bug fix — needs acma-ansys05 for testing"
+      reason: "Windows bug fix — needs licensed-win-1 for testing"
 verification:
   yaml_valid: true
   assign_workstations_dry_run: "0 errors"

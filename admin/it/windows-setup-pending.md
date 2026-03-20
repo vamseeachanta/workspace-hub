@@ -13,22 +13,22 @@ Remote deployment is not available (no SSH, no remote management).
 
 | Machine | OS | Status | Notes |
 |---|---|---|---|
-| ACMA-ANSYS05 | Windows 11 | Pending — operator on-site required | ANSYS workstation |
-| acma-ws014 | Windows 11 | Pending — operator on-site required | Dev workstation |
+| licensed-win-1 | Windows 11 | Pending — operator on-site required | ANSYS workstation |
+| licensed-win-2 | Windows 11 | Pending — operator on-site required | Dev workstation |
 
 ---
 
-## ace-linux-2 Deployment — SSH Attempt Blocked
+## dev-secondary Deployment — SSH Attempt Blocked
 
-SSH deployment to ace-linux-2 was attempted on 2026-02-24 but failed:
+SSH deployment to dev-secondary was attempted on 2026-02-24 but failed:
 
 ```
 ssh -o BatchMode=yes -o ConnectTimeout=5 ace2 hostname
 # Result: SSH FAILED (connection refused / host unreachable)
 ```
 
-ace-linux-2 deployment must be completed manually when SSH access is restored.
-Target path on ace-linux-2: `/mnt/workspace-hub/`
+dev-secondary deployment must be completed manually when SSH access is restored.
+Target path on dev-secondary: `/mnt/workspace-hub/`
 
 Deployment commands (run when SSH is available):
 

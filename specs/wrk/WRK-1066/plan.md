@@ -1,11 +1,11 @@
 # WRK-1066 Plan — Environment Parity Audit
 
-Route: A (simple) — inline plan, single executor (claude on ace-linux-1).
+Route: A (simple) — inline plan, single executor (claude on dev-primary).
 Revised through 12 rounds of Codex cross-review.
 
 ## Steps
 
-1. **`scripts/readiness/harness-config.yaml`** — add `linux_reachable: false` to acma-ansys05 block.
+1. **`scripts/readiness/harness-config.yaml`** — add `linux_reachable: false` to licensed-win-1 block.
 
 2. **`scripts/maintenance/ai-tools-status.sh`** — pure collector/analyzer:
    - Reads `harness-config.yaml` for connection details (no hardcoded hosts)
@@ -28,5 +28,5 @@ Revised through 12 rounds of Codex cross-review.
 
 ## Deferred
 
-- acma-ansys05 version collection: Windows, no SSH; requires local Git Bash session
-- ace-linux-2 version collection: offline at execution time; auto-collects on next weekly cron
+- licensed-win-1 version collection: Windows, no SSH; requires local Git Bash session
+- dev-secondary version collection: offline at execution time; auto-collects on next weekly cron

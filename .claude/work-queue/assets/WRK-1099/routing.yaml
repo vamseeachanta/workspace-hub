@@ -2,9 +2,9 @@ wrk_id: WRK-1099
 stage: 9
 routed_at: "2026-03-10T06:40:00Z"
 route: A
-execution_machine: ace-linux-1
+execution_machine: dev-primary
 orchestrator: claude
 provider: claude
 rationale: >
   Simple complexity (Route A); single file change to scripts/work-queue/whats-next.sh;
-  no cross-machine deps; ace-linux-1 is the designated execution workstation.
+  no cross-machine deps; dev-primary is the designated execution workstation.

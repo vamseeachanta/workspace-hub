@@ -1,7 +1,7 @@
 # Gate Evidence Summary — WRK-1038
 
 **Generated:** 2026-03-08
-**Route:** A (Simple) | **Workstation:** ace-linux-1 | **Retroactive capture**
+**Route:** A (Simple) | **Workstation:** dev-primary | **Retroactive capture**
 
 ## Stage Gate Status
 
@@ -9,7 +9,7 @@
 |-------|------|--------|-------|
 | 1  | Capture | ✅ done | WRK-1038.md created in working/ |
 | 2  | Resource Intelligence | ✅ done | Settings files + log structure inspected |
-| 3  | Triage | ✅ done | Route A, simple, ace-linux-1 |
+| 3  | Triage | ✅ done | Route A, simple, dev-primary |
 | 4  | Plan Draft | ✅ done | Inline plan, all steps executed |
 | 5  | User Review — Plan Draft | ⬜ n/a | User waived: "no user review needed" |
 | 6  | Cross-Review | ✅ done | 2 parallel agents, both APPROVE |

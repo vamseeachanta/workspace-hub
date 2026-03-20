@@ -2,7 +2,7 @@ wrk_id: WRK-1020
 stage: work_execution
 executed_at: "2026-03-08T11:30:00Z"
 orchestrator: claude
-workstation: ace-linux-1
+workstation: dev-primary
 integrated_repo_tests:
   - name: test_update_portfolio_signals
     scope: integrated

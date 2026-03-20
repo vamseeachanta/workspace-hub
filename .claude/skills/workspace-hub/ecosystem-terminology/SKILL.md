@@ -144,10 +144,10 @@ related_skills:
 
 | Canonical | Aliases (OK in casual chat) | Never Use | Notes |
 |-----------|---------------------------|-----------|-------|
-| `ace-linux-1` | primary, ace1-machine | ace1, linux-1, machine1 | Primary orchestration machine |
-| `ace-linux-2` | secondary, ace2-machine | ace2, linux-2, machine2 | Secondary Linux / CFD-FEA dev |
-| `acma-ansys05` | ansys-machine, orcaflex-machine | ansys5, acma5 | Windows, OrcaFlex license-locked |
-| `acma-ws014` | windows-machine | ws14, acma14 | Windows 11 workstation |
+| `dev-primary` | primary, ace1-machine | ace1, linux-1, machine1 | Primary orchestration machine |
+| `dev-secondary` | secondary, ace2-machine | ace2, linux-2, machine2 | Secondary Linux / CFD-FEA dev |
+| `licensed-win-1` | ansys-machine, orcaflex-machine | ansys5, acma5 | Windows, OrcaFlex license-locked |
+| `licensed-win-2` | windows-machine | ws14, acma14 | Windows 11 workstation |
 | `gali-linux-compute-1` | gali-compute | gali1, compute1 | Heavy-compute Linux (planned) |
 | vamsee | — | user (in evidence `reviewer` field use `vamsee`) | Repo owner |
 
@@ -162,8 +162,8 @@ related_skills:
 | `og_manufacturing` | `OGManufacturing` (repo) / `ogmanufacturing` (package) | Mixed-case rule |
 | `work_queue` | `work-queue` | Wrong directory name |
 | `skill.md` | `SKILL.md` | Incorrect capitalisation |
-| `ace1`, `linux-1` | `ace-linux-1` | Non-canonical machine shorthand |
-| `ace2`, `linux-2` | `ace-linux-2` | Non-canonical machine shorthand |
+| `ace1`, `linux-1` | `dev-primary` | Non-canonical machine shorthand |
+| `ace2`, `linux-2` | `dev-secondary` | Non-canonical machine shorthand |
 | `AssetUtilities` | `assetutilities` | PascalCase is wrong for package/repo ID |
 | `DigitalModel` | `digitalmodel` | PascalCase is wrong for package/repo ID |
 | `WorldEnergyData` | `worldenergydata` | PascalCase is wrong for package/repo ID |

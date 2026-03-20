@@ -4,5 +4,5 @@ activated_by: claude
 route: B
 complexity: medium
 set_active_wrk: true
-session_id: "ace-linux-1-20260316-0900"
+session_id: "dev-primary-20260316-0900"
 orchestrator_agent: claude

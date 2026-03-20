@@ -68,7 +68,7 @@ cat .claude/state/session-analysis/bootstrap-$(date +%Y-%m-%d).md
 ```
 
 Known machines with session data:
-- `ace-linux-1` (primary — 241+ sessions)
+- `dev-primary` (primary — 241+ sessions)
 - Any other machines where Claude Code has been run
 
 ## Re-running

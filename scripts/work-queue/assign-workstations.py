@@ -30,45 +30,45 @@ STATUS_DIRS = ["pending", "working", "blocked"]
 
 KEYWORD_RULES: list[tuple[list[str], str]] = [
     # License-locked tools — highest priority
-    (["orcaflex", "orcawave", "ansys", "aqwa"], "acma-ansys05"),
-    # Open-source FEA/CFD/animation — ace-linux-2 speciality
+    (["orcaflex", "orcawave", "ansys", "aqwa"], "licensed-win-1"),
+    # Open-source FEA/CFD/animation — dev-secondary speciality
     (["openfoam", "blender", "gmsh", "calculix", "fenics", "fenicsx",
       "freecad", "elmer", "cfd", "fea-hpc", "heavy-compute", "large-sim"],
-     "ace-linux-2"),
+     "dev-secondary"),
     # GPU-heavy compute
     (["gali", "gpu-training", "cuda-training"], "gali-linux-compute-1"),
     # Windows-only tools
-    (["solidworks", "windows-only", "ms-office", "excel-macro"], "acma-ws014"),
+    (["solidworks", "windows-only", "ms-office", "excel-macro"], "licensed-win-2"),
 ]
 
 REPO_RULES: dict[str, str] = {
-    "worldenergydata": "ace-linux-1",
-    "aceengineer-website": "ace-linux-1",
-    "aceengineer-admin": "ace-linux-1",
-    "aceengineer-strategy": "ace-linux-1",
-    "workspace-hub": "ace-linux-1",
-    "digitalmodel": "ace-linux-1",
-    "assetutilities": "ace-linux-1",
-    "assethold": "ace-linux-1",
-    "achantas-data": "ace-linux-1",
-    "hobbies": "ace-linux-1",
-    "investments": "ace-linux-1",
-    "sabithaandkrishnaestates": "ace-linux-1",
-    "saipem": "ace-linux-1",
-    "rock-oil-field": "ace-linux-1",
-    "OGManufacturing": "ace-linux-1",
-    "doris": "ace-linux-1",
-    "frontierdeepwater": "ace-linux-1",
-    "acma-projects": "ace-linux-1",  # default; keyword rules may override
-    "pdf-large-reader": "ace-linux-1",
-    "pyproject-starter": "ace-linux-1",
+    "worldenergydata": "dev-primary",
+    "aceengineer-website": "dev-primary",
+    "aceengineer-admin": "dev-primary",
+    "aceengineer-strategy": "dev-primary",
+    "workspace-hub": "dev-primary",
+    "digitalmodel": "dev-primary",
+    "assetutilities": "dev-primary",
+    "assethold": "dev-primary",
+    "achantas-data": "dev-primary",
+    "hobbies": "dev-primary",
+    "investments": "dev-primary",
+    "sabithaandkrishnaestates": "dev-primary",
+    "saipem": "dev-primary",
+    "rock-oil-field": "dev-primary",
+    "OGManufacturing": "dev-primary",
+    "doris": "dev-primary",
+    "frontierdeepwater": "dev-primary",
+    "acma-projects": "dev-primary",  # default; keyword rules may override
+    "pdf-large-reader": "dev-primary",
+    "pyproject-starter": "dev-primary",
 }
 
-DEFAULT_MACHINE = "ace-linux-1"
+DEFAULT_MACHINE = "dev-primary"
 
 # Items whose title or tags suggest they are purely machine-agnostic
 # (hub-only docs, skill files, queue management with no external tooling)
-# We still assign ace-linux-1 rather than leaving blank, per SKILL.md.
+# We still assign dev-primary rather than leaving blank, per SKILL.md.
 
 
 def _read_frontmatter(path: Path) -> tuple[str, str, str]:

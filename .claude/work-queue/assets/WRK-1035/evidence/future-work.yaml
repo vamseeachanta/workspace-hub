@@ -19,7 +19,7 @@ recommendations:
 
   - id: FW-03
     title: Stage 17 live validation — comprehensive-learning nightly integration
-    description: Wire day-N.md generation into comprehensive-learning pipeline on ace-linux-1
+    description: Wire day-N.md generation into comprehensive-learning pipeline on dev-primary
     disposition: existing-updated
     status: pending
     captured: true

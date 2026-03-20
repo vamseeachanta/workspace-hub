@@ -3,7 +3,7 @@ stage: 10
 executed_by: claude
 executed_at: "2026-03-07T00:00:00Z"
 commit: 95ca596a
-workstation: ace-linux-1
+workstation: dev-primary
 phases_complete:
   - phase: 1
     description: Schema + Micro-Skill Contract (SKILL.md changes 1-4)

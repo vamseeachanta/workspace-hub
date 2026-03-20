@@ -1,6 +1,6 @@
 # WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction
 
-**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-09
+**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-09
 
 ---
 

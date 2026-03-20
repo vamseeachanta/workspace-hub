@@ -2,12 +2,12 @@ wrk_id: WRK-1087
 generated_at: 2026-03-09T22:00:00Z
 recommendations:
   - wrk_id: WRK-1090
-    title: "feat(audit): extend audit trail to ace-linux-2 and acma-ansys05 agents"
+    title: "feat(audit): extend audit trail to dev-secondary and licensed-win-1 agents"
     disposition: spun-off-new
     status: captured
     captured: true
     notes: >
-      Current implementation covers ace-linux-1 only. Extend session.sh integration
+      Current implementation covers dev-primary only. Extend session.sh integration
       to remote machines so multi-machine sessions contribute to the same audit log
       (or per-machine logs with aggregation query support).
   - wrk_id: WRK-1091

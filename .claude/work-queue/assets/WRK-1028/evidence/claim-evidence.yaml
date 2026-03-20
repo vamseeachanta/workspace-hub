@@ -2,7 +2,7 @@ wrk_id: WRK-1028
 stage: 8
 claimed_at: "2026-03-07T20:05:00Z"
 orchestrator: claude
-workstation: ace-linux-1
+workstation: dev-primary
 quota_snapshot:
   claude:
     tier: max
@@ -21,4 +21,4 @@ quota_snapshot:
     pct_remaining: 100
 quota_assessment: proceed
 quota_note: "Claude Max has ample headroom. Codex at 54% — adequate for cross-review (Stage 13). Gemini at 100%."
-active_wrk_set: "ace-linux-1"
+active_wrk_set: "dev-primary"

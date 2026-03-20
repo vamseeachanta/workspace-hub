@@ -25,7 +25,7 @@ existing_infrastructure:
 dependency_check:
   - WRK-1019: archived ✓
   - portfolio-signals.yaml schema: defined in WRK-1019 plan.md ✓
-  - gemini CLI: available on ace-linux-1 (version 0.27.3)
+  - gemini CLI: available on dev-primary (version 0.27.3)
   - PyYAML: available (preflight in comprehensive-learning-nightly.sh confirms)
 
 open_questions:

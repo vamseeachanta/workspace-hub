@@ -124,7 +124,7 @@
 |-------|---------|
 | **Triggers** | Session ends, nightly cron (22:00), user invokes `/comprehensive-learning`; "fire-and-forget" — not triggered mid-WRK |
 | **Inputs** | `logs/orchestrator/` JSONL and plain-text session logs; `candidates/`, `corrections/`, `patterns/`, `session-signals/` state dirs; per-machine committed derived state |
-| **Outputs** | Phase 1-9 outputs on all machines: insights, reflect, knowledge, patterns, memory compaction, action candidates, WRK items from candidates; Phase 10a/10 on ace-linux-1: cross-machine compilation report |
+| **Outputs** | Phase 1-9 outputs on all machines: insights, reflect, knowledge, patterns, memory compaction, action candidates, WRK items from candidates; Phase 10a/10 on dev-primary: cross-machine compilation report |
 | **Handoffs** | → `/improve` (Phase 4); → `/reflect` (Phase 2); → `/knowledge` (Phase 3); → `/insights` (Phase 1); these sub-skills must NOT run standalone during sessions |
 | **Negative scope** | Does NOT govern WRK lifecycle stages; does NOT enforce gates; does NOT run during live WRK execution; explicitly prohibits standalone sub-skills during sessions |
 

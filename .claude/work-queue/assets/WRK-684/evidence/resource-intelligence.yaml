@@ -5,7 +5,7 @@ findings_summary: |
   Source and destination scripts are identified and readable.
   comprehensive-learning outputs Markdown tables; /today sections are bash-generated.
   A clean parser needed for integration. Path is clear — no blockers.
-  Cross-machine sync noted: ensure reports from ace-linux-1 are available before /today runs.
+  Cross-machine sync noted: ensure reports from dev-primary are available before /today runs.
 skills:
   core_used:
     - work-queue

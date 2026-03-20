@@ -7,4 +7,4 @@ rationale: >
   3 files to patch + 3 TDD tests + skill already created.
   Clear scope, no architectural decisions needed.
   Multi-provider cross-review required at Stage 6 (Route B).
-computer: ace-linux-1
+computer: dev-primary

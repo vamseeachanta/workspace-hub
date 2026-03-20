@@ -296,10 +296,10 @@ priority: medium
 complexity: medium
 route: B
 created_at: 2026-03-09
-computer: ace-linux-1
+computer: dev-primary
 orchestrator: claude
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: harness
 subcategory: performance-profiling
 related: [WRK-1054]
@@ -407,15 +407,15 @@ source = ["src"]
 #   bash scripts/cron/setup-cron.sh --dry-run     # preview without changes
 #
 # MACHINE ROLES:
-#   full              ace-linux-1  — nightly pipeline + all maintenance
-#   contribute        ace-linux-2  — repo sync only
-#   contribute-minimal ACMA-ANSYS05 / acma-ws014  — Windows Task Scheduler
+#   full              dev-primary  — nightly pipeline + all maintenance
+#   contribute        dev-secondary  — repo sync only
+#   contribute-minimal licensed-win-1 / licensed-win-2  — Windows Task Scheduler
 #
 # FORMAT:  # ROLE: <role>
 #          <cron-schedule>  <command>
 # ─────────────────────────────────────────────────────────────────────────────
 
-# ── ROLE: full (ace-linux-1) ──────────────────────────────────────────────────
+# ── ROLE: full (dev-primary) ──────────────────────────────────────────────────
 
  succeeded in 50ms:
 #!/usr/bin/env bash

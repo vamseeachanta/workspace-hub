@@ -3,9 +3,9 @@ completed_at: 2026-03-08T14:45:00Z
 route: C
 complexity: complex
 priority: high
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 route_rationale: >
   Upgraded from B to C. Scope covers 17 user thoughts, 27 canonical rules,
   skill pruning of 6 work/workflow skills, new stage gate artifacts, gate

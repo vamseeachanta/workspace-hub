@@ -2,7 +2,7 @@
 
 date: 2026-03-06
 runner: claude
-machine: ace-linux-1
+machine: dev-primary
 command: bash scripts/session/tests/test_detect_drift.sh
 
 ## TDD Cycle

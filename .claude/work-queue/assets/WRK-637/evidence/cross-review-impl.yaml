@@ -41,8 +41,8 @@ findings_resolved:
       regex; unknown commands default to keep (conservative)"
     verified_by_test: test_compact_log_written
   - id: P2-path-staleness-cross-machine
-    description: "os.path.exists() on ace-linux-1 false-positives for paths valid on
-      ace-linux-2 or Windows"
+    description: "os.path.exists() on dev-primary false-positives for paths valid on
+      dev-secondary or Windows"
     resolution: "Rule 2 now gated behind --check-paths opt-in flag; disabled by default"
     verified_by_test: test_path_staleness_skipped_without_flag
   - id: P2-keep-scope-undocumented

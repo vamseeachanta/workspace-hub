@@ -44,7 +44,7 @@ Evidence from hook log tool distribution and transcript content analysis:
 
 | Section / File | Evidence of Use | Noise Assessment |
 |---|---|---|
-| CLAUDE.md: Windows Compatibility (404b) | No Windows tool calls observed; server is Linux (`uname -a: Linux ace-linux-1`) | Loaded every session, never triggered |
+| CLAUDE.md: Windows Compatibility (404b) | No Windows tool calls observed; server is Linux (`uname -a: Linux dev-primary`) | Loaded every session, never triggered |
 | CLAUDE.md: SPARC Modes (82b) | 0 SPARC mentions across 3 transcript sessions; `sparc` agents exist but no `/sparc-*` invocations seen | Likely never invoked in recent sessions |
 | CLAUDE.md: Resource Index (1095b) | Content is a compressed duplicate of `.claude/RESOURCE_INDEX.md`; not cited in transcripts | Redundant with auto-generated full index |
 | CLAUDE.md: Plan Mode Convention (836b) | Cross-review procedure also in `work-queue/process.md` and MEMORY.md gate rules | Partial overlap with 2 other files |
@@ -219,7 +219,7 @@ CODEX.md and GEMINI.md carry only: Required Gates (WRK mapping, approval, cross-
 
 **Section: Windows Compatibility**
 - Action: Remove entirely from CLAUDE.md
-- Rationale: Machine is `Linux ace-linux-1`. If Windows support is re-introduced, restore. Until then, 404 bytes of MINGW/CRLF/symlink rules load for every session on a Linux host with zero benefit.
+- Rationale: Machine is `Linux dev-primary`. If Windows support is re-introduced, restore. Until then, 404 bytes of MINGW/CRLF/symlink rules load for every session on a Linux host with zero benefit.
 - Cross-reference: KNOWLEDGE.md §Environment Conventions already has Windows paths; git-workflow.md can carry the "LF line endings" note.
 
 **Section: Resource Index (inline)**

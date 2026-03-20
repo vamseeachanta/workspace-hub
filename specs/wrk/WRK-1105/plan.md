@@ -87,7 +87,7 @@ MEMORY.md has grown to 146/200 lines, with ~25 WRK-NNN ARCHIVED entries. These a
 - 2.4 Implement `scripts/knowledge/query-knowledge.sh`
 - 2.5 Write failing tests for build-knowledge-index.sh (index creation, incremental update)
 - 2.6 Implement `scripts/knowledge/build-knowledge-index.sh`
-- 2.7 Create `knowledge-base/` directory with `.gitkeep`; add `knowledge-base/*.jsonl` and `knowledge-base/index.jsonl` and `knowledge-base/*.lock` to `.gitignore` — these are machine-local runtime state, not committed artifacts. Persistence rationale: knowledge-base is local to ace-linux-1 and rebuilt from archive/ history if lost.
+- 2.7 Create `knowledge-base/` directory with `.gitkeep`; add `knowledge-base/*.jsonl` and `knowledge-base/index.jsonl` and `knowledge-base/*.lock` to `.gitignore` — these are machine-local runtime state, not committed artifacts. Persistence rationale: knowledge-base is local to dev-primary and rebuilt from archive/ history if lost.
 
 **Deliverables:**
 - `scripts/knowledge/capture-wrk-summary.sh`
@@ -315,7 +315,7 @@ same path as WRK completions.
 ## Out of Scope
 
 - Vector embeddings or semantic search (not yet needed; JSONL with keyword search is sufficient for Phase 1)
-- Cross-machine knowledge sync (ace-linux-2, acma-ansys05) — knowledge-base/ lives on ace-linux-1 only
+- Cross-machine knowledge sync (dev-secondary, licensed-win-1) — knowledge-base/ lives on dev-primary only
 - Automated career learnings extraction from engineering session logs (manual seed only in this WRK)
 - Retroactive backfill of all archived WRK items from git history (migrate MEMORY.md entries only)
 

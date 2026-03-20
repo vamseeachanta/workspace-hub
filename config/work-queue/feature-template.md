@@ -7,9 +7,9 @@ priority: high
 complexity: complex
 created_at: "YYYY-MM-DD"
 target_repos: []
-computer: ace-linux-1
-plan_workstations: [ace-linux-1]
-execution_workstations: [ace-linux-1]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
 category: ""
 subcategory: ""
 spec_ref: specs/wrk/WRK-NNN/wrk-NNN-<short-name>.md

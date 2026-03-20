@@ -5,8 +5,8 @@
 # Provides: ace1, ace2, ace1-tmux, ace2-tmux, whoami-machine
 # Coloured PS1 prompt with hostname included
 
-MACHINE_1="ace-linux-1"
-MACHINE_2="ace-linux-2"
+MACHINE_1="dev-primary"
+MACHINE_2="dev-secondary"
 MACHINE_1_USER="${ACE_SSH_USER:-vamsee}"
 
 alias ace1="ssh ${MACHINE_1_USER}@${MACHINE_1}"

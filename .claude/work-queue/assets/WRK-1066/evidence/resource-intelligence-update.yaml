@@ -21,6 +21,6 @@ additions:
   - resource: scripts/readiness/harness-config.yaml
     type: config
     description: >
-      Added linux_reachable field to acma-ansys05 (false) to signal Windows
-      machines that cannot be reached via SSH from ace-linux-1.
+      Added linux_reachable field to licensed-win-1 (false) to signal Windows
+      machines that cannot be reached via SSH from dev-primary.
     relevance: medium

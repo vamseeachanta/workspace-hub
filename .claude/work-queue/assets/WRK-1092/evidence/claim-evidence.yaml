@@ -8,7 +8,7 @@ metadata_version: "1"
 session_owner: user
 agent_fit:
   capability_match: confirmed
-  rationale: Route A / execution_workstations=[ace-linux-1] / provider=claude
+  rationale: Route A / execution_workstations=[dev-primary] / provider=claude
 blocking_state:
   blocked: false
   blocked_by: []

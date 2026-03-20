@@ -8,7 +8,7 @@ recommendations:
     captured: true
     priority: low
   - id: FW-2
-    description: "Cross-machine JSONL aggregation — collect cost data from ace-linux-2"
+    description: "Cross-machine JSONL aggregation — collect cost data from dev-secondary"
     disposition: spun-off-new
     status: open
     captured: true

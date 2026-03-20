@@ -2,7 +2,7 @@ wrk_id: WRK-1023
 stage: 10
 executed_at: "2026-03-09T01:25:00Z"
 executor: claude
-computer: ace-linux-1
+computer: dev-primary
 
 steps_completed:
   - extended_provider_config_block_with_context_and_effort

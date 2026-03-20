@@ -15,7 +15,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=ace-linux-1, execution_workstations=acma-ansys05"
+      "details": "plan_workstations=dev-primary, execution_workstations=licensed-win-1"
     },
     {
       "name": "Stage evidence gate",

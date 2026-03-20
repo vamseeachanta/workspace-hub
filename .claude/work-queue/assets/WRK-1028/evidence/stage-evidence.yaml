@@ -33,7 +33,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: "Route C confirmed (complex, architectural, multi-deliverable). Workstation:\
-    \ ace-linux-1. Orchestrator: claude. No blockers. plan_ensemble: false. Staged\
+    \ dev-primary. Orchestrator: claude. No blockers. plan_ensemble: false. Staged\
     \ delivery confirmed: P1(hookify) \u2192 P2(scripts) \u2192 P3(contracts+micro-skills)\
     \ \u2192 P4(heavy).\n"
   evidence: .claude/work-queue/pending/WRK-1028.md

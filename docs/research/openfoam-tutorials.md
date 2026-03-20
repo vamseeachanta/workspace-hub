@@ -1,18 +1,18 @@
 # OpenFOAM Tutorial Run Notes
 
 > Status: Research completed 2026-02-24
-> Machine: ace-linux-2 (OpenFOAM ESI v2312, verified installed)
+> Machine: dev-secondary (OpenFOAM ESI v2312, verified installed)
 > WRK: WRK-343 (feeds WRK-047, WRK-292)
 
 ## Summary
 
-OpenFOAM ESI v2312 is confirmed installed and operational on ace-linux-2. The pitzDaily
+OpenFOAM ESI v2312 is confirmed installed and operational on dev-secondary. The pitzDaily
 tutorial was run as part of WRK-290 installation verification, confirming end-to-end
 solver execution (converged in 281 iterations). This document collects the tutorial
 evidence from WRK-290 and adds pattern documentation for the remaining tutorials that
 must be run when parallelism permits.
 
-## Installation State (ace-linux-2 as of 2026-02-24)
+## Installation State (dev-secondary as of 2026-02-24)
 
 | Component | Version | Status |
 |-----------|---------|--------|
@@ -81,7 +81,7 @@ pitzDaily/
 
 ## Tutorial 2: cavity (icoFoam — laminar, transient)
 
-**Status: COMPLETED** (run headlessly 2026-03-15, ace-linux-2)
+**Status: COMPLETED** (run headlessly 2026-03-15, dev-secondary)
 
 ### What this tutorial tests
 - laminar transient incompressible solver (icoFoam)
@@ -112,13 +112,13 @@ paraFoam &   # or foamToVTK for headless
 - No turbulenceProperties (laminar)
 
 ### Expected runtime
-- < 30 seconds on ace-linux-2
+- < 30 seconds on dev-secondary
 
 ---
 
 ## Tutorial 3: damBreak (interFoam — VOF multiphase)
 
-**Status: COMPLETED** (run headlessly 2026-03-15, ace-linux-2)
+**Status: COMPLETED** (run headlessly 2026-03-15, dev-secondary)
 
 ### What this tutorial tests
 - Volume-of-fluid (VOF) free surface solver (interFoam)
@@ -155,7 +155,7 @@ foamToVTK         # For headless post-processing
 - alpha.water initial condition uses `boxToCell` or `zoneToCell` selectors
 
 ### Expected runtime
-- 2-5 minutes on ace-linux-2
+- 2-5 minutes on dev-secondary
 
 ---
 
@@ -249,7 +249,7 @@ The `runner.py` in Phase 5 should replicate this pattern:
 ### paraFoam (GUI)
 - Launches ParaView with OpenFOAM reader plugin
 - Requires X display (use `paraFoam -builtin` for built-in reader)
-- Not suitable for headless ace-linux-2 automation
+- Not suitable for headless dev-secondary automation
 
 ### foamToVTK (headless)
 ```bash
@@ -264,7 +264,7 @@ foamToVTK -time '100:500' # Convert time range
 pvpython --force-offscreen-rendering script.py
 ```
 - ParaView Python API for automated post-processing
-- Verified working on ace-linux-2 (WRK-290)
+- Verified working on dev-secondary (WRK-290)
 
 ### postProcess utility
 ```bash
@@ -280,7 +280,7 @@ postProcess -func probes
 
 | Issue | Impact | Resolution |
 |-------|--------|------------|
-| paraFoam requires X display | Cannot use GUI on ace-linux-2 headlessly | Use foamToVTK + pvpython, or paraFoam -builtin |
+| paraFoam requires X display | Cannot use GUI on dev-secondary headlessly | Use foamToVTK + pvpython, or paraFoam -builtin |
 | motorBike needs ~2GB disk | May not fit in current workspace | Use smaller mesh config or confirm disk available |
 | Parallel runs require mpirun | snappyHexMesh parallel needs `decomposePar` first | Follow Allrun script pattern |
 

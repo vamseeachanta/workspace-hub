@@ -1,6 +1,6 @@
 # OpenFOAM Tutorial Verification — WRK-343
 generated_at: "2026-03-15T00:00:00Z"
-machine: ace-linux-2
+machine: dev-secondary
 openfoam_version: v2312
 openfoam_path: /usr/lib/openfoam/openfoam2312
 overall_verdict: PASS

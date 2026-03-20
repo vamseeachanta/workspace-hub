@@ -7,7 +7,7 @@ additions:
     resource_type: mcp_server
     catalog_ref: config/ai-tools/mcp-servers.yaml
     notes: >
-      Semantic Scholar MCP installed and active on ace-linux-1. Enables live
+      Semantic Scholar MCP installed and active on dev-primary. Enables live
       literature search (200M+ papers) from within agent context. SHA-pinned.
       Trust assessment: PASS (2026-03-09).
 

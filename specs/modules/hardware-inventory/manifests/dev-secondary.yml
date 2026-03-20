@@ -1,4 +1,4 @@
-hostname: ace-linux-2
+hostname: dev-secondary
 alias: eng-secondary
 os: ubuntu
 workspace_root: /mnt/workspace-hub

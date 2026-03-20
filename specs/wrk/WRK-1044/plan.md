@@ -1,6 +1,6 @@
 # WRK-1044 Plan — Deterministic Gate Enforcement D1-D16
 
-> Route C | complex | ace-linux-1 | Blocks: WRK-1045
+> Route C | complex | dev-primary | Blocks: WRK-1045
 
 ## Mission
 
@@ -377,7 +377,7 @@ Target total suite: ≥100 (54 existing + 46 new).**
 
 ## Out of Scope
 
-- ace-linux-2 deployment
+- dev-secondary deployment
 - Live crontab changes
 - N1-N5 scripting (documentation only)
 - Splitting verify-gate-evidence.py (separate future WRK)

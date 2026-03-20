@@ -8,9 +8,9 @@
 #  1. Clone workspace-hub
 #       git clone git@github.com:<org>/workspace-hub.git
 #       cd workspace-hub && git submodule update --init --recursive
-#  2. Set up SSH key to ace-linux-1 (for state file sync)
+#  2. Set up SSH key to dev-primary (for state file sync)
 #       ssh-keygen -t ed25519 -C "$(hostname)" # if no key exists
-#       ssh-copy-id vamsee@ace-linux-1
+#       ssh-copy-id vamsee@dev-primary
 #  3. Install crontab
 #       bash scripts/cron/setup-cron.sh
 #  4. Smoke-test readiness
@@ -37,9 +37,9 @@ HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
 
 # ── Determine cron_variant from hostname ─────────────────────────────────────
 case "$HOSTNAME_SHORT" in
-  ace-linux-1)             CRON_VARIANT="full" ;;
-  ace-linux-2)             CRON_VARIANT="contribute" ;;
-  acma-ansys05|acma-ws014) CRON_VARIANT="contribute-minimal" ;;
+  dev-primary)             CRON_VARIANT="full" ;;
+  dev-secondary)             CRON_VARIANT="contribute" ;;
+  licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
   *)
     echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
     echo "      Update the case statement in this script if this is a new machine."

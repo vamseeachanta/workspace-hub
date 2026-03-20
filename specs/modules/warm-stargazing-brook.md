@@ -27,12 +27,12 @@ GT1R R35 parachute mounting frame — calculate structural loads during deployme
 
 | Child key | Child Title | Scope | blocked_by | orchestrator |
 |---|---|---|---|---|
-| 1 | 3D CAD geometry (FreeCAD) | Model frame from hand sketches and photos on ace-linux-2 | — | claude |
+| 1 | 3D CAD geometry (FreeCAD) | Model frame from hand sketches and photos on dev-secondary | — | claude |
 | 2 | 2D engineering drawing | Derive dimensioned 2D views from 3D CAD | 1 | claude |
 | 3 | Chute drag force | Drag at 200 and 250 MPH (existing parachute_drag.py) | — | claude |
 | 4 | 2D frame analysis | Extend frame_solver with under-hood frame (Page 2 geometry) | 1 | claude |
 | 5 | 3D FEM analysis (CalculiX) | Beam FEM with stress distribution and deformation | 1 | claude |
-| 6 | OrcaFlex frame analysis | Static frame model with applied drag force on acma-ansys05 | 1 | claude |
+| 6 | OrcaFlex frame analysis | Static frame model with applied drag force on licensed-win-1 | 1 | claude |
 | 7 | 2D vs 3D comparison | Quantify simplification between direct stiffness and FEM | 4 | claude |
 | 8 | Member and connection checks | Unity ratios and bolt weld pin checks with 3D results | 4 | claude |
 | 9 | Pipeline and engineering report | End-to-end script and formatted calc report | 7 | claude |

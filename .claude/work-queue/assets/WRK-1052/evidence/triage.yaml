@@ -3,4 +3,4 @@ stage: 3
 complexity: simple
 route: A
 rationale: Single file extension (session-logger.sh + new helper script). No multi-provider review needed.
-execution_workstations: [ace-linux-1]
+execution_workstations: [dev-primary]

@@ -11,15 +11,15 @@ MEMORY_DIR="/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memo
 
 # Ordered sed expressions (longer/more-specific patterns first)
 SED_ARGS=(
-  -e 's/aceengineer-va/home-win/g'
-  -e 's/acma-ansys05/licensed-win-1/g'
-  -e 's/ACMA-ANSYS05/licensed-win-1/g'
-  -e 's/acma-ws014/licensed-win-2/g'
-  -e 's/ace-linux-2/dev-secondary/g'
-  -e 's/ace-linux-1/dev-primary/g'
-  -e 's/ace_linux_2/dev_secondary/g'
-  -e 's/ace_linux_1/dev_primary/g'
-  -e 's/MacBook Air/macbook-portable/g'
+  -e 's/home-win/home-win/g'
+  -e 's/licensed-win-1/licensed-win-1/g'
+  -e 's/licensed-win-1/licensed-win-1/g'
+  -e 's/licensed-win-2/licensed-win-2/g'
+  -e 's/dev-secondary/dev-secondary/g'
+  -e 's/dev-primary/dev-primary/g'
+  -e 's/dev_secondary/dev_secondary/g'
+  -e 's/dev_primary/dev_primary/g'
+  -e 's/macbook-portable/macbook-portable/g'
   -e 's/100\.107\.64\.76/10.1.0.1/g'
   -e 's/100\.93\.161\.27/10.1.0.2/g'
   -e 's/192\.168\.1\.100/10.0.0.1/g'
@@ -27,12 +27,12 @@ SED_ARGS=(
   -e 's/192\.168\.1\.148/10.0.0.3/g'
   -e 's/192\.168\.1\.166/10.0.0.4/g'
   -e 's/vamsee\.achanta/devuser/g'
-  -e 's/krishna@192/devuser2@10/g'
-  -e 's/user `vamsee`/user `devuser`/g'
-  -e 's/user: vamsee/user: devuser/g'
+  -e 's/devuser2@10/devuser2@10/g'
+  -e 's/user `devuser`/user `devuser`/g'
+  -e 's/user: devuser/user: devuser/g'
 )
 
-SEARCH='ace-linux|acma-ansys|aceengineer-va|ACMA-ANSYS|acma-ws014|MacBook Air|100\.107\.64\.76|100\.93\.161\.27|192\.168\.1\.(100|103|148|166)|vamsee\.achanta|krishna@192'
+SEARCH='ace-linux|acma-ansys|home-win|ACMA-ANSYS|licensed-win-2|macbook-portable|100\.107\.64\.76|100\.93\.161\.27|192\.168\.1\.(100|103|148|166)|vamsee\.achanta|devuser2@10'
 
 GLOBS=(--include '*.md' --include '*.yaml' --include '*.yml' --include '*.json' --include '*.sh' --include '*.py' --include '*.txt' --include '*.toml' --include '*.jsonl')
 

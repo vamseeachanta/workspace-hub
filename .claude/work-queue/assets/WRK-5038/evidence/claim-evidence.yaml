@@ -2,6 +2,6 @@ stage: 8
 wrk_id: WRK-5038
 claimed_by: claude
 claimed_at: "2026-03-13T04:20:00Z"
-workstation: ace-linux-1
+workstation: dev-primary
 provider: claude
 route: C

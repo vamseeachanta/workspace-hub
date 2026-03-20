@@ -2,7 +2,7 @@
 
 ## Context
 
-FreeCAD is the only open-source parametric CAD tool in the stack. WRK-1251 adds production-grade hull generation, FEM structural analysis via CalculiX, and design table batch studies — capabilities that currently require commercial licenses (ANSYS on acma-ansys05). This unlocks WRK-1252 (full CAD-to-CFD pipeline).
+FreeCAD is the only open-source parametric CAD tool in the stack. WRK-1251 adds production-grade hull generation, FEM structural analysis via CalculiX, and design table batch studies — capabilities that currently require commercial licenses (ANSYS on licensed-win-1). This unlocks WRK-1252 (full CAD-to-CFD pipeline).
 
 **Classified as Feature WRK** because it exceeds chunk-sizing on 3 dimensions: 2 repos (max 1), 10+ files (max 5), 4 components (max 3 phases).
 

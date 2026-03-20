@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # comprehensive-learning.sh — Session Learning Pipeline orchestrator (v2.0.0)
 # Implements the 10-phase pipeline from comprehensive-learning SKILL.md.
-# Runs on ace-linux-1 only. Other machines commit/push state files.
+# Runs on dev-primary only. Other machines commit/push state files.
 
 set -uo pipefail
 
@@ -26,8 +26,8 @@ mkdir -p "$LEARNING_REPORTS_DIR"
 MACHINE=$(hostname | tr '[:upper:]' '[:lower:]')
 
 # --- Single-Machine Guard ---
-if [[ "$MACHINE" != "ace-linux-1" ]]; then
-  echo "comprehensive-learning runs on ace-linux-1 only."
+if [[ "$MACHINE" != "dev-primary" ]]; then
+  echo "comprehensive-learning runs on dev-primary only."
   echo "From this machine, commit state files and push:"
   
   # State files to commit — guarded loop skips missing paths (cross-platform safe)
@@ -85,7 +85,7 @@ write_report() {
             printf "| %s | %s | %s |\n" "$p" "$s" "$n"
         done
         printf "\n"
-        printf "Machine: ace-linux-1 | Mode: full | Elapsed: %ds\n" "$ELAPSED"
+        printf "Machine: dev-primary | Mode: full | Elapsed: %ds\n" "$ELAPSED"
     } > "$REPORT_FILE"
 
     echo "Report written to ${REPORT_FILE}"

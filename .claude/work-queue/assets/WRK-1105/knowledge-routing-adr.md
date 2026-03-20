@@ -31,7 +31,7 @@ real knowledge base. Each session rediscovers patterns already learned.
 - `knowledge-base/wrk-completions.jsonl` — WRK completion entries, appended at archive time
 - `knowledge-base/index.jsonl` — merged and deduplicated index of all stores
 - `knowledge-base/*.lock` — flock files for concurrent-write safety
-- Rationale: knowledge-base is local to ace-linux-1; rebuilt from archive/ if lost via
+- Rationale: knowledge-base is local to dev-primary; rebuilt from archive/ if lost via
   `bash scripts/knowledge/rebuild-from-archive.sh` (future WRK follow-on)
 - **Not committed** — machine-specific runtime state
 

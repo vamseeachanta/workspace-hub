@@ -16,13 +16,13 @@ implementation-ready. Seven material things have changed since planning:
 5. **July 2025 Option B (PyFoam-centric) needs revision** — PyFoam should be
    supplementary, not primary; Jinja2+subprocess is the correct foundation
 6. **GMSH module unchanged** — identical to what Phase 0 assessed
-7. **BemRosetta unavailable on ace-linux-2** — use acma-ansys05, or skip in Phase 0
+7. **BemRosetta unavailable on dev-secondary** — use licensed-win-1, or skip in Phase 0
 
 **Recommendation: Start WRK-047 Phase 1 immediately.** All prerequisites met.
 
 ---
 
-## Section 1: Environment Status (ace-linux-2)
+## Section 1: Environment Status (dev-secondary)
 
 ### What WRK-047 Phase 0 assumed
 
@@ -115,7 +115,7 @@ WRK-047 phases. No changes needed — they are valid requirements.
 PyFoam was selected in July 2025 under the assumption it provides "stable interface
 across versions." In practice:
 1. PyFoam 2023.7 ships with a broken bundled `six` library on Python 3.12 — fixed
-   manually on ace-linux-2, but this is a fragility point
+   manually on dev-secondary, but this is a fragility point
 2. PyFoam is not needed for dict file generation — Jinja2 templates are cleaner,
    more maintainable, and version-independent
 3. PyFoam's `ParsedParameterFile` is useful for reading/modifying existing dicts,
@@ -219,8 +219,8 @@ BemRosetta mesh models (`hydrodynamics/bemrosetta/models/mesh_models.py`) availa
 as input to OpenFOAM geometry import pipeline.
 
 ### Current state
-- BemRosetta software: NOT available on ace-linux-2 (no Linux binary, skipped in WRK-290)
-- **Available on acma-ansys05** only
+- BemRosetta software: NOT available on dev-secondary (no Linux binary, skipped in WRK-290)
+- **Available on licensed-win-1** only
 - `bemrosetta/models/mesh_models.py` and mesh handlers: **present in digitalmodel codebase**
   (the Python models and parsers exist, independent of BemRosetta binary being installed)
 
@@ -305,7 +305,7 @@ External software: OpenFOAM (required for execution, not file generation)
 **Amendment D: Add `fluidfoam` to the Phase 4 evaluation list**
 
 fluidfoam provides direct field reading from OpenFOAM time directories without
-a foamToVTK conversion step. Install on ace-linux-2 and evaluate alongside pyvista.
+a foamToVTK conversion step. Install on dev-secondary and evaluate alongside pyvista.
 
 For simple force/scalar extraction: fluidfoam is simpler.
 For 3D visualization: pyvista is required.
@@ -341,7 +341,7 @@ WRK-047 test files as they are created in each phase.
 **Amendment G: Confirm ESI v2312 as target version**
 
 WRK-047 says "target OpenFOAM.com (ESI) v2306+ syntax." Confirmed:
-- v2312 is installed on ace-linux-2 ✓
+- v2312 is installed on dev-secondary ✓
 - v2312 is a superset of v2306 ✓
 - ESI v2312 dict syntax is the template target ✓
 
@@ -398,7 +398,7 @@ WRK-292 (capability map — file formats, workflow pipelines, interoperability m
 depends on WRK-290 (complete) and WRK-291. The WRK-343 findings feed directly into
 WRK-292's CFD pipeline documentation:
 
-**CFD pipeline (verified working on ace-linux-2):**
+**CFD pipeline (verified working on dev-secondary):**
 ```
 FreeCAD (STEP) → GMSH (mesh generation) → meshio (format conversion)
      → OpenFOAM polyMesh → blockMesh/snappyHexMesh → simpleFoam/interFoam

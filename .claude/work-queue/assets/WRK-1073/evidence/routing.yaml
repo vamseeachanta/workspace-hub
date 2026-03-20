@@ -1,8 +1,8 @@
 wrk_id: WRK-1073
 stage: 9
 route: A
-routing_decision: Route A — simple single-purpose artifact creation, ace-linux-1
-computer: ace-linux-1
+routing_decision: Route A — simple single-purpose artifact creation, dev-primary
+computer: dev-primary
 orchestrator: claude
-execution_workstations: [ace-linux-1]
+execution_workstations: [dev-primary]
 routed_at: 2026-03-09T09:45:00Z

@@ -39,7 +39,7 @@ future physics-ML feature in `digitalmodel`.
 
 ## Pip Install Smoke Test
 
-Tested on ace-linux-2 (this evaluation machine), Python 3.11, using `uv`:
+Tested on dev-secondary (this evaluation machine), Python 3.11, using `uv`:
 
 ```bash
 uv init the_well_test --no-workspace

@@ -12,7 +12,7 @@ files_modified:
   - .claude/skills/workspace-hub/workstations/SKILL.md
 monitoring_gate:
   required_sessions: 10
-  platforms: [ace-linux-1, ace-linux-2, acma-ansys05]
+  platforms: [dev-primary, dev-secondary, licensed-win-1]
   sessions_observed: 0
   status: pending
   close_condition: 10 sessions on Linux + Windows without terminal friction

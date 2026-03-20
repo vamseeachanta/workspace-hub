@@ -29,7 +29,7 @@ review:
 
 > **Status**: Draft — awaiting user plan approval before writing begins
 > **Deliverable**: `docs/vision/VISION.md` in `workspace-hub`
-> **Computer**: ace-linux-1
+> **Computer**: dev-primary
 
 ---
 

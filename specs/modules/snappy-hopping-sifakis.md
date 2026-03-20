@@ -63,7 +63,7 @@ specs, output files, results, docs. Each category has a different failure mode p
 **WRK-NEW-A1: Clean orphaned tests/agent_os/ in worldenergydata**
 - `rm -rf tests/agent_os/` (src was archived in WRK-344; tests/ not cleaned)
 - Add test to confirm no import references remain
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-A2: Consolidate worldenergydata test archive dirs**
 - Merge `tests/_archived/` + `tests/_archived_tests/` + `tests/legacy_tests/` → single `tests/_archive/`
@@ -97,51 +97,51 @@ specs, output files, results, docs. Each category has a different failure mode p
 - Move `tests/modules/<module>/` → `tests/unit/<module>/` (many modules)
 - Move `tests/dashboard/`, `tests/economics/`, `tests/eia/` → `tests/unit/`
 - Fix imports after move; run full test suite
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B2: Resolve worldenergydata dual validation packages**
 - `src/worldenergydata/validation/` is the old package (pre-WRK-345)
 - `src/worldenergydata/common/validation/` is canonical (post-WRK-345)
 - Migrate any remaining callers from `validation/` → `common/validation/`, then delete `validation/`
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B3: Consolidate worldenergydata fixture/data dirs**
 - Canonical: `tests/fixtures/<domain>/` for static test data
 - Move `test_data/` (root-level) → `tests/fixtures/`; remove `tests/data/` duplicates
 - Update imports/fixture paths in affected tests
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B4: Resolve digitalmodel dual test root (tests/ vs tests/unit/)**
 - `tests/unit/well/` (WRK-377 pattern) conflicts with `tests/well/` (all other modules)
 - Decision: adopt `tests/<domain>/` as canonical (matches 95% of existing modules)
 - Move `tests/unit/well/` → `tests/well/`; remove `tests/unit/` dir
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B5: Remove tests inside digitalmodel src/**
 - Move `src/digitalmodel/asset_integrity/tests/` → `tests/asset_integrity/`
 - Enforce in repo-structure skill: no `tests/` inside `src/`
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B6: Clean digitalmodel tests/subsea/ ghost dirs**
 - `tests/subsea/mooring/` has no src counterpart (only `mooring_analysis/` exists)
 - Merge or delete; align with `src/digitalmodel/subsea/mooring_analysis/`
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B7: Clean digitalmodel tests/phase2/, tests/phase3/, tests/output/**
 - `tests/phase2/`, `tests/phase3/` — unnamed catch-all; contents → appropriate domain dirs
 - `tests/output/`, `tests/outputs/` — generated artifacts; add to `.gitignore`
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B8: Clarify worldenergydata eia/ vs eia_us/ split**
 - `eia/` (Feb 2026) vs `eia_us/` (older) — document clear split or merge
 - Define: `eia_us/` = US-only BSEE/RRC/EIA data; `eia/` = international EIA API client
 - If roles overlap → merge; if distinct → add `__init__.py` docstrings clarifying scope
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 **WRK-NEW-B9: Remove worldenergydata src modules/ catch-all**
 - `src/worldenergydata/modules/` — undefined responsibility alongside domain packages
 - Audit contents; migrate to appropriate domain packages; delete
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 ### Group C — Skill Hardening (Route A/B, main session)
 
@@ -167,19 +167,19 @@ specs, output files, results, docs. Each category has a different failure mode p
 - Checks per repo: generated artifacts in tests/output (fail), tests inside src/ (fail),
   WRK files in docs/ (warn), results/ not gitignored (warn), kebab-case in src (warn)
 - Integrates with pre-commit hook
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 ### Group D — Long Horizon (Route C, architectural)
 
 **WRK-NEW-D1: Break up digitalmodel infrastructure/ monolith**
 - Split 40+ subdirs into domain-aligned modules
 - High import chain complexity; requires full test suite as safety net
-- Computer: ace-linux-1 (long session)
+- Computer: dev-primary (long session)
 
 **WRK-NEW-D2: Populate specs/modules/ in both repos**
 - Digitalmodel: architecture specs for top-5 domains (infrastructure, hydrodynamics, structural, subsea, well)
 - Worldenergydata: data-source specs per jurisdiction (bsee, eia_us, metocean, sodir, vessel_fleet)
-- Computer: ace-linux-1
+- Computer: dev-primary
 
 ---
 

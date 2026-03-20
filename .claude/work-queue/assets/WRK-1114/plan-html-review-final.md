@@ -24,7 +24,7 @@ decision: passed
 
 | Machine | Floor | Ceiling |
 |---------|-------|---------|
-| ace-linux-1 | 1 | 4999 |
-| acma-ansys05 | 5000 | 9999 |
-| ace-linux-2 | 10000 | 14999 |
+| dev-primary | 1 | 4999 |
+| licensed-win-1 | 5000 | 9999 |
+| dev-secondary | 10000 | 14999 |
 | gali-linux-compute-1 | 15000 | 19999 |

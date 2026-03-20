@@ -12,10 +12,10 @@ SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
 VALID_MACHINES = {
-    "ace-linux-1",
-    "ace-linux-2",
-    "acma-ansys05",
-    "acma-ws014",
+    "dev-primary",
+    "dev-secondary",
+    "licensed-win-1",
+    "licensed-win-2",
     "gali-linux-compute-1",
 }
 

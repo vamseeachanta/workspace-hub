@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
-| Workstation contract gate | PASS | plan_workstations=[ace-linux-1, ace-linux-2], execution_workstations=[ace-linux-1, ace-linux-2] |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary, dev-secondary], execution_workstations=[dev-primary, dev-secondary] |
 | Resource-intelligence gate | FAIL | resource-intelligence evidence absent (legacy item — WARN) |
 | Activation gate | FAIL | activation.yaml missing |
 | Agent log gate | PASS | legacy WRK (id=578 < 658) — log gate skipped |

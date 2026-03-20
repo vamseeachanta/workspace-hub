@@ -32,13 +32,13 @@ capabilities:
 requires: []
 tags: []
 see_also:
-- workstations-ace-linux-1-storage
+- workstations-dev-primary-storage
 - workstations-repo-to-machine-routing-current
 - workstations-hardware-notes
 - workstations-consolidation-principles
 - workstations-software-capability-map
 - workstations-copy-paste
-- workstations-ace-linux-2-open-source-tools
+- workstations-dev-secondary-open-source-tools
 - workstations-routing-rules
 - workstations-multi-machine-wrk-items
 - workstations-comprehensive-learning-integration
@@ -49,13 +49,13 @@ see_also:
 
 ## Sub-Skills
 
-- [ace-linux-1 Storage (+1)](ace-linux-1-storage/SKILL.md)
+- [dev-primary Storage (+1)](dev-primary-storage/SKILL.md)
 - [Repo-to-machine routing (current) (+2)](repo-to-machine-routing-current/SKILL.md)
 - [Hardware Notes](hardware-notes/SKILL.md)
 - [Consolidation Principles (+1)](consolidation-principles/SKILL.md)
 - [Software Capability Map](software-capability-map/SKILL.md)
 - [Copy / Paste (+5)](copy-paste/SKILL.md)
-- [ace-linux-2 open-source tools](ace-linux-2-open-source-tools/SKILL.md)
+- [dev-secondary open-source tools](dev-secondary-open-source-tools/SKILL.md)
 - [Routing Rules](routing-rules/SKILL.md)
 - [Multi-machine WRK Items](multi-machine-wrk-items/SKILL.md)
 - [comprehensive-learning Integration](comprehensive-learning-integration/SKILL.md)

@@ -2,5 +2,5 @@ wrk_id: WRK-1247
 stage: 18
 action: reclaim
 status: "n/a"
-reason: "Single-session WRK on ace-linux-1; no claim transfer needed"
+reason: "Single-session WRK on dev-primary; no claim transfer needed"
 reclaimed_at: "2026-03-16T20:15:00Z"

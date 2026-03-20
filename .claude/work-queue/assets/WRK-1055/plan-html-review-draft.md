@@ -15,4 +15,4 @@ Draft plan reviewed via lifecycle HTML. Approved 6-phase execution plan:
 5. Documentation update (.claude/docs/mcp-servers.md)
 6. Codex cross-review
 
-Scope limited to Claude on ace-linux-1. Route B confirmed.
+Scope limited to Claude on dev-primary. Route B confirmed.

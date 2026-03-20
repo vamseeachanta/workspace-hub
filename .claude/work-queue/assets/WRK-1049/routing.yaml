@@ -1,6 +1,6 @@
 wrk_id: WRK-1049
 routed_at: "2026-03-08T22:43:00Z"
 route: B
-workstation: ace-linux-1
+workstation: dev-primary
 provider: claude
 skill_entry: work-queue-workflow/SKILL.md

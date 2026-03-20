@@ -30,7 +30,7 @@ Add a "Codex Notes" section at the end with your specific findings.
 CLAUDE DRAFT PLAN:
 # WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction
 
-**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-09
+**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-09
 
 ---
 
@@ -261,7 +261,7 @@ plan_reviewed: false
  succeeded in 51ms:
 # WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction
 
-**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-09
+**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-09
 
 ---
 
@@ -303,7 +303,7 @@ When reviewing:
 codex
 # WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction
 
-**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-10
+**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-10
 
 ---
 
@@ -562,7 +562,7 @@ tokens used
 51,524
 # WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction
 
-**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-10
+**Route:** B (Medium) | **Computer:** dev-primary | **Drafted:** 2026-03-10
 
 ---
 

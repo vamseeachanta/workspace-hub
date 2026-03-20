@@ -75,7 +75,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route A assigned to ace-linux-1.
+  comment: Route A assigned to dev-primary.
   evidence: .claude/work-queue/assets/WRK-1057/routing.yaml
 - order: 10
   stage: Work Execution

@@ -10,9 +10,9 @@ Route A (Simple)
 
 | Machine | Floor | Ceiling | Notes |
 |---------|-------|---------|-------|
-| ace-linux-1 | 1 | 4999 | Primary; current IDs ~1114 |
-| acma-ansys05 | 5000 | 9999 | Windows / orcaflex |
-| ace-linux-2 | 10000 | 14999 | Reserved |
+| dev-primary | 1 | 4999 | Primary; current IDs ~1114 |
+| licensed-win-1 | 5000 | 9999 | Windows / orcaflex |
+| dev-secondary | 10000 | 14999 | Reserved |
 | gali-linux-compute-1 | 15000 | 19999 | Reserved |
 
 ## Implementation Steps
@@ -27,8 +27,8 @@ Route A (Simple)
 
 ## Test Strategy
 - 5 bash unit tests in `tests/work-queue/test-machine-id-ranges.sh`
-- Test scenarios: ace-linux-1 empty queue, acma-ansys05 empty queue,
-  ace-linux-1 above floor, acma-ansys05 above floor, ceiling < floor assertion
+- Test scenarios: dev-primary empty queue, licensed-win-1 empty queue,
+  dev-primary above floor, licensed-win-1 above floor, ceiling < floor assertion
 
 ## Acceptance Criteria
 - `config/work-queue/machine-ranges.yaml` defines canonical partition table

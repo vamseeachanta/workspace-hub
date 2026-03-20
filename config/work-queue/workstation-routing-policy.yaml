@@ -7,8 +7,8 @@
 policy:
   linux_first:
     rule: >
-      All non-licensed work MUST run on Ace Linux machines (ace-linux-1,
-      ace-linux-2). Licensed machines (acma-ansys05, acma-ws014) are shared
+      All non-licensed work MUST run on Ace Linux machines (dev-primary,
+      dev-secondary). Licensed machines (licensed-win-1, licensed-win-2) are shared
       and budget-constrained — use ONLY when the task requires licensed
       software (OrcaFlex, ANSYS, AQWA, SolidWorks, Excel macros).
     rationale: >
@@ -24,27 +24,27 @@ policy:
       require licensed software should be routed to a licensed machine.
     example: >
       A feature needing OrcaFlex post-processing: plan, code, test, review
-      stages run on ace-linux-1; only the OrcaFlex execution stage runs on
-      acma-ansys05.
+      stages run on dev-primary; only the OrcaFlex execution stage runs on
+      licensed-win-1.
 
   routing_keywords:
     licensed:
       - keyword: [orcaflex, ansys, aqwa]
-        machine: acma-ansys05
+        machine: licensed-win-1
         reason: License-locked engineering software
       - keyword: [solidworks, excel-macro]
-        machine: acma-ws014
+        machine: licensed-win-2
         reason: Windows-only licensed software
     linux:
       - keyword: [openfoam, blender, gmsh, calculix, fenics]
-        machine: ace-linux-2
+        machine: dev-secondary
         reason: Open-source simulation / meshing
       - keyword: [heavy-compute, cfd-hpc, fea-hpc]
         machine: gali-linux-compute-1
         reason: HPC workloads
       - keyword: [worldenergydata, workspace-hub, digitalmodel, assetutilities, assethold]
-        machine: ace-linux-1
+        machine: dev-primary
         reason: Primary development
     default:
-      machine: ace-linux-1
+      machine: dev-primary
       reason: Linux-first policy — default for all unmatched work

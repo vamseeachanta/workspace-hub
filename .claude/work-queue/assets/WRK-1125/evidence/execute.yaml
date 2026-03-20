@@ -1,7 +1,7 @@
 wrk_id: WRK-1125
 executed_at: "2026-03-11T13:30:00Z"
 executed_by: claude
-machine: ace-linux-1
+machine: dev-primary
 files_changed:
   - scripts/work-queue/whats-next.sh
 changes_summary: >

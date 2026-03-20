@@ -3,7 +3,7 @@ stage: 8
 activated_at: "2026-03-12T15:10:00Z"
 activated_by: claude
 route: A
-computer: ace-linux-1
+computer: dev-primary
 set_active_wrk: true
-session_id: "ace-linux-1-2026-03-12T15:00:00Z"
+session_id: "dev-primary-2026-03-12T15:00:00Z"
 orchestrator_agent: claude

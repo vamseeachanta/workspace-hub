@@ -1,7 +1,7 @@
 wrk_id: WRK-5037
 executed_at: "2026-03-13T04:45:00+00:00"
 provider: claude
-workstation: ace-linux-1
+workstation: dev-primary
 
 artifacts_created:
   - scripts/data/doc_intelligence/__init__.py

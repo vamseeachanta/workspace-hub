@@ -16,7 +16,7 @@ The `comprehensive-learning` skill synthesizes knowledge and trends across sessi
 
 ## Assumptions
 - Learning reports follow the Markdown format defined in Phase 10 of `comprehensive-learning`.
-- ace-linux-1 is the primary machine for generating these reports.
+- dev-primary is the primary machine for generating these reports.
 
 ## Open Questions
 - Should we create a new `/today` section (`learning-outcomes.sh`) or merge it into `session-analysis.sh`?

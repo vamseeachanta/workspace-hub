@@ -8,7 +8,7 @@ items:
   - id: CL-03-2
     text: "Confirm route, workstations, orchestrator"
     completed: true
-    note: "Route C, ace-linux-1, Claude orchestrator"
+    note: "Route C, dev-primary, Claude orchestrator"
   - id: CL-03-3
     text: "Surface open questions; update WRK frontmatter"
     completed: true

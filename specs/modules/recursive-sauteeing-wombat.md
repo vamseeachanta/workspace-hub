@@ -93,7 +93,7 @@ NEXT_ID=$(bash scripts/work-queue/next-id.sh)
 # Update .claude/work-queue/state.yaml last_id
 ```
 
-Skip Phase 5 if `$CL_MACHINE_MODE == skip-candidates` (ace-linux-2, to avoid duplicates).
+Skip Phase 5 if `$CL_MACHINE_MODE == skip-candidates` (dev-secondary, to avoid duplicates).
 
 **Phase 6 — Report**
 Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md` with:
@@ -109,23 +109,23 @@ non-fatal phase failures).
 ```bash
 MACHINE=$(hostname | tr '[:upper:]' '[:lower:]')
 case "$MACHINE" in
-  ace-linux-1)        CL_MACHINE_MODE=full ;;
-  ace-linux-2)        CL_MACHINE_MODE=skip-candidates ;;
-  acma-ansys05)       CL_MACHINE_MODE=lightweight ;;   # Phase 1 only
+  dev-primary)        CL_MACHINE_MODE=full ;;
+  dev-secondary)        CL_MACHINE_MODE=skip-candidates ;;
+  licensed-win-1)       CL_MACHINE_MODE=lightweight ;;   # Phase 1 only
   *)                  CL_MACHINE_MODE=full ;;
 esac
 export CL_MACHINE_MODE
 ```
 
-Lightweight mode (acma-ansys05): run Phase 1 only, write report, exit.
+Lightweight mode (licensed-win-1): run Phase 1 only, write report, exit.
 
 ### Cron examples (document in SKILL.md under ## Scheduling)
 
 ```bash
-# ace-linux-1: nightly 22:00
+# dev-primary: nightly 22:00
 0 22 * * * cd /mnt/local-analysis/workspace-hub && claude --skill comprehensive-learning >> .claude/state/learning-reports/cron.log 2>&1
 
-# acma-ansys05: nightly 23:00 (lightweight — Phase 1 only)
+# licensed-win-1: nightly 23:00 (lightweight — Phase 1 only)
 0 23 * * * cd /path/to/workspace && claude --skill comprehensive-learning >> cron.log 2>&1
 ```
 
@@ -156,8 +156,8 @@ This is a 3-5 line edit to the existing file.
 
 ```yaml
 machines:
-  ace-linux-1:
-    hostname: ace-linux-1
+  dev-primary:
+    hostname: dev-primary
     programs: [python, uv, git, claude-code, worldenergydata, digitalmodel,
                assetutilities, assethold, legal-scan, pytest]
     exclusive: []
@@ -165,23 +165,23 @@ machines:
     isolated: false
     cron_variant: full
 
-  ace-linux-2:
-    hostname: ace-linux-2
+  dev-secondary:
+    hostname: dev-secondary
     programs: [python, uv, git, claude-code, digitalmodel, assetutilities]
     exclusive: []
-    shares_hub: ace-linux-1
+    shares_hub: dev-primary
     isolated: false
     cron_variant: skip-candidates
 
-  acma-ansys05:
-    hostname: ACMA-ANSYS05
+  licensed-win-1:
+    hostname: licensed-win-1
     programs: [orcaflex, ansys, python, office]
     exclusive: [orcaflex, ansys]
     shares_hub: null
     isolated: true
     cron_variant: lightweight
 
-  acma-ws014:
+  licensed-win-2:
     hostname: ACMA-WS014
     programs: [office, windows-tools]
     exclusive: []
@@ -204,17 +204,17 @@ Routing decision (for use when setting `computer:` on a new WRK item):
 
 | Keyword in WRK title/tags | Recommended machine |
 |---------------------------|---------------------|
-| orcaflex, ansys, aqwa | acma-ansys05 |
-| office, windows, excel | acma-ws014 or acma-ansys05 |
+| orcaflex, ansys, aqwa | licensed-win-1 |
+| office, windows, excel | licensed-win-2 or licensed-win-1 |
 | cfd, fea, heavy-compute | gali-linux-compute-1 |
-| worldenergydata, hub, claude | ace-linux-1 |
-| everything else | ace-linux-1 or ace-linux-2 |
+| worldenergydata, hub, claude | dev-primary |
+| everything else | dev-primary or dev-secondary |
 
 **3. Add `## Multi-machine WRK Items` section**
 
 For tasks spanning machines, allow list:
 ```yaml
-computer: [acma-ansys05, ace-linux-1]
+computer: [licensed-win-1, dev-primary]
 ```
 Document conventions for handoff steps.
 

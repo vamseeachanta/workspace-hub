@@ -53,7 +53,7 @@ src/digitalmodel/subsea/pipeline/free_span/
 ## Key Formulas (F105 per TwoHSpanVIV reference code)
 
 Reference MATLAB implementation at:
-`/mnt/remote/ace-linux-2/dde/Personal/FreeSpanVIVFatigue/` (13 files).
+`/mnt/remote/dev-secondary/dde/Personal/FreeSpanVIVFatigue/` (13 files).
 Port algorithm logic directly. Strip all proprietary identifiers — run
 `scripts/legal/legal-sanity-scan.sh digitalmodel/` before any commit.
 

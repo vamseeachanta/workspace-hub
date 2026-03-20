@@ -13,8 +13,8 @@ note added to step 7, `plan_approved` set to true in frontmatter.
 - `plan_approved: false` in frontmatter — set to true (FIXED)
 
 ### Suggestions
-- Confirm `hostname` output is lowercase on acma-ansys05 before executing step 7
+- Confirm `hostname` output is lowercase on licensed-win-1 before executing step 7
 - For step 7: success criterion is "manifest found/read" — repo/tool misses in dev-env-check output are informational only
 
 ### Questions for Author
-- Does `hostname` on acma-ansys05 return exactly lowercase `acma-ansys05`?
+- Does `hostname` on licensed-win-1 return exactly lowercase `licensed-win-1`?

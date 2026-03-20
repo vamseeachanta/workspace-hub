@@ -65,7 +65,7 @@ priority: high
 complexity: complex
 created_at: "2026-03-11"
 target_repos: [workspace-hub]
-computer: ace-linux-1
+computer: dev-primary
 category: harness
 subcategory: testing
 children: []
@@ -755,7 +755,7 @@ priority: high
 complexity: medium
 created_at: "2026-03-11"
 target_repos: [workspace-hub]
-computer: ace-linux-1
+computer: dev-primary
 category: harness
 subcategory: testing
 spec_ref: ${T18_SPEC}

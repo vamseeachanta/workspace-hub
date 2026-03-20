@@ -119,7 +119,7 @@ sed -i "s/^id: ${wrk_ref}/id: ${wrk_ref}\nparent: ${WRK_ID}/" "$EXISTING"
 
 **Issue (MINOR-4):** The `sed -i` `\n` newline escape is not portable across all
 `sed` implementations (BSD `sed` on macOS requires `$'\n'` or a literal newline
-within the substitution). The workspace target is Linux (`ace-linux-1`), so GNU sed
+within the substitution). The workspace target is Linux (`dev-primary`), so GNU sed
 is guaranteed. Still, the plan should note this as a Linux-only assumption in the
 script header comment to prevent future porting confusion.
 

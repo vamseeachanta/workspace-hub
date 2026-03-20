@@ -17,6 +17,6 @@
 ## Findings
 
 **APPROVE:** All acceptance criteria met. Implementation is correct and well-tested.
-**MINOR (deferred):** Add test scenarios for ace-linux-2 and gali-linux-compute-1.
+**MINOR (deferred):** Add test scenarios for dev-secondary and gali-linux-compute-1.
 
 ## Test Results: 5 PASS, 0 FAIL

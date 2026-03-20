@@ -170,7 +170,7 @@ based on R-03 alone.
   moved to references/); content converted to scripts replaced with a one-line reference note.
   This prevents references/ from becoming a dump directory.
 
-- The Risks section is thorough. The Codex/ace-linux-1 deadlock risk, the sentinel rejection
+- The Risks section is thorough. The Codex/dev-primary deadlock risk, the sentinel rejection
   surfacing real failures, and the work-queue/SKILL.md cross-reference risk are all identified
   with concrete mitigations. The `--since-wrk` flag proposal for backward compatibility is
   pragmatic and avoids retroactive failure of archived WRKs.

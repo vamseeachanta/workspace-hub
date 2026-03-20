@@ -22,7 +22,7 @@ usable non-interactive plan reviews through the existing wrapper scripts.
 
 ## Assumptions
 
-- Provider CLIs are installed and authenticated on `ace-linux-1`.
+- Provider CLIs are installed and authenticated on `dev-primary`.
 - Provider-specific structured output can be rendered into the canonical markdown schema locally.
 
 ## Open Questions

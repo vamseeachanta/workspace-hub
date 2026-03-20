@@ -279,4 +279,4 @@ All evidence paths under `.claude/work-queue/assets/WRK-1019/`.
 
 ## Workstation
 
-ace-linux-1 (plan + execution)
+dev-primary (plan + execution)

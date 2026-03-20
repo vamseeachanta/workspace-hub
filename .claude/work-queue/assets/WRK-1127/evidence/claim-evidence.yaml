@@ -4,7 +4,7 @@ best_fit_provider: claude
 session_owner: vamsee
 route: C
 claimed_at: "2026-03-11"
-computer: ace-linux-1
+computer: dev-primary
 quota_snapshot:
   status: available
   pct_remaining: 80

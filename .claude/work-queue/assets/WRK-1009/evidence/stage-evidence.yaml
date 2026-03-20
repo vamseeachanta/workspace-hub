@@ -27,7 +27,7 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Route B (medium), ace-linux-1, orchestrator=claude.
+  comment: Route B (medium), dev-primary, orchestrator=claude.
   evidence: .claude/work-queue/working/WRK-1009.md
 - order: 4
   stage: Plan Draft

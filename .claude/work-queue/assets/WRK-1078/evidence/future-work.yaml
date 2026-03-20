@@ -3,9 +3,9 @@ stage: 15
 generated_at: "2026-03-10T10:45:00Z"
 
 recommendations:
-  - title: "Verify WRK-1078 fixes on acma-ansys05 after WRK-1077 machine setup"
+  - title: "Verify WRK-1078 fixes on licensed-win-1 after WRK-1077 machine setup"
     priority: medium
-    rationale: "WRK-1077 is prerequisite — run verify-setup.sh on acma-ansys05"
+    rationale: "WRK-1077 is prerequisite — run verify-setup.sh on licensed-win-1"
     disposition: existing-updated
     status: deferred
     captured: true

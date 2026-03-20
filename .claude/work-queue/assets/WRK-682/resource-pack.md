@@ -15,7 +15,7 @@ Users working across multiple terminals and workstations experience "stale" work
 - Must include a debounce mechanism to handle batch file updates.
 
 ## Assumptions
-- `inotifywait` is available on the target workstation (ace-linux-1).
+- `inotifywait` is available on the target workstation (dev-primary).
 - The user has configured git remotes correctly for all submodules.
 
 ## Open Questions
