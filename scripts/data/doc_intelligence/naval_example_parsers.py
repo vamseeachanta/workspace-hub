@@ -17,6 +17,7 @@ from typing import Protocol
 
 from scripts.data.doc_intelligence.worked_example_parser import (
     parse_given_inputs,
+    parse_prose_inputs,
     parse_solution_units,
 )
 
@@ -105,6 +106,8 @@ class EN400Parser:
         number = m.group(1)
         title = m.group(2).strip().rstrip(".")
         inputs = parse_given_inputs(text)
+        if not inputs:
+            inputs = parse_prose_inputs(text)
         unit = parse_solution_units(text)
         expected, eq_unit = _extract_final_answer(text)
         if expected is None:
@@ -159,9 +162,10 @@ class TupperBiranParser:
         expected, unit = _extract_final_answer(solution_text)
         if expected is None:
             return []
+        inputs = parse_prose_inputs(text)
         return [_build_result(
             number, title, source, domain,
-            expected, unit, [], "tupper_biran",
+            expected, unit, inputs, "tupper_biran",
         )]
 
 
@@ -194,9 +198,10 @@ class AttwoodPNAParser:
             return []
         page = source.get("page", 0)
         number = f"p{page}" if page else "inline"
+        inputs = parse_prose_inputs(text)
         return [_build_result(
             number, title, source, domain,
-            expected, unit, [], "attwood_pna",
+            expected, unit, inputs, "attwood_pna",
         )]
 
 

@@ -35,7 +35,7 @@ deep_extract() {
 
     echo "EXTRACT  ${stem}"
     if uv run --no-project python "${REPO_ROOT}/scripts/data/doc-intelligence/deep-extract.py" \
-        --manifest "${manifest}" --output-dir "${REPORT_DIR}" 2>/dev/null; then
+        --manifest "${manifest}" --output-dir "${REPORT_DIR}" --report 2>/dev/null; then
         extracted=$((extracted + 1))
     else
         echo "FAIL  ${stem} (exit $?)" >&2

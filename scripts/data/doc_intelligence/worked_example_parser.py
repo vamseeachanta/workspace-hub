@@ -63,6 +63,63 @@ def parse_given_inputs(text: str) -> list[dict]:
     return inputs
 
 
+# Pattern: number with optional unit in prose — "450 ft", "5000 tonnes"
+_PROSE_NUM_RE = re.compile(
+    r"([\d,]+(?:\.\d+)?(?:[eE][+-]?\d+)?)"  # number
+    r"\s*"
+    r"([A-Za-z/%][A-Za-z0-9/²³^%]*)?"  # optional unit
+)
+
+
+def parse_prose_inputs(text: str) -> list[dict]:
+    """Extract numerical inputs from prose text (not just Given: sections).
+
+    Scans text before "Solution" for all numbers with optional units.
+    Falls back to parse_given_inputs first if a Given: section exists.
+    """
+    # Try formal Given: section first
+    formal = parse_given_inputs(text)
+    if formal:
+        return formal
+
+    # Split at Solution/Answer to only parse input text
+    input_text = text
+    for marker in ("Solution", "Answer", "Find:"):
+        idx = text.lower().find(marker.lower())
+        if idx > 0:
+            input_text = text[:idx]
+            break
+
+    inputs = []
+    seen_values = set()
+
+    for m in _PROSE_NUM_RE.finditer(input_text):
+        raw = m.group(1).replace(",", "")
+        unit = (m.group(2) or "").strip()
+
+        try:
+            value = float(raw)
+        except ValueError:
+            continue
+
+        # Skip trivially small integers that are likely ordinals/labels
+        if value == 0:
+            continue
+
+        # Deduplicate by value
+        if value in seen_values:
+            continue
+        seen_values.add(value)
+
+        inputs.append({
+            "symbol": f"x{len(inputs)+1}",
+            "value": value,
+            "unit": unit,
+        })
+
+    return inputs
+
+
 def parse_solution_units(text: str) -> str:
     """Extract unit from the Solution line's final value.
 
