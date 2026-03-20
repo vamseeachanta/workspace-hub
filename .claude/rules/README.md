@@ -1,2 +1,2 @@
 # Rules
-See `.claude/docs/rules-guide.md` for full guide. Rule files: security.md, testing.md, coding-style.md, git-workflow.md, patterns.md, legal-compliance.md
+Universal constraints only. Stage-specific rules live in micro-skills (`.claude/skills/workspace-hub/stages/`). Files: coding-style.md, patterns.md

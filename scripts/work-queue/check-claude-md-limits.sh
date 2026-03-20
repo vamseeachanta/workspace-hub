@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="${1:-$(git rev-parse --show-toplevel)}"
 LIMIT=20
-HARNESS_FILES=(CLAUDE.md AGENTS.md CODEX.md GEMINI.md)
+HARNESS_FILES=(CLAUDE.md AGENTS.md GEMINI.md)
 FAIL=0
 
 for harness in "${HARNESS_FILES[@]}"; do

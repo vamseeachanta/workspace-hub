@@ -1,15 +1,18 @@
-# Workspace Hub Agent Contract
-Contract-Version: 1.0.3 | Last-Updated: 2026-03-04 | Canonical for all AI agent behavior.
-## Workflow Gates
-1. Every task maps to WRK-* in `.claude/work-queue/`
-2. WRK item + plan + explicit approval (naming WRK id) before execution
-3. Cross-review mandatory (multi-provider) before presenting significant implementation
-4. Governance skills: `/work-queue-workflow` + `/workflow-gatepass`; inferred signals ≠ compliance
+# Workspace Hub
+> Engineering workspace — shared utilities, digital twin, energy data, asset portfolio
+## Hard Gates
+1. Orchestrate, don't execute — delegate execution to subagents
+2. Plan before acting — explicit plan + user approval before implementation
+3. TDD mandatory — tests before implementation; no exceptions
+4. WRK gate — every task maps to WRK-* in `.claude/work-queue/`
+5. Gate evidence — run `scripts/work-queue/verify-gate-evidence.py WRK-xxx` before claim/close
+## Commands
+- Python: `uv run` always — never bare `python3`
+- Git: commit to `main` + push immediately; branch only for multi-session WRKs
+- Cross-review: `scripts/review/cross-review.sh <file> all` — multi-provider mandatory
+- Work: `scripts/agents/work.sh --provider <name> run` — dispatches to group runners
 ## Policies
-- **Work items**: `.claude/work-queue/` only; no WRK-*.md in child repos; regenerate INDEX.md on changes
-- **Plans**: Route A/B in WRK body; Route C in `specs/wrk/WRK-<id>/`; templates in `specs/templates/`
-- **Reviews**: verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
-- **Adapters**: CLAUDE.md/CODEX.md/GEMINI.md are adapters; AGENTS.md canonical; no override weakens gates
-- **Dev**: `uv run` for ALL Python — never bare `python3`; see `.claude/rules/python-runtime.md`
-- **Parallel-agent side effects**: out-of-WRK-scope changes are non-blocking; document under Out-of-Scope Side Effects
-- **Scope**: planning restricted to WRK locations; cross-domain execution requires explicit user permission
+- Plans: Route A/B in WRK body; Route C in `specs/wrk/WRK-<id>/`
+- Reviews: verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
+- Scope: planning restricted to WRK locations; cross-domain requires explicit permission
+- Secrets: never hardcode API keys/tokens — use environment variables

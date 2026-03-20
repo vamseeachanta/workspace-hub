@@ -1,13 +1,6 @@
-# Gemini Harness Adapter
-
-All WRK execution must go through wrapper scripts:
-- `scripts/agents/session.sh` — session init/close
-- `scripts/agents/work.sh` — /work run routing
-- `scripts/agents/plan.sh` — plan draft/review
-- `scripts/agents/execute.sh` — implementation
-- `scripts/agents/review.sh` — cross-review
-
-Direct provider API calls bypass gate logging. Use wrappers.
-
-See `.claude/docs/orchestrator-gate-contract.md` for the full gate contract.
-Gate evidence required: `verify-gate-evidence.py WRK-NNN` must PASS before claim/close.
+# Workspace Hub — Gemini Adapter
+> Canonical instructions: AGENTS.md
+## Gemini-Specific
+- Wrapper scripts: `scripts/agents/session.sh`, `work.sh`, `plan.sh`, `execute.sh`, `review.sh`
+- Cross-review: `echo content | gemini -p "prompt" -y`
+- Gate evidence: `scripts/work-queue/verify-gate-evidence.py WRK-NNN`
