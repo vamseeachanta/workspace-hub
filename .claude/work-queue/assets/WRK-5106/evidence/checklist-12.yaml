@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 12
+completed_at: "2026-03-21"
+items:
+  - id: CL-12-1
+    completed: true
+    evidence: "3 tests run: dry-run, live-run, edge case — all passing"
+  - id: CL-12-2
+    completed: true
+    evidence: "All 5 acceptance criteria verified"
+  - id: CL-12-3
+    completed: true
+    evidence: "tdd-results.yaml written with all_passing: true"

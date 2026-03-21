@@ -1,0 +1,10 @@
+stage: 8
+wrk_id: WRK-5106
+claimed_by: claude
+claimed_at: "2026-03-21T12:31:00Z"
+machine: sowon
+route: B
+complexity: medium
+session_id: "session-5106-sowon"
+orchestrator_agent: claude
+set_active_wrk: true

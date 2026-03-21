@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+      "details": "reviewed=True, approved=True, artifact=plan.md, confirmation=confirmation block incomplete \u2014 confirmed_by, confirmed_at, decision=missing (need 'passed')"
     },
     {
       "name": "Workstation contract gate",
@@ -36,21 +36,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "pre-cutoff backfill (id=1036, created_at=2026-03-08T00:00:00Z) \u2014 log gate skipped"
+      "details": "pre-cutoff backfill (id=1036, created_at=2026-03-08T00:00:00Z) \u2014 log gate skipped (optional \u2014 no multi-agent indicators)"
     },
     {
-      "name": "User-review HTML-open gate",
-      "status": "PASS",
-      "ok": true,
+      "name": "GitHub issue gate",
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
-    },
-    {
-      "name": "User-review publish gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "github_issue_ref missing from frontmatter"
     },
     {
       "name": "Cross-review gate",
@@ -86,13 +79,6 @@
       "ok": true,
       "warn": false,
       "details": "no midnight UTC sentinel found"
-    },
-    {
-      "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",

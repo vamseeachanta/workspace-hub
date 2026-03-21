@@ -1,0 +1,46 @@
+wrk_id: WRK-5106
+stage: 2
+completion_status: complete
+domain: harness/work-queue
+complexity_assessment: medium
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - ecosystem-terminology
+  optional: []
+codebase_findings:
+  - description: "update-github-issue.py already supports --update and --dry-run for single WRK"
+    path: scripts/knowledge/update-github-issue.py
+    relevance: "Core tool to wrap in batch loop; already renders the WRK-5104 template (Mission/What/Why, collapsible details, stage progress)"
+  - description: "backfill-domain-labels.sh is an existing batch backfill script with rate limiting, dry-run, summary report"
+    path: scripts/work-queue/backfill-domain-labels.sh
+    relevance: "Direct pattern to follow — iterates issues, finds WRK files, applies changes, reports counts; already has sleep 0.5 rate limiting"
+  - description: "wrk-status-index.json has 831 WRK entries; only 6 have actual github_issue_ref URLs stored"
+    path: .claude/work-queue/wrk-status-index.json
+    relevance: "Primary scope issue: most WRK files lack github_issue_ref. Batch script must handle two cases: (1) update existing issues that have refs, (2) match GitHub issues to WRK files by title pattern for issues without stored refs"
+  - description: "1256 GitHub issues exist in the repo; most have WRK IDs in titles (e.g. 'WRK-5107: ...')"
+    path: "(GitHub API)"
+    relevance: "The batch script can extract WRK IDs from issue titles to reverse-map issues back to local WRK files, similar to backfill-domain-labels.sh approach"
+  - description: "1180 WRK .md files exist on disk across pending/working/done/archive directories"
+    path: .claude/work-queue/
+    relevance: "Upper bound of files to process; many will have corresponding GitHub issues discoverable by title matching"
+  - description: "WRK-5104 introduced the standardized template; future-work.yaml explicitly spawned WRK-5106"
+    path: .claude/work-queue/assets/WRK-5104/evidence/future-work.yaml
+    relevance: "Confirms lineage and that render_body() in update-github-issue.py already produces the target template format"
+knowledge_base_findings: "Knowledge base has 5 harness-category WRK entries (WRK-088, 090, 094, 108, 124). No existing batch-update-issues tooling found. backfill-domain-labels.sh and backfill-categories.py are the closest prior art for batch GitHub operations."
+online_research: "not needed - internal tooling"
+scope_estimate: |
+  Two-phase scope:
+  Phase 1 (primary): Write backfill-issues.sh that:
+    - Fetches all ~1256 GitHub issues via gh issue list
+    - Extracts WRK ID from each issue title
+    - Finds matching local WRK .md file
+    - Calls update-github-issue.py --update for each match
+    - Rate limits (sleep between calls, ~1256 issues at 0.5s = ~10 min)
+    - Dry-run mode, resume-on-failure, summary report
+  Phase 2 (secondary): Backfill github_issue_ref into WRK files that lack it
+    - For issues matched by title but missing stored ref, write the URL back
+  Estimated deliverables: 1 new script (~120-150 lines bash)
+  Estimated API calls: ~1256 reads + ~1256 writes = ~2512 (well within 5000/hr limit)
+  Risk: Some WRK files may not have enough content to render a useful template body

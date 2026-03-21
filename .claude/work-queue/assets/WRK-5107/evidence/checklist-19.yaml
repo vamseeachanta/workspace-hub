@@ -1,0 +1,13 @@
+wrk_id: WRK-5107
+stage: 19
+completed_at: "2026-03-21"
+items:
+  - id: CL-19-1
+    completed: true
+    evidence: "Committed: 7d8a73eb feat(WRK-5107): purge HTML gates from verify-gate-evidence.py"
+  - id: CL-19-2
+    completed: true
+    evidence: "104 files changed, 3370 insertions, 475 deletions"
+  - id: CL-19-3
+    completed: true
+    evidence: "Pushed to origin/main"

@@ -1,0 +1,8 @@
+stage: 2
+wrk_id: WRK-5106
+human_gate: false
+started_at: "2026-03-21T11:40:31.849887+00:00"
+completed_at: "2026-03-21T11:42:44.660039+00:00"
+duration_s: 132.8
+completed_at: "2026-03-21T11:43:01.644464+00:00"
+duration_s: 149.8

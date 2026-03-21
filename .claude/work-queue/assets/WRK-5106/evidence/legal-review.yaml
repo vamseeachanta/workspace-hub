@@ -1,0 +1,6 @@
+wrk_id: WRK-5106
+stage: 14
+review: not_applicable
+reason: "Internal tooling script — no external dependencies, no licensing concerns, no third-party code"
+reviewer: claude
+reviewed_at: 2026-03-21T12:40:00Z

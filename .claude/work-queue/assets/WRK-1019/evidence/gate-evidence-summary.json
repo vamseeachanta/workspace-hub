@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
     },
     {
       "name": "Workstation contract gate",
@@ -43,21 +43,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "pre-cutoff backfill (id=1019, created_at=2026-03-05T00:00:00Z) \u2014 log gate skipped"
+      "details": "pre-cutoff backfill (id=1019, created_at=2026-03-05T00:00:00Z) \u2014 log gate skipped (optional \u2014 no multi-agent indicators)"
     },
     {
-      "name": "User-review HTML-open gate",
-      "status": "PASS",
-      "ok": true,
+      "name": "GitHub issue gate",
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
-    },
-    {
-      "name": "User-review publish gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "github_issue_ref missing from frontmatter"
     },
     {
       "name": "Cross-review gate",
@@ -137,13 +130,6 @@
       "details": "no midnight UTC sentinel found"
     },
     {
-      "name": "Browser open elapsed time gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "stage=plan_final: approval confirmed only 0s after browser open (min 300s required)"
-    },
-    {
       "name": "Sentinel values gate",
       "status": "PASS",
       "ok": true,
@@ -172,13 +158,6 @@
       "details": "codex keyword found in review artifacts (1 file(s) checked)"
     },
     {
-      "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "publish commits appear unique across stages"
-    },
-    {
       "name": "Stage evidence paths gate",
       "status": "FAIL",
       "ok": false,
@@ -191,13 +170,6 @@
       "ok": true,
       "warn": false,
       "details": "no done/pending contradictions found"
-    },
-    {
-      "name": "Plan publish predates approval gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "plan_draft published_at (2026-03-07 22:00:00+00:00) < reviewed_at (2026-03-07 22:30:00+00:00): publish predates approval"
     },
     {
       "name": "Workstation contract (strict) gate",

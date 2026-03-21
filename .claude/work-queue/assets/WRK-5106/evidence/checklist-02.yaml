@@ -1,0 +1,22 @@
+wrk_id: WRK-5106
+stage: 2
+completed_at: "2026-03-21"
+items:
+  - id: CL-02-1
+    completed: true
+    evidence: "Codebase searched: found update-github-issue.py, backfill-domain-labels.sh, wrk-status-index.json, 1180 WRK files, 6 with github_issue_ref"
+  - id: CL-02-2
+    completed: true
+    evidence: "Knowledge base queried via query-knowledge.sh --category harness — 5 entries, no existing batch-update tooling"
+  - id: CL-02-3
+    completed: true
+    evidence: "Online research not needed — internal tooling only"
+  - id: CL-02-4
+    completed: true
+    evidence: "No external documents to save — all findings are internal codebase artifacts"
+  - id: CL-02-5
+    completed: true
+    evidence: "Complexity assessed as medium — building blocks exist, need batch wrapper script"
+  - id: CL-02-6
+    completed: true
+    evidence: "evidence/resource-intelligence.yaml written with completion_status, domain, skills.core_used (3 entries)"

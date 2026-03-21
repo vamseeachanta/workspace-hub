@@ -2,6 +2,7 @@ stage: 5
 type: user-review-plan-draft
 wrk_id: WRK-5107
 decision: approved
+approval_decision: approve_as_is
 approved_at: "2026-03-21T10:00:00Z"
 reviewer: vamsee
 method: 3-agent-synthesis

@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 15
+completed_at: "2026-03-21"
+items:
+  - id: CL-15-1
+    completed: true
+    evidence: "future-work.yaml written — no follow-up WRKs needed (one-time batch script)"
+  - id: CL-15-2
+    completed: true
+    evidence: "No future work items to capture — one-time batch script, no_follow_ups_rationale provided"
+  - id: CL-15-3
+    completed: true
+    evidence: "future-work.yaml written with recommendations: [] and no_follow_ups_rationale"

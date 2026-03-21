@@ -1,0 +1,14 @@
+wrk_id: WRK-5106
+stage: 1
+completed_at: "2026-03-21"
+items:
+  - id: CL-01-1
+    completed: true
+    evidence: "Title, category (harness), mission captured in pending/WRK-5106.md"
+  - id: CL-01-2
+    completed: true
+    evidence: "pending/WRK-5106.md validated — validate-wrk-frontmatter.sh exit 0"
+  - id: CL-01-3
+    completed: true
+    approved_by: user
+    evidence: "User approved scope in GitHub issue #1254 comments (x2) — 'I approve stage 1'"

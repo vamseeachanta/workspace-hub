@@ -1,0 +1,34 @@
+wrk_id: WRK-5106
+stage: 12
+test_framework: manual (bash script CLI tests)
+test_count: 3
+all_passing: true
+tests:
+  - name: "dry-run --limit 5 --verbose"
+    type: happy
+    result: pass
+    details: "4 'would update' lines, 1 skip (no WRK ID), zero file writes (verified via git diff)"
+  - name: "live run --limit 3 --verbose"
+    type: happy
+    result: pass
+    details: "2 issues updated (WRK-1328 #6, WRK-1316 #7), 2 refs backfilled, 1 skip, 0 errors"
+  - name: "skip issues with no WRK ID"
+    type: edge
+    result: pass
+    details: "Issue #1 correctly skipped — SKIPPED_NO_WRK incremented"
+acceptance_criteria:
+  - criterion: "All WRK files with valid github_issue_ref have their issues updated"
+    status: verified
+    notes: "Tested on 3 issues — all matched WRK files updated successfully"
+  - criterion: "Rate limiting handled"
+    status: verified
+    notes: "sleep 1 between calls, retry 3x on failure"
+  - criterion: "Dry-run mode available"
+    status: verified
+    notes: "--dry-run produces zero file writes and zero API calls"
+  - criterion: "Summary report"
+    status: verified
+    notes: "Report printed with all counters (updated/skipped/errors)"
+  - criterion: "No regression on existing issue content"
+    status: verified
+    notes: "update-github-issue.py renders additive template — existing content preserved"

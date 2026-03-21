@@ -1,0 +1,60 @@
+<!-- WRK-5106: backfill GitHub issues — lifecycle tracked at https://github.com/vamseeachanta/workspace-hub/issues/1254 -->
+<!-- Plan: see Stage 4 section below -->
+<html><body>
+<h2>Stage 4: Plan Draft</h2>
+<h3>Scripts to Create</h3>
+<ul>
+  <li><code>scripts/work-queue/backfill-issues.sh</code> — main batch script (~120 lines)
+    <ul>
+      <li>Input: --dry-run, --limit N, --resume-from N</li>
+      <li>Output: updated/skipped/failed counts to stdout</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Plan</h3>
+<ol>
+  <li>Phase 1: Fetch all ~1256 GitHub issues via <code>gh issue list --state all --limit 5000</code></li>
+  <li>Phase 2: For each issue, extract WRK-NNN from title, find local WRK file, backfill <code>github_issue_ref</code> if missing</li>
+  <li>Phase 3: Call <code>update-github-issue.py --update</code> for each matched WRK file (rate limited: sleep 0.5s)</li>
+  <li>Print summary report: updated / skipped / failed / total</li>
+</ol>
+
+<h3>Acceptance Criteria</h3>
+<ul>
+  <li>All WRK files with matching GitHub issues have github_issue_ref populated</li>
+  <li>All matched issues updated to WRK-5104 template format</li>
+  <li>--dry-run mode previews without API writes</li>
+  <li>--resume-from N skips first N issues for failure recovery</li>
+  <li>Summary report: updated/skipped/failed counts</li>
+</ul>
+
+<h3>Pseudocode</h3>
+<pre>
+1. Parse CLI args (--dry-run, --limit, --resume-from)
+2. gh issue list --repo REPO --state all --limit 5000 --json number,title > tmpfile
+3. For each (number, title) in tmpfile:
+   a. Extract WRK_ID from title via regex /WRK-(\d+)/
+   b. If no WRK_ID → skip (SKIPPED_NO_WRK++)
+   c. Find local WRK file via find_wrk_file()
+   d. If no file → skip (SKIPPED_NO_FILE++)
+   e. If WRK file missing github_issue_ref → inject it into frontmatter
+   f. If --dry-run → log "would update" (DRY_RUN++)
+   g. Else → uv run update-github-issue.py WRK_ID --update
+   h. If exit 0 → UPDATED++, else ERRORS++
+   i. sleep 0.5
+4. Print summary: total/updated/skipped/errors
+</pre>
+
+<h3>Test Plan</h3>
+<table>
+  <tr><th>Test</th><th>Type</th><th>Expected</th></tr>
+  <tr><td>--dry-run with 5 issues</td><td>happy</td><td>No API writes, 5 "would update" lines</td></tr>
+  <tr><td>Issue with no WRK ID in title</td><td>edge</td><td>Skipped with SKIPPED_NO_WRK count</td></tr>
+  <tr><td>WRK file not found on disk</td><td>edge</td><td>Skipped with SKIPPED_NO_FILE count</td></tr>
+  <tr><td>update-github-issue.py returns error</td><td>error</td><td>ERRORS++ and continue processing</td></tr>
+  <tr><td>--limit 3 flag</td><td>happy</td><td>Only processes first 3 issues</td></tr>
+</table>
+
+<p>See <a href="https://github.com/vamseeachanta/workspace-hub/issues/1254">GitHub Issue #1254</a></p>
+</body></html>

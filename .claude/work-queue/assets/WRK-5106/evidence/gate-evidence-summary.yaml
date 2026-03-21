@@ -1,0 +1,11 @@
+wrk_id: WRK-5106
+stage: 14
+generated_at: "2026-03-21T12:42:00Z"
+gates_passing: 23
+gates_failing: 2
+remaining_failures:
+  - gate: "Stage evidence"
+    reason: "Stage 14 in_progress — will be done on exit"
+  - gate: "User-review close"
+    reason: "Stage 17 not yet reached"
+verdict: "All actionable gates pass. Remaining 2 are sequencing-dependent."

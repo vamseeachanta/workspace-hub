@@ -1,0 +1,10 @@
+wrk_id: WRK-5106
+stage: 5
+decision: approved
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: 2026-03-21T11:57:07Z
+notes: |
+  User approved plan via GitHub issue #1254 + interactive synthesis.
+  Decisions: Python helper for YAML (not sed), resume by issue number (simple),
+  minimal testing (dry-run + spot-check, one-time script).

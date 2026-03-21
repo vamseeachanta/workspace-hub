@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 9
+completed_at: "2026-03-21"
+items:
+  - id: CL-09-1
+    completed: true
+    evidence: "Skills loaded: work-queue-workflow, workflow-gatepass, ecosystem-terminology"
+  - id: CL-09-2
+    completed: true
+    evidence: "Delivery order confirmed: P0 preflight → P1 fetch → P2 backfill refs → P3 update issues → P4 report"
+  - id: CL-09-3
+    completed: true
+    evidence: "routing.yaml written with work_queue_skill: loaded, work_wrapper_complete: true"

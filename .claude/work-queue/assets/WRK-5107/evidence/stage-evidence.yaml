@@ -1,5 +1,5 @@
 wrk_id: WRK-5107
-generated_at: '2026-03-21T11:02:28Z'
+generated_at: '2026-03-21T11:08:49Z'
 reviewed_by: agent
 stages:
 - order: 1
@@ -76,7 +76,7 @@ stages:
   evidence: ''
 - order: 19
   stage: Close
-  status: in_progress
+  status: done
   evidence: ''
 - order: 20
   stage: Archive

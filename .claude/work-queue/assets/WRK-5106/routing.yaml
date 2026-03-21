@@ -1,0 +1,19 @@
+wrk_id: WRK-5106
+stage: 9
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass
+  - ecosystem-terminology
+stage_sequence_from_here:
+  - 10: Work Execution
+  - 11: Artifact Generation
+  - 12: TDD / Eval
+  - 13: Agent Cross-Review
+delivery_order:
+  - P0: Preflight checks
+  - P1: Fetch & match GitHub issues
+  - P2: Backfill github_issue_ref into WRK files
+  - P3: Update GitHub issues via update-github-issue.py
+  - P4: Summary report

@@ -1,0 +1,36 @@
+wrk_id: WRK-5106
+stage: 10
+completion_status: complete
+test_count: 3
+integrated_repo_tests:
+  - name: "dry-run --limit 5"
+    scope: "integrated"
+    command: "bash scripts/work-queue/backfill-issues.sh --dry-run --limit 5 --verbose"
+    result: pass
+    artifact_ref: "ac-test-matrix.md"
+  - name: "live run --limit 3"
+    scope: "integrated"
+    command: "bash scripts/work-queue/backfill-issues.sh --limit 3 --verbose"
+    result: pass
+    artifact_ref: "ac-test-matrix.md"
+  - name: "edge: no WRK ID skip"
+    scope: "integrated"
+    command: "included in --limit 5 run"
+    result: pass
+    artifact_ref: "ac-test-matrix.md"
+files_changed:
+  - path: scripts/work-queue/backfill-issues.sh
+    description: "New batch script — fetches GitHub issues, matches to WRK files, backfills github_issue_ref, updates issue bodies"
+tests:
+  - name: "dry-run --limit 5"
+    type: happy
+    result: pass
+    details: "4 'would update' lines, 1 skip (no WRK ID), zero file writes confirmed"
+  - name: "live run --limit 3"
+    type: happy
+    result: pass
+    details: "2 issues updated (WRK-1328 #6, WRK-1316 #7), 2 refs backfilled, 1 skip"
+  - name: "no WRK ID in title"
+    type: edge
+    result: pass
+    details: "Issue #1 (no WRK ID) correctly skipped with SKIPPED_NO_WRK count"

@@ -1,0 +1,24 @@
+wrk_id: WRK-5106
+stage: 5
+completed_at: "2026-03-21"
+items:
+  - id: CL-05-1
+    completed: true
+    approved_by: user
+    evidence: "Claude plan draft written to plan_claude.md and presented to user"
+  - id: CL-05-2
+    completed: true
+    approved_by: user
+    evidence: "Codex and Gemini plans dispatched via stage5-plan-dispatch.sh — plan_codex.md (404 lines) and plan_gemini.md (59 lines)"
+  - id: CL-05-3
+    completed: true
+    approved_by: user
+    evidence: "3-way synthesis presented interactively — 8 conflict areas, 3 requiring user decision"
+  - id: CL-05-4
+    completed: true
+    approved_by: user
+    evidence: "User resolved all conflicts: Python helper (not sed), resume by issue number, minimal testing. Merged plan written to specs/wrk/WRK-5106/plan.md"
+  - id: CL-05-5
+    completed: true
+    approved_by: user
+    evidence: "User approved stage 5 via GitHub issue #1254 comment (2026-03-21T11:57:07Z) and interactive conflict resolution"

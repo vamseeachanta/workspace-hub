@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 11
+artifacts:
+  - type: script
+    path: scripts/work-queue/backfill-issues.sh
+    description: "Batch backfill script — fetches GitHub issues, matches to WRK files, backfills github_issue_ref, updates issue bodies"
+    lines: 170
+  - type: plan
+    path: specs/wrk/WRK-5106/plan.md
+    description: "Merged 3-agent plan (Claude/Codex/Gemini)"
+  - type: lifecycle
+    path: .claude/work-queue/assets/WRK-5106/WRK-5106-lifecycle.html
+    description: "Stage tracking HTML"

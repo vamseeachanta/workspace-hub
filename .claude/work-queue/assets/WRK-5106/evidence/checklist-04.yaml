@@ -1,0 +1,28 @@
+wrk_id: WRK-5106
+stage: 4
+completed_at: "2026-03-21"
+items:
+  - id: CL-04-0
+    completed: true
+    evidence: "Scripts-over-LLM audit: backfill-issues.sh will be reusable for future template changes. Added Scripts to Create section."
+  - id: CL-04-1
+    completed: true
+    evidence: "Plan drafted in lifecycle HTML Stage 4 section"
+  - id: CL-04-2
+    completed: true
+    evidence: "ACs defined: 5 specific testable criteria (github_issue_ref populated, template updated, dry-run, resume, summary)"
+  - id: CL-04-3
+    completed: true
+    evidence: "Pseudocode: 4 major steps with 9 substeps covering fetch, match, backfill, update"
+  - id: CL-04-4
+    completed: true
+    evidence: "Test plan: 5 entries covering happy/edge/error paths"
+  - id: CL-04-5
+    completed: true
+    evidence: "Lifecycle HTML written: WRK-5106-lifecycle.html with Stage 4 section"
+  - id: CL-04-6
+    completed: true
+    evidence: "Chunk sizing checked: 1 repo, ~2 files changed, within limits — not a Feature WRK"
+  - id: CL-04-7
+    completed: true
+    evidence: "No external API research needed — using existing gh CLI and update-github-issue.py"

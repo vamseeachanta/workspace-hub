@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 3
+completed_at: "2026-03-21"
+items:
+  - id: CL-03-1
+    completed: true
+    evidence: "Read resource-intelligence.yaml — medium complexity, building blocks exist"
+  - id: CL-03-2
+    completed: true
+    evidence: "Route B confirmed (medium). Workstation: sowon. Orchestrator: claude."
+  - id: CL-03-3
+    completed: true
+    evidence: "Open question resolved: script must match issues by title pattern since only 6/1180 WRK files have github_issue_ref. Updated What section in WRK file."

@@ -1,0 +1,16 @@
+wrk_id: WRK-5106
+stage: 8
+completed_at: "2026-03-21"
+items:
+  - id: CL-08-1
+    completed: true
+    evidence: "Agent quota checked — claude max tier available"
+  - id: CL-08-2
+    completed: true
+    evidence: "claim-evidence.yaml written with proceed decision"
+  - id: CL-08-3
+    completed: true
+    evidence: "WRK moved to working/, status updated, activated_at set"
+  - id: CL-08-4
+    completed: true
+    evidence: "activation.yaml written with gates_confirmed"
