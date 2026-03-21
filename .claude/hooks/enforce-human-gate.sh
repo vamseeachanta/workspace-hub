@@ -41,6 +41,80 @@ fi
 # It IS a human gate. Check for approval evidence.
 EVIDENCE_DIR="$REPO_ROOT/.claude/work-queue/assets/$WRK_ID/evidence"
 
+# ── WRK-5104: GitHub issue comment-based approval (checked first) ─────────
+
+# Explicit escape hatch
+if [[ "${SKIP_GATE_GITHUB_CHECK:-0}" == "1" ]]; then
+    GITHUB_CHECK="skip"
+else
+    GITHUB_CHECK="try"
+fi
+
+_check_github_approval() {
+    # Read github_issue_ref from WRK frontmatter
+    local wrk_file=""
+    for folder in pending working done; do
+        local candidate="$REPO_ROOT/.claude/work-queue/$folder/$WRK_ID.md"
+        if [[ -f "$candidate" ]]; then
+            wrk_file="$candidate"
+            break
+        fi
+    done
+    [[ -z "$wrk_file" ]] && return 1
+
+    local issue_ref
+    issue_ref=$(grep -m1 '^github_issue_ref:' "$wrk_file" 2>/dev/null | sed 's/^github_issue_ref:\s*//' | tr -d '"'"'" | xargs)
+    [[ -z "$issue_ref" ]] && return 1
+
+    local issue_num="${issue_ref##*/}"
+    [[ -z "$issue_num" ]] && return 1
+
+    # Check gh is available and authenticated
+    if ! command -v gh &>/dev/null || ! gh auth status &>/dev/null; then
+        return 1  # Fall back to local
+    fi
+
+    # Read comments as JSON
+    local comments_json
+    comments_json=$(gh issue view "$issue_num" --comments --json comments 2>/dev/null) || return 1
+
+    # Find the last "AWAITING APPROVAL" comment index, then check for "approved" after it
+    # Uses jq: find last AWAITING index, then check if any comment after it contains "approved"
+    local approved
+    approved=$(echo "$comments_json" | jq -r '
+        [.comments | to_entries[] | select(.value.body | test("AWAITING APPROVAL")) | .key] as $awaiting |
+        if ($awaiting | length) == 0 then "no_awaiting"
+        else
+            ($awaiting | last) as $last_await |
+            [.comments | to_entries[] | select(.key > $last_await) | select(.value.body | test("(?i)approved"))] |
+            if length > 0 then "yes" else "no" end
+        end
+    ' 2>/dev/null) || return 1
+
+    if [[ "$approved" == "yes" ]]; then
+        return 0  # Approved on GitHub
+    fi
+    return 2  # AWAITING exists but no approval yet
+}
+
+if [[ "$GITHUB_CHECK" == "try" ]]; then
+    _check_github_approval
+    gh_result=$?
+    if [[ $gh_result -eq 0 ]]; then
+        # Approved via GitHub comment
+        exit 0
+    elif [[ $gh_result -eq 2 ]]; then
+        # AWAITING APPROVAL posted but no approval comment yet
+        echo "BLOCKED: Stage $STAGE awaiting approval on GitHub issue." >&2
+        echo "  Comment 'approved' on the GitHub issue to proceed." >&2
+        echo "  (Or set SKIP_GATE_GITHUB_CHECK=1 to use local evidence instead)" >&2
+        exit 2
+    fi
+    # gh_result == 1: GitHub unavailable, fall through to local check
+fi
+
+# ── Local evidence fallback ───────────────────────────────────────────────
+
 # Map stage → expected evidence file and field
 case "$STAGE" in
     1)

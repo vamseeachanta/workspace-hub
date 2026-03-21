@@ -299,6 +299,51 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
         print(f"⚠ GitHub Issue update error: {exc}", file=sys.stderr)
 
 
+# ── GitHub Issue stage comment (WRK-5104) ─────────────────────────────────────
+
+HUMAN_GATE_STAGES = {1, 5, 7, 17}
+
+
+def _post_stage_comment(wrk_id: str, stage: int, human_gate: bool, repo_root: str) -> None:
+    """Post a stage completion/awaiting-approval comment on the GitHub issue.
+
+    Non-blocking: failures are logged but do not halt the stage exit.
+    """
+    import subprocess
+    from datetime import datetime, timezone
+
+    issue_ref = _get_github_issue_ref(wrk_id, repo_root)
+    if not issue_ref:
+        return
+    script = os.path.join(repo_root, "scripts", "knowledge", "update-github-issue.py")
+    if not os.path.exists(script):
+        return
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    if human_gate or stage in HUMAN_GATE_STAGES:
+        comment = (
+            f"## Stage {stage} — AWAITING APPROVAL\n\n"
+            f"Review the issue sections above and comment `approved` to proceed.\n\n"
+            f"Timestamp: {now}"
+        )
+    else:
+        comment = f"## Stage {stage} — DONE\n\nCompleted at {now}"
+
+    try:
+        result = subprocess.run(
+            ["uv", "run", "--no-project", "python", script, wrk_id,
+             "--comment", comment],
+            capture_output=True, text=True, cwd=repo_root,
+        )
+        if result.returncode == 0:
+            print(f"✔ Stage {stage} comment posted to GitHub issue")
+        else:
+            print(f"⚠ Stage comment failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+    except Exception as exc:
+        print(f"⚠ Stage comment error: {exc}", file=sys.stderr)
+
+
 # ── Stage timing (WRK-1316) ───────────────────────────────────────────────────
 
 def _log_stage_completed(stage: int, stage_dir: str) -> None:
@@ -476,6 +521,9 @@ def _main() -> None:
 
     # Update GitHub Issue (now reads correct stage state)
     _regenerate_lifecycle_html(wrk_id, repo_root)
+
+    # Post stage completion comment on GitHub issue (WRK-5104)
+    _post_stage_comment(wrk_id, stage, human_gate, repo_root)
 
     # Write rich checkpoint and emit STAGE_GATE signal
     _write_cp, _print_gate, _log_complete = _load_checkpoint_writer()

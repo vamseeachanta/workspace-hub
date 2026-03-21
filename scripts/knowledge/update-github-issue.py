@@ -46,6 +46,27 @@ def extract_acceptance_criteria(wrk_id, root):
     _, body = parse_frontmatter(wrk)
     return [ln.strip() for ln in body.splitlines() if re.match(r'\s*- \[[ x]\]', ln)]
 
+def _extract_sections(wrk_id, root, headings=("Mission", "What", "Why")):
+    """Extract named ## sections from the WRK body markdown."""
+    wrk = find_wrk_file(wrk_id, root)
+    if not wrk: return ""
+    _, body = parse_frontmatter(wrk)
+    sections = {}
+    current, buf = None, []
+    for line in body.splitlines():
+        m = re.match(r'^##\s+(.+)$', line)
+        if m:
+            if current: sections[current] = "\n".join(buf).strip()
+            current, buf = m.group(1).strip(), []
+        elif current is not None:
+            buf.append(line)
+    if current: sections[current] = "\n".join(buf).strip()
+    parts = []
+    for h in headings:
+        if h in sections and sections[h]:
+            parts.append(f"### {h}\n\n{sections[h]}")
+    return "\n\n".join(parts)
+
 def _read_yaml(path):
     return _load_yaml(path.read_text()) if path.exists() else {}
 
@@ -81,8 +102,18 @@ def _render_tdd(edir):
 def _render_stages(edir):
     p = edir / "stage-evidence.yaml"
     if not p.exists(): return "Not yet available"
-    lines = [f"- [{'x' if m.group(3).strip()=='done' else ' '}] **{m.group(1)}. {m.group(2).strip()}** — {m.group(4).strip()}"
-             for m in re.finditer(r'-\s+order:\s*(\d+)\n\s+stage:\s*(.+)\n\s+status:\s*(\w+)\n(?:\s+.*\n)*?\s+comment:\s*["\']?(.+?)["\']?\s*$', p.read_text(), re.MULTILINE)]
+    raw = p.read_text()
+    lines = []
+    for m in re.finditer(
+        r'-\s+order:\s*(\d+)\n\s+stage:\s*(.+)\n\s+status:\s*(\w+)'
+        r'(?:\n\s+evidence:\s*["\']?(.*?)["\']?)?'
+        r'(?:\n\s+comment:\s*["\']?(.*?)["\']?)?',
+        raw, re.MULTILINE,
+    ):
+        order, name, status = m.group(1), m.group(2).strip(), m.group(3).strip()
+        detail = (m.group(5) or m.group(4) or status).strip() or status
+        check = "x" if status == "done" else " "
+        lines.append(f"- [{check}] **{order}. {name}** — {detail}")
     return "\n".join(lines) if lines else "Not yet available"
 
 def _render_cost(edir):
@@ -97,6 +128,20 @@ def _render_plan(fm, root):
     if ref and (root / ref).exists(): return (root / ref).read_text().strip()
     return "Not yet available"
 
+def _current_stage(edir):
+    """Derive current stage from stage-evidence.yaml (first non-done stage)."""
+    p = edir / "stage-evidence.yaml"
+    if not p.exists(): return None
+    raw = p.read_text()
+    for m in re.finditer(
+        r'-\s+order:\s*(\d+)\n\s+stage:\s*(.+)\n\s+status:\s*(\w+)', raw, re.MULTILINE
+    ):
+        status = m.group(3).strip()
+        if status != "done":
+            return f"Stage {m.group(1)}: {m.group(2).strip()} ({status})"
+    return "All stages done"
+
+
 def render_body(wrk_id, root):
     wrk = find_wrk_file(wrk_id, root)
     if not wrk: return f"WRK file not found for {wrk_id}"
@@ -105,10 +150,14 @@ def render_body(wrk_id, root):
     sub = fm.get("subcategory", "")
     edir = root / ".claude/work-queue/assets" / wrk_id / "evidence"
     acs = extract_acceptance_criteria(wrk_id, root)
+    stage_info = _current_stage(edir)
+    status_str = stage_info if stage_info else fm.get('status', 'unknown')
     return "\n\n".join([
         f"## {wrk_id}: {fm.get('title', wrk_id)}", "",
-        f"**Status:** {fm.get('status','unknown')} | **Priority:** {fm.get('priority','unset')} | **Category:** {f'{cat}/{sub}' if sub else cat}",
+        f"**Status:** {status_str} | **Priority:** {fm.get('priority','unset')} | **Category:** {cat}" + (f" | **Subcategory:** {sub}" if sub else ""),
         f"**Repo:** {fm.get('target_repos','workspace-hub')} | **Complexity:** {fm.get('complexity','unset')} | **Machine:** {fm.get('computer','unset')}",
+        "", "---", "",
+        _extract_sections(wrk_id, root),
         "", "---", "",
         _detail("Implementation Summary", _render_impl(edir)),
         _detail("Final Plan", _render_plan(fm, root)),
@@ -141,6 +190,14 @@ def _gh_run(cmd):
         print(f"Error: {r.stderr}", file=sys.stderr); sys.exit(1)
     return r
 
+def _get_issue_number(fm):
+    """Extract issue number from github_issue_ref in frontmatter."""
+    ref = fm.get("github_issue_ref", "")
+    if not ref:
+        print("No github_issue_ref in frontmatter", file=sys.stderr); sys.exit(1)
+    return ref.rstrip("/").split("/")[-1]
+
+
 def main(argv=None, repo_root=None):
     pa = argparse.ArgumentParser(description=__doc__)
     pa.add_argument("wrk_id")
@@ -148,13 +205,29 @@ def main(argv=None, repo_root=None):
     g.add_argument("--create", action="store_true")
     g.add_argument("--update", action="store_true")
     g.add_argument("--close", action="store_true")
+    g.add_argument("--comment", type=str, help="Post a comment on the issue")
+    g.add_argument("--read-comments", action="store_true", help="Read issue comments as JSON")
     pa.add_argument("--dry-run", action="store_true")
     args = pa.parse_args(argv)
     root = Path(repo_root) if repo_root else _repo_root_default()
-    body = render_body(args.wrk_id, root)
-    if args.dry_run: print(body); return
     wrk = find_wrk_file(args.wrk_id, root)
     fm, _ = parse_frontmatter(wrk) if wrk else ({}, "")
+
+    if args.comment:
+        num = _get_issue_number(fm)
+        if args.dry_run: print(f"Would comment on #{num}: {args.comment}"); return
+        _gh_run(["gh", "issue", "comment", num, "--body", args.comment])
+        print(f"Commented on #{num}")
+        return
+
+    if args.read_comments:
+        num = _get_issue_number(fm)
+        r = _gh_run(["gh", "issue", "view", num, "--comments", "--json", "comments"])
+        print(r.stdout)
+        return
+
+    body = render_body(args.wrk_id, root)
+    if args.dry_run: print(body); return
     lbl = []
     for lb in generate_labels(args.wrk_id, root): lbl.extend(["--label", lb])
     if args.create:
@@ -163,15 +236,13 @@ def main(argv=None, repo_root=None):
         url = r.stdout.strip(); print(f"Created: {url}")
         if wrk: _store_issue_ref(wrk, url)
     elif args.update:
-        ref = fm.get("github_issue_ref", "")
-        if not ref: print("No github_issue_ref in frontmatter", file=sys.stderr); sys.exit(1)
-        _gh_run(["gh", "issue", "edit", ref.rstrip("/").split("/")[-1], "--body", body])
-        print(f"Updated: {ref}")
+        num = _get_issue_number(fm)
+        _gh_run(["gh", "issue", "edit", num, "--body", body])
+        print(f"Updated: {fm.get('github_issue_ref', '')}")
     elif args.close:
-        ref = fm.get("github_issue_ref", "")
-        if not ref: print("No github_issue_ref in frontmatter", file=sys.stderr); sys.exit(1)
-        _gh_run(["gh", "issue", "close", ref.rstrip("/").split("/")[-1]])
-        print(f"Closed: {ref}")
+        num = _get_issue_number(fm)
+        _gh_run(["gh", "issue", "close", num])
+        print(f"Closed: {fm.get('github_issue_ref', '')}")
 
 if __name__ == "__main__":
     main()
