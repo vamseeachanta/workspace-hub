@@ -73,6 +73,10 @@ if bash "$SCRIPTS/is-human-gate.sh" "$STAGE" 2>/dev/null; then
     HUMAN_GATE="yes"
 fi
 
+# ── Write dispatch breadcrumb (enables L3 hook enforcement) ─────────────────
+mkdir -p "$REPO_ROOT/.claude/state"
+echo "$STAGE" > "$REPO_ROOT/.claude/state/dispatch-${WRK_ID}"
+
 # ── Print dispatch ───────────────────────────────────────────────────────────
 echo "━━━ DISPATCH: $WRK_ID ━━━"
 echo "Stage: $STAGE ($STAGE_NAME) | Group: $GROUP | Human gate: $HUMAN_GATE"
