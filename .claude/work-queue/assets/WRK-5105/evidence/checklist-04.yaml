@@ -1,0 +1,28 @@
+evidence_type: checklist
+wrk_id: WRK-5105
+stage: 4
+items:
+  - id: CL-04-0
+    completed: true
+    notes: "Scripts audit: update-wrk-index.sh (write path), rebuild-wrk-index.sh (batch + urgency post-pass), whats-next.sh (index reader)"
+  - id: CL-04-1
+    completed: true
+    notes: "Plan mode used, plan written to specs/modules/federated-jingling-flurry.md"
+  - id: CL-04-2
+    completed: true
+    notes: "ACs defined: 9 items covering enriched columns, compact mode, performance, backward compat"
+  - id: CL-04-3
+    completed: true
+    notes: "Pseudocode: Python index reader → TSV → bash draw_table; enriched column layouts"
+  - id: CL-04-4
+    completed: true
+    notes: "Test plan: T66 enriched fields, T67 urgency post-pass, T68 index-first + compact"
+  - id: CL-04-5
+    completed: true
+    notes: "Plan in lifecycle HTML deferred — harness task"
+  - id: CL-04-6
+    completed: true
+    notes: "Chunk sizing checked — single script rewrite, no feature WRK needed"
+  - id: CL-04-7
+    completed: true
+    notes: "No external API needed — all data from local index"

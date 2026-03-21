@@ -1,0 +1,59 @@
+wrk_id: WRK-5104
+stage: 2
+completion_status: complete
+domain: harness/work-queue
+complexity_assessment: medium
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+    - data/document-index-pipeline
+  related:
+    - workspace-hub/knowledge
+
+files_identified:
+  modify:
+    - scripts/work-queue/exit_stage.py
+    - .claude/hooks/enforce-human-gate.sh
+  reference:
+    - scripts/knowledge/update-github-issue.py
+    - scripts/work-queue/is-human-gate.sh
+    - scripts/work-queue/stages/stage-01-capture.yaml
+    - scripts/work-queue/stages/stage-05-user-review-plan-draft.yaml
+    - scripts/work-queue/stages/stage-07-user-review-plan-final.yaml
+    - scripts/work-queue/stages/stage-17-user-review-implementation.yaml
+
+human_gate_stages:
+  - stage: 1
+    gate_file: user-review-capture.yaml
+    gate_field: scope_approved
+    gate_value: "true"
+  - stage: 5
+    gate_file: user-review-plan-draft.yaml
+    gate_field: decision
+    gate_value: approved
+  - stage: 7
+    gate_file: plan-final-review.yaml
+    gate_field: decision
+    gate_value: passed
+  - stage: 17
+    gate_file: user-review-close.yaml
+    gate_field: decision
+    gate_value: approved
+
+existing_github_integration:
+  - update-github-issue.py: creates/updates/closes issues via gh CLI
+  - enforce-github-issue-ref.sh: L3 hook blocking commits without github_issue_ref
+  - gh CLI already used throughout codebase
+
+design_approach:
+  mechanism: "exit_stage.py posts 'awaiting approval' comment on GitHub issue at human gate stages; enforce-human-gate.sh reads GitHub issue comments via gh for approval confirmation"
+  approval_patterns: ["comment with 'approved'", "checkbox tick", "label"]
+  offline_fallback: "local evidence file check when gh unavailable"
+  prior_art: "IssueOps methodology (GitHub Blog), trstringer/manual-approval pattern"
+
+risks:
+  - gh CLI auth may fail in CI or offline environments
+  - comment parsing must be idempotent and resilient to formatting
+  - must not break existing local-only workflow during transition

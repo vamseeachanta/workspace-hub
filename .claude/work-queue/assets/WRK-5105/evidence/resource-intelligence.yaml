@@ -1,0 +1,44 @@
+evidence_type: resource-intelligence
+wrk_id: WRK-5105
+stage: 2
+completion_status: complete
+domain: harness/work-queue
+complexity_assessment: medium
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/whats-next
+    - workspace-hub/work-queue
+  supplementary: []
+
+key_files:
+  modify:
+    - scripts/work-queue/whats-next.sh          # main display script (569 lines)
+    - scripts/work-queue/rebuild-wrk-index.sh   # index rebuild (46 lines)
+    - scripts/work-queue/update-wrk-index.sh    # atomic upsert (72 lines)
+  read_only:
+    - scripts/work-queue/urgency_score.py       # score computation
+    - scripts/work-queue/claim-item.sh          # calls update-wrk-index at line 376
+    - scripts/work-queue/start_stage.py         # stage entry orchestrator
+  test:
+    - scripts/work-queue/tests/test_wrk_index.py  # 6 existing tests (T60-T65)
+
+current_index_fields: [status, machine, last_updated, updated_by, title, priority, category]
+needed_index_fields:
+  high_priority: [subcategory, urgency_score, created_at, blocked_by, checkpoint_stage]
+  medium_priority: [github_issue_ref, type, note, not_before, session_pid, standing, cadence]
+
+architecture_notes: |
+  Current: whats-next.sh scans 419 files + calls uv run urgency_score.py (21s) = ~2.5min total
+  Target: single JSON read (0.14s) + render = <2s
+  Strategy: enrich index at write time (rebuild/update scripts), whats-next reads index only
+
+  Integration points:
+  - rebuild-wrk-index.sh: add all new fields + urgency score computation
+  - update-wrk-index.sh: add new fields during single-WRK upsert
+  - claim-item.sh (line 376): already calls update-wrk-index, no change needed
+  - whats-next.sh: rewrite process_file() to read from index, keep draw_table() as-is
+
+prior_art:
+  - WRK-5048: box-drawing table framework (archived 2026-03)
+  - WRK-5048/future-work.yaml: terminal width detection, --no-color, sorting

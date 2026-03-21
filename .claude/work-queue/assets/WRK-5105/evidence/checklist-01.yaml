@@ -1,0 +1,14 @@
+evidence_type: checklist
+wrk_id: WRK-5105
+stage: 1
+items:
+  - id: CL-01-1
+    completed: true
+    notes: "Title, category (harness), subcategory (work-queue), mission captured in WRK-5105.md"
+  - id: CL-01-2
+    completed: true
+    notes: "pending/WRK-5105.md written, validate-wrk-frontmatter.sh passes, github_issue_ref #1253"
+  - id: CL-01-3
+    completed: true
+    approved_by: user
+    notes: "User initiated via /work add with explicit description and added performance requirements"

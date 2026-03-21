@@ -1,0 +1,31 @@
+evidence_type: checklist
+wrk_id: WRK-5105
+stage: 2
+items:
+  - id: CL-02-1
+    completed: true
+    notes: "Codebase search: found whats-next.sh, rebuild-wrk-index.sh, update-wrk-index.sh, urgency_score.py, claim-item.sh, start_stage.py, verify_checklist.py"
+  - id: CL-02-2
+    completed: true
+    notes: "Knowledge base: WRK-5048 (archived) is direct prior art for table formatting"
+  - id: CL-02-3
+    completed: true
+    notes: "Document index: wrk-status-index.json has 778 entries, 7 fields currently"
+  - id: CL-02-4
+    completed: true
+    notes: "No external research needed — harness-internal task, all resources in codebase"
+  - id: CL-02-5
+    completed: true
+    notes: "N/A — no external documents to save"
+  - id: CL-02-6
+    completed: true
+    notes: "N/A — no document-index updates needed"
+  - id: CL-02-7
+    completed: true
+    notes: "Complexity: medium — modifying 3 scripts, enriching existing index, existing test coverage"
+  - id: CL-02-8
+    completed: true
+    notes: "resource-intelligence.yaml written with all required fields"
+  - id: CL-02-9
+    completed: true
+    notes: "Lifecycle HTML update deferred — not applicable for this harness task"

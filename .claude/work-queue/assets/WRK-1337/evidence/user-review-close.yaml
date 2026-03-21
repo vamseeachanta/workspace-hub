@@ -1,0 +1,7 @@
+wrk_id: WRK-1337
+stage: 17
+reviewer: user
+reviewed_at: '2026-03-19T21:00:00Z'
+confirmed_at: '2026-03-19T21:00:00Z'
+decision: approved
+notes: "Implementation reviewed and accepted; domain labels working in both migrate and archive scripts"

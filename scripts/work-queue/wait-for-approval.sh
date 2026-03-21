@@ -58,11 +58,11 @@ for (( i=1; i<=MAX_POLLS; i++ )); do
     }
 
     approved=$(echo "$comments_json" | jq -r '
-        [.comments | to_entries[] | select(.value.body | test("AWAITING APPROVAL")) | .key] as $awaiting |
+        [.comments | to_entries[] | select(.value.body | startswith("## Stage")) | select(.value.body | test("AWAITING APPROVAL")) | .key] as $awaiting |
         if ($awaiting | length) == 0 then "no_awaiting"
         else
             ($awaiting | last) as $last_await |
-            [.comments | to_entries[] | select(.key > $last_await) | select(.value.body | test("(?i)approved"))] |
+            [.comments | to_entries[] | select(.key > $last_await) | select(.value.body | test("(?i)\\bapprove"))] |
             if length > 0 then "yes" else "no" end
         end
     ' 2>/dev/null) || approved="error"

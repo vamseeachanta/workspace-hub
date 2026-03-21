@@ -1,0 +1,13 @@
+evidence_type: stage-checklist
+wrk_id: WRK-5105
+stage: 1
+items:
+  - id: CL-01-1
+    completed: true
+    notes: "Title, category (harness), subcategory (work-queue), mission all captured in WRK-5105.md"
+  - id: CL-01-2
+    completed: true
+    notes: "pending/WRK-5105.md written, validate-wrk-frontmatter.sh passes, github_issue_ref populated (#1253)"
+  - id: CL-01-3
+    completed: true
+    notes: "User initiated capture via /work add with explicit description and followed up with performance requirements"

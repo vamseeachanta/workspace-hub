@@ -17,6 +17,32 @@ except Exception:  # pragma: no cover - handled at runtime
 
 ALLOWED_STATUS = {"pending", "in_progress", "done", "n/a", "blocked"}
 
+CANONICAL_STAGES = [
+    "Capture", "Resource Intelligence", "Triage", "Plan Draft",
+    "User Review - Plan Draft", "Cross-Review", "User Review - Plan Final",
+    "Claim / Activation", "Work-Queue Routing", "Work Execution",
+    "Artifact Generation", "TDD / Eval", "Agent Cross-Review",
+    "Verify Gate Evidence", "Future Work Synthesis",
+    "Resource Intelligence Update", "User Review - Implementation",
+    "Reclaim", "Close", "Archive",
+]
+
+
+def _bootstrap_stage_evidence(stage_file: Path, wrk_id: str) -> dict:
+    """Create initial stage-evidence.yaml with all 20 stages pending."""
+    stage_file.parent.mkdir(parents=True, exist_ok=True)
+    data = {
+        "wrk_id": wrk_id,
+        "generated_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "reviewed_by": "agent",
+        "stages": [
+            {"order": i + 1, "stage": name, "status": "pending", "evidence": ""}
+            for i, name in enumerate(CANONICAL_STAGES)
+        ],
+    }
+    stage_file.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    return data
+
 
 def parse_frontmatter(text: str) -> tuple[str, str] | None:
     match = re.match(r"^---\s*\n(.*?)\n---\s*\n?(.*)$", text, re.DOTALL)
@@ -77,9 +103,10 @@ def main() -> int:
     workspace_root = Path(os.getenv("WORKSPACE_ROOT", Path(__file__).resolve().parents[2]))
     stage_file = resolve_stage_evidence_path(workspace_root, wrk_id)
     if not stage_file.exists():
-        raise FileNotFoundError(f"stage evidence file missing: {stage_file}")
-
-    data = yaml.safe_load(stage_file.read_text(encoding="utf-8")) or {}
+        data = _bootstrap_stage_evidence(stage_file, wrk_id)
+        print(f"[BOOTSTRAP] created {stage_file}")
+    else:
+        data = yaml.safe_load(stage_file.read_text(encoding="utf-8")) or {}
     if not isinstance(data, dict):
         raise ValueError(f"{stage_file} must be a YAML mapping")
     stages = data.get("stages")

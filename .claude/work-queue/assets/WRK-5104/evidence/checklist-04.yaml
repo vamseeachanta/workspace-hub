@@ -1,0 +1,28 @@
+stage: 4
+wrk_id: WRK-5104
+completed_at: "2026-03-21T04:15:00Z"
+items:
+  - id: CL-04-1
+    description: "Scripts-over-LLM audit performed (25% recurrence check)"
+    completed: true
+    note: "All logic in shell/python scripts, no LLM overhead"
+  - id: CL-04-2
+    description: "EnterPlanMode entered for ideation (4a)"
+    completed: true
+    note: "Plan provided by user in conversation, refined in plan mode"
+  - id: CL-04-3
+    description: "ACs defined (specific, testable)"
+    completed: true
+    note: "5 ACs in WRK-5104.md + 6-row test plan in specs/wrk/WRK-5104/plan.md"
+  - id: CL-04-4
+    description: "Pseudocode written (>= 3 steps or N/A+reason)"
+    completed: true
+    note: "4-step pseudocode in plan.md covering all modified scripts"
+  - id: CL-04-5
+    description: "Test plan written (>= 3 entries or N/A+reason)"
+    completed: true
+    note: "6-entry test plan in plan.md (happy + edge cases)"
+  - id: CL-04-6
+    description: "plan.html generated"
+    completed: true
+    note: "Lifecycle tracking moved to GitHub issue #1252 (WRK-5104 migration)"

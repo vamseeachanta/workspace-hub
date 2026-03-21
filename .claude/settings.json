@@ -232,6 +232,11 @@
             "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-dispatch.sh\"",
             "statusMessage": "WRK-1389: dispatch-run.sh required before group runners"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-github-issue-ref.sh\"",
+            "statusMessage": "WRK-5102: github_issue_ref required for working/done WRK files"
           }
         ]
       }

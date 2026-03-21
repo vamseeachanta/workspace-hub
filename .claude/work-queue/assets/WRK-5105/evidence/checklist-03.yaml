@@ -1,0 +1,16 @@
+evidence_type: checklist
+wrk_id: WRK-5105
+stage: 3
+items:
+  - id: CL-03-1
+    completed: true
+    notes: "Read resource-intelligence.yaml — domain: harness/work-queue, complexity: medium"
+  - id: CL-03-2
+    completed: true
+    notes: "Route B confirmed (medium complexity), dev-primary only, claude orchestrator"
+  - id: CL-03-3
+    completed: true
+    notes: "No open questions — user requirements clear (pre-computed index, ≤2s, richer columns)"
+  - id: CL-03-4
+    completed: true
+    notes: "Lifecycle HTML update deferred — harness task"

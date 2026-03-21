@@ -34,14 +34,42 @@ CALLER="${3:-unknown}"
 TITLE=""
 PRIORITY=""
 CATEGORY=""
+SUBCATEGORY=""
+CREATED_AT=""
+BLOCKED_BY=""
+GH_ISSUE_REF=""
+WRK_TYPE=""
+NOTE=""
+NOT_BEFORE=""
+STANDING=""
+CADENCE=""
+COMPUTER=""
+CHECKPOINT_STAGE=""
+SESSION_PID=""
 if [[ -n "$WRK_FILE" ]]; then
   TITLE=$(get_fm_field "$WRK_FILE" "title")
   PRIORITY=$(get_fm_field "$WRK_FILE" "priority")
   CATEGORY=$(get_fm_field "$WRK_FILE" "category")
+  SUBCATEGORY=$(get_fm_field "$WRK_FILE" "subcategory")
+  CREATED_AT=$(get_fm_field "$WRK_FILE" "created_at")
+  BLOCKED_BY=$(grep -m1 "^blocked_by:" "$WRK_FILE" 2>/dev/null | sed 's/^blocked_by: *//' || true)
+  GH_ISSUE_REF=$(get_fm_field "$WRK_FILE" "github_issue_ref")
+  WRK_TYPE=$(get_fm_field "$WRK_FILE" "type")
+  NOTE=$(get_fm_field "$WRK_FILE" "note")
+  NOT_BEFORE=$(get_fm_field "$WRK_FILE" "not_before")
+  STANDING=$(get_fm_field "$WRK_FILE" "standing")
+  CADENCE=$(get_fm_field "$WRK_FILE" "cadence")
+  COMPUTER=$(get_fm_field "$WRK_FILE" "computer")
+  # Checkpoint stage from assets
+  CP_FILE="${QUEUE_DIR}/assets/${WRK_ID}/checkpoint.yaml"
+  [[ -f "$CP_FILE" ]] && CHECKPOINT_STAGE=$(get_fm_field "$CP_FILE" "current_stage")
+  # Session PID from evidence
+  LOCK_FILE="${QUEUE_DIR}/assets/${WRK_ID}/evidence/session-lock.yaml"
+  [[ -f "$LOCK_FILE" ]] && SESSION_PID=$(get_fm_field "$LOCK_FILE" "session_pid")
 fi
 
-uv run --no-project python - <<PYEOF
-import json, os, tempfile
+python3 - <<PYEOF
+import json, os
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -53,7 +81,7 @@ if idx_path.exists():
     except (json.JSONDecodeError, OSError):
         data = {}
 
-data["${WRK_ID}"] = {
+entry = {
     "status": "${STATUS}",
     "machine": "${MACHINE}",
     "last_updated": datetime.now(timezone.utc).isoformat(),
@@ -61,7 +89,26 @@ data["${WRK_ID}"] = {
     "title": """${TITLE}""",
     "priority": "${PRIORITY}",
     "category": "${CATEGORY}",
+    "subcategory": "${SUBCATEGORY}",
+    "created_at": "${CREATED_AT}",
+    "blocked_by": "${BLOCKED_BY}",
+    "github_issue_ref": "${GH_ISSUE_REF}",
+    "type": "${WRK_TYPE}",
+    "note": "${NOTE}",
+    "not_before": "${NOT_BEFORE}",
+    "standing": "${STANDING}",
+    "cadence": "${CADENCE}",
+    "computer": "${COMPUTER}",
+    "checkpoint_stage": "${CHECKPOINT_STAGE}",
+    "session_pid": "${SESSION_PID}",
 }
+
+# Preserve urgency_score from previous index entry if present (computed by rebuild post-pass)
+prev = data.get("${WRK_ID}", {})
+if "urgency_score" in prev and "${CALLER}" != "rebuild-wrk-index":
+    entry["urgency_score"] = prev["urgency_score"]
+
+data["${WRK_ID}"] = entry
 
 tmp = idx_path.with_suffix(".json.tmp")
 tmp.write_text(json.dumps(data, indent=2))

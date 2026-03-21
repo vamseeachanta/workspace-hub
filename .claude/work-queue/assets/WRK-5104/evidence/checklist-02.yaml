@@ -1,0 +1,22 @@
+wrk_id: WRK-5104
+stage: 2
+completed_at: "2026-03-21"
+items:
+  - id: CL-02-1
+    completed: true
+    evidence: "Searched enforce-human-gate.sh, exit_stage.py, is-human-gate.sh, stage contracts"
+  - id: CL-02-2
+    completed: true
+    evidence: "Queried codebase for gh CLI usage, GitHub issue integration patterns"
+  - id: CL-02-3
+    completed: true
+    evidence: "Searched document-index for human gate and GitHub approval prior art"
+  - id: CL-02-4
+    completed: true
+    evidence: "WebSearch for IssueOps, GitHub issue-based approval gates, manual-approval patterns"
+  - id: CL-02-5
+    completed: true
+    evidence: "Medium complexity confirmed — 2 core files to modify, gh CLI already in use"
+  - id: CL-02-6
+    completed: true
+    evidence: "evidence/resource-intelligence.yaml written with domain, skills, files, design approach"

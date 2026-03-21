@@ -1,0 +1,23 @@
+evidence_type: checklist
+wrk_id: WRK-5105
+stage: 5
+items:
+  - id: CL-05-1
+    completed: true
+    approved_by: user
+    notes: "ACs walked through: 9 items covering enriched columns, compact mode, performance, backward compat"
+  - id: CL-05-2
+    completed: true
+    approved_by: user
+    notes: "Pseudocode reviewed via EnterPlanMode: Python index reader → TSV → bash draw_table pipeline"
+  - id: CL-05-3
+    completed: true
+    approved_by: user
+    notes: "Test plan reviewed: T66 enriched fields, T67 urgency post-pass, T68 index-first + compact"
+  - id: CL-05-4
+    completed: true
+    notes: "All revisions applied during interactive session"
+  - id: CL-05-5
+    completed: true
+    approved_by: user
+    notes: "User approved plan via ExitPlanMode approval flow"

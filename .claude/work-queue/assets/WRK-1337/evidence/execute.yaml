@@ -1,0 +1,27 @@
+wrk_id: WRK-1337
+stage: 10
+executed_at: '2026-03-19T20:00:00Z'
+provider: claude
+commits:
+  - 654e8e82  # feat(WRK-1337): add domain:<subcategory> labels to GitHub Issues
+  - e1fa538a  # feat(WRK-1337): backfill category + subcategory into 278 WRK files
+scripts_modified:
+  - scripts/work-queue/migrate-wrk-to-github.sh
+  - scripts/work-queue/archive-item.sh
+verification: "Both scripts extract subcategory and add domain: labels"
+integrated_repo_tests:
+  - name: "migrate-wrk subcategory extraction"
+    scope: integrated
+    command: "grep -q 'domain:' scripts/work-queue/migrate-wrk-to-github.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/migrate-wrk-to-github.sh
+  - name: "archive-item subcategory extraction"
+    scope: integrated
+    command: "grep -q 'domain:' scripts/work-queue/archive-item.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/archive-item.sh
+  - name: "frontmatter backfill verification"
+    scope: repo
+    command: "git log --oneline e1fa538a -1"
+    result: pass
+    artifact_ref: e1fa538a

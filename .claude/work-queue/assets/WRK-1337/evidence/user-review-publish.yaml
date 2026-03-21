@@ -1,0 +1,29 @@
+wrk_id: WRK-1337
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 654e8e82
+    documents:
+      - .claude/work-queue/assets/WRK-1337/plan-html-review-draft.md
+    published_at: '2026-03-19T18:50:00Z'
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 654e8e82
+    documents:
+      - .claude/work-queue/assets/WRK-1337/plan-html-review-final.md
+    published_at: '2026-03-19T19:05:00Z'
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: e1fa538a
+    documents:
+      - .claude/work-queue/assets/WRK-1337/review.md
+    published_at: '2026-03-19T20:55:00Z'
+    reviewer: user

@@ -1,5 +1,5 @@
 """
-Tests T60–T65: Centralized WRK Status Index (WRK-1143).
+Tests T60–T68: Centralized WRK Status Index (WRK-1143, WRK-5105).
 
 T60: rebuild-wrk-index.sh on temp queue dir → valid JSON with correct status values
 T61: update-wrk-index.sh upserts new entry; repeat call overwrites cleanly (no duplicates)
@@ -7,6 +7,9 @@ T62: update-wrk-index.sh creates index file when none exists
 T63: update-wrk-index.sh with missing WRK-ID exits 1 with stderr message
 T64: claim-item.sh source contains "update-wrk-index" (wiring gate)
 T65: whats-next.sh source contains "--debug" flag handling (wiring gate)
+T66: update-wrk-index.sh extracts enriched fields (subcategory, created_at, etc.)
+T67: rebuild-wrk-index.sh computes urgency_score for non-archived entries
+T68: whats-next.sh source uses index-first data path (no uv run urgency_score.py)
 """
 from __future__ import annotations
 
@@ -261,3 +264,95 @@ class TestT65WhatsNextDebugWired:
             "whats-next.sh does not reference 'wrk-status-index' or 'read_index_status' — "
             "index read wiring not yet implemented"
         )
+
+
+# ---------------------------------------------------------------------------
+# T66: update-wrk-index.sh extracts enriched fields (subcategory, etc.)
+# ---------------------------------------------------------------------------
+
+def _write_enriched_wrk(path: Path, wrk_id: str) -> None:
+    """Write a WRK file with all enriched frontmatter fields."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        f"---\n"
+        f"id: {wrk_id}\n"
+        f"title: Enriched Test Item\n"
+        f"status: pending\n"
+        f"priority: high\n"
+        f"category: engineering\n"
+        f"subcategory: structural\n"
+        f"created_at: 2026-03-01\n"
+        f"blocked_by: []\n"
+        f'github_issue_ref: https://github.com/test/repo/issues/42\n'
+        f"type: task\n"
+        f"computer: dev-primary\n"
+        f"---\n\nBody.\n"
+    )
+
+
+class TestT66EnrichedFields:
+    def test_update_extracts_enriched_fields(self, tmp_path):
+        """T66: update-wrk-index.sh extracts subcategory, created_at, github_issue_ref, etc."""
+        _write_enriched_wrk(tmp_path / "pending" / "WRK-9030.md", "WRK-9030")
+
+        result = _run_script(
+            "update-wrk-index.sh",
+            ["WRK-9030", "pending"],
+            env_overrides={"WORK_QUEUE_ROOT": str(tmp_path)},
+        )
+        assert result.returncode == 0, f"Script failed:\n{result.stderr}"
+
+        index = json.loads((tmp_path / "wrk-status-index.json").read_text())
+        entry = index["WRK-9030"]
+
+        assert entry["subcategory"] == "structural"
+        assert entry["created_at"] == "2026-03-01"
+        assert "github.com" in entry["github_issue_ref"]
+        assert entry["type"] == "task"
+        assert entry["computer"] == "dev-primary"
+        assert entry["category"] == "engineering"
+
+
+# ---------------------------------------------------------------------------
+# T67: rebuild-wrk-index.sh computes urgency_score for non-archived entries
+# ---------------------------------------------------------------------------
+
+class TestT67UrgencyScoreComputed:
+    def test_rebuild_computes_urgency_scores(self, tmp_path):
+        """T67: rebuild-wrk-index.sh post-pass writes urgency_score for pending items."""
+        _write_enriched_wrk(tmp_path / "pending" / "WRK-9040.md", "WRK-9040")
+
+        result = _run_script(
+            "rebuild-wrk-index.sh",
+            [],
+            env_overrides={"WORK_QUEUE_ROOT": str(tmp_path)},
+        )
+        assert result.returncode == 0, f"Script failed:\n{result.stderr}"
+
+        index = json.loads((tmp_path / "wrk-status-index.json").read_text())
+        entry = index["WRK-9040"]
+
+        assert "urgency_score" in entry, "urgency_score not computed by rebuild"
+        assert isinstance(entry["urgency_score"], (int, float))
+        assert entry["urgency_score"] > 0, "urgency_score should be positive for high-priority item"
+
+
+# ---------------------------------------------------------------------------
+# T68: whats-next.sh uses index-first path (no uv run urgency_score.py)
+# ---------------------------------------------------------------------------
+
+class TestT68IndexFirstPath:
+    def test_whats_next_does_not_call_urgency_score_py(self):
+        """T68: whats-next.sh should not call uv run urgency_score.py at runtime."""
+        script = SCRIPTS_DIR / "whats-next.sh"
+        content = script.read_text()
+        assert "urgency_score.py" not in content, (
+            "whats-next.sh still references urgency_score.py — "
+            "should use pre-computed scores from index"
+        )
+
+    def test_whats_next_has_compact_flag(self):
+        """T68b: whats-next.sh supports --compact flag."""
+        script = SCRIPTS_DIR / "whats-next.sh"
+        content = script.read_text()
+        assert "--compact" in content, "whats-next.sh missing --compact flag support"

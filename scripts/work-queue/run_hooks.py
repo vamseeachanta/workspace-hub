@@ -50,8 +50,8 @@ def run_hooks(hooks, wrk_id, repo_root, phase, stage,
         timeout_s = hook.get("timeout_s", 30)
         description = hook.get("description", script)
 
-        # Substitute WRK-NNN token with actual WRK ID
-        resolved_script = script.replace("WRK-NNN", wrk_id)
+        # Substitute WRK-NNN and ${WRK_ID} tokens with actual WRK ID
+        resolved_script = script.replace("WRK-NNN", wrk_id).replace("${WRK_ID}", wrk_id)
 
         if dry_run:
             if verbose:

@@ -1,0 +1,12 @@
+wrk_id: WRK-1337
+stage: 8
+generated_at: '2026-03-20T04:00:00Z'
+best_fit_provider: claude
+session_owner: claude
+route: A
+quota_snapshot:
+  active_wrk_count: 1
+  max_parallel: 1
+  proceed: true
+decision: proceed
+reason: "Single active item, within quota limits"

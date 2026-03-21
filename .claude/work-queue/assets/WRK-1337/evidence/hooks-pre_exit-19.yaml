@@ -1,0 +1,24 @@
+phase: pre_exit
+stage: 19
+wrk_id: WRK-1337
+executed_at: '2026-03-21T03:32:26.638268+00:00'
+hooks:
+- script: scripts/work-queue/verify-gate-evidence.py WRK-1337
+  description: Final gate verification before close
+  gate: hard
+  returncode: 0
+  duration_s: 0.271
+  passed: true
+  stdout: "Gate evidence for WRK-1337 (phase=close, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1337):\n\
+    \  - Plan gate: OK (reviewed=True, approved=True, artifact=plan-html-review-final.md,\
+    \ confirmation=confirmed_by=present, confirmed_at=present, decision=passed)\n\
+    \  - Workstation contract gate: OK (plan_workstations=[dev-primary], execution_workstations=[dev-primary])\n\
+    \  - Stage evidence gate: OK (stage-evidence.yaml: stages=20, contract=20-stage)\n\
+    \  - Resource-intelligence gate: OK "
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

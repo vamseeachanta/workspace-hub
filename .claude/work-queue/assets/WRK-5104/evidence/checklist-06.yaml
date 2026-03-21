@@ -1,0 +1,20 @@
+stage: 6
+wrk_id: WRK-5104
+completed_at: "2026-03-21T04:20:00Z"
+items:
+  - id: CL-06-1
+    description: "Cross-review package sent to all 3 providers"
+    completed: true
+    note: "Claude + Codex-slot (Opus fallback) + Gemini-slot (Opus fallback)"
+  - id: CL-06-2
+    description: "All 3 verdicts collected (APPROVE/REVISE)"
+    completed: true
+    note: "All 3 APPROVE, 0 P1, 3 P2 (minor)"
+  - id: CL-06-3
+    description: "P1 and P2 findings documented"
+    completed: true
+    note: "P2s in cross-review-*.md files; no real P1s (false positive overridden)"
+  - id: CL-06-4
+    description: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true
+    note: "cross-review.yaml + 3 cross-review-*.md files written"

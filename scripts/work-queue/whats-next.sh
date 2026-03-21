@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # whats-next.sh — Refresh and display the prioritised "run now" work list.
-# Scans pending/working/blocked WRK items, resolves blocker archive status,
-# and outputs a categorised table with parallel execution hints.
+# Reads pre-computed data from wrk-status-index.json (built by rebuild-wrk-index.sh).
 # Usage: bash scripts/work-queue/whats-next.sh [--category <name>] [--subcategory <name>]
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -11,6 +10,7 @@ FILTER_CATEGORY="harness"   # default: harness-focused view
 FILTER_SUBCATEGORY=""
 SHOW_ALL=false
 MED_LIMIT=20
+COMPACT=false
 _CATEGORY_EXPLICIT=false
 _DEBUG=false
 while [[ $# -gt 0 ]]; do
@@ -19,6 +19,7 @@ while [[ $# -gt 0 ]]; do
     --subcategory)  FILTER_SUBCATEGORY="$2"; shift 2 ;;
     --all)          SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
     --limit)        MED_LIMIT="$2"; shift 2 ;;
+    --compact)      COMPACT=true; shift ;;
     --debug)        _DEBUG=true; shift ;;
     *) shift ;;
   esac
@@ -26,253 +27,282 @@ done
 # --subcategory alone clears the default category filter (cross-category search)
 [[ -n "$FILTER_SUBCATEGORY" && "$_CATEGORY_EXPLICIT" == false ]] && FILTER_CATEGORY=""
 
-get_field() { grep -m1 "^$2:" "$1" 2>/dev/null | sed "s/^$2: *//" | tr -d '"' || true; }
+# ── Index-first data load (single python3 call) ──────────────────────────────
+# Outputs TSV lines: section\tfield1\tfield2\t...
+# Sections: COORDINATING, WORKING, PARKED, UNCLAIMED, HIGH, NEWLY_UNBLOCKED, MEDIUM, BLOCKED, DEFERRED
+# Each section has its own field layout documented in the Python output.
 
-read_index_status() {
-  # Returns status from wrk-status-index.json, or empty string if absent.
-  local _id="$1"
-  local _idx="${QUEUE_DIR}/wrk-status-index.json"
-  [[ -f "$_idx" ]] || return
-  python3 -c "
-import json, sys
-try:
-    d = json.load(open(sys.argv[1]))
-    print(d.get(sys.argv[2], {}).get('status', ''))
-except Exception:
-    pass
-" "$_idx" "$_id" 2>/dev/null
-}
+_INDEX_FILE="${QUEUE_DIR}/wrk-status-index.json"
+if [[ ! -f "$_INDEX_FILE" ]]; then
+  echo "Error: wrk-status-index.json not found. Run: bash scripts/work-queue/rebuild-wrk-index.sh" >&2
+  exit 1
+fi
 
-is_archived() {
-  local num="$1"
-  find "$QUEUE_DIR/archive" "$QUEUE_DIR/archived" -name "WRK-${num}.md" 2>/dev/null | grep -qc . 2>/dev/null
-  return $?
-}
+_TSV_DATA=$(python3 - "$_INDEX_FILE" "$FILTER_CATEGORY" "$FILTER_SUBCATEGORY" "$THIS_HOST" "$MED_LIMIT" <<'PYEOF'
+import json, re, sys
+from datetime import datetime, timezone
 
-# Returns 0 if all blockers are archived (or list is empty), 1 otherwise.
-# Writes active (unresolved) blockers to stdout when returning 1.
-check_blockers() {
-  local raw="$1"
-  local ids active=""
-  ids=$(echo "$raw" | tr -d '[]' | tr ',' '\n' | tr -d ' ' | grep -v '^$' || true)
-  while IFS= read -r dep; do
-    [[ -z "$dep" ]] && continue
-    local num; num=$(echo "$dep" | grep -oE '[0-9]+' || true)
-    [[ -z "$num" ]] && continue
-    if ! is_archived "$num" 2>/dev/null; then
-      active="$active,$dep"
-    fi
-  done <<< "$ids"
-  active="${active#,}"
-  if [[ -z "$active" ]]; then
-    echo "clear"
-    return 0
-  else
-    echo "active:$active"
-    return 1
-  fi
-}
+idx_path, filter_cat, filter_sub, this_host, med_limit_str = sys.argv[1:6]
+med_limit = int(med_limit_str)
+data = json.loads(open(idx_path).read())
+now = datetime.now(timezone.utc)
+today_epoch = int(now.timestamp())
 
-has_recent_session_lock() {
-  local wrk_id="$1"
-  local lock="$QUEUE_DIR/assets/$wrk_id/evidence/session-lock.yaml"
-  [[ ! -f "$lock" ]] && return 1
-  local locked_at
-  locked_at=$(get_field "$lock" "locked_at")
-  [[ -z "$locked_at" ]] && return 1
-  local now lock_ts age
-  now=$(date +%s)
-  lock_ts=$(date -d "$locked_at" +%s 2>/dev/null) || return 1
-  age=$(( now - lock_ts ))
-  # Reject future-dated locks (clock skew) and stale locks (>2h)
-  [[ $age -gt -86400 && $age -lt 7200 ]]
-}
+archived_ids = {wid for wid, e in data.items() if e.get("status") == "archived"}
 
-# Returns current_stage from checkpoint.yaml (empty string if no checkpoint).
-get_checkpoint_stage() {
-  local wrk_id="$1"
-  local cp="$QUEUE_DIR/assets/$wrk_id/checkpoint.yaml"
-  [[ ! -f "$cp" ]] && return
-  get_field "$cp" "current_stage"
-}
+def fmt_age(created_at):
+    if not created_at:
+        return "—"
+    try:
+        dt = datetime.strptime(created_at.split(".")[0].strip(), "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        days = max((now - dt).days, 0)
+        if days < 30:
+            return f"{days}d"
+        elif days < 90:
+            return f"{days // 7}w"
+        else:
+            return f"{days // 30}mo"
+    except ValueError:
+        return "—"
 
-# Returns session_pid from evidence/session-lock.yaml (empty if absent/missing field).
-get_session_pid() {
-  local wrk_id="$1"
-  local lock="$QUEUE_DIR/assets/$wrk_id/evidence/session-lock.yaml"
-  [[ ! -f "$lock" ]] && return
-  get_field "$lock" "session_pid"
-}
+def fmt_gh(ref):
+    if not ref or ref == "pending":
+        return "—"
+    m = re.search(r"/(\d+)$", ref)
+    return f"#{m.group(1)}" if m else "—"
 
-# Maps stage number → Status label: WAITING (hard gates 1/5/7/17) / START / READY (no stage).
-derive_status() {
-  local stage="$1"
-  [[ -z "$stage" ]] && echo "READY" && return
-  case "$stage" in 1|5|7|17) echo "WAITING" ;; *) echo "START" ;; esac
-}
+def fmt_urg(score):
+    if score is None:
+        return "—"
+    return str(score)
 
-declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED COORDINATING_ITEMS
-declare -A WRK_NOTES WRK_NOT_BEFORE WRK_URGENCY
+def check_blockers(blocked_by_str):
+    """Returns (is_clear, active_blockers_str)"""
+    if not blocked_by_str or blocked_by_str == "[]":
+        return True, ""
+    deps = re.findall(r"WRK-(\d+)", blocked_by_str)
+    active = [f"WRK-{d}" for d in deps if f"WRK-{d}" not in archived_ids]
+    if not active:
+        return True, ""
+    return False, ",".join(active)
 
-# ── Pre-compute urgency scores (single Python call) ──────────────────
-_urgency_json=$(uv run --no-project python "$REPO_ROOT/scripts/work-queue/urgency_score.py" --all --json --queue-dir "$QUEUE_DIR" 2>/dev/null || echo "[]")
-while IFS='	' read -r _uid _uscore; do
-  [[ -n "$_uid" ]] && WRK_URGENCY["$_uid"]="$_uscore"
-done < <(python3 -c "
-import json, sys
-for item in json.loads(sys.argv[1]):
-    print(item['id'] + '\t' + str(item['score']))
-" "$_urgency_json" 2>/dev/null)
+def not_before_future(nb):
+    if not nb:
+        return False
+    try:
+        dt = datetime.strptime(nb.strip(), "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        return dt.timestamp() > today_epoch
+    except ValueError:
+        return False
 
-process_file() {
-  local f="$1" loc="$2"
-  local id status priority subcategory category blocked_by computer title
+# Classify each entry
+coordinating = []
+working = []
+parked = []
+unclaimed = []
+high_ready = []
+newly_unblocked = []
+medium_ready = []
+blocked = []
+deferred = []
 
-  id=$(get_field "$f" "id"); [[ -z "$id" ]] && return
-  status=$(get_field "$f" "status")
-  local wrk_type_early
-  wrk_type_early=$(get_field "$f" "type")
-  # Coordinating feature WRKs bypass category/subcategory filters so they always appear
-  if [[ "$status" != "coordinating" || "$wrk_type_early" != "feature" ]]; then
-    category=$(get_field "$f" "category")
-    [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && return
-    subcategory=$(get_field "$f" "subcategory")
-    [[ -n "$FILTER_SUBCATEGORY" && "$subcategory" != *"$FILTER_SUBCATEGORY"* ]] && return
-  fi
-  category=${category:-$(get_field "$f" "category")}
-  subcategory=${subcategory:-$(get_field "$f" "subcategory")}
-  priority=$(get_field "$f" "priority")
-  computer=$(get_field "$f" "computer")
-  title=$(get_field "$f" "title" | cut -c1-48)
-  local _idx_status _idx_source
-  _idx_status=$(read_index_status "$id")
-  _idx_source="scan"
-  [[ -n "$_idx_status" ]] && _idx_source="index"
-  [[ "$_DEBUG" == "true" ]] && title="${title} (${_idx_source})"
-  if [[ -n "$_idx_status" ]]; then
-    status="$_idx_status"   # index is primary source
-  fi
-  blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
+for wid, e in data.items():
+    status = e.get("status", "")
+    if status in ("archived", "done"):
+        continue
 
-  local cp_stage item_status item_pid note not_before
-  cp_stage=$(get_checkpoint_stage "$id")
-  item_status=$(derive_status "$cp_stage")
-  item_pid=$(get_session_pid "$id")
-  note=$(get_field "$f" "note")
-  not_before=$(get_field "$f" "not_before")
-  WRK_NOTES["$id"]="$note"
-  WRK_NOT_BEFORE["$id"]="$not_before"
-  local row="$id|$priority|$subcategory|$computer|$title|$cp_stage|$item_status|$item_pid"
+    cat = e.get("category", "")
+    sub = e.get("subcategory", "")
+    wrk_type = e.get("type", "")
+    is_coordinating_feature = (status == "coordinating" and wrk_type == "feature")
 
-  if [[ "$loc" == "working" ]]; then
-    local wrk_type
-    wrk_type=$(get_field "$f" "type")
-    if [[ "$status" == "coordinating" && "$wrk_type" == "feature" ]]; then
-      # Count child progress
-      local children_raw total_children archived_children pending_children done_children
-      children_raw=$(grep -m1 "^children:" "$f" 2>/dev/null | sed 's/^children: *//' | tr -d '[]' | tr ',' '\n' | tr -d ' ' | grep -v '^$' || true)
-      total_children=0; archived_children=0; pending_children=0; done_children=0
-      while IFS= read -r child; do
-        [[ -z "$child" ]] && continue
-        (( total_children++ ))
-        local cnum; cnum=$(echo "$child" | grep -oE '[0-9]+' || true)
-        if is_archived "$cnum" 2>/dev/null; then
-          (( archived_children++ ))
-        elif find "$QUEUE_DIR/working" -name "${child}.md" 2>/dev/null | grep -qc .; then
-          (( pending_children++ ))  # working = in progress, counted as pending for simplicity
-        else
-          (( pending_children++ ))
-        fi
-      done <<< "$children_raw"
-      local all_done=false
-      [[ $total_children -gt 0 && $archived_children -eq $total_children ]] && all_done=true
-      local progress="${archived_children}/${total_children} archived"
-      [[ "$all_done" == "true" ]] && progress="ALL DONE — ready to close"
-      COORDINATING_ITEMS+=("$id|$priority|$subcategory|$computer|$title|$progress")
-      return
-    fi
-    [[ -n "$note" ]] && WORKING_PARKED+=("$row") || WORKING_ITEMS+=("$row")
-    return
-  fi
+    # Category/subcategory filter (coordinating features bypass)
+    if not is_coordinating_feature:
+        if filter_cat and filter_cat not in cat:
+            continue
+        if filter_sub and filter_sub not in sub:
+            continue
 
-  local bstatus
-  bstatus=$(check_blockers "$blocked_by") || true
+    pri = e.get("priority", "")
+    computer = e.get("computer", "")
+    title = (e.get("title", "") or "")[:60]
+    urg = fmt_urg(e.get("urgency_score"))
+    gh = fmt_gh(e.get("github_issue_ref", ""))
+    age = fmt_age(e.get("created_at", ""))
+    cp_stage = e.get("checkpoint_stage", "")
+    pid = e.get("session_pid", "")
+    note = e.get("note", "")
+    nb = e.get("not_before", "")
+    standing = e.get("standing", "")
+    cadence = e.get("cadence", "")
+    bb_raw = e.get("blocked_by", "")
+    is_clear, active_blockers = check_blockers(bb_raw)
 
-  if [[ "$status" == "blocked" ]]; then
-    EXT_BLOCKED+=("$row|${bstatus#active:}"); return
-  fi
+    # Determine directory location from status
+    if status == "working" or status == "coordinating":
+        loc = "working"
+    elif status == "blocked":
+        loc = "blocked"
+    else:
+        loc = "pending"
 
-  # Detect misplaced items: status=working but file still in pending/ (claim-item.sh was skipped).
-  if [[ "$status" == "working" && "$loc" == "pending" ]]; then
-    UNCLAIMED_ACTIVE+=("$row"); return
-  fi
+    # Deferred: not_before in future (except working items)
+    if nb and loc != "working" and not_before_future(nb):
+        deferred.append((wid, pri, sub, computer, title, nb, urg, gh, age, cat))
+        continue
 
-  # Guard: skip pending items already in archive (ghost copies).
-  if [[ "$loc" == "pending" ]]; then
-    local _num; _num=$(echo "$id" | grep -oE '[0-9]+')
-    if [[ -n "$_num" ]] && find "$QUEUE_DIR/archive" "$QUEUE_DIR/archived" -name "WRK-${_num}.md" 2>/dev/null | grep -qc .; then
-      return
-    fi
-  fi
+    # Working items
+    if loc == "working":
+        if is_coordinating_feature:
+            coordinating.append((wid, pri, sub, computer, title, "—", urg, gh, age, cat))
+            continue
+        if note:
+            parked.append((wid, pri, sub, computer, title, cp_stage, pid, urg, gh, age, cat, note, nb))
+        else:
+            working.append((wid, pri, sub, computer, title, cp_stage, pid, urg, gh, age, cat, note, nb))
+        continue
 
-  # Skip periodic-review items (standing + cadence) from ready-to-start buckets only.
-  # Items in working/ or blocked/ always display regardless of standing+cadence.
-  if [[ "$loc" == "pending" ]]; then
-    local _standing _cadence
-    _standing=$(get_field "$f" "standing")
-    _cadence=$(get_field "$f" "cadence")
-    [[ "$_standing" == "true" && -n "$_cadence" ]] && return
-  fi
+    # Blocked items
+    if status == "blocked":
+        reason = active_blockers if active_blockers else "external (no WRK deps)"
+        blocked.append((wid, pri, sub, computer, title, reason, urg, gh, age, cat))
+        continue
 
-  if [[ "$bstatus" == "clear" ]]; then
-    # Check for unclaimed active session: recent lock OR checkpoint present
-    if has_recent_session_lock "$id" || [[ -n "$cp_stage" ]]; then
-      UNCLAIMED_ACTIVE+=("$row"); return
-    fi
-    # Was it previously blocked (had WRK deps that are now cleared)?
-    local raw_ids
-    raw_ids=$(echo "$blocked_by" | tr -d '[]' | tr -d ' ' | grep -v '^$' || true)
-    if [[ "$priority" == "high" ]]; then
-      HIGH_UNBLOCKED+=("$row")
-    elif [[ -n "$raw_ids" ]]; then
-      NEWLY_UNBLOCKED+=("$row")
-    else
-      MED_UNBLOCKED+=("$row")
-    fi
-  fi
-}
+    # Pending items: skip standing+cadence
+    if standing == "true" and cadence:
+        continue
 
-for f in "$QUEUE_DIR/working"/*.md;  do [[ -f "$f" ]] && process_file "$f" working;  done
-for f in "$QUEUE_DIR/pending"/*.md;  do [[ -f "$f" ]] && process_file "$f" pending;  done
-for f in "$QUEUE_DIR/blocked"/*.md;  do [[ -f "$f" ]] && process_file "$f" blocked;  done
+    # Unclaimed: status=working but in pending, or has checkpoint stage
+    if status == "working" and loc == "pending":
+        unclaimed.append((wid, pri, sub, computer, title, cp_stage, pid, urg, gh, age, cat, note, nb))
+        continue
+    if cp_stage:
+        unclaimed.append((wid, pri, sub, computer, title, cp_stage, pid, urg, gh, age, cat, note, nb))
+        continue
 
-# ── Sort ready arrays by urgency score (descending) ──────────────────
-sort_by_urgency() {
-  local -n __arr="$1"
-  [[ ${#__arr[@]} -le 1 ]] && return
-  local -a scored=()
-  for row in "${__arr[@]}"; do
-    local _id; _id="${row%%|*}"
-    local _sc="${WRK_URGENCY[$_id]:-0}"
-    scored+=("${_sc}|${row}")
-  done
-  local -a sorted_rows=()
-  while IFS= read -r line; do
-    sorted_rows+=("${line#*|}")  # strip score prefix
-  done < <(printf '%s\n' "${scored[@]}" | sort -t'|' -k1 -rn)
-  __arr=("${sorted_rows[@]}")
-}
-sort_by_urgency HIGH_UNBLOCKED
-sort_by_urgency NEWLY_UNBLOCKED
-sort_by_urgency MED_UNBLOCKED
+    # Ready items (blockers clear)
+    if is_clear:
+        has_deps = bool(re.findall(r"WRK-\d+", bb_raw))
+        if pri == "high":
+            high_ready.append((wid, pri, cat, computer, title, urg, sub, gh, age))
+        elif has_deps:
+            newly_unblocked.append((wid, pri, cat, computer, title, urg, sub, gh, age))
+        else:
+            medium_ready.append((wid, pri, cat, computer, title, urg, sub, gh, age))
+
+# Sort ready arrays by urgency score (descending)
+def sort_key(item):
+    try:
+        return -float(item[5]) if item[5] != "—" else 0
+    except (ValueError, IndexError):
+        return 0
+
+high_ready.sort(key=sort_key)
+newly_unblocked.sort(key=sort_key)
+medium_ready.sort(key=sort_key)
+
+# Output TSV — use "—" for empty fields to prevent bash read from collapsing consecutive tabs
+def p(section, *fields):
+    safe = [str(f) if f else "—" for f in fields]
+    print(section + "\t" + "\t".join(safe))
+
+for r in coordinating:
+    p("COORDINATING", *r)
+for r in working:
+    p("WORKING", *r)
+for r in parked:
+    p("PARKED", *r)
+for r in unclaimed:
+    p("UNCLAIMED", *r)
+for r in high_ready:
+    p("HIGH", *r)
+for r in newly_unblocked:
+    p("NEWLY_UNBLOCKED", *r)
+for r in medium_ready[:med_limit]:
+    p("MEDIUM", *r)
+p("META", "med_overflow", str(max(0, len(medium_ready) - med_limit)))
+for r in blocked:
+    p("BLOCKED", *r)
+for r in deferred:
+    p("DEFERRED", *r)
+# Counts (use raw print to avoid "—" substitution for 0)
+counts = [len(coordinating), len(working), len(parked), len(unclaimed),
+          len(high_ready), len(newly_unblocked), len(medium_ready), len(blocked), len(deferred)]
+print("COUNTS\t" + "\t".join(str(c) for c in counts))
+PYEOF
+)
+
+# ── Parse TSV into bash arrays ────────────────────────────────────────────────
+declare -a WORKING_ITEMS WORKING_PARKED UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED COORDINATING_ITEMS DEFERRED_ITEMS
+declare -A WRK_NOTES WRK_NOT_BEFORE
+MED_OVERFLOW=0
+_COUNTS_LINE=""
+
+while IFS=$'\t' read -r section rest; do
+  case "$section" in
+    COORDINATING)
+      # wid|pri|sub|cpu|title|progress|urg|gh|age|cat
+      IFS=$'\t' read -r wid pri sub cpu title progress urg gh age cat <<< "$rest"
+      COORDINATING_ITEMS+=("$wid|$pri|$sub|$cpu|$title|$progress|$urg|$gh|$age|$cat")
+      ;;
+    WORKING)
+      # wid|pri|sub|cpu|title|cpstage|pid|urg|gh|age|cat|note|nb
+      IFS=$'\t' read -r wid pri sub cpu title cpstage pid urg gh age cat note nb <<< "$rest"
+      WORKING_ITEMS+=("$wid|$pri|$sub|$cpu|$title|$cpstage|$pid|$urg|$gh|$age|$cat")
+      [[ -n "$note" ]] && WRK_NOTES["$wid"]="$note"
+      [[ -n "$nb" ]] && WRK_NOT_BEFORE["$wid"]="$nb"
+      ;;
+    PARKED)
+      IFS=$'\t' read -r wid pri sub cpu title cpstage pid urg gh age cat note nb <<< "$rest"
+      WORKING_PARKED+=("$wid|$pri|$sub|$cpu|$title|$cpstage|$pid|$urg|$gh|$age|$cat")
+      [[ -n "$note" ]] && WRK_NOTES["$wid"]="$note"
+      [[ -n "$nb" ]] && WRK_NOT_BEFORE["$wid"]="$nb"
+      ;;
+    UNCLAIMED)
+      IFS=$'\t' read -r wid pri sub cpu title cpstage pid urg gh age cat note nb <<< "$rest"
+      UNCLAIMED_ACTIVE+=("$wid|$pri|$sub|$cpu|$title|$cpstage|$pid|$urg|$gh|$age|$cat")
+      ;;
+    HIGH)
+      # wid|pri|cat|cpu|title|urg|sub|gh|age
+      IFS=$'\t' read -r wid pri cat cpu title urg sub gh age <<< "$rest"
+      HIGH_UNBLOCKED+=("$wid|$pri|$cat|$cpu|$title|$urg|$sub|$gh|$age")
+      ;;
+    NEWLY_UNBLOCKED)
+      IFS=$'\t' read -r wid pri cat cpu title urg sub gh age <<< "$rest"
+      NEWLY_UNBLOCKED+=("$wid|$pri|$cat|$cpu|$title|$urg|$sub|$gh|$age")
+      ;;
+    MEDIUM)
+      IFS=$'\t' read -r wid pri cat cpu title urg sub gh age <<< "$rest"
+      MED_UNBLOCKED+=("$wid|$pri|$cat|$cpu|$title|$urg|$sub|$gh|$age")
+      ;;
+    BLOCKED)
+      # wid|pri|sub|cpu|title|reason|urg|gh|age|cat
+      IFS=$'\t' read -r wid pri sub cpu title reason urg gh age cat <<< "$rest"
+      EXT_BLOCKED+=("$wid|$pri|$sub|$cpu|$title|$reason|$urg|$gh|$age|$cat")
+      ;;
+    DEFERRED)
+      # wid|pri|sub|cpu|title|nb|urg|gh|age|cat
+      IFS=$'\t' read -r wid pri sub cpu title nb urg gh age cat <<< "$rest"
+      DEFERRED_ITEMS+=("$wid|$pri|$sub|$cpu|$title|$nb|$urg|$gh|$age|$cat")
+      ;;
+    META)
+      IFS=$'\t' read -r key val <<< "$rest"
+      [[ "$key" == "med_overflow" ]] && MED_OVERFLOW="$val"
+      ;;
+    COUNTS)
+      _COUNTS_LINE="$rest"
+      ;;
+  esac
+done <<< "$_TSV_DATA"
+
+# Parse counts
+IFS=$'\t' read -r _cnt_coord _cnt_work _cnt_park _cnt_uncl _cnt_high _cnt_newu _cnt_med _cnt_block _cnt_def <<< "$_COUNTS_LINE"
 
 # ── Render (box-drawing tables) ───────────────────────────────────────────────
 
 TABLE_WIDTH=120
 
-# draw_table <section_label> <colour> <emoji> <col_widths> <headers> <rows[]> [notes_prefix]
-# col_widths / headers: pipe-separated strings.  rows: newline-separated, pipe-delimited.
-# Renders uniform box-drawing tables: ┌─┬─┐ top, │ cells, ├─┼─┤ after header, └─┴─┘ bottom.
+# draw_table <section_label> <colour> <emoji> <col_widths> <headers> <rows[]>
 draw_table() {
   local label="$1" colour="$2" emoji="$3" col_widths_str="$4" headers_str="$5"
   shift 5
@@ -312,7 +342,6 @@ draw_table() {
 
   # Data rows
   for row in "${rows[@]}"; do
-    # Check for special merged rows (annotations)
     if [[ "$row" == _NOTE_:* ]]; then
       local note_text="${row#_NOTE_:}"
       local inner_w=$(( ${#top_rule} - 4 ))
@@ -329,7 +358,6 @@ draw_table() {
     local cell_line=""
     for (( i=0; i<ncols; i++ )); do
       local val="${cells[$i]:-}"
-      # Truncate to column width
       val="${val:0:${widths[$i]}}"
       cell_line+="│ $(printf "%-${widths[$i]}s" "$val") "
     done
@@ -366,13 +394,19 @@ partition_rows() {
 }
 
 # render_working_section <label> <colour> <emoji> <arr_name>
-# Columns: Icon | WRK | Priority | Stage | PID | Title
+# Enriched: ICON | WRK | PRI | URG | STAGE | PID | GH# | AGE | TITLE
+# Compact:  ICON | WRK | PRI | STAGE | PID | TITLE
 render_working_section() {
   local label="$1" colour="$2" emoji="$3" arr_name="$4"
   local -n _warr="$arr_name"
   [[ ${#_warr[@]} -eq 0 ]] && return
 
-  local widths="4|10|10|9|11|60" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
+  local widths hdrs
+  if [[ "$COMPACT" == "true" ]]; then
+    widths="4|10|10|9|11|60" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
+  else
+    widths="4|10|6|5|9|11|6|5|50" hdrs="ICON|WRK|PRI|URG|STAGE|PID|GH#|AGE|TITLE"
+  fi
   local -a table_rows=()
 
   partition_rows "$arr_name"
@@ -382,10 +416,15 @@ render_working_section() {
     table_rows+=("_MERGED_:[this machine: $THIS_HOST]")
 
   for row in "${_local_rows[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
+    # wid|pri|sub|cpu|title|cpstage|pid|urg|gh|age|cat
+    IFS='|' read -r id pri sub cpu ttl cpstage pid urg gh age cat <<< "$row"
     local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
     local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
-    table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
+    if [[ "$COMPACT" == "true" ]]; then
+      table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
+    else
+      table_rows+=("$emoji|$id|$pri|$urg|$stage_disp|$pid_disp|$gh|$age|$ttl")
+    fi
     local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
     [[ -n "$_note" ]] && table_rows+=("_NOTE_:$_note")
     [[ -n "$_nb" ]]   && table_rows+=("_NOTE_:not before: $_nb")
@@ -396,10 +435,14 @@ render_working_section() {
       table_rows+=("_MERGED_:[other machines: ${_remote_ids[*]}]")
     else
       for row in "${_remote_rows[@]}"; do
-        IFS='|' read -r id pri sub cpu ttl cpstage status pid _rest <<< "$row"
+        IFS='|' read -r id pri sub cpu ttl cpstage pid urg gh age cat <<< "$row"
         local stage_disp; [[ -n "$cpstage" ]] && stage_disp="Stage $cpstage" || stage_disp="—"
         local pid_disp;   [[ -n "$pid" ]]     && pid_disp="PID $pid"         || pid_disp="—"
-        table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
+        if [[ "$COMPACT" == "true" ]]; then
+          table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
+        else
+          table_rows+=("$emoji|$id|$pri|$urg|$stage_disp|$pid_disp|$gh|$age|$ttl")
+        fi
       done
     fi
   fi
@@ -408,7 +451,8 @@ render_working_section() {
 }
 
 # render_ready_section <label> <colour> <emoji> <arr_name>
-# Columns: Icon | WRK | Priority | [Machine] | Title — Machine only if mixed
+# Enriched: ICON | WRK | PRI | URG | CAT | SUB | GH# | AGE | [MACHINE] | TITLE
+# Compact:  ICON | WRK | PRI | [MACHINE] | TITLE
 render_ready_section() {
   local label="$1" colour="$2" emoji="$3" arr_name="$4"
   local -n _rarr="$arr_name"
@@ -417,10 +461,18 @@ render_ready_section() {
   local mixed=false widths hdrs
   has_mixed_machines "$arr_name" && mixed=true
 
-  if [[ "$mixed" == "true" ]]; then
-    widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
+  if [[ "$COMPACT" == "true" ]]; then
+    if [[ "$mixed" == "true" ]]; then
+      widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
+    else
+      widths="4|10|10|83" hdrs="ICON|WRK|PRI|TITLE"
+    fi
   else
-    widths="4|10|10|83" hdrs="ICON|WRK|PRI|TITLE"
+    if [[ "$mixed" == "true" ]]; then
+      widths="4|10|6|5|10|12|6|5|15|40" hdrs="ICON|WRK|PRI|URG|CAT|SUB|GH#|AGE|MACHINE|TITLE"
+    else
+      widths="4|10|6|5|10|12|6|5|50" hdrs="ICON|WRK|PRI|URG|CAT|SUB|GH#|AGE|TITLE"
+    fi
   fi
 
   local -a table_rows=()
@@ -431,15 +483,21 @@ render_ready_section() {
     table_rows+=("_MERGED_:[this machine: $THIS_HOST]")
 
   for row in "${_local_rows[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
-    if [[ "$mixed" == "true" ]]; then
-      table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
+    # wid|pri|cat|cpu|title|urg|sub|gh|age
+    IFS='|' read -r id pri cat cpu ttl urg sub gh age <<< "$row"
+    if [[ "$COMPACT" == "true" ]]; then
+      if [[ "$mixed" == "true" ]]; then
+        table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
+      else
+        table_rows+=("$emoji|$id|$pri|$ttl")
+      fi
     else
-      table_rows+=("$emoji|$id|$pri|$ttl")
+      if [[ "$mixed" == "true" ]]; then
+        table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$cpu|$ttl")
+      else
+        table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$ttl")
+      fi
     fi
-    local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
-    [[ -n "$_note" ]] && table_rows+=("_NOTE_:$_note")
-    [[ -n "$_nb" ]]   && table_rows+=("_NOTE_:not before: $_nb")
   done
 
   if [[ $has_remote -eq 1 ]]; then
@@ -447,11 +505,19 @@ render_ready_section() {
       table_rows+=("_MERGED_:[other machines: ${_remote_ids[*]}]")
     else
       for row in "${_remote_rows[@]}"; do
-        IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
-        if [[ "$mixed" == "true" ]]; then
-          table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
+        IFS='|' read -r id pri cat cpu ttl urg sub gh age <<< "$row"
+        if [[ "$COMPACT" == "true" ]]; then
+          if [[ "$mixed" == "true" ]]; then
+            table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
+          else
+            table_rows+=("$emoji|$id|$pri|$ttl")
+          fi
         else
-          table_rows+=("$emoji|$id|$pri|$ttl")
+          if [[ "$mixed" == "true" ]]; then
+            table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$cpu|$ttl")
+          else
+            table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$ttl")
+          fi
         fi
       done
     fi
@@ -466,7 +532,7 @@ render_coordinating() {
   local widths="4|10|10|50|30" hdrs="ICON|WRK|PRI|TITLE|CHILD PROGRESS"
   local -a table_rows=()
   for crow in "${COORDINATING_ITEMS[@]}"; do
-    IFS='|' read -r cid cpri csub ccpu cttl cprogress <<< "$crow"
+    IFS='|' read -r cid cpri csub ccpu cttl cprogress _rest <<< "$crow"
     table_rows+=("◈|$cid|$cpri|$cttl|$cprogress")
   done
   draw_table "COORDINATING — feature WRKs managing children" "\033[35m" "◈" \
@@ -479,10 +545,8 @@ render_blocked() {
   local widths="4|10|26|70" hdrs="ICON|WRK|SUBCATEGORY|BLOCKED BY"
   local -a table_rows=()
   for row in "${EXT_BLOCKED[@]}"; do
-    IFS='|' read -r id _pri sub _cpu _ttl _cpstage _status _pid reason <<< "$row"
-    local display_reason="$reason"
-    [[ "$display_reason" == "clear" || -z "$display_reason" ]] && display_reason="external (no WRK deps)"
-    table_rows+=("✗|$id|$sub|$display_reason")
+    IFS='|' read -r id pri sub cpu ttl reason _rest <<< "$row"
+    table_rows+=("✗|$id|$sub|$reason")
   done
   draw_table "EXTERNALLY BLOCKED" "\033[31m" "✗" \
     "$widths" "$hdrs" "${table_rows[@]}"
@@ -503,25 +567,29 @@ render_working_section "PARKED — deferred / awaiting input"                   
 render_working_section "IN-PROGRESS UNCLAIMED — session active, not yet claimed"  "\033[33m" "⚠"  UNCLAIMED_ACTIVE
 render_ready_section   "HIGH PRIORITY — ready to start"                           "\033[32m" "★"  HIGH_UNBLOCKED
 render_ready_section   "NEWLY UNBLOCKED — blockers cleared"                       "\033[33m" "↑"  NEWLY_UNBLOCKED
-# Cap medium section
-if [[ ${#MED_UNBLOCKED[@]} -gt $MED_LIMIT ]]; then
-  MED_DISPLAY=("${MED_UNBLOCKED[@]:0:$MED_LIMIT}")
-  MED_OVERFLOW=$(( ${#MED_UNBLOCKED[@]} - MED_LIMIT ))
-else
-  MED_DISPLAY=("${MED_UNBLOCKED[@]}")
-  MED_OVERFLOW=0
-fi
-render_ready_section "MEDIUM — ready" "\033[0m" "·" MED_DISPLAY
+render_ready_section   "MEDIUM — ready"                                           "\033[0m"  "·"  MED_UNBLOCKED
 [[ $MED_OVERFLOW -gt 0 ]] && echo "  … and $MED_OVERFLOW more (use --limit N or --category to narrow)"
 
 render_blocked
+
+# ── Deferred items (not_before in the future) ─────────────────────────────
+if [[ ${#DEFERRED_ITEMS[@]} -gt 0 ]]; then
+  _def_widths="4|10|10|12|68" _def_hdrs="ICON|WRK|PRI|NOT BEFORE|TITLE"
+  _def_rows=()
+  for row in "${DEFERRED_ITEMS[@]}"; do
+    IFS='|' read -r id pri sub cpu ttl nb _rest <<< "$row"
+    _def_rows+=("⏳|$id|$pri|$nb|$ttl")
+  done
+  draw_table "DEFERRED — not before date in the future" "\033[90m" "⏳" \
+    "$_def_widths" "$_def_hdrs" "${_def_rows[@]}"
+fi
 
 # ── Parallel hints ────────────────────────────────────────────────────────────
 echo ""; echo "\033[1m── Parallel hints ──\033[0m"
 
 declare -A machine_map
 for row in "${HIGH_UNBLOCKED[@]}" "${NEWLY_UNBLOCKED[@]}"; do
-  IFS='|' read -r id _pri _sub cpu _ttl <<< "$row"
+  IFS='|' read -r id _pri _sub cpu _rest <<< "$row"
   [[ -n "$cpu" ]] && machine_map["$cpu"]+="$id "
 done
 
@@ -541,5 +609,5 @@ else
 fi
 
 echo ""
-echo "Summary: \033[35m${#COORDINATING_ITEMS[@]} coordinating\033[0m · \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[90m${#WORKING_PARKED[@]} parked\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
+echo "Summary: \033[35m${_cnt_coord:-0} coordinating\033[0m · \033[36m${_cnt_work:-0} working\033[0m · \033[90m${_cnt_park:-0} parked\033[0m · \033[33m${_cnt_uncl:-0} unclaimed\033[0m · \033[32m${_cnt_high:-0} high ready\033[0m · \033[33m${_cnt_newu:-0} newly unblocked\033[0m · ${_cnt_med:-0} medium · \033[31m${_cnt_block:-0} blocked\033[0m · \033[90m${_cnt_def:-0} deferred\033[0m"
 echo ""

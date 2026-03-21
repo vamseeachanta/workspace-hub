@@ -1,0 +1,7 @@
+stage: 1
+gate: user-review-capture
+status: approved
+scope_approved: true
+approved_by: user
+approved_at: "2026-03-21T00:00:00Z"
+notes: "User approved stage 1 capture. WRK file validated, GitHub issue #1252 created."

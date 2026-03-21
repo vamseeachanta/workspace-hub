@@ -2,3 +2,11 @@ stage: 8
 wrk_id: WRK-1337
 human_gate: false
 started_at: "2026-03-20T03:51:45.229655+00:00"
+completed_at: "2026-03-21T03:06:22.225290+00:00"
+duration_s: 83677.0
+completed_at: "2026-03-21T03:06:39.348403+00:00"
+duration_s: 83694.1
+completed_at: "2026-03-21T03:07:45.869591+00:00"
+duration_s: 83760.6
+completed_at: "2026-03-21T03:08:14.926555+00:00"
+duration_s: 83789.7

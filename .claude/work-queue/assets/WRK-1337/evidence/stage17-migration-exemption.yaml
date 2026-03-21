@@ -1,0 +1,5 @@
+wrk_id: WRK-1337
+approved_by: vamsee
+approval_scope: "Legacy WRK executed before Stage 17 gate hardening"
+reason: "WRK-1337 was executed and reviewed before the implementation review pipeline was enforced"
+exempted_at: '2026-03-20T04:00:00Z'

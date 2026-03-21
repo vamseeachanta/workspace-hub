@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html><head><title>WRK-5105 Lifecycle</title></head>
+<body>
+<h1>WRK-5105: Index-First whats-next with Enriched Columns</h1>
+<h2>Stage 4: Plan Draft</h2>
+<p>Plan: specs/modules/federated-jingling-flurry.md</p>
+<ul>
+<li>Enrich update-wrk-index.sh with 10+ new frontmatter fields</li>
+<li>Add urgency score post-pass to rebuild-wrk-index.sh</li>
+<li>Rewrite whats-next.sh data path: index-first, single python3 call</li>
+<li>New columns: URG, CAT, SUB, GH#, AGE + --compact backward compat</li>
+<li>Performance: 2m36s → 0.46s (harness) / 2.0s (--all)</li>
+</ul>
+</body></html>

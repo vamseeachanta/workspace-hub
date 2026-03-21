@@ -1,0 +1,3 @@
+reviewer: user
+override_reason: "No actual P1 findings — all 3 reviews say 'P1 Findings: None'. False positive from P1 header text matching."
+overridden_at: "2026-03-21T04:20:00Z"

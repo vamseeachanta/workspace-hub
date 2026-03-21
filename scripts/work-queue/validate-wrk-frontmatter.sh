@@ -52,6 +52,7 @@ REQUIRED_FIELDS=(
 
 # Optional fields (documented here for schema reference; not validated)
 # github_issue_ref — URL to linked GitHub Issue (WRK-1333)
+#   Enforcement promoted to L3 hook (WRK-5102): enforce-github-issue-ref.sh
 
 # Extract frontmatter (between first --- and second ---)
 frontmatter="$(awk '/^---$/{n++; next} n==1{print} n>=2{exit}' "$FILE_PATH")"
