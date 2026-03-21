@@ -64,7 +64,23 @@ Write to `${QUEUE_DIR}/pending/${FILENAME}` using the appropriate template:
 
 Fill in all frontmatter fields. Set `created_at` to current ISO 8601 timestamp.
 
-### 7. Context Document (Complex Items Only)
+### 7. Create GitHub Issue
+
+After writing the WRK file, create a linked GitHub issue and store the reference:
+
+```bash
+uv run --no-project python "${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py" \
+  "WRK-${NEXT_ID}" --create
+```
+
+This automatically:
+- Creates a GitHub issue titled `WRK-NNN: <title>` with labels from category/priority
+- Stores `github_issue_ref: <url>` in the WRK frontmatter via `_store_issue_ref()`
+
+If `gh` is not authenticated or the command fails, log a warning but do not block capture.
+The issue can be created later via `update-github-issue.py WRK-NNN --create`.
+
+### 8. Context Document (Complex Items Only)
 
 For complex items or when input exceeds 500 words, create a companion context document:
 
@@ -74,7 +90,7 @@ ${QUEUE_DIR}/assets/CONTEXT-${ID}-${SLUG}.md
 
 This preserves the verbatim original request and links to extracted WRK items.
 
-### 8. Sync to Target Repos
+### 9. Sync to Target Repos
 
 For each repo in `target_repos`, mirror the work item:
 
@@ -96,7 +112,7 @@ synced_to:
   - achantas-data
 ```
 
-### 9. Confirm to User
+### 10. Confirm to User
 
 Output a summary:
 
@@ -104,6 +120,7 @@ Output a summary:
 Created WRK-001: Fix login redirect
   Priority: medium | Complexity: simple | Repo: aceengineer-website
   File: .claude/work-queue/pending/WRK-001-fix-login-redirect.md
+  Issue: https://github.com/<owner>/<repo>/issues/NNN
 ```
 
 For multi-item captures:

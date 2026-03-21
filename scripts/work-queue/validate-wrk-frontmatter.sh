@@ -86,5 +86,19 @@ if [[ ${#missing[@]} -gt 0 ]]; then
   exit 1
 fi
 
+# Warn (non-blocking) if github_issue_ref is absent
+has_issue_ref="$(echo "$frontmatter" | awk '
+  BEGIN { found=0 }
+  /^github_issue_ref:/ {
+    sub(/^[^:]+:[ \t]*/, ""); gsub(/^"/, ""); gsub(/"$/, "")
+    gsub(/^[ \t]+/, ""); gsub(/[ \t]+$/, "")
+    if ($0 != "") { found=1 }
+  }
+  END { print found }
+')"
+if [[ "$has_issue_ref" != "1" ]]; then
+  echo "⚠ ${WRK_ID}: github_issue_ref not set — run: uv run --no-project python scripts/knowledge/update-github-issue.py ${WRK_ID} --create" >&2
+fi
+
 echo "✔ ${WRK_ID}: all required frontmatter fields present"
 exit 0

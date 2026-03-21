@@ -9,6 +9,7 @@ target_repos:
   - {{ target_repo }}
 commit:
 spec_ref:
+github_issue_ref:
 related: []
 blocked_by: []
 route:
