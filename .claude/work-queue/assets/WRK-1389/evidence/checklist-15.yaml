@@ -1,0 +1,15 @@
+wrk_id: WRK-1389
+stage: 15
+items:
+  - id: CL-15-1
+    text: "Review execution notes and review.md for deferred ideas"
+    completed: true
+    evidence: "5 future work items identified from 11 discrepancies"
+  - id: CL-15-2
+    text: "Capture each as WRK item"
+    completed: true
+    evidence: "4 spun-off-new + 1 append-existing, all captured: true"
+  - id: CL-15-3
+    text: "Write future-work.yaml"
+    completed: true
+    evidence: "evidence/future-work.yaml written"

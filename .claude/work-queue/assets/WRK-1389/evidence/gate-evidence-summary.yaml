@@ -1,0 +1,11 @@
+wrk_id: WRK-1389
+stage: 14
+phase: claim
+all_gates_pass: true
+gate_count: 15
+ok_count: 12
+warn_count: 3
+missing_count: 0
+notes: |
+  All gates pass. 3 WARNs are non-blocking (agent logs, claim legacy, reclaim).
+  D1 (author identity) manifested live: allowlist uses 'vamsee' but GitHub username is 'vamseeachanta'.

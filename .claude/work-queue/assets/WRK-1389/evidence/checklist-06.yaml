@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 6
+items:
+  - id: CL-06-1
+    text: "Cross-review package sent to all 3 providers"
+    completed: true
+    evidence: "Route A simple — Claude Opus fallback for Codex and Gemini slots"
+  - id: CL-06-2
+    text: "All 3 verdicts collected"
+    completed: true
+    evidence: "3x APPROVE, 0 P1, 1 P2"
+  - id: CL-06-3
+    text: "Synthesized into cross-review.yaml"
+    completed: true
+    evidence: "evidence/cross-review.yaml written"
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true
+    evidence: "cross-review.yaml has 3 reviewers: claude, codex-slot (Opus fallback), gemini-slot (Opus fallback)"

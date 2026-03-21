@@ -1,0 +1,36 @@
+wrk_id: WRK-1389
+stage: 2
+completion_status: complete
+domain: harness/work-queue
+complexity_assessment: simple
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/work-queue
+    - coordination/workspace/work-queue
+  related:
+    - workspace-hub/knowledge
+resources:
+  local_scripts:
+    - scripts/work-queue/dispatch-run.sh
+    - scripts/work-queue/run-plan.sh
+    - scripts/work-queue/run-execute.sh
+    - scripts/work-queue/exit_stage.py
+    - scripts/work-queue/wait-for-approval.sh
+    - scripts/knowledge/update-github-issue.py
+    - scripts/work-queue/verify-gate-evidence.py
+  prior_art:
+    - WRK-5099: "wired dispatch-run.sh into /work run"
+    - WRK-5100: "removed dead lifecycle HTML refs"
+    - WRK-5101: "wired GitHub issue creation into /work add"
+    - WRK-5104: "GitHub issue as human gate (9 discrepancies found)"
+    - WRK-5107: "purge HTML gates from verify-gate-evidence.py (5 discrepancies found)"
+    - WRK-1161: "suppress non-actionable CLI stderr noise"
+  github_issues:
+    - "#1245 (WRK-1389 tracker)"
+    - "#1252 (WRK-5104 — 4 discrepancy comments)"
+    - "#1255 (WRK-5107 — 4 discrepancy comments)"
+notes: |
+  All resources are local to workspace-hub. No external research needed.
+  The 9 discrepancies from WRK-5104 and WRK-5107 are the primary input.
+  WRK-1161 (stderr noise suppression) is related to the "too many error codes" discrepancy.

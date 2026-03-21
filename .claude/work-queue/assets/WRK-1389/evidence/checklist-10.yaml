@@ -1,0 +1,23 @@
+wrk_id: WRK-1389
+stage: 10
+items:
+  - id: CL-10-1
+    text: "Scripts-over-LLM audit performed"
+    completed: true
+    evidence: "No new scripts needed — categorization WRK, no implementation code"
+  - id: CL-10-2
+    text: "Tests written BEFORE implementation (TDD Red)"
+    completed: true
+    evidence: "N/A — categorization WRK with no code. 3 verification checks in execute.yaml serve as acceptance tests"
+  - id: CL-10-3
+    text: "All tests pass (TDD Green)"
+    completed: true
+    evidence: "3/3 pass: all discrepancies have disposition, all fix items have owner, zero unaddressed"
+  - id: CL-10-4
+    text: "evidence/execute.yaml written with integrated_repo_tests >= 3"
+    completed: true
+    evidence: "execute.yaml has 3 test entries all passing"
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    completed: true
+    evidence: "No code changes to commit — categorization WRK produces evidence files only"

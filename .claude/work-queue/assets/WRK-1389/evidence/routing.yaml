@@ -1,0 +1,13 @@
+wrk_id: WRK-1389
+stage: 9
+work_queue_skill: loaded
+work_wrapper_complete: true
+route: A
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/work-queue
+delivery_order:
+  - "P1: Finalize disposition table for all 11 discrepancies (D1-D11)"
+  - "P2: Capture follow-up WRKs for fix items"
+  - "P3: Update GitHub issue body with final results"
+stage_sequence_from_here: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]

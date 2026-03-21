@@ -1,0 +1,35 @@
+wrk_id: WRK-1389
+stage: 4
+items:
+  - id: CL-04-0
+    text: "Scripts-over-LLM audit"
+    completed: true
+    evidence: "No new scripts needed — fixes are template/config changes"
+  - id: CL-04-1
+    text: "EnterPlanMode for thinking"
+    completed: true
+    evidence: "Plan drafted with disposition table for all 9 discrepancies"
+  - id: CL-04-2
+    text: "Define ACs"
+    completed: true
+    evidence: "3 ACs in plan.md"
+  - id: CL-04-3
+    text: "Write pseudocode"
+    completed: true
+    evidence: "N/A — categorization WRK, not implementation"
+  - id: CL-04-4
+    text: "Write test plan"
+    completed: true
+    evidence: "3-entry test plan in plan.md"
+  - id: CL-04-5
+    text: "Record plan in lifecycle"
+    completed: true
+    evidence: "Plan posted to GitHub issue #1245"
+  - id: CL-04-6
+    text: "Chunk sizing check"
+    completed: true
+    evidence: "Simple categorization — well within limits"
+  - id: CL-04-7
+    text: "Research before building"
+    completed: true
+    evidence: "N/A — internal harness work"

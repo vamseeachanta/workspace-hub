@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    evidence: "domain=harness/work-queue, complexity=simple"
+  - id: CL-03-2
+    text: "Confirm route, workstations, orchestrator"
+    completed: true
+    evidence: "Route A (simple), sowon, claude orchestrator"
+  - id: CL-03-3
+    text: "Surface open questions; update WRK frontmatter"
+    completed: true
+    evidence: "No open questions — discrepancies already documented on GitHub"
+  - id: CL-03-4
+    text: "Update lifecycle HTML"
+    completed: true
+    evidence: "N/A — HTML lifecycle removed per WRK-5107"

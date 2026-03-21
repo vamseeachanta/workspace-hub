@@ -1,0 +1,11 @@
+wrk_id: WRK-1389
+stage: 18
+items:
+  - id: CL-18-1
+    text: "Check for checkpoint.yaml"
+    completed: true
+    evidence: "checkpoint.yaml exists but single-session — no reclaim needed"
+  - id: CL-18-2
+    text: "Write reclaim.yaml"
+    completed: true
+    evidence: "evidence/reclaim.yaml with status: n/a"

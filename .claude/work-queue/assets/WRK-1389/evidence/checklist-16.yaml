@@ -1,0 +1,15 @@
+wrk_id: WRK-1389
+stage: 16
+items:
+  - id: CL-16-1
+    text: "Identify ≥3 lessons learned"
+    completed: true
+    evidence: "5 lessons in resource-intelligence-update.yaml"
+  - id: CL-16-2
+    text: "Note new tools/patterns/constraints"
+    completed: true
+    evidence: "2 additions noted"
+  - id: CL-16-3
+    text: "Write resource-intelligence-update.yaml"
+    completed: true
+    evidence: "evidence/resource-intelligence-update.yaml written"

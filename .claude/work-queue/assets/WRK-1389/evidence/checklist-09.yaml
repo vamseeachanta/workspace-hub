@@ -1,0 +1,15 @@
+wrk_id: WRK-1389
+stage: 9
+items:
+  - id: CL-09-1
+    text: "Load all required skills"
+    completed: true
+    evidence: "work-queue-workflow + work-queue loaded"
+  - id: CL-09-2
+    text: "Confirm delivery order"
+    completed: true
+    evidence: "P1: disposition table, P2: follow-up WRKs, P3: update GitHub"
+  - id: CL-09-3
+    text: "Write routing.yaml"
+    completed: true
+    evidence: "evidence/routing.yaml written"

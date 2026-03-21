@@ -1,0 +1,22 @@
+wrk_id: WRK-1389
+stage: 17
+items:
+  - id: CL-17-1
+    text: "Stages 10-16 evidence walked through with user"
+    completed: true
+    approved_by: vamsee
+    evidence: "User reviewed disposition table and stage progress on GitHub issue #1245"
+  - id: CL-17-2
+    text: "All user questions answered"
+    completed: true
+    approved_by: vamsee
+    evidence: "No questions raised — user approved directly"
+  - id: CL-17-3
+    text: "All ACs confirmed passing"
+    completed: true
+    evidence: "3/3 ACs pass per ac-test-matrix.md"
+  - id: CL-17-4
+    text: "Explicit user approval received (I approve stage 17)"
+    completed: true
+    approved_by: vamsee
+    evidence: "GitHub issue #1245 comment 'i approve stage 17'"

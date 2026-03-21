@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 11
+items:
+  - id: CL-11-1
+    text: "All evidence YAML files present"
+    completed: true
+    evidence: "37 evidence files across stages 1-10"
+  - id: CL-11-2
+    text: "GitHub issue updated via update-github-issue.py"
+    completed: true
+    evidence: "Issue #1245 body updated with disposition table and stage progress"
+  - id: CL-11-3
+    text: "GitHub issue reflects current stage progress"
+    completed: true
+    evidence: "Stages 1-10 marked done in Stage Progress section"
+  - id: CL-11-4
+    text: "Required evidence files present"
+    completed: true
+    evidence: "All checklists (01-10), gate files, execute.yaml present"

@@ -1,0 +1,9 @@
+wrk_id: WRK-1389
+stage: 8
+quota_snapshot: "80% remaining"
+proceed_decision: proceed
+machine: sowon
+provider: claude
+best_fit_provider: claude
+session_owner: claude
+route: A

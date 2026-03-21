@@ -1,0 +1,39 @@
+wrk_id: WRK-1389
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Search codebase — existing code, skills, tests"
+    completed: true
+    evidence: "Identified 7 key scripts and 6 prior WRKs"
+  - id: CL-02-2
+    text: "Query knowledge base"
+    completed: true
+    evidence: "query-knowledge.sh --category work-queue returned WRK-1161 (related)"
+  - id: CL-02-3
+    text: "Search document-index"
+    completed: true
+    evidence: "No external documents needed — harness-internal item"
+  - id: CL-02-4
+    text: "Online research"
+    completed: true
+    evidence: "N/A — internal harness work, no external standards apply"
+  - id: CL-02-5
+    text: "Save discovered documents"
+    completed: true
+    evidence: "N/A — no external documents"
+  - id: CL-02-6
+    text: "Update document-index"
+    completed: true
+    evidence: "N/A — no new index entries"
+  - id: CL-02-7
+    text: "Assess complexity"
+    completed: true
+    evidence: "simple — categorize and plan fixes for known discrepancies"
+  - id: CL-02-8
+    text: "Write resource-intelligence.yaml"
+    completed: true
+    evidence: "evidence/resource-intelligence.yaml written"
+  - id: CL-02-9
+    text: "Update lifecycle HTML"
+    completed: true
+    evidence: "N/A — HTML lifecycle removed per WRK-5107"

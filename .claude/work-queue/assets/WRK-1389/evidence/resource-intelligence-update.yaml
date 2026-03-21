@@ -1,0 +1,21 @@
+wrk_id: WRK-1389
+stage: 16
+lessons:
+  - id: L1
+    lesson: "human_authority_allowlist uses 'vamsee' not 'vamseeachanta' — reviewer field must match"
+    category: configuration
+  - id: L2
+    lesson: "wait-for-approval.sh requires approval AFTER the AWAITING comment — post AWAITING first, then poll"
+    category: workflow
+  - id: L3
+    lesson: "Agent should NOT post AWAITING comments manually — let run-*.sh/exit_stage.py handle it to avoid duplicates"
+    category: workflow
+  - id: L4
+    lesson: "Route must be set in WRK frontmatter — defaults to B if missing, causing cross-review count mismatch"
+    category: configuration
+  - id: L5
+    lesson: "Evidence files sometimes need to be in both evidence/ and assets root (e.g. routing.yaml, ac-test-matrix.md)"
+    category: structure
+additions:
+  - "D10/D11 are new discrepancy patterns not seen in WRK-5104/WRK-5107"
+  - "Gate evidence verifier works well with --phase claim for mid-lifecycle checks"

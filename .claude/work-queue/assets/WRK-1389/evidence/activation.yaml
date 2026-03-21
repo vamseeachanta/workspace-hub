@@ -1,0 +1,10 @@
+wrk_id: WRK-1389
+stage: 8
+activated_at: "2026-03-21T22:28:00Z"
+session_id: "sowon-2026-03-21-claude"
+orchestrator_agent: claude
+set_active_wrk: true
+gates_confirmed:
+  - plan-final-review: passed
+  - cross-review: APPROVE
+  - user-review-plan-draft: approved

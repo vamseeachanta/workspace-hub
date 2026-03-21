@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 13
+items:
+  - id: CL-13-1
+    text: "Implementation + tests sent to all 3 providers"
+    completed: true
+    evidence: "Route A — Claude Opus fallback for Codex/Gemini slots"
+  - id: CL-13-2
+    text: "Each provider reviewed"
+    completed: true
+    evidence: "3x APPROVE, 0 P1, 2 P2"
+  - id: CL-13-3
+    text: "Verdicts collected"
+    completed: true
+    evidence: "Unanimous APPROVE"
+  - id: CL-13-4
+    text: "review.md written"
+    completed: true
+    evidence: "assets/WRK-1389/review.md written"

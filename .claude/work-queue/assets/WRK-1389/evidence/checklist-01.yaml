@@ -1,0 +1,17 @@
+wrk_id: WRK-1389
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+    evidence: "pending/WRK-1389.md exists with title, category:harness, mission in body"
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+    evidence: "validate-wrk-frontmatter.sh exit 0"
+  - id: CL-01-3
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: vamseeachanta
+    approved_at: "2026-03-21T21:51:06Z"
+    evidence: "GitHub issue #1245 comment: 'I approve stage 1'"

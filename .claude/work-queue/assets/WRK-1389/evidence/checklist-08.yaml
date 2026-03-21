@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 8
+items:
+  - id: CL-08-1
+    text: "Read agent-quota; assess proceed/pause"
+    completed: true
+    evidence: "80% remaining, proceed"
+  - id: CL-08-2
+    text: "Write claim-evidence.yaml"
+    completed: true
+    evidence: "evidence/claim-evidence.yaml written"
+  - id: CL-08-3
+    text: "Update working/WRK-NNN.md"
+    completed: true
+    evidence: "Moved to working/, status: working, activated_at set"
+  - id: CL-08-4
+    text: "Write activation.yaml"
+    completed: true
+    evidence: "evidence/activation.yaml written with gates_confirmed"

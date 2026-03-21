@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 12
+items:
+  - id: CL-12-1
+    text: "Run full test suite; capture results"
+    completed: true
+    evidence: "N/A — no code tests; AC verification checks: 3/3 PASS"
+  - id: CL-12-2
+    text: "Map each AC to test result"
+    completed: true
+    evidence: "ac-test-matrix.md written with 3 ACs all PASS"
+  - id: CL-12-3
+    text: "Fix any FAIL before writing matrix"
+    completed: true
+    evidence: "No FAILs"
+  - id: CL-12-4
+    text: "Write ac-test-matrix.md"
+    completed: true
+    evidence: "evidence/ac-test-matrix.md written"

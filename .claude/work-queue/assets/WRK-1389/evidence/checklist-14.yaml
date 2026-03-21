@@ -1,0 +1,19 @@
+wrk_id: WRK-1389
+stage: 14
+items:
+  - id: CL-14-1
+    text: "Run verify-gate-evidence.py"
+    completed: true
+    evidence: "All gates pass (--phase claim)"
+  - id: CL-14-2
+    text: "Fix any FAIL gates"
+    completed: true
+    evidence: "Fixed: plan.md, activation set_active_wrk, reviewer name"
+  - id: CL-14-3
+    text: "Re-run until all pass"
+    completed: true
+    evidence: "Exit 0 on final run"
+  - id: CL-14-4
+    text: "Write gate-evidence-summary.yaml"
+    completed: true
+    evidence: "evidence/gate-evidence-summary.yaml written"

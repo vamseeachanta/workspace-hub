@@ -1,0 +1,33 @@
+wrk_id: WRK-1389
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Standardize author identity in stage comments (D1)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "vamsee vs vamseeachanta vs agent alias — add allowlist validation + canonical name mapping"
+  - id: FW-2
+    title: "Fix update-github-issue.py body staleness (D2, D3, D4, D7)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Sync ACs from checklist evidence, default empty sections to None, inline future-work summary, update at stage entry"
+  - id: FW-3
+    title: "Fix exit_stage.py stage comment ordering (D6, D10)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Numbering from YAML not LLM; prevent duplicate AWAITING comments"
+  - id: FW-4
+    title: "Fix wait-for-approval.sh timing race (D11)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Accept approval at any time, not just after AWAITING comment"
+  - id: FW-5
+    title: "Reduce stage overhead and error noise (D8, D9)"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: "Related to WRK-1161. Audit stage runner timing and simplify"
