@@ -6504,10 +6504,10 @@
     "urgency_score": 10.0
   },
   "WRK-5105": {
-    "status": "pending",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-21T03:54:18.216038+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-21T09:26:15.459725+00:00",
+    "updated_by": "archive-manual",
     "title": "refactor(whats-next): richer table columns \u2014 category, subcategory, urgency, github issue, age",
     "priority": "high",
     "category": "harness",
@@ -6521,7 +6521,7 @@
     "standing": "",
     "cadence": "",
     "computer": "dev-primary",
-    "checkpoint_stage": "4",
+    "checkpoint_stage": "6",
     "session_pid": "1277360",
     "urgency_score": 10.0
   },
