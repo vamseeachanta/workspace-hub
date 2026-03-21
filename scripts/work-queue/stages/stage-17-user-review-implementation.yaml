@@ -10,7 +10,9 @@ gate_value: approved
 skills_required:
   - workspace-hub/work-queue-workflow
 entry_reads:
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10-s16
+  - assets/WRK-NNN/evidence/execute.yaml
+  - assets/WRK-NNN/ac-test-matrix.md
+  - assets/WRK-NNN/review.md
 pre_checks:
   - script: scripts/work-queue/check-acs-pass.sh WRK-NNN
     description: "Verify all acceptance criteria are marked [x] before user review"

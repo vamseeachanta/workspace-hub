@@ -106,7 +106,7 @@ related_skills:
 | Script files | `kebab-case.sh` | `snake_case.sh`, `camelCase.sh` |
 | Python source | `snake_case.py` | `kebab-case.py`, `camelCase.py` |
 | Stage exit artifact | `stage-evidence.yaml` | `stage_evidence.yaml`, `stageEvidence.yaml` |
-| Lifecycle HTML | `WRK-NNN-lifecycle.html` | `lifecycle.html`, `wrk-nnn-lifecycle.html` |
+| GitHub issue (review surface) | GitHub issue URL | `WRK-NNN-lifecycle.html` (deprecated) |
 | Config files | `kebab-case.yaml` | `snake_case.yaml` |
 | Commands dir | `.claude/commands/` | `.claude/command/`, `.claude/cmds/` |
 
@@ -133,7 +133,7 @@ related_skills:
 | CI | Continuous Integration | devops |
 | CD | Continuous Deployment | devops |
 | RI | Resource Intelligence (Stage 2 artefact) | harness |
-| HTML | Lifecycle review document (`WRK-NNN-lifecycle.html`) | harness |
+| HTML | (deprecated) formerly Lifecycle review document; now GitHub issue is the review surface | harness |
 | MCP | Model Context Protocol (Claude tool server standard) | ai |
 | QA | Quality Assurance | engineering |
 | CLI | Command-Line Interface | tools |

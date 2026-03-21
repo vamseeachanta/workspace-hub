@@ -1,0 +1,46 @@
+stage: 14
+wrk_id: WRK-5100
+verification_tool: verify-gate-evidence.py
+result: PASS_WITH_WARNINGS
+gates:
+  - name: Plan gate
+    status: OK
+    detail: "Plan at specs/modules/delightful-dreaming-comet.md"
+  - name: Stage evidence gate
+    status: OK
+    detail: "Evidence files for stages 1-14 present"
+  - name: Activation gate
+    status: OK
+    detail: "activation.yaml present with session_id and orchestrator_agent"
+  - name: Integrated test gate
+    status: OK
+    detail: "5 grep-based AC tests in execute.yaml, all PASS"
+  - name: Legal gate
+    status: OK
+    detail: "No external code ported. Internal harness changes only."
+  - name: Future-work gate
+    status: WARN
+    detail: "Stage 15 not yet run — expected"
+  - name: Resource-intelligence update gate
+    status: WARN
+    detail: "Stage 16 not yet run — expected"
+  - name: User-review close gate
+    status: WARN
+    detail: "Stage 17 not yet run — expected"
+  - name: github_issue gate
+    status: OK
+    detail: "github_issue_ref populated: #1257"
+  - name: Cross-review count gate
+    status: OK
+    detail: "Route B: 3 cross-review files present"
+  - name: Approval ordering gate
+    status: OK
+  - name: Claim artifact gate
+    status: OK
+  - name: ISO datetime gate
+    status: OK
+  - name: Codex keyword gate
+    status: OK
+  - name: Workstation contract gate
+    status: OK
+notes: "All critical gates OK. 3 WARNs for stages not yet completed (15-17)."

@@ -1,0 +1,16 @@
+stage: 1
+wrk_id: WRK-5100
+items:
+  - id: CL-01-1
+    completed: true
+    text: "WRK title, category, mission captured"
+    note: "Title: fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps. Category: harness/work-queue. Mission: purge HTML-era refs, fix workflow gaps from live sessions."
+  - id: CL-01-2
+    completed: true
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    note: "validate-wrk-frontmatter.sh exits 0. github_issue_ref populated (#1257)."
+  - id: CL-01-3
+    completed: true
+    text: "User explicitly approved scope"
+    approved_by: vamseeachanta
+    note: "Approved via GitHub issue #1257 comment: 'proceed with dispatch'."

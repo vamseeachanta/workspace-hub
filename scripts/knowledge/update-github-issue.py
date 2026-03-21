@@ -47,10 +47,15 @@ def extract_acceptance_criteria(wrk_id, root):
     return [ln.strip() for ln in body.splitlines() if re.match(r'\s*- \[[ x]\]', ln)]
 
 def _extract_sections(wrk_id, root, headings=("Mission", "What", "Why")):
-    """Extract named ## sections from the WRK body markdown."""
+    """Extract named ## sections from the WRK body markdown.
+
+    If none of the priority headings match, falls back to all ## sections
+    found in the body (preserving their original order).
+    """
     wrk = find_wrk_file(wrk_id, root)
     if not wrk: return ""
     _, body = parse_frontmatter(wrk)
+    ordered_keys = []
     sections = {}
     current, buf = None, []
     for line in body.splitlines():
@@ -58,13 +63,17 @@ def _extract_sections(wrk_id, root, headings=("Mission", "What", "Why")):
         if m:
             if current: sections[current] = "\n".join(buf).strip()
             current, buf = m.group(1).strip(), []
+            ordered_keys.append(current)
         elif current is not None:
             buf.append(line)
     if current: sections[current] = "\n".join(buf).strip()
+    # Try priority headings first; fall back to all sections
+    keys = [h for h in headings if h in sections and sections[h]]
+    if not keys:
+        keys = [k for k in ordered_keys if k in sections and sections[k]]
     parts = []
-    for h in headings:
-        if h in sections and sections[h]:
-            parts.append(f"### {h}\n\n{sections[h]}")
+    for h in keys:
+        parts.append(f"### {h}\n\n{sections[h]}")
     return "\n\n".join(parts)
 
 def _read_yaml(path):

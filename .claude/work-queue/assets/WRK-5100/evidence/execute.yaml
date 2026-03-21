@@ -1,0 +1,40 @@
+stage: 10
+wrk_id: WRK-5100
+execution_summary: |
+  Purged all lifecycle HTML references from 18 stage micro-skills, 6 stage YAML contracts,
+  archive template, validate-queue-state.sh, and ecosystem terminology. Fixed
+  update-github-issue.py _extract_sections to fall back to all ## headings.
+  All 5 ACs verified passing via grep checks and dry-run.
+integrated_repo_tests:
+  - name: "ac1_no_lifecycle_html_in_micro_skills"
+    scope: "repo"
+    command: "grep -r 'lifecycle\\.html' .claude/skills/workspace-hub/stages/"
+    result: PASS
+    artifact_ref: "ac-test-matrix.md"
+  - name: "ac2_no_lifecycle_html_in_yaml_contracts"
+    scope: "repo"
+    command: "grep -r 'lifecycle\\.html' scripts/work-queue/stages/"
+    result: PASS
+    artifact_ref: "ac-test-matrix.md"
+  - name: "ac3_no_html_verification_ref_in_template"
+    scope: "repo"
+    command: "grep 'html_verification_ref' scripts/work-queue/templates/archive-tooling-template.yaml"
+    result: PASS
+    artifact_ref: "ac-test-matrix.md"
+  - name: "ac4_no_html_verification_ref_in_validate_script"
+    scope: "repo"
+    command: "grep 'html_verification_ref' scripts/work-queue/validate-queue-state.sh"
+    result: PASS
+    artifact_ref: "ac-test-matrix.md"
+  - name: "ac5_extract_sections_renders_headings"
+    scope: "integrated"
+    command: "uv run --no-project python scripts/knowledge/update-github-issue.py WRK-5100 --update --dry-run | grep -c '###'"
+    result: PASS
+    artifact_ref: "ac-test-matrix.md"
+files_changed:
+  micro_skills: 18
+  yaml_contracts: 8
+  scripts: 2
+  templates: 1
+  terminology: 1
+  total: 30

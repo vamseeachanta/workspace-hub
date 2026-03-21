@@ -1,0 +1,11 @@
+stage: 15
+wrk_id: WRK-5100
+recommendations:
+  - id: FW-1
+    title: "GitHub issue workflow discrepancies"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-5109
+    github_issue: "https://github.com/vamseeachanta/workspace-hub/issues/1258"
+    details: "Stage summaries, approval UX, execute gate, agent attribution"

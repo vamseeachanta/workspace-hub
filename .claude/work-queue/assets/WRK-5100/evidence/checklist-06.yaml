@@ -1,0 +1,19 @@
+stage: 6
+wrk_id: WRK-5100
+items:
+  - id: CL-06-1
+    completed: true
+    text: "Cross-review package sent to all 3 providers"
+    note: "All 3 slots reviewed (Claude + 2x Claude Opus fallback for Codex/Gemini slots)."
+  - id: CL-06-2
+    completed: true
+    text: "All 3 verdicts collected (APPROVE/REVISE)"
+    note: "3x APPROVE. Unanimous."
+  - id: CL-06-3
+    completed: true
+    text: "P1 and P2 findings documented"
+    note: "0 P1, 2 P2 (stage 4/5 YAML inline fix, verify stage 19 clean)."
+  - id: CL-06-4
+    completed: true
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    note: "Written with 3 reviewers, verdict APPROVE, plus cross-review-{claude,codex,gemini}.md files."

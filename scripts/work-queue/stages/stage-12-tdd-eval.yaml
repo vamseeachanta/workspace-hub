@@ -9,7 +9,7 @@ skills_required:
   - superpowers/test-driven-development
 entry_reads:
   - assets/WRK-NNN/evidence/execute.yaml
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10
+  - assets/WRK-NNN/evidence/execute.yaml
 exit_artifacts:
   - assets/WRK-NNN/ac-test-matrix.md
 blocking_condition: "ac-test-matrix.md missing or any AC in FAIL state"

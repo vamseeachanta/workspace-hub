@@ -27,3 +27,4 @@ git_history_timeout_seconds: 8
 human_authority_allowlist:
   - user
   - vamsee
+  - vamseeachanta

@@ -1,0 +1,23 @@
+stage: 17
+wrk_id: WRK-5100
+items:
+  - id: CL-17-1
+    completed: true
+    text: "Stages 10-16 evidence walked through with user"
+    approved_by: vamseeachanta
+    note: "Summary posted on GitHub issue #1257. All changes listed."
+  - id: CL-17-2
+    completed: true
+    text: "All user questions answered"
+    approved_by: vamseeachanta
+    note: "Gate config fixes applied per user request. WRK-5109 created per user request."
+  - id: CL-17-3
+    completed: true
+    text: "All ACs confirmed passing"
+    approved_by: vamseeachanta
+    note: "7/7 ACs pass. Claim-phase gates all OK."
+  - id: CL-17-4
+    completed: true
+    text: "Explicit user approval received (I approve stage 17)"
+    approved_by: vamseeachanta
+    note: "Approved via GitHub issue #1257."

@@ -6,5 +6,4 @@ Checklist:
 2. Write evidence/claim-evidence.yaml (quota snapshot, proceed decision)
 3. Update working/WRK-NNN.md (status: working, activated_at)
 4. Write evidence/activation.yaml (activated_at, gates_confirmed)
-5. Update lifecycle HTML Stage 8 section
 Exit: evidence/claim-evidence.yaml + evidence/activation.yaml + working/WRK-NNN.md

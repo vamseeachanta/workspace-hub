@@ -5,5 +5,4 @@ Checklist:
 1. Read resource-intelligence.yaml
 2. Confirm route (A/B/C), workstations, orchestrator
 3. Surface open questions; update WRK frontmatter
-4. Update lifecycle HTML Stage 3 section
 Exit: pending/WRK-NNN.md (route/workstations set)

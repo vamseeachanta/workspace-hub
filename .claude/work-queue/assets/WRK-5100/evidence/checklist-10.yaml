@@ -1,0 +1,23 @@
+stage: 10
+wrk_id: WRK-5100
+items:
+  - id: CL-10-1
+    completed: true
+    text: "Scripts-over-LLM check"
+    note: "No new scripts needed. All changes are edits to existing files."
+  - id: CL-10-2
+    completed: true
+    text: "EnterPlanMode for test/file strategy"
+    note: "Plan mode used at stage 4. Execution followed plan phases 1-6."
+  - id: CL-10-3
+    completed: true
+    text: "Tests written and passing"
+    note: "5 grep-based AC checks, all PASS. No code logic changes requiring unit tests."
+  - id: CL-10-4
+    completed: true
+    text: "Implementation complete"
+    note: "30 files edited across micro-skills, YAML contracts, scripts, templates, terminology."
+  - id: CL-10-5
+    completed: true
+    text: "evidence/execute.yaml written"
+    note: "Written with 5 integrated_repo_tests, all PASS."

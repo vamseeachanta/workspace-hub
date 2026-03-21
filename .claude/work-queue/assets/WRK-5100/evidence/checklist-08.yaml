@@ -1,0 +1,19 @@
+stage: 8
+wrk_id: WRK-5100
+items:
+  - id: CL-08-1
+    completed: true
+    text: "Agent quota assessed"
+    note: "Claude Opus, ~80% remaining. Proceed."
+  - id: CL-08-2
+    completed: true
+    text: "evidence/claim-evidence.yaml written"
+    note: "Quota snapshot, proceed decision, machine: sowon."
+  - id: CL-08-3
+    completed: true
+    text: "WRK moved to working/ with status: working"
+    note: "pending → working, activated_at set."
+  - id: CL-08-4
+    completed: true
+    text: "evidence/activation.yaml written"
+    note: "All 4 gates confirmed passed."

@@ -1,0 +1,15 @@
+stage: 9
+wrk_id: WRK-5100
+items:
+  - id: CL-09-1
+    completed: true
+    text: "All required skills loaded"
+    note: "work-queue-workflow + ecosystem-terminology loaded."
+  - id: CL-09-2
+    completed: true
+    text: "Delivery order confirmed"
+    note: "6 phases, P1 first (HTML purge, YAML, template, script, extract fix), then P2 (terminology)."
+  - id: CL-09-3
+    completed: true
+    text: "routing.yaml written"
+    note: "Route B, work_queue_skill: loaded, work_wrapper_complete: true."

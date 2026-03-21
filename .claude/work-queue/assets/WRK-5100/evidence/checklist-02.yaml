@@ -1,0 +1,27 @@
+stage: 2
+wrk_id: WRK-5100
+items:
+  - id: CL-02-1
+    completed: true
+    text: "Codebase search completed (existing code, skills, tests)"
+    note: "Grep for lifecycle.html across all stage micro-skills and YAML contracts. Found 18 stage files + 8 YAML contracts + archive template + validate-queue-state.sh + ecosystem terminology."
+  - id: CL-02-2
+    completed: true
+    text: "Knowledge base queried"
+    note: "Reviewed prior commits (3780f948, 7d8a73eb, 57509d14) and GitHub issue comments (#1252, #1254) for discrepancies."
+  - id: CL-02-3
+    completed: true
+    text: "Online research performed (WebSearch)"
+    note: "N/A — internal harness cleanup, no external standards apply."
+  - id: CL-02-4
+    completed: true
+    text: "Discovered documents saved to docu-intel + index updated"
+    note: "N/A — no external documents discovered. All findings are codebase-internal."
+  - id: CL-02-5
+    completed: true
+    text: "Complexity assessed (simple/medium/complex)"
+    note: "Medium — 18+ files to edit across micro-skills, YAML, scripts, and terminology. Code change to update-github-issue.py already made."
+  - id: CL-02-6
+    completed: true
+    text: "evidence/resource-intelligence.yaml written"
+    note: "Written with codebase_findings, prior_work, session_discrepancies."

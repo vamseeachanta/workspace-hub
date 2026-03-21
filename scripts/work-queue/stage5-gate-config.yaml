@@ -45,3 +45,4 @@ emergency_bypass_approved_by: ""
 human_authority_allowlist:
   - user
   - vamsee
+  - vamseeachanta

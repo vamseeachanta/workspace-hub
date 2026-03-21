@@ -1,0 +1,15 @@
+stage: 12
+wrk_id: WRK-5100
+items:
+  - id: CL-12-1
+    completed: true
+    text: "Full test suite run; results captured"
+    note: "5 grep-based AC checks all PASS. No unit test suite for text-only changes."
+  - id: CL-12-2
+    completed: true
+    text: "Each AC mapped to test result"
+    note: "7/7 ACs mapped in ac-test-matrix.md, all PASS."
+  - id: CL-12-3
+    completed: true
+    text: "ac-test-matrix.md written"
+    note: "Written with all 7 ACs."

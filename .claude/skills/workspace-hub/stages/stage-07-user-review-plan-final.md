@@ -1,5 +1,5 @@
 Stage 7 · User Review — Plan Final | human_interactive | heavy | single-thread
-Entry: WRK-NNN-lifecycle.html#s1-s6, evidence/cross-review.yaml
+Entry: evidence/cross-review.yaml, GitHub issue (stages 1-6)
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Checklist:
 1. Read cross-review findings; present revisions to human
@@ -8,7 +8,6 @@ Checklist:
 4. Ask for explicit final approval
 5. Write evidence/plan-final-review.yaml via Write tool:
    confirmed_by, confirmed_at, decision: passed
-6. Update lifecycle HTML Stage 7 section; flip chip to done
-7. Print: GATE PASSED — /checkpoint WRK-NNN → new session → /resume WRK-NNN
+6. Print: GATE PASSED — /checkpoint WRK-NNN → new session → /resume WRK-NNN
 Exit: evidence/plan-final-review.yaml (confirmed_by + confirmed_at + decision: passed)
 GATE: Stage 8 blocked until gate-check.py confirms plan-final-review.yaml complete

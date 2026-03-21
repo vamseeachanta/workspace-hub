@@ -1,0 +1,19 @@
+stage: 13
+wrk_id: WRK-5100
+items:
+  - id: CL-13-1
+    completed: true
+    text: "Implementation + tests sent to all 3 providers"
+    note: "3 slots reviewed (Claude + 2x Claude Opus fallback)."
+  - id: CL-13-2
+    completed: true
+    text: "All 3 verdicts collected"
+    note: "3x APPROVE. 0 P1, 3 P2 (minor)."
+  - id: CL-13-3
+    completed: true
+    text: "P1 and P2 findings documented"
+    note: "0 P1, 3 P2 documented in review.md."
+  - id: CL-13-4
+    completed: true
+    text: "review.md written with all 3 providers listed"
+    note: "Written with Claude, Codex-slot, Gemini-slot. All APPROVE."

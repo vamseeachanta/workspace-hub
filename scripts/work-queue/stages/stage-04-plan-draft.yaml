@@ -12,8 +12,8 @@ entry_reads:
   - pending/WRK-NNN.md
   - assets/WRK-NNN/evidence/resource-intelligence.yaml
 exit_artifacts:
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html
-blocking_condition: "lifecycle HTML Stage 4 section absent"
+  - assets/WRK-NNN/evidence/checklist-04.yaml
+blocking_condition: "stage 4 checklist evidence absent"
 log_action: plan_draft_complete
 context_budget_kb: 8
 plan_mode: required
@@ -34,7 +34,7 @@ checklist:
     text: "Test plan written (>= 3 entries or N/A+reason)"
     requires_human: false
   - id: CL-04-6
-    text: "plan.html generated"
+    text: "Plan spec written to specs/modules/"
     requires_human: false
 tools_activated:
   - type: skill

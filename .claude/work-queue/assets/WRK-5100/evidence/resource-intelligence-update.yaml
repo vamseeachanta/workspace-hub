@@ -1,0 +1,22 @@
+stage: 16
+wrk_id: WRK-5100
+lessons:
+  - id: L1
+    lesson: "Gate config allowlists must include GitHub username (vamseeachanta), not just short aliases"
+    category: gate-config
+    action: "Added vamseeachanta to all 3 gate config allowlists"
+  - id: L2
+    lesson: "Stage YAML exit_artifacts are hard-checked by exit_stage.py — must be updated when workflow changes"
+    category: stage-contracts
+    action: "Chicken-and-egg discovered: can't exit stage 4 without fixing stage 4 YAML first"
+  - id: L3
+    lesson: "verify-gate-evidence.py regenerates gate-evidence-summary.json on every run — manual edits are overwritten"
+    category: gate-verification
+    action: "Fix underlying evidence/config rather than editing the JSON output"
+  - id: L4
+    lesson: "_extract_sections in update-github-issue.py should support arbitrary headings, not just Mission/What/Why"
+    category: github-integration
+    action: "Added fallback to all ## headings when priority headings not present"
+additions:
+  - tool: "update-github-issue.py _extract_sections fallback"
+    description: "Now renders any ## heading when Mission/What/Why not found"

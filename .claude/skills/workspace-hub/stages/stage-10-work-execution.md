@@ -1,5 +1,5 @@
 Stage 10 · Work Execution | task_agent | heavy | parallel-optional
-Entry: WRK-NNN-lifecycle.html#s7-s9, routing.yaml
+Entry: routing.yaml, evidence/activation.yaml
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 TDD MANDATORY: write failing tests before any implementation code.
 Checklist:

@@ -6,5 +6,4 @@ Checklist:
 2. Fix any FAIL gates before proceeding (do not skip)
 3. Re-run until all gates PASS
 4. Write evidence/gate-evidence-summary.yaml (all gates: PASS)
-5. Update lifecycle HTML Stage 14 section (gate checklist)
 Exit: verify-gate-evidence.py exits 0 + evidence/gate-evidence-summary.yaml

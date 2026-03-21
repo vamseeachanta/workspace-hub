@@ -1,0 +1,52 @@
+stage: 2
+wrk_id: WRK-5100
+completion_status: complete
+domain: harness/work-queue
+complexity_assessment: medium
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/ecosystem-terminology
+    - workspace-hub/resource-intelligence
+  related:
+    - workspace-hub/stages/*
+
+codebase_findings:
+  lifecycle_html_refs:
+    description: "18 stage micro-skills (02-20) reference WRK-NNN-lifecycle.html"
+    files_affected: 18
+    pattern: "Entry: WRK-NNN-lifecycle.html#sN-sM, checklist 'Update lifecycle HTML Stage N'"
+  stage_yaml_contracts:
+    description: "8 YAML contracts reference lifecycle HTML in exit_artifacts/entry_reads"
+    files: "stage-{04,05,06,07,10,12,13,17}-*.yaml"
+  archive_template_mismatch:
+    file: "scripts/work-queue/templates/archive-tooling-template.yaml"
+    issue: "has html_verification_ref, gate_checks_archive.py now validates github_issue_ref"
+  validate_queue_state:
+    file: "scripts/work-queue/validate-queue-state.sh"
+    issue: "lines 152-163 check html_verification_ref instead of github_issue_ref"
+  ecosystem_terminology:
+    file: ".claude/skills/workspace-hub/ecosystem-terminology/SKILL.md"
+    issue: "lines 109, 136 define Lifecycle HTML as canonical"
+  update_github_issue:
+    file: "scripts/knowledge/update-github-issue.py"
+    issue: "_extract_sections only pulled Mission/What/Why — fixed to fall back to all headings"
+
+prior_work:
+  - commit: "3780f948"
+    desc: "Stage 1 lifecycle HTML refs already removed"
+  - commit: "7d8a73eb"
+    desc: "WRK-5107: HTML gates purged from verify-gate-evidence.py"
+  - commit: "57509d14"
+    desc: "WRK-5101: GitHub issue creation wired into stage 1"
+
+session_discrepancies:
+  source_issues: ["#1252 (WRK-5104)", "#1254 (WRK-5106)"]
+  findings:
+    - "Stage completion comments post bare 'Stage N — DONE' with no summary"
+    - "Agent re-asks confirmation after approval already given"
+    - "Execute group (stages 8-10) runs without human checkpoint"
+    - "All comments appear under vamseeachanta — no agent attribution"
+
+online_research: "N/A — internal harness cleanup, no external standards apply"

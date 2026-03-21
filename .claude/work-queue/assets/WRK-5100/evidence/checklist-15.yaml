@@ -1,0 +1,15 @@
+stage: 15
+wrk_id: WRK-5100
+items:
+  - id: CL-15-1
+    completed: true
+    text: "Execution notes and review.md reviewed for deferred ideas"
+    note: "Section F (4 discrepancies) identified during planning, deferred."
+  - id: CL-15-2
+    completed: true
+    text: "Each deferred idea captured as WRK item"
+    note: "WRK-5109 created (#1258) covering all 4 discrepancies."
+  - id: CL-15-3
+    completed: true
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    note: "1 recommendation with captured: true, wrk_ref: WRK-5109."

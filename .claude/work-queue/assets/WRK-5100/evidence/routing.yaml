@@ -1,0 +1,28 @@
+stage: 9
+wrk_id: WRK-5100
+route: B
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/ecosystem-terminology
+delivery_order:
+  - phase: 1
+    desc: "Purge lifecycle HTML from 18 stage micro-skills"
+    priority: P1
+  - phase: 2
+    desc: "Update 8 stage YAML contracts"
+    priority: P1
+  - phase: 3
+    desc: "Fix archive template mismatch"
+    priority: P1
+  - phase: 4
+    desc: "Fix validate-queue-state.sh"
+    priority: P1
+  - phase: 5
+    desc: "Update ecosystem terminology"
+    priority: P2
+  - phase: 6
+    desc: "_extract_sections fix (already done)"
+    priority: P1
+stage_sequence_from_here: [10, 11, 12, 13, 14, 15, 16]

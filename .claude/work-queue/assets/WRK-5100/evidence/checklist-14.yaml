@@ -1,0 +1,11 @@
+stage: 14
+wrk_id: WRK-5100
+items:
+  - id: CL-14-1
+    completed: true
+    text: "verify-gate-evidence.py run"
+    note: "All critical gates OK. WARNs for stages 15-17 not yet completed."
+  - id: CL-14-2
+    completed: true
+    text: "gate-evidence-summary.yaml written"
+    note: "PASS_WITH_WARNINGS. 8 OK, 4 expected warnings."

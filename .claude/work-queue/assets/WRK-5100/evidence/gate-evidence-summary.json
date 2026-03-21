@@ -1,0 +1,189 @@
+{
+  "wrk_id": "WRK-5100",
+  "phase": "close",
+  "summary_file": "assets/WRK-5100/evidence/gate-evidence-summary.json",
+  "gates": [
+    {
+      "name": "Plan gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "reviewed=True, approved=True, artifact=delightful-dreaming-comet.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+    },
+    {
+      "name": "Workstation contract gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan_workstations=[sowon], execution_workstations=[sowon]"
+    },
+    {
+      "name": "Stage evidence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
+    },
+    {
+      "name": "Resource-intelligence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence.yaml: completion_status=complete, p1_count=0, core_skills=3"
+    },
+    {
+      "name": "Activation gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "activation.yaml: activation evidence OK"
+    },
+    {
+      "name": "Agent log gate",
+      "status": "WARN",
+      "ok": true,
+      "warn": true,
+      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log (optional \u2014 no multi-agent indicators)"
+    },
+    {
+      "name": "GitHub issue gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/1257"
+    },
+    {
+      "name": "Cross-review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5100/review.md"
+    },
+    {
+      "name": "TDD gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "test files=['ac-test-matrix.md']"
+    },
+    {
+      "name": "Integrated test gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "execute.yaml: integrated_repo_tests=5 (all passing)"
+    },
+    {
+      "name": "Legal gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5100/legal-scan.md, result=PASS"
+    },
+    {
+      "name": "Claim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "claim evidence absent (legacy item \u2014 WARN)"
+    },
+    {
+      "name": "Future-work gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "future-work.yaml: recommendations=1"
+    },
+    {
+      "name": "Resource-intelligence update gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence-update.yaml: additions=1"
+    },
+    {
+      "name": "User-review close gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-close.yaml: decision=approved"
+    },
+    {
+      "name": "Reclaim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=close)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no sentinel values found"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Codex keyword in review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "codex keyword found in review artifacts (7 file(s) checked)"
+    },
+    {
+      "name": "Stage evidence paths gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all stage evidence paths verified"
+    },
+    {
+      "name": "Done/pending contradiction gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no done/pending contradictions found"
+    },
+    {
+      "name": "Workstation contract (strict) gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "workstation contract fields present"
+    },
+    {
+      "name": "Reclaim n/a gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
+    }
+  ]
+}

@@ -150,15 +150,15 @@ def check_workflow_evidence(path: Path, frontmatter: str, expected_status: str |
                 )
 
     if status in {"done", "archived"}:
-        value = frontmatter_value(frontmatter, "html_verification_ref")
+        value = frontmatter_value(frontmatter, "github_issue_ref")
         if not value:
             record_issue(
-                f"{wrk_id}: missing html_verification_ref",
+                f"{wrk_id}: missing github_issue_ref",
                 blocking=is_wrk624_plus and is_post_close,
             )
-        elif not path_exists(value):
+        elif not value.startswith("https://"):
             record_issue(
-                f"{wrk_id}: html_verification_ref does not exist -> {value}",
+                f"{wrk_id}: github_issue_ref is not a valid URL -> {value}",
                 blocking=is_wrk624_plus and is_post_close,
             )
 

@@ -15,8 +15,8 @@ merge_status: ""
 #   "in-sync" | "no-remote" | "n/a"
 sync_status: ""
 
-# html_verification_ref: path to the lifecycle HTML file (must exist on disk).
-html_verification_ref: ".claude/work-queue/assets/WRK-NNN/WRK-NNN-lifecycle.html"
+# github_issue_ref: URL to the GitHub issue tracking this WRK.
+github_issue_ref: "https://github.com/<owner>/<repo>/issues/<number>"
 
 # legal_scan_ref: path to legal scan artifact (must exist on disk).
 legal_scan_ref: ".claude/work-queue/assets/WRK-NNN/evidence/legal-scan.md"

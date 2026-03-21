@@ -10,8 +10,7 @@ Checklist:
 2. Define ACs (specific, testable)
 3. Write pseudocode for key functions (≥3 steps; N/A+reason allowed for pure-doc WRKs)
 4. Write test plan (≥3 entries: what|happy/edge/error|expected; N/A+reason allowed)
-5. Record plan in lifecycle HTML Stage 4 section
-6. Check chunk sizing: read config/work-queue/chunk-sizing.yaml — if ANY limit exceeded,
+5. Check chunk sizing: read config/work-queue/chunk-sizing.yaml — if ANY limit exceeded,
    create a Feature WRK (type: feature) instead of a regular WRK
-7. Research before building: check for official API before building scrapers or estimators
-Exit: WRK-NNN-lifecycle.html (Stage 4 section present)
+6. Research before building: check for official API before building scrapers or estimators
+Exit: evidence/checklist-04.yaml + plan spec in specs/modules/

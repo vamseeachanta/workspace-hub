@@ -9,7 +9,7 @@ skills_required:
   - superpowers/test-driven-development
   - superpowers/systematic-debugging
 entry_reads:
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s7-s9
+  - assets/WRK-NNN/evidence/plan-final-review.yaml
   - assets/WRK-NNN/routing.yaml
 exit_artifacts:
   - assets/WRK-NNN/evidence/execute.yaml

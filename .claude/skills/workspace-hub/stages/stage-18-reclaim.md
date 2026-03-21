@@ -5,5 +5,4 @@ Checklist:
 1. Check for assets/WRK-NNN/checkpoint.yaml
 2. If no checkpoint: write evidence/reclaim.yaml (status: n/a) via Write tool
 3. If checkpoint found: re-orient from checkpoint; write reclaim.yaml (status: reclaimed)
-4. Update lifecycle HTML Stage 18 section
 Exit: evidence/reclaim.yaml (status: n/a | reclaimed)

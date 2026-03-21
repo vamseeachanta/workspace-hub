@@ -1,0 +1,7 @@
+# Stage 1 exit gate — user approval of captured scope
+stage: 1
+wrk_id: "WRK-5100"
+reviewer: "vamseeachanta"
+confirmed_at: "2026-03-21T18:30:00Z"
+scope_approved: true
+notes: "Scope expanded from simple stage-1 fix to 6-section cleanup (A-F). Approved via GitHub issue #1257 comment."

@@ -10,5 +10,4 @@ Checklist:
 6. **Update document-index** — add new entries via phase-a pipeline
 7. Assess complexity (simple/medium/complex)
 8. Write evidence/resource-intelligence.yaml (completion_status, domain, skills.core_used ≥3)
-9. Update lifecycle HTML Stage 2 section
 Exit: evidence/resource-intelligence.yaml

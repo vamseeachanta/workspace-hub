@@ -1,0 +1,15 @@
+stage: 3
+wrk_id: WRK-5100
+items:
+  - id: CL-03-1
+    completed: true
+    text: "Read resource-intelligence.yaml"
+    note: "Reviewed — 18 stage files, 8 YAML contracts, 4 scripts, 1 terminology file affected."
+  - id: CL-03-2
+    completed: true
+    text: "Confirm route (A/B/C), workstations, orchestrator"
+    note: "Route B (medium). Orchestrator: claude on sowon. Single workstation sufficient."
+  - id: CL-03-3
+    completed: true
+    text: "Surface open questions; update WRK frontmatter"
+    note: "No open questions. Frontmatter already has complexity:medium, workstations:[sowon]."

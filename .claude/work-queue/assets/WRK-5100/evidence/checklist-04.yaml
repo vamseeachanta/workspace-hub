@@ -1,0 +1,31 @@
+stage: 4
+wrk_id: WRK-5100
+items:
+  - id: CL-04-1
+    completed: true
+    text: "Scripts-over-LLM audit"
+    note: "No new scripts needed. Changes are edits to existing micro-skills, YAML contracts, and scripts."
+  - id: CL-04-2
+    completed: true
+    text: "EnterPlanMode for thinking before writing"
+    note: "Plan mode used. Plan at specs/modules/delightful-dreaming-comet.md"
+  - id: CL-04-3
+    completed: true
+    text: "Define ACs (specific, testable)"
+    note: "7 ACs defined — all grep/command-verifiable."
+  - id: CL-04-4
+    completed: true
+    text: "Write pseudocode for key functions"
+    note: "N/A — no new functions. Changes are text edits to micro-skills and field renames in YAML/shell."
+  - id: CL-04-5
+    completed: true
+    text: "Write test plan"
+    note: "6 test entries defined in plan (grep checks, dry-run, validate-queue-state, checklist summary, stage 11 parse)."
+  - id: CL-04-6
+    completed: true
+    text: "Check chunk sizing"
+    note: "Within limits — 18 micro-skill edits are small text changes, 8 YAML edits, 3 script/template edits."
+  - id: CL-04-7
+    completed: true
+    text: "Research before building"
+    note: "N/A — internal harness cleanup, no external APIs or tools involved."

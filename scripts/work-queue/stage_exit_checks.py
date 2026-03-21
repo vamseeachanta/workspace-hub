@@ -76,7 +76,7 @@ def check_s1_capture_gate(assets_dir: Path) -> tuple[bool | None, str]:
 
 def check_s17_reviewer_allowlist(
     assets_dir: Path,
-    allowlist: tuple[str, ...] = ("user", "vamsee"),
+    allowlist: tuple[str, ...] = ("user", "vamsee", "vamseeachanta"),
 ) -> tuple[bool | None, str]:
     """Stage 17 exit: reviewer in user-review-close.yaml must be in allowlist."""
     path = assets_dir / "evidence" / "user-review-close.yaml"
@@ -363,7 +363,7 @@ def check_s6_p1_pause(assets_dir: Path) -> tuple[bool | None, str]:
 
     data = _read_yaml(override_path)
     reviewer = str(data.get("reviewer", "")).strip()
-    allowlist = ("user", "vamsee")
+    allowlist = ("user", "vamsee", "vamseeachanta")
     if reviewer not in allowlist:
         return False, (
             f"cross-review-p1-override.yaml: reviewer={reviewer!r} "

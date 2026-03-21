@@ -1,0 +1,15 @@
+stage: 16
+wrk_id: WRK-5100
+items:
+  - id: CL-16-1
+    completed: true
+    text: "3+ lessons learned identified"
+    note: "4 lessons: allowlist config, YAML exit_artifacts, gate JSON regeneration, _extract_sections."
+  - id: CL-16-2
+    completed: true
+    text: "New tools/patterns/constraints documented"
+    note: "1 addition: _extract_sections fallback in update-github-issue.py."
+  - id: CL-16-3
+    completed: true
+    text: "evidence/resource-intelligence-update.yaml written"
+    note: "4 lessons, 1 addition."

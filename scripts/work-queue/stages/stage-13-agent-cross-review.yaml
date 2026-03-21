@@ -8,7 +8,8 @@ skills_required:
   - workspace-hub/work-queue-workflow
   - workspace-hub/workflow-gatepass
 entry_reads:
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10-s12
+  - assets/WRK-NNN/evidence/execute.yaml
+  - assets/WRK-NNN/ac-test-matrix.md
   - assets/WRK-NNN/ac-test-matrix.md
 exit_artifacts:
   - assets/WRK-NNN/review.md
