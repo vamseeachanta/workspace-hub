@@ -80,6 +80,12 @@ scripts/agents/session.sh init --provider claude  # once per session
 /work status WRK-NNN                              # inspect item
 ```
 
+## GOTCHA: `/work run` MUST use dispatch-run.sh
+
+**Do NOT call group runners (run-plan.sh, run-execute.sh, etc.) directly.**
+Always start with `bash scripts/work-queue/dispatch-run.sh WRK-NNN` and follow its output.
+A L3 hook will block group runner calls without a dispatch breadcrumb.
+
 ## Version History
 
 - **2.0.0** (2026-03-11): Feature layer section added (WRK-1129)
