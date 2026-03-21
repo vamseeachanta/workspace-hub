@@ -29,7 +29,6 @@ RULES = [
     (r"harness.*file|CLAUDE\.md|AGENTS\.md|CODEX\.md|agent.*harness|context.*reduc|recurring.*correction.*pattern|not.responding.to.improve", "harness", "ai-config"),
     (r"test.*health|test.*coverage|TDD.*promot|test.*fix|sandbox.*gate|automate.*gate", "harness", "testing"),
     (r"commit.*harden|git.*hygien|chore.*commit|repository_sync", "harness", "git"),
-    (r"HTML.*template|html.*review|lifecycle.*html|html.*infra|canonical.*HTML", "harness", "workflow-html"),
     (r"back.link|missing.*link", "harness", "skills-maintenance"),
 
     # --- Engineering: specific disciplines first ---

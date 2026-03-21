@@ -1,0 +1,13 @@
+wrk_id: WRK-5107
+stage: 9
+completed_at: "2026-03-21"
+items:
+  - id: CL-09-1
+    completed: true
+    evidence: "Skills loaded: work-queue-workflow, workflow-gatepass, ecosystem-terminology"
+  - id: CL-09-2
+    completed: true
+    evidence: "Delivery order confirmed: P1 verify-gate-evidence.py, P2 gate_checks_archive.py, P3 diagnostic scripts, P4 backfill"
+  - id: CL-09-3
+    completed: true
+    evidence: "routing.yaml written with skills_loaded, stage_sequence, delivery_order"

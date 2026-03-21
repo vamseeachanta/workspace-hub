@@ -1,0 +1,20 @@
+wrk_id: WRK-5107
+stage: 17
+completed_at: "2026-03-21"
+items:
+  - id: CL-17-1
+    completed: true
+    approved_by: user
+    evidence: "User reviewed implementation on GitHub issue #1255"
+  - id: CL-17-2
+    completed: true
+    approved_by: user
+    evidence: "user-review-close.yaml written with decision: approved"
+  - id: CL-17-3
+    completed: true
+    approved_by: user
+    evidence: "All ACs passing: 3 PASS in ac-test-matrix.md, 1 N/A (stage 14 e2e)"
+  - id: CL-17-4
+    completed: true
+    approved_by: user
+    evidence: "User commented 'i approve stage 17' on GitHub issue #1255"

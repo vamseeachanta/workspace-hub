@@ -1,0 +1,28 @@
+wrk_id: WRK-5107
+stage: 10
+completed_at: "2026-03-21"
+items:
+  - id: CL-10-0
+    completed: true
+    evidence: "Scripts-over-LLM check: no recurring ops — one-time refactor"
+  - id: CL-10-1
+    completed: true
+    evidence: "Plan reviewed before implementation via EnterPlanMode in stage 4"
+  - id: CL-10-2
+    completed: true
+    evidence: "TDD invoked: 24 tests written first in test_wrk5107_html_purge.py"
+  - id: CL-10-3
+    completed: true
+    evidence: "All 24 tests initially failing (Red phase confirmed)"
+  - id: CL-10-4
+    completed: true
+    evidence: "Implementation completed across 5 files (Green phase)"
+  - id: CL-10-5
+    completed: true
+    evidence: "Refactored: cleaned up removed function imports in test_gate_verifier_hardening.py"
+  - id: CL-10-6
+    completed: true
+    evidence: "execute.yaml written with 4 integrated/repo test entries, all passing"
+  - id: CL-10-7
+    completed: true
+    evidence: "75 tests passing across WRK-5107 related files (24 new + 51 existing)"

@@ -1,0 +1,25 @@
+wrk_id: WRK-5107
+stage: 4
+completed_at: "2026-03-21"
+items:
+  - id: CL-04-0
+    completed: true
+    evidence: "Scripts-over-LLM audit: no recurring ops — this is a one-time refactor of verify-gate-evidence.py"
+  - id: CL-04-1
+    completed: true
+    evidence: "Plan entered via EnterPlanMode, 2 Explore agents researched verify-gate-evidence.py and 4 supporting scripts"
+  - id: CL-04-2
+    completed: true
+    evidence: "ACs defined: 4 acceptance criteria in WRK-5107.md + 9-row test plan in specs/modules/cuddly-sniffing-snowglobe.md"
+  - id: CL-04-3
+    completed: true
+    evidence: "Pseudocode: 5 HTML functions to remove, 1 new check_github_issue_gate(), 5 gate tweaks — all with line ranges"
+  - id: CL-04-4
+    completed: true
+    evidence: "Test plan: 9 entries (3 happy, 4 edge, 1 error, 1 integration) in plan file"
+  - id: CL-04-5
+    completed: true
+    evidence: "Plan written to specs/modules/cuddly-sniffing-snowglobe.md — user approved via ExitPlanMode"
+  - id: CL-04-6
+    completed: true
+    evidence: "Chunk sizing: single WRK, medium complexity, Route B — no feature WRK needed"

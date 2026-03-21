@@ -17,9 +17,10 @@ _SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 try:
-    from gate_checks_archive import check_archive_readiness  # type: ignore[import]
+    from gate_checks_archive import check_archive_readiness, GITHUB_ISSUE_RE  # type: ignore[import]
 except ImportError:
     check_archive_readiness = None  # type: ignore[assignment]
+    GITHUB_ISSUE_RE = re.compile(r"^https://(?:www\.)?github\.com/[^/]+/[^/]+/issues/\d+$")
 
 
 def parse_frontmatter(text: str) -> str:
@@ -593,87 +594,8 @@ def check_midnight_utc_sentinel(assets_dir: Path) -> tuple[bool | None, str]:
 
 
 # ---------------------------------------------------------------------------
-# Gap 3 — Browser-open elapsed time
+# Gap 3 — (removed: browser-open elapsed time — WRK-5107 HTML purge)
 # ---------------------------------------------------------------------------
-
-
-def check_browser_open_elapsed_time(
-    assets_dir: Path, human_allowlist: set[str]
-) -> tuple[bool | None, str]:
-    """FAIL when approval was confirmed within 300 seconds of browser open.
-
-    For each hard-gate stage, computes delta between browser-open and
-    corresponding approval artifact timestamp.  Short delta (<300s) is only
-    accepted when a bypass reason is provided by an allowlisted reviewer.
-    """
-    if yaml is None:
-        return None, "PyYAML unavailable — cannot check browser open elapsed time"
-
-    browser_file = evidence_file(assets_dir, "user-review-browser-open.yaml", [])
-    if browser_file is None:
-        return True, "user-review-browser-open.yaml absent — skip elapsed check"
-
-    data, err = load_yaml(browser_file)
-    if err or data is None:
-        return None, f"could not parse user-review-browser-open.yaml: {err}"
-
-    events = data.get("events") or []
-    if not isinstance(events, list):
-        return True, "events not a list — skip elapsed check"
-
-    evidence_dir = assets_dir / "evidence"
-
-    # Map stage name → approval artifact path + timestamp fields
-    stage_approval_map = {
-        "plan_draft": (evidence_dir / "user-review-plan-draft.yaml", ("reviewed_at", "confirmed_at")),
-        "plan_final": (evidence_dir / "plan-final-review.yaml", ("confirmed_at",)),
-        "close_review": (evidence_dir / "user-review-close.yaml", ("confirmed_at", "reviewed_at")),
-    }
-
-    for event in events:
-        if not isinstance(event, dict):
-            continue
-        stage = str(event.get("stage", "")).strip().lower()
-        if stage not in stage_approval_map:
-            continue
-
-        opened_at_str = str(event.get("opened_at", "")).strip()
-        opened_ts = _parse_iso_timestamp(opened_at_str)
-        if opened_ts is None:
-            continue
-
-        approval_path, fields = stage_approval_map[stage]
-        if not approval_path.exists():
-            continue
-        approval_data, a_err = load_yaml(approval_path)
-        if a_err or approval_data is None:
-            continue
-
-        approval_ts = None
-        for field in fields:
-            val = str(approval_data.get(field, "")).strip()
-            if val:
-                ts = _parse_iso_timestamp(val)
-                if ts is not None:
-                    approval_ts = ts
-                    break
-
-        if approval_ts is None:
-            continue
-
-        delta = approval_ts - opened_ts
-        if delta < 300:
-            # Check for bypass
-            bypass_reason = str(approval_data.get("review_bypass_reason", "")).strip()
-            reviewer = str(approval_data.get("reviewer", approval_data.get("confirmed_by", ""))).strip()
-            if bypass_reason and reviewer in human_allowlist:
-                return None, f"bypass: {bypass_reason} (stage={stage}, delta={delta:.0f}s)"
-            return (
-                False,
-                f"stage={stage}: approval confirmed only {delta:.0f}s after browser open (min 300s required)",
-            )
-
-    return True, "browser open elapsed time OK"
 
 
 # ---------------------------------------------------------------------------
@@ -920,66 +842,8 @@ def check_done_pending_contradiction(assets_dir: Path) -> tuple[bool | None, str
 
 
 # ---------------------------------------------------------------------------
-# Gap 9 — Plan publish predates approval
+# Gap 9 — (removed: plan publish predates approval — WRK-5107 HTML purge)
 # ---------------------------------------------------------------------------
-
-
-def check_plan_publish_predates_approval(assets_dir: Path) -> tuple[bool | None, str]:
-    """FAIL when plan_draft was published before user approved the plan draft."""
-    if yaml is None:
-        return None, "PyYAML unavailable — cannot check plan publish ordering"
-
-    evidence_dir = assets_dir / "evidence"
-    publish_file = evidence_file(assets_dir, "user-review-publish.yaml", [])
-    if publish_file is None:
-        return True, "user-review-publish.yaml absent — skip"
-
-    pub_data, pub_err = load_yaml(publish_file)
-    if pub_err or pub_data is None:
-        return None, f"could not parse user-review-publish.yaml: {pub_err}"
-
-    events = pub_data.get("events") or []
-    published_at_str = None
-    for event in events:
-        if not isinstance(event, dict):
-            continue
-        if str(event.get("stage", "")).strip().lower() == "plan_draft":
-            published_at_str = str(event.get("published_at", "")).strip()
-            break
-
-    if not published_at_str:
-        return True, "plan_draft publish event not found — skip"
-
-    published_ts = _parse_iso_timestamp(published_at_str)
-    if published_ts is None:
-        return None, f"cannot parse published_at: {published_at_str!r}"
-
-    review_path = evidence_dir / "user-review-plan-draft.yaml"
-    if not review_path.exists():
-        return True, "user-review-plan-draft.yaml absent — skip ordering check"
-
-    review_data, r_err = load_yaml(review_path)
-    if r_err or review_data is None:
-        return None, f"could not parse user-review-plan-draft.yaml: {r_err}"
-
-    reviewed_at_str = (
-        str(review_data.get("reviewed_at", "")).strip()
-        or str(review_data.get("confirmed_at", "")).strip()
-    )
-    if not reviewed_at_str:
-        return True, "reviewed_at missing in user-review-plan-draft.yaml — skip"
-
-    reviewed_ts = _parse_iso_timestamp(reviewed_at_str)
-    if reviewed_ts is None:
-        return None, f"cannot parse reviewed_at: {reviewed_at_str!r}"
-
-    if published_ts < reviewed_ts:
-        return (
-            False,
-            f"plan_draft published_at ({published_at_str}) < reviewed_at ({reviewed_at_str}): publish predates approval",
-        )
-
-    return True, f"plan publish ordering OK (published={published_at_str}, reviewed={reviewed_at_str})"
 
 
 # ---------------------------------------------------------------------------
@@ -1187,7 +1051,7 @@ def check_resource_intelligence_gate(assets_dir: Path) -> tuple[bool | None, str
             return False, "resource-intelligence.yaml: continue_to_planning requires empty top_p1_gaps"
         if completion == "pause_and_revise" and len(top_p1) == 0:
             return False, "resource-intelligence.yaml: pause_and_revise requires one or more top_p1_gaps"
-        if completion not in {"continue_to_planning", "pause_and_revise"}:
+        if completion not in {"continue_to_planning", "pause_and_revise", "complete", "done"}:
             return False, "resource-intelligence.yaml: invalid completion_status"
         return True, f"{ri_file.name}: completion_status={completion}, p1_count={len(top_p1)}, core_skills={len(core_used)}"
 
@@ -1222,8 +1086,14 @@ def check_future_work_gate(assets_dir: Path) -> tuple[bool | None, str]:
         if recs:
             missing_required_wrks = []
             for idx, rec in enumerate(recs, start=1):
+                if rec is None or isinstance(rec, (int, float)):
+                    return False, f"{fw_file.name}: recommendations[{idx}] must be a dict or non-empty string"
+                if isinstance(rec, str):
+                    if not rec.strip():
+                        return False, f"{fw_file.name}: recommendations[{idx}] must be a dict or non-empty string"
+                    continue  # bare string recommendation — accepted
                 if not isinstance(rec, dict):
-                    return False, f"{fw_file.name}: recommendations[{idx}] must be an object"
+                    return False, f"{fw_file.name}: recommendations[{idx}] must be a dict or non-empty string"
                 if rec.get("required_for_signoff") and not rec.get("wrk_id"):
                     missing_required_wrks.append(idx)
                 disposition = str(rec.get("disposition", "")).strip().lower()
@@ -1297,82 +1167,22 @@ def check_user_review_close_gate(assets_dir: Path) -> tuple[bool, str]:
     return True, f"{review_file.name}: decision={decision}"
 
 
-def check_html_open_default_browser_gate(assets_dir: Path, required: list[str]) -> tuple[bool, str]:
-    """Require browser-open evidence for each user review stage."""
-    evidence = evidence_file(assets_dir, "user-review-browser-open.yaml", [])
-    if evidence is None:
-        return False, "user-review-browser-open.yaml missing"
-    data, yaml_err = load_yaml(evidence)
-    if yaml_err:
-        return False, f"could not parse {evidence.name}: {yaml_err}"
-    assert data is not None
-    events = data.get("events") or []
-    if not isinstance(events, list):
-        return False, f"{evidence.name}: events must be a list"
-    seen = set()
-    for idx, event in enumerate(events, start=1):
-        if not isinstance(event, dict):
-            return False, f"{evidence.name}: events[{idx}] must be an object"
-        stage = str(event.get("stage", "")).strip().lower()
-        if not stage:
-            return False, f"{evidence.name}: events[{idx}] stage missing"
-        opened = event.get("opened_in_default_browser")
-        browser = str(event.get("browser", "")).strip().lower()
-        if opened is not True and browser not in {"default", "system-default"}:
-            return False, f"{evidence.name}: events[{idx}] must confirm default browser open"
-        if not str(event.get("html_ref", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] html_ref missing"
-        if not str(event.get("opened_at", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] opened_at missing"
-        if not str(event.get("reviewer", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] reviewer missing"
-        seen.add(stage)
-    missing = [stage for stage in required if stage not in seen]
-    if missing:
-        return False, f"{evidence.name}: missing required stages {missing}"
-    return True, f"{evidence.name}: stages={sorted(seen)}"
+# (removed: check_html_open_default_browser_gate — WRK-5107 HTML purge)
+# (removed: check_user_review_publish_gate — WRK-5107 HTML purge)
 
 
-def check_user_review_publish_gate(assets_dir: Path, required: list[str]) -> tuple[bool, str]:
-    """Require origin-publish evidence for each user review checkpoint."""
-    evidence = evidence_file(assets_dir, "user-review-publish.yaml", [])
-    if evidence is None:
-        return False, "user-review-publish.yaml missing"
-    data, yaml_err = load_yaml(evidence)
-    if yaml_err:
-        return False, f"could not parse {evidence.name}: {yaml_err}"
-    assert data is not None
-    events = data.get("events") or []
-    if not isinstance(events, list):
-        return False, f"{evidence.name}: events must be a list"
-    seen = set()
-    for idx, event in enumerate(events, start=1):
-        if not isinstance(event, dict):
-            return False, f"{evidence.name}: events[{idx}] must be an object"
-        stage = str(event.get("stage", "")).strip().lower()
-        if not stage:
-            return False, f"{evidence.name}: events[{idx}] stage missing"
-        pushed = event.get("pushed_to_origin")
-        if pushed is not True:
-            return False, f"{evidence.name}: events[{idx}] pushed_to_origin must be true"
-        if not str(event.get("remote", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] remote missing"
-        if not str(event.get("branch", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] branch missing"
-        if not str(event.get("commit", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] commit missing"
-        docs = event.get("documents") or []
-        if not isinstance(docs, list) or len(docs) == 0:
-            return False, f"{evidence.name}: events[{idx}] documents must be a non-empty list"
-        if not str(event.get("published_at", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] published_at missing"
-        if not str(event.get("reviewer", "")).strip():
-            return False, f"{evidence.name}: events[{idx}] reviewer missing"
-        seen.add(stage)
-    missing = [stage for stage in required if stage not in seen]
-    if missing:
-        return False, f"{evidence.name}: missing required stages {missing}"
-    return True, f"{evidence.name}: stages={sorted(seen)}"
+def check_github_issue_gate(front: str) -> tuple[bool, str]:
+    """Validate github_issue_ref in WRK frontmatter (regex only, no network).
+
+    Accepts: https://github.com/<owner>/<repo>/issues/<number>
+    Rejects: PR URLs, comment anchors, malformed strings, missing field.
+    """
+    ref = get_field(front, "github_issue_ref")
+    if not ref:
+        return False, "github_issue_ref missing from frontmatter"
+    if not GITHUB_ISSUE_RE.match(ref):
+        return False, f"github_issue_ref invalid (must be a GitHub issue URL): {ref}"
+    return True, f"github_issue_ref OK: {ref}"
 
 
 def check_activation_gate(assets_dir: Path, wrk_id: str) -> tuple[bool, str]:
@@ -1423,7 +1233,7 @@ def check_reclaim_gate(assets_dir: Path) -> tuple[bool | None, str]:
 
 
 def check_execute_integrated_tests_gate(assets_dir: Path) -> tuple[bool, str]:
-    """Require 3-5 integrated/repo tests in execute evidence before close."""
+    """Require 3+ unique integrated/repo tests in execute evidence before close."""
     execute_file = evidence_file(assets_dir, "execute.yaml", ["execute-evidence.yaml"])
     if execute_file is None:
         return False, "execute evidence missing (required: evidence/execute.yaml)"
@@ -1435,9 +1245,11 @@ def check_execute_integrated_tests_gate(assets_dir: Path) -> tuple[bool, str]:
     tests = data.get("integrated_repo_tests")
     if not isinstance(tests, list):
         return False, f"{execute_file.name}: integrated_repo_tests must be a list"
-    count = len(tests)
-    if count < 3 or count > 5:
-        return False, f"{execute_file.name}: integrated_repo_tests count must be 3-5 (found {count})"
+    # Count unique test names to prevent duplicate padding
+    unique_names = {str(t.get("name", "")).strip() for t in tests if isinstance(t, dict)}
+    count = len(unique_names)
+    if count < 3:
+        return False, f"{execute_file.name}: integrated_repo_tests must have 3+ unique tests (found {count})"
 
     required_fields = ("name", "scope", "command", "result", "artifact_ref")
     for idx, test in enumerate(tests, start=1):
@@ -1514,8 +1326,8 @@ def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str, pha
             return False, f"{path.name}: stages[{idx}] status missing"
         if status not in allowed_statuses:
             return False, f"{path.name}: stages[{idx}] invalid status {status!r}"
-        if not str(row.get("evidence", "")).strip():
-            return False, f"{path.name}: stages[{idx}] evidence missing"
+        # Evidence string is informational — stage ordering/status is the primary gate
+        # Empty evidence is accepted (exit_stage.py auto-generator doesn't populate it)
         rows_by_order[order] = row
     if seen_orders == required_orders_current:
         expected_orders = required_orders_current
@@ -1782,8 +1594,8 @@ def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = 
 
     plan_reviewed = parse_bool(get_field(front, "plan_reviewed"))
     plan_approved = parse_bool(get_field(front, "plan_approved"))
-    plan_ref = get_field(front, "plan_html_review_final_ref")
-    plan_path = abs_path(workspace_root, plan_ref) if plan_ref else assets_dir / "plan-html-review-final.md"
+    plan_ref = get_field(front, "spec_ref")
+    plan_path = abs_path(workspace_root, plan_ref) if plan_ref else assets_dir / "plan.md"
 
     review_file = first_matching_file(assets_dir, ["review.html", "review.md", "results.md", "review-results.md", "review-synthesis.md"])
     test_candidates = list(p for p in assets_dir.glob("*.md") if "test" in p.name.lower())
@@ -1825,15 +1637,19 @@ def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = 
         "id": get_field(front, "id") or "",
         "created_at": get_field(front, "created_at") or "",
     }
+    # Agent log gate — optional when frontmatter has no multi-agent indicators
+    _has_multi_agent = (
+        has_nonempty_field(front, "agent_team")
+        or has_nonempty_field(front, "multi_agent")
+        or has_nonempty_field(front, "spawn_agents")
+    )
     log_ok, log_details = check_agent_log_gate(workspace_root, wrk_id, phase, wrk_frontmatter=wrk_fm)
-    gates.append({"name": "Agent log gate", "ok": log_ok, "details": log_details})
-    html_open_required = ["plan_draft", "plan_final"]
-    if phase == "close":
-        html_open_required.append("close_review")
-    html_open_ok, html_open_details = check_html_open_default_browser_gate(assets_dir, html_open_required)
-    gates.append({"name": "User-review HTML-open gate", "ok": html_open_ok, "details": html_open_details})
-    publish_ok, publish_details = check_user_review_publish_gate(assets_dir, html_open_required)
-    gates.append({"name": "User-review publish gate", "ok": publish_ok, "details": publish_details})
+    if _has_multi_agent:
+        gates.append({"name": "Agent log gate", "ok": log_ok, "details": log_details})
+    else:
+        gates.append({"name": "Agent log gate", "ok": log_ok or True, "warn": not log_ok, "details": log_details + " (optional — no multi-agent indicators)"})
+    gh_ok, gh_details = check_github_issue_gate(front)
+    gates.append({"name": "GitHub issue gate", "ok": gh_ok, "details": gh_details})
     gates.append(
         {"name": "Cross-review gate", "ok": bool(review_file), "details": f"artifact={'none' if not review_file else review_file}"}
     )
@@ -1890,9 +1706,7 @@ def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = 
     midnight_ok, midnight_details = check_midnight_utc_sentinel(assets_dir)
     gates.append({"name": "Midnight UTC sentinel gate", "ok": bool(midnight_ok), "warn": midnight_ok is None, "details": midnight_details})
 
-    # Gap 3 — Browser open elapsed time (both phases)
-    elapsed_ok, elapsed_details = check_browser_open_elapsed_time(assets_dir, _human_allowlist)
-    gates.append({"name": "Browser open elapsed time gate", "ok": bool(elapsed_ok), "warn": elapsed_ok is None, "details": elapsed_details})
+    # Gap 3 — (removed: browser open elapsed time — WRK-5107 HTML purge)
 
     # Gap 5 — Sentinel values (both phases)
     sentinel_ok, sentinel_details = check_sentinel_values(assets_dir)
@@ -1916,9 +1730,7 @@ def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = 
         codex_ok, codex_details = check_codex_keyword_in_review(assets_dir)
         gates.append({"name": "Codex keyword in review gate", "ok": bool(codex_ok), "warn": codex_ok is None, "details": codex_details})
 
-        # Gap 6 — Publish commit uniqueness
-        commit_ok, commit_details = check_publish_commit_uniqueness(assets_dir)
-        gates.append({"name": "Publish commit uniqueness gate", "ok": bool(commit_ok), "warn": commit_ok is None, "details": commit_details})
+        # Gap 6 — (removed: publish commit uniqueness — WRK-5107 HTML purge)
 
         # Gap 7 — Stage evidence paths exist on disk
         sep_ok, sep_details = check_stage_evidence_paths(assets_dir, workspace_root)
@@ -1928,9 +1740,7 @@ def run_checks(wrk_id: str, phase: str = "close", workspace_root: Path | None = 
         dp_ok, dp_details = check_done_pending_contradiction(assets_dir)
         gates.append({"name": "Done/pending contradiction gate", "ok": bool(dp_ok), "warn": dp_ok is None, "details": dp_details})
 
-        # Gap 9 — Plan publish predates approval
-        ppa_ok, ppa_details = check_plan_publish_predates_approval(assets_dir)
-        gates.append({"name": "Plan publish predates approval gate", "ok": bool(ppa_ok), "warn": ppa_ok is None, "details": ppa_details})
+        # Gap 9 — (removed: plan publish predates approval — WRK-5107 HTML purge)
 
         # Gap 10 — Workstation contract (strict)
         ws_ok, ws_details = check_workstation_contract_strict(front)

@@ -8,9 +8,15 @@ Return convention: (True, msg) = PASS, (None, msg) = WARN/soft-fail, (False, msg
 """
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
+
+# Shared regex for validating GitHub issue URLs — used by verify-gate-evidence.py too
+GITHUB_ISSUE_RE = re.compile(
+    r"^https://(?:www\.)?github\.com/[^/]+/[^/]+/issues/\d+$"
+)
 
 # Sentinel strings that indicate an un-filled stub value
 _STUB_SENTINELS = {
@@ -25,7 +31,7 @@ _STUB_SENTINELS = {
 _REQUIRED_FIELDS = (
     "merge_status",
     "sync_status",
-    "html_verification_ref",
+    "github_issue_ref",
     "legal_scan_ref",
     "archive_readiness",
 )
@@ -50,7 +56,7 @@ def check_archive_readiness(assets_dir: Path) -> tuple[bool | None, str]:
     1. archive-tooling.yaml exists and is valid YAML
     2. All required fields present and non-sentinel
     3. merge_status / sync_status not stub sentinels (hard-fail)
-    4. html_verification_ref file exists on disk
+    4. github_issue_ref is a valid GitHub issue URL
     5. legal_scan_ref file exists on disk
     6. document_index_ref present OR exemption note provided (soft-fail if absent)
     7. archive_readiness field matches actual gate outcomes
@@ -76,13 +82,13 @@ def check_archive_readiness(assets_dir: Path) -> tuple[bool | None, str]:
                 "if remediation is non-trivial, run create-spinoff-wrk.sh to capture it"
             )
 
-    # --- 3. html_verification_ref must be set and file must exist ---
-    html_ref = str(data.get("html_verification_ref", "")).strip()
-    if not html_ref:
-        return False, "archive-tooling.yaml: html_verification_ref is empty — must point to lifecycle HTML file"
-    if not Path(html_ref).exists():
+    # --- 3. github_issue_ref must be a valid GitHub issue URL ---
+    gh_ref = str(data.get("github_issue_ref", "")).strip()
+    if not gh_ref:
+        return False, "archive-tooling.yaml: github_issue_ref is empty — must be a GitHub issue URL"
+    if not GITHUB_ISSUE_RE.match(gh_ref):
         return False, (
-            f"archive-tooling.yaml: html_verification_ref={html_ref!r} not found on disk"
+            f"archive-tooling.yaml: github_issue_ref={gh_ref!r} is not a valid GitHub issue URL"
         )
 
     # --- 4. legal_scan_ref must be set and file must exist ---

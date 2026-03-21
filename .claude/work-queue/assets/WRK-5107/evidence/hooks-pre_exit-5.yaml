@@ -1,0 +1,26 @@
+phase: pre_exit
+stage: 5
+wrk_id: WRK-5107
+executed_at: '2026-03-21T10:56:26.502857+00:00'
+hooks:
+- script: bash scripts/work-queue/wait-for-approval.sh WRK-5107 5
+  description: Poll GitHub issue for approval comment
+  gate: hard
+  returncode: 0
+  duration_s: 674.492
+  passed: true
+  stdout: "\u23F3 Waiting for approval on GitHub issue #1255 (stage 5)...\n   Post\
+    \ a comment containing 'approved' on the issue to proceed.\n   Polling every 60s\
+    \ (timeout: 30min)\n   \u23F3 Poll 1/30 (60s elapsed) \u2014 not yet approved\n\
+    \   \u23F3 Poll 2/30 (120s elapsed) \u2014 not yet approved\n   \u23F3 Poll 3/30\
+    \ (180s elapsed) \u2014 not yet approved\n   \u23F3 Poll 4/30 (240s elapsed) \u2014\
+    \ not yet approved\n   \u23F3 Poll 5/30 (300s elapsed) \u2014 not yet approved\n\
+    \   \u23F3 Poll 6/30 (360s elapsed) \u2014 not yet approved\n   \u23F3 Poll 7/30\
+    \ (420s elapsed) \u2014 not yet approv"
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

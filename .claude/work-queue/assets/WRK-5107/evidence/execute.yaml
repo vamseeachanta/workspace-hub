@@ -1,0 +1,42 @@
+wrk_id: WRK-5107
+stage: 10
+type: execute
+execution_summary: |
+  TDD implementation: 24 new tests written first, then 5 files modified.
+  All HTML-era gate functions removed from verify-gate-evidence.py.
+  New check_github_issue_gate() added with regex-only validation.
+  5 non-HTML gates tweaked per plan. 4 supporting scripts updated.
+  3 pre-existing test_archive_readiness tests fixed for new field name.
+integrated_repo_tests:
+  - name: test_wrk5107_html_purge
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_wrk5107_html_purge.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_wrk5107_html_purge.py
+    test_count: 24
+  - name: test_archive_readiness
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_archive_readiness.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_archive_readiness.py
+    test_count: 3
+  - name: test_gate_verifier_hardening
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_gate_verifier_hardening.py
+  - name: test_d_item_gates
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_d_item_gates.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_d_item_gates.py
+    test_count: 30
+files_modified:
+  - scripts/work-queue/verify-gate-evidence.py
+  - scripts/work-queue/gate_checks_archive.py
+  - scripts/work-queue/audit-session-signal-coverage.py
+  - scripts/work-queue/build-session-gate-analysis.py
+  - scripts/work-queue/backfill-categories.py
+  - scripts/work-queue/tests/test_wrk5107_html_purge.py
+  - scripts/work-queue/tests/test_archive_readiness.py
+  - scripts/work-queue/tests/test_gate_verifier_hardening.py

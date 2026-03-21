@@ -12,10 +12,9 @@ REQUIRED_SIGNALS: list[dict[str, object]] = [
     {"name": "resource_intelligence", "stage": "2 Resource Intelligence", "required": True},
     {"name": "triage_contract_complete", "stage": "3 Triage", "required": True},
     {"name": "plan_draft_complete", "stage": "4 Plan Draft", "required": True},
-    {"name": "plan_html_review_draft", "stage": "5 User Review - Plan (Draft)", "required": True},
-    {"name": "html_open_default_browser", "stage": "5/7/17 User Reviews", "required": True},
+    {"name": "plan_review_draft", "stage": "5 User Review - Plan (Draft)", "required": True},
     {"name": "cross_review", "stage": "6 Cross-Review", "required": True},
-    {"name": "plan_html_review_final", "stage": "7 User Review - Plan (Final)", "required": True},
+    {"name": "plan_review_final", "stage": "7 User Review - Plan (Final)", "required": True},
     {"name": "claim_evidence", "stage": "8 Claim / Activation", "required": True},
     {"name": "set_active_wrk", "stage": "8 Claim / Activation", "required": True},
     {"name": "work_queue_skill", "stage": "9 Work-Queue Routing", "required": True},
@@ -72,7 +71,7 @@ def _session_infers_signal(session: dict, signal: str) -> bool:
             "scripts/agents/plan.sh" in scripts
             or "scripts/review/build-claude-plan-bundle.py" in scripts
         )
-    if signal in {"plan_html_review_draft", "plan_html_review_final", "user_review_close", "html_open_default_browser"}:
+    if signal in {"plan_review_draft", "plan_review_final", "user_review_close"}:
         return "scripts/work-queue/log-user-review-browser-open.sh" in scripts
     if signal == "agent_cross_review":
         return (

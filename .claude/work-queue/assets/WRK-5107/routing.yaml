@@ -1,0 +1,26 @@
+wrk_id: WRK-5107
+stage: 9
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass
+  - ecosystem-terminology
+route: B
+stage_sequence_from_here:
+  - 10: Work Execution (tests first, then 5 files)
+  - 11: Artifact Generation
+  - 12: TDD / Eval
+  - 13: Agent Cross-Review
+  - 14: Verify Gate Evidence
+  - 15: Future Work Synthesis
+  - 16: Resource Intelligence Update
+  - 17: User Review - Implementation
+  - 18: Reclaim
+  - 19: Close
+  - 20: Archive
+delivery_order:
+  P1: "verify-gate-evidence.py — remove HTML, add GitHub issue gate, tweak 5 gates"
+  P2: "gate_checks_archive.py — swap html_verification_ref → github_issue_ref"
+  P3: "audit-session-signal-coverage.py + build-session-gate-analysis.py — remove HTML signals"
+  P4: "backfill-categories.py — remove HTML regex"

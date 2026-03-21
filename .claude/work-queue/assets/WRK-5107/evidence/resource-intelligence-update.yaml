@@ -1,0 +1,16 @@
+wrk_id: WRK-5107
+stage: 16
+type: resource-intelligence-update
+completion_status: complete
+additions:
+  - "check_github_issue_gate() — new gate function for GitHub issue URL validation"
+  - "GITHUB_ISSUE_RE — shared regex constant in gate_checks_archive.py"
+no_additions_rationale: ""
+post_work_findings:
+  - "verify-gate-evidence.py reduced by ~200 lines after HTML purge"
+  - "GITHUB_ISSUE_RE shared between verify-gate-evidence.py and gate_checks_archive.py"
+  - "15 pre-existing test failures unrelated to WRK-5107 remain in test suite"
+skills_used:
+  - work-queue-workflow
+  - workflow-gatepass
+  - test-driven-development

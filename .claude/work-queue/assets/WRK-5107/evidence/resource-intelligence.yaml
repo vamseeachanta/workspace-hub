@@ -1,0 +1,61 @@
+wrk_id: WRK-5107
+stage: 2
+type: resource-intelligence
+completion_status: complete
+domain: work-queue-infrastructure
+files_to_modify:
+  - path: scripts/work-queue/verify-gate-evidence.py
+    changes: |
+      - Remove check_html_open_default_browser_gate() (lines 1300-1333)
+      - Remove check_user_review_publish_gate() (lines 1336-1375)
+      - Remove html_open_required stage list logic (lines 1830-1836)
+      - Replace plan_html_review_final_ref with spec_ref (line 1785)
+      - Replace HTML gates with GitHub issue approval checks
+      - Change integrated test range 3-5 to 3+ (lines 1426, 1440)
+      - Make agent log gate optional for single-agent
+      - Accept stage_evidence_ref from frontmatter
+      - Accept completion_status: complete and done
+      - Accept simple string future-work recommendations
+  - path: scripts/work-queue/audit-session-signal-coverage.py
+    changes: Remove HTML signal mappings (plan_html_review_draft, plan_html_review_final, html_open_default_browser)
+  - path: scripts/work-queue/build-session-gate-analysis.py
+    changes: Remove HTML signal mappings and references
+  - path: scripts/work-queue/backfill-categories.py
+    changes: Remove HTML category pattern regex
+  - path: scripts/work-queue/gate_checks_archive.py
+    changes: Remove html_verification_ref field requirement
+html_references_found:
+  - file: scripts/work-queue/verify-gate-evidence.py
+    line: 1300-1333
+    reference: check_html_open_default_browser_gate() — validates user-review-browser-open.yaml with html_ref
+  - file: scripts/work-queue/verify-gate-evidence.py
+    line: 1336-1375
+    reference: check_user_review_publish_gate() — validates user-review-publish.yaml
+  - file: scripts/work-queue/verify-gate-evidence.py
+    line: 1460-1478
+    reference: check_plan_confirmation() references plan-html-review-final.md
+  - file: scripts/work-queue/verify-gate-evidence.py
+    line: 1785
+    reference: plan_html_review_final_ref frontmatter field
+  - file: scripts/work-queue/verify-gate-evidence.py
+    line: 1830-1835
+    reference: html_open_required stages list
+github_issue_workflow:
+  introduced_by: WRK-5104
+  key_files:
+    - scripts/work-queue/exit_stage.py
+    - scripts/knowledge/update-github-issue.py
+    - scripts/work-queue/wait-for-approval.sh
+    - scripts/work-queue/tests/test_github_issue_integration.py
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - knowledge
+complexity_assessment: medium
+route: B
+notes:
+  - verify-gate-evidence.py is the primary file (~1800 lines), 5 supporting scripts also need HTML purge
+  - WRK-5104 already wired GitHub issue updates into exit_stage.py — approval pattern exists
+  - Browser elapsed time check should be removed (HTML-era) or rewired to GitHub comment timestamps
+  - SKIP_GATE_GITHUB_CHECK env var pattern from WRK-5104 can serve as offline fallback

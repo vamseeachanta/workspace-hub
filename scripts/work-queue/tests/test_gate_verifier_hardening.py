@@ -31,13 +31,13 @@ _spec.loader.exec_module(_mod)  # type: ignore[union-attr]
 
 check_approval_ordering = _mod.check_approval_ordering
 check_midnight_utc_sentinel = _mod.check_midnight_utc_sentinel
-check_browser_open_elapsed_time = _mod.check_browser_open_elapsed_time
+# (removed: check_browser_open_elapsed_time — WRK-5107 HTML purge)
 check_codex_keyword_in_review = _mod.check_codex_keyword_in_review
 check_sentinel_values = _mod.check_sentinel_values
-check_publish_commit_uniqueness = _mod.check_publish_commit_uniqueness
+# (removed: check_publish_commit_uniqueness — WRK-5107 HTML purge)
 check_stage_evidence_paths = _mod.check_stage_evidence_paths
 check_done_pending_contradiction = _mod.check_done_pending_contradiction
-check_plan_publish_predates_approval = _mod.check_plan_publish_predates_approval
+# (removed: check_plan_publish_predates_approval — WRK-5107 HTML purge)
 check_workstation_contract_strict = _mod.check_workstation_contract_strict
 check_reclaim_gate_na = _mod.check_reclaim_gate_na
 check_claim_artifact_path = _mod.check_claim_artifact_path
@@ -149,88 +149,7 @@ def test_T14_midnight_utc_sentinel_pass(tmp_path):
     assert ok is True
 
 
-# ---------------------------------------------------------------------------
-# T15 — check_browser_open_elapsed_time FAIL when delta < 300s
-# ---------------------------------------------------------------------------
-
-def test_T15_browser_elapsed_fail_too_quick(tmp_path):
-    """Delta < 300s between browser-open and plan_draft approval → FAIL."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    # browser opened at 12:00, plan_draft reviewed at 12:03 (180s later — below 300s threshold)
-    _write(assets / "evidence" / "user-review-browser-open.yaml", (
-        "events:\n"
-        "  - stage: plan_draft\n"
-        "    opened_at: '2026-03-08T12:00:00Z'\n"
-        "    opened_in_default_browser: true\n"
-        "    html_ref: plan.html\n"
-        "    reviewer: vamsee\n"
-    ))
-    _write(ev / "user-review-plan-draft.yaml", (
-        "reviewed_at: '2026-03-08T12:03:00Z'\n"
-        "approval_decision: approve_as_is\n"
-    ))
-
-    ok, detail = check_browser_open_elapsed_time(assets, human_allowlist={"vamsee"})
-    assert ok is False
-    assert "180" in detail or "stage=plan_draft" in detail
-
-
-# ---------------------------------------------------------------------------
-# T16 — check_browser_open_elapsed_time PASS when delta >= 300s
-# ---------------------------------------------------------------------------
-
-def test_T16_browser_elapsed_pass(tmp_path):
-    """Delta >= 300s → PASS."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    # browser opened at 12:00, reviewed at 12:10 (600s later)
-    _write(assets / "evidence" / "user-review-browser-open.yaml", (
-        "events:\n"
-        "  - stage: plan_draft\n"
-        "    opened_at: '2026-03-08T12:00:00Z'\n"
-        "    opened_in_default_browser: true\n"
-        "    html_ref: plan.html\n"
-        "    reviewer: vamsee\n"
-    ))
-    _write(ev / "user-review-plan-draft.yaml", (
-        "reviewed_at: '2026-03-08T12:10:00Z'\n"
-        "approval_decision: approve_as_is\n"
-    ))
-
-    ok, detail = check_browser_open_elapsed_time(assets, human_allowlist={"vamsee"})
-    assert ok is True
-
-
-# ---------------------------------------------------------------------------
-# T17 — check_browser_open_elapsed_time FAIL at Stage 17 (close_review) delta < 300s
-# ---------------------------------------------------------------------------
-
-def test_T17_browser_elapsed_fail_close_review(tmp_path):
-    """close_review stage with delta < 300s → FAIL."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    _write(assets / "evidence" / "user-review-browser-open.yaml", (
-        "events:\n"
-        "  - stage: close_review\n"
-        "    opened_at: '2026-03-08T15:00:00Z'\n"
-        "    opened_in_default_browser: true\n"
-        "    html_ref: impl.html\n"
-        "    reviewer: vamsee\n"
-    ))
-    # confirmed only 60 seconds later
-    _write(ev / "user-review-close.yaml", (
-        "confirmed_at: '2026-03-08T15:01:00Z'\n"
-        "reviewer: vamsee\n"
-        "decision: approved\n"
-    ))
-
-    ok, detail = check_browser_open_elapsed_time(assets, human_allowlist={"vamsee"})
-    assert ok is False
-    assert "close_review" in detail or "60" in detail
+# T15-T17 removed — browser-open elapsed time tests purged (WRK-5107)
 
 
 # ---------------------------------------------------------------------------
@@ -309,88 +228,7 @@ def test_T21_sentinel_values_fail_empty_route(tmp_path):
     assert "route" in detail
 
 
-# ---------------------------------------------------------------------------
-# T22 — check_publish_commit_uniqueness FAIL all three same commit
-# ---------------------------------------------------------------------------
-
-def test_T22_publish_commit_uniqueness_fail_all_same(tmp_path):
-    """All three stages share the same commit hash → FAIL."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    _write(ev / "user-review-publish.yaml", (
-        "events:\n"
-        "  - stage: plan_draft\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T10:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [plan.html]\n"
-        "  - stage: plan_final\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T11:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [plan.html]\n"
-        "  - stage: close_review\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T12:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [impl.html]\n"
-    ))
-
-    ok, detail = check_publish_commit_uniqueness(assets)
-    assert ok is False
-    assert "abc1234" in detail
-
-
-# ---------------------------------------------------------------------------
-# T23 — check_publish_commit_uniqueness WARN when plan_draft+plan_final share commit
-# ---------------------------------------------------------------------------
-
-def test_T23_publish_commit_uniqueness_warn_plan_draft_final_same(tmp_path):
-    """plan_draft and plan_final share commit but close_review differs → WARN (None)."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    _write(ev / "user-review-publish.yaml", (
-        "events:\n"
-        "  - stage: plan_draft\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T10:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [plan.html]\n"
-        "  - stage: plan_final\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T11:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [plan.html]\n"
-        "  - stage: close_review\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: def5678\n"
-        "    published_at: '2026-03-08T14:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [impl.html]\n"
-    ))
-
-    ok, detail = check_publish_commit_uniqueness(assets)
-    assert ok is None
-    assert "abc1234" in detail
+# T22-T23 removed — publish commit uniqueness tests purged (WRK-5107)
 
 
 # ---------------------------------------------------------------------------
@@ -440,35 +278,7 @@ def test_T25_done_pending_contradiction_fail(tmp_path):
     assert "pending" in detail.lower()
 
 
-# ---------------------------------------------------------------------------
-# T26 — check_plan_publish_predates_approval FAIL
-# ---------------------------------------------------------------------------
-
-def test_T26_plan_publish_predates_approval_fail(tmp_path):
-    """Plan draft published before user approved it → FAIL."""
-    assets = _make_assets(tmp_path)
-    ev = assets / "evidence"
-
-    # published at 10:00, reviewed at 11:00 → published BEFORE review
-    _write(ev / "user-review-publish.yaml", (
-        "events:\n"
-        "  - stage: plan_draft\n"
-        "    pushed_to_origin: true\n"
-        "    remote: origin\n"
-        "    branch: main\n"
-        "    commit: abc1234\n"
-        "    published_at: '2026-03-08T10:00:00Z'\n"
-        "    reviewer: vamsee\n"
-        "    documents: [plan.html]\n"
-    ))
-    _write(ev / "user-review-plan-draft.yaml", (
-        "reviewed_at: '2026-03-08T11:00:00Z'\n"
-        "approval_decision: approve_as_is\n"
-    ))
-
-    ok, detail = check_plan_publish_predates_approval(assets)
-    assert ok is False
-    assert "predates" in detail or "< reviewed_at" in detail or "published_at" in detail
+# T26 removed — plan publish predates approval test purged (WRK-5107)
 
 
 # ---------------------------------------------------------------------------

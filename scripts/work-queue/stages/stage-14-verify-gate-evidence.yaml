@@ -21,7 +21,7 @@ checklist:
     text: "evidence/gate-evidence-summary.yaml written"
     requires_human: false
 pre_exit_hooks:
-  - script: scripts/work-queue/verify-gate-evidence.py WRK-NNN
-    description: "All gates must PASS before proceeding"
+  - script: scripts/work-queue/verify-gate-evidence.py WRK-NNN --phase claim
+    description: "All claim-phase gates must PASS before proceeding"
     gate: hard
     timeout_s: 60

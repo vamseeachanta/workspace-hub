@@ -1,0 +1,13 @@
+wrk_id: WRK-5107
+stage: 15
+completed_at: "2026-03-21"
+items:
+  - id: CL-15-1
+    completed: true
+    evidence: "future-work.yaml written with 2 recommendations, both captured to WRK-1316"
+  - id: CL-15-2
+    completed: true
+    evidence: "Both items captured as existing WRK-1316 (stage transition hardening)"
+  - id: CL-15-3
+    completed: true
+    evidence: "future-work.yaml: 2 recommendations, both disposition spun-off-new/existing-updated, captured: true"

@@ -1,0 +1,5 @@
+wrk_id: WRK-5107
+stage: 18
+type: reclaim
+reclaim_decision: n/a
+reason: "No reclaim needed — single session, single workstation"

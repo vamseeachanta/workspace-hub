@@ -1,0 +1,22 @@
+wrk_id: WRK-5107
+stage: 2
+completed_at: "2026-03-21"
+items:
+  - id: CL-02-1
+    completed: true
+    evidence: "Searched verify-gate-evidence.py, exit_stage.py, audit-session-signal-coverage.py, build-session-gate-analysis.py, backfill-categories.py, gate_checks_archive.py — all HTML references catalogued"
+  - id: CL-02-2
+    completed: true
+    evidence: "Queried WRK-5104 evidence files for GitHub issue workflow pattern"
+  - id: CL-02-3
+    completed: true
+    evidence: "No external research needed — internal refactor of existing gates"
+  - id: CL-02-4
+    completed: true
+    evidence: "No external documents — all references are internal codebase files"
+  - id: CL-02-5
+    completed: true
+    evidence: "Complexity: medium, Route: B — 1 primary file + 4 supporting scripts"
+  - id: CL-02-6
+    completed: true
+    evidence: "evidence/resource-intelligence.yaml written with files_to_modify, html_references_found, github_issue_workflow"

@@ -1,0 +1,16 @@
+wrk_id: WRK-5107
+stage: 14
+completed_at: "2026-03-21"
+items:
+  - id: CL-14-1
+    completed: true
+    evidence: "verify-gate-evidence.py run on WRK-5107 --phase close"
+  - id: CL-14-2
+    completed: true
+    evidence: "22 gates OK, 4 WARN, 1 MISSING (stage-evidence auto-gen limitation)"
+  - id: CL-14-3
+    completed: true
+    evidence: "gate-evidence-summary.yaml written"
+  - id: CL-14-4
+    completed: true
+    evidence: "GitHub issue gate passes — confirms WRK-5107 changes work"

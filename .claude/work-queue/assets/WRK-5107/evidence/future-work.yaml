@@ -1,0 +1,12 @@
+wrk_id: WRK-5107
+recommendations:
+  - description: "Remove HTML auto-open tests (test_auto_open_html.py) and workflow-html skill"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1316
+  - description: "Stage exit contracts still reference lifecycle.html as exit artifact — update for GitHub issue workflow"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    wrk_id: WRK-1316

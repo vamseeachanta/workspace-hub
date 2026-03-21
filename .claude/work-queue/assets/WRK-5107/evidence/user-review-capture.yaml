@@ -1,0 +1,19 @@
+stage: 1
+type: user-review-capture
+wrk_id: WRK-5107
+scope_approved: true
+approved_at: "2026-03-21T05:00:00Z"
+confirmed_at: "2026-03-21T05:00:00Z"
+reviewer: vamsee
+title: "refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow"
+mission: >
+  Replace HTML lifecycle gates in verify-gate-evidence.py with GitHub issue
+  workflow gates. Purge all HTML-era artifact checks — no backward compatibility.
+category: harness
+complexity: B
+route: B
+notes:
+  - User decision: replace HTML gates entirely, not coexist
+  - process.md already updated (3-5 → 3+) in 3 locations
+  - Stage workflow conventions added (open issue at stage 1, update before exit)
+  - GitHub issue #1255 created and updated with full scope

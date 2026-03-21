@@ -34,7 +34,7 @@ def _write_archive_tooling(assets: Path, **overrides) -> None:
     data = {
         "merge_status": "merged-to-main",
         "sync_status": "in-sync",
-        "html_verification_ref": str(assets / "WRK-000-lifecycle.html"),
+        "github_issue_ref": "https://github.com/test/repo/issues/1",
         "legal_scan_ref": str(assets / "evidence" / "legal-scan.md"),
         "document_index_ref": "hooks/post-archive-index.sh",
         "archive_readiness": "pass",
@@ -55,7 +55,7 @@ class TestT1ArchivePass:
         assets = tmp_path / "assets" / "WRK-000"
         assets.mkdir(parents=True)
         # Create referenced files so path checks pass
-        (assets / "WRK-000-lifecycle.html").write_text("<html/>")
+        # github_issue_ref is validated by URL format, no file needed
         (assets / "evidence").mkdir()
         (assets / "evidence" / "legal-scan.md").write_text("PASS")
         _write_archive_tooling(assets)
@@ -75,7 +75,7 @@ class TestT2SoftFailWorkaround:
         """T2: document_index_ref absent, exemption_note present → (None, ...) soft-fail."""
         assets = tmp_path / "assets" / "WRK-000"
         assets.mkdir(parents=True)
-        (assets / "WRK-000-lifecycle.html").write_text("<html/>")
+        # github_issue_ref is validated by URL format, no file needed
         (assets / "evidence").mkdir()
         (assets / "evidence" / "legal-scan.md").write_text("PASS")
         _write_archive_tooling(
@@ -104,7 +104,7 @@ class TestT3HardFailSpinoff:
         """T3: merge_status='checked (manual)' sentinel detected → (False, ...) hard-fail."""
         assets = tmp_path / "assets" / "WRK-000"
         assets.mkdir(parents=True)
-        (assets / "WRK-000-lifecycle.html").write_text("<html/>")
+        # github_issue_ref is validated by URL format, no file needed
         (assets / "evidence").mkdir()
         (assets / "evidence" / "legal-scan.md").write_text("PASS")
         _write_archive_tooling(

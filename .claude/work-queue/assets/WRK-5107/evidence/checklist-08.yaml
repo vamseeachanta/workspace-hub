@@ -1,0 +1,16 @@
+wrk_id: WRK-5107
+stage: 8
+completed_at: "2026-03-21"
+items:
+  - id: CL-08-1
+    completed: true
+    evidence: "agent-quota-latest.json read — all providers have sufficient quota"
+  - id: CL-08-2
+    completed: true
+    evidence: "claim-evidence.yaml written with quota snapshot and proceed decision"
+  - id: CL-08-3
+    completed: true
+    evidence: "working/WRK-5107.md created with status: working, activated_at set"
+  - id: CL-08-4
+    completed: true
+    evidence: "activation.yaml written with gates_confirmed"
