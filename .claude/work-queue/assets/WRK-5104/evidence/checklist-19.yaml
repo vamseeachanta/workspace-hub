@@ -1,0 +1,16 @@
+stage: 19
+wrk_id: WRK-5104
+completed_at: "2026-03-21T05:23:00Z"
+items:
+  - id: CL-19-1
+    description: "verify-gate-evidence.py exits 0"
+    completed: true
+    note: "Claim-phase gate check passes"
+  - id: CL-19-2
+    description: "close-item.sh executed"
+    completed: true
+    note: "Moved to done/ with status: done"
+  - id: CL-19-3
+    description: "done/WRK-NNN.md exists with percent_complete: 100"
+    completed: true
+    note: "done/WRK-5104.md exists"

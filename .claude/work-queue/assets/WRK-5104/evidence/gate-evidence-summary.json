@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-5104",
-  "phase": "close",
+  "phase": "archive",
   "summary_file": "assets/WRK-5104/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -18,18 +18,11 @@
       "details": "plan_workstations=[sowon], execution_workstations=[sowon]"
     },
     {
-      "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "stage-evidence.yaml: stages[1] evidence missing"
-    },
-    {
       "name": "Resource-intelligence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: invalid completion_status"
+      "details": "resource-intelligence.yaml: completion_status=complete, p1_count=0, core_skills=3"
     },
     {
       "name": "Activation gate",
@@ -40,24 +33,17 @@
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "status": "WARN",
+      "ok": true,
+      "warn": true,
+      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log (optional \u2014 no multi-agent indicators)"
     },
     {
-      "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "name": "GitHub issue gate",
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
-    },
-    {
-      "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/1252"
     },
     {
       "name": "Cross-review gate",
@@ -67,27 +53,6 @@
       "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5104/review.md"
     },
     {
-      "name": "TDD gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "test files=['ac-test-matrix.md']"
-    },
-    {
-      "name": "Integrated test gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "execute.yaml: integrated_repo_tests=5 (all passing)"
-    },
-    {
-      "name": "Legal gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5104/legal-scan.md, result=pass"
-    },
-    {
       "name": "Claim gate",
       "status": "WARN",
       "ok": false,
@@ -95,39 +60,18 @@
       "details": "claim evidence absent (legacy item \u2014 WARN)"
     },
     {
-      "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "future-work.yaml: recommendations[1] disposition must be existing-updated|spun-off-new"
-    },
-    {
-      "name": "Resource-intelligence update gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "resource-intelligence-update.yaml: additions=3"
-    },
-    {
-      "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "user-review-close.yaml: missing fields: ['reviewer']"
-    },
-    {
       "name": "Reclaim gate",
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     },
     {
       "name": "Approval ordering gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=close)"
+      "details": "approval ordering OK (phase=archive)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -135,13 +79,6 @@
       "ok": true,
       "warn": false,
       "details": "no midnight UTC sentinel found"
-    },
-    {
-      "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -165,53 +102,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Codex keyword in review gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "codex keyword found in review artifacts (4 file(s) checked)"
-    },
-    {
-      "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "insufficient commit data \u2014 skip uniqueness check"
-    },
-    {
-      "name": "Stage evidence paths gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "all stage evidence paths verified"
-    },
-    {
-      "name": "Done/pending contradiction gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no done/pending contradictions found"
-    },
-    {
-      "name": "Plan publish predates approval gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "plan_draft publish event not found \u2014 skip"
-    },
-    {
-      "name": "Workstation contract (strict) gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "workstation contract fields present"
-    },
-    {
-      "name": "Reclaim n/a gate",
-      "status": "WARN",
+      "name": "Archive readiness gate",
+      "status": "FAIL",
       "ok": false,
-      "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "warn": false,
+      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5104/evidence/archive-tooling.yaml"
     }
   ]
 }

@@ -1,0 +1,16 @@
+stage: 16
+wrk_id: WRK-5104
+completed_at: "2026-03-21T05:16:00Z"
+items:
+  - id: CL-16-1
+    description: ">= 3 lessons learned identified"
+    completed: true
+    note: "1) jq patterns need testing with quoted replies 2) verify-gate-evidence.py needs GitHub migration 3) gate allowlist uses 'vamsee' not 'vamseeachanta'"
+  - id: CL-16-2
+    description: "New tools/patterns/constraints documented"
+    completed: true
+    note: "wait-for-approval.sh, --comment/--read-comments modes, SKIP_GATE_GITHUB_CHECK env var"
+  - id: CL-16-3
+    description: "evidence/resource-intelligence-update.yaml written"
+    completed: true
+    note: "3 additions documented"

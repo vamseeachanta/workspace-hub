@@ -1,0 +1,12 @@
+stage: 18
+wrk_id: WRK-5104
+completed_at: "2026-03-21T05:22:00Z"
+items:
+  - id: CL-18-1
+    description: "Checkpoint presence checked"
+    completed: true
+    note: "checkpoint.yaml present"
+  - id: CL-18-2
+    description: "evidence/reclaim.yaml written (n/a or reclaimed)"
+    completed: true
+    note: "status: n/a — no reclaim needed"

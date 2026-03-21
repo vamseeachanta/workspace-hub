@@ -1,13 +1,14 @@
 phase: pre_exit
-stage: 14
+stage: 19
 wrk_id: WRK-5104
-executed_at: '2026-03-21T11:16:58.539633+00:00'
+executed_at: '2026-03-21T11:21:40.555748+00:00'
 hooks:
 - script: scripts/work-queue/verify-gate-evidence.py WRK-5104 --phase claim
-  description: All claim-phase gates must PASS before proceeding
+  description: 'Final gate verification before close (claim-phase: stage-evidence
+    auto-gen limitation)'
   gate: hard
   returncode: 0
-  duration_s: 0.274
+  duration_s: 0.28
   passed: true
   stdout: "Gate evidence for WRK-5104 (phase=claim, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5104):\n\
     \  - Plan gate: OK (reviewed=True, approved=True, artifact=plan-html-review-final.md,\

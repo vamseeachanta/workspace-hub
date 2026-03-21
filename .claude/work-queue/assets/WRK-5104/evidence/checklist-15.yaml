@@ -1,0 +1,16 @@
+stage: 15
+wrk_id: WRK-5104
+completed_at: "2026-03-21T05:15:00Z"
+items:
+  - id: CL-15-1
+    description: "Execution notes reviewed for deferred items"
+    completed: true
+    note: "3 follow-up items + 1 spun-off WRK identified"
+  - id: CL-15-2
+    description: "Each item captured as new WRK or deferred with reason"
+    completed: true
+    note: "WRK-5106 (backfill), WRK-5107 (verify-gate-evidence update) captured"
+  - id: CL-15-3
+    description: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true
+    note: "WRK-5106 captured: true"

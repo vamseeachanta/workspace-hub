@@ -1,0 +1,29 @@
+phase: pre_exit
+stage: 17
+wrk_id: WRK-5104
+executed_at: '2026-03-21T11:20:34.034957+00:00'
+hooks:
+- script: bash scripts/work-queue/wait-for-approval.sh WRK-5104 17
+  description: Poll GitHub issue for approval comment
+  gate: hard
+  returncode: 0
+  duration_s: 1.278
+  passed: true
+  stdout: "\u23F3 Waiting for approval on GitHub issue #1252 (stage 17)...\n   Post\
+    \ a comment containing 'approved' on the issue to proceed.\n   Polling every 60s\
+    \ (timeout: 30min)\n\u2714 Approval received on GitHub issue #1252. Proceeding."
+  stderr: ''
+- script: scripts/work-queue/check-acs-pass.sh WRK-5104
+  description: Verify all acceptance criteria are marked [x] before user review
+  gate: hard
+  returncode: 0
+  duration_s: 0.019
+  passed: true
+  stdout: 'OK: All 5 ACs complete in WRK-5104'
+  stderr: ''
+summary:
+  total: 2
+  passed: 2
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

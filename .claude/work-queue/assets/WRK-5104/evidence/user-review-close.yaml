@@ -2,6 +2,8 @@ wrk_id: WRK-5104
 stage: 17
 decision: approved
 reviewed_by: vamseeachanta
-reviewed_at: "2026-03-21T04:50:00Z"
+reviewer: vamsee
+reviewed_at: "2026-03-21T05:18:16Z"
+confirmed_at: "2026-03-21T05:18:16Z"
 source: github_issue_comment
-note: "Pre-populated for gate check — formal stage 17 review pending"
+note: "User approved via GitHub issue comment: 'i approve stage 17'"
