@@ -9,7 +9,6 @@ skills_required:
 entry_reads: []
 exit_artifacts:
   - pending/WRK-NNN.md
-  - assets/WRK-NNN/WRK-NNN-lifecycle.html
 blocking_condition: "pending/WRK-NNN.md missing or invalid frontmatter"
 log_action: wrk_captured
 context_budget_kb: 4
@@ -21,9 +20,6 @@ checklist:
     text: "pending/WRK-NNN.md written with valid frontmatter"
     requires_human: false
   - id: CL-01-3
-    text: "Lifecycle + plan HTML opened in browser"
-    requires_human: false
-  - id: CL-01-4
     text: "User explicitly approved scope"
     requires_human: true
 tools_activated:
