@@ -129,7 +129,11 @@ def generate_labels(wrk_id, root):
 
 def _store_issue_ref(wrk_path, url):
     text = wrk_path.read_text()
-    wrk_path.write_text(re.sub(r'\n---\n', f'\ngithub_issue_ref: {url}\n---\n', text, count=1))
+    if re.search(r'^github_issue_ref:', text, re.MULTILINE):
+        text = re.sub(r'^github_issue_ref:.*$', f'github_issue_ref: {url}', text, count=1, flags=re.MULTILINE)
+    else:
+        text = re.sub(r'\n---\n', f'\ngithub_issue_ref: {url}\n---\n', text, count=1)
+    wrk_path.write_text(text)
 
 def _gh_run(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True)
