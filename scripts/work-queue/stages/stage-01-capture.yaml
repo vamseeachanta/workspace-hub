@@ -22,6 +22,11 @@ checklist:
   - id: CL-01-3
     text: "User explicitly approved scope"
     requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 1"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
 tools_activated:
   - type: skill
     ref: workspace-hub/ecosystem-terminology

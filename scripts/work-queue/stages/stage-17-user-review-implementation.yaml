@@ -33,6 +33,11 @@ checklist:
   - id: CL-17-4
     text: "Explicit user approval received (I approve stage 17)"
     requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 17"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
 tools_activated:
   - type: skill
     ref: superpowers/verification-before-completion

@@ -34,6 +34,11 @@ checklist:
   - id: CL-07-4
     text: "Explicit user approval received (I approve stage 7)"
     requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 7"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
 feature_notes:
   - "Feature WRKs: generate evidence/feature-decomposition.yaml before Stage 7 sign-off"
   - "Consumed by: new-feature.sh (scaffold input at Stage 9b)"

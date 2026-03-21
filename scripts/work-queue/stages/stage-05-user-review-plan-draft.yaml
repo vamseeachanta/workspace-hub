@@ -37,6 +37,11 @@ checklist:
   - id: CL-05-5
     text: "Explicit user approval received (I approve stage 5)"
     requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 5"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
 lm_judgment_required:
   - id: N1
     rule: "Section-by-section plan dialogue was thorough (not drop-and-approve)"
