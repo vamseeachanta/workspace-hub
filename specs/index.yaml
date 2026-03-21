@@ -1,13 +1,13 @@
-generated: '2026-03-20'
-total_specs: 1890
+generated: '2026-03-21'
+total_specs: 1894
 by_category:
   archive: 13
   data-sources: 13
-  modules: 348
+  modules: 351
   other: 61
   repos: 1344
   templates: 20
-  wrk: 91
+  wrk: 92
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 374
+  workspace-hub: 378
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -373,6 +373,8 @@ by_wrk:
   WRK-1323: 1
   WRK-1330: 1
   WRK-1339: 1
+  WRK-1362: 1
+  WRK-1363: 1
   WRK-1369: 1
   WRK-1371: 1
   WRK-5002: 1
@@ -400,7 +402,10 @@ by_wrk:
   WRK-5070: 1
   WRK-5071: 1
   WRK-5072: 1
-  WRK-5082: 2
+  WRK-5082: 3
+  WRK-5101: 1
+  WRK-5104: 2
+  WRK-5105: 1
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -1585,6 +1590,17 @@ specs:
   wrk_refs:
   - WRK-1242
   mtime: '2026-03-16'
+- path: specs/modules/federated-jingling-flurry.md
+  title: 'WRK-5105: Index-First whats-next with Enriched Columns'
+  description: '`whats-next.sh` takes **2m36s** for `--all` because it scans 419 WRK files individually and calls `uv run
+    urgency_score.py` (21s alone). The user wants ≤2s with richer columns (category, subcategor...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - federated-jingling-flurry
+  wrk_refs:
+  - WRK-5105
+  mtime: '2026-03-21'
 - path: specs/modules/foamy-conjuring-hollerith.md
   title: 'Plan: WRK-1143 — Centralized WRK Status Index'
   description: 'WRK-1143 targets a single source of truth (`wrk-status-index.json`) for WRK status across parallel sessions.
@@ -1740,6 +1756,18 @@ specs:
   - WRK-1147
   - WRK-5067
   mtime: '2026-03-13'
+- path: specs/modules/imperative-wondering-ember.md
+  title: 'WRK-5104: GitHub Issue as Human Gate — Stage Approval via Issue Confirmation'
+  description: Local human gates (stages 1, 5, 7, 17) are enforced by `enforce-human-gate.sh` checking local YAML evidence
+    files. Agents bypass these by skipping `start_stage.py`/`exit_stage.py` and committing di...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - imperative-wondering-ember
+  wrk_refs:
+  - WRK-5101
+  - WRK-5104
+  mtime: '2026-03-21'
 - path: specs/modules/import-anthropic-knowledge-work-plugins.md
   title: Import Anthropic Knowledge-Work-Plugins into Workspace-Hub
   description: Import 55+ skills and 40+ commands from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins)
@@ -2022,6 +2050,19 @@ specs:
   wrk_refs:
   - WRK-94
   mtime: '2026-02-04'
+- path: specs/modules/prancy-sprouting-pie.md
+  title: 'WRK-1362 Plan: Chute Drag Force — Single and Dual Chute Assessment'
+  description: Child of WRK-5082 (parachute frame force calculation). GT1R R35 (3,600 lbs) needs drag force at 200/250 MPH
+    for frame design. Code and 25 tests were already written (uncommitted) but bypassed the s...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - prancy-sprouting-pie
+  wrk_refs:
+  - WRK-1362
+  - WRK-1363
+  - WRK-5082
+  mtime: '2026-03-20'
 - path: specs/modules/predictive-session-planning.md
   title: Predictive Session Planning
   description: Heuristic model that recommends which WRK items to tackle each session, based on task complexity, agent speed
@@ -22296,6 +22337,18 @@ specs:
   wrk_refs:
   - WRK-5039
   mtime: '2026-03-13'
+- path: specs/wrk/WRK-5104/plan.md
+  title: 'WRK-5104: GitHub Issue as Human Gate — Plan'
+  description: At every stage exit, `exit_stage.py` posts a stage-completion comment on the GitHub issue. At human gate stages,
+    it additionally posts an "awaiting approval" comment and the hook blocks until user ...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5104
+  wrk_refs:
+  - WRK-5104
+  mtime: '2026-03-21'
 - path: specs/wrk/WRK-577/plan.md
   title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
   description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
