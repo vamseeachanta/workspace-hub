@@ -9,7 +9,6 @@
 #   bash scripts/work-queue/backfill-issues.sh [--dry-run] [--limit N] [--resume-from ISSUE_NUMBER] [--verbose]
 set -euo pipefail
 
-REPO="vamseeachanta/workspace-hub"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 QUEUE_DIR="$REPO_ROOT/.claude/work-queue"
 UPDATE_SCRIPT="$REPO_ROOT/scripts/knowledge/update-github-issue.py"
@@ -18,6 +17,7 @@ DRY_RUN=false
 LIMIT=0
 RESUME_FROM=0
 VERBOSE=false
+TARGET_REPO=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -25,9 +25,12 @@ while [[ $# -gt 0 ]]; do
         --limit) LIMIT="$2"; shift 2 ;;
         --resume-from) RESUME_FROM="$2"; shift 2 ;;
         --verbose) VERBOSE=true; shift ;;
+        --repo) TARGET_REPO="$2"; shift 2 ;;
         *) echo "Unknown arg: $1" >&2; exit 1 ;;
     esac
 done
+
+REPO="${TARGET_REPO:-vamseeachanta/workspace-hub}"
 
 # --- Phase 0: Preflight ---
 echo "=== Phase 0: Preflight ==="
@@ -181,7 +184,7 @@ while IFS=$'\t' read -r ISSUE_NUM TITLE; do
     # Retry up to 3 times
     SUCCESS=false
     for ATTEMPT in 1 2 3; do
-        if uv run --no-project python3 "$UPDATE_SCRIPT" "$WRK_NAME" --update 2>/dev/null; then
+        if uv run --no-project python3 "$UPDATE_SCRIPT" "$WRK_NAME" --update --repo "$REPO" 2>/dev/null; then
             SUCCESS=true
             break
         fi

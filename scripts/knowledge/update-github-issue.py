@@ -208,21 +208,33 @@ def main(argv=None, repo_root=None):
     g.add_argument("--comment", type=str, help="Post a comment on the issue")
     g.add_argument("--read-comments", action="store_true", help="Read issue comments as JSON")
     pa.add_argument("--dry-run", action="store_true")
+    pa.add_argument("--repo", type=str, default=None, help="GitHub repo (owner/name) for gh commands")
     args = pa.parse_args(argv)
     root = Path(repo_root) if repo_root else _repo_root_default()
     wrk = find_wrk_file(args.wrk_id, root)
     fm, _ = parse_frontmatter(wrk) if wrk else ({}, "")
 
+    # Build --repo flag if specified, or infer from github_issue_ref
+    repo_flag = []
+    if args.repo:
+        repo_flag = ["--repo", args.repo]
+    elif fm.get("github_issue_ref"):
+        import urllib.parse
+        ref = fm["github_issue_ref"].rstrip("/")
+        parts = ref.replace("https://github.com/", "").split("/")
+        if len(parts) >= 3:
+            repo_flag = ["--repo", f"{parts[0]}/{parts[1]}"]
+
     if args.comment:
         num = _get_issue_number(fm)
         if args.dry_run: print(f"Would comment on #{num}: {args.comment}"); return
-        _gh_run(["gh", "issue", "comment", num, "--body", args.comment])
+        _gh_run(["gh", "issue", "comment", num, "--body", args.comment] + repo_flag)
         print(f"Commented on #{num}")
         return
 
     if args.read_comments:
         num = _get_issue_number(fm)
-        r = _gh_run(["gh", "issue", "view", num, "--comments", "--json", "comments"])
+        r = _gh_run(["gh", "issue", "view", num, "--comments", "--json", "comments"] + repo_flag)
         print(r.stdout)
         return
 
@@ -232,16 +244,16 @@ def main(argv=None, repo_root=None):
     for lb in generate_labels(args.wrk_id, root): lbl.extend(["--label", lb])
     if args.create:
         r = _gh_run(["gh", "issue", "create", "--title",
-                      f"{args.wrk_id}: {fm.get('title', args.wrk_id)}", "--body", body] + lbl)
+                      f"{args.wrk_id}: {fm.get('title', args.wrk_id)}", "--body", body] + lbl + repo_flag)
         url = r.stdout.strip(); print(f"Created: {url}")
         if wrk: _store_issue_ref(wrk, url)
     elif args.update:
         num = _get_issue_number(fm)
-        _gh_run(["gh", "issue", "edit", num, "--body", body])
+        _gh_run(["gh", "issue", "edit", num, "--body", body] + repo_flag)
         print(f"Updated: {fm.get('github_issue_ref', '')}")
     elif args.close:
         num = _get_issue_number(fm)
-        _gh_run(["gh", "issue", "close", num])
+        _gh_run(["gh", "issue", "close", num] + repo_flag)
         print(f"Closed: {fm.get('github_issue_ref', '')}")
 
 if __name__ == "__main__":
