@@ -1,0 +1,12 @@
+wrk_id: WRK-5104
+stage: 16
+additions:
+  - type: script
+    path: scripts/work-queue/wait-for-approval.sh
+    description: "Polls GitHub issue comments for approval (60s interval, 30min timeout)"
+  - type: hook_update
+    path: .claude/hooks/enforce-human-gate.sh
+    description: "GitHub comment-based approval check before local evidence fallback"
+  - type: cli_mode
+    path: scripts/knowledge/update-github-issue.py
+    description: "Added --comment and --read-comments modes for issue comment management"

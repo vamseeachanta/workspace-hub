@@ -1,6 +1,6 @@
 wrk_id: WRK-5104
 stage: 2
-completion_status: complete
+completion_status: full
 domain: harness/work-queue
 complexity_assessment: medium
 

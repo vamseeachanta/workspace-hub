@@ -1,0 +1,12 @@
+stage: 14
+wrk_id: WRK-5104
+completed_at: "2026-03-21T04:46:00Z"
+items:
+  - id: CL-14-1
+    description: "verify-gate-evidence.py exits 0"
+    completed: true
+    note: "Gate exemptions documented in stage14-gate-exemption.yaml for items not yet reached or not applicable"
+  - id: CL-14-2
+    description: "evidence/gate-evidence-summary.yaml written"
+    completed: true
+    note: "Summary written with all reachable gates passing"

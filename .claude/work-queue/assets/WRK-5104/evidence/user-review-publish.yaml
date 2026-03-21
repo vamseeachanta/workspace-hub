@@ -1,0 +1,13 @@
+wrk_id: WRK-5104
+stages:
+  plan_draft:
+    published_at: "2026-03-21T03:38:00Z"
+    commit_hash: 7c108c6f
+  plan_final:
+    published_at: "2026-03-21T04:07:00Z"
+    commit_hash: 7c108c6f
+  close_review:
+    published_at: "2026-03-21T04:50:00Z"
+    commit_hash: ce84db56
+method: github_issue_update
+url: https://github.com/vamseeachanta/workspace-hub/issues/1252

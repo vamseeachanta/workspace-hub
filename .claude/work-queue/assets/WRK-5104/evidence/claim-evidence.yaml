@@ -1,0 +1,11 @@
+stage: 8
+wrk_id: WRK-5104
+claimed_by: claude
+claimed_at: "2026-03-21T04:32:00Z"
+machine: sowon
+route: B
+best_fit_provider: claude
+session_owner: claude
+quota_snapshot:
+  status: available
+  pct_remaining: 80

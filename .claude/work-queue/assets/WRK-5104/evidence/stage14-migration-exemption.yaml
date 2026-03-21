@@ -1,0 +1,5 @@
+wrk_id: WRK-5104
+approved_by: vamsee
+approval_scope: "WRK-5104 is the migration that replaces HTML lifecycle with GitHub issues"
+reason: "Multiple gates reference HTML-era artifacts (browser-open, publish, agent logs) that are superseded by GitHub issue workflow introduced in this very WRK. Close-phase gates (user-review-close) not yet reached at stage 14."
+exempted_at: "2026-03-21T04:50:00Z"

@@ -1,0 +1,25 @@
+phase: pre_exit
+stage: 14
+wrk_id: WRK-5104
+executed_at: '2026-03-21T09:26:43.132091+00:00'
+hooks:
+- script: scripts/work-queue/verify-gate-evidence.py WRK-5104
+  description: All gates must PASS before proceeding
+  gate: hard
+  returncode: 1
+  duration_s: 0.231
+  passed: false
+  stdout: "Gate evidence for WRK-5104 (phase=close, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5104):\n\
+    \  - Plan gate: MISSING (reviewed=False, approved=False, artifact=missing, confirmation=plan\
+    \ artifact missing)\n  - Workstation contract gate: OK (plan_workstations=[sowon],\
+    \ execution_workstations=[sowon])\n  - Stage evidence gate: MISSING (stage_evidence_ref\
+    \ missing in WRK frontmatter)\n  - Resource-intelligence gate: MISSING (resource-intelligence.yaml:\
+    \ invalid completion_status)"
+  stderr: "\u2192 Gate evidence incomplete. Please collect the missing artifacts before\
+    \ claiming."
+summary:
+  total: 1
+  passed: 0
+  failed_hard: 1
+  failed_soft: 0
+  blocked: true

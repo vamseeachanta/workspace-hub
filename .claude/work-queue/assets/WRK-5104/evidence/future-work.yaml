@@ -1,0 +1,14 @@
+wrk_id: WRK-5104
+stage: 15
+spun_off_new:
+  - id: WRK-5106
+    title: "Backfill >1000 GitHub issues to new template"
+    captured: true
+    github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1254
+recommendations:
+  - description: "Stage comments should include brief summaries (not just DONE)"
+    priority: medium
+  - description: "Fix stage numbering bug — derive name from YAML contract via script"
+    priority: high
+  - description: "Review GitHub issue content holistically for improvements"
+    priority: low

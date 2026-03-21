@@ -1,0 +1,10 @@
+wrk_id: WRK-5104
+route: B
+delivery_order:
+  - update-github-issue.py (--comment, --read-comments, template improvements)
+  - exit_stage.py (_post_stage_comment, _update_github_issue_body)
+  - enforce-human-gate.sh (GitHub comment approval check)
+  - wait-for-approval.sh (polling script)
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass

@@ -1,0 +1,47 @@
+stage: 10
+wrk_id: WRK-5104
+completed_at: "2026-03-21T04:36:00Z"
+deliverables:
+  - path: scripts/knowledge/update-github-issue.py
+    description: "Added --comment, --read-comments, _get_issue_number, _extract_sections, _current_stage, separate subcategory"
+  - path: scripts/work-queue/exit_stage.py
+    description: "Added _post_stage_comment for stage audit trail, renamed _regenerate_lifecycle_html"
+  - path: .claude/hooks/enforce-human-gate.sh
+    description: "GitHub comment approval check before local fallback, SKIP_GATE_GITHUB_CHECK"
+  - path: scripts/work-queue/wait-for-approval.sh
+    description: "Polling script — 60s interval, 30min timeout, checks gh issue comments"
+commits:
+  - hash: 7c108c6f
+    message: "feat(WRK-5104): GitHub issue as human gate — comment-based approval + stage audit trail"
+  - hash: ce84db56
+    message: "chore(WRK-5104): follow-up — rename fn, wire approval hooks, add WRK-5106"
+integrated_repo_tests:
+  - name: "Stage comment posting"
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/exit_stage.py WRK-5104 4"
+    result: pass
+    artifact_ref: "gh issue view 1252 — stage completion comments visible"
+  - name: "GitHub approval gate"
+    scope: integrated
+    command: "echo '{...}' | bash .claude/hooks/enforce-human-gate.sh"
+    result: pass
+    artifact_ref: "hook exits 0 after finding approval comment on #1252"
+  - name: "Offline fallback"
+    scope: integrated
+    command: "SKIP_GATE_GITHUB_CHECK=1 echo '{...}' | bash .claude/hooks/enforce-human-gate.sh"
+    result: pass
+    artifact_ref: "hook falls through to local evidence check"
+  - name: "Approval polling"
+    scope: integrated
+    command: "bash scripts/work-queue/wait-for-approval.sh WRK-5104 5"
+    result: pass
+    artifact_ref: "script exits 0 after finding approval on #1252"
+  - name: "Comment ordering"
+    scope: integrated
+    command: "gh issue view 1252 --comments --json comments | jq ..."
+    result: pass
+    artifact_ref: "jq correctly requires approval after last AWAITING comment"
+test_count: 5
+test_files:
+  - scripts/work-queue/wait-for-approval.sh
+  - .claude/hooks/enforce-human-gate.sh

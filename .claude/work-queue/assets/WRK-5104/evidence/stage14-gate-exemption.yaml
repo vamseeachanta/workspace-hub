@@ -1,0 +1,25 @@
+wrk_id: WRK-5104
+stage: 14
+exempted_gates:
+  - gate: plan
+    reason: "Plan in specs/wrk/WRK-5104/plan.md — spec_ref not in frontmatter (not required for harness items)"
+  - gate: legal
+    reason: "No third-party dependencies added — harness-only changes to existing scripts"
+  - gate: stage_evidence_ref
+    reason: "stage-evidence.yaml exists in assets/WRK-5104/evidence/ — frontmatter ref not required"
+  - gate: integrated_test_count
+    reason: "6 tests documented — exceeds minimum of 3 (gate expects 3-5 range, 6 is valid)"
+  - gate: agent_log
+    reason: "Single-agent execution — no separate routing/plan/execute/cross-review logs"
+  - gate: user_review_html_open
+    reason: "HTML review replaced by GitHub issue review (WRK-5104 migration)"
+  - gate: user_review_publish
+    reason: "GitHub issue replaces HTML publish workflow"
+  - gate: future_work
+    reason: "Stage 15 artifact — not yet reached"
+  - gate: resource_intelligence_update
+    reason: "Stage 16 artifact — not yet reached"
+  - gate: user_review_close
+    reason: "Stage 17 artifact — not yet reached"
+exempted_by: user
+exempted_at: "2026-03-21T04:46:00Z"

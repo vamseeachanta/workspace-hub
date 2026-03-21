@@ -1,0 +1,20 @@
+stage: 8
+wrk_id: WRK-5104
+completed_at: "2026-03-21T04:32:00Z"
+items:
+  - id: CL-08-1
+    description: "Agent quota checked"
+    completed: true
+    note: "80% remaining"
+  - id: CL-08-2
+    description: "claim-item.sh exits 0 (no collision)"
+    completed: true
+    note: "No collision — single agent claim"
+  - id: CL-08-3
+    description: "working/WRK-NNN.md exists"
+    completed: true
+    note: "Moved from pending/ to working/"
+  - id: CL-08-4
+    description: "evidence/activation.yaml written"
+    completed: true
+    note: "session_id, orchestrator_agent, route B"
