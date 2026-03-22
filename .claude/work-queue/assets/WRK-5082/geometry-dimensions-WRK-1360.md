@@ -105,8 +105,8 @@
 
 | Parameter | Value | Unit | Confidence | Notes |
 |-----------|-------|------|------------|-------|
-| tube_od | 1.5 | in | medium | Sketch side view "1.5 (H)" |
-| tube_wall | 0.120 | in | low | Assumed — pending client measurements |
+| tube_od | 1.75 | in | high | Client confirmed |
+| tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1 roll cage spec) |
 | material | 4130 chromoly | — | high | Known from client |
 | tube_cl | 12.0 | in | medium | Sketch side view "12 CL" |
 
@@ -114,8 +114,8 @@
 
 | Parameter | Value | Unit | Confidence | Notes |
 |-----------|-------|------|------------|-------|
-| tube_od | TBD | in | low | Not published by T1 — measure from kit |
-| tube_wall | TBD | in | low | Not published by T1 — measure from kit |
+| tube_od | 1.75 | in | high | Client confirmed |
+| tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1) |
 | material | 4130 chromoly | — | high | T1 product spec |
 | bolt_size | M8x1.25 | — | high | T1 install guide, 10.9 grade, 25mm length |
 
