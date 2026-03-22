@@ -56,21 +56,39 @@
 | v_strut_left | N1→N5 | — | Left junction to coupler pin |
 | v_strut_right | N3→N5 | — | Right junction to coupler pin |
 
-## Assembly 2: Under-Hood Frame (sketch page 2)
+## Assembly 2: Under-Hood Frame — GT1R Bolt-In Parachute Mount (sketch page 2)
 
-> **Not symmetric** — single bar assembly on one side of engine bay.
+> **This is the commercial GT1R bolt-in parachute mount kit** from T1 Race Development.
+> It bolts to the frame rails under the hood where the OEM aluminum bumper beam attached.
+> Reference: https://www.t1racedevelopment.com/product/gt1r-r35-bolt-on-parachute-kit/
+>
+> Assembly 1 (rear trunk) is a **separate custom welded structure** inside the trunk.
+> The two assemblies share the load path through the vehicle frame rails.
 
-### Dimensions
+### GT1R Kit Specs (from manufacturer)
 
 | Parameter | Value | Unit | Confidence | Source | Notes |
 |-----------|-------|------|------------|--------|-------|
-| hood_fwd_offset | 60.0 | in | low | estimate | Forward of trunk bar — no sketch dimension |
-| hood_z_elevation | 12.0 | in | low | estimate | Above trunk bar — no sketch dimension |
-| hood_bar_main | 14.0 | in | medium | sketch "14" | N7→N8 horizontal bar |
-| hood_bar_end_horiz | 5.0 | in | medium | sketch "5" | N8→N9 horizontal component |
-| hood_bar_end_drop | 1.0 | in | medium | sketch "1" | N8→N9 vertical drop |
-| curved_arm_fwd | 8.0 | in | medium | sketch "8" | N8→N10 (modeled straight, should be 150° arc) |
-| curved_arm_angle | 150 | deg | medium | sketch "150° eth" | Not yet modeled as arc |
+| material | 4130 chromoly | — | high | T1 product page | Bent + TIG welded in-house |
+| finish | gloss black powder coat | — | high | T1 product page | |
+| mounting_bolts | M8x1.25, 25mm | — | high | T1 install guide | 10.9 grade |
+| mounting_torque | 26 | ft-lbs | high | T1 install guide | Main mount bolts |
+| upper_assembly_torque | 75 | ft-lbs | high | T1 install guide | |
+| chute_hole_dia | 1.625 | in | high | T1 install guide | "1 5/8" hole saw" |
+| cable_hole_dia | 0.375 | in | high | T1 install guide | 3/8" for release cable |
+| chute_type | Stroud 430 | — | high | T1 recommendation | Single chute only |
+
+### Frame Dimensions (from hand sketch page 2)
+
+| Parameter | Value | Unit | Confidence | Source | Notes |
+|-----------|-------|------|------------|--------|-------|
+| hood_fwd_offset | 60.0 | in | low | estimate | Distance forward of trunk bar — needs measurement |
+| hood_z_elevation | 12.0 | in | low | estimate | Height above trunk bar — needs measurement |
+| hood_bar_main | 14.0 | in | medium | sketch "14" | N7→N8 horizontal bar span |
+| hood_bar_end_horiz | 5.0 | in | medium | sketch "5" | N8→N9 horizontal to bolted connection |
+| hood_bar_end_drop | 1.0 | in | medium | sketch "1" | N8→N9 vertical drop at B1 |
+| curved_arm_fwd | 8.0 | in | medium | sketch "8" | N8→N10 curved member (150° arc) |
+| curved_arm_angle | 150 | deg | medium | sketch "150° eth" | Included angle — not yet modeled as arc |
 
 ### Node Positions (under-hood)
 
@@ -78,10 +96,12 @@
 |------|---|---|---|-------|------------|----|
 | N7 | -18.0 | 60.0 | 12.0 | hood bar left | C2 weld | free |
 | N8 | -4.0 | 60.0 | 12.0 | hood bar right | C2 weld | free |
-| N9 | 1.0 | 60.0 | 11.0 | B1 bolted | B1 (6 bolts) | bolted |
+| N9 | 1.0 | 60.0 | 11.0 | B1 bolted | B1 (M8, 6 bolts) | bolted |
 | N10 | -4.0 | 68.0 | 12.0 | P1 pinned | P1 | pinned |
 
-## Tube Properties (all members)
+## Tube Properties
+
+### Assembly 1 — Rear Trunk (custom welded)
 
 | Parameter | Value | Unit | Confidence | Notes |
 |-----------|-------|------|------------|-------|
@@ -90,18 +110,25 @@
 | material | 4130 chromoly | — | high | Known from client |
 | tube_cl | 12.0 | in | medium | Sketch side view "12 CL" |
 
-## Bolt Properties
+### Assembly 2 — Under-Hood (GT1R kit)
 
-| Parameter | Value | Unit | Notes |
-|-----------|-------|------|-------|
-| b1_bolt_size | 5/8 | in | Sketch annotation, 6 bolts at B1 |
+| Parameter | Value | Unit | Confidence | Notes |
+|-----------|-------|------|------------|-------|
+| tube_od | TBD | in | low | Not published by T1 — measure from kit |
+| tube_wall | TBD | in | low | Not published by T1 — measure from kit |
+| material | 4130 chromoly | — | high | T1 product spec |
+| bolt_size | M8x1.25 | — | high | T1 install guide, 10.9 grade, 25mm length |
 
 ## Frame Rails (connecting assemblies)
 
 | Member | From | To | Notes |
 |--------|------|----|-------|
-| frame_rail_left | N0 | N7 | Left C3 mount to hood bar left |
-| frame_rail_right | N4 | N8 | Right C3 mount to hood bar right |
+| frame_rail_left | N0 | N7 | Left C3 weld (trunk) → hood bar left (vehicle frame rail) |
+| frame_rail_right | N4 | N8 | Right C3 weld (trunk) → hood bar right (vehicle frame rail) |
+
+> **Load path:** Parachute drag → N6 bracket → arm → N5 coupler pin → V-struts →
+> N1/N3 bar junctions → N0/N4 C3 welds → frame rails → N7/N8 under-hood mount →
+> B1 bolted connection to chassis subframe
 
 ## Stick Figure Schematics
 
@@ -196,8 +223,10 @@
 
 ## Items for Client Clarification
 
-1. Tube wall thickness — 0.120" assumed, needs confirmation
+1. Tube wall thickness (Assembly 1) — 0.120" assumed, needs confirmation
 2. Parachute arm length — 12" estimated from photos
 3. Under-hood frame position relative to trunk (hood_fwd_offset, hood_z_elevation)
 4. Curved member — is 150° the included angle or the bend angle?
 5. Frame rail path — straight line or follows vehicle body contour?
+6. GT1R kit tube OD/wall — not published, measure from physical kit
+7. GT1R kit — is the chute arm (slip-fit tube) part of Assembly 2 or separate?
