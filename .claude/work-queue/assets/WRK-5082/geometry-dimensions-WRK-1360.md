@@ -71,8 +71,8 @@
 |------|---|---|---|-------|------------|----|-------|
 | **N0** | **0.0** | **0.0** | **0.0** | **C2 weld junction** | **C2 weld** | **free** | **ORIGIN — shared with Assy 2** |
 | N1 | 0.0 | -7.25 | 0.0 | parachute bracket | bracket | free | Chute attachment point |
-| N2 | 0.0 | -4.0 | 0.0 | coupler pin | double pin | free | V-strut convergence |
-| N3 | 0.0 | 8.5 | 1.0 | center spine mid | weld | free | Intermediate on center spine |
+| N2 | 0.0 | -4.0 | 0.0 | coupler pin | double pin | free | Chute arm connects here |
+| N3 | 0.0 | 8.5 | 1.0 | center spine mid | weld | free | V-strut convergence point; physical weld node |
 | N4 | 0.0 | 20.5 | 2.5 | center bar C1 bolt | C1 bolt+pin | free (shear) | Center of horizontal bar |
 | N5 | 12.0 | 20.5 | 2.5 | right strut junction | C0 weld | free | V-strut meets bar (+X) |
 | N6 | 15.0 | 20.5 | 2.5 | right bar bend | weld | free | Bend before drop to C3 (+X) |
@@ -94,14 +94,14 @@
 | M1 | N2 | N0 | center_spine_lower | Coupler pin → C2 weld origin, 4" |
 | M2 | N0 | N3 | center_spine_mid | C2 weld → intermediate, 8.5" |
 | M3 | N3 | N4 | center_spine_upper | Intermediate → center bar, 12" |
-| M4 | N5 | N2 | v_strut_right | Right bar junction → coupler pin |
-| M5 | N8 | N2 | v_strut_left | Left bar junction → coupler pin |
+| M4 | N5 | N3 | v_strut_right | Right bar junction → center spine mid (through N3) |
+| M5 | N8 | N3 | v_strut_left | Left bar junction → center spine mid (through N3) |
 | M6 | N4 | N5 | bar_right_inner | Center bar → right junction, 12" |
 | M7 | N4 | N8 | bar_left_inner | Center bar → left junction, 12" |
 | M8 | N5 | N6 | bar_right_mid | Right junction → bend, 3" |
-| M9 | N6 | N7 | bar_right_end | Bend → right C3, 3" (Z drops 2.5→-0.5) |
+| M9 | N6 | N7 | bar_right_end | Bend → right C3, 3" (smooth bend, Z drops 2.5→-0.5) |
 | M10 | N8 | N9 | bar_left_mid | Left junction → bend, 3" |
-| M11 | N9 | N10 | bar_left_end | Bend → left C3, 3" (Z drops 2.5→-0.5) |
+| M11 | N9 | N10 | bar_left_end | Bend → left C3, 3" (smooth bend, Z drops 2.5→-0.5) |
 
 ---
 
@@ -155,7 +155,8 @@ Parachute drag
     → N1 (bracket)
     → N2 (coupler pin)
     → N0 (C2 weld, ORIGIN) ──────→ Assy 2: N11/N13 → N12/N14 (B1 bolted to chassis)
-    → N5/N8 (V-struts to bar)
+    → N3 (center spine mid, V-strut convergence)
+    → N5/N8 (V-struts from bar)
     → N7/N10 (C3 welds to frame rails, fixed BC)
 ```
 
@@ -295,8 +296,8 @@ Parachute drag
 | M1 | N2 | N0 | rear_trunk | center_spine_lower |
 | M2 | N0 | N3 | rear_trunk | center_spine_mid |
 | M3 | N3 | N4 | rear_trunk | center_spine_upper |
-| M4 | N5 | N2 | rear_trunk | v_strut_right |
-| M5 | N8 | N2 | rear_trunk | v_strut_left |
+| M4 | N5 | N3 | rear_trunk | v_strut_right |
+| M5 | N8 | N3 | rear_trunk | v_strut_left |
 | M6 | N4 | N5 | rear_trunk | bar_right_inner |
 | M7 | N4 | N8 | rear_trunk | bar_left_inner |
 | M8 | N5 | N6 | rear_trunk | bar_right_mid |
@@ -310,11 +311,16 @@ Parachute drag
 
 ---
 
-## Items for Client Clarification
+## Resolved Clarifications
+
+| # | Question | Answer |
+|---|----------|--------|
+| 1 | V-strut routing | N5/N8 connect to N2 **through N3** (not direct) |
+| 2 | Center spine N3 | Physical weld node (not just a bend) |
+| 3 | N7/N10 bar drop | **Smooth bends** (Z: 2.5 → -0.5) |
+| 4 | N12 position (21, 5, -4) | **Confirmed** — 3D path down to bolt onto chassis under upper body |
+| 5 | Fixed BCs | N7/N10 (C3 weld, fixed); N12/N14 (B1 bolted) |
+
+## Remaining Items for Client
 
 1. Tube wall thickness (Assembly 1) — 0.120" assumed, needs confirmation
-2. V-strut routing — do N5/N8 connect directly to N2, or through N3?
-3. Center spine — is N3 a physical node (weld/junction) or just a bend?
-4. N7/N10 drop — bar drops from Z=2.5 to Z=-0.5 at ends. Smooth bend or sharp?
-5. N12 position (21, 5, -4) — the Z=-4 drop needs verification
-6. Frame rail connections — are N7/N10 the only fixed BCs?
