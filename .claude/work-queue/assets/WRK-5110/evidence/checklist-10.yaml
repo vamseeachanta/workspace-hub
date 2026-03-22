@@ -1,0 +1,23 @@
+wrk_id: WRK-5110
+stage: 10
+items:
+  - id: CL-10-1
+    text: "Scripts-over-LLM audit performed"
+    completed: true
+    completed_at: 2026-03-22T09:10:00Z
+  - id: CL-10-2
+    text: "Tests written BEFORE implementation (TDD Red)"
+    completed: true
+    completed_at: 2026-03-22T09:11:00Z
+  - id: CL-10-3
+    text: "All tests pass (TDD Green)"
+    completed: true
+    completed_at: 2026-03-22T09:14:00Z
+  - id: CL-10-4
+    text: "evidence/execute.yaml written with integrated_repo_tests >= 3"
+    completed: true
+    completed_at: 2026-03-22T09:15:00Z
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    completed: true
+    completed_at: 2026-03-22T09:16:00Z

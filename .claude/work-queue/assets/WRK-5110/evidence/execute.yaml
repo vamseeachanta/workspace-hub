@@ -1,6 +1,9 @@
 wrk_id: WRK-5110
 stage: 10
 completed_at: "2026-03-22T09:15:00Z"
+test_count: 13
+test_files:
+  - tests/work-queue/test_stage_mapping.py
 execution_summary: >
   Created work-queue-orchestrator folder-skill at
   .claude/skills/workspace-hub/work-queue-orchestrator/ with lean SKILL.md (49 lines),

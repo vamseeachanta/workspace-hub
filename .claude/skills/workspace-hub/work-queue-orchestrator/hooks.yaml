@@ -14,10 +14,12 @@ constraints:
   - id: NB-02
     rule: human-gates-cannot-be-skipped
     description: >
-      Stages 1, 5, 7, 17 are hard human gates. Agent must stop
-      and wait for explicit approval. Silence is not approval.
+      Stages 5, 7, 17 use field-based human gates (human_gate: true).
+      Stage 1 uses hook-based gating (pre_exit_hook: wait-for-approval.sh).
+      Agent must stop and wait for explicit approval. Silence is not approval.
     enforcement: exit_stage.py
-    stages: [1, 5, 7, 17]
+    field_gated_stages: [5, 7, 17]
+    hook_gated_stages: [1]
 
   - id: NB-03
     rule: evidence-before-exit

@@ -112,6 +112,28 @@ class TestHooksFiles:
         assert isinstance(data, dict)
         assert "constraints" in data, "hooks.yaml must have 'constraints' key"
 
+    def test_human_gate_consistency_with_hooks(self):
+        """Stages with human_gate: true must match hooks.yaml NB-02."""
+        hooks_path = os.path.join(ORCH_DIR, "hooks.yaml")
+        mapping_path = os.path.join(REFS_DIR, "stage-mapping.yaml")
+        with open(hooks_path) as f:
+            hooks = yaml.safe_load(f)
+        with open(mapping_path) as f:
+            mapping = yaml.safe_load(f)
+
+        nb02 = next(
+            c for c in hooks["constraints"]
+            if c["id"] == "NB-02"
+        )
+        field_gated = set(nb02["field_gated_stages"])
+        mapping_gated = {
+            s["order"] for s in mapping["stages"] if s["human_gate"]
+        }
+        assert mapping_gated == field_gated, (
+            f"Mapping human_gate stages {mapping_gated} != "
+            f"hooks.yaml field_gated_stages {field_gated}"
+        )
+
     def test_hooks_schema_valid_yaml(self):
         path = os.path.join(REFS_DIR, "hooks-schema.yaml")
         assert os.path.isfile(path), "hooks-schema.yaml missing"

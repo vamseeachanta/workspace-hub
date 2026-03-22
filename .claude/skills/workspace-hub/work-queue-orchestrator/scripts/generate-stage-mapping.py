@@ -13,21 +13,14 @@ import argparse
 import glob
 import os
 import re
+import subprocess
 import sys
 
 import yaml
 
-REPO = os.path.dirname(
-    os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.dirname(os.path.abspath(__file__))
-                )
-            )
-        )
-    )
-)
+REPO = subprocess.check_output(
+    ["git", "rev-parse", "--show-toplevel"], text=True
+).strip()
 STAGES_DIR = os.path.join(REPO, "scripts", "work-queue", "stages")
 REFS_DIR = os.path.join(
     REPO, ".claude", "skills", "workspace-hub",
