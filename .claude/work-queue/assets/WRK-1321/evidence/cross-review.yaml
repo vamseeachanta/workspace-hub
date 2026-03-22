@@ -1,0 +1,47 @@
+wrk_id: WRK-1321
+stage: 6
+verdict: APPROVE
+reviewers:
+  - provider: claude
+    verdict: REQUEST_CHANGES
+    p1_count: 2
+    p1_findings:
+      - "update-orchestration-paths.py lacks dry-run/backup/rollback (ADDRESSED)"
+      - "path-pattern coverage too narrow for 72 scripts (ADDRESSED)"
+    p2_count: 0
+    file: 20260322T014338Z-plan.md-plan-claude.md
+  - provider: codex-slot-claude-opus
+    verdict: APPROVE
+    p1_count: 0
+    p2_count: 7
+    p2_findings:
+      - "AST patching scope underspecified"
+      - "No atomicity guarantee across 20-stage scaffold"
+      - "hooks.yaml schema validation lacks reference schema"
+      - "Unknown bucket needs size bound (>20% threshold)"
+      - "Rollback --rollback vs git revert are distinct tests"
+      - "Progressive disclosure test too vague"
+      - "Shared scripts post-cleanup syntax check needed"
+  - provider: gemini
+    verdict: APPROVE
+    p1_count: 0
+    p2_count: 3
+    p2_findings:
+      - "In-flight WRK state migration not addressed"
+      - "PEP 723 inline deps for migration scripts"
+      - "audit-old-paths.sh must scan dotfiles/hidden dirs"
+    file: 20260322T014505Z-plan.md-plan-gemini.md
+p1_findings:
+  - id: P1-1
+    description: "update-orchestration-paths.py lacks dry-run/backup/rollback safeguards"
+    resolution: "Added --dry-run, atomic backup per file, and --rollback subcommand to script spec and child-d ACs"
+    resolved_at: 2026-03-21T13:00:00Z
+  - id: P1-2
+    description: "Path-pattern coverage too narrow — only sys.path.append and source ../ listed"
+    resolution: "Added path-pattern discovery step to child-c with comprehensive grep coverage matrix as explicit input to child-d"
+    resolved_at: 2026-03-21T13:00:00Z
+p2_incorporated: true
+notes: >
+  All 10 P2 findings incorporated into plan.md.
+  Claude's 2 P1s addressed before Codex/Gemini reviews.
+  Final plan updated at specs/wrk/WRK-1321/plan.md.

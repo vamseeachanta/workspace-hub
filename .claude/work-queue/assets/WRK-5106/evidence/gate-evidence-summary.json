@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-5106",
-  "phase": "claim",
+  "phase": "archive",
   "summary_file": "assets/WRK-5106/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -36,7 +36,7 @@
       "status": "WARN",
       "ok": true,
       "warn": true,
-      "details": "routing:missing-log ; plan:missing-log (optional \u2014 no multi-agent indicators)"
+      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log (optional \u2014 no multi-agent indicators)"
     },
     {
       "name": "GitHub issue gate",
@@ -61,17 +61,17 @@
     },
     {
       "name": "Reclaim gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "reclaim.yaml: reclaim_decision=pause_and_replan"
     },
     {
       "name": "Approval ordering gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=claim)"
+      "details": "approval ordering OK (phase=archive)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -102,11 +102,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Stage1 capture gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-21 11:33:00+00:00"
+      "name": "Archive readiness gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "archive-tooling.yaml: document_index_ref absent \u2014 exemption accepted: hub-only item \u2014 no document-index entries affected"
     }
   ]
 }

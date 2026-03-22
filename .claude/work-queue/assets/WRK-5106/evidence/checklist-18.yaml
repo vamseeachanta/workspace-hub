@@ -1,0 +1,10 @@
+wrk_id: WRK-5106
+stage: 18
+completed_at: "2026-03-21"
+items:
+  - id: CL-18-1
+    completed: true
+    evidence: "reclaim.yaml written — no resources to reclaim (one-time batch script)"
+  - id: CL-18-2
+    completed: true
+    evidence: "reclaim.yaml written with reclaim_needed: false"

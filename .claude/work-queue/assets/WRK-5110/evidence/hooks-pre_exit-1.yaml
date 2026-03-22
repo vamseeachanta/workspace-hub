@@ -1,0 +1,21 @@
+phase: pre_exit
+stage: 1
+wrk_id: WRK-5110
+executed_at: '2026-03-22T04:51:44.907813+00:00'
+hooks:
+- script: bash scripts/work-queue/wait-for-approval.sh WRK-5110 1
+  description: Poll GitHub issue for approval comment
+  gate: hard
+  returncode: 0
+  duration_s: 1.217
+  passed: true
+  stdout: "\u23F3 Waiting for approval on GitHub issue #9 (stage 1)...\n   Post a\
+    \ comment containing 'approved' on the issue to proceed.\n   Polling every 60s\
+    \ (timeout: 30min)\n\u2714 Approval received on GitHub issue #9. Proceeding."
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

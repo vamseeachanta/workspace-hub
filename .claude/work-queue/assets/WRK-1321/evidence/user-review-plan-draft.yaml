@@ -1,0 +1,16 @@
+wrk_id: WRK-1321
+stage: 5
+decision: approved
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: 2026-03-21T12:45:00Z
+synthesis: merged
+plans_reviewed:
+  - plan_claude.md
+  - plan_codex.md
+  - plan_gemini.md
+notes: >
+  User approved on GitHub issue #9. 3-way synthesis merged into final plan.
+  Codex plan adopted as base (12 ACs, 18 tests, 4-bucket classification).
+  Gemini's copy-first-then-delete pattern adopted for child-c/d.
+  Final plan at specs/wrk/WRK-1321/plan.md.

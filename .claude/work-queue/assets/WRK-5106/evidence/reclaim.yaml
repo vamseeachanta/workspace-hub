@@ -1,0 +1,5 @@
+wrk_id: WRK-5106
+stage: 18
+reclaim_needed: false
+reclaim_decision: "pause_and_replan"
+reason: "No resources to reclaim — one-time batch script, no persistent processes"

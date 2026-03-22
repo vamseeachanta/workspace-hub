@@ -1,0 +1,9 @@
+wrk_id: WRK-5106
+merge_status: "n/a-direct-commit"
+sync_status: "in-sync"
+github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1254"
+legal_scan_ref: ".claude/work-queue/assets/WRK-5106/legal-scan.md"
+archive_readiness: "pass"
+document_index_ref: ""
+document_index_exemption: "hub-only item — no document-index entries affected"
+spin_off_wrks: []

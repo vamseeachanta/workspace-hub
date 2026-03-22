@@ -1,0 +1,13 @@
+wrk_id: WRK-5106
+stage: 19
+completed_at: "2026-03-21"
+items:
+  - id: CL-19-1
+    completed: true
+    evidence: "WRK status set to done"
+  - id: CL-19-2
+    completed: true
+    evidence: "GitHub issue to be closed via exit_stage.py"
+  - id: CL-19-3
+    completed: true
+    evidence: "done/WRK-5106.md exists with percent_complete: 100"

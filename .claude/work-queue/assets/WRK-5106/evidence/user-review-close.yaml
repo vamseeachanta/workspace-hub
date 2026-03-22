@@ -1,0 +1,9 @@
+wrk_id: WRK-5106
+stage: 17
+decision: approved
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: 2026-03-21T13:15:00Z
+notes: |
+  User approved close via "close 5106 and archive" instruction.
+  Results: 1,510 issues updated across 13 repos, 981 refs backfilled.

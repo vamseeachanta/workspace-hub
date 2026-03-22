@@ -2,3 +2,7 @@ stage: 5
 wrk_id: WRK-1321
 human_gate: true
 started_at: "2026-03-22T00:27:08.919864+00:00"
+completed_at: "2026-03-22T01:41:51.768625+00:00"
+duration_s: 4482.8
+completed_at: "2026-03-22T01:42:10.901442+00:00"
+duration_s: 4502.0

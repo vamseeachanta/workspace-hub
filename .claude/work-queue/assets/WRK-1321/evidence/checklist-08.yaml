@@ -1,0 +1,19 @@
+wrk_id: WRK-1321
+stage: 8
+items:
+  - id: CL-08-1
+    text: "Agent quota checked"
+    completed: true
+    completed_at: 2026-03-21T13:30:00Z
+  - id: CL-08-2
+    text: "claim-item.sh exits 0 (no collision)"
+    completed: true
+    completed_at: 2026-03-21T13:30:00Z
+  - id: CL-08-3
+    text: "working/WRK-NNN.md exists"
+    completed: true
+    completed_at: 2026-03-21T13:30:00Z
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    completed: true
+    completed_at: 2026-03-21T13:30:00Z

@@ -1,0 +1,84 @@
+wrk_id: WRK-5110
+generated_at: '2026-03-22T04:57:27Z'
+reviewed_by: agent
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  evidence: ''
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: ''
+- order: 3
+  stage: Triage
+  status: done
+  evidence: ''
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: ''
+- order: 5
+  stage: User Review - Plan Draft
+  status: done
+  evidence: ''
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: ''
+- order: 7
+  stage: User Review - Plan Final
+  status: done
+  evidence: ''
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: ''
+- order: 9
+  stage: Work-Queue Routing
+  status: done
+  evidence: ''
+- order: 10
+  stage: Work Execution
+  status: pending
+  evidence: ''
+- order: 11
+  stage: Artifact Generation
+  status: pending
+  evidence: ''
+- order: 12
+  stage: TDD / Eval
+  status: pending
+  evidence: ''
+- order: 13
+  stage: Agent Cross-Review
+  status: pending
+  evidence: ''
+- order: 14
+  stage: Verify Gate Evidence
+  status: pending
+  evidence: ''
+- order: 15
+  stage: Future Work Synthesis
+  status: pending
+  evidence: ''
+- order: 16
+  stage: Resource Intelligence Update
+  status: pending
+  evidence: ''
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  evidence: ''
+- order: 18
+  stage: Reclaim
+  status: pending
+  evidence: ''
+- order: 19
+  stage: Close
+  status: pending
+  evidence: ''
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: ''

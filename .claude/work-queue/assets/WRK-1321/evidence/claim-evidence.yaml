@@ -1,0 +1,11 @@
+wrk_id: WRK-1321
+stage: 8
+quota_snapshot:
+  claude: available
+  codex: quota_limited
+  gemini: available
+proceed_decision: proceed
+best_fit_provider: claude
+session_owner: claude
+route: C
+notes: "Feature WRK — execution proceeds to child WRK spawning at Stage 9."

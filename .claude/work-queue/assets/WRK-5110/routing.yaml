@@ -1,0 +1,7 @@
+wrk_id: WRK-5110
+route: B
+complexity: medium
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+notes: "Route B — child of Feature WRK-1321. Medium complexity orchestrator creation."

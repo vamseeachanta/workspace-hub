@@ -1,0 +1,20 @@
+wrk_id: WRK-5106
+stage: 17
+completed_at: "2026-03-21"
+items:
+  - id: CL-17-1
+    completed: true
+    approved_by: user
+    evidence: "User approved close — 'close 5106 and archive'"
+  - id: CL-17-2
+    completed: true
+    approved_by: user
+    evidence: "No outstanding user questions"
+  - id: CL-17-3
+    completed: true
+    approved_by: user
+    evidence: "All ACs passing: 1510 issues updated, dry-run works, rate limiting works, summary report works, no regression"
+  - id: CL-17-4
+    completed: true
+    approved_by: user
+    evidence: "User explicitly instructed 'close 5106 and archive' — approval confirmed"

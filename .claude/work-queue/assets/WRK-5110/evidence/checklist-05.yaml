@@ -1,0 +1,27 @@
+wrk_id: WRK-5110
+stage: 5
+items:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-21T13:50:00Z
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-21T13:50:00Z
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-21T13:50:00Z
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    completed: true
+    completed_at: 2026-03-21T13:50:00Z
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-21T13:50:00Z

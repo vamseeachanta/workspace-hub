@@ -1,5 +1,5 @@
 wrk_id: WRK-1321
-generated_at: '2026-03-22T00:27:08Z'
+generated_at: '2026-03-22T04:42:18Z'
 reviewed_by: agent
 stages:
 - order: 1
@@ -20,23 +20,23 @@ stages:
   evidence: ''
 - order: 5
   stage: User Review - Plan Draft
-  status: in_progress
+  status: done
   evidence: ''
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: done
   evidence: ''
 - order: 7
   stage: User Review - Plan Final
-  status: pending
+  status: done
   evidence: ''
 - order: 8
   stage: Claim / Activation
-  status: pending
+  status: done
   evidence: ''
 - order: 9
   stage: Work-Queue Routing
-  status: pending
+  status: done
   evidence: ''
 - order: 10
   stage: Work Execution

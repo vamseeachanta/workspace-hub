@@ -1,11 +1,17 @@
 wrk_id: WRK-1321
-route: C
-complexity: complex
-orchestrator: claude
-plan_workstations: [dev-primary]
-execution_workstations: [dev-primary]
-open_questions: []
-notes: >
-  Route C confirmed. 28 skills to consolidate, 20 stages to convert,
-  72 scripts to redistribute. Needs detailed planning before execution.
-  No blockers — WRK-1316 (hooks/checklists) already complete.
+stage: 9
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass
+  - work-queue (coordination)
+stage_sequence_from_here: "Feature WRK — coordinating children"
+delivery_order:
+  - WRK-5110 (child-a: orchestrator)
+  - WRK-5111 (child-b: 20 stages)
+  - WRK-5112 (child-c: scripts)
+  - WRK-5113 (child-d: cutover+cleanup)
+feature_routing: completed
+children_spawned: [WRK-5110, WRK-5111, WRK-5112, WRK-5113]
+notes: "Feature WRK now coordinating. Children queued as pending with sequential blocking."

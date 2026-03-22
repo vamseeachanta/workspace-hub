@@ -1,0 +1,31 @@
+wrk_id: WRK-5110
+stage: 4
+items:
+  - id: CL-04-0
+    text: "scripts-over-LLM audit completed"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-1
+    text: "EnterPlanMode for thinking before writing"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-2
+    text: "ACs defined (specific, testable)"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-3
+    text: "Pseudocode for key functions (>=3 steps)"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-4
+    text: "Test plan (>=3 entries)"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-5
+    text: "Chunk sizing checked"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z
+  - id: CL-04-6
+    text: "Research before building"
+    completed: true
+    completed_at: 2026-03-21T13:48:00Z

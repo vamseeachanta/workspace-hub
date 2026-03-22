@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-21T23:20:18Z by generate-index.py -->
+<!-- Generated: 2026-03-22T02:44:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-21T23:20:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-22T02:44:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,10 +14,10 @@
 | Status | Count |
 |--------|-------|
 | pending | 321 |
-| working | 9 |
+| working | 8 |
 | blocked | 12 |
 | done | 9 |
-| archived | 431 |
+| archived | 432 |
 
 ### By Priority
 
@@ -41,7 +41,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 41 |
+| harness | 40 |
 | engineering | 166 |
 | data | 27 |
 | platform | 11 |
@@ -80,7 +80,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 292 / 785 |
+| Plans exist | 293 / 785 |
 | Plans cross-reviewed | 207 |
 | Plans approved | 232 |
 | Brochure pending | 8 |
@@ -93,18 +93,18 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 785 |
-| Total archived | 431 |
-| Completion rate | 431/785 (55%) |
-| Monthly rate (current month) | 153 archived |
+| Total archived | 432 |
+| Completion rate | 432/785 (55%) |
+| Monthly rate (current month) | 154 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 77 / 321 | 24% |
-| Plans cross-reviewed | 9 | 10% |
-| Plans user-approved | 9 | 10% |
+| Pending items with plans | 78 / 321 | 24% |
+| Plans cross-reviewed | 8 | 9% |
+| Plans user-approved | 8 | 9% |
 
 ### Aging
 
@@ -120,14 +120,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 126 | 5 | 9 |
-| Medium   | 147  | 4  | 1  |
+| Medium   | 147  | 3  | 1  |
 | Low      | 48  | 0  | 2  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (41 items — 7 high, 28 medium, 6 low)
+### harness (40 items — 7 high, 27 medium, 6 low)
 
 #### harness / agent-adapters
 
@@ -240,7 +240,6 @@
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | ? | HIGH | feat(stage-exit): self-contained stage-exit-NN.yaml with auto-capture + --decisions flag | pending |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
-| WRK-5106 | MEDIUM | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working |
 | WRK-5109 | MEDIUM | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending |
 
 #### harness / workflow
@@ -775,6 +774,7 @@
 | [WRK-1271](pending/WRK-1271.md) | Enforce 200-line hard limit on all SKILL.md files | pending | 0/0 |
 | [WRK-1281](pending/WRK-1281.md) | Extract numerical test vectors from all naval architecture literature and document intelligence | pending | 0/0 |
 | [WRK-1287](pending/WRK-1287.md) | Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills | pending | 0/0 |
+| [WRK-1321](pending/WRK-1321.md) | Restructure work-queue skills into two-tier folder-skill architecture | pending | 0/0 |
 | [WRK-1322](pending/WRK-1322.md) | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | 0/0 |
 | [WRK-1339](pending/WRK-1339.md) | Deepen naval architecture knowledge extraction from SNAME collection | working | 0/14 archived (0%) |
 | [WRK-1341](pending/WRK-1341.md) | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | 0/0 |
@@ -1494,7 +1494,7 @@
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | working | high | medium | dev-primary | dev-primary | dev-primary | - | aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | sabithaandkrishnaestates | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1320 | Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing | blocked | high | medium | dev-secondary | dev-primary | dev-secondary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1321 |
 | WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1585,7 +1585,7 @@
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - | sowon | sowon | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1944,7 +1944,6 @@
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | medium | simple | workspace-hub | - |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2396,6 +2395,7 @@
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | high | medium | workspace-hub | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | medium | simple | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | high | medium | workspace-hub | - |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | medium | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | high | medium | workspace-hub | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | medium | B | - | - |
 
@@ -3246,7 +3246,7 @@
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | - |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | medium | - |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | - |
 
@@ -4092,7 +4092,7 @@
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | workspace-hub, sabithaandkrishnaestates | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | simple | workspace-hub | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | simple | workspace-hub | - |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | workspace-hub | - |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | workspace-hub | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | B | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
 
@@ -4717,7 +4717,7 @@
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | workspace-hub, sabithaandkrishnaestates | - |
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | workspace-hub | - |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | workspace-hub | - |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | workspace-hub | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
 
@@ -5691,7 +5691,7 @@
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | blocked | high | medium | workspace-hub |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | blocked | high | complex | digitalmodel |
 
-### sowon (2 active / 7 total)
+### sowon (1 active / 7 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5699,7 +5699,7 @@
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | workspace-hub |
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | workspace-hub |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | workspace-hub |
-| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | medium | workspace-hub |
+| WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | workspace-hub |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | workspace-hub |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | workspace-hub |
 
