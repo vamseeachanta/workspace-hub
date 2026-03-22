@@ -1,13 +1,13 @@
-generated: '2026-03-21'
-total_specs: 1894
+generated: '2026-03-22'
+total_specs: 1901
 by_category:
   archive: 13
   data-sources: 13
-  modules: 351
+  modules: 353
   other: 61
   repos: 1344
   templates: 20
-  wrk: 92
+  wrk: 97
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 378
+  workspace-hub: 385
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -370,6 +370,7 @@ by_wrk:
   WRK-1279: 1
   WRK-1301: 1
   WRK-1316: 1
+  WRK-1321: 3
   WRK-1323: 1
   WRK-1330: 1
   WRK-1339: 1
@@ -403,9 +404,14 @@ by_wrk:
   WRK-5071: 1
   WRK-5072: 1
   WRK-5082: 3
+  WRK-5100: 1
   WRK-5101: 1
-  WRK-5104: 2
+  WRK-5104: 5
   WRK-5105: 1
+  WRK-5106: 2
+  WRK-5107: 3
+  WRK-5109: 1
+  WRK-5110: 1
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -1406,6 +1412,18 @@ specs:
   - WRK-1179
   - WRK-1181
   mtime: '2026-03-17'
+- path: specs/modules/cuddly-sniffing-snowglobe.md
+  title: 'WRK-5107: Purge HTML Gates from verify-gate-evidence.py'
+  description: 'WRK-5104 replaced the HTML lifecycle with GitHub issues. `verify-gate-evidence.py` still enforces HTML-era
+    artifact checks, blocking stage 14 for all WRKs using the new workflow. User decision: **r...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - cuddly-sniffing-snowglobe
+  wrk_refs:
+  - WRK-5104
+  - WRK-5107
+  mtime: '2026-03-21'
 - path: specs/modules/curious-munching-marshmallow.md
   title: 'WRK-1261: Quantify Skill Curation Quality Hierarchy'
   description: patterns.md defines an enforcement gradient (prose → micro-skill → script → hook) but skill eval tooling didn't
@@ -1455,6 +1473,21 @@ specs:
   - WRK-1053
   - WRK-1244
   mtime: '2026-03-16'
+- path: specs/modules/delightful-dreaming-comet.md
+  title: 'WRK-5100: Purge Lifecycle HTML Refs & Fix GitHub-Issue Workflow Gaps'
+  description: The work-queue lifecycle migrated from local `WRK-NNN-lifecycle.html` files to GitHub issues (WRK-5104, WRK-5107).
+    Stage 1 was already cleaned up (commit 3780f948), but stages 2-20 micro-skills, YA...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - delightful-dreaming-comet
+  wrk_refs:
+  - WRK-5100
+  - WRK-5104
+  - WRK-5106
+  - WRK-5107
+  - WRK-5109
+  mtime: '2026-03-21'
 - path: specs/modules/delightful-fluttering-yao.md
   title: WRK-1339 Stage 4 Plan — Naval Architecture Expert Agent via Deep Knowledge Extraction
   description: We have 145 manifests from ~30 naval architecture textbooks/references and 110 ship plans. Today's session
@@ -22208,6 +22241,30 @@ specs:
   - WRK-1301
   - WRK-5002
   mtime: '2026-03-18'
+- path: specs/wrk/WRK-1321/plan.md
+  title: 'WRK-1321: Two-Tier Folder-Skill Architecture'
+  description: Restructure the work-queue's 3 overlapping skill trees (28 skills), 20 bare stage micro-skills, and 72 flat
+    scripts into a two-tier folder-skill architecture following Anthropic best practices. OUT...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1321
+  wrk_refs:
+  - WRK-1321
+  mtime: '2026-03-22'
+- path: specs/wrk/WRK-1321/wrk-1321-two-tier-folder-skills.md
+  title: 'WRK-1321: Two-Tier Folder-Skill Architecture'
+  description: Restructure the work-queue's 3 overlapping skill trees (28 skills), 20 bare stage micro-skills, and 72 flat
+    scripts into a two-tier folder-skill architecture following Anthropic best practices. OUT...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1321
+  - wrk-1321-two-tier-folder-skills
+  wrk_refs:
+  - WRK-1321
+  mtime: '2026-03-22'
 - path: specs/wrk/WRK-1330/plan.md
   title: 'WRK-1330: Archive Synthesis Plan'
   description: '| # | Question | Decision | |---|----------|----------| | 1 | Backfill scope | All 409 archived WRKs | | 2
@@ -22349,6 +22406,42 @@ specs:
   wrk_refs:
   - WRK-5104
   mtime: '2026-03-21'
+- path: specs/wrk/WRK-5106/plan.md
+  title: WRK-5106 Plan — Merged
+  description: 'One new script: `scripts/work-queue/backfill-issues.sh` (~150 lines bash)'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5106
+  wrk_refs:
+  - WRK-5106
+  mtime: '2026-03-21'
+- path: specs/wrk/WRK-5107/plan.md
+  title: 'WRK-5107: Purge HTML Gates from verify-gate-evidence.py'
+  description: 'WRK-5104 replaced the HTML lifecycle with GitHub issues. `verify-gate-evidence.py` still enforces HTML-era
+    artifact checks, blocking stage 14 for all WRKs using the new workflow. User decision: **r...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5107
+  wrk_refs:
+  - WRK-5104
+  - WRK-5107
+  mtime: '2026-03-21'
+- path: specs/wrk/WRK-5110/plan.md
+  title: 'WRK-5110: Create Orchestrator Folder-Skill'
+  description: 'Parent: WRK-1321 (child-a)'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5110
+  wrk_refs:
+  - WRK-1321
+  - WRK-5110
+  mtime: '2026-03-22'
 - path: specs/wrk/WRK-577/plan.md
   title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
   description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
