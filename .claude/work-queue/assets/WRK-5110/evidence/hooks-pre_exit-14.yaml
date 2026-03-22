@@ -1,0 +1,23 @@
+phase: pre_exit
+stage: 14
+wrk_id: WRK-5110
+executed_at: '2026-03-22T10:15:48.945689+00:00'
+hooks:
+- script: scripts/work-queue/verify-gate-evidence.py WRK-5110 --phase claim
+  description: All claim-phase gates must PASS before proceeding
+  gate: hard
+  returncode: 0
+  duration_s: 0.566
+  passed: true
+  stdout: "Gate evidence for WRK-5110 (phase=claim, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5110):\n\
+    \  - Plan gate: OK (reviewed=True, approved=True, artifact=plan.md, confirmation=confirmed_by=present,\
+    \ confirmed_at=present, decision=passed)\n  - Workstation contract gate: OK (plan_workstations=[dev-primary],\
+    \ execution_workstations=[dev-primary])\n  - Resource-intelligence gate: OK (resource-intelligence.yaml:\
+    \ completion_status=continue_to_planning, p1_count=0, core_skills=3)\n  "
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

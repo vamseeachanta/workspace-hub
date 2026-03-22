@@ -10,6 +10,10 @@ items:
     completed: true
     completed_at: 2026-03-22T09:48:00Z
   - id: CL-13-3
-    text: "review.md written with verdict and findings"
+    text: "All P1 findings fixed"
+    completed: true
+    completed_at: 2026-03-22T09:48:00Z
+  - id: CL-13-4
+    text: "review.md written with all 3 providers listed"
     completed: true
     completed_at: 2026-03-22T09:48:00Z

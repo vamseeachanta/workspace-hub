@@ -1,0 +1,112 @@
+{
+  "wrk_id": "WRK-5110",
+  "phase": "claim",
+  "summary_file": "assets/WRK-5110/evidence/gate-evidence-summary.json",
+  "gates": [
+    {
+      "name": "Plan gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "reviewed=True, approved=True, artifact=plan.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+    },
+    {
+      "name": "Workstation contract gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan_workstations=[dev-primary], execution_workstations=[dev-primary]"
+    },
+    {
+      "name": "Resource-intelligence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+    },
+    {
+      "name": "Activation gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "activation.yaml: activation evidence OK"
+    },
+    {
+      "name": "Agent log gate",
+      "status": "WARN",
+      "ok": true,
+      "warn": true,
+      "details": "routing:missing-log ; plan:missing-log (optional \u2014 no multi-agent indicators)"
+    },
+    {
+      "name": "GitHub issue gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/9"
+    },
+    {
+      "name": "Cross-review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5110/review.md"
+    },
+    {
+      "name": "Claim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "claim evidence absent (legacy item \u2014 WARN)"
+    },
+    {
+      "name": "Reclaim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=claim)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no sentinel values found"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Stage1 capture gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-21 13:40:00+00:00"
+    }
+  ]
+}

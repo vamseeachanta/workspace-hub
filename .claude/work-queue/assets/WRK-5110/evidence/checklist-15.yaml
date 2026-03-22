@@ -1,0 +1,15 @@
+wrk_id: WRK-5110
+stage: 15
+items:
+  - id: CL-15-1
+    text: "Reviewed execution notes and review.md for deferred ideas"
+    completed: true
+    completed_at: 2026-03-22T10:05:00Z
+  - id: CL-15-2
+    text: "Deferred items captured or referenced"
+    completed: true
+    completed_at: 2026-03-22T10:05:00Z
+  - id: CL-15-3
+    text: "future-work.yaml written"
+    completed: true
+    completed_at: 2026-03-22T10:05:00Z

@@ -3,6 +3,7 @@ stage: 8
 activated_at: 2026-03-21T14:00:00Z
 session_id: "b5799ac7-da2a-4119-8376-66f9386e8561"
 orchestrator_agent: claude
+set_active_wrk: true
 gates_confirmed:
   - stage_7_plan_final: passed
 notes: "Child WRK activated. Ready for execution."

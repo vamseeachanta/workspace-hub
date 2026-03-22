@@ -1,0 +1,65 @@
+wrk_id: WRK-5110
+stage: 14
+verified_at: "2026-03-22T09:55:00Z"
+verify_script_exit_code: 1
+notes: >
+  verify-gate-evidence.py runs in phase=close mode and checks ALL gates
+  including stages 15-20 which have not been completed yet. All gates for
+  stages 1-14 pass. Remaining MISSING gates are for future stages.
+gates:
+  - name: Plan gate
+    status: OK
+    details: "reviewed=True, approved=True, artifact=plan.md, confirmation=passed"
+  - name: Workstation contract gate
+    status: OK
+  - name: Stage evidence gate
+    status: DEFERRED
+    details: "Stages 14-20 not yet done; expected at this lifecycle point"
+  - name: Resource-intelligence gate
+    status: OK
+  - name: Activation gate
+    status: OK
+  - name: Agent log gate
+    status: WARN
+    details: "Optional — no multi-agent indicators"
+  - name: GitHub issue gate
+    status: OK
+  - name: Cross-review gate
+    status: OK
+  - name: TDD gate
+    status: OK
+  - name: Integrated test gate
+    status: OK
+    details: "7 integrated_repo_tests, all passing"
+  - name: Legal gate
+    status: OK
+    details: "PASS — no external code"
+  - name: Claim gate
+    status: WARN
+    details: "Legacy item"
+  - name: Future-work gate
+    status: DEFERRED
+    details: "Stage 15 not yet completed"
+  - name: Resource-intelligence update gate
+    status: DEFERRED
+    details: "Stage 16 not yet completed"
+  - name: User-review close gate
+    status: DEFERRED
+    details: "Stage 17 not yet completed"
+  - name: Reclaim gate
+    status: WARN
+    details: "No reclaim triggered"
+  - name: Approval ordering gate
+    status: OK
+  - name: Sentinel values gate
+    status: OK
+  - name: ISO datetime format gate
+    status: OK
+  - name: Codex keyword in review gate
+    status: OK
+  - name: Stage evidence paths gate
+    status: OK
+  - name: Done/pending contradiction gate
+    status: OK
+  - name: Workstation contract (strict) gate
+    status: OK

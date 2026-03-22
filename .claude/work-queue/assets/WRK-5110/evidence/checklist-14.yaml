@@ -1,0 +1,15 @@
+wrk_id: WRK-5110
+stage: 14
+items:
+  - id: CL-14-1
+    text: "verify-gate-evidence.py run"
+    completed: true
+    completed_at: 2026-03-22T09:55:00Z
+  - id: CL-14-2
+    text: "Fixable gates resolved (activation, integrated tests)"
+    completed: true
+    completed_at: 2026-03-22T09:55:00Z
+  - id: CL-14-3
+    text: "gate-evidence-summary.yaml written"
+    completed: true
+    completed_at: 2026-03-22T09:55:00Z

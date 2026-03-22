@@ -13,40 +13,43 @@ execution_summary: >
 integrated_repo_tests:
   - name: test_produces_20_stages
     file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestGenerateStageMapping::test_produces_20_stages -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
   - name: test_stage_numbers_sequential
     file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestGenerateStageMapping::test_stage_numbers_sequential -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
   - name: test_names_match_contracts
     file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_output_valid_yaml
-    file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_required_fields_present
-    file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_stage_mapping_yaml_exists
-    file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_stage_mapping_yaml_has_20_stages
-    file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestGenerateStageMapping::test_names_match_contracts -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
   - name: test_hooks_yaml_valid
     file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestHooksFiles::test_hooks_yaml_valid -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
-  - name: test_hooks_schema_valid_yaml
+  - name: test_human_gate_consistency_with_hooks
     file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_skill_md_exists
-    file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestHooksFiles::test_human_gate_consistency_with_hooks -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
   - name: test_skill_md_under_50_lines
     file: tests/work-queue/test_stage_mapping.py
-    result: PASS
-  - name: test_skill_md_has_frontmatter
-    file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestSkillMd::test_skill_md_under_50_lines -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS
   - name: test_no_stage_specific_scripts
     file: tests/work-queue/test_stage_mapping.py
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_mapping.py::TestScriptsDir::test_no_stage_specific_scripts -v"
+    artifact_ref: tests/work-queue/test_stage_mapping.py
     result: PASS

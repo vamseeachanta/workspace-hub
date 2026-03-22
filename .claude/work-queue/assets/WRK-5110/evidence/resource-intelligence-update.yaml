@@ -1,0 +1,48 @@
+wrk_id: WRK-5110
+stage: 16
+completed_at: "2026-03-22T10:08:00Z"
+lessons:
+  - id: L1
+    topic: "Stage 1 human_gate enforcement mechanism"
+    lesson: >
+      Stage 1 (Capture) uses hook-based gating (pre_exit_hook with
+      wait-for-approval.sh) rather than the human_gate field. This distinction
+      between field-gated and hook-gated stages must be documented explicitly
+      to prevent data inconsistencies across reference documents.
+    applies_to: [work-queue-orchestrator, workflow-gatepass]
+
+  - id: L2
+    topic: "verify-gate-evidence.py phase parameter"
+    lesson: >
+      The verify script defaults to phase=close which checks ALL gates including
+      future stages. For mid-lifecycle verification (stage 14), use --phase claim
+      to avoid false failures from stages not yet completed. The JSON summary
+      file is auto-generated and consumed by D-item checks.
+    applies_to: [work-queue-orchestrator, workflow-gatepass]
+
+  - id: L3
+    topic: "git rev-parse for REPO root in scripts"
+    lesson: >
+      Per coding-style.md, Python scripts should use git rev-parse --show-toplevel
+      for repo root resolution instead of chained os.path.dirname calls. This is
+      more resilient to directory restructuring.
+    applies_to: [coding-style]
+
+  - id: L4
+    topic: "Cross-review human_gate consistency testing"
+    lesson: >
+      Cross-validation tests between related artifacts (e.g., hooks.yaml NB-02
+      stage list vs mapping human_gate fields) catch data inconsistencies that
+      individual file tests miss. All 3 reviewers flagged the same issue.
+    applies_to: [work-queue-orchestrator, testing]
+
+additions:
+  - type: skill
+    path: .claude/skills/workspace-hub/work-queue-orchestrator/SKILL.md
+    description: "New orchestrator folder-skill with canonical stage mapping"
+  - type: script
+    path: .claude/skills/workspace-hub/work-queue-orchestrator/scripts/generate-stage-mapping.py
+    description: "Canonical 20-stage mapping generator"
+  - type: test
+    path: tests/work-queue/test_stage_mapping.py
+    description: "14 tests for orchestrator skill validation"

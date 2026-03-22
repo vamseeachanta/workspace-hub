@@ -1,0 +1,28 @@
+wrk_id: WRK-5110
+stage: 15
+completed_at: "2026-03-22T10:05:00Z"
+recommendations:
+  - id: FW-01
+    description: "Add error handling for malformed contract YAMLs in generate-stage-mapping.py"
+    disposition: deferred
+    status: noted
+    captured: false
+    notes: "P2 finding from cross-review. Low risk — contracts are managed files."
+  - id: FW-02
+    description: "WRK-5111 (child-b): Stage micro-skill migration to folder-skill sub-skills"
+    disposition: existing-wrk
+    status: pending
+    captured: true
+    wrk_ref: WRK-5111
+  - id: FW-03
+    description: "WRK-5112 (child-c): Script consolidation under orchestrator"
+    disposition: existing-wrk
+    status: pending
+    captured: true
+    wrk_ref: WRK-5112
+  - id: FW-04
+    description: "WRK-5113 (child-d): Integration testing and cutover"
+    disposition: existing-wrk
+    status: pending
+    captured: true
+    wrk_ref: WRK-5113
