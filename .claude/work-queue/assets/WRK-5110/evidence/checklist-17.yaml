@@ -1,0 +1,23 @@
+wrk_id: WRK-5110
+stage: 17
+items:
+  - id: CL-17-1
+    text: "Human reviewed GitHub issue and evidence"
+    completed: true
+    completed_at: 2026-03-22T10:15:00Z
+    approved_by: vamsee
+  - id: CL-17-2
+    text: "All ACs pass; all gates green"
+    completed: true
+    completed_at: 2026-03-22T10:15:00Z
+    approved_by: vamsee
+  - id: CL-17-3
+    text: "Explicit approval received"
+    completed: true
+    completed_at: 2026-03-22T10:15:00Z
+    approved_by: vamsee
+  - id: CL-17-4
+    text: "user-review-close.yaml written"
+    completed: true
+    completed_at: 2026-03-22T10:15:00Z
+    approved_by: vamsee

@@ -1,0 +1,11 @@
+wrk_id: WRK-5110
+stage: 18
+items:
+  - id: CL-18-1
+    text: "Checkpoint presence verified"
+    completed: true
+    completed_at: 2026-03-22T10:20:00Z
+  - id: CL-18-2
+    text: "reclaim.yaml written"
+    completed: true
+    completed_at: 2026-03-22T10:20:00Z
