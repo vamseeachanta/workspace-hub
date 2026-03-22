@@ -2,13 +2,15 @@
 
 > **Edit this file** to refine dimensions. Once finalized, coordinates will be
 > regenerated from these values into `frame_geometry_3d.py`.
+>
+> **Convention:** Only +X nodes defined. −X nodes are mirror images about X=0 plane.
 
 ## Coordinate System
 
 - **X** = transverse (+ right, − left), centered on vehicle centerline
 - **Y** = longitudinal (+ forward, − rearward)
 - **Z** = vertical (+ up)
-- **Origin** = coupler pin (N5), center of rear trunk frame
+- **Origin** = coupler pin (N5) = (0, 0, 0)
 
 ### 3D Axes Convention
 
@@ -20,14 +22,14 @@
                  │
                  │
                  │
-                 ●──────────────► +X (right)
+                 ●──────────────► +X (right / passenger)
                 ╱  Origin = N5
-               ╱   (coupler pin,
-              ╱     center of
-             ╱      rear trunk frame)
+               ╱   (coupler pin)
+              ╱
+             ╱
             ╱
            ↙
-         +Y (forward)
+         +Y (forward / toward hood)
 
 
     Axis    Direction          Vehicle Reference
@@ -50,180 +52,181 @@
              ╱│            │            │╲
             ╱ │   HOOD     │            │ ╲
            ╱  │            │            │  ╲
-          │   │  Assembly 2│(GT1R kit)  │   │
-          │   │   under-   │            │   │
-          │   │    hood    │            │   │
+          │   │  Under-Hood│Frame       │   │
+          │   │  N14━━N13━━N10━━N11━━━━N9   │   Y=9 (N9,N14)
+          │   │            │            │   │   Y=4 (N10,N11,N13)
           │   ├────────────┼────────────┤   │
           │   │            │            │   │
           │   │  CABIN     │            │   │
           │   │            │            │   │
-          │   │            │            │   │
+          │   │            │  N8        │   │   Y=12.5
           │   ├────────────┼────────────┤   │
           │   │            │            │   │
  -X ◄─────┼───┤  TRUNK    ●(N5 origin) ├───┼─────► +X
-  (left)  │   │  Assembly 1│(custom wld)│   │  (right)
-          │   │            │            │   │
-          │   │   N0●━━━━━━●━━━━━━●N4   │   │
+  (left)  │   │            │            │   │  (right)
+          │   │ N0━N12━N1━━N2━━N3━N7━N4 │   │   Y=24.5
           │   │            │            │   │
            ╲  │            │            │  ╱
             ╲ └────────────┼────────────┘ ╱
              ╲─────────────┼─────────────╱
                            │
-                           ● N6 (parachute)
+                           ● N6 (parachute)          Y=-3.25
                            │
                            ↓
                          -Y (rearward)
 ```
 
-### Side View (right side, Y-Z plane)
+### Side View (right side, Y-Z plane, X=0 centerline)
 
 ```
-                  +Z (up)
-                    ↑
-                    │
-                    │         ╱╲
-                    │        ╱  ╲  windshield
-                    │   ____╱    ╲________
-                    │  │roof              │trunk lid
-                    │  │                  │   ╲
-                    │  │     CABIN        │    ╲
-                    │  │                  │ Assembly 1
-   Assembly 2 ─────┤──┤                  ├──●━bar (Z=+7.25)
-   (under-hood)    │  │                  │  │╲
-                    │  │                  │  │ ╲ v-strut
-                    │  │                  │  │  ╲
-  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓●━━N5 ORIGIN (Z=0)
-  ▓▓ ground ▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│
-                    │  └──────────────────┘  │ arm
-                    │     ◎            ◎     │
-                    │   (front         (rear ● N6 (chute)
-                    │    wheel)        wheel)
-                    │
-   -Y ◄─────────────┼──────────────────────────────► +Y
-   (rearward)       │                          (forward)
-                    ↓
-                  -Z (down)
+  Z (up +)
+  ↑
+  │
+  │                              N2
+  │                              ● ━━━━━━━━━━━━━     Z=+2.5 (bar)
+  │                             ╱
+  │                            ╱
+  │                    N8     ╱
+  │                    ●     ╱                        Z=+1
+  │                   ╱     ╱
+  │                  ╱     ╱
+  │          N10    ╱     ╱
+  │━━━━━━━━━━● ━━━╱━━━━╱━━━━━━━━━━━━━━━━━━━━━━━     Z=0
+  │  N9(-4)  ╱   ╱   ╱
+  │         ╱   ╱   ╱
+  │        ╱  N5●  ╱                                  Z=0 (ORIGIN)
+  │           │   ╱
+  │           │  ╱
+  │        N6 ● ╱                                     Z=0
+  │      [CHUTE]
+  │
+  └──────────────────────────────────────→ Y (fwd +)
+    -3.25  0   4    12.5        24.5
 ```
 
-### Front View (looking from rear, X-Z plane)
+### Front View (looking from rear, X-Z plane, Y=24.5 bar section)
 
 ```
-                  +Z (up)
-                    ↑
-                    │        ___________
-                    │       ╱           ╲
-                    │      ╱   rear      ╲
-                    │     ╱   window      ╲
-                    │    │                 │
-                    │    │     TRUNK       │
-                    │    │                 │
-  N0●━━━━━━━━━━━━━━●━━━━●━━━━━━━━━━━━━━━━●━━━━━━━━━━●N4   Z=+7.25
-  (C3 fix)  N1     │    N2               N3     (C3 fix)
-             ╲     │     │              ╱
-              ╲    │     │  7.25"      ╱
-               ╲   │     ↕           ╱
-                ╲  │               ╱
-                 ╲ │              ╱
-                  ╲│             ╱
-                   ●━━━━━━━━━━━● N5 (ORIGIN)               Z=0
-                   │  (coupler pin)
-                   │
-                   │  ◎ tailpipe   ◎ tailpipe
-                   │
-  -X ◄─────────────┼──────────────────────────────► +X
-  (left)           │                           (right)
-                   ↓
-                 -Z (down)
+  X=  -18    -15    -12        0       +12    +15    +18
+       │      │      │         │        │      │      │
+       │  3"  │  3"  │   12"   │  12"   │  3"  │  3"  │
+       │      │      │         │        │      │      │
+       ●━━━━━━●━━━━━━●━━━━━━━━━●━━━━━━━━●━━━━━━●━━━━━━●  ── Z=+2.5
+      N0     N12    N1        N2       N3     N7     N4
+      (-0.5)              (bar at 2.5)             (-0.5)
+   [C3 fix]                [C1 blt]             [C3 fix]
+                ╲                      ╱
+                  ╲                  ╱
+                    ╲              ╱
+                      ╲          ╱
+                        ╲      ╱
+                          ╲  ╱
+                           ● N5 (ORIGIN)              ── Z=0
+                        [coupler pin]
 ```
 
-## Assembly 1: Rear Trunk Frame (sketch page 1 + photos)
+> **Note:** N0 and N4 are at Z=-0.5 (dropped 3" from N1/N3 at Z=2.5).
+> N7 and N12 are bend points at Z=2.5 transitioning to the dropped ends.
 
-### Parachute Arm (from chute attachment to coupler pin)
+---
 
-| Parameter | Value | Unit | Confidence | Source | Notes |
-|-----------|-------|------|------------|--------|-------|
-| arm_length | 12.0 | in | low | photo estimate | N6→N5, Y-direction. Revised down from 18" based on bracket closeup |
-| arm_z | 0.0 | in | — | origin | Arm and coupler pin at origin Z=0 |
+## Assembly 1: Rear Trunk Frame
 
-### Coupler Pin (N5) — ORIGIN
+### Node Positions (+X side, origin at N5)
 
-| Parameter | Value | Unit | Confidence | Source | Notes |
-|-----------|-------|------|------------|--------|-------|
-| coupler_x | 0.0 | in | high | symmetry | Centered on vehicle — **ORIGIN** |
-| coupler_y | 0.0 | in | — | origin | **ORIGIN** |
-| coupler_z | 0.0 | in | — | origin | **ORIGIN** — bar is 7.25" above at Z=+7.25 |
+| Node | X | Y | Z | Label | Connection | BC | Notes |
+|------|---|---|---|-------|------------|----|-------|
+| N5 | 0.0 | 0.0 | 0.0 | coupler pin | double pin | free | **ORIGIN** |
+| N6 | 0.0 | -3.25 | 0.0 | parachute bracket | bracket | free | Chute attach point |
+| N10 | 0.0 | 4.0 | 0.0 | C2 weld junction | C2 weld | free | Shared with under-hood frame |
+| N8 | 0.0 | 12.5 | 1.0 | center strut mid | weld | free | Intermediate point on center spine |
+| N2 | 0.0 | 24.5 | 2.5 | center bolt | C1 bolt+pin | free (shear) | Center of horizontal bar |
+| N3 | 12.0 | 24.5 | 2.5 | right strut junction | C0 weld | free | V-strut meets bar |
+| N7 | 15.0 | 24.5 | 2.5 | right bar bend | weld | free | Bend point before drop to N4 |
+| N4 | 18.0 | 24.5 | -0.5 | right C3 mount | C3 weld | fixed | Frame rail attachment |
 
-### Horizontal Bar (symmetric about X=0)
+### Node Positions (−X side, mirrored)
 
-| Parameter | Value | Unit | Confidence | Source | Notes |
-|-----------|-------|------|------------|--------|-------|
-| bar_total_width | 36.0 | in | high | sketch 6+12+12+6 | Full transverse span |
-| outer_segment | 6.0 | in | high | sketch | N0→N1 and N3→N4 (end stubs to frame rail mounts) |
-| inner_segment | 12.0 | in | high | sketch | N1→N2 and N2→N3 (strut junction to center bolt) |
-| bar_z | +7.25 | in | high | sketch | Bar is 7.25" above coupler pin (origin) |
+| Node | X | Y | Z | Label | Mirror of | Connection | BC |
+|------|---|---|---|-------|-----------|------------|----|
+| N1 | -12.0 | 24.5 | 2.5 | left strut junction | N3 | C0 weld | free |
+| N12 | -15.0 | 24.5 | 2.5 | left bar bend | N7 | weld | free |
+| N0 | -18.0 | 24.5 | -0.5 | left C3 mount | N4 | C3 weld | fixed |
 
-### Node Positions (rear trunk, origin at N5)
+### Members (rear trunk)
 
-| Node | X | Y | Z | Label | Connection | BC |
-|------|---|---|---|-------|------------|----|
-| N0 | -18.0 | 0.0 | +7.25 | left C3 mount | C3 weld | fixed |
-| N1 | -12.0 | 0.0 | +7.25 | left strut junction | C0 weld | free |
-| N2 | 0.0 | 0.0 | +7.25 | center bolt | C1 bolt+pin | free (shear) |
-| N3 | +12.0 | 0.0 | +7.25 | right strut junction | C0 weld | free |
-| N4 | +18.0 | 0.0 | +7.25 | right C3 mount | C3 weld | fixed |
-| N5 | 0.0 | 0.0 | 0.0 | coupler pin | double pin | free |
-| N6 | 0.0 | -12.0 | 0.0 | parachute bracket | bracket | free |
+| ID | From | To | Label | Notes |
+|----|------|----|-------|-------|
+| M0 | N6 | N5 | parachute_arm | Chute → coupler pin, 3.25" |
+| M1 | N5 | N10 | center_spine_lower | Coupler → C2 junction, 4" |
+| M2 | N10 | N8 | center_spine_mid | C2 junction → intermediate, 8.5" |
+| M3 | N8 | N2 | center_spine_upper | Intermediate → center bar, 12" |
+| M4 | N3 | N5 | v_strut_right | Right bar junction → coupler pin |
+| M5 | N1 | N5 | v_strut_left | Left bar junction → coupler pin |
+| M6 | N2 | N3 | bar_right_inner | Center → right junction, 12" |
+| M7 | N2 | N1 | bar_left_inner | Center → left junction, 12" |
+| M8 | N3 | N7 | bar_right_mid | Right junction → bend, 3" |
+| M9 | N7 | N4 | bar_right_end | Bend → right C3 mount, 3" (drops Z: 2.5→-0.5) |
+| M10 | N1 | N12 | bar_left_mid | Left junction → bend, 3" |
+| M11 | N12 | N0 | bar_left_end | Bend → left C3 mount, 3" (drops Z: 2.5→-0.5) |
 
-### V-Struts
+---
 
-| Parameter | Value | Unit | Notes |
-|-----------|-------|------|-------|
-| v_strut_length | 14.02 | in | Computed: √(12² + 7.25²) |
-| v_strut_left | N1→N5 | — | Left junction to coupler pin |
-| v_strut_right | N3→N5 | — | Right junction to coupler pin |
+## Assembly 2: Under-Hood Frame (GT1R Bolt-In Parachute Mount)
 
-## Assembly 2: Under-Hood Frame — GT1R Bolt-In Parachute Mount (sketch page 2)
-
-> **This is the commercial GT1R bolt-in parachute mount kit** from T1 Race Development.
-> It bolts to the frame rails under the hood where the OEM aluminum bumper beam attached.
+> **GT1R bolt-in kit** from T1 Race Development.
+> Bolts to frame rails where OEM bumper beam attached.
 > Reference: https://www.t1racedevelopment.com/product/gt1r-r35-bolt-on-parachute-kit/
->
-> Assembly 1 (rear trunk) is a **separate custom welded structure** inside the trunk.
-> The two assemblies share the load path through the vehicle frame rails.
+
+### Node Positions (+X side)
+
+| Node | X | Y | Z | Label | Connection | BC | Notes |
+|------|---|---|---|-------|------------|----|-------|
+| N10 | 0.0 | 4.0 | 0.0 | C2 weld junction | C2 weld | free | **Shared with Assembly 1** |
+| N11 | 16.0 | 4.0 | 0.0 | hood bar right | weld | free | Under-hood bar endpoint |
+| N9 | 21.0 | 9.0 | -4.0 | B1 bolted right | B1 (M8, 6 bolts) | bolted | Bolted to chassis subframe |
+
+### Node Positions (−X side, mirrored)
+
+| Node | X | Y | Z | Label | Mirror of | Connection | BC |
+|------|---|---|---|-------|-----------|------------|----|
+| N13 | -16.0 | 4.0 | 0.0 | hood bar left | N11 | weld | free |
+| N14 | -21.0 | 9.0 | -4.0 | B1 bolted left | N9 | B1 (M8, 6 bolts) | bolted |
+
+### Members (under-hood)
+
+| ID | From | To | Label | Notes |
+|----|------|----|-------|-------|
+| M12 | N10 | N11 | hood_bar_right | C2 junction → right bar end, 16" |
+| M13 | N11 | N9 | hood_bar_right_end | Right bar → B1 bolted, angled |
+| M14 | N10 | N13 | hood_bar_left | C2 junction → left bar end, 16" |
+| M15 | N13 | N14 | hood_bar_left_end | Left bar → B1 bolted, angled |
 
 ### GT1R Kit Specs (from manufacturer)
 
-| Parameter | Value | Unit | Confidence | Source | Notes |
-|-----------|-------|------|------------|--------|-------|
-| material | 4130 chromoly | — | high | T1 product page | Bent + TIG welded in-house |
-| finish | gloss black powder coat | — | high | T1 product page | |
-| mounting_bolts | M8x1.25, 25mm | — | high | T1 install guide | 10.9 grade |
-| mounting_torque | 26 | ft-lbs | high | T1 install guide | Main mount bolts |
-| upper_assembly_torque | 75 | ft-lbs | high | T1 install guide | |
-| chute_hole_dia | 1.625 | in | high | T1 install guide | "1 5/8" hole saw" |
-| cable_hole_dia | 0.375 | in | high | T1 install guide | 3/8" for release cable |
-| chute_type | Stroud 430 | — | high | T1 recommendation | Single chute only |
+| Parameter | Value | Unit | Source | Notes |
+|-----------|-------|------|--------|-------|
+| mounting_bolts | M8x1.25, 25mm | — | T1 install guide | 10.9 grade |
+| mounting_torque | 26 | ft-lbs | T1 install guide | Main mount bolts |
+| upper_assembly_torque | 75 | ft-lbs | T1 install guide | |
+| chute_hole_dia | 1.625 | in | T1 install guide | "1 5/8" hole saw" |
+| cable_hole_dia | 0.375 | in | T1 install guide | 3/8" for release cable |
+| chute_type | Stroud 430 | — | T1 recommendation | Single chute only |
 
-### Frame Dimensions (from hand sketch page 2)
+---
 
-| Parameter | Value | Unit | Confidence | Source | Notes |
-|-----------|-------|------|------------|--------|-------|
-| hood_fwd_offset | 60.0 | in | low | estimate | Distance forward of trunk bar — needs measurement |
-| hood_z_elevation | 19.25 | in | low | estimate | Height above origin (was 12" above bar, bar is at Z=+7.25) |
-| hood_bar_main | 14.0 | in | medium | sketch "14" | N7→N8 horizontal bar span |
-| hood_bar_end_horiz | 5.0 | in | medium | sketch "5" | N8→N9 horizontal to bolted connection |
-| hood_bar_end_drop | 1.0 | in | medium | sketch "1" | N8→N9 vertical drop at B1 |
-| curved_arm_fwd | 8.0 | in | medium | sketch "8" | N8→N10 curved member (150° arc) |
-| curved_arm_angle | 150 | deg | medium | sketch "150° eth" | Included angle — not yet modeled as arc |
+## Load Path
 
-### Node Positions (under-hood)
+```
+Parachute drag
+    → N6 (bracket)
+    → N5 (coupler pin, ORIGIN)
+    → N10 (C2 weld junction) ──────→ Under-hood frame → N9/N14 (B1 bolted to chassis)
+    → N1/N3 (V-struts to bar)
+    → N0/N4 (C3 welds to frame rails)
+```
 
-| Node | X | Y | Z | Label | Connection | BC |
-|------|---|---|---|-------|------------|----|
-| N7 | -18.0 | 60.0 | +19.25 | hood bar left | C2 weld | free |
-| N8 | -4.0 | 60.0 | +19.25 | hood bar right | C2 weld | free |
-| N9 | 1.0 | 60.0 | +18.25 | B1 bolted | B1 (M8, 6 bolts) | bolted |
-| N10 | -4.0 | 68.0 | +19.25 | P1 pinned | P1 | pinned |
+---
 
 ## Tube Properties
 
@@ -232,9 +235,8 @@
 | Parameter | Value | Unit | Confidence | Notes |
 |-----------|-------|------|------------|-------|
 | tube_od | 1.75 | in | high | Client confirmed |
-| tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1 roll cage spec) |
+| tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1) |
 | material | 4130 chromoly | — | high | Known from client |
-| tube_cl | 12.0 | in | medium | Sketch side view "12 CL" |
 
 ### Assembly 2 — Under-Hood (GT1R kit)
 
@@ -243,116 +245,57 @@
 | tube_od | 1.75 | in | high | Client confirmed |
 | tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1) |
 | material | 4130 chromoly | — | high | T1 product spec |
-| bolt_size | M8x1.25 | — | high | T1 install guide, 10.9 grade, 25mm length |
 
-## Frame Rails (connecting assemblies)
+---
 
-| Member | From | To | Notes |
-|--------|------|----|-------|
-| frame_rail_left | N0 | N7 | Left C3 weld (trunk) → hood bar left (vehicle frame rail) |
-| frame_rail_right | N4 | N8 | Right C3 weld (trunk) → hood bar right (vehicle frame rail) |
+## All Nodes Summary
 
-> **Load path:** Parachute drag → N6 bracket → arm → N5 coupler pin → V-struts →
-> N1/N3 bar junctions → N0/N4 C3 welds → frame rails → N7/N8 under-hood mount →
-> B1 bolted connection to chassis subframe
+| Node | X | Y | Z | Assembly | Connection | BC |
+|------|---|---|---|----------|------------|----|
+| N0 | -18.0 | 24.5 | -0.5 | rear_trunk | C3 weld | fixed |
+| N1 | -12.0 | 24.5 | 2.5 | rear_trunk | C0 weld | free |
+| N2 | 0.0 | 24.5 | 2.5 | rear_trunk | C1 bolt+pin | free |
+| N3 | 12.0 | 24.5 | 2.5 | rear_trunk | C0 weld | free |
+| N4 | 18.0 | 24.5 | -0.5 | rear_trunk | C3 weld | fixed |
+| N5 | 0.0 | 0.0 | 0.0 | rear_trunk | double pin | free |
+| N6 | 0.0 | -3.25 | 0.0 | rear_trunk | bracket | free |
+| N7 | 15.0 | 24.5 | 2.5 | rear_trunk | weld | free |
+| N8 | 0.0 | 12.5 | 1.0 | rear_trunk | weld | free |
+| N9 | 21.0 | 9.0 | -4.0 | under_hood | B1 (6 bolts) | bolted |
+| N10 | 0.0 | 4.0 | 0.0 | shared | C2 weld | free |
+| N11 | 16.0 | 4.0 | 0.0 | under_hood | weld | free |
+| N12 | -15.0 | 24.5 | 2.5 | rear_trunk | weld | free |
+| N13 | -16.0 | 4.0 | 0.0 | under_hood | weld | free |
+| N14 | -21.0 | 9.0 | -4.0 | under_hood | B1 (6 bolts) | bolted |
 
-## Stick Figure Schematics
+## All Members Summary
 
-### Front View (looking from rear of car, X-Z plane, Y=0)
+| ID | From | To | Assembly | Label |
+|----|------|----|----------|-------|
+| M0 | N6 | N5 | rear_trunk | parachute_arm |
+| M1 | N5 | N10 | rear_trunk | center_spine_lower |
+| M2 | N10 | N8 | rear_trunk | center_spine_mid |
+| M3 | N8 | N2 | rear_trunk | center_spine_upper |
+| M4 | N3 | N5 | rear_trunk | v_strut_right |
+| M5 | N1 | N5 | rear_trunk | v_strut_left |
+| M6 | N2 | N3 | rear_trunk | bar_right_inner |
+| M7 | N2 | N1 | rear_trunk | bar_left_inner |
+| M8 | N3 | N7 | rear_trunk | bar_right_mid |
+| M9 | N7 | N4 | rear_trunk | bar_right_end |
+| M10 | N1 | N12 | rear_trunk | bar_left_mid |
+| M11 | N12 | N0 | rear_trunk | bar_left_end |
+| M12 | N10 | N11 | under_hood | hood_bar_right |
+| M13 | N11 | N9 | under_hood | hood_bar_right_end |
+| M14 | N10 | N13 | under_hood | hood_bar_left |
+| M15 | N13 | N14 | under_hood | hood_bar_left_end |
 
-```
-  X=  -18      -12        0       +12      +18
-       │        │         │        │        │
-       │   6"   │   12"   │  12"   │   6"   │
-       ├────────┼─────────┼────────┼────────┤
-       │        │         │        │        │
-       ●━━━━━━━━●━━━━━━━━━●━━━━━━━━●━━━━━━━━●  ── Z=+7.25 (bar)
-      N0       N1        N2       N3       N4
-   [C3 fix]  [C0 wld]  [C1 blt] [C0 wld] [C3 fix]
-                ╲                  ╱
-                 ╲                ╱
-                  ╲   7.25"      ╱
-                   ╲    │       ╱
-                    ╲   ↓      ╱
-                     ╲        ╱
-                      ● N5 (ORIGIN)             ── Z=0
-                   [coupler pin]
-                      │
-                      │ 12" (into page, −Y)
-                      │
-                      ● N6                      ── Z=0
-                 [PARACHUTE POINT]
-```
-
-### Top View (looking down, X-Y plane)
-
-```
-  Y (forward +)
-  ↑
-  │
-  │         Under-Hood Frame
-  │
-  │  N10 ●                                          Y=68
-  │       │  8"
-  │       │
-  │  N7 ●━━━━━━━━━━━━━━● N8 ━━━━━● N9              Y=60
-  │      ← ── 14" ── →    ← 5" →
-  │       │                │
-  │       │  frame         │  frame
-  │       │  rail L        │  rail R
-  │       │  ~61"          │  ~65"
-  │       │                │
-  │       │                │
-  │       │   Rear Trunk Frame
-  │       │                │
-  │  N0 ●━━━━━━●━━━━━━●━━━━━━●━━━━━━● N4            Y=0
-  │     -18   N1    N2/N5   N3     +18
-  │            -12  (origin) +12
-  │                   │
-  │                   │ 12" (arm)
-  │                   │
-  │                   ● N6                           Y=-12
-  │              [PARACHUTE]
-  │
-  └──────────────────────────────────────→ X (right +)
-       -18    -12     0    +12    +18
-```
-
-### Side View (looking from left, Y-Z plane, X=0 centerline)
-
-```
-  Z (up +)
-  ↑
-  │
-  │                    N8
-  │         ● ─────────                              Z=+19.25
-  │         N7         │╲N9                           Z=+18.25
-  │                    │
-  │    frame rail      │
-  │    (behind)        │
-  │                    │
-  │                    │
-  │                    ● N2                           Z=+7.25 (bar)
-  │                    │
-  │                    │ 7.25"
-  │                    │
-  ●━━━━━━━━━━━━━━━━━━━━● N5 (ORIGIN)                 Z=0
-  │                    │
-  │                    │ 12" (arm)
-  │                    │
-  │                    ● N6                           Z=0
-  │               [PARACHUTE]
-  │
-  └──────────────────────────────────────→ Y (fwd +)
-       -12     0            60      68
-```
+---
 
 ## Items for Client Clarification
 
 1. Tube wall thickness (Assembly 1) — 0.120" assumed, needs confirmation
-2. Parachute arm length — 12" estimated from photos
-3. Under-hood frame position relative to trunk (hood_fwd_offset, hood_z_elevation)
-4. Curved member — is 150° the included angle or the bend angle?
-5. Frame rail path — straight line or follows vehicle body contour?
-6. GT1R kit tube OD/wall — not published, measure from physical kit
-7. GT1R kit — is the chute arm (slip-fit tube) part of Assembly 2 or separate?
+2. V-strut routing — do N1/N3 connect directly to N5, or through N8?
+3. Center spine — is N8 a physical node (weld/junction) or just a bend?
+4. N4/N0 drop — bar drops from Z=2.5 to Z=-0.5 at ends. Is this a smooth bend or sharp?
+5. Under-hood N9 position (21, 9, -4) — the Z=-4 drop needs verification
+6. Frame rail connections — are N0/N4 the only fixed BCs?
