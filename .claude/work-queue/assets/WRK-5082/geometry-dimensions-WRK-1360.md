@@ -52,7 +52,7 @@
              ╱│            │            │╲
             ╱ │   HOOD     │            │ ╲
            ╱  │            │            │  ╲
-          │   │  Under-Hood│Frame       │   │
+          │   │  Under-Chassis│Frame       │   │
           │   │  N14━━N13━━N10━━N11━━━━N9   │   Y=9 (N9,N14)
           │   │            │            │   │   Y=4 (N10,N11,N13)
           │   ├────────────┼────────────┤   │
@@ -138,7 +138,7 @@
 |------|---|---|---|-------|------------|----|-------|
 | N5 | 0.0 | 0.0 | 0.0 | coupler pin | double pin | free | **ORIGIN** |
 | N6 | 0.0 | -3.25 | 0.0 | parachute bracket | bracket | free | Chute attach point |
-| N10 | 0.0 | 4.0 | 0.0 | C2 weld junction | C2 weld | free | Shared with under-hood frame |
+| N10 | 0.0 | 4.0 | 0.0 | C2 weld junction | C2 weld | free | Shared with under-chassis frame |
 | N8 | 0.0 | 12.5 | 1.0 | center strut mid | weld | free | Intermediate point on center spine |
 | N2 | 0.0 | 24.5 | 2.5 | center bolt | C1 bolt+pin | free (shear) | Center of horizontal bar |
 | N3 | 12.0 | 24.5 | 2.5 | right strut junction | C0 weld | free | V-strut meets bar |
@@ -172,7 +172,7 @@
 
 ---
 
-## Assembly 2: Under-Hood Frame (GT1R Bolt-In Parachute Mount)
+## Assembly 2: Under-Chassis Frame (GT1R Bolt-In Parachute Mount)
 
 > **GT1R bolt-in kit** from T1 Race Development.
 > Bolts to frame rails where OEM bumper beam attached.
@@ -193,7 +193,7 @@
 | N13 | -16.0 | 4.0 | 0.0 | hood bar left | N11 | weld | free |
 | N14 | -21.0 | 9.0 | -4.0 | B1 bolted left | N9 | B1 (M8, 6 bolts) | bolted |
 
-### Members (under-hood)
+### Members (under-chassis)
 
 | ID | From | To | Label | Notes |
 |----|------|----|-------|-------|
@@ -238,7 +238,7 @@ Parachute drag
 | tube_wall | 0.120 | in | high | Standard for 1.75" OD 4130 (NHRA SFI 25.1) |
 | material | 4130 chromoly | — | high | Known from client |
 
-### Assembly 2 — Under-Hood (GT1R kit)
+### Assembly 2 — Under-Chassis (GT1R kit)
 
 | Parameter | Value | Unit | Confidence | Notes |
 |-----------|-------|------|------------|-------|
@@ -261,12 +261,12 @@ Parachute drag
 | N6 | 0.0 | -3.25 | 0.0 | rear_trunk | bracket | free |
 | N7 | 15.0 | 24.5 | 2.5 | rear_trunk | weld | free |
 | N8 | 0.0 | 12.5 | 1.0 | rear_trunk | weld | free |
-| N9 | 21.0 | 9.0 | -4.0 | under_hood | B1 (6 bolts) | bolted |
+| N9 | 21.0 | 9.0 | -4.0 | under_chassis | B1 (6 bolts) | bolted |
 | N10 | 0.0 | 4.0 | 0.0 | shared | C2 weld | free |
-| N11 | 16.0 | 4.0 | 0.0 | under_hood | weld | free |
+| N11 | 16.0 | 4.0 | 0.0 | under_chassis | weld | free |
 | N12 | -15.0 | 24.5 | 2.5 | rear_trunk | weld | free |
-| N13 | -16.0 | 4.0 | 0.0 | under_hood | weld | free |
-| N14 | -21.0 | 9.0 | -4.0 | under_hood | B1 (6 bolts) | bolted |
+| N13 | -16.0 | 4.0 | 0.0 | under_chassis | weld | free |
+| N14 | -21.0 | 9.0 | -4.0 | under_chassis | B1 (6 bolts) | bolted |
 
 ## All Members Summary
 
@@ -284,10 +284,10 @@ Parachute drag
 | M9 | N7 | N4 | rear_trunk | bar_right_end |
 | M10 | N1 | N12 | rear_trunk | bar_left_mid |
 | M11 | N12 | N0 | rear_trunk | bar_left_end |
-| M12 | N10 | N11 | under_hood | hood_bar_right |
-| M13 | N11 | N9 | under_hood | hood_bar_right_end |
-| M14 | N10 | N13 | under_hood | hood_bar_left |
-| M15 | N13 | N14 | under_hood | hood_bar_left_end |
+| M12 | N10 | N11 | under_chassis | hood_bar_right |
+| M13 | N11 | N9 | under_chassis | hood_bar_right_end |
+| M14 | N10 | N13 | under_chassis | hood_bar_left |
+| M15 | N13 | N14 | under_chassis | hood_bar_left_end |
 
 ---
 
