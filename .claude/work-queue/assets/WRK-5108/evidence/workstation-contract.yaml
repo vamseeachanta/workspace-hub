@@ -1,0 +1,4 @@
+wrk_id: WRK-5108
+plan_workstations: ["claude"]
+execution_workstations: ["claude"]
+note: "Single-provider interactive session"

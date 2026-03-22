@@ -1,0 +1,11 @@
+wrk_id: WRK-1321
+route: C
+complexity: complex
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+open_questions: []
+notes: >
+  Route C confirmed. 28 skills to consolidate, 20 stages to convert,
+  72 scripts to redistribute. Needs detailed planning before execution.
+  No blockers — WRK-1316 (hooks/checklists) already complete.

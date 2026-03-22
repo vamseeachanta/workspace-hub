@@ -1,0 +1,9 @@
+wrk_id: WRK-5108
+stage: 8
+quota_snapshot: "n/a"
+proceed_decision: proceed
+machine: sowon
+provider: claude
+best_fit_provider: claude
+session_owner: claude
+route: B

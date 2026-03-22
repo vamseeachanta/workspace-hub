@@ -1,0 +1,12 @@
+wrk_id: WRK-1321
+current_stage: 5
+stage_name: User Review - Plan Draft
+completed_stage: 4
+next_action: Execute stage 5: User Review - Plan Draft
+context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1321/checkpoint.yaml
+  - assets/WRK-1321/evidence/checklist-04.yaml
+  - pending/WRK-1321.md
+checkpointed_at: 2026-03-22T00:25:28Z
+human_gate: true

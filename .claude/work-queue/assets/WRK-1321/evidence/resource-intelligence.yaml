@@ -1,0 +1,67 @@
+wrk_id: WRK-1321
+stage: 2
+completion_status: continue_to_planning
+complexity: complex
+domain: skill-architecture
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - ecosystem-terminology
+
+files_consulted:
+  # Current skill trees (28 skills total)
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md  # root + 17 sub-skills
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md  # workflow + stages ref
+  - .claude/skills/workspace-hub/workflow-gatepass/SKILL.md    # gatepass + 9 sub-skills
+  # Stage micro-skills (20 bare .md files)
+  - .claude/skills/workspace-hub/stages/stage-01-capture.md    # through stage-20
+  # Stage contracts (20 YAML files)
+  - scripts/work-queue/stages/stage-01-capture.yaml            # through stage-20
+  # Scripts (72 total: 43 .sh + 29 .py)
+  - scripts/work-queue/dispatch-run.sh
+  - scripts/work-queue/run-plan.sh
+  - scripts/work-queue/exit_stage.py
+  - scripts/work-queue/verify_checklist.py
+
+online_research:
+  - url: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+    summary: "Anthropic official skill authoring best practices — folder structure, progressive disclosure, scripts co-location, <500 line SKILL.md, one-level-deep references"
+  - url: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
+    summary: "Skills architecture — 3-level loading (metadata/instructions/resources), filesystem-based progressive disclosure, SKILL.md + scripts/ + references/ pattern"
+
+key_findings:
+  current_state:
+    - "3 overlapping skill trees: coordination/work-queue (17), workspace-hub/workflow (1), workspace-hub/gatepass (9+1)"
+    - "20 bare stage micro-skills (.md files, not folder-skills)"
+    - "20 YAML stage contracts in scripts/work-queue/stages/"
+    - "72 flat scripts (43 sh + 29 py) in scripts/work-queue/"
+    - "No hooks.yaml per stage — hooks are global pre-commit or in contract YAML"
+    - "No gotchas.md files exist"
+
+  anthropic_best_practices:
+    - "A skill is a folder: SKILL.md + scripts/ + references/ + assets/"
+    - "SKILL.md body under 500 lines — split excess into referenced files"
+    - "References one level deep from SKILL.md (no nested chains)"
+    - "Scripts co-located and executed via bash (output only consumes tokens)"
+    - "Progressive disclosure: metadata always loaded, SKILL.md on-demand, resources on-demand"
+    - "Descriptions must specify WHAT and WHEN to trigger"
+    - "Workflows: clear steps with checklists, feedback loops, validation scripts"
+
+  design_alignment:
+    - "WRK-1321 two-tier design aligns well with Anthropic patterns"
+    - "Tier 1 orchestrator = high-level SKILL.md with domain-specific references"
+    - "Tier 2 stage folders = progressive disclosure per-stage"
+    - "Contract YAML can move into each stage folder as contract.yaml"
+    - "Stage micro-skill content merges into stage folder SKILL.md"
+    - "Scripts redistribute from flat scripts/ to stage-specific scripts/"
+
+notes: >
+  Complex restructuring affecting 28 skills, 20 stages, 72 scripts.
+  Anthropic best practices strongly support the folder-skill approach.
+  Key risk: ensuring dispatch-run.sh, exit_stage.py, verify_checklist.py
+  and other orchestration scripts continue working after paths change.
+  Must preserve all hook integrations (pre-commit, L3 dispatch check).
+  No external dependencies — purely internal skill architecture refactor.

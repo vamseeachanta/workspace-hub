@@ -17854,5 +17854,26 @@
     "computer": "dev-primary",
     "checkpoint_stage": "",
     "session_pid": ""
+  },
+  "WRK-5108": {
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-21T23:20:16.548229+00:00",
+    "updated_by": "archive-item.sh",
+    "title": "chore(work-queue): prune unused code/scripts from /work workflow",
+    "priority": "medium",
+    "category": "maintenance",
+    "subcategory": "",
+    "created_at": "",
+    "blocked_by": "",
+    "github_issue_ref": "https://github.com/vamseeachanta/workspace-hub/issues/1256",
+    "type": "",
+    "note": "",
+    "not_before": "",
+    "standing": "",
+    "cadence": "",
+    "computer": "",
+    "checkpoint_stage": "",
+    "session_pid": ""
   }
 }

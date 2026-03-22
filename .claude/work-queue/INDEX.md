@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-21T22:50:50Z by generate-index.py -->
+<!-- Generated: 2026-03-21T23:20:18Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-21T22:50:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-21T23:20:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 782
+**Total items:** 785
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 322 |
+| pending | 321 |
 | working | 9 |
 | blocked | 12 |
 | done | 9 |
-| archived | 427 |
+| archived | 431 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 350 |
-| medium | 359 |
+| high | 352 |
+| medium | 360 |
 | low | 72 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 167 |
-| medium | 366 |
+| simple | 169 |
+| medium | 367 |
 | complex | 150 |
 
 ### By Category
@@ -46,7 +46,7 @@
 | data | 27 |
 | platform | 11 |
 | business | 6 |
-| maintenance | 6 |
+| maintenance | 5 |
 | personal | 4 |
 | uncategorised | 4 |
 
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 366 |
+| workspace-hub | 368 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 291 / 782 |
-| Plans cross-reviewed | 204 |
-| Plans approved | 229 |
+| Plans exist | 292 / 785 |
+| Plans cross-reviewed | 207 |
+| Plans approved | 232 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,17 +92,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 782 |
-| Total archived | 427 |
-| Completion rate | 427/782 (55%) |
-| Monthly rate (current month) | 149 archived |
+| Total captured | 785 |
+| Total archived | 431 |
+| Completion rate | 431/785 (55%) |
+| Monthly rate (current month) | 153 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 77 / 322 | 24% |
+| Pending items with plans | 77 / 321 | 24% |
 | Plans cross-reviewed | 9 | 10% |
 | Plans user-approved | 9 | 10% |
 
@@ -120,7 +120,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 126 | 5 | 9 |
-| Medium   | 148  | 4  | 1  |
+| Medium   | 147  | 4  | 1  |
 | Low      | 48  | 0  | 2  |
 
 ## By Category
@@ -708,7 +708,7 @@
 |----|----------|-------|--------|
 | WRK-580 | LOW | feat(worldenergydata): map open-access journal portfolio for engineering | pending |
 
-### maintenance (6 items — 0 high, 4 medium, 2 low)
+### maintenance (5 items — 0 high, 3 medium, 2 low)
 
 #### maintenance / cleanup
 
@@ -729,12 +729,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-574 | MEDIUM | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending |
-
-#### maintenance / uncategorised
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-5108 | MEDIUM | chore(work-queue): prune unused code/scripts from /work workflow | pending |
 
 ### personal (4 items — 1 high, 0 medium, 3 low)
 
@@ -1239,6 +1233,7 @@
 | ? | chore(hooks): wire check-claude-md-limits.sh to pre-commit hook | pending | medium | simple | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | ? | chore(harness): propagate canonical AGENTS.md format to child repos | pending | medium | simple | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1386 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| ? | feat(micro-skills): add rules content to stages 11, 13, 20 micro-skills | archived | medium | simple | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | - | dev-primary | dev-primary, dev-secondary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | dev-primary | dev-primary | dev-primary | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1538,6 +1533,7 @@
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | dev-primary | dev-primary, home-win | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1379 |
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1585,12 +1581,13 @@
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | pending | high | complex | dev-primary | dev-primary | dev-primary | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1362 |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | pending | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | pending | medium | B | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - | sowon | sowon | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -1933,7 +1930,6 @@
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | medium | medium | workspace-hub, sabithaandkrishnaestates | - |
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | high | complex | digitalmodel | - |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | high | complex | workspace-hub | - |
-| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | medium | B | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | medium | medium | workspace-hub | - |
 
 ### Working
@@ -2217,6 +2213,7 @@
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | high | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | medium | simple | workspace-hub | - |
+| ? | feat(micro-skills): add rules content to stages 11, 13, 20 micro-skills | medium | simple | - | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
@@ -2380,6 +2377,7 @@
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | high | simple | workspace-hub | - |
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | high | medium | workspace-hub | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | medium | simple | workspace-hub | - |
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | high | simple | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
@@ -2395,9 +2393,11 @@
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | medium | medium | workspace-hub | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | low | medium | workspace-hub | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | high | simple | workspace-hub | - |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | high | medium | workspace-hub | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | medium | simple | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | high | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | high | medium | workspace-hub | - |
+| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | medium | B | - | - |
 
 ## By Repository
 
@@ -3215,6 +3215,7 @@
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | - |
 | WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | - |
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3241,6 +3242,7 @@
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | medium | - |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | pending | high | complex | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | - |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | - |
@@ -3711,6 +3713,7 @@
 | WRK-1376 | Resistance prediction — Holtrop-Mennen method implementation | pending | moderate | digitalmodel | - |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | simple | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | archived | simple | workspace-hub | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | archived | complex | workspace-hub | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | archived | complex | workspace-hub | - |
@@ -3724,6 +3727,7 @@
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | pending | complex | digitalmodel | - |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | pending | complex | workspace-hub | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | simple | workspace-hub | - |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | medium | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | medium | workspace-hub | - |
 
@@ -3913,6 +3917,7 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | ? | chore(hooks): wire check-claude-md-limits.sh to pre-commit hook | pending | simple | - | - |
 | ? | chore(harness): propagate canonical AGENTS.md format to child repos | pending | simple | - | - |
+| ? | feat(micro-skills): add rules content to stages 11, 13, 20 micro-skills | archived | simple | - | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | archived | medium | workspace-hub | - |
@@ -4088,7 +4093,7 @@
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | simple | workspace-hub | - |
 | WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | simple | workspace-hub | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | workspace-hub | - |
-| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | pending | B | - | - |
+| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | B | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
 
 ### Low
@@ -4249,6 +4254,7 @@
 | ? | chore(hooks): wire check-claude-md-limits.sh to pre-commit hook | pending | medium | - | - |
 | ? | chore(harness): propagate canonical AGENTS.md format to child repos | pending | medium | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
+| ? | feat(micro-skills): add rules content to stages 11, 13, 20 micro-skills | archived | medium | - | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | archived | high | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | archived | medium | workspace-hub | - |
@@ -4328,6 +4334,7 @@
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | archived | high | workspace-hub | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | workspace-hub | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | workspace-hub | - |
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -4708,6 +4715,7 @@
 | WRK-5092 | sabithaandkrishnaestates repo — document indexing and structure enhancement | pending | medium | sabithaandkrishnaestates | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | working | high | sabithaandkrishnaestates | - |
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | workspace-hub, sabithaandkrishnaestates | - |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | workspace-hub | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | workspace-hub | - |
@@ -5399,7 +5407,7 @@
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | workspace-hub |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | workspace-hub |
 
-### (unassigned) (30 active / 239 total)
+### (unassigned) (29 active / 240 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5631,6 +5639,7 @@
 | ? | chore(harness): trim 30 child repo CLAUDE.md files to 20-line adapter format | pending | high | medium | - |
 | ? | chore(hooks): wire check-claude-md-limits.sh to pre-commit hook | pending | medium | simple | - |
 | ? | chore(harness): propagate canonical AGENTS.md format to child repos | pending | medium | simple | - |
+| ? | feat(micro-skills): add rules content to stages 11, 13, 20 micro-skills | archived | medium | simple | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | workspace-hub |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - |
 | WRK-1274 | Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections | pending | medium | medium | - |
@@ -5641,7 +5650,7 @@
 | WRK-1289 | Review Anthropic agent skills course — apply learnings to ecosystem skill design | pending | medium | medium | workspace-hub |
 | WRK-1317 | Generalize stage-transition engine to all workspace-hub workflows | pending | high | C | - |
 | WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | workspace-hub |
-| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | pending | medium | B | - |
+| WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - |
 
 ### dev-primary, dev-secondary (18 active / 20 total)
 
@@ -5682,11 +5691,13 @@
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | blocked | high | medium | workspace-hub |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | blocked | high | complex | digitalmodel |
 
-### sowon (2 active / 5 total)
+### sowon (2 active / 7 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
+| WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | workspace-hub |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | workspace-hub |
+| WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | workspace-hub |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | workspace-hub |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | working | medium | medium | workspace-hub |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | workspace-hub |

@@ -1,0 +1,15 @@
+wrk_id: WRK-1321
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    completed_at: 2026-03-21T12:20:00Z
+  - id: CL-03-2
+    text: "Confirmed route (C), workstations (dev-primary), orchestrator (claude)"
+    completed: true
+    completed_at: 2026-03-21T12:20:00Z
+  - id: CL-03-3
+    text: "Open questions surfaced; WRK frontmatter updated"
+    completed: true
+    completed_at: 2026-03-21T12:20:00Z
