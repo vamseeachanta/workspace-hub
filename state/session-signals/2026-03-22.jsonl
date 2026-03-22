@@ -27,3 +27,5 @@
 {"event": "stage_exit", "wrk": "WRK-5110", "stage": 14, "date": "2026-03-22", "timestamp": "2026-03-22T10:15:52.360170Z"}
 {"event": "stage_exit", "wrk": "WRK-5110", "stage": 15, "date": "2026-03-22", "timestamp": "2026-03-22T10:16:28.792844Z"}
 {"event": "stage_exit", "wrk": "WRK-5110", "stage": 16, "date": "2026-03-22", "timestamp": "2026-03-22T10:17:07.616429Z"}
+{"event": "stage_exit", "wrk": "WRK-5110", "stage": 17, "date": "2026-03-22", "timestamp": "2026-03-22T14:13:53.208110Z"}
+{"event": "stage_exit", "wrk": "WRK-5110", "stage": 18, "date": "2026-03-22", "timestamp": "2026-03-22T14:14:44.077970Z"}
