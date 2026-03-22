@@ -1,0 +1,161 @@
+stages:
+- order: 1
+  name: Capture
+  slug: capture
+  contract: scripts/work-queue/stages/stage-01-capture.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-01-capture.md
+  weight: light
+  human_gate: false
+  invocation: human_interactive
+- order: 2
+  name: Resource Intelligence
+  slug: resource-intelligence
+  contract: scripts/work-queue/stages/stage-02-resource-intelligence.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-02-resource-intelligence.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 3
+  name: Triage
+  slug: triage
+  contract: scripts/work-queue/stages/stage-03-triage.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-03-triage.md
+  weight: light
+  human_gate: false
+  invocation: chained_agent
+- order: 4
+  name: Plan Draft
+  slug: plan-draft
+  contract: scripts/work-queue/stages/stage-04-plan-draft.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-04-plan-draft.md
+  weight: medium
+  human_gate: false
+  invocation: chained_agent
+- order: 5
+  name: User Review - Plan Draft
+  slug: user-review-plan-draft
+  contract: scripts/work-queue/stages/stage-05-user-review-plan-draft.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-05-user-review-plan-draft.md
+  weight: heavy
+  human_gate: true
+  invocation: human_interactive
+- order: 6
+  name: Cross-Review
+  slug: cross-review
+  contract: scripts/work-queue/stages/stage-06-cross-review.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-06-cross-review.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 7
+  name: User Review - Plan Final
+  slug: user-review-plan-final
+  contract: scripts/work-queue/stages/stage-07-user-review-plan-final.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-07-user-review-plan-final.md
+  weight: heavy
+  human_gate: true
+  invocation: human_interactive
+- order: 8
+  name: Claim / Activation
+  slug: claim-activation
+  contract: scripts/work-queue/stages/stage-08-claim-activation.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-08-claim-activation.md
+  weight: light
+  human_gate: false
+  invocation: chained_agent
+- order: 9
+  name: Work-Queue Routing
+  slug: routing
+  contract: scripts/work-queue/stages/stage-09-routing.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-09-routing.md
+  weight: light
+  human_gate: false
+  invocation: chained_agent
+- order: 10
+  name: Work Execution
+  slug: work-execution
+  contract: scripts/work-queue/stages/stage-10-work-execution.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-10-work-execution.md
+  weight: heavy
+  human_gate: false
+  invocation: task_agent
+- order: 11
+  name: Artifact Generation
+  slug: artifact-generation
+  contract: scripts/work-queue/stages/stage-11-artifact-generation.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-11-artifact-generation.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 12
+  name: TDD / Eval
+  slug: tdd-eval
+  contract: scripts/work-queue/stages/stage-12-tdd-eval.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-12-tdd-eval.md
+  weight: heavy
+  human_gate: false
+  invocation: task_agent
+- order: 13
+  name: Agent Cross-Review
+  slug: agent-cross-review
+  contract: scripts/work-queue/stages/stage-13-agent-cross-review.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-13-agent-cross-review.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 14
+  name: Verify Gate Evidence
+  slug: verify-gate-evidence
+  contract: scripts/work-queue/stages/stage-14-verify-gate-evidence.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-14-verify-gate-evidence.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 15
+  name: Future Work Synthesis
+  slug: future-work
+  contract: scripts/work-queue/stages/stage-15-future-work.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-15-future-work.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 16
+  name: Resource Intelligence Update
+  slug: resource-intelligence-update
+  contract: scripts/work-queue/stages/stage-16-resource-intelligence-update.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-16-resource-intelligence-update.md
+  weight: medium
+  human_gate: false
+  invocation: task_agent
+- order: 17
+  name: User Review - Implementation
+  slug: user-review-implementation
+  contract: scripts/work-queue/stages/stage-17-user-review-implementation.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-17-user-review-implementation.md
+  weight: heavy
+  human_gate: true
+  invocation: human_interactive
+- order: 18
+  name: Reclaim
+  slug: reclaim
+  contract: scripts/work-queue/stages/stage-18-reclaim.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-18-reclaim.md
+  weight: light
+  human_gate: false
+  invocation: task_agent
+- order: 19
+  name: Close
+  slug: close
+  contract: scripts/work-queue/stages/stage-19-close.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-19-close.md
+  weight: light
+  human_gate: false
+  invocation: task_agent
+- order: 20
+  name: Archive
+  slug: archive
+  contract: scripts/work-queue/stages/stage-20-archive.yaml
+  micro_skill: .claude/skills/workspace-hub/stages/stage-20-archive.md
+  weight: light
+  human_gate: false
+  invocation: task_agent

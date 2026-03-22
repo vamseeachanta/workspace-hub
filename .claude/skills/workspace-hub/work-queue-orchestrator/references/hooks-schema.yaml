@@ -1,0 +1,49 @@
+# Schema for per-stage hooks in stage contract YAML files.
+# Hooks are arrays of {script, description, gate, timeout_s} objects.
+
+type: object
+properties:
+  pre_enter_hooks:
+    type: array
+    items:
+      type: object
+      properties:
+        script:
+          type: string
+          description: Shell command to execute before entering stage
+        description:
+          type: string
+          description: Human-readable hook purpose
+        gate:
+          type: string
+          enum: [hard, soft]
+          description: "hard = blocks on failure; soft = warns only"
+        timeout_s:
+          type: integer
+          minimum: 1
+          maximum: 3600
+          description: Maximum seconds before hook times out
+      required: [script, description, gate, timeout_s]
+  pre_exit_hooks:
+    type: array
+    items:
+      type: object
+      properties:
+        script:
+          type: string
+          description: Shell command to execute before exiting stage
+        description:
+          type: string
+          description: Human-readable hook purpose
+        gate:
+          type: string
+          enum: [hard, soft]
+          description: "hard = blocks on failure; soft = warns only"
+        timeout_s:
+          type: integer
+          minimum: 1
+          maximum: 3600
+          description: Maximum seconds before hook times out
+      required: [script, description, gate, timeout_s]
+required:
+  - pre_exit_hooks

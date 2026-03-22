@@ -1,0 +1,43 @@
+# Work-Queue Orchestrator — No-Bypass Constraints
+# These constraints are enforced by dispatch-run.sh and exit_stage.py.
+
+constraints:
+  - id: NB-01
+    rule: dispatch-before-group-runner
+    description: >
+      dispatch-run.sh must be called before any group runner
+      (run-plan.sh, run-execute.sh, etc.). L3 hook blocks
+      group runner calls without a dispatch breadcrumb.
+    enforcement: hook
+    script: scripts/work-queue/dispatch-run.sh
+
+  - id: NB-02
+    rule: human-gates-cannot-be-skipped
+    description: >
+      Stages 1, 5, 7, 17 are hard human gates. Agent must stop
+      and wait for explicit approval. Silence is not approval.
+    enforcement: exit_stage.py
+    stages: [1, 5, 7, 17]
+
+  - id: NB-03
+    rule: evidence-before-exit
+    description: >
+      Each stage's exit_artifacts must exist before exit_stage.py
+      allows transition. Missing artifacts block the transition.
+    enforcement: exit_stage.py
+
+  - id: NB-04
+    rule: plan-mode-before-writes
+    description: >
+      Stages 4, 6, 10, 13 require EnterPlanMode before any
+      implementation or artifact writes.
+    enforcement: micro-skill
+    stages: [4, 6, 10, 13]
+
+  - id: NB-05
+    rule: tdd-before-implementation
+    description: >
+      Stage 10 requires failing tests written before any
+      implementation code (TDD Red-Green-Refactor).
+    enforcement: micro-skill
+    stages: [10]
