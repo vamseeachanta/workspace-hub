@@ -10,6 +10,132 @@
 - **Z** = vertical (+ up)
 - **Origin** = coupler pin (N5), center of rear trunk frame
 
+### 3D Axes Convention
+
+```
+                +Z (up)
+                 ↑
+                 │
+                 │
+                 │
+                 │
+                 │
+                 ●──────────────► +X (right)
+                ╱  Origin = N5
+               ╱   (coupler pin,
+              ╱     center of
+             ╱      rear trunk frame)
+            ╱
+           ↙
+         +Y (forward)
+
+
+    Axis    Direction          Vehicle Reference
+    ────    ─────────          ─────────────────
+    +X      right              passenger side
+    −X      left               driver side
+    +Y      forward            toward hood/engine
+    −Y      rearward           toward bumper/chute
+    +Z      up                 toward roof
+    −Z      down               toward ground
+```
+
+### Plan View (top-down, X-Y plane)
+
+```
+                         +Y (forward)
+                           ↑
+                           │
+              ┌────────────┼────────────┐
+             ╱│            │            │╲
+            ╱ │   HOOD     │            │ ╲
+           ╱  │            │            │  ╲
+          │   │  Assembly 2│(GT1R kit)  │   │
+          │   │   under-   │            │   │
+          │   │    hood    │            │   │
+          │   ├────────────┼────────────┤   │
+          │   │            │            │   │
+          │   │  CABIN     │            │   │
+          │   │            │            │   │
+          │   │            │            │   │
+          │   ├────────────┼────────────┤   │
+          │   │            │            │   │
+ -X ◄─────┼───┤  TRUNK    ●(N5 origin) ├───┼─────► +X
+  (left)  │   │  Assembly 1│(custom wld)│   │  (right)
+          │   │            │            │   │
+          │   │   N0●━━━━━━●━━━━━━●N4   │   │
+          │   │            │            │   │
+           ╲  │            │            │  ╱
+            ╲ └────────────┼────────────┘ ╱
+             ╲─────────────┼─────────────╱
+                           │
+                           ● N6 (parachute)
+                           │
+                           ↓
+                         -Y (rearward)
+```
+
+### Side View (right side, Y-Z plane)
+
+```
+                  +Z (up)
+                    ↑
+                    │
+                    │         ╱╲
+                    │        ╱  ╲  windshield
+                    │   ____╱    ╲________
+                    │  │roof              │trunk lid
+                    │  │                  │   ╲
+                    │  │     CABIN        │    ╲
+                    │  │                  │ Assembly 1
+   Assembly 2 ─────┤──┤                  ├──●━bar (Z=0)
+   (under-hood)    │  │                  │  │╲
+                    │  │                  │  │ ╲ v-strut
+                    │  │                  │  │  ╲
+  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓●━━N5 (Z=-7.25)
+  ▓▓ ground ▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│
+                    │  └──────────────────┘  │ arm
+                    │     ◎            ◎     │
+                    │   (front         (rear ● N6 (chute)
+                    │    wheel)        wheel)
+                    │
+   -Y ◄─────────────┼──────────────────────────────► +Y
+   (rearward)       │                          (forward)
+                    ↓
+                  -Z (down)
+```
+
+### Front View (looking from rear, X-Z plane)
+
+```
+                  +Z (up)
+                    ↑
+                    │        ___________
+                    │       ╱           ╲
+                    │      ╱   rear      ╲
+                    │     ╱   window      ╲
+                    │    │                 │
+                    │    │     TRUNK       │
+                    │    │                 │
+  N0●━━━━━━━━━━━━━━●━━━━●━━━━━━━━━━━━━━━━●━━━━━━━━━━●N4   Z=0
+  (C3 fix)  N1     │    N2               N3     (C3 fix)
+             ╲     │     │              ╱
+              ╲    │     │  7.25"      ╱
+               ╲   │     ↕           ╱
+                ╲  │               ╱
+                 ╲ │              ╱
+                  ╲│             ╱
+                   ●━━━━━━━━━━━● N5                        Z=-7.25
+                   │  (coupler pin)
+                   │
+                   │  ◎ tailpipe   ◎ tailpipe
+                   │
+  -X ◄─────────────┼──────────────────────────────► +X
+  (left)           │                           (right)
+                   ↓
+                 -Z (down)
+```
+
 ## Assembly 1: Rear Trunk Frame (sketch page 1 + photos)
 
 ### Parachute Arm (from chute attachment to coupler pin)
