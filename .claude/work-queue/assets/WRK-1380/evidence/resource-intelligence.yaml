@@ -1,0 +1,25 @@
+wrk_id: WRK-1380
+stage: 2
+generated_at: "2026-03-22T09:33:39Z"
+completion_status: continue_to_planning
+domain:
+  category: document-intelligence
+  subcategory: manual-curation
+  problem: "Populate ship dimensions from 110 SNAME ship-plan PDFs and verify a subset against Jane's Fighting Ships 2009-2010."
+  architecture_decision: "Plan around manifest-guided manual extraction with mounted PDF references; do not depend on OCR-only extraction for drawing-heavy plans."
+skills:
+  core_used:
+    - work-queue-workflow
+    - resource-intelligence
+    - document-index-pipeline
+top_p1_gaps: []
+top_p2_gaps:
+  - "Locate or confirm the canonical generator for the initial ship-dimensions template."
+  - "Confirm the canonical repository path for the generated ship-dimensions.yaml output."
+top_p3_gaps:
+  - "Stage 1 approval polling defaults should respect cross-repo github_issue_ref values without a manual GH_REPO override."
+quality_signals:
+  missing_artifact_rate: 0.0
+  plan_edits_required: 0
+  confidence: medium
+notes: "Local manifests and mounted SNAME/Jane's references are present; no P1 resource blocker prevents planning."

@@ -1,0 +1,16 @@
+wrk_id: WRK-1380
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+    completed_at: 2026-03-22T09:04:10Z
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+    completed_at: 2026-03-22T09:04:10Z
+  - id: CL-01-3
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: user
+    completed_at: 2026-03-22T09:04:10Z

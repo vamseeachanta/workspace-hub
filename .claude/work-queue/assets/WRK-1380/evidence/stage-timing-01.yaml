@@ -1,4 +1,12 @@
 stage: 1
 wrk_id: WRK-1380
 human_gate: true
-started_at: "2026-03-22T02:40:14.867178+00:00"
+started_at: "2026-03-22T09:03:29.731086+00:00"
+completed_at: "2026-03-22T09:04:17.455670+00:00"
+duration_s: 47.7
+completed_at: "2026-03-22T09:04:45.118193+00:00"
+duration_s: 75.4
+completed_at: "2026-03-22T09:05:50.667966+00:00"
+duration_s: 140.9
+completed_at: "2026-03-22T09:06:24.466448+00:00"
+duration_s: 174.7

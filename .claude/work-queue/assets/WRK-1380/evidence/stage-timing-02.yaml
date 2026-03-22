@@ -1,0 +1,6 @@
+stage: 2
+wrk_id: WRK-1380
+human_gate: false
+started_at: "2026-03-22T09:06:49.735449+00:00"
+completed_at: "2026-03-22T10:04:20.722854+00:00"
+duration_s: 3451.0

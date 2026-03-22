@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-1380
+reviewer: user
+confirmed_at: "2026-03-22T09:04:10Z"
+scope_approved: true
+notes: "User approved continuing after github_issue_ref update."

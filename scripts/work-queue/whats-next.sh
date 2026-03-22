@@ -12,7 +12,7 @@ SHOW_ALL=false
 MED_LIMIT=20
 COMPACT=false
 _CATEGORY_EXPLICIT=false
-_DEBUG=false
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --category)     FILTER_CATEGORY="$2"; _CATEGORY_EXPLICIT=true; shift 2 ;;
@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
     --all)          SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
     --limit)        MED_LIMIT="$2"; shift 2 ;;
     --compact)      COMPACT=true; shift ;;
-    --debug)        _DEBUG=true; shift ;;
+
     *) shift ;;
   esac
 done
@@ -555,7 +555,15 @@ render_blocked() {
 # ── Main output ──────────────────────────────────────────────────────────────
 
 echo ""
-scope_label="${FILTER_CATEGORY:-all categories}"
+if [[ -n "$FILTER_CATEGORY" && -n "$FILTER_SUBCATEGORY" ]]; then
+  scope_label="$FILTER_CATEGORY / $FILTER_SUBCATEGORY"
+elif [[ -n "$FILTER_CATEGORY" ]]; then
+  scope_label="$FILTER_CATEGORY"
+elif [[ -n "$FILTER_SUBCATEGORY" ]]; then
+  scope_label="subcategory: $FILTER_SUBCATEGORY"
+else
+  scope_label="all categories"
+fi
 echo "\033[1m╔══════════════════════════════════════════════╗\033[0m"
 printf "\033[1m║   WHAT'S NEXT  %-30s║\033[0m\n" "$(date '+%Y-%m-%d %H:%M')     "
 printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"

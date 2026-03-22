@@ -1,0 +1,39 @@
+resources:
+  - name: wrk_spec
+    path: /mnt/local-analysis/workspace-hub/.claude/work-queue/pending/WRK-1381.md
+    type: wrk
+    note: Canonical acceptance criteria and scope
+  - name: github_issue_458
+    path: https://github.com/vamseeachanta/digitalmodel/issues/458
+    type: github_issue
+    note: Human-review coordination thread
+  - name: stability_api
+    path: /mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/naval_architecture/stability.py
+    type: source_code
+    note: Existing GZ calculation API
+  - name: dedicated_gz_fixture
+    path: /mnt/local-analysis/workspace-hub/digitalmodel/tests/fixtures/test_vectors/naval_architecture/gz_curves.yaml
+    type: fixture
+    note: Current dedicated GZ curve fixture set with 3 conditions
+  - name: dedicated_gz_tests
+    path: /mnt/local-analysis/workspace-hub/digitalmodel/tests/naval_architecture/test_gz_curves.py
+    type: test
+    note: Existing GZ curve validation tests
+  - name: en400_stability_fixture
+    path: /mnt/local-analysis/workspace-hub/digitalmodel/tests/fixtures/test_vectors/naval_architecture/en400_stability.yaml
+    type: fixture
+    note: Point-example stability data from EN400
+  - name: en400_stability_tests
+    path: /mnt/local-analysis/workspace-hub/digitalmodel/tests/naval_architecture/test_en400_worked_examples.py
+    type: test
+    note: Existing worked-example coverage for Chapter 4 stability
+missing_resources:
+  - name: curves_index
+    path: curves/index.jsonl
+    type: missing_reference
+  - name: pna_gz_manifest
+    path: PNA-GZ-Curves.manifest.yaml
+    type: missing_reference
+  - name: shared_digitized_curve_artifact
+    path: data/doc-intelligence/digitized-curves/gz-curves.yaml
+    type: missing_reference

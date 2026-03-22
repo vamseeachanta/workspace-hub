@@ -1,0 +1,35 @@
+wrk_id: WRK-1380
+no_external_sources: false
+sources:
+  - id: workspace_hub_local
+    source_type: registry
+    origin: /mnt/local-analysis/workspace-hub
+    license_access: in_repo
+    retrieval_date: "2026-03-22"
+    canonical_storage_path: /mnt/local-analysis/workspace-hub
+    duplicate_status: canonical
+    status: available
+  - id: ace_standards_local
+    source_type: registry
+    origin: /mnt/ace/docs/_standards
+    license_access: mounted_local
+    retrieval_date: "2026-03-22"
+    canonical_storage_path: /mnt/ace/docs/_standards
+    duplicate_status: canonical
+    status: available
+  - id: ocrmypdf_limitations_docs
+    source_type: additive
+    origin: https://ocrmypdf.readthedocs.io/en/v11.4.5/introduction.html
+    license_access: public_web
+    retrieval_date: "2026-03-22"
+    canonical_storage_path: https://ocrmypdf.readthedocs.io/en/v11.4.5/introduction.html
+    duplicate_status: additive_unique
+    status: available
+  - id: tesseract_improve_quality_docs
+    source_type: additive
+    origin: https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html
+    license_access: public_web
+    retrieval_date: "2026-03-22"
+    canonical_storage_path: https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html
+    duplicate_status: additive_unique
+    status: available

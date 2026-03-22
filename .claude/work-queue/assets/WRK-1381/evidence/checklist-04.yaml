@@ -1,0 +1,22 @@
+wrk_id: WRK-1381
+stage: 4
+completed_at: "2026-03-22"
+items:
+  - id: CL-04-1
+    completed: true
+    evidence: "Scripts-over-LLM audit documented in WRK-1381 ## Plan; no existing curve-expansion script found in current workspace snapshot."
+  - id: CL-04-2
+    completed: true
+    evidence: "Plan ideation completed before writing plan artifacts; Route B inline plan added to WRK-1381."
+  - id: CL-04-3
+    completed: true
+    evidence: "4 acceptance criteria already present in WRK and reflected in phase/test planning."
+  - id: CL-04-4
+    completed: true
+    evidence: "5-step pseudocode added in WRK-1381 ## Plan."
+  - id: CL-04-5
+    completed: true
+    evidence: "6-entry test plan added in WRK-1381 ## Plan."
+  - id: CL-04-6
+    completed: true
+    evidence: "Route B authoritative plan written inline in .claude/work-queue/pending/WRK-1381.md."

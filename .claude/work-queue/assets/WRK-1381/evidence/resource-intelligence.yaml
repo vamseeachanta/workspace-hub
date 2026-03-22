@@ -1,0 +1,67 @@
+wrk_id: WRK-1381
+stage: 2
+completed_at: "2026-03-22T09:40:00Z"
+completion_status: continue_to_planning
+generated_by: codex
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - AGENTS.md
+
+relevant_files:
+  wrk:
+    - .claude/work-queue/pending/WRK-1381.md
+  source_code:
+    - digitalmodel/src/digitalmodel/naval_architecture/stability.py
+  fixtures:
+    - digitalmodel/tests/fixtures/test_vectors/naval_architecture/gz_curves.yaml
+    - digitalmodel/tests/fixtures/test_vectors/naval_architecture/en400_stability.yaml
+  tests:
+    - digitalmodel/tests/naval_architecture/test_gz_curves.py
+    - digitalmodel/tests/naval_architecture/test_en400_worked_examples.py
+
+existing_patterns:
+  - "Dedicated GZ fixture file already exists in digitalmodel with 3 curve conditions."
+  - "Dedicated GZ test module already validates fixture values plus IMO criteria."
+  - "EN400 worked-example stability data already provides point-example coverage."
+  - "GZ calculation API exists; the main gap is fixture breadth and traceability."
+
+gaps:
+  - id: G1
+    severity: P1
+    description: >
+      Current dedicated GZ fixture coverage is 3 conditions, below the WRK target of
+      at least 10 digitized curves with source traceability.
+  - id: G2
+    severity: P1
+    description: >
+      Shared digitized-curve artifact `data/doc-intelligence/digitized-curves/gz-curves.yaml`
+      is not present in the current workspace snapshot.
+  - id: G3
+    severity: P2
+    description: >
+      Referenced source-side assets (`curves/index.jsonl`, `PNA-GZ-Curves.manifest.yaml`)
+      are not present under the active workspace root.
+  - id: G4
+    severity: P2
+    description: >
+      Fixture schema currently mixes imperial and metric representations without a documented
+      canonical normalization strategy.
+
+risks:
+  - id: R1
+    description: Missing source-side assets could stall traceable expansion beyond existing fixtures.
+    mitigation: >
+      Plan from confirmed in-repo textbook-derived values first; explicitly track absent
+      assets as open questions in Stage 4.
+  - id: R2
+    description: Unit ambiguity in expanded fixtures could produce misleading tests.
+    mitigation: >
+      Require schema decision and failing tests for traceability/unit consistency before
+      fixture expansion.
+  - id: R3
+    description: Claim/activation attempted too early will fail gate enforcement.
+    mitigation: >
+      Complete Stage 4-7 planning evidence before running claim-item.sh.

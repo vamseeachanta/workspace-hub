@@ -131,6 +131,7 @@
       "Bash(pip:*)",
       "Bash(pip3:*)"
     ],
+    "defaultMode": "bypassPermissions",
     "deny": [
       "Bash(rm -rf /)",
       "Bash(curl:*)",
