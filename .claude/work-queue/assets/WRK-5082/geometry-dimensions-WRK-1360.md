@@ -88,11 +88,11 @@
                     │  │                  │   ╲
                     │  │     CABIN        │    ╲
                     │  │                  │ Assembly 1
-   Assembly 2 ─────┤──┤                  ├──●━bar (Z=0)
+   Assembly 2 ─────┤──┤                  ├──●━bar (Z=+7.25)
    (under-hood)    │  │                  │  │╲
                     │  │                  │  │ ╲ v-strut
                     │  │                  │  │  ╲
-  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓●━━N5 (Z=-7.25)
+  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓●━━N5 ORIGIN (Z=0)
   ▓▓ ground ▓▓▓▓▓▓▓│▓▓│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│▓▓│
                     │  └──────────────────┘  │ arm
                     │     ◎            ◎     │
@@ -117,7 +117,7 @@
                     │    │                 │
                     │    │     TRUNK       │
                     │    │                 │
-  N0●━━━━━━━━━━━━━━●━━━━●━━━━━━━━━━━━━━━━●━━━━━━━━━━●N4   Z=0
+  N0●━━━━━━━━━━━━━━●━━━━●━━━━━━━━━━━━━━━━●━━━━━━━━━━●N4   Z=+7.25
   (C3 fix)  N1     │    N2               N3     (C3 fix)
              ╲     │     │              ╱
               ╲    │     │  7.25"      ╱
@@ -125,7 +125,7 @@
                 ╲  │               ╱
                  ╲ │              ╱
                   ╲│             ╱
-                   ●━━━━━━━━━━━● N5                        Z=-7.25
+                   ●━━━━━━━━━━━● N5 (ORIGIN)               Z=0
                    │  (coupler pin)
                    │
                    │  ◎ tailpipe   ◎ tailpipe
@@ -143,15 +143,15 @@
 | Parameter | Value | Unit | Confidence | Source | Notes |
 |-----------|-------|------|------------|--------|-------|
 | arm_length | 12.0 | in | low | photo estimate | N6→N5, Y-direction. Revised down from 18" based on bracket closeup |
-| arm_z | -7.25 | in | high | sketch | Arm and coupler pin sit 7.25" below horizontal bar |
+| arm_z | 0.0 | in | — | origin | Arm and coupler pin at origin Z=0 |
 
-### Coupler Pin (N5) — V-strut convergence point
+### Coupler Pin (N5) — ORIGIN
 
 | Parameter | Value | Unit | Confidence | Source | Notes |
 |-----------|-------|------|------------|--------|-------|
-| coupler_x | 0.0 | in | high | symmetry | Centered on vehicle |
-| coupler_y | 0.0 | in | — | origin | Reference point |
-| coupler_z | -7.25 | in | high | sketch "7.25" | Below horizontal bar |
+| coupler_x | 0.0 | in | high | symmetry | Centered on vehicle — **ORIGIN** |
+| coupler_y | 0.0 | in | — | origin | **ORIGIN** |
+| coupler_z | 0.0 | in | — | origin | **ORIGIN** — bar is 7.25" above at Z=+7.25 |
 
 ### Horizontal Bar (symmetric about X=0)
 
@@ -160,19 +160,19 @@
 | bar_total_width | 36.0 | in | high | sketch 6+12+12+6 | Full transverse span |
 | outer_segment | 6.0 | in | high | sketch | N0→N1 and N3→N4 (end stubs to frame rail mounts) |
 | inner_segment | 12.0 | in | high | sketch | N1→N2 and N2→N3 (strut junction to center bolt) |
-| bar_z | 0.0 | in | — | reference | Bar defines Z=0 plane |
+| bar_z | +7.25 | in | high | sketch | Bar is 7.25" above coupler pin (origin) |
 
-### Node Positions (rear trunk, from centerline)
+### Node Positions (rear trunk, origin at N5)
 
 | Node | X | Y | Z | Label | Connection | BC |
 |------|---|---|---|-------|------------|----|
-| N0 | -18.0 | 0.0 | 0.0 | left C3 mount | C3 weld | fixed |
-| N1 | -12.0 | 0.0 | 0.0 | left strut junction | C0 weld | free |
-| N2 | 0.0 | 0.0 | 0.0 | center bolt | C1 bolt+pin | free (shear) |
-| N3 | +12.0 | 0.0 | 0.0 | right strut junction | C0 weld | free |
-| N4 | +18.0 | 0.0 | 0.0 | right C3 mount | C3 weld | fixed |
-| N5 | 0.0 | 0.0 | -7.25 | coupler pin | double pin | free |
-| N6 | 0.0 | -12.0 | -7.25 | parachute bracket | bracket | free |
+| N0 | -18.0 | 0.0 | +7.25 | left C3 mount | C3 weld | fixed |
+| N1 | -12.0 | 0.0 | +7.25 | left strut junction | C0 weld | free |
+| N2 | 0.0 | 0.0 | +7.25 | center bolt | C1 bolt+pin | free (shear) |
+| N3 | +12.0 | 0.0 | +7.25 | right strut junction | C0 weld | free |
+| N4 | +18.0 | 0.0 | +7.25 | right C3 mount | C3 weld | fixed |
+| N5 | 0.0 | 0.0 | 0.0 | coupler pin | double pin | free |
+| N6 | 0.0 | -12.0 | 0.0 | parachute bracket | bracket | free |
 
 ### V-Struts
 
@@ -209,7 +209,7 @@
 | Parameter | Value | Unit | Confidence | Source | Notes |
 |-----------|-------|------|------------|--------|-------|
 | hood_fwd_offset | 60.0 | in | low | estimate | Distance forward of trunk bar — needs measurement |
-| hood_z_elevation | 12.0 | in | low | estimate | Height above trunk bar — needs measurement |
+| hood_z_elevation | 19.25 | in | low | estimate | Height above origin (was 12" above bar, bar is at Z=+7.25) |
 | hood_bar_main | 14.0 | in | medium | sketch "14" | N7→N8 horizontal bar span |
 | hood_bar_end_horiz | 5.0 | in | medium | sketch "5" | N8→N9 horizontal to bolted connection |
 | hood_bar_end_drop | 1.0 | in | medium | sketch "1" | N8→N9 vertical drop at B1 |
@@ -220,10 +220,10 @@
 
 | Node | X | Y | Z | Label | Connection | BC |
 |------|---|---|---|-------|------------|----|
-| N7 | -18.0 | 60.0 | 12.0 | hood bar left | C2 weld | free |
-| N8 | -4.0 | 60.0 | 12.0 | hood bar right | C2 weld | free |
-| N9 | 1.0 | 60.0 | 11.0 | B1 bolted | B1 (M8, 6 bolts) | bolted |
-| N10 | -4.0 | 68.0 | 12.0 | P1 pinned | P1 | pinned |
+| N7 | -18.0 | 60.0 | +19.25 | hood bar left | C2 weld | free |
+| N8 | -4.0 | 60.0 | +19.25 | hood bar right | C2 weld | free |
+| N9 | 1.0 | 60.0 | +18.25 | B1 bolted | B1 (M8, 6 bolts) | bolted |
+| N10 | -4.0 | 68.0 | +19.25 | P1 pinned | P1 | pinned |
 
 ## Tube Properties
 
@@ -266,7 +266,7 @@
        │   6"   │   12"   │  12"   │   6"   │
        ├────────┼─────────┼────────┼────────┤
        │        │         │        │        │
-       ●━━━━━━━━●━━━━━━━━━●━━━━━━━━●━━━━━━━━●  ── Z=0 (bar)
+       ●━━━━━━━━●━━━━━━━━━●━━━━━━━━●━━━━━━━━●  ── Z=+7.25 (bar)
       N0       N1        N2       N3       N4
    [C3 fix]  [C0 wld]  [C1 blt] [C0 wld] [C3 fix]
                 ╲                  ╱
@@ -275,12 +275,12 @@
                    ╲    │       ╱
                     ╲   ↓      ╱
                      ╲        ╱
-                      ● N5                      ── Z=-7.25
+                      ● N5 (ORIGIN)             ── Z=0
                    [coupler pin]
                       │
                       │ 12" (into page, −Y)
                       │
-                      ● N6                      ── Z=-7.25
+                      ● N6                      ── Z=0
                  [PARACHUTE POINT]
 ```
 
@@ -306,8 +306,8 @@
   │       │   Rear Trunk Frame
   │       │                │
   │  N0 ●━━━━━━●━━━━━━●━━━━━━●━━━━━━● N4            Y=0
-  │     -18   N1     N2     N3     +18
-  │            -12    0     +12
+  │     -18   N1    N2/N5   N3     +18
+  │            -12  (origin) +12
   │                   │
   │                   │ 12" (arm)
   │                   │
@@ -325,22 +325,22 @@
   ↑
   │
   │                    N8
-  │         ● ─────────                              Z=12
-  │         N7         │╲N9                           Z=11
+  │         ● ─────────                              Z=+19.25
+  │         N7         │╲N9                           Z=+18.25
   │                    │
   │    frame rail      │
   │    (behind)        │
   │                    │
   │                    │
-  ●━━━━━━━━━━━━━━━━━━━━● N2                          Z=0  (bar)
+  │                    ● N2                           Z=+7.25 (bar)
   │                    │
   │                    │ 7.25"
   │                    │
-  │                    ● N5                           Z=-7.25
+  ●━━━━━━━━━━━━━━━━━━━━● N5 (ORIGIN)                 Z=0
   │                    │
   │                    │ 12" (arm)
   │                    │
-  │                    ● N6                           Z=-7.25
+  │                    ● N6                           Z=0
   │               [PARACHUTE]
   │
   └──────────────────────────────────────→ Y (fwd +)
