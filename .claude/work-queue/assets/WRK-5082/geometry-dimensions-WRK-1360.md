@@ -131,9 +131,9 @@
 | ID | From | To | Label | Notes |
 |----|------|----|-------|-------|
 | M12 | N0 | N11 | chassis_bar_right | C2 weld → right bar end, 16" |
-| M13 | N11 | N12 | chassis_bar_right_end | Right bar → B1 bolted, angled |
+| M13 | N11 | N12 | chassis_bar_right_end | Right bar → B1 bolted, smooth bend |
 | M14 | N0 | N13 | chassis_bar_left | C2 weld → left bar end, 16" |
-| M15 | N13 | N14 | chassis_bar_left_end | Left bar → B1 bolted, angled |
+| M15 | N13 | N14 | chassis_bar_left_end | Left bar → B1 bolted, smooth bend |
 
 ### GT1R Kit Specs (from manufacturer)
 
@@ -318,6 +318,7 @@ Parachute drag
 | 1 | V-strut routing | N5/N8 connect to N2 **through N3** (not direct) |
 | 2 | Center spine N3 | Physical weld node (not just a bend) |
 | 3 | N7/N10 bar drop | **Smooth bends** (Z: 2.5 → -0.5) |
+| 6 | N11→N12 / N13→N14 | **Smooth bends** (chassis bar to B1 bolted) |
 | 4 | N12 position (21, 5, -4) | **Confirmed** — 3D path down to bolt onto chassis under upper body |
 | 5 | Fixed BCs | N7/N10 (C3 weld, fixed); N12/N14 (B1 bolted) |
 
