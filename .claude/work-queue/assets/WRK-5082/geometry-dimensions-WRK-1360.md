@@ -98,10 +98,10 @@
 | M5 | N8 | N3 | v_strut_left | Left bar junction → center spine mid (through N3) |
 | M6 | N4 | N5 | bar_right_inner | Center bar → right junction, 12" |
 | M7 | N4 | N8 | bar_left_inner | Center bar → left junction, 12" |
-| M8 | N5 | N6 | bar_right_mid | Right junction → bend, 3" |
-| M9 | N6 | N7 | bar_right_end | Bend → right C3, 3" (smooth bend, Z drops 2.5→-0.5) |
-| M10 | N8 | N9 | bar_left_mid | Left junction → bend, 3" |
-| M11 | N9 | N10 | bar_left_end | Bend → left C3, 3" (smooth bend, Z drops 2.5→-0.5) |
+| M8 | N5 | N6 | bar_right_mid | Right junction → bend start, 3" (straight) |
+| M9 | N6 | N7 | bar_right_bend | **BEND** R=5.25" CLR (3D), Z drops 2.5→-0.5 |
+| M10 | N8 | N9 | bar_left_mid | Left junction → bend start, 3" (straight) |
+| M11 | N9 | N10 | bar_left_bend | **BEND** R=5.25" CLR (3D), Z drops 2.5→-0.5 |
 
 ---
 
@@ -130,10 +130,10 @@
 
 | ID | From | To | Label | Notes |
 |----|------|----|-------|-------|
-| M12 | N0 | N11 | chassis_bar_right | C2 weld → right bar end, 16" |
-| M13 | N11 | N12 | chassis_bar_right_end | Right bar → B1 bolted, smooth bend |
-| M14 | N0 | N13 | chassis_bar_left | C2 weld → left bar end, 16" |
-| M15 | N13 | N14 | chassis_bar_left_end | Left bar → B1 bolted, smooth bend |
+| M12 | N0 | N11 | chassis_bar_right | C2 weld → right bar end, 16" (straight) |
+| M13 | N11 | N12 | chassis_bar_right_bend | **BEND** R=5.25" CLR (3D), 3D path to B1 bolted |
+| M14 | N0 | N13 | chassis_bar_left | C2 weld → left bar end, 16" (straight) |
+| M15 | N13 | N14 | chassis_bar_left_bend | **BEND** R=5.25" CLR (3D), 3D path to B1 bolted |
 
 ### GT1R Kit Specs (from manufacturer)
 
@@ -145,6 +145,25 @@
 | chute_hole_dia | 1.625 | in | T1 install guide | "1 5/8" hole saw" |
 | cable_hole_dia | 0.375 | in | T1 install guide | 3/8" for release cable |
 | chute_type | Stroud 430 | — | T1 recommendation | Single chute only |
+
+---
+
+## Bend Properties
+
+| Parameter | Value | Unit | Notes |
+|-----------|-------|------|-------|
+| tube_od | 1.75 | in | All members |
+| bend_clr | 5.25 | in | 3D bend (3 × OD), standard for roll cage / frame work |
+| bend_type | 3D | — | Mandrel bend recommended for 4130 chromoly |
+
+### Bend Members
+
+| Member | From | To | Bend Plane | Angle | Notes |
+|--------|------|----|------------|-------|-------|
+| M9 | N6 | N7 | X-Z at Y=20.5 | ~45° | Bar end drops Z: 2.5→-0.5, X: 15→18 |
+| M11 | N9 | N10 | X-Z at Y=20.5 | ~45° | Mirror of M9 |
+| M13 | N11 | N12 | 3D (X-Y-Z) | ~50° | Chassis bar to subframe, compound bend |
+| M15 | N13 | N14 | 3D (X-Y-Z) | ~50° | Mirror of M13 |
 
 ---
 
