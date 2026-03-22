@@ -394,7 +394,7 @@ partition_rows() {
 }
 
 # render_working_section <label> <colour> <emoji> <arr_name>
-# Enriched: ICON | WRK | PRI | URG | STAGE | PID | GH# | AGE | TITLE
+# Enriched: ICON | WRK | PRI | URG | GH# | AGE | STAGE | PID | TITLE
 # Compact:  ICON | WRK | PRI | STAGE | PID | TITLE
 render_working_section() {
   local label="$1" colour="$2" emoji="$3" arr_name="$4"
@@ -405,7 +405,7 @@ render_working_section() {
   if [[ "$COMPACT" == "true" ]]; then
     widths="4|10|10|9|11|60" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
   else
-    widths="4|10|6|5|9|11|6|5|50" hdrs="ICON|WRK|PRI|URG|STAGE|PID|GH#|AGE|TITLE"
+    widths="4|10|6|5|6|5|9|11|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|STAGE|PID|TITLE"
   fi
   local -a table_rows=()
 
@@ -423,7 +423,7 @@ render_working_section() {
     if [[ "$COMPACT" == "true" ]]; then
       table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
     else
-      table_rows+=("$emoji|$id|$pri|$urg|$stage_disp|$pid_disp|$gh|$age|$ttl")
+      table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$stage_disp|$pid_disp|$ttl")
     fi
     local _note="${WRK_NOTES[$id]:-}" _nb="${WRK_NOT_BEFORE[$id]:-}"
     [[ -n "$_note" ]] && table_rows+=("_NOTE_:$_note")
@@ -441,7 +441,7 @@ render_working_section() {
         if [[ "$COMPACT" == "true" ]]; then
           table_rows+=("$emoji|$id|$pri|$stage_disp|$pid_disp|$ttl")
         else
-          table_rows+=("$emoji|$id|$pri|$urg|$stage_disp|$pid_disp|$gh|$age|$ttl")
+          table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$stage_disp|$pid_disp|$ttl")
         fi
       done
     fi
@@ -451,7 +451,7 @@ render_working_section() {
 }
 
 # render_ready_section <label> <colour> <emoji> <arr_name>
-# Enriched: ICON | WRK | PRI | URG | CAT | SUB | GH# | AGE | [MACHINE] | TITLE
+# Enriched: ICON | WRK | PRI | URG | GH# | AGE | CAT | SUB | [MACHINE] | TITLE
 # Compact:  ICON | WRK | PRI | [MACHINE] | TITLE
 render_ready_section() {
   local label="$1" colour="$2" emoji="$3" arr_name="$4"
@@ -469,9 +469,9 @@ render_ready_section() {
     fi
   else
     if [[ "$mixed" == "true" ]]; then
-      widths="4|10|6|5|10|12|6|5|15|40" hdrs="ICON|WRK|PRI|URG|CAT|SUB|GH#|AGE|MACHINE|TITLE"
+      widths="4|10|6|5|6|5|10|12|15|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|MACHINE|TITLE"
     else
-      widths="4|10|6|5|10|12|6|5|50" hdrs="ICON|WRK|PRI|URG|CAT|SUB|GH#|AGE|TITLE"
+      widths="4|10|6|5|6|5|10|12|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|TITLE"
     fi
   fi
 
@@ -493,9 +493,9 @@ render_ready_section() {
       fi
     else
       if [[ "$mixed" == "true" ]]; then
-        table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$cpu|$ttl")
+        table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
       else
-        table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$ttl")
+        table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$ttl")
       fi
     fi
   done
@@ -514,9 +514,9 @@ render_ready_section() {
           fi
         else
           if [[ "$mixed" == "true" ]]; then
-            table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$cpu|$ttl")
+            table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
           else
-            table_rows+=("$emoji|$id|$pri|$urg|$cat|$sub|$gh|$age|$ttl")
+            table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$ttl")
           fi
         fi
       done
@@ -526,27 +526,29 @@ render_ready_section() {
   draw_table "$label" "$colour" "$emoji" "$widths" "$hdrs" "${table_rows[@]}"
 }
 
-# render_coordinating — Icon | WRK | Priority | Title | Child Progress
+# render_coordinating — Icon | WRK | PRI | URG | GH# | AGE | Child Progress | Title
 render_coordinating() {
   [[ ${#COORDINATING_ITEMS[@]} -eq 0 ]] && return
-  local widths="4|10|10|50|30" hdrs="ICON|WRK|PRI|TITLE|CHILD PROGRESS"
+  local widths="4|10|6|5|6|5|20|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CHILD PROGRESS|TITLE"
   local -a table_rows=()
   for crow in "${COORDINATING_ITEMS[@]}"; do
-    IFS='|' read -r cid cpri csub ccpu cttl cprogress _rest <<< "$crow"
-    table_rows+=("◈|$cid|$cpri|$cttl|$cprogress")
+    # wid|pri|sub|cpu|title|progress|urg|gh|age|cat
+    IFS='|' read -r cid cpri csub ccpu cttl cprogress curg cgh cage ccat <<< "$crow"
+    table_rows+=("◈|$cid|$cpri|$curg|$cgh|$cage|$cprogress|$cttl")
   done
   draw_table "COORDINATING — feature WRKs managing children" "\033[35m" "◈" \
     "$widths" "$hdrs" "${table_rows[@]}"
 }
 
-# render_blocked — Icon | WRK | Subcategory | Blocked By
+# render_blocked — Icon | WRK | PRI | URG | GH# | AGE | Blocked By | Title
 render_blocked() {
   [[ ${#EXT_BLOCKED[@]} -eq 0 ]] && return
-  local widths="4|10|26|70" hdrs="ICON|WRK|SUBCATEGORY|BLOCKED BY"
+  local widths="4|10|6|5|6|5|30|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|BLOCKED BY|TITLE"
   local -a table_rows=()
   for row in "${EXT_BLOCKED[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl reason _rest <<< "$row"
-    table_rows+=("✗|$id|$sub|$reason")
+    # wid|pri|sub|cpu|title|reason|urg|gh|age|cat
+    IFS='|' read -r id pri sub cpu ttl reason urg gh age cat <<< "$row"
+    table_rows+=("✗|$id|$pri|$urg|$gh|$age|$reason|$ttl")
   done
   draw_table "EXTERNALLY BLOCKED" "\033[31m" "✗" \
     "$widths" "$hdrs" "${table_rows[@]}"
@@ -582,11 +584,12 @@ render_blocked
 
 # ── Deferred items (not_before in the future) ─────────────────────────────
 if [[ ${#DEFERRED_ITEMS[@]} -gt 0 ]]; then
-  _def_widths="4|10|10|12|68" _def_hdrs="ICON|WRK|PRI|NOT BEFORE|TITLE"
+  _def_widths="4|10|6|5|6|5|12|40" _def_hdrs="ICON|WRK|PRI|URG|GH#|AGE|NOT BEFORE|TITLE"
   _def_rows=()
   for row in "${DEFERRED_ITEMS[@]}"; do
-    IFS='|' read -r id pri sub cpu ttl nb _rest <<< "$row"
-    _def_rows+=("⏳|$id|$pri|$nb|$ttl")
+    # wid|pri|sub|cpu|title|nb|urg|gh|age|cat
+    IFS='|' read -r id pri sub cpu ttl nb urg gh age cat <<< "$row"
+    _def_rows+=("⏳|$id|$pri|$urg|$gh|$age|$nb|$ttl")
   done
   draw_table "DEFERRED — not before date in the future" "\033[90m" "⏳" \
     "$_def_widths" "$_def_hdrs" "${_def_rows[@]}"
