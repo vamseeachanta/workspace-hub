@@ -1,12 +1,13 @@
 wrk_id: WRK-1380
-current_stage: 5
-stage_name: User Review - Plan Draft
-completed_stage: 4
-next_action: Execute stage 5: User Review - Plan Draft
-context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
+current_stage: 6
+stage_name: Cross-Review
+completed_stage: 5
+next_action: Execute stage 6: Cross-Review
+context_summary: Stage 5 complete. Next: stage 6 (Cross-Review).
 entry_reads:
   - .claude/work-queue/assets/WRK-1380/checkpoint.yaml
   - assets/WRK-1380/evidence/checklist-04.yaml
-  - pending/WRK-1380.md
-checkpointed_at: 2026-03-23T04:21:17Z
-human_gate: true
+  - assets/WRK-1380/evidence/user-review-plan-draft.yaml
+  - assets/WRK-1380/evidence/user-review-plan-draft.yaml
+checkpointed_at: 2026-03-23T05:51:29Z
+human_gate: false

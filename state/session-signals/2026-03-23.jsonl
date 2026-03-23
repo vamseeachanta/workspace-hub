@@ -3,3 +3,6 @@
 {"event": "stage_exit", "wrk": "WRK-1380", "stage": 3, "date": "2026-03-23", "timestamp": "2026-03-23T04:10:19.310705Z"}
 {"event": "stage_exit", "wrk": "WRK-1380", "stage": 4, "date": "2026-03-23", "timestamp": "2026-03-23T04:16:49.597027Z"}
 {"event": "stage_exit", "wrk": "WRK-1380", "stage": 4, "date": "2026-03-23", "timestamp": "2026-03-23T04:21:25.204075Z"}
+{"event": "stage_exit", "wrk": "WRK-5111", "stage": 2, "date": "2026-03-23", "timestamp": "2026-03-23T05:07:20.201068Z"}
+{"event": "stage_exit", "wrk": "WRK-5111", "stage": 3, "date": "2026-03-23", "timestamp": "2026-03-23T05:45:21.742801Z"}
+{"event": "stage_exit", "wrk": "WRK-5111", "stage": 4, "date": "2026-03-23", "timestamp": "2026-03-23T05:55:56.639909Z"}

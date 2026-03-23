@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-22T02:44:38Z by generate-index.py -->
+<!-- Generated: 2026-03-23T06:05:28Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-22T02:44:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-23T06:05:28Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 785
+**Total items:** 788
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 321 |
+| pending | 323 |
 | working | 8 |
 | blocked | 12 |
 | done | 9 |
@@ -23,8 +23,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 352 |
-| medium | 360 |
+| high | 353 |
+| medium | 362 |
 | low | 72 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 169 |
-| medium | 367 |
+| medium | 370 |
 | complex | 150 |
 
 ### By Category
@@ -41,8 +41,8 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 40 |
-| engineering | 166 |
+| harness | 41 |
+| engineering | 167 |
 | data | 27 |
 | platform | 11 |
 | business | 6 |
@@ -72,7 +72,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 368 |
+| workspace-hub | 372 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 293 / 785 |
-| Plans cross-reviewed | 207 |
-| Plans approved | 232 |
+| Plans exist | 295 / 788 |
+| Plans cross-reviewed | 208 |
+| Plans approved | 233 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 785 |
+| Total captured | 788 |
 | Total archived | 432 |
-| Completion rate | 432/785 (55%) |
+| Completion rate | 432/788 (55%) |
 | Monthly rate (current month) | 154 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,17 +102,17 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 78 / 321 | 24% |
-| Plans cross-reviewed | 8 | 9% |
-| Plans user-approved | 8 | 9% |
+| Pending items with plans | 78 / 323 | 24% |
+| Plans cross-reviewed | 9 | 10% |
+| Plans user-approved | 9 | 10% |
 
 ### Aging
 
 | Bucket | Count | Items |
 |--------|-------|-------|
-| Pending > 30 days | 23 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182 |
-| Pending > 14 days | 167 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-679, WRK-681, WRK-685, WRK-687, WRK-688, WRK-694, WRK-TEST-ENSEMBLE, WRK-1000, WRK-1001, WRK-1024 |
-| Working > 7 days | 2 | WRK-129, WRK-1022 |
+| Pending > 30 days | 28 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261 |
+| Pending > 14 days | 170 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-679, WRK-681, WRK-685, WRK-687, WRK-688, WRK-694, WRK-TEST-ENSEMBLE, WRK-1000, WRK-1001, WRK-1024, WRK-1027, WRK-1043, WRK-1048 |
+| Working > 7 days | 4 | WRK-129, WRK-1022, WRK-1251, WRK-5084 |
 | Blocked > 7 days | 10 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664, WRK-1082 |
 
 ### Priority Distribution (active items only)
@@ -120,14 +120,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 126 | 5 | 9 |
-| Medium   | 147  | 3  | 1  |
+| Medium   | 149  | 3  | 1  |
 | Low      | 48  | 0  | 2  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (40 items — 7 high, 27 medium, 6 low)
+### harness (41 items — 7 high, 28 medium, 6 low)
 
 #### harness / agent-adapters
 
@@ -203,6 +203,12 @@
 | WRK-1107 | MEDIUM | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending |
 | WRK-182 | LOW | Predictive Session Planning | pending |
 
+#### harness / skill-improvement
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1391 | MEDIUM | FreeCAD skill improvement — bend arcs + coordinate conventions | pending |
+
 #### harness / skills
 
 | ID | Priority | Title | Status |
@@ -254,7 +260,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (166 items — 84 high, 66 medium, 16 low)
+### engineering (167 items — 84 high, 67 medium, 16 low)
 
 #### engineering / artificial-lift
 
@@ -570,6 +576,12 @@
 |----|----------|-------|--------|
 | WRK-1233 | MEDIUM | Add test coverage for platform and pipeline loaders | pending |
 
+#### engineering / tooling
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5115 | MEDIUM | Custom GitHub CLI bash tools for session-cycle efficiency | pending |
+
 #### engineering / uncategorised
 
 | ID | Priority | Title | Status |
@@ -774,7 +786,7 @@
 | [WRK-1271](pending/WRK-1271.md) | Enforce 200-line hard limit on all SKILL.md files | pending | 0/0 |
 | [WRK-1281](pending/WRK-1281.md) | Extract numerical test vectors from all naval architecture literature and document intelligence | pending | 0/0 |
 | [WRK-1287](pending/WRK-1287.md) | Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills | pending | 0/0 |
-| [WRK-1321](pending/WRK-1321.md) | Restructure work-queue skills into two-tier folder-skill architecture | pending | 0/0 |
+| [WRK-1321](working/WRK-1321.md) | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | 0/4 archived (0%) |
 | [WRK-1322](pending/WRK-1322.md) | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | 0/0 |
 | [WRK-1339](pending/WRK-1339.md) | Deepen naval architecture knowledge extraction from SNAME collection | working | 0/14 archived (0%) |
 | [WRK-1341](pending/WRK-1341.md) | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | 0/0 |
@@ -798,7 +810,7 @@
 | [WRK-5070](pending/WRK-5070.md) | Metocean and extreme value analysis study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5071](pending/WRK-5071.md) | Coiled tubing hydraulics study — literature, methods and implementation | pending | 0/0 |
 | [WRK-5072](pending/WRK-5072.md) | Artificial lift and rod pump study — literature, methods and implementation | pending | 0/0 |
-| [WRK-5082](working/WRK-5082.md) | Parachute frame force calculation — drag car parachute deployment | coordinating | 0/10 archived (0%) |
+| [WRK-5082](working/WRK-5082.md) | Parachute frame force calculation — drag car parachute deployment | coordinating | 0/11 archived (0%) |
 
 ## Master Table
 
@@ -1494,7 +1506,7 @@
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | working | high | medium | dev-primary | dev-primary | dev-primary | - | aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | sabithaandkrishnaestates | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1320 | Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing | blocked | high | medium | dev-secondary | dev-primary | dev-secondary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1321 |
 | WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1510,9 +1522,7 @@
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | dev-primary | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360 |
-| WRK-1362 | Chute drag force — single and dual chute assessment | pending | high | medium | dev-primary | dev-primary | dev-primary | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1363 | 2D frame analysis | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362, WRK-1341 |
 | WRK-1365 | OrcaFlex frame analysis | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
@@ -1530,10 +1540,12 @@
 | WRK-1377 | Hull form parametric design — coefficients and Series 60 | pending | medium | complex | dev-primary | dev-primary | dev-primary | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1372 |
 | WRK-1378 | Regulatory compliance engine — IMO/ABS/DNV automated checks | pending | low | complex | dev-primary | dev-primary | dev-primary | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1374 |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | pending | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1370, WRK-1372, WRK-1376 |
-| WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | dev-primary | dev-primary, home-win | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | dev-primary | dev-primary, home-win | dev-primary | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | working | medium | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1379 |
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360 |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1583,12 +1595,15 @@
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - | sowon | sowon | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5111 |
+| WRK-5113 | Update paths and remove old skills | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5112 |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1873,15 +1888,12 @@
 | WRK-1314 | platform-review: reassess build-later and don't-build items against Claude Code roadmap | low | simple | workspace-hub | - |
 | WRK-1317 | Generalize stage-transition engine to all workspace-hub workflows | high | C | - | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | high | medium | sabithaandkrishnaestates | - |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | high | C | workspace-hub | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | high | C | workspace-hub | - |
 | WRK-1325 | Fix invalid skill names over 64 chars | medium | simple | workspace-hub | - |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | medium | medium | workspace-hub | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | high | medium | digitalmodel | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | low | medium | digitalmodel | - |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | high | medium | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | high | medium | workspace-hub | - |
-| WRK-1362 | Chute drag force — single and dual chute assessment | high | medium | digitalmodel | - |
 | WRK-1363 | 2D frame analysis | high | medium | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | high | medium | workspace-hub | - |
 | WRK-1365 | OrcaFlex frame analysis | high | medium | workspace-hub | - |
@@ -1900,8 +1912,9 @@
 | WRK-1378 | Regulatory compliance engine — IMO/ABS/DNV automated checks | low | complex | digitalmodel | - |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | high | complex | workspace-hub, digitalmodel | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | low | simple | workspace-hub | - |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | medium | moderate | workspace-hub, digitalmodel | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | high | complex | workspace-hub, digitalmodel | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | medium | simple | workspace-hub | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | medium | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | medium | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | medium | simple | workspace-hub | - |
@@ -1931,6 +1944,10 @@
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | high | complex | digitalmodel | - |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | high | complex | workspace-hub | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | medium | medium | workspace-hub | - |
+| WRK-5111 | Convert 20 stages to folder-skills | high | medium | workspace-hub | - |
+| WRK-5112 | Redistribute scripts to stage folders | high | medium | workspace-hub | - |
+| WRK-5113 | Update paths and remove old skills | high | medium | workspace-hub | - |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -1941,9 +1958,9 @@
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | high | medium | aceengineer-admin | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | high | complex | workspace-hub | - |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | medium | moderate | workspace-hub, digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | medium | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -2773,7 +2790,6 @@
 | WRK-1283 | Rudder types survey — video references and digitalmodel coverage | pending | medium | medium | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | - |
-| WRK-1362 | Chute drag force — single and dual chute assessment | pending | high | medium | - |
 | WRK-1370 | Curate extracted worked examples into TDD fixtures | pending | high | moderate | - |
 | WRK-1372 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | pending | high | complex | - |
 | WRK-1373 | Seakeeping module — 6-DOF motion analysis | pending | medium | complex | - |
@@ -2783,8 +2799,9 @@
 | WRK-1377 | Hull form parametric design — coefficients and Series 60 | pending | medium | complex | - |
 | WRK-1378 | Regulatory compliance engine — IMO/ABS/DNV automated checks | pending | low | complex | - |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | pending | high | complex | - |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | - |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | working | medium | moderate | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -3185,7 +3202,7 @@
 | WRK-1314 | platform-review: reassess build-later and don't-build items against Claude Code roadmap | pending | low | simple | - |
 | WRK-1316 | Stage transition hardening — hooks, checklists, HTML refresh, tool activation per stage | archived | high | C | - |
 | WRK-1320 | Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing | blocked | high | medium | - |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | - |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | high | C | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | - |
 | WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | - |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | - |
@@ -3199,7 +3216,6 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | medium | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | - |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | pending | high | medium | - |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | - |
 | WRK-1363 | 2D frame analysis | pending | high | medium | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | - |
@@ -3213,9 +3229,11 @@
 | WRK-1372 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | pending | high | complex | - |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | pending | high | complex | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | - |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | - |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | working | medium | moderate | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | - |
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3244,11 +3262,14 @@
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | simple | - |
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | high | medium | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | simple | - |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | - |
+| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | - |
+| WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | - |
+| WRK-5113 | Update paths and remove old skills | pending | high | medium | - |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -3687,7 +3708,7 @@
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | working | medium | aceengineer-admin | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | pending | medium | sabithaandkrishnaestates | - |
 | WRK-1320 | Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing | blocked | medium | workspace-hub | - |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | C | workspace-hub | - |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | C | workspace-hub | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | C | workspace-hub | - |
 | WRK-1330 | Archive synthesis — backfill knowledge capture + distill into roadmap and mission docs | archived | complex | workspace-hub | - |
 | WRK-1331 | GitHub Issue body template renderer (update-github-issue.py) | archived | medium | workspace-hub | - |
@@ -3698,9 +3719,7 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | medium | workspace-hub | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | complex | workspace-hub | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | medium | digitalmodel | - |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | pending | medium | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | pending | medium | workspace-hub | - |
-| WRK-1362 | Chute drag force — single and dual chute assessment | pending | medium | digitalmodel | - |
 | WRK-1363 | 2D frame analysis | pending | medium | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | medium | workspace-hub | - |
 | WRK-1365 | OrcaFlex frame analysis | pending | medium | workspace-hub | - |
@@ -3730,6 +3749,9 @@
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | medium | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | medium | workspace-hub | - |
+| WRK-5111 | Convert 20 stages to folder-skills | pending | medium | workspace-hub | - |
+| WRK-5112 | Redistribute scripts to stage folders | pending | medium | workspace-hub | - |
+| WRK-5113 | Update paths and remove old skills | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -4061,7 +4083,9 @@
 | WRK-1373 | Seakeeping module — 6-DOF motion analysis | pending | complex | digitalmodel | - |
 | WRK-1374 | Advanced stability — damage stability and IMO compliance | pending | complex | digitalmodel | - |
 | WRK-1377 | Hull form parametric design — coefficients and Series 60 | pending | complex | digitalmodel | - |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | moderate | workspace-hub, digitalmodel | - |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | working | moderate | workspace-hub, digitalmodel | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | simple | workspace-hub | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -4091,10 +4115,10 @@
 | WRK-5092 | sabithaandkrishnaestates repo — document indexing and structure enhancement | pending | medium | sabithaandkrishnaestates | - |
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | workspace-hub, sabithaandkrishnaestates | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | simple | workspace-hub | - |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | simple | workspace-hub | - |
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | workspace-hub | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | B | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -4335,6 +4359,7 @@
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | workspace-hub | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | workspace-hub | - |
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | workspace-hub | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | workspace-hub | - |
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | workspace-hub | - |
@@ -4347,7 +4372,6 @@
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | workspace-hub | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | workspace-hub | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | workspace-hub | - |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | workspace-hub | - |
 
 ### Medium
 
@@ -4692,15 +4716,14 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | workspace-hub | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | digitalmodel | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | digitalmodel | - |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | pending | high | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | pending | high | workspace-hub | - |
-| WRK-1362 | Chute drag force — single and dual chute assessment | pending | high | digitalmodel | - |
 | WRK-1363 | 2D frame analysis | pending | high | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | workspace-hub | - |
 | WRK-1365 | OrcaFlex frame analysis | pending | high | workspace-hub | - |
 | WRK-1366 | 2D vs 3D comparison | pending | high | workspace-hub | - |
 | WRK-1367 | Member and connection checks | pending | high | workspace-hub | - |
 | WRK-1368 | Pipeline and engineering report | pending | high | workspace-hub | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | archived | medium | workspace-hub | - |
@@ -4720,6 +4743,10 @@
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | workspace-hub | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
+| WRK-5111 | Convert 20 stages to folder-skills | pending | high | workspace-hub | - |
+| WRK-5112 | Redistribute scripts to stage folders | pending | high | workspace-hub | - |
+| WRK-5113 | Update paths and remove old skills | pending | high | workspace-hub | - |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -4878,7 +4905,7 @@
 
 ## By Computer
 
-### dev-primary (271 active / 475 total)
+### dev-primary (274 active / 478 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5276,7 +5303,7 @@
 | WRK-1316 | Stage transition hardening — hooks, checklists, HTML refresh, tool activation per stage | archived | high | C | workspace-hub |
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | working | high | medium | aceengineer-admin |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | pending | high | medium | sabithaandkrishnaestates |
-| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | pending | high | C | workspace-hub |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | high | C | workspace-hub |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | high | C | workspace-hub |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | pending | medium | medium | workspace-hub |
 | WRK-1328 | Add --summary flag to verify_checklist.py — one-line pass/fail per stage | archived | medium | A | workspace-hub |
@@ -5290,9 +5317,7 @@
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | workspace-hub |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | workspace-hub |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | digitalmodel |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | pending | high | medium | workspace-hub |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | workspace-hub |
-| WRK-1362 | Chute drag force — single and dual chute assessment | pending | high | medium | digitalmodel |
 | WRK-1363 | 2D frame analysis | pending | high | medium | workspace-hub |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | workspace-hub |
 | WRK-1365 | OrcaFlex frame analysis | pending | high | medium | workspace-hub |
@@ -5311,8 +5336,10 @@
 | WRK-1378 | Regulatory compliance engine — IMO/ABS/DNV automated checks | pending | low | complex | digitalmodel |
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | pending | high | complex | workspace-hub, digitalmodel |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | simple | workspace-hub |
-| WRK-1381 | GZ curve digitization from PNA and Biran figures | pending | medium | moderate | workspace-hub, digitalmodel |
+| WRK-1381 | GZ curve digitization from PNA and Biran figures | working | medium | moderate | workspace-hub, digitalmodel |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | workspace-hub, digitalmodel |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | workspace-hub |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | workspace-hub, digitalmodel |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | medium | workspace-hub |
@@ -5355,8 +5382,11 @@
 | WRK-5094 | Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement | pending | medium | medium | workspace-hub, sabithaandkrishnaestates |
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | pending | high | complex | digitalmodel |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | pending | high | complex | workspace-hub |
-| WRK-5103 | whats-next.sh should filter out items with future not_before dates | working | medium | simple | workspace-hub |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | workspace-hub |
+| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | workspace-hub |
+| WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | workspace-hub |
+| WRK-5113 | Update paths and remove old skills | pending | high | medium | workspace-hub |
+| WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | workspace-hub |
 
 ### dev-secondary (13 active / 21 total)
 
@@ -5825,6 +5855,7 @@
 | WRK-1299 | OCR pipeline — dev-primary scanned PDFs (53K docs) | WRK-1296, WRK-1298 | - | WRK-1245 |
 | WRK-1304 | Update pdf skill to recommend PyMuPDF4LLM over Codex for single-doc Markdown conversion | WRK-1302 | - | - |
 | WRK-1319 | Self-prepared cost segregation study — 15645 Westpark (Family Dollar) | - | - | WRK-5093 |
+| WRK-1321 | Restructure work-queue skills into two-tier folder-skill architecture | - | WRK-5110, WRK-5111, WRK-5112, WRK-5113 | - |
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | WRK-1321 | - | - |
 | WRK-1330 | Archive synthesis — backfill knowledge capture + distill into roadmap and mission docs | - | WRK-1331, WRK-1332, WRK-1333, WRK-1334, WRK-1335, WRK-1336 | - |
 | WRK-1331 | GitHub Issue body template renderer (update-github-issue.py) | - | - | WRK-1330 |
@@ -5835,9 +5866,7 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | WRK-1332 | - | WRK-1330 |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | - | WRK-1369, WRK-1370, WRK-1371, WRK-1372, WRK-1373, WRK-1374, WRK-1375, WRK-1376, WRK-1377, WRK-1378, WRK-1379, WRK-1380, WRK-1381, WRK-1382 | - |
 | WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | - | - | WRK-5082 |
-| WRK-1360 | 3D CAD geometry (FreeCAD) | - | - | WRK-5082 |
 | WRK-1361 | 2D engineering drawing | WRK-1360 | - | WRK-5082 |
-| WRK-1362 | Chute drag force — single and dual chute assessment | - | - | WRK-5082 |
 | WRK-1363 | 2D frame analysis | WRK-1360, WRK-1362 | - | WRK-5082 |
 | WRK-1364 | 3D FEM analysis (CalculiX) | WRK-1360, WRK-1362, WRK-1341 | - | WRK-5082 |
 | WRK-1365 | OrcaFlex frame analysis | WRK-1360, WRK-1362 | - | WRK-5082 |
@@ -5855,15 +5884,20 @@
 | WRK-1379 | Naval architecture expert skill — knowledge synthesis agent | WRK-1370, WRK-1372, WRK-1376 | - | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | - | - | WRK-1339 |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | WRK-1379 | - | - |
+| WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | - | - | WRK-5082 |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | WRK-1360 | - | WRK-5082 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | WRK-5038 | - | - |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on dev-secondary | WRK-5054 | - | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | WRK-5054 | - | - |
-| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | - | WRK-1360, WRK-1361, WRK-1362, WRK-1363, WRK-1364, WRK-1365, WRK-1366, WRK-1367, WRK-1368, WRK-5095 | - |
+| WRK-5082 | Parachute frame force calculation — drag car parachute deployment | - | WRK-1360, WRK-1361, WRK-1362, WRK-1363, WRK-1364, WRK-1365, WRK-1366, WRK-1367, WRK-1368, WRK-5095, WRK-5114 | - |
 | WRK-5087 | feat(cron): skill-autoresearch-nightly — automated skill improvement loop for overnight cron | WRK-5086 | - | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | WRK-5086 | - | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | - | WRK-1319 | - |
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | WRK-1362 | - | WRK-5082 |
+| WRK-5111 | Convert 20 stages to folder-skills | - | - | WRK-1321 |
+| WRK-5112 | Redistribute scripts to stage folders | WRK-5111 | - | WRK-1321 |
+| WRK-5113 | Update paths and remove old skills | WRK-5112 | - | WRK-1321 |
 

@@ -3428,10 +3428,10 @@
     "urgency_score": 1.8
   },
   "WRK-1381": {
-    "status": "pending",
+    "status": "working",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-22T04:37:03.779444+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "last_updated": "2026-03-23T06:05:17.388807+00:00",
+    "updated_by": "claim-item.sh",
     "title": "GZ curve digitization from PNA and Biran figures",
     "priority": "medium",
     "category": "document-intelligence",

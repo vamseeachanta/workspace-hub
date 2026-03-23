@@ -1,5 +1,5 @@
 wrk_id: WRK-5111
-generated_at: '2026-03-23T04:07:15Z'
+generated_at: '2026-03-23T05:56:58Z'
 reviewed_by: agent
 stages:
 - order: 1
@@ -8,19 +8,19 @@ stages:
   evidence: ''
 - order: 2
   stage: Resource Intelligence
-  status: in_progress
+  status: done
   evidence: ''
 - order: 3
   stage: Triage
-  status: pending
+  status: done
   evidence: ''
 - order: 4
   stage: Plan Draft
-  status: pending
+  status: done
   evidence: ''
 - order: 5
   stage: User Review - Plan Draft
-  status: pending
+  status: in_progress
   evidence: ''
 - order: 6
   stage: Cross-Review
