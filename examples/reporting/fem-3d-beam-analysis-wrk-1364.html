@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D FEM Beam Analysis — GT1R Parachute Mounting Frame — CALC-WRK-1364</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:         #f3efe6;
+  --panel:      #fffdf8;
+  --ink:        #172126;
+  --muted:      #55636b;
+  --accent:     #0f766e;
+  --accent-2:   #8a5a2b;
+  --line:       #d9d0c0;
+  --shadow:     0 16px 40px rgba(20,33,38,0.08);
+  --good:       #166534;
+  --warn:       #b45309;
+  --bad:        #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;padding:0;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.2em .4em;border-radius:3px;font-size:.88em;}
+
+.hero{padding:28px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1.report-title{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;}
+.meta-chip{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.meta-chip strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+.card h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:0;
+  color:var(--accent-2);letter-spacing:.02em;font-size:1.2rem;}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+thead th{background:var(--panel);border-bottom:2px solid var(--accent);
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.78rem;padding:8px 10px;text-align:left;color:var(--ink);}
+tbody td{border-bottom:1px solid var(--line);padding:7px 10px;
+  color:var(--muted);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td strong,tbody td code{color:var(--ink);}
+tbody tr:hover>td{background:rgba(15,118,110,.03);}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-draft{background:#fef3c7;color:var(--warn);}
+.badge-reviewed{background:#dbeafe;color:#1d4ed8;}
+.badge-approved{background:#dcfce7;color:var(--good);}
+
+.equation-block{background:#f8f9fa;border:1px solid var(--line);border-radius:10px;
+  padding:16px 20px;margin:12px 0;position:relative;}
+.equation-block .eq-number{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:.82rem;color:var(--muted);font-weight:700;}
+.equation-name{font-size:.85rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.equation-desc{font-size:.85rem;color:var(--muted);margin-top:8px;}
+.variable-list{margin:8px 0 0;padding:0 0 0 18px;font-size:.82rem;}
+.variable-list li{margin:2px 0;color:var(--muted);}
+.variable-list li .var-sym{color:var(--ink);font-weight:600;}
+
+.chart-container{margin:16px 0;position:relative;}
+.chart-container canvas{max-height:400px;width:100%;}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--accent-2);margin-bottom:8px;}
+
+details{margin:8px 0;}
+details summary{cursor:pointer;font-weight:700;color:var(--accent);
+  font-size:.9rem;padding:4px 0;}
+details summary:hover{text-decoration:underline;}
+details[open] summary{margin-bottom:8px;}
+
+.report-footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);margin-top:40px;}
+
+@media print{
+  body{background:#fff;}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  .hero{background:#f8f8f8;border-bottom:2px solid #333;}
+  .chart-container canvas{max-height:300px;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">CALC-WRK-1364</div>
+    <h1 class="report-title">3D FEM Beam Analysis — GT1R Parachute Mounting Frame</h1>
+    <div class="meta-chips">
+      <div class="meta-chip"><strong>Status</strong><span class="badge badge-draft">DRAFT</span></div>
+      <div class="meta-chip"><strong>Revision</strong>1</div>
+      <div class="meta-chip"><strong>Date</strong>2026-03-22</div>
+      <div class="meta-chip"><strong>Author</strong>Vamsee Achanta</div>
+        <div class="meta-chip"><strong>Project</strong>GT1R R35 Parachute Frame — WRK-5082</div>
+      <div class="meta-chip"><strong>Standard</strong>CalculiX v2.21 Timoshenko Beam Theory (B32R element formulation)</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+<div class="card">
+  <h2>Scope</h2>
+  <p><strong>Objective:</strong> Perform 3D finite element beam analysis of the GT1R R35 parachute mounting frame
+using CalculiX B32R Timoshenko beam elements with PIPE cross-section to determine
+stress distribution, deformation, load distribution across members, and reaction
+forces under parachute drag loading.
+</p>
+  <h3>Inclusions</h3>
+  <ul>
+    <li>3D beam FEM with 15 nodes, 16 B32R elements, and PIPE cross-section</li>
+    <li>Three load cases: 200 MPH single chute, 250 MPH single chute, 250 MPH dual chute</li>
+    <li>Von Mises stress distribution and utilisation ratios</li>
+    <li>Load distribution and strain across all frame members</li>
+    <li>Reaction forces at all boundary condition nodes (C3 fixed, B1 bolted)</li>
+  </ul>
+  <h3>Exclusions</h3>
+  <ul>
+    <li>Nonlinear material behavior (elastic analysis only)</li>
+    <li>Connection detail stress (bolt holes, weld toes — see WRK-1367)</li>
+    <li>Dynamic/impact loading (static equivalent applied)</li>
+    <li>Buckling analysis</li>
+  </ul>
+  <h3>Limitations</h3>
+  <ul>
+    <li>Linear elastic analysis — utilisation &gt; 1.0 indicates yield exceedance, not actual failure</li>
+    <li>PIPE section assumes uniform wall thickness; local thinning at bends not modeled</li>
+    <li>B32R reduced integration may underestimate peak stress at sharp transitions</li>
+  </ul>
+  <p><strong>Validity Range:</strong> Elastic regime only; results valid for utilisation &lt; 1.0</p>
+</div>
+
+<div class="card">
+  <h2>Frame Schematic — Node &amp; Connection Nomenclature</h2>
+  <p style="color:var(--muted);margin-bottom:12px;">Plan view (X–Y plane). Vehicle forward direction is +Y (up). Drag force acts in −Y at load point N2.</p>
+
+  <svg viewBox="-290 -260 580 620" xmlns="http://www.w3.org/2000/svg"
+       style="max-width:720px;margin:0 auto;display:block;font-family:'Helvetica Neue',sans-serif;">
+
+    <!-- Background grid -->
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#b91c1c"/>
+      </marker>
+      <marker id="arrow-axis" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#55636b"/>
+      </marker>
+    </defs>
+
+    <!-- Coordinate axes -->
+    <line x1="-250" y1="240" x2="-210" y2="240" stroke="#55636b" stroke-width="1.5" marker-end="url(#arrow-axis)"/>
+    <text x="-205" y="244" fill="#55636b" font-size="11" font-weight="bold">+X (right)</text>
+    <line x1="-250" y1="240" x2="-250" y2="200" stroke="#55636b" stroke-width="1.5" marker-end="url(#arrow-axis)"/>
+    <text x="-248" y="196" fill="#55636b" font-size="11" font-weight="bold">+Y (fwd)</text>
+
+    <!-- ═══ ASSEMBLY 1: REAR TRUNK (blue) ═══ -->
+    <!-- Center spine: N1 → N2 → N0 → N3 → N4 -->
+    <line x1="0" y1="95" x2="0" y2="52" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="0" y1="52" x2="0" y2="0" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="0" y1="0" x2="0" y2="-110" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="0" y1="-110" x2="0" y2="-200" stroke="#1d4ed8" stroke-width="2.5"/>
+
+    <!-- Horizontal bar: N10 — N9 — N8 — N4 — N5 — N6 — N7 -->
+    <line x1="-216" y1="-200" x2="-180" y2="-200" stroke="#1d4ed8" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <line x1="-180" y1="-200" x2="-144" y2="-200" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="-144" y1="-200" x2="0" y2="-200" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="0" y1="-200" x2="144" y2="-200" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="144" y1="-200" x2="180" y2="-200" stroke="#1d4ed8" stroke-width="2.5"/>
+    <line x1="180" y1="-200" x2="216" y2="-200" stroke="#1d4ed8" stroke-width="2.5" stroke-dasharray="6,3"/>
+
+    <!-- V-struts: N5→N3, N8→N3 -->
+    <line x1="144" y1="-200" x2="0" y2="-110" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="-144" y1="-200" x2="0" y2="-110" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <!-- ═══ ASSEMBLY 2: UNDER-CHASSIS (green) ═══ -->
+    <!-- N0→N11, N0→N13 -->
+    <line x1="0" y1="0" x2="192" y2="0" stroke="#0f766e" stroke-width="2.5"/>
+    <line x1="0" y1="0" x2="-192" y2="0" stroke="#0f766e" stroke-width="2.5"/>
+    <!-- N11→N12, N13→N14 (bends, dashed) -->
+    <line x1="192" y1="0" x2="252" y2="-65" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <line x1="-192" y1="0" x2="-252" y2="-65" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="6,3"/>
+
+    <!-- ═══ NODES ═══ -->
+    <!-- N0: C2 weld junction (origin) -->
+    <circle cx="0" cy="0" r="6" fill="#fff" stroke="#172126" stroke-width="2"/>
+    <text x="8" y="-8" fill="#172126" font-size="11" font-weight="bold">N0</text>
+    <text x="8" y="14" fill="#55636b" font-size="9">C2 weld (origin)</text>
+
+    <!-- N1: Parachute bracket -->
+    <circle cx="0" cy="95" r="6" fill="#fff" stroke="#172126" stroke-width="2"/>
+    <text x="8" y="99" fill="#172126" font-size="11" font-weight="bold">N1</text>
+    <text x="8" y="112" fill="#55636b" font-size="9">Parachute bracket</text>
+
+    <!-- N2: Coupler pin — LOAD POINT -->
+    <circle cx="0" cy="52" r="8" fill="#b91c1c" stroke="#172126" stroke-width="2"/>
+    <text x="10" y="56" fill="#b91c1c" font-size="11" font-weight="bold">N2 — LOAD POINT</text>
+    <!-- Load arrow -->
+    <line x1="0" y1="80" x2="0" y2="62" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+    <text x="6" y="78" fill="#b91c1c" font-size="10" font-weight="bold">F (−Y)</text>
+
+    <!-- N3: center spine mid -->
+    <circle cx="0" cy="-110" r="5" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="8" y="-106" fill="#172126" font-size="10">N3</text>
+
+    <!-- N4: C1 bolt -->
+    <circle cx="0" cy="-200" r="5" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="6" y="-210" fill="#172126" font-size="10" font-weight="bold">N4</text>
+    <text x="6" y="-222" fill="#55636b" font-size="9">C1 bolt+pin</text>
+
+    <!-- N5: right strut junction -->
+    <circle cx="144" cy="-200" r="5" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="148" y="-210" fill="#172126" font-size="10">N5 (C0)</text>
+
+    <!-- N6: right bar bend -->
+    <circle cx="180" cy="-200" r="4" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="184" y="-205" fill="#55636b" font-size="9">N6</text>
+
+    <!-- N7: RIGHT C3 MOUNT — FIXED BC -->
+    <rect x="206" y="-212" width="20" height="20" fill="none" stroke="#b91c1c" stroke-width="2.5"/>
+    <circle cx="216" cy="-202" r="4" fill="#b91c1c"/>
+    <text x="192" y="-218" fill="#b91c1c" font-size="11" font-weight="bold">N7</text>
+    <text x="180" y="-230" fill="#b91c1c" font-size="10" font-weight="bold">C3 FIXED</text>
+    <text x="178" y="-242" fill="#55636b" font-size="9">(46.2% of load)</text>
+
+    <!-- N8: left strut junction -->
+    <circle cx="-144" cy="-200" r="5" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="-178" y="-210" fill="#172126" font-size="10">N8 (C0)</text>
+
+    <!-- N9: left bar bend -->
+    <circle cx="-180" cy="-200" r="4" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="-200" y="-205" fill="#55636b" font-size="9">N9</text>
+
+    <!-- N10: LEFT C3 MOUNT — FIXED BC -->
+    <rect x="-236" y="-212" width="20" height="20" fill="none" stroke="#b91c1c" stroke-width="2.5"/>
+    <circle cx="-226" cy="-202" r="4" fill="#b91c1c"/>
+    <text x="-240" y="-218" fill="#b91c1c" font-size="11" font-weight="bold">N10</text>
+    <text x="-260" y="-230" fill="#b91c1c" font-size="10" font-weight="bold">C3 FIXED</text>
+    <text x="-258" y="-242" fill="#55636b" font-size="9">(47.5% of load)</text>
+
+    <!-- N11: right chassis bar end -->
+    <circle cx="192" cy="0" r="5" fill="#fff" stroke="#0f766e" stroke-width="1.5"/>
+    <text x="196" y="-8" fill="#0f766e" font-size="10">N11</text>
+
+    <!-- N12: RIGHT B1 BOLTED — FIXED BC -->
+    <polygon points="244,-65 260,-65 252,-78" fill="none" stroke="#b45309" stroke-width="2.5"/>
+    <circle cx="252" cy="-65" r="4" fill="#b45309"/>
+    <text x="260" y="-68" fill="#b45309" font-size="11" font-weight="bold">N12</text>
+    <text x="260" y="-56" fill="#b45309" font-size="10" font-weight="bold">B1 BOLTED</text>
+    <text x="260" y="-44" fill="#55636b" font-size="9">(18.9% of load)</text>
+
+    <!-- N13: left chassis bar end -->
+    <circle cx="-192" cy="0" r="5" fill="#fff" stroke="#0f766e" stroke-width="1.5"/>
+    <text x="-220" y="-8" fill="#0f766e" font-size="10">N13</text>
+
+    <!-- N14: LEFT B1 BOLTED — FIXED BC -->
+    <polygon points="-260,-65 -244,-65 -252,-78" fill="none" stroke="#b45309" stroke-width="2.5"/>
+    <circle cx="-252" cy="-65" r="4" fill="#b45309"/>
+    <text x="-275" y="-68" fill="#b45309" font-size="11" font-weight="bold">N14</text>
+    <text x="-275" y="-56" fill="#b45309" font-size="10" font-weight="bold">B1 BOLTED</text>
+    <text x="-275" y="-44" fill="#55636b" font-size="9">(19.8% of load)</text>
+
+    <!-- ═══ LEGEND ═══ -->
+    <rect x="-270" y="260" width="540" height="90" rx="6" fill="#fffdf8" stroke="#d9d0c0" stroke-width="1"/>
+    <text x="-258" y="280" fill="#172126" font-size="12" font-weight="bold">Legend</text>
+
+    <!-- Assembly colors -->
+    <line x1="-258" y1="296" x2="-228" y2="296" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="-222" y="300" fill="#172126" font-size="10">Assembly 1: Rear Trunk</text>
+    <line x1="-258" y1="316" x2="-228" y2="316" stroke="#0f766e" stroke-width="2.5"/>
+    <text x="-222" y="320" fill="#172126" font-size="10">Assembly 2: Under-Chassis</text>
+    <line x1="-258" y1="336" x2="-228" y2="336" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="-222" y="340" fill="#172126" font-size="10">Bend member (B32R curved)</text>
+
+    <!-- BC symbols -->
+    <rect x="20" y="286" width="12" height="12" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    <text x="38" y="297" fill="#172126" font-size="10">C3 Fixed BC (frame rail mounts) — 93.7% total</text>
+    <polygon points="20,316 32,316 26,306" fill="none" stroke="#b45309" stroke-width="2"/>
+    <text x="38" y="317" fill="#172126" font-size="10">B1 Bolted BC (subframe bolts) — 38.7% total</text>
+    <circle cx="26" cy="336" r="5" fill="#b91c1c"/>
+    <text x="38" y="340" fill="#172126" font-size="10">Load application point (drag force, −Y)</text>
+  </svg>
+
+  <p style="color:var(--muted);font-size:0.85em;margin-top:8px;text-align:center;">
+    <strong>Dashed lines</strong> = bend members (B32R curved). <strong>Solid lines</strong> = straight members.
+    Percentages show reaction force share of applied load (governing case, 250 MPH dual).
+    C3 mounts carry the dominant load path; B1 bolts carry the secondary path.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Design Basis</h2>
+  <ul>
+    <li>CalculiX v2.21 — Timoshenko beam theory (B32R element)</li>
+    <li>ASTM A519 — 4130 chromoly steel mechanical properties</li>
+  </ul>
+  <p><strong>Design Life:</strong> N/A — single-event deployment loading</p>
+  <p><strong>Safety Class:</strong> High — driver safety system</p>
+  <p><strong>Environment:</strong> Sea-level atmosphere; ambient temperature (no thermal effects)</p>
+</div>
+
+<div class="card">
+  <h2>Inputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Frame Geometry</strong></td>
+        <td class="katex-inline">$-$</td>
+        <td>15 nodes, 16 members</td>
+        <td>-</td>
+        <td>WRK-1360 (frame_geometry_3d.py)</td>
+      </tr>
+      <tr>
+        <td><strong>Tube Outer Diameter</strong></td>
+        <td class="katex-inline">$D_o$</td>
+        <td>1.75</td>
+        <td>in</td>
+        <td>GT1R specification</td>
+      </tr>
+      <tr>
+        <td><strong>Tube Wall Thickness</strong></td>
+        <td class="katex-inline">$t$</td>
+        <td>0.12</td>
+        <td>in</td>
+        <td>GT1R specification (AISI 4130, normalized)</td>
+      </tr>
+      <tr>
+        <td><strong>Elastic Modulus</strong></td>
+        <td class="katex-inline">$E$</td>
+        <td>29700000</td>
+        <td>psi</td>
+        <td>ASTM A519, 4130 chromoly (normalized)</td>
+      </tr>
+      <tr>
+        <td><strong>Poisson&#x27;s Ratio</strong></td>
+        <td class="katex-inline">$\nu$</td>
+        <td>0.29</td>
+        <td>-</td>
+        <td>ASTM A519</td>
+      </tr>
+      <tr>
+        <td><strong>Yield Strength</strong></td>
+        <td class="katex-inline">$F_y$</td>
+        <td>63000</td>
+        <td>psi</td>
+        <td>ASTM A519, 4130 chromoly (normalized)</td>
+      </tr>
+      <tr>
+        <td><strong>Drag Force — Case 1 (200 MPH single)</strong></td>
+        <td class="katex-inline">$F_1$</td>
+        <td>24298</td>
+        <td>lbs</td>
+        <td>WRK-1362 (chute_assessment.py)</td>
+      </tr>
+      <tr>
+        <td><strong>Drag Force — Case 2 (250 MPH single)</strong></td>
+        <td class="katex-inline">$F_2$</td>
+        <td>37966</td>
+        <td>lbs</td>
+        <td>WRK-1362</td>
+      </tr>
+      <tr>
+        <td><strong>Drag Force — Case 3 (250 MPH dual)</strong></td>
+        <td class="katex-inline">$F_3$</td>
+        <td>52731</td>
+        <td>lbs</td>
+        <td>WRK-1362 (governing case)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="card">
+  <h2>Methodology</h2>
+  <p>3D Timoshenko beam finite element analysis using CalculiX v2.21 with B32R
+(3-node quadratic, reduced integration) beam elements and PIPE cross-section.
+The frame geometry from WRK-1360 (15 nodes, 16 members) is converted to a
+CalculiX INP file via the fem_bridge module. Mid-nodes are interpolated at
+member midpoints for the quadratic element formulation.
+
+Boundary conditions: C3 nodes (N7, N10) fixed in all 6 DOFs; B1 nodes (N12, N14)
+fixed in all 6 DOFs. Drag force applied at coupler pin (N2) in -Y direction.</p>
+  <p><strong>Standard:</strong> CalculiX v2.21 Timoshenko Beam Theory (B32R element formulation)</p>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq1: Von Mises Equivalent Stress</div>
+    <div class="katex-display">$$\sigma_{vm} = \sqrt{\frac{1}{2}\left[(\sigma_{xx}-\sigma_{yy})^2 + (\sigma_{yy}-\sigma_{zz})^2 + (\sigma_{zz}-\sigma_{xx})^2 + 6(\tau_{xy}^2 + \tau_{yz}^2 + \tau_{zx}^2)\right]}$$</div>
+    <div class="equation-desc">Combined stress criterion for ductile materials</div>
+    <span class="eq-number">(eq1)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq2: Utilisation Ratio</div>
+    <div class="katex-display">$$UR = \frac{\sigma_{vm,max}}{F_y}$$</div>
+    <div class="equation-desc">Ratio of maximum von Mises stress to yield strength; UR &gt; 1.0 indicates yield exceedance</div>
+    <span class="eq-number">(eq2)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq3: Elastic Strain</div>
+    <div class="katex-display">$$\varepsilon = \frac{\sigma}{E}$$</div>
+    <div class="equation-desc">Hooke&#x27;s law — elastic strain from stress (valid for UR &lt; 1.0)</div>
+    <span class="eq-number">(eq3)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq4: Equilibrium Check</div>
+    <div class="katex-display">$$\sum R_y = F_{applied}$$</div>
+    <div class="equation-desc">Sum of vertical reaction forces equals applied load</div>
+    <span class="eq-number">(eq4)</span>
+    
+  </div>
+</div>
+
+<div class="card">
+  <h2>Calculations</h2>
+  <div class="calc-step">
+    <h3>Step 1: Generate FEM model — 15 frame nodes + 16 mid-nodes = 31 total nodes, 16 B32R elements</h3>
+  </div>
+  <div class="calc-step">
+    <h3>Step 2: Apply boundary conditions — 4 BC nodes (N7, N10, N12, N14) × 6 DOFs = 24 constraints</h3>
+  </div>
+  <div class="calc-step">
+    <h3>Step 3: Solve 3 load cases via CalculiX ccx v2.21</h3>
+  </div>
+  <div class="calc-step">
+    <h3>Step 4: Extract results — von Mises stress, displacement, reactions, strains</h3>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Outputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Pass/Fail</th><th>Limit</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Max Von Mises — Case 1 (200 MPH single)</strong></td>
+        <td class="katex-inline">$\sigma_{vm,1}$</td>
+        <td>193399</td>
+        <td>psi</td>
+        <td>—</td>
+        <td>≤ 63000</td>
+      </tr>
+      <tr>
+        <td><strong>Max Von Mises — Case 2 (250 MPH single)</strong></td>
+        <td class="katex-inline">$\sigma_{vm,2}$</td>
+        <td>302186</td>
+        <td>psi</td>
+        <td>—</td>
+        <td>≤ 63000</td>
+      </tr>
+      <tr>
+        <td><strong>Max Von Mises — Case 3 (250 MPH dual, GOVERNING)</strong></td>
+        <td class="katex-inline">$\sigma_{vm,3}$</td>
+        <td>419703</td>
+        <td>psi</td>
+        <td>—</td>
+        <td>≤ 63000</td>
+      </tr>
+      <tr>
+        <td><strong>Max Displacement — Case 1</strong></td>
+        <td class="katex-inline">$\delta_1$</td>
+        <td>0.164</td>
+        <td>in</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Max Displacement — Case 2</strong></td>
+        <td class="katex-inline">$\delta_2$</td>
+        <td>0.257</td>
+        <td>in</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Max Displacement — Case 3 (GOVERNING)</strong></td>
+        <td class="katex-inline">$\delta_3$</td>
+        <td>0.357</td>
+        <td>in</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Equilibrium Check — Case 1</strong></td>
+        <td class="katex-inline">$\sum R_y$</td>
+        <td>24298</td>
+        <td>lbs</td>
+        <td>—</td>
+        <td>≤ 24298</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="card">
+  <h2>Validation</h2>
+  <p><strong>Method:</strong> Multi-method validation: (1) Equilibrium check — ΣRy = 24,298 lbs = F_applied (error &lt; 0.01%); (2) WRK-1341 cantilever benchmark — B32R deflection vs PL³/3EI, 0.35% error; (3) Symmetry check — N7 Fy = N10 Fy = 22,639 lbs</p>
+  <p><strong>Test File:</strong> <code>tests/structural/parachute/test_fem_3d.py</code></p>
+</div>
+
+
+
+<div class="card">
+  <h2>Conclusions</h2>
+  <p><strong>Adequacy:</strong> INADEQUATE — The current tube section (1.75&quot; OD × 0.120&quot; wall, 4130 chromoly
+normalized) is significantly overstressed under all three drag loading cases.
+Utilisation ratios range from 3.07 (Case 1) to 6.66 (Case 3, governing).
+The frame exceeds yield capacity by 3–7× under parachute deployment loads.
+</p>
+  <p><strong>Governing Check:</strong> Case 3 (250 MPH dual chute) — UR = 6.66 (max von Mises = 419,703 psi vs Fy = 63,000 psi).
+C3 frame rail mounts carry ~86% of load (Fy = 22,639 lbs each).
+B1 bolted connections carry ~14% (Fy = 3,726 lbs each).
+Equilibrium verified to &lt; 0.01% error.
+</p>
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Investigate larger tube section (e.g., 2.0&quot; OD × 0.188&quot; wall) or heat-treated 4130 (Fy = 100 ksi)</li>
+    <li>Check C3 weld capacity for 24,368 lbs reaction force (WRK-1367)</li>
+    <li>Check B1 bolt group for 10,421 lbs reaction — 6× M8 bolts (WRK-1367)</li>
+    <li>Consider stiffening at V-strut junction (high stress concentration area)</li>
+    <li>Compare with 2D direct stiffness results to quantify simplification error (WRK-1366)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Charts</h2>
+  <div class="chart-container">
+    <div class="chart-title">Utilisation Ratio by Load Case</div>
+    <canvas id="chart-utilisation-ratio" height="300"></canvas>
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">Reaction Force Distribution — Governing Case (250 MPH Dual)</div>
+    <canvas id="chart-reaction-forces" height="300"></canvas>
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">Reaction Force Distribution — % of Total Load</div>
+    <canvas id="chart-reaction-force-pct" height="300"></canvas>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Member Load Distribution — Governing Case (250 MPH Dual)</h2>
+  <p style="color:var(--muted);margin-bottom:12px;">
+    Axial stress (σ<sub>yy</sub>) × cross-section area = member axial force.
+    % is relative to applied load (52,731 lbs). Members carry combined axial, bending, and shear —
+    percentages can exceed 100% because of load path redistribution through the frame.
+  </p>
+
+  <!-- Member label schematic -->
+  <svg viewBox="-290 -260 580 560" xmlns="http://www.w3.org/2000/svg"
+       style="max-width:720px;margin:0 auto 16px;display:block;font-family:'Helvetica Neue',sans-serif;">
+
+    <!-- Members with labels -->
+    <!-- M0: N1→N2 parachute_arm -->
+    <line x1="0" y1="95" x2="0" y2="52" stroke="#aaa" stroke-width="5"/>
+    <text x="6" y="76" fill="#172126" font-size="9" font-weight="bold">M0</text>
+
+    <!-- M1: N2→N0 center_spine_lower -->
+    <line x1="0" y1="52" x2="0" y2="0" stroke="#3b82f6" stroke-width="5"/>
+    <text x="6" y="28" fill="#172126" font-size="9" font-weight="bold">M1</text>
+
+    <!-- M2: N0→N3 center_spine_mid -->
+    <line x1="0" y1="0" x2="0" y2="-110" stroke="#3b82f6" stroke-width="5"/>
+    <text x="6" y="-52" fill="#172126" font-size="9" font-weight="bold">M2</text>
+
+    <!-- M3: N3→N4 center_spine_upper -->
+    <line x1="0" y1="-110" x2="0" y2="-200" stroke="#60a5fa" stroke-width="4"/>
+    <text x="6" y="-152" fill="#172126" font-size="9" font-weight="bold">M3</text>
+
+    <!-- M4: N5→N3 v_strut_right -->
+    <line x1="144" y1="-200" x2="0" y2="-110" stroke="#3b82f6" stroke-width="4"/>
+    <text x="78" y="-162" fill="#172126" font-size="9" font-weight="bold">M4</text>
+
+    <!-- M5: N8→N3 v_strut_left -->
+    <line x1="-144" y1="-200" x2="0" y2="-110" stroke="#3b82f6" stroke-width="4"/>
+    <text x="-92" y="-162" fill="#172126" font-size="9" font-weight="bold">M5</text>
+
+    <!-- M6: N4→N5 bar_right_inner -->
+    <line x1="0" y1="-200" x2="144" y2="-200" stroke="#60a5fa" stroke-width="4"/>
+    <text x="68" y="-206" fill="#172126" font-size="9" font-weight="bold">M6</text>
+
+    <!-- M7: N4→N8 bar_left_inner -->
+    <line x1="0" y1="-200" x2="-144" y2="-200" stroke="#60a5fa" stroke-width="4"/>
+    <text x="-80" y="-206" fill="#172126" font-size="9" font-weight="bold">M7</text>
+
+    <!-- M8: N5→N6 bar_right_mid -->
+    <line x1="144" y1="-200" x2="180" y2="-200" stroke="#ef4444" stroke-width="5"/>
+    <text x="156" y="-206" fill="#172126" font-size="9" font-weight="bold">M8</text>
+
+    <!-- M9: N8→N9 bar_left_mid -->
+    <line x1="-144" y1="-200" x2="-180" y2="-200" stroke="#ef4444" stroke-width="5"/>
+    <text x="-170" y="-206" fill="#172126" font-size="9" font-weight="bold">M9</text>
+
+    <!-- M10: N6→N7 bar_right_bend (HIGHEST STRESS) -->
+    <line x1="180" y1="-200" x2="216" y2="-200" stroke="#b91c1c" stroke-width="6"/>
+    <text x="190" y="-206" fill="#b91c1c" font-size="9" font-weight="bold">M10*</text>
+
+    <!-- M11: N9→N10 bar_left_bend (HIGHEST STRESS) -->
+    <line x1="-180" y1="-200" x2="-216" y2="-200" stroke="#b91c1c" stroke-width="6"/>
+    <text x="-216" y="-206" fill="#b91c1c" font-size="9" font-weight="bold">M11*</text>
+
+    <!-- M12: N0→N11 chassis_bar_right -->
+    <line x1="0" y1="0" x2="192" y2="0" stroke="#0f766e" stroke-width="4"/>
+    <text x="90" y="-8" fill="#172126" font-size="9" font-weight="bold">M12</text>
+
+    <!-- M13: N0→N13 chassis_bar_left -->
+    <line x1="0" y1="0" x2="-192" y2="0" stroke="#0f766e" stroke-width="4"/>
+    <text x="-106" y="-8" fill="#172126" font-size="9" font-weight="bold">M13</text>
+
+    <!-- M14: N11→N12 chassis_bar_right_bend -->
+    <line x1="192" y1="0" x2="252" y2="-65" stroke="#0f766e" stroke-width="4" stroke-dasharray="6,3"/>
+    <text x="224" y="-28" fill="#172126" font-size="9" font-weight="bold">M14</text>
+
+    <!-- M15: N13→N14 chassis_bar_left_bend -->
+    <line x1="-192" y1="0" x2="-252" y2="-65" stroke="#0f766e" stroke-width="4" stroke-dasharray="6,3"/>
+    <text x="-250" y="-28" fill="#172126" font-size="9" font-weight="bold">M15</text>
+
+    <!-- Key nodes -->
+    <circle cx="0" cy="52" r="6" fill="#b91c1c"/>
+    <text x="8" y="48" fill="#b91c1c" font-size="9" font-weight="bold">N2 (load)</text>
+    <circle cx="0" cy="0" r="5" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="6" y="14" fill="#55636b" font-size="8">N0</text>
+    <circle cx="0" cy="-110" r="4" fill="#fff" stroke="#172126" stroke-width="1.5"/>
+    <text x="6" y="-114" fill="#55636b" font-size="8">N3</text>
+    <rect x="206" y="-210" width="18" height="18" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    <text x="226" y="-198" fill="#b91c1c" font-size="8">N7 (C3)</text>
+    <rect x="-224" y="-210" width="18" height="18" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    <text x="-270" y="-198" fill="#b91c1c" font-size="8">N10 (C3)</text>
+    <polygon points="244,-65 260,-65 252,-78" fill="none" stroke="#b45309" stroke-width="2"/>
+    <text x="262" y="-64" fill="#b45309" font-size="8">N12 (B1)</text>
+    <polygon points="-260,-65 -244,-65 -252,-78" fill="none" stroke="#b45309" stroke-width="2"/>
+    <text x="-270" y="-56" fill="#b45309" font-size="8">N14 (B1)</text>
+
+    <!-- Legend -->
+    <text x="-270" y="220" fill="#172126" font-size="10" font-weight="bold">Color key: line width ∝ stress</text>
+    <line x1="-270" y1="232" x2="-245" y2="232" stroke="#b91c1c" stroke-width="6"/>
+    <text x="-240" y="236" fill="#172126" font-size="9">Highest stress (&gt;200k psi)</text>
+    <line x1="-270" y1="248" x2="-245" y2="248" stroke="#ef4444" stroke-width="5"/>
+    <text x="-240" y="252" fill="#172126" font-size="9">High stress (&gt;100k psi)</text>
+    <line x1="-270" y1="264" x2="-245" y2="264" stroke="#3b82f6" stroke-width="5"/>
+    <text x="-240" y="268" fill="#172126" font-size="9">Moderate stress (&gt;50k psi)</text>
+    <line x1="20" y1="232" x2="45" y2="232" stroke="#0f766e" stroke-width="4"/>
+    <text x="50" y="236" fill="#172126" font-size="9">Under-chassis members</text>
+    <line x1="20" y1="248" x2="45" y2="248" stroke="#aaa" stroke-width="4"/>
+    <text x="50" y="252" fill="#172126" font-size="9">Near-zero stress</text>
+    <text x="20" y="268" fill="#b91c1c" font-size="9" font-weight="bold">* = peak stress location</text>
+  </svg>
+
+  <!-- Member load distribution table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Member</th><th>Label</th><th>Nodes</th>
+        <th>Max σ<sub>vm</sub> (psi)</th><th>σ<sub>vm</sub> %F<sub>y</sub></th>
+        <th>Axial Force (lbs)</th><th>% of Load</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>M0</td><td>parachute_arm</td><td>N1→N2</td><td style="text-align:right">23,440</td><td style="text-align:right">37%</td><td style="text-align:right">≈0</td><td style="text-align:right">0.0%</td></tr>
+      <tr style="background:#e8f4f8"><td>M1</td><td>center_spine_lower</td><td>N2→N0</td><td style="text-align:right">88,291</td><td style="text-align:right">140%</td><td style="text-align:right">52,851</td><td style="text-align:right"><strong>100.2%</strong></td></tr>
+      <tr style="background:#e8f4f8"><td>M2</td><td>center_spine_mid</td><td>N0→N3</td><td style="text-align:right">80,545</td><td style="text-align:right">128%</td><td style="text-align:right">51,715</td><td style="text-align:right"><strong>98.1%</strong></td></tr>
+      <tr><td>M3</td><td>center_spine_upper</td><td>N3→N4</td><td style="text-align:right">23,311</td><td style="text-align:right">37%</td><td style="text-align:right">−15,999</td><td style="text-align:right">30.3%</td></tr>
+      <tr style="background:#e8f4f8"><td>M4</td><td>v_strut_right</td><td>N5→N3</td><td style="text-align:right">115,217</td><td style="text-align:right">183%</td><td style="text-align:right">50,939</td><td style="text-align:right"><strong>96.6%</strong></td></tr>
+      <tr style="background:#e8f4f8"><td>M5</td><td>v_strut_left</td><td>N8→N3</td><td style="text-align:right">115,217</td><td style="text-align:right">183%</td><td style="text-align:right">50,939</td><td style="text-align:right"><strong>96.6%</strong></td></tr>
+      <tr><td>M6</td><td>bar_right_inner</td><td>N4→N5</td><td style="text-align:right">99,216</td><td style="text-align:right">157%</td><td style="text-align:right">−19,709</td><td style="text-align:right">37.4%</td></tr>
+      <tr><td>M7</td><td>bar_left_inner</td><td>N4→N8</td><td style="text-align:right">99,216</td><td style="text-align:right">157%</td><td style="text-align:right">−19,709</td><td style="text-align:right">37.4%</td></tr>
+      <tr style="background:#fde8e8"><td>M8</td><td>bar_right_mid</td><td>N5→N6</td><td style="text-align:right">146,678</td><td style="text-align:right">233%</td><td style="text-align:right">−38,064</td><td style="text-align:right"><strong>72.2%</strong></td></tr>
+      <tr style="background:#fde8e8"><td>M9</td><td>bar_left_mid</td><td>N8→N9</td><td style="text-align:right">146,678</td><td style="text-align:right">233%</td><td style="text-align:right">−38,064</td><td style="text-align:right"><strong>72.2%</strong></td></tr>
+      <tr style="background:#fca5a5"><td><strong>M10</strong></td><td><strong>bar_right_bend</strong></td><td>N6→N7</td><td style="text-align:right"><strong>266,461</strong></td><td style="text-align:right"><strong>423%</strong></td><td style="text-align:right">60,156</td><td style="text-align:right"><strong>114.1%</strong></td></tr>
+      <tr style="background:#fca5a5"><td><strong>M11</strong></td><td><strong>bar_left_bend</strong></td><td>N9→N10</td><td style="text-align:right"><strong>266,461</strong></td><td style="text-align:right"><strong>423%</strong></td><td style="text-align:right">60,156</td><td style="text-align:right"><strong>114.1%</strong></td></tr>
+      <tr><td>M12</td><td>chassis_bar_right</td><td>N0→N11</td><td style="text-align:right">76,378</td><td style="text-align:right">121%</td><td style="text-align:right">−22,648</td><td style="text-align:right">43.0%</td></tr>
+      <tr><td>M13</td><td>chassis_bar_left</td><td>N0→N13</td><td style="text-align:right">76,378</td><td style="text-align:right">121%</td><td style="text-align:right">−22,648</td><td style="text-align:right">43.0%</td></tr>
+      <tr><td>M14</td><td>chassis_bar_right_bend</td><td>N11→N12</td><td style="text-align:right">79,456</td><td style="text-align:right">126%</td><td style="text-align:right">33,393</td><td style="text-align:right">63.3%</td></tr>
+      <tr><td>M15</td><td>chassis_bar_left_bend</td><td>N13→N14</td><td style="text-align:right">79,456</td><td style="text-align:right">126%</td><td style="text-align:right">33,393</td><td style="text-align:right">63.3%</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:0.85em;margin-top:6px;">
+    Negative axial force = compression. Rows highlighted red = peak stress members (M10/M11, bar bends at C3).
+    Blue highlights = primary tension load path (center spine and V-struts).
+  </p>
+</div>
+
+<div class="card">
+  <h2>Reaction Force Summary — X, Y, Z Components (value, %)</h2>
+  <p style="color:var(--muted);margin-bottom:12px;">
+    Applied load is in −Y direction. % is relative to applied force for each case.
+    Non-zero Fx and Fz arise from frame geometry — load redistributes through angled members.
+  </p>
+  <table>
+    <thead>
+      <tr><th rowspan="2">Node</th><th rowspan="2">Label</th><th rowspan="2">BC</th>
+          <th colspan="4">Case 1 — 200 MPH Single (24,298 lbs)</th>
+          <th colspan="4">Case 3 — 250 MPH Dual (52,731 lbs)</th></tr>
+      <tr><th>Fx (lbs, %)</th><th>Fy (lbs, %)</th><th>Fz (lbs, %)</th><th>|F| (lbs, %)</th>
+          <th>Fx (lbs, %)</th><th>Fy (lbs, %)</th><th>Fz (lbs, %)</th><th>|F| (lbs, %)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>N7</td><td>right_c3</td><td>Fixed</td>
+        <td style="text-align:right">−354, 1.5%</td><td style="text-align:right">10,432, 42.9%</td><td style="text-align:right">4,139, 17.0%</td><td style="text-align:right"><strong>11,229, 46.2%</strong></td>
+        <td style="text-align:right">−768, 1.5%</td><td style="text-align:right">22,639, 42.9%</td><td style="text-align:right">8,983, 17.0%</td><td style="text-align:right"><strong>24,368, 46.2%</strong></td>
+      </tr>
+      <tr>
+        <td>N10</td><td>left_c3</td><td>Fixed</td>
+        <td style="text-align:right">−4,815, 19.8%</td><td style="text-align:right">10,432, 42.9%</td><td style="text-align:right">−1,029, 4.2%</td><td style="text-align:right"><strong>11,536, 47.5%</strong></td>
+        <td style="text-align:right">−10,448, 19.8%</td><td style="text-align:right">22,639, 42.9%</td><td style="text-align:right">−2,233, 4.2%</td><td style="text-align:right"><strong>25,034, 47.5%</strong></td>
+      </tr>
+      <tr>
+        <td>N12</td><td>right_b1</td><td>Bolted</td>
+        <td style="text-align:right">4,202, 17.3%</td><td style="text-align:right">1,717, 7.1%</td><td style="text-align:right">−742, 3.1%</td><td style="text-align:right"><strong>4,599, 18.9%</strong></td>
+        <td style="text-align:right">9,119, 17.3%</td><td style="text-align:right">3,726, 7.1%</td><td style="text-align:right">−1,609, 3.1%</td><td style="text-align:right"><strong>9,981, 18.9%</strong></td>
+      </tr>
+      <tr>
+        <td>N14</td><td>left_b1</td><td>Bolted</td>
+        <td style="text-align:right">−4,202, 17.3%</td><td style="text-align:right">1,717, 7.1%</td><td style="text-align:right">−1,566, 6.4%</td><td style="text-align:right"><strong>4,802, 19.8%</strong></td>
+        <td style="text-align:right">−9,119, 17.3%</td><td style="text-align:right">3,726, 7.1%</td><td style="text-align:right">−3,399, 6.4%</td><td style="text-align:right"><strong>10,421, 19.8%</strong></td>
+      </tr>
+      <tr style="background:#f0f0f0;font-weight:bold">
+        <td colspan="3">TOTAL</td>
+        <td style="text-align:right">−5,168, 21.3%</td><td style="text-align:right">24,298, 100.0%</td><td style="text-align:right">802, 3.3%</td><td style="text-align:right"><strong>24,855</strong></td>
+        <td style="text-align:right">−11,216, 21.3%</td><td style="text-align:right">52,731, 100.0%</td><td style="text-align:right">1,741, 3.3%</td><td style="text-align:right"><strong>53,939</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:0.85em;margin-top:6px;">
+    <strong>Key insight:</strong> ΣFy = applied load (100% — equilibrium verified).
+    ΣFx = 21.3% indicates significant lateral load transfer through the frame.
+    ΣFz = 3.3% indicates minor vertical load transfer.
+    The resultant total reaction exceeds the applied load because the frame redistributes load in 3D.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Data Tables</h2>
+  <h3>Load Case Summary</h3>
+  <table>
+    <thead><tr><th>Case (-)</th><th>Speed (MPH)</th><th>Config (-)</th><th>Applied Force (lbs)</th><th>Max σ_vm (psi)</th><th>UR (-)</th><th>Max δ (in)</th><th>Status (-)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>200</td><td>Single</td><td>24,298</td><td>193,399</td><td>3.07</td><td>0.164</td><td>FAIL</td></tr>
+      <tr><td>2</td><td>250</td><td>Single</td><td>37,966</td><td>302,186</td><td>4.80</td><td>0.257</td><td>FAIL</td></tr>
+      <tr><td>3</td><td>250</td><td>Dual</td><td>52,731</td><td>419,703</td><td>6.66</td><td>0.357</td><td>FAIL</td></tr>
+    </tbody>
+  </table>
+  <h3>Reaction Force Distribution — % of Applied Load</h3>
+  <table>
+    <thead><tr><th>Node (-)</th><th>Label (-)</th><th>BC Type (-)</th><th>|F| (Case 1) (lbs)</th><th>% (Case 1) (%)</th><th>|F| (Case 3) (lbs)</th><th>% (Case 3) (%)</th></tr></thead>
+    <tbody>
+      <tr><td>N7</td><td>right_c3_mount</td><td>Fixed</td><td>11,229</td><td>46.2</td><td>24,368</td><td>46.2</td></tr>
+      <tr><td>N10</td><td>left_c3_mount</td><td>Fixed</td><td>11,536</td><td>47.5</td><td>25,034</td><td>47.5</td></tr>
+      <tr><td>N12</td><td>right_b1_bolted</td><td>Bolted</td><td>4,599</td><td>18.9</td><td>9,981</td><td>18.9</td></tr>
+      <tr><td>N14</td><td>left_b1_bolted</td><td>Bolted</td><td>4,802</td><td>19.8</td><td>10,421</td><td>19.8</td></tr>
+      <tr><td></td><td></td><td>**C3 Total**</td><td></td><td>**93.7%**</td><td></td><td>**93.7%**</td></tr>
+      <tr><td></td><td></td><td>**B1 Total**</td><td></td><td>**38.7%**</td><td></td><td>**38.7%**</td></tr>
+    </tbody>
+  </table>
+  <h3>Reaction Forces — Governing Case (250 MPH Dual)</h3>
+  <table>
+    <thead><tr><th>Node (-)</th><th>Label (-)</th><th>BC Type (-)</th><th>Fx (lbs)</th><th>Fy (lbs)</th><th>Fz (lbs)</th><th>|F| (lbs)</th></tr></thead>
+    <tbody>
+      <tr><td>N7</td><td>right_c3_mount</td><td>Fixed</td><td>-492</td><td>22,639</td><td>5,749</td><td>24,368</td></tr>
+      <tr><td>N10</td><td>left_c3_mount</td><td>Fixed</td><td>-6,692</td><td>22,639</td><td>-1,430</td><td>25,034</td></tr>
+      <tr><td>N12</td><td>right_b1_bolted</td><td>Bolted</td><td>5,838</td><td>3,726</td><td>-1,030</td><td>9,981</td></tr>
+      <tr><td>N14</td><td>left_b1_bolted</td><td>Bolted</td><td>-5,838</td><td>3,726</td><td>-2,176</td><td>10,421</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <details open>
+    <summary>Assumptions</summary>
+    <ol>
+    <li>All connections are rigid (welded joints modeled as continuous beam)</li>
+    <li>B1 bolted connections are fully fixed (6-DOF constrained) — conservative</li>
+    <li>Load applied as concentrated force at coupler pin node (N2) in -Y direction</li>
+    <li>Material is homogeneous, isotropic, and linear elastic</li>
+    <li>Cross-section is constant along each member (uniform PIPE)</li>
+    <li>Self-weight neglected (small relative to drag forces)</li>
+    </ol>
+  </details>
+</div>
+<div class="card">
+  <details open>
+    <summary>References</summary>
+    <ol>
+    <li>CalculiX User&#x27;s Manual, Version 2.21, Guido Dhondt, 2023</li>
+    <li>ASTM A519 — Standard Specification for Seamless Carbon and Alloy Steel Mechanical Tubing</li>
+    <li>WRK-1360 — 3D CAD Geometry (FreeCAD), completed 2026-03-22</li>
+    <li>WRK-1362 — Chute Drag Force Assessment, completed 2026-03-22</li>
+    <li>WRK-1341 — CalculiX B31/B32 INP Writer, completed 2026-03-22</li>
+    <li>WRK-5082 — GT1R R35 Parachute Frame (parent epic)</li>
+    </ol>
+  </details>
+</div>
+
+<div class="card">
+  <h2>Change Log</h2>
+  <table>
+    <thead><tr><th>Rev</th><th>Date</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>2026-03-22</td><td>Initial 3D FEM beam analysis — B32R elements, PIPE section, 3 load cases</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="report-footer">
+  Generated by calculation-report skill &middot; CALC-WRK-1364 Rev 1
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+new Chart(document.getElementById("chart-utilisation-ratio"), {"type": "bar", "data": {"labels": [1, 2, 3], "datasets": [{"label":"Utilisation (\u03c3_vm / F_y)","data":[3.07, 4.8, 6.66],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1},{"label":"Yield Limit","data":[1.0, 1.0, 1.0],"backgroundColor":"#16a34acc","borderColor":"#16a34a","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "Load Case"}}, "y": {"title": {"display": true, "text": "Utilisation Ratio"}}}}});
+new Chart(document.getElementById("chart-reaction-forces"), {"type": "bar", "data": {"labels": [1, 2, 3, 4], "datasets": [{"label":"Reaction |F|","data":[24368, 25034, 9981, 10421],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "BC Node"}}, "y": {"title": {"display": true, "text": "Reaction Magnitude"}}}}});
+new Chart(document.getElementById("chart-reaction-force-pct"), {"type": "bar", "data": {"labels": [1, 2, 3, 4], "datasets": [{"label":"Case 1 (200 single)","data":[46.2, 47.5, 18.9, 19.8],"backgroundColor":"#3b82f6cc","borderColor":"#3b82f6","borderWidth":1},{"label":"Case 3 (250 dual)","data":[46.2, 47.5, 18.9, 19.8],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "BC Node"}}, "y": {"title": {"display": true, "text": "% of Applied Load"}}}}});
+});
+</script>
+</body>
+</html>
