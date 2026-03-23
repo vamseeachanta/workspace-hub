@@ -219,13 +219,20 @@ def build_chart_scripts(charts):
                 f'"y":{{"title":{{"display":true,'
                 f'"text":{json.dumps(chart["y_label"])}}}'
                 + (f',"type":"logarithmic"' if y_scale == "log" else "")
-                + "}}"
+                + "}"
             )
             config = (
                 f'{{"type":"bar","data":{{"labels":{json.dumps(labels)},'
                 f'"datasets":[{datasets_str}]}},'
                 f'"options":{{"responsive":true,"scales":{{{scales_js}}}}}}}'
             )
+            # Verify brace balance (fix for WRK-1362 extra-brace bug)
+            _opens = config.count("{")
+            _closes = config.count("}")
+            if _closes > _opens:
+                # Remove excess closing braces from end
+                excess = _closes - _opens
+                config = config[:-excess-2] + config[-2:]
         else:
             x_t = "logarithmic" if x_scale == "log" else "linear"
             y_t = "logarithmic" if y_scale == "log" else "linear"
