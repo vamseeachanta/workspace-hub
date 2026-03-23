@@ -72,7 +72,7 @@ if [[ ! -f "$STAGE5_CHECKER" ]]; then
     exit 2
 fi
 stage5_exit=0
-stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+stage5_output="$(uv run --no-project --with pyyaml python "$STAGE5_CHECKER" \
     --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
 if [[ "$stage5_exit" -eq 1 ]]; then
     echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
@@ -91,7 +91,7 @@ fi
 # confirmed plan-final-review.yaml before AI agents can proceed to execution.
 # Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
 stage7_exit=0
-stage7_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+stage7_output="$(uv run --no-project --with pyyaml python "$STAGE5_CHECKER" \
     --stage7-check "$WRK_ID" 2>&1)" || stage7_exit=$?
 if [[ "$stage7_exit" -eq 1 ]]; then
     echo "✖ Stage 7 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
@@ -337,7 +337,7 @@ echo "Running gate evidence validator for ${WRK_ID}..."
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_start" "$ORCH_AGENT" "phase=claim"
 fi
-if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
+if ! uv run --no-project --with pyyaml python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
   if [[ -x "$GATE_LOGGER" ]]; then
     bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_fail" "$ORCH_AGENT" "phase=claim"
   fi
@@ -353,7 +353,7 @@ fi
 # Best-effort stage progress update for claim/activation stage.
 STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
 if [[ -f "$STAGE_UPDATER" ]]; then
-  uv run --no-project python "$STAGE_UPDATER" "$WRK_ID" --order 8 --status done --reviewed-by "$ORCH_AGENT" >/dev/null || \
+  uv run --no-project --with pyyaml python "$STAGE_UPDATER" "$WRK_ID" --order 8 --status done --reviewed-by "$ORCH_AGENT" >/dev/null || \
     echo "⚠ Could not update stage-evidence order 8 for ${WRK_ID}" >&2
 fi
 

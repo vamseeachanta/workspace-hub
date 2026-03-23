@@ -1,0 +1,32 @@
+stage: 4
+stage_name: plan-draft
+wrk_id: WRK-5097
+completion_status: complete
+completed_at: "2026-03-23"
+checklist:
+  - item: "Recommended option selected with justification"
+    status: pass
+    detail: "Option A (GitHub-issue-first) recommended; Options C/D ruled out by research; Option B inferior due to persistent dual-numbering"
+  - item: "Detailed acceptance criteria (specific, testable)"
+    status: pass
+    detail: "10 acceptance criteria defined (AC-1 through AC-10), each specific and testable"
+  - item: "Pseudocode with >= 3 steps"
+    status: pass
+    detail: "5 pseudocode steps: gh-next-id.sh, capture pipeline update, promote-local-ids.sh, config migration, backfill"
+  - item: "Test plan with >= 3 entries"
+    status: pass
+    detail: "10 test entries covering unit, integration, regression, migration, and manual verification"
+  - item: "Migration strategy for existing WRK items"
+    status: pass
+    detail: "4-phase migration: prepare, switch, backfill, cleanup. Existing items retain current IDs."
+  - item: "Risk assessment"
+    status: pass
+    detail: "7 risks identified with likelihood, impact, and mitigation for each"
+  - item: "Plan spec written to specs/modules/"
+    status: pass
+    detail: "specs/modules/wrk-github-numbering-unification/plan.md"
+artifacts:
+  - path: specs/modules/wrk-github-numbering-unification/plan.md
+    description: "Full plan spec with option analysis, ACs, pseudocode, tests, migration, risks"
+  - path: .claude/work-queue/assets/WRK-5097/evidence/resource-intelligence.yaml
+    description: "Stage 2 resource intelligence findings"

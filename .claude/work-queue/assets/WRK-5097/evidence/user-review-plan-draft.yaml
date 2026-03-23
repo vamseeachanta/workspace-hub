@@ -1,0 +1,28 @@
+stage: 5
+name: User Review - Plan Draft
+wrk_id: WRK-5097
+decision: approved
+approval_decision: approve_as_is
+reviewed_at: "2026-03-23T12:00:00Z"
+reviewer: user
+
+decision_log:
+  - section: "Option selection (A vs B vs C vs D)"
+    discussed: true
+    outcome: "Option A approved. User confirmed could not see value in Option B."
+  - section: "Offline fallback pattern"
+    discussed: true
+    outcome: "WRK-LOCAL-YYYYMMDD-HHMMSS accepted as offline fallback."
+  - section: "Backfill scope"
+    discussed: true
+    outcome: "Backfill of ~87 items missing github_issue_ref included in this WRK item (not deferred)."
+  - section: "PR number gaps"
+    discussed: true
+    outcome: "No concerns — uniqueness over sequentiality accepted."
+
+checklist:
+  CL-05-1: true  # Every AC walked through with user
+  CL-05-2: true  # Every pseudocode block reviewed
+  CL-05-3: true  # Test plan reviewed
+  CL-05-4: true  # All requested revisions applied (none requested)
+  CL-05-5: true  # Explicit user approval received

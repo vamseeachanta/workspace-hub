@@ -1,6 +1,6 @@
 wrk_id: WRK-5097
-generated_at: '2026-03-23T16:48:16Z'
-reviewed_by: agent
+generated_at: '2026-03-23T21:01:12Z'
+reviewed_by: claude
 stages:
 - order: 1
   stage: Capture
@@ -32,7 +32,7 @@ stages:
   evidence: ''
 - order: 8
   stage: Claim / Activation
-  status: pending
+  status: done
   evidence: ''
 - order: 9
   stage: Work-Queue Routing

@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-5097
+scope_approved: true
+confirmed_at: "2026-03-20T12:00:00Z"
+reviewer: user
+notes: "Capture scope approved — unify WRK and GitHub issue numbering"

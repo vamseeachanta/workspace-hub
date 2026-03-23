@@ -1,0 +1,8 @@
+version: 1
+wrk_id: WRK-5097
+owner: claude
+session_id: session-20260323
+claimed_at: "2026-03-23T19:15:00Z"
+quota: available
+route: C
+complexity: complex

@@ -1,0 +1,54 @@
+stage: 6
+wrk_id: WRK-5097
+review_type: plan
+completed_at: "2026-03-23T18:57:00Z"
+
+reviewers:
+  claude:
+    verdict: APPROVE
+    p1_count: 0
+    p2_count: 2
+    p3_count: 3
+    result_file: scripts/review/results/20260323T185651Z-plan.md-plan-claude.md
+  codex:
+    verdict: REQUEST_CHANGES
+    p1_count: 3
+    p2_count: 2
+    p3_count: 3
+    result_file: scripts/review/results/20260323T185651Z-plan.md-plan-codex.md
+  gemini:
+    verdict: REQUEST_CHANGES
+    p1_count: 1
+    p2_count: 1
+    p3_count: 1
+    result_file: scripts/review/results/20260323T185651Z-plan.md-plan-gemini.md
+
+p1_findings:
+  - id: P1-CODEX-1
+    source: codex
+    summary: "Source-of-truth repo for issue creation is ambiguous — multi-repo minting breaks global uniqueness"
+    status: pending
+  - id: P1-CODEX-2
+    source: codex
+    summary: "Offline promotion under-specified — risks broken references in specs, docs, scripts, session handoff"
+    status: pending
+  - id: P1-CODEX-3
+    source: codex
+    summary: "Backfill duplicate detection unspecified — no protection against creating duplicate GitHub issues"
+    status: pending
+  - id: P1-GEMINI-1
+    source: gemini
+    summary: "WRK-LOCAL-* non-numeric format may break downstream WRK-[0-9]+ regex consumers beyond just the validator"
+    status: pending
+
+consensus_themes:
+  - "All 3 reviewers flag promote-local-ids.sh reference rewriting as incomplete"
+  - "All 3 reviewers want broader impact audit of WRK-[0-9]+ regex consumers"
+  - "Codex and Gemini want single-repo-mint clarified"
+  - "Claude and Gemini flag the two-step issue create+edit as suboptimal"
+
+checklist:
+  CL-06-1: true
+  CL-06-2: true
+  CL-06-3: true
+  CL-06-4: true
