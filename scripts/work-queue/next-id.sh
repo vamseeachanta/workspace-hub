@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # next-id.sh - Return the next sequential WRK-NNN ID
 #
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║  DEPRECATED (WRK-5097): Use gh-next-id.sh instead.                      ║
+# ║  This script now delegates to gh-next-id.sh when a --title is provided. ║
+# ║  Legacy (no-args) behavior is preserved for backward compatibility.      ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+#
 # Machine-partitioned ID ranges (config/work-queue/machine-ranges.yaml):
 #   dev-primary        1 – 4999   (default; current IDs ~1114)
 #   licensed-win-1    5000 – 9999   (Windows / orcaflex machine)
@@ -17,6 +23,16 @@
 #
 # Validates state.yaml last_id against actual files and auto-corrects drift.
 set -euo pipefail
+
+# ── Deprecation: delegate to gh-next-id.sh when possible ────────────────────
+>&2 echo "next-id.sh: DEPRECATED — use gh-next-id.sh instead (WRK-5097)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+GH_NEXT_ID="${SCRIPT_DIR}/gh-next-id.sh"
+if [[ -x "$GH_NEXT_ID" ]] && [[ "${1:-}" == "--title" || "${NEXT_ID_USE_GITHUB:-}" == "1" ]]; then
+  # Delegate fully to gh-next-id.sh
+  exec bash "$GH_NEXT_ID" "$@"
+fi
+# Fall through to legacy behavior for callers that pass no arguments
 
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"

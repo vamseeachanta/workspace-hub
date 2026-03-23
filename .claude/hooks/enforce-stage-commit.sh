@@ -28,7 +28,7 @@ fi
 WRK_ID=$(head -1 "$ACTIVE_WRK_FILE" | tr -d '[:space:]')
 if [[ -z "$WRK_ID" || "$WRK_ID" == *"started_at"* ]]; then
     # active-wrk may have multi-line format; extract just the ID
-    WRK_ID=$(grep -oP 'WRK-\d+' "$ACTIVE_WRK_FILE" | head -1)
+    WRK_ID=$(grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' "$ACTIVE_WRK_FILE" | head -1)
 fi
 
 if [[ -z "$WRK_ID" ]]; then

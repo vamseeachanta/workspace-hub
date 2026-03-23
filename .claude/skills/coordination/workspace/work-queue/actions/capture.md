@@ -48,13 +48,21 @@ From the description, infer:
 - **priority**: Default `medium`; infer `high` if words like "urgent", "critical", "broken", "fix"; infer `low` if "nice to have", "eventually", "when possible"
 - **complexity**: Per classification above
 
-### 5. Generate ID
+### 5. Generate ID (GitHub-first, with offline fallback)
 
 ```bash
-NEXT_ID=$(bash "${WORKSPACE_ROOT}/scripts/work-queue/next-id.sh")
-SLUG=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-' | head -c 40)
-FILENAME="WRK-${NEXT_ID}-${SLUG}.md"
+# gh-next-id.sh creates a GitHub issue and returns its number as the WRK ID.
+# If gh is unavailable, it returns a LOCAL-YYYYMMDD-HHMMSS-hostname fallback.
+GH_OUTPUT=$(bash "${WORKSPACE_ROOT}/scripts/work-queue/gh-next-id.sh" --title "$TITLE")
+NEXT_ID=$(echo "$GH_OUTPUT" | sed -n '1p')
+ISSUE_URL=$(echo "$GH_OUTPUT" | sed -n '2p')
+
+FILENAME="WRK-${NEXT_ID}.md"
 ```
+
+> **Deprecation notice**: `next-id.sh` (machine-range-based numbering) is deprecated.
+> New captures MUST use `gh-next-id.sh`. The old script now logs a warning and
+> delegates to `gh-next-id.sh`.
 
 ### 6. Create Work Item File
 
@@ -64,21 +72,29 @@ Write to `${QUEUE_DIR}/pending/${FILENAME}` using the appropriate template:
 
 Fill in all frontmatter fields. Set `created_at` to current ISO 8601 timestamp.
 
-### 7. Create GitHub Issue
+If the ID is a LOCAL fallback (starts with `LOCAL-`), add `provisional_id: true` to frontmatter.
+The `github_issue_ref` is set at creation time (from `ISSUE_URL`) — no post-hoc step needed.
 
-After writing the WRK file, create a linked GitHub issue and store the reference:
+### 7. Store GitHub Issue Reference
+
+The GitHub issue was already created by `gh-next-id.sh` in step 5. Store the reference:
 
 ```bash
-uv run --no-project python "${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py" \
-  "WRK-${NEXT_ID}" --create
+# ISSUE_URL is already available from step 5
+# Add github_issue_ref to frontmatter
+if [[ "$ISSUE_URL" != "offline" ]]; then
+  # Issue created — store ref directly in frontmatter
+  # github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/NNN
+
+  # Update issue body with full WRK content
+  uv run --no-project python "${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py" \
+    "WRK-${NEXT_ID}" --update
+fi
 ```
 
-This automatically:
-- Creates a GitHub issue titled `WRK-NNN: <title>` with labels from category/priority
-- Stores `github_issue_ref: <url>` in the WRK frontmatter via `_store_issue_ref()`
-
-If `gh` is not authenticated or the command fails, log a warning but do not block capture.
-The issue can be created later via `update-github-issue.py WRK-NNN --create`.
+If `gh` was unavailable (offline capture), the item gets a `WRK-LOCAL-*` ID with
+`provisional_id: true`. Run `promote-local-ids.sh` when connectivity returns to
+promote to real GitHub-derived IDs.
 
 ### 8. Context Document (Complex Items Only)
 
@@ -133,7 +149,7 @@ Created 3 work items:
 
 ## Error Handling
 
-- If `next-id.sh` fails, fall back to timestamp-based ID: `WRK-YYYYMMDD-HHMMSS`
+- If `gh-next-id.sh` returns a LOCAL ID (gh unavailable), capture proceeds with `WRK-LOCAL-*` ID and `provisional_id: true`. Run `promote-local-ids.sh` later.
 - If queue directory doesn't exist, create it with full structure
 - If duplicate found, prompt user for action (skip, create anyway, update existing)
 

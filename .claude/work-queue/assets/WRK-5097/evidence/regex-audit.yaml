@@ -1,0 +1,82 @@
+# WRK-5097 Phase 0: Regex Audit — Files containing WRK-[0-9] or WRK-\d patterns
+# Generated: 2026-03-23
+# Purpose: Identify all consumers of WRK ID patterns that need WRK-LOCAL-* support
+
+audit_date: "2026-03-23"
+wrk_id: WRK-5097
+
+# Files containing WRK-\d or WRK-[0-9] regex patterns (code that PARSES WRK IDs)
+# These are the files that need updating to handle WRK-LOCAL-* format
+regex_consumers:
+  - file: .claude/hooks/enforce-human-gate.sh
+    pattern: "WRK-\\d+"
+    usage: "Extract WRK ID from exit_stage.py commands"
+    needs_update: true
+    reason: "grep -oP 'WRK-\\d+' will not match WRK-LOCAL-* IDs"
+
+  - file: .claude/hooks/enforce-dispatch.sh
+    pattern: "WRK-\\d+"
+    usage: "Extract WRK ID from runner commands"
+    needs_update: true
+    reason: "grep -oP 'WRK-\\d+' will not match WRK-LOCAL-* IDs"
+
+  - file: .claude/hooks/enforce-active-stage.sh
+    pattern: "WRK-\\d+"
+    usage: "Extract WRK ID from active-wrk file and commands"
+    needs_update: true
+    reason: "Multiple grep -oP 'WRK-\\d+' calls will miss LOCAL IDs"
+
+  - file: .claude/hooks/enforce-stage-machinery.sh
+    pattern: "WRK-\\d+"
+    usage: "Extract WRK ID from evidence file paths"
+    needs_update: true
+    reason: "grep -oP 'WRK-\\d+' will not match WRK-LOCAL-* IDs"
+
+  - file: .claude/hooks/enforce-stage-commit.sh
+    pattern: "WRK-\\d+"
+    usage: "Extract WRK ID from active-wrk file"
+    needs_update: true
+    reason: "grep -oP 'WRK-\\d+' will not match WRK-LOCAL-* IDs"
+
+  - file: config/shell/bashrc-snippets.sh
+    pattern: "WRK-[0-9]+"
+    usage: "Display active WRK in shell prompt"
+    needs_update: true
+    reason: "grep -oE 'WRK-[0-9]+' will not match WRK-LOCAL-* IDs"
+
+  - file: .claude/work-queue/scripts/suggest-future-work.sh
+    pattern: "WRK-[0-9]+"
+    usage: "Overlap check regex for pending item matching"
+    needs_update: false
+    reason: "Used in sed to strip overlap info display text only; LOCAL IDs won't appear in this context"
+
+  - file: .claude/hooks/session-memory/save-snapshot.sh
+    pattern: "WRK-[0-9]+"
+    usage: "Extract WRK ID from git log for prompt display"
+    needs_update: true
+    reason: "grep -oE 'WRK-[0-9]+' will not match WRK-LOCAL-* commit refs"
+
+# Files containing WRK-[0-9] as literal data (filenames, references) — no regex update needed
+data_files_count: 241
+data_files_note: >
+  241 files contain literal WRK-NNNN references (work items, tests, configs, docs).
+  These do NOT need regex updates — they contain specific WRK IDs, not parsing logic.
+  New LOCAL IDs will be handled by the promote-local-ids.sh script.
+
+# Validator script (special case — needs both legacy and new format support)
+validator:
+  file: scripts/work-queue/validate-wrk-frontmatter.sh
+  needs_update: true
+  reason: "Must accept WRK-LOCAL-* format and reject malformed IDs like WRK-abc"
+
+# next-id.sh — will be wrapped, not updated
+next_id:
+  file: scripts/work-queue/next-id.sh
+  needs_update: false
+  reason: "Will be wrapped by gh-next-id.sh; kept as legacy fallback"
+
+summary:
+  total_regex_consumers: 8
+  needs_update: 7
+  already_ok: 1
+  phase_gate: "All 7 files identified for Phase 1 update"

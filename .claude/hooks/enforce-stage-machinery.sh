@@ -21,7 +21,7 @@ if [[ "$FILE_PATH" != *"/evidence/"* ]]; then
 fi
 
 # Extract WRK ID from path (e.g., .../assets/WRK-1316/evidence/foo.yaml)
-WRK_ID=$(echo "$FILE_PATH" | grep -oP 'WRK-\d+' | head -1)
+WRK_ID=$(echo "$FILE_PATH" | grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' | head -1)
 if [[ -z "$WRK_ID" ]]; then
     exit 0  # Not a WRK evidence path — allow
 fi

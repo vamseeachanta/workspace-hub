@@ -24,7 +24,7 @@ extract_title() {
     title=$(awk '/^---/{found++; next} found==1 && /^title:/{sub(/^title:[[:space:]]*"?/,""); sub(/"?[[:space:]]*$/,""); print; exit}' "$file" 2>/dev/null)
     if [[ -z "$title" ]]; then
         # Fall back to first H1 heading
-        title=$(grep -m1 '^# ' "$file" 2>/dev/null | sed 's/^# //' | sed 's/WRK-[0-9]*:[[:space:]]*//')
+        title=$(grep -m1 '^# ' "$file" 2>/dev/null | sed 's/^# //' | sed 's/WRK-[0-9A-Z_-]*:[[:space:]]*//')
     fi
     echo "${title:-unknown}"
 }

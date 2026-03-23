@@ -1,6 +1,6 @@
 # Skills Summary
 
-Generated: 2026-03-23T14:27:38Z
+Generated: 2026-03-23T21:23:07Z
 
 > AUTO-GENERATED. Do not edit manually.
 > Sync command: `uv run --no-project python scripts/skills/generate-skill-summary.py`
@@ -1209,7 +1209,7 @@ Generated: 2026-03-23T14:27:38Z
 | 1191 | [feature-layer-epic-level-work](coordination/workspace/work-queue/feature-layer-epic-level-work/SKILL.md) | active | [coordination/workspace/work-queue/feature-layer-epic-level-work/SKILL.md](coordination/workspace/work-queue/feature-layer-epic-level-work/SKILL.md) | Sub-skill of work-queue: Feature Layer (Epic-level work). | When a work item exceeds chunk-sizing limits (`config/work-queue/chunk-sizing.yaml`), |
 | 1192 | [integration-points](coordination/workspace/work-queue/integration-points/SKILL.md) | active | [coordination/workspace/work-queue/integration-points/SKILL.md](coordination/workspace/work-queue/integration-points/SKILL.md) | Sub-skill of work-queue: Integration Points. | No objective text found. |
 | 1193 | [key-scripts](coordination/workspace/work-queue/key-scripts/SKILL.md) | active | [coordination/workspace/work-queue/key-scripts/SKILL.md](coordination/workspace/work-queue/key-scripts/SKILL.md) | Sub-skill of work-queue: Key Scripts. | No objective text found. |
-| 1194 | [machine-wrk-id-ranges](coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md) | active | [coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md](coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md) | Sub-skill of work-queue: Machine WRK ID Ranges. | **ID range confusion warning**: `next-id.sh` scans ALL pending/working files including those from |
+| 1194 | [machine-wrk-id-ranges](coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md) | active | [coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md](coordination/workspace/work-queue/machine-wrk-id-ranges/SKILL.md) | Sub-skill of work-queue: Machine WRK ID Ranges. | **DEPRECATED (WRK-5097, 2026-03-23):** Machine-partitioned ranges are no longer |
 | 1195 | [parallel-work-policy](coordination/workspace/work-queue/parallel-work-policy/SKILL.md) | active | [coordination/workspace/work-queue/parallel-work-policy/SKILL.md](coordination/workspace/work-queue/parallel-work-policy/SKILL.md) | Sub-skill of work-queue: Parallel Work Policy. | No objective text found. |
 | 1196 | [planning-requirement](coordination/workspace/work-queue/planning-requirement/SKILL.md) | active | [coordination/workspace/work-queue/planning-requirement/SKILL.md](coordination/workspace/work-queue/planning-requirement/SKILL.md) | Sub-skill of work-queue: Planning Requirement. | Every WRK item must have an approved plan before implementation begins. |
 | 1197 | [queue-directory-structure](coordination/workspace/work-queue/queue-directory-structure/SKILL.md) | active | [coordination/workspace/work-queue/queue-directory-structure/SKILL.md](coordination/workspace/work-queue/queue-directory-structure/SKILL.md) | Sub-skill of work-queue: Queue Directory Structure. | .claude/work-queue/ |

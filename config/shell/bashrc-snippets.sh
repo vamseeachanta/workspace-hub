@@ -83,7 +83,7 @@ fi
 _wh_prompt_info() {
   local branch wrk_item
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" || return
-  wrk_item="$(git log --oneline -1 2>/dev/null | grep -oE 'WRK-[0-9]+' | head -1 || true)"
+  wrk_item="$(git log --oneline -1 2>/dev/null | grep -oE 'WRK-([0-9]+|LOCAL-[0-9]{8}-[0-9]{6}-[a-zA-Z0-9_-]+)' | head -1 || true)"
   if [[ -n "$wrk_item" ]]; then
     printf ' \e[36m(%s|%s)\e[0m' "$branch" "$wrk_item"
   else

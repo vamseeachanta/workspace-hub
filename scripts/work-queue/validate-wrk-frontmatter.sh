@@ -12,7 +12,18 @@ set -euo pipefail
 
 WRK_ID="${1:-}"
 if [[ -z "$WRK_ID" ]]; then
-  echo "Usage: $0 <WRK-NNN>" >&2
+  echo "Usage: $0 <WRK-NNN|WRK-LOCAL-YYYYMMDD-HHMMSS-hostname>" >&2
+  exit 2
+fi
+
+# Validate WRK ID format: accept legacy WRK-NNN and new WRK-LOCAL-YYYYMMDD-HHMMSS-hostname
+if [[ "$WRK_ID" =~ ^WRK-[0-9]+$ ]]; then
+  : # Legacy numeric format — OK
+elif [[ "$WRK_ID" =~ ^WRK-LOCAL-[0-9]{8}-[0-9]{6}-[a-zA-Z0-9_-]+$ ]]; then
+  : # Offline fallback format — OK
+else
+  echo "✖ Invalid WRK ID format: ${WRK_ID}" >&2
+  echo "  Expected: WRK-NNN (numeric) or WRK-LOCAL-YYYYMMDD-HHMMSS-hostname" >&2
   exit 2
 fi
 

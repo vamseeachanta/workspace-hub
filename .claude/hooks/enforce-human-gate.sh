@@ -21,8 +21,8 @@ if ! echo "$COMMAND" | grep -qP 'exit_stage\.py' 2>/dev/null; then
 fi
 
 # Extract WRK ID and stage number
-WRK_ID=$(echo "$COMMAND" | grep -oP 'WRK-\d+' | head -1)
-STAGE=$(echo "$COMMAND" | grep -oP 'WRK-\d+\s+(\d+)' | grep -oP '\d+$')
+WRK_ID=$(echo "$COMMAND" | grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' | head -1)
+STAGE=$(echo "$COMMAND" | grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)\s+(\d+)' | grep -oP '\d+$')
 
 if [[ -z "$WRK_ID" || -z "$STAGE" ]]; then
     exit 0  # Can't parse — allow (exit_stage.py will validate internally)

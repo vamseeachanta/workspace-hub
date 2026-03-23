@@ -25,7 +25,7 @@ if echo "$COMMAND" | grep -qP 'dispatch-run\.sh' 2>/dev/null; then
 fi
 
 # Extract WRK ID from command
-WRK_ID=$(echo "$COMMAND" | grep -oP 'WRK-\d+' | head -1)
+WRK_ID=$(echo "$COMMAND" | grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' | head -1)
 if [[ -z "$WRK_ID" ]]; then
     exit 0  # Can't determine WRK — allow (other hooks will catch)
 fi

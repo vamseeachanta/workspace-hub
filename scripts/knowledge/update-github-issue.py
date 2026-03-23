@@ -252,10 +252,21 @@ def main(argv=None, repo_root=None):
     lbl = []
     for lb in generate_labels(args.wrk_id, root): lbl.extend(["--label", lb])
     if args.create:
-        r = _gh_run(["gh", "issue", "create", "--title",
-                      f"{args.wrk_id}: {fm.get('title', args.wrk_id)}", "--body", body] + lbl + repo_flag)
-        url = r.stdout.strip(); print(f"Created: {url}")
-        if wrk: _store_issue_ref(wrk, url)
+        # WRK-5097: If github_issue_ref already exists (issue created by gh-next-id.sh),
+        # update the existing issue instead of creating a duplicate.
+        existing_ref = fm.get("github_issue_ref", "")
+        if existing_ref and existing_ref.startswith("http"):
+            num = existing_ref.rstrip("/").split("/")[-1]
+            _gh_run(["gh", "issue", "edit", num, "--body", body] + repo_flag)
+            # Also apply labels
+            if lbl:
+                _gh_run(["gh", "issue", "edit", num] + lbl + repo_flag)
+            print(f"Updated existing issue (created by gh-next-id.sh): {existing_ref}")
+        else:
+            r = _gh_run(["gh", "issue", "create", "--title",
+                          f"{args.wrk_id}: {fm.get('title', args.wrk_id)}", "--body", body] + lbl + repo_flag)
+            url = r.stdout.strip(); print(f"Created: {url}")
+            if wrk: _store_issue_ref(wrk, url)
     elif args.update:
         num = _get_issue_number(fm)
         _gh_run(["gh", "issue", "edit", num, "--body", body] + repo_flag)

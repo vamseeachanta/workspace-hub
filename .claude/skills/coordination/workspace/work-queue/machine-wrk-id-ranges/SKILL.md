@@ -9,10 +9,14 @@ scripts_exempt: true
 
 # Machine WRK ID Ranges
 
-## Machine WRK ID Ranges
+> **DEPRECATED (WRK-5097, 2026-03-23):** Machine-partitioned ranges are no longer
+> the primary ID allocation mechanism. New WRK IDs are derived from GitHub issue
+> numbers via `scripts/work-queue/gh-next-id.sh`. This eliminates cross-machine
+> conflicts entirely. The ranges below are retained for legacy reference only.
 
+## Machine WRK ID Ranges (Legacy)
 
-Each machine owns a non-overlapping numeric range (canonical: `config/work-queue/machine-ranges.yaml`).
+Each machine previously owned a non-overlapping numeric range (canonical: `config/work-queue/machine-ranges.yaml`).
 `next-id.sh` reads this table and enforces the floor automatically.
 
 | Machine | Floor | Ceiling | Notes |
@@ -22,10 +26,8 @@ Each machine owns a non-overlapping numeric range (canonical: `config/work-queue
 | `dev-secondary` | 10000 | 14999 | Reserved |
 | `gali-linux-compute-1` | 15000 | 19999 | Reserved |
 
-Re-allocation: bump floor/ceiling when within 50 of ceiling.
+## New ID Allocation (WRK-5097)
 
-> **ID range confusion warning**: `next-id.sh` scans ALL pending/working files including those from
-> other machines. If a WRK-5000+ file exists in `pending/` (created on licensed-win-1), dev-primary
-> sessions will see MAX_FILE_ID ≥ 5000 and issue IDs from that range. This is a known limitation.
-> **Fix**: when in doubt, check `hostname` and compare issued ID against your machine's floor/ceiling.
-> Items created on the wrong range can be renamed; update frontmatter `id:` to match the new filename.
+- **Online:** `gh-next-id.sh --title "..."` creates a GitHub issue and returns the number as the WRK ID.
+- **Offline:** Falls back to `WRK-LOCAL-YYYYMMDD-HHMMSS-{hostname}`. Promote with `promote-local-ids.sh`.
+- **All issues** created in `vamseeachanta/workspace-hub` regardless of `target_repos`.
