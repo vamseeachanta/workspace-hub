@@ -1,5 +1,5 @@
 wrk_id: WRK-1380
-generated_at: '2026-03-23T05:51:36Z'
+generated_at: '2026-03-23T12:14:15Z'
 reviewed_by: agent
 stages:
 - order: 1
@@ -24,7 +24,7 @@ stages:
   evidence: ''
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: in_progress
   evidence: ''
 - order: 7
   stage: User Review - Plan Final

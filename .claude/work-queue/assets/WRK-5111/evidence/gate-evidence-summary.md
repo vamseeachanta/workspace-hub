@@ -1,0 +1,19 @@
+# Gate Evidence Summary (WRK-5111, phase=claim)
+
+| Gate | Status | Details |
+|---|---|---|
+| Plan gate | FAIL | reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing |
+| Workstation contract gate | PASS | plan_workstations=[dev-primary], execution_workstations=[dev-primary] |
+| Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=complete, p1_count=0, core_skills=3 |
+| Activation gate | PASS | activation.yaml: activation evidence OK |
+| Agent log gate | WARN | routing:missing-log ; plan:missing-log (optional — no multi-agent indicators) |
+| GitHub issue gate | PASS | github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/1272 |
+| Cross-review gate | FAIL | artifact=none |
+| Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
+| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Approval ordering gate | PASS | approval ordering OK (phase=claim) |
+| Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
+| Sentinel values gate | PASS | no sentinel values found |
+| Claim artifact path gate | FAIL | no claim artifact found (expected evidence/claim-evidence.yaml) |
+| ISO datetime format gate | PASS | all timestamp fields have time components |
+| Stage1 capture gate | FAIL | user-review-capture.yaml: confirmed_at missing |

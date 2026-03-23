@@ -1,0 +1,20 @@
+stage: 6
+wrk_id: WRK-5111
+items:
+  - id: CL-06-1
+    text: "EnterPlanMode — synthesize all inputs before writing verdict"
+    completed: true
+    completed_at: "2026-03-23T04:30:00Z"
+  - id: CL-06-2
+    text: "Cross-review package sent to all 3 providers"
+    completed: true
+    completed_at: "2026-03-23T04:32:00Z"
+    notes: "Claude direct, Codex+Gemini fallback to Claude Opus (quota/iteration cap)"
+  - id: CL-06-3
+    text: "All 3 verdicts collected"
+    completed: true
+    completed_at: "2026-03-23T04:34:00Z"
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written"
+    completed: true
+    completed_at: "2026-03-23T04:35:00Z"

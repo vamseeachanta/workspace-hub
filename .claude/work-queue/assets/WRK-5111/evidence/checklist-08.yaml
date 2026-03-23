@@ -1,0 +1,19 @@
+stage: 8
+wrk_id: WRK-5111
+items:
+  - id: CL-08-1
+    text: "Agent quota assessed — proceed"
+    completed: true
+    completed_at: "2026-03-23T04:42:00Z"
+  - id: CL-08-2
+    text: "claim-evidence.yaml written"
+    completed: true
+    completed_at: "2026-03-23T04:42:00Z"
+  - id: CL-08-3
+    text: "WRK moved to working status"
+    completed: true
+    completed_at: "2026-03-23T04:42:00Z"
+  - id: CL-08-4
+    text: "activation.yaml written"
+    completed: true
+    completed_at: "2026-03-23T04:42:00Z"
