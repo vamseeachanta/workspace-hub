@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --bg:         #f3efe6;
@@ -83,7 +82,7 @@ tbody tr:hover>td{background:rgba(15,118,110,.03);}
 .variable-list li .var-sym{color:var(--ink);font-weight:600;}
 
 .chart-container{margin:16px 0;position:relative;}
-.chart-container canvas{max-height:400px;width:100%;}
+.chart-container canvas,.chart-container svg{max-height:400px;width:100%;}
 .chart-title{font-size:.9rem;font-weight:700;color:var(--accent-2);margin-bottom:8px;}
 
 details{margin:8px 0;}
@@ -553,15 +552,142 @@ Equilibrium verified to &lt; 0.01% error.
   <h2>Charts</h2>
   <div class="chart-container">
     <div class="chart-title">Utilisation Ratio by Load Case</div>
-    <canvas id="chart-utilisation-ratio" height="300"></canvas>
+    <svg viewBox="0 0 500 300" style="width:100%;max-height:400px;font-family:sans-serif;font-size:11px;">
+      <rect x="60" y="15" width="410" height="240" fill="#fafaf8" stroke="var(--line)" stroke-width="0.5"/>
+      <!-- Y gridlines 0–7, step 1 -->
+      <line x1="60" y1="255" x2="470" y2="255" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="259" text-anchor="end" fill="var(--muted)">0</text>
+      <line x1="60" y1="221" x2="470" y2="221" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="225" text-anchor="end" fill="var(--muted)">1</text>
+      <line x1="60" y1="187" x2="470" y2="187" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="191" text-anchor="end" fill="var(--muted)">2</text>
+      <line x1="60" y1="153" x2="470" y2="153" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="157" text-anchor="end" fill="var(--muted)">3</text>
+      <line x1="60" y1="119" x2="470" y2="119" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="123" text-anchor="end" fill="var(--muted)">4</text>
+      <line x1="60" y1="85" x2="470" y2="85" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="89" text-anchor="end" fill="var(--muted)">5</text>
+      <line x1="60" y1="51" x2="470" y2="51" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="55" text-anchor="end" fill="var(--muted)">6</text>
+      <line x1="60" y1="17" x2="470" y2="17" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="21" text-anchor="end" fill="var(--muted)">7</text>
+      <!-- Yield limit line at y=1.0 => y_svg=221 -->
+      <line x1="60" y1="221" x2="470" y2="221" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="473" y="218" fill="#16a34a" font-size="10" font-weight="700">Yield (1.0)</text>
+      <!-- Axes -->
+      <text x="265" y="290" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">Load Case</text>
+      <text x="14" y="140" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600" transform="rotate(-90,14,140)">Utilisation Ratio</text>
+      <!-- y_svg = 255 - (val/7)*240 -->
+      <!-- Case 1: 3.07 => 255-105=150 -->
+      <rect x="100" y="150" width="60" height="105" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="130" y="145" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">3.07</text>
+      <text x="130" y="270" text-anchor="middle" fill="var(--muted)">Case 1</text>
+      <!-- Case 2: 4.80 => 255-165=90 -->
+      <rect x="220" y="90" width="60" height="165" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="250" y="85" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">4.80</text>
+      <text x="250" y="270" text-anchor="middle" fill="var(--muted)">Case 2</text>
+      <!-- Case 3: 6.66 => 255-228=27 -->
+      <rect x="340" y="27" width="60" height="228" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="370" y="22" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">6.66</text>
+      <text x="370" y="270" text-anchor="middle" fill="var(--muted)">Case 3</text>
+      <!-- Legend -->
+      <rect x="130" y="4" width="12" height="12" fill="#b91c1ccc" stroke="#b91c1c" rx="2"/>
+      <text x="147" y="14" fill="var(--ink)" font-size="10">Utilisation (σ_vm / F_y)</text>
+      <line x1="280" y1="10" x2="300" y2="10" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="305" y="14" fill="var(--ink)" font-size="10">Yield Limit</text>
+    </svg>
   </div>
   <div class="chart-container">
     <div class="chart-title">Reaction Force Distribution — Governing Case (250 MPH Dual)</div>
-    <canvas id="chart-reaction-forces" height="300"></canvas>
+    <svg viewBox="0 0 500 300" style="width:100%;max-height:400px;font-family:sans-serif;font-size:11px;">
+      <rect x="70" y="15" width="400" height="240" fill="#fafaf8" stroke="var(--line)" stroke-width="0.5"/>
+      <!-- Y gridlines 0–30000, step 5000 -->
+      <line x1="70" y1="255" x2="470" y2="255" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="259" text-anchor="end" fill="var(--muted)">0</text>
+      <line x1="70" y1="215" x2="470" y2="215" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="219" text-anchor="end" fill="var(--muted)">5k</text>
+      <line x1="70" y1="175" x2="470" y2="175" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="179" text-anchor="end" fill="var(--muted)">10k</text>
+      <line x1="70" y1="135" x2="470" y2="135" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="139" text-anchor="end" fill="var(--muted)">15k</text>
+      <line x1="70" y1="95" x2="470" y2="95" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="99" text-anchor="end" fill="var(--muted)">20k</text>
+      <line x1="70" y1="55" x2="470" y2="55" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="59" text-anchor="end" fill="var(--muted)">25k</text>
+      <line x1="70" y1="15" x2="470" y2="15" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="65" y="19" text-anchor="end" fill="var(--muted)">30k</text>
+      <!-- Axes -->
+      <text x="270" y="290" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">BC Node</text>
+      <text x="16" y="140" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600" transform="rotate(-90,16,140)">Reaction Magnitude (lbs)</text>
+      <!-- y_svg = 255 - (val/30000)*240 -->
+      <!-- Node 1: 24368 => 255-195=60 -->
+      <rect x="90" y="60" width="55" height="195" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="117" y="55" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="700">24,368</text>
+      <text x="117" y="270" text-anchor="middle" fill="var(--muted)">Node 1</text>
+      <!-- Node 2: 25034 => 255-200=55 -->
+      <rect x="190" y="55" width="55" height="200" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="217" y="50" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="700">25,034</text>
+      <text x="217" y="270" text-anchor="middle" fill="var(--muted)">Node 2</text>
+      <!-- Node 3: 9981 => 255-80=175 -->
+      <rect x="290" y="175" width="55" height="80" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="317" y="170" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="700">9,981</text>
+      <text x="317" y="270" text-anchor="middle" fill="var(--muted)">Node 3</text>
+      <!-- Node 4: 10421 => 255-83=172 -->
+      <rect x="390" y="172" width="55" height="83" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="417" y="167" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="700">10,421</text>
+      <text x="417" y="270" text-anchor="middle" fill="var(--muted)">Node 4</text>
+      <!-- Legend -->
+      <rect x="200" y="4" width="12" height="12" fill="#b91c1ccc" stroke="#b91c1c" rx="2"/>
+      <text x="217" y="14" fill="var(--ink)" font-size="10">Reaction |F| (lbs)</text>
+    </svg>
   </div>
   <div class="chart-container">
     <div class="chart-title">Reaction Force Distribution — % of Total Load</div>
-    <canvas id="chart-reaction-force-pct" height="300"></canvas>
+    <svg viewBox="0 0 500 300" style="width:100%;max-height:400px;font-family:sans-serif;font-size:11px;">
+      <rect x="60" y="15" width="410" height="240" fill="#fafaf8" stroke="var(--line)" stroke-width="0.5"/>
+      <!-- Y gridlines 0–50%, step 10 -->
+      <line x1="60" y1="255" x2="470" y2="255" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="259" text-anchor="end" fill="var(--muted)">0%</text>
+      <line x1="60" y1="207" x2="470" y2="207" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="211" text-anchor="end" fill="var(--muted)">10%</text>
+      <line x1="60" y1="159" x2="470" y2="159" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="163" text-anchor="end" fill="var(--muted)">20%</text>
+      <line x1="60" y1="111" x2="470" y2="111" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="115" text-anchor="end" fill="var(--muted)">30%</text>
+      <line x1="60" y1="63" x2="470" y2="63" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="67" text-anchor="end" fill="var(--muted)">40%</text>
+      <line x1="60" y1="15" x2="470" y2="15" stroke="#e0ddd5" stroke-width="0.5"/>
+      <text x="55" y="19" text-anchor="end" fill="var(--muted)">50%</text>
+      <!-- Axes -->
+      <text x="265" y="290" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">BC Node</text>
+      <text x="14" y="140" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600" transform="rotate(-90,14,140)">% of Applied Load</text>
+      <!-- y_svg = 255 - (val/50)*240 -->
+      <!-- Node 1: Case1=46.2% => 255-222=33, Case3=46.2% => same -->
+      <rect x="85" y="33" width="30" height="222" fill="#3b82f6cc" stroke="#3b82f6" stroke-width="1" rx="2"/>
+      <rect x="118" y="33" width="30" height="222" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="116" y="28" text-anchor="middle" fill="var(--ink)" font-size="9" font-weight="700">46.2%</text>
+      <text x="116" y="270" text-anchor="middle" fill="var(--muted)">Node 1</text>
+      <!-- Node 2: Case1=47.5% => 255-228=27, Case3=47.5% -->
+      <rect x="185" y="27" width="30" height="228" fill="#3b82f6cc" stroke="#3b82f6" stroke-width="1" rx="2"/>
+      <rect x="218" y="27" width="30" height="228" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="216" y="22" text-anchor="middle" fill="var(--ink)" font-size="9" font-weight="700">47.5%</text>
+      <text x="216" y="270" text-anchor="middle" fill="var(--muted)">Node 2</text>
+      <!-- Node 3: Case1=18.9% => 255-91=164, Case3=18.9% -->
+      <rect x="285" y="164" width="30" height="91" fill="#3b82f6cc" stroke="#3b82f6" stroke-width="1" rx="2"/>
+      <rect x="318" y="164" width="30" height="91" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="316" y="159" text-anchor="middle" fill="var(--ink)" font-size="9" font-weight="700">18.9%</text>
+      <text x="316" y="270" text-anchor="middle" fill="var(--muted)">Node 3</text>
+      <!-- Node 4: Case1=19.8% => 255-95=160, Case3=19.8% -->
+      <rect x="385" y="160" width="30" height="95" fill="#3b82f6cc" stroke="#3b82f6" stroke-width="1" rx="2"/>
+      <rect x="418" y="160" width="30" height="95" fill="#b91c1ccc" stroke="#b91c1c" stroke-width="1" rx="2"/>
+      <text x="416" y="155" text-anchor="middle" fill="var(--ink)" font-size="9" font-weight="700">19.8%</text>
+      <text x="416" y="270" text-anchor="middle" fill="var(--muted)">Node 4</text>
+      <!-- Legend -->
+      <rect x="140" y="4" width="12" height="12" fill="#3b82f6cc" stroke="#3b82f6" rx="2"/>
+      <text x="157" y="14" fill="var(--ink)" font-size="10">Case 1 (200 single)</text>
+      <rect x="290" y="4" width="12" height="12" fill="#b91c1ccc" stroke="#b91c1c" rx="2"/>
+      <text x="307" y="14" fill="var(--ink)" font-size="10">Case 3 (250 dual)</text>
+    </svg>
   </div>
 </div>
 
@@ -843,13 +969,6 @@ document.addEventListener("DOMContentLoaded", function() {
     ],
     throwOnError: false
   });
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-new Chart(document.getElementById("chart-utilisation-ratio"), {"type": "bar", "data": {"labels": [1, 2, 3], "datasets": [{"label":"Utilisation (\u03c3_vm / F_y)","data":[3.07, 4.8, 6.66],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1},{"label":"Yield Limit","data":[1.0, 1.0, 1.0],"backgroundColor":"#16a34acc","borderColor":"#16a34a","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "Load Case"}}, "y": {"title": {"display": true, "text": "Utilisation Ratio"}}}}});
-new Chart(document.getElementById("chart-reaction-forces"), {"type": "bar", "data": {"labels": [1, 2, 3, 4], "datasets": [{"label":"Reaction |F|","data":[24368, 25034, 9981, 10421],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "BC Node"}}, "y": {"title": {"display": true, "text": "Reaction Magnitude"}}}}});
-new Chart(document.getElementById("chart-reaction-force-pct"), {"type": "bar", "data": {"labels": [1, 2, 3, 4], "datasets": [{"label":"Case 1 (200 single)","data":[46.2, 47.5, 18.9, 19.8],"backgroundColor":"#3b82f6cc","borderColor":"#3b82f6","borderWidth":1},{"label":"Case 3 (250 dual)","data":[46.2, 47.5, 18.9, 19.8],"backgroundColor":"#b91c1ccc","borderColor":"#b91c1c","borderWidth":1}]}, "options": {"responsive": true, "scales": {"x": {"title": {"display": true, "text": "BC Node"}}, "y": {"title": {"display": true, "text": "% of Applied Load"}}}}});
 });
 </script>
 </body>
