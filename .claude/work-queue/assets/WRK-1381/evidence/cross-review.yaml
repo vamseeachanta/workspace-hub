@@ -1,0 +1,37 @@
+wrk_id: WRK-1381
+stage: 6
+review_cycle_id: WRK-1381-plan-v1
+reviewed_at: "2026-03-23T04:18:00Z"
+
+providers:
+  claude:
+    verdict: REQUEST_CHANGES
+    severity: P1
+    findings:
+      - "Plan mixed true figure digitization with expansion of already captured in-repo values."
+      - "Acceptance criterion for <= 2% accuracy had no defined verification method."
+    resolution: "Plan revised to split source-digitization vs fixture integration, define provenance classes, and define checkpoint-based accuracy checks."
+
+  codex:
+    verdict: REQUEST_CHANGES
+    severity: P1
+    findings:
+      - "Current plan could complete fixture expansion without delivering actual figure digitization."
+      - "Shared artifact path was treated as optional even though it is part of current acceptance criteria."
+      - "Dependency on PNA/Biran/EN400 source assets was noted but not promoted to an explicit blocker."
+    resolution: "Plan revised to make source availability an explicit dependency, require the shared artifact or a prior scope change, and strengthen provenance requirements."
+    notes: "Codex review completed successfully via direct `submit-to-codex.sh` invocation after wrapper-path failure in `cross-review.sh`."
+
+  gemini:
+    verdict: REQUEST_CHANGES
+    severity: P1
+    findings:
+      - "Digitization tooling/process was undefined."
+      - "Plan contradicted the WRK mission by assuming expansion from existing values while source assets were missing."
+      - "2% accuracy criterion was not measurable."
+    resolution: "Plan revised to require explicit digitization/transcription provenance, explicit method declaration for figure-backed curves, and explicit checkpoint-based accuracy verification."
+
+overall_verdict: REVISIONS_REQUIRED
+plan_version: v2-revised
+scope_change: false
+notes: "All 3 providers reviewed the plan. Consensus blocker theme was source-of-truth ambiguity and missing accuracy methodology."

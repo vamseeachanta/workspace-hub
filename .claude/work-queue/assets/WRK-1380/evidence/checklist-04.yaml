@@ -1,0 +1,27 @@
+stage: 4
+wrk_id: WRK-1380
+items:
+  - id: CL-04-1
+    completed: true
+    text: "Scripts-over-LLM audit performed (25% recurrence check)"
+    note: "Identified two recurring support scripts for future ship-plan batches: priority queue builder and Phase 1 validator."
+  - id: CL-04-2
+    completed: true
+    text: "EnterPlanMode entered for ideation (4a)"
+    note: "Stage 4 handled as planning-only work: no implementation or execution artifacts beyond the plan spec and checklist."
+  - id: CL-04-3
+    completed: true
+    text: "ACs defined (specific, testable)"
+    note: "Plan spec defines five measurable ACs covering schema generation, completeness counts, capital-ship coverage, Jane's verification, and validation before commit."
+  - id: CL-04-4
+    completed: true
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    note: "Pseudocode included for queue builder, Phase 1 validator, and the manual extraction loop."
+  - id: CL-04-5
+    completed: true
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    note: "Three test entries defined: validator happy path, validator threshold failure, and queue ordering."
+  - id: CL-04-6
+    completed: true
+    text: "Plan spec written to specs/modules/"
+    note: "Wrote specs/modules/wrk-1380-ship-dimensions-phase-1-plan.md with dependencies, execution plan, ACs, pseudocode, and tests."
