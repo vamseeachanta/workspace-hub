@@ -24,8 +24,8 @@ stages:
   evidence: ''
 - order: 6
   stage: Cross-Review
-  status: in_progress
-  evidence: ''
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1380/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan Final
   status: pending

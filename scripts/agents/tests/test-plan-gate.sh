@@ -179,6 +179,13 @@ if [[ -z "$FILTER_GROUP" || "$FILTER_GROUP" == "2" ]]; then
     fail "2.cross-review.gate_scoped_to_plan_type"
   fi
 
+  # 2.cross-review: timeout config key matches canonical stage5-gate-config schema
+  if grep -q 'checker_timeout_seconds' "$cross_review"; then
+    pass "2.cross-review.uses_checker_timeout_seconds"
+  else
+    fail "2.cross-review.uses_checker_timeout_seconds"
+  fi
+
   # 2.AC-57b: all four callers must be guarded (fully hardened state)
   ALL_GUARDED=true
   for ep in "${ENTRYPOINTS[@]}"; do

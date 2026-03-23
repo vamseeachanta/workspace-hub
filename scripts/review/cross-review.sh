@@ -71,9 +71,16 @@ if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" ]]; then
     echo "⚠ Neither timeout nor gtimeout found — running gate check without timeout guard" >&2
   fi
 
-  # Read checker_timeout from gate config (default 30s, validate as positive integer)
+  # Read checker timeout from gate config (default 30s, validate as positive integer).
+  # Prefer the canonical checker_timeout_seconds key; fall back to legacy checker_timeout.
   GATE_CONFIG="${WS_HUB_ROOT}/scripts/work-queue/stage5-gate-config.yaml"
-  checker_timeout=$(grep -m1 'checker_timeout:' "$GATE_CONFIG" 2>/dev/null | awk '{print $2}')
+  checker_timeout="$(
+    awk '
+      /^checker_timeout_seconds:/ { print $2; found=1; exit }
+      /^checker_timeout:/ && !found { legacy=$2 }
+      END { if (!found && legacy != "") print legacy }
+    ' "$GATE_CONFIG" 2>/dev/null
+  )"
   if ! [[ "${checker_timeout:-}" =~ ^[1-9][0-9]*$ ]]; then
     checker_timeout=30
   fi

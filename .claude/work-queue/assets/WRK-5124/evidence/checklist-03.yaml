@@ -1,0 +1,17 @@
+wrk_id: WRK-5124
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-03-2
+    text: "Confirm route (A/B/C), workstations, orchestrator"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Route B (medium), dev-primary, orchestrator: claude"
+  - id: CL-03-3
+    text: "Surface open questions; update WRK frontmatter"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Added route: B to frontmatter. No open questions — root cause is clear from investigation."

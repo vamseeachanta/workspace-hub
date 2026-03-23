@@ -1,13 +1,13 @@
 wrk_id: WRK-1380
-current_stage: 6
-stage_name: Cross-Review
-completed_stage: 5
-next_action: Execute stage 6: Cross-Review
-context_summary: Stage 5 complete. Next: stage 6 (Cross-Review).
+current_stage: 4
+stage_name: Plan Draft
+completed_stage: 6
+next_action: Revise plan to resolve Stage 6 cross-review findings, then repeat stages 5-6.
+context_summary: Stage 6 completed with REVISE verdict. Return to plan revision to resolve unresolved execution-path dependencies before Stage 7.
 entry_reads:
   - .claude/work-queue/assets/WRK-1380/checkpoint.yaml
   - assets/WRK-1380/evidence/checklist-04.yaml
   - assets/WRK-1380/evidence/user-review-plan-draft.yaml
-  - assets/WRK-1380/evidence/user-review-plan-draft.yaml
-checkpointed_at: 2026-03-23T05:51:29Z
+  - assets/WRK-1380/evidence/cross-review.yaml
+checkpointed_at: 2026-03-23T16:45:00Z
 human_gate: false

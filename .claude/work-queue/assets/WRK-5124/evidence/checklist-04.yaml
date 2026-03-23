@@ -1,0 +1,36 @@
+wrk_id: WRK-5124
+stage: 4
+items:
+  - id: CL-04-0
+    text: "scripts-over-LLM audit"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "No new scripts needed — all changes to existing scripts"
+  - id: CL-04-1
+    text: "EnterPlanMode for thinking before writing"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-04-2
+    text: "Define ACs (specific, testable)"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-04-3
+    text: "Write pseudocode for key functions"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "3-step pseudocode: uv check, timeout wrapper, exit handling"
+  - id: CL-04-4
+    text: "Write test plan"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "4 entries: happy path, uv unavailable, timeout, gemini-specific"
+  - id: CL-04-5
+    text: "Check chunk sizing"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Within limits: 1 repo, 2-3 files, <150 words plan"
+  - id: CL-04-6
+    text: "Research before building"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "N/A — internal infrastructure fix, no external APIs"

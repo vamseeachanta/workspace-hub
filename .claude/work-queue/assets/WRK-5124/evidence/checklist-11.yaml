@@ -1,0 +1,19 @@
+wrk_id: WRK-5124
+stage: 11
+items:
+  - id: CL-11-1
+    text: "Verify all evidence YAML files present"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-11-2
+    text: "Run update-github-issue.py --update"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-11-3
+    text: "Confirm GitHub issue reflects current progress"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-11-4
+    text: "Check required evidence files present"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z

@@ -42,6 +42,21 @@ source_roots:
     provenance_rule: mounted project path should stay authoritative
     dedup_rule: prefer canonical mounted project path
     availability_check_ref: scripts/readiness/check-network-mounts.sh
+  - source_id: research_literature_local
+    document_intelligence_bucket: research_literature
+    mount_root: /mnt/ace-data/digitalmodel/docs/domains
+    symlink_note: "/mnt/ace-data is a symlink to /mnt/ace (local drive /dev/sda1)"
+    local_or_remote: local
+    canonical_storage_policy: downloaded research literature organized by engineering domain (rw NFS to ace-linux-2)
+    provenance_rule: each domain folder contains a download-literature.sh script with source URLs
+    dedup_rule: prefer this location over ad-hoc downloads; check before re-downloading
+    availability_check_ref: local filesystem presence
+    structure: |
+      <domain>/literature/
+        <subtopic>/
+          <author-year-title>.pdf
+      Domains: cathodic_protection, geotechnical, hydrodynamics,
+               naval_architecture, pipeline, structural, subsea
   - source_id: dde_project_remote
     document_intelligence_bucket: dde_project
     mount_root: ""

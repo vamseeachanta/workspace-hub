@@ -1,0 +1,39 @@
+wrk_id: WRK-5124
+stage: 10
+items:
+  - id: CL-10-0
+    text: "scripts-over-LLM check"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "No new scripts — changes to existing scripts only"
+  - id: CL-10-1
+    text: "EnterPlanMode — plan test and file strategy"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-10-2
+    text: "Invoke TDD skill"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Bash syntax validation as tests for shell scripts"
+  - id: CL-10-3
+    text: "Write failing tests first (Red)"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Shell syntax + grep checks verify structure"
+  - id: CL-10-4
+    text: "Implement minimum code to pass (Green)"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-10-5
+    text: "Refactor while tests stay green"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "No refactoring needed — clean implementation"
+  - id: CL-10-7
+    text: "Write execute.yaml"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-10-8
+    text: "Git commit + push"
+    completed: false
+    notes: "Awaiting user confirmation to commit"

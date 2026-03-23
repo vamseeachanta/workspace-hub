@@ -1,0 +1,44 @@
+wrk_id: WRK-5124
+stage: 10
+execution_summary: |
+  Fixed Stage 6 cross-review gate stall for Codex/Gemini providers.
+  Two files changed:
+  1. scripts/review/cross-review.sh — Added uv pre-check, timeout/gtimeout fallback,
+     integer-validated checker_timeout config, explicit exit code handling (124=timeout,
+     1=predicate, other=infrastructure)
+  2. scripts/review/submit-to-gemini.sh — Added check_uv_readiness() with timeout-wrapped
+     uv probe before render step
+files_changed:
+  - scripts/review/cross-review.sh
+  - scripts/review/submit-to-gemini.sh
+integrated_repo_tests:
+  - name: "cross-review-syntax"
+    scope: repo
+    command: "bash -n scripts/review/cross-review.sh"
+    result: pass
+    artifact_ref: "scripts/review/cross-review.sh"
+  - name: "gemini-submit-syntax"
+    scope: repo
+    command: "bash -n scripts/review/submit-to-gemini.sh"
+    result: pass
+    artifact_ref: "scripts/review/submit-to-gemini.sh"
+  - name: "uv-precheck-present"
+    scope: repo
+    command: "grep -q 'command -v uv' scripts/review/cross-review.sh"
+    result: pass
+    artifact_ref: "scripts/review/cross-review.sh"
+  - name: "gtimeout-fallback-present"
+    scope: repo
+    command: "grep -q 'gtimeout' scripts/review/cross-review.sh"
+    result: pass
+    artifact_ref: "scripts/review/cross-review.sh"
+  - name: "gemini-check-uv-readiness"
+    scope: repo
+    command: "grep -q 'check_uv_readiness' scripts/review/submit-to-gemini.sh"
+    result: pass
+    artifact_ref: "scripts/review/submit-to-gemini.sh"
+  - name: "gemini-timeout-wrapped-probe"
+    scope: repo
+    command: "grep -q 'timeout 10s' scripts/review/submit-to-gemini.sh"
+    result: pass
+    artifact_ref: "scripts/review/submit-to-gemini.sh"

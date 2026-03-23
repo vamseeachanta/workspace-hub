@@ -1,0 +1,32 @@
+wrk_id: WRK-5124
+stage: 5
+items:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "ACs presented in synthesis diff table; user approved via 'continue'"
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Pseudocode in plan reviewed; Codex refinements adopted"
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "8-scenario test plan in merged plan"
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Codex refinements merged into plan.md"
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "User said 'post stage/summary to gh; continue'"

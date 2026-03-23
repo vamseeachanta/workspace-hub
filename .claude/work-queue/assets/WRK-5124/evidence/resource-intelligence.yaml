@@ -1,0 +1,56 @@
+wrk_id: WRK-5124
+stage: 2
+completion_status: complete
+domain: work-queue-infrastructure
+complexity_assessment: medium
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+    - workspace-hub/ecosystem-terminology
+  related:
+    - workspace-hub/workflow-gatepass
+
+key_files:
+  - scripts/review/cross-review.sh  # Stage 6 entrypoint, Stage 5 gate check at line 57
+  - scripts/work-queue/verify-gate-evidence.py  # Gate checker, _run_stage5_check() at line 1794
+  - scripts/work-queue/stage5-gate-config.yaml  # Gate config, activation: full
+  - scripts/review/submit-to-codex.sh  # check_uv_readiness() at line 182
+  - scripts/review/submit-to-gemini.sh  # No explicit uv pre-check
+  - scripts/review/submit-to-claude.sh  # uv only post-execution at line 241
+
+root_cause_analysis: |
+  The Stage 6 cross-review.sh runs a Stage 5 gate check (line 57) that ALWAYS uses
+  `uv run --no-project python verify-gate-evidence.py --stage5-check WRK-ID`.
+  This gate fires BEFORE any provider-specific code runs.
+
+  For Claude: succeeds because the orchestrator session already passed through this path.
+  For Codex/Gemini: if uv is unavailable or the gate environment differs, the check
+  fails with exit code 2 (infrastructure failure) and the process stalls there —
+  never reaching submit-to-codex.sh or submit-to-gemini.sh.
+
+  Verified via process tree: cross-review.sh was under verify-gate-evidence.py --stage5-check,
+  NOT inside submit-to-codex.sh.
+
+asymmetry_table:
+  claude:
+    stage5_gate: same_path
+    submit_uv_check: implicit_post_exec
+    fallback: continue_if_render_fails
+  codex:
+    stage5_gate: same_path
+    submit_uv_check: explicit_pre_exec_hard_gate
+    fallback: exit_1
+  gemini:
+    stage5_gate: same_path
+    submit_uv_check: none_implicit_in_retry_loop
+    fallback: retry_then_exit_1
+
+fix_areas:
+  - cross-review.sh gate check should handle uv unavailability gracefully for subagent providers
+  - Consider whether Stage 5 gate should be checked differently when provider is subagent vs orchestrator
+  - Gemini submit script needs explicit uv pre-check like Codex has
+
+prior_art: []
+online_research: []

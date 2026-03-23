@@ -1,0 +1,39 @@
+wrk_id: WRK-5124
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Search codebase — existing code, skills, tests in target repos"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-02-2
+    text: "Query knowledge base"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-02-3
+    text: "Search document-index for relevant prior art"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-02-4
+    text: "Online research"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "N/A — internal infrastructure bug, no external resources needed"
+  - id: CL-02-5
+    text: "Save discovered documents"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "N/A — no external documents discovered"
+  - id: CL-02-6
+    text: "Update document-index"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "N/A — no new entries"
+  - id: CL-02-7
+    text: "Assess complexity"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Medium — requires changes to cross-review.sh gate path and provider submission scripts"
+  - id: CL-02-8
+    text: "Write evidence/resource-intelligence.yaml"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z

@@ -1,0 +1,26 @@
+wrk_id: WRK-5124
+stage: 6
+items:
+  - id: CL-06-0
+    text: "EnterPlanMode — synthesize inputs before writing verdict"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-06-1
+    text: "Send cross-review to Codex and Gemini simultaneously"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Codex reviewed during Stage 5 dispatch; Gemini timed out; Claude reviewed via cross-review.sh"
+  - id: CL-06-2
+    text: "Collect all 3 verdicts"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "Claude: REQUEST_CHANGES (3 P2s); Codex: APPROVE (from Stage 5); Gemini: TIMEOUT (exit 124)"
+  - id: CL-06-3
+    text: "Synthesize into cross-review.yaml"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-06-4
+    text: "Apply revisions from REVISE verdict"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "All 3 P2 findings addressed: gtimeout fallback, timeout-wrapped uv probe, explicit exit code branches"

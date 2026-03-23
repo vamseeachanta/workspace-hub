@@ -44,6 +44,19 @@ Industry standard lookup tables, material properties, and design code parameters
 | Equipment specifications | Vendor-neutral reference data |
 | Pipe capacity tables | Design code tables |
 
+### Tier 2a — Research Literature (`/mnt/ace-data/digitalmodel/docs/domains/`)
+
+Downloaded academic papers, conference proceedings, ITTC guidelines, classification society rules, and textbooks used as reference material for engineering analysis. Organized by domain (hydrodynamics, naval_architecture, pipeline, etc.) with per-domain `download-literature.sh` scripts for reproducible acquisition.
+
+**Not committed to git** — stored on local drive (`/mnt/ace` on ace-linux-1). Each domain folder contains a download script that documents provenance.
+
+**Examples:**
+- ITTC resistance/propulsion guidelines
+- Holtrop-Mennen 1982 power prediction paper
+- DNV-RP-C205 environmental conditions
+- Barrass & Derrett ship stability textbook
+- LR classification rules
+
 ### Tier 3 — Project Data (project repos)
 
 Project-specific configurations, analysis inputs/outputs, and client deliverables. Never stored in `worldenergydata` or `digitalmodel`. Always in the project repo (`rock-oil-field`, `client_projects`, or equivalent).
@@ -58,6 +71,7 @@ Ask: **"Where did this data originate?"**
 |--------|------|-------|
 | Public API, website, or database | Tier 1 | `worldenergydata` |
 | Engineering standard (DNV-RP-C203, API 2A, BS 7608) | Tier 2 | `digitalmodel` |
+| Research paper, textbook, ITTC guideline | Tier 2a | `/mnt/ace-data/digitalmodel/docs/domains/` |
 | Specific project or client | Tier 3 | Project repo |
 
 ---

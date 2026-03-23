@@ -1,0 +1,15 @@
+stage: 15
+wrk_id: WRK-5111
+items:
+  - id: CL-15-1
+    text: "Future work captured"
+    completed: true
+    completed_at: "2026-03-23T05:20:00Z"
+  - id: CL-15-2
+    text: "All items have Captured=yes"
+    completed: true
+    completed_at: "2026-03-23T05:20:00Z"
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written"
+    completed: true
+    completed_at: "2026-03-23T05:20:00Z"

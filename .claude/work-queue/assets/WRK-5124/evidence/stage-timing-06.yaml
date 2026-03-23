@@ -1,0 +1,6 @@
+stage: 6
+wrk_id: WRK-5124
+human_gate: false
+started_at: "2026-03-23T15:44:40.943946+00:00"
+completed_at: "2026-03-23T15:51:53.795693+00:00"
+duration_s: 432.9

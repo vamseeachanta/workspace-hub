@@ -1,0 +1,24 @@
+phase: pre_enter
+stage: 10
+wrk_id: WRK-5124
+executed_at: '2026-03-23T15:56:54.377602+00:00'
+hooks:
+- script: scripts/work-queue/verify-log-presence.sh WRK-5124
+  description: Verify routing.yaml exists before execution begins
+  gate: soft
+  returncode: 0
+  duration_s: 0.256
+  passed: true
+  stdout: "[verify-log-presence] Machine: ace-linux-1\n  claude  OK  (22 file(s),\
+    \ latest: session_20260323.jsonl, valid JSON: 1247/1247)\n  codex   OK  (native:\
+    \ 808 session(s), latest: rollout-2026-03-23T10-35-30-019d1b56-3f57-7960-b4ac-da6a1bd77a21.jsonl;\
+    \ orchestrator: 408 cross-review(s))\n  gemini  OK  (native: 850 session(s), latest:\
+    \ session-2026-03-23T15-35-1028377d.json; orchestrator: 216 cross-review(s))\n\
+    \nPASS"
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

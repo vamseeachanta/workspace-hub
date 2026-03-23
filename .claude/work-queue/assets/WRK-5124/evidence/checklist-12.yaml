@@ -1,0 +1,21 @@
+wrk_id: WRK-5124
+stage: 12
+items:
+  - id: CL-12-1
+    text: "Run full test suite; capture results"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "7 AC verification tests + 2 syntax checks = 9 total, all pass"
+  - id: CL-12-2
+    text: "Map each AC to test result"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-12-3
+    text: "Fix any FAIL before writing matrix"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z
+    notes: "No failures"
+  - id: CL-12-4
+    text: "Write ac-test-matrix.md"
+    completed: true
+    completed_at: 2026-03-23T00:00:00Z

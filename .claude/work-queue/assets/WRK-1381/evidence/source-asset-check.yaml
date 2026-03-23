@@ -1,0 +1,32 @@
+wrk_id: WRK-1381
+stage_context: execution
+checked_at: "2026-03-23T18:45:00Z"
+checked_by: codex
+status: source_blocked_for_true_figure_digitization
+
+expected_assets:
+  - PNA-GZ-Curves.manifest.yaml
+  - curves/index.jsonl
+  - PNA / Biran / EN400 source figures for GZ digitization
+
+workspace_scan:
+  workspace_root: /mnt/local-analysis/workspace-hub
+  asset_hits:
+    pna_gz_manifest: []
+    curves_index_jsonl:
+      - tests/data/doc_intelligence/test_query.py
+    source_books_or_figures: []
+
+findings:
+  - The expected source manifest `PNA-GZ-Curves.manifest.yaml` is not present in the active workspace snapshot.
+  - No real `curves/index.jsonl` source corpus was found under the active workspace root; only a test-helper reference exists.
+  - No local PNA/Biran/EN400 figure assets suitable for new `figure_digitized` GZ extraction were located in this execution pass.
+
+execution_implication:
+  - Current WRK execution can continue on transcription/integration artifacts.
+  - Addition of a true `figure_digitized` condition with `source_checkpoints` and `max_error_pct <= 2.0`
+    remains blocked on source-asset availability.
+
+recommended_next_step:
+  - Import or locate the missing source figures/manifests, then add at least one real `figure_digitized`
+    condition to both the validation fixture and shared doc-intelligence corpus.

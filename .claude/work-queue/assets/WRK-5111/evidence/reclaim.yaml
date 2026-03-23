@@ -1,0 +1,6 @@
+wrk_id: WRK-5111
+stage: 18
+completed_at: "2026-03-23T05:30:00Z"
+status: n/a
+reclaim_triggered: false
+n/a_reason: "Single-session execution — no reclaim needed"

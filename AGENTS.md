@@ -1,5 +1,7 @@
 # Workspace Hub
 > Engineering workspace — shared utilities, digital twin, energy data, asset portfolio
+## Retrieval
+- Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates
 1. Orchestrate, don't execute — delegate execution to subagents
 2. Plan before acting — explicit plan + user approval before implementation

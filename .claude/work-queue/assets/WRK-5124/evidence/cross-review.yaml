@@ -1,0 +1,30 @@
+wrk_id: WRK-5124
+stage: 6
+verdict: REVISE
+reviewers:
+  - provider: claude
+    verdict: REQUEST_CHANGES
+    result_file: scripts/review/results/20260323T154626Z-plan.md-plan-claude.md
+  - provider: codex
+    verdict: APPROVE
+    notes: "Codex reviewed during Stage 5 plan dispatch — contributed 4 refinements already merged"
+    result_file: assets/WRK-5124/plan_codex.md
+  - provider: gemini
+    verdict: TIMEOUT
+    notes: "Gemini timed out (exit 124) during Stage 5 dispatch — demonstrating the bug this WRK fixes"
+p1_findings: []
+p2_findings:
+  - id: P2-1
+    source: claude
+    description: "Non-timeout checker failures unhandled in shown code — need explicit else-branch for non-124 non-zero exits"
+    resolution: "Add else-branch that preserves existing exit 1/2 semantics from original code"
+  - id: P2-2
+    source: claude
+    description: "check_uv_readiness() uv run probe has no timeout — can itself hang"
+    resolution: "Wrap uv readiness probe in timeout 10s"
+  - id: P2-3
+    source: claude
+    description: "timeout missing on macOS — hard exit blocks macOS users"
+    resolution: "Add gtimeout fallback; if neither available, run without timeout + warning"
+return_to_stage: null
+notes: "Revisions applied inline before proceeding — all P2 findings addressed in plan update"

@@ -1,0 +1,23 @@
+wrk_id: WRK-5124
+stage: 17
+items:
+  - id: CL-17-1
+    text: "Present implementation to user"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-17-2
+    text: "User explicitly approved implementation"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-17-3
+    text: "Write user-review-close.yaml"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z
+  - id: CL-17-4
+    text: "Explicit user approval received (I approve stage 17)"
+    completed: true
+    approved_by: vamsee
+    completed_at: 2026-03-23T00:00:00Z

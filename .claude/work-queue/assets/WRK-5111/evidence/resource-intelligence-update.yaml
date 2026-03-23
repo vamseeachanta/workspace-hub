@@ -1,0 +1,19 @@
+wrk_id: WRK-5111
+stage: 16
+completed_at: "2026-03-23T05:22:00Z"
+updates:
+  - type: new_scripts
+    items:
+      - scripts/work-queue/migrate-stage-to-folder.sh
+      - scripts/work-queue/validate-folder-skill.sh
+  - type: new_skill_folders
+    count: 20
+    location: .claude/skills/workspace-hub/stages/stage-NN-name/
+  - type: pattern_established
+    description: "Anthropic folder-skill convention applied to all 20 stages"
+additions:
+  - "migrate-stage-to-folder.sh — reusable script for future stage migrations"
+  - "validate-folder-skill.sh — reusable validation for folder-skill structure"
+  - "20 stage folder-skills with co-located gotchas from operational experience"
+knowledge_base_updated: false
+notes: "No external documents discovered. Internal patterns documented in gotchas.md files."

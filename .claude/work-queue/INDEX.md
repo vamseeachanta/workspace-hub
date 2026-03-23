@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-23T06:05:28Z by generate-index.py -->
+<!-- Generated: 2026-03-23T16:09:43Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-23T06:05:28Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-23T16:09:43Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 788
+**Total items:** 796
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 323 |
-| working | 8 |
+| pending | 330 |
+| working | 9 |
 | blocked | 12 |
 | done | 9 |
 | archived | 432 |
@@ -23,16 +23,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 353 |
-| medium | 362 |
+| high | 354 |
+| medium | 369 |
 | low | 72 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 169 |
-| medium | 370 |
+| simple | 175 |
+| medium | 372 |
 | complex | 150 |
 
 ### By Category
@@ -48,7 +48,7 @@
 | business | 6 |
 | maintenance | 5 |
 | personal | 4 |
-| uncategorised | 4 |
+| uncategorised | 5 |
 
 ### By Repository
 
@@ -59,20 +59,20 @@
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 6 |
 | aceengineer-strategy | 1 |
-| aceengineer-website | 15 |
+| aceengineer-website | 16 |
 | achantas-data | 10 |
 | acma-projects | 5 |
 | assethold | 19 |
 | assetutilities | 20 |
 | client_projects | 1 |
-| digitalmodel | 242 |
+| digitalmodel | 244 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 5 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 372 |
+| workspace-hub | 375 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 295 / 788 |
-| Plans cross-reviewed | 208 |
-| Plans approved | 233 |
+| Plans exist | 296 / 796 |
+| Plans cross-reviewed | 209 |
+| Plans approved | 234 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 788 |
+| Total captured | 796 |
 | Total archived | 432 |
-| Completion rate | 432/788 (55%) |
+| Completion rate | 432/796 (54%) |
 | Monthly rate (current month) | 154 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,9 +102,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 78 / 323 | 24% |
-| Plans cross-reviewed | 9 | 10% |
-| Plans user-approved | 9 | 10% |
+| Pending items with plans | 78 / 330 | 24% |
+| Plans cross-reviewed | 10 | 11% |
+| Plans user-approved | 10 | 11% |
 
 ### Aging
 
@@ -119,8 +119,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 126 | 5 | 9 |
-| Medium   | 149  | 3  | 1  |
+| High     | 126 | 6 | 9 |
+| Medium   | 156  | 3  | 1  |
 | Low      | 48  | 0  | 2  |
 
 ## By Category
@@ -762,7 +762,7 @@
 | WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
 | WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
 
-### uncategorised (4 items — 1 high, 1 medium, 2 low)
+### uncategorised (5 items — 1 high, 2 medium, 2 low)
 
 #### uncategorised / uncategorised
 
@@ -770,6 +770,7 @@
 |----|----------|-------|--------|
 | WRK-476 | HIGH | feat(worldenergydata): create ESG/Carbon Emissions module | pending |
 | WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
+| WRK-5117 | MEDIUM | Add VC funding of 1MM to market brochures | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
 
@@ -789,7 +790,6 @@
 | [WRK-1321](working/WRK-1321.md) | Restructure work-queue skills into two-tier folder-skill architecture | coordinating | 0/4 archived (0%) |
 | [WRK-1322](pending/WRK-1322.md) | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | pending | 0/0 |
 | [WRK-1339](pending/WRK-1339.md) | Deepen naval architecture knowledge extraction from SNAME collection | working | 0/14 archived (0%) |
-| [WRK-1341](pending/WRK-1341.md) | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | 0/0 |
 | [WRK-1342](pending/WRK-1342.md) | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | 0/0 |
 | [WRK-1373](pending/WRK-1373.md) | Seakeeping module — 6-DOF motion analysis | pending | 0/0 |
 | [WRK-1374](pending/WRK-1374.md) | Advanced stability — damage stability and IMO compliance | pending | 0/0 |
@@ -1520,11 +1520,10 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-1332 |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | dev-primary | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360 |
 | WRK-1363 | 2D frame analysis | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
-| WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362, WRK-1341 |
+| WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
 | WRK-1365 | OrcaFlex frame analysis | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
 | WRK-1366 | 2D vs 3D comparison | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1363, WRK-1364 |
 | WRK-1367 | Member and connection checks | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1363, WRK-1364 |
@@ -1600,10 +1599,19 @@
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - | sowon | sowon | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5111 |
 | WRK-5113 | Update paths and remove old skills | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-5112 |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | pending | medium | simple | - | - | - | - | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | medium | simple | - | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | medium | simple | - | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | medium | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | simple | - | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | working | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1891,7 +1899,6 @@
 | WRK-1322 | Evaluate and catalog all workspace-hub workflows — standardize on stage-contract pattern | high | C | workspace-hub | - |
 | WRK-1325 | Fix invalid skill names over 64 chars | medium | simple | workspace-hub | - |
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | medium | medium | workspace-hub | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | high | medium | digitalmodel | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | low | medium | digitalmodel | - |
 | WRK-1361 | 2D engineering drawing | high | medium | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | high | medium | workspace-hub | - |
@@ -1944,10 +1951,18 @@
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | high | complex | digitalmodel | - |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | high | complex | workspace-hub | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | medium | medium | workspace-hub | - |
-| WRK-5111 | Convert 20 stages to folder-skills | high | medium | workspace-hub | - |
 | WRK-5112 | Redistribute scripts to stage folders | high | medium | workspace-hub | - |
 | WRK-5113 | Update paths and remove old skills | high | medium | workspace-hub | - |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | medium | medium | workspace-hub | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | medium | simple | aceengineer-website | - |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | medium | simple | digitalmodel | - |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | medium | simple | digitalmodel | - |
+| WRK-5120 | Calc report generator — add chart JS validation tests | high | simple | workspace-hub | - |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | medium | medium | workspace-hub | - |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | medium | simple | workspace-hub | - |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | medium | simple | digitalmodel | - |
+| WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | medium | medium | - | - |
+| WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | high | medium | - | - |
 
 ### Working
 
@@ -1961,6 +1976,7 @@
 | WRK-1381 | GZ curve digitization from PNA and Biran figures | medium | moderate | workspace-hub, digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2494,6 +2510,7 @@
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | pending | medium | simple | - |
 
 ### achantas-data
 
@@ -2788,7 +2805,6 @@
 | WRK-1281 | Extract numerical test vectors from all naval architecture literature and document intelligence | pending | high | complex | - |
 | WRK-1282 | Drive-off research and analysis methodologies | pending | medium | medium | - |
 | WRK-1283 | Rudder types survey — video references and digitalmodel coverage | pending | medium | medium | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | - |
 | WRK-1370 | Curate extracted worked examples into TDD fixtures | pending | high | moderate | - |
 | WRK-1372 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | pending | high | complex | - |
@@ -2821,6 +2837,9 @@
 | WRK-5077 | Data needs registry — fill gaps across all digitalmodel domains | pending | medium | complex | - |
 | WRK-5082 | Parachute frame force calculation — drag car parachute deployment | coordinating | medium | complex | - |
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | pending | high | complex | - |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | medium | simple | - |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | medium | simple | - |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | simple | - |
 
 ### doris
 
@@ -3266,10 +3285,13 @@
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | medium | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | medium | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | medium | - |
-| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | - |
 | WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | - |
 | WRK-5113 | Update paths and remove old skills | pending | high | medium | - |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | - |
+| WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | simple | - |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | medium | - |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | simple | - |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | working | high | medium | - |
 
 ### worldenergydata
 
@@ -3718,7 +3740,6 @@
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | archived | simple | workspace-hub | - |
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | medium | workspace-hub | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | complex | workspace-hub | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | medium | digitalmodel | - |
 | WRK-1361 | 2D engineering drawing | pending | medium | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | pending | medium | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | medium | workspace-hub | - |
@@ -3749,9 +3770,11 @@
 | WRK-5100 | fix(stages): purge dead lifecycle HTML refs and fix GitHub-issue workflow gaps | archived | medium | workspace-hub | - |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | medium | workspace-hub | - |
-| WRK-5111 | Convert 20 stages to folder-skills | pending | medium | workspace-hub | - |
 | WRK-5112 | Redistribute scripts to stage folders | pending | medium | workspace-hub | - |
 | WRK-5113 | Update paths and remove old skills | pending | medium | workspace-hub | - |
+| WRK-5120 | Calc report generator — add chart JS validation tests | pending | simple | workspace-hub | - |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | working | medium | workspace-hub | - |
+| WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | medium | - | - |
 
 ### Medium
 
@@ -4119,6 +4142,13 @@
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | B | - | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | workspace-hub | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | pending | simple | aceengineer-website | - |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | simple | digitalmodel | - |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | simple | digitalmodel | - |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | workspace-hub | - |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | pending | simple | workspace-hub | - |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | simple | digitalmodel | - |
+| WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | - | - |
 
 ### Low
 
@@ -4372,6 +4402,12 @@
 | WRK-5047 | feat(skill): shell-tdd skill — bash test harness patterns and gotchas | archived | medium | workspace-hub | - |
 | WRK-5099 | fix(dispatch): wire dispatch-run.sh into /work run command flow | archived | high | workspace-hub | - |
 | WRK-5102 | feat(work-queue): promote github_issue_ref enforcement from script warning to hook | archived | medium | workspace-hub | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | pending | medium | aceengineer-website | - |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | medium | digitalmodel | - |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | medium | digitalmodel | - |
+| WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | workspace-hub | - |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | workspace-hub | - |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | digitalmodel | - |
 
 ### Medium
 
@@ -4714,7 +4750,6 @@
 | WRK-1331 | GitHub Issue body template renderer (update-github-issue.py) | archived | high | workspace-hub | - |
 | WRK-1333 | Wire Issue updater into stage lifecycle (replace HTML gen) | archived | high | workspace-hub | - |
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | workspace-hub | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | digitalmodel | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | digitalmodel | - |
 | WRK-1361 | 2D engineering drawing | pending | high | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | pending | high | workspace-hub | - |
@@ -4743,10 +4778,13 @@
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | archived | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | archived | high | workspace-hub | - |
 | WRK-5109 | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending | medium | workspace-hub | - |
-| WRK-5111 | Convert 20 stages to folder-skills | pending | high | workspace-hub | - |
 | WRK-5112 | Redistribute scripts to stage folders | pending | high | workspace-hub | - |
 | WRK-5113 | Update paths and remove old skills | pending | high | workspace-hub | - |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | workspace-hub | - |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | workspace-hub | - |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | working | high | workspace-hub | - |
+| WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | - | - |
+| WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | - | - |
 
 ### Complex
 
@@ -4905,7 +4943,7 @@
 
 ## By Computer
 
-### dev-primary (274 active / 478 total)
+### dev-primary (273 active / 477 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5316,7 +5354,6 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | medium | workspace-hub |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | workspace-hub |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | workspace-hub |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | pending | high | medium | digitalmodel |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | workspace-hub |
 | WRK-1363 | 2D frame analysis | pending | high | medium | workspace-hub |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | workspace-hub |
@@ -5383,10 +5420,10 @@
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | pending | high | complex | digitalmodel |
 | WRK-5097 | Unify WRK numbering with GitHub issue numbering to avoid confusion | pending | high | complex | workspace-hub |
 | WRK-5105 | refactor(whats-next): richer table columns — category, subcategory, urgency, github issue, age | archived | high | medium | workspace-hub |
-| WRK-5111 | Convert 20 stages to folder-skills | pending | high | medium | workspace-hub |
 | WRK-5112 | Redistribute scripts to stage folders | pending | high | medium | workspace-hub |
 | WRK-5113 | Update paths and remove old skills | pending | high | medium | workspace-hub |
 | WRK-5115 | Custom GitHub CLI bash tools for session-cycle efficiency | pending | medium | medium | workspace-hub |
+| WRK-5124 | Stage 6 cross-review stalls in Stage 5 gate check for Codex/Gemini providers | working | high | medium | workspace-hub |
 
 ### dev-secondary (13 active / 21 total)
 
@@ -5437,7 +5474,7 @@
 | WRK-5013 | Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection) | pending | medium | simple | workspace-hub |
 | WRK-5016 | OrcaFlex demo version input-file troubleshooting workflow | pending | medium | simple | workspace-hub |
 
-### (unassigned) (29 active / 240 total)
+### (unassigned) (38 active / 249 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5681,6 +5718,15 @@
 | WRK-1317 | Generalize stage-transition engine to all workspace-hub workflows | pending | high | C | - |
 | WRK-1325 | Fix invalid skill names over 64 chars | pending | medium | simple | workspace-hub |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | archived | medium | B | - |
+| WRK-5117 | Add VC funding of 1MM to market brochures | pending | medium | simple | aceengineer-website |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | medium | simple | digitalmodel |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | medium | simple | digitalmodel |
+| WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | simple | workspace-hub |
+| WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | medium | workspace-hub |
+| WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | simple | workspace-hub |
+| WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | simple | digitalmodel |
+| WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | medium | - |
+| WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | medium | - |
 
 ### dev-primary, dev-secondary (18 active / 20 total)
 
@@ -5865,10 +5911,9 @@
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | WRK-1331 | - | WRK-1330 |
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | WRK-1332 | - | WRK-1330 |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | - | WRK-1369, WRK-1370, WRK-1371, WRK-1372, WRK-1373, WRK-1374, WRK-1375, WRK-1376, WRK-1377, WRK-1378, WRK-1379, WRK-1380, WRK-1381, WRK-1382 | - |
-| WRK-1341 | CalculiX beam/frame element support — extend INP writer for B31/B32 | - | - | WRK-5082 |
 | WRK-1361 | 2D engineering drawing | WRK-1360 | - | WRK-5082 |
 | WRK-1363 | 2D frame analysis | WRK-1360, WRK-1362 | - | WRK-5082 |
-| WRK-1364 | 3D FEM analysis (CalculiX) | WRK-1360, WRK-1362, WRK-1341 | - | WRK-5082 |
+| WRK-1364 | 3D FEM analysis (CalculiX) | WRK-1360, WRK-1362 | - | WRK-5082 |
 | WRK-1365 | OrcaFlex frame analysis | WRK-1360, WRK-1362 | - | WRK-5082 |
 | WRK-1366 | 2D vs 3D comparison | WRK-1363, WRK-1364 | - | WRK-5082 |
 | WRK-1367 | Member and connection checks | WRK-1363, WRK-1364 | - | WRK-5082 |
@@ -5897,7 +5942,8 @@
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | WRK-5086 | - | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | - | WRK-1319 | - |
 | WRK-5095 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | WRK-1362 | - | WRK-5082 |
-| WRK-5111 | Convert 20 stages to folder-skills | - | - | WRK-1321 |
 | WRK-5112 | Redistribute scripts to stage folders | WRK-5111 | - | WRK-1321 |
 | WRK-5113 | Update paths and remove old skills | WRK-5112 | - | WRK-1321 |
+| WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | - | - | WRK-5082 |
+| WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | - | - | WRK-5082 |
 

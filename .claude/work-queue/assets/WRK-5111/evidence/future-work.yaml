@@ -1,0 +1,24 @@
+wrk_id: WRK-5111
+stage: 15
+completed_at: "2026-03-23T05:20:00Z"
+recommendations:
+  - "WRK-5112: Redistribute scripts to stage folders"
+  - "WRK-5113: Update paths and remove old skills + bare .md cleanup"
+items:
+  - title: "Redistribute scripts to stage folders"
+    captured: yes
+    disposition: existing-updated
+    wrk_ref: WRK-5112
+    category: work-queue-infrastructure
+    subcategory: skill-architecture
+  - title: "Update paths and remove old skills"
+    captured: yes
+    disposition: existing-updated
+    wrk_ref: WRK-5113
+    category: work-queue-infrastructure
+    subcategory: skill-architecture
+  - title: "Remove bare stage-NN.md files after path updates"
+    captured: yes
+    disposition: existing-updated
+    wrk_ref: WRK-5113
+    notes: "AC6 deferred to WRK-5113 per cross-review P2"

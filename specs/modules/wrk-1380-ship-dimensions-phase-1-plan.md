@@ -4,7 +4,7 @@
 
 `WRK-1380` is a manual-curation child of `WRK-1339`. The job is to populate a ship-dimensions template for 110 SNAME ship-plan PDFs, complete a Phase 1 subset first, and verify a sample against Jane's Fighting Ships 2009-2010.
 
-Current planning dependency: the named template generator (`generate-ship-dimension-template.py`) and the canonical output location for `ship-dimensions.yaml` are still not discoverable in this workspace. Execution cannot assume those paths until confirmed.
+Current planning dependency: the named template generator (`generate-ship-dimension-template.py`) and the canonical output location for `ship-dimensions.yaml` are still not discoverable in the mounted `workspace-hub` checkout. Execution cannot assume those paths until the WRK-1339 Child E handoff is recovered locally.
 
 ## Chunk Sizing Check
 
@@ -86,6 +86,6 @@ No scraper or estimator is planned for this WRK. Stage 4 uses local files and mo
 
 ## Open Dependencies
 
-1. Confirm where `generate-ship-dimension-template.py` lives.
-2. Confirm the canonical repository/path for the generated `ship-dimensions.yaml`.
-3. Confirm whether Phase 1 execution will occur in `workspace-hub` only or in the actual `digitalmodel` repo once mounted.
+1. Recover the WRK-1339 Child E generator or generated template artifact inside `workspace-hub`.
+2. Confirm the canonical repository/path for the generated `ship-dimensions.yaml` within `workspace-hub`.
+3. Keep Phase 1 execution in `workspace-hub`, consistent with `WRK-1380.target_repos`.
