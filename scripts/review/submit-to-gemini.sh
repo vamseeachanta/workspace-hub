@@ -136,6 +136,30 @@ err_file="$(mktemp)"
 rendered_file="$(mktemp)"
 trap 'rm -rf "$run_dir" "$raw_file" "$err_file" "$rendered_file"' EXIT
 
+# WRK-5124: Pre-check uv readiness before render (matches submit-to-codex.sh pattern)
+check_uv_readiness() {
+  if ! command -v uv >/dev/null 2>&1; then
+    echo "# ERROR: uv not found" >&2
+    echo "# Diagnose: command -v uv" >&2
+    return 1
+  fi
+  # Wrap probe in timeout to prevent hanging (same failure mode this fix addresses)
+  local timeout_cmd=""
+  if command -v timeout >/dev/null 2>&1; then
+    timeout_cmd="timeout 10s"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    timeout_cmd="gtimeout 10s"
+  fi
+  if ! $timeout_cmd uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
+    echo "# ERROR: uv is installed but not functional" >&2
+    echo "# Diagnose: uv run --no-project python -c \"print(1)\"" >&2
+    return 1
+  fi
+  return 0
+}
+
+check_uv_readiness || { echo "✖ uv readiness check failed — cannot render Gemini output" >&2; exit 1; }
+
 run_renderer() {
   uv run --no-project python "$RENDERER" --provider gemini --input "$raw_file"
 }

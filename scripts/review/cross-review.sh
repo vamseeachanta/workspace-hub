@@ -45,6 +45,7 @@ esac
 # cross-review.sh is an official Stage 6 entrypoint for plan reviews.
 # When --type plan and --wrk-id are supplied, enforce Stage 5 gate.
 # Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
+# WRK-5124: Added uv pre-check, timeout wrapper, gtimeout fallback.
 WS_HUB_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 STAGE5_CHECKER="${WS_HUB_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" ]]; then
@@ -53,16 +54,52 @@ if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" ]]; then
     echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
     exit 2
   fi
+
+  # Pre-check: uv must be available
+  if ! command -v uv >/dev/null 2>&1; then
+    echo "✖ uv not found — required for Stage 5 gate check" >&2
+    exit 2
+  fi
+
+  # Resolve timeout command: timeout → gtimeout → none (with warning)
+  _TIMEOUT_CMD=""
+  if command -v timeout >/dev/null 2>&1; then
+    _TIMEOUT_CMD="timeout"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    _TIMEOUT_CMD="gtimeout"
+  else
+    echo "⚠ Neither timeout nor gtimeout found — running gate check without timeout guard" >&2
+  fi
+
+  # Read checker_timeout from gate config (default 30s, validate as positive integer)
+  GATE_CONFIG="${WS_HUB_ROOT}/scripts/work-queue/stage5-gate-config.yaml"
+  checker_timeout=$(grep -m1 'checker_timeout:' "$GATE_CONFIG" 2>/dev/null | awk '{print $2}')
+  if ! [[ "${checker_timeout:-}" =~ ^[1-9][0-9]*$ ]]; then
+    checker_timeout=30
+  fi
+
+  # Run gate check with timeout guard (or without if no timeout command)
   stage5_exit=0
-  stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
-      --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
-  if [[ "$stage5_exit" -eq 1 ]]; then
+  if [[ -n "$_TIMEOUT_CMD" ]]; then
+    stage5_output="$($_TIMEOUT_CMD "${checker_timeout}s" uv run --no-project python "$STAGE5_CHECKER" \
+        --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
+  else
+    stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+        --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
+  fi
+
+  # Handle exit codes: 124=timeout, 1=predicate failure, other=infrastructure failure
+  if [[ "$stage5_exit" -eq 124 ]]; then
+    echo "✖ Stage 5 gate check TIMED OUT after ${checker_timeout}s for ${WRK_ID}" >&2
+    echo "Check uv environment and verify-gate-evidence.py availability." >&2
+    exit 2
+  elif [[ "$stage5_exit" -eq 1 ]]; then
     echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
     echo "$stage5_output" >&2
     echo "Complete Stage 5 interactive review and evidence before Stage 6 cross-review." >&2
     exit 1
-  elif [[ "$stage5_exit" -eq 2 ]]; then
-    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+  elif [[ "$stage5_exit" -eq 2 ]] || [[ "$stage5_exit" -ne 0 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure, exit $stage5_exit) for ${WRK_ID}:" >&2
     echo "$stage5_output" >&2
     echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
     exit 2
