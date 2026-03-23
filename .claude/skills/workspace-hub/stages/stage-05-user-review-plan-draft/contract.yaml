@@ -1,0 +1,50 @@
+order: 5
+name: User Review - Plan Draft
+weight: heavy
+invocation: human_interactive
+human_gate: true
+parallelism: parallel
+gate_file: evidence/user-review-plan-draft.yaml
+gate_field: decision
+gate_value: approved
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/brainstorming
+entry_reads:
+  - assets/WRK-NNN/evidence/checklist-04.yaml
+  - pending/WRK-NNN.md
+exit_artifacts:
+  - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
+blocking_condition: "user-review-plan-draft.yaml missing or decision != approved"
+log_action: plan_draft_reviewed
+context_budget_kb: 16
+checklist:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    requires_human: true
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    requires_human: true
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    requires_human: true
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    requires_human: false
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 5"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
+lm_judgment_required:
+  - id: N1
+    rule: "Section-by-section plan dialogue was thorough (not drop-and-approve)"
+    why_not_scriptable: "Quality of conversation — no artifact captures dialogue depth"
+    mitigation: "Agent must log each section discussed in user-review-plan-draft.yaml decision_log"
+  - id: N4
+    rule: "Multi-agent plan synthesis (Route B/C) merged all 3 agents views fairly"
+    why_not_scriptable: "Content comparison requires semantic judgment"
+    mitigation: "Synthesis diff table required in plan.md before approval"

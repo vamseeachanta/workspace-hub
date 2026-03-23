@@ -1,0 +1,8 @@
+# Stage 19 hooks — extracted from contract
+pre_enter_hooks: []
+pre_exit_hooks:
+- script: scripts/work-queue/verify-gate-evidence.py WRK-NNN --phase claim
+  description: 'Final gate verification before close (claim-phase: stage-evidence
+    auto-gen limitation)'
+  gate: hard
+  timeout_s: 60
