@@ -1,5 +1,6 @@
 ---
 id: WRK-TEST-ENSEMBLE
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/203
 title: Smoke test for ensemble planning
 status: pending
 priority: low

@@ -1,0 +1,14 @@
+wrk_id: WRK-5097
+stage: 15
+completed_at: "2026-03-23T21:30:00Z"
+recommendations:
+  - title: "Run backfill-github-refs.sh to link ~89 items"
+    wrk_id: WRK-1286
+    disposition: spun-off-new
+    status: pending
+    captured: true
+  - title: "Phase 4 cleanup: remove deprecated machine-ranges"
+    wrk_id: WRK-1287
+    disposition: spun-off-new
+    status: pending
+    captured: true

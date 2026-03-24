@@ -1,34 +1,34 @@
 wrk_id: WRK-5097
-generated_at: '2026-03-23T21:01:12Z'
-reviewed_by: claude
+generated_at: '2026-03-23T21:33:09Z'
+reviewed_by: orchestrator
 stages:
 - order: 1
   stage: Capture
-  status: pending
+  status: done
   evidence: ''
 - order: 2
   stage: Resource Intelligence
-  status: in_progress
+  status: done
   evidence: ''
 - order: 3
   stage: Triage
-  status: pending
+  status: done
   evidence: ''
 - order: 4
   stage: Plan Draft
-  status: pending
+  status: done
   evidence: ''
 - order: 5
   stage: User Review - Plan Draft
-  status: pending
+  status: done
   evidence: ''
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: done
   evidence: ''
 - order: 7
   stage: User Review - Plan Final
-  status: pending
+  status: done
   evidence: ''
 - order: 8
   stage: Claim / Activation
@@ -36,49 +36,49 @@ stages:
   evidence: ''
 - order: 9
   stage: Work-Queue Routing
-  status: pending
+  status: done
   evidence: ''
 - order: 10
   stage: Work Execution
-  status: pending
+  status: done
   evidence: ''
 - order: 11
   stage: Artifact Generation
-  status: pending
+  status: done
   evidence: ''
 - order: 12
   stage: TDD / Eval
-  status: pending
+  status: n/a
   evidence: ''
 - order: 13
   stage: Agent Cross-Review
-  status: pending
+  status: done
   evidence: ''
 - order: 14
   stage: Verify Gate Evidence
-  status: pending
+  status: done
   evidence: ''
 - order: 15
   stage: Future Work Synthesis
-  status: pending
+  status: done
   evidence: ''
 - order: 16
   stage: Resource Intelligence Update
-  status: pending
+  status: done
   evidence: ''
 - order: 17
   stage: User Review - Implementation
-  status: pending
+  status: done
   evidence: ''
 - order: 18
   stage: Reclaim
-  status: pending
+  status: n/a
   evidence: ''
 - order: 19
   stage: Close
-  status: pending
+  status: done
   evidence: ''
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: ''

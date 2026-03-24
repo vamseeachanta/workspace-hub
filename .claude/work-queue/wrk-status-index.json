@@ -6176,10 +6176,10 @@
     "urgency_score": 0.0
   },
   "WRK-5097": {
-    "status": "working",
+    "status": "archived",
     "machine": "ace-linux-1",
-    "last_updated": "2026-03-23T21:01:12.958882+00:00",
-    "updated_by": "claim-item.sh",
+    "last_updated": "2026-03-23T21:33:09.656794+00:00",
+    "updated_by": "archive-item.sh",
     "title": "Unify WRK numbering with GitHub issue numbering to avoid confusion",
     "priority": "high",
     "category": "coordination",

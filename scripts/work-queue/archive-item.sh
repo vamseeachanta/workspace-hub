@@ -54,7 +54,7 @@ fi
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_start" "orchestrator" "phase=archive"
 fi
-if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase archive --retry 3; then
+if ! uv run --no-project --with pyyaml python "$VALIDATOR" "$ITEM_ID" --phase archive --retry 3; then
   if [[ -x "$GATE_LOGGER" ]]; then
     bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_fail" "orchestrator" "phase=archive"
   fi
@@ -79,7 +79,7 @@ ARCHIVE_PATH="${ARCHIVE_DIR}/${BASENAME}"
 
 # Update status to archived
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-uv run --no-project python <<EOF
+uv run --no-project --with pyyaml python <<EOF
 import re
 with open("$ITEM_FILE", 'r') as f:
     content = f.read()
@@ -98,7 +98,7 @@ EOF
 # Hard gate: Stage 20 evidence update required before file move (WRK-668 GAP-F)
 STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
 if [[ -f "$STAGE_UPDATER" ]]; then
-  if ! uv run --no-project python "$STAGE_UPDATER" "$ITEM_ID" --order 20 --status done --reviewed-by "orchestrator" >/dev/null; then
+  if ! uv run --no-project --with pyyaml python "$STAGE_UPDATER" "$ITEM_ID" --order 20 --status done --reviewed-by "orchestrator" >/dev/null; then
     echo "✖ Could not update stage-evidence order 20 for ${ITEM_ID}; archive aborted." >&2
     exit 1
   fi
@@ -120,7 +120,7 @@ if [[ -x "$INDEX_UPDATER" ]]; then
 fi
 
 # Regenerate index
-uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
+uv run --no-project --with pyyaml python "${QUEUE_DIR}/scripts/generate-index.py"
 
 if [[ -x "$GATE_LOGGER" ]]; then
   bash "$GATE_LOGGER" "$ITEM_ID" "archive" "archive_item" "orchestrator" "work item archived"
@@ -161,14 +161,14 @@ SUBCATEGORY=$(grep -oP '^subcategory:\s*\K\S+' "$ARCHIVE_PATH" 2>/dev/null || ec
 # Close WRK GitHub Issue (non-blocking)
 ISSUE_UPDATER="${WORKSPACE_ROOT}/scripts/knowledge/update-github-issue.py"
 if [[ -f "$ISSUE_UPDATER" ]]; then
-  uv run --no-project python "$ISSUE_UPDATER" "$ITEM_ID" --close 2>/dev/null || true
+  uv run --no-project --with pyyaml python "$ISSUE_UPDATER" "$ITEM_ID" --close 2>/dev/null || true
 fi
 
 # Create GitHub Issues for future-work follow-ons (non-blocking)
 ASSETS_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}"
 FW_FILE="${ASSETS_DIR}/evidence/future-work.yaml"
 if [[ -f "$FW_FILE" ]]; then
-  uv run --no-project python -c "
+  uv run --no-project --with pyyaml python -c "
 import sys, re, subprocess
 fw_path = sys.argv[1]
 wrk_id = sys.argv[2]
