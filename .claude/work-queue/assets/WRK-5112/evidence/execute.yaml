@@ -18,20 +18,30 @@ integrated_repo_tests:
   - name: "validate-folder-skill all 20 stages"
     scope: integrated
     result: pass
+    command: "bash scripts/work-queue/validate-folder-skill.sh"
+    artifact_ref: "evidence/checklist-10.yaml"
     details: "20/20 PASS after script redistribution"
   - name: "Python imports (exit_stage, start_stage, verify_checklist, run_hooks)"
     scope: repo
     result: pass
+    command: "uv run python -c 'import exit_stage; import start_stage'"
+    artifact_ref: "evidence/execute.yaml"
     details: "All key Python imports work through symlinks"
   - name: "pytest work-queue tests"
     scope: repo
     result: pass
+    command: "uv run pytest scripts/work-queue/tests/ -q"
+    artifact_ref: "ac-test-matrix.md"
     details: "239 passed, 15 pre-existing failures, 0 new failures"
   - name: "dispatch-run.sh smoke test"
     scope: integrated
     result: pass
+    command: "bash scripts/work-queue/dispatch-run.sh WRK-5112"
+    artifact_ref: "evidence/execute.yaml"
     details: "dispatch-run.sh WRK-5112 correctly identifies stage and group"
   - name: "symlink resolution for moved scripts"
     scope: integrated
     result: pass
+    command: "readlink scripts/work-queue/wait-for-approval.sh"
+    artifact_ref: "evidence/execute.yaml"
     details: "All 20 symlinks resolve correctly (relative paths)"

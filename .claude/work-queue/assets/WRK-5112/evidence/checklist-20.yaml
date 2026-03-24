@@ -1,0 +1,7 @@
+wrk_id: WRK-5112
+stage: 20
+items:
+  - id: CL-20-1
+    text: "Archive item"
+    completed: true
+    evidence: "WRK-5112 in done/ with status: done, percent_complete: 100."

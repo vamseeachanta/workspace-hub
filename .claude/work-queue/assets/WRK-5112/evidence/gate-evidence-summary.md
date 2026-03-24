@@ -10,7 +10,7 @@
 | GitHub issue gate | PASS | github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/1306 |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-5112/review.md |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
-| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Reclaim gate | WARN | reclaim.yaml: status=n/a (Stage 18 not triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=claim) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Sentinel values gate | PASS | no sentinel values found |

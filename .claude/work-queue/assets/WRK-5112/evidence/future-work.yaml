@@ -1,0 +1,13 @@
+wrk_id: WRK-5112
+stage: 15
+future_items:
+  - description: "Remove duplicate script copies at old paths (WRK-5113 cutover task)"
+    priority: high
+    target: WRK-5113
+  - description: "Update contract.yaml files to reference new script paths"
+    priority: medium
+    target: WRK-5113
+  - description: "Add scripts/ section to stage SKILL.md files listing co-located scripts"
+    priority: low
+    target: WRK-5113
+notes: "All future work items are scoped to WRK-5113 (child-d: update paths and remove old skills)."

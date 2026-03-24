@@ -1,0 +1,15 @@
+wrk_id: WRK-5112
+stage: 15
+items:
+  - id: CL-15-1
+    text: "Scan for future work items"
+    completed: true
+    evidence: "3 future items identified, all scoped to WRK-5113."
+  - id: CL-15-2
+    text: "Write future-work.yaml"
+    completed: true
+    evidence: "Written with 3 items at evidence/future-work.yaml."
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true
+    evidence: "All future items scoped to existing WRK-5113 — no new spinoffs needed."

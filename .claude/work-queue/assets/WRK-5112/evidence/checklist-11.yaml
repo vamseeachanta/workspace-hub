@@ -1,0 +1,15 @@
+wrk_id: WRK-5112
+stage: 11
+items:
+  - id: CL-11-1
+    text: "Verify all evidence YAML files present"
+    completed: true
+    evidence: "All evidence files present: checklist-01 through checklist-10, execute.yaml, resource-intelligence.yaml, cross-review.yaml, plan-final-review.yaml, activation.yaml, claim-evidence.yaml, routing.yaml."
+  - id: CL-11-2
+    text: "Run update-github-issue.py --update"
+    completed: true
+    evidence: "GitHub issue #1306 updated with current stage progress."
+  - id: CL-11-3
+    text: "Confirm GitHub issue reflects current progress"
+    completed: true
+    evidence: "Issue updated. Stage 10 summary posted as comment."

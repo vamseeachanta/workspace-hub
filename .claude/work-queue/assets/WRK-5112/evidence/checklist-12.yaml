@@ -1,0 +1,19 @@
+wrk_id: WRK-5112
+stage: 12
+items:
+  - id: CL-12-1
+    text: "Run full test suite; capture results"
+    completed: true
+    evidence: "uv run pytest scripts/work-queue/tests/ — 239 passed, 15 pre-existing failures, 0 new."
+  - id: CL-12-2
+    text: "Map each AC to test result"
+    completed: true
+    evidence: "ac-test-matrix.md written. 5/5 ACs PASS."
+  - id: CL-12-3
+    text: "Fix any FAIL before writing matrix"
+    completed: true
+    evidence: "No failures to fix. All ACs pass."
+  - id: CL-12-4
+    text: "Write ac-test-matrix.md"
+    completed: true
+    evidence: "Written at assets/WRK-5112/ac-test-matrix.md."

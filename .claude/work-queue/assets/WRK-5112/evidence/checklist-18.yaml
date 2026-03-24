@@ -1,0 +1,11 @@
+wrk_id: WRK-5112
+stage: 18
+items:
+  - id: CL-18-1
+    text: "Reclaim resources if needed"
+    completed: true
+    evidence: "No reclaim needed — single agent, single session execution."
+  - id: CL-18-2
+    text: "evidence/reclaim.yaml written (n/a or reclaimed)"
+    completed: true
+    evidence: "Written with reclaim_triggered: false."

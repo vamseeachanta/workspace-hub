@@ -1,0 +1,5 @@
+wrk_id: WRK-5112
+stage: 18
+status: n/a
+reclaim_triggered: false
+reason: "Single agent, single session. No resources to reclaim."

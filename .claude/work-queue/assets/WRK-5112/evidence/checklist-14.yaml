@@ -1,0 +1,11 @@
+wrk_id: WRK-5112
+stage: 14
+items:
+  - id: CL-14-1
+    text: "Run verify-gate-evidence.py"
+    completed: true
+    evidence: "Core gates pass: Plan, workstation, resource-intel, activation, GitHub, cross-review, TDD, claim all OK."
+  - id: CL-14-2
+    text: "Review gate evidence results"
+    completed: true
+    evidence: "MISSING gates are for later stages (future-work, resource-intel-update, user-review-close) — expected at stage 14."

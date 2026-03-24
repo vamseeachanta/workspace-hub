@@ -1,0 +1,15 @@
+wrk_id: WRK-5112
+stage: 16
+items:
+  - id: CL-16-1
+    text: "Update resource intelligence with new artifacts"
+    completed: true
+    evidence: "resource-intelligence-update.yaml written with 3 updates."
+  - id: CL-16-2
+    text: "Write resource-intelligence-update.yaml"
+    completed: true
+    evidence: "2 new scripts/artifacts + 1 architecture change documented."
+  - id: CL-16-3
+    text: "evidence/resource-intelligence-update.yaml written"
+    completed: true
+    evidence: "Written at evidence/resource-intelligence-update.yaml with completion_status=complete."
