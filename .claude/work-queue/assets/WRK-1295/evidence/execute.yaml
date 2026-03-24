@@ -1,0 +1,34 @@
+wrk_id: WRK-1295
+stage: 10
+execution_summary: |
+  Phase 1 (Phase A indexing): COMPLETE — 262 workspace_spec records indexed (index total: 1,034,195)
+  Phase 2 (Phase B batch): IN PROGRESS
+    - workspace_spec: single-shard Phase B launched (977 docs to classify, 872 already have summaries)
+    - ace_standards: dry-run scanning 55,586 docs — full batch requires launch-batch.sh with parallel shards
+  Phase 3 (validation): PENDING — awaiting Phase 2 completion
+execution_status: in_progress
+phases_completed:
+  - phase: 1
+    description: "Phase A indexing for workspace_spec"
+    status: complete
+    records_indexed: 262
+    total_index_size: 1034195
+  - phase: 2
+    description: "Phase B batch LLM classification"
+    status: in_progress
+    workspace_spec_launched: true
+    ace_standards_launched: false
+    note: "ace_standards requires launch-batch.sh 10 ace_standards from terminal"
+  - phase: 3
+    description: "Validation and checkpoint"
+    status: pending
+integrated_repo_tests:
+  - test: "Phase A indexes workspace_spec files"
+    result: pass
+    detail: "262 records indexed with source=workspace_spec"
+  - test: "Phase B worker runs for workspace_spec"
+    result: pass
+    detail: "Shard 0/1 launched, processing 977 docs"
+  - test: "Index integrity maintained"
+    result: pass
+    detail: "Total index 1,034,195 records after Phase A append"

@@ -1,0 +1,38 @@
+current_stage: 5
+stage_name: Explore
+started_at: "2026-03-24T10:00:00Z"
+last_updated: "2026-03-24T10:30:00Z"
+status: in_progress
+entry_reads:
+  - scripts/data/doc-intelligence/deep-extract.py
+  - scripts/data/doc-intelligence/batch-deep-extract-naval.sh
+  - scripts/data/doc_intelligence/deep_extract.py
+  - scripts/data/doc_intelligence/naval_example_parsers.py
+  - scripts/data/doc_intelligence/worked_example_parser.py
+  - .claude/work-queue/working/WRK-1323.md
+findings:
+  current_total: 82
+  target: 150
+  gap: 68
+  top_sources:
+    - {name: "EN400", count: 31}
+    - {name: "Biran", count: 22}
+    - {name: "Attwood", count: 16}
+  zero_yield_textbooks:
+    - "Basic-Ship-Theory-Vol1-Rawson-Tupper-2001 (CID encoding failure)"
+    - "Marine-Hydrodynamics-Newman-2018 (no Example keyword - uses Problems)"
+    - "PNA SecRev Vol2 & Vol3 (no Example keyword)"
+    - "Practical-Ship-Hydrodynamics-Bertram-2000"
+    - "Ship-Structural-Analysis-Design-Hughes-Paik"
+    - "Engineering-Mathematics-Ship-Design"
+    - "Offshore-Hydromechanics-2001"
+  root_causes:
+    - "CID encoding: pdfplumber returns (cid:N) for some PDFs"
+    - "Missing parser format: books use 'Problem N.N' not 'Example N.N'"
+    - "Section boundary splits: example/solution in separate sections"
+  next_actions:
+    - "Add OCR fallback for CID-encoded PDFs"
+    - "Add Format E parser for Problem N.N patterns"
+    - "Add cross-section joining in deep_extract_manifest"
+    - "Re-run batch extraction on high-yield candidates"
+    - "Verify total >= 150"
