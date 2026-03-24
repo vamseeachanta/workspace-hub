@@ -1,0 +1,35 @@
+wrk_id: WRK-5112
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Search codebase for existing code, skills, tests"
+    completed: true
+    evidence: "Inherited from parent WRK-1321 research. 80+ scripts in scripts/work-queue/, 20 stage folder-skills created by WRK-5111."
+  - id: CL-02-2
+    text: "Query knowledge base"
+    completed: true
+    evidence: "Parent WRK-1321 completed 3-provider cross-review with extensive knowledge gathering."
+  - id: CL-02-3
+    text: "Search document-index for prior art"
+    completed: true
+    evidence: "WRK-5110 and WRK-5111 are direct prior art — orchestrator and stage folder-skills already exist."
+  - id: CL-02-4
+    text: "Online research for standards and best practices"
+    completed: true
+    evidence: "Anthropic folder-skill best practices already researched in parent WRK-1321 stage 2."
+  - id: CL-02-5
+    text: "Save discovered documents"
+    completed: true
+    evidence: "N/A — no new external documents. All resources are internal."
+  - id: CL-02-6
+    text: "Update document-index"
+    completed: true
+    evidence: "N/A — no new external documents to index."
+  - id: CL-02-7
+    text: "Assess complexity"
+    completed: true
+    evidence: "Route B (medium). Script analysis and redistribution with path verification."
+  - id: CL-02-8
+    text: "Write evidence/resource-intelligence.yaml"
+    completed: true
+    evidence: "Written with completion_status, domain, skills.core_used (3 skills)."

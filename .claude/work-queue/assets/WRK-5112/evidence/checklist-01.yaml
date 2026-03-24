@@ -1,0 +1,16 @@
+wrk_id: WRK-5112
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+    evidence: "Title: Redistribute scripts to stage folders. Category: work-queue-infrastructure. Mission defined in working/WRK-5112.md"
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+    evidence: "validate-wrk-frontmatter.sh passed. File at pending/WRK-5112.md with all required fields."
+  - id: CL-01-3
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: vamsee
+    evidence: "User approved via interactive prompt and GitHub issue #1306 comment."

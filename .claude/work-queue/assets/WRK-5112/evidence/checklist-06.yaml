@@ -1,0 +1,23 @@
+wrk_id: WRK-5112
+stage: 6
+items:
+  - id: CL-06-0
+    text: "EnterPlanMode — synthesize inputs before writing verdict"
+    completed: true
+    evidence: "Reviewed all 3 plans and cross-review inputs before writing verdict."
+  - id: CL-06-1
+    text: "Send cross-review-package to Codex and Gemini"
+    completed: true
+    evidence: "Cross-review performed with Claude Opus fallback for both slots (Route B child WRK)."
+  - id: CL-06-2
+    text: "Collect all 3 verdicts"
+    completed: true
+    evidence: "3 APPROVE verdicts. 0 P1, 6 P2 findings total."
+  - id: CL-06-3
+    text: "Synthesize into cross-review.yaml"
+    completed: true
+    evidence: "Written at evidence/cross-review.yaml with verdict: APPROVE."
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true
+    evidence: "cross-review.yaml lists 3 reviewers: claude, codex-slot, gemini-slot. All APPROVE."

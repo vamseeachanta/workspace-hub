@@ -1,0 +1,11 @@
+wrk_id: WRK-5112
+stage: 9
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass
+  - work-queue (coordination)
+route: B
+delivery_order: single
+notes: "Route B — direct execution, no children needed."

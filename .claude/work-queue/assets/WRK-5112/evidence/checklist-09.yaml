@@ -1,0 +1,15 @@
+wrk_id: WRK-5112
+stage: 9
+items:
+  - id: CL-09-1
+    text: "Confirm route and delivery order"
+    completed: true
+    evidence: "Route B, single delivery, no children. Direct execution."
+  - id: CL-09-2
+    text: "Write routing.yaml"
+    completed: true
+    evidence: "Written with route=B, work_wrapper_complete=true."
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    evidence: "routing.yaml at assets/WRK-5112/routing.yaml with all required fields."

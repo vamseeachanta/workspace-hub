@@ -1,0 +1,12 @@
+wrk_id: WRK-5112
+stage: 8
+version: 1
+owner: claude
+provider: claude
+best_fit_provider: claude
+session_owner: claude
+route: B
+session_id: dev-primary-20260323
+claimed_at: 2026-03-23T18:30:00Z
+quota: available
+notes: "Claimed by Claude for execution. Route B child of WRK-1321."
