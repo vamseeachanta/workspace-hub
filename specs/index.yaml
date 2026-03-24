@@ -1,13 +1,13 @@
-generated: '2026-03-22'
-total_specs: 1901
+generated: '2026-03-24'
+total_specs: 1915
 by_category:
   archive: 13
   data-sources: 13
-  modules: 353
+  modules: 362
   other: 61
   repos: 1344
   templates: 20
-  wrk: 97
+  wrk: 102
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 385
+  workspace-hub: 399
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -257,7 +257,7 @@ by_wrk:
   WRK-684: 1
   WRK-686: 1
   WRK-687: 1
-  WRK-690: 1
+  WRK-690: 3
   WRK-693: 1
   WRK-700: 1
   WRK-888: 1
@@ -354,7 +354,7 @@ by_wrk:
   WRK-1183: 1
   WRK-1185: 1
   WRK-1187: 1
-  WRK-1188: 2
+  WRK-1188: 4
   WRK-1200: 1
   WRK-1203: 1
   WRK-1242: 3
@@ -368,16 +368,22 @@ by_wrk:
   WRK-1272: 1
   WRK-1273: 1
   WRK-1279: 1
+  WRK-1295: 2
   WRK-1301: 1
   WRK-1316: 1
-  WRK-1321: 3
+  WRK-1321: 6
   WRK-1323: 1
   WRK-1330: 1
-  WRK-1339: 1
-  WRK-1362: 1
+  WRK-1339: 3
+  WRK-1341: 1
+  WRK-1360: 1
+  WRK-1362: 2
   WRK-1363: 1
-  WRK-1369: 1
+  WRK-1364: 1
+  WRK-1366: 1
+  WRK-1369: 2
   WRK-1371: 1
+  WRK-1380: 2
   WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
@@ -404,6 +410,7 @@ by_wrk:
   WRK-5071: 1
   WRK-5072: 1
   WRK-5082: 3
+  WRK-5097: 1
   WRK-5100: 1
   WRK-5101: 1
   WRK-5104: 5
@@ -411,7 +418,11 @@ by_wrk:
   WRK-5106: 2
   WRK-5107: 3
   WRK-5109: 1
-  WRK-5110: 1
+  WRK-5110: 5
+  WRK-5111: 3
+  WRK-5112: 2
+  WRK-5113: 1
+  WRK-5124: 2
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -1115,6 +1126,16 @@ specs:
   - WRK-613
   - WRK-614
   mtime: '2026-03-20'
+- path: specs/modules/WRK-1369-batch-deep-extract-naval.md
+  title: 'WRK-1369: Batch Deep Extraction — Naval Architecture'
+  description: Execute batch-deep-extract-naval.sh on all textbook manifests, verify results, rebuild indexes, report yield.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1369-batch-deep-extract-naval
+  wrk_refs:
+  - WRK-1369
+  mtime: '2026-03-24'
 - path: specs/modules/abstract-tinkering-hartmanis.md
   title: 'WRK-5082: Parachute Frame Force Calculation (Feature Plan)'
   description: A client has a GT1R Nissan GT-R R35 drag car with a bolt-on parachute kit (4130 chromoly steel frame). They
@@ -1160,6 +1181,20 @@ specs:
   - aceengineer-website-cron-status-daily-reflect
   wrk_refs: []
   mtime: '2026-01-27'
+- path: specs/modules/adaptive-puzzling-seahorse.md
+  title: 'WRK-5111: Convert 20 Stages to Folder-Skills'
+  description: The 20 stage micro-skills are bare .md files with contracts living separately. WRK-5110 established the orchestrator
+    folder-skill pattern. This WRK converts each stage into a self-contained folder-...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - adaptive-puzzling-seahorse
+  wrk_refs:
+  - WRK-690
+  - WRK-1321
+  - WRK-5110
+  - WRK-5111
+  mtime: '2026-03-23'
 - path: specs/modules/agents-md-assessment-workspace-hub.md
   title: 'Assessment: AGENTS.md Concepts for workspace-hub'
   description: 'Vercel blog: "agents.md outperforms skills in our agent evals"'
@@ -1599,6 +1634,21 @@ specs:
   wrk_refs:
   - WRK-95
   mtime: '2026-02-09'
+- path: specs/modules/eventual-tinkering-rainbow.md
+  title: 'WRK-5113: Update Paths and Remove Old Skills — Implementation Plan'
+  description: '**Goal:** Complete the two-tier folder-skill migration by updating orchestration scripts to use new contract
+    paths, removing old skill trees, and verifying end-to-end lifecycle works.'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - eventual-tinkering-rainbow
+  wrk_refs:
+  - WRK-1321
+  - WRK-5110
+  - WRK-5111
+  - WRK-5112
+  - WRK-5113
+  mtime: '2026-03-24'
 - path: specs/modules/expressive-percolating-dolphin.md
   title: 'WRK-5042: Batch Extraction Pipeline'
   description: WRK-5037 delivered `extract-document.py` (single-doc extraction) and WRK-5038 delivered federated content indexes.
@@ -1679,6 +1729,21 @@ specs:
   - WRK-5035
   - WRK-5054
   mtime: '2026-03-13'
+- path: specs/modules/glimmering-conjuring-torvalds.md
+  title: 'WRK-1364: 3D FEM Analysis (CalculiX) — Implementation Plan'
+  description: 'The GT1R R35 parachute mounting frame needs 3D FEM analysis to capture out-of-plane bending, torsion, and
+    stress concentrations that the 2D direct stiffness model cannot. All three blockers are done:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - glimmering-conjuring-torvalds
+  wrk_refs:
+  - WRK-1341
+  - WRK-1360
+  - WRK-1362
+  - WRK-1364
+  - WRK-1366
+  mtime: '2026-03-23'
 - path: specs/modules/glittery-sprouting-island.md
   title: 'WRK-1111 Plan: @ File Reference Pipeline'
   description: Claude Code's `@file` syntax in CLAUDE.md causes a file's contents to be auto-included in every session context
@@ -1909,6 +1974,17 @@ specs:
   wrk_refs:
   - WRK-1084
   mtime: '2026-03-11'
+- path: specs/modules/lively-floating-parrot.md
+  title: WRK-5110 Implementation Plan — Work-Queue Orchestrator Folder-Skill
+  description: 'The work-queue orchestration logic is split across 3 skills: `coordination/workspace/work-queue/`, `workspace-hub/work-queue-workflow/`,
+    and `workspace-hub/workflow-gatepass/`. WRK-5110 creates a u...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - lively-floating-parrot
+  wrk_refs:
+  - WRK-5110
+  mtime: '2026-03-22'
 - path: specs/modules/md-to-pdf-skill-via-chrome-headless.md
   title: md-to-pdf skill — Markdown to styled PDF via Chrome headless
   description: Build a reusable md-to-pdf skill with HTML template, print CSS components, and Chrome headless PDF generation
@@ -3025,6 +3101,18 @@ specs:
   - WRK-127
   - WRK-129
   mtime: '2026-02-23'
+- path: specs/modules/wrk-1295-batch-llm-summaries.md
+  title: 'WRK-1295: Batch LLM Summaries — ace_standards + workspace_spec'
+  description: Run Phase B (LLM classification) on ace_standards and workspace_spec documents using the proven `phase-b-claude-worker.py`
+    pipeline. Resume-safe, parallelized via `launch-batch.sh`.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1295-batch-llm-summaries
+  wrk_refs:
+  - WRK-1188
+  - WRK-1295
+  mtime: '2026-03-24'
 - path: specs/modules/wrk-131-passing-ship-analysis.md
   title: Passing Ship Analysis for Moored Vessels
   description: 'End-to-end passing ship analysis: force calculation, mooring response, parametric studies, benchmarking, and
@@ -3072,6 +3160,18 @@ specs:
   - WRK-44
   - WRK-138
   mtime: '2026-02-13'
+- path: specs/modules/wrk-1380-ship-dimensions-phase-1-plan.md
+  title: 'WRK-1380 Plan: Ship Dimensions Phase 1'
+  description: '`WRK-1380` is a manual-curation child of `WRK-1339`. The job is to populate a ship-dimensions template for
+    110 SNAME ship-plan PDFs, complete a Phase 1 subset first, and verify a sample against Jan...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1380-ship-dimensions-phase-1-plan
+  wrk_refs:
+  - WRK-1339
+  - WRK-1380
+  mtime: '2026-03-23'
 - path: specs/modules/wrk-139-develop-gmsh-skill-and-documentation.md
   title: 'WRK-139: Develop gmsh Skill and Documentation'
   description: Create a dedicated gmsh meshing skill with comprehensive documentation gathered from online sources, local
@@ -3142,6 +3242,17 @@ specs:
   wrk_refs:
   - WRK-380
   mtime: '2026-03-20'
+- path: specs/modules/wrk-5124-stage6-gate-check-fix.md
+  title: 'WRK-5124: Fix Stage 6 cross-review gate stall for Codex/Gemini'
+  description: Fix the Stage 5 gate check in `cross-review.sh` that stalls for non-Claude providers due to `uv` execution
+    path differences, and add uniform uv pre-checks across all provider submission scripts.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-5124-stage6-gate-check-fix
+  wrk_refs:
+  - WRK-5124
+  mtime: '2026-03-23'
 - path: specs/modules/yaml-state-file-schema-validation.md
   title: YAML State File Schema Validation
   description: Add Pydantic-based schema validation for the 4 YAML state files in `.claude/state/` and `.claude/work-queue/`.
@@ -3374,6 +3485,17 @@ specs:
   - vamsee-linux1
   wrk_refs: []
   mtime: '2026-02-24'
+- path: specs/modules/wrk-github-numbering-unification/plan.md
+  title: 'WRK-5097: Unify WRK Numbering with GitHub Issue Numbering'
+  description: 'confirmed_by: user confirmed_at: 2026-03-23T19:10:00Z decision: passed'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-github-numbering-unification
+  wrk_refs:
+  - WRK-5097
+  mtime: '2026-03-23'
 - path: specs/modules/skill-eval/plan.md
   title: Skill Eval - Test/Evaluate All Skills
   description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
@@ -22228,6 +22350,19 @@ specs:
   wrk_refs:
   - WRK-1242
   mtime: '2026-03-15'
+- path: specs/wrk/WRK-1295/plan.md
+  title: 'WRK-1295: Batch LLM Summaries — ace_standards + workspace_spec'
+  description: Run Phase B (LLM classification) on ace_standards and workspace_spec documents using the proven `phase-b-claude-worker.py`
+    pipeline. Resume-safe, parallelized via `launch-batch.sh`.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1295
+  wrk_refs:
+  - WRK-1188
+  - WRK-1295
+  mtime: '2026-03-24'
 - path: specs/wrk/WRK-1301/research-brief.md
   title: 'WRK-1301: /work Queue Enhancement Research Brief'
   description: '**What it is:** A meta-prompting/context-engineering framework wrapping AI coding agents (Claude Code, Gemini
@@ -22277,6 +22412,19 @@ specs:
   wrk_refs:
   - WRK-1330
   mtime: '2026-03-19'
+- path: specs/wrk/WRK-1380/plan.md
+  title: 'WRK-1380: Ship Dimensions Phase 1 Plan'
+  description: Populate the ship-dimensions template for the first execution slice of 110 SNAME ship-plan PDFs, prioritizing
+    capital ships and verifying a subset against Jane's Fighting Ships 2009-2010. This rema...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1380
+  wrk_refs:
+  - WRK-1339
+  - WRK-1380
+  mtime: '2026-03-23'
 - path: specs/wrk/WRK-140/plan.md
   title: 'WRK-140 Plan: Integrate gmsh Meshing into digitalmodel Pipelines'
   description: Wire gmsh meshing skill (WRK-139) into digitalmodel hydrodynamic analysis pipelines.
@@ -22442,6 +22590,45 @@ specs:
   - WRK-1321
   - WRK-5110
   mtime: '2026-03-22'
+- path: specs/wrk/WRK-5111/plan.md
+  title: 'WRK-5111: Convert 20 Stages to Folder-Skills'
+  description: The 20 stage micro-skills are bare .md files with contracts living separately. WRK-5110 established the orchestrator
+    folder-skill pattern. This WRK converts each stage into a self-contained folder-...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5111
+  wrk_refs:
+  - WRK-690
+  - WRK-1321
+  - WRK-5110
+  - WRK-5111
+  mtime: '2026-03-23'
+- path: specs/wrk/WRK-5112/plan.md
+  title: 'WRK-5112: Redistribute Scripts to Stage Folders'
+  description: Move stage-specific scripts from flat `scripts/work-queue/` into their corresponding `stage-NN-name/scripts/`
+    folder-skill directories. Keep shared/orchestration scripts in place.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5112
+  wrk_refs:
+  - WRK-5112
+  mtime: '2026-03-24'
+- path: specs/wrk/WRK-5124/plan.md
+  title: 'WRK-5124 Plan: Fix Stage 6 cross-review gate stall for Codex/Gemini'
+  description: '`cross-review.sh:57` calls `uv run --no-project python verify-gate-evidence.py --stage5-check` before any
+    provider-specific code runs. This can hang or fail for non-Claude providers, blocking them ...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5124
+  wrk_refs:
+  - WRK-5124
+  mtime: '2026-03-23'
 - path: specs/wrk/WRK-577/plan.md
   title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
   description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
@@ -22728,7 +22915,7 @@ specs:
   - data-needs
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-03-13'
+  mtime: '2026-03-23'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

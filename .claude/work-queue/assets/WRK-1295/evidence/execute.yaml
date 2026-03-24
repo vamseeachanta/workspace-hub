@@ -2,11 +2,12 @@ wrk_id: WRK-1295
 stage: 10
 execution_summary: |
   Phase 1 (Phase A indexing): COMPLETE — 262 workspace_spec records indexed (index total: 1,034,195)
-  Phase 2 (Phase B batch): IN PROGRESS
-    - workspace_spec: single-shard Phase B launched (977 docs to classify, 872 already have summaries)
-    - ace_standards: dry-run scanning 55,586 docs — full batch requires launch-batch.sh with parallel shards
-  Phase 3 (validation): PENDING — awaiting Phase 2 completion
-execution_status: in_progress
+  Phase 2 (Phase B batch): COMPLETE
+    - ace_standards: 4-shard batch — 1,711 new + 53,707 skipped = 99.7%, 101 errors (timeouts)
+    - workspace_spec: 1-shard batch — 971 new of ~977 docs
+  Phase 3 (validation): COMPLETE — 66,381 classified docs, other_rate=6.1%
+    checkpoint: data/document-index/checkpoints/checkpoint-batch-20260324-132227.yaml
+execution_status: complete
 phases_completed:
   - phase: 1
     description: "Phase A indexing for workspace_spec"
@@ -22,6 +23,11 @@ phases_completed:
   - phase: 3
     description: "Validation and checkpoint"
     status: pending
+test_count: 3
+test_files:
+  - "phase_b_checkpoint.py (validation)"
+  - "phase-b-claude-worker.py --dry-run (pre-execution verification)"
+  - "phase-a-index.py --dry-run (pre-indexing verification)"
 integrated_repo_tests:
   - test: "Phase A indexes workspace_spec files"
     result: pass
