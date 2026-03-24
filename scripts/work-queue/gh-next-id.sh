@@ -6,7 +6,7 @@
 # when gh CLI is unavailable or unauthenticated.
 #
 # Usage:
-#   gh-next-id.sh --title "Fix login redirect" [--body "Details..."] [--labels "bug,high"]
+#   gh-next-id.sh --title "Fix login redirect" [--body "Details..."] [--labels "bug,high"] [--repo owner/repo]
 #
 # Output (stdout):
 #   Line 1: ID (numeric or LOCAL-YYYYMMDD-HHMMSS-hostname)
@@ -42,19 +42,22 @@ _wrk_id_is_reserved() {
 TITLE=""
 BODY=""
 LABELS=""
+TARGET_REPO=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --title)  TITLE="$2";  shift 2 ;;
     --body)   BODY="$2";   shift 2 ;;
     --labels) LABELS="$2"; shift 2 ;;
+    --repo)   TARGET_REPO="$2"; shift 2 ;;
     --help|-h)
-      echo "Usage: $0 --title <title> [--body <body>] [--labels <labels>]"
+      echo "Usage: $0 --title <title> [--body <body>] [--labels <labels>] [--repo owner/repo]"
       echo ""
       echo "Options:"
       echo "  --title   (required) Title for the WRK item"
       echo "  --body    (optional) Body/description for the GitHub issue"
       echo "  --labels  (optional) Comma-separated labels"
+      echo "  --repo    (optional) Target repo (default: vamseeachanta/workspace-hub)"
       echo ""
       echo "Output:"
       echo "  Line 1: ID (numeric GitHub issue number, or LOCAL-YYYYMMDD-HHMMSS-hostname)"
@@ -72,6 +75,9 @@ if [[ -z "$TITLE" ]]; then
   echo "Error: --title is required" >&2
   exit 1
 fi
+
+# Override default repo if --repo provided
+[[ -n "$TARGET_REPO" ]] && REPO="$TARGET_REPO"
 
 # ── Attempt GitHub issue creation ────────────────────────────────────────────
 _try_github() {
