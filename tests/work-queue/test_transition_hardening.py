@@ -699,8 +699,8 @@ class TestIntegrationPreExitHooksFromYaml:
     def test_stage07_pre_checks_loaded(self):
         """Stage 7 YAML has pre_checks → merged into hooks list."""
         from exit_stage import _load_pre_exit_hooks
-        stage_yaml = os.path.join(REPO, "scripts", "work-queue", "stages",
-                                  "stage-07-user-review-plan-final.yaml")
+        stage_yaml = os.path.join(REPO, ".claude", "skills", "workspace-hub", "stages",
+                                  "stage-07-user-review-plan-final", "contract.yaml")
         hooks = _load_pre_exit_hooks(stage_yaml)
         assert len(hooks) >= 1
         assert any("check-p1-resolved" in h["script"] for h in hooks)
@@ -709,8 +709,8 @@ class TestIntegrationPreExitHooksFromYaml:
     def test_stage17_pre_checks_normalized(self):
         """Stage 17 pre_checks with gate:hard (was required:true) loads correctly."""
         from exit_stage import _load_pre_exit_hooks
-        stage_yaml = os.path.join(REPO, "scripts", "work-queue", "stages",
-                                  "stage-17-user-review-implementation.yaml")
+        stage_yaml = os.path.join(REPO, ".claude", "skills", "workspace-hub", "stages",
+                                  "stage-17-user-review-implementation", "contract.yaml")
         hooks = _load_pre_exit_hooks(stage_yaml)
         assert len(hooks) >= 1
         assert any("check-acs-pass" in h["script"] for h in hooks)
@@ -719,8 +719,8 @@ class TestIntegrationPreExitHooksFromYaml:
     def test_stage14_pre_exit_hooks_loaded(self):
         """Stage 14 has pre_exit_hooks (not pre_checks) → loaded directly."""
         from exit_stage import _load_pre_exit_hooks
-        stage_yaml = os.path.join(REPO, "scripts", "work-queue", "stages",
-                                  "stage-14-verify-gate-evidence.yaml")
+        stage_yaml = os.path.join(REPO, ".claude", "skills", "workspace-hub", "stages",
+                                  "stage-14-verify-gate-evidence", "contract.yaml")
         hooks = _load_pre_exit_hooks(stage_yaml)
         assert len(hooks) >= 1
         assert any("verify-gate-evidence" in h["script"] for h in hooks)
@@ -728,8 +728,8 @@ class TestIntegrationPreExitHooksFromYaml:
     def test_stage10_no_pre_exit_hooks(self):
         """Stage 10 has no pre_exit_hooks or pre_checks → empty list."""
         from exit_stage import _load_pre_exit_hooks
-        stage_yaml = os.path.join(REPO, "scripts", "work-queue", "stages",
-                                  "stage-10-work-execution.yaml")
+        stage_yaml = os.path.join(REPO, ".claude", "skills", "workspace-hub", "stages",
+                                  "stage-10-work-execution", "contract.yaml")
         hooks = _load_pre_exit_hooks(stage_yaml)
         assert hooks == []
 
@@ -1045,7 +1045,9 @@ class TestSummaryAllPass:
         stages_dir = tmp_path / "stages"
         stages_dir.mkdir()
         for n, name in [(1, "capture"), (2, "resource-intelligence"), (3, "triage")]:
-            _write(str(stages_dir / f"stage-{n:02d}-{name}.yaml"), textwrap.dedent(f"""\
+            stage_folder = stages_dir / f"stage-{n:02d}-{name}"
+            stage_folder.mkdir()
+            _write(str(stage_folder / "contract.yaml"), textwrap.dedent(f"""\
                 order: {n}
                 name: Stage {n}
                 checklist:
@@ -1078,7 +1080,8 @@ class TestSummaryMixed:
         stages_dir = tmp_path / "stages"
         stages_dir.mkdir()
         # Stage 1: has checklist, complete
-        _write(str(stages_dir / "stage-01-capture.yaml"), textwrap.dedent("""\
+        (stages_dir / "stage-01-capture").mkdir()
+        _write(str(stages_dir / "stage-01-capture" / "contract.yaml"), textwrap.dedent("""\
             order: 1
             name: Capture
             checklist:
@@ -1087,7 +1090,8 @@ class TestSummaryMixed:
                 requires_human: false
         """))
         # Stage 2: has checklist, INCOMPLETE
-        _write(str(stages_dir / "stage-02-resource-intelligence.yaml"), textwrap.dedent("""\
+        (stages_dir / "stage-02-resource-intelligence").mkdir()
+        _write(str(stages_dir / "stage-02-resource-intelligence" / "contract.yaml"), textwrap.dedent("""\
             order: 2
             name: Resource Intelligence
             checklist:
@@ -1130,7 +1134,8 @@ class TestSummaryNoChecklist:
         from verify_checklist import summary_all_stages
         stages_dir = tmp_path / "stages"
         stages_dir.mkdir()
-        _write(str(stages_dir / "stage-18-reclaim.yaml"), textwrap.dedent("""\
+        (stages_dir / "stage-18-reclaim").mkdir()
+        _write(str(stages_dir / "stage-18-reclaim" / "contract.yaml"), textwrap.dedent("""\
             order: 18
             name: Reclaim
         """))

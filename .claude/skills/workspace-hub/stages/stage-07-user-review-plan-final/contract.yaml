@@ -8,7 +8,7 @@ gate_file: evidence/plan-final-review.yaml
 gate_field: decision
 gate_value: passed
 skills_required:
-  - workspace-hub/work-queue-workflow
+  - workspace-hub/work-queue-orchestrator
 entry_reads:
   - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
   - assets/WRK-NNN/evidence/cross-review.yaml

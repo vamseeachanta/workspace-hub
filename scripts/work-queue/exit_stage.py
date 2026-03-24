@@ -430,14 +430,12 @@ def _main() -> None:
         str(Path(__file__).parent.parent.parent),
     )
 
-    import glob as _glob
-    contract_glob = os.path.join(
-        repo_root, "scripts", "work-queue", "stages", f"stage-{stage:02d}-*.yaml"
-    )
-    matches = _glob.glob(contract_glob)
-    if not matches:
+    from resolve_contract import resolve_contract_path as _resolve_contract
+    _contract_path = _resolve_contract(stage, repo_root)
+    if not _contract_path:
         print(f"No contract found for stage {stage}", file=sys.stderr)
         sys.exit(1)
+    matches = [_contract_path]
 
     # Minimal YAML field extraction
     contract: dict = {}

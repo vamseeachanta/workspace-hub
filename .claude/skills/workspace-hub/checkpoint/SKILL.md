@@ -17,7 +17,7 @@ capabilities:
 - stage_resume
 related_skills:
 - session-start
-- work-queue-workflow
+- work-queue-orchestrator
 tools:
 - Read
 - Write

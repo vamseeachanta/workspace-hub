@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts" / "work-q
 from run_log import append_stage_event, read_completed_stages, should_skip_stage, hash_entry_files
 from generate_transition_table import load_stage_contracts, build_transition_table, validate_transition
 
-STAGES_DIR = str(Path(__file__).parent.parent.parent / "scripts" / "work-queue" / "stages")
+STAGES_DIR = str(Path(__file__).parent.parent.parent / ".claude" / "skills" / "workspace-hub" / "stages")
 
 
 @pytest.fixture

@@ -13,7 +13,7 @@ triggers:
 - wrk workflow tests
 - gatepass tests
 related_skills:
-- workflow-gatepass
+- work-queue-orchestrator
 - work-queue
 - qa-closure
 capabilities:

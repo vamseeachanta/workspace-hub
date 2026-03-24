@@ -16,7 +16,7 @@ triggers:
 related_skills:
 - save
 - work-queue
-- workflow-gatepass
+- work-queue-orchestrator
 - improve
 capabilities:
 - readiness-surface

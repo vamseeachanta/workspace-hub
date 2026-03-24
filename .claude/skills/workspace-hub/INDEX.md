@@ -19,8 +19,6 @@
 - [Tool Readiness](tool-readiness/SKILL.md) — 1 skill
 - [What's Next](whats-next/SKILL.md) — 1 skill (v1.0.0)
 - [Workstations](workstations/SKILL.md) — 1 skill
-- [Work-Queue Workflow](work-queue-workflow/SKILL.md) — 1 skill (v1.0.0)
-- [Workflow Gatepass](workflow-gatepass/SKILL.md) — 1 skill (v1.0.0)
 - [WRK Lifecycle Testpack](wrk-lifecycle-testpack/SKILL.md) — 1 skill (v1.0.0)
 
 ## File Structure Skills Cluster

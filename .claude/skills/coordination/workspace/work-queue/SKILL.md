@@ -32,9 +32,8 @@ related_skills:
 - repo-sync
 - session-start
 - session-end
-- workflow-gatepass
+- work-queue-orchestrator
 - wrk-lifecycle-testpack
-- work-queue-workflow
 - comprehensive-learning
 scripts:
 - next-id.sh
@@ -47,24 +46,7 @@ scripts:
 - ../../../../scripts/agents/execute.sh
 - ../../../../scripts/agents/review.sh
 requires: []
-see_also:
-- work-queue-command-interface
-- work-queue-canonical-20-stage-lifecycle
-- work-queue-stage-contracts-summary
-- work-queue-complexity-routing
-- work-queue-feature-layer-epic-level-work
-- work-queue-cross-review-route-bc
-- work-queue-planning-requirement
-- work-queue-checkpoint-resume
-- work-queue-work-item-format
-- work-queue-machine-wrk-id-ranges
-- work-queue-queue-directory-structure
-- work-queue-key-scripts
-- work-queue-work-execution-principle-scripts-over-llm-overhead
-- work-queue-parallel-work-policy
-- work-queue-scope-discipline
-- work-queue-archival-safety
-- work-queue-integration-points
+see_also: []
 tags: []
 ---
 

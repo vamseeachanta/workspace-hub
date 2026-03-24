@@ -17,7 +17,7 @@ assert_exit1() { "$@" && fail "$1 (expected exit 1)" || pass "$1"; }
 # T1 — stage-09-routing.yaml has feature_routing: key (AC1)
 # ──────────────────────────────────────────────────────────────────────────────
 echo ""; echo "T1: stage-09-routing.yaml has feature_routing:"
-ROUTING_YAML="$REPO_ROOT/scripts/work-queue/stages/stage-09-routing.yaml"
+ROUTING_YAML="$REPO_ROOT/.claude/skills/workspace-hub/stages/stage-09-routing/contract.yaml"
 if [[ -f "$ROUTING_YAML" ]]; then
   content=$(cat "$ROUTING_YAML")
   assert_contains "$content" "feature_routing:" "stage-09 has feature_routing: key"
@@ -33,7 +33,7 @@ fi
 # T2 — stage-19-close.yaml blocking_condition contains feature-close-check (AC2)
 # ──────────────────────────────────────────────────────────────────────────────
 echo ""; echo "T2: stage-19-close.yaml blocking_condition has feature-close-check"
-CLOSE_YAML="$REPO_ROOT/scripts/work-queue/stages/stage-19-close.yaml"
+CLOSE_YAML="$REPO_ROOT/.claude/skills/workspace-hub/stages/stage-19-close/contract.yaml"
 if [[ -f "$CLOSE_YAML" ]]; then
   content=$(cat "$CLOSE_YAML")
   assert_contains "$content" "feature-close-check" "stage-19 blocking_condition has feature-close-check"
@@ -48,7 +48,7 @@ fi
 # T3 — stage-07-user-review-plan-final.yaml has feature-decomposition reference (AC3)
 # ──────────────────────────────────────────────────────────────────────────────
 echo ""; echo "T3: stage-07 references feature-decomposition.yaml"
-STAGE07_YAML="$REPO_ROOT/scripts/work-queue/stages/stage-07-user-review-plan-final.yaml"
+STAGE07_YAML="$REPO_ROOT/.claude/skills/workspace-hub/stages/stage-07-user-review-plan-final/contract.yaml"
 if [[ -f "$STAGE07_YAML" ]]; then
   content=$(cat "$STAGE07_YAML")
   assert_contains "$content" "feature-decomposition" "stage-07 has feature-decomposition reference"

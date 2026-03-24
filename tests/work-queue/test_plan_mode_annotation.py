@@ -2,14 +2,14 @@
 import yaml
 from pathlib import Path
 
-STAGES_DIR = Path("scripts/work-queue/stages")
+STAGES_DIR = Path(".claude/skills/workspace-hub/stages")
 PLAN_MODE_STAGES = {4, 6, 10, 13}
 
 
 def test_plan_mode_required_annotated():
     """Stages 4, 6, 10, 13 must have plan_mode: required in their contract YAML."""
     for n in PLAN_MODE_STAGES:
-        files = list(STAGES_DIR.glob(f"stage-{n:02d}-*.yaml"))
+        files = list(STAGES_DIR.glob(f"stage-{n:02d}-*/contract.yaml"))
         assert files, f"No contract found for stage {n}"
         data = yaml.safe_load(files[0].read_text())
         assert data.get("plan_mode") == "required", (
@@ -19,13 +19,14 @@ def test_plan_mode_required_annotated():
 
 def test_non_deliberative_stages_not_annotated():
     """Stages outside {4,6,10,13} must NOT have plan_mode: required."""
-    for f in STAGES_DIR.glob("stage-*.yaml"):
-        order = int(f.stem.split("-")[1])
+    for f in STAGES_DIR.glob("stage-*/contract.yaml"):
+        parent = f.parent.name
+        order = int(parent.split("-")[1])
         if order in PLAN_MODE_STAGES:
             continue
         data = yaml.safe_load(f.read_text())
         assert data.get("plan_mode") != "required", (
-            f"Stage {order} ({f.name}) has unexpected plan_mode: required"
+            f"Stage {order} ({parent}) has unexpected plan_mode: required"
         )
 
 
@@ -41,21 +42,21 @@ def test_plan_mode_skill_exists():
         )
 
 
-def test_work_queue_workflow_references_plan_mode():
-    """work-queue-workflow/SKILL.md must reference the plan-mode skill."""
-    skill = Path(".claude/skills/workspace-hub/work-queue-workflow/SKILL.md")
+def test_orchestrator_references_plan_mode():
+    """work-queue-orchestrator/SKILL.md must reference the plan-mode skill."""
+    skill = Path(".claude/skills/workspace-hub/work-queue-orchestrator/SKILL.md")
     text = skill.read_text()
     assert "plan-mode" in text.lower() or "plan_mode" in text.lower(), (
-        "work-queue-workflow/SKILL.md does not reference plan-mode skill"
+        "work-queue-orchestrator/SKILL.md does not reference plan-mode skill"
     )
 
 
-def test_stage_micro_skills_reference_plan_mode():
-    """Stage 6, 10, 13 micro-skills must reference EnterPlanMode."""
+def test_stage_folder_skills_reference_plan_mode():
+    """Stage 6, 10, 13 folder-skills must reference EnterPlanMode."""
     for n in [6, 10, 13]:
-        files = list(Path(".claude/skills/workspace-hub/stages").glob(f"stage-{n:02d}-*.md"))
-        assert files, f"No micro-skill for stage {n}"
+        files = list(STAGES_DIR.glob(f"stage-{n:02d}-*/SKILL.md"))
+        assert files, f"No folder-skill for stage {n}"
         text = files[0].read_text()
         assert "EnterPlanMode" in text or "plan-mode" in text.lower(), (
-            f"Stage {n} micro-skill missing EnterPlanMode reference"
+            f"Stage {n} folder-skill missing EnterPlanMode reference"
         )

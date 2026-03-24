@@ -105,11 +105,11 @@ def summary_all_stages(wrk_id, stages_dir, evidence_dir):
         evidence_dir: path to assets/WRK-NNN/evidence/
     """
     import re
-    matches = sorted(glob.glob(os.path.join(stages_dir, "stage-*-*.yaml")))
+    matches = sorted(glob.glob(os.path.join(stages_dir, "stage-*", "contract.yaml")))
     lines = []
     for stage_yaml_path in matches:
-        basename = os.path.basename(stage_yaml_path)
-        m = re.match(r"stage-(\d+)-(.+)\.yaml", basename)
+        parent_dir = os.path.basename(os.path.dirname(stage_yaml_path))
+        m = re.match(r"stage-(\d+)-(.+)", parent_dir)
         if not m:
             continue
         stage = int(m.group(1))
@@ -144,7 +144,8 @@ if __name__ == "__main__":
     if args.summary:
         repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
             os.path.abspath(__file__))))
-        stages_dir = os.path.join(repo_root, "scripts", "work-queue", "stages")
+        from resolve_contract import resolve_stages_dir
+        stages_dir = resolve_stages_dir(repo_root)
         evidence_dir = os.path.join(
             repo_root, ".claude", "work-queue", "assets", args.wrk_id, "evidence")
         lines = summary_all_stages(args.wrk_id, stages_dir, evidence_dir)
@@ -157,12 +158,13 @@ if __name__ == "__main__":
 
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))))
-    stages_dir = os.path.join(repo_root, "scripts", "work-queue", "stages")
+    from resolve_contract import resolve_stages_dir
+    stages_dir = resolve_stages_dir(repo_root)
     evidence_dir = os.path.join(
         repo_root, ".claude", "work-queue", "assets", args.wrk_id, "evidence")
 
     # Find stage YAML
-    matches = glob.glob(os.path.join(stages_dir, f"stage-{args.stage:02d}-*.yaml"))
+    matches = glob.glob(os.path.join(stages_dir, f"stage-{args.stage:02d}-*", "contract.yaml"))
     if not matches:
         print(f"No stage YAML found for stage {args.stage}", file=sys.stderr)
         sys.exit(2)

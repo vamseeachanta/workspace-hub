@@ -13,7 +13,7 @@ triggers:
 - Stage 10 work execution
 - Stage 13 agent cross-review
 related_skills:
-- work-queue-workflow
+- work-queue-orchestrator
 - writing-plans
 tags: []
 ---

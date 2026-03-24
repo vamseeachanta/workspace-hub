@@ -8,7 +8,7 @@ gate_file: evidence/user-review-plan-draft.yaml
 gate_field: decision
 gate_value: approved
 skills_required:
-  - workspace-hub/work-queue-workflow
+  - workspace-hub/work-queue-orchestrator
   - superpowers/brainstorming
 entry_reads:
   - assets/WRK-NNN/evidence/checklist-04.yaml

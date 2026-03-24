@@ -40,7 +40,8 @@ def load_stage_contracts(stages_dir: str) -> list[dict[str, Any]]:
     Returns:
         List of dicts with at least {order, name, human_gate} keys.
     """
-    pattern = os.path.join(stages_dir, "stage-*-*.yaml")
+    # folder-skill layout: stage-NN-name/contract.yaml
+    pattern = os.path.join(stages_dir, "stage-*", "contract.yaml")
     contracts = []
     for path in sorted(glob.glob(pattern)):
         fields = _read_yaml_fields(path)
@@ -130,7 +131,7 @@ def generate_yaml(stages_dir: str) -> str:
     table = build_transition_table(contracts)
 
     lines = ["# Auto-generated transition table — do not edit manually",
-             "# Source: scripts/work-queue/stages/stage-NN-*.yaml",
+             "# Source: .claude/skills/workspace-hub/stages/stage-NN-*/contract.yaml",
              "# WRK-1187 Enhancement 2",
              "",
              "transitions:"]
@@ -147,9 +148,9 @@ def generate_yaml(stages_dir: str) -> str:
 
 if __name__ == "__main__":
     import sys
-    stages = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "stages"
-    )
+    # Default: folder-skill layout
+    _repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    stages = os.path.join(_repo_root, ".claude", "skills", "workspace-hub", "stages")
     if len(sys.argv) > 1:
         stages = sys.argv[1]
     print(generate_yaml(stages))

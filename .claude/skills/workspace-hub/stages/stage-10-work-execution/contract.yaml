@@ -5,7 +5,7 @@ invocation: task_agent
 human_gate: false
 parallelism: parallel-optional
 skills_required:
-  - workspace-hub/work-queue-workflow
+  - workspace-hub/work-queue-orchestrator
   - superpowers/test-driven-development
   - superpowers/systematic-debugging
 entry_reads:

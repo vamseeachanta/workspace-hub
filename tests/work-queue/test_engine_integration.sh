@@ -66,14 +66,18 @@ setup_workspace() {
   mkdir -p "${ws}/.claude/work-queue"/{pending,working,blocked,archive,assets}
   printf 'last_id: 0\n' > "${ws}/.claude/work-queue/state.yaml"
 
-  # Copy stage contracts
-  mkdir -p "${ws}/scripts/work-queue/stages"
-  cp "${SCRIPTS}/stages"/stage-*.yaml "${ws}/scripts/work-queue/stages/"
+  # Copy stage contracts (folder-skill layout)
+  for stage_dir in "${REPO_ROOT}/.claude/skills/workspace-hub/stages"/stage-*/; do
+    stage_name=$(basename "$stage_dir")
+    mkdir -p "${ws}/.claude/skills/workspace-hub/stages/${stage_name}"
+    cp "${stage_dir}/contract.yaml" "${ws}/.claude/skills/workspace-hub/stages/${stage_name}/"
+  done
 
   # Copy engine scripts
   for f in exit_stage.py run_log.py generate_transition_table.py \
            checkpoint_writer.py update-stage-evidence.py \
            stage_dispatch.py stage_exit_checks.py \
+           resolve_contract.py \
            generate-html-review.py is-human-gate.sh; do
     [[ -f "${SCRIPTS}/$f" ]] && cp "${SCRIPTS}/$f" "${ws}/scripts/work-queue/"
   done
@@ -256,7 +260,7 @@ echo "--- Suite 4: Transition table validation ---"
 TV_RESULT=$(uv run --no-project python -c "
 import sys; sys.path.insert(0, '${ws}/scripts/work-queue')
 from generate_transition_table import load_stage_contracts, build_transition_table, validate_transition
-contracts = load_stage_contracts('${ws}/scripts/work-queue/stages')
+contracts = load_stage_contracts('${ws}/.claude/skills/workspace-hub/stages')
 table = build_transition_table(contracts)
 results = []
 # Legal transitions
@@ -322,7 +326,7 @@ echo "--- Suite 6: Transition table YAML artifact ---"
 
 YAML_PATH="${ws}/config/work-queue/transitions.yaml"
 uv run --no-project python "${ws}/scripts/work-queue/generate_transition_table.py" \
-  "${ws}/scripts/work-queue/stages" > "$YAML_PATH" 2>/dev/null
+  "${ws}/.claude/skills/workspace-hub/stages" > "$YAML_PATH" 2>/dev/null
 
 assert_file_exists "transitions.yaml generated" "$YAML_PATH"
 TRANSITION_COUNT=$(grep -c "^  - from:" "$YAML_PATH" 2>/dev/null || echo "0")

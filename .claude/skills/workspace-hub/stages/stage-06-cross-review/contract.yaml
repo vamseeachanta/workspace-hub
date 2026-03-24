@@ -5,8 +5,8 @@ invocation: task_agent
 human_gate: false
 parallelism: parallel
 skills_required:
-  - workspace-hub/work-queue-workflow
-  - workspace-hub/workflow-gatepass
+  - workspace-hub/work-queue-orchestrator
+  - workspace-hub/work-queue-orchestrator
 entry_reads:
   - assets/WRK-NNN/evidence/checklist-04.yaml
   - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
@@ -35,7 +35,7 @@ tools_activated:
   - type: skill
     ref: coordination/workspace/work-queue/cross-review-route-bc
   - type: skill
-    ref: workspace-hub/workflow-gatepass
+    ref: workspace-hub/work-queue-orchestrator
 lm_judgment_required:
   - id: N3
     rule: "Cross-review finding correctly classified as P1 vs P2 vs P3"

@@ -18,7 +18,7 @@ from generate_transition_table import (
 
 
 STAGES_DIR = str(
-    Path(__file__).parent.parent.parent / "scripts" / "work-queue" / "stages"
+    Path(__file__).parent.parent.parent / ".claude" / "skills" / "workspace-hub" / "stages"
 )
 
 

@@ -166,14 +166,11 @@ if __name__ == "__main__":
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))))
 
-    # Load hooks from stage YAML
-    stages_dir = os.path.join(repo_root, "scripts", "work-queue", "stages")
-    stage_files = [f for f in os.listdir(stages_dir)
-                   if f.startswith(f"stage-{args.stage:02d}")]
-    if not stage_files:
+    # Load hooks from stage contract YAML (folder-skill layout)
+    from resolve_contract import resolve_contract_path
+    stage_yaml = resolve_contract_path(args.stage, repo_root)
+    if not stage_yaml:
         sys.exit(0)
-
-    stage_yaml = os.path.join(stages_dir, stage_files[0])
     with open(stage_yaml) as f:
         stage_data = yaml.safe_load(f) or {}
 

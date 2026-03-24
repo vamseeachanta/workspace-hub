@@ -5,7 +5,7 @@ invocation: task_agent
 human_gate: false
 parallelism: single-thread
 skills_required:
-  - workspace-hub/work-queue-workflow
+  - workspace-hub/work-queue-orchestrator
   - workspace-hub/resource-intelligence
 entry_reads:
   - pending/WRK-NNN.md

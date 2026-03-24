@@ -18,7 +18,7 @@ related_skills:
 - session-end
 - save
 - session-start
-- workflow-gatepass
+- work-queue-orchestrator
 capabilities:
 - wrk-state-capture
 - session-handoff

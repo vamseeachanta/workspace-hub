@@ -1,3 +1,14 @@
+# Stage 10 Prompt Package — WRK-5113
+## Stage: Work Execution
+**Invocation:** task_agent
+**Weight:** heavy
+**Context budget:** 16 KB
+
+## Exit artifacts (must exist before calling exit-stage.sh)
+  - `assets/WRK-NNN/evidence/execute.yaml`
+
+## Stage Micro-Skill (rules for this stage)
+```
 Stage 10 · Work Execution | task_agent | heavy | parallel-optional
 Entry: routing.yaml, evidence/activation.yaml
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
@@ -27,3 +38,19 @@ Python: `uv run` always; per-repo commands in config/onboarding/repo-map.yaml
 Git: commit to main + push; submodules: commit inside first then update pointer
 Legal: run scripts/legal/legal-sanity-scan.sh if porting external code; no client identifiers
 Exit: evidence/execute.yaml (≥3 test entries all passing)
+
+```
+
+## Entry reads
+
+### assets/WRK-NNN/evidence/plan-final-review.yaml
+```
+[entry_reads: assets/WRK-NNN/evidence/plan-final-review.yaml — file not found]
+```
+
+### assets/WRK-NNN/routing.yaml
+```
+[entry_reads: assets/WRK-NNN/routing.yaml — file not found]
+```
+
+**Blocking condition:** execute.yaml missing or integrated_repo_tests < 3 entries

@@ -18,7 +18,7 @@ related_skills:
 - save
 - improve
 - session-start
-- workflow-gatepass
+- work-queue-orchestrator
 capabilities:
 - session-close-checklist
 - work-item-update

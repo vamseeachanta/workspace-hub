@@ -72,7 +72,7 @@ class TestGenerateStageMapping:
         """Each stage entry must have required fields."""
         required = {
             "order", "name", "slug", "contract",
-            "micro_skill", "weight", "human_gate", "invocation",
+            "folder_skill", "weight", "human_gate", "invocation",
         }
         for entry in mapping_output["stages"]:
             missing = required - set(entry.keys())

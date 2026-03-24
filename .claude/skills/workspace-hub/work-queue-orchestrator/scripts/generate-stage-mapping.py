@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Generate canonical stage-number to stage-folder-name mapping.
 
-Reads all 20 stage contract YAMLs from scripts/work-queue/stages/ and
-outputs a structured YAML mapping to stdout.
+Reads all 20 stage contract YAMLs from folder-skill locations
+(.claude/skills/workspace-hub/stages/stage-NN-*/contract.yaml)
+and outputs a structured YAML mapping to stdout.
 
 Usage:
     python generate-stage-mapping.py              # print to stdout
@@ -21,7 +22,9 @@ import yaml
 REPO = subprocess.check_output(
     ["git", "rev-parse", "--show-toplevel"], text=True
 ).strip()
-STAGES_DIR = os.path.join(REPO, "scripts", "work-queue", "stages")
+STAGES_DIR = os.path.join(
+    REPO, ".claude", "skills", "workspace-hub", "stages",
+)
 REFS_DIR = os.path.join(
     REPO, ".claude", "skills", "workspace-hub",
     "work-queue-orchestrator", "references",
@@ -30,13 +33,13 @@ REFS_DIR = os.path.join(
 
 def build_mapping():
     """Build canonical stage mapping from contract YAMLs."""
-    pattern = os.path.join(STAGES_DIR, "stage-*-*.yaml")
+    pattern = os.path.join(STAGES_DIR, "stage-*", "contract.yaml")
     files = sorted(glob.glob(pattern))
 
     stages = []
     for filepath in files:
-        filename = os.path.basename(filepath)
-        match = re.match(r"stage-(\d{2})-(.+)\.yaml", filename)
+        parent_dir = os.path.basename(os.path.dirname(filepath))
+        match = re.match(r"stage-(\d{2})-(.+)", parent_dir)
         if not match:
             continue
 
@@ -45,9 +48,9 @@ def build_mapping():
             contract = yaml.safe_load(f)
 
         rel_contract = os.path.relpath(filepath, REPO)
-        micro_skill = (
+        folder_skill = (
             f".claude/skills/workspace-hub/stages/"
-            f"stage-{contract['order']:02d}-{slug}.md"
+            f"stage-{contract['order']:02d}-{slug}/SKILL.md"
         )
 
         stages.append({
@@ -55,7 +58,7 @@ def build_mapping():
             "name": contract["name"],
             "slug": slug,
             "contract": rel_contract,
-            "micro_skill": micro_skill,
+            "folder_skill": folder_skill,
             "weight": contract.get("weight", "light"),
             "human_gate": contract.get("human_gate", False),
             "invocation": contract.get("invocation", "task_agent"),

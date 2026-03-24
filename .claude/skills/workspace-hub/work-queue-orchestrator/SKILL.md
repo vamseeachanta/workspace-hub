@@ -8,8 +8,7 @@ type: skill
 wrk_ref: WRK-5110
 related_skills:
   - work-queue
-  - work-queue-workflow
-  - workflow-gatepass
+  - plan-mode
 capabilities:
   - stage-dispatch
   - gate-enforcement
@@ -46,4 +45,4 @@ See [hooks.yaml](hooks.yaml) for no-bypass rules.
 
 ## Source of Truth
 
-Stage contracts: `scripts/work-queue/stages/stage-NN-*.yaml` | Micro-skills: `.claude/skills/workspace-hub/stages/stage-NN-*.md` | Gates: `scripts/work-queue/exit_stage.py`
+Stage contracts: `.claude/skills/workspace-hub/stages/stage-NN-*/contract.yaml` | Stage skills: `.claude/skills/workspace-hub/stages/stage-NN-*/SKILL.md` | Gates: `scripts/work-queue/exit_stage.py`
