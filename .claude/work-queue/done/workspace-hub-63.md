@@ -1,0 +1,46 @@
+---
+id: workspace-hub#63
+title: "Review session logs and eliminate recurring errors"
+status: done
+percent_complete: 100
+orchestrator: claude
+priority: medium
+complexity: medium
+compound: false
+created_at: 2026-03-13T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: []
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: harness
+subcategory: session-health
+stage_evidence_ref: .claude/work-queue/assets/WRK-1168/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/63
+---
+# Review Session Logs and Eliminate Recurring Errors
+
+## Mission
+Audit recent session signal logs for recurring errors and fix the underlying causes.
+
+## What
+Review `state/session-signals/*.jsonl` logs (2026-03-11 through 2026-03-13) to identify recurring errors, warnings, and failure patterns across AI agent sessions. Fix the root causes rather than suppressing symptoms.
+
+## Why
+Session log errors indicate friction in the AI agent workflow — broken scripts, missing files, misconfigured paths, or stale references. Cleaning these up improves session reliability and reduces noise.
+
+## Acceptance Criteria
+- [ ] Audit session logs from last 3 days for error/warning patterns
+- [ ] Categorize errors by root cause (script bug, missing file, config issue, etc.)
+- [ ] Fix top 3-5 most frequent errors
+- [ ] Verify fixes by running affected scripts/workflows
+- [ ] Confirm reduced error rate in subsequent session logs

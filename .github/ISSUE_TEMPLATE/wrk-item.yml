@@ -1,0 +1,113 @@
+name: Work Item
+description: Create a work queue item (feature, bug, task, refactor)
+title: "[WRK] "
+labels: ["wrk-item"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options:
+        - feature
+        - bug
+        - task
+        - refactor
+        - research
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - high
+        - medium
+        - low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexity
+      options:
+        - simple
+        - medium
+        - complex
+    validations:
+      required: true
+
+  - type: dropdown
+    id: route
+    attributes:
+      label: Route
+      description: "A=simple, B=medium, C=complex"
+      options:
+        - A
+        - B
+        - C
+    validations:
+      required: true
+
+  - type: input
+    id: category
+    attributes:
+      label: Category
+      placeholder: "e.g., harness, engineering-calculations, data"
+    validations:
+      required: true
+
+  - type: input
+    id: subcategory
+    attributes:
+      label: Subcategory
+      placeholder: "e.g., tooling, finite-elements, extraction"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: machine
+    attributes:
+      label: Machine
+      description: "Primary execution machine"
+      options:
+        - dev-primary
+        - dev-secondary
+        - licensed-win-1
+        - licensed-win-2
+        - gali-linux-compute-1
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: "What needs to be done and why"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: "Specific, testable conditions for completion"
+    validations:
+      required: false
+
+  - type: input
+    id: target-repos
+    attributes:
+      label: Target Repos
+      placeholder: "e.g., digitalmodel, workspace-hub"
+    validations:
+      required: false
+
+  - type: input
+    id: blocked-by
+    attributes:
+      label: Blocked By
+      placeholder: "e.g., workspace-hub#123, digitalmodel#7"
+    validations:
+      required: false

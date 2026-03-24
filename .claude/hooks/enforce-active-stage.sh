@@ -50,15 +50,15 @@ fi
 ACTIVE_WRK_FILE="$REPO_ROOT/.claude/state/active-wrk"
 WRK_ID=""
 if [[ -f "$ACTIVE_WRK_FILE" ]]; then
-    WRK_ID=$(grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' "$ACTIVE_WRK_FILE" 2>/dev/null | head -1)
+    WRK_ID=$(grep -oP '(WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)|[a-zA-Z][\w-]*-\d+)' "$ACTIVE_WRK_FILE" 2>/dev/null | head -1)
 fi
 
 # Also detect WRK from command or file path — catches agents that skip set-active-wrk
 if [[ -z "$WRK_ID" ]]; then
     # Check if command or file references a WRK in work-queue paths
     COMBINED="$COMMAND $FILE_PATH"
-    if echo "$COMBINED" | grep -qP 'work-queue.*(pending|working|done|archive|assets)/WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' 2>/dev/null; then
-        WRK_ID=$(echo "$COMBINED" | grep -oP 'WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)' | head -1)
+    if echo "$COMBINED" | grep -qP 'work-queue.*(pending|working|done|archive|assets)/(WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)|[a-zA-Z][\w-]*-\d+)' 2>/dev/null; then
+        WRK_ID=$(echo "$COMBINED" | grep -oP '(WRK-(\d+|LOCAL-\d{8}-\d{6}-[a-zA-Z0-9_-]+)|[a-zA-Z][\w-]*-\d+)' | head -1)
     fi
 fi
 

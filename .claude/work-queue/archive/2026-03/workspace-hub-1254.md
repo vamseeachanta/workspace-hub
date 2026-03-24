@@ -1,0 +1,55 @@
+---
+completed_at: 2026-03-22T02:44:33Z
+id: workspace-hub#1254
+title: "chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template"
+status: archived
+activated_at: "2026-03-21T12:31:00Z"
+priority: medium
+category: harness
+subcategory: work-queue
+complexity: medium
+target_repos:
+  - workspace-hub
+computer: sowon
+plan_workstations: [sowon]
+execution_workstations: [sowon]
+created_at: "2026-03-21T04:00:00Z"
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1254
+stage_evidence_ref: .claude/work-queue/assets/WRK-5106/evidence/stage-evidence.yaml
+spec_ref: specs/wrk/WRK-5106/plan.md
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+---
+
+## Mission
+
+Backfill all existing GitHub issues (>1000) to the standardized template
+introduced in WRK-5104: header → Mission/What/Why → collapsible details
+(Implementation, Plan, AC, TDD, Cost, Stage Progress).
+
+## What
+
+1. Write `backfill-issues.sh` that fetches all ~1256 GitHub issues via `gh issue list`,
+   extracts WRK IDs from titles, matches to local WRK files, and calls
+   `update-github-issue.py --update` on each match
+2. Backfill `github_issue_ref` into WRK files that lack it (currently only 6 of 1180 have it)
+3. Handle rate limiting (sleep between API calls, ~2512 calls well within 5000/hr limit)
+4. Support `--dry-run` mode to preview without hitting API
+5. Resume-on-failure capability
+6. Report: updated/skipped/failed counts
+
+## Why
+
+WRK-5104 introduced a richer issue template (Mission/What/Why sections,
+dynamic stage status, separate subcategory). Only 5 issues were backfilled
+during that work. The remaining >1000 issues still use the old format or
+have no body at all.
+
+## Acceptance Criteria
+
+- [x] All WRK files with valid `github_issue_ref` have their issues updated
+- [x] Rate limiting handled (sleep between API calls, resume on failure)
+- [x] Dry-run mode available to preview without hitting API
+- [x] Summary report: updated/skipped/failed counts
+- [x] No regression on existing issue content (template is additive)

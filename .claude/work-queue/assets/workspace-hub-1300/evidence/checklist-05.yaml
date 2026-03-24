@@ -1,0 +1,32 @@
+wrk_id: WRK-1392
+stage: 5
+items:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    completed: true
+    approved_by: vamsee
+    completed_at: "2026-03-23T22:02:00Z"
+    notes: "7 ACs presented; user approved via ExitPlanMode"
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: "2026-03-23T22:02:00Z"
+    notes: "frame_to_json, compute_arc_midpoint, generate_viewer_html pseudocode reviewed"
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    completed: true
+    approved_by: vamsee
+    completed_at: "2026-03-23T22:02:00Z"
+    notes: "8-test plan reviewed (happy + edge cases)"
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    completed: true
+    completed_at: "2026-03-23T22:02:00Z"
+    notes: "User requested CDN via jsdelivr and embedding in FEM calc report — both applied"
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    completed: true
+    approved_by: vamsee
+    completed_at: "2026-03-23T22:02:00Z"
+    notes: "User approved via ExitPlanMode directive"

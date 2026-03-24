@@ -194,17 +194,15 @@ for i in "${!ROW_KEYS[@]}"; do
 
         KEY_TO_ID["$key"]="$wrk_ref"
     else
-        # Allocate new ID via next-id.sh
-        # next-id.sh uses WORKSPACE_ROOT env var; point it at TMPDIR when testing
-        new_id=$(WORKSPACE_ROOT="${WORK_QUEUE_ROOT%/.claude/work-queue}" \
-            bash "${REPO_ROOT}/scripts/work-queue/next-id.sh" 2>/dev/null)
-        # next-id.sh writes a sentinel file at WORK_QUEUE_ROOT/pending/WRK-NNNN.md
-        # Ensure that sentinel ends up in the correct WORK_QUEUE_ROOT pending dir
-        SENTINEL_REAL="${REPO_ROOT}/.claude/work-queue/pending/WRK-${new_id}.md"
+        # Allocate new ID via gh-next-id.sh (GitHub-backed)
+        local _gh_output
+        _gh_output=$(WORKSPACE_ROOT="${WORK_QUEUE_ROOT%/.claude/work-queue}" \
+            bash "${REPO_ROOT}/scripts/work-queue/gh-next-id.sh" \
+            --title "${ROW_TITLES[$i]:-child of ${WRK_ID}}" 2>/dev/null)
+        new_id=$(echo "$_gh_output" | head -1)
+        # gh-next-id.sh does not create sentinel files — create one
         SENTINEL_TARGET="${WORK_QUEUE_ROOT}/pending/WRK-${new_id}.md"
-        if [[ -f "$SENTINEL_REAL" && "$SENTINEL_REAL" != "$SENTINEL_TARGET" ]]; then
-            mv "$SENTINEL_REAL" "$SENTINEL_TARGET" 2>/dev/null || true
-        fi
+        touch "$SENTINEL_TARGET"
         KEY_TO_ID["$key"]="WRK-${new_id}"
         CREATED_SENTINELS+=("$SENTINEL_TARGET")
     fi

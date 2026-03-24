@@ -1,0 +1,147 @@
+---
+id: workspace-hub#12
+title: Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents
+status: working
+orchestrator: claude
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-03-06T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: [WRK-342, WRK-576]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 80
+brochure_status: n/a
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary, licensed-win-1]
+note: needs multi-workstation coordination — waiting on licensed-win-1 inputs
+category: harness
+subcategory: agent-ux
+stage_evidence_ref: .claude/work-queue/assets/WRK-1022/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/12
+---
+# Consistent Terminal Experience for AI Agents (Linux CLI + Windows Git Bash)
+
+## Mission
+**Document and standardize essential terminal commands for AI agent sessions across Linux CLI and Windows Terminal Git Bash, with focus on copy/paste/exit workflows, so agents operate consistently on all machines.**
+
+## What
+AI agents (claude, codex, gemini) run on multiple machines — dev-primary, dev-secondary, and licensed-win-1 (Windows Git Bash). Each platform has different keyboard shortcuts and CLI behaviors, especially for the three most critical operations: copy from CLI, paste to CLI, and exit. This WRK documents the canonical commands, identifies gaps, and adds the reference to the workstations skill and relevant docs.
+
+## Why
+Inconsistent terminal behavior causes agent friction and errors — particularly on Windows Git Bash where Ctrl+C means interrupt (not copy), and paste behavior differs from Linux. Documenting this once and surfacing it via the workstations skill saves repeated troubleshooting.
+
+## Acceptance Criteria
+- [x] Document copy/paste/exit commands for each platform (Linux terminal, Windows Git Bash)
+- [x] Document AI agent CLI-specific commands: submit prompt, multi-line input, interrupt, exit REPL
+- [x] Recommend 5+ additional useful terminal commands for AI agent sessions
+- [x] Add "Terminal Keyboard Shortcuts Reference" section to `.claude/skills/workspace-hub/workstations/SKILL.md`
+- [x] Cover: copy/paste, new line (multi-line), change tab, and other keyboard shortcuts
+- [ ] Verify commands on licensed-win-1 (Windows Git Bash) where behavior differs most
+- [ ] Write `scripts/operations/screenshot-to-claude.sh` — copies `@<latest-screenshot-path>` to clipboard (Linux); add GNOME custom keyboard shortcut instructions
+- [ ] Add `ccss` alias to shell profile bootstrap (new-machine-setup.md + WRK-5026 inotify doc)
+- [ ] Update `workstations/SKILL.md` Terminal Shortcuts section with corrected Linux CLI image workflow
+- [ ] Cross-reference: WRK-5026 (new-machine-setup), WRK-1110 (workstations skill), WRK-1111 (context pipeline) — each should note the `ccss` alias in their setup steps
+- [ ] Document Claude Code chat input triggers (`@`, `#`, `/`, `!`, Shift+Enter, Tab) in a new "Claude Code Input Shortcuts" section
+- [ ] **Practice session gate (Linux)**: complete guided practice session on dev-primary or dev-secondary — cover terminal copy/paste (Ctrl+Shift+C/V), screenshot paste via Ctrl+V into Claude, AI agent REPL commands, tmux basics, Claude Code input triggers (`@`, `#`, `/`, `!`); user confirms comfort
+- [ ] **Practice session gate (Windows)**: complete guided practice session on licensed-win-1 (Windows Git Bash) — cover Ctrl+V paste, Ctrl+C copy-vs-interrupt distinction, Shift+Insert, agent REPL commands, Claude Code input triggers; user confirms comfort
+- [ ] **Monitoring gate**: 10 sessions observed on Linux (dev-primary/dev-secondary) + Windows (licensed-win-1) without friction — then close
+
+## Agentic AI Horizon
+- This is foundational plumbing — agents that know their terminal environment operate faster and with fewer errors.
+- As agent CLIs mature (claude, codex, gemini), the command surface will stabilize; document now and update via comprehensive-learning.
+
+## Platform Notes
+
+### Linux CLI (dev-primary, dev-secondary)
+- **Copy**: Ctrl+Shift+C (terminal) or mouse select + middle-click paste
+- **Paste**: Ctrl+Shift+V
+- **Exit agent REPL**: Ctrl+D or type `exit`
+- **Interrupt/cancel**: Ctrl+C
+- **Change tab (terminal)**: Ctrl+Page Up / Ctrl+Page Down
+
+### Windows Terminal Git Bash (licensed-win-1)
+- **Copy**: Ctrl+C (when no selection = interrupt; WITH selection = copy — context-sensitive)
+- **Paste**: Ctrl+V (Windows Terminal) or Shift+Insert (classic)
+- **Exit agent REPL**: Ctrl+D or type `exit`
+- **Interrupt/cancel**: Ctrl+C (when no text selected)
+
+### AI Agent CLI Commands (cross-platform)
+- **claude**: `claude` to start; Ctrl+D or `/exit` to quit; Enter for single-line submit; Shift+Enter or `\` for multi-line
+- **codex**: `codex` to start; Ctrl+D or `exit` to quit
+- **gemini**: `gemini` to start; Ctrl+D or `/exit` to quit
+
+### Pasting Images / Screenshots into Claude Chat
+
+**Claude web (browser):**
+- Linux / Windows: `Ctrl+V` — pastes clipboard image inline
+- macOS: `Cmd+V`
+
+**Claude Code CLI (terminal) — Linux:**
+- `Ctrl+V` does NOT work — terminal cannot receive clipboard images
+- Use `@/absolute/path/to/image.png` syntax to reference the file
+- GNOME Print Screen auto-saves to `~/Pictures/Screenshots/`
+- Optimal workflow: `ccss` alias copies `@<latest-screenshot-path>` to clipboard → Ctrl+V pastes the path string into Claude Code chat:
+  ```bash
+  alias ccss='echo -n "@$(ls -t ~/Pictures/Screenshots/*.png | head -1)" | xclip -selection clipboard'
+  ```
+  Add to `~/.bashrc`. Requires `xclip` (`sudo apt install xclip`).
+- For maximum friction reduction: bind a GNOME custom keyboard shortcut to `scripts/operations/screenshot-to-claude.sh` (see AC below)
+
+**Claude Code CLI (terminal) — Windows Git Bash (licensed-win-1):**
+- Same limitation — `Ctrl+V` doesn't paste images in terminal
+- Save screenshot to file → use `@C:/path/to/image.png`
+
+### Claude Code Input Shortcuts (chat prompt triggers)
+
+These are typed directly in the Claude Code chat input — NOT keyboard shortcuts but input prefixes/triggers:
+
+| Trigger | What it does | Example |
+|---------|-------------|---------|
+| `@<path>` | Reference a file or directory inline; Claude reads it | `@src/engine.py` or `@tests/` |
+| `@<path>` + Tab | Autocomplete file paths after `@` | `@src/` → Tab → pick file |
+| `#` | Add a memory note Claude stores across sessions | `# always use uv run for Python` |
+| `/` | Open slash command menu (skills, built-ins) | `/help`, `/compact`, `/exit` |
+| `!<cmd>` | Run a bash command and show output in chat | `!git status` |
+| Shift+Enter | New line without submitting (multi-line prompt) | Type long prompt across lines |
+| `\` at end of line | Same as Shift+Enter in some terminals | Continue prompt on next line |
+| Ctrl+C | Cancel current Claude response mid-stream | Stop a long generation |
+| Ctrl+L | Clear screen (terminal, not Claude chat) | Clean up terminal view |
+| `/compact` | Summarise conversation to free context | Use when context fills up |
+| `/clear` | Clear conversation history entirely | Fresh context, same session |
+| `/cost` | Show token usage and cost for current session | Budget check |
+| `/session-start` | Load session-start skill (mandatory before work requests per CLAUDE.md) | Start of any work session |
+| `/work` | Open work queue (list/run/status); `/work run WRK-NNN` resumes a specific item | `/work run WRK-1142` |
+| `/fast` | Toggle fast mode for faster output (same model, lower latency) | Long multi-step sessions |
+
+**WRK hard-gate response format (workflow trigger, not a keyboard shortcut):**
+- Type `I approve stage N` (e.g. `I approve stage 7`) to unblock a HARD GATE stage (1, 5, 7, 17).
+  Silence does NOT count as approval — Claude waits until you explicitly respond.
+
+**Most impactful underused shortcuts (priority practice):**
+1. `@<file>` — eliminates "read this file first" preamble; just `@path` and ask
+2. `#` — builds persistent memory so Claude doesn't forget preferences
+3. `!<cmd>` — run git/bash inline without switching windows
+4. `/compact` — recover context instead of starting a new session
+5. `/work run WRK-NNN` — resume exactly the right item without re-stating context
+
+### Recommended Useful Commands
+- `tmux` / `screen` — persistent sessions, survive disconnects (critical for long agent runs)
+- `Ctrl+L` — clear terminal screen (cross-platform)
+- `Ctrl+A` / `Ctrl+E` — jump to line start/end (Linux; Git Bash with readline)
+- `Ctrl+R` — reverse history search
+- `Ctrl+Z` then `bg` — background a running process (Linux)
+- `Alt+.` — insert last argument from previous command (Linux bash)
+- `history | grep <cmd>` — find past commands
+
+---
+*Source: consistent terminal experience in linux cli and windows terminal git bash; address commands used for ai agents (copy from cli, paste to cli, exit are the most important); document and suggest any other useful commands; recommend most useful commands*

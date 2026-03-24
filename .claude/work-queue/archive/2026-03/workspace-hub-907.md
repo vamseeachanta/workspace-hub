@@ -1,0 +1,46 @@
+---
+completed_at: 2026-03-11T14:34:48Z
+id: workspace-hub#907
+title: "fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items"
+status: archived
+stage_evidence_ref: .claude/work-queue/assets/WRK-1123/evidence/stage-evidence.yaml
+priority: high
+complexity: simple
+created_at: 2026-03-11
+computer: dev-primary
+orchestrator: claude
+plan_reviewed: true
+plan_approved: true
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+html_output_ref: .claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-1123/WRK-1123-plan.html
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-1123/plan-html-review-final.md
+html_verification_ref: .claude/work-queue/assets/WRK-1123/WRK-1123-lifecycle.html
+claim_routing_ref: .claude/work-queue/assets/WRK-1123/routing.yaml
+category: harness
+subcategory: work-queue
+related: [WRK-1049, WRK-1069]
+blocked_by: []
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/907
+---
+## Mission
+Fix `start_stage.py` so Stage 1 cannot run on a pending item — preventing orphaned
+session locks that trigger false "unclaimed" warnings in `whats-next.sh`.
+
+## What
+- Add a `working/` guard for Stage 1 in `start_stage.py` (currently only stages ≥9 are guarded)
+- Stage 1 should exit 1 with a clear message if `WRK-NNN.md` is not in `working/`
+- Auto-purge stale lock (age >2h AND pid dead) in `start_stage.py` pre-flight
+
+## Why
+`start_stage.py` writes `session-lock.yaml` during Stage 1 before verifying the item
+is claimed. A session running Stage 1 on a pending item that then dies leaves an
+orphaned lock, causing `whats-next.sh` to surface the item as "unclaimed active".
+Observed on WRK-1069 (lock at 10:22Z, PID 347842 dead).
+
+## Acceptance Criteria
+- [ ] Stage 1 on a pending item → exits 1 with message "claim it before starting stage 1"
+- [ ] Stage 1 on a working item → proceeds as before
+- [ ] Unit test: test_stage1_guard_blocks_pending in tests/test_start_stage_guards.py
+- [ ] Stale lock (pid dead, age>2h) auto-purged before guard check

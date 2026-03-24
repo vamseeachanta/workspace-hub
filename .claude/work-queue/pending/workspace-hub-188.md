@@ -1,0 +1,138 @@
+---
+id: workspace-hub#188
+title: "feat(digitalmodel): geotechnical module — umbrella tracker"
+status: pending
+priority: medium
+complexity: complex
+compound: true
+created_at: 2026-02-25T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref: specs/online-resources/follow-on-candidates.md
+related:
+  - WRK-391
+  - WRK-383
+  - WRK-474
+  - WRK-478
+  - WRK-582
+blocked_by: []
+children:
+  - WRK-618
+  - WRK-619
+  - WRK-620
+  - WRK-621
+  - WRK-622
+  - WRK-623
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-597/evidence/stage-evidence.yaml
+subcategory: skills
+category: harness
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/188
+---
+# Geotechnical Module — Umbrella Tracker
+
+## What
+
+Umbrella tracker for the geotechnical engineering module in
+`digitalmodel/src/digitalmodel/geotechnical/`. This WRK is complete when
+all 6 children complete.
+
+## Why
+
+Geotechnical analysis is fundamental to every offshore structure — jackets,
+monopiles, gravity bases, suction caissons, drag anchors, and pipeline
+on-bottom stability all require soil-structure interaction calculations.
+No geotechnical module currently exists in the ecosystem. This fills a
+critical gap between the structural modules (WRK-383) and the mooring
+modules (WRK-474).
+
+Original WRK-597 was too large for a single item. Split into 6 phased
+children per review feedback.
+
+## Children (Dependency Graph)
+
+```
+WRK-618 (Soil Models)  ← foundation layer, no blockers
+    ├── WRK-619 (Piles)              ← depends on 618
+    ├── WRK-620 (On-Bottom Stability) ← depends on 618
+    ├── WRK-621 (Foundations)         ← depends on 618
+    ├── WRK-623 (Scour)              ← depends on 618
+    └── WRK-622 (Anchors)            ← depends on 618 + 619
+```
+
+| WRK | Phase | Title | Blocked By |
+|-----|-------|-------|------------|
+| WRK-618 | 1 | Soil models, CPT correlation, shared types | — |
+| WRK-619 | 2 | Pile axial/lateral capacity, p-y/t-z/q-z | WRK-618 |
+| WRK-620 | 3 | Pipeline on-bottom stability (DNV-RP-F109) | WRK-618 |
+| WRK-621 | 4 | Shallow foundation bearing capacity | WRK-618 |
+| WRK-622 | 5 | Anchor capacity (drag, suction, torpedo) | WRK-618, WRK-619 |
+| WRK-623 | 6 | Scour prediction (DNV-RP-F107) | WRK-618 |
+
+Phases 2–4 and 6 are parallelisable after Phase 1. Phase 5 needs Phase 2
+(suction caisson reuses pile lateral methods).
+
+## Key Standards
+
+- API RP 2GEO (Geotechnical and Foundation Design Considerations)
+- DNV-RP-C212 (Offshore Soil Mechanics and Geotechnical Engineering)
+- DNV-RP-E303 (Geotechnical Design and Installation of Suction Anchors)
+- DNV-RP-F109 (On-Bottom Stability Design of Submarine Pipelines)
+- DNV-RP-F107 (Risk Assessment of Pipeline Protection)
+- ISO 19901-4 (Geotechnical and Foundation Design Considerations)
+- API RP 2SK (Station Keeping — mooring anchor sections)
+- DNVGL-RP-E301 (Design and Installation of Fluke Anchors)
+
+## Package Adoption
+
+| Package | License | Strategy | Phase |
+|---------|---------|----------|-------|
+| pygef | MIT | Direct dependency | 1 |
+| python-AGS4 | LGPL-3.0 | Direct dependency | 1 |
+| groundhog | GPL-3.0 | Optional extra only | 2, 4 |
+| openpile | GPL-3.0 | Optional extra only | 2 |
+
+## Deferred Topics
+
+| Topic | Reason | Suggested WRK |
+|-------|--------|---------------|
+| Settlement (elastic, consolidation) | Needs Phase 1+4 first | WRK-624 |
+| Slope stability | Specialist sub-discipline | WRK-625 |
+| ISO 19901-2 (Seismic design) | Separate domain | separate WRK |
+
+## Integration Points
+
+- **WRK-474** (MoorDyn/MoorPy): anchor holding capacity feeds mooring design
+- **WRK-478** (Cathodic Protection): anode sled OBS checks
+- **WRK-481** (GEBCO Bathymetry): water depth and seabed slope
+- **WRK-582** (OpenGeoSys): advanced soil-structure interaction (future)
+
+## Acceptance Criteria
+
+- [ ] All 6 children (WRK-618..623) complete
+- [ ] Cross-review passes (Codex hard gate)
+- [ ] Legal scan passes
+
+## Source
+
+Identified as a gap during WRK-391 research and WRK-383 module mapping.
+Split into phased children per review feedback (2026-02-26).
+
+## Notes
+
+### 2026-02-27 — Phase split implemented
+- WRK-597 converted to umbrella tracker (`compound: true`)
+- 6 children created (WRK-618..623) in `.claude/work-queue/pending/`
+- 3 skills created: geotechnical-engineering, engineering-package-evaluator,
+  standards-coverage-mapper
+- Capability map updated: 6 new geotechnical module entries, 10 standards (all gap)
+- Legal scan: PASS
+- Cross-review: not yet run (next session)
+- No code written yet — WRK-618 (Phase 1: soil models) is the first implementation target

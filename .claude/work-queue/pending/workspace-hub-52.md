@@ -1,0 +1,37 @@
+---
+id: workspace-hub#52
+title: Add licensed-win-2 to workstations documentation and routing
+status: pending
+priority: medium
+complexity: simple
+created_at: 2026-03-11
+target_repos: [workspace-hub]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: infrastructure
+subcategory: workstations
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/52
+---
+
+## Mission
+
+Register licensed-win-2 as a known workstation in workspace-hub routing, documentation, and tooling.
+
+## What
+
+Add licensed-win-2 to the workstations skill/documentation and any routing tables that reference known machines.
+
+## Why
+
+licensed-win-2 is a Windows machine that needs to be discoverable and properly routed in the work queue and workstation assignment system.
+
+## Acceptance Criteria
+
+- [ ] licensed-win-2 appears in workstation routing documentation
+- [ ] Any applicable routing tables updated (e.g. `SKILL.md`, `assign-workstations.py`, machine-ranges)
+- [ ] Details confirmed with user before finalising
+
+## Notes
+
+User indicated they will provide more details soon. Holding as `pending` until scoping is complete.

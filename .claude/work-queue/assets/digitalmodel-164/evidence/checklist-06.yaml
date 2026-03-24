@@ -1,0 +1,22 @@
+stage: 6
+items:
+  - id: CL-06-0
+    description: "EnterPlanMode — synthesize inputs before verdict"
+    completed: true
+    evidence: "Reviewed plan, searched codebase for additional Codex refs, found 2 more files"
+  - id: CL-06-1
+    description: "Cross-review package sent to Codex and Gemini"
+    completed: true
+    evidence: "cross-review.sh dispatched; both fell back to Claude Opus due to quota/NO_OUTPUT"
+  - id: CL-06-2
+    description: "All 3 verdicts collected"
+    completed: true
+    evidence: "3 APPROVE verdicts in evidence/cross-review-{claude,codex,gemini}.md"
+  - id: CL-06-3
+    description: "Synthesized into cross-review.yaml"
+    completed: true
+    evidence: "verdict=APPROVE, 0 P1, 1 P2 (scope expansion to 6 files)"
+  - id: CL-06-4
+    description: "No REVISE — no return_to_stage needed"
+    completed: true
+    evidence: "All 3 providers APPROVE"

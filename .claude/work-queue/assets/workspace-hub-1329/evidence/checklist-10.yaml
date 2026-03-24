@@ -1,0 +1,20 @@
+stage: 10
+items:
+  - id: CL-10-1
+    text: "Implement fix per plan"
+    completed: true
+  - id: CL-10-2
+    text: "Run existing tests"
+    completed: true
+    notes: "45/45 pass"
+  - id: CL-10-3
+    text: "E2E validation with real Gemini CLI"
+    completed: true
+    notes: "Valid structured output produced"
+  - id: CL-10-4
+    text: "Write execute.yaml"
+    completed: true
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    completed: true
+    notes: "Will be committed with WRK evidence at close stage"

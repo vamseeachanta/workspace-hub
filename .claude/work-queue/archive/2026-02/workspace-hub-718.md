@@ -1,0 +1,37 @@
+---
+id: workspace-hub#718
+title: Upload videos from Doris computer to YouTube
+status: archived
+merged_into: WRK-006
+priority: medium
+complexity: simple
+category: personal
+subcategory: household
+created_at: 2026-01-29T00:00:00Z
+target_repos:
+  - achantas-data
+commit:
+spec_ref:
+related:
+  - WRK-006
+blocked_by: []
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-007/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/718
+---
+# Upload videos from Doris computer to YouTube
+
+## What
+Transfer and upload videos from Doris's computer to YouTube. Ensure each video has proper titles and descriptions set during the upload process.
+
+## Why
+Consolidate video content on YouTube platform for centralized access and sharing.
+
+## Acceptance Criteria
+- [ ] All target videos transferred from Doris's computer
+- [ ] Videos uploaded to YouTube
+- [ ] Proper titles and descriptions set for each video
+
+---
+*Source: Upload videos from Doris computer to YouTube*

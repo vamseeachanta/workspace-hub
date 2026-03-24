@@ -1,0 +1,58 @@
+---
+id: workspace-hub#510
+title: "feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2"
+status: done
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-24T23:52:56Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-437/evidence/stage-evidence.yaml
+category: engineering
+subcategory: subsea-risers
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/510
+---
+# feat(calculations): implement BP Riser Array Design Guidelines v2
+
+## Standard
+- **ID**: BP Riser Array Design Guidelines v2
+- **Title**: BP Riser Array Design Guidelines v2
+- **Org**: Unknown
+- **Document**: `` (SHA: `d5126b1d11b3a736...`)
+- **Summary**: Papers Guidelines BP Riser Array Design Guidelines v2.doc
+- **Discipline**: pipeline
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+Papers Guidelines BP Riser Array Design Guidelines v2.doc
+
+## Acceptance Criteria
+- [ ] Function implements BP Riser Array Design Guidelines v2 calculation
+- [ ] Unit tests cover nominal and edge cases
+- [ ] Result validated against worked example in standard (if available)
+- [ ] Module registry updated: status → implemented
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  BP Riser Array Design Guidelines v2 calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable

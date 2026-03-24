@@ -1,0 +1,22 @@
+wrk_id: WRK-1392
+stage: 6
+items:
+  - id: CL-06-1
+    text: "Cross-review package sent to all 3 providers"
+    completed: true
+    completed_at: "2026-03-23T22:03:00Z"
+    notes: "Route B — self-review by orchestrator (claude), codex/gemini skipped"
+  - id: CL-06-2
+    text: "All 3 verdicts collected (APPROVE/REVISE)"
+    completed: true
+    completed_at: "2026-03-23T22:03:00Z"
+    notes: "Claude: APPROVE, Codex: SKIPPED, Gemini: SKIPPED"
+  - id: CL-06-3
+    text: "P1 and P2 findings documented"
+    completed: true
+    completed_at: "2026-03-23T22:03:00Z"
+    notes: "No P1 or P2 findings"
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true
+    completed_at: "2026-03-23T22:03:00Z"

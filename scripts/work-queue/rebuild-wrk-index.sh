@@ -9,15 +9,19 @@ UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-wrk-index.sh"
 echo '{}' > "${QUEUE_DIR}/wrk-status-index.json"
 
 # Scan pending/, working/, blocked/
-for dir in "pending" "working" "blocked"; do
+for dir in "pending" "working" "blocked" "done"; do
   dir_path="${QUEUE_DIR}/${dir}"
   [[ -d "$dir_path" ]] || continue
-  for f in "${dir_path}"/WRK-*.md; do
+  declare -A _seen_rebuild=()
+  for f in "${dir_path}"/WRK-*.md "${dir_path}"/*-[0-9]*.md; do
     [[ -f "$f" ]] || continue
     wrk_id=$(basename "$f" .md)
+    [[ -n "${_seen_rebuild[$wrk_id]+x}" ]] && continue
+    _seen_rebuild["$wrk_id"]=1
     status=$(grep -m1 "^status:" "$f" 2>/dev/null | sed 's/^status: *//' | tr -d '"' || echo "$dir")
     WORK_QUEUE_ROOT="$QUEUE_DIR" bash "$UPDATER" "$wrk_id" "$status" "rebuild-wrk-index" || true
   done
+  unset _seen_rebuild
 done
 
 # Scan archive/YYYY-MM/ subdirs
@@ -26,7 +30,7 @@ if [[ -d "${QUEUE_DIR}/archive" ]]; then
     [[ -f "$f" ]] || continue
     wrk_id=$(basename "$f" .md)
     WORK_QUEUE_ROOT="$QUEUE_DIR" bash "$UPDATER" "$wrk_id" "archived" "rebuild-wrk-index" || true
-  done < <(find "${QUEUE_DIR}/archive" -name "WRK-*.md" 2>/dev/null | sort)
+  done < <(find "${QUEUE_DIR}/archive" \( -name "WRK-*.md" -o -name "*-[0-9]*.md" \) 2>/dev/null | sort -u)
 fi
 
 # Post-pass: compute urgency scores for all non-archived entries
@@ -63,7 +67,7 @@ for wid, entry in active_entries.items():
     bb = entry.get("blocked_by", "")
     if not bb or bb == "[]":
         continue
-    for dep in re.findall(r"WRK-\d+", bb):
+    for dep in re.findall(r"(?:WRK-\d+|[a-zA-Z][\w-]*-\d+)", bb):
         blocking_counts[dep] = blocking_counts.get(dep, 0) + 1
 
 for wid, entry in active_entries.items():
@@ -88,7 +92,7 @@ for wid, entry in active_entries.items():
     bp = 0.0
     bb = entry.get("blocked_by", "")
     if bb and bb != "[]":
-        for dep in re.findall(r"WRK-\d+", bb):
+        for dep in re.findall(r"(?:WRK-\d+|[a-zA-Z][\w-]*-\d+)", bb):
             if dep not in archived_ids:
                 bp = weights["blocked_penalty"]
                 break

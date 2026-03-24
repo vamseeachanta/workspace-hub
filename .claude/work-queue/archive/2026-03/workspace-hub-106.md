@@ -1,0 +1,36 @@
+---
+id: workspace-hub#106
+title: "Patch archive-item.sh for ongoing GitHub Issue creation"
+status: done
+commit: 0b7228c9
+priority: high
+complexity: simple
+type: child
+parent: WRK-1330
+category: harness
+subcategory: knowledge-management
+repository: workspace-hub
+created_at: "2026-03-19"
+target_repos: [workspace-hub]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+blocked_by: [WRK-1331]
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/106
+---
+
+## Mission
+
+Add GitHub Issue creation to `archive-item.sh` post-archive actions for future-work items.
+
+### Changes
+- After knowledge capture step, parse `future-work.yaml`
+- For each follow-on item: `gh issue create --title "FW: {title}" --label "follow-on,{category}"`
+- Non-blocking (best-effort, like knowledge capture)
+- At archive: call `update-github-issue.py WRK-NNN --close` to close the WRK's own issue
+
+### ACs
+- [ ] Future-work items create GitHub Issues at archive time
+- [ ] WRK issue closed at archive time
+- [ ] Non-blocking (archive never fails due to issue creation)
+- [ ] TDD: 3+ tests

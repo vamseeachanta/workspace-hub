@@ -1,0 +1,137 @@
+---
+id: workspace-hub#398
+title: "Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across dev-primary and dev-secondary"
+status: done
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-23T00:00:00Z
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: [WRK-295, WRK-296, WRK-297, WRK-307, WRK-308, WRK-224]
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+stage_evidence_ref: .claude/work-queue/assets/WRK-342/evidence/stage-evidence.yaml
+category: harness
+subcategory: ops
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/398
+---
+# Multi-machine workflow clarity — SSH helpers, hostname statusline, CLI consistency
+
+## What
+
+Working across dev-primary and dev-secondary simultaneously is confusing:
+- No clear visual indicator of which machine the active shell is on
+- No helper scripts to quickly jump between machines or open named sessions
+- Claude Code statusline does not show hostname — all sessions look identical
+- CLI environment (aliases, PATH, workspace layout) may differ between machines
+
+Deliver three things:
+1. **SSH helper scripts** — quick named commands to open sessions on the other machine
+2. **Hostname in statusline** — Claude Code status bar shows `dev-primary` or `dev-secondary`
+3. **CLI consistency audit + sync** — verify both machines have matching shell config, aliases,
+   and workspace-hub layout; document and close gaps
+
+## Why
+
+Session confusion leads to running commands on the wrong machine, broken assumptions about
+file paths, and wasted debugging time. With two Linux workstations now both active and
+running workspace-hub, a clear multi-machine identity layer is essential.
+
+## Scope
+
+### Part 1 — SSH Helper Scripts
+
+Create `scripts/operations/system/ssh-helpers.sh` (source in `.bashrc`):
+
+```bash
+# Jump to the other machine
+alias ace1='ssh vamsee@dev-primary'
+alias ace2='ssh vamsee@dev-secondary'
+
+# Named tmux sessions on the other machine
+alias ace1-tmux='ssh -t vamsee@dev-primary "tmux new-session -A -s main"'
+alias ace2-tmux='ssh -t vamsee@dev-secondary "tmux new-session -A -s main"'
+
+# Show which machine you are on
+alias whoami-machine='echo "$(hostname) | $(hostname -I | awk "{print \$1}") | Tailscale: $(tailscale ip 2>/dev/null | head -1)"'
+```
+
+Shell prompt: `PS1` should include `\h` (hostname) in a distinctive colour so it is
+always visible — especially in tmux where tab titles may be misleading.
+
+### Part 2 — Hostname in Claude Code Statusline
+
+The statusline script is at `.claude/statusline-command.sh`. Prepend hostname so sessions
+on different machines are visually distinct in the Claude Code footer:
+
+```
+[dev-secondary] WRK-307 | 3 pending | main
+[dev-primary] WRK-342 | 3 pending | main
+```
+
+Implementation: prefix output with `$(hostname -s)` read from `/etc/hostname`.
+
+### Part 3 — CLI Consistency Audit
+
+Compare both machines and close gaps:
+
+| Item | dev-primary | dev-secondary | Action |
+|------|-------------|-------------|
+--------|
+| workspace-hub path | /mnt/local-analysis/workspace-hub | /mnt/workspace-hub | Standardise |
+| .bashrc aliases | TBD | TBD | Audit + sync |
+| uv installed | Yes | TBD | Install if missing |
+| Claude CLI | Yes | TBD | Install if missing |
+| Codex CLI | Yes | TBD | Install if missing |
+| Tailscale | 10.1.0.1 | 10.1.0.2 | OK |
+| tmux config | TBD | TBD | Sync |
+
+Workspace path inconsistency (known issue):
+- dev-primary: /mnt/local-analysis/workspace-hub
+- dev-secondary: /mnt/workspace-hub
+- Target: same path on both, or ~/workspace-hub symlink that resolves on both
+
+## Acceptance Criteria
+
+- [ ] `ace1` / `ace2` aliases work from either machine
+- [ ] `whoami-machine` command shows hostname + IP + Tailscale IP
+- [ ] Shell prompt (PS1) includes hostname in colour
+- [ ] Claude Code statusline shows [hostname] prefix
+- [ ] workspace-hub path consistent or symlinked on both machines
+- [ ] .bashrc aliases synced between machines
+- [ ] Audit table completed showing tool install status on both machines
+
+## Plan
+
+*(to be filled before implementation — Part 2 statusline change is Route A; Parts 1+3 are Route B)*
+
+## Related Work Items
+
+| WRK | Title | Relationship |
+|-----|-------|
+-------------|
+| WRK-295 | Bidirectional SSH key auth | Foundation — keys must work before helpers |
+| WRK-296 | Tailscale on dev-secondary | Foundation — remote SSH via Tailscale |
+| WRK-297 | SSHFS mounts dev-primary to dev-secondary | Related — file access across machines |
+| WRK-307 | KVM display fix dev-secondary | Related — same multi-machine problem space |
+| WRK-308 | Remote desktop dev-secondary | Related — alternative display access |
+| WRK-224 | Tool-readiness SKILL + statusline | Related — statusline is shared surface |
+
+## Agentic AI Horizon
+
+- Shell config sync is a good candidate for a repeatable script for any new machine added
+- Statusline hostname is a two-line change — low risk, high daily value
+- Path standardisation unlocks script portability across machines without per-machine edits
+
+---
+*Source: "we are working on 2 computer and it is confusing as hell. I do not even know how an ssh will open user on another computer. help me with scripts to handle all this. also the status line should also reflect the machine we are on. as the views across machines are or want to be consistent across cli. we also want to tackle the consistency along with this. review and see if related work items and tag accordingly"*

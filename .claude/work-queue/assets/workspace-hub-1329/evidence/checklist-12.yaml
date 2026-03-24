@@ -1,0 +1,13 @@
+stage: 12
+items:
+  - id: CL-12-1
+    text: "Run test suite"
+    completed: true
+    notes: "45/45 tests pass in tests/review/test-submit-scripts.sh"
+  - id: CL-12-2
+    text: "AC test matrix written"
+    completed: true
+  - id: CL-12-3
+    text: "E2E validation"
+    completed: true
+    notes: "Real Gemini CLI produced valid structured output"

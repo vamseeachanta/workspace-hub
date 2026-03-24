@@ -1,0 +1,49 @@
+verdict: REVISE
+return_to_stage: 4
+reviewers:
+  - provider: claude-agent
+    verdict: REVISE
+    review_ref: evidence/cross-review-claude.md
+  - provider: claude-script
+    verdict: REQUEST_CHANGES
+    review_ref: evidence/cross-review-claude-script.md
+    notes: "Codex-slot fallback — Codex timed out (exit 124)"
+  - provider: gemini
+    verdict: REQUEST_CHANGES
+    review_ref: evidence/cross-review-gemini.md
+
+p1_findings:
+  - id: P1-1
+    source: claude-agent
+    title: "Quality threshold inconsistency — 3 conflicting sets in codebase"
+    resolution: "Canonicalize on MeshQuality.is_good defaults (AR<5, skew<0.7, J>0.3); accept overrides via YAML config"
+  - id: P1-2
+    source: claude-agent
+    title: "Child 2 duplicates GeometryProcessor boolean methods"
+    resolution: "Child 2 becomes thin orchestration layer delegating to GeometryProcessor; only adds defeaturing config + watertight validation"
+  - id: P1-3
+    source: claude-script
+    title: "MeshQualityAnalyzer shared-module coupling — not truly parallel"
+    resolution: "All children are read-only consumers of current API; no modifications to MeshQualityAnalyzer"
+  - id: P1-4
+    source: claude-script
+    title: "Child 4 cross-repo boundary unspecified"
+    resolution: "digitalmodel owns CLI + YAML schema + tests; workspace-hub gets skill SKILL.md update only (documentation, no executable code)"
+  - id: P1-5
+    source: gemini
+    title: "OCC entity renumbering breaks boundary layer if parallel"
+    resolution: "Children 2 and 3 remain independent — they solve different problems (Child 2: assembly boolean ops; Child 3: boundary layer on any geometry). Physical group tagging contract added as shared convention."
+
+p2_findings:
+  - id: P2-1
+    source: claude-agent
+    title: "MeshQualityAnalyzer only supports tetrahedra"
+  - id: P2-2
+    source: claude-agent
+    title: "refinement.py reuse claim is misleading"
+  - id: P2-3
+    source: claude-agent
+    title: "Test plan missing non-monotonic convergence case"
+  - id: P2-4
+    source: claude-agent
+    title: "No formal e2e integration test entry"

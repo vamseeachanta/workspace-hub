@@ -1,0 +1,27 @@
+---
+id: workspace-hub#711
+title: "standardization(ux): define and enforce canonical HTML templates for plan and review artifacts"
+status: done
+route: B
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-03-02T12:30:00Z
+completed_at: 2026-03-02T13:50:00Z
+target_repos:
+  - workspace-hub
+orchestrator: gemini
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+claim_routing_ref: .claude/work-queue/assets/WRK-686/resource-intelligence-summary.md
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-686/review.html
+plan_html_review_final_ref: assets/WRK-686/plan-review-final.html
+html_output_ref: assets/WRK-686/implementation-review-final.html
+html_verification_ref: .claude/work-queue/assets/WRK-686/variation-test-results.md
+stage_evidence_ref: .claude/work-queue/assets/WRK-686/evidence/stage-evidence.yaml
+category: harness
+subcategory: cross-review
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/711
+---
+# standardization(ux): define and enforce canonical HTML templates for plan and review artifacts
+...

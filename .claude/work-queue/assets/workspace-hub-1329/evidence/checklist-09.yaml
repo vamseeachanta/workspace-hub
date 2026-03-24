@@ -1,0 +1,11 @@
+stage: 9
+items:
+  - id: CL-09-1
+    text: "Route B confirmed — single-agent execution"
+    completed: true
+  - id: CL-09-2
+    text: "Routing decision recorded"
+    completed: true
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true

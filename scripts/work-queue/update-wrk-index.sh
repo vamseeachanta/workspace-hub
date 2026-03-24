@@ -20,6 +20,11 @@ for dir in "working" "pending" "blocked" "done"; do
   if [[ -f "$candidate" ]]; then
     WRK_FILE="$candidate"; break
   fi
+  # Fallback: search for repo-prefixed files matching the ID
+  for alt in "${QUEUE_DIR}/${dir}"/*-[0-9]*.md; do
+    [[ -f "$alt" ]] || continue
+    [[ "$(basename "$alt" .md)" == "$WRK_ID" ]] && { WRK_FILE="$alt"; break 2; }
+  done
 done
 
 # Also check archive/YYYY-MM/ subdirs
@@ -60,6 +65,8 @@ if [[ -n "$WRK_FILE" ]]; then
   STANDING=$(get_fm_field "$WRK_FILE" "standing")
   CADENCE=$(get_fm_field "$WRK_FILE" "cadence")
   COMPUTER=$(get_fm_field "$WRK_FILE" "computer")
+  EXEC_WORKSTATIONS=$(get_fm_field "$WRK_FILE" "execution_workstations")
+  EXEC_MACHINE=$(get_fm_field "$WRK_FILE" "execution_machine")
   # Checkpoint stage from assets
   CP_FILE="${QUEUE_DIR}/assets/${WRK_ID}/checkpoint.yaml"
   [[ -f "$CP_FILE" ]] && CHECKPOINT_STAGE=$(get_fm_field "$CP_FILE" "current_stage")
@@ -99,6 +106,8 @@ entry = {
     "standing": "${STANDING}",
     "cadence": "${CADENCE}",
     "computer": "${COMPUTER}",
+    "execution_workstations": "${EXEC_WORKSTATIONS}",
+    "execution_machine": "${EXEC_MACHINE}",
     "checkpoint_stage": "${CHECKPOINT_STAGE}",
     "session_pid": "${SESSION_PID}",
 }

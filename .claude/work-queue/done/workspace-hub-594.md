@@ -1,0 +1,58 @@
+---
+id: workspace-hub#594
+title: "feat(doc-intel): build-doc-intelligence.py + federated content indexes"
+status: done
+route: C
+priority: high
+complexity: complex
+created_at: 2026-03-12T00:00:00Z
+target_repos:
+  - workspace-hub
+commit: cdbef316
+spec_ref: specs/wrk/WRK-5038/wrk-5038-federated-content-indexes.md
+related:
+  - WRK-1113
+  - WRK-1151
+blocked_by: []
+notes: >
+  Naval architecture content types to index: stability constants (GM, GZ),
+  resistance equations (Holtrop, ITTC), hull form tables, GZ curves,
+  stability criteria (IMO IS Code), structural analysis procedures,
+  hydrostatic definitions, worked examples from PNA/Tupper/Biran.
+parent:
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+orchestrator: claude
+cross_review: pending
+category: document-intelligence
+subcategory: index-builder
+stage_evidence_ref: .claude/work-queue/assets/WRK-5038/evidence/stage-evidence.yaml
+html_verification_ref: .claude/work-queue/assets/WRK-5038/workflow-final-review.html
+html_output_ref: .claude/work-queue/assets/WRK-5038/workflow-final-review.html
+completed_at: 2026-03-13T09:20:27Z
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/594
+---
+# feat(doc-intel): build-doc-intelligence.py + federated content indexes
+
+## Mission
+Create scripts/data/doc-intelligence/build-doc-intelligence.py that reads all manifests and builds constants.jsonl, equations.jsonl, tables/, curves/, procedures.jsonl, requirements.jsonl, definitions.jsonl, worked_examples.jsonl, manifest-index.jsonl.
+
+## Why
+Federated indexes enable fast querying across all extracted documents without re-parsing. Each content type gets its own index for type-specific search and promotion.
+
+## Acceptance Criteria
+- [ ] build-doc-intelligence.py scans manifest directory and builds all 8 content-type indexes
+- [ ] constants.jsonl, equations.jsonl, procedures.jsonl, requirements.jsonl, definitions.jsonl, worked_examples.jsonl created
+- [ ] tables/ directory with per-table CSV files and tables-index.jsonl
+- [ ] curves/ directory with per-curve CSV files and curves-index.jsonl
+- [ ] manifest-index.jsonl as master index of all processed documents
+- [ ] Incremental rebuild: skip manifests already indexed (hash-based)
+- [ ] Summary statistics printed on completion
+
+## TDD Approach
+Test index building with fixture manifests. Test incremental rebuild skips unchanged. Test each content-type index schema. Test summary statistics output.

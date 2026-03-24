@@ -1,0 +1,23 @@
+wrk_id: WRK-1392
+stage: 20
+items:
+  - id: CL-20-1
+    text: "archive-item.sh executed"
+    completed: true
+    completed_at: "2026-03-24T04:15:00Z"
+  - id: CL-20-2
+    text: "archive/WRK-NNN.md exists"
+    completed: true
+    completed_at: "2026-03-24T04:15:00Z"
+  - id: CL-20-3
+    text: "INDEX.md regenerated"
+    completed: true
+    completed_at: "2026-03-24T04:15:00Z"
+  - id: CL-20-4
+    text: "active-wrk cleared"
+    completed: true
+    completed_at: "2026-03-24T04:15:00Z"
+  - id: CL-20-5
+    text: "Git committed and pushed"
+    completed: true
+    completed_at: "2026-03-24T04:15:00Z"

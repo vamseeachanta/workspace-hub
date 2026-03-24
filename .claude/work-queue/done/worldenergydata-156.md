@@ -1,0 +1,45 @@
+---
+id: worldenergydata#156
+title: "Phase B extraction on og_standards"
+status: done
+priority: high
+complexity: high
+created_at: "2026-03-14"
+target_repos:
+  - workspace-hub
+category: engineering
+subcategory: data-extraction
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+parent: WRK-1179
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/156
+---
+
+## Mission
+Run the Phase B text extraction pipeline on unprocessed og_standards documents (27,980 records) to generate AI summaries enabling semantic search and gap triage.
+
+## Execution Strategy
+
+**Iterative learning loop** (process → learn → improve → repeat):
+1. Batch 1: Process 20-30 documents with deep extraction
+2. Analyze: Run extraction_learner to capture patterns and gaps
+3. Improve: Update extraction regex, skill heuristics, domain patterns
+4. Repeat: Process next 20-30 documents with improved extractors
+5. Continue until all og_standards processed or budget exhausted
+
+## Acceptance Criteria
+1. ~~Phase B extraction completes on og_standards subset with >90% success rate~~ ✅ 100% (27,083/27,083)
+2. ~~AI summaries written to document index JSONL~~ ✅ all summaries have discipline
+3. Deep extraction (tables, worked examples, charts) run on 9 high-value docs
+4. Extraction learnings captured after each batch (extraction-learnings.yaml)
+5. Skills improved based on learnings (doc-extraction heuristics, regex patterns)
+6. ~~TDD tests passing for extraction pipeline invocation~~ ✅ 40 tests pass
+7. Extraction report YAML generated with record counts and error summary
+
+## Phase 4 Plan
+See `specs/modules/wrk-1188-phase-4-deep-extraction.md` for full plan.
+9 target docs (DNV-RP-B401/F109/C203/C205/F105 + API RP 1111/2SK/2A + API 579).
+Learning loop: extract → audit → enhance scripts → re-extract → update skill.

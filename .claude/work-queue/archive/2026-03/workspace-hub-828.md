@@ -1,0 +1,173 @@
+---
+id: workspace-hub#828
+title: "chore(harness): keep all workstations ready so engineering work is never blocked by harness drift"
+status: archived
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-03-08T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref: .claude/work-queue/assets/WRK-1047/plan_claude.md
+related: [WRK-1016, WRK-1012, WRK-691, WRK-306, WRK-1002, WRK-1003, WRK-1004, WRK-1005]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary, dev-secondary, licensed-win-1]
+category: harness
+subcategory: ai-config
+route: B
+stage_evidence_ref: .claude/work-queue/assets/WRK-1047/evidence/stage-evidence.yaml
+claim_routing_ref: .claude/work-queue/assets/WRK-1047/claim-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-1047/plan_claude.md
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-1047/cross-review-plan.md
+html_output_ref: .claude/work-queue/assets/WRK-1047/workflow-final-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+completed_at: 2026-03-08T18:11:21Z
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/828
+---
+# chore(harness): keep all workstations ready so engineering work is never blocked by harness drift
+
+## Mission
+**Every hour spent debugging a broken hook, missing plugin, or stale skill is an hour not spent on engineering.
+This WRK ensures all 3 workstations stay continuously ready — verified nightly — so every session starts on a clean harness and the team can focus entirely on delivering core engineering work.**
+
+## What
+
+### P1 — `harness-readiness-check.sh` (new script)
+A single script deployable on any workstation. Checks:
+
+| Check | Pass criterion |
+|-------|---------------|
+| Harness file line counts | CLAUDE.md / AGENTS.md / CODEX.md / GEMINI.md ≤20 lines in hub + all tier-1 repos |
+| Plugins installed | `claude plugin list` returns all 9 expected plugins, 0 load errors |
+| Hooks present | All hooks in `.claude/settings.json` `hooks:` block exist on disk |
+| Hook latency | Each hook completes in <5s (measured via `time bash <hook> < /dev/null 2>&1`) |
+| settings.json valid | `jq empty .claude/settings.json` exits 0 |
+| AI tools minimum versions | claude ≥2.1, codex ≥0.100, gemini ≥0.25 |
+| uv available | `uv --version` ≥0.5.0 |
+| pre-commit configured | `.pre-commit-config.yaml` present in tier-1 repos with legal scan entry |
+| Active WRK state | `.claude/state/active-wrk` readable (or absent — both valid) |
+
+Emits: `scripts/work-queue/harness-readiness-report.yaml` with per-check pass/fail + timestamp.
+Exit code: 0=all pass, 1=one or more fail.
+
+### P2 — Nightly cron integration
+- Add `harness-readiness-check.sh` to `scripts/cron/nightly-readiness.sh`
+- Run on dev-primary (dev-secondary via SSH if available, licensed-win-1 via Task Scheduler on Windows)
+- Feed `harness-readiness-report.yaml` into comprehensive-learning Phase 1 signals row
+
+### P3 — Cross-workstation comparison report
+- `scripts/work-queue/compare-harness-state.sh` — SSHes to dev-secondary, runs readiness check, compares output with dev-primary, prints diff
+- Surfaces mismatches (plugin version skew, missing hooks, line-count violations on the remote machine)
+- licensed-win-1: manual step documented (Windows/Git Bash; no automated SSH)
+
+### P4 — Remediation playbook
+- `scripts/work-queue/remediate-harness.sh --workstation <name>` — prints (does not apply) the fix commands for each failed check
+- Documents Windows-specific differences (no `xdg-open`, Git Bash paths, Task Scheduler vs cron)
+
+### P5 — Skills and slash commands sync verification
+Verify that `.claude/skills/` and `.claude/commands/` trees are consistent across workstations after each `git pull`:
+
+| Check | Pass criterion |
+|-------|---------------|
+| Skill count | `find .claude/skills -name SKILL.md \| wc -l` matches dev-primary baseline |
+| Commands count | `find .claude/commands -name "*.md" \| wc -l` matches dev-primary baseline |
+| Plugin-synced skills | `scripts/skills/sync-knowledge-work-plugins.sh --dry-run` exits 0 (no stale skills) |
+| Skill index | `.claude/skills/*/INDEX.md` present and non-empty where expected |
+| No diverged/incoming leftovers | `.claude/skills/_diverged/` and `.claude/skills/incoming/` empty (or documented) |
+
+- Add these checks to `harness-readiness-check.sh` as the `skills_sync` block
+- `compare-harness-state.sh` includes skill/command count diff in its cross-workstation report
+- licensed-win-1: verify skills accessible via Git Bash path; commands run via `claude /command`
+
+### P6 — Work-queue-workflow simulation (all 3 providers)
+Smoke-test the full WRK lifecycle workflow for Claude, Codex, and Gemini using the existing
+`orchestrator-variation-check.sh` harness:
+
+```bash
+# Per provider — verifies gate scripts + lifecycle test suite run clean
+bash scripts/review/orchestrator-variation-check.sh \
+  --wrk WRK-SIM \
+  --orchestrator <claude|codex|gemini> \
+  --scripts \
+    "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-SIM" \
+    "bash tests/work-queue/test-lifecycle-gates.sh" \
+    "bash scripts/work-queue/harness-readiness-check.sh"
+```
+
+Simulation WRK (`WRK-SIM`) is a minimal fixture WRK with pre-populated evidence for all 20
+stages. Purpose: confirm each provider can parse and execute the workflow end-to-end without
+gate errors, not to actually close a real WRK.
+
+Deliverables:
+- `variation-test-results-claude.md`, `variation-test-results-codex.md`, `variation-test-results-gemini.md` — all must show APPROVE or PASS
+- `parse-session-logs.sh WRK-SIM` — parses all 3 provider log formats; no parse errors
+- Known provider differences documented (Codex interactive vs pipe mode; Gemini JSON vs YAML output)
+- Simulation is repeatable: included in nightly cron after initial pass
+
+## Why
+
+The engineering repos (digitalmodel, assetutilities, worldenergydata, assethold) are the
+GTM-critical output. Every session that opens with a broken harness — missing hook, stale
+plugin, skill count mismatch, provider that can't run the workflow — is a session where
+engineering work stalls while we fix infrastructure instead of building capability.
+
+Currently there is no machine-readable signal that a workstation is ready. The engineer
+finds out at the moment of failure: a legal scan that silently didn't run, a slash command
+that doesn't exist on dev-secondary, Codex failing mid-review because its log format wasn't
+accounted for. These failures are invisible until they hurt.
+
+This WRK makes readiness **explicit, measurable, and self-healing**:
+
+| Before | After |
+|--------|-------|
+| Drift found at session time, blocks engineering | Drift found overnight, fixed before session starts |
+| No cross-workstation check — dev-secondary and licensed-win-1 assumed OK | Verified nightly; mismatch surfaced in morning report |
+| Provider workflow simulation done once per WRK | Repeatable WRK-SIM fixture; regressions caught automatically |
+| Skills/commands synced by hand after git pull | Sync verified as part of readiness report |
+
+WRK-1016 does a one-time settings audit. This WRK is the **ongoing enforcement layer**
+that keeps every workstation ready every day.
+
+## Acceptance Criteria
+
+- [ ] `harness-readiness-check.sh` runs clean on dev-primary (all P1 checks pass or print clear FAIL reason)
+- [ ] Script is portable: same script body runs on dev-secondary (`bash` invocation confirmed)
+- [ ] licensed-win-1 Windows compatibility documented (known differences called out in script header)
+- [ ] Nightly cron updated on dev-primary; `harness-readiness-report.yaml` written after first run
+- [ ] comprehensive-learning Phase 1 signal row includes harness readiness pass/fail count
+- [ ] `compare-harness-state.sh` produces a diff between dev-primary and dev-secondary readiness
+- [ ] Remediation playbook (`remediate-harness.sh`) prints actionable fix steps for at least 3 failure types
+- [ ] Skills sync check: `harness-readiness-check.sh` skill_sync block passes on dev-primary (count + plugin-sync + no diverged leftovers)
+- [ ] Commands sync check: slash command count matches baseline on all reachable workstations
+- [ ] `sync-knowledge-work-plugins.sh --dry-run` exits 0 on dev-primary and dev-secondary
+- [ ] WRK-SIM fixture created with pre-populated evidence for all 20 stages
+- [ ] `orchestrator-variation-check.sh` runs clean for all 3 providers against WRK-SIM
+- [ ] `variation-test-results-{claude,codex,gemini}.md` all show APPROVE or PASS
+- [ ] `parse-session-logs.sh WRK-SIM` parses all 3 provider log formats without errors
+- [ ] Provider differences (Codex interactive/pipe, Gemini JSON/YAML) documented in simulation notes
+- [ ] Simulation added to nightly cron after first successful run
+- [ ] ≥12 unit/integration tests covering: missing plugin, oversized CLAUDE.md, slow hook, skill count mismatch, command count mismatch, provider parse failure
+- [ ] Changes committed; INDEX regenerated
+
+## Notes
+
+- Builds on: WRK-306 (ai-agent-readiness.sh + ai-agent-versions.yaml), WRK-691 (session-start drift detection)
+- licensed-win-1: no automated SSH; document manual Git Bash run procedure
+- Hook latency measurement must not modify global state — run with `< /dev/null 2>&1`
+- Companion to WRK-1016 (one-time settings audit) — this is the recurring enforcement layer
+- Skills sync: `scripts/skills/sync-knowledge-work-plugins.sh` is the canonical tool (skill-sync/SKILL.md)
+- WRK-SIM fixture: minimal, reusable, never closes a real WRK — stored at `tests/work-queue/fixtures/WRK-SIM/`
+- Provider simulation: WRK-1002/1003/1004/1005 established the cross-provider patterns; reuse `parse-session-logs.sh` + `orchestrator-variation-check.sh`
+- Codex note: interactive mode not available via SSH pipe — use `--scripts` flag in variation-check harness

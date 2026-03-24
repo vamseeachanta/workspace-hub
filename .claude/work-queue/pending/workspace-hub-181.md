@@ -1,0 +1,25 @@
+---
+id: workspace-hub#181
+title: "Clean digitalmodel docs/modules/ stale content"
+status: pending
+priority: low
+complexity: simple
+created_at: 2026-02-25T00:00:00Z
+target_repos:
+  - digitalmodel
+blocked_by: []
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-575/evidence/stage-evidence.yaml
+subcategory: cleanup
+category: maintenance
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/181
+---
+# WRK-575: Remove stale docs/modules/references/
+
+## Tasks
+- [ ] Check if docs/modules/references/ has any unique content not duplicated in docs/domains/
+- [ ] If empty/duplicated: `git rm -r docs/modules/references/`
+- [ ] If unique: `git mv docs/modules/references/ docs/domains/references/`
+- [ ] Commit

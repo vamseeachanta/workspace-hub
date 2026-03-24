@@ -1,0 +1,50 @@
+---
+id: workspace-hub#1301
+title: "BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171)"
+status: pending
+priority: medium
+complexity: medium
+created_at: 2026-02-20T00:00:00Z
+supersedes: WRK-153
+target_repos:
+  - aceengineer-website
+target_module:
+commit:
+spec_ref:
+related: [WRK-078, WRK-153, WRK-019, WRK-171]
+blocked_by: [WRK-019, WRK-171]
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+provider_alt:
+stage_evidence_ref: .claude/work-queue/assets/WRK-261/evidence/stage-evidence.yaml
+subcategory: production
+category: data
+
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1301
+---
+# BSEE Field Economics Case Study — Rebuild on Calibrated Cost Data
+
+## What
+
+Rebuild the BSEE field economics case study (originally WRK-078/WRK-153) using calibrated drilling/completion cost data from WRK-019 and cost calibration from WRK-171. The result will be substantially more credible than proxy-based estimates.
+
+## Why
+
+The original case study used proxy costs; with WRK-019 and WRK-171 complete, the same analysis can use real calibrated cost data — a step change in credibility for client presentations.
+
+## Acceptance Criteria
+
+- [ ] Case study rebuilt with WRK-019 cost layer
+- [ ] NPV/IRR recalculated with calibrated costs
+- [ ] Published on aceengineer website
+- [ ] Clearly shows data provenance (real BSEE + calibrated costs)
+
+## Agentic AI Horizon
+
+**Disposition: blocked** — do not start until WRK-019 and WRK-171 are both complete; result will be far more credible and won't need to be redone

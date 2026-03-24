@@ -1,0 +1,38 @@
+---
+id: workspace-hub#81
+title: "Research Claude Certified program for skill enhancement patterns"
+status: pending
+priority: low
+complexity: simple
+created_at: 2026-03-15
+target_repos: [workspace-hub]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: AI Orchestration
+subcategory: Skills Enhancement
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/81
+---
+
+## Mission
+
+Research the Anthropic Claude Certified program announcement and extract patterns applicable to workspace-hub skill development.
+
+## What
+
+Review LinkedIn post by Steven Nouri about Anthropic's Claude Certified launch and identify:
+- Certification structure and knowledge domains
+- Best practices or patterns that can improve our skill definitions
+- Any official Anthropic guidance on prompt engineering, tool use, or agent design that we should incorporate
+
+Source: https://www.linkedin.com/posts/stevenouri_anthropic-just-launched-the-claude-certified-activity-7438909847762485248-DZq-/
+
+## Why
+
+Staying current with Anthropic's official guidance ensures our skills and agent patterns align with recommended practices, improving reliability and effectiveness.
+
+## Acceptance Criteria
+
+- [ ] LinkedIn post content reviewed and key points extracted
+- [ ] Actionable improvements identified for workspace-hub skills (if any)
+- [ ] Findings documented or captured as future WRK items

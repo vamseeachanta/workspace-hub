@@ -1,0 +1,25 @@
+wrk_id: WRK-1304
+completion_status: complete
+domain: document-intelligence
+complexity_assessment: simple
+route: A
+skills:
+  core_used:
+    - pdf
+    - pdf-text-extractor
+    - pdf-why-convert-to-markdown-first
+    - pdf-openai-codex-conversion
+files_to_modify:
+  - .claude/skills/data/documents/pdf/SKILL.md
+  - .claude/skills/data/documents/pdf-text-extractor/SKILL.md
+  - .claude/skills/data/documents/pdf/why-convert-to-markdown-first/SKILL.md
+  - .claude/skills/data/documents/pdf/openai-codex-conversion/SKILL.md
+prior_art:
+  - WRK-1302 (PyMuPDF4LLM benchmark — archived, confirms viability)
+  - WRK-1303 (Docling benchmark)
+  - WRK-1277 (pdfplumber D-state discovery)
+notes: |
+  AGPL license concern noted in current skill. WRK-1304 mission says to proceed
+  with PyMuPDF4LLM as default for single-doc markdown conversion. Codex remains
+  option for complex docs. Key change: pymupdf4llm replaces Codex as primary
+  recommendation for single-doc PDF→Markdown.

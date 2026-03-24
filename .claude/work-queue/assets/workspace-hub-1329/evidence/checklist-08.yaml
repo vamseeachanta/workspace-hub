@@ -1,0 +1,14 @@
+stage: 8
+items:
+  - id: CL-08-1
+    text: "Claim WRK for execution"
+    completed: true
+  - id: CL-08-2
+    text: "Verify workstation availability"
+    completed: true
+  - id: CL-08-3
+    text: "Write activation evidence"
+    completed: true
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    completed: true

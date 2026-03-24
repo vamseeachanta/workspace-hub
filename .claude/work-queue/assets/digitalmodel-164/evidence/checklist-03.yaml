@@ -1,0 +1,14 @@
+stage: 3
+items:
+  - id: CL-03-1
+    description: "resource-intelligence.yaml reviewed"
+    completed: true
+    evidence: "completion_status=complete, domain=document-intelligence, 4 skills identified"
+  - id: CL-03-2
+    description: "Route/workstations/orchestrator confirmed"
+    completed: true
+    evidence: "Route A (simple), dev-primary for plan+execution, orchestrator=claude"
+  - id: CL-03-3
+    description: "Open questions surfaced; WRK frontmatter updated"
+    completed: true
+    evidence: "No open questions. Blocker WRK-1302 cleared. AGPL license accepted per mission scope."

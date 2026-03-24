@@ -1,0 +1,8 @@
+stage: 8
+wrk_id: WRK-5140
+quota_snapshot:
+  claude: "max tier, available"
+  codex: "96% remaining"
+  gemini: "100% remaining"
+proceed_decision: proceed
+reason: "All providers available. Route B medium complexity — well within quota."

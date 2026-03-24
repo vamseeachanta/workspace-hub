@@ -1,5 +1,6 @@
 # machine_ranges_ref: config/work-queue/machine-ranges.yaml
-# Each machine owns a non-overlapping ID range. next-id.sh enforces the floor.
+# Legacy: last_id is no longer used for new allocations. WRK IDs are now
+# allocated via gh-next-id.sh (GitHub issue numbers). Retained for history.
 last_id: 5130
 last_processed: WRK-127
 created_at: 2026-01-29T00:00:00Z

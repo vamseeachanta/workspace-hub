@@ -1,0 +1,8 @@
+wrk_id: workspace-hub-1345
+reviewer: vamsee
+overridden_at: "2026-03-24T12:50:00Z"
+override_reason: "All 3 P1 findings have been incorporated into the revised plan. P1-A (GH Actions validator added), P1-B (delta-sync with TTL added), P1-C (rollback path + burned-ID exclusion added). Plan updated before stage 6 exit."
+p1_findings_addressed:
+  - P1-A
+  - P1-B
+  - P1-C

@@ -1,0 +1,55 @@
+---
+id: workspace-hub#420
+title: "Heriberto: powder room sink caulk for water drainage"
+status: done
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-02-23T00:00:00Z
+target_repos:
+  - achantas-data
+commit:
+spec_ref:
+related: [WRK-359, WRK-360]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-361/evidence/stage-evidence.yaml
+category: personal
+subcategory: household
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/420
+---
+# Heriberto: Powder Room Sink Caulk for Water Drainage
+
+## What
+
+Have Heriberto re-caulk the powder room sink to improve water drainage and prevent
+water from pooling or seeping where it shouldn't.
+
+## Why
+
+Current caulk is inadequate — water does not drain properly and may cause damage
+over time.
+
+## Acceptance Criteria
+
+- [ ] Old caulk removed
+- [ ] Fresh caulk applied around sink base/drain area
+- [ ] Water drains cleanly with no pooling or seepage
+
+---
+*Source: handyman items for Heriberto — c/ powerroom sink caulk for better water drainage*
+
+## Cancellation Note
+Cancelled during WRK-663 triage: Out of scope for AI agent workspace-hub (personal errand/handyman task).
+
+## Migration Note
+Migrated to achantas-data repo for implementation per user review of WRK-663.

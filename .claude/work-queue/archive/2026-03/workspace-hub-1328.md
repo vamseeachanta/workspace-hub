@@ -1,0 +1,34 @@
+---
+completed_at: 2026-03-24T09:12:30Z
+id: workspace-hub#1328
+title: "Fix cross-review.sh Codex dispatch crash on first review attempt"
+status: archived
+priority: high
+complexity: simple
+route: A
+created_at: "2026-03-24"
+target_repos:
+  - workspace-hub
+category: engineering
+subcategory: infrastructure
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+blocked_by: []
+plan_reviewed: true
+plan_approved: true
+tags: [cross-review, codex, bug-fix]
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1328
+---
+
+## Mission
+
+Fix the unguarded `ls` glob pattern in `count_wrk_codex_reviews()` (cross-review.sh lines 200-207) that crashes the script when no prior Codex reviews exist for a WRK item. With `set -euo pipefail`, the `ls` exit code 2 (no match) aborts the entire script before the actual Codex submission is attempted.
+
+## Acceptance Criteria
+
+1. [ ] `count_wrk_codex_reviews()` returns 0 when no prior reviews exist (no crash)
+2. [ ] Cross-review completes Codex submission on first attempt for a new WRK
+3. [ ] Existing behavior preserved when prior reviews DO exist

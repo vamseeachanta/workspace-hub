@@ -1,0 +1,58 @@
+---
+id: workspace-hub#570
+title: "feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead..."
+status: done
+priority: high
+complexity: low
+compound: false
+created_at: 2026-02-24T23:52:56Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-467/evidence/stage-evidence.yaml
+category: engineering-calculations
+subcategory: standards
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/570
+---
+# feat(calculations): implement Britton, J.S., et al, 1987 - Improvin...
+
+## Standard
+- **ID**: Britton, J.S., et al, 1987 - Improving Wellhead Performance
+- **Title**: Britton, J.S., et al, 1987   Improving Wellhead Performance
+- **Org**: Unknown
+- **Document**: `` (SHA: `730dfe29990888da...`)
+- **Summary**: Papers Offshore Technology Conference Britton, J.S., et al, 1987 - Improving Wellhead Performance.pdf
+- **Discipline**: marine
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+Papers Offshore Technology Conference Britton, J.S., et al, 1987 - Improving Wellhead Performance.pdf
+
+## Acceptance Criteria
+- [ ] Function implements Britton, J.S., et al, 1987 - Improvin... calculation
+- [ ] Unit tests cover nominal and edge cases
+- [ ] Result validated against worked example in standard (if available)
+- [ ] Module registry updated: status → implemented
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  Britton, J.S., et al, 1987 - Improvin... calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable

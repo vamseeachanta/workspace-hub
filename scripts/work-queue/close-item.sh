@@ -75,6 +75,15 @@ for dir in working pending blocked done; do
     SOURCE_DIR="$dir"
     break
   fi
+  # Fallback: search for repo-prefixed files matching the ID
+  for alt in "${QUEUE_DIR}/${dir}"/*-[0-9]*.md; do
+    [[ -f "$alt" ]] || continue
+    if [[ "$(basename "$alt" .md)" == "$WRK_ID" ]]; then
+      FILE_PATH="$alt"
+      SOURCE_DIR="$dir"
+      break 2
+    fi
+  done
 done
 
 if [[ -z "$FILE_PATH" ]]; then

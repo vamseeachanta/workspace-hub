@@ -1,0 +1,52 @@
+---
+id: workspace-hub#44
+title: Set up WhatsApp MCP for Claude CLI on dev-primary
+status: pending
+not_before: 2026-04-10
+note: punted ~1 month — revisit 2026-04-10
+priority: low
+complexity: simple
+created_at: 2026-03-10T00:00:00Z
+scheduled_check: 2026-04-10
+target_repos:
+  - workspace-hub
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+category: harness/skills
+subcategory: integrations
+parent_wrk: WRK-1108
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/44
+---
+
+## Mission
+
+Set up `lharries/whatsapp-mcp` on dev-primary for use with Claude CLI (not Desktop), connecting via QR code.
+
+## What
+
+Install and configure the most popular WhatsApp MCP server for personal CLI use. Focus is Claude Code CLI integration, not Claude Desktop.
+
+## Why
+
+WRK-1108 research confirmed WhatsApp MCP integration is available. Postponed one month to reassess CLI support maturity.
+
+## Acceptance Criteria
+
+- [ ] Re-check `lharries/whatsapp-mcp` and alternatives for Claude CLI support (not just Desktop) on 2026-04-10
+- [ ] Go prerequisites verified on dev-primary
+- [ ] `lharries/whatsapp-mcp` cloned and built
+- [ ] MCP server configured for Claude CLI (`.claude/settings.json` or equivalent)
+- [ ] QR-code auth completed — phone linked
+- [ ] Smoke test: Claude CLI can list chats and send a test message
+- [ ] Document setup steps in `docs/integrations/whatsapp-mcp.md`
+
+## Notes
+
+- Scheduled check: 2026-04-10 (postponed — CLI integration maturity to be reassessed)
+- Repo: https://github.com/lharries/whatsapp-mcp
+- Uses unofficial whatsmeow Go library — ToS risk for high-volume use
+- Prompt injection risk: be cautious exposing received messages to Claude in untrusted contexts
+- Fallback: `delltrak/wamcp` (Docker, 63 tools, official Meta Cloud API support)

@@ -1,0 +1,75 @@
+---
+id: worldenergydata#157
+title: "POC — Deep extraction on 10 XLSX calculation spreadsheets"
+status: done
+stage: 17
+priority: high
+complexity: medium
+route: B
+created_at: "2026-03-15"
+parent: WRK-1245
+target_repos:
+  - workspace-hub
+category: engineering
+subcategory: data-extraction
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+tags: [xlsx-extraction, dark-intelligence, poc]
+claim_routing_ref: .claude/work-queue/assets/WRK-1247/claim-evidence.yaml
+stage_evidence_ref: .claude/work-queue/assets/WRK-1247/evidence/stage-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+plan_reviewed: true
+plan_approved: true
+html_output_ref: .claude/work-queue/assets/WRK-1247/workflow-final-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-1247/workflow-final-review.html
+percent_complete: 100
+completed_at: 2026-03-16T20:44:24Z
+commit: 182fe724
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/157
+---
+## Mission
+
+Prove XLSX formula extraction yield on 10 calculation spreadsheets before scaling to 23K XLSX files.
+
+## What
+
+Select 10 XLSX files from ace_project + dde_project (prioritizing filenames containing
+"calc", "design", "analysis") and run the dark intelligence workflow on each:
+Extract → Sanitize → Archive → Generate TDD tests → Implement.
+
+### XLSX Extractor Enhancements Required
+
+The current `deep-extract.py` XLSX path uses openpyxl for basic table extraction but
+doesn't extract formulas — only cell values. This POC requires:
+
+1. Read cell formulas (not just computed values) via `openpyxl` `data_only=False`
+2. Map formula dependencies (input → calculation → output chains)
+3. Extract named ranges as variable definitions
+4. Identify calculation blocks vs data blocks (heuristic: cells with formulas vs static data)
+
+### Extraction Outputs Per Spreadsheet
+
+- YAML calc-report inputs (named ranges → variables, formula chains → functions)
+- Python functions implementing extracted calculation logic
+- pytest test cases using original cell values as assertions
+- Validation against existing digitalmodel/assetutilities code where overlap exists
+
+## Why
+
+The 23,642 XLSX files are the second-largest extraction target after PDFs. Without
+formula extraction, we only get cell values — losing the calculation methodologies
+that are the primary engineering value. This POC identifies parser gaps on a controlled
+set before committing to full-scale extraction.
+
+## Acceptance Criteria
+
+1. [x] 10 XLSX files selected with documented selection criteria (poc-file-list.yaml)
+2. [x] openpyxl formula extractor reads formulas (656K extracted, 100% cache hit)
+3. [x] Formula dependency mapping produces input→calc→output chains (187K output cells)
+4. [x] Named ranges extracted as variable definitions (0 found in corpus — gap documented)
+5. [x] Each spreadsheet produces a YAML calc-report + Python function + pytest test (6/6 + HTML reports)
+6. [x] Extraction yield report: formulas found, chains mapped, tests generated per file (yield-report.yaml)
+7. [x] Gap analysis document identifying what the extractor cannot handle (Chartsheet, >15MB, networkx isolation, no .xlsm)

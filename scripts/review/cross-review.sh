@@ -203,7 +203,13 @@ count_wrk_codex_reviews() {
   if [[ -z "$wrk_id_lower" ]]; then
     echo 0; return
   fi
-  ls "$RESULTS_DIR"/*"${wrk_id_lower}"*-codex.md 2>/dev/null | grep -v "opus-fallback" | wc -l | tr -d ' '
+  local matches
+  matches="$(find "$RESULTS_DIR" -maxdepth 1 -name "*${wrk_id_lower}*-codex.md" 2>/dev/null | grep -v "opus-fallback" || true)"
+  if [[ -z "$matches" ]]; then
+    echo 0
+  else
+    echo "$matches" | wc -l | tr -d ' '
+  fi
 }
 
 # Run Claude Opus as a substitute for Codex; writes verdict to result_file

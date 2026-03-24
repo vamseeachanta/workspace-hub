@@ -1,0 +1,42 @@
+---
+id: workspace-hub#1030
+title: "context-budget-monitor: PreCompact hook warning at context thresholds"
+status: done
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-03-17T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref: specs/wrk/WRK-1301/research-brief.md
+related: [WRK-1301]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-1312/evidence/stage-evidence.yaml
+orchestrator: claude
+subcategory: work-queue
+category: tooling
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1030
+---
+
+## Description
+
+Add a PreCompact hook that warns "context running low — checkpoint your WRK now" when context compaction fires. Inspired by GSD's context monitor (35%/25% thresholds).
+
+Note: expect native Claude Code context health signals to supersede this. Build as ~20 lines of shell.
+
+## Acceptance Criteria
+
+- [ ] PreCompact hook in settings.json triggers warning script
+- [ ] Script outputs structured warning with active WRK ID and checkpoint suggestion
+- [ ] TDD: test hook script outputs expected warning format

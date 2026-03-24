@@ -33,7 +33,14 @@ fi
 # ── Check item exists ────────────────────────────────────────────────────────
 _found=false
 for _dir in pending working blocked done; do
-    [[ -f "$QUEUE/$_dir/${WRK_ID}.md" ]] && { _found=true; break; }
+    if [[ -f "$QUEUE/$_dir/${WRK_ID}.md" ]]; then
+        _found=true; break
+    fi
+    # Fallback: search for repo-prefixed files matching the ID
+    for _alt in "$QUEUE/$_dir"/*-[0-9]*.md; do
+        [[ -f "$_alt" ]] || continue
+        [[ "$(basename "$_alt" .md)" == "$WRK_ID" ]] && { _found=true; break 2; }
+    done
 done
 if [[ "$_found" == "false" ]]; then
     echo "ERROR: $WRK_ID not found in pending/working/blocked/done" >&2
@@ -76,6 +83,27 @@ fi
 # ── Write dispatch breadcrumb (enables L3 hook enforcement) ─────────────────
 mkdir -p "$REPO_ROOT/.claude/state"
 echo "$STAGE" > "$REPO_ROOT/.claude/state/dispatch-${WRK_ID}"
+
+# ── Stamp execution_machine on WRK frontmatter ─────────────────────────────
+_exec_host=$(hostname -s 2>/dev/null || echo "unknown")
+for _dir in working pending blocked done; do
+    _wf="$QUEUE/$_dir/${WRK_ID}.md"
+    if [[ ! -f "$_wf" ]]; then
+        # Fallback: search for repo-prefixed files matching the ID
+        _wf=""
+        for _alt in "$QUEUE/$_dir"/*-[0-9]*.md; do
+            [[ -f "$_alt" ]] || continue
+            [[ "$(basename "$_alt" .md)" == "$WRK_ID" ]] && { _wf="$_alt"; break; }
+        done
+        [[ -z "$_wf" ]] && continue
+    fi
+    if grep -q '^execution_machine:' "$_wf" 2>/dev/null; then
+        sed -i "s/^execution_machine:.*/execution_machine: ${_exec_host}/" "$_wf"
+    else
+        sed -i "/^computer:/a execution_machine: ${_exec_host}" "$_wf"
+    fi
+    break
+done
 
 # ── Print dispatch ───────────────────────────────────────────────────────────
 echo "━━━ DISPATCH: $WRK_ID ━━━"

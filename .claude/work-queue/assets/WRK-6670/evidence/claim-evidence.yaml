@@ -1,0 +1,9 @@
+stage: 8
+wrk_id: workspace-hub-1345
+quota_check: proceed
+claimed_by: claude
+claimed_at: "2026-03-24T13:15:00Z"
+machine: dev-primary
+best_fit_provider: claude
+session_owner: claude
+route: C

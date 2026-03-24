@@ -1,0 +1,27 @@
+---
+id: digitalmodel#160
+title: "Create audit-calc-methodology.py — auto-score examples against 16-section checklist"
+status: pending
+priority: low
+complexity: simple
+route: A
+repo: workspace-hub
+category: engineering-methodology
+subcategory: scripts
+created_at: "2026-03-16"
+machine: dev-primary
+parent_wrk: WRK-1242
+tags: [script, audit, calculations]
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/160
+---
+
+## Mission
+
+Create a deterministic script that scores any calculation YAML against the 16-section methodology, replacing manual audit. Per the 25% repetition rule, this audit will recur whenever new examples are added.
+
+## Scope
+
+- `scripts/reporting/audit-calc-methodology.py` — reads a YAML, checks for 16 top-level keys, outputs score
+- Batch mode: `--dir examples/reporting/` scores all files
+- Output: YAML summary matching `audit-examples.yaml` format
+- TDD: tests with known-score files

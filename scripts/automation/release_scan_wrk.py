@@ -23,7 +23,7 @@ PROVIDERS = ("claude", "codex", "gemini")
 STATE_REL = Path("config") / "ai-tools" / "release-scan-state.yaml"
 PENDING_REL = Path(".claude") / "work-queue" / "pending"
 INDEX_SCRIPT_REL = Path(".claude") / "work-queue" / "scripts" / "generate-index.py"
-NEXT_ID_REL = Path("scripts") / "work-queue" / "next-id.sh"
+NEXT_ID_REL = Path("scripts") / "work-queue" / "gh-next-id.sh"
 
 
 def parse_state(state_path: Path) -> dict[str, str]:
@@ -146,20 +146,21 @@ def _touch_scan_timestamp(state_path: Path) -> None:
     state_path.write_text(yaml.dump(data, default_flow_style=False))
 
 
-def _get_next_id(workspace_root: Path) -> str:
-    """Call next-id.sh to get atomic WRK ID."""
+def _get_next_id(workspace_root: Path, title: str = "auto-captured WRK") -> str:
+    """Call gh-next-id.sh to get atomic WRK ID."""
     script = workspace_root / NEXT_ID_REL
     result = subprocess.run(
-        ["bash", str(script)],
+        ["bash", str(script), "--title", title],
         capture_output=True,
         text=True,
         cwd=str(workspace_root),
         env={**os.environ, "WORKSPACE_ROOT": str(workspace_root)},
     )
     if result.returncode != 0:
-        print(f"ERROR: next-id.sh failed: {result.stderr}", file=sys.stderr)
+        print(f"ERROR: gh-next-id.sh failed: {result.stderr}", file=sys.stderr)
         sys.exit(1)
-    return f"WRK-{result.stdout.strip()}"
+    first_line = result.stdout.strip().split("\n")[0]
+    return f"WRK-{first_line}"
 
 
 def _rebuild_index(workspace_root: Path) -> None:
@@ -211,7 +212,8 @@ def run_scan(
         return changes
 
     # Get next WRK ID and write file
-    wrk_id = _get_next_id(workspace_root)
+    providers_changed = ", ".join(c["provider"] for c in changes)
+    wrk_id = _get_next_id(workspace_root, title=f"Release notes review: {providers_changed}")
     content = generate_wrk_content(wrk_id, changes)
     wrk_path = workspace_root / PENDING_REL / f"{wrk_id}.md"
     wrk_path.parent.mkdir(parents=True, exist_ok=True)

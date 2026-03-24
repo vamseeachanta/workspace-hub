@@ -1,0 +1,35 @@
+wrk_id: WRK-5139
+completion_status: complete
+domain: infrastructure/cross-review
+complexity_assessment: medium
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/cross-review-route-bc
+    - workspace-hub/work-execution-principle-scripts-over-llm-overhead
+  supporting:
+    - data/document-index-pipeline
+findings:
+  root_cause_candidates:
+    - id: RC-1
+      description: "Gemini CLI returns exit 0 with empty stdout on certain inputs"
+      confidence: high
+      evidence: "Raw failure log shows exit 0, STDERR has 'Loaded cached credentials' but stdout=0 bytes"
+    - id: RC-2
+      description: "No pre-render check for empty raw_file in submit-to-gemini.sh"
+      confidence: high
+      evidence: "Lines 202-204 go straight to renderer without checking file size"
+    - id: RC-3
+      description: "STDERR diagnostics (rate limits, capacity errors) not inspected"
+      confidence: medium
+      evidence: "WRK-1083 showed 429/MODEL_CAPACITY_EXHAUSTED in stderr, but exit was 0"
+  files_to_modify:
+    - path: scripts/review/submit-to-gemini.sh
+      changes: "Add empty-output check, STDERR inspection, retry with backoff, diagnostic logging"
+    - path: scripts/review/cross-review.sh
+      changes: "Improve Gemini failure classification in submit_review gemini case"
+  related_wrks:
+    - WRK-5124 (timeout fix for stage5 gate check)
+    - WRK-1083 (429 rate limit precedent)
+    - WRK-1008 (NO_OUTPUT fallback policy)
+  platform_notes: "Bash scripts — Linux/macOS native, WSL on Windows. Fix logic is platform-agnostic (JSON validation, file size checks)."

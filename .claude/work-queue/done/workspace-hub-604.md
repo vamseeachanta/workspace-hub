@@ -1,0 +1,95 @@
+---
+id: workspace-hub#604
+title: "docs(digitalmodel): add calc_examples mapping — pipeline domain"
+status: done
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-25T00:00:00Z
+completed_at: 2026-02-25
+target_repos:
+  - workspace-hub
+commit:
+spec_ref: specs/data-sources/digitalmodel.yaml
+related:
+  - WRK-309
+  - WRK-482
+  - WRK-497
+  - WRK-498
+  - WRK-499
+blocked_by: []
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-560/evidence/stage-evidence.yaml
+category: engineering
+subcategory: calculation-examples
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/604
+---
+# docs(digitalmodel): Add Calc Examples Mapping — Pipeline Domain
+
+## What
+
+Add a `calc_examples` section to `specs/data-sources/digitalmodel.yaml` for the
+**pipeline domain**, linking real project calculation files from the document index
+to each standard gap (DNV-OS-F101, DNV-OS-F201, DNV-RP-F109, API-RP-1111, etc.).
+
+Each `calc_examples` entry ties a specific gap to concrete project workbooks/reports
+that demonstrate how that standard's checks are applied in practice.
+
+## Why
+
+These calculation files are the basis for writing tests in new pipeline modules.
+Each project calc (e.g., propagation buckle check in Excel, wall thickness report
+in PDF) provides expected inputs and outputs that unit tests can be validated against.
+Without this mapping, gap WRK items (WRK-497..503) cannot reference test data.
+
+## Calculation Files Identified (from index query 2026-02-25)
+
+### DNV OS F101 / Pressure Containment / Wall Thickness
+- `/mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx`
+- `/mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/` (multiple Excel calcs)
+
+### Mecor Pipeline — propagation buckle (API 1111 / DNV OS F101)
+- Likely in `/mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/`
+- Query: `scripts/readiness/query-docs.sh --domain pipeline --keyword "propagat"` to verify
+
+### General pipeline design calcs
+- `/mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx`
+
+## Steps
+
+1. Run `scripts/readiness/query-docs.sh --domain pipeline --status gap` to list pipeline gap docs
+2. For each gap in `specs/data-sources/digitalmodel.yaml` gaps list (DNV-OS-F101, F201, F109, API-1111):
+   - Search index for calc files with matching keywords and doc-number patterns (`/CAL/`, `-CAL-`)
+   - Filter to files with `.pdf` / `.xlsx` extensions
+   - Select 3-5 most relevant files per standard
+3. Add `calc_examples:` section to `specs/data-sources/digitalmodel.yaml` below `gaps:`:
+   ```yaml
+   calc_examples:
+   - standard: DNV-OS-F101
+     domain: pipeline
+     description: Pipeline pressure containment and wall thickness checks
+     files:
+     - path: /mnt/ace/docs/disciplines/production/projects/.../CAL/...xlsx
+       description: Wall thickness calculation workbook — NNNN project
+       type: xlsx
+   ```
+4. Verify paths are accessible on dev-primary (or note `host: dev-secondary/dde` where relevant)
+5. Commit to workspace-hub
+
+## Acceptance Criteria
+
+- [x] `calc_examples` section added to `specs/data-sources/digitalmodel.yaml` for pipeline domain
+- [x] DNV-OS-F101: 5 files (0116 thinwall × 2, mecor DNV WT sizing, pipe checks, propagation checks)
+- [x] DNV-OS-F201: 4 files (Paleogene production riser × 2, 0099 drilling riser, von Mises check)
+- [x] DNV-RP-F109: 4 files (metocean data, weight matching, weight verification, DNV WT for geometry)
+      Note: no standalone F109 stability spreadsheet in archive; files provide input data layer
+- [x] API-RP-1111: 5 files (API WT sizing, propagation buckle, stress-strain, ASME/API combined, TJG pipelay)
+- [x] All file paths verified accessible on dev-primary (`ls -la` confirmed)
+- [x] WRK-497 updated with calc_examples reference block

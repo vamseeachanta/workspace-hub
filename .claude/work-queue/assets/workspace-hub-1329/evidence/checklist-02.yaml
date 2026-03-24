@@ -1,0 +1,30 @@
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Search codebase — existing code, skills, tests in target repos"
+    completed: true
+  - id: CL-02-2
+    text: "Query knowledge base"
+    completed: true
+  - id: CL-02-3
+    text: "Search document-index for relevant prior art"
+    completed: true
+  - id: CL-02-4
+    text: "Online research — WebSearch for standards, papers, tools, best practices"
+    completed: true
+    notes: "Tested Gemini CLI v0.32.1 directly — confirmed stdin+prompt works, output-format json produces wrapper JSON"
+  - id: CL-02-5
+    text: "Save discovered documents"
+    completed: true
+    notes: "N/A — no external documents needed"
+  - id: CL-02-6
+    text: "Update document-index"
+    completed: true
+    notes: "N/A — no new entries"
+  - id: CL-02-7
+    text: "Assess complexity (simple/medium/complex)"
+    completed: true
+    notes: "medium — targeted bash script fix with clear root cause"
+  - id: CL-02-8
+    text: "Write evidence/resource-intelligence.yaml"
+    completed: true

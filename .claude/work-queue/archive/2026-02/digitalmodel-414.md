@@ -1,0 +1,32 @@
+---
+id: digitalmodel#414
+title: "Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder"
+status: archived
+priority: high
+complexity: simple
+category: engineering
+subcategory: standards
+compound: false
+created_at: 2026-02-20T00:00:00Z
+target_repos:
+  - workspace-hub
+related: [WRK-280]
+blocked_by: []
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-282/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/414
+---
+# Migrate raw ABS docs into structured ABS/ folder
+
+## What
+
+`/mnt/ace/O&G-Standards/raw/0000 Codes & Standards/ABS/` contains unprocessed ABS documents
+(sub-folders ABS 00, 002, 057, 101, 104, 115, 123 and loose PDFs). These predate the structured
+archive and need migrating to `/mnt/ace/O&G-Standards/ABS/`.
+
+## Acceptance Criteria
+
+- [ ] All ABS docs from raw/ moved to ABS/Guidance-Notes/ or ABS/Rules/ as appropriate
+- [ ] INDEX.md updated with every new file
+- [ ] raw/ABS/ folder empty after migration

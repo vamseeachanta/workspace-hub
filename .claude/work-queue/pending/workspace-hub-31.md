@@ -1,0 +1,101 @@
+---
+id: workspace-hub#31
+title: "Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo"
+status: pending
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-03-03T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: []
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+orchestrator: codex
+subcategory: cleanup
+category: maintenance
+stage_evidence_ref: .claude/work-queue/assets/WRK-1001/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/31
+---
+# Clean up unnecessary files in .claude/ folder
+
+## What
+
+Five cleanup/relocation tasks:
+
+1. **`.claude/` folder cleanup** — remove empty directories, stale backup
+   files, dead code, and redundant registry/doc files.
+2. **`achantas-data` relocation** — move `/mnt/local-analysis/achantas-data`
+   into `/mnt/local-analysis/workspace-hub/achantas-data`.
+3. **`workspace-hub-revert-pr2` worktree removal** — git worktree on branch
+   `chore/revert-pr2-58e3f21`; confirm branch no longer needed and remove.
+4. **Workspace-hub root artifact cleanup** — delete ~23 0-byte garbage
+   files (mermaid node labels accidentally created as files, e.g.
+   `B[Resource`, `C[Triage]`, `K[Execute]`, `**Module**:`, `-`,
+   `Version:`); delete `.coverage`, `reproduce_bug.py`,
+   `paraview.80s-478634,dev-secondary.btr`.
+5. **`aceengineer-strategy` relocation** — move
+   `/mnt/local-analysis/aceengineer-strategy` into workspace-hub; keep
+   GitHub repo private.
+
+## Why
+
+The `.claude/` folder has accumulated empty directories, a stale 16KB
+backup, dead Python tool files, and duplicate registry/doc files over
+time. Cleaning these up reduces confusion about what is canonical.
+
+`achantas-data` and `aceengineer-strategy` sit outside the workspace-hub
+tree, making them invisible to hub tooling. The revert worktree is stale.
+Consolidating everything in-tree aligns with workspace conventions.
+
+## Acceptance Criteria
+
+- [ ] Empty dirs deleted: `backups/`, `checkpoints/`, `outputs/`,
+      `plans/`, `reports/`, `memory/`, `knowledge/`, `agent-library/`,
+      `tools/`, `workflows/`, `agents/`, `templates/`
+- [ ] Stale files deleted: `CLAUDE.md.backup`, `NEW_SKILLS_SUMMARY.md`
+- [ ] Redundant registry files reviewed; only one canonical registry kept:
+      `skill-registry.yaml`, `skills-index.yaml`, `agent-skills-map.yaml`
+- [ ] Redundant docs reviewed; content merged or deleted:
+      `CONFIGURATION.md`, `COORDINATION.md`, `RESOURCE_INDEX.md`
+- [ ] No active references broken (grep check before each delete)
+- [ ] ~23 0-byte garbage files deleted from workspace-hub root
+      (`B[Resource`, `C[Triage]`, `**Module**:`, `-`, `Version:`, etc.)
+- [ ] `.coverage`, `reproduce_bug.py`, `paraview.80s-478634,dev-secondary.btr`
+      deleted from workspace-hub root
+- [ ] Git commit with .claude/ + root cleanup changes
+- [ ] `aceengineer-strategy` moved to
+      `/mnt/local-analysis/workspace-hub/aceengineer-strategy`
+- [ ] GitHub repo `vamseeachanta/aceengineer-strategy` remains private
+- [ ] Submodule pointer added to workspace-hub if appropriate
+- [ ] `achantas-data` moved from `/mnt/local-analysis/achantas-data` to
+      `/mnt/local-analysis/workspace-hub/achantas-data`
+- [ ] Any scripts/configs referencing the old path updated
+- [ ] Verify data integrity after move (file count matches)
+- [ ] Assess and remove/archive git worktree at
+      `/mnt/local-analysis/workspace-hub-revert-pr2` (branch
+      `chore/revert-pr2-58e3f21`); confirm branch is no longer needed,
+      then `git worktree remove` it
+
+## Agentic AI Horizon
+
+- Low AI leverage — purely mechanical cleanup; no agentic upside to waiting.
+- Do it now; keep it simple.
+
+---
+*Source: User requests — (1) clean up .claude/ folder; (2) move
+achantas-data into workspace-hub; (3) remove stale revert worktree;
+(4) move aceengineer-strategy into workspace-hub (keep private)*

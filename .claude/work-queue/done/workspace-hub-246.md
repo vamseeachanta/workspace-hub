@@ -1,0 +1,53 @@
+---
+id: workspace-hub#246
+title: "Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM"
+status: done
+priority: high
+complexity: simple
+compound: false
+created_at: 2026-02-16T00:00:00Z
+target_repos: []
+target_module:
+commit:
+spec_ref:
+related: []
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: true
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+provider_alt:
+stage_evidence_ref: .claude/work-queue/assets/WRK-167/evidence/stage-evidence.yaml
+category: personal
+subcategory: household
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/246
+---
+# Calendar: Krishna ADHD Evaluation
+
+## What
+Add calendar event: **Krishna ADHD evaluation** on **24 February 2026 at 2:30 PM – 4:00 PM**.
+
+## Why
+Medical appointment — must not be missed.
+
+## Acceptance Criteria
+- [ ] Event added to calendar (Google Calendar or system calendar)
+- [ ] Reminder set (at least 1 day before + 1 hour before)
+
+## Plan
+- Add event to Google Calendar via CLI or browser
+- Set reminders: 1 day before + 1 hour before
+
+---
+*Source: add to calendar 24th Feb 2:30 AM Krishna ADHD evaluation*
+
+## Agentic AI Horizon
+
+- Calendar appointment tracking is a personal admin task with no ecosystem agentic value.
+- Calendar management agents will handle this autonomously; the event itself is time-critical regardless.
+- **Disposition: do now** — time-sensitive calendar item; ensure the appointment is confirmed and on the calendar immediately.

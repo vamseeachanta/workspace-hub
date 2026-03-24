@@ -1,0 +1,44 @@
+---
+id: worldenergydata#203
+title: "worldenergydata module discoverability review — regenerate after new data source modules"
+status: archived
+priority: medium
+complexity: simple
+category: data
+subcategory: ingestion
+compound: false
+created_at: 2026-02-20T00:00:00Z
+target_repos:
+  - worldenergydata
+commit:
+spec_ref:
+related: [WRK-096, WRK-190, WRK-194, WRK-018]
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-252/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/203
+---
+# worldenergydata module discoverability review — regenerate after new data source modules
+
+## What
+Re-run the worldenergydata module discoverability review (originally WRK-096) now that significant new modules have been added: NCS/WRK-190, Brazil ANP/WRK-194, adapters/WRK-018. Generate a machine-readable module manifest. Fold into the skills knowledge graph.
+
+## Why
+The original discoverability improvements are outdated — new modules added since WRK-096 are not indexed or discoverable by agents.
+
+## Acceptance Criteria
+- [ ] Updated module index covering all data source modules including NCS, Brazil ANP, BSEE, OSHA, PHMSA, LNG, and marine safety
+- [ ] Machine-readable manifest generated at `worldenergydata/module-manifest.yaml`
+- [ ] Linked to skills knowledge graph (WRK-205)
+- [ ] Agents can query "available data sources by region/type"
+
+## Agentic AI Horizon
+- Prerequisite for autonomous data analysis — agents cannot use modules they cannot discover
+- Low effort, generates from existing code; the WRK-252 manifest will also inform WRK-247 (digitalmodel manifest) approach
+- **Disposition: invest now** — low effort, high discoverability value, prerequisite for autonomous data workflows

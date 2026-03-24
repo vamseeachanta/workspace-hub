@@ -1,0 +1,15 @@
+stage: 9
+wrk_id: workspace-hub-1345
+items:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    completed: true
+    completed_at: "2026-03-24T13:18:00Z"
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    completed: true
+    completed_at: "2026-03-24T13:18:00Z"
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    completed_at: "2026-03-24T13:18:00Z"

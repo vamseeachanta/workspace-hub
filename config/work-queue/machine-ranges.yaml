@@ -1,18 +1,16 @@
 # ╔═══════════════════════════════════════════════════════════════════════════╗
-# ║  DEPRECATED (WRK-5097, 2026-03-23)                                      ║
+# ║  LEGACY (WRK-5097 / WRK-5140)                                           ║
 # ║                                                                          ║
-# ║  Machine-partitioned ranges are no longer needed. New WRK IDs are now    ║
-# ║  derived from GitHub issue numbers via gh-next-id.sh, providing a        ║
-# ║  single global counter. This file is retained for reference and for      ║
-# ║  backward compatibility with legacy next-id.sh callers.                  ║
-# ║                                                                          ║
-# ║  Removal planned: 30 days after all callers migrate to gh-next-id.sh.   ║
+# ║  Machine-partitioned ranges are no longer used for new allocations.      ║
+# ║  WRK IDs are now derived from GitHub issue numbers via gh-next-id.sh,    ║
+# ║  providing a single global counter. This file is retained for            ║
+# ║  historical reference only.                                              ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 #
-# Machine-partitioned WRK ID ranges (LEGACY)
+# Machine-partitioned WRK ID ranges (LEGACY — not used for new allocations)
 #
-# Each machine owns a non-overlapping numeric range.
-# next-id.sh reads this file, detects $HOSTNAME, and enforces a floor.
+# Each machine previously owned a non-overlapping numeric range.
+# These ranges are no longer enforced; gh-next-id.sh is the sole allocator.
 #
 # Re-allocation policy: when MAX_ID is within 50 of the ceiling,
 # request a new ceiling block from the workspace-hub maintainer and

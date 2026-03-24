@@ -1,0 +1,73 @@
+---
+id: workspace-hub#612
+title: "docs(doris): add calc_examples mapping — pipeline design calcs"
+status: done
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-25T00:00:00Z
+target_repos:
+  - doris
+  - workspace-hub
+commit:
+spec_ref: specs/data-sources/doris.yaml
+related:
+  - WRK-309
+  - WRK-497
+  - WRK-499
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-564/evidence/stage-evidence.yaml
+category: engineering
+subcategory: pipeline
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/612
+---
+# docs(doris): Add Calc Examples Mapping — Pipeline Design Calcs
+
+## What
+
+Add a `calc_examples` section to `specs/data-sources/doris.yaml` linking real
+project pipeline design calculation files to the doris gaps (DNV-OS-F101 pressure
+containment, API-RP-1111 wall thickness, DNV-RP-F109 on-bottom stability).
+
+Also review and update `specs/data-sources/doris.yaml` — the current file may be
+sparse; add any doris-specific standards with their paths from the index.
+
+## Why
+
+Doris is the primary pipeline design calculation repo. All calculation Excel files
+in the pipeline domain of the index should be mapped here so doris developers know
+what reference implementations exist when coding new checks.
+
+## Steps
+
+1. Read current `specs/data-sources/doris.yaml`
+2. Query `scripts/readiness/query-docs.sh --domain pipeline --status gap` for doris-relevant calcs
+3. Search index for pipeline calc files with doc-number patterns in `/mnt/ace/docs/` and `/mnt/dde/`
+4. For each major calculation type (pressure containment, wall thickness, propagation,
+   on-bottom stability, upheaval buckling), find 3-5 representative project calc files
+5. Add `calc_examples:` section to doris.yaml
+6. Search for any additional pipeline standards in `/mnt/ace/0000 O&G/` not yet in doris.yaml
+
+## Key Pipeline Calc Categories to Map
+
+- Pressure containment (SMYS/SMTS-based wall thickness): DNV OS F101 Sec 5
+- Propagation buckle initiation/arrest: API RP 1111 Sec 4
+- On-bottom stability (hydrodynamic loads): DNV RP F109
+- Upheaval buckling (DNV RP F110 - pipeline expansion)
+- Pipelay S-lay tensioner calcs: DNV OS F101 / installation
+
+## Acceptance Criteria
+
+- [ ] `specs/data-sources/doris.yaml` updated with `calc_examples` section
+- [ ] At least 10 calc files mapped across the 5 pipeline calculation categories
+- [ ] File paths verified accessible from dev-primary (or note dde host)
+- [ ] Any doris standards not yet in YAML added as `status: gap`
+- [ ] Legal scan passes

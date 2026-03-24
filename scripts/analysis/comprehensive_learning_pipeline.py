@@ -114,13 +114,17 @@ def create_wrk_item(title, description, priority="low", source="comprehensive-le
         try:
             fcntl.flock(lock_file, fcntl.LOCK_EX)
             
-            # Get next ID using next-id.sh
+            # Get next ID using gh-next-id.sh
             try:
-                next_id = subprocess.check_output(["bash", os.path.join(WS_HUB, "scripts", "work-queue", "next-id.sh")]).decode().strip()
+                _gh_out = subprocess.check_output(
+                    ["bash", os.path.join(WS_HUB, "scripts", "work-queue", "gh-next-id.sh"),
+                     "--title", title[:80]],
+                ).decode().strip()
+                next_id = _gh_out.split("\n")[0]
             except Exception as e:
                 print(f"Error getting next ID: {e}")
                 return None
-                
+
             wrk_file = os.path.join(PENDING_WRK_DIR, f"WRK-{next_id}.md")
             
             # Sanitize inputs

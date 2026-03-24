@@ -1,0 +1,13 @@
+# Repos participating in GH-first work queue
+# gh-sync-down.sh iterates this list for delta-sync
+# setup-gh-labels.sh deploys labels to each repo
+# deploy-gh-templates.sh pushes issue templates to each repo
+owner: vamseeachanta
+repos:
+  - workspace-hub
+  - digitalmodel
+  - worldenergydata
+  - sabithaandkrishnaestates
+  - aceengineer-admin
+  - aceengineer-website
+  - assethold

@@ -1,0 +1,119 @@
+---
+id: workspace-hub#114
+title: "SSHFS mounts on dev-primary for dev-secondary drives — bidirectional file access"
+status: pending
+priority: high
+complexity: simple
+compound: false
+created_at: 2026-02-21T00:00:00Z
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: [WRK-287, WRK-294, WRK-295, WRK-342]
+blocked_by: [WRK-294]
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 0
+brochure_status: n/a
+stage_evidence_ref: .claude/work-queue/assets/WRK-297/evidence/stage-evidence.yaml
+subcategory: workstations
+category: platform
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/114
+---
+# SSHFS mounts on dev-primary for dev-secondary drives
+
+## What
+
+Configure SSHFS mounts on dev-primary so it can access dev-secondary's drives seamlessly.
+This is the reverse direction — dev-secondary already mounts dev-primary's workspace-hub via
+SSHFS. Both machines should have full bidirectional drive access.
+
+## Why
+
+- dev-secondary already has SSHFS access to dev-primary (workspace-hub mounted at `/mnt/workspace-hub`)
+- dev-primary has **no access** to dev-secondary's drives
+- Bidirectional access needed: work from either seat, access any data from either machine
+- dev-secondary has 2.7 TB bulk storage (`/mnt/dde`) not available from dev-primary
+
+## Prerequisites (all met)
+
+- [x] SSH key auth dev-primary → dev-secondary: working (WRK-295)
+- [x] openssh-server on dev-secondary: installed (this session)
+- [x] /etc/hosts: both machines know each other
+- [ ] WRK-294 mount paths active on dev-secondary (needs reboot)
+
+## Current State
+
+### dev-primary local mounts
+| Mount Point | Device | Size | Type |
+|-------------|--------|------|
+------|
+| /mnt/ace | /dev/sda1 | 7.3 TB | ext4 |
+| /mnt/local-analysis | /dev/sdc1 | 932 GB | ntfs |
+| / | /dev/sdb2 | 233 GB | ext4 (boot SSD) |
+
+### dev-secondary local mounts (after WRK-294 reboot)
+| Mount Point | Device | Size | Type |
+|-------------|--------|------|
+------|
+| /mnt/local-analysis | /dev/sda2 | 931 GB | ntfs |
+| /mnt/dde | /dev/sdc2 | 2.7 TB | ntfs |
+| / | /dev/sdb1 | 466 GB | ext4 (boot SSD) |
+
+## Target Remote Mounts on dev-primary
+
+| Remote Path | Mount Point on dev-primary | Purpose |
+|-------------|---------------------------|
+---------|
+| dev-secondary:/mnt/local-analysis | /mnt/remote/dev-secondary/local-analysis | Access AE-02 workspace data |
+| dev-secondary:/mnt/dde | /mnt/remote/dev-secondary/dde | Access AE-02 bulk storage |
+
+## Steps
+
+### On dev-primary:
+
+1. Install sshfs if not present: `sudo apt install -y sshfs`
+2. Create mount points:
+   ```bash
+   sudo mkdir -p /mnt/remote/dev-secondary/local-analysis
+   sudo mkdir -p /mnt/remote/dev-secondary/dde
+   sudo chown -R vamsee:vamsee /mnt/remote
+   ```
+3. Test manual mount:
+   ```bash
+   sshfs vamsee@dev-secondary:/mnt/local-analysis /mnt/remote/dev-secondary/local-analysis
+   sshfs vamsee@dev-secondary:/mnt/dde /mnt/remote/dev-secondary/dde
+   ```
+4. Verify: `ls /mnt/remote/dev-secondary/local-analysis` and `ls /mnt/remote/dev-secondary/dde`
+5. Add fstab entries for persistence:
+   ```
+   vamsee@dev-secondary:/mnt/local-analysis /mnt/remote/dev-secondary/local-analysis fuse.sshfs defaults,_netdev,x-systemd.automount,IdentityFile=/home/vamsee/.ssh/id_ed25519,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,nofail 0 0
+   vamsee@dev-secondary:/mnt/dde /mnt/remote/dev-secondary/dde fuse.sshfs defaults,_netdev,x-systemd.automount,IdentityFile=/home/vamsee/.ssh/id_ed25519,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,nofail 0 0
+   ```
+6. `sudo systemctl daemon-reload && sudo mount -a`
+
+### Also standardize dev-secondary's existing SSHFS mount
+
+The current mount on dev-secondary (`/mnt/workspace-hub` from dev-primary) should follow
+the same `/mnt/remote/<hostname>/` convention for consistency:
+
+| Current | Target |
+|---------|
+--------|
+| /mnt/workspace-hub (just workspace-hub) | /mnt/remote/dev-primary/local-analysis (full drive) |
+
+This can be addressed as a follow-up after WRK-294 reboot stabilizes.
+
+## Acceptance Criteria
+
+- [ ] sshfs installed on dev-primary
+- [ ] /mnt/remote/dev-secondary/local-analysis accessible from dev-primary
+- [ ] /mnt/remote/dev-secondary/dde accessible from dev-primary
+- [ ] fstab entries with _netdev,x-systemd.automount for persistence
+- [ ] Mounts survive reboot
+- [ ] `ls`, `git status` work from mount points

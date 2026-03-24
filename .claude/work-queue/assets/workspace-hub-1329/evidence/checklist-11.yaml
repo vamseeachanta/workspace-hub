@@ -1,0 +1,10 @@
+stage: 11
+items:
+  - id: CL-11-1
+    text: "Identify required artifacts"
+    completed: true
+    notes: "Single script modification — no additional artifacts needed"
+  - id: CL-11-2
+    text: "Generate artifacts"
+    completed: true
+    notes: "N/A — bug fix, no new artifacts"

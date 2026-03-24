@@ -1,0 +1,190 @@
+---
+id: workspace-hub#694
+title: "feat(skills): define Resource Intelligence skill and validator-ready stage contract"
+status: done
+route: C
+priority: high
+complexity: complex
+compound: false
+created_at: 2026-02-28T00:00:00Z
+completed_at: 2026-03-01T12:15:00Z
+target_repos:
+  - workspace-hub
+commit: 06d4c15
+spec_ref: specs/wrk/WRK-655/plan.md
+related:
+  - WRK-624
+blocked_by: []
+parent:
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+brochure_status: n/a
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+orchestrator: claude
+cross_review: codex=REQUEST_CHANGES(resolved), gemini=APPROVE
+html_output_ref: assets/WRK-655/wrk-655-resource-intelligence-review.html
+resource_pack_ref: .claude/work-queue/assets/WRK-655/resource-pack.md
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-655/plan-html-review-draft.md
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-655/plan-html-review-final.md
+claim_routing_ref: .claude/work-queue/assets/WRK-655/claim-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+html_verification_ref: .claude/work-queue/assets/WRK-655/html-verification.md
+stage_evidence_ref: .claude/work-queue/assets/WRK-655/evidence/stage-evidence.yaml
+category: harness
+subcategory: workflow-gates
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/694
+---
+# feat(skills): Define Resource Intelligence Skill and Validator-Ready Stage Contract
+
+## Problem
+
+`Resource Intelligence` is now part of the canonical `WRK-624` workflow, but it is
+still the loosest stage in practice:
+
+- the stage is described in policy, but not yet operationalized through a dedicated skill
+- its artifact contract is not yet validator-checkable end to end
+- repo context, document intelligence, legal scan, prior learnings, and skill routing
+  are known concepts, but not yet presented as one defined workflow
+- relevant online codes, standards, and documents are not yet systematically downloaded, documented, and placed in durable reference locations
+- user review of stage gaps is not yet backed by a reusable ecosystem skill
+
+Without a first-class skill, the stage risks degenerating into inconsistent, ad hoc
+research notes that vary by agent and session.
+
+## What
+
+Create or enhance the ecosystem so `Resource Intelligence` becomes a defined, reusable
+skill-driven stage.
+
+## First-Pass Implementation Progress
+
+- canonical skill created at `.claude/skills/workspace-hub/resource-intelligence/`
+- mounted-source registry created at `data/document-index/mounted-source-registry.yaml`
+- maturity ledger created at `data/document-index/resource-intelligence-maturity.yaml`
+- linked maturity summary created at `data/document-index/resource-intelligence-maturity.md`
+- `WRK-655` resource-pack artifacts created under `.claude/work-queue/assets/WRK-655/`
+- `WRK-624` references updated to point to the canonical skill path
+
+### Scope
+
+1. **Create or enhance a dedicated Resource Intelligence skill**
+   - canonical path under `.claude/skills/`
+   - clear trigger conditions
+   - minimal but reusable workflow
+   - explicit artifact outputs for the WRK resource pack
+
+2. **Define the stage knowledge map**
+   - repo lifecycle wrapper
+   - domain context loader
+   - repo/document inventory
+   - document intelligence / indexing
+   - prior knowledge surfacing
+   - legal scan
+   - agent-fit and quota awareness
+   - deep-learning handoff
+   - reviewed capability authority for routing and quota decisions
+
+3. **Define the stage gap model**
+   - `P1`: blocking gaps
+   - `P2`: material but non-blocking gaps
+   - `P3`: enhancement gaps
+   - explicit rule:
+     - surface `P1` gaps to user first
+     - pause for user when unresolved `P1` gaps remain
+     - continue when no `P1` gaps remain
+
+4. **Make the stage validator-ready**
+   - define minimum artifact presence rules
+   - define minimum content/section rules
+   - define legal-scan proof location
+   - define how document-intelligence indexing is recorded
+   - define provenance, storage, and dedup rules for downloaded complementary sources
+
+5. **Update workflow references**
+  - `WRK-624` spec and HTML should point to the new skill and stage contract
+  - recommended-next-work section should reflect the new stage capability
+6. **Increase long-term intelligence value**
+   - relevant online codes, standards, and documents should be downloaded only as complements to existing document-intelligence sources
+   - each downloaded source should have provenance, licensing/access status, and canonical storage location recorded
+   - downloaded sources should be documented in document intelligence
+   - downloaded sources should be placed in the relevant reference location for future reuse
+   - used to compound repository intelligence over time
+
+## Knowledge Map to Support This WRK
+
+| Role | Skill / System | Purpose |
+|---|---|---|
+| Lifecycle wrapper | `work-queue` | Align stage artifacts to WRK lifecycle |
+| Domain scoping | `engineering-context-loader` | Narrow relevant domain context and standards |
+| Repo/document scan | `document-inventory` | Inventory source collections before deeper processing |
+| Document intelligence | `document-rag-pipeline` | Build searchable document context when needed |
+| Prior learnings | `knowledge-manager` | Surface prior decisions, patterns, gotchas |
+| Legal check | `legal-sanity` | Check resource-pack artifacts for sensitive content |
+| Agent fit | `agent-router` | Help select best provider mix for later stages |
+| Quota awareness | `agent-usage-optimizer` | Keep downstream claim/review work within quota |
+| Deep synthesis | `comprehensive-learning` | Consume outputs later for slower ecosystem learning |
+
+## Acceptance Criteria
+
+- [ ] Resource Intelligence executes through a defined skill, not ad hoc instructions
+- [ ] Skill defines required artifacts for `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, and `resources.yaml`
+- [ ] Skill defines a visible `P1/P2/P3` gap-ranking model
+- [ ] Skill defines user-pause behavior for unresolved `P1` gaps
+- [ ] Stage knowledge map is documented and easy for the user to inspect/tweak
+- [ ] Capability review of `agent-router` and `agent-usage-optimizer` is completed or a bounded interim-routing rule is documented explicitly
+- [ ] Validator-ready rules are documented for minimum stage completion
+- [ ] `WRK-624` references are updated to point at the new skill contract
+- [ ] Relevant online codes, standards, and documents are downloaded only as additive complements to existing document-intelligence sources, documented with provenance, and placed in the appropriate long-term reference location
+- [ ] The plan defines a 3-month repository-intelligence maturity target and tracking method
+- [ ] The plan defines example-rich validation cases for this repository's Resource Intelligence stage
+- [ ] Legal scan passes
+
+## Suggested Improvements From Review
+
+1. Add `route: C` directly to WRK frontmatter so the item itself is a clean example of the tightened contract.
+2. Treat blank `plan_html_review_final_ref` and `claim_routing_ref` as stage-pending fields, not omissions:
+   - `plan_html_review_final_ref` remains empty until post-review
+   - `claim_routing_ref` remains empty until claim/execution
+3. Require downloaded-source provenance to be recorded in `resources.yaml` with:
+   - source URL or origin
+   - license/access status
+   - retrieval date
+   - canonical storage path
+   - duplicate/superseded relationship if any
+4. Require a formal capability review of `agent-router` and `agent-usage-optimizer`, or else record an explicit interim-routing rule with limits.
+5. Define repository-native example cases for validation before execution.
+
+## User Decisions Recorded
+
+1. **Skill target**: create a new canonical `resource-intelligence` skill.
+2. **Mounted-source registry location**: use the best-structured location as long as the registry is clearly linked to existing document-intelligence assets and well documented for AI agents.
+3. **Routing authority approach**: use the interim-routing rule first; `agent-router` is advisory for fit, `agent-usage-optimizer` is advisory for quota, and the orchestrator retains final authority.
+4. **Tracking artifacts for the 3-month metric**: use both YAML and Markdown, with the Markdown linked to the YAML to prevent drift.
+5. **Minimum first-pass example set**: accept the recommended example set from the plan.
+
+## Repository-Native Example Sources
+
+These are the most relevant baseline sources to validate the Resource Intelligence stage in `workspace-hub`:
+
+1. `AGENTS.md`
+2. `.claude/work-queue/process.md`
+3. `specs/wrk/WRK-624/plan.md`
+4. `assets/WRK-624/wrk-624-workflow-review.html`
+5. `scripts/work-queue/validate-queue-state.sh`
+6. `scripts/work-queue/claim-item.sh`
+7. `scripts/work-queue/close-item.sh`
+8. `.claude/skills/coordination/orchestration/agent-router/SKILL.md`
+9. `.claude/skills/ai/agent-usage-optimizer/SKILL.md`
+10. `.claude/skills/data/documents/document-rag-pipeline/SKILL.md`
+
+## Notes
+
+- Prefer enhancing an existing skill if one already cleanly fits the role; only create a new one if that produces a clearer ecosystem contract.
+- Keep the skill concise; push detailed references into linked files where needed.
+- The goal is not generic “research guidance.” The goal is a repeatable, inspectable
+  stage contract that materially improves planning quality.

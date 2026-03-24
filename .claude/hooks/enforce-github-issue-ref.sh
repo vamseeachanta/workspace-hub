@@ -30,12 +30,16 @@ QUEUE_DIR="$REPO_ROOT/.claude/work-queue"
 violations=()
 
 # Check staged WRK files in working/ and done/
+declare -A _seen_hook_files=()
 for folder in working done; do
     dir="$QUEUE_DIR/$folder"
     [[ -d "$dir" ]] || continue
 
-    for wrk_file in "$dir"/WRK-*.md; do
+    for wrk_file in "$dir"/WRK-*.md "$dir"/*-[0-9]*.md; do
         [[ -f "$wrk_file" ]] || continue
+        _bname="$(basename "$wrk_file")"
+        [[ -n "${_seen_hook_files[$_bname]+x}" ]] && continue
+        _seen_hook_files["$_bname"]=1
 
         # Only check if this file is staged for commit
         rel_path="${wrk_file#"$REPO_ROOT"/}"

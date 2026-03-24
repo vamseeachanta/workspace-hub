@@ -1,0 +1,14 @@
+stage: 9
+items:
+  - id: CL-09-1
+    description: "All required skills loaded"
+    completed: true
+    evidence: "work-queue-workflow, workflow-gatepass, pdf, pdf-text-extractor"
+  - id: CL-09-2
+    description: "Delivery order confirmed"
+    completed: true
+    evidence: "Single-pass, Route A sequence: 10→14→17→18→19→20"
+  - id: CL-09-3
+    description: "routing.yaml written"
+    completed: true
+    evidence: "work_queue_skill=loaded, work_wrapper_complete=true"

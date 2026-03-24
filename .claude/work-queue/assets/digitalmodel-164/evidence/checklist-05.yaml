@@ -1,0 +1,27 @@
+stage: 5
+items:
+  - id: CL-05-1
+    description: "Plan draft presented to user"
+    completed: true
+    approved_by: user
+    evidence: "Plan summary posted to GitHub issue 164 (digitalmodel) and discussed in conversation"
+  - id: CL-05-2
+    description: "User review decision captured"
+    completed: true
+    approved_by: user
+    evidence: "User approved stage 5 in conversation"
+  - id: CL-05-3
+    description: "Test plan reviewed"
+    completed: true
+    approved_by: user
+    evidence: "5-row test plan in specs/wrk/WRK-1304/plan.md — user approved full plan"
+  - id: CL-05-4
+    description: "All requested revisions applied"
+    completed: true
+    approved_by: user
+    evidence: "No revisions requested — plan approved as-is"
+  - id: CL-05-5
+    description: "Explicit user approval received (I approve stage 5)"
+    completed: true
+    approved_by: user
+    evidence: "User typed 'i approve stage 5' in conversation"

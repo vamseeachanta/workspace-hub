@@ -1,0 +1,16 @@
+wrk_id: WRK-1304
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - work-queue-workflow
+  - workflow-gatepass
+  - pdf
+  - pdf-text-extractor
+delivery_order: single-pass
+stage_sequence_from_here:
+  - 10  # Work Execution
+  - 14  # Verify Gate Evidence
+  - 17  # User Review Implementation
+  - 18  # Reclaim
+  - 19  # Close
+  - 20  # Archive

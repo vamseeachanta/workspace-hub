@@ -1,0 +1,14 @@
+wrk_id: WRK-1304
+verdict: APPROVE
+reviewers:
+  - provider: claude
+    verdict: APPROVE
+    file: evidence/cross-review-claude.md
+p1_findings: []
+p2_findings:
+  - "Two additional files reference Codex: pdf/dependencies/SKILL.md and data/documents/INDEX.md — add to scope"
+actions_taken:
+  - "Will include pdf/dependencies/SKILL.md and INDEX.md in implementation"
+  - "Will increment version numbers in frontmatter"
+  - "Will add pymupdf4llm version pin in install instructions"
+  - "Will keep brief AGPL note rather than removing entirely"

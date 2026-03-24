@@ -1,0 +1,46 @@
+---
+id: workspace-hub#1264
+title: "OrcaFlex frame analysis"
+status: pending
+priority: high
+complexity: medium
+created_at: "2026-03-19"
+parent: WRK-5082
+blocked_by: [WRK-1360, WRK-1362]
+target_repos: [workspace-hub]
+computer: dev-primary
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: engineering-calculations
+subcategory: structural-dynamics
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1264
+---
+
+## Mission
+
+Build a static/quasi-static frame model in OrcaFlex with applied parachute drag force — independent verification of 2D and CalculiX results.
+
+## What
+
+1. **Model frame** as OrcaFlex line objects with correct geometry from WRK-1360
+2. **Define section properties**: 4130 chromoly tube (OD/wall from CAD), EA/EI/GJ
+3. **Apply boundary conditions**: fixed supports at vehicle mount points (C3, B1)
+4. **Apply static drag force** from WRK-1362 at chute attachment point
+5. **Run static analysis** for all load cases (200/250 MPH)
+6. **Extract**: member forces, reactions, deflections at key points
+
+Execution on **licensed-win-1** (OrcaFlex license required).
+
+## Why
+
+OrcaFlex provides an independent third-party verification of the frame analysis — different solver, different element formulation. Comparing with 2D direct stiffness and CalculiX builds confidence in the results.
+
+## Acceptance Criteria
+
+- [ ] OrcaFlex model built with correct frame geometry and section properties
+- [ ] Static analysis completed for 200 MPH and 250 MPH load cases
+- [ ] Member forces and reactions extracted at all support points
+- [ ] Deflections at chute attachment point reported
+- [ ] Results exported to YAML for cross-tool comparison (WRK-1366)
+- [ ] Comparison with 2D/CalculiX results documented (% difference)

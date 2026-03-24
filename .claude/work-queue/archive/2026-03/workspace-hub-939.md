@@ -1,0 +1,48 @@
+---
+id: workspace-hub#939
+title: "Generator sequencing — paralleling, load-shed, black-start state machine"
+status: archived
+priority: high
+complexity: complex
+created_at: 2026-03-13
+target_repos: [digitalmodel]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: career
+subcategory: portfolio-project
+route: C
+parent: WRK-1048
+blocked_by: [WRK-1153]
+plan_reviewed: true
+plan_approved: true
+stage_evidence_ref: .claude/work-queue/assets/WRK-1154/evidence/stage-evidence.yaml
+html_verification_ref: .claude/work-queue/assets/WRK-1154/workflow-final-review.html
+html_output_ref: .claude/work-queue/assets/WRK-1154/workflow-final-review.html
+percent_complete: 100
+completed_at: 2026-03-13T09:20:49Z
+commit: f51d4736
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/939
+---
+## Mission
+Build a deterministic state-machine for multi-generator paralleling and sequencing logic
+at `digitalmodel/power/controls/generator_sequencing.py` per IEEE 1547 / NFPA 110.
+
+## What
+- GeneratorUnit: state machine (OFFLINE → CRANKING → IDLE → RATED → SYNCHRONIZED → ONLINE)
+- SynchronizationChecker: voltage/frequency/phase-angle match within tolerances
+- ParallelBusController: load sharing computation, priority-based load-shed execution
+- BlackStartSequencer: critical load definition, NFPA 110 sequence validation
+
+## Why
+Primary JD responsibility — every technical screen will ask for sequencing evidence.
+Covers generator controls, paralleling logic, load-shed schemes, black-start requirements,
+and protection system integration (5 core JD items).
+
+## Acceptance Criteria
+- [ ] GeneratorUnit state machine with valid transition enforcement — ≥8 tests
+- [ ] SynchronizationChecker with configurable tolerances — ≥8 tests
+- [ ] ParallelBusController with load sharing and shed logic — ≥10 tests
+- [ ] BlackStartSequencer with NFPA 110 compliance validation — ≥8 tests
+- [ ] All classes have docstrings referencing IEEE 1547 / NFPA 110
+- [ ] Module importable from `digitalmodel.power.controls`
