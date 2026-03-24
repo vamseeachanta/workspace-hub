@@ -1,0 +1,20 @@
+---
+id: workspace-hub#79
+title: "[script]: Missing back-link: workspace-hub/work-queue-workflow should list data/"
+status: pending
+priority: low
+source: comprehensive-learning/phase-7
+computer: dev-primary
+category: work-queue-infrastructure
+subcategory: work-queue
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/79
+---
+## Context
+Auto-created by comprehensive-learning analysis.
+
+## Description
+Auto-created from `.claude/state/candidates/script-candidates.md`.
+Score: 0.70
+
+## Acceptance Criteria
+- [ ] Issue addressed or candidate assessed

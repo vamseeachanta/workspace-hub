@@ -1,0 +1,50 @@
+---
+id: workspace-hub#30
+title: "fix(work-queue): restore /work skill compatibility in Codex CLI"
+status: pending
+route: B
+priority: medium
+complexity: medium
+compound: false
+created_at: 2026-03-02T15:20:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related:
+  - WRK-670
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+orchestrator: codex
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary, dev-secondary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-1000/evidence/stage-evidence.yaml
+subcategory: skills
+category: harness
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/30
+---
+# fix(work-queue): restore /work skill compatibility in Codex CLI
+
+## Problem
+
+`/work` skill invocation is inconsistent in Codex CLI compared with Claude and Gemini. This blocks reliable Codex participation in work-queue flows.
+
+## What
+
+Identify why slash-command skill loading fails in Codex CLI and implement a supported workaround (or direct wrapper path) so `/work add`, `/work list`, and `/work run` equivalents are available in Codex sessions.
+
+## Why
+
+Codex is used as a review/orchestration provider in the work-queue contract. If `/work` cannot be invoked reliably, queue operations become error-prone and cross-review gates degrade.
+
+## Acceptance Criteria
+
+- [ ] Root cause documented for Codex `/work` behavior.
+- [ ] Stable Codex-compatible invocation path implemented.
+- [ ] `/work add` and `/work list` (or explicit equivalents) validated in Codex CLI.
+- [ ] Any Codex-specific notes added to adapter docs.
+- [ ] Regression evidence captured on dev-secondary.

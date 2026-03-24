@@ -1,0 +1,148 @@
+---
+id: workspace-hub#7
+title: "Stage transition hardening — hooks, checklists, HTML refresh, tool activation per stage"
+status: superseded
+completed_at: "2026-03-21T00:00:00Z"
+superseded_by: [WRK-1323, WRK-1328, WRK-1384, WRK-1389, WRK-5099, WRK-5101, WRK-5104, WRK-5107]
+superseded_reason: "All 8 plan phases implemented across child WRKs — no remaining work"
+priority: high
+complexity: C
+category: work-queue-infrastructure
+subcategory: workflow-engine
+created: 2026-03-17
+created_at: "2026-03-17T00:00:00Z"
+source: user-request
+target_repos: [workspace-hub]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+tags: [lifecycle, stage-transitions, hooks, checklists, DX]
+route: C
+orchestrator: claude
+workstations: [dev-primary]
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/7
+---
+
+# WRK-1316: Stage Transition Hardening
+
+## Problem Statement
+
+After many sessions running WRK items through the 20-stage lifecycle, several recurring pain points degrade work item quality and developer experience:
+
+1. **HTML not opened at start** — plan.html and lifecycle.html are not auto-opened when a WRK begins processing, and not refreshed during transitions
+2. **User review gates not enforced** — interactive stages (1, 5, 7, 17) are sometimes blown through without waiting for explicit user approval
+3. **No per-stage tool/skill activation** — each stage has a distinct objective but doesn't declaratively activate the tools and skills needed for that stage
+4. **No transition hooks** — moving from stage N-1 to stage N has no hook mechanism to enforce preconditions, run checks, or trigger side effects
+5. **No mandatory checklists per stage** — stages lack a required checklist that must be completed before the transition is allowed
+
+## Stage Reference
+
+Full stage-by-stage objectives, flowcharts, checklists, and hooks:
+→ `assets/WRK-1316/stage-objectives-and-flowcharts.md`
+
+## Requirements
+
+### R0: Stage 2 Online Research + Docu-Intel Integration
+- During Stage 2, once the subject is clear, perform **online research** (WebSearch) for standards, papers, best practices
+- Any references/documents found must be saved to `/mnt/ace/<repo>/` with context
+- New documents must be added to the document-index (index.jsonl) via phase-a pipeline
+- This enhances learnings cumulatively — every WRK contributes to the corpus
+
+### R1: Stage Transition Hooks
+- Define `pre_exit` and `pre_enter` hooks per stage in a declarative config (YAML)
+- `pre_exit(N)` runs before leaving stage N — validates all stage N obligations are met
+- `pre_enter(N)` runs before entering stage N — sets up context, tools, HTML refresh
+- Hook failures block the transition with a clear error message
+
+### R2: Mandatory Per-Stage Checklists
+- Each stage defines a checklist in config (YAML)
+- All checklist items must be marked complete before `pre_exit` allows transition
+- Checklist state persisted in the WRK checkpoint file
+- Human-gate stages require explicit user sign-off on each checklist item
+
+### R3: HTML Auto-Open and Refresh
+- On WRK start (`/work run`), auto-open plan.html and lifecycle.html in browser
+- On every stage transition, regenerate and refresh both HTML files
+- Wire into `pre_enter` hook so it happens automatically
+
+### R4: Per-Stage Tool/Skill Activation
+- Each stage declares which skills and tools are relevant (in stage config)
+- Stage entry loads those skills into context / surfaces them to the agent
+- Example: Stage 4 (planning) activates `brainstorming`, `writing-plans`; Stage 10 (implement) activates `TDD`, `executing-plans`
+
+### R5: User Review Gate Enforcement
+- Stages marked `human_gate: true` must STOP and present checklist + evidence to user
+- No auto-proceed past human gates — enforce via hook that checks for explicit user response
+- Explicit approval text required (e.g., "I approve stage N") — no inference from other signals
+- Log gate wait/approval timestamps in audit trail
+
+### R6: Claim at Stage 1 (not Stage 8)
+- Lock the WRK the moment processing begins (Stage 1 entry)
+- No other process should touch the WRK until explicit pause/release
+- Current Stage 8 claim is too late — move claim to Stage 1
+
+### R7: Stage Self-Containment
+- Every stage exit must: persist all work, document completion, clear/minimize context
+- Completed stages' work is never lost
+- Context handoff between stages is explicit (via checkpoint + evidence)
+- A natural pause point is any stage completion boundary
+
+### R8: HTML Stage Indicator Accuracy
+- HTML must always reflect the actual current stage (not stale state)
+- `start_stage.py` and `exit_stage.py` MUST be called for every stage transition
+- Never bypass stage machinery by writing evidence files manually
+- `stage-evidence.yaml` is the single source of truth for HTML stage indicators
+
+### R9: L3 Claude Code Hooks — Mandatory Stage Enforcement
+- Agent can bypass L2 scripts by simply not calling them (proven by WRK-1323 audit)
+- L3 hooks fire automatically on every tool call — agent cannot skip them
+- **PreToolUse on Write**: block writes to `evidence/` unless `stage-evidence.yaml` shows current stage `in_progress`
+- **PreToolUse on Bash (git commit)**: block commit unless active WRK has stage-timing files (stages were actually run)
+- **PreToolUse on Bash (cat/echo to evidence/)**: block Bash writes to evidence directories (enforce Write tool only)
+- These hooks go in `.claude/settings.json` — project-level, apply to all sessions
+
+## Acceptance Criteria
+
+- [ ] AC1: Stage transition config YAML exists with hooks, checklists, and tool declarations for all 20 stages
+- [ ] AC2: `exit_stage.py` enforces checklist completion before allowing transition
+- [ ] AC3: HTML files auto-opened on `/work run` and regenerated on every stage transition
+- [ ] AC4: Human-gate stages block until explicit user approval text (tested with is-human-gate.sh)
+- [ ] AC5: Per-stage skill activation surfaces relevant skills at stage entry
+- [ ] AC6: All hooks testable independently via script (not LLM judgment)
+- [ ] AC7: Design is generalizable — WRK-1317 can extract a reusable engine from these deliverables
+- [ ] AC8: WRK is locked at Stage 1 entry; released only on explicit pause/exit
+- [ ] AC9: Every stage exit preserves all work; HTML shows correct current stage
+- [ ] AC10: `stage-evidence.yaml` is single source of truth; no bypassing stage machinery
+- [ ] AC11: L3 PreToolUse hooks in settings.json block evidence writes without active stage
+- [ ] AC12: L3 PreToolUse hooks block git commit without stage-timing evidence
+- [ ] AC13: L3 PreToolUse hooks block Bash cat/echo to evidence directories
+
+## Follow-Up (dependency chain)
+
+- **WRK-1317**: Generalize stage-transition engine to all workflows — blocked by this WRK
+- **WRK-1321**: Restructure into two-tier folder-skill architecture (Anthropic best practices) — blocked by this WRK
+- **WRK-1322**: Evaluate and catalog ALL workspace-hub workflows, standardize on stage-contract pattern — blocked by WRK-1316 + WRK-1321
+
+## Research Context
+
+### Documented User Complaints (11 feedback files)
+1. Skills not built before implementation (`feedback_skill_before_code.md`)
+2. Unpushed commits (`feedback_always_push.md`)
+3. Redundant HTML opens at stages 7/17 — should refresh, not re-open (`feedback_html_refresh.md`)
+4. Dev work in wrong repo (`feedback_repo_scope.md`)
+5. Skills not backed by scripts — prose = context rot (`feedback_script_based_workflows.md`)
+6. Specs/plans in wrong directory (`feedback_specs_plans_location.md`)
+7. Missing execution notes on long tasks (`feedback_wrk_execution_notes.md`)
+8. Incomplete research sources (`feedback_research_skill_sources.md`)
+9. Optional deps assumed in --no-project mode (`feedback_uv_run_isolation.md`)
+10. Raw Excel files carried forward (`feedback_dark_intelligence_excel.md`)
+11. Verbose stage table in /whats-next (`feedback_whats_next_format.md`)
+
+### Prior Workflow WRKs (40-60 engineering hours)
+- WRK-1017: Stage 5 gate hardening (EXTREME — 50+ commits, 20+ iterations)
+- WRK-1028: Stage-isolated execution model (HIGH — 50+ commits in <24h)
+- WRK-1142: Micro-skill per-stage loading (20 stage files + start_stage.py)
+- WRK-1144: Micro-skill → script extraction audit (5 child WRKs spawned)
+- WRK-1053: Deterministic skill loops → scripts
+- WRK-1041/1115/1159: HTML lifecycle visibility
+- WRK-1049: Concurrent session claim collision fix

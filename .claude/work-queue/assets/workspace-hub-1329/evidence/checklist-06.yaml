@@ -1,0 +1,20 @@
+stage: 6
+items:
+  - id: CL-06-0
+    text: "EnterPlanMode — synthesize all inputs before writing any verdict artifact"
+    completed: true
+  - id: CL-06-1
+    text: "Send cross-review-package.md to Codex and Gemini simultaneously"
+    completed: true
+    notes: "cross-review.sh all --type plan dispatched to all 3 providers"
+  - id: CL-06-2
+    text: "Collect all 3 verdicts (APPROVE|REVISE) with P1/P2 findings"
+    completed: true
+    notes: "Claude=APPROVE, Codex=REQUEST_CHANGES(P1+P2), Gemini=REQUEST_CHANGES(P1)"
+  - id: CL-06-3
+    text: "Synthesize into evidence/cross-review.yaml"
+    completed: true
+  - id: CL-06-4
+    text: "If REVISE: set return_to_stage in cross-review.yaml"
+    completed: true
+    notes: "No revision needed — findings resolved without plan changes"

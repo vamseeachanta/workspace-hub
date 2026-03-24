@@ -1,0 +1,52 @@
+---
+id: workspace-hub#954
+title: "Calculation report skill — rich formula templates with HTML output"
+status: archived
+priority: high
+complexity: complex
+created_at: 2026-03-13
+target_repos: [workspace-hub, digitalmodel]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: skills
+subcategory: reporting
+stage_evidence_ref: .claude/work-queue/assets/WRK-1178/evidence/stage-evidence.yaml
+html_verification_ref: .claude/work-queue/assets/WRK-1178/workflow-final-review.html
+plan_approved: true
+plan_reviewed: true
+spec_ref: .claude/work-queue/assets/WRK-1178/evidence/user-review-plan-draft.yaml
+html_output_ref: .claude/work-queue/assets/WRK-1178/workflow-final-review.html
+percent_complete: 100
+completed_at: 2026-03-14T04:33:06Z
+commit: d5cf83dc
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/954
+---
+## Mission
+
+Create a reusable calculation report skill with a YAML→Markdown→HTML pipeline that renders engineering calculations with rich formulas, interactive charts, and consistent structure — inspired by the workflow-html design system.
+
+## What
+
+- Single source of truth in YAML (all metadata, inputs, methodology, outputs self-contained)
+- Markdown report generation from YAML with LaTeX math (`$$...$$`)
+- HTML report with interactive charts, inspired by workflow-html warm-parchment design
+- Sections: Inputs (with units), Methodology (with numbered equations), Outputs (with units), Assumptions, References
+- Calculation versioning (revision tracking, change log)
+- Consistent template across every calculation in the repo ecosystem
+
+## Why
+
+- Engineering calculations lack a consistent reporting format
+- Formulas, units, and methodology need professional, reviewable presentation
+- Interactive HTML enables stakeholder review without specialised tooling
+- YAML source of truth enables programmatic generation and validation
+- Standardisation reduces cognitive load across repos
+
+## Acceptance Criteria
+
+1. Skill produces markdown with LaTeX math blocks for formulas
+2. Template includes: title, revision, inputs table (name/symbol/value/unit), methodology with numbered equations, outputs table, assumptions, references
+3. HTML output with interactive charts using workflow-html warm-parchment design system; pipeline: YAML → Markdown → HTML
+4. Existing digitalmodel fatigue analysis calculations (e.g. pipeline_girth_weld, scr_touchdown, mooring_chain) used as example structured inputs
+5. Reusable function/script that accepts structured YAML input and emits markdown then HTML

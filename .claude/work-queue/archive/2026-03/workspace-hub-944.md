@@ -1,0 +1,55 @@
+---
+id: workspace-hub#944
+title: "chore(harness): stage-17 AC-pass checker script — confirm all ACs met before close"
+status: archived
+route: A
+priority: high
+complexity: simple
+compound: false
+created_at: 2026-03-12T10:30:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related:
+  - WRK-1144
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+orchestrator: claude
+cross_review: pending
+stage_evidence_ref: .claude/work-queue/assets/WRK-1157/evidence/stage-evidence.yaml
+subcategory: work-queue
+category: harness
+parent: WRK-1144
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/944
+---
+# chore(harness): Stage-17 AC-Pass Checker Script
+
+## Mission
+
+Create a deterministic script that verifies all acceptance criteria in a WRK
+file are marked `[x]` (done) before Stage 17 close, making this a binary
+Level 2 check rather than LLM prose inspection.
+
+## What
+
+Script: `scripts/work-queue/check-acs-pass.sh WRK-NNN`
+
+- Read the WRK `.md` file (working/ or pending/)
+- Extract all AC lines: `- [ ]` (incomplete) and `- [x]` (complete)
+- Exit 0 if all ACs are `[x]`; exit 1 listing incomplete ACs
+
+## Acceptance Criteria
+
+- [x] Script exits 0 when all `- [x]` ACs found
+- [x] Script exits 1 and lists incomplete ACs when any `- [ ]` remain
+- [x] Handles WRKs with no AC section gracefully (exits 0 with warning)
+- [x] Integrated into stage-17-user-review-implementation.md checklist

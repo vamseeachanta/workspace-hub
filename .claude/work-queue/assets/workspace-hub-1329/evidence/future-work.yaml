@@ -1,0 +1,9 @@
+wrk_id: WRK-5139
+stage: 15
+future_items:
+  - title: "Add STDERR redaction for credential/auth info in review artifacts"
+    priority: low
+    notes: "Codex P2 finding — valid concern but out of scope for this WRK"
+  - title: "Add unit tests for classify_stderr() function"
+    priority: low
+    notes: "Currently tested via E2E only"

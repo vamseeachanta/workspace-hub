@@ -1,0 +1,195 @@
+---
+id: digitalmodel#268
+title: "feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme"
+status: pending
+priority: high
+complexity: complex
+compound: true
+created_at: 2026-02-26T00:00:00Z
+target_repos:
+  - frontierdeepwater
+  - aceengineer-website
+commit:
+spec_ref:
+related:
+  - WRK-470
+  - WRK-391
+blocked_by: []
+children:
+  - WRK-632
+  - WRK-633
+  - WRK-634
+  - WRK-625
+  - WRK-626
+  - WRK-627
+  - WRK-629
+  - WRK-630
+  - WRK-631
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 40
+brochure_status: complete
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+provider: claude
+orchestrator: claude
+stage_evidence_ref: .claude/work-queue/assets/WRK-628/evidence/stage-evidence.yaml
+subcategory: pipeline
+category: engineering
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/268
+---
+# feat(frontierdeepwater): Client AI Roadshow — Phased Engineering AI Adoption Programme
+
+## What
+
+Umbrella tracker for the full phased AI adoption initiative targeting engineering teams.
+Three phases, executed over 1–6 months:
+
+```
+Phase 1: Desktop Q&A Demo (Week 1)      → WRK-625, WRK-626, WRK-627
+Phase 2: Engineering Chatbot (1-3 mo)   → TBD WRK items post-demo
+Phase 3: Advanced Integration (3-6 mo)  → TBD WRK items post-pilot
+```
+
+### Phase 1 — Desktop Q&A Demo (active)
+
+Two clients, each with discipline-specific demo builds:
+
+**Client 1** — rigid jumpers, FFS (pipe), GoA data:
+- **WRK-625** — Day 1: system prompts + knowledge base [30% done]
+- **WRK-626** — Days 2-3: calculation templates + OrcaFlex data processing
+- **WRK-627** — Days 4-5: multi-step workflows + BSEE/GoA data + demo package
+
+**Client 2** — diffraction analysis, FFS (plates), GoA analysis, maritime legal consulting:
+- **WRK-629** — Day 1-2: system prompts + knowledge base + diffraction/plate FFS context
+- **WRK-630** — Days 3-5: workflows + GoA data + demo package
+
+Demo target: 1 week per client. Success = both clients agree to a 2-week pilot.
+
+### Phase 2 — Microsoft Teams Chatbot (post-demo)
+
+Both clients have Microsoft Teams — deploy via Azure Bot Service + Claude API.
+One bot per client, each loaded with their discipline-specific system prompt.
+- **WRK-631** — Teams bot integration, both clients, Option A (API) → Option B (RAG)
+Architecture: start with Option A (Claude API + system prompt), graduate to Option B (RAG
+backend with company doc index) as usage and doc volume grows.
+
+### Phase 3 — Advanced Integration (post-pilot)
+
+Multi-agent workflows: OrcaFlex batch parametric studies, knowledge base indexing,
+AI-assisted QA/peer review. New WRK items when Phase 2 is operational.
+
+## Why
+
+Engineering AI demos create the highest ROI pathway to recurring AI services revenue.
+A successful 1-week demo → pilot → chatbot deployment represents a repeatable template
+applicable to other client disciplines and firms. The roadshow format (phased, low
+initial cost, measurable ROI) is designed to convert demo curiosity into paid engagement.
+
+Expected benefits demonstrated in the demo:
+| Task | Before | After | Reduction |
+|------|--------|-------|-----------|
+| Code reference lookup | 15-30 min | 1-2 min | 90% |
+| Preliminary sizing | 2-4 hr | 15-30 min | 85% |
+| Calc memo drafting | 4-8 hr | 1-2 hr | 75% |
+| Simulation data extraction | 1-2 hr/case | 5-10 min | 90% |
+
+## Skills by Stream
+
+### Shared / Fundamentals (WRK-632)
+- `ai/prompting/prompt-engineering` — system prompt design patterns
+- `ai/prompting/ai-prompting` — Claude-specific prompting best practices
+- **MISSING → WRK-633**: `business/client-demo/engineering-chatbot` — GTM demo execution
+
+### Client 1 — Rigid Jumpers + FFS + GoA (WRK-625/626/627)
+- `engineering/marine-offshore/orcaflex-jumper-analysis` — rigid jumper model setup + analysis
+- `engineering/marine-offshore/orcaflex-post-processing` — ASCII result extraction + summary tables
+- `engineering/asset-integrity/fitness-for-service` — API 579-1 assessments (pipe + plate)
+- `engineering/marine-offshore/viv-analysis` — VIV screening + DNV-RP-F105
+- `data/energy/marine-safety-incidents` — BSEE/GoA data, MAIB/NTSB incident context
+
+### Client 2 — Diffraction + Plate FFS + GoA + Maritime Legal (WRK-629/630)
+- `engineering/marine-offshore/diffraction-analysis` — panel models, RAOs, QTFs
+- `engineering/marine-offshore/orcawave-qtf-analysis` — QTF second-order loads
+- `engineering/asset-integrity/fitness-for-service` — API 579-1 plates (Part 4/5/8/9)
+- `engineering/marine-offshore/marine-safety` — integrity management, life extension
+- `data/energy/marine-safety-incidents` — MAIB/NTSB loaders for legal case precedents
+- `engineering/marine-offshore/risk-assessment` — risk matrix, bow-tie analysis
+- `business/legal/compliance` — regulatory framework, liability, legal report structure
+- **MISSING → WRK-633**: `engineering/maritime-legal` — casualty investigation + expert witness
+
+### Phase 2 — Teams Chatbot (WRK-631)
+- `business/communication/teams-api` — Azure Bot Framework, Teams app manifest, Graph API
+- `data/documents/rag-system-builder` — RAG backend for Phase 2 document intelligence
+
+## Session Notes (2026-02-27)
+
+### Completed This Session
+
+**Sales collateral — all 4 clients (WRK-634 ✓):**
+
+| Asset | File | Status |
+|---|---|---|
+| Client 1 brochure + PDF | `specs/client-demos/brochure-client1-rigid-jumper-pipeline.*` | ✓ done |
+| Client 2 brochure + PDF | `specs/client-demos/brochure-client2-structural-maritime.*` | ✓ done |
+| Client 3 brochure + PDF | `specs/client-demos/brochure-client3-general-oilgas.*` | ✓ done |
+| Client 4 brochure + PDF | `specs/client-demos/brochure-client4-renewables-digital-twin.*` | ✓ done |
+| Summary brochure + PDF | `specs/client-demos/brochure-summary-all-clients.*` | ✓ done |
+| Client 1 pitch email | `specs/client-demos/pitch-email-client1-rigid-jumper-pipeline.md` | ✓ done |
+| Client 2 pitch email | `specs/client-demos/pitch-email-client2-structural-maritime.md` | ✓ done |
+| Client 3 pitch email | `specs/client-demos/pitch-email-client3-general-oilgas.md` | ✓ done |
+| Client 4 pitch email | `specs/client-demos/pitch-email-client4-renewables-digital-twin.md` | ✓ done |
+
+**Scope expansion this session:**
+- Client 3 (general O&G: drilling/reservoir/pipeline/regulatory) added to roadshow — no
+  dedicated WRK items yet; brochure and pitch email done as sales collateral
+- Client 4 (offshore wind + digital twin) added — same status
+- "Gets Smarter Over Time" continuous improvement narrative added to all 4 brochures
+  and pitch emails (commits `5655460`)
+- All commits pushed to `main`; last commit `a9d65b6`
+
+### What Remains (ranked by demo readiness impact)
+
+1. **WRK-625/626/627** — Client 1 system prompts + knowledge base + calc templates +
+   OrcaFlex processing + demo package — NOT YET STARTED; this is the critical path to
+   an actual live demo
+2. **WRK-629/630** — Client 2 system prompts + knowledge base + demo package — NOT YET STARTED
+3. **WRK-632** — Shared chatbot fundamentals: persona, tone, disclaimer, tiers — NOT YET STARTED;
+   should be done FIRST as it patches all system prompts
+4. **WRK-633** — Two missing skills: `engineering-chatbot` + `engineering/maritime-legal` — NOT YET
+   STARTED; needed before WRK-625 and WRK-629
+5. **WRK-631** — Teams chatbot (Phase 2) — blocked by demo success; defer until post-pilot
+
+### Biggest Gaps vs Live Demo Readiness
+
+- No system prompts built yet (WRK-625, WRK-629 are both 0%)
+- No calculation templates assembled
+- No demo scripts / question banks prepared
+- Brochures are ready to send; demo cannot be run until WRK-625/629 complete
+- Client 3 and Client 4 have no demo build WRK items at all — create when clients are identified
+
+## Acceptance Criteria
+
+- [ ] Phase 1 demo delivered (WRK-625 + WRK-626 + WRK-627 complete)
+- [ ] Demo run with SME1 and SME2 — feedback captured in `ai-initiatives/pilot/feedback.md`
+- [ ] Post-demo debrief: go/no-go for Phase 2 chatbot documented
+- [ ] Phase 2 WRK items created if demo succeeds
+- [ ] ROI tracking started: `ai-initiatives/pilot/time_savings_log.md`
+- [ ] Aceengineer-website portfolio entry updated (brochure_status: synced)
+
+## Timeline
+
+| Week | Milestone | WRK |
+|------|-----------|-----|
+| Week 1 | Demo build | WRK-625/626/627 |
+| Week 2 | Demo with SME1 + SME2 | this item |
+| Week 3 | Pilot (2-3 engineers/team) | new WRK |
+| Week 4 | Evaluate ROI, Phase 2 decision | new WRK |
+
+## Agentic AI Horizon
+
+This is a GTM (go-to-market) compound item. Phase 1 is Codex/Claude executable now.
+Phase 2/3 depend on demo outcome — defer those WRK items until feedback is in.
+The repeatable roadshow template created here is reusable across other client firms.

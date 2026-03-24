@@ -1,0 +1,30 @@
+stage: 4
+items:
+  - id: CL-04-0
+    description: "scripts-over-LLM audit performed"
+    completed: true
+    evidence: "No recurring operations — pure doc edits to 4 skill files"
+  - id: CL-04-1
+    description: "EnterPlanMode for thinking before writing"
+    completed: true
+    evidence: "Plan drafted inline — Route A simple, pure-doc WRK"
+  - id: CL-04-2
+    description: "ACs defined (specific, testable)"
+    completed: true
+    evidence: "5 ACs in specs/wrk/WRK-1304/plan.md matching WRK frontmatter"
+  - id: CL-04-3
+    description: "Pseudocode for key functions"
+    completed: true
+    evidence: "N/A — pure documentation WRK, no executable code"
+  - id: CL-04-4
+    description: "Test plan written"
+    completed: true
+    evidence: "N/A — pure documentation updates, validation is markdown correctness"
+  - id: CL-04-5
+    description: "Chunk sizing checked"
+    completed: true
+    evidence: "4 skill files, all small edits — well within limits"
+  - id: CL-04-6
+    description: "Research before building"
+    completed: true
+    evidence: "N/A — no APIs or scrapers involved"

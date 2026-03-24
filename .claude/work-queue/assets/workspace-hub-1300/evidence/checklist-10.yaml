@@ -1,0 +1,25 @@
+wrk_id: WRK-1392
+stage: 10
+items:
+  - id: CL-10-1
+    text: "Scripts-over-LLM audit performed"
+    completed: true
+    completed_at: "2026-03-23T22:08:00Z"
+  - id: CL-10-2
+    text: "Tests written BEFORE implementation (TDD Red)"
+    completed: true
+    completed_at: "2026-03-23T22:08:00Z"
+  - id: CL-10-3
+    text: "All tests pass (TDD Green)"
+    completed: true
+    completed_at: "2026-03-23T22:10:00Z"
+    notes: "17/17 pass"
+  - id: CL-10-4
+    text: "evidence/execute.yaml written with integrated_repo_tests >= 3"
+    completed: true
+    completed_at: "2026-03-23T22:10:00Z"
+    notes: "5 integrated repo tests"
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    completed: true
+    completed_at: "2026-03-23T22:12:00Z"

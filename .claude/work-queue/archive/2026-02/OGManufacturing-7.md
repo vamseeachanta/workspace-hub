@@ -1,0 +1,37 @@
+---
+id: OGManufacturing#7
+title: Add dynacard module README
+status: archived
+completed_at: 2026-02-03T00:00:00Z
+priority: low
+complexity: low
+category: engineering
+subcategory: drilling
+created_at: 2026-02-03T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+related: [WRK-049]
+blocked_by: []
+synced_to: []
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-091/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/OGManufacturing/issues/7
+---
+# Add dynacard module README
+
+## What
+Create a README.md for the dynacard module documenting purpose, quickstart, API overview, calculator catalog, and solver comparison.
+
+## Why
+The module has 21 source files and 67 public API exports but no top-level documentation. A README makes it discoverable and usable by other developers.
+
+## Acceptance Criteria
+- [x] README.md created in dynacard module directory
+- [x] Covers: purpose, quickstart, calculator catalog, solver comparison
+- [x] References API RP 11L and Gibbs 1963
+
+---
+*Source: WRK-049 P2 follow-up*

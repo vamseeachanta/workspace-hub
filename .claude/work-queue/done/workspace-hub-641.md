@@ -1,0 +1,58 @@
+---
+id: workspace-hub#641
+title: "chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming"
+status: done
+priority: low
+complexity: simple
+compound: false
+created_at: 2026-02-25T00:00:00Z
+completed_at: 2026-02-25
+target_repos:
+  - worldenergydata
+commit: bc665a0
+spec_ref:
+related:
+  - WRK-599
+blocked_by: []
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-600/evidence/stage-evidence.yaml
+category: engineering
+subcategory: structural
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/641
+---
+## Summary
+
+Fix the specific src/ structure violations found in the 2026-02-25 audit of worldenergydata.
+
+## Violations to Fix
+
+### 1. `bsee/docs/infrastructure_data_catalog.md` — markdown in src/
+```bash
+mkdir -p docs/domains/bsee/
+git mv src/worldenergydata/bsee/docs/infrastructure_data_catalog.md docs/domains/bsee/
+# Remove now-empty bsee/docs/ dir
+```
+
+### 2. `vessel_fleet/configs/` → rename to `vessel_fleet/config/`
+```bash
+git mv src/worldenergydata/vessel_fleet/configs src/worldenergydata/vessel_fleet/config
+# Update any import: from vessel_fleet.configs import → from vessel_fleet.config import
+grep -r "vessel_fleet.configs\|vessel_fleet/configs" src/ tests/ --include="*.py" -l
+```
+
+### 3. Verify `bsee/sql/` and `bsee/templates/` are declared as package_data
+Check `pyproject.toml` — if `package_data` or `[tool.setuptools.package-data]` lists `*.sql`
+and `*.html`, these are legitimate. If not declared, they won't be installed as package resources.
+Add: `"worldenergydata.bsee" = ["sql/*.sql", "templates/*.html"]` to pyproject.toml if missing.
+
+## Acceptance Criteria
+- [x] `bsee/docs/*.md` moved to `docs/domains/bsee/` (+ paleowells/README.md)
+- [x] `vessel_fleet/configs/` renamed to `vessel_fleet/config/`, 36 string refs updated
+- [x] `bsee/sql/` and `bsee/templates/` declared in pyproject.toml `package_data`
+- [x] Tests still pass: 176 passed in 13.51s

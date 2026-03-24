@@ -1,0 +1,26 @@
+stage: 10
+items:
+  - id: CL-10-0
+    description: "scripts-over-LLM check"
+    completed: true
+    evidence: "No scripts needed — pure documentation edits"
+  - id: CL-10-1
+    description: "Plan test and file strategy"
+    completed: true
+    evidence: "6 files identified from plan + P2 cross-review finding"
+  - id: CL-10-2
+    description: "TDD — write failing tests first"
+    completed: true
+    evidence: "N/A — pure documentation WRK, no executable code"
+  - id: CL-10-3
+    description: "Implement changes"
+    completed: true
+    evidence: "All 6 files edited: pdf/SKILL.md, pdf-text-extractor/SKILL.md, why-convert-to-markdown-first/SKILL.md, openai-codex-conversion/SKILL.md, dependencies/SKILL.md, INDEX.md"
+  - id: CL-10-4
+    description: "execute.yaml written with ≥3 test entries"
+    completed: true
+    evidence: "5 test entries, all passing"
+  - id: CL-10-5
+    description: "Git committed and pushed"
+    completed: true
+    evidence: "Pending user approval to commit — stage 17 will handle final commit"

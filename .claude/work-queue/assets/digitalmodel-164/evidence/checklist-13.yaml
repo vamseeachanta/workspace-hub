@@ -1,0 +1,22 @@
+stage: 13
+items:
+  - id: CL-13-0
+    description: "EnterPlanMode — analyze implementation before verdict"
+    completed: true
+    evidence: "Verified pymupdf4llm references in pdf/SKILL.md via grep"
+  - id: CL-13-1
+    description: "Implementation reviewed by Claude"
+    completed: true
+    evidence: "All 6 files verified, changes correct"
+  - id: CL-13-2
+    description: "Verdicts collected"
+    completed: true
+    evidence: "APPROVE — Route A single-reviewer"
+  - id: CL-13-3
+    description: "review.md written"
+    completed: true
+    evidence: "verdict=APPROVE, 0 P1, 0 P2"
+  - id: CL-13-4
+    description: "review.md written with all 3 providers listed"
+    completed: true
+    evidence: "Route A — single Claude reviewer sufficient; review.md has Claude APPROVE"

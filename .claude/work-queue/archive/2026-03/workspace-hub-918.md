@@ -1,0 +1,61 @@
+---
+id: workspace-hub#918
+title: "feat(harness): multi-code standards semantic search — RuleAgent-equivalent for DNV/API/ABS/BS"
+status: archived
+priority: medium
+complexity: medium
+created_at: 2026-03-11
+computer: dev-primary
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: harness
+subcategory: standards-tooling
+related: [WRK-272, WRK-277, WRK-688]
+blocked_by: []
+triage_completed: true
+plan_reviewed: true
+plan_approved: true
+plan_ref: .claude/work-queue/assets/WRK-1132/plan-html-review-final.md
+spec_ref: ""
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-1132/WRK-1132-plan.html
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-1132/plan-html-review-final.md
+html_output_ref: .claude/work-queue/assets/WRK-1132/WRK-1132-lifecycle.html
+html_verification_ref: .claude/work-queue/assets/WRK-1132/workflow-final-review.html
+claim_routing_ref: .claude/work-queue/logs/WRK-1132-routing.log
+stage_evidence_ref: .claude/work-queue/assets/WRK-1132/evidence/stage-evidence.yaml
+html_output_ref: .claude/work-queue/assets/WRK-1132/workflow-final-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-1132/workflow-final-review.html
+percent_complete: 100
+completed_at: 2026-03-11T22:23:18Z
+commit: 48b0b5945bf67aaab3779e6b6c0c3becc2957443
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/918
+---
+## Mission
+Build a semantic search tool over the workspace's engineering standards PDFs — analogous
+to DNV's RuleAgent but multi-code and vendor-independent (DNV + API + ABS + BS + ISO).
+
+## Context
+DNV launched RuleAgent in their Veracity portal (2026-03-11): AI Q&A → links to applicable
+rule sections, vessel-specific filtering. It is DNV-only. ACE differentiator: multi-code
+independence across all classification societies.
+
+## What
+- Index PDFs in `docs/domains/` (CP standards, wall thickness codes, fatigue S-N, etc.)
+  against the existing document-index (1M+ records) or a dedicated vector store
+- Accept natural-language query → return ranked rule sections with doc/page citations
+- Filter by code family (DNV / API / ABS / BS) and topic (CP, fatigue, wall thickness, lift)
+- CLI entry point: `scripts/standards/query-standards.sh "question" [--code DNV] [--topic CP]`
+- Integrate with MCP semantic scholar for gap-fill when local PDFs lack coverage
+
+## Why
+- GTM differentiator vs DNV RuleAgent (multi-code, no vendor lock-in)
+- Speeds up WRK-272/277 (DNV-RP-B401/ABS offshore CP) and future standards work
+- Reduces engineering lookup time — same value RuleAgent delivers internally at DNV
+
+## Acceptance Criteria
+- [ ] PDF ingestion pipeline indexes `docs/domains/` content
+- [ ] Query returns section citations with doc name + page number
+- [ ] At least one code family filter working (DNV or API)
+- [ ] CLI usable in < 5s for a standard query
+- [ ] Codex cross-review passes

@@ -1,0 +1,72 @@
+---
+id: workspace-hub#639
+title: "docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules"
+status: done
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-02-25T00:00:00Z
+completed_at: 2026-02-25
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related:
+  - WRK-600
+  - WRK-601
+  - WRK-602
+blocked_by: []
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+computer: [dev-primary]
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-599/evidence/stage-evidence.yaml
+category: harness
+subcategory: skills
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/639
+---
+## Summary
+
+The 2026-02-25 folder-structure audit of digitalmodel and worldenergydata revealed a class of
+issues not yet covered by the repo-structure or file-taxonomy skills: **non-Python files
+loose in src/ package directories**.
+
+## Findings
+
+### worldenergydata src/
+- `bsee/docs/infrastructure_data_catalog.md` — markdown doc inside src/ (VIOLATION)
+- `bsee/sql/*.sql` — SQL query files in src/ (BORDERLINE — package resources OK if declared in pyproject.toml)
+- `bsee/templates/*.html` — HTML templates in src/ (BORDERLINE — same as SQL)
+- `vessel_fleet/configs/` — naming: should be `config/` (singular) to match repo conventions
+
+### digitalmodel src/
+- `specialized/gis/arcgis-2x.yml`, `arcgis.yml` — YAML config in src/ (should be `config/gis/`)
+- `specialized/gis/GIS_2013-12-16-UTM_conv.ipynb` — Jupyter notebook in src/ (VIOLATION)
+- `specialized/gis/` duplicates top-level `gis/` — dual competing GIS implementations
+
+## Required Skill Updates
+
+### repo-structure SKILL.md
+Add enforcement rule: NEVER non-Python files in src/ Python package tree
+- .md files -> docs/domains/<domain>/
+- .ipynb files -> notebooks/<domain>/
+- YAML config files -> config/<domain>/
+- Exception: .sql and HTML templates that are package resources (accessed via importlib.resources)
+  MUST be declared as package_data in pyproject.toml
+
+### file-taxonomy SKILL.md
+Add entry for SQL/HTML templates as package resources:
+- "Is it a SQL query or HTML template used at runtime by a Python package?"
+  -> keep in src/<pkg>/<domain>/ as package_data; declare in pyproject.toml
+- Add distinction: package resource (in src/) vs runtime config (at config/) vs docs (at docs/)
+
+## Acceptance Criteria
+- [x] repo-structure v1.4.0: "NEVER Non-Python files in src/" enforcement rule — already present
+- [x] file-taxonomy v1.5.0: decision tree entry 16/17 for package resources (SQL/HTML) — present;
+      v1.6.0 adds `config/` vs `configs/` naming row (WRK-600 lesson)
+- [x] clean-code v2.1.0: Module Migration Shim Protocol — API compat check, diverged-API
+      handling, patch.object scope for shim modules (WRK-602 lesson)
+- [x] Both skills specify where .md and .ipynb files belong when found in src/

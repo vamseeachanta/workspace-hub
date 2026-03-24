@@ -1,0 +1,89 @@
+---
+id: workspace-hub#656
+title: Research CalculiX automation for AI-agent-driven FEA solve on hull geometry
+status: done
+priority: medium
+complexity: medium
+compound: false
+created_at: 2026-02-25T00:00:00Z
+completed_at: 2026-02-26T00:00:00Z
+target_repos:
+  - CAD-DEVELOPMENTS
+commit: 202a849
+spec_ref:
+related:
+  - WRK-612
+blocked_by:
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status:
+computer: dev-secondary
+execution_workstations: [dev-secondary]
+plan_workstations: [dev-secondary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-613/evidence/stage-evidence.yaml
+category: ai-orchestration
+subcategory: ai-tools
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/656
+---
+# Research CalculiX automation for AI-agent-driven FEA solve on hull geometry
+
+## What
+
+Research CalculiX (ccx) automation and build `agents/solve_agent.py` — a prototype that takes a meshed hull (`.msh` from Gmsh) and an analysis spec YAML, generates a CalculiX `.inp` file, runs the solver, and extracts key results (max stress, displacement, reaction forces). Target analysis: linear static structural (hydrostatic pressure + self-weight).
+
+## Why
+
+CalculiX is available on dev-secondary, is open-source, and supports full 3D FEA via `.inp` input files that are text-format and AI-friendly to generate. It's the most direct path to a working FEA solve agent for hull structural analysis.
+
+## Acceptance Criteria
+
+- [ ] Research note at `docs/research/calculix-automation.md`: CalculiX .inp format, material cards, BC types, result extraction from `.frd` output
+- [ ] `specs/analysis/hull_linear_static.yaml` — analysis spec: material (steel/aluminium/GRP), boundary conditions (fixed keel, pressure load), load cases
+- [ ] `agents/solve_agent.py` with `solve(mesh_path, spec_path, output_dir) -> dict` — generates `.inp`, runs `ccx`, parses `.frd`, returns max stress + displacement
+- [ ] Proof-of-concept: run a linear static analysis on the meshed hull from WRK-612
+- [ ] Results summary written to `docs/results/hull_linear_static_summary.md`
+- [ ] 5+ tests in `tests/test_solve_agent.py` (mock .frd parsing)
+- [ ] Pushed to `bakkiprasad5669/CAD-DEVELOPMENTS`
+
+## Research Questions
+
+1. CalculiX vs FEniCS vs Elmer for shell/hull structural analysis on dev-secondary — which gives the cleanest AI-agent interface?
+2. How to convert Gmsh `.msh` → CalculiX element format (C3D8, S8R shell elements)?
+3. What is the recommended workflow for hydrostatic pressure loads in CalculiX?
+4. How to parse CalculiX `.frd` output files programmatically?
+
+## Agentic AI Horizon
+
+- Once the solve agent works, the full CAD→mesh→solve loop is automatable from a natural language brief
+- AI can generate parametric load cases (multiple sea states, load combinations) and run batch analyses
+- Results feed back into geometry_agent to drive shape optimization (close the loop)
+
+## Implementation Notes (2026-02-26, dev-secondary)
+
+**Files created/modified:**
+- `agents/solve_agent.py` (354 lines) — CalculiX INP generation, solver execution, .frd parsing
+- `tests/test_solve_agent.py` (151 lines) — 7 tests, all passing
+- `specs/analysis/hull_linear_static.yaml` — analysis spec (steel, 6mm shell, gravity)
+- `docs/research/calculix-automation.md` — research findings
+- `docs/results/hull_linear_static_summary.md` — proof-of-concept results
+
+**Research answers:**
+1. CalculiX wins over FEniCS/Elmer — text-based I/O, already installed (ccx 2.21), well-documented format
+2. Gmsh MSH v4 → CalculiX: must read MSH directly and write S3 elements (Gmsh's INP export uses CPS3 plane stress, wrong for shell analysis)
+3. Hydrostatic pressure: `*DLOAD` with `P` card on element set; gravity via `GRAV` card
+4. `.frd` format: fixed-width 12-char columns, NOT space-separated (values concatenate like `6.86E-07-6.21E-06`)
+
+**Unit system (mm-based):** Length: mm, Force: N, Stress: MPa, Density: tonnes/mm³ (7.85e-9 for steel), Gravity: 9810 mm/s².
+
+**Proof-of-concept results:** 5m planing hull, 6mm steel, self-weight gravity — 0.135 mm max displacement, 0.95 MPa max von Mises (vs ~250 MPa yield). Solve time <0.1s.
+
+**Critical .frd parsing fix:** Initial `line.split()` approach failed on concatenated floats. Fixed with fixed-width column parser: `line[pos:pos+12]` in 12-char increments starting at position 13.
+
+**Commits:** `b8c50f6` (auto-sync, partial), `202a849` (final solve_agent + research doc)
+
+---
+*Source: WRK-610 analysis — solve_agent.py is Stage 3 of the AI-agent FEA pipeline.*

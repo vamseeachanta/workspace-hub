@@ -1,0 +1,44 @@
+---
+id: digitalmodel#373
+title: "Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material"
+status: archived
+priority: medium
+complexity: medium
+category: engineering
+subcategory: pipeline
+created_at: 2026-02-16T00:00:00Z
+target_repos:
+  - digitalmodel
+target_module: structural
+commit: 0aff96687
+spec_ref:
+related: [WRK-044, WRK-155]
+blocked_by: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+provider: claude
+provider_alt:
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-158/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/373
+---
+# Wall Thickness Parametric Engine
+
+## What
+Build a parametric sweep engine for wall thickness calculations that generates utilization tables across parameter combinations (diameter, wall thickness, pressure, material grade, water depth). Phase 2 of original WRK-044 plan.
+
+## Why
+- Individual wall thickness checks exist but no batch/parametric capability
+- Engineering workflows require comparing options across parameter space
+- Enables "selection chart" deliverables for clients
+
+## Acceptance Criteria
+- [ ] Parametric input specification (YAML or dict) for sweep dimensions
+- [ ] Cartesian product engine generating all combinations
+- [ ] Utilization ratio calculated for each combination using any registered design code
+- [ ] Summary table output (DataFrame) with pass/fail flagging
+- [ ] Excel export of parametric results
+- [ ] Tests with at least 2 sweep configurations

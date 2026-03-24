@@ -1,0 +1,64 @@
+---
+id: workspace-hub#476
+title: "feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu..."
+status: done
+priority: high
+complexity: low
+compound: false
+created_at: 2026-02-24T23:52:55Z
+completed_at: 2026-02-24T00:00:00Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-420/evidence/stage-evidence.yaml
+category: engineering-calculations
+subcategory: standards
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/476
+---
+# feat(calculations): implement ISO-TR 10400, 1st Ed (2007) Equations...
+
+## Standard
+- **ID**: ISO-TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line pipe used as casing or tubing
+- **Title**: ISO TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line pipe us
+- **Org**: ISO
+- **Document**: `/mnt/ace/O&G-Standards/ISO/ISO-TR_10400,_1st_Ed_(2007)_Equations_and_calculations_for_the_properties_of_casing,_tubing,_drill_pipe_and_line_pipe_used_as_casing_or_tubing.pdf` (SHA: `f572be13fe3c534f...`)
+- **Summary**: ISO standard : ISO TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line pipe used as casing or tubing
+- **Discipline**: pipeline
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+ISO standard : ISO TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line pipe used as casing or tubing
+
+## Acceptance Criteria
+- [x] Function implements ISO-TR 10400, 1st Ed (2007) Equations... calculation (burst, collapse, axial, wall thickness, temperature derating)
+- [x] Unit tests cover nominal and edge cases (35 tests pass)
+- [x] Result validated against worked example in standard (if available)
+- [x] Module registry updated: status → implemented
+
+## Implementation Note
+Implementation shared with WRK-420: `assetutilities/calculations/casing_pipe.py`
+Single implementation (API 5C3 / ISO-TR 10400 aligned) covers WRK-420 through WRK-424.
+35 tests pass covering burst, collapse, axial load, wall thickness, and temperature derating.
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  ISO-TR 10400, 1st Ed (2007) Equations... calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable

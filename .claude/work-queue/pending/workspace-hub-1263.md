@@ -1,0 +1,44 @@
+---
+id: workspace-hub#1263
+title: "3D FEM analysis (CalculiX)"
+status: pending
+priority: high
+complexity: medium
+created_at: "2026-03-19"
+parent: WRK-5082
+blocked_by: [WRK-1360, WRK-1362]
+target_repos: [workspace-hub]
+computer: dev-primary
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: engineering-calculations
+subcategory: structural-dynamics
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1263
+---
+
+## Mission
+
+Run 3D beam/frame FEM analysis in CalculiX using the full frame geometry — stress distribution, deformation, and reaction forces under drag loading.
+
+## What
+
+1. **Mesh** the WRK-1360 FreeCAD geometry as B31 beam elements (requires WRK-1341 INP writer support)
+2. **Define material**: 4130 chromoly steel (E=205 GPa, Fy=460 MPa, ρ=7850 kg/m³)
+3. **Apply boundary conditions**: C3 fixed, B1 bolted (6-DOF springs or fixed), P1 pinned, coupler pin
+4. **Apply loads**: drag force from WRK-1362 at chute attachment point
+5. **Solve** all load cases (200 MPH single, 250 MPH single, 250 MPH dual)
+6. **Post-process**: stress contours (von Mises), deformation plots, reaction forces at all BCs
+
+## Why
+
+3D FEM captures effects the 2D direct stiffness model cannot — out-of-plane bending, torsion, local stress concentrations at connections. The comparison with 2D results (WRK-1366) quantifies the simplification error.
+
+## Acceptance Criteria
+
+- [ ] CalculiX model runs with B31 beam elements for all load cases
+- [ ] Stress contours (von Mises) plotted on deformed shape
+- [ ] Maximum stress vs yield strength reported (utilisation ratio)
+- [ ] Reaction forces at all BCs extracted and tabulated
+- [ ] Deformation at chute attachment point reported
+- [ ] Results exported to YAML for comparison (WRK-1366) and checks (WRK-1367)

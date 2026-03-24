@@ -1,0 +1,54 @@
+---
+id: workspace-hub#204
+title: "2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)"
+status: working
+stage: 1
+priority: high
+complexity: medium
+created_at: 2026-03-17
+target_repos: [aceengineer-admin]
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: personal-finance
+subcategory: tax-preparation
+related: [WRK-5084, WRK-5093, WRK-1262]
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/204
+---
+
+## Mission
+
+Prepare and file 2025 corporate taxes for AceEngineer Inc (C-Corp, engineering services). Federal Form 1120 by April 15, 2026 (or extension). Texas franchise tax by May 15, 2026.
+
+## What
+
+- Collect all AceEngineer Inc financial records from `aceengineer-admin/`
+- Prepare Form 1120 (flat 21% corporate rate)
+- Compute gross receipts, COGS, officer compensation, deductions
+- File Texas No Tax Due Report + PIR (if under $2.47M revenue threshold)
+- Coordinate with personal return (WRK-5084) for any dividends/distributions
+
+## Why
+
+AceEngineer Inc is a C-Corp subject to double taxation — corporate income taxed at 21%, then dividends taxed again on the personal return. April 15, 2026 deadline for Form 1120.
+
+## Dependencies
+
+- WRK-1262 (aceengineer-admin restructure) would help but is not a blocker — can work with current repo structure
+- WRK-5084 (personal return) needs to know if any 1099-DIVs were issued
+- **NEW**: 2024 Form 1120 never filed — may need WRK for that first (NOL chain)
+
+## Acceptance Criteria
+
+1. Form 1120 filed or extension (Form 7004) requested by April 15, 2026
+2. TX franchise tax filed by May 15, 2026
+3. Tax preparation worksheet created at `aceengineer-admin/taxes/2025/tax-preparation-worksheet.yaml`
+4. All source documents indexed and verified
+
+## Stage 1 Session Notes (2026-03-18)
+
+- Revenue confirmed FINAL: $300,470 (ACMA $284,480 + seaNATION $15,990)
+- 2024 Form 1120 NOT FILED — only TX state return in Tax/2024/
+- Chase bank statements Jan-Jun on home-win — need SMB share to retrieve
+- Tax strategy questions documented (R&D retention, officer comp, imputed interest, 2024 gap)
+- Checkpoint: `.claude/work-queue/assets/WRK-1318/checkpoint.yaml`

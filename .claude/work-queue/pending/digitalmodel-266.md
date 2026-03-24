@@ -1,0 +1,76 @@
+---
+id: digitalmodel#266
+title: "feat(geotechnical): scour prediction per DNV-RP-F107"
+status: pending
+priority: low
+complexity: medium
+compound: false
+created_at: 2026-02-26T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+related:
+  - WRK-597
+blocked_by:
+  - WRK-618
+parent: WRK-597
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+computer: [dev-primary, dev-secondary]
+execution_workstations: [dev-primary, dev-secondary]
+plan_workstations: [dev-primary, dev-secondary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-623/evidence/stage-evidence.yaml
+subcategory: pipeline
+category: engineering
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/266
+---
+# Scour Prediction (Phase 6)
+
+## What
+
+Implement scour depth prediction for pipelines and offshore structures per
+DNV-RP-F107, including scour protection (rock dumping) design.
+
+## Why
+
+Scour is a soil erosion phenomenon that affects pipelines, monopiles,
+jackets, and gravity base structures. Not in the original WRK-597 scope
+but identified as a gap during review. Located in `geotechnical/scour/`
+because scour is fundamentally a soil erosion problem, not pipeline-specific.
+
+## Scope
+
+### Packages
+- None — custom implementation
+
+### Standards
+- DNV-RP-F107 (Risk Assessment of Pipeline Protection)
+
+## Deliverables
+
+- `geotechnical/scour/pipeline_scour.py` — F107 pipeline scour depth
+- `geotechnical/scour/structure_scour.py` — monopile/jacket leg scour
+- `geotechnical/scour/scour_protection.py` — rock dumping design
+- Test suite validated against Sumer & Fredsoe (2002) and DNV-RP-F107 examples
+
+## Acceptance Criteria
+
+- [ ] Pipeline scour depth prediction per DNV-RP-F107
+- [ ] Monopile and jacket leg scour depth estimation
+- [ ] Rock dumping scour protection sizing
+- [ ] Tests validated against Sumer & Fredsoe (2002) and DNV-RP-F107 examples
+- [ ] Cross-review passes (Codex hard gate)
+- [ ] Legal scan passes
+
+## Integration Points
+
+- **WRK-618** (Soil Models): scour depends on soil type and properties
+- Monopile/jacket foundation design (future WRK items)
+
+## Source
+
+Phase 6 of WRK-597 geotechnical module split. New scope identified during
+review — not in original WRK-597.

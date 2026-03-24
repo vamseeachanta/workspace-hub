@@ -1,0 +1,31 @@
+---
+id: worldenergydata#129
+title: "BOEM/BSEE data refresh CLI script"
+status: pending
+priority: medium
+complexity: medium
+created_at: "2026-03-15"
+target_repos:
+  - worldenergydata
+category: engineering
+subcategory: data-pipeline
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+blocked_by:
+  - WRK-1231
+  - WRK-1232
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/129
+---
+
+## Mission
+Create a CLI script to refresh all BOEM/BSEE binary data using the 129 specs in url_registry.py. Currently 9 of 129 specs have empty local cache. No automated way to download missing data or verify integrity.
+
+## Acceptance Criteria
+1. Script `scripts/bsee/refresh-data.sh` or Python equivalent
+2. Downloads missing specs, verifies checksums, reports stale caches
+3. Dry-run mode for audit without download
+4. YAML report: spec count, downloaded, skipped, failed, cache age
+5. TDD tests for download logic (mocked HTTP)

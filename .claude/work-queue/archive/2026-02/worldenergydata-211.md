@@ -1,0 +1,34 @@
+---
+id: worldenergydata#211
+title: "Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots"
+status: archived
+priority: medium
+complexity: simple
+category: data
+subcategory: ingestion
+compound: false
+created_at: 2026-02-20T00:00:00Z
+target_repos:
+  - workspace-hub
+related: [WRK-281]
+blocked_by: []
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-283/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/211
+---
+# Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots
+
+## What
+
+Apply the same navigation treatment as WRK-281 (2H/) to the three remaining legacy roots:
+- `0_mrv/` — 5 items
+- `Production/` — 25 items
+- `umbilical/` — 1 item
+
+## Acceptance Criteria
+
+- [ ] INDEX.md created at each root with project table (number, client, discipline, files)
+- [ ] README.md in each project folder
+- [ ] Loose files matched to projects; orphans flagged
+- [ ] Human can find any project within 2 lookups

@@ -1,0 +1,33 @@
+---
+id: workspace-hub#709
+title: "feat(work-queue): implement cross-terminal automatic active sync for priority management"
+status: done
+route: B
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-03-02T10:00:00Z
+completed_at: 2026-03-02T11:45:00Z
+target_repos:
+  - workspace-hub
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
+brochure_status: n/a
+orchestrator: gemini
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+claim_routing_ref: .claude/work-queue/assets/WRK-682/claim-evidence.yaml
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-682/review.html
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-682/plan-html-review-final.md
+html_output_ref: assets/WRK-682/implementation-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-682/variation-test-results.md
+stage_evidence_ref: .claude/work-queue/assets/WRK-682/evidence/stage-evidence.yaml
+category: work-queue-infrastructure
+subcategory: work-queue
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/709
+---
+# feat(work-queue): implement cross-terminal automatic active sync for priority management
+
+## Objective
+...

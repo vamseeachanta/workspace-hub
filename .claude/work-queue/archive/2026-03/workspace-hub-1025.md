@@ -1,0 +1,40 @@
+---
+id: workspace-hub#1025
+title: "legal-gate-close: wire legal-sanity-scan into close-item.sh"
+status: done
+priority: high
+complexity: simple
+compound: false
+created_at: 2026-03-17T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref: specs/wrk/WRK-1301/research-brief.md
+related: [WRK-1301]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-1307/evidence/stage-evidence.yaml
+orchestrator: claude
+subcategory: work-queue
+category: tooling
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1025
+---
+
+## Description
+
+Add `legal-sanity-scan.sh` check to `close-item.sh` so WRKs cannot close without passing legal scan on target repos.
+
+## Acceptance Criteria
+
+- [ ] `close-item.sh` runs `scripts/legal/legal-sanity-scan.sh` on target_repos before closing
+- [ ] Block-severity violations prevent close (exit 1)
+- [ ] TDD: test close with clean repo (pass) and repo with deny-list violation (fail)

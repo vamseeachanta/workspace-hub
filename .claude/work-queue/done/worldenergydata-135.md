@@ -1,0 +1,62 @@
+---
+id: worldenergydata#135
+title: "POC v2 — Pattern-aware XLSX-to-Python on 10 workbooks using xlsx-to-python skill"
+status: closed
+stage: 7
+priority: high
+complexity: medium
+route: B
+created_at: "2026-03-16"
+closed_at: "2026-03-16"
+close_reason: "completed-negative-finding"
+parent: WRK-1245
+target_repos:
+  - workspace-hub
+category: engineering
+subcategory: data-extraction
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+tags: [xlsx-extraction, dark-intelligence, poc, pattern-detection, loop-collapse, negative-finding]
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/135
+---
+## Mission
+
+Re-run the 10-workbook POC using the updated xlsx-to-python skill — detect row patterns, collapse to Python loops, generate compact runnable code + HTML calc-reports.
+
+## Outcome: NEGATIVE FINDING
+
+Pipeline built and executed successfully across 6 processable files. All 56 TDD tests pass, all generated Python passes `ast.parse()`. However, **the extracted patterns and formulas are not useful for implementing Python calculations**.
+
+### Why the approach failed
+
+1. **Too many patterns**: openpyxl Translator normalization creates separate groups for every absolute-ref variation ($E$36 vs $E$44). Conductor workbook yielded 843 patterns instead of the hoped ~132 semantically distinct calculations.
+2. **No semantic context**: Generated code is syntactically valid but reads like a cell dump with loops — not engineer-written Python. Variables are cell refs (c5, d7) not meaningful names (diameter, wall_thickness).
+3. **Formulas lack domain meaning**: The mechanical translation preserves formula structure but loses the engineering intent. Without understanding what each calculation represents, the output isn't maintainable or reviewable.
+
+### What was delivered
+
+| Workbook | Formulas | Patterns | Compression | Loops |
+|----------|----------|----------|-------------|-------|
+| Flowback Calculator | 50,000* | 19,785 | 2.5x | 65 |
+| Conductor Assessment | 2,699 | 843 | 3.2x | 31 |
+| SN Curve Definitions | 6,264 | 638 | 9.8x | 118 |
+| Spotfire Formulas | 222 | 5 | 44.4x | 2 |
+| SITP Calculations | 3 | 3 | 1.0x | 0 |
+| C&K Flow Rate | 0 | 0 | — | 0 |
+
+### Blocked follow-up items
+
+Follow-up WRK items dependent on XLSX-to-Python translation are **blocked** — mechanical formula translation does not produce useful engineering code. A fundamentally different approach is needed (manual extraction guided by formula map, or LLM-assisted semantic pass).
+
+### Files created (remain as infrastructure)
+
+- `scripts/data/doc_intelligence/pattern_detector.py` (103 lines, 19 tests)
+- `scripts/data/doc_intelligence/loop_collapse_generator.py` (197 lines, 12 tests)
+- `scripts/data/doc_intelligence/module_assembler.py` (109 lines, 7 tests)
+- `scripts/data/doc_intelligence/test_generator_v2.py` (128 lines, 6 tests)
+- `scripts/data/doc_intelligence/calc_report_from_patterns.py` (107 lines, 7 tests)
+- `scripts/data/doc_intelligence/run_poc_v2.py` (234 lines, 5 tests)
+- Output: `knowledge/dark-intelligence/xlsx-poc-v2/` (6 workbook dirs + compression-report.yaml)

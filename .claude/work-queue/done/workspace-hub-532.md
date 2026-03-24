@@ -1,0 +1,58 @@
+---
+id: workspace-hub#532
+title: "feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs..."
+status: done
+priority: high
+complexity: low
+compound: false
+created_at: 2026-02-24T23:52:56Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-448/evidence/stage-evidence.yaml
+category: personal-finance
+subcategory: tax-preparation
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/532
+---
+# feat(calculations): implement Larimore, D., et al, 1998 - Case Hist...
+
+## Standard
+- **ID**: Larimore, D., et al, 1998 - Case History - First Diverless 
+- **Title**: Larimore, D., et al, 1998   Case History   First Diverless
+- **Org**: Unknown
+- **Document**: `` (SHA: `c79bfea25b7dd5fa...`)
+- **Summary**: Papers Offshore Technology Conference Larimore, D., et al, 1998 - Case History - First Diverless .pdf
+- **Discipline**: marine
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+Papers Offshore Technology Conference Larimore, D., et al, 1998 - Case History - First Diverless .pdf
+
+## Acceptance Criteria
+- [ ] Function implements Larimore, D., et al, 1998 - Case Hist... calculation
+- [ ] Unit tests cover nominal and edge cases
+- [ ] Result validated against worked example in standard (if available)
+- [ ] Module registry updated: status → implemented
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  Larimore, D., et al, 1998 - Case Hist... calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable

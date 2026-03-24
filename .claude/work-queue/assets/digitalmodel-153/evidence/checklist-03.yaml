@@ -1,0 +1,17 @@
+stage: 3
+wrk_id: WRK-1249
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    completed_at: "2026-03-24T00:00:00Z"
+  - id: CL-03-2
+    text: "Confirm route (A/B/C), workstations, orchestrator"
+    completed: true
+    completed_at: "2026-03-24T00:00:00Z"
+    notes: "Route C (complex). dev-secondary. claude orchestrator."
+  - id: CL-03-3
+    text: "Surface open questions; update WRK frontmatter"
+    completed: true
+    completed_at: "2026-03-24T00:00:00Z"
+    notes: "Cleared resolved blocker WRK-140. No open questions."

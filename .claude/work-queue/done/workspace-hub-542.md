@@ -1,0 +1,58 @@
+---
+id: workspace-hub#542
+title: "feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts"
+status: done
+priority: high
+complexity: low
+compound: false
+created_at: 2026-02-24T23:52:56Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-453/evidence/stage-evidence.yaml
+category: engineering-calculations
+subcategory: standards
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/542
+---
+# feat(calculations): implement OTC1997-8494 Code Conflicts
+
+## Standard
+- **ID**: OTC1997-8494 Code Conflicts
+- **Title**: OTC1997 8494 Code Conflicts
+- **Org**: OnePetro
+- **Document**: `/mnt/ace/O&G-Standards/OnePetro/OTC1997-8494_Code_Conflicts.pdf` (SHA: `999c55e1e7ad138e...`)
+- **Summary**: This paper addresses concerns that current pipeline codes result in overly conservative designs for high-pressure subsea flowlines and steel catenary risers. It highlights the limitations of the tr...
+- **Discipline**: marine
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+This paper addresses concerns that current pipeline codes result in overly conservative designs for high-pressure subsea flowlines and steel catenary risers. It highlights the limitations of the traditional Barlow formula for thick-walled pipe and the resulting economic penalties in deepwater projects. It advocates for a shift toward limit state design based on actual burst strength to achieve ...
+
+## Acceptance Criteria
+- [ ] Function implements OTC1997-8494 Code Conflicts calculation
+- [ ] Unit tests cover nominal and edge cases
+- [ ] Result validated against worked example in standard (if available)
+- [ ] Module registry updated: status → implemented
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  OTC1997-8494 Code Conflicts calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable

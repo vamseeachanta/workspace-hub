@@ -1,0 +1,149 @@
+---
+id: workspace-hub#194
+title: "feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline"
+status: pending
+priority: medium
+complexity: small
+compound: false
+created_at: 2026-02-27T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related:
+  - WRK-635
+  - WRK-299
+blocked_by:
+  - WRK-635
+parent:
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: [dev-primary, licensed-win-1]
+execution_workstations: [dev-primary, licensed-win-1]
+plan_workstations: [dev-primary, licensed-win-1]
+provider: claude
+orchestrator: claude
+stage_evidence_ref: .claude/work-queue/assets/WRK-636/evidence/stage-evidence.yaml
+subcategory: session
+category: harness
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/194
+---
+# feat(memory): Codex Session Archive → Comprehensive-Learning Pipeline
+
+## What
+
+Extend the nightly comprehensive-learning pipeline to ingest Codex session JSONL
+files alongside Claude sessions. Gemini does NOT store session transcripts (only
+`.project_root` markers in `~/.gemini/history/`) — no action needed for Gemini.
+
+### Codex session format (confirmed)
+
+```json
+{"timestamp": "...", "type": "response_item", "payload": {"role": "user", "content": "..."}}
+{"timestamp": "...", "type": "event_msg",    "payload": "**Requesting clarification...**"}
+{"timestamp": "...", "type": "session_meta", "payload": {...}}
+```
+
+Key types to extract: `response_item` (role=user/assistant), `event_msg` (assistant text).
+Skip: `session_meta`, `turn_context`, developer-role system preambles.
+
+Session files location:
+- **dev-primary**: `~/.codex/sessions/2026/` — 252 files (Feb 2026)
+- **licensed-win-1**: `%USERPROFILE%\.codex\sessions\` (Windows) — check if present
+
+### Changes required
+
+**1. `scripts/cron/comprehensive-learning-nightly.sh`**
+
+Add Codex rsync step alongside existing Claude session rsync:
+
+```bash
+# Rsync Codex sessions from contributor machines
+rsync -az --no-delete --timeout=30 \
+  -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+  dev-secondary:.codex/sessions/ \
+  .claude/state/sessions-archive/codex-dev-secondary/ 2>/dev/null || true
+```
+
+For licensed-win-1 (Windows): use `robocopy` or `rsync` via Git Bash/WSL if available;
+document in SKILL.md that Windows rsync is best-effort.
+
+**2. `scripts/memory/scan-sessions.py` (WRK-635)**
+
+Add `--format codex` flag and parser:
+
+```python
+def parse_codex_session(path):
+    """Parse ~/.codex/sessions/**/*.jsonl into (timestamp, role, text) tuples."""
+    for line in open(path):
+        r = json.loads(line)
+        if r['type'] == 'response_item':
+            payload = r['payload']
+            role = payload.get('role', '')
+            if role in ('user', 'assistant'):
+                content = payload.get('content', '')
+                if isinstance(content, list):
+                    content = ' '.join(
+                        c.get('text', '') for c in content if isinstance(c, dict)
+                    )
+                yield r['timestamp'], role, str(content)
+        elif r['type'] == 'event_msg':
+            payload = r.get('payload', '')
+            if isinstance(payload, str) and payload.strip():
+                yield r['timestamp'], 'assistant', payload
+```
+
+**3. Comprehensive-learning SKILL.md — Session Archive section**
+
+Update the machine rsync table to include Codex paths:
+
+```
+.claude/state/sessions-archive/
+  claude-dev-primary/   # Claude sessions (local)
+  claude-dev-secondary/   # Claude sessions (rsync'd)
+  codex-dev-primary/    # Codex sessions (local symlink: ~/.codex/sessions/)
+  codex-dev-secondary/    # Codex sessions (rsync'd)
+  codex-licensed-win-1/   # Codex sessions (rsync'd when reachable, Windows)
+```
+
+**4. Phase 7 back-analysis**
+
+The Phase 7 back-analysis scan in SKILL.md already references `sessions-archive/`.
+No change needed there — it will automatically pick up Codex sessions once they
+are rsynced into the archive directory.
+
+## Why
+
+Codex is heavily used for cross-review (hard gate on all WRK items) and
+refactoring tasks. Its 252 sessions contain code-review decisions, P1/P2 fix
+rationales, and architectural insights that are currently invisible to the
+memory pipeline. Gemini sessions are one-shot (`gemini -p`) with no transcripts
+stored — no sessions to capture there.
+
+## Clarification: auto-memory vs comprehensive-learning
+
+These are **complementary layers** — both should run:
+
+| Layer | Trigger | Depth | Scope |
+|-------|---------|-------|-------|
+| Auto-memory | Real-time during Claude sessions | Shallow, opportunistic | Claude only |
+| Comprehensive-learning | Nightly cron | Deep — trends, corrections, candidates | All agents, all machines |
+
+Comprehensive-learning Phase 3 (Knowledge) + Phase 4 (Improve) already write to
+the same `memory/` directory that auto-memory uses. Auto-memory is the "fast path"
+(captures in-session learnings immediately); comprehensive-learning is the "deep path"
+(cross-session patterns, staleness checks, WRK feedback loop). Neither replaces the
+other. Run both.
+
+## Acceptance Criteria
+
+- [ ] `comprehensive-learning-nightly.sh` includes Codex rsync step
+- [ ] `scan-sessions.py` handles `--format codex` (or auto-detects by path)
+- [ ] Codex sessions land in `sessions-archive/codex-dev-primary/` locally
+- [ ] Phase 7 back-analysis finds at least 5 net-new learnings from Codex sessions
+- [ ] SKILL.md Session Archive section updated with Codex paths
+- [ ] licensed-win-1 Codex path documented (Windows caveat noted)
+- [ ] Legal scan passes

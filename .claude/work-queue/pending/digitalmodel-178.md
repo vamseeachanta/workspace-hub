@@ -1,0 +1,45 @@
+---
+id: digitalmodel#178
+title: "feat(worldenergydata): integrate CMEMS Wave Multi-Year Product"
+status: pending
+priority: medium
+complexity: moderate
+compound: false
+created_at: 2026-02-24T00:00:00Z
+target_repos:
+  - worldenergydata
+target_module: metocean
+commit:
+spec_ref:
+related:
+  - WRK-391
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-480/evidence/stage-evidence.yaml
+subcategory: marine
+category: engineering
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/178
+---
+# feat(worldenergydata): integrate CMEMS Wave Multi-Year Product
+
+## Objective
+Integrate the CMEMS Wave Multi-Year (1967-2025) hindcast into the `metocean` module.
+
+## Context
+This product provides a 58-year wave climate baseline, which is critical for extreme wave statistics and return period calculations. It complements ERA5 with dedicated ocean-wave physics.
+
+## Plan
+1. Implement CMEMS Marine Service data downloader.
+2. Integrate the wave multi-year product into the metocean analysis pipeline.
+3. Update extreme value analysis (EVA) modules to utilize this longer baseline.
+4. Verify results against ERA5 benchmarks.
+
+## Acceptance Criteria
+- Successful ingestion of CMEMS wave data.
+- EVA results improved by longer historical baseline.

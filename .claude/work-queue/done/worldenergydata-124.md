@@ -1,0 +1,42 @@
+---
+id: worldenergydata#124
+title: "Ingest BOEM lease data"
+status: done
+priority: high
+complexity: medium
+resolution: already_satisfied
+created_at: "2026-03-14"
+target_repos:
+  - worldenergydata
+category: engineering
+subcategory: data-ingestion
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+parent: WRK-1179
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/124
+---
+
+## Mission
+Ingest offshore lease, well API, and platform permit data from data.boem.gov API into worldenergydata, complementing existing BSEE production data.
+
+## Acceptance Criteria
+1. BOEM API client with lease block, well, and platform endpoints
+2. Data normalised into worldenergydata standard DataFrame schema
+3. TDD tests passing with fixture data from BOEM API responses
+4. Ingestion report YAML with record counts per endpoint
+
+## Resolution (2026-03-15)
+**Closed as already satisfied.** BOEM has NO REST API — only bulk ZIP file downloads.
+The BSEE module already ingests all BOEM data categories:
+- `url_registry.py`: 129 download specs covering lease, well, platform, pipeline, production, company
+- `bsee/data/loaders/`: loaders for lease, well, infrastructure, rig_fleet, block
+- `data/modules/bsee/bin/`: binary data on disk
+
+Remaining gaps captured as separate WRK items:
+- WRK-1231: CompanyLoader (missing loader)
+- WRK-1232: Production pipeline completion (stub methods)
+- WRK-1233: Platform/pipeline loader tests (zero coverage)
+- WRK-1234: Data refresh CLI (no automated download script)

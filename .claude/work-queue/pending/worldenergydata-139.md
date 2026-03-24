@@ -1,0 +1,54 @@
+---
+id: worldenergydata#139
+title: "Batch deep extraction — dev-primary machine-readable PDFs (154K docs, local disk)"
+status: pending
+priority: high
+complexity: complex
+route: C
+created_at: "2026-03-17"
+target_repos:
+  - workspace-hub
+category: engineering
+subcategory: data-extraction
+computer: dev-primary
+plan_workstations:
+  - dev-primary
+execution_workstations:
+  - dev-primary
+parent: WRK-1245
+blocked_by: [WRK-1295]
+tags: [doc-intelligence, deep-extraction, tables, dev-primary]
+key_scripts:
+  - scripts/data/document-index/deep-extract.py
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/139
+---
+
+## Mission
+
+Run deterministic deep extraction (tables, charts, metadata) on 154K machine-readable
+PDFs that are local to dev-primary (/mnt/ace/ disk). This is the dev-primary shard of
+Phase 2a from WRK-1245.
+
+## Context — Machine split by workstation
+
+| Machine | machine PDFs | ocr-needed | Key path prefix |
+|---------|-------------|------------|-----------------|
+| dev-primary | 154,170 | 52,915 | /mnt/ace/ |
+| dev-secondary | 124,729 | 39,127 | /mnt/dde/ |
+
+Processing locally avoids the NFS D-state hangs discovered in WRK-1277.
+
+## Scope
+
+- Run deep extraction on 154K machine-readable PDFs on dev-primary local disk
+- Use pdftotext (poppler) for text extraction — NOT pdfplumber (too slow, D-state risk)
+- Extract: tables, charts metadata, constants, equations
+- Output: tables → CSV, charts → metadata YAML
+- Estimated runtime: ~35h at 1.2 docs/sec
+
+## Acceptance Criteria
+
+1. [ ] Deep extraction run on ≥150K dev-primary machine PDFs
+2. [ ] Table extraction yield ≥70% on ace_project segment
+3. [ ] Output artifacts stored in structured format
+4. [ ] Extraction errors categorized and logged

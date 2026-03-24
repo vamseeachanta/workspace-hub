@@ -1,0 +1,39 @@
+---
+id: workspace-hub#1340
+title: "verify agents team running on all machines"
+status: pending
+priority: high
+complexity: simple
+created_at: 2026-03-24T09:14:34Z
+parent:
+target_repos:
+  - workspace-hub
+commit:
+spec_ref:
+related: []
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+computer: ace-linux-2
+execution_workstations: [dev-primary, dev-secondary, ace-license-win-1, ace-license-win-2]
+plan_workstations: [dev-primary]
+provider: claude
+provider_alt:
+stage_evidence_ref: .claude/work-queue/assets/WRK-1340/evidence/stage-evidence.yaml
+subcategory: operations
+category: infrastructure
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1340
+---
+# Verify Agents Team Running on All Machines
+
+## Mission
+Check that the agents team (Claude Code agent instances) is running and operational on all machines in the ecosystem.
+
+## Acceptance Criteria
+- [ ] Confirm agents team status on dev-primary
+- [ ] Confirm agents team status on dev-secondary
+- [ ] Confirm agents team status on ace-license-win-1
+- [ ] Confirm agents team status on ace-license-win-2
+- [ ] Document any machines where agents are not running and remediate

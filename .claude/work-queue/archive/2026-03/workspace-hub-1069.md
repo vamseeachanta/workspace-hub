@@ -1,0 +1,31 @@
+---
+id: workspace-hub#1069
+title: "feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report"
+status: archived
+route: B
+priority: medium
+complexity: simple
+compound: false
+created_at: 2026-03-02T10:10:00Z
+completed_at: 2026-03-10T18:49:12Z
+target_repos:
+  - workspace-hub
+orchestrator: gemini
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+plan_reviewed: true
+plan_approved: true
+claim_routing_ref: .claude/work-queue/assets/WRK-684/claim-evidence.yaml
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-684/review.html
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-684/plan-review-final.md
+html_output_ref: .claude/work-queue/assets/WRK-684/workflow-final-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-684/resource-intelligence-summary.md
+stage_evidence_ref: .claude/work-queue/assets/WRK-684/evidence/stage-evidence.yaml
+subcategory: skills
+category: harness
+percent_complete: 100
+commit: b658a702
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1069
+---
+# feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report
+...

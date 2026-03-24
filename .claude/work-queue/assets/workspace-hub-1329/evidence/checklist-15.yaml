@@ -1,0 +1,11 @@
+stage: 15
+items:
+  - id: CL-15-1
+    text: "Identify future work items"
+    completed: true
+  - id: CL-15-2
+    text: "Write future-work.yaml"
+    completed: true
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true

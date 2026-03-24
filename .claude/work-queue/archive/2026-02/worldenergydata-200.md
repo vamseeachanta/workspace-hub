@@ -1,0 +1,44 @@
+---
+id: worldenergydata#200
+title: "BSEE field pipeline skill — zero-config agent-callable wrapper"
+status: archived
+priority: high
+complexity: medium
+category: data
+subcategory: bsee
+compound: false
+created_at: 2026-02-20T00:00:00Z
+target_repos:
+  - worldenergydata
+commit:
+spec_ref:
+related: [WRK-017]
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-239/evidence/stage-evidence.yaml
+github_issue_ref: https://github.com/vamseeachanta/worldenergydata/issues/200
+---
+# BSEE field pipeline skill — zero-config agent-callable wrapper
+
+## What
+Wrap the BSEE field pipeline (wellbore, casing, drilling, completions, interventions with FieldContext) as a named, zero-config agent-callable skill. An agent should call `bsee_field_pipeline(field_name)` and receive a full FieldReport without needing setup knowledge.
+
+## Why
+The pipeline was delivered (WRK-017) but requires too much setup knowledge to invoke autonomously. With improved agents in 3-4 months, the bottleneck will be the invocation interface, not the model capability.
+
+## Acceptance Criteria
+- [ ] Skill registered at `.claude/skills/eng/`
+- [ ] Invocation API documented (input: field_name, output: FieldReport schema)
+- [ ] Agent can call it with zero additional context
+- [ ] Tested against 2 real field names
+
+## Agentic AI Horizon
+- Directly enables autonomous engineering analysis — agents can run a full BSEE field report from a single field name string
+- The pipeline logic is already complete; the only gap is the invocation interface, which agents cannot bridge themselves
+- **Disposition: do now** — pipeline exists, wrapper is low effort, bottleneck is interface not model capability

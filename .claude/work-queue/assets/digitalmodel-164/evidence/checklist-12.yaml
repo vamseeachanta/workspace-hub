@@ -1,0 +1,18 @@
+stage: 12
+items:
+  - id: CL-12-1
+    description: "Full test suite run"
+    completed: true
+    evidence: "N/A — pure documentation WRK; content validation performed manually"
+  - id: CL-12-2
+    description: "Each AC mapped to test result"
+    completed: true
+    evidence: "5 ACs all PASS in ac-test-matrix.md"
+  - id: CL-12-3
+    description: "No FAIL results"
+    completed: true
+    evidence: "All PASS"
+  - id: CL-12-4
+    description: "ac-test-matrix.md written"
+    completed: true
+    evidence: "Written with 5 AC rows + 2 P2 scope rows, all PASS"

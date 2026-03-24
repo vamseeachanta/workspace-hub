@@ -1,0 +1,118 @@
+---
+id: digitalmodel#254
+title: "feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel"
+status: pending
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-25T00:00:00Z
+target_repos:
+  - workspace-hub
+  - client_projects
+  - digitalmodel
+commit:
+spec_ref:
+  - scripts/data/orcaflex/dat-to-yaml.py
+  - scripts/data/orcaflex/anonymize-import.py
+related:
+  - WRK-309
+  - WRK-568
+  - WRK-569
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: licensed-win-1
+execution_workstations: [licensed-win-1]
+plan_workstations: [licensed-win-1]
+stage_evidence_ref: .claude/work-queue/assets/WRK-589/evidence/stage-evidence.yaml
+subcategory: pipeline
+category: engineering
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/254
+---
+# feat(orcaflex): dat-to-yaml Pipeline — Extract, Legal-Scan, Import to digitalmodel
+
+## What
+
+Three-stage pipeline to convert binary OrcaFlex `.dat` model files into
+portable YAML test fixtures for `digitalmodel`:
+
+```
+Stage 1 (licensed-win-1):  .dat → OrcFxAPI → raw YAML  → client_projects/data/raw/orcaflex-extracted/
+Stage 2 (dev-primary):   pull client_projects → legal scan → anonymize string fields
+Stage 3 (dev-primary):   clean YAML → digitalmodel/data/orcaflex/ (test fixtures)
+```
+
+## Why
+
+OrcaFlex `.dat` files are binary and require a licensed OrcaFlex install
+to read. licensed-win-1 has OrcaFlex installed. Once extracted to YAML the
+engineering data (geometry, material properties, load cases, water depth)
+is plain-text and version-controllable.
+
+`client_projects` is the staging repo because raw extracts may contain
+client-specific object names, vessel names, and project references that
+must be anonymized before committing to the open `digitalmodel` repo.
+
+## Stage 1 — Extraction Script (licensed-win-1)
+
+Script: `scripts/data/orcaflex/dat-to-yaml.py`
+
+Run on licensed-win-1 (Windows, OrcaFlex licensed):
+```cmd
+cd C:\path\to\workspace-hub
+python scripts\data\orcaflex\dat-to-yaml.py ^
+    --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
+    --output "client_projects\data\raw\orcaflex-extracted\drilling-riser-development" ^
+    --project drilling-riser-development
+```
+
+Extracts per .dat file:
+- `general`: StaticSimulationLength, DynamicSimulationLength, ImplicitConstantTimeStep
+- `environment`: WaterDepth, SeaDensity, CurrentSpeed, CurrentDirection, WaveHs, WaveTz, WaveDirection
+- `lines[]`: name, length[], OD[], WallThickness[], MassPerLength[], E, CDt, CDn
+- `vessels[]`: name, InitialX, InitialY, InitialZ
+- `metadata`: source_file, orcaflex_version, extracted_at
+
+## Stage 2 — Legal Scan + Anonymize (dev-primary)
+
+Script: `scripts/data/orcaflex/anonymize-import.py`
+
+```bash
+python3 scripts/data/orcaflex/anonymize-import.py \
+    --input client_projects/data/raw/orcaflex-extracted/ \
+    --output digitalmodel/data/orcaflex/ \
+    --dry-run        # preview changes
+```
+
+Anonymization rules:
+- Replace all string field values with generic labels (Line1, Vessel1, etc.)
+- Keep all numeric fields as-is (dimensions, properties, load cases)
+- Flag matches against `.legal-deny-list.yaml` as BLOCK violations
+- Output `_anonymize_log.yaml` per project showing substitutions made
+
+## Stage 3 — Verify + Commit (dev-primary)
+
+```bash
+bash scripts/legal/legal-sanity-scan.sh digitalmodel/data/orcaflex/
+cd digitalmodel && python3 -m pytest tests/data/orcaflex/ -q
+git add data/orcaflex/ && git commit -m "data(orcaflex): add extracted model fixtures WRK-589"
+```
+
+## Priority Order for Extraction
+
+1. `0000 Drilling Riser Development/Latest` (31 base models) — DNV-OS-F201 fixtures
+2. `31290 WellHead Fatigue/BOP on Wellhead` (240 models) — API-RP-2A-WSD fixtures
+3. `611 Mecor S Lay/Reference` (3 models) — DNV-OS-F101 base fixture
+4. `5 - OrcaFlex API Check` (1 model) — minimal API test fixture
+
+## Acceptance Criteria
+
+- [ ] `dat-to-yaml.py` runs on licensed-win-1 against Latest/ drilling riser models
+- [ ] Raw YAMLs committed to `client_projects/data/raw/orcaflex-extracted/`
+- [ ] `anonymize-import.py` produces clean YAMLs with no string client identifiers
+- [ ] Legal scan passes on `digitalmodel/data/orcaflex/`
+- [ ] At least 1 drilling riser + 1 wellhead fatigue fixture in digitalmodel
+- [ ] Fixtures linked back to WRK-497..510 (pipeline gap items) via `test_data:` field

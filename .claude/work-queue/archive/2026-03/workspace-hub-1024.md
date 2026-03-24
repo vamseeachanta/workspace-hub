@@ -1,0 +1,40 @@
+---
+id: workspace-hub#1024
+title: "feature-auto-close: trigger feature WRK close when all children archived"
+status: done
+priority: high
+complexity: simple
+compound: false
+created_at: 2026-03-17T00:00:00Z
+target_repos:
+  - workspace-hub
+commit:
+spec_ref: specs/wrk/WRK-1301/research-brief.md
+related: [WRK-1301]
+blocked_by: []
+synced_to: []
+plan_ensemble: false
+ensemble_consensus_score: null
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-1306/evidence/stage-evidence.yaml
+orchestrator: claude
+subcategory: work-queue
+category: tooling
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1024
+---
+
+## Description
+
+Add `feature-close-check.sh` call to `on-complete-hook.sh`. When a child WRK archives, check if its parent feature WRK has all children archived. If so, auto-close the feature WRK.
+
+## Acceptance Criteria
+
+- [ ] `on-complete-hook.sh` calls `feature-close-check.sh` after archive
+- [ ] Feature WRK auto-transitions to done/archived when last child archives
+- [ ] TDD: test with feature parent + 2 children, archive both children

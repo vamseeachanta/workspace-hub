@@ -1,0 +1,10 @@
+stage: 5
+wrk_id: WRK-5139
+gate: human
+decision: approved
+approval_decision: approve_as_is
+approved_by: user
+scope_approved: true
+timestamp: "2026-03-24T08:40:00+00:00"
+evidence: "User said: 'i approve stage 1' (approving plan draft)"
+notes: "Single-file fix to submit-to-gemini.sh. ~30 lines. No new scripts. User approved without revision."

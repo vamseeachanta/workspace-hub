@@ -1,0 +1,4 @@
+wrk_id: WRK-5139
+stage: 18
+status: n/a
+notes: "No reclaim triggered — single session, no resource contention"

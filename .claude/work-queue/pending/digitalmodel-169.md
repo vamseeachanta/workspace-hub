@@ -1,0 +1,55 @@
+---
+id: digitalmodel#169
+title: "Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps"
+status: pending
+priority: medium
+complexity: complex
+compound: false
+created_at: 2026-02-20T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+related: [WRK-158, WRK-032, WRK-241, WRK-245]
+blocked_by: []
+synced_to: []
+plan_reviewed: true
+plan_approved: true
+percent_complete: 95
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-256/evidence/stage-evidence.yaml
+subcategory: marine
+category: engineering
+github_issue_ref: https://github.com/vamseeachanta/digitalmodel/issues/169
+---
+# Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps
+
+## What
+Create a unified parametric study coordinator that can run Cartesian sweeps across OrcaFlex models (WRK-032 campaign generator), wall thickness/utilisation (WRK-158 parametric engine), and fatigue parameters (WRK-245 fatigue skill). Agents orchestrate a full engineering study with one invocation specifying the study type and parameter ranges.
+
+## Why
+Parametric study infrastructure exists across three separate systems (campaign, wall thickness, fatigue) but they are disconnected. A unified coordinator would enable full end-to-end parametric engineering studies.
+
+## Acceptance Criteria
+- [x] Coordinator accepts study type and parameter ranges as input
+- [x] Dispatches to the correct engine (wall thickness sweep, fatigue sweep); OrcaFlex live path deferred (licence required on licensed workstation)
+- [x] Aggregates results into a unified report
+- [x] WRK-241 (pipeline integrity) and WRK-245 (fatigue skill) are now complete — blockers cleared
+- [x] Tested with a combined wall thickness + fatigue parameter sweep
+
+## Implementation Notes (2026-02-24)
+- Module: `digitalmodel/src/digitalmodel/structural/parametric_coordinator.py`
+- Tests: `digitalmodel/tests/test_parametric_coordinator.py` — 46 tests, all passing
+- OrcaFlex engine stubbed via `OrcaFlexUnavailableError` on dev-primary (no OrcFxAPI licence)
+- OrcaFlex live path compiled but gated by `ORCAFLEX_AVAILABLE` flag
+- Cross-review: Gemini APPROVE (P3 minor CSS issue addressed in refactor); Codex NO_OUTPUT
+- Legal scan: new file clean; pre-existing `sanitize_s7_models.py` BLOCK violations unchanged
+- Remaining 5%: run on licensed OrcaFlex workstation to exercise live campaign path
+
+## Agentic AI Horizon
+- High-value capability for engineering study automation — agents can run multi-domain parameter sweeps from a single invocation
+- Blocked by WRK-241 and WRK-245; coordinator interface can be designed now
+- **Disposition: groundwork now** (design coordinator interface and dispatch logic); execute after WRK-241 and WRK-245 ship

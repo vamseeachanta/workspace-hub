@@ -1,0 +1,57 @@
+---
+id: workspace-hub#841
+title: "feat(harness): quality gap discovery — audit folders not covered by quality checks"
+status: archived
+priority: low
+complexity: medium
+created_at: 2026-03-09
+computer: dev-primary
+orchestrator: claude
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+category: harness
+subcategory: code-quality
+related: [WRK-1056, WRK-1058, WRK-1059]
+blocked_by: []
+triage_completed: true
+triage_notes: >
+  WRK-1059 archived — blocker cleared. Route B (medium): gap discovery script + YAML report.
+  Key insight: check-all.sh + api-audit.py already exist; gap script walks repos and
+  classifies dirs against those tools. Gaps: scripts/, examples/, ratchet integration,
+  pydocstyle/radon/vulture missing in 4 repos.
+spec_ref: "specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md"
+plan_reviewed: true
+plan_approved: true
+claim_routing_ref: .claude/work-queue/assets/WRK-1060/claim-evidence.yaml
+stage_evidence_ref: .claude/work-queue/assets/WRK-1060/evidence/stage-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+html_output_ref: .claude/work-queue/assets/WRK-1060/workflow-final-review.html
+html_verification_ref: .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
+plan_html_review_draft_ref: .claude/work-queue/assets/WRK-1060/plan-html-review-final.md
+plan_html_review_final_ref: .claude/work-queue/assets/WRK-1060/plan-html-review-final.md
+percent_complete: 100
+completed_at: 2026-03-11T19:23:45Z
+commit: ade1a2c9
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/841
+---
+## Mission
+Identify folders and file types across tier-1 repos that are not covered by
+any existing quality check (ruff, mypy, docs, structure) and propose targeted
+improvements for each gap.
+
+## What
+- Walk all tier-1 repo dirs; classify each path against known check coverage
+- Report uncovered dirs/file types (e.g. notebooks, data/, config/, scripts/)
+- For each gap: propose which check tool applies and estimated effort
+- Output: gap report YAML + human-readable summary
+
+## Why
+Quality checks are only as good as their coverage. Blind spots in folder
+structure accumulate technical debt silently.
+
+## Acceptance Criteria
+- [ ] Gap discovery script walks all 5 repos
+- [ ] Uncovered dirs/file types listed with check tool recommendation
+- [ ] Gap report YAML produced
+- [ ] At least one gap addressed with a concrete new check or WRK capture
+- [ ] Codex cross-review passes

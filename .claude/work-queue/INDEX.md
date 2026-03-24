@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-24T09:12:33Z by generate-index.py -->
+<!-- Generated: 2026-03-24T09:45:15Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-24T09:12:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-24T09:45:15Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 864
+**Total items:** 865
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 389 |
-| working | 12 |
+| pending | 391 |
+| working | 11 |
 | blocked | 12 |
 | done | 9 |
 | archived | 437 |
@@ -23,17 +23,17 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 355 |
-| medium | 434 |
+| high | 357 |
+| medium | 433 |
 | low | 74 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 179 |
-| medium | 433 |
-| complex | 149 |
+| simple | 180 |
+| medium | 432 |
+| complex | 150 |
 
 ### By Category
 
@@ -41,8 +41,8 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 41 |
-| engineering | 174 |
+| harness | 42 |
+| engineering | 171 |
 | data | 27 |
 | platform | 11 |
 | business | 6 |
@@ -59,20 +59,20 @@
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 6 |
 | aceengineer-strategy | 1 |
-| aceengineer-website | 16 |
+| aceengineer-website | 17 |
 | achantas-data | 10 |
 | acma-projects | 5 |
 | assethold | 19 |
 | assetutilities | 20 |
 | client_projects | 1 |
-| digitalmodel | 250 |
+| digitalmodel | 251 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 5 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 386 |
+| workspace-hub | 387 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 303 / 864 |
-| Plans cross-reviewed | 215 |
-| Plans approved | 240 |
+| Plans exist | 303 / 865 |
+| Plans cross-reviewed | 216 |
+| Plans approved | 241 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 864 |
+| Total captured | 865 |
 | Total archived | 437 |
-| Completion rate | 437/864 (51%) |
+| Completion rate | 437/865 (51%) |
 | Monthly rate (current month) | 157 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -102,9 +102,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 83 / 389 | 21% |
-| Plans cross-reviewed | 11 | 11% |
-| Plans user-approved | 11 | 11% |
+| Pending items with plans | 82 / 391 | 21% |
+| Plans cross-reviewed | 12 | 12% |
+| Plans user-approved | 12 | 12% |
 
 ### Aging
 
@@ -112,22 +112,22 @@
 |--------|-------|-------|
 | Pending > 30 days | 29 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297 |
 | Pending > 14 days | 174 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-679, WRK-681, WRK-685, WRK-687, WRK-688, WRK-694, WRK-TEST-ENSEMBLE, WRK-1000, WRK-1001, WRK-1024, WRK-1027, WRK-1043, WRK-1048, WRK-1050, WRK-1051, WRK-1088, WRK-1096 |
-| Working > 7 days | 5 | WRK-129, WRK-1022, WRK-1251, WRK-5084, WRK-5093 |
+| Working > 7 days | 6 | WRK-129, WRK-1022, WRK-1249, WRK-1251, WRK-5084, WRK-5093 |
 | Blocked > 7 days | 11 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664, WRK-1082, WRK-1253 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 122 | 7 | 9 |
-| Medium   | 218  | 5  | 1  |
+| High     | 125 | 6 | 9 |
+| Medium   | 217  | 5  | 1  |
 | Low      | 49  | 0  | 2  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (41 items — 6 high, 29 medium, 6 low)
+### harness (42 items — 7 high, 29 medium, 6 low)
 
 #### harness / agent-adapters
 
@@ -244,6 +244,7 @@
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | ? | HIGH | feat(stage-exit): self-contained stage-exit-NN.yaml with auto-capture + --decisions flag | pending |
+| WRK-1344 | HIGH | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-5103 | MEDIUM | whats-next.sh should filter out items with no file on disk (ghost entries) | pending |
 | WRK-5109 | MEDIUM | fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution | pending |
@@ -260,7 +261,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (174 items — 85 high, 73 medium, 16 low)
+### engineering (171 items — 84 high, 71 medium, 16 low)
 
 #### engineering / artificial-lift
 
@@ -377,14 +378,6 @@
 | WRK-1282 | MEDIUM | Drive-off research and analysis methodologies | pending |
 | WRK-1283 | MEDIUM | Rudder types survey — video references and digitalmodel coverage | pending |
 | WRK-5067 | MEDIUM | Hydrodynamics and wave mechanics study — literature, methods and implementation [feature] | pending |
-
-#### engineering / infrastructure
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-5140 | HIGH | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working |
-| WRK-5139 | MEDIUM | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending |
-| WRK-5139 | MEDIUM | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working |
 
 #### engineering / marine
 
@@ -520,7 +513,7 @@
 | WRK-631 | MEDIUM | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending |
 | WRK-662 | MEDIUM | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending |
 | WRK-694 | MEDIUM | Per-session log files in session-logger.sh | pending |
-| WRK-1249 | MEDIUM | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending |
+| WRK-1249 | MEDIUM | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation [feature] | working |
 | WRK-1250 | MEDIUM | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending |
 | WRK-1251 | MEDIUM | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies [feature] | working |
 | WRK-1252 | MEDIUM | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending |
@@ -848,6 +841,7 @@
 | [WRK-1147](pending/WRK-1147.md) | Propeller-rudder hydrodynamic interaction study — literature, methods and implementation | pending | 1/4 archived (25%) |
 | [WRK-1179](pending/WRK-1179.md) | 15-day ecosystem sprint — data completeness + calculation coverage | coordinating | 4/18 archived (22%) |
 | [WRK-1245](pending/WRK-1245.md) | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | 0/0 |
+| [WRK-1249](working/WRK-1249.md) | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | 0/4 archived (0%) |
 | [WRK-1251](working/WRK-1251.md) | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | 0/0 |
 | [WRK-1270](pending/WRK-1270.md) | Skill-workflow alignment — nest tool families, co-locate scripts | pending | 0/0 |
 | [WRK-1271](pending/WRK-1271.md) | Enforce 200-line hard limit on all SKILL.md files | pending | 0/0 |
@@ -1513,7 +1507,7 @@
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | dev-primary | dev-primary | dev-primary, dev-secondary | - | workspace-hub, digitalmodel, assetutilities, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-140 |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | medium | complex | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-047, WRK-343 |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-1249, WRK-1250, WRK-1251 |
@@ -1596,7 +1590,11 @@
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1338 | WRK-1338 | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1340 | verify agents team running on all machines | pending | high | simple | ace-linux-2 | dev-primary | dev-primary, dev-secondary, ace-license-win-1, ace-license-win-2 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | complex | ace-linux-2 | dev-primary | dev-primary, dev-secondary | claude | workspace-hub, digitalmodel, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | pending | medium | medium | ace-linux-2 | ace-license-win-1 | ace-license-win-1, ace-license-win-2 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360 |
 | WRK-1363 | 2D frame analysis | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360, WRK-1362 |
@@ -1742,9 +1740,6 @@
 | WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1999,7 +1994,6 @@
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | medium | medium | workspace-hub | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | high | complex | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | low | simple | workspace-hub | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1255 | Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable) | high | medium | workspace-hub | - |
@@ -2040,7 +2034,11 @@
 | WRK-1327 | Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh | medium | medium | workspace-hub | - |
 | WRK-1329 | WRK-1329 | medium | medium | - | - |
 | WRK-1338 | WRK-1338 | medium | medium | - | - |
+| WRK-1340 | verify agents team running on all machines | high | simple | workspace-hub | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | high | complex | workspace-hub, digitalmodel, aceengineer-website | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | low | medium | digitalmodel | - |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | medium | medium | workspace-hub | - |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | high | medium | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | high | medium | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | high | medium | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | high | medium | workspace-hub | - |
@@ -2154,7 +2152,6 @@
 | WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | medium | medium | digitalmodel | - |
 | WRK-5135 | gmsh boundary layer field specification — y+ targeting | medium | medium | digitalmodel | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | medium | medium | digitalmodel, workspace-hub | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -2162,6 +2159,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | medium | complex | digitalmodel, workspace-hub | - |
 | WRK-1295 | Batch LLM summaries — ace_standards + workspace_spec (4,685 docs, Phase 1 of WRK-1245) | high | medium | workspace-hub | - |
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | high | medium | aceengineer-admin | - |
@@ -2170,8 +2168,6 @@
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | medium | medium | workspace-hub | - |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2710,6 +2706,7 @@
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 | WRK-1146 | docs(marketing): Anthropic research-blog format as template for aceengineer/workspace-hub technical posts | pending | low | simple | - |
 | WRK-1184 | Establish ecosystem theme — tethering timeless engineering to single source of truth | pending | high | medium | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | complex | - |
 | WRK-5117 | Add VC funding of 1MM to market brochures | pending | medium | simple | - |
 
 ### achantas-data
@@ -2997,7 +2994,7 @@
 | WRK-1193 | Geotechnical anchor holding capacity | pending | medium | medium | - |
 | WRK-1194 | Geotechnical scour assessment | pending | medium | low | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | medium | complex | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | - |
@@ -3005,6 +3002,7 @@
 | WRK-1281 | Extract numerical test vectors from all naval architecture literature and document intelligence | pending | high | complex | - |
 | WRK-1282 | Drive-off research and analysis methodologies | pending | medium | medium | - |
 | WRK-1283 | Rudder types survey — video references and digitalmodel coverage | pending | medium | medium | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | complex | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | medium | - |
 | WRK-1370 | Curate extracted worked examples into TDD fixtures | pending | high | moderate | - |
 | WRK-1372 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | pending | high | complex | - |
@@ -3377,7 +3375,7 @@
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | complex | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | done | high | medium | - |
 | WRK-1248 | Research Claude Certified program for skill enhancement patterns | pending | low | simple | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | medium | complex | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | - |
@@ -3443,6 +3441,10 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | medium | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | complex | - |
+| WRK-1340 | verify agents team running on all machines | pending | high | simple | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | complex | - |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | pending | medium | medium | - |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending | high | medium | - |
 | WRK-1361 | 2D engineering drawing | pending | high | medium | - |
 | WRK-1363 | 2D frame analysis | pending | high | medium | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | medium | - |
@@ -3506,9 +3508,6 @@
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | medium | moderate | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | - |
 | WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | - |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | - |
 
 ### worldenergydata
 
@@ -3957,6 +3956,9 @@
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | archived | simple | workspace-hub | - |
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | medium | workspace-hub | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | complex | workspace-hub | - |
+| WRK-1340 | verify agents team running on all machines | pending | simple | workspace-hub | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | complex | workspace-hub, digitalmodel, aceengineer-website | - |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending | medium | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | pending | medium | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | pending | medium | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | medium | workspace-hub | - |
@@ -3992,7 +3994,6 @@
 | WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | medium | - | - |
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | pending | moderate | workspace-hub | - |
 | WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | simple | workspace-hub | - |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | medium | workspace-hub | - |
 
 ### Medium
 
@@ -4291,7 +4292,7 @@
 | WRK-1233 | Add test coverage for platform and pipeline loaders | pending | simple | worldenergydata | - |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | pending | medium | worldenergydata | - |
 | WRK-1243 | Standardize WRK file structure anatomy across all lifecycle stages | pending | medium | workspace-hub | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | complex | digitalmodel, workspace-hub | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | complex | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | complex | digitalmodel, workspace-hub | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | complex | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | complex | digitalmodel, workspace-hub | - |
@@ -4330,6 +4331,7 @@
 | WRK-1329 | WRK-1329 | pending | medium | - | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | simple | workspace-hub | - |
 | WRK-1338 | WRK-1338 | pending | medium | - | - |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | pending | medium | workspace-hub | - |
 | WRK-1371 | Promoted table curation — clean 3,683 CSVs to usable subset | pending | moderate | workspace-hub | - |
 | WRK-1373 | Seakeeping module — 6-DOF motion analysis | pending | complex | digitalmodel | - |
 | WRK-1374 | Advanced stability — damage stability and IMO compliance | pending | complex | digitalmodel | - |
@@ -4430,8 +4432,6 @@
 | WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | digitalmodel | - |
 | WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | digitalmodel | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | digitalmodel, workspace-hub | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | workspace-hub | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | workspace-hub | - |
 
 ### Low
 
@@ -4674,6 +4674,7 @@
 | WRK-1334 | Delete HTML infrastructure (generator, sub-skills, files) | archived | high | workspace-hub | - |
 | WRK-1335 | Patch archive-item.sh for ongoing GitHub Issue creation | archived | high | workspace-hub | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | workspace-hub | - |
+| WRK-1340 | verify agents team running on all machines | pending | high | workspace-hub | - |
 | WRK-1380 | Ship dimensions manual data entry from 110 ship plans | pending | low | workspace-hub | - |
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | workspace-hub | - |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | workspace-hub | - |
@@ -5049,6 +5050,8 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | archived | high | workspace-hub | - |
 | WRK-1338 | WRK-1338 | pending | medium | - | - |
 | WRK-1342 | OrcaFlex parachute deployment template — time-domain snap load analysis | pending | low | digitalmodel | - |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | pending | medium | workspace-hub | - |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending | high | workspace-hub | - |
 | WRK-1361 | 2D engineering drawing | pending | high | workspace-hub | - |
 | WRK-1363 | 2D frame analysis | pending | high | workspace-hub | - |
 | WRK-1364 | 3D FEM analysis (CalculiX) | pending | high | workspace-hub | - |
@@ -5132,9 +5135,6 @@
 | WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | digitalmodel | - |
 | WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | digitalmodel | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | digitalmodel, workspace-hub | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | workspace-hub | - |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | workspace-hub | - |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | workspace-hub | - |
 
 ### Complex
 
@@ -5249,7 +5249,7 @@
 | WRK-1176 | Two-agent pattern — initializer vs coder session roles | pending | low | workspace-hub | - |
 | WRK-1178 | Calculation report skill — rich formula templates with HTML output | archived | high | workspace-hub, digitalmodel | - |
 | WRK-1245 | Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents | pending | high | workspace-hub, digitalmodel, assetutilities, worldenergydata | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | medium | digitalmodel, workspace-hub | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | digitalmodel, workspace-hub | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | digitalmodel, workspace-hub | - |
@@ -5261,6 +5261,7 @@
 | WRK-1330 | Archive synthesis — backfill knowledge capture + distill into roadmap and mission docs | archived | high | workspace-hub | - |
 | WRK-1332 | Archive synthesis + knowledge backfill (synthesize-archive.py) | archived | high | workspace-hub | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | working | high | workspace-hub | - |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | workspace-hub, digitalmodel, aceengineer-website | - |
 | WRK-1372 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | pending | high | workspace-hub, digitalmodel | - |
 | WRK-1373 | Seakeeping module — 6-DOF motion analysis | pending | medium | digitalmodel | - |
 | WRK-1374 | Advanced stability — damage stability and IMO compliance | pending | medium | digitalmodel | - |
@@ -5292,7 +5293,7 @@
 
 ## By Computer
 
-### dev-primary (279 active / 487 total)
+### dev-primary (276 active / 484 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5780,9 +5781,6 @@
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | pending | medium | moderate | workspace-hub |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | medium | moderate | workspace-hub |
 | WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | workspace-hub |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | workspace-hub |
-| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | workspace-hub |
-| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | workspace-hub |
 
 ### dev-secondary (17 active / 25 total)
 
@@ -5801,7 +5799,7 @@
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | CAD-DEVELOPMENTS |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1050 | chore(harness): verify Codex config on dev-secondary (WRK-1024 follow-up) | pending | medium | simple | - |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | pending | medium | complex | digitalmodel, workspace-hub |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | working | medium | complex | digitalmodel, workspace-hub |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending | medium | complex | digitalmodel, workspace-hub |
 | WRK-1251 | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies | working | medium | complex | digitalmodel, workspace-hub |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending | medium | complex | digitalmodel, workspace-hub |
@@ -6144,6 +6142,15 @@
 | WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | medium | - |
 | WRK-5130 | WRK-5130 | pending | medium | medium | - |
 
+### ace-linux-2 (4 active / 4 total)
+
+| ID | Title | Status | Priority | Complexity | Repos |
+|-----|-------|--------|----------|------------|-------|
+| WRK-1340 | verify agents team running on all machines | pending | high | simple | workspace-hub |
+| WRK-1341 | slim down large repos — relocate PDFs, reduce .git bloat | pending | high | complex | workspace-hub, digitalmodel, aceengineer-website |
+| WRK-1343 | ace-license-win-2 network drive sharing from ace-license-win-1 via symlink | pending | medium | medium | workspace-hub |
+| WRK-1344 | create atomic capture-wrk.sh to fix /work add bootstrap errors | pending | high | medium | workspace-hub |
+
 ### dev-primary, dev-secondary (18 active / 20 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
@@ -6300,7 +6307,7 @@
 | WRK-1204 | Ingest rig metadata from state railroad commissions and industry sources | WRK-1190 | - | WRK-1179 |
 | WRK-1234 | BOEM/BSEE data refresh CLI script | WRK-1231, WRK-1232 | - | - |
 | WRK-1246 | Assess deep extraction yield across text-extractable corpus — tables, charts, equations | - | - | WRK-1245 |
-| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | WRK-140 | - | - |
+| WRK-1249 | gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation | - | WRK-5133, WRK-5134, WRK-5135, WRK-5136 | - |
 | WRK-1250 | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | WRK-047, WRK-343 | - | - |
 | WRK-1252 | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | WRK-1249, WRK-1250, WRK-1251 | - | - |
 | WRK-1253 | Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield) | WRK-1269 | - | WRK-1245 |

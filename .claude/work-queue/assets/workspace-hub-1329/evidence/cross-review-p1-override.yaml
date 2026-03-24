@@ -1,0 +1,12 @@
+wrk_id: WRK-5139
+stage: 6
+reviewer: vamsee
+overrides:
+  - reviewer: codex
+    finding: "cross-review.sh overwrites diagnostic output"
+    override_reason: "Partially valid but mitigated — preserve_raw_result() already saves .raw.md before overwrite. No plan change needed."
+    overridden_at: "2026-03-24T08:53:00Z"
+  - reviewer: gemini
+    finding: "STDERR capture must be explicit in bash"
+    override_reason: "Non-issue — existing script already captures stderr to $err_file (line 176). No additional work needed."
+    overridden_at: "2026-03-24T08:53:00Z"

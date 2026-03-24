@@ -1,0 +1,31 @@
+wrk_id: WRK-1249
+type: feature
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/workflow-gatepass
+  - engineering/cad/gmsh-meshing
+  - engineering/cad/gmsh-meshing/quality-metrics
+  - engineering/cad/gmsh-meshing/batch-meshing
+delivery_order:
+  - wrk_id: WRK-5133
+    title: "Parametric mesh convergence study"
+    parallel_group: 1
+  - wrk_id: WRK-5134
+    title: "OCC boolean workflow"
+    parallel_group: 1
+  - wrk_id: WRK-5135
+    title: "Boundary layer field spec"
+    parallel_group: 1
+  - wrk_id: WRK-5136
+    title: "Mesh quality gate"
+    parallel_group: 1
+notes: "All 4 children in parallel group 1 — no inter-dependencies. Each child runs its own 20-stage lifecycle independently."
+stage_sequence_from_here:
+  - stage: 10-18
+    scope: "Delegated to children — Feature WRK parent waits for all children to complete"
+  - stage: 19
+    scope: "Close Feature WRK when all children archived"
+  - stage: 20
+    scope: "Archive Feature WRK"

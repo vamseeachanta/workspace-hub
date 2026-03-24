@@ -1,0 +1,17 @@
+stage: 13
+items:
+  - id: CL-13-1
+    text: "Submit implementation to all 3 providers"
+    completed: true
+    notes: "Claude=REQUEST_CHANGES, Codex=TIMEOUT, Gemini=REQUEST_CHANGES"
+  - id: CL-13-2
+    text: "Address all findings"
+    completed: true
+    notes: "All P2 findings fixed: grep -E portability, AUTH_FAILURE break, stale var reset, double classify call, non-zero exit classification"
+  - id: CL-13-3
+    text: "Re-run tests after fixes"
+    completed: true
+    notes: "45/45 pass"
+  - id: CL-13-4
+    text: "review.md written with all 3 providers listed"
+    completed: true

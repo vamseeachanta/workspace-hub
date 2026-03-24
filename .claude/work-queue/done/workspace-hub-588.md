@@ -1,0 +1,65 @@
+---
+id: workspace-hub#588
+title: "feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P"
+status: done
+priority: high
+complexity: medium
+compound: false
+created_at: 2026-02-24T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+related:
+  - WRK-309
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+test_data:
+- path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 06 (IFA)/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf
+  description: CP design report Rev 06 IFA — sacrificial anode design per DNV RP B401; full worked example
+  standard: DNV-RP-B401
+- path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 05 (CR)/2100-RPT-4005-05 Cathodic Protection Design Report _Approved_.pdf
+  description: CP design report Rev 05 CR — earlier revision for comparison
+  standard: DNV-RP-B401
+stage_evidence_ref: .claude/work-queue/assets/WRK-495/evidence/stage-evidence.yaml
+category: engineering
+subcategory: cathodic-protection
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/588
+---
+# feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P
+
+## Standard
+- **Standard**: DNV B401
+- **Full title**: DNV RP B401 with 2008 amendments (2005) Cathodic Protection Design
+- **Domain**: cathodic-protection
+- **Document path**: `/mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP B401/DNV RP B401 with 2008 amendments (2005) Cathodic Protection Design.pdf`
+
+## What
+
+Implement engineering calculations and data models from **DNV B401**
+in the `digitalmodel` repository, module `cathodic_protection`.
+
+This standard was identified in Phase C/E of WRK-309 (Document Intelligence)
+as a gap — the document exists on the drives but its content has not been
+implemented in the target repo.
+
+## Why
+
+**DNV B401** is a key industry standard in the `cathodic-protection` domain.
+Implementing its calculations enables agents and engineers to perform
+rigorous code-compliant analysis directly from the codebase.
+
+## Acceptance Criteria
+
+- [ ] Core calculations / design checks implemented with unit tests
+- [ ] Input validation at parameter boundaries
+- [ ] Docstring cites the standard clause/equation numbers
+- [ ] Example usage verified against standard worked example (if available)
+- [ ] Cross-review passed via `scripts/review/cross-review.sh`

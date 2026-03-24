@@ -1,0 +1,34 @@
+stage: 4
+wrk_id: WRK-6670
+items:
+  - id: CL-04-1
+    text: "Scripts-over-LLM audit performed (25% recurrence check)"
+    completed: true
+    completed_at: "2026-03-24T12:15:00Z"
+    note: "7 new scripts identified, 5 existing modified. Scripts-vs-LLM matrix in plan."
+  - id: CL-04-2
+    text: "EnterPlanMode entered for ideation (4a)"
+    completed: true
+    completed_at: "2026-03-24T12:12:00Z"
+  - id: CL-04-3
+    text: "ACs defined (specific, testable)"
+    completed: true
+    completed_at: "2026-03-24T12:15:00Z"
+    note: "ACs defined per phase: A (zero stale items), B (machine filtering), C (GH sync), D (renumbering), E (cross-review)"
+  - id: CL-04-4
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    completed: true
+    completed_at: "2026-03-24T12:15:00Z"
+    note: "N/A — parent epic. Pseudocode will be in each child WRK's stage 4."
+    na: true
+    na_reason: "Parent feature WRK coordinates children; no direct implementation code"
+  - id: CL-04-5
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    completed: true
+    completed_at: "2026-03-24T12:15:00Z"
+    note: "12 test entries across all phases in plan spec"
+  - id: CL-04-6
+    text: "Plan spec written to specs/modules/"
+    completed: true
+    completed_at: "2026-03-24T12:16:00Z"
+    note: "specs/modules/foamy-sniffing-castle.md + specs/wrk/WRK-6670/plan.md"

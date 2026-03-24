@@ -1,0 +1,58 @@
+---
+id: workspace-hub#512
+title: "feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing"
+status: done
+priority: high
+complexity: low
+compound: false
+created_at: 2026-02-24T23:52:56Z
+target_repos:
+  - assetutilities
+commit:
+spec_ref:
+related:
+  - WRK-386
+blocked_by: []
+synced_to: []
+plan_reviewed: false
+plan_approved: false
+percent_complete: 100
+brochure_status: n/a
+computer: dev-primary
+execution_workstations: [dev-primary]
+plan_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/WRK-438/evidence/stage-evidence.yaml
+category: engineering
+subcategory: subsea-risers
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/512
+---
+# feat(calculations): implement Riser Equivalencing & De-equivalencing
+
+## Standard
+- **ID**: Riser Equivalencing & De-equivalencing
+- **Title**: Riser Equivalencing & De equivalencing
+- **Org**: Unknown
+- **Document**: `` (SHA: `4d30898b0affc51a...`)
+- **Summary**: Papers Guidelines Riser Equivalencing & De-equivalencing.doc
+- **Discipline**: pipeline
+
+## Target Module
+- **Repo**: assetutilities
+- **Module**: `calculations`
+- **Current status**: gap (no implementation found)
+- **Capability tier target**: Tier 1 (deterministic calculation)
+
+## What to Implement
+Papers Guidelines Riser Equivalencing & De-equivalencing.doc
+
+## Acceptance Criteria
+- [ ] Function implements Riser Equivalencing & De-equivalencing calculation
+- [ ] Unit tests cover nominal and edge cases
+- [ ] Result validated against worked example in standard (if available)
+- [ ] Module registry updated: status → implemented
+
+## Agentic AI Horizon
+- Standards implementation is direct engineering value: agents can invoke
+  Riser Equivalencing & De-equivalencing calculations in automated workflows
+- **Disposition: invest now** — engineering standards code is foundational
+  and non-perishable
