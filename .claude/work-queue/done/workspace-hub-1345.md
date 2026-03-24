@@ -1,7 +1,7 @@
 ---
 id: workspace-hub#1345
 title: "GH-first work queue — single source of truth migration"
-status: coordinating
+status: done
 activated_at: "2026-03-24T13:15:00Z"
 type: feature
 priority: high

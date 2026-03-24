@@ -1,5 +1,5 @@
 stage: 9
-wrk_id: WRK-6670
+wrk_id: workspace-hub-1345
 work_queue_skill: loaded
 work_wrapper_complete: true
 skills_loaded:

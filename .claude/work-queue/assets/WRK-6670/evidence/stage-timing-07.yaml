@@ -1,5 +1,5 @@
 stage: 7
-wrk_id: WRK-6670
+wrk_id: workspace-hub-1345
 human_gate: true
 started_at: "2026-03-24T10:48:51.211007+00:00"
 completed_at: "2026-03-24T11:31:14.871280+00:00"

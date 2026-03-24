@@ -12,7 +12,7 @@ plan_workstations:
   - dev-primary
 execution_workstations:
   - dev-primary
-category: harness/skills
+category: harness
 subcategory: work-queue
 github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1270
 ---
