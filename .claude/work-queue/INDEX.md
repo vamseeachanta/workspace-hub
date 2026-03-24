@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-24T03:23:32Z by generate-index.py -->
+<!-- Generated: 2026-03-24T09:12:33Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-24T03:23:32Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-24T09:12:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 853
+**Total items:** 864
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 384 |
-| working | 9 |
+| pending | 389 |
+| working | 12 |
 | blocked | 12 |
 | done | 9 |
-| archived | 434 |
+| archived | 437 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 353 |
-| medium | 426 |
-| low | 73 |
+| high | 355 |
+| medium | 434 |
+| low | 74 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 177 |
-| medium | 424 |
+| simple | 179 |
+| medium | 433 |
 | complex | 149 |
 
 ### By Category
@@ -42,7 +42,7 @@
 | Category | Active Items |
 |----------|-------------|
 | harness | 41 |
-| engineering | 167 |
+| engineering | 174 |
 | data | 27 |
 | platform | 11 |
 | business | 6 |
@@ -65,14 +65,14 @@
 | assethold | 19 |
 | assetutilities | 20 |
 | client_projects | 1 |
-| digitalmodel | 244 |
+| digitalmodel | 250 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 5 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 378 |
+| workspace-hub | 386 |
 | worldenergydata | 117 |
 
 ### Plan Tracking
@@ -80,9 +80,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 298 / 853 |
-| Plans cross-reviewed | 211 |
-| Plans approved | 236 |
+| Plans exist | 303 / 864 |
+| Plans cross-reviewed | 215 |
+| Plans approved | 240 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,35 +92,35 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 853 |
-| Total archived | 434 |
-| Completion rate | 434/853 (51%) |
-| Monthly rate (current month) | 155 archived |
+| Total captured | 864 |
+| Total archived | 437 |
+| Completion rate | 437/864 (51%) |
+| Monthly rate (current month) | 157 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 79 / 384 | 21% |
-| Plans cross-reviewed | 11 | 12% |
-| Plans user-approved | 11 | 12% |
+| Pending items with plans | 83 / 389 | 21% |
+| Plans cross-reviewed | 11 | 11% |
+| Plans user-approved | 11 | 11% |
 
 ### Aging
 
 | Bucket | Count | Items |
 |--------|-------|-------|
-| Pending > 30 days | 28 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261 |
-| Pending > 14 days | 170 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-679, WRK-681, WRK-685, WRK-687, WRK-688, WRK-694, WRK-TEST-ENSEMBLE, WRK-1000, WRK-1001, WRK-1024, WRK-1027, WRK-1043, WRK-1048 |
-| Working > 7 days | 4 | WRK-129, WRK-1022, WRK-1251, WRK-5084 |
-| Blocked > 7 days | 10 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664, WRK-1082 |
+| Pending > 30 days | 29 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297 |
+| Pending > 14 days | 174 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-148, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-261, WRK-297, WRK-311, WRK-352, WRK-470, WRK-473, WRK-474, WRK-475, WRK-476, WRK-477, WRK-478, WRK-479, WRK-480, WRK-481, WRK-483, WRK-484, WRK-485, WRK-486, WRK-487, WRK-488, WRK-489, WRK-490, WRK-492, WRK-494, WRK-496, WRK-498, WRK-499, WRK-500, WRK-501, WRK-502, WRK-503, WRK-504, WRK-505, WRK-506, WRK-507, WRK-508, WRK-509, WRK-510, WRK-511, WRK-512, WRK-513, WRK-514, WRK-515, WRK-516, WRK-517, WRK-518, WRK-519, WRK-520, WRK-521, WRK-522, WRK-523, WRK-524, WRK-525, WRK-526, WRK-527, WRK-528, WRK-529, WRK-530, WRK-531, WRK-532, WRK-533, WRK-534, WRK-535, WRK-536, WRK-537, WRK-538, WRK-539, WRK-540, WRK-541, WRK-542, WRK-543, WRK-544, WRK-545, WRK-546, WRK-547, WRK-548, WRK-549, WRK-550, WRK-551, WRK-552, WRK-553, WRK-554, WRK-555, WRK-556, WRK-557, WRK-558, WRK-559, WRK-571, WRK-574, WRK-575, WRK-579, WRK-580, WRK-581, WRK-582, WRK-583, WRK-584, WRK-585, WRK-586, WRK-587, WRK-588, WRK-589, WRK-595, WRK-597, WRK-598, WRK-603, WRK-604, WRK-608, WRK-609, WRK-616, WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623, WRK-625, WRK-626, WRK-627, WRK-628, WRK-629, WRK-630, WRK-631, WRK-632, WRK-634, WRK-635, WRK-636, WRK-661, WRK-662, WRK-665, WRK-666, WRK-679, WRK-681, WRK-685, WRK-687, WRK-688, WRK-694, WRK-TEST-ENSEMBLE, WRK-1000, WRK-1001, WRK-1024, WRK-1027, WRK-1043, WRK-1048, WRK-1050, WRK-1051, WRK-1088, WRK-1096 |
+| Working > 7 days | 5 | WRK-129, WRK-1022, WRK-1251, WRK-5084, WRK-5093 |
+| Blocked > 7 days | 11 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664, WRK-1082, WRK-1253 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 122 | 6 | 9 |
-| Medium   | 213  | 3  | 1  |
+| High     | 122 | 7 | 9 |
+| Medium   | 218  | 5  | 1  |
 | Low      | 49  | 0  | 2  |
 
 ## By Category
@@ -260,7 +260,7 @@
 |----|----------|-------|--------|
 | WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
-### engineering (167 items — 84 high, 67 medium, 16 low)
+### engineering (174 items — 85 high, 73 medium, 16 low)
 
 #### engineering / artificial-lift
 
@@ -377,6 +377,14 @@
 | WRK-1282 | MEDIUM | Drive-off research and analysis methodologies | pending |
 | WRK-1283 | MEDIUM | Rudder types survey — video references and digitalmodel coverage | pending |
 | WRK-5067 | MEDIUM | Hydrodynamics and wave mechanics study — literature, methods and implementation [feature] | pending |
+
+#### engineering / infrastructure
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-5140 | HIGH | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working |
+| WRK-5139 | MEDIUM | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending |
+| WRK-5139 | MEDIUM | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working |
 
 #### engineering / marine
 
@@ -516,6 +524,10 @@
 | WRK-1250 | MEDIUM | OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation | pending |
 | WRK-1251 | MEDIUM | FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies [feature] | working |
 | WRK-1252 | MEDIUM | Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation | pending |
+| WRK-5133 | MEDIUM | gmsh parametric mesh convergence study script | pending |
+| WRK-5134 | MEDIUM | gmsh OCC boolean workflow for multi-body STEP assemblies | pending |
+| WRK-5135 | MEDIUM | gmsh boundary layer field specification — y+ targeting | pending |
+| WRK-5136 | MEDIUM | gmsh mesh quality gate script with YAML verdict | pending |
 | WRK-023 | LOW | Property GIS development timeline with future projection and Google Earth animation | pending |
 | WRK-047 | LOW | OpenFOAM CFD analysis capability for digitalmodel | pending |
 | WRK-623 | LOW | feat(geotechnical): scour prediction per DNV-RP-F107 | pending |
@@ -1610,6 +1622,8 @@
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | sowon | sowon | sowon | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1360 |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | licensed-win-1 | dev-primary | licensed-win-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1717,11 +1731,20 @@
 | WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | simple | - | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | simple | - | - | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | archived | low | simple | local-analysis | local-analysis | local-analysis | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | pending | high | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | pending | medium | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | medium | moderate | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5130 | WRK-5130 | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -2127,6 +2150,11 @@
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | medium | moderate | workspace-hub | - |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | medium | moderate | workspace-hub | - |
 | WRK-5130 | WRK-5130 | medium | medium | - | - |
+| WRK-5133 | gmsh parametric mesh convergence study script | medium | medium | digitalmodel | - |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | medium | medium | digitalmodel | - |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | medium | medium | digitalmodel | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -2139,8 +2167,11 @@
 | WRK-1318 | 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120) | high | medium | aceengineer-admin | - |
 | WRK-1339 | Deepen naval architecture knowledge extraction from SNAME collection | high | complex | workspace-hub | - |
 | WRK-1381 | GZ curve digitization from PNA and Biran figures | medium | moderate | workspace-hub, digitalmodel | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-5084 | 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ) | high | medium | achantas-data | - |
 | WRK-5093 | 2025 SKEstates Inc tax preparation — C-Corp (Form 1120) | high | medium | sabithaandkrishnaestates | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | medium | medium | workspace-hub | - |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -2575,6 +2606,7 @@
 | WRK-1336 | Bulk review 38 existing open issues + roadmap update | high | medium | workspace-hub | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | medium | simple | workspace-hub | - |
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | high | simple | workspace-hub | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | low | medium | workspace-hub | - |
 | WRK-5027 | audit(patterns): identify recurring LLM-prose operations that should be scripts per 25% rule | medium | medium | workspace-hub | - |
 | WRK-5035 | chore(doc-intel): gitignore pre-condition + data/standards/promoted/ scaffold | high | simple | workspace-hub | - |
@@ -2597,6 +2629,8 @@
 | WRK-5106 | chore(work-queue): backfill >1000 GitHub issues to new WRK-5104 issue template | medium | medium | workspace-hub | - |
 | WRK-5107 | refactor(work-queue): update verify-gate-evidence.py for GitHub issue workflow | high | medium | workspace-hub | - |
 | WRK-5108 | chore(work-queue): prune unused code/scripts from /work workflow | medium | B | - | - |
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | low | simple | workspace-hub | - |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | high | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -2984,6 +3018,8 @@
 | WRK-1381 | GZ curve digitization from PNA and Biran figures | working | medium | moderate | - |
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | - |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | medium | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | medium | - |
 | WRK-5040 | feat(doc-intel): promote-to-code.py — promote all 8 manifest content types | archived | medium | complex | - |
 | WRK-5056 | feat(digitalmodel): integrate theoretical naval architecture into ecosystem models | pending | medium | medium | - |
 | WRK-5058 | Drilling riser engineering study — literature, methods and implementation | pending | medium | complex | - |
@@ -3006,6 +3042,10 @@
 | WRK-5118 | CalculiX B32 quadratic beam integration test with ccx | pending | medium | simple | - |
 | WRK-5119 | CalculiX beam cross-section tests — CIRC and PIPE sections | pending | medium | simple | - |
 | WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | simple | - |
+| WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | medium | - |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | medium | - |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | medium | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | - |
 
 ### doris
 
@@ -3421,6 +3461,8 @@
 | WRK-1389 | test(dispatch): verify dispatch-run.sh in live /work run sessions across stage groups | archived | high | simple | - |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | - |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | medium | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | medium | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | medium | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | - |
@@ -3458,9 +3500,15 @@
 | WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | simple | - |
 | WRK-5121 | FEM visualization skill — automate ccx results to PNG pipeline | pending | medium | medium | - |
 | WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | simple | - |
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | archived | low | simple | - |
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | pending | high | moderate | - |
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | pending | medium | moderate | - |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | medium | moderate | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | - |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | - |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | - |
 
 ### worldenergydata
 
@@ -3943,6 +3991,8 @@
 | WRK-5120 | Calc report generator — add chart JS validation tests | pending | simple | workspace-hub | - |
 | WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | medium | - | - |
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | pending | moderate | workspace-hub | - |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | simple | workspace-hub | - |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | medium | workspace-hub | - |
 
 ### Medium
 
@@ -4288,6 +4338,8 @@
 | WRK-1383 | WRK-1383 | pending | medium | - | - |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | simple | workspace-hub | - |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | workspace-hub, digitalmodel | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | simple | workspace-hub | - |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | simple | workspace-hub | - |
@@ -4374,6 +4426,12 @@
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | pending | moderate | workspace-hub | - |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | moderate | workspace-hub | - |
 | WRK-5130 | WRK-5130 | pending | medium | - | - |
+| WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | digitalmodel | - |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | digitalmodel | - |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | digitalmodel | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | workspace-hub | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | workspace-hub | - |
 
 ### Low
 
@@ -4452,6 +4510,7 @@
 | WRK-5071 | Coiled tubing hydraulics study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5072 | Artificial lift and rod pump study — literature, methods and implementation | pending | complex | digitalmodel | - |
 | WRK-5088 | feat(skills): preference weighting for skill routing based on historical success rates | archived | medium | workspace-hub | - |
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | archived | simple | workspace-hub | - |
 
 ## By Complexity
 
@@ -4636,6 +4695,8 @@
 | WRK-5120 | Calc report generator — add chart JS validation tests | pending | high | workspace-hub | - |
 | WRK-5122 | Calc report generator — auto-embed images as base64 | pending | medium | workspace-hub | - |
 | WRK-5123 | CalculiX plate-with-hole test fix — 2 pre-existing failures | pending | medium | digitalmodel | - |
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | archived | low | workspace-hub | - |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | workspace-hub | - |
 
 ### Medium
 
@@ -4997,6 +5058,8 @@
 | WRK-1368 | Pipeline and engineering report | pending | high | workspace-hub | - |
 | WRK-1383 | WRK-1383 | pending | medium | - | - |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | workspace-hub, digitalmodel | - |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-5000 | OrcaFlex scripting workflows — automation foundation | pending | medium | workspace-hub | - |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | workspace-hub | - |
 | WRK-5004 | untitled | pending | medium | - | - |
@@ -5065,6 +5128,13 @@
 | WRK-5125 | Mount /mnt/ace from ace-linux-1 via NFS on ace-linux-2 | pending | medium | - | - |
 | WRK-5126 | Session-to-execution flow: integrate data intelligence, file structure, and testing into /work | pending | high | - | - |
 | WRK-5130 | WRK-5130 | pending | medium | - | - |
+| WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | digitalmodel | - |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | digitalmodel | - |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | digitalmodel | - |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | workspace-hub | - |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | workspace-hub | - |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | workspace-hub | - |
 
 ### Complex
 
@@ -5222,7 +5292,7 @@
 
 ## By Computer
 
-### dev-primary (275 active / 481 total)
+### dev-primary (279 active / 487 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5659,6 +5729,8 @@
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | pending | high | complex | workspace-hub, digitalmodel |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | pending | medium | simple | workspace-hub |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | pending | medium | medium | workspace-hub, digitalmodel |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | working | medium | medium | workspace-hub, digitalmodel |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | archived | medium | medium | workspace-hub, digitalmodel |
 | WRK-5001 | Research-to-WRK synthesis — automate paper → action-item capture | pending | medium | simple | workspace-hub |
 | WRK-5002 | Task complexity tier → model routing (extend task_classifier.sh) | pending | medium | simple | workspace-hub |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | archived | low | medium | workspace-hub |
@@ -5707,8 +5779,12 @@
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | pending | high | moderate | workspace-hub |
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | pending | medium | moderate | workspace-hub |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | pending | medium | moderate | workspace-hub |
+| WRK-5138 | Fix cross-review.sh Codex dispatch crash on first review attempt | archived | high | simple | workspace-hub |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | pending | medium | medium | workspace-hub |
+| WRK-5139 | Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON | working | medium | medium | workspace-hub |
+| WRK-5140 | Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation | working | high | medium | workspace-hub |
 
-### dev-secondary (13 active / 21 total)
+### dev-secondary (17 active / 25 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -5733,6 +5809,10 @@
 | WRK-1298 | OCR pipeline — dev-secondary scanned PDFs (39K docs, GPU-accelerated) | pending | medium | complex | workspace-hub |
 | WRK-1320 | Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing | blocked | high | medium | workspace-hub |
 | WRK-5055 | feat(doc-intel): extract ship plan drawings via CAD pipeline on dev-secondary | pending | medium | high | workspace-hub |
+| WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | medium | digitalmodel |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | medium | digitalmodel |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | pending | medium | medium | digitalmodel |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | digitalmodel, workspace-hub |
 
 ### licensed-win-1 (17 active / 18 total)
 
@@ -6096,6 +6176,12 @@
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | workspace-hub |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | workspace-hub |
 
+### local-analysis (0 active / 1 total)
+
+| ID | Title | Status | Priority | Complexity | Repos |
+|-----|-------|--------|----------|------------|-------|
+| WRK-5125 | Add scatter chart example YAML for calc report test coverage | archived | low | simple | workspace-hub |
+
 ### orcaflex-license-machine (2 active / 2 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
@@ -6269,6 +6355,8 @@
 | WRK-1382 | Naval architect expert skill — engineering + legal consultant agent | WRK-1379 | - | - |
 | WRK-1391 | FreeCAD skill improvement — bend arcs + coordinate conventions | - | - | WRK-5082 |
 | WRK-1392 | 3D interactive frame viewer (HTML/three.js) | WRK-1360 | - | WRK-5082 |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | - | - | WRK-5082 |
+| WRK-1392 | 3D interactive frame viewer (HTML/three.js) | - | - | WRK-5082 |
 | WRK-5003 | O*NET task tagging for WRK capture — classify work by occupational category | WRK-1128 | - | - |
 | WRK-5037 | feat(doc-intel): extract-document.py + document parse layer | WRK-5036 | - | - |
 | WRK-5039 | feat(doc-intel): query-doc-intelligence.py + Stage 2 resource-intel integration | WRK-5038 | - | - |
@@ -6286,4 +6374,8 @@
 | WRK-5127 | Recover ship-dimensions template artifact from WRK-1339 Child E | - | - | WRK-1339 |
 | WRK-5128 | Stabilize doc-intelligence launcher and pytest runtime on dev-primary | - | - | WRK-5127 |
 | WRK-5129 | Phase 1 manual entry for ship dimensions template | - | - | WRK-1380 |
+| WRK-5133 | gmsh parametric mesh convergence study script | - | - | WRK-1249 |
+| WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | - | - | WRK-1249 |
+| WRK-5135 | gmsh boundary layer field specification — y+ targeting | - | - | WRK-1249 |
+| WRK-5136 | gmsh mesh quality gate script with YAML verdict | - | - | WRK-1249 |
 
