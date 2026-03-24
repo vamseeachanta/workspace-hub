@@ -1,0 +1,12 @@
+stage: 18
+wrk_id: workspace-hub-225
+completed_at: "2026-03-24T22:50:00Z"
+items:
+  - id: CL-18-1
+    text: "Checkpoint presence checked"
+    completed: true
+    completed_at: "2026-03-24T22:50:00Z"
+  - id: CL-18-2
+    text: "evidence/reclaim.yaml written (n/a or reclaimed)"
+    completed: true
+    completed_at: "2026-03-24T22:50:00Z"

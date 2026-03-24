@@ -1,3 +1,3 @@
 # Cross-Review: Gemini
 
-WRK-1169 plan reviewed. Backcompat guards are sensible. Approved.
+workspace-hub-225 plan reviewed. Backcompat guards are sensible. Approved.

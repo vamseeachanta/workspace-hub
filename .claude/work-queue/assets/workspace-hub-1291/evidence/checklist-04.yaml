@@ -1,0 +1,27 @@
+stage: 4
+wrk_id: WRK-1339
+items:
+  - id: CL-04-0
+    text: "Scripts-over-LLM audit"
+    completed: true
+    note: "5 new scripts identified (diagnose-cid, re-extract-cid, audit-ocr, populate-ship-dims, validate-yield); 4 existing scripts need modification"
+  - id: CL-04-1
+    text: "EnterPlanMode for thinking"
+    completed: true
+    note: "Plan mode used; explored extraction infrastructure and coverage gaps"
+  - id: CL-04-2
+    text: "Define ACs (specific, testable)"
+    completed: true
+    note: "5 ACs: >=300 examples, clean equations, ship dims for >=50 vessels, use_as_test flags, <5% OCR artifacts"
+  - id: CL-04-3
+    text: "Write pseudocode for key functions"
+    completed: true
+    note: "Pseudocode for _has_cid_corruption(), _extract_with_pypdfium2(), _windowed_sections(), audit_record()"
+  - id: CL-04-4
+    text: "Write test plan"
+    completed: true
+    note: "11 test entries covering happy/edge/error paths for CID detection, sliding window, use_as_test, OCR audit, e2e yield"
+  - id: CL-04-5
+    text: "Record plan in specs/modules/"
+    completed: true
+    note: "Plan written to specs/modules/luminous-leaping-crescent.md"

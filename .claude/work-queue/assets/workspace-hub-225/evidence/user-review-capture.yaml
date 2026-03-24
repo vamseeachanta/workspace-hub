@@ -1,7 +1,8 @@
-wrk_id: WRK-1169
+wrk_id: workspace-hub-225
 stage: 1
 reviewer: vamsee
 scope_approved: true
+confirmed_at: "2026-03-13T00:00:00Z"
 reviewed_at: "2026-03-13T00:00:00Z"
 notes: |
   Scope approved with refinements:

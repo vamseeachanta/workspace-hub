@@ -2,3 +2,5 @@ stage: 4
 wrk_id: WRK-1339
 human_gate: false
 started_at: "2026-03-20T04:05:08.761137+00:00"
+completed_at: "2026-03-24T23:46:32.530844+00:00"
+duration_s: 416483.8

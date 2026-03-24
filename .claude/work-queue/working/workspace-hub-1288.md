@@ -11,6 +11,7 @@ target_repos:
 category: engineering
 subcategory: data-extraction
 computer: dev-primary
+execution_machine: ace-linux-1
 plan_workstations:
   - dev-primary
 execution_workstations:

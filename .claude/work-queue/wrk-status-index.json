@@ -11753,10 +11753,10 @@
     "session_pid": ""
   },
   "workspace-hub-225": {
-    "status": "working",
-    "machine": "ace-linux-2",
-    "last_updated": "2026-03-24T14:34:07.904946+00:00",
-    "updated_by": "rebuild-wrk-index",
+    "status": "archived",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-24T23:23:18.609061+00:00",
+    "updated_by": "archive-item.sh",
     "title": "Fix WRK lifecycle discipline \u2014 missed gates, HTML refresh, and stage compliance",
     "priority": "high",
     "category": "harness",
@@ -11771,8 +11771,8 @@
     "cadence": "",
     "computer": "dev-primary",
     "execution_workstations": "[dev-primary]",
-    "execution_machine": "",
-    "checkpoint_stage": "17",
+    "execution_machine": "ace-linux-1",
+    "checkpoint_stage": "20",
     "session_pid": "1223599",
     "urgency_score": 10.0
   },

@@ -9,6 +9,7 @@ route: C
 created_at: 2026-03-19
 target_repos: [workspace-hub]
 computer: dev-primary
+execution_machine: ace-linux-1
 plan_workstations: [dev-primary]
 execution_workstations: [dev-primary]
 category: document-intelligence

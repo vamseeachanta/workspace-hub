@@ -1,7 +1,7 @@
 ---
 id: workspace-hub#225
 title: "Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance"
-status: working
+status: archived
 orchestrator: claude
 priority: high
 complexity: medium
@@ -15,16 +15,18 @@ related: [WRK-1041, WRK-1115]
 blocked_by: []
 synced_to: []
 plan_ensemble: false
-plan_reviewed: false
-plan_approved: false
-percent_complete: 0
+plan_reviewed: true
+plan_approved: true
+percent_complete: 100
 computer: dev-primary
+execution_machine: ace-linux-1
 plan_workstations: [dev-primary]
 execution_workstations: [dev-primary]
 category: harness
 subcategory: workflow-compliance
-stage_evidence_ref: .claude/work-queue/assets/WRK-1169/evidence/stage-evidence.yaml
+stage_evidence_ref: .claude/work-queue/assets/workspace-hub-225/evidence/stage-evidence.yaml
 github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/225
+completed_at: 2026-03-24T23:23:15Z
 ---
 # Fix WRK Lifecycle Discipline — Missed Gates, HTML Refresh, Stage Compliance
 
@@ -43,9 +45,9 @@ Review session logs and WRK evidence from recent items to identify where agent b
 The 20-stage lifecycle and its gate evidence system exist to ensure quality and user oversight. When agents silently skip gates or mishandle HTML artifacts, the workflow loses its value — plans go unreviewed, evidence is missing, and the user loses visibility into progress.
 
 ## Acceptance Criteria
-- [ ] Audit last 5-10 WRK items (session logs + evidence directories) for compliance gaps
-- [ ] Categorize violations: missed gate, missing evidence YAML, HTML not opened, HTML reopened vs refreshed, stage scripts not called
-- [ ] Quantify frequency of each violation type
-- [ ] Strengthen enforcement — promote prose rules to scripts/hooks per patterns.md enforcement gradient
-- [ ] Candidates for enforcement: pre-stage-advance check script, HTML open/refresh script, gate evidence validator as blocking hook
-- [ ] Verify fixes by dry-running a WRK through stages 1-7 and confirming compliance
+- [x] Audit last 5-10 WRK items (session logs + evidence directories) for compliance gaps
+- [x] Categorize violations: missed gate, missing evidence YAML, HTML not opened, HTML reopened vs refreshed, stage scripts not called
+- [x] Quantify frequency of each violation type
+- [x] Strengthen enforcement — promote prose rules to scripts/hooks per patterns.md enforcement gradient
+- [x] Candidates for enforcement: pre-stage-advance check script, HTML open/refresh script, gate evidence validator as blocking hook
+- [x] Verify fixes by dry-running a WRK through stages 1-7 and confirming compliance

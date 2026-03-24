@@ -1,5 +1,5 @@
 stage: 6
-wrk_id: WRK-1169
+wrk_id: workspace-hub-225
 reviewers:
   - provider: claude
     verdict: approved

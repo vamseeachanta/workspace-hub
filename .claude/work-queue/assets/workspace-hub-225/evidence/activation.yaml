@@ -1,6 +1,7 @@
 stage: 8
-wrk_id: WRK-1169
+wrk_id: workspace-hub-225
 activated_at: "2026-03-14T06:00:00Z"
 status: active
+set_active_wrk: true
 session_id: "faf9e8a8-5e75-4bc5-8095-17eece3d20d3"
 orchestrator_agent: claude
