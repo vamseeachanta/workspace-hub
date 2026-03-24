@@ -412,9 +412,9 @@ render_working_section() {
 
   local widths hdrs
   if [[ "$COMPACT" == "true" ]]; then
-    widths="4|10|10|9|11|60" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
+    widths="4|22|10|9|11|48" hdrs="ICON|WRK|PRI|STAGE|PID|TITLE"
   else
-    widths="4|10|6|5|6|5|9|11|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|STAGE|PID|TITLE"
+    widths="4|22|6|5|6|5|9|11|28" hdrs="ICON|WRK|PRI|URG|GH#|AGE|STAGE|PID|TITLE"
   fi
   local -a table_rows=()
 
@@ -470,9 +470,9 @@ render_ready_section() {
   local widths hdrs
 
   if [[ "$COMPACT" == "true" ]]; then
-    widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
+    widths="4|22|10|15|56" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
   else
-    widths="4|10|6|5|6|5|10|12|15|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|MACHINE|TITLE"
+    widths="4|22|6|5|6|5|10|12|15|28" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|MACHINE|TITLE"
   fi
 
   local -a table_rows=()
@@ -513,7 +513,7 @@ render_ready_section() {
 # render_coordinating — Icon | WRK | PRI | URG | GH# | AGE | Child Progress | Title
 render_coordinating() {
   [[ ${#COORDINATING_ITEMS[@]} -eq 0 ]] && return
-  local widths="4|10|6|5|6|5|20|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CHILD PROGRESS|TITLE"
+  local widths="4|22|6|5|6|5|20|28" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CHILD PROGRESS|TITLE"
   local -a table_rows=()
   for crow in "${COORDINATING_ITEMS[@]}"; do
     # wid|pri|sub|cpu|title|progress|urg|gh|age|cat
@@ -527,7 +527,7 @@ render_coordinating() {
 # render_blocked — Icon | WRK | PRI | URG | GH# | AGE | Blocked By | Title
 render_blocked() {
   [[ ${#EXT_BLOCKED[@]} -eq 0 ]] && return
-  local widths="4|10|6|5|6|5|30|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|BLOCKED BY|TITLE"
+  local widths="4|22|6|5|6|5|30|28" hdrs="ICON|WRK|PRI|URG|GH#|AGE|BLOCKED BY|TITLE"
   local -a table_rows=()
   for row in "${EXT_BLOCKED[@]}"; do
     # wid|pri|sub|cpu|title|reason|urg|gh|age|cat
@@ -571,7 +571,7 @@ render_blocked
 
 # ── Deferred items (not_before in the future) ─────────────────────────────
 if [[ ${#DEFERRED_ITEMS[@]} -gt 0 ]]; then
-  _def_widths="4|10|6|5|6|5|12|40" _def_hdrs="ICON|WRK|PRI|URG|GH#|AGE|NOT BEFORE|TITLE"
+  _def_widths="4|22|6|5|6|5|12|28" _def_hdrs="ICON|WRK|PRI|URG|GH#|AGE|NOT BEFORE|TITLE"
   _def_rows=()
   for row in "${DEFERRED_ITEMS[@]}"; do
     # wid|pri|sub|cpu|title|nb|urg|gh|age|cat
