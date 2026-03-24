@@ -60,6 +60,8 @@ if [[ -n "$WRK_FILE" ]]; then
   STANDING=$(get_fm_field "$WRK_FILE" "standing")
   CADENCE=$(get_fm_field "$WRK_FILE" "cadence")
   COMPUTER=$(get_fm_field "$WRK_FILE" "computer")
+  EXEC_WORKSTATIONS=$(get_fm_field "$WRK_FILE" "execution_workstations")
+  EXEC_MACHINE=$(get_fm_field "$WRK_FILE" "execution_machine")
   # Checkpoint stage from assets
   CP_FILE="${QUEUE_DIR}/assets/${WRK_ID}/checkpoint.yaml"
   [[ -f "$CP_FILE" ]] && CHECKPOINT_STAGE=$(get_fm_field "$CP_FILE" "current_stage")
@@ -99,6 +101,8 @@ entry = {
     "standing": "${STANDING}",
     "cadence": "${CADENCE}",
     "computer": "${COMPUTER}",
+    "execution_workstations": "${EXEC_WORKSTATIONS}",
+    "execution_machine": "${EXEC_MACHINE}",
     "checkpoint_stage": "${CHECKPOINT_STAGE}",
     "session_pid": "${SESSION_PID}",
 }

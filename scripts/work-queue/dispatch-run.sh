@@ -77,6 +77,19 @@ fi
 mkdir -p "$REPO_ROOT/.claude/state"
 echo "$STAGE" > "$REPO_ROOT/.claude/state/dispatch-${WRK_ID}"
 
+# ── Stamp execution_machine on WRK frontmatter ─────────────────────────────
+_exec_host=$(hostname -s 2>/dev/null || echo "unknown")
+for _dir in working pending blocked done; do
+    _wf="$QUEUE/$_dir/${WRK_ID}.md"
+    [[ -f "$_wf" ]] || continue
+    if grep -q '^execution_machine:' "$_wf" 2>/dev/null; then
+        sed -i "s/^execution_machine:.*/execution_machine: ${_exec_host}/" "$_wf"
+    else
+        sed -i "/^computer:/a execution_machine: ${_exec_host}" "$_wf"
+    fi
+    break
+done
+
 # ── Print dispatch ───────────────────────────────────────────────────────────
 echo "━━━ DISPATCH: $WRK_ID ━━━"
 echo "Stage: $STAGE ($STAGE_NAME) | Group: $GROUP | Human gate: $HUMAN_GATE"

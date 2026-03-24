@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # whats-next.sh — Refresh and display the prioritised "run now" work list.
 # Reads pre-computed data from wrk-status-index.json (built by rebuild-wrk-index.sh).
-# Usage: bash scripts/work-queue/whats-next.sh [--category <name>] [--subcategory <name>]
+# Usage: bash scripts/work-queue/whats-next.sh [--category <name>] [--subcategory <name>] [--machine <name>] [--all-machines]
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 QUEUE_DIR="$REPO_ROOT/.claude/work-queue"
@@ -12,12 +12,15 @@ SHOW_ALL=false
 MED_LIMIT=20
 COMPACT=false
 _CATEGORY_EXPLICIT=false
+FILTER_MACHINE="$THIS_HOST"  # default: current machine only
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --category)     FILTER_CATEGORY="$2"; _CATEGORY_EXPLICIT=true; shift 2 ;;
     --subcategory)  FILTER_SUBCATEGORY="$2"; shift 2 ;;
-    --all)          SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
+    --all)          SHOW_ALL=true; FILTER_CATEGORY=""; FILTER_MACHINE=""; shift ;;
+    --all-machines) FILTER_MACHINE=""; shift ;;
+    --machine)      FILTER_MACHINE="$2"; shift 2 ;;
     --limit)        MED_LIMIT="$2"; shift 2 ;;
     --compact)      COMPACT=true; shift ;;
 
@@ -38,11 +41,11 @@ if [[ ! -f "$_INDEX_FILE" ]]; then
   exit 1
 fi
 
-_TSV_DATA=$(python3 - "$_INDEX_FILE" "$FILTER_CATEGORY" "$FILTER_SUBCATEGORY" "$THIS_HOST" "$MED_LIMIT" <<'PYEOF'
+_TSV_DATA=$(python3 - "$_INDEX_FILE" "$FILTER_CATEGORY" "$FILTER_SUBCATEGORY" "$THIS_HOST" "$MED_LIMIT" "$FILTER_MACHINE" <<'PYEOF'
 import json, re, sys
 from datetime import datetime, timezone
 
-idx_path, filter_cat, filter_sub, this_host, med_limit_str = sys.argv[1:6]
+idx_path, filter_cat, filter_sub, this_host, med_limit_str, filter_machine = sys.argv[1:7]
 med_limit = int(med_limit_str)
 data = json.loads(open(idx_path).read())
 now = datetime.now(timezone.utc)
@@ -125,6 +128,11 @@ for wid, e in data.items():
 
     pri = e.get("priority", "")
     computer = e.get("computer", "")
+
+    # Machine filter (coordinating features bypass)
+    if filter_machine and not is_coordinating_feature:
+        if computer and computer != filter_machine:
+            continue
     title = (e.get("title", "") or "")[:60]
     urg = fmt_urg(e.get("urgency_score"))
     gh = fmt_gh(e.get("github_issue_ref", ""))
@@ -458,21 +466,12 @@ render_ready_section() {
   local -n _rarr="$arr_name"
   [[ ${#_rarr[@]} -eq 0 ]] && return
 
-  local mixed=false widths hdrs
-  has_mixed_machines "$arr_name" && mixed=true
+  local widths hdrs
 
   if [[ "$COMPACT" == "true" ]]; then
-    if [[ "$mixed" == "true" ]]; then
-      widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
-    else
-      widths="4|10|10|83" hdrs="ICON|WRK|PRI|TITLE"
-    fi
+    widths="4|10|10|15|68" hdrs="ICON|WRK|PRI|MACHINE|TITLE"
   else
-    if [[ "$mixed" == "true" ]]; then
-      widths="4|10|6|5|6|5|10|12|15|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|MACHINE|TITLE"
-    else
-      widths="4|10|6|5|6|5|10|12|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|TITLE"
-    fi
+    widths="4|10|6|5|6|5|10|12|15|40" hdrs="ICON|WRK|PRI|URG|GH#|AGE|CAT|SUB|MACHINE|TITLE"
   fi
 
   local -a table_rows=()
@@ -486,17 +485,9 @@ render_ready_section() {
     # wid|pri|cat|cpu|title|urg|sub|gh|age
     IFS='|' read -r id pri cat cpu ttl urg sub gh age <<< "$row"
     if [[ "$COMPACT" == "true" ]]; then
-      if [[ "$mixed" == "true" ]]; then
-        table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
-      else
-        table_rows+=("$emoji|$id|$pri|$ttl")
-      fi
+      table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
     else
-      if [[ "$mixed" == "true" ]]; then
-        table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
-      else
-        table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$ttl")
-      fi
+      table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
     fi
   done
 
@@ -507,17 +498,9 @@ render_ready_section() {
       for row in "${_remote_rows[@]}"; do
         IFS='|' read -r id pri cat cpu ttl urg sub gh age <<< "$row"
         if [[ "$COMPACT" == "true" ]]; then
-          if [[ "$mixed" == "true" ]]; then
-            table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
-          else
-            table_rows+=("$emoji|$id|$pri|$ttl")
-          fi
+          table_rows+=("$emoji|$id|$pri|$cpu|$ttl")
         else
-          if [[ "$mixed" == "true" ]]; then
-            table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
-          else
-            table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$ttl")
-          fi
+          table_rows+=("$emoji|$id|$pri|$urg|$gh|$age|$cat|$sub|$cpu|$ttl")
         fi
       done
     fi
@@ -566,9 +549,12 @@ elif [[ -n "$FILTER_SUBCATEGORY" ]]; then
 else
   scope_label="all categories"
 fi
+machine_label="$THIS_HOST"
+[[ -n "$FILTER_MACHINE" ]] && machine_label="$FILTER_MACHINE" || machine_label="all machines"
 echo "\033[1m╔══════════════════════════════════════════════╗\033[0m"
 printf "\033[1m║   WHAT'S NEXT  %-30s║\033[0m\n" "$(date '+%Y-%m-%d %H:%M')     "
 printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
+printf "\033[1m║   machine: %-34s║\033[0m\n" "$machine_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
 render_coordinating
