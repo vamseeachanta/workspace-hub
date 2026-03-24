@@ -1,0 +1,14 @@
+wrk_id: WRK-1295
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - data/document-index-pipeline
+  - workspace-hub/knowledge
+stage_sequence_from_here:
+  - 10: Work Execution
+  - 11: Artifact Generation
+  - 12: TDD / Eval
+  - 13: Agent Cross-Review
+  - 14: Verify Gate Evidence
+delivery_order: "Phase 1 (Phase A indexing) → Phase 2 (Phase B batch) → Phase 3 (validate)"

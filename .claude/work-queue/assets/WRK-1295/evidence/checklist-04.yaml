@@ -1,0 +1,31 @@
+wrk_id: WRK-1295
+stage: 4
+items:
+  - id: CL-04-0
+    text: "Scripts-over-LLM audit performed"
+    completed: true
+    note: "All scripts already exist — no new scripts needed. N/A section in plan."
+  - id: CL-04-1
+    text: "EnterPlanMode for thinking before writing"
+    completed: true
+    note: "Plan drafted based on resource intelligence findings"
+  - id: CL-04-2
+    text: "ACs defined (specific, testable)"
+    completed: true
+    note: "5 ACs defined with quantitative thresholds"
+  - id: CL-04-3
+    text: "Pseudocode for key functions (≥3 steps)"
+    completed: true
+    note: "3-phase pseudocode: index, classify, validate"
+  - id: CL-04-4
+    text: "Test plan (≥3 entries)"
+    completed: true
+    note: "4 test entries: happy path index, happy path classify, edge resume, error PDF fallback"
+  - id: CL-04-5
+    text: "Chunk sizing checked"
+    completed: true
+    note: "1 repo, ~3 files changed, 3 phases — within limits"
+  - id: CL-04-6
+    text: "Research before building"
+    completed: true
+    note: "All scripts production-ready from WRK-1188; no new tooling needed"

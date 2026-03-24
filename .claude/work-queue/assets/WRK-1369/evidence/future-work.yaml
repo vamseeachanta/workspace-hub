@@ -1,0 +1,16 @@
+wrk_id: WRK-1369
+stage: 15
+synthesized_at: '2026-03-24T03:20:00Z'
+recommendations:
+  - title: "Target problem-set textbooks for deep extraction to reach 150+ worked examples"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    rationale: "Current 82 deep-extracted examples below 150-200 target. 26/44 manifests are standards without worked examples."
+    priority: medium
+  - title: "Validate enforce-human-gate.sh fix across all WRK items"
+    disposition: existing-updated
+    status: committed
+    captured: true
+    rationale: "Bug found and fixed during WRK-1369 — set -e crash and no_awaiting misclassification."
+    priority: high

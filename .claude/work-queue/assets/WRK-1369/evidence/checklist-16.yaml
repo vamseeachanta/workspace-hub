@@ -1,0 +1,15 @@
+wrk_id: WRK-1369
+stage: 16
+items:
+  - id: CL-16-1
+    text: ">= 3 lessons learned identified"
+    completed: true
+    evidence: "3 additions in resource-intelligence-update.yaml."
+  - id: CL-16-2
+    text: "New tools/patterns/constraints documented"
+    completed: true
+    evidence: "PEP 723 pattern, set -e function call pattern, manifest filtering lesson."
+  - id: CL-16-3
+    text: "evidence/resource-intelligence-update.yaml written"
+    completed: true
+    evidence: "Written with 3 additions."

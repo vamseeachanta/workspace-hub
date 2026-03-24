@@ -1,0 +1,4 @@
+wrk_id: WRK-1369
+stage: 14
+legal_review: not_applicable
+reason: "Batch extraction of existing document manifests. No new external data sourced. No licensing concerns."

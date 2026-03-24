@@ -1,0 +1,19 @@
+wrk_id: WRK-1295
+stage: 6
+reviewer: vamsee
+overridden_at: "2026-03-23T14:00:00Z"
+override_reason: |
+  User acknowledges budget mismatch ($9 stated vs ~$114 actual) and approves proceeding.
+  The $9 figure in WRK frontmatter was an initial estimate before resource intelligence.
+  Phase A workspace_spec dependency is known and will be resolved in execution.
+  Plan will be revised in next iteration to reflect actual budget.
+p1_findings_overridden:
+  - id: P1-1
+    description: "Budget AC5 fails: $9 vs $114"
+    disposition: "Budget updated to ~$114, user approved"
+  - id: P1-2
+    description: "Phase A workspace_spec underspecified"
+    disposition: "Will be detailed in execution phase"
+  - id: P1-3
+    description: "Budget mismatch 12x"
+    disposition: "Same as P1-1, duplicate finding"

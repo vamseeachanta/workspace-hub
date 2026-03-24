@@ -1,0 +1,53 @@
+wrk_id: WRK-1295
+stage: 6
+verdict: REVISE
+return_to_stage: 4
+reviewers:
+  - provider: claude
+    verdict: APPROVE
+    review_file: cross-review-claude.md
+  - provider: codex
+    verdict: REVISE
+    review_file: cross-review-codex.md
+  - provider: gemini
+    verdict: REVISE
+    review_file: cross-review-gemini.md
+
+p1_findings:
+  - id: P1-1
+    source: codex
+    description: "Budget AC5 fails before execution: $9 approved vs $114 estimated"
+    resolution_required: true
+  - id: P1-2
+    source: codex
+    description: "Phase A workspace_spec dependency underspecified — no script, owner, or success criteria"
+    resolution_required: true
+  - id: P1-3
+    source: gemini
+    description: "Budget mismatch ~$114 vs $9 — 12x over budget"
+    resolution_required: true
+
+p2_findings:
+  - id: P2-1
+    source: claude
+    description: "WRK title/mission doc counts (4,685) don't match index (57,173)"
+  - id: P2-2
+    source: codex
+    description: "No throughput/concurrency assumptions for shard execution"
+  - id: P2-3
+    source: codex
+    description: "Validation spot-check needs sampling strategy and rubric"
+  - id: P2-4
+    source: codex
+    description: "Should run canary batch (50-100 docs) before full launch"
+  - id: P2-5
+    source: codex
+    description: "Success metric '≥90%' needs explicit denominator definition"
+
+synthesis_notes: |
+  All 3 reviewers flagged the $9 vs $114 budget mismatch as blocking.
+  Codex additionally flagged Phase A as underspecified.
+  Recommended: return to Stage 4 to revise plan with:
+  1. Updated budget (or reduced scope)
+  2. Concrete Phase A commands and success criteria
+  3. Canary batch step before full launch

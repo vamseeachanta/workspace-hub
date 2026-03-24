@@ -1,0 +1,15 @@
+wrk_id: WRK-1295
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Read resource-intelligence.yaml"
+    completed: true
+    note: "Reviewed all findings including blocker and cost mismatch"
+  - id: CL-03-2
+    text: "Confirm route (A/B/C), workstations, orchestrator"
+    completed: true
+    note: "Route B confirmed, dev-primary workstation, claude orchestrator"
+  - id: CL-03-3
+    text: "Surface open questions; update WRK frontmatter"
+    completed: true
+    note: "3 open questions added: workspace_spec Phase A blocker, doc count mismatch, budget mismatch"

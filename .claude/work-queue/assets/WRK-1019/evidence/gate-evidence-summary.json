@@ -47,10 +47,10 @@
     },
     {
       "name": "GitHub issue gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "github_issue_ref missing from frontmatter"
+      "details": "github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/808"
     },
     {
       "name": "Cross-review gate",

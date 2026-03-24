@@ -1,0 +1,27 @@
+wrk_id: WRK-1295
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Codebase search completed (existing code, skills, tests)"
+    completed: true
+    note: "Searched phase-b-claude-worker.py, launch-batch.sh, document-index pipeline, prior WRK-1188 results"
+  - id: CL-02-2
+    text: "Knowledge base queried"
+    completed: true
+    note: "Queried document-index data, index.jsonl counts, summaries directory state"
+  - id: CL-02-3
+    text: "Online research performed (WebSearch)"
+    completed: true
+    note: "No external research needed — pipeline is mature and documented internally"
+  - id: CL-02-4
+    text: "Discovered documents saved to docu-intel + index updated"
+    completed: true
+    note: "No new external documents discovered — all relevant docs already in corpus"
+  - id: CL-02-5
+    text: "Complexity assessed (simple/medium/complex)"
+    completed: true
+    note: "Medium — proven pipeline but workspace_spec blocker and budget mismatch need resolution"
+  - id: CL-02-6
+    text: "evidence/resource-intelligence.yaml written"
+    completed: true
+    note: "Written with completion_status, domain, skills.core_used (3 skills)"

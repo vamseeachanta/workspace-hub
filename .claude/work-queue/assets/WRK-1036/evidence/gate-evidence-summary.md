@@ -7,7 +7,7 @@
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | pre-cutoff backfill (id=1036, created_at=2026-03-08T00:00:00Z) — log gate skipped (optional — no multi-agent indicators) |
-| GitHub issue gate | FAIL | github_issue_ref missing from frontmatter |
+| GitHub issue gate | PASS | github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/817 |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1036/review.md |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=claude, quota=available(null) |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |

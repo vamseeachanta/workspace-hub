@@ -8,7 +8,7 @@
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | pre-cutoff backfill (id=1019, created_at=2026-03-05T00:00:00Z) — log gate skipped (optional — no multi-agent indicators) |
-| GitHub issue gate | FAIL | github_issue_ref missing from frontmatter |
+| GitHub issue gate | PASS | github_issue_ref OK: https://github.com/vamseeachanta/workspace-hub/issues/808 |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1019/review.md |
 | TDD gate | PASS | test files=['test-results.md'] |
 | Integrated test gate | PASS | execute.yaml: integrated_repo_tests=5 (all passing) |

@@ -1,0 +1,16 @@
+wrk_id: WRK-1369
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+    evidence: "Title: Run batch deep extraction on all naval architecture manifests. Category: document-intelligence. Mission defined in pending/WRK-1369.md"
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+    evidence: "validate-wrk-frontmatter.sh passed. File at pending/WRK-1369.md with all required fields including github_issue_ref."
+  - id: CL-01-3
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: vamsee
+    evidence: "User approved stage 1 in conversation: 'i approve stage 1'. GitHub issue #1293 comment posted."

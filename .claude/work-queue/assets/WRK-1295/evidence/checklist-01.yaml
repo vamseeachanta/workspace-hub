@@ -1,0 +1,16 @@
+wrk_id: WRK-1295
+stage: 1
+items:
+  - id: CL-01-1
+    text: "WRK title, category, mission captured"
+    completed: true
+    note: "Title, category (engineering/data-extraction), and mission captured in pending/WRK-1295.md"
+  - id: CL-01-2
+    text: "pending/WRK-NNN.md written with valid frontmatter"
+    completed: true
+    note: "WRK-1295.md exists with valid frontmatter including github_issue_ref"
+  - id: CL-01-3
+    text: "User explicitly approved scope"
+    completed: true
+    approved_by: vamsee
+    note: "User approved scope in conversation 2026-03-23"

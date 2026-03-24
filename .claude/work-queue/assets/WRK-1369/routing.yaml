@@ -1,0 +1,12 @@
+wrk_id: WRK-1369
+route: B
+delivery_order:
+  - run batch-deep-extract-naval.sh
+  - verify extraction reports (44/44)
+  - count worked examples per textbook
+  - run assess-extraction-quality.py --report
+  - run build-doc-intelligence.py --force
+  - write extraction-yield-report.yaml
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - data/document-index-pipeline

@@ -1,0 +1,15 @@
+wrk_id: WRK-1369
+stage: 9
+items:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    completed: true
+    evidence: "workspace-hub/work-queue-workflow, data/document-index-pipeline loaded."
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    completed: true
+    evidence: "6-step delivery order in routing.yaml."
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    evidence: "assets/WRK-1369/routing.yaml written."

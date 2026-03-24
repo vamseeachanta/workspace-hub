@@ -1,0 +1,15 @@
+wrk_id: WRK-1295
+stage: 9
+items:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    completed: true
+    note: "work-queue-workflow, document-index-pipeline, knowledge loaded"
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    completed: true
+    note: "Phase 1 (indexing) → Phase 2 (batch) → Phase 3 (validate)"
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    note: "work_queue_skill: loaded, work_wrapper_complete: true"
