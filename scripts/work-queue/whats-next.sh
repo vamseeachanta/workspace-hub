@@ -108,7 +108,7 @@ deferred = []
 
 for wid, e in data.items():
     status = e.get("status", "")
-    if status in ("archived", "done"):
+    if status in ("archived", "done", "closed"):
         continue
 
     cat = e.get("category", "")

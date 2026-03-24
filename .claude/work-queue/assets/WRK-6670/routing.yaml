@@ -1,0 +1,31 @@
+stage: 9
+wrk_id: WRK-6670
+work_queue_skill: loaded
+work_wrapper_complete: true
+skills_loaded:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/workflow-gatepass
+  - workspace-hub/ecosystem-terminology
+delivery_order:
+  - phase: A
+    child: WRK-6671
+    title: "Fix stale index & filter bugs"
+    parallel_with: WRK-6672
+  - phase: B
+    child: WRK-6672
+    title: "Machine filtering & display"
+    parallel_with: WRK-6671
+  - phase: C
+    child: WRK-6673
+    title: "GH as single source of truth"
+    depends_on: [WRK-6671, WRK-6672]
+  - phase: D
+    child: WRK-6674
+    title: "Retire WRK numbering & renumber"
+    depends_on: [WRK-6673]
+  - phase: E
+    child: WRK-6675
+    title: "Cross-review passes"
+    depends_on: [WRK-6674]
+stage_sequence_from_here: [10]
+note: "Stage 10 for parent epic = dispatch children. Phases A+B dispatched in parallel."

@@ -1,0 +1,60 @@
+completion_status: complete
+domain: work-queue-infrastructure
+complexity: complex
+route: C
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/ecosystem-terminology
+    - data/document-index-pipeline
+  supplementary:
+    - workspace-hub/knowledge
+    - workspace-hub/resource-intelligence
+
+key_files:
+  scripts:
+    - path: scripts/work-queue/rebuild-wrk-index.sh
+      lines: 113
+      role: "Rebuilds wrk-status-index.json from WRK files. BUG: skips done/ dir (line 12)"
+    - path: scripts/work-queue/whats-next.sh
+      lines: 625
+      role: "Main display script. BUG: no 'closed' exclusion (line 111), no machine filtering, no machine column"
+    - path: scripts/work-queue/update-wrk-index.sh
+      role: "Updates single entry in wrk-status-index.json. Missing execution_workstations field"
+    - path: scripts/work-queue/dispatch-run.sh
+      role: "Dispatches work execution. Needs execution_machine stamp"
+    - path: scripts/work-queue/gh-next-id.sh
+      role: "Generates next WRK ID from GH issues. To be retired in Phase D"
+    - path: scripts/knowledge/update-github-issue.py
+      role: "Creates/updates GH issues from WRK frontmatter"
+  templates:
+    - path: .github/ISSUE_TEMPLATE/
+      exists: false
+      note: "Must be created for Phase C (GH issue templates with required fields)"
+
+infrastructure:
+  github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1345"
+  no_existing_issue_templates: true
+  wrk_pattern_files: "50+ files reference WRK-\\d+ pattern across scripts, skills, tests"
+
+phase_dependencies:
+  A_bug_fixes: "independent — can start immediately"
+  B_machine_ux: "independent — can start immediately"
+  C_gh_architecture: "depends on A+B stable"
+  D_migration: "depends on C (GH infra must exist)"
+  E_validation: "depends on all prior phases"
+
+external_research:
+  - topic: "GitHub Projects v2 custom fields for machine assignment"
+    relevance: "Phase C needs project board integration"
+  - topic: "gh CLI issue template creation"
+    relevance: "Phase C needs programmatic template setup"
+
+gaps:
+  p1: []
+  p2:
+    - "No GH issue templates exist — must create from scratch"
+    - "50+ files reference WRK-\\d+ — migration script needed"
+  p3:
+    - "GH Projects v2 custom fields API may have limitations for machine tracking"

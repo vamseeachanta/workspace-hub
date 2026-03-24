@@ -9,7 +9,7 @@ UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-wrk-index.sh"
 echo '{}' > "${QUEUE_DIR}/wrk-status-index.json"
 
 # Scan pending/, working/, blocked/
-for dir in "pending" "working" "blocked"; do
+for dir in "pending" "working" "blocked" "done"; do
   dir_path="${QUEUE_DIR}/${dir}"
   [[ -d "$dir_path" ]] || continue
   for f in "${dir_path}"/WRK-*.md; do
