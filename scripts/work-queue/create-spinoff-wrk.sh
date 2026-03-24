@@ -35,10 +35,11 @@ done
 # Normalize source WRK id
 [[ "$SOURCE_WRK" =~ ^WRK- ]] || SOURCE_WRK="WRK-${SOURCE_WRK}"
 
-# ── Allocate next WRK id ───────────────────────────────────────────────────────
-# Use next-id.sh; fall back to Python if it fails (e.g. non-numeric WRK filenames present)
-_RAW_ID=$(bash "${SCRIPTS_DIR}/next-id.sh" 2>/dev/null) || _RAW_ID=""
-if [[ -z "$_RAW_ID" ]]; then
+# ── Allocate next WRK id via gh-next-id.sh ────────────────────────────────────
+_GH_OUTPUT=$(bash "${SCRIPTS_DIR}/gh-next-id.sh" \
+    --title "fix: archive blocker from ${SOURCE_WRK} — ${BLOCKER_DESC:0:60}" 2>/dev/null) || _GH_OUTPUT=""
+_RAW_ID=$(echo "$_GH_OUTPUT" | head -1)
+if [[ -z "$_RAW_ID" || "$_RAW_ID" == LOCAL-* ]]; then
   _QUEUE_DIR="$QUEUE_DIR"
   _RAW_ID=$(uv run --no-project python -c "
 import re

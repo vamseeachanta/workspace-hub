@@ -87,13 +87,14 @@ exit "${MOCK_UVX_EXIT:-0}"
 EOF
     chmod +x "$mock_dir/uvx"
 
-    # Mock next-id.sh (used for auto-WRK) — returns bare number like real script
+    # Mock gh-next-id.sh (used for auto-WRK) — returns ID + URL like real script
     mkdir -p "$mock_dir/../scripts/work-queue"
-    cat > "$mock_dir/../scripts/work-queue/next-id.sh" << 'EOF'
+    cat > "$mock_dir/../scripts/work-queue/gh-next-id.sh" << 'EOF'
 #!/usr/bin/env bash
-echo "9999"
+echo "99999"
+echo "https://github.com/test/issues/99999"
 EOF
-    chmod +x "$mock_dir/../scripts/work-queue/next-id.sh"
+    chmod +x "$mock_dir/../scripts/work-queue/gh-next-id.sh"
 }
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-5140
+human_gate: true
+started_at: "2026-03-24T08:23:39.900203+00:00"
+completed_at: "2026-03-24T08:24:00Z"
+notes: "Pre-captured — valid frontmatter and GH issue ref already present"

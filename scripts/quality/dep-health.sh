@@ -155,7 +155,10 @@ if [[ ${#CVE_BLOCKING_REPOS[@]} -gt 0 ]]; then
     LOCKFILE="$REPO_ROOT/.claude/work-queue/state.yaml.lock"
     (
         flock --timeout 10 200 || { echo "WARN: flock timeout — skipping auto-WRK capture"; exit 0; }
-        NEXT_NUM=$(bash "$SCRIPTS_ROOT/scripts/work-queue/next-id.sh" 2>/dev/null || echo "AUTO")
+        _GH_OUT=$(bash "$SCRIPTS_ROOT/scripts/work-queue/gh-next-id.sh" \
+            --title "CVE remediation — HIGH/CRITICAL advisories in: ${REPOS_STR}" 2>/dev/null) || _GH_OUT=""
+        NEXT_NUM=$(echo "$_GH_OUT" | head -1)
+        [[ -z "$NEXT_NUM" ]] && NEXT_NUM="AUTO"
         NEXT_ID="WRK-${NEXT_NUM}"
         PENDING_DIR="$REPO_ROOT/.claude/work-queue/pending"
         mkdir -p "$PENDING_DIR"

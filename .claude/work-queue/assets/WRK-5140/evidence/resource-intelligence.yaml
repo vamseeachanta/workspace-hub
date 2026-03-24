@@ -1,0 +1,41 @@
+completion_status: complete
+domain: engineering/infrastructure
+complexity_assessment: medium
+route: B
+
+live_callers:
+  - file: scripts/work-queue/new-feature.sh
+    line: 200
+    usage: "Allocates child WRK IDs via next-id.sh"
+  - file: scripts/work-queue/create-spinoff-wrk.sh
+    line: 40
+    usage: "Allocates spinoff WRK ID via next-id.sh"
+  - file: scripts/quality/dep-health.sh
+    line: 158
+    usage: "Auto-WRK creation via next-id.sh"
+  - file: scripts/automation/release_scan_wrk.py
+    line: 150
+    usage: "Atomic WRK ID allocation"
+  - file: scripts/analysis/comprehensive_learning_pipeline.py
+    line: 119
+    usage: "WRK ID for captured learning items"
+
+tests_to_update:
+  - scripts/work-queue/tests/test-next-id-collision.sh
+  - tests/work-queue/test-machine-id-ranges.sh
+  - tests/quality/test_dep_health.sh
+
+config_comments:
+  - config/work-queue/machine-ranges.yaml
+  - .claude/work-queue/state.yaml
+
+archive_collision:
+  root_archive_max_id: 1303
+  monthly_archive_max_id: 5125
+  gh_issue_current_range: "~1300s"
+  collision_risk: "GH issues in 1300 range collide with archived root-level WRK files"
+
+skills_core_used:
+  - Grep
+  - Read
+  - Bash
