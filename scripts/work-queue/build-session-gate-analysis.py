@@ -280,7 +280,8 @@ def main() -> int:
     parser.add_argument("--days", type=int, default=7, help="Lookback window in days (default: 7)")
     args = parser.parse_args()
 
-    wrk_id = args.wrk_id if args.wrk_id.startswith("WRK-") else f"WRK-{args.wrk_id}"
+    # Repo-prefixed IDs (e.g. workspace-hub-1349) pass through; bare numbers get WRK- prefix
+    wrk_id = args.wrk_id if (args.wrk_id.startswith("WRK-") or "-" in args.wrk_id) else f"WRK-{args.wrk_id}"
     report = build_report(args.days)
 
     workspace_root = Path(__file__).resolve().parents[2]
