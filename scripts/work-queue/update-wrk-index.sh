@@ -20,6 +20,11 @@ for dir in "working" "pending" "blocked" "done"; do
   if [[ -f "$candidate" ]]; then
     WRK_FILE="$candidate"; break
   fi
+  # Fallback: search for repo-prefixed files matching the ID
+  for alt in "${QUEUE_DIR}/${dir}"/*-[0-9]*.md; do
+    [[ -f "$alt" ]] || continue
+    [[ "$(basename "$alt" .md)" == "$WRK_ID" ]] && { WRK_FILE="$alt"; break 2; }
+  done
 done
 
 # Also check archive/YYYY-MM/ subdirs

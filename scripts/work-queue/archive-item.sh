@@ -12,8 +12,8 @@ if [[ -z "$ITEM_ID" ]]; then
   exit 1
 fi
 
-# Normalize ID format
-[[ "$ITEM_ID" =~ ^WRK- ]] || ITEM_ID="WRK-${ITEM_ID}"
+# Normalize ID format — only add WRK- prefix for bare numeric IDs
+[[ "$ITEM_ID" =~ ^[0-9]+$ ]] && ITEM_ID="WRK-${ITEM_ID}"
 
 # Find the item file — prefer working > pending > blocked > done order
 ITEM_FILE=""
@@ -22,6 +22,14 @@ for dir in "working" "pending" "blocked" "done"; do
     ITEM_FILE="${QUEUE_DIR}/${dir}/${ITEM_ID}.md"
     break
   fi
+  # Fallback: search for repo-prefixed files matching the ID
+  for alt in "${QUEUE_DIR}/${dir}"/*-[0-9]*.md; do
+    [[ -f "$alt" ]] || continue
+    if [[ "$(basename "$alt" .md)" == "$ITEM_ID" ]]; then
+      ITEM_FILE="$alt"
+      break 2
+    fi
+  done
 done
 
 if [[ -z "$ITEM_FILE" ]]; then
@@ -110,6 +118,16 @@ for dir in "working" "pending" "blocked" "done"; do
   if [[ -f "$stale" ]]; then
     rm "$stale"
     [[ "$stale" != "$ITEM_FILE" ]] && echo "✔ Removed ghost copy: ${dir}/${ITEM_ID}.md"
+  else
+    # Check for repo-prefixed file matching the ID
+    for alt in "${QUEUE_DIR}/${dir}"/*-[0-9]*.md; do
+      [[ -f "$alt" ]] || continue
+      if [[ "$(basename "$alt" .md)" == "$ITEM_ID" ]]; then
+        rm "$alt"
+        [[ "$alt" != "$ITEM_FILE" ]] && echo "✔ Removed ghost copy: ${dir}/$(basename "$alt")"
+        break
+      fi
+    done
   fi
 done
 

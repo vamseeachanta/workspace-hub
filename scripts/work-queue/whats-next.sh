@@ -83,8 +83,9 @@ def check_blockers(blocked_by_str):
     """Returns (is_clear, active_blockers_str)"""
     if not blocked_by_str or blocked_by_str == "[]":
         return True, ""
-    deps = re.findall(r"WRK-(\d+)", blocked_by_str)
-    active = [f"WRK-{d}" for d in deps if f"WRK-{d}" not in archived_ids]
+    # Match both WRK-NNN and repo-NNN (e.g. workspace-hub-1345) identifiers
+    deps = re.findall(r"(?:WRK-\d+|[a-zA-Z][\w-]*-\d+)", blocked_by_str)
+    active = [d for d in deps if d not in archived_ids]
     if not active:
         return True, ""
     return False, ",".join(active)
@@ -190,7 +191,7 @@ for wid, e in data.items():
 
     # Ready items (blockers clear)
     if is_clear:
-        has_deps = bool(re.findall(r"WRK-\d+", bb_raw))
+        has_deps = bool(re.findall(r"(?:WRK-\d+|[a-zA-Z][\w-]*-\d+)", bb_raw))
         if pri == "high":
             high_ready.append((wid, pri, cat, computer, title, urg, sub, gh, age))
         elif has_deps:
