@@ -1,0 +1,15 @@
+stage: 12
+wrk_id: workspace-hub-1363
+items:
+  - id: CL-12-1
+    text: "Full test suite run with zero failures"
+    completed: true
+    notes: "Classification script runs successfully on full 15,449 file archive"
+  - id: CL-12-2
+    text: "Every AC mapped to test result (PASS/N/A+reason, no FAIL)"
+    completed: true
+    notes: "5 ACs all PASS"
+  - id: CL-12-3
+    text: "ac-test-matrix.md written with >= 3 PASS entries"
+    completed: true
+    notes: "5 PASS entries in ac-test-matrix.md"

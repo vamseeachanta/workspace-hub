@@ -1,5 +1,5 @@
 stage: 4
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 items:
   - id: CL-04-1
     text: "Scripts-over-LLM audit performed (25% recurrence check)"

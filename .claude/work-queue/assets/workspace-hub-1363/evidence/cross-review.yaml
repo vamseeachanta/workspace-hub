@@ -1,6 +1,6 @@
 # Stage 6: Cross-Review evidence
 stage: 6
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 review_type: single_provider  # Route B — only claude available this session
 
 reviewers:

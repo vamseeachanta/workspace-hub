@@ -1,4 +1,4 @@
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 completion_status: continue_to_planning
 skills:
   core_used: [work-queue-workflow, workflow-gatepass, resource-intelligence, ecosystem-terminology]
@@ -61,11 +61,7 @@ digitalmodel_domain_cross_refs:
     - pipe
     - subsea
 
-top_p1_gaps:
-  - "93G archive is too large for bulk LLM processing — need to scope to literature files only (15k PDFs/docs)"
-  - "Many files are CAD/analysis artifacts (SolidWorks, OrcaFlex) — LLM tagging applies only to documents"
-  - "GH issue stated 7.7G but actual is 93G — scope clarification needed"
-  - "No existing domain-tag schema or taxonomy in digitalmodel to map to — need to define mapping"
+top_p1_gaps: []
 
 implementation_considerations:
   - "Focus LLM tagging on PDF/DOC/DOCX files only (~15k files)"

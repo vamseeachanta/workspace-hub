@@ -1,0 +1,14 @@
+stage: 9
+wrk_id: workspace-hub-1363
+items:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    completed: true
+    notes: "work-queue-workflow, resource-intelligence, ecosystem-terminology"
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    completed: true
+    notes: "explore → implement → batch classify → cross-reference → validate"
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true

@@ -1,5 +1,5 @@
 stage: 1
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 items:
   - id: CL-01-1
     text: "WRK title, category, mission captured"

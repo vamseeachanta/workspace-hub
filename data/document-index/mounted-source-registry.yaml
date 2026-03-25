@@ -57,6 +57,25 @@ source_roots:
           <author-year-title>.pdf
       Domains: cathodic_protection, geotechnical, hydrodynamics,
                naval_architecture, pipeline, structural, subsea
+  - source_id: riser_eng_job_local
+    document_intelligence_bucket: riser_eng_job
+    mount_root: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job
+    local_or_remote: local
+    index_artifact_ref: data/document-index/index.jsonl
+    registry_ref: data/document-index/registry.yaml
+    canonical_storage_policy: riser engineering project archives (4 projects, 93G)
+    provenance_rule: mounted source of truth for riser engineering literature
+    dedup_rule: prefer this location; domain-index.yaml provides classification
+    availability_check_ref: local filesystem presence
+    domain_index_ref: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/domain-index-full.yaml
+    structure: |
+      <project-code>/
+        <doc-type>-<number>-<rev>.<ext>
+      Projects: 2100-blk31-slor-design (53G), 3824-containment-riser (30G),
+                3836-hp1-riser (7.4G), 3837-cdp2-fsr (3.7G)
+      Literature: 15,449 PDF/DOC/DOCX files
+      Domains: risers, riser_analysis, viv, structural, fatigue, mooring,
+               fem, catenary, connections, installation, metocean, pipe, subsea
   - source_id: dde_project_remote
     document_intelligence_bucket: dde_project
     mount_root: ""

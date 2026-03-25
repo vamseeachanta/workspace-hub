@@ -1,26 +1,26 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-25T12:27:38Z by generate-index.py -->
+<!-- Generated: 2026-03-25T15:30:56Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-25T12:27:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-25T15:30:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 46
+**Total items:** 49
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 6 |
+| pending | 9 |
 | archived | 40 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 22 |
+| high | 25 |
 | medium | 22 |
 | low | 1 |
 
@@ -28,7 +28,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 12 |
+| simple | 15 |
 | medium | 28 |
 | complex | 3 |
 
@@ -38,7 +38,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 1 |
+| harness | 4 |
 | engineering | 4 |
 
 ### By Repository
@@ -46,7 +46,7 @@
 | Repository | Count |
 |------------|-------|
 | digitalmodel | 9 |
-| workspace-hub | 32 |
+| workspace-hub | 35 |
 | worldenergydata | 3 |
 
 ### Plan Tracking
@@ -54,7 +54,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 19 / 46 |
+| Plans exist | 19 / 49 |
 | Plans cross-reviewed | 14 |
 | Plans approved | 21 |
 | Brochure pending | 2 |
@@ -66,9 +66,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 46 |
+| Total captured | 49 |
 | Total archived | 40 |
-| Completion rate | 40/46 (87%) |
+| Completion rate | 40/49 (82%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 10 archived |
 
@@ -76,7 +76,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 4 / 6 | 67% |
+| Pending items with plans | 4 / 9 | 44% |
 | Plans cross-reviewed | 0 | 0% |
 | Plans user-approved | 0 | 0% |
 
@@ -93,7 +93,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 1 | 0 | 0 |
+| High     | 4 | 0 | 0 |
 | Medium   | 5  | 0  | 0  |
 | Low      | 0  | 0  | 0  |
 
@@ -101,12 +101,15 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (1 items — 0 high, 1 medium, 0 low)
+### harness (4 items — 3 high, 1 medium, 0 low)
 
 #### harness / work-queue
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
+| WRK-1409 | HIGH | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending |
+| WRK-1410 | HIGH | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending |
+| WRK-1411 | HIGH | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending |
 | WRK-5103 | MEDIUM | whats-next.sh should filter out items with no file on disk (ghost entries) | pending |
 
 ### engineering (4 items — 0 high, 4 medium, 0 low)
@@ -164,6 +167,9 @@ No active feature WRKs found.
 | WRK-1300 | Review and update PDF/document skills — learnings from WRK-1277 and readability sessions | archived | high | medium | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1324 | Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete | pending | high | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | dev-primary | dev-primary | dev-primary | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-5103 | whats-next.sh should filter out items with no file on disk (ghost entries) | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-5133 | gmsh parametric mesh convergence study script | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | pending | medium | medium | dev-secondary | dev-secondary | dev-secondary | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
@@ -182,6 +188,9 @@ No active feature WRKs found.
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-1324 | Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete | high | simple | workspace-hub | - |
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | high | simple | workspace-hub | - |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | high | simple | workspace-hub | - |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | high | simple | workspace-hub | - |
 | WRK-5103 | whats-next.sh should filter out items with no file on disk (ghost entries) | medium | medium | - | - |
 | WRK-5133 | gmsh parametric mesh convergence study script | medium | medium | digitalmodel | - |
 | WRK-5134 | gmsh OCC boolean workflow for multi-body STEP assemblies | medium | medium | digitalmodel | - |
@@ -279,6 +288,9 @@ No active feature WRKs found.
 | WRK-1300 | Review and update PDF/document skills — learnings from WRK-1277 and readability sessions | archived | high | medium | - |
 | WRK-1324 | Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete | pending | high | simple | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | simple | - |
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending | high | simple | - |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending | high | simple | - |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending | high | simple | - |
 | WRK-5136 | gmsh mesh quality gate script with YAML verdict | pending | medium | medium | - |
 | WRK-6671 | Fix stale index & filter bugs in whats-next pipeline | archived | high | simple | - |
 | WRK-6672 | Machine filtering & display in whats-next | archived | high | medium | - |
@@ -319,6 +331,9 @@ No active feature WRKs found.
 | WRK-1244 | Evaluate canonical skill ecosystem quality using skill-creator eval | archived | medium | workspace-hub | - |
 | WRK-1300 | Review and update PDF/document skills — learnings from WRK-1277 and readability sessions | archived | medium | workspace-hub | - |
 | WRK-1324 | Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete | pending | simple | workspace-hub | - |
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending | simple | workspace-hub | - |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending | simple | workspace-hub | - |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending | simple | workspace-hub | - |
 | WRK-6671 | Fix stale index & filter bugs in whats-next pipeline | archived | simple | workspace-hub | - |
 | WRK-6672 | Machine filtering & display in whats-next | archived | medium | workspace-hub | - |
 | WRK-6673 | GH Issues as single source of truth — architecture & sync | archived | complex | workspace-hub | - |
@@ -372,6 +387,9 @@ No active feature WRKs found.
 | WRK-1156 | chore(harness): stage-07/17 gate-passed printer script — emit checkpoint prompt on gate pass | archived | high | workspace-hub | - |
 | WRK-1324 | Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete | pending | high | workspace-hub | - |
 | WRK-1337 | Add subcategory/domain labels to GitHub Issues for WRK items | archived | medium | workspace-hub | - |
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending | high | workspace-hub | - |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending | high | workspace-hub | - |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending | high | workspace-hub | - |
 | WRK-6671 | Fix stale index & filter bugs in whats-next pipeline | archived | high | workspace-hub | - |
 | WRK-6675 | Cross-review /whats-next pipeline end-to-end | archived | medium | workspace-hub | - |
 
@@ -478,6 +496,14 @@ No active feature WRKs found.
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | digitalmodel |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | workspace-hub |
 | WRK-5103 | whats-next.sh should filter out items with no file on disk (ghost entries) | pending | medium | medium | - |
+
+### ace-linux-1 (3 active / 3 total)
+
+| ID | Title | Status | Priority | Complexity | Repos |
+|-----|-------|--------|----------|------------|-------|
+| WRK-1409 | fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr | pending | high | simple | workspace-hub |
+| WRK-1410 | fix: archive blocker from WRK-workspace-hub-1398 — Fix skills-curation cron — invalid claude CLI invocation | pending | high | simple | workspace-hub |
+| WRK-1411 | fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to / | pending | high | simple | workspace-hub |
 
 ## Dependencies
 

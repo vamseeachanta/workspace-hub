@@ -1,6 +1,6 @@
 # Stage 7 exit gate — user review of final plan
 stage: 7
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 confirmed_by: "vamsee"
 confirmed_at: "2026-03-25T16:45:00Z"
 decision: passed

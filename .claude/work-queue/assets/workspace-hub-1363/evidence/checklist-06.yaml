@@ -1,5 +1,5 @@
 stage: 6
-wrk_id: WRK-1363
+wrk_id: workspace-hub-1363
 items:
   - id: CL-06-1
     text: "Cross-review package sent to all 3 providers"

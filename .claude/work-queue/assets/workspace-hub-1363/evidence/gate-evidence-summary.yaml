@@ -1,0 +1,37 @@
+wrk_id: workspace-hub-1363
+phase: claim
+verified_at: "2026-03-25T17:10:00Z"
+all_pass: true
+gates:
+  - name: Plan gate
+    status: OK
+  - name: Workstation contract gate
+    status: OK
+  - name: Resource-intelligence gate
+    status: OK
+  - name: Activation gate
+    status: OK
+  - name: Agent log gate
+    status: WARN
+    notes: "Single-provider session — no multi-agent logs"
+  - name: GitHub issue gate
+    status: OK
+  - name: Cross-review gate
+    status: OK
+  - name: Claim gate
+    status: OK
+  - name: Reclaim gate
+    status: WARN
+    notes: "No reclaim triggered"
+  - name: Approval ordering gate
+    status: OK
+  - name: Midnight UTC sentinel gate
+    status: OK
+  - name: Sentinel values gate
+    status: OK
+  - name: Claim artifact path gate
+    status: OK
+  - name: ISO datetime format gate
+    status: OK
+  - name: Stage1 capture gate
+    status: OK
