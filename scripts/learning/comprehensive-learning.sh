@@ -26,7 +26,7 @@ mkdir -p "$LEARNING_REPORTS_DIR"
 MACHINE=$(hostname | tr '[:upper:]' '[:lower:]')
 
 # --- Single-Machine Guard ---
-if [[ "$MACHINE" != "dev-primary" ]]; then
+if [[ "$MACHINE" != "dev-primary" && "$MACHINE" != "ace-linux-1" ]]; then
   echo "comprehensive-learning runs on dev-primary only."
   echo "From this machine, commit state files and push:"
   

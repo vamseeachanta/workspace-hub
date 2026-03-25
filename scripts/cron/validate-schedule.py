@@ -13,7 +13,9 @@ REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "descriptio
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
 VALID_MACHINES = {
     "dev-primary",
+    "ace-linux-1",
     "dev-secondary",
+    "ace-linux-2",
     "licensed-win-1",
     "licensed-win-2",
     "gali-linux-compute-1",

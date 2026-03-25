@@ -146,7 +146,8 @@ declare -a anti_patterns=()
 bash_file_ops_count=0
 if [[ -d "$PENDING_REVIEWS_DIR" ]]; then
     bash_file_ops_count=$(grep -rl 'grep\|cat\|find\|sed' "$PENDING_REVIEWS_DIR"/*.jsonl 2>/dev/null \
-        | wc -l | tr -d ' ' || echo 0)
+        | wc -l | tr -d '[:space:]' || true)
+    bash_file_ops_count="${bash_file_ops_count:-0}"
 fi
 if [[ "${bash_file_ops_count:-0}" -gt 2 ]]; then
     anti_patterns+=("bash-file-ops: bash used for file ops instead of dedicated tools (${bash_file_ops_count} occurrences)")
@@ -154,7 +155,8 @@ fi
 
 # Detect inline complex work (long tool sequences without delegation)
 if command -v jq &>/dev/null && [[ -d "$PENDING_REVIEWS_DIR" ]]; then
-    skill_candidates_count=$(wc -l < "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null || echo 0)
+    skill_candidates_count=$(wc -l < "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null | tr -d '[:space:]' || true)
+    skill_candidates_count="${skill_candidates_count:-0}"
     if [[ "${skill_candidates_count:-0}" -gt 5 ]]; then
         anti_patterns+=("inline-complex-work: ${skill_candidates_count} tool sequences could be delegated")
     fi
@@ -172,8 +174,8 @@ declare -A candidate_counts=(
 
 # Script candidates: repeated bash sequences (2+ times) from pending-reviews
 if [[ -f "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" ]]; then
-    n_script=$(wc -l < "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null || echo 0)
-    candidate_counts[script]="${n_script}"
+    n_script=$(wc -l < "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null | tr -d '[:space:]' || echo 0)
+    candidate_counts[script]="${n_script:-0}"
 
     if [[ "${n_script}" -gt 0 ]]; then
         {
@@ -198,8 +200,8 @@ fi
 
 # Skill candidates: patterns from insights + errors that recur across sessions
 if [[ -f "${PENDING_REVIEWS_DIR}/insights.jsonl" ]]; then
-    n_skill=$(wc -l < "${PENDING_REVIEWS_DIR}/insights.jsonl" 2>/dev/null || echo 0)
-    candidate_counts[skill]="${n_skill}"
+    n_skill=$(wc -l < "${PENDING_REVIEWS_DIR}/insights.jsonl" 2>/dev/null | tr -d '[:space:]' || echo 0)
+    candidate_counts[skill]="${n_skill:-0}"
 
     if [[ "${n_skill}" -gt 0 ]]; then
         {
@@ -214,8 +216,8 @@ fi
 
 # Hook candidates: recurring triggers (new_file events for hooks/scripts)
 if [[ -f "${PENDING_REVIEWS_DIR}/new-files.jsonl" ]]; then
-    n_hook=$(grep -c '"signal":"new_file"' "${PENDING_REVIEWS_DIR}/new-files.jsonl" 2>/dev/null || echo 0)
-    candidate_counts[hook]="${n_hook}"
+    n_hook=$(grep -c '"signal":"new_file"' "${PENDING_REVIEWS_DIR}/new-files.jsonl" 2>/dev/null || true)
+    candidate_counts[hook]="${n_hook:-0}"
 
     if [[ "${n_hook}" -gt 0 ]]; then
         {
@@ -238,8 +240,8 @@ fi
 # MCP candidates: memory update candidates referencing external tools
 if [[ -f "${PENDING_REVIEWS_DIR}/memory-updates.jsonl" ]]; then
     n_mcp=$(grep -ci 'api\|endpoint\|external\|mcp\|tool' \
-        "${PENDING_REVIEWS_DIR}/memory-updates.jsonl" 2>/dev/null || echo 0)
-    candidate_counts[mcp]="${n_mcp}"
+        "${PENDING_REVIEWS_DIR}/memory-updates.jsonl" 2>/dev/null || true)
+    candidate_counts[mcp]="${n_mcp:-0}"
 fi
 
 log "  Candidates: script=${candidate_counts[script]} skill=${candidate_counts[skill]} hook=${candidate_counts[hook]} agent=${candidate_counts[agent]} mcp=${candidate_counts[mcp]}"
@@ -272,16 +274,16 @@ log "Step 7: writing session summary to ${SUMMARY_FILE}"
     printf 'Sessions analysed: %d\n' "$N_SESSIONS"
     printf 'Skills scored: %d\n' "$N_SKILLS_SCORED"
     printf 'Candidates identified: %d script, %d skill, %d hook, %d agent, %d mcp\n' \
-        "${candidate_counts[script]}" "${candidate_counts[skill]}" \
-        "${candidate_counts[hook]}" "${candidate_counts[agent]}" \
-        "${candidate_counts[mcp]}"
+        "$((${candidate_counts[script]:-0}))" "$((${candidate_counts[skill]:-0}))" \
+        "$((${candidate_counts[hook]:-0}))" "$((${candidate_counts[agent]:-0}))" \
+        "$((${candidate_counts[mcp]:-0}))"
     printf 'Anti-patterns detected: %d\n' "$N_ANTI_PATTERNS"
     printf 'Deep gaps: %d\n\n' "$N_GAPS"
 
     if [[ "${N_ANTI_PATTERNS}" -gt 0 ]]; then
         printf '## Anti-patterns\n\n'
         for ap in "${anti_patterns[@]}"; do
-            printf '- %s\n' "$ap"
+            printf -- '- %s\n' "$ap"
         done
         printf '\n'
     fi
@@ -289,7 +291,7 @@ log "Step 7: writing session summary to ${SUMMARY_FILE}"
     if [[ "${N_GAPS}" -gt 0 ]]; then
         printf '## Deep Gaps\n\n'
         for gap in "${deep_gaps[@]}"; do
-            printf '- %s\n' "$gap"
+            printf -- '- %s\n' "$gap"
         done
         printf '\n'
     fi
@@ -297,7 +299,7 @@ log "Step 7: writing session summary to ${SUMMARY_FILE}"
     printf '## Skills Scored\n\n'
     if [[ "${N_SKILLS_SCORED}" -gt 0 ]]; then
         for skill in "${!skill_usage[@]}"; do
-            printf '- %s: %d session(s)\n' "$skill" "${skill_usage[$skill]}"
+            printf -- '- %s: %d session(s)\n' "$skill" "${skill_usage[$skill]}"
         done
     else
         printf '_No skill invocations recorded in signal files._\n'
@@ -307,7 +309,7 @@ log "Step 7: writing session summary to ${SUMMARY_FILE}"
     printf '## Signal Files\n\n'
     if [[ "${N_SESSIONS}" -gt 0 ]]; then
         for f in "${SIGNAL_FILES[@]}"; do
-            printf '- %s\n' "$(basename "$f")"
+            printf -- '- %s\n' "$(basename "$f")"
         done
     else
         printf '_No signal files found for %s._\n' "$ANALYSIS_DATE"
@@ -315,8 +317,14 @@ log "Step 7: writing session summary to ${SUMMARY_FILE}"
     printf '\n'
 
     printf '## Quality Metric\n\n'
-    total_candidates=$(( ${candidate_counts[script]} + ${candidate_counts[skill]} + \
-        ${candidate_counts[hook]} + ${candidate_counts[agent]} + ${candidate_counts[mcp]} + N_GAPS ))
+    # Sanitize counts — strip non-digits, default to 0
+    _cs=$(printf '%s' "${candidate_counts[script]:-0}" | tr -cd '0-9'); _cs=${_cs:-0}
+    _ck=$(printf '%s' "${candidate_counts[skill]:-0}" | tr -cd '0-9'); _ck=${_ck:-0}
+    _ch=$(printf '%s' "${candidate_counts[hook]:-0}" | tr -cd '0-9'); _ch=${_ch:-0}
+    _ca=$(printf '%s' "${candidate_counts[agent]:-0}" | tr -cd '0-9'); _ca=${_ca:-0}
+    _cm=$(printf '%s' "${candidate_counts[mcp]:-0}" | tr -cd '0-9'); _cm=${_cm:-0}
+    _ng=${N_GAPS:-0}
+    total_candidates=$(( _cs + _ck + _ch + _ca + _cm + _ng ))
     if [[ "${N_SESSIONS}" -gt 0 && "${total_candidates}" -gt 0 ]]; then
         printf 'At least one actionable output produced: YES (%d total)\n' "$total_candidates"
     elif [[ "${N_SESSIONS}" -gt 0 ]]; then

@@ -37,8 +37,8 @@ HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
 
 # ── Determine cron_variant from hostname ─────────────────────────────────────
 case "$HOSTNAME_SHORT" in
-  dev-primary)             CRON_VARIANT="full" ;;
-  dev-secondary)             CRON_VARIANT="contribute" ;;
+  dev-primary|ace-linux-1)   CRON_VARIANT="full" ;;
+  dev-secondary|ace-linux-2) CRON_VARIANT="contribute" ;;
   licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
   *)
     echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
