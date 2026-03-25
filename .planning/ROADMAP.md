@@ -3,13 +3,21 @@
 ## Milestone 1: Foundation Sprint
 
 ### Phase 1: Accelerate digitalmodel development
-**Goal:** Ship core calculation modules faster — structural, fatigue, CP, VIV
+**Goal:** Ship 3+ new calculation modules (on-bottom stability, ASME B31.4 wall thickness, spectral scatter fatigue) with full test coverage, standards traceability manifests, and CI validation
 **Why:** digitalmodel is the product engine; everything else (website, marketing, client work) depends on it having robust, validated calculations
 **Must-haves:**
 - Identify highest-value calculation gaps (what clients actually need vs what exists)
 - Increase test coverage on existing modules
 - Streamline the standard-to-code pipeline (reduce time from reading a standard clause to shipping a validated function)
 **UAT:** 3+ new calculation modules shipped with full test coverage and traceability to standards
+**Plans:** 5 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — YAML manifest schema (Pydantic model + CI validation script)
+- [ ] 01-02-PLAN.md — On-bottom stability module (DNV-RP-F109)
+- [ ] 01-03-PLAN.md — ASME B31.4 wall thickness code strategy
+- [ ] 01-04-PLAN.md — Spectral fatigue from sea-state scatter diagrams (DNV-RP-C203)
+- [ ] 01-05-PLAN.md — Integration: validate manifests, update registry, cross-module tests
 
 ### Phase 2: Accelerate worldenergydata pipelines
 **Goal:** Reliable, current energy data feeds — EIA, BSEE, global production
