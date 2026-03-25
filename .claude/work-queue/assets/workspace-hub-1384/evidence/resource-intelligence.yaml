@@ -10,6 +10,8 @@ total_items: 37  # folders + top-level files, excluding workspace-hub
 skills:
   core_used:
     - workspace-hub/work-queue-orchestrator
+    - workspace-hub/knowledge
+    - workspace-hub/resource-intelligence
   optional_used: []
 
 inventory:

@@ -1,0 +1,15 @@
+stage: 9
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    completed: true
+    evidence: "4 skills: work-queue-orchestrator, document-index-pipeline, knowledge, ecosystem-terminology"
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    completed: true
+    evidence: "5-step delivery order in routing.yaml"
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    evidence: "assets/workspace-hub-1357/routing.yaml written"

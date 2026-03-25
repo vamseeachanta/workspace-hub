@@ -5,3 +5,4 @@ session_id: "session-wrk-1384"
 orchestrator_agent: claude
 route: B
 workstation: ace-linux-2
+set_active_wrk: true

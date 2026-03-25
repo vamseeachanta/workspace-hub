@@ -1,0 +1,19 @@
+# Stage 5 exit gate — user review of plan draft
+stage: 5
+wrk_id: WRK-1363
+reviewer: "vamsee"
+confirmed_at: "2026-03-25T16:30:00Z"
+reviewed_at: "2026-03-25T16:30:00Z"
+decision: approved
+scope_approved: true
+notes: "User approved plan draft. ACs, pseudocode, and test plan reviewed via GH issue summary."
+decision_log:
+  - section: "Acceptance Criteria (5 ACs)"
+    status: reviewed
+    notes: "Classification script, full coverage, index, cross-refs, 80% accuracy"
+  - section: "Pseudocode (5 steps)"
+    status: reviewed
+    notes: "Scan → pattern classify → LLM classify → aggregate → validate"
+  - section: "Test Plan (6 entries)"
+    status: reviewed
+    notes: "Unit, integration, schema validation, path check, manual sample"

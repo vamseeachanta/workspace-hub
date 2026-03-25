@@ -1,0 +1,27 @@
+stage: 5
+wrk_id: WRK-1363
+items:
+  - id: CL-05-1
+    text: "Every AC walked through with user"
+    completed: true
+    approved_by: vamsee
+    notes: "5 ACs reviewed in PLAN group summary posted to GH #1363"
+  - id: CL-05-2
+    text: "Every pseudocode block reviewed"
+    completed: true
+    approved_by: vamsee
+    notes: "5-step pseudocode reviewed via GH summary"
+  - id: CL-05-3
+    text: "Test plan reviewed"
+    completed: true
+    approved_by: vamsee
+    notes: "6 test entries reviewed via GH summary"
+  - id: CL-05-4
+    text: "All requested revisions applied"
+    completed: true
+    notes: "No revisions requested"
+  - id: CL-05-5
+    text: "Explicit user approval received (I approve stage 5)"
+    completed: true
+    approved_by: vamsee
+    notes: "User stated 'Approved stage five'"

@@ -5,7 +5,7 @@ repo: workspace-hub
 type: task
 complexity: B
 priority: medium
-status: pending
+status: working
 created: 2026-03-25
 exec_order: 3
 depends_on: [WRK-1358]
@@ -16,8 +16,13 @@ workstations: [ace-workstation]
 plan_workstations: [ace-workstation]
 execution_workstations: [ace-workstation]
 orchestrator: claude
+claim_routing_ref: .claude/work-queue/assets/workspace-hub-1357/claim-evidence.yaml
+stage_evidence_ref: .claude/work-queue/assets/workspace-hub-1357/evidence/stage-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+plan_reviewed: true
+plan_approved: true
+spec_ref: .claude/work-queue/assets/workspace-hub-1357/evidence/plan-final-review.yaml
 ---
-
 # WRK-1357: LLM-classify va-hdd-2 remaining content
 
 ## Description

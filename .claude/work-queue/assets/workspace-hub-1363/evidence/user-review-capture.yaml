@@ -1,0 +1,7 @@
+# Stage 1 exit gate — user approval of captured scope
+stage: 1
+wrk_id: "WRK-1363"
+reviewer: "vamsee"
+confirmed_at: "2026-03-25T16:00:00Z"
+scope_approved: true
+notes: "User approved stage 1 — scope as captured in pending file and GH issue"

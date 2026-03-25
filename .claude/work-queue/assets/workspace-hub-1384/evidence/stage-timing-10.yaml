@@ -2,3 +2,7 @@ stage: 10
 wrk_id: workspace-hub-1384
 human_gate: false
 started_at: "2026-03-25T04:37:50.383173+00:00"
+completed_at: "2026-03-25T12:16:45.156407+00:00"
+duration_s: 27534.8
+completed_at: "2026-03-25T12:17:14.348195+00:00"
+duration_s: 27564.0

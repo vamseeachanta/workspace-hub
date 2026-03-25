@@ -1,0 +1,27 @@
+stage: 4
+wrk_id: WRK-1363
+items:
+  - id: CL-04-1
+    text: "Scripts-over-LLM audit performed (25% recurrence check)"
+    completed: true
+    notes: "Filename pattern matching handles bulk classification; LLM reserved for ambiguous cases only. No existing scripts found for this task."
+  - id: CL-04-2
+    text: "EnterPlanMode entered for ideation (4a)"
+    completed: true
+    notes: "Plan drafted with pseudocode, ACs, test plan in specs/modules/wrk-1363-llm-domain-tag-riser-eng-job.md"
+  - id: CL-04-3
+    text: "ACs defined (specific, testable)"
+    completed: true
+    notes: "5 ACs: classification script exists, all files classified, index created, cross-references created, 80% accuracy on sample"
+  - id: CL-04-4
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    completed: true
+    notes: "5-step pseudocode: scan, classify (pattern + LLM), aggregate, cross-reference, validate"
+  - id: CL-04-5
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    completed: true
+    notes: "6 test entries: file type handling, pattern matching, LLM classifier, schema validation, path validation, accuracy sample"
+  - id: CL-04-6
+    text: "Plan spec written to specs/modules/"
+    completed: true
+    notes: "specs/modules/wrk-1363-llm-domain-tag-riser-eng-job.md"

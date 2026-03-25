@@ -1,7 +1,7 @@
 stage: 7
 decision: passed
 confirmed_by: user
-confirmed_at: "2026-03-24"
+confirmed_at: "2026-03-24T23:30:00Z"
 p1_findings: 0
 p2_findings: 0
 notes: "No P1/P2 findings from cross-review. User approved plan. Proceeding to execution."

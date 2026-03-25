@@ -1,0 +1,13 @@
+stage: 16
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-16-1
+    text: ">= 3 lessons learned identified"
+    completed: true
+    note: "3 lessons learned documented"
+  - id: CL-16-2
+    text: "New tools/patterns/constraints documented"
+    completed: true
+  - id: CL-16-3
+    text: "evidence/resource-intelligence-update.yaml written"
+    completed: true

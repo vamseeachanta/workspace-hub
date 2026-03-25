@@ -1,3 +1,7 @@
+confirmed_by: user
+confirmed_at: 2026-03-24T23:30:00Z
+decision: passed
+
 # WRK-1384: Review local-analysis folders for relocation to knowledge center
 
 ## Summary

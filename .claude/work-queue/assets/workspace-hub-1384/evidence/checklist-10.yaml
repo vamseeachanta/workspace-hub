@@ -11,4 +11,7 @@ items:
     notes: "Disk space verified: 2.7TB available on /mnt/ace/ (need ~290GB)"
   - id: CL-10-4
     completed: true
-    notes: "Relocation script executed - rsync copy in progress"
+    notes: "Relocation script executed - rsync copy complete"
+  - id: CL-10-5
+    completed: true
+    notes: "N/A - file relocation task, no code changes to commit"

@@ -27807,5 +27807,28 @@
     "execution_machine": "",
     "checkpoint_stage": "20",
     "session_pid": "1591188"
+  },
+  "workspace-hub-1384": {
+    "status": "done",
+    "machine": "ace-linux-1",
+    "last_updated": "2026-03-25T12:27:38.113221+00:00",
+    "updated_by": "close-item.sh",
+    "title": "Review local-analysis folders for relocation to knowledge center",
+    "priority": "medium",
+    "category": "",
+    "subcategory": "",
+    "created_at": "",
+    "blocked_by": "",
+    "github_issue_ref": "https://github.com/vamseeachanta/workspace-hub/issues/1384",
+    "type": "task",
+    "note": "",
+    "not_before": "",
+    "standing": "",
+    "cadence": "",
+    "computer": "",
+    "execution_workstations": "[ace-linux-2]",
+    "execution_machine": "",
+    "checkpoint_stage": "14",
+    "session_pid": "1506433"
   }
 }

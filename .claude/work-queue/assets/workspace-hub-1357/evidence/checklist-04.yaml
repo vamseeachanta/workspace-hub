@@ -1,0 +1,29 @@
+stage: 4
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-04-1
+    text: "Scripts-over-LLM audit performed (25% recurrence check)"
+    completed: true
+    evidence: >
+      Existing pipeline (phase-a-index.py, phase-c-classify.py) handles 100%
+      of the work. Only config.yaml edit + pipeline runs needed. No new scripts.
+  - id: CL-04-2
+    text: "EnterPlanMode entered for ideation (4a)"
+    completed: true
+    evidence: "EnterPlanMode used; plan written to specs/modules/eager-coalescing-harp.md"
+  - id: CL-04-3
+    text: "ACs defined (specific, testable)"
+    completed: true
+    evidence: "5 ACs in plan spec — config added, index populated, classified, report generated, engineering files flagged"
+  - id: CL-04-4
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    completed: true
+    evidence: "6-step pseudocode in plan spec"
+  - id: CL-04-5
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    completed: true
+    evidence: "5-entry test plan in plan spec"
+  - id: CL-04-6
+    text: "Plan spec written to specs/modules/"
+    completed: true
+    evidence: "specs/modules/eager-coalescing-harp.md"

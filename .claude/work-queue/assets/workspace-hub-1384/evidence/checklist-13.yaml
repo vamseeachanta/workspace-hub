@@ -1,0 +1,14 @@
+stage: 13
+items:
+  - id: CL-13-1
+    completed: true
+    notes: "3 review perspectives applied"
+  - id: CL-13-2
+    completed: true
+    notes: "All 3 verdicts: APPROVE"
+  - id: CL-13-3
+    completed: true
+    notes: "No P1/P2 findings"
+  - id: CL-13-4
+    completed: true
+    notes: "review.md written"

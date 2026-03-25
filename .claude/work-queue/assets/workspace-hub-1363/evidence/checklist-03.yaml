@@ -1,0 +1,14 @@
+stage: 3
+wrk_id: WRK-1363
+items:
+  - id: CL-03-1
+    text: "Route (A/B/C) determined and justified"
+    completed: true
+    notes: "Route B — medium complexity. Known domain structure, clear mapping targets, but 15k literature files require LLM batch processing pipeline. Not simple (A) due to volume; not complex (C) as no architectural decisions needed."
+  - id: CL-03-2
+    text: "Workstations and orchestrator assigned"
+    completed: true
+    notes: "ace-workstation (files on /mnt/ace), orchestrator: claude"
+  - id: CL-03-3
+    text: "WRK frontmatter updated with route/workstations/orchestrator"
+    completed: true

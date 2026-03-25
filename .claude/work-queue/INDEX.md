@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-25T05:14:02Z by generate-index.py -->
+<!-- Generated: 2026-03-25T12:27:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-25T05:14:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-25T12:27:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 

@@ -1,0 +1,11 @@
+stage: 12
+items:
+  - id: CL-12-1
+    completed: true
+    notes: "Dry run + post-copy verification passed"
+  - id: CL-12-2
+    completed: true
+    notes: "7 ACs mapped to PASS results"
+  - id: CL-12-3
+    completed: true
+    notes: "ac-test-matrix.md written with 7 PASS entries"

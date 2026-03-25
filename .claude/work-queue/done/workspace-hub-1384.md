@@ -6,15 +6,22 @@ type: task
 complexity: B
 route: B
 priority: medium
-status: working
+status: done
 created: 2026-03-24
 workstations: [ace-linux-2]
+plan_workstations: [ace-linux-2]
+execution_workstations: [ace-linux-2]
 orchestrator: claude
+plan_reviewed: true
+plan_approved: true
+spec_ref: specs/modules/wrk-1384-local-analysis-relocation.md
 github_issue: https://github.com/vamseeachanta/workspace-hub/issues/1384
-github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1384"
+github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1384
 claim_routing_ref: .claude/work-queue/assets/workspace-hub-1384/claim-evidence.yaml
 stage_evidence_ref: .claude/work-queue/assets/workspace-hub-1384/evidence/stage-evidence.yaml
 claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+percent_complete: 100
+completed_at: 2026-03-25T12:27:36Z
 ---
 # WRK-1384: Review local-analysis folders for relocation to knowledge center
 

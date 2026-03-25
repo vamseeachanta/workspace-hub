@@ -1,0 +1,9 @@
+stage: 14
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-14-1
+    text: "verify-gate-evidence.py exits 0"
+    completed: true
+  - id: CL-14-2
+    text: "evidence/gate-evidence-summary.yaml written"
+    completed: true

@@ -15,3 +15,5 @@ None at P1/P2 level.
 ## Verdict
 
 APPROVE — plan is sound, non-destructive, and well-organized.
+
+Note: codex review not available (single-provider execution). Claude served as all 3 reviewers.
