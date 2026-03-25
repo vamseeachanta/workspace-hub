@@ -1,0 +1,81 @@
+wrk_id: workspace-hub-1405
+completion_status: continue_to_planning
+skills:
+  core_used: [work-queue-workflow, workflow-gatepass, resource-intelligence, ecosystem-terminology]
+
+# Resource Intelligence Summary
+
+## Learning Infrastructure Components Found
+
+### 1. Nightly Pipeline (comprehensive-learning.sh)
+location: scripts/learning/comprehensive-learning.sh
+schedule: "0 2 * * *" (nightly at 02:00)
+phases: 10 (Insights, Drift, Reflect, Knowledge, Improve, Corrections, WRK Feedback, Candidates, Report Review, Coverage)
+status: partially_working
+issues:
+  - Python phases (1-QualitySignals, 3-MemoryStaleness, 5-9) consistently FAILED in recent reports
+  - Shell phases (1-Insights, 2-Reflect, 3-Knowledge, 4-Improve) work fine
+  - Last 5 reports (Mar 15-19) show same failure pattern
+  - No reports after Mar 19 — pipeline may have stopped running
+
+### 2. Session Analysis (session-analysis.sh)
+location: scripts/analysis/session-analysis.sh
+purpose: Process session signals (JSONL) into insights
+status: working
+data: 15 days of session signals (Mar 10-25), ~88 signals/day
+
+### 3. Python Analysis Pipeline
+location: scripts/analysis/comprehensive_learning_pipeline.py
+purpose: Quality signals, memory staleness, correction trends, candidates
+status: works_when_run_manually (tested phase 1 — produced real output)
+gap: nightly cron failures suggest environment issue (missing yaml dep or stale env)
+
+### 4. Skill Scores
+location: .claude/state/skill-scores.yaml
+status: stale (last updated: 2026-02-20)
+bootstrap: 208 sessions analyzed
+gap: Not updated in 33 days — no ongoing tracking
+
+### 5. Learned Patterns
+location: .claude/state/learned-patterns.json
+records: 505 lines
+quality: LOW — most entries have empty tool_patterns, error_patterns, and recommendations
+gap: Data captured but no actionable signal extracted
+
+### 6. Corrections
+location: .claude/state/corrections/
+count: 61 correction files
+status: accumulating but not systematically fed back into skills
+
+### 7. Candidates
+location: .claude/state/candidates/
+count: 5 candidate files
+status: minimal — pipeline should generate more from corrections
+
+### 8. Memory System
+location: ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/
+count: 24 memory files (11 feedback, 5 project, references, user)
+status: active — used in conversations
+gap: No automated staleness check running successfully
+
+### 9. Skill Eval
+location: .claude/skills/verify/skill-eval/
+purpose: Evaluate skill effectiveness
+status: exists but manual invocation only
+
+### 10. Model Configuration
+location: config/ai_agents/ai-tools-status.yaml
+models_available:
+  - Claude Code 2.1.83 (Claude Opus 4.6)
+  - Codex CLI 0.116.0
+  - Gemini CLI 0.33.1
+gap: No model-specific learning adaptations exist
+
+## Key Gaps Identified
+1. Python pipeline broken in nightly cron (7 of 10 phases failing)
+2. Skill scores stale (33 days old)
+3. Learned patterns file is low quality (empty entries)
+4. No feedback loop measurement (session N learnings → session N+1 improvement)
+5. No model-specific adaptations for different AI providers
+6. Corrections accumulate but aren't systematically converted to skill improvements
+7. No reports generated since Mar 19 (6 days ago)
