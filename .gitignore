@@ -1,27 +1,30 @@
 # Individual Git Repositories - Exclude all subdirectory repos
-aceengineer-admin/   # Personal
-aceengineer-website/ # Personal, Work
-achantas-data/ # Personal
-achantas-media/ # Personal
-acma-projects/ # Work
-ai-native-traditional-eng/ # Work
-assethold/ # Work
-assetutilities/ # Work
-client_projects/ # Work
-digitalmodel/ # Work
-doris/ # Work
-energy/ # Work
-frontierdeepwater/ # Work
-hobbies/ # Personal
-investments/ # Personal
-OGManufacturing/ # Work
-pyproject-starter/ # Work
-rock-oil-field/ # Work
-sabithaandkrishnaestates/ # Personal
-saipem/ # Work
-sd-work/ # Personal
-seanation/ # Work
-teamresumes/ # Work
+aceengineer-admin/
+aceengineer-strategy/
+aceengineer-website/
+achantas-data/
+achantas-media/
+acma-projects/
+ai-native-traditional-eng/
+assethold/
+assetutilities/
+CAD-DEVELOPMENTS/
+client_projects/
+digitalmodel/
+doris/
+energy/
+frontierdeepwater/
+hobbies/
+investments/
+OGManufacturing/
+pyproject-starter/
+rock-oil-field/
+sabithaandkrishnaestates/
+saipem/
+sd-work/
+seanation/
+simpledigitalmarketing/
+teamresumes/
 worldenergydata/
 
 # Build and dependency directories
@@ -380,7 +383,6 @@ coverage.xml
 # Claude Code project memory - ignore local settings and checkpoints
 .claude/settings.local.json
 .claude/checkpoints/
-simpledigitalmarketing/
 
 # Refactor Analysis Reports
 .refactor-reports/
