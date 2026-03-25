@@ -1,8 +1,0 @@
-stage: 1
-name: capture
-reviewer: user
-decision: approved
-scope_approved: true
-confirmed_at: "2026-03-25T00:00:00Z"
-timestamp: "2026-03-25T00:00:00Z"
-notes: "Captured via /work add"

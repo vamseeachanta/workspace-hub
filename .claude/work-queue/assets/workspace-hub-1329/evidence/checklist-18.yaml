@@ -1,8 +1,0 @@
-stage: 18
-items:
-  - id: CL-18-1
-    text: "Reclaim resources"
-    completed: true
-  - id: CL-18-2
-    text: "Write reclaim.yaml"
-    completed: true

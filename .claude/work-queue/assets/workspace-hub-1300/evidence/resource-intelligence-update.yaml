@@ -1,6 +1,0 @@
-wrk_id: WRK-1392
-update_type: none
-additions: []
-no_additions_rationale: "Feature used established patterns (CDN via jsdelivr, Python HTML templates, sag formula). No new external resources, tools, or knowledge discovered during execution."
-notes: "Original resource intelligence remains accurate. three.js CDN pattern now documented in frame_viewer_3d.py."
-updated_at: "2026-03-24T04:12:00Z"

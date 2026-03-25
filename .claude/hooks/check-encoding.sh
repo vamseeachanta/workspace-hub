@@ -24,7 +24,7 @@ collect_files() {
         # the last commit to avoid full-repo scan overhead (was 7s+ for full scan).
         # Exclude specs/repos/ — machine-generated engineering tool outputs.
         git diff --name-only -z HEAD~1..HEAD --diff-filter=ACM -- \
-            '.claude/work-queue' '.claude/skills' 'specs' 'config' \
+            '.claude/skills' 'specs' 'config' \
             2>/dev/null || true
     fi
 }

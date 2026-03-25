@@ -1,5 +1,0 @@
-stage: 14
-items:
-  - id: CL-14-1
-    completed: true
-    notes: "Gate evidence verified and fixed"

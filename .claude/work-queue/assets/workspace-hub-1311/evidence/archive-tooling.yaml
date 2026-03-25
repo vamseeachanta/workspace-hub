@@ -1,7 +1,0 @@
-wrk_id: WRK-5125
-
-merge_status: "n/a-direct-commit"
-sync_status: "n/a"
-github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1284"
-legal_scan_ref: ".claude/work-queue/assets/WRK-5125/legal-scan.md"
-archive_readiness: "pass"

@@ -1,6 +1,0 @@
-stage: claim
-wrk_id: WRK-690
-session_owner: codex
-best_fit_provider: codex
-quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
-claim_expires_at: "2026-03-04T20:00:00Z"

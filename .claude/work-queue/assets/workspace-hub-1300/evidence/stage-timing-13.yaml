@@ -1,6 +1,0 @@
-stage: 13
-wrk_id: WRK-1392
-human_gate: false
-started_at: "2026-03-24T07:48:19.809867+00:00"
-completed_at: "2026-03-24T07:48:21.326163+00:00"
-duration_s: 1.5

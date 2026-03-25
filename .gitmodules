@@ -58,10 +58,6 @@
 	path = investments
 	url = https://github.com/vamseeachanta/investments
 
-[submodule "pdf-large-reader"]
-	path = pdf-large-reader
-	url = https://github.com/vamseeachanta/pdf-large-reader.git
-
 [submodule "pyproject-starter"]
 	path = pyproject-starter
 	url = https://github.com/vamseeachanta/pyproject-starter.git

@@ -1,9 +1,0 @@
-# WRK-1404 Routing
-wrk_id: workspace-hub-1404
-route: B
-complexity: medium
-target_repo: workspace-hub
-delegation: none
-execution_mode: single-agent
-provider: claude
-notes: "Single-repo filesystem reorganization. No cross-repo coordination needed."

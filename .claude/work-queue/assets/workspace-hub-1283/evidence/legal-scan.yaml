@@ -1,4 +1,0 @@
-wrk_id: WRK-5124
-scan_result: clean
-notes: "No external code ported. Changes are internal error handling additions to existing scripts."
-scanned_at: 2026-03-23T00:00:00Z

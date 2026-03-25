@@ -1,6 +1,0 @@
-wrk_id: WRK-5139
-stage: 9
-route: B
-execution_mode: single-agent
-provider: claude
-workstation: dev-primary

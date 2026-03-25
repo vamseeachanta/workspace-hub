@@ -1,7 +1,0 @@
-# Stage 10 hooks — extracted from contract
-pre_enter_hooks:
-- script: scripts/work-queue/verify-log-presence.sh WRK-NNN
-  description: Verify routing.yaml exists before execution begins
-  gate: soft
-  timeout_s: 10
-pre_exit_hooks: []

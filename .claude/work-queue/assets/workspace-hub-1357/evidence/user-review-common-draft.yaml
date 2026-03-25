@@ -1,7 +1,0 @@
-stage: 5
-wrk_id: workspace-hub-1357
-approval_decision: approve_as_is
-review_cycle_id: "rc-1357-01"
-reviewer: vamsee
-confirmed_at: "2026-03-25T17:00:00Z"
-notes: "Route B — plan approved. No changes requested."

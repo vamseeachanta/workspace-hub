@@ -1,4 +1,0 @@
-wrk_id: WRK-1392
-future_items: []
-no_follow_ups_rationale: "Feature is self-contained — 3D viewer works standalone and is embedded in FEM calc report. No architectural changes, no new follow-up needed."
-notes: "Potential enhancements (animation, section property display) are cosmetic and not urgent. No WRK items created."

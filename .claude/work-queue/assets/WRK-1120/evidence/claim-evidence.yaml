@@ -1,8 +1,0 @@
-wrk_id: WRK-1120
-version: 1
-owner: claude
-session_id: wrk-1120-session-manual
-claimed_at: "2026-03-11T05:35:00Z"
-quota: available
-hostname: dev-primary
-route: A

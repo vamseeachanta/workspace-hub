@@ -5,7 +5,7 @@
 # Cron (dev-primary, as root):
 #   0 7 * * * /mnt/local-analysis/workspace-hub/scripts/readiness/check-network-mounts.sh
 #
-# Cron (dev-secondary, as root):
+# Cron (ace-linux-2, as root):
 #   0 7 * * * /mnt/local-analysis/workspace-hub/scripts/readiness/check-network-mounts.sh
 set -euo pipefail
 
@@ -21,10 +21,10 @@ mkdir -p "$LOG_DIR"
 # Format: "mount_point|remote_host|probe_subpath"
 declare -A HOST_MOUNTS
 HOST_MOUNTS["dev-primary"]="
-/mnt/remote/dev-secondary/local-analysis|dev-secondary|.
-/mnt/remote/dev-secondary/dde|dev-secondary|.
+/mnt/remote/ace-linux-2/local-analysis|ace-linux-2|.
+/mnt/remote/ace-linux-2/dde|ace-linux-2|.
 "
-HOST_MOUNTS["dev-secondary"]="
+HOST_MOUNTS["ace-linux-2"]="
 /mnt/workspace-hub|dev-primary|.git/HEAD
 /mnt/remote/dev-primary/local-analysis|dev-primary|.
 /mnt/remote/dev-primary/ace|dev-primary|.

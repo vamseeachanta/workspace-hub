@@ -1,7 +1,0 @@
-wrk_id: WRK-5139
-stage: 16
-updates:
-  - type: codebase
-    description: "submit-to-gemini.sh now has classify_stderr() and empty-output detection"
-  - type: knowledge
-    description: "Gemini CLI v0.32.1 intermittently returns exit 0 with empty stdout on capacity/auth issues"

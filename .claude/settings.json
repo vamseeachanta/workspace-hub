@@ -1,18 +1,11 @@
 {
   "env": {
-    "CLAUDE_FLOW_AUTO_COMMIT": "false",
-    "CLAUDE_FLOW_AUTO_PUSH": "false",
-    "CLAUDE_FLOW_HOOKS_ENABLED": "true",
-    "CLAUDE_FLOW_TELEMETRY_ENABLED": "false",
-    "CLAUDE_FLOW_REMOTE_EXECUTION": "false",
-    "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "MAX_TEAMMATES": "10"
   },
   "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [],
-    "defaultMode": "bypassPermissions",
+    "defaultMode": "auto",
     "deny": [
       "Bash(rm -rf /)",
       "Bash(curl:*)",
@@ -31,118 +24,36 @@
       "Bash(git -c core.hookspath:*)"
     ]
   },
-  "enabledMcpjsonServers": [],
   "hooks": {
     "PreToolUse": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-logger.sh\" pre"
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true",
-            "statusMessage": "Ecosystem link check"
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/readiness.sh\" 2>/dev/null || true",
-            "statusMessage": "Session readiness check"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-active-stage.sh\"",
-            "statusMessage": "WRK-1316: active stage enforcement"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '📝 Edit: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
-          }
-        ]
-      },
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | uv run --no-project python \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/work-queue/gate_check.py\"",
-            "statusMessage": "WRK stage gate check"
-          }
-        ]
-      },
       {
         "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-stage-machinery.sh\"",
-            "statusMessage": "WRK-1316: stage machinery enforcement"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-no-bash-evidence.sh\"",
-            "statusMessage": "WRK-1316: no Bash evidence writes"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-stage-commit.sh\"",
-            "statusMessage": "WRK-1316: stage timing required for commit"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-human-gate.sh\"",
-            "statusMessage": "WRK-1316: human gate approval required"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/openfoam-workflow-guard.sh\" 2>/dev/null || true",
-            "statusMessage": "OpenFOAM workflow guard"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-dispatch.sh\"",
-            "statusMessage": "WRK-1389: dispatch-run.sh required before group runners"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/enforce-github-issue-ref.sh\"",
-            "statusMessage": "WRK-5102: github_issue_ref required for working/done WRK files"
+            "command": "node .claude/hooks/gsd-prompt-guard.js",
+            "timeout": 5
           }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-logger.sh\" post"
-          }
-        ]
-      },
-      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "echo '✅ Saved: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
-          },
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
+        "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\""
+            "command": "node .claude/hooks/gsd-context-monitor.js",
+            "timeout": 10
           }
         ]
       }
@@ -153,29 +64,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-memory/pre-compact-save.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/context-budget-monitor.sh\" 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "manual",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash -c 'echo \"📋 Before compact: Review CLAUDE.md for delegation patterns and agent library\"; echo \"   Agents: .claude/agent-library/{core,devops,github,sparc}/\"; echo \"   Skills: skills/ (77 available)\"; echo \"   TDD mandatory, batch operations\"'"
-          }
-        ]
-      },
-      {
-        "matcher": "auto",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash -c 'echo \"🔄 Auto-compact: Preserve context of agent-library and skills\"; echo \"   Use Task tool for delegation (Explore, Plan, Bash, general-purpose)\"'"
           }
         ]
       }
@@ -193,16 +82,16 @@
             "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
             "statusMessage": "Emitting session quality signals"
-          },
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
           {
             "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/hooks/tidy-agent-teams.sh\" 2>/dev/null || true",
-            "statusMessage": "Tidying stale agent teams"
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/audit/log-action.sh\" session_end \"stop\" 2>/dev/null || true",
-            "statusMessage": "Audit: session_end"
+            "command": "node .claude/hooks/gsd-check-update.js"
           }
         ]
       }
@@ -210,8 +99,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/statusline-command.sh\"",
-    "padding": 0
+    "command": "node .claude/hooks/gsd-statusline.js"
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
@@ -220,7 +108,6 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
@@ -233,6 +120,6 @@
       }
     }
   },
-  "plansDirectory": "specs/modules",
+  "plansDirectory": ".planning",
   "autoMemoryDirectory": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
 }

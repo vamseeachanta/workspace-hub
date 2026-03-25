@@ -1,6 +1,0 @@
-stage: 9
-wrk_id: WRK-1057
-route: A
-execution_machine: dev-primary
-assigned_at: 2026-03-09T00:00:00Z
-routing_notes: "Route A simple — single script + section integration on dev-primary"

@@ -1,6 +1,0 @@
-wrk_id: WRK-1101
-scanned_at: "2026-03-12T20:30:00Z"
-tool: scripts/legal/legal-sanity-scan.sh
-result: PASS
-violations: 0
-notes: "No legal violations found in workspace-hub scan"

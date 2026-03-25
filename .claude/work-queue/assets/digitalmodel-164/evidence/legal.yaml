@@ -1,3 +1,0 @@
-wrk_id: WRK-1304
-scan_result: pass
-notes: "No external code ported. AGPL license for pymupdf4llm acknowledged in skill documentation. No client identifiers."

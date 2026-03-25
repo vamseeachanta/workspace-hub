@@ -1,6 +1,0 @@
-wrk_id: WRK-1094
-routed_at: "2026-03-10T10:50:00Z"
-route: A
-assigned_workstation: dev-primary
-provider: claude
-routing_rationale: "Route A — simple, single script, hub harness checks; dev-primary is canonical"

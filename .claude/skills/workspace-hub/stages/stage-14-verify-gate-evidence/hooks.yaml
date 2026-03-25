@@ -1,7 +1,0 @@
-# Stage 14 hooks — extracted from contract
-pre_enter_hooks: []
-pre_exit_hooks:
-- script: scripts/work-queue/verify-gate-evidence.py WRK-NNN --phase claim
-  description: All claim-phase gates must PASS before proceeding
-  gate: hard
-  timeout_s: 60

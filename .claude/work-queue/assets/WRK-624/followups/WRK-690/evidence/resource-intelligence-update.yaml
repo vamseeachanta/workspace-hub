@@ -1,3 +1,0 @@
-additions:
-  - Added stage-evidence backfill for all WRK files and mandatory stage ledger enforcement.
-  - Added activation gate evidence and gate summary artifact generation.

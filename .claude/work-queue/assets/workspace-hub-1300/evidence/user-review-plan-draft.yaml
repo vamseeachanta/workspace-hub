@@ -1,8 +1,0 @@
-stage: 5
-title: "User Review — Plan Draft"
-wrk_id: WRK-1392
-timestamp: "2026-03-23T22:02:00Z"
-decision: approved
-reviewer: vamsee
-method: "In-session plan mode approval (ExitPlanMode)"
-notes: "User resolved CDN question: jsdelivr CDN (matching existing calc reports). Also requested embedding viewer in FEM calc report."

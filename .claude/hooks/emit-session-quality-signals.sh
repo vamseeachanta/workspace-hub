@@ -34,14 +34,8 @@ if [[ ! -f "$TODAY_SESSION" ]]; then
     exit 0
 fi
 
-# Detect active WRK: scan work-queue/working/ (items explicitly in-flight)
+# Active work context (GSD workflow or none)
 ACTIVE_WRK="none"
-if [[ -d "${WS}/.claude/work-queue/working" ]]; then
-    ACTIVE_WRK=$(find "${WS}/.claude/work-queue/working" -maxdepth 1 \
-        -name "WRK-*.md" | head -1 \
-        | xargs -I{} basename {} .md 2>/dev/null) || ACTIVE_WRK="none"
-fi
-[[ -z "$ACTIVE_WRK" ]] && ACTIVE_WRK="none"
 
 # Count tool calls in today's session JSONL by type
 # session-logger.sh writes: {"ts":...,"hook":"pre"/"post","tool":"<name>",...}

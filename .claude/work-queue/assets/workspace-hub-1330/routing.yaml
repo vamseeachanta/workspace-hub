@@ -1,9 +1,0 @@
-stage: 9
-wrk_id: WRK-5140
-skills_loaded:
-  - work-queue
-  - work-queue-workflow
-route: B
-stage_sequence: [10, 11, 12, 13, 14, 17]
-work_queue_skill: loaded
-work_wrapper_complete: true

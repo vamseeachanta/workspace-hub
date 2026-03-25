@@ -1,7 +1,0 @@
-wrk_id: workspace-hub-1384
-phase: close
-verified_at: "2026-03-25T01:10:00Z"
-pass_count: 10
-fail_count: 0
-warn_count: 3
-summary: "All critical gates pass. Warnings are for optional multi-agent features not applicable to this single-provider task."

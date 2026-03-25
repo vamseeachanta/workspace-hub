@@ -23,11 +23,11 @@ mkdir -p "$WORKSPACE_HUB/.claude/state/learning-reports" 2>/dev/null
 git pull --no-rebase origin main
 
 # Step 2: rsync raw sessions from contributor machines — each independently best-effort
-# dev-secondary: sessions at /mnt/workspace-hub/.claude/state/sessions/ (not ~/.claude/state/)
+# ace-linux-2: sessions at /mnt/workspace-hub/.claude/state/sessions/ (not ~/.claude/state/)
 rsync -az --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-  dev-secondary:/mnt/workspace-hub/.claude/state/sessions/ \
-  "$WORKSPACE_HUB/.claude/state/sessions-archive/dev-secondary/" 2>/dev/null || true
+  ace-linux-2:/mnt/workspace-hub/.claude/state/sessions/ \
+  "$WORKSPACE_HUB/.claude/state/sessions-archive/ace-linux-2/" 2>/dev/null || true
 
 rsync -az --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \

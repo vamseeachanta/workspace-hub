@@ -1,6 +1,0 @@
-wrk_id: WRK-1155
-stage: 5
-decision: approved
-reviewer: vamsee
-reviewed_at: 2026-03-13T04:45:00Z
-notes: "Plan approved — 5-phase TDD: models, BESS controller, island detector, EMS, package wiring"

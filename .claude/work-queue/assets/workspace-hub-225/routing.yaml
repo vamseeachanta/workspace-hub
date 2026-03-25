@@ -1,7 +1,0 @@
-stage: 9
-wrk_id: workspace-hub-225
-route: A
-orchestrator: claude
-target_repos:
-  - workspace-hub
-routed_at: "2026-03-14T06:00:00Z"

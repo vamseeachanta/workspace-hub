@@ -1,6 +1,0 @@
-wrk_id: WRK-1100
-route: A
-workstation: dev-primary
-provider: claude
-routing_decision: Route A — simple fix, single file, dev-primary
-routed_at: 2026-03-10T14:10:00Z

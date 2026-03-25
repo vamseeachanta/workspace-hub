@@ -1,8 +1,0 @@
-{
-  "tool_name": "Edit",
-  "tool_input": {
-    "file_path": "/mnt/github/workspace-hub/src/config.py",
-    "old_string": "API_KEY = \"hardcoded_key_123\"",
-    "new_string": "API_KEY = os.environ.get(\"API_KEY\", \"\")"
-  }
-}

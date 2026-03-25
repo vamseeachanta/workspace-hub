@@ -1,8 +1,0 @@
-wrk_id: workspace-hub-1384
-route: B
-delivery_order:
-  - stage: 10  # Work Execution - generate rsync relocation script
-  - stage: 11  # Artifact Generation - produce relocation report
-  - stage: 14  # Verify Gate Evidence
-skills:
-  - workspace-hub/work-queue-orchestrator

@@ -1,6 +1,0 @@
-stage: 12
-wrk_id: WRK-5139
-human_gate: false
-started_at: "2026-03-24T09:15:01.714038+00:00"
-completed_at: "2026-03-24T09:15:38.703068+00:00"
-duration_s: 37.0

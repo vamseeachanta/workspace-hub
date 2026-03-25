@@ -1,7 +1,0 @@
-wrk_id: workspace-hub-1384
-updated_at: "2026-03-25T01:08:00Z"
-additions:
-  - "Knowledge center /mnt/ace/ now contains engineering project archives from local-analysis"
-  - "Conference papers consolidated under docs/conferences/"
-  - "GDrive and www archives added to aceengineer-admin/"
-  - "OSI datasets added to data/"

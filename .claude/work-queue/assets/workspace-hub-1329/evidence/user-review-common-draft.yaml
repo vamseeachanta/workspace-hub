@@ -1,7 +1,0 @@
-wrk_id: WRK-5139
-stage: 5
-approval_decision: approve_as_is
-review_cycle_id: WRK-5139-plan-v1
-confirmed_by: vamsee
-reviewed_at: "2026-03-24T08:42:00Z"
-notes: "Plan approved: fix empty-output detection in submit-to-gemini.sh, add STDERR inspection"

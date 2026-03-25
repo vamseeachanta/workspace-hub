@@ -1,6 +1,0 @@
-stage: 1
-wrk_id: "workspace-hub-1345"
-reviewer: "vamsee"
-confirmed_at: "2026-03-24T12:00:00Z"
-scope_approved: true
-notes: "Epic with 5 child phases (A-E). Scope confirmed: bug fixes, machine UX, GH architecture, migration, validation."

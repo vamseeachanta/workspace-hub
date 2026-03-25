@@ -1,7 +1,0 @@
-# Stage 05 hooks — extracted from contract
-pre_enter_hooks: []
-pre_exit_hooks:
-- script: bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 5
-  description: Poll GitHub issue for approval comment
-  gate: hard
-  timeout_s: 1860

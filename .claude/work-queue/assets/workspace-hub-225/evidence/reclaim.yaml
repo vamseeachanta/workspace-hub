@@ -1,6 +1,0 @@
-stage: 18
-wrk_id: workspace-hub-225
-status: n/a
-reason: "Item completing normally — no reclaim needed"
-checkpoint_found: true
-reclaimed_at: "2026-03-24T22:50:00Z"

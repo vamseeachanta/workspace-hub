@@ -1,8 +1,0 @@
-stage: 5
-wrk_id: WRK-5140
-verdict: approved
-reviewer: user
-feedback:
-  - "Requested deterministic collision avoidance instead of warning-only"
-  - "Requested thorough scan of 5000+ series"
-  - "Result: static blocklist + live scan + auto-burn approach"

@@ -1,6 +1,0 @@
-wrk_id: WRK-1295
-stage: 1
-scope_approved: true
-reviewer: vamsee
-confirmed_at: 2026-03-23T12:00:00Z
-notes: "Route B medium — batch LLM summaries on 4,685 ace_standards + workspace_spec docs, Phase 1 of WRK-1245"

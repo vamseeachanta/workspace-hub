@@ -1,8 +1,0 @@
-wrk_id: WRK-1381
-stage: 1
-scope_approved: true
-reviewer: vamseeachanta
-confirmed_at: "2026-03-22T04:35:28Z"
-reviewed_at: "2026-03-22T04:35:28Z"
-notes: "Scope approved via GitHub issue #458 while establishing WRK-to-issue linkage and execution path."
-

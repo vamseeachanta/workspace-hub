@@ -1,8 +1,0 @@
-wrk_id: workspace-hub-1362
-route: A
-delivery_order:
-  - stage: 10  # Work Execution
-  - stage: 11  # Artifact Generation
-  - stage: 12  # TDD / Eval
-skills_loaded:
-  - workspace-hub/work-queue-orchestrator

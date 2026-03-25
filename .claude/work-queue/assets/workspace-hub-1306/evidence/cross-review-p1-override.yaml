@@ -1,8 +1,0 @@
-wrk_id: WRK-5112
-stage: 6
-reviewer: vamsee
-override_reason: >
-  All 3 cross-review files contain "## P1 Findings (blocking): None" headers.
-  The P1 section heading triggers the regex check but there are zero actual P1 findings.
-  All verdicts are APPROVE with 0 P1 issues.
-overridden_at: 2026-03-23T18:20:00Z

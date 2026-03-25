@@ -1,9 +1,0 @@
-# Gate Evidence Summary
-wrk_id: workspace-hub-1404
-stage: 14
-gate_passed: true
-verified_at: "2026-03-25T19:10:00-05:00"
-p1_findings: 0
-all_tests_pass: true
-checklists_complete: 13
-evidence_files_present: 9

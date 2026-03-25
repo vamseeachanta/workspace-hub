@@ -1,8 +1,0 @@
-wrk_id: WRK-1369
-merge_status: "n/a-direct-commit"
-sync_status: "in-sync"
-github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1293"
-legal_scan_ref: ".claude/work-queue/assets/WRK-1369/legal-scan.md"
-archive_readiness: "pass"
-document_index_exemption: "hub-only item — extraction on existing manifests"
-spin_off_wrks: ["WRK-1323"]

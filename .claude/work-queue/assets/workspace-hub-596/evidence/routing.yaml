@@ -1,8 +1,0 @@
-wrk_id: WRK-5041
-stage: 9
-gate: work-queue-routing
-completed_at: "2026-03-13"
-route: B
-routed_to: claude
-execution_machine: dev-primary
-method: retroactive

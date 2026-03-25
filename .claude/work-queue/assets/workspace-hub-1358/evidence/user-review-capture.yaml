@@ -1,7 +1,0 @@
-# Stage 1 exit gate — user approval of captured scope
-stage: 1
-wrk_id: "workspace-hub-1358"
-reviewer: "vamsee"
-confirmed_at: "2026-03-25T04:45:00Z"
-scope_approved: true
-notes: "Dedup scan across digitalmodel and O&G-Standards — scope confirmed by user"

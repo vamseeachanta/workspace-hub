@@ -1,8 +1,0 @@
-stage: 14
-items:
-  - id: CL-14-1
-    text: "Verify all gate evidence present"
-    completed: true
-  - id: CL-14-2
-    text: "Write gate-evidence-summary"
-    completed: true

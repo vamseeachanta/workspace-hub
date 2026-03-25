@@ -6,7 +6,7 @@
 # Coloured PS1 prompt with hostname included
 
 MACHINE_1="dev-primary"
-MACHINE_2="dev-secondary"
+MACHINE_2="ace-linux-2"
 MACHINE_1_USER="${ACE_SSH_USER:-vamsee}"
 
 alias ace1="ssh ${MACHINE_1_USER}@${MACHINE_1}"
