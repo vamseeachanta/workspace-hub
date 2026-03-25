@@ -1,0 +1,30 @@
+phase: pre_exit
+stage: 17
+wrk_id: workspace-hub-1357
+executed_at: '2026-03-25T13:24:21.791211+00:00'
+hooks:
+- script: bash scripts/work-queue/wait-for-approval.sh workspace-hub-1357 17
+  description: Poll GitHub issue for approval comment
+  gate: hard
+  returncode: 0
+  duration_s: 1.556
+  passed: true
+  stdout: "\u23F3 Waiting for approval on GitHub issue #1357 (stage 17)...\n   Post\
+    \ a comment containing 'approved' on the issue to proceed.\n   Polling every 60s\
+    \ (timeout: 30min)\n\u2714 Approval received on GitHub issue #1357. Proceeding."
+  stderr: ''
+- script: scripts/work-queue/check-acs-pass.sh workspace-hub-1357
+  description: Verify all acceptance criteria are marked [x] before user review
+  gate: hard
+  returncode: 0
+  duration_s: 0.015
+  passed: true
+  stdout: ''
+  stderr: 'WARNING: No acceptance criteria found in workspace-hub-1357 (warning: no
+    AC section)'
+summary:
+  total: 2
+  passed: 2
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

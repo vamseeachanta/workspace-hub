@@ -1,0 +1,15 @@
+stage: 9
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-09-1
+    text: "routing.yaml written with route assignment"
+    completed: true
+    evidence: "Route B, provider=claude, workstation=dev-primary"
+  - id: CL-09-2
+    text: "Work item routed to correct provider"
+    completed: true
+    evidence: "claude — 4-phase learning infra plan execution"
+  - id: CL-09-3
+    text: "routing.yaml written"
+    completed: true
+    evidence: "assets/workspace-hub-1405/routing.yaml exists"

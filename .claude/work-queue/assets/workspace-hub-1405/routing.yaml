@@ -1,0 +1,6 @@
+wrk_id: workspace-hub-1405
+routed_at: "2026-03-25T17:40:00Z"
+route: B
+workstation: dev-primary
+provider: claude
+skill_entry: work-queue-workflow/SKILL.md

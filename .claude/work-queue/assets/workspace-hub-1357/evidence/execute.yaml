@@ -1,6 +1,6 @@
 wrk_id: workspace-hub-1357
 stage: 10
-executed_at: "2026-03-25T17:45:00Z"
+executed_at: "2026-03-25T13:24:00Z"
 outcome: completed_early
 reason: >
   va-hdd-2 content was already indexed (31,066 files) and classified under
@@ -11,22 +11,28 @@ artifacts_produced:
   - data/document-index/summaries/va-hdd-2-classification-report.yaml
 
 integrated_repo_tests:
-  - test: "verify va-hdd-2 entries exist in index"
+  - name: "verify-va-hdd-2-entries-exist"
+    scope: repo
     command: "grep -c 'va-hdd-2' data/document-index/index.jsonl"
-    result: "31066 entries found"
-    status: pass
-  - test: "verify all entries have domain classification"
+    result: pass
+    artifact_ref: "data/document-index/index.jsonl"
+  - name: "verify-all-entries-have-domain"
+    scope: repo
     command: "grep 'va-hdd-2' index.jsonl | grep -c '\"domain\": null'"
-    result: "0 entries with null domain"
-    status: pass
-  - test: "verify config.yaml not modified (reverted)"
+    result: pass
+    artifact_ref: "data/document-index/index.jsonl"
+  - name: "verify-config-not-modified"
+    scope: integrated
     command: "git diff scripts/data/document-index/config.yaml"
-    result: "no diff — config reverted to original state"
-    status: pass
-  - test: "verify classification report generated"
+    result: pass
+    artifact_ref: "scripts/data/document-index/config.yaml"
+  - name: "verify-classification-report-generated"
+    scope: repo
     command: "test -f data/document-index/summaries/va-hdd-2-classification-report.yaml"
-    result: "file exists"
-    status: pass
+    result: pass
+    artifact_ref: "data/document-index/summaries/va-hdd-2-classification-report.yaml"
+
+test_count: 4
 
 code_changes:
   - file: data/document-index/summaries/va-hdd-2-classification-report.yaml

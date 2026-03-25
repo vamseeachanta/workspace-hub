@@ -1,0 +1,20 @@
+stage: 7
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-07-1
+    text: "User reviewed cross-review findings"
+    completed: true
+    approved_by: vamsee
+  - id: CL-07-2
+    text: "P1 findings resolved (if any)"
+    completed: true
+    evidence: "0 P1 findings — nothing to resolve"
+  - id: CL-07-3
+    text: "plan-final-review.yaml written with decision=passed"
+    completed: true
+    approved_by: vamsee
+  - id: CL-07-4
+    text: "Explicit user approval received (I approve stage 7)"
+    completed: true
+    approved_by: vamsee
+    evidence: "User said 'yes. approved. proceed' in conversation"

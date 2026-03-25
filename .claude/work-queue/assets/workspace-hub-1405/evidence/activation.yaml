@@ -1,0 +1,6 @@
+wrk_id: workspace-hub-1405
+set_active_wrk: true
+active_wrk_ref: ".claude/state/active-wrk"
+session_id: "session-20260325-173000"
+orchestrator_agent: claude
+activated_at: "2026-03-25T17:40:00Z"

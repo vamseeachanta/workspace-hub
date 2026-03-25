@@ -5,7 +5,7 @@ repo: workspace-hub
 type: task
 complexity: B
 priority: medium
-status: working
+status: archived
 created: 2026-03-25
 exec_order: 3
 depends_on: [WRK-1358]
@@ -22,6 +22,8 @@ claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
 plan_reviewed: true
 plan_approved: true
 spec_ref: .claude/work-queue/assets/workspace-hub-1357/evidence/plan-final-review.yaml
+percent_complete: 100
+completed_at: 2026-03-25T13:31:18Z
 ---
 # WRK-1357: LLM-classify va-hdd-2 remaining content
 

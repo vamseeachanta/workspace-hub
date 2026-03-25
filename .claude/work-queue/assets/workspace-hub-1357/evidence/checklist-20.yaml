@@ -1,0 +1,19 @@
+stage: 20
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-20-1
+    text: "archive-item.sh executed"
+    completed: true
+  - id: CL-20-2
+    text: "archive/WRK-NNN.md exists"
+    completed: true
+  - id: CL-20-3
+    text: "INDEX.md regenerated"
+    completed: true
+  - id: CL-20-4
+    text: "active-wrk cleared"
+    completed: true
+  - id: CL-20-5
+    text: "Git committed and pushed"
+    completed: true
+    note: "Changes staged for commit"

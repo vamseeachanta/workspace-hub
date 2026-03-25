@@ -1,0 +1,10 @@
+stage: 18
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-18-1
+    text: "Checkpoint presence checked"
+    completed: true
+    note: "No checkpoint recovery needed"
+  - id: CL-18-2
+    text: "evidence/reclaim.yaml written (n/a or reclaimed)"
+    completed: true

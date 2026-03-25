@@ -61,7 +61,7 @@
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
 - `.gitignore` blanket rules (e.g., `lib/`, `memory/`) override earlier whitelists — add negation AFTER the blanket rule
-- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-03-11*
+- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-03-25*
 - Always verify new `lib/` directories: `git check-ignore <path>`
 
 ## Shell Script Portability
@@ -82,7 +82,7 @@
 
 - **Entry point**: `scripts/coordination/routing/route.sh` *verified: 2026-03-15*
 - **Model registry**: `config/agents/model-registry.yaml` (5 models across 3 providers)
-- **EWMA engine**: `scripts/coordination/routing/lib/model_registry.sh`
+- **EWMA engine**: `scripts/coordination/routing/lib/model_registry.sh` *verified: 2026-03-25*
 - **Config**: `config/agents/routing-config.yaml` *verified: 2026-03-15*
 - Adaptive routing: EWMA alpha=0.3, seed=3.0, min_ratings=3, poor_threshold=2.5
 - Rate with model: `route.sh --rate 4 claude/sonnet-4-5` *stale: 2026-03-15*

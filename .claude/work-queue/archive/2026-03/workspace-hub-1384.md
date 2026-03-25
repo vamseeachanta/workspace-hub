@@ -6,7 +6,7 @@ type: task
 complexity: B
 route: B
 priority: medium
-status: done
+status: archived
 created: 2026-03-24
 workstations: [ace-linux-2]
 plan_workstations: [ace-linux-2]
@@ -21,7 +21,7 @@ claim_routing_ref: .claude/work-queue/assets/workspace-hub-1384/claim-evidence.y
 stage_evidence_ref: .claude/work-queue/assets/workspace-hub-1384/evidence/stage-evidence.yaml
 claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
 percent_complete: 100
-completed_at: 2026-03-25T12:27:36Z
+completed_at: 2026-03-25T14:00:09Z
 ---
 # WRK-1384: Review local-analysis folders for relocation to knowledge center
 

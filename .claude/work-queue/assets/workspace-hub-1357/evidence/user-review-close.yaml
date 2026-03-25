@@ -1,0 +1,9 @@
+# Stage 17 exit gate — user review close
+stage: 17
+wrk_id: workspace-hub-1357
+reviewer: vamsee
+confirmed_at: 2026-03-25T18:00:00Z
+reviewed_at: 2026-03-25T18:00:00Z
+decision: approved
+scope_approved: true
+notes: "User approved Stage 17 in CLI. va-hdd-2 classification confirmed complete."

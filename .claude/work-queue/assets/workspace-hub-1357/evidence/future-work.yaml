@@ -1,29 +1,45 @@
 wrk_id: workspace-hub-1357
 stage: 15
-generated_at: "2026-03-25T18:10:00Z"
+generated_at: "2026-03-25T13:24:00Z"
+updated_at: "2026-03-25T18:30:00Z"
 
 recommendations:
   - description: "Spot-check classification accuracy on a sample of va-hdd-2 files"
-    rationale: "The existing classification was inherited from ace_project source. A random sample check would validate domain assignment quality."
-    priority: low
-    captured: true
-    action: "Deferred — can be a follow-up WRK if accuracy concerns arise"
-  - description: "Batch-summarize engineering files in va-hdd-2 for quick retrieval"
-    rationale: "31,066 files are indexed but lack per-file summaries. LLM summarization would improve search and retrieval."
+    rationale: "51.5% engineering rate is anomalously high for personal HDD. Keyword routing may over-classify."
     priority: medium
+    disposition: spun-off
+    status: captured
     captured: true
-    action: "Deferred — separate WRK recommended when batch summarization pipeline is ready"
+    wrk_ref: WRK-1400
+    action: "Captured as WRK-1400 (Route A, medium priority)"
+  - description: "Batch-summarize 15,990 engineering files in va-hdd-2"
+    rationale: "Engineering-domain files have domain classification but no Phase B summaries (status: gap)."
+    priority: high
+    disposition: spun-off
+    status: captured
+    captured: true
+    wrk_ref: WRK-1399
+    action: "Captured as WRK-1399 (Route B, high priority, ~$32 cost)"
+  - description: "Phase B batch summaries for full ace_project gap pool (394K docs)"
+    rationale: "Pipeline is 62% summarized. Remaining 394K docs need Phase B to complete coverage."
+    priority: medium
+    disposition: spun-off
+    status: captured
+    captured: true
+    wrk_ref: WRK-1401
+    action: "Captured as WRK-1401 (Route C, medium priority, ~$789 cost, multi-week)"
 
 no_follow_ups_rationale: ""
 
-spun_off_new: []
+spun_off_new:
+  - wrk_id: WRK-1399
+    title: "Phase B batch summaries for va-hdd-2 engineering files (15,990 gap docs)"
+    github_issue: https://github.com/vamseeachanta/workspace-hub/issues/1399
+  - wrk_id: WRK-1400
+    title: "Spot-check va-hdd-2 classification accuracy for engineering domains"
+    github_issue: https://github.com/vamseeachanta/workspace-hub/issues/1400
+  - wrk_id: WRK-1401
+    title: "Phase B batch summaries for ace_project gap pool (394K unsummarized docs)"
+    github_issue: https://github.com/vamseeachanta/workspace-hub/issues/1401
 
-deferred:
-  - description: "Spot-check classification accuracy on va-hdd-2 sample"
-    reason: "Low priority — no accuracy concerns reported yet"
-    captured: true
-    action: "Deferred — capture as WRK if issues surface"
-  - description: "Batch-summarize engineering files for quick retrieval"
-    reason: "Requires batch summarization pipeline — separate scope"
-    captured: true
-    action: "Deferred — separate WRK when pipeline is ready"
+deferred: []

@@ -4,6 +4,9 @@
 # set -euo pipefail ensures git pull failure aborts before the pipeline runs.
 set -euo pipefail
 
+# Ensure uv and other user-installed tools are on PATH (cron has minimal PATH)
+export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
+
 WORKSPACE_HUB="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$WORKSPACE_HUB"
 
