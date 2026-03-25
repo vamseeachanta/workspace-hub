@@ -1,0 +1,16 @@
+wrk_id: workspace-hub-1404
+stage: 15
+items:
+  - id: CL-15-1
+    text: "Future work items identified"
+    completed: true
+    completed_at: 2026-03-25T19:15:00Z
+  - id: CL-15-2
+    text: "future-work.yaml written"
+    completed: true
+    completed_at: 2026-03-25T19:15:00Z
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true
+    completed_at: 2026-03-25T19:15:00Z
+    notes: "3 future items captured, none spun off as new WRKs (all low priority)"

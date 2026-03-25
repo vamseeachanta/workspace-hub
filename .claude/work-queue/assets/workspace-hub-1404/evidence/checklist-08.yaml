@@ -1,0 +1,19 @@
+wrk_id: workspace-hub-1404
+stage: 8
+items:
+  - id: CL-08-1
+    text: "WRK moved from pending to working"
+    completed: true
+    completed_at: 2026-03-25T18:45:00Z
+  - id: CL-08-2
+    text: "activation.yaml written"
+    completed: true
+    completed_at: 2026-03-25T18:45:00Z
+  - id: CL-08-3
+    text: "Status updated in frontmatter"
+    completed: true
+    completed_at: 2026-03-25T18:45:00Z
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    completed: true
+    completed_at: 2026-03-25T18:45:00Z

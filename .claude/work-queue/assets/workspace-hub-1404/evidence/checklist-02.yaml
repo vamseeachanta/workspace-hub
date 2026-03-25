@@ -1,0 +1,29 @@
+wrk_id: workspace-hub-1404
+stage: 2
+items:
+  - id: CL-02-1
+    text: "Resources surveyed and catalogued"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z
+  - id: CL-02-2
+    text: "Duplicates identified"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z
+  - id: CL-02-3
+    text: "resource-intelligence.yaml written"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z
+  - id: CL-02-4
+    text: "Discovered documents saved to docu-intel + index updated"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z
+    notes: "Resource intelligence captured in evidence/resource-intelligence.yaml with full folder survey"
+  - id: CL-02-5
+    text: "Complexity assessed (simple/medium/complex)"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z
+    notes: "Confirmed complexity B (medium) — filesystem reorganization with duplicate check"
+  - id: CL-02-6
+    text: "evidence/resource-intelligence.yaml written"
+    completed: true
+    completed_at: 2026-03-25T18:10:00Z

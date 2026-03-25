@@ -1,0 +1,14 @@
+# Stage 1: User Review — Capture
+wrk_id: workspace-hub-1404
+stage: 1
+gate: HARD
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-25T18:00:00-05:00"
+confirmed_at: "2026-03-25T18:00:00-05:00"
+notes: >
+  User initiated /work run for WRK-1404. Scope: organize /mnt/ace/docs/
+  subfolders added during local-analysis relocation (WRK-1384/1396),
+  deduplicate engineering references, consolidate overlapping categories,
+  standardize folder names, check if docker-examples/ and sd-python-docs/
+  belong under docs/ or respective repos. Complexity B. Approved via /work run.

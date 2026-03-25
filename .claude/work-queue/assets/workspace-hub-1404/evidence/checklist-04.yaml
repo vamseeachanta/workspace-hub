@@ -1,0 +1,32 @@
+wrk_id: workspace-hub-1404
+stage: 4
+items:
+  - id: CL-04-1
+    text: "Plan drafted with concrete steps"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+  - id: CL-04-2
+    text: "User reviewed and approved plan"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+    approved_by: vamsee
+  - id: CL-04-3
+    text: "Plan file written to specs/"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+    notes: "specs/modules/jiggly-honking-hedgehog.md"
+  - id: CL-04-4
+    text: "Pseudocode written (>= 3 steps or N/A+reason)"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+    notes: "8-step plan with concrete file moves — filesystem ops, no code"
+  - id: CL-04-5
+    text: "Test plan written (>= 3 entries or N/A+reason)"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+    notes: "N/A — filesystem reorganization verified by ls and empty-dir checks (Step 8)"
+  - id: CL-04-6
+    text: "Plan spec written to specs/modules/"
+    completed: true
+    completed_at: 2026-03-25T18:25:00Z
+    notes: "specs/modules/jiggly-honking-hedgehog.md + specs/wrk/workspace-hub-1404/plan.md"

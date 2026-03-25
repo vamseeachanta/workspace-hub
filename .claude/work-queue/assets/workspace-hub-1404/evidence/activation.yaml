@@ -1,0 +1,14 @@
+# Stage 8: Claim / Activation
+wrk_id: workspace-hub-1404
+stage: 8
+activated_at: "2026-03-25T18:45:00-05:00"
+claimed_by: claude
+session_id: "session-2026-03-25-1404"
+orchestrator_agent: claude
+status: working
+set_active_wrk: true
+plan_workstations:
+  - ace-linux-1
+execution_workstations:
+  - ace-linux-1
+notes: "Moved from pending to working. Ready for execution."

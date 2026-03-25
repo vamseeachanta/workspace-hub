@@ -1,0 +1,17 @@
+wrk_id: workspace-hub-1404
+stage: 3
+items:
+  - id: CL-03-1
+    text: "Complexity route confirmed"
+    completed: true
+    completed_at: 2026-03-25T18:15:00Z
+    notes: "Route B confirmed — filesystem reorg, no code changes"
+  - id: CL-03-2
+    text: "Scope boundaries defined"
+    completed: true
+    completed_at: 2026-03-25T18:15:00Z
+    notes: "IN: 9 target subfolders, dedup, rename. OUT: numbered project folders, cross-machine moves"
+  - id: CL-03-3
+    text: "Routing decision recorded"
+    completed: true
+    completed_at: 2026-03-25T18:15:00Z
