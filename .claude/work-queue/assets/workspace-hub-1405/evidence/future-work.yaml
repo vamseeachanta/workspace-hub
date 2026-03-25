@@ -1,0 +1,19 @@
+wrk_id: workspace-hub-1405
+stage: 14
+recommendations:
+  - "Promote top 5 correction themes to actual skill/rule changes"
+  - "Refine one-shot rate metric by linking corrections to specific sessions"
+  - "Automate correction→candidate pipeline when pattern count > 3"
+items:
+  - title: "Promote correction themes to actual skill changes"
+    priority: medium
+    related_phase: 3
+    notes: "correction-promotions.yaml has 5 themes identified but not yet applied"
+  - title: "Refine one-shot rate metric"
+    priority: low
+    related_phase: 2
+    notes: "Current calculation is an approximation — corrections not linked to specific sessions"
+  - title: "Automate correction→candidate when pattern count > 3"
+    priority: medium
+    related_phase: 3
+    notes: "Phase 7 candidates pipeline could auto-generate from correction-promotions.yaml"

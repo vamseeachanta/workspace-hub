@@ -209,4 +209,20 @@ run_py_phase "7" "Candidates"
 run_py_phase "8" "Report Review"
 run_py_phase "9" "Coverage Audit"
 
+# --- Phase 9b: Weekly Trends (feedback loop metrics) ---
+echo "--- Phase 9b: Weekly Trends ---"
+TRENDS_PY="${WS_HUB}/scripts/analysis/weekly-trends.py"
+if [[ -f "$TRENDS_PY" ]]; then
+    trends_out=$(uv run --no-project python "$TRENDS_PY" 2>&1)
+    trends_result=$(echo "$trends_out" | grep "^PHASE_RESULT|" | tail -1)
+    if [[ -n "$trends_result" ]]; then
+        IFS='|' read -r _p _n status notes <<< "$trends_result"
+        log_phase "9b Weekly Trends" "$status" "$notes"
+    else
+        log_phase "9b Weekly Trends" "FAILED" "weekly-trends.py produced no result"
+    fi
+else
+    log_phase "9b Weekly Trends" "SKIPPED" "weekly-trends.py not found"
+fi
+
 exit 0

@@ -1,0 +1,21 @@
+stage: 17
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-17-1
+    text: "User reviewed implementation"
+    completed: true
+    approved_by: vamsee
+  - id: CL-17-2
+    text: "Implementation summary posted to GitHub"
+    completed: true
+    approved_by: vamsee
+    evidence: "Comment posted to issue #1405"
+  - id: CL-17-3
+    text: "user-review-close.yaml written with decision=approved"
+    completed: true
+    approved_by: vamsee
+  - id: CL-17-4
+    text: "Explicit user approval received (I approve stage 17)"
+    completed: true
+    approved_by: vamsee
+    evidence: "User said 'i approve stage 17' in conversation"

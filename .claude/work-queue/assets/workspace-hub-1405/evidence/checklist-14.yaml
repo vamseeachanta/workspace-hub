@@ -1,0 +1,19 @@
+stage: 14
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-14-1
+    text: "Gate evidence verification run"
+    completed: true
+    evidence: "verify-gate-evidence.py run — 13 PASS, 3 WARN, remaining are expected for assessment WRKs"
+  - id: CL-14-2
+    text: "Future work documented"
+    completed: true
+    evidence: "future-work.yaml with 3 items"
+  - id: CL-14-3
+    text: "Legal scan completed"
+    completed: true
+    evidence: "legal-scan.md — no external code introduced"
+  - id: CL-14-4
+    text: "Resource intelligence YAML fixed"
+    completed: true
+    evidence: "Fixed invalid YAML in schedule/phases fields"

@@ -5,10 +5,16 @@ repo: workspace-hub
 type: task
 complexity: B
 priority: medium
-status: pending
+status: working
 created: 2026-03-25
 github_issue: https://github.com/vamseeachanta/workspace-hub/issues/1405
 github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1405
+plan_reviewed: true
+plan_approved: true
+spec_ref: specs/modules/workspace-hub-1405-learning-infra-assessment.md
+plan_workstations: [dev-primary]
+execution_workstations: [dev-primary]
+stage_evidence_ref: .claude/work-queue/assets/workspace-hub-1405/evidence/stage-evidence.yaml
 ---
 
 # WRK-1405: Learning infrastructure assessment for latest AI models

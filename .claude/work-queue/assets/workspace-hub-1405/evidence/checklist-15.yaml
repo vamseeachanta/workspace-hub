@@ -1,0 +1,15 @@
+stage: 15
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-15-1
+    text: "Future work synthesized"
+    completed: true
+    evidence: "future-work.yaml with 3 recommendations and follow-up items"
+  - id: CL-15-2
+    text: "Each item captured as new WRK or deferred with reason"
+    completed: true
+    evidence: "Items deferred — will be addressed as part of correction-promotions.yaml promotion cycle"
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true
+    evidence: "future-work.yaml written with recommendations"

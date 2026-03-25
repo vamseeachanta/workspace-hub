@@ -251,9 +251,27 @@ def phase_5_correction_trend_analysis():
     MIN_CORRECTION_GAP_S = 60
     MIN_CHAIN_POSITION_THRESHOLD = 2
 
+    # WRK evidence files generate high-volume noise — filter them out
+    WRK_EVIDENCE_NOISE = {
+        'stage-evidence.yaml', 'execute.yaml', 'activation.yaml', 'claim-evidence.yaml',
+        'routing.yaml', 'checkpoint.yaml', 'session-lock.yaml', 'run-log.jsonl',
+        'gate-evidence-summary.json', 'gate-evidence-summary.md', 'resource-intelligence.yaml',
+        'user-review-publish.yaml', 'user-review-browser-open.yaml', 'user-review-capture.yaml',
+        'user-review-plan-draft.yaml', 'plan-final-review.yaml', 'future-work.yaml',
+        'cross-review.yaml',
+    }
+
     stats = {} # (type, tool) -> {this_week: N, last_week: N, last_4_weeks: N}
 
     for c in all_corrections:
+        # Filter out WRK evidence file edits (pipeline workflow, not mistakes)
+        basename = c.get('basename', '')
+        filepath = c.get('file', '')
+        if basename in WRK_EVIDENCE_NOISE or '/evidence/' in filepath:
+            continue
+        if basename.startswith(('checklist-', 'stage-timing-', 'cross-review-', 'hooks-pre_exit')):
+            continue
+
         # Filter out sequential-chain noise: fast edits deep in a chain are not
         # genuine corrections (e.g., CSV row-by-row edits, SKILL.md incremental
         # updates).  Require either a meaningful pause OR early chain position.

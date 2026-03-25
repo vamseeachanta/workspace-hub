@@ -172,3 +172,8 @@ Deep research across 4 parallel agents covering Claude Code workflows, AI agent 
 - [Zep](https://www.getzep.com/) — temporal knowledge graph (~85% LoCoMo)
 - [Letta/MemGPT](https://www.letta.com/) — LLM-managed memory tiers
 - [LangMem SDK](https://blog.langchain.com/langmem-sdk-launch/) — LangGraph memory integration
+
+---
+confirmed_by: vamsee
+confirmed_at: 2026-03-25T17:30:00Z
+decision: passed

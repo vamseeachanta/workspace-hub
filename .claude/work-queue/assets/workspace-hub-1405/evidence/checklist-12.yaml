@@ -1,0 +1,15 @@
+stage: 12
+wrk_id: workspace-hub-1405
+items:
+  - id: CL-12-1
+    text: "weekly-trends.py runs and produces valid JSONL output"
+    completed: true
+    evidence: "PHASE_RESULT|trends|DONE and JSONL validation passed"
+  - id: CL-12-2
+    text: "comprehensive_learning_pipeline.py phase 5 passes with WRK noise filter"
+    completed: true
+    evidence: "PHASE_RESULT|5|DONE|Analyzed 2 types, escalated 0"
+  - id: CL-12-3
+    text: "Full pipeline runs all phases DONE"
+    completed: true
+    evidence: "Learning report 2026-03-25-1155.md confirms all phases DONE"
