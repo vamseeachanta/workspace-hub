@@ -19,6 +19,19 @@ tasks:
     is_claude_task: false
     description: Nightly benchmark run; exits 1 on >20% regression vs committed baseline.
 
+  - id: gsd-researcher
+    label: Nightly GSD domain researcher
+    schedule: "35 1 * * *"
+    machines: [dev-primary, ace-linux-1]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/gsd-researcher-nightly.sh
+      >> $WORKSPACE_HUB/logs/research/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/research/*.log
+    is_claude_task: true
+    description: Nightly domain research rotating standards/python-ecosystem/ai-tooling; Sunday synthesis.
+
   - id: dep-health
     label: Dependency health check
     schedule: "0 1 * * *"
