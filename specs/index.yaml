@@ -1,13 +1,13 @@
-generated: '2026-03-24'
-total_specs: 1915
+generated: '2026-03-25'
+total_specs: 1926
 by_category:
   archive: 13
   data-sources: 13
-  modules: 362
+  modules: 369
   other: 61
   repos: 1344
   templates: 20
-  wrk: 102
+  wrk: 106
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 399
+  workspace-hub: 410
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -364,26 +364,33 @@ by_wrk:
   WRK-1252: 1
   WRK-1261: 2
   WRK-1263: 2
-  WRK-1269: 1
+  WRK-1269: 3
   WRK-1272: 1
   WRK-1273: 1
   WRK-1279: 1
+  WRK-1288: 1
   WRK-1295: 2
   WRK-1301: 1
   WRK-1316: 1
   WRK-1321: 6
   WRK-1323: 1
   WRK-1330: 1
-  WRK-1339: 3
-  WRK-1341: 1
+  WRK-1339: 5
+  WRK-1341: 4
+  WRK-1355: 1
+  WRK-1357: 1
+  WRK-1358: 1
   WRK-1360: 1
-  WRK-1362: 2
+  WRK-1362: 4
   WRK-1363: 1
   WRK-1364: 1
   WRK-1366: 1
   WRK-1369: 2
-  WRK-1371: 1
+  WRK-1370: 2
+  WRK-1371: 3
+  WRK-1372: 2
   WRK-1380: 2
+  WRK-1384: 1
   WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
@@ -423,6 +430,13 @@ by_wrk:
   WRK-5112: 2
   WRK-5113: 1
   WRK-5124: 2
+  WRK-5140: 1
+  WRK-6670: 2
+  WRK-6671: 2
+  WRK-6672: 2
+  WRK-6673: 2
+  WRK-6674: 2
+  WRK-6675: 2
   WRK-9998: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -1495,6 +1509,16 @@ specs:
   - WRK-379
   - WRK-1200
   mtime: '2026-03-14'
+- path: specs/modules/dedup-scan-digitalmodel-og-standards.md
+  title: 'WRK-1358: Dedup Scan — digitalmodel & O&G-Standards'
+  description: '**No file-level duplicates found.** The two stores serve different purposes:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - dedup-scan-digitalmodel-og-standards
+  wrk_refs:
+  - WRK-1358
+  mtime: '2026-03-25'
 - path: specs/modules/deep-snacking-comet.md
   title: 'WRK-1244: Evaluate Canonical Skill Ecosystem Quality'
   description: After WRK-639 cleaned out 124 diverged/incoming skills and WRK-1053 scripted the audit loops, we have 403 canonical
@@ -1623,6 +1647,18 @@ specs:
   - dynacard-svg-diagnostic-charts
   wrk_refs: []
   mtime: '2026-02-09'
+- path: specs/modules/eager-coalescing-harp.md
+  title: 'WRK-1357: LLM-classify va-hdd-2 remaining content into digitalmodel domains'
+  description: va-hdd-2 (`/mnt/ace/data/va-hdd-2`) is a 727 GB legacy HDD dump containing mostly personal/educational literature
+    (GRE, MBA, Finance, Photography, etc.) with minimal engineering content. WRK-1288 c...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - eager-coalescing-harp
+  wrk_refs:
+  - WRK-1288
+  - WRK-1357
+  mtime: '2026-03-25'
 - path: specs/modules/engineering-unit-tracking-system-spec-to-code-lifecycle.md
   title: Engineering Unit Tracking System — Spec to Code Lifecycle
   description: Unified unit tracking across engineering repos using pint, with provenance tracing from input config through
@@ -1684,6 +1720,17 @@ specs:
   wrk_refs:
   - WRK-5105
   mtime: '2026-03-21'
+- path: specs/modules/fix-readme-migrated-pointers.md
+  title: Fix broken README_MIGRATED.md pointers in /mnt/ace/docs/
+  description: 99 README_MIGRATED.md files under `/mnt/ace/docs/` point to non-existent `/mnt/ace/docs/clients/unknown/projects/<slug>`
+    paths. The actual project directories live under `/mnt/ace/docs/disciplines/...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - fix-readme-migrated-pointers
+  wrk_refs:
+  - WRK-1362
+  mtime: '2026-03-25'
 - path: specs/modules/foamy-conjuring-hollerith.md
   title: 'Plan: WRK-1143 — Centralized WRK Status Index'
   description: 'WRK-1143 targets a single source of truth (`wrk-status-index.json`) for WRK status across parallel sessions.
@@ -1706,6 +1753,24 @@ specs:
   wrk_refs:
   - WRK-1113
   mtime: '2026-03-12'
+- path: specs/modules/foamy-sniffing-castle.md
+  title: 'WRK-6670: GH-First Work Queue — Single Source of Truth Migration'
+  description: 'The work queue''s local-markdown-as-source-of-truth has accumulated bugs: `rebuild-wrk-index.sh` skips `done/`,
+    `whats-next.sh` doesn''t filter `closed` status, and there''s no machine filtering. This...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - foamy-sniffing-castle
+  wrk_refs:
+  - WRK-1269
+  - WRK-1341
+  - WRK-6670
+  - WRK-6671
+  - WRK-6672
+  - WRK-6673
+  - WRK-6674
+  - WRK-6675
+  mtime: '2026-03-24'
 - path: specs/modules/fuzzy-scribbling-fog.md
   title: 'WRK-1188: Phase B Extraction on og_standards — Implementation Plan'
   description: 27,980 og_standards documents have zero LLM summaries or discipline classifications. This blocks semantic search,
@@ -1985,6 +2050,20 @@ specs:
   wrk_refs:
   - WRK-5110
   mtime: '2026-03-22'
+- path: specs/modules/luminous-leaping-crescent.md
+  title: WRK-1339 Plan — Deepen Naval Architecture Knowledge Extraction
+  description: 'Current extraction: 107 worked examples, 815 equations from ~30 naval architecture textbooks. Target: 300+
+    worked examples with clean given/find/answer separation, <5% OCR artifacts. Root cause of ...'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - luminous-leaping-crescent
+  wrk_refs:
+  - WRK-1339
+  - WRK-1370
+  - WRK-1371
+  - WRK-1372
+  mtime: '2026-03-25'
 - path: specs/modules/md-to-pdf-skill-via-chrome-headless.md
   title: md-to-pdf skill — Markdown to styled PDF via Chrome headless
   description: Build a reusable md-to-pdf skill with HTML template, print CSS components, and Chrome headless PDF generation
@@ -1994,6 +2073,18 @@ specs:
   - md-to-pdf-skill-via-chrome-headless
   wrk_refs: []
   mtime: '2026-02-16'
+- path: specs/modules/melodic-bouncing-rabbit.md
+  title: 'WRK-1355: Consolidate /mnt/ace — Single Source of Truth'
+  description: WRK-1341 relocated ~46 GB from 10 git repos to `/mnt/ace/<repo>/`, but the drive already had disorganized legacy
+    content (HDD dumps, duplicate-looking dirs, root clutter). This plan creates a singl...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - melodic-bouncing-rabbit
+  wrk_refs:
+  - WRK-1341
+  - WRK-1355
+  mtime: '2026-03-25'
 - path: specs/modules/metocean-study.md
   title: metocean study
   description: Wave statistics, EVA, joint probability, wind/current per API RP 2MET, ISO 19901-1.
@@ -3172,6 +3263,17 @@ specs:
   - WRK-1339
   - WRK-1380
   mtime: '2026-03-23'
+- path: specs/modules/wrk-1384-local-analysis-relocation.md
+  title: 'WRK-1384: Review local-analysis folders for relocation to knowledge center'
+  description: Inventory all folders/files in `/mnt/remote/ace-linux-2/local-analysis` (excluding workspace-hub), classify
+    by type, and produce a relocation plan mapping items to `/mnt/ace/` knowledge center.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1384-local-analysis-relocation
+  wrk_refs:
+  - WRK-1384
+  mtime: '2026-03-25'
 - path: specs/modules/wrk-139-develop-gmsh-skill-and-documentation.md
   title: 'WRK-139: Develop gmsh Skill and Documentation'
   description: Create a dedicated gmsh meshing skill with comprehensive documentation gathered from online sources, local
@@ -21658,6 +21760,33 @@ specs:
   wrk_refs:
   - WRK-205
   mtime: '2026-02-19'
+- path: specs/wrk/workspace-hub-1291/plan.md
+  title: WRK-1339 Plan — Deepen Naval Architecture Knowledge Extraction
+  description: 'Current extraction: 107 worked examples, 815 equations from ~30 naval architecture textbooks. Target: 300+
+    worked examples with clean given/find/answer separation, <5% OCR artifacts. Root cause of ...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - workspace-hub-1291
+  wrk_refs:
+  - WRK-1339
+  - WRK-1370
+  - WRK-1371
+  - WRK-1372
+  mtime: '2026-03-25'
+- path: specs/wrk/workspace-hub-1362/plan.md
+  title: Fix broken README_MIGRATED.md pointers in /mnt/ace/docs/
+  description: 99 README_MIGRATED.md files under `/mnt/ace/docs/` point to non-existent `/mnt/ace/docs/clients/unknown/projects/<slug>`
+    paths. The actual project directories live under `/mnt/ace/docs/disciplines/...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - workspace-hub-1362
+  wrk_refs:
+  - WRK-1362
+  mtime: '2026-03-25'
 - path: specs/wrk/WRK-1003/plan.md
   title: WRK-1003 Execution Plan
   description: ''
@@ -22629,6 +22758,18 @@ specs:
   wrk_refs:
   - WRK-5124
   mtime: '2026-03-23'
+- path: specs/wrk/WRK-5140/plan.md
+  title: 'WRK-5140: Remove deprecated next-id.sh, enforce gh-next-id.sh'
+  description: '**Goal:** Eliminate the deprecated `next-id.sh` local counter and migrate all callers to `gh-next-id.sh`,
+    which allocates WRK IDs from GitHub issue numbers.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-5140
+  wrk_refs:
+  - WRK-5140
+  mtime: '2026-03-24'
 - path: specs/wrk/WRK-577/plan.md
   title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
   description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
@@ -22789,6 +22930,25 @@ specs:
   - WRK-655
   - WRK-664
   mtime: '2026-03-20'
+- path: specs/wrk/WRK-6670/plan.md
+  title: 'WRK-6670: GH-First Work Queue — Single Source of Truth Migration'
+  description: 'The work queue''s local-markdown-as-source-of-truth has accumulated bugs: `rebuild-wrk-index.sh` skips `done/`,
+    `whats-next.sh` doesn''t filter `closed` status, and there''s no machine filtering. This...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-6670
+  wrk_refs:
+  - WRK-1269
+  - WRK-1341
+  - WRK-6670
+  - WRK-6671
+  - WRK-6672
+  - WRK-6673
+  - WRK-6674
+  - WRK-6675
+  mtime: '2026-03-24'
 - path: specs/wrk/WRK-668/plan.md
   title: 'WRK-668 Plan: Archive Tooling Contract and Auto Spin-off Workflow'
   description: '**Route**: B | **Complexity**: medium | **Priority**: high **Approved**: pending Stage 5 user review'
