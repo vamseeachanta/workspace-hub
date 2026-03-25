@@ -93,7 +93,7 @@ def main() -> int:
     if yaml is None:
         raise RuntimeError("PyYAML is required. Run with uv environment.")
 
-    # Repo-prefixed IDs (e.g. workspace-hub-1349) pass through; bare numbers get WRK- prefix
+    # Accept both WRK-NNN and repo-name-NNN formats as-is
     wrk_id = args.wrk_id if (args.wrk_id.startswith("WRK-") or "-" in args.wrk_id) else f"WRK-{args.wrk_id}"
     status = args.status.strip().lower()
     if status not in ALLOWED_STATUS:

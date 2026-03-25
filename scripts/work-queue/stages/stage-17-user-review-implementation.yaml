@@ -1,0 +1,45 @@
+order: 17
+name: User Review - Implementation
+weight: heavy
+invocation: human_interactive
+human_gate: true
+parallelism: single-thread
+gate_file: evidence/user-review-close.yaml
+gate_field: decision
+gate_value: approved
+skills_required:
+  - workspace-hub/work-queue-orchestrator
+entry_reads:
+  - assets/WRK-NNN/evidence/execute.yaml
+  - assets/WRK-NNN/ac-test-matrix.md
+  - assets/WRK-NNN/review.md
+pre_checks:
+  - script: scripts/work-queue/check-acs-pass.sh WRK-NNN
+    description: "Verify all acceptance criteria are marked [x] before user review"
+    gate: hard
+exit_artifacts:
+  - assets/WRK-NNN/evidence/user-review-close.yaml
+blocking_condition: "user-review-close.yaml missing or decision != approved"
+log_action: implementation_reviewed
+context_budget_kb: 16
+checklist:
+  - id: CL-17-1
+    text: "Stages 10-16 evidence walked through with user"
+    requires_human: true
+  - id: CL-17-2
+    text: "All user questions answered"
+    requires_human: true
+  - id: CL-17-3
+    text: "All ACs confirmed passing"
+    requires_human: false
+  - id: CL-17-4
+    text: "Explicit user approval received (I approve stage 17)"
+    requires_human: true
+pre_exit_hooks:
+  - script: "bash scripts/work-queue/wait-for-approval.sh ${WRK_ID} 17"
+    description: "Poll GitHub issue for approval comment"
+    gate: hard
+    timeout_s: 1860
+tools_activated:
+  - type: skill
+    ref: superpowers/verification-before-completion

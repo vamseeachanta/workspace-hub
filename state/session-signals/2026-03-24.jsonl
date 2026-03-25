@@ -44,3 +44,7 @@
 {"event": "stage_exit", "wrk": "WRK-1369", "stage": 16, "date": "2026-03-24", "timestamp": "2026-03-24T03:21:16.842231Z"}
 {"event": "stage_exit", "wrk": "WRK-1369", "stage": 17, "date": "2026-03-24", "timestamp": "2026-03-24T03:22:04.999869Z"}
 {"event": "stage_exit", "wrk": "WRK-1369", "stage": 18, "date": "2026-03-24", "timestamp": "2026-03-24T03:22:27.038582Z"}
+{"event": "stage_exit", "wrk": "workspace-hub-225", "stage": 17, "date": "2026-03-24", "timestamp": "2026-03-24T23:15:12.495051Z"}
+{"event": "stage_exit", "wrk": "workspace-hub-225", "stage": 18, "date": "2026-03-24", "timestamp": "2026-03-24T23:15:45.016741Z"}
+{"event": "stage_exit", "wrk": "workspace-hub-225", "stage": 19, "date": "2026-03-24", "timestamp": "2026-03-24T23:21:33.228527Z"}
+{"event": "stage_exit", "wrk": "workspace-hub-1291", "stage": 4, "date": "2026-03-24", "timestamp": "2026-03-24T23:49:06.731881Z"}

@@ -16,8 +16,10 @@ category: document-intelligence
 subcategory: knowledge-extraction
 children: [WRK-1369, WRK-1370, WRK-1371, WRK-1372, WRK-1373, WRK-1374, WRK-1375, WRK-1376, WRK-1377, WRK-1378, WRK-1379, WRK-1380, WRK-1381, WRK-1382]
 github_issue_ref: https://github.com/vamseeachanta/workspace-hub/issues/1291
+claim_routing_ref: .claude/work-queue/assets/workspace-hub-1291/claim-evidence.yaml
+stage_evidence_ref: .claude/work-queue/assets/workspace-hub-1291/evidence/stage-evidence.yaml
+claim_quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
 ---
-
 ## Mission
 
 Systematically extract all worked examples, equations, tables, and numerical test data from the full SNAME naval architecture collection (~30 textbooks/references, 146 manifests). Produce clean input/output pairs suitable for TDD in digitalmodel.

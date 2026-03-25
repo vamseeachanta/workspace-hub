@@ -1,0 +1,24 @@
+generated_at: '2026-03-24T18:42:26'
+label: batch
+total: 2099
+discipline_distribution:
+  workspace-spec: 555
+  marine: 834
+  pipeline: 19
+  structural: 152
+  regulatory: 28
+  energy-economics: 233
+  other: 237
+  installation: 11
+  materials: 5
+  cathodic-protection: 1
+  drilling: 24
+other_rate_pct: 11.3
+method_breakdown:
+  unknown: 1448
+  direct: 636
+  no_text: 15
+org_breakdown:
+  unknown: 1463
+  ? ''
+  : 636

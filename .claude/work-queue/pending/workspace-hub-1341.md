@@ -29,6 +29,7 @@ plan_reviewed: false
 plan_approved: false
 percent_complete: 0
 computer: ace-linux-2
+execution_machine: ace-linux-1
 execution_workstations: [ace-linux-1]
 plan_workstations: [dev-primary]
 provider: claude
@@ -114,11 +115,36 @@ Too many document/data locations exist across the ecosystem. Before relocating, 
 - WRK-1341 AC #2 covers git-filter-repo / BFG for history rewriting
 - worldenergydata WRK-196 flagged large legacy files in `common/legacy/`
 
-### Strategy Sequence
-1. **Audit first** — `git rev-list --objects --all | git cat-file --batch-check` per repo to identify large objects
-2. **Relocate PDFs/binaries** to `/mnt/ace-data/<repo>/`, update any code paths that reference them
-3. **Rewrite history** with git-filter-repo (preferred over BFG — actively maintained)
-4. **Orphan branch** — push current history to `archive/pre-slim` branch before force-pushing cleaned main
-5. **Shallow clone config** — set `clone.defaultRemoteTimeout` and recommend `--depth 1` for CI/daily use
-6. **Guard rails** — .gitattributes LFS rules + pre-commit hook rejecting files >5 MB
-7. **Backup** — full backup of `/mnt/ace-data/` after consolidation + slimmed repos pushed to GitHub
+### Strategy Sequence (Revised 2026-03-24)
+1. **Archive branch** — push `archive/pre-slim` branch preserving full history before changes
+2. **Relocate heavy files** to `/mnt/ace/<repo>/` mirroring repo paths — no deletions, curate later
+3. **Fresh .git reinit** — simpler than git-filter-repo; history on archive branch
+4. **Guard rails** — .gitattributes + pre-commit hook rejecting files >5 MB
+5. **Repeat per repo** — public repos first (digitalmodel, worldenergydata), then private
+
+### Decisions Made (2026-03-24)
+- **Q1 — Target structure:** `/mnt/ace/<repo>/docs/<domain>/literature/` for PDFs
+- **Q2 — Organization:** Domain-organized (not repo-mirrored)
+- **Q3 — Local drive consolidation:** Deferred to follow-up WRK
+- **Q4 — Symlinks:** Only aceengineer-admin → `/mnt/ace/.ace-knowledge`
+- **Q5 — document-intelligence index:** Deferred — slim repos first, manifest later
+- **Q6 — Sequence:** Slim repos first, sort local drives later
+- **Keep .dat files** in repo for now
+- **htmlcov/** deleted (regenerable), not relocated
+- **No LLM classification** needed for digitalmodel — folder names = domains
+
+### Execution Log
+
+#### digitalmodel (2026-03-24) — IN PROGRESS
+- Pre-slim: 17 GB total (.git 8 GB + working tree 8.4 GB)
+- `archive/pre-slim` branch pushed to GitHub
+- Relocated to `/mnt/ace/digitalmodel/`:
+  - PDFs: 880 files, 2.3 GB → `docs/<domain>/literature/`
+  - Excel: 117 files, 57 MB → `docs/<domain>/data/`
+  - .sim: 77 files, 864 MB → mirrored repo paths
+  - Heavy binaries (.dxf, .wbpz, .3dm, etc.) → `docs/<domain>/data/`
+  - baseline_results + optimized_results → `tests/`
+- Deleted: htmlcov/ (146 MB, regenerable)
+- Post-slim working tree: 4.7 GB (from 8.4 GB)
+- Pending: fresh .git reinit to reclaim 8 GB
+- Full log: `/mnt/ace/digitalmodel/RELOCATION-LOG.md`

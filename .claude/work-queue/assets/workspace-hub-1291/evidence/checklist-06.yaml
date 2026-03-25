@@ -1,0 +1,19 @@
+stage: 6
+wrk_id: WRK-1339
+items:
+  - id: CL-06-1
+    text: "Cross-review package sent to all 3 providers"
+    completed: true
+    note: "Claude, Codex-slot (Opus fallback), Gemini-slot (Opus fallback) — all 3 received plan + WRK spec + resource-intelligence"
+  - id: CL-06-2
+    text: "All 3 verdicts collected (APPROVE/REVISE)"
+    completed: true
+    note: "Claude: APPROVE, Codex-slot: APPROVE, Gemini-slot: REVISE"
+  - id: CL-06-3
+    text: "P1 and P2 findings documented"
+    completed: true
+    note: "4 P1 findings, 4 P2 findings documented in cross-review.yaml; all resolved in plan update"
+  - id: CL-06-4
+    text: "evidence/cross-review.yaml written with all 3 reviewers"
+    completed: true
+    note: "Written with verdict APPROVE, all 3 reviewers listed, all P1s resolved"

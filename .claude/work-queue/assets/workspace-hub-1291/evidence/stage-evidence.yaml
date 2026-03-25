@@ -1,5 +1,5 @@
-wrk_id: WRK-1339
-generated_at: '2026-03-20T04:05:08Z'
+wrk_id: workspace-hub-1291
+generated_at: '2026-03-25T00:27:25Z'
 reviewed_by: agent
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -30,7 +30,7 @@ stages:
   evidence: .claude/work-queue/working/WRK-1339.md
 - order: 4
   stage: Plan Draft
-  status: in_progress
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
@@ -38,7 +38,7 @@ stages:
   evidence: specs/wrk/WRK-1339/plan.md
 - order: 5
   stage: User Review - Plan (Draft)
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
@@ -46,7 +46,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1339/plan-html-review-draft.md
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
@@ -54,7 +54,7 @@ stages:
   evidence: scripts/review/results/wrk-000-review.md
 - order: 7
   stage: User Review - Plan (Final)
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
@@ -62,7 +62,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1339/plan-html-review-final.md
 - order: 8
   stage: Claim / Activation
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
@@ -70,7 +70,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1339/evidence/claim.yaml
 - order: 9
   stage: Work-Queue Routing Skill
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
@@ -78,7 +78,7 @@ stages:
   evidence: /work
 - order: 10
   stage: Work Execution
-  status: pending
+  status: in_progress
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'

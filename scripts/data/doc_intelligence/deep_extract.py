@@ -53,17 +53,52 @@ def deep_extract_manifest(
     table_result = export_tables_from_manifest(manifest_dict, tables_dir)
 
     # 2. Worked example parsing — try multi-format first, fall back to legacy
+    #    Uses sliding window to catch examples that span page boundaries.
+    sections = manifest_dict.get("sections", [])
     examples = []
-    for section in manifest_dict.get("sections", []):
+    seen_keys: set[tuple] = set()  # (source_book, number, page) for dedup
+
+    def _add_example(ex: dict) -> None:
+        """Add example if not already seen (deduplication by key)."""
+        key = (
+            ex.get("source_book", ""),
+            ex.get("number", ""),
+            ex.get("page", 0),
+        )
+        if key not in seen_keys:
+            seen_keys.add(key)
+            examples.append(ex)
+
+    # Pass 1: individual sections (original behavior)
+    for section in sections:
         text = section.get("text", "")
         source = section.get("source", {})
         multi = parse_examples_multi_format(text, source, domain)
         if multi:
-            examples.extend(multi)
+            for ex in multi:
+                _add_example(ex)
         else:
             parsed = parse_enhanced_example(text, domain=domain, source=source)
             if parsed:
-                examples.append(parsed)
+                _add_example(parsed)
+
+    # Pass 2: sliding window (concatenate adjacent sections to catch
+    # examples where "Example N.N" is on one page and "Solution" on the next)
+    window_size = 3
+    for i in range(len(sections) - 1):
+        window = sections[i : i + window_size]
+        combined_text = "\n\n".join(s.get("text", "") for s in window)
+        first_source = window[0].get("source", {})
+        multi = parse_examples_multi_format(combined_text, first_source, domain)
+        if multi:
+            for ex in multi:
+                _add_example(ex)
+        else:
+            parsed = parse_enhanced_example(
+                combined_text, domain=domain, source=first_source
+            )
+            if parsed:
+                _add_example(parsed)
 
     # 3. Chart metadata (image extraction only if pdf_path provided)
     figure_refs = manifest_dict.get("figure_refs", [])

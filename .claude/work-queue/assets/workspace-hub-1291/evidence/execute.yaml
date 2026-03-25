@@ -1,0 +1,42 @@
+wrk_id: workspace-hub-1291
+stage: 10
+status: in_progress
+started_at: "2026-03-24T16:30:00Z"
+
+phase_1_cid_fix:
+  status: complete
+  files_modified:
+    - scripts/data/doc_intelligence/parsers/pdf.py
+  files_created:
+    - scripts/data/doc-intelligence/diagnose-cid-manifests.py
+    - scripts/data/doc-intelligence/re-extract-cid-manifests.sh
+  findings:
+    - "pypdfium2 also fails on CID-corrupted PDFs — switched to pdftotext (poppler) fallback"
+    - "Only 1 fully corrupted manifest (Rawson-Tupper 96.7%), not 15 as originally estimated"
+    - "7 partially corrupted (1-7% CID), 24 clean, 113 empty (ship plans)"
+    - "pdftotext successfully extracts Rawson-Tupper: 0 → 400 sections"
+  test_results:
+    - test: "CID detection on corrupted text"
+      result: pass
+    - test: "CID detection on clean text"
+      result: pass
+    - test: "pdftotext extraction on Rawson-Tupper"
+      result: "pass — 400 sections, 5 tables extracted"
+    - test: "Fallback triggered automatically"
+      result: "pass — errors list contains fallback message"
+
+phase_2_sliding_window:
+  status: complete
+  files_modified:
+    - scripts/data/doc_intelligence/deep_extract.py
+  description: "Added 2-pass extraction: individual sections then sliding window (size 3) with deduplication by (source_book, number, page)"
+
+phase_3_reextract:
+  status: pending
+  note: "Run re-extract-cid-manifests.sh then batch-deep-extract-naval.sh"
+
+phase_4_ship_plans:
+  status: pending
+
+phase_5_audit:
+  status: pending
