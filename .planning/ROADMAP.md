@@ -14,7 +14,7 @@
 
 Plans:
 - [x] 01-01-PLAN.md — YAML manifest schema (Pydantic model + CI validation script)
-- [ ] 01-02-PLAN.md — On-bottom stability module (DNV-RP-F109)
+- [x] 01-02-PLAN.md — On-bottom stability module (DNV-RP-F109)
 - [ ] 01-03-PLAN.md — ASME B31.4 wall thickness code strategy
 - [ ] 01-04-PLAN.md — Spectral fatigue from sea-state scatter diagrams (DNV-RP-C203)
 - [ ] 01-05-PLAN.md — Integration: validate manifests, update registry, cross-module tests
