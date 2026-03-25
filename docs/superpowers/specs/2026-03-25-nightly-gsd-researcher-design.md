@@ -32,7 +32,7 @@ daily_today.sh (6 AM, existing)
 |-----------|--------------------|--------------------------------------------------------------|
 | Mon, Thu  | `standards`        | Offshore/subsea standards (API, DNV, ABS, ISO) updates       |
 | Tue, Fri  | `python-ecosystem` | Dependencies, uv changes, packaging, tier-1 package impacts  |
-| Wed, Sat  | `ai-tooling`       | Claude/Codex/Gemini CLI changes, MCP, agent patterns         |
+| Wed, Sat  | `ai-tooling`       | Claude/Codex/Gemini CLI, GSD framework, MCP, agent patterns  |
 | Sunday    | `synthesis`        | Review week's findings, flag top insights for promotion       |
 
 ## Script: gsd-researcher-nightly.sh
