@@ -12,6 +12,7 @@
 # Usage: bash scripts/cron/gsd-researcher-nightly.sh [--dry-run]
 
 set -uo pipefail
+export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -44,7 +45,7 @@ esac
 
 # ── Git pull ─────────────────────────────────────────────────────────────────
 log "Starting nightly research"
-cd "$WS_HUB"
+cd "$WS_HUB" || { log "ERROR: cannot cd to $WS_HUB"; exit 1; }
 git pull --rebase --quiet 2>>"$LOG_FILE" || {
     log "WARNING: git pull failed — continuing with local state"
 }
@@ -72,7 +73,7 @@ done
 # ── Domain prompts ───────────────────────────────────────────────────────────
 OUTPUT_FORMAT='Use this exact output format:
 
-# Research: DOMAIN — DATE
+# Research: __DOMAIN__ — __DATE__
 
 ## Key Findings
 - Finding with source/reference (one bullet per finding, 3-5 findings)
@@ -145,7 +146,7 @@ ${OUTPUT_FORMAT}"
 
 Output format:
 
-# Weekly Research Synthesis — DATE
+# Weekly Research Synthesis — __DATE__
 
 ## Top 3 Insights for PROJECT.md
 1. Insight with rationale for promotion
@@ -163,8 +164,8 @@ Output format:
 esac
 
 # ── Replace placeholders in prompts ──────────────────────────────────────────
-PROMPT="${PROMPT//DOMAIN/$DOMAIN}"
-PROMPT="${PROMPT//DATE/$DATE}"
+PROMPT="${PROMPT//__DOMAIN__/$DOMAIN}"
+PROMPT="${PROMPT//__DATE__/$DATE}"
 
 OUTPUT_FILE="${OUTPUT_DIR}/${DATE}-${DOMAIN}.md"
 
@@ -191,6 +192,11 @@ RESULT=$(echo "$CONTEXT" | timeout "$TIME_BUDGET" claude -p "$PROMPT" 2>>"$LOG_F
 }
 
 # ── Write output ─────────────────────────────────────────────────────────────
+if [[ -z "$RESULT" ]]; then
+    log "ERROR: claude returned empty result"
+    bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "empty result for domain=${DOMAIN}" || true
+    exit 1
+fi
 echo "$RESULT" > "$OUTPUT_FILE"
 log "Research written to: ${OUTPUT_FILE} ($(wc -l < "$OUTPUT_FILE") lines)"
 
