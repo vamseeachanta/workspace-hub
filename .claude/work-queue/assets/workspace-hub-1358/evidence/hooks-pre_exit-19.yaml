@@ -1,0 +1,24 @@
+phase: pre_exit
+stage: 19
+wrk_id: workspace-hub-1358
+executed_at: '2026-03-25T05:11:41.764463+00:00'
+hooks:
+- script: scripts/work-queue/verify-gate-evidence.py workspace-hub-1358 --phase claim
+  description: 'Final gate verification before close (claim-phase: stage-evidence
+    auto-gen limitation)'
+  gate: hard
+  returncode: 0
+  duration_s: 0.301
+  passed: true
+  stdout: "Gate evidence for workspace-hub-1358 (phase=claim, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/workspace-hub-1358):\n\
+    \  - Plan gate: OK (reviewed=True, approved=True, artifact=dedup-scan-digitalmodel-og-standards.md,\
+    \ confirmation=confirmed_by=present, confirmed_at=present, decision=passed)\n\
+    \  - Workstation contract gate: OK (plan_workstations=[ace-workstation], execution_workstations=[ace-workstation])\n\
+    \  - Resource-intelligence gate: OK (resource-intelligence.yaml: completio"
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

@@ -1,0 +1,13 @@
+wrk_id: workspace-hub-1358
+stage: 16
+generated_at: "2026-03-25T05:40:00Z"
+
+additions:
+  - type: lesson_learned
+    description: "data/standards/promoted/ and digitalmodel/ serve complementary roles — no dedup needed"
+  - type: lesson_learned
+    description: "naval-architecture category dominates standards store (98% of files) — worth separate audit"
+  - type: pattern
+    description: "digitalmodel references shared data store via relative paths — correct shared-data architecture"
+
+no_additions_rationale: ""

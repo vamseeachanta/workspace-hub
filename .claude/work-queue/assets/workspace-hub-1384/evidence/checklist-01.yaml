@@ -1,0 +1,12 @@
+stage: 1
+items:
+  - id: CL-01-1
+    completed: true
+    notes: "Title and scope captured in pending file"
+  - id: CL-01-2
+    completed: true
+    notes: "pending/workspace-hub-1384.md written with valid frontmatter"
+  - id: CL-01-3
+    completed: true
+    approved_by: user
+    notes: "User approved scope via /work add command"

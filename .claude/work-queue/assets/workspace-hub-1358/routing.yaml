@@ -1,0 +1,7 @@
+wrk_id: workspace-hub-1358
+route: A
+delivery_order: sequential
+skills_loaded:
+  - workspace-hub/work-queue-orchestrator
+execution_target: workspace-hub
+notes: "Read-only analysis task — no code changes, just findings documentation"

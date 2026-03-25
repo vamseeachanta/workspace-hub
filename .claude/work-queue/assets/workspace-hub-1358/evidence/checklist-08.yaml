@@ -1,0 +1,16 @@
+stage: 8
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-08-1
+    text: "Agent quota checked"
+    completed: true
+  - id: CL-08-2
+    text: "claim-item.sh exits 0 (no collision)"
+    completed: true
+    note: "Claimed manually — script had WRK ID format issue"
+  - id: CL-08-3
+    text: "working/WRK-NNN.md exists"
+    completed: true
+  - id: CL-08-4
+    text: "evidence/activation.yaml written"
+    completed: true

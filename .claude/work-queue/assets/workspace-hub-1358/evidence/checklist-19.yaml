@@ -1,0 +1,12 @@
+stage: 19
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-19-1
+    text: "verify-gate-evidence.py exits 0"
+    completed: true
+  - id: CL-19-2
+    text: "close-item.sh executed"
+    completed: true
+  - id: CL-19-3
+    text: "done/WRK-NNN.md exists with percent_complete: 100"
+    completed: true

@@ -1,0 +1,13 @@
+stage: 15
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-15-1
+    text: "Execution notes reviewed for deferred items"
+    completed: true
+  - id: CL-15-2
+    text: "Each item captured as new WRK or deferred with reason"
+    completed: true
+    note: "2 deferred items documented with rationale"
+  - id: CL-15-3
+    text: "evidence/future-work.yaml written (all spun-off-new: captured: true)"
+    completed: true

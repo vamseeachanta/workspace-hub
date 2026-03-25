@@ -1,0 +1,23 @@
+phase: pre_exit
+stage: 14
+wrk_id: workspace-hub-1362
+executed_at: '2026-03-25T04:40:34.251835+00:00'
+hooks:
+- script: scripts/work-queue/verify-gate-evidence.py workspace-hub-1362 --phase claim
+  description: All claim-phase gates must PASS before proceeding
+  gate: hard
+  returncode: 0
+  duration_s: 0.24
+  passed: true
+  stdout: "Gate evidence for workspace-hub-1362 (phase=claim, assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/workspace-hub-1362):\n\
+    \  - Plan gate: OK (reviewed=True, approved=True, artifact=plan.md, confirmation=confirmed_by=present,\
+    \ confirmed_at=present, decision=passed)\n  - Workstation contract gate: OK (plan_workstations=[ace-workstation],\
+    \ execution_workstations=[ace-workstation])\n  - Resource-intelligence gate: OK\
+    \ (resource-intelligence.yaml: completion_status=complete, p1_count=0, c"
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

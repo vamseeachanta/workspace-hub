@@ -1,0 +1,5 @@
+plan_workstations:
+  - ace-workstation
+execution_workstations:
+  - ace-workstation
+match: true

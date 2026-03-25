@@ -1,0 +1,13 @@
+wrk_id: workspace-hub-1357
+current_stage: 4
+stage_name: Plan Draft
+completed_stage: 3
+next_action: Execute stage 4: Plan Draft
+context_summary: Stage 3 complete. Next: stage 4 (Plan Draft).
+entry_reads:
+  - .claude/work-queue/assets/workspace-hub-1357/checkpoint.yaml
+  - pending/workspace-hub-1357.md
+  - assets/workspace-hub-1357/evidence/resource-intelligence.yaml
+checkpointed_at: 2026-03-25T05:44:16Z
+human_gate: false
+chained_stages: [[2, 3, 4]]

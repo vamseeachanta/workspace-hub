@@ -1,0 +1,31 @@
+order: 9
+name: Work-Queue Routing
+weight: light
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [8, 9]
+skills_required:
+  - workspace-hub/work-queue-orchestrator
+entry_reads:
+  - assets/WRK-NNN/evidence/activation.yaml
+exit_artifacts:
+  - assets/WRK-NNN/routing.yaml
+blocking_condition: "routing.yaml missing"
+log_action: routing_complete
+context_budget_kb: 4
+checklist:
+  - id: CL-09-1
+    text: "All required skills loaded"
+    requires_human: false
+  - id: CL-09-2
+    text: "Delivery order confirmed"
+    requires_human: false
+  - id: CL-09-3
+    text: "routing.yaml written"
+    requires_human: false
+feature_routing:
+  step: "9b — Feature scaffolding"
+  condition: "type: feature"
+  action: "bash scripts/work-queue/new-feature.sh WRK-NNN"
+  note: "Run after Stage 7 exit; scaffolds children from Decomposition table; sets status:coordinating"

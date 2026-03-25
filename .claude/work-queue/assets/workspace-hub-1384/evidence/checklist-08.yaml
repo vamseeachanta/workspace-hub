@@ -1,0 +1,14 @@
+stage: 8
+items:
+  - id: CL-08-1
+    completed: true
+    notes: "Quota check passed"
+  - id: CL-08-2
+    completed: true
+    notes: "Claim successful, no collision"
+  - id: CL-08-3
+    completed: true
+    notes: "working/workspace-hub-1384.md exists"
+  - id: CL-08-4
+    completed: true
+    notes: "evidence/activation.yaml written"

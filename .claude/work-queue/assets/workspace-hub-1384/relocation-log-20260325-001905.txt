@@ -1,0 +1,106 @@
+[2026-03-25 00:19:05] Starting relocation from /mnt/remote/ace-linux-2/local-analysis to /mnt/ace
+[2026-03-25 00:19:05] Dry run: no
+[2026-03-25 00:19:05] Syncing: 0111 RII → client_projects/0111-RII/
+
+sent 3.14K bytes  received 39 bytes  2.12K bytes/sec
+total size is 2.94G  speedup is 923,047.70
+[2026-03-25 00:19:06] Syncing: 0112 CN Adapter → client_projects/0112-CN-Adapter/
+
+sent 966 bytes  received 27 bytes  1.99K bytes/sec
+total size is 6.53M  speedup is 6,580.63
+[2026-03-25 00:19:06] Syncing: 0116 Thinwall Pipe FEA → client_projects/0116-Thinwall-Pipe-FEA/
+
+sent 22.02K bytes  received 257 bytes  14.85K bytes/sec
+total size is 15.96G  speedup is 716,118.39
+[2026-03-25 00:19:07] Syncing: 0119 Programming → client_projects/0119-Programming/
+
+sent 1.25K bytes  received 33 bytes  2.58K bytes/sec
+total size is 26.29M  speedup is 20,413.56
+[2026-03-25 00:19:07] Syncing: 0127 Mooring → client_projects/0127-Mooring/
+
+sent 684 bytes  received 13 bytes  1.39K bytes/sec
+total size is 10.14M  speedup is 14,551.26
+[2026-03-25 00:19:07] Syncing: 0132 → client_projects/0132/
+
+sent 21.11K bytes  received 81 bytes  42.38K bytes/sec
+total size is 446.34M  speedup is 21,061.92
+[2026-03-25 00:19:08] Syncing: 0154 TVO → client_projects/0154-TVO/
+
+sent 136.86K bytes  received 931 bytes  30.62K bytes/sec
+total size is 25.64G  speedup is 186,086.86
+[2026-03-25 00:19:12] Syncing: 0159 Anchor FEA → client_projects/0159-Anchor-FEA/
+
+sent 977 bytes  received 24 bytes  2.00K bytes/sec
+total size is 288.36M  speedup is 288,073.03
+[2026-03-25 00:19:12] Syncing: 0162-001 → client_projects/0162-001/
+
+sent 244 bytes  received 13 bytes  514.00 bytes/sec
+total size is 476.48M  speedup is 1,854,011.70
+[2026-03-25 00:19:12] Syncing: 0163-FDAS → client_projects/0163-FDAS/
+
+sent 111.54K bytes  received 310 bytes  44.74K bytes/sec
+total size is 5.22G  speedup is 46,697.14
+[2026-03-25 00:19:14] Syncing: 0182 → client_projects/0182/
+
+sent 56.47K bytes  received 75 bytes  113.09K bytes/sec
+total size is 8.82G  speedup is 155,923.00
+[2026-03-25 00:19:14] Syncing: 0190 → client_projects/0190/
+
+sent 7.58K bytes  received 110 bytes  5.13K bytes/sec
+total size is 68.68M  speedup is 8,926.71
+[2026-03-25 00:19:15] Syncing: 0198 → client_projects/0198/
+
+sent 29.57K bytes  received 87 bytes  59.31K bytes/sec
+total size is 51.56G  speedup is 1,738,932.85
+[2026-03-25 00:19:15] Syncing: Sewol → client_projects/Sewol/
+
+sent 104.81G bytes  received 56.57K bytes  69.57M bytes/sec
+total size is 137.19G  speedup is 1.31
+[2026-03-25 00:44:21] Syncing: 0000 Completed → client_projects/0000-Completed/
+
+sent 13.30G bytes  received 839.71K bytes  33.13M bytes/sec
+total size is 13.29G  speedup is 1.00
+[2026-03-25 00:51:02] Syncing: 0000 Conferences → docs/conferences/
+
+sent 29.39G bytes  received 745.06K bytes  37.90M bytes/sec
+total size is 29.38G  speedup is 1.00
+[2026-03-25 01:03:58] Syncing: 0000 GDrive → aceengineer-admin/gdrive-export/
+
+sent 7.36G bytes  received 37.16K bytes  58.17M bytes/sec
+total size is 7.36G  speedup is 1.00
+[2026-03-25 01:06:04] Syncing: 0000 www → aceengineer-admin/www-archive/
+
+sent 1.40G bytes  received 250.80K bytes  17.41M bytes/sec
+total size is 1.40G  speedup is 1.00
+[2026-03-25 01:07:25] Syncing: OSI → data/osi-datasets/
+
+sent 2.68G bytes  received 95 bytes  73.36M bytes/sec
+total size is 2.68G  speedup is 1.00
+[2026-03-25 01:08:02] Syncing: OrcFxAPIConfig.py → digitalmodel/
+
+sent 1.81K bytes  received 35 bytes  3.69K bytes/sec
+total size is 1.70K  speedup is 0.92
+[2026-03-25 01:08:03] Syncing: repo → docs/engineering-drawings/
+
+sent 564.66M bytes  received 11.84K bytes  45.17M bytes/sec
+total size is 564.48M  speedup is 1.00
+[2026-03-25 01:08:15] Syncing: github_ref → docs/github-references/
+
+sent 1.22M bytes  received 3.86K bytes  491.02K bytes/sec
+total size is 1.21M  speedup is 0.99
+[2026-03-25 01:08:17] === Relocation complete ===
+[2026-03-25 01:08:17] Review log: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/workspace-hub-1384/relocation-log-20260325-001905.txt
+[2026-03-25 01:08:17] 
+[2026-03-25 01:08:17] Items NOT relocated (manual review needed):
+[2026-03-25 01:08:17]   - Temp (77G) - mixed content
+[2026-03-25 01:08:17]   - InstallationFiles (18G) - software installers
+[2026-03-25 01:08:17]   - itunes (16G) - personal media
+[2026-03-25 01:08:17]   - 0000 BigData (415M) - training materials
+[2026-03-25 01:08:17]   - DataStax-Community Edition (100M)
+[2026-03-25 01:08:17]   - HadoopCourse (37M)
+[2026-03-25 01:08:17]   - solidworks (42M)
+[2026-03-25 01:08:17]   - 0000 Tecplot (5.4M)
+[2026-03-25 01:08:17] 
+[2026-03-25 01:08:17] Items safe to delete:
+[2026-03-25 01:08:17]   - $RECYCLE.BIN, System Volume Information, DumpStack.log.tmp
+[2026-03-25 01:08:17]   - msdia80.dll, acma_wood.ps1, Dropbox (empty), Son_Server2

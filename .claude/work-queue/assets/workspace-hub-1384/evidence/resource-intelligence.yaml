@@ -1,0 +1,122 @@
+completion_status: complete
+assessed_at: "2026-03-24"
+complexity: B
+complexity_rationale: "File review and relocation planning - moderate scope, no code changes"
+
+source_location: /mnt/remote/ace-linux-2/local-analysis
+destination: /mnt/ace/
+total_items: 37  # folders + top-level files, excluding workspace-hub
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-orchestrator
+  optional_used: []
+
+inventory:
+  total_size_estimate: "~370GB"
+  categories:
+    engineering_projects:
+      items:
+        - "0111 RII (2.8G) - Riser analysis project"
+        - "0112 CN Adapter (6.3M) - CN adapter project"
+        - "0116 Thinwall Pipe FEA (15G) - FEA analysis"
+        - "0119 Programming (26M) - Programming utilities"
+        - "0127 Mooring (9.8M) - Mooring analysis"
+        - "0132 (428M) - CALM buoy / float analysis"
+        - "0154 TVO (24G) - Abaqus FEA project"
+        - "0159 Anchor FEA (276M) - Anchor FEA analysis"
+        - "0162-001 (455M) - Engineering project"
+        - "0163-FDAS (4.9G) - FDAS project data"
+        - "0182 (8.3G) - Deepwater SCR technology"
+        - "0190 (66M) - Riser analysis / time trace"
+        - "0198 (49G) - Tanker analysis (OrcaFlex)"
+      relocate_to: "/mnt/ace/client_projects/"
+      notes: "Numbered project folders - engineering deliverables"
+
+    completed_archive:
+      items:
+        - "0000 Completed (13G) - Historical completed projects (AceEngineer, marketing, admin)"
+      relocate_to: "/mnt/ace/client_projects/ or /mnt/ace/Production/"
+      notes: "Legacy completed work - review per subfolder"
+
+    conferences_literature:
+      items:
+        - "0000 Conferences (28G) - OTC, OMAE, SPE, ISOPE, etc."
+      relocate_to: "/mnt/ace/docs/"
+      notes: "Technical conference papers - high knowledge value"
+
+    web_assets:
+      items:
+        - "0000 www (1.4G) - Website backups (aceengineer.com, fdas, etc.)"
+      relocate_to: "/mnt/ace/aceengineer-admin/ or /mnt/ace/Production/"
+      notes: "Historical website files"
+
+    google_drive_export:
+      items:
+        - "0000 GDrive (6.9G) - Google Drive export (finance, admin, docs)"
+      relocate_to: "/mnt/ace/aceengineer-admin/"
+      notes: "Business admin documents"
+
+    sewol_fea:
+      items:
+        - "Sewol (128G) - ANSYS/FEA Sewol vessel analysis"
+      relocate_to: "/mnt/ace/client_projects/"
+      notes: "Largest single item - ANSYS models and results"
+
+    software_installations:
+      items:
+        - "InstallationFiles (18G) - Abaqus, Tecplot, Office, etc."
+        - "solidworks (42M) - SolidWorks eDrawings"
+        - "0000 Tecplot (5.4M) - Tecplot config"
+      relocate_to: "DELETE or local archive only"
+      notes: "Installation media - no knowledge value, can be re-downloaded"
+
+    data_science_courses:
+      items:
+        - "0000 BigData (415M) - Spark, Hive, Cassandra, NIFI, Azure"
+        - "DataStax-Community Edition (100M) - Cassandra distribution"
+        - "HadoopCourse (37M) - Hadoop training"
+      relocate_to: "/mnt/ace/data/ or DELETE"
+      notes: "Training materials - low retention priority"
+
+    temp_misc:
+      items:
+        - "Temp (77G) - Mixed temp files, photos, docs"
+        - "$RECYCLE.BIN (3.6M) - Windows recycle bin"
+        - "System Volume Information (1008K) - Windows system"
+        - "Son_Server2 (4.5M) - Server files"
+      relocate_to: "REVIEW individually / DELETE"
+      notes: "Temp folder needs manual triage - 77GB"
+
+    osi_data:
+      items:
+        - "OSI (2.5G) - Bearing/machinery datasets (IMS, FEMTO, CMAPSS)"
+      relocate_to: "/mnt/ace/data/"
+      notes: "Industrial sensor datasets - research value"
+
+    repo_references:
+      items:
+        - "repo (540M) - Engineering drawings, flanges"
+        - "github_ref (1.7M) - Context engineering, scrapers, PRPs"
+        - "Dropbox (8K) - Empty"
+      relocate_to: "/mnt/ace/docs/ or respective repos"
+      notes: "Reference materials"
+
+    personal_media:
+      items:
+        - "itunes (16G) - iTunes backup"
+      relocate_to: "Personal storage / DELETE from work drive"
+      notes: "Not work-related"
+
+    top_level_files:
+      items:
+        - "acma_wood.ps1 (1K) - PowerShell script"
+        - "DumpStack.log.tmp (8K) - Windows dump log"
+        - "msdia80.dll (905K) - Visual Studio DLL"
+        - "OrcFxAPIConfig.py (1.7K) - OrcaFlex config"
+      relocate_to: "DELETE (system artifacts) except OrcFxAPIConfig.py -> /mnt/ace/digitalmodel/"
+      notes: "Mostly system artifacts"
+
+online_research: "not_applicable"
+knowledge_base_queried: true
+codebase_search: true

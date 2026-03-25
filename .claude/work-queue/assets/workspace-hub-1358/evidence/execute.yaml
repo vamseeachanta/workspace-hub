@@ -1,0 +1,40 @@
+wrk_id: workspace-hub-1358
+stage: 10
+completed_at: "2026-03-25T05:35:00Z"
+
+execution_summary: >
+  Dedup scan completed across data/standards/promoted/ (10,681 files)
+  and digitalmodel/ (781 docs + source code). No file-level duplicates found.
+  Only 1 basename match (requirements.py — common boilerplate, not a duplicate).
+  Content-level overlap identified in dnv_rp_b401.py (hardcoded constants from
+  the same standard tables), but this is intentional design.
+
+deliverables:
+  - evidence/resource-intelligence.yaml (comprehensive findings)
+  - specs/modules/dedup-scan-digitalmodel-og-standards.md (spec + results)
+
+integrated_repo_tests:
+  - name: "verify-dedup-findings-section"
+    scope: repo
+    command: "grep dedup_findings evidence/resource-intelligence.yaml"
+    result: pass
+    artifact_ref: "evidence/resource-intelligence.yaml"
+  - name: "verify-exact-file-duplicates-count"
+    scope: repo
+    command: "grep exact_file_duplicates evidence/resource-intelligence.yaml"
+    result: pass
+    artifact_ref: "evidence/resource-intelligence.yaml"
+  - name: "verify-recommendations-structure"
+    scope: repo
+    command: "grep -c 'id: R' evidence/resource-intelligence.yaml"
+    result: pass
+    artifact_ref: "evidence/resource-intelligence.yaml"
+  - name: "verify-no-meaningful-duplicates"
+    scope: integrated
+    command: "basename comparison across data/standards/promoted and digitalmodel"
+    result: pass
+    artifact_ref: "evidence/resource-intelligence.yaml"
+
+test_count: 4
+code_changes: none
+notes: "Read-only analysis task — no code modifications needed"

@@ -1,0 +1,9 @@
+wrk_id: workspace-hub-1362
+additions:
+  - type: pattern
+    description: "README_MIGRATED.md files follow 2-line format: 'This project has moved.' + 'New location: <path>'"
+  - type: constraint
+    description: "Project directories under /mnt/ace/docs/disciplines/ are organized by 9 O&G categories"
+  - type: lesson
+    description: "After repo slimming relocations, pointer files may reference planned but uncreated directory structures"
+no_additions_rationale: null

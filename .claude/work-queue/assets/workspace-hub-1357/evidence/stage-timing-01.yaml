@@ -1,0 +1,12 @@
+stage: 1
+wrk_id: workspace-hub-1357
+human_gate: true
+started_at: "2026-03-25T05:20:12.179583+00:00"
+completed_at: "2026-03-25T05:20:40.025775+00:00"
+duration_s: 27.8
+completed_at: "2026-03-25T05:21:16.104228+00:00"
+duration_s: 63.9
+completed_at: "2026-03-25T05:21:58.013842+00:00"
+duration_s: 105.8
+completed_at: "2026-03-25T05:23:30.985092+00:00"
+duration_s: 198.8

@@ -1,0 +1,105 @@
+wrk_id: workspace-hub-1358
+stage: 2
+generated_at: "2026-03-25T05:00:00Z"
+completion_status: complete
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-orchestrator
+    - workspace-hub/resource-intelligence
+    - workspace-hub/ecosystem-terminology
+    - workspace-hub/knowledge
+
+# Resource Intelligence: Dedup Scan — digitalmodel & O&G-Standards
+
+document_stores:
+  - name: data/standards/promoted
+    location: /data/standards/promoted/
+    description: "Workspace-hub-level shared standards data store (extracted PDF tables as CSV)"
+    file_count: 10681
+    categories:
+      - name: naval-architecture
+        files: 10463
+        note: "Bulk of files — extracted tables from 25 PDF sources"
+      - name: engineering-standards
+        files: 67
+        note: "ASME-31G tables (46 CSVs) + other standards"
+      - name: data-models
+        files: 99
+      - name: dnv-rp-b401
+        files: 8
+        note: "Tables 10-1 through 10-8"
+      - name: dnv-rp-c203
+        files: 2
+      - name: dnv-rp-f109
+        files: 3
+      - name: engineering-data
+        files: 37
+      - name: energy-data
+        files: 1
+      - name: engineering-analysis
+        files: 1
+
+  - name: digitalmodel/docs/domains
+    location: /digitalmodel/docs/domains/
+    description: "Domain knowledge docs within digitalmodel repo"
+    file_count: 781
+    key_subdirs:
+      - standards (6 files — includes STANDARDS_INDEX.md, cross-repo guide)
+      - cathodic_protection (20+ files — CP examples referencing DNV-RP-B401)
+      - engineering (empty)
+      - naval-architecture related domains (mooring, riser_analysis, risers, pipe)
+
+  - name: digitalmodel/src (code with embedded constants)
+    location: /digitalmodel/src/digitalmodel/cathodic_protection/
+    description: "Python modules with hardcoded DNV-RP-B401 table values as constants"
+    note: "dnv_rp_b401.py embeds Table 10-6 and 10-8 values as Python constants"
+
+dedup_findings:
+  exact_file_duplicates: 0
+  description: "No exact filename duplicates found between data/standards/promoted and digitalmodel"
+
+  content_overlap:
+    - type: "hardcoded constants vs CSV tables"
+      severity: low
+      detail: >
+        digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py embeds
+        DNV-RP-B401 Table 10-6 (anode capacity) and Table 10-8 (utilization factors)
+        as Python constants. The same tables exist as CSVs in
+        data/standards/promoted/dnv-rp-b401/. This is intentional — code uses
+        constants for calculation; CSVs serve as reference data.
+      action: none_required
+
+  cross_references:
+    - type: "digitalmodel references shared store"
+      detail: >
+        digitalmodel/specs/data-needs.yaml and src/digitalmodel/naval_architecture/curves.py
+        reference data/standards/promoted/naval-architecture/curves/ CSV files.
+        This is correct architecture: shared data store at workspace-hub level,
+        consumed by digitalmodel.
+      action: none_required
+
+  architecture_assessment: >
+    The two stores serve different purposes and are NOT duplicative:
+    - data/standards/promoted/ = shared extracted-table CSVs (reference data)
+    - digitalmodel/docs/domains/ = markdown knowledge docs (analysis guides, examples)
+    - digitalmodel/src/ = Python code with embedded constants from standards
+
+    The architecture is correct: workspace-hub owns the data store, digitalmodel
+    consumes it via relative paths. No deduplication action needed.
+
+recommendations:
+  - id: R1
+    priority: info
+    description: "No file-level deduplication needed — stores serve different purposes"
+  - id: R2
+    priority: low
+    description: >
+      Consider extracting hardcoded constants from dnv_rp_b401.py into a
+      lookup against the CSV tables for single-source-of-truth, but this
+      is an optimization, not a dedup issue.
+  - id: R3
+    priority: info
+    description: >
+      The naval-architecture category (10,463 files) dominates the standards store.
+      Consider a separate WRK to validate these extracted tables are complete and correct.

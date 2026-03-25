@@ -1,0 +1,16 @@
+stage: 7
+items:
+  - id: CL-07-1
+    completed: true
+    approved_by: user
+    notes: "Cross-review: no P1/P2, three P3 suggestions noted"
+  - id: CL-07-2
+    completed: true
+    notes: "No P1 findings to resolve"
+  - id: CL-07-3
+    completed: true
+    notes: "No changes requested"
+  - id: CL-07-4
+    completed: true
+    approved_by: user
+    notes: "User approved plan - 'plan looks good'"

@@ -1,0 +1,14 @@
+stage: 3
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-03-1
+    text: "Route (A/B/C) determined and justified"
+    completed: true
+    note: "Route A — read-only analysis scan, no code changes needed"
+  - id: CL-03-2
+    text: "Workstations and orchestrator assigned"
+    completed: true
+    note: "ace-workstation, orchestrator=claude"
+  - id: CL-03-3
+    text: "WRK frontmatter updated with route/workstations/orchestrator"
+    completed: true

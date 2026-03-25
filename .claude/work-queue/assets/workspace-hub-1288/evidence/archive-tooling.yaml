@@ -1,0 +1,13 @@
+wrk_id: workspace-hub-1288
+
+merge_status: "no-branch-created"
+sync_status: "in-sync"
+github_issue_ref: "https://github.com/vamseeachanta/workspace-hub/issues/1288"
+legal_scan_ref: ".claude/work-queue/assets/workspace-hub-1288/evidence/legal-scan.md"
+archive_readiness: "pass"
+
+document_index_ref: ""
+document_index_exemption: "hub-only item — data pipeline execution, no code changes requiring document-index"
+
+spin_off_wrks:
+  - workspace-hub-1353

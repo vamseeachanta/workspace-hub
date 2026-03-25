@@ -1,0 +1,6 @@
+reviewer: vamsee
+confirmed_at: 2026-03-25T04:30:00Z
+scope_approved: true
+notes: >
+  Approved. Route A simple task: scan README_MIGRATED.md files under /mnt/ace/docs/
+  for broken path references from repo slimming (WRK-1341) and update to correct locations.

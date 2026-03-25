@@ -1,0 +1,19 @@
+stage: 3
+wrk_id: workspace-hub-1357
+items:
+  - id: CL-03-1
+    text: "Route (A/B/C) determined and justified"
+    completed: true
+    evidence: >
+      Route B — medium complexity. Existing classification pipeline exists
+      but needs source addition and content review. Not trivial (A) because
+      content nature assessment needed; not complex (C) because no new
+      architecture required.
+  - id: CL-03-2
+    text: "Workstations and orchestrator assigned"
+    completed: true
+    evidence: "ace-workstation (has access to /mnt/ace/data/va-hdd-2), orchestrator: claude"
+  - id: CL-03-3
+    text: "WRK frontmatter updated with route/workstations/orchestrator"
+    completed: true
+    evidence: "pending/workspace-hub-1357.md updated with route: B, workstations, orchestrator fields"

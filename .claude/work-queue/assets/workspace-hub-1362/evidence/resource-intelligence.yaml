@@ -1,0 +1,25 @@
+scope:
+  total_files: 99
+  broken_pointers: 99
+  valid_pointers: 0
+  all_resolvable: true
+
+pattern:
+  source: "/mnt/ace/docs/<project-name>/README_MIGRATED.md"
+  current_target: "/mnt/ace/docs/clients/unknown/projects/<slug>"
+  actual_location: "/mnt/ace/docs/disciplines/<category>/projects/<slug>"
+
+fix_approach: >
+  For each README_MIGRATED.md, extract the project slug from the current
+  broken pointer, find the actual directory under disciplines/, and rewrite
+  the "New location:" line to point to the correct path.
+
+dependencies: none
+risk: low — file content is a simple 2-line pointer, no downstream consumers
+
+completion_status: complete
+skills:
+  core_used:
+    - workspace-hub/work-queue-orchestrator
+    - workspace-hub/ecosystem-terminology
+    - superpowers/verification-before-completion

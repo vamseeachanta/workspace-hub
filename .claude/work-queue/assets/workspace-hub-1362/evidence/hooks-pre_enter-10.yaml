@@ -1,0 +1,24 @@
+phase: pre_enter
+stage: 10
+wrk_id: workspace-hub-1362
+executed_at: '2026-03-25T04:34:20.166821+00:00'
+hooks:
+- script: scripts/work-queue/verify-log-presence.sh workspace-hub-1362
+  description: Verify routing.yaml exists before execution begins
+  gate: soft
+  returncode: 0
+  duration_s: 0.381
+  passed: true
+  stdout: "[verify-log-presence] Machine: ace-linux-1\n  claude  OK  (23 file(s),\
+    \ latest: session_20260324.jsonl, valid JSON: 3747/3747)\n  codex   OK  (native:\
+    \ 811 session(s), latest: rollout-2026-03-23T22-09-15-019d1dd1-6600-75f3-85b5-87f621a982fe.jsonl;\
+    \ orchestrator: 410 cross-review(s))\n  gemini  OK  (native: 850 session(s), latest:\
+    \ session-2026-03-23T15-35-1028377d.json; orchestrator: 219 cross-review(s))\n\
+    \nPASS"
+  stderr: ''
+summary:
+  total: 1
+  passed: 1
+  failed_hard: 0
+  failed_soft: 0
+  blocked: false

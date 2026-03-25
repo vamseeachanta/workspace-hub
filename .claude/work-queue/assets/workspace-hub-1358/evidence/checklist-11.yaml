@@ -1,0 +1,9 @@
+stage: 11
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-11-1
+    text: "GitHub Issue updated with execution results"
+    completed: true
+  - id: CL-11-2
+    text: "Stage evidence files present and correct"
+    completed: true

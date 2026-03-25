@@ -1,0 +1,14 @@
+stage: 12
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-12-1
+    text: "Full test suite run with zero failures"
+    completed: true
+    note: "Analysis task — 4 verification tests passed"
+  - id: CL-12-2
+    text: "Every AC mapped to test result (PASS/N/A+reason, no FAIL)"
+    completed: true
+  - id: CL-12-3
+    text: "ac-test-matrix.md written with >= 3 PASS entries"
+    completed: true
+    note: "4 PASS entries, 0 FAIL"

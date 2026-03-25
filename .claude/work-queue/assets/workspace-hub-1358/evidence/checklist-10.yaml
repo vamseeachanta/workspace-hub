@@ -1,0 +1,22 @@
+stage: 10
+wrk_id: workspace-hub-1358
+items:
+  - id: CL-10-1
+    text: "Scripts-over-LLM audit performed"
+    completed: true
+    note: "No recurring pattern — one-off analysis"
+  - id: CL-10-2
+    text: "Tests written BEFORE implementation (TDD Red)"
+    completed: true
+    note: "N/A — analysis task with no code changes; test plan in spec verified"
+  - id: CL-10-3
+    text: "All tests pass (TDD Green)"
+    completed: true
+    note: "4 verification tests passed"
+  - id: CL-10-4
+    text: "evidence/execute.yaml written with integrated_repo_tests >= 3"
+    completed: true
+  - id: CL-10-5
+    text: "Git committed and pushed"
+    completed: true
+    note: "N/A — no code changes to commit; evidence files tracked"

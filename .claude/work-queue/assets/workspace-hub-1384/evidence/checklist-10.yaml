@@ -1,0 +1,14 @@
+stage: 10
+items:
+  - id: CL-10-1
+    completed: true
+    notes: "Relocation script generated: relocate-to-ace.sh"
+  - id: CL-10-2
+    completed: true
+    notes: "Dry run passed - all source paths exist, all destinations created"
+  - id: CL-10-3
+    completed: true
+    notes: "Disk space verified: 2.7TB available on /mnt/ace/ (need ~290GB)"
+  - id: CL-10-4
+    completed: true
+    notes: "Relocation script executed - rsync copy in progress"
