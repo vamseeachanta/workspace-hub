@@ -59,6 +59,7 @@ generate_daily() {
         run_section wrk-health.sh         "$WORKSPACE_ROOT"
         run_section session-analysis.sh   "$WORKSPACE_ROOT"
         run_section learning-outcomes.sh   "$WORKSPACE_ROOT"
+        run_section research-highlights.sh "$WORKSPACE_ROOT"
         run_section data-health.sh        "$WORKSPACE_ROOT"
 
         echo "## Summary"
