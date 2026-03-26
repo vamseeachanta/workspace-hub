@@ -33,19 +33,30 @@ Declared values (must be multiples of 4):
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| xs | 4px | Icon gaps, compliance badge margins (3px existing, round to 4px for new elements) |
+| xs | 4px | Icon gaps, compliance badge margins |
 | sm | 8px | Inline padding, nav CTA padding (`8px 16px`), navbar-toggle padding |
-| md | 16px | Form control padding (`12px 15px` existing), container gutters (15px existing) |
-| lg | 24px | Section inner padding, form-group margins (20-25px existing) |
-| xl | 32px | Case study header padding (30px mobile, round to 32px) |
-| 2xl | 40px | Contact form card padding (`40px` existing), contact info card padding |
-| 3xl | 60px | Hero section padding (`60px 0` existing), major section breaks |
+| md | 16px | Form control padding, container gutters |
+| lg | 24px | Section inner padding, form-group margins |
+| xl | 32px | Case study header padding (mobile) |
+| 2xl | 48px | Major section breaks, card padding regions |
+| 3xl | 64px | Page-level spacing, hero section padding |
 
-Exceptions:
-- Touch targets: 44px minimum height on all `.btn` elements, 48px on `.navbar-nav > li > a` (existing responsive.css pattern, do not change)
-- Contact form submit button: 14px vertical padding (existing, keeps consistent with `btn-submit` styling)
+Exceptions: none -- all new spacing in Phase 4 uses the standard 7-token scale above.
 
-**Source:** Values extracted from `responsive.css`, `marketing.css`, `contact.html` inline styles. Phase 4 does not introduce new spacing tokens -- use existing values.
+### Legacy Exceptions (existing, not modified this phase)
+
+These values exist in the current codebase and are not introduced or changed by Phase 4. They are documented for awareness only:
+
+| Existing Value | Where | Nearest Contract Token | Notes |
+|----------------|-------|----------------------|-------|
+| 40px | Contact form card padding (`contact.html` inline style) | 2xl (48px) | Pre-existing inline style, not modified this phase |
+| 60px | Hero section padding (`60px 0` in `marketing.css`) | 3xl (64px) | Pre-existing CSS rule, not modified this phase |
+| 14px vertical padding | `.btn-submit` contact form button | sm (8px) / md (16px) | Pre-existing button style, not modified this phase |
+| 15px | Container gutters (Bootstrap 3 default) | md (16px) | Bootstrap framework default, cannot change |
+| 12px 15px | `.form-control` padding (Bootstrap 3 default) | md (16px) | Bootstrap framework default, cannot change |
+| 3px | Compliance badge margins (existing) | xs (4px) | Pre-existing, not modified this phase |
+
+**Source:** Values extracted from `responsive.css`, `marketing.css`, `contact.html` inline styles. Phase 4 does not introduce new spacing tokens -- all new elements use the standard contract scale.
 
 ---
 
@@ -60,15 +71,20 @@ Exceptions:
 
 Font stack: `'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif` (Bootstrap United default with Ubuntu override).
 
-**Phase 4 specifics:**
-- Case study body text: 16px at weight 400, line-height 1.6 (matches `.article-content` in responsive.css)
-- Case study h2: 28px (`1.8em` desktop) at weight 700, line-height 1.2
-- Case study h3: 22px (`1.4em` desktop) at weight 700, line-height 1.2
-- CTA button text: 18px (`1.1em`) at weight 600 (matches `.btn-submit` pattern)
-- Form labels: 14px at weight 400 (Bootstrap default)
-- Compliance badges: 12px (`0.75em`) at weight 400
+**Weights:** Ubuntu ships 400 and 700 only. All new Phase 4 text uses 400 or 700 exclusively.
 
-**Source:** Values from `responsive.css`, `contact.html` inline styles, Bootstrap United base. Ubuntu only ships weights 400 and 700 -- do not use 600 except where CSS `font-weight: 600` falls back to 700 per browser behavior.
+### Legacy Typography Exceptions (existing, not modified this phase)
+
+These sizes exist in the current codebase and are not introduced or changed by Phase 4. Each maps to the nearest contract size:
+
+| Existing Size | Where | Nearest Contract Size | Notes |
+|---------------|-------|----------------------|-------|
+| 28px (`1.8em`) | Case study h2 headings | Heading 24px | Pre-existing `responsive.css` rule, not modified this phase |
+| 22px (`1.4em`) | Case study h3 headings | Heading 24px | Pre-existing `responsive.css` rule, not modified this phase |
+| 18px (`1.1em`) | `.btn-submit` CTA button text | Body 16px | Pre-existing button style, not modified this phase |
+| 12px (`0.75em`) | Compliance badges | Label 14px | Pre-existing badge style, not modified this phase |
+
+**Source:** Values from `responsive.css`, `contact.html` inline styles, Bootstrap United base. Phase 4 does not introduce any new font sizes -- all new text elements use the 4-size contract scale.
 
 ---
 
@@ -106,6 +122,18 @@ Font stack: `'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif` (Bootstra
 **Do NOT use accent for:** general links, nav items, body text emphasis, icons, borders on non-CTA elements.
 
 **Source:** `marketing.css` `:root` variables, `contact.html` inline styles, `bootstrap-united.css`.
+
+---
+
+## Visual Hierarchy
+
+Focal point declaration for each enhanced page area. The focal point is the single element the user's eye should land on first within the section.
+
+| Page Area | Focal Point | How Achieved |
+|-----------|-------------|--------------|
+| Calculator page bottom CTA (`.info-section`) | "Discuss Your Project" `btn-success btn-lg` button | Largest button in section, `#38b44a` green on white background creates strongest contrast against page dominant color. Heading draws eye down, button captures action. |
+| Case study bottom CTA (`.info-section`) | "Get a Similar Analysis for Your Project" heading + "Discuss Your Project" `btn-success btn-lg` button | Heading at 24px bold establishes context, green CTA button is the only accent-weight element in the section. Secondary "Try the Calculator" button in `btn-default` (white) recedes. |
+| Contact form submit button | "Send Message" `btn-submit` button | `#e95420` orange background is the only accent-colored element in the form card. Full-width button at bottom of form creates natural visual terminus after completing fields. |
 
 ---
 
@@ -198,7 +226,7 @@ This phase does not introduce new UI components. All work enhances existing patt
 ### New HTML Pattern: Case Study Bottom CTA
 
 ```html
-<div class="info-section" style="margin-top: 40px;">
+<div class="info-section" style="margin-top: 48px;">
     <h2>Get a Similar Analysis for Your Project</h2>
     <p>
         Whether you need [specific analysis type] for [specific application],
