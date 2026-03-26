@@ -31,7 +31,12 @@ Phase 03 — 0/0 plans (needs discuss → plan)
 
 Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260326-m07 | add a gh issue to install and configure tmux or similar across all machines | 2026-03-26 | 7d32c40d | [260326-m07-add-a-gh-issue-to-install-and-configure-](./quick/260326-m07-add-a-gh-issue-to-install-and-configure-/) |
+
 ## Session
 
-- Last session: 2026-03-26T20:55:00Z
-- Stopped at: Completed quick/260326-m07 (terminal multiplexer issue #1462)
+Last activity: 2026-03-26 - Completed quick task 260326-m07: add a gh issue to install and configure tmux or similar across all machines
