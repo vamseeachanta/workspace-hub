@@ -38,7 +38,12 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - collapseCheck defaults E=207000 MPa, nu=0.3 when not provided
 
 ### Phase 03 Plan 02 Decisions
-- [Phase 03]: All pricing CTAs route to contact.html -- consultation-based pricing, no payment infrastructure per D-07
+- All pricing CTAs route to contact.html -- consultation-based pricing, no payment infrastructure per D-07
+
+### Phase 03 Plan 03 Decisions
+- Followed fatigue-life-calculator.html template pattern for new calculator pages
+- Removed Coming Soon placeholder cards from index (replaced by actual calculators)
+- Added GA4 guard (typeof gtag check) to prevent errors without analytics loaded
 
 ### Quick Tasks Completed
 
