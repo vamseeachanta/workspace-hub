@@ -2,7 +2,7 @@
 
 ## Overview
 
-Engineering workspace orchestrating a portfolio of Python packages, data repositories, and web properties for offshore/subsea engineering. The hub coordinates 24 git submodules through shared tooling, AI agent configuration, and cross-repo automation.
+Engineering workspace orchestrating a portfolio of Python packages, data repositories, and web properties for offshore/subsea engineering. The hub coordinates 24 independent git repositories through shared tooling, AI agent configuration, and cross-repo automation.
 
 **Theme:** Tethering timeless engineering to a single source of truth — every calculation traces to its standard, every standard to its implementation.
 
@@ -23,11 +23,11 @@ Engineering workspace orchestrating a portfolio of Python packages, data reposit
 - **AI agents:** Claude Code, Codex CLI, Gemini CLI — multi-provider with cross-review
 - **Workflow:** GSD framework (discuss → plan → execute → verify → ship)
 - **Task tracking:** GitHub Issues (no local work queue)
-- **Git:** 24 submodules, commit to main + push; branch only for multi-session work
+- **Git:** 24 independent repos (submodules removed 2026-03-25), commit to main + push; branch only for multi-session work
 
 ## Engineering Domains
 
-- Offshore/subsea structural analysis (cathodic protection, VIV, fitness-for-service)
+- Offshore/subsea structural analysis (cathodic protection, VIV, fitness-for-service, on-bottom stability, wall thickness, fatigue)
 - Computational fluid dynamics (OpenFOAM) and finite element analysis
 - Energy data aggregation (EIA, BSEE, global production)
 - Marine/maritime legal and regulatory compliance
