@@ -55,7 +55,8 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 ### Pending Todos
 
-1. Automate OrcaFlex model generation on licensed machine (tooling)
+1. Automate OrcaWave vessel hull analysis on licensed machine (tooling) — **tackle first**
+2. Automate OrcaFlex model generation on licensed machine (tooling) — after OrcaWave
 
 ### Roadmap Evolution
 
