@@ -47,6 +47,12 @@ Plans:
 - SEO and content strategy targeting offshore/subsea engineering keywords
 - Pricing/access model (freemium? subscription? per-calculation?)
 **UAT:** Website live with clear value prop, at least 3 calculation demos, and a signup/contact flow
+**Plans:** 3 plans
+
+Plans:
+- [x] 03-01-PLAN.md — Calculator engines: OBS (DNV-RP-F109) + wall thickness (ASME B31.4) with TDD
+- [ ] 03-02-PLAN.md — TBD
+- [ ] 03-03-PLAN.md — TBD
 
 ### Phase 4: Client acquisition — 3-5 clients + broad individual user base
 **Goal:** 3-5 paying clients (consultancies, operators) and a growing base of individual engineers using the platform
