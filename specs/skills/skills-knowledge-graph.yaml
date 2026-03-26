@@ -6,6 +6,7 @@ schema_version: "2.0.0"
 generated_at: "2026-03-25"
 generated_by: "issue-1100"
 source: "SKILLS_INDEX.md + SKILL.md frontmatter + manual annotation"
+# Canonical domain taxonomy: specs/taxonomy/domains.yaml
 
 # ─────────────────────────────────────────────
 # Domain taxonomy

@@ -122,8 +122,12 @@ def claude_summarise(text: str, meta: dict) -> Optional[dict]:
             logging.warning("claude non-zero: %s", r.stderr[:200])
             return None
 
-        outer = json.loads(r.stdout)
+        # --output-format json may return multiple JSON objects on separate lines
+        first_line = r.stdout.strip().splitlines()[0] if r.stdout.strip() else "{}"
+        outer = json.loads(first_line)
         raw = outer.get("result", "")
+        if not raw:
+            return None
         # Strip markdown fences if present
         if raw.startswith("```"):
             lines = raw.strip().split("\n")

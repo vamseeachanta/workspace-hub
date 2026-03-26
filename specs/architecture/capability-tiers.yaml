@@ -1,6 +1,7 @@
 # Capability Tiers — Superintelligent Engineering Agent Architecture
 # WRK-385 | Created: 2026-02-24
 # Reference: specs/architecture/agent-vision.md
+# Canonical domain taxonomy: specs/taxonomy/domains.yaml
 
 tiers:
   - id: 0

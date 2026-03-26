@@ -30,9 +30,30 @@ _SOLUTION_RE = re.compile(
 def _parse_example(record: dict) -> Optional[dict]:
     """Extract title, example number, and expected value from a record.
 
+    Supports two formats:
+    1. Structured records from deep extraction (have number/title/expected_value keys)
+    2. Legacy raw-text records (regex-parsed from text field)
+
     Returns a dict with keys: number, title, expected_value, source, domain
     or None if parsing fails.
     """
+    # Format 1: structured records from naval_example_parsers / deep extraction
+    if record.get("expected_value") is not None and record.get("number"):
+        expected = record["expected_value"]
+        if isinstance(expected, str):
+            try:
+                expected = float(expected.replace(",", ""))
+            except ValueError:
+                return None
+        return {
+            "number": str(record["number"]),
+            "title": record.get("title", ""),
+            "expected_value": expected,
+            "source": record.get("source", {}),
+            "domain": record.get("domain", "unknown"),
+        }
+
+    # Format 2: legacy raw-text records (regex parsing)
     text = record.get("text", "")
 
     title_match = _EXAMPLE_RE.search(text)
@@ -145,7 +166,7 @@ def promote_worked_examples(
         parsed = _parse_example(rec)
         if parsed is None:
             continue
-        manifest = rec.get("manifest", "unknown")
+        manifest = rec.get("manifest") or rec.get("source_book") or "unknown"
         by_manifest[manifest].append(parsed)
         manifest_domain[manifest] = parsed["domain"]
 

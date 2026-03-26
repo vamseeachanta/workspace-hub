@@ -40,6 +40,7 @@ def collect_examples_from_reports(reports_dir: str) -> list[dict]:
                 "input_count": ex.get("input_count", 0),
                 "use_as_test": has_inputs and ex["expected_value"] is not None,
                 "extraction_source": "deep",
+                "domain": ex.get("domain", "naval-architecture"),
             })
     return examples
 

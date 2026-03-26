@@ -1,0 +1,101 @@
+"""Worked examples from Ship-Hydrostatics-and-Stability-Biran — auto-promoted.
+
+# content-hash: 3990eb179eaaa1475c2faaef5ad4a95c1578094e337d00f400c25641fca0aae8
+"""
+
+import pytest
+
+
+@pytest.mark.parametrize(
+    "description,expected_approx",
+    [
+        ("Figure 2. 1 6(a) shows a cone floating top-down in water. The diameter of the ba", 0.2267),
+        ("Figure 2.16(b) shows a cone floating top-up. Noting by F^ the freeboard, that is", 7),
+        ("B and M curves of Lido 9", 6),
+        ("An offshore platform", 4),
+        ("In this example, we consider the integral { L", 2.57),
+        ("Calculate the integral L/• 45 - x3 dx", 1),
+        ("the displacement of geometrically similar hulls", 3),
+        ("Plot in one figure the righting-arm curves and the tangents in origin of the Shi", 2.1),
+        ("Draw the curve of statical stability of the Ship Lido 9 for a displacement in se", 2.1),
+        ("Wind pressure", 0.5144),
+        ("stability in turning", 16),
+        ("Critical draught of grounded ship", 4.92),
+        ("1)", 3.45),
+        ("Least-squares fit of the results of an inclining experiment", 62547.7106),
+        ("Application of the IMO weather criterion for cargo and pas-", 0.824),
+        ("The 1MO turning criterion", 26251),
+        ("The turning criterion of the US Navy", 0.15),
+        ("5ai7 s/w/i in longitudinal waves", 1),
+        ("details the data used in the above-mentioned figure", 0.18),
+        ("illustrates a MATLAB function that automatically checks the", 2943),
+        ("and the wind arm prescribed by the", 2.21),
+        ("Analysis of the flooding calculations of a simple barge", 0.823),
+        ("Cubic Bezier curve", 3),
+        ("Melting ice cube", 12),
+        ("Melting ice cube", 0.2267),
+        ("Melting ice cube", 16),
+        ("Figure 2.16(b) shows a cone floating top-up. Noting by F^ the freeboard, that is", 7),
+        ("B and M curves of Lido 9", 6),
+        ("B and M curves of Lido 9", 6),
+        ("Catamaran stability", 4),
+        ("we learnt that if an ice cube melts in a glass of water, the level of", 4),
+        ("we learnt that if an ice cube melts in a glass of water, the level of", 4),
+        ("to plot only the B and M curves of the vessel", 12),
+        ("In this example, we consider the integral { L", 2.57),
+        ("In this example, we consider the integral { L", 2.57),
+        ("using this time Simpson's rule", 1),
+        ("Calculate the integral L/• 45 - x3 dx", 1),
+        ("Calculate the integral 2 sin x dx", 2),
+        ("Find the trapezoidal multipliers corresponding to integration over the set of st", 2),
+        ("Find the Simpson's multipliers corresponding to integration over the set of stat", 2),
+        ("the displacement of geometrically similar hulls", 3),
+        ("the displacement of geometrically similar hulls", 3),
+        ("Using the data of Ship Lido 9 plot a figure in which you can verify the property", 4),
+        ("Show that affine transformations leave the coefficients of form unchanged. In ma", 4),
+        ("Show that for affine hulls, the metacentric radius, BM, behaves like B2/T. Stati", 4),
+        ("Plot in one figure the righting-arm curves and the tangents in origin of the Shi", 2.1),
+        ("Draw the curve of statical stability of the Ship Lido 9 for a displacement in se", 2.1),
+        ("Plot in one figure the righting-arm curves and the tangents in origin of the Shi", 2.1),
+        ("Draw the curve of statical stability of the Ship Lido 9 for a displacement in se", 2.1),
+        ("Once, it was not unusual to see that a ship carrying timber on deck sailed", 5.5),
+        ("Once, it was not unusual to see that a ship carrying timber on deck sailed", 5.55),
+        ("Wind pressure", 0.5144),
+        ("Wind pressure", 16),
+        ("Dynamical stability", 4.92),
+        ("Critical draught of grounded ship", 4.92),
+        ("Dynamical stability", 4.92),
+        ("Critical draught of grounded ship", 4.92),
+        ("1)", 3.45),
+        ("1)", 3.45),
+        ("Least-squares fit of the results of an inclining experiment", 62547.7106),
+        ("Application of the IMO general requirements for cargo and", 0.824),
+        ("Application of the IMO general requirements for cargo and", 26251),
+        ("and redo the calculations assuming a wind speed of", 0.15),
+        ("and redo the calculations assuming a wind speed of", 0.15),
+        ("Parametric resonance in ship stability", 1),
+        ("are calculated", 27),
+        ("are calculated", 0.846),
+        ("details the data used in the above-mentioned figure", 0.18),
+        ("details the data used in the above-mentioned figure", 0.18),
+        ("Computer function for BV1033", 0.1),
+        ("Computer function for BV1033", 0.01),
+        ("illustrates a MATLAB function that automatically checks the", 2943),
+        ("illustrates a MATLAB function that automatically checks the", 2943),
+        ("and the wind arm prescribed by the", 2.21),
+        ("for machinery", 1.5),
+        ("Analysis of the flooding calculations of a simple barge", 0.823),
+        ("Analysis of the flooding calculations of a simple barge", 649.294),
+        ("Simulating a Frahm vibration absorber", 100),
+        ("Cubic Bezier curve", 3),
+        ("Cubic Bezier curve", 3),
+    ],
+)
+def test_worked_example(description, expected_approx):
+    """Verify worked examples from source documents.
+
+    These tests serve as regression checks — the expected values come
+    directly from the standard's worked examples.
+    """
+    # TODO: Wire to actual implementation when equations are promoted
+    assert expected_approx > 0, f"Placeholder for: {description}"

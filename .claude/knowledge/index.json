@@ -1,23 +1,24 @@
 {
   "metadata": {
-    "generated_at": "2026-03-25T00:00:00-05:00",
-    "entry_count": 12,
-    "active_count": 12,
+    "generated_at": "2026-03-25T23:00:00-05:00",
+    "entry_count": 17,
+    "active_count": 17,
     "errors": 0,
     "avg_confidence": 0.93,
     "type_counts": {
       "decision": 5,
       "gotcha": 3,
       "pattern": 2,
-      "tip": 2
+      "tip": 2,
+      "resource": 5
     },
     "category_counts": {
       "architecture": 3,
-      "data": 3,
+      "data": 5,
       "data-governance": 1,
       "skills": 1,
       "testing": 1,
-      "tooling": 3
+      "tooling": 4
     }
   },
   "entries": [
@@ -326,6 +327,86 @@
       "status": "active",
       "access_count": 0,
       "file": ".claude/knowledge/entries/decisions/ADR-005-resource-intelligence-schema.md"
+    },
+    {
+      "id": "RES-001",
+      "type": "resource",
+      "title": "OrcFxAPI .frequencies returns Hz in descending order",
+      "category": "data",
+      "tags": ["orcfxapi", "orcawave", "frequency", "units", "api", "descending"],
+      "repos": ["digitalmodel"],
+      "confidence": 0.95,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "manual",
+      "related": ["GOT-002"],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/resources/RES-001-orcfxapi-frequencies-hz-descending.md"
+    },
+    {
+      "id": "RES-002",
+      "type": "resource",
+      "title": "AQWA elements must use QPPL DIFF for diffraction analysis",
+      "category": "data",
+      "tags": ["aqwa", "diffraction", "qppl", "dat-format", "mesh"],
+      "repos": ["digitalmodel"],
+      "confidence": 0.95,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "manual",
+      "related": ["GOT-002", "RES-001"],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/resources/RES-002-aqwa-qppl-diff-required.md"
+    },
+    {
+      "id": "RES-003",
+      "type": "resource",
+      "title": "BEMRosetta CLI supports mesh conversion only via -mesh mode",
+      "category": "tooling",
+      "tags": ["bemrosetta", "mesh", "nemoh", "cli", "conversion"],
+      "repos": ["digitalmodel"],
+      "confidence": 0.90,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "manual",
+      "related": ["RES-001", "RES-002"],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/resources/RES-003-bemrosetta-mesh-mode-only.md"
+    },
+    {
+      "id": "RES-004",
+      "type": "resource",
+      "title": "DNV-RP-C203 provides 221 SN curves from 17 international standards",
+      "category": "data",
+      "tags": ["dnv", "sn-curve", "fatigue", "standards", "digitalmodel"],
+      "repos": ["digitalmodel"],
+      "confidence": 1.0,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "manual",
+      "related": ["PAT-002"],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/resources/RES-004-dnv-rp-c203-sn-curves.md"
+    },
+    {
+      "id": "RES-005",
+      "type": "resource",
+      "title": "BSEE production data available via data.gov API v2",
+      "category": "data",
+      "tags": ["bsee", "api", "production", "oil-gas", "data-gov", "gulf-of-mexico"],
+      "repos": ["worldenergydata"],
+      "confidence": 0.90,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "manual",
+      "related": [],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/resources/RES-005-bsee-api-v2-production-data.md"
     }
   ]
 }

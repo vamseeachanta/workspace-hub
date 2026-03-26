@@ -1,0 +1,511 @@
+# Pre-computed index from specs/skills/skills-knowledge-graph.yaml
+# Regenerate: scripts/coordination/routing/lib/skill_graph.sh --rebuild-index
+generated_at: "2026-03-26"
+source: specs/skills/skills-knowledge-graph.yaml
+
+by_domain:
+  business:
+    - aceengineer-admin/expense-tracking
+    - aceengineer-admin/invoice-automation
+    - aceengineer-admin/tax-preparation
+  data_processing:
+    - assetutilities/data-management
+    - assetutilities/plotly-visualization
+    - workspace-hub/data-pipeline-processor
+    - workspace-hub/parallel-file-processor
+  design:
+    - workspace-hub/algorithmic-art
+    - workspace-hub/brand-guidelines
+    - workspace-hub/canvas-design
+    - workspace-hub/frontend-design
+    - workspace-hub/internal-comms
+    - workspace-hub/slack-gif-creator
+    - workspace-hub/theme-factory
+  development:
+    - workspace-hub/mcp-builder
+    - workspace-hub/skill-creator
+    - workspace-hub/sparc-workflow
+    - workspace-hub/webapp-testing
+    - workspace-hub/web-artifacts-builder
+    - workspace-hub/yaml-workflow-executor
+  document_generation:
+    - assetutilities/pdf-utilities
+    - workspace-hub/doc-coauthoring
+    - workspace-hub/docx
+    - workspace-hub/engineering-report-generator
+    - workspace-hub/pdf
+    - workspace-hub/pptx
+    - workspace-hub/xlsx
+  energy_data:
+    - worldenergydata/bsee-data-extractor
+    - worldenergydata/energy-data-visualizer
+    - worldenergydata/fdas-economics
+    - worldenergydata/field-analyzer
+    - worldenergydata/marine-safety-incidents
+    - worldenergydata/npv-analyzer
+    - worldenergydata/sodir-data-extractor
+    - worldenergydata/web-scraper-energy
+    - worldenergydata/well-production-dashboard
+  marine_offshore:
+    - digitalmodel/aqwa-analysis
+    - digitalmodel/catenary-riser
+    - digitalmodel/fatigue-analysis
+    - digitalmodel/hydrodynamics
+    - digitalmodel/mooring-design
+    - digitalmodel/orcaflex-modeling
+    - digitalmodel/orcaflex-post-processing
+    - digitalmodel/signal-analysis
+    - digitalmodel/structural-analysis
+    - digitalmodel/viv-analysis
+  workspace_ops:
+    - workspace-hub/agent-orchestration
+    - workspace-hub/ai-tool-assessment
+    - workspace-hub/compliance-check
+    - workspace-hub/repo-sync
+    - workspace-hub/workspace-cli
+
+by_input_type:
+  agent_config:
+    - workspace-hub/agent-orchestration
+  analysis_results:
+    - workspace-hub/engineering-report-generator
+  announcement_brief:
+    - workspace-hub/internal-comms
+  api_number:
+    - worldenergydata/bsee-data-extractor
+  api_spec:
+    - workspace-hub/mcp-builder
+  aqwa_model:
+    - digitalmodel/aqwa-analysis
+  audience_context:
+    - workspace-hub/internal-comms
+  bank_statements:
+    - aceengineer-admin/expense-tracking
+  block_id:
+    - worldenergydata/bsee-data-extractor
+  brand_brief:
+    - workspace-hub/brand-guidelines
+  cash_flow_data:
+    - worldenergydata/npv-analyzer
+  cli_command:
+    - workspace-hub/workspace-cli
+  client_data:
+    - aceengineer-admin/invoice-automation
+  codebase_path:
+    - workspace-hub/compliance-check
+  cost_estimates:
+    - worldenergydata/fdas-economics
+  csv_data:
+    - aceengineer-admin/expense-tracking
+    - assetutilities/data-management
+    - assetutilities/plotly-visualization
+    - digitalmodel/orcaflex-modeling
+    - digitalmodel/signal-analysis
+    - workspace-hub/data-pipeline-processor
+    - workspace-hub/engineering-report-generator
+    - workspace-hub/xlsx
+  current_data:
+    - digitalmodel/hydrodynamics
+  current_profile:
+    - digitalmodel/viv-analysis
+  customization_params:
+    - workspace-hub/theme-factory
+  dataframe:
+    - assetutilities/plotly-visualization
+  date_range:
+    - worldenergydata/marine-safety-incidents
+  design_brief:
+    - workspace-hub/canvas-design
+  design_spec:
+    - workspace-hub/frontend-design
+    - workspace-hub/web-artifacts-builder
+  discount_rate:
+    - worldenergydata/npv-analyzer
+  draft_document:
+    - workspace-hub/doc-coauthoring
+  environmental_data:
+    - digitalmodel/catenary-riser
+    - digitalmodel/mooring-design
+  feedback_notes:
+    - workspace-hub/doc-coauthoring
+  field_metadata:
+    - worldenergydata/energy-data-visualizer
+  field_name:
+    - worldenergydata/bsee-data-extractor
+    - worldenergydata/field-analyzer
+    - worldenergydata/sodir-data-extractor
+  field_parameters:
+    - worldenergydata/fdas-economics
+  file_list:
+    - workspace-hub/parallel-file-processor
+  financial_records:
+    - aceengineer-admin/tax-preparation
+  hours_log:
+    - aceengineer-admin/invoice-automation
+  html_content:
+    - workspace-hub/pdf
+  image_assets:
+    - workspace-hub/slack-gif-creator
+  incident_type:
+    - worldenergydata/marine-safety-incidents
+  joint_data:
+    - digitalmodel/fatigue-analysis
+  json_data:
+    - assetutilities/data-management
+    - workspace-hub/data-pipeline-processor
+  lease_id:
+    - worldenergydata/bsee-data-extractor
+  load_data:
+    - digitalmodel/structural-analysis
+  logo_assets:
+    - workspace-hub/brand-guidelines
+  material_data:
+    - digitalmodel/structural-analysis
+  modal_data:
+    - digitalmodel/viv-analysis
+  orcaflex_model:
+    - digitalmodel/orcaflex-modeling
+  orcaflex_results:
+    - digitalmodel/orcaflex-post-processing
+  pdf_file:
+    - assetutilities/pdf-utilities
+    - workspace-hub/pdf
+  price_scenarios:
+    - worldenergydata/fdas-economics
+    - worldenergydata/npv-analyzer
+  prior_year_returns:
+    - aceengineer-admin/tax-preparation
+  processing_config:
+    - workspace-hub/parallel-file-processor
+  production_csv:
+    - worldenergydata/energy-data-visualizer
+    - worldenergydata/field-analyzer
+    - worldenergydata/well-production-dashboard
+  receipt_images:
+    - aceengineer-admin/expense-tracking
+  reference_images:
+    - workspace-hub/canvas-design
+  region:
+    - worldenergydata/marine-safety-incidents
+  repo_list:
+    - workspace-hub/repo-sync
+  riser_properties:
+    - digitalmodel/catenary-riser
+    - digitalmodel/viv-analysis
+  rule_set:
+    - workspace-hub/compliance-check
+  scrape_config:
+    - worldenergydata/web-scraper-energy
+  section_properties:
+    - digitalmodel/structural-analysis
+  seed_value:
+    - workspace-hub/algorithmic-art
+  sim_files:
+    - digitalmodel/orcaflex-post-processing
+  skill_template:
+    - workspace-hub/skill-creator
+  slide_content:
+    - workspace-hub/pptx
+  sn_curve_params:
+    - digitalmodel/fatigue-analysis
+  stress_history:
+    - digitalmodel/fatigue-analysis
+  subscription_data:
+    - workspace-hub/ai-tool-assessment
+  sync_config:
+    - workspace-hub/repo-sync
+  tabular_data:
+    - workspace-hub/xlsx
+  task_description:
+    - workspace-hub/sparc-workflow
+  task_spec:
+    - workspace-hub/agent-orchestration
+  template_docx:
+    - workspace-hub/docx
+  template_pptx:
+    - workspace-hub/pptx
+  test_spec:
+    - workspace-hub/webapp-testing
+  text_content:
+    - workspace-hub/docx
+    - workspace-hub/pdf
+  theme_selection:
+    - workspace-hub/theme-factory
+  time_series_data:
+    - digitalmodel/signal-analysis
+    - worldenergydata/energy-data-visualizer
+  tool_definitions:
+    - workspace-hub/mcp-builder
+  url:
+    - workspace-hub/webapp-testing
+    - worldenergydata/web-scraper-energy
+  usage_logs:
+    - workspace-hub/ai-tool-assessment
+  user_prompt:
+    - workspace-hub/algorithmic-art
+    - workspace-hub/skill-creator
+    - workspace-hub/slack-gif-creator
+    - workspace-hub/web-artifacts-builder
+  vessel_data:
+    - digitalmodel/mooring-design
+  vessel_geometry:
+    - digitalmodel/aqwa-analysis
+    - digitalmodel/hydrodynamics
+  wave_data:
+    - digitalmodel/hydrodynamics
+  wellbore_id:
+    - worldenergydata/sodir-data-extractor
+  well_metadata:
+    - worldenergydata/well-production-dashboard
+  wireframe:
+    - workspace-hub/frontend-design
+  yaml_config:
+    - aceengineer-admin/invoice-automation
+    - assetutilities/data-management
+    - assetutilities/plotly-visualization
+    - digitalmodel/catenary-riser
+    - digitalmodel/mooring-design
+    - digitalmodel/orcaflex-modeling
+    - digitalmodel/orcaflex-post-processing
+    - workspace-hub/data-pipeline-processor
+    - workspace-hub/docx
+    - workspace-hub/engineering-report-generator
+    - workspace-hub/pptx
+    - workspace-hub/xlsx
+    - workspace-hub/yaml-workflow-executor
+
+by_output_type:
+  agent_logs:
+    - workspace-hub/agent-orchestration
+  aggregation_report:
+    - workspace-hub/parallel-file-processor
+  analysis_report:
+    - digitalmodel/catenary-riser
+    - digitalmodel/fatigue-analysis
+    - digitalmodel/mooring-design
+    - digitalmodel/structural-analysis
+    - digitalmodel/viv-analysis
+    - worldenergydata/marine-safety-incidents
+  announcement:
+    - workspace-hub/internal-comms
+  aqwa_results:
+    - digitalmodel/aqwa-analysis
+  architecture:
+    - workspace-hub/sparc-workflow
+  assessment_report:
+    - workspace-hub/ai-tool-assessment
+  benchmarking_results:
+    - worldenergydata/field-analyzer
+  brand_guide_doc:
+    - workspace-hub/brand-guidelines
+  cash_flow_plot:
+    - worldenergydata/npv-analyzer
+  cash_flow_table:
+    - worldenergydata/fdas-economics
+  categorized_expenses:
+    - aceengineer-admin/expense-tracking
+  change_log:
+    - workspace-hub/doc-coauthoring
+  cli_output:
+    - workspace-hub/workspace-cli
+  completion:
+    - workspace-hub/sparc-workflow
+  compliance_report:
+    - workspace-hub/compliance-check
+  component_code:
+    - workspace-hub/frontend-design
+  conflict_report:
+    - workspace-hub/repo-sync
+  cpa_package:
+    - aceengineer-admin/tax-preparation
+  css_file:
+    - workspace-hub/frontend-design
+  css_variables:
+    - workspace-hub/theme-factory
+  csv_data:
+    - assetutilities/data-management
+    - workspace-hub/data-pipeline-processor
+    - worldenergydata/web-scraper-energy
+  cycle_counts:
+    - digitalmodel/signal-analysis
+  damage_summary:
+    - digitalmodel/fatigue-analysis
+  dat_files:
+    - digitalmodel/orcaflex-modeling
+  directory_structure:
+    - workspace-hub/skill-creator
+  docx_file:
+    - workspace-hub/docx
+  docx_invoice:
+    - aceengineer-admin/invoice-automation
+  economic_model:
+    - worldenergydata/fdas-economics
+  expense_report:
+    - aceengineer-admin/expense-tracking
+  extracted_tables:
+    - workspace-hub/pdf
+  extracted_text:
+    - assetutilities/pdf-utilities
+    - workspace-hub/pdf
+  fatigue_damage:
+    - digitalmodel/viv-analysis
+  fatigue_life:
+    - digitalmodel/fatigue-analysis
+  field_metadata:
+    - worldenergydata/sodir-data-extractor
+  field_report:
+    - worldenergydata/field-analyzer
+  gif_file:
+    - workspace-hub/slack-gif-creator
+  heatmap:
+    - worldenergydata/marine-safety-incidents
+  html_dashboard:
+    - worldenergydata/energy-data-visualizer
+    - worldenergydata/well-production-dashboard
+  html_file:
+    - assetutilities/plotly-visualization
+    - workspace-hub/algorithmic-art
+    - workspace-hub/frontend-design
+    - workspace-hub/web-artifacts-builder
+  html_report:
+    - digitalmodel/orcaflex-post-processing
+    - workspace-hub/engineering-report-generator
+  hydrodynamic_coefficients:
+    - digitalmodel/aqwa-analysis
+    - digitalmodel/hydrodynamics
+  incident_database:
+    - worldenergydata/marine-safety-incidents
+  json_data:
+    - assetutilities/data-management
+    - workspace-hub/data-pipeline-processor
+  log_output:
+    - workspace-hub/yaml-workflow-executor
+  mcp_server_code:
+    - workspace-hub/mcp-builder
+  memo:
+    - workspace-hub/internal-comms
+  mooring_config:
+    - digitalmodel/mooring-design
+  newsletter:
+    - workspace-hub/internal-comms
+  npv_results:
+    - worldenergydata/npv-analyzer
+  orcaflex_model:
+    - digitalmodel/catenary-riser
+    - digitalmodel/mooring-design
+  orcaflex_results:
+    - digitalmodel/orcaflex-modeling
+  orchestration_results:
+    - workspace-hub/agent-orchestration
+  p5js_sketch:
+    - workspace-hub/algorithmic-art
+  parquet_data:
+    - workspace-hub/data-pipeline-processor
+  pdf_file:
+    - assetutilities/pdf-utilities
+    - workspace-hub/canvas-design
+    - workspace-hub/pdf
+  pdf_invoice:
+    - aceengineer-admin/invoice-automation
+  plotly_figures:
+    - assetutilities/plotly-visualization
+    - digitalmodel/orcaflex-post-processing
+    - workspace-hub/engineering-report-generator
+    - worldenergydata/energy-data-visualizer
+    - worldenergydata/field-analyzer
+    - worldenergydata/well-production-dashboard
+  png_file:
+    - workspace-hub/canvas-design
+  pptx_file:
+    - workspace-hub/pptx
+  processed_files:
+    - workspace-hub/parallel-file-processor
+  production_csv:
+    - worldenergydata/bsee-data-extractor
+    - worldenergydata/sodir-data-extractor
+  pseudocode:
+    - workspace-hub/sparc-workflow
+  rao_data:
+    - digitalmodel/aqwa-analysis
+    - digitalmodel/hydrodynamics
+  refinement:
+    - workspace-hub/sparc-workflow
+  revised_document:
+    - workspace-hub/doc-coauthoring
+  riser_config:
+    - digitalmodel/catenary-riser
+  scraped_data:
+    - worldenergydata/web-scraper-energy
+  screenshots:
+    - workspace-hub/webapp-testing
+  sensitivity_results:
+    - worldenergydata/fdas-economics
+  sim_files:
+    - digitalmodel/orcaflex-modeling
+  skill_md:
+    - workspace-hub/skill-creator
+  spectral_results:
+    - digitalmodel/signal-analysis
+  spec:
+    - workspace-hub/sparc-workflow
+  statistics_csv:
+    - digitalmodel/orcaflex-post-processing
+  statistics:
+    - digitalmodel/signal-analysis
+  stress_results:
+    - digitalmodel/structural-analysis
+  style_tokens:
+    - workspace-hub/brand-guidelines
+    - workspace-hub/theme-factory
+  sync_status:
+    - workspace-hub/repo-sync
+  tax_documents:
+    - aceengineer-admin/tax-preparation
+  test_results:
+    - workspace-hub/webapp-testing
+  theme_config:
+    - workspace-hub/theme-factory
+  tool_schema:
+    - workspace-hub/mcp-builder
+  tornado_chart:
+    - worldenergydata/npv-analyzer
+  transformed_data:
+    - assetutilities/data-management
+  utilization_ratios:
+    - digitalmodel/structural-analysis
+  violation_list:
+    - workspace-hub/compliance-check
+  viv_response:
+    - digitalmodel/viv-analysis
+  wave_spectra:
+    - digitalmodel/hydrodynamics
+  well_metadata:
+    - worldenergydata/bsee-data-extractor
+  workflow_results:
+    - workspace-hub/yaml-workflow-executor
+  xlsx_file:
+    - workspace-hub/xlsx
+
+feed_chains:
+  - [digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing, digitalmodel/fatigue-analysis]
+  - [digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing, digitalmodel/structural-analysis]
+  - [digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing, workspace-hub/engineering-report-generator]
+  - [digitalmodel/mooring-design, digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing]
+  - [digitalmodel/catenary-riser, digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing]
+  - [digitalmodel/aqwa-analysis, digitalmodel/orcaflex-modeling, digitalmodel/orcaflex-post-processing]
+  - [worldenergydata/bsee-data-extractor, worldenergydata/field-analyzer, worldenergydata/fdas-economics]
+  - [worldenergydata/bsee-data-extractor, worldenergydata/field-analyzer, worldenergydata/energy-data-visualizer]
+  - [worldenergydata/sodir-data-extractor, worldenergydata/field-analyzer, worldenergydata/fdas-economics]
+  - [worldenergydata/sodir-data-extractor, worldenergydata/field-analyzer, worldenergydata/energy-data-visualizer]
+  - [worldenergydata/web-scraper-energy, worldenergydata/bsee-data-extractor, worldenergydata/field-analyzer]
+  - [worldenergydata/web-scraper-energy, worldenergydata/bsee-data-extractor, worldenergydata/well-production-dashboard]
+  - [worldenergydata/web-scraper-energy, worldenergydata/sodir-data-extractor, worldenergydata/field-analyzer]
+  - [worldenergydata/web-scraper-energy, worldenergydata/sodir-data-extractor, worldenergydata/well-production-dashboard]
+  - [digitalmodel/aqwa-analysis, digitalmodel/hydrodynamics]
+  - [digitalmodel/signal-analysis, digitalmodel/fatigue-analysis]
+  - [digitalmodel/viv-analysis, digitalmodel/fatigue-analysis]
+  - [workspace-hub/xlsx, workspace-hub/engineering-report-generator]
+  - [workspace-hub/brand-guidelines, workspace-hub/theme-factory]
+  - [assetutilities/plotly-visualization, workspace-hub/engineering-report-generator]
+  - [aceengineer-admin/expense-tracking, aceengineer-admin/tax-preparation]
+  - [aceengineer-admin/invoice-automation, aceengineer-admin/tax-preparation]

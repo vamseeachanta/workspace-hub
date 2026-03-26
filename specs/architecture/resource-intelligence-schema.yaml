@@ -98,6 +98,7 @@ schema:
           description: "Date the source was accessed or parsed. Optional."
 
     # --- Domain Tags ---
+    # Canonical domain taxonomy: specs/taxonomy/domains.yaml
 
     domain:
       type: object

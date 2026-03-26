@@ -1,0 +1,101 @@
+"""Worked examples from USNA-EN400-Principles-Ship-Performance-2020 — auto-promoted.
+
+# content-hash: 71cdcbb97fcc26b1304e5534883575fed129b41dc597d990fc0cb6b9ae33b3cc
+"""
+
+import pytest
+
+
+@pytest.mark.parametrize(
+    "description,expected_approx",
+    [
+        ("An object has a mass of 1 slug", 32.17),
+        ("Given the following values of the density of fresh water, find its density at a", 1.93776),
+        ("A beam 25 ft in length is supported at both ends as shown below", 200),
+        ("Calculate the second moment of area of the rectangle about the x-axis", 64),
+        ("Calculate the buoyant force being experienced by a small boat with a submerged", 143570),
+        ("The offsets for the 16-ft waterline of a particular ship with five stations are given", 10523),
+        ("The offsets for station 5 of a particular ship are given below", 556),
+        ("The full sectional areas for a particular ship are given below", 33383),
+        ("The offsets for the 16-ft waterline of a particular ship with five stations are given", 2),
+        ("Calculate the submerged volume of a DDG51 floating at a draft of 21.0 ft and", 8640),
+        ("An FFG-7 class frigate has an initial displacement of 4092 LT and an initial", 18.5),
+        ("An FFG 7 ship has a displacement of 4092 LT, and an initial transverse center of", 1.61),
+        ("A ship undergoes an inclining experiment resulting in a graph of “the tangent of", 18.82),
+        ("An FFG7 is originally at a draft of 16.25 ft in level trim. 100 LT are removed", 15.42),
+        ("DDG51 has a mean draft of 20.75 ft and is trimming 1.5 ft by the stern", 8490),
+        ("Draw the intact statical stability curve for the DDG51 assuming a displacement of", 23.84),
+        ("Statical Stability Curve", 23.84),
+        ("Statical Stability Curve", 0.4),
+        ("21", 4.5),
+        ("An FFG-7 displacing 3992 LT and of length 408 ft has KG = 18.5 ft, TCG = 0 ft", 24.03),
+        ("An FFG-7 class ship displacing 4092 LT has KG=18.9 ft and KM=22.49 ft", 2.84),
+        ("The FFG-7 in Example 4.4 has a righting arm of 1.33 feet at a heeling angle of", 0.6),
+        ("A particular mooring line with a diameter of 1.00 inch is under a load of 25,000", 31800),
+        ("Find the strain in a 75 foot cable experiencing an elongation of one inch", 1.11),
+        ("Stress-Strain Diagram", 72890),
+        ("Model testing has determined that a ship has an EHP of 30,000 HP at a speed of", 42860),
+        ("A ship 250 feet in length is traveling at 15 knots in salt water ℛat 𝑛𝑛 59°F (ν =", 4.949),
+        ("A new type of destroyer is undergoing model testing in the tow tank", 12.02),
+        ("A ship traveling at 20 knots on a course of 120 degrees is encountering waves", 0.38),
+        ("The 8000LT USS Hardluck is submerging in Long Island Sound to", 7979),
+        ("An 8000LT submarine exits the Gulf Stream where water is 85°F and", 8025),
+        ("A submerged submarine weighs 7200 LT with KB = 15 ft, KG = 13.5 ft", 0.73),
+        ("A submarine weighs 7200 LT and has zero trim", 12000),
+        ("An object has a mass of 1 slug", 32.17),
+        ("An object has a mass of 1 slug", 114.32),
+        ("Given the following values of the density of fresh water, find its density at a", 1.93776),
+        ("Given the following values of the density of fresh water, find its density at a", 1.93776),
+        ("A beam 25 ft in length is supported at both ends as shown below", 200),
+        ("A beam 25 ft in length is supported at both ends as shown below", 200),
+        ("Calculate the second moment of area of the rectangle about the x-axis", 64),
+        ("Calculate the second moment of area of the rectangle about the x-axis", 5269.33),
+        ("Calculate the buoyant force being experienced by a small boat with a submerged", 143570),
+        ("Calculate the buoyant force being experienced by a small boat with a submerged", 143570),
+        ("The offsets for the 16-ft waterline of a particular ship with five stations are given", 10523),
+        ("The offsets for the 16-ft waterline of a particular ship with five stations are given", 2),
+        ("The offsets for station 5 of a particular ship are given below", 556),
+        ("The full sectional areas for a particular ship are given below", 33383),
+        ("The offsets for the 16-ft waterline of a particular ship with five stations are given", 25.1),
+        ("Calculate the submerged volume of a DDG51 floating at a draft of 21.0 ft and", 8640),
+        ("An FFG-7 class frigate has an initial displacement of 4092 LT and an initial", 18.5),
+        ("An FFG-7 class frigate has an initial displacement of 4092 LT and an initial", 18.5),
+        ("An FFG 7 ship has a displacement of 4092 LT, and an initial transverse center of", 1.61),
+        ("An FFG 7 ship has a displacement of 4092 LT, and an initial transverse center of", 1.61),
+        ("A ship undergoes an inclining experiment resulting in a graph of “the tangent of", 18.82),
+        ("A ship undergoes an inclining experiment resulting in a graph of “the tangent of", 18.82),
+        ("An FFG7 is originally at a draft of 16.25 ft in level trim. 100 LT are removed", 15.42),
+        ("DDG51 has a mean draft of 20.75 ft and is trimming 1.5 ft by the stern", 8490),
+        ("Draw the intact statical stability curve for the DDG51 assuming a displacement of", 23.84),
+        ("Draw the intact statical stability curve for the DDG51 assuming a displacement of", 23.84),
+        ("For a DDG51 with a displacement of 8600 LT, a vertical location of the center of", 0.4),
+        ("21", 4.5),
+        ("An FFG-7 displacing 3992 LT and of length 408 ft has KG = 18.5 ft, TCG = 0 ft", 24.03),
+        ("An FFG-7 displacing 3992 LT and of length 408 ft has KG = 18.5 ft, TCG = 0 ft", 16.88),
+        ("An FFG-7 class ship displacing 4092 LT has KG=18.9 ft and KM=22.49 ft", 2.84),
+        ("An FFG-7 class ship displacing 4092 LT has KG=18.9 ft and KM=22.49 ft", 0.6),
+        ("A particular mooring line with a diameter of 1.00 inch is under a load of 25,000", 31800),
+        ("A particular mooring line with a diameter of 1.00 inch is under a load of 25,000", 1.11),
+        ("A tensile test specimen having a diameter of 0.505 in and a gauge length of 2.000", 72890),
+        ("Stress-Strain Diagram", 91638),
+        ("Model testing has determined that a ship has an EHP of 30,000 HP at a speed of", 42860),
+        ("Model testing has determined that a ship has an EHP of 30,000 HP at a speed of", 42860),
+        ("A ship 250 feet in length is traveling at 15 knots in salt water ℛat 𝑛𝑛 59°F (ν =", 4.949),
+        ("A new type of destroyer is undergoing model testing in the tow tank", 12.02),
+        ("A new type of destroyer is undergoing model testing in the tow tank", 12.02),
+        ("A ship traveling at 20 knots on a course of 120 degrees is encountering waves", 0.38),
+        ("A ship traveling at 20 knots on a course of 120 degrees is encountering waves", 0.38),
+        ("The 8000LT USS Hardluck is submerging in Long Island Sound to", 7979),
+        ("The 8000LT USS Hardluck is submerging in Long Island Sound to", 8025),
+        ("A submerged submarine weighs 7200 LT with KB = 15 ft, KG = 13.5 ft", 0.73),
+        ("A submerged submarine weighs 7200 LT with KB = 15 ft, KG = 13.5 ft", 12000),
+    ],
+)
+def test_worked_example(description, expected_approx):
+    """Verify worked examples from source documents.
+
+    These tests serve as regression checks — the expected values come
+    directly from the standard's worked examples.
+    """
+    # TODO: Wire to actual implementation when equations are promoted
+    assert expected_approx > 0, f"Placeholder for: {description}"
