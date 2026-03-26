@@ -15,15 +15,15 @@ progress:
 
 ## Current Focus
 
-Phase 01: Accelerate digitalmodel development -- COMPLETE
+Phase 02: Accelerate worldenergydata pipelines
 
 ## Current Position
 
-Phase 01 — All 5 plans complete
+Phase 02 — Plan 03 complete (SODIR adapter)
 
 ## Progress
 
-- Plans: 5/5 complete
+- Plans: 1/6 complete (02-03 done)
 
 ## Decisions
 
@@ -43,8 +43,10 @@ Phase 01 — All 5 plans complete
 - On-bottom stability gap removed from subsea/pipeline registry entry
 - New modules registered at development maturity (needs field validation)
 - Coverage tests added to raise scatter_fatigue above 80% threshold
+- SODIR adapter uses client.get() with table query param for uniform endpoint handling
+- Partial failure returns success status since data was written for remaining endpoints
 
 ## Session
 
-- Last session: 2026-03-26T00:50:32Z
-- Stopped at: Completed 01-05-PLAN.md (integration validation -- phase complete)
+- Last session: 2026-03-26T04:36:20Z
+- Stopped at: Completed 02-03-PLAN.md (SODIR adapter wiring)
