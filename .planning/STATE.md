@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing
-last_updated: "2026-03-26T04:40:00Z"
+last_updated: "2026-03-26T04:42:00Z"
 progress:
   total_phases: 5
   completed_phases: 1
@@ -51,8 +51,10 @@ Phase 02 — Wave 1 complete (4/6 plans), proceeding to Wave 2
 - BSEE adapter uses stdlib logging (not loguru) to match scheduler patterns
 - SODIR adapter uses client.get() with table query param for uniform endpoint handling
 - Partial failure returns success status since data was written for remaining endpoints
+- Used Pydantic BaseModel (not dataclass) for CSV validation per D-06 requirement
+- Tier 2 stubs return status=skipped to avoid triggering monitoring alerts
 
 ## Session
 
-- Last session: 2026-03-26T04:40:00Z
+- Last session: 2026-03-26T04:42:00Z
 - Stopped at: Wave 1 complete — merging results before Wave 2
