@@ -53,6 +53,10 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 ## Accumulated Context
 
+### Pending Todos
+
+1. Automate OrcaFlex model generation on licensed machine (tooling)
+
 ### Roadmap Evolution
 
 - Phase 6 added: Update plan and vision for digitalmodel repo
