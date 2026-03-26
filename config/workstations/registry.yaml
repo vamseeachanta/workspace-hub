@@ -47,7 +47,7 @@ machines:
     capabilities:
       agent_clis: [claude]
       languages: [python3, bash]
-      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, uv, git]
+      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, capytaine, tmux, uv, git]
       gpu: nvidia-t400
     storage:
       local: /mnt/dde                     # primary work partition
