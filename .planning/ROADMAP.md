@@ -17,7 +17,7 @@ Plans:
 - [x] 01-02-PLAN.md — On-bottom stability module (DNV-RP-F109)
 - [x] 01-03-PLAN.md — ASME B31.4 wall thickness code strategy
 - [x] 01-04-PLAN.md — Spectral fatigue from sea-state scatter diagrams (DNV-RP-C203)
-- [ ] 01-05-PLAN.md — Integration: validate manifests, update registry, cross-module tests
+- [x] 01-05-PLAN.md — Integration: validate manifests, update registry, cross-module tests
 
 ### Phase 2: Accelerate worldenergydata pipelines
 **Goal:** Reliable, current energy data feeds — EIA, BSEE, global production
