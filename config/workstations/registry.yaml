@@ -72,7 +72,7 @@ machines:
     capabilities:
       agent_clis: [claude, codex, gemini]
       languages: [bash]  # git-bash / MINGW64
-      tools: [orcaflex, ansys]
+      tools: [orcaflex, ansys, git]
       gpu: false
     storage:
       local: 'D:\'                        # primary drive
@@ -96,7 +96,7 @@ machines:
     capabilities:
       agent_clis: [claude, codex, gemini]
       languages: [bash]
-      tools: [orcaflex, ansys]
+      tools: [orcaflex, ansys, git]
       gpu: false
     repos:
       - OGManufacturing
