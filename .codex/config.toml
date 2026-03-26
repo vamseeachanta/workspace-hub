@@ -4,7 +4,7 @@
 # WRK-304: fixed [model] table → scalar per CLI 0.104 expectation 2026-02-24
 
 model = "gpt-5.4"
-model_reasoning_effort = "medium"
+model_reasoning_effort = true
 
 [features]
 codex_hooks = true

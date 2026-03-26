@@ -64,15 +64,23 @@ cloned:
     status: success
     notes: "BEM solver for wave diffraction/radiation, Fortran 90. No Python API (pyhams is a separate package)"
 
-  - name: bemio
-    path: /mnt/ace/bemio
-    url: https://github.com/WEC-Sim/bemio.git
-    license: unknown
+  - name: WEC-Sim
+    path: /mnt/ace/WEC-Sim
+    url: https://github.com/WEC-Sim/WEC-Sim.git
+    license: Apache-2.0
     has_python_api: true
     cloned_at: "2026-03-25"
     status: success
-    notes: "BEM I/O for reading WAMIT/NEMOH/AQWA output. DEPRECATED - now included in WEC-Sim. Has setup.py"
+    notes: "Wave energy converter simulation (MATLAB/Simulink + Python BEMIO examples). Includes Capytaine integration."
 
 skipped: []
+
+replaced:
+  - name: bemio
+    original_path: /mnt/ace/bemio
+    original_url: https://github.com/WEC-Sim/bemio.git
+    replaced_by: WEC-Sim
+    reason: "Deprecated upstream — bemio functionality absorbed into WEC-Sim/examples/BEMIO/"
+    replaced_at: "2026-03-25"
 
 failed: []

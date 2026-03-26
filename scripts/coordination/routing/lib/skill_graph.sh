@@ -4,8 +4,8 @@
 # Usage:
 #   skill_graph.sh --domain <domain>              List skills in a domain
 #   skill_graph.sh --capability "<query>"          Fuzzy-match capabilities
-#   skill_graph.sh --feeds-from <skill-id>         What skills consume this skill's output
-#   skill_graph.sh --feeds-to <skill-id>           What skills feed into this skill
+#   skill_graph.sh --edges-from <skill-id>          What skills consume this skill's output
+#   skill_graph.sh --edges-to <skill-id>            What skills feed into this skill
 #   skill_graph.sh --rebuild-index                 Regenerate skill-graph-index.yaml
 #
 # Version: 1.0.0
@@ -62,7 +62,6 @@ _sg_skills_by_capability() {
     _sg_check_graph || return 1
 
     awk -v query="$query" '
-    function lc(s) { cmd = "printf \"%s\" \"" s "\" | tr \"[:upper:]\" \"[:lower:]\""; cmd | getline r; close(cmd); return r }
     /^nodes:/ { in_nodes = 1; next }
     in_nodes && /^[a-z]/ { in_nodes = 0 }
     in_nodes && /^  - id:/ {
@@ -340,12 +339,12 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
             [[ -z "${2:-}" ]] && { echo "Error: --capability requires a search query" >&2; exit 1; }
             _sg_skills_by_capability "$2"
             ;;
-        --feeds-from)
-            [[ -z "${2:-}" ]] && { echo "Error: --feeds-from requires a skill ID" >&2; exit 1; }
+        --edges-from|--feeds-from)
+            [[ -z "${2:-}" ]] && { echo "Error: --edges-from requires a skill ID" >&2; exit 1; }
             _sg_feeds_from "$2"
             ;;
-        --feeds-to)
-            [[ -z "${2:-}" ]] && { echo "Error: --feeds-to requires a skill ID" >&2; exit 1; }
+        --edges-to|--feeds-to)
+            [[ -z "${2:-}" ]] && { echo "Error: --edges-to requires a skill ID" >&2; exit 1; }
             _sg_feeds_to "$2"
             ;;
         --rebuild-index)

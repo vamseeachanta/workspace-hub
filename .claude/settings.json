@@ -1,4 +1,8 @@
 {
+  "cleanupPeriodDays": 90,
+  "autoMemoryEnabled": true,
+  "autoDreamEnabled": true,
+  "showThinkingSummaries": true,
   "env": {
     "MAX_TEAMMATES": "10"
   },
