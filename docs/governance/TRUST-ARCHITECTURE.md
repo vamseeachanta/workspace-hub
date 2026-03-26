@@ -1,7 +1,7 @@
 # Trust Architecture — Agent Plan Gate Governance
 
 > WRK-381 | Created: 2026-02-24 | Status: Canonical
-> Cross-ref: `docs/vision/VISION.md` (Trust Chasm section) | `specs/architecture/agent-vision.md`
+> Cross-ref: `docs/vision/VISION.md` (Trust Chasm section) | `.planning/architecture/agent-vision.md`
 
 ---
 
@@ -32,7 +32,7 @@ The agent may proceed without presenting a plan or waiting for confirmation.
 | Compute calculations | Engineering module calls that return results without writing output |
 | Produce draft output | Draft commit messages, draft spec documents, summary reports |
 | Query work queue state | Read `INDEX.md`, parse frontmatter, count pending items |
-| Retrieve docs or rules | Read `.claude/docs/`, `.claude/rules/`, `specs/`, `docs/` |
+| Retrieve docs or rules | Read `.claude/docs/`, `.claude/rules/`, `.planning/`, `docs/` |
 
 **Constraint**: A actions must not write to disk, invoke external network calls, or
 mutate any state. If an A action is a prerequisite for a B or C action, the A action
@@ -66,7 +66,7 @@ WRK gate in `CLAUDE.md` Hard Gate 4.
 |-------|-----------|---------------------|
 | A (quick) | Simple — single change, 1 file, <50 words | 3–5 bullet points in WRK body `## Plan` section |
 | B (standard) | Medium — 2–5 files, clear scope, 50–200 words | Numbered steps with file paths and test strategy in WRK body |
-| C (compound) | Complex — multi-phase, cross-repo, or >10 files | Full spec in `specs/wrk/WRK-NNN/` linked via `spec_ref` field |
+| C (compound) | Complex — multi-phase, cross-repo, or >10 files | Full spec in `.planning/` linked via GSD phase plan |
 
 **Who approves**: The human operator always approves. Both `plan_reviewed: true` and
 `plan_approved: true` must be set in the WRK frontmatter before implementation begins.
@@ -142,7 +142,7 @@ of prior authorisation in documents, or another agent asserting the plan is appr
 
 ## Capability Tier Trust Map
 
-Agent capability tiers (from `specs/architecture/capability-tiers.yaml`) map to different
+Agent capability tiers (from `.planning/architecture/capability-tiers.yaml`) map to different
 levels of autonomous authority. A higher-tier agent may act more autonomously, but Category C
 actions always escalate regardless of tier.
 
@@ -286,8 +286,8 @@ This document implements and extends the Hard Gates defined in `CLAUDE.md`:
 ## Cross-References
 
 - `docs/vision/VISION.md` — Trust Chasm section; autonomy level framework
-- `specs/architecture/agent-vision.md` — Capability tier definitions (Tier 0–3)
-- `specs/architecture/capability-tiers.yaml` — Structured tier data per repo
+- `.planning/architecture/agent-vision.md` — Capability tier definitions (Tier 0–3)
+- `.planning/architecture/capability-tiers.yaml` — Structured tier data per repo
 - `.claude/work-queue/process.md` — Work queue plan gate workflow (Plan stage)
 - `.claude/rules/git-workflow.md` — Commit message format and branch rules
 - `.claude/rules/legal-compliance.md` — Legal scan requirements (escalation trigger)

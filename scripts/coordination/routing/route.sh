@@ -25,7 +25,7 @@ WORK_QUEUE_DIR="${WORK_QUEUE_DIR:-$(cd "$SCRIPT_DIR/../../.." && pwd)/.claude/wo
 
 mkdir -p "$LOG_DIR"
 
-# Skill graph lookup: lib/skill_graph.sh (domain/capability routing from specs/skills/skills-knowledge-graph.yaml)
+# Skill graph lookup: lib/skill_graph.sh (domain/capability routing from .planning/skills/skills-knowledge-graph.yaml)
 
 # --- Source libraries ---
 source "$LIB_DIR/usage_bootstrap.sh"

@@ -39,7 +39,7 @@ Runs all 4 phases sequentially:
 ```
 /compound plan "Add OAuth2 authentication"
 ```
-Produces a research-informed plan at `specs/modules/<module>/plan.md`. Delegates to:
+Produces a research-informed plan at `.planning/phases/<phase>/PLAN.md`. Delegates to:
 - `/knowledge advise` for prior learnings
 - Explore subagent for codebase archaeology
 - WebSearch for best practices
@@ -84,7 +84,7 @@ Shows current session checkpoint state.
 .claude/compound-state/          # Session checkpoints (ephemeral)
 .claude/compound-reviews/        # Multi-perspective review reports
 .claude/knowledge/entries/       # Reuses existing knowledge structure
-specs/modules/<module>/plan.md   # Reuses existing spec location
+.planning/phases/<phase>/PLAN.md   # Reuses existing spec location
 ```
 
 ## Skill Reference

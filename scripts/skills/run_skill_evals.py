@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""run_skill_evals.py — Execute skill eval checks defined in specs/skills/evals/*.yaml.
+"""run_skill_evals.py — Execute skill eval checks defined in .planning/skills/evals/*.yaml.
 
 For each eval YAML:
   - Read the target SKILL.md (path from eval's skill_path field)
@@ -23,8 +23,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run skill evals")
     parser.add_argument(
         "--evals-dir",
-        default="specs/skills/evals",
-        help="Directory containing eval YAML files (default: specs/skills/evals)",
+        default=".planning/skills/evals",
+        help="Directory containing eval YAML files (default: .planning/skills/evals)",
     )
     parser.add_argument(
         "--results-dir",

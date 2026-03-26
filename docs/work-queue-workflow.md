@@ -14,7 +14,7 @@ CAPTURE -> TRIAGE -> PLAN -> CLAIM -> IMPLEMENT -> CROSS-REVIEW -> CLOSE -> ARCH
 |-------|--------|------------------|
 | Capture | `pending/` | WRK created with baseline frontmatter |
 | Triage | `pending/` | Priority, complexity, route, provider, computer assigned |
-| Plan | `pending/` or `specs/wrk/WRK-<id>/` | Plan drafted and approved |
+| Plan | `pending/` or `.planning/` | Plan drafted and approved |
 | Claim | `working/` | Active ownership and readiness confirmed |
 | Implement | `working/` | Files changed and tests run |
 | Cross-Review | `working/` | Required reviews collected and major findings resolved |

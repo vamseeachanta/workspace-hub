@@ -26,7 +26,7 @@ The existing index.json pattern works well for project-internal knowledge but ne
 
 ## Decision
 
-Introduce a `resource` entry type with prefix `RES-NNN`, stored in `.claude/knowledge/entries/resources/` and indexed in the existing `index.json`. The schema is defined in `specs/architecture/resource-intelligence-schema.yaml`.
+Introduce a `resource` entry type with prefix `RES-NNN`, stored in `.claude/knowledge/entries/resources/` and indexed in the existing `index.json`. The schema is defined in `.planning/architecture/resource-intelligence-schema.yaml`.
 
 Key design choices:
 
@@ -71,7 +71,7 @@ Key design choices:
 
 ## References
 
-- Schema: `specs/architecture/resource-intelligence-schema.yaml`
+- Schema: `.planning/architecture/resource-intelligence-schema.yaml`
 - Existing index: `.claude/knowledge/index.json`
 - Knowledge format ADR: ADR-002
 - Data residence strategy: ADR-004

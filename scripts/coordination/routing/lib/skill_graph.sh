@@ -16,7 +16,7 @@ set -euo pipefail
 # --- Resolve paths ---
 _SG_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _SG_REPO_ROOT="$(cd "$_SG_SCRIPT_DIR/../../../.." && pwd)"
-_SG_GRAPH_FILE="${SKILL_GRAPH_FILE:-$_SG_REPO_ROOT/specs/skills/skills-knowledge-graph.yaml}"
+_SG_GRAPH_FILE="${SKILL_GRAPH_FILE:-$_SG_REPO_ROOT/.planning/skills/skills-knowledge-graph.yaml}"
 _SG_INDEX_FILE="${SKILL_GRAPH_INDEX:-$_SG_REPO_ROOT/config/agents/skill-graph-index.yaml}"
 
 # --- Helpers ---
@@ -166,10 +166,10 @@ _sg_rebuild_index() {
     mkdir -p "$(dirname "$out")"
 
     {
-        echo "# Pre-computed index from specs/skills/skills-knowledge-graph.yaml"
+        echo "# Pre-computed index from .planning/skills/skills-knowledge-graph.yaml"
         echo "# Regenerate: scripts/coordination/routing/lib/skill_graph.sh --rebuild-index"
         echo "generated_at: \"$(date -u +%Y-%m-%d)\""
-        echo "source: specs/skills/skills-knowledge-graph.yaml"
+        echo "source: .planning/skills/skills-knowledge-graph.yaml"
         echo ""
 
         # --- by_domain ---

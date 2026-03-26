@@ -41,7 +41,7 @@ see_also:
 - gmsh-openfoam-orcaflex-agent-usage-pattern
 - gmsh-openfoam-orcaflex-error-propagation-map
 wrk_ref: WRK-380
-spec_ref: specs/modules/wrk-380-gmsh-openfoam-orcaflex-pipeline.md
+spec_ref: .planning/archive/modules/wrk-380-gmsh-openfoam-orcaflex-pipeline.md
 tags: []
 ---
 

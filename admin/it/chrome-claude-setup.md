@@ -121,6 +121,6 @@ seamless image paste. Most users launch Chrome manually when needed.
 
 ## Related
 
-- `specs/modules/terminal-ux/cross-machine-audit.md` — full terminal UX audit
+- `.planning/archive/modules/terminal-ux/cross-machine-audit.md` — full terminal UX audit
 - `scripts/readiness/nightly-readiness.sh` — R-UX check flags absent extension
 - WRK-228 — Cross-machine terminal UX consistency work item

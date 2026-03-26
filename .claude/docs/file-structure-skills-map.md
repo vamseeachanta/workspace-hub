@@ -56,7 +56,7 @@ then `file-taxonomy` to decide where to put a new file.
 | Writing runtime config (YAML/JSON) | `file-taxonomy` | → `config/<domain>/` |
 | Placing notebooks | `file-taxonomy` | → `notebooks/<domain>/` (NOT src/) |
 | Finding AI session logs | `file-taxonomy` | See "AI Agent Log & Session File Locations" section |
-| Writing a design spec (pre-build) | `file-taxonomy` | → `specs/wrk/WRK-NNN/` |
+| Writing a design spec (pre-build) | `file-taxonomy` | → `.planning/ (GSD phases)` |
 | Locating Codex session data | `file-taxonomy` | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` |
 | Locating Gemini session data | `file-taxonomy` | `~/.gemini/tmp/<project>/chats/session-*.json` |
 | Understanding gitignore policy | `file-taxonomy` | Gitignore Policy table |

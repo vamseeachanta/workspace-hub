@@ -38,7 +38,7 @@ def repo_root(tmp_path):
         subcategory: cathodic-protection
         computer: dev-primary
         stage_evidence_ref: .claude/work-queue/assets/WRK-9999/evidence/stage-evidence.yaml
-        spec_ref: specs/wrk/WRK-9999/plan.md
+        spec_ref: .planning/archive/modules/WRK-9999/plan.md
         ---
         # Test Feature
 

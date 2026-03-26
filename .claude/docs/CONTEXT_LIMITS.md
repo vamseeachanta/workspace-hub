@@ -30,7 +30,7 @@ Large context files degrade AI quality by:
 | MCP tools | `.claude/docs/mcp-tools.md` | 8KB | MCP coordination |
 | Execution patterns | `.claude/docs/execution-patterns.md` | 12KB | Complex workflows |
 | Memory policies | `.claude/docs/memory-policies.md` | 6KB | Cross-session work |
-| Plan templates | `specs/templates/` | 12KB | Plan mode |
+| Plan templates | `.planning/templates/` | 12KB | Plan mode |
 
 ### Content Categories
 
@@ -119,6 +119,6 @@ done
 
 ## Related Documents
 
-- [Plan Template](../../../specs/templates/plan-template.md)
+- [Plan Template](../../../.planning/templates/plan-template.md)
 - [Cross-Review Policy](./CROSS_REVIEW_POLICY.md)
 - [Agent Library](../agent-library/)

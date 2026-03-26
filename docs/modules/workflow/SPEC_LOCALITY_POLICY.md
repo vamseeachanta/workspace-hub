@@ -10,24 +10,24 @@ All new planning and specification artifacts are centralized in `workspace-hub`.
 ## Canonical Locations
 
 1. WRK-linked execution specs:
-- `specs/wrk/WRK-<id>/`
+- `.planning/ (GSD phases)`
 
 2. Repository/domain specs:
-- `specs/repos/<repo>/`
+- `.planning/archive/ (archived)`
 
 3. Shared templates:
-- `specs/templates/`
+- `.planning/templates/`
 
 ## Work Queue Integration
 
 - `WRK-*.md` files must exist only under `.claude/work-queue/`.
-- Route C work should set `spec_ref` to `specs/wrk/WRK-<id>/<slug>.md`.
+- Route C work should set `spec_ref` to `.planning/ (GSD phases)<slug>.md`.
 
 ## Migration Guidance
 
-1. Existing repo-local `specs/` content should be migrated to `specs/repos/<repo>/`.
-2. Leave a `specs/README.md` pointer in child repos during transition.
-3. Do not add new spec files to child repo `specs/` directories.
+1. Existing repo-local `specs/` content should be migrated to `.planning/archive/ (archived)`.
+2. Leave a `.planning/README.md` pointer in child repos during transition.
+3. Do not add new spec files to child repo `.planning/` directories.
 
 ## Enforcement
 

@@ -37,7 +37,7 @@ not_ok() {
 # ---------------------------------------------------------------------------
 test_valid_eval_dir_exits_0() {
     local tmpdir="${TMPDIR_ROOT}/t1"
-    mkdir -p "${tmpdir}/specs/skills/evals"
+    mkdir -p "${tmpdir}/.planning/skills/evals"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-results"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-candidates"
     mkdir -p "${tmpdir}/.claude/skills/workspace-hub/test-skill"
@@ -62,7 +62,7 @@ version: 1.0.0
 All stages documented here.
 EOF
 
-    cat > "${tmpdir}/specs/skills/evals/test-skill.yaml" <<'EOF'
+    cat > "${tmpdir}/.planning/skills/evals/test-skill.yaml" <<'EOF'
 version: 1
 wrk_id: WRK-1009
 skill_name: test-skill
@@ -86,7 +86,7 @@ EOF
     local out
     out=$(cd "${tmpdir}" && \
         uv run --no-project python "${WS_HUB}/scripts/skills/run_skill_evals.py" \
-        --evals-dir specs/skills/evals \
+        --evals-dir .planning/skills/evals \
         --results-dir .claude/state/skill-eval-results 2>&1)
     local rc=$?
     if [[ $rc -eq 0 ]]; then
@@ -101,11 +101,11 @@ EOF
 # ---------------------------------------------------------------------------
 test_missing_skill_exits_nonzero() {
     local tmpdir="${TMPDIR_ROOT}/t2"
-    mkdir -p "${tmpdir}/specs/skills/evals"
+    mkdir -p "${tmpdir}/.planning/skills/evals"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-results"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-candidates"
 
-    cat > "${tmpdir}/specs/skills/evals/ghost-skill.yaml" <<'EOF'
+    cat > "${tmpdir}/.planning/skills/evals/ghost-skill.yaml" <<'EOF'
 version: 1
 wrk_id: WRK-1009
 skill_name: ghost-skill
@@ -122,7 +122,7 @@ EOF
     local out
     out=$(cd "${tmpdir}" && \
         uv run --no-project python "${WS_HUB}/scripts/skills/run_skill_evals.py" \
-        --evals-dir specs/skills/evals \
+        --evals-dir .planning/skills/evals \
         --results-dir .claude/state/skill-eval-results 2>&1)
     local rc=$?
     # Should exit nonzero because skill path doesn't exist — treated as FAIL
@@ -139,7 +139,7 @@ EOF
 # ---------------------------------------------------------------------------
 test_jsonl_has_required_fields() {
     local tmpdir="${TMPDIR_ROOT}/t3"
-    mkdir -p "${tmpdir}/specs/skills/evals"
+    mkdir -p "${tmpdir}/.planning/skills/evals"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-results"
     mkdir -p "${tmpdir}/.claude/state/skill-eval-candidates"
     mkdir -p "${tmpdir}/.claude/skills/test/my-skill"
@@ -156,7 +156,7 @@ version: 1.0.0
 Phase 1 documented.
 EOF
 
-    cat > "${tmpdir}/specs/skills/evals/my-skill.yaml" <<'EOF'
+    cat > "${tmpdir}/.planning/skills/evals/my-skill.yaml" <<'EOF'
 version: 1
 wrk_id: WRK-1009
 skill_name: my-skill
@@ -172,7 +172,7 @@ EOF
 
     cd "${tmpdir}" && \
         uv run --no-project python "${WS_HUB}/scripts/skills/run_skill_evals.py" \
-        --evals-dir specs/skills/evals \
+        --evals-dir .planning/skills/evals \
         --results-dir .claude/state/skill-eval-results 2>&1 >/dev/null || true
 
     local jsonl_file
@@ -337,7 +337,7 @@ test_script_candidate_scan_produces_files() {
     local md_found=0
     local json_found=0
 
-    [[ -f "${WS_HUB}/specs/skills/script-conversion-candidates.md" ]] && md_found=1
+    [[ -f "${WS_HUB}/.planning/skills/script-conversion-candidates.md" ]] && md_found=1
     ls "${WS_HUB}/.claude/state/skill-script-candidates/"*.json 2>/dev/null | grep -q . && json_found=1
 
     if [[ $md_found -eq 1 && $json_found -eq 1 ]]; then

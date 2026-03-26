@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 WRK-386: Automated Gap-to-WRK Generator
-Reads specs/capability-map/<repo>.yaml for each tier-1 repo, finds all
+Reads .planning/archive/capability-map/<repo>.yaml for each tier-1 repo, finds all
 entries with status: gap, loads Phase B summaries, and generates scoped
 WRK items written to .claude/work-queue/pending/WRK-NNN.md.
 

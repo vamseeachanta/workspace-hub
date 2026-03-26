@@ -104,7 +104,7 @@ cathodic_protection, geotechnical, hydrodynamics, naval_architecture, pipeline, 
 | **digitalmodel** | Shared GZ corpus | `digitalmodel/data/doc-intelligence/digitized-curves/gz-curves.yaml` |
 | **worldenergydata** | Data catalog | `worldenergydata/data/catalog/data-catalog.yml` — 246 datasets, 10 modules |
 | **worldenergydata** | API contracts | `worldenergydata/docs/api-contracts.md` |
-| **workspace-hub** | Per-repo data source specs | `specs/data-sources/<repo>.yaml` — 9 repos covered |
+| **workspace-hub** | Per-repo data source specs | `.planning/archive/data-sources/<repo>.yaml` — 9 repos covered |
 
 ---
 
@@ -113,9 +113,9 @@ cathodic_protection, geotechnical, hydrodynamics, naval_architecture, pipeline, 
 | What | Location | Notes |
 |------|----------|-------|
 | **Design code registry** | `data/design-codes/code-registry.yaml` | 30+ codes (DNV, API, ASTM, ISO, BS), edition tracking, current/check/superseded |
-| **Online resources** | `specs/online-resources/catalog.yaml` | 50+ evaluated resources (The Well, DNV explorer, API portal) |
-| **Capability maps** | `specs/capability-map/` | Module-to-standards mappings |
-| **Research briefs** | `specs/capability-map/research-briefs/` | 13 domain expertise summaries |
+| **Online resources** | `.planning/archive/online-resources/catalog.yaml` | 50+ evaluated resources (The Well, DNV explorer, API portal) |
+| **Capability maps** | `.planning/archive/capability-map/` | Module-to-standards mappings |
+| **Research briefs** | `.planning/archive/capability-map/research-briefs/` | 13 domain expertise summaries |
 | **Public data sources** | `data/document-index/public-og-data-sources.yaml` | Public O&G data sources |
 | **Domain coverage** | `docs/document-intelligence/domain-coverage.md` | Standards coverage by domain |
 

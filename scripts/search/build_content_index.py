@@ -50,7 +50,7 @@ def scan_repository(repo_path: Path):
                     
             # 3. Key Docs
             key_doc_names = {'readme.md', 'architecture.md', 'vision.md', 'index.md'}
-            if file.lower() in key_doc_names or 'docs/' in lower_path or 'specs/' in lower_path:
+            if file.lower() in key_doc_names or 'docs/' in lower_path or '.planning/' in lower_path:
                 if file_path.suffix.lower() in {'.md', '.txt', '.pdf', '.rst'}:
                     if path_str not in results["disciplines"] and path_str not in results["project_files"]:
                         results["key_docs"].append(path_str)

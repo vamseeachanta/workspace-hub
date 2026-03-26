@@ -22,9 +22,9 @@ collect_files() {
     else
         # Non-pre-commit (post-merge/post-checkout): only scan files changed in
         # the last commit to avoid full-repo scan overhead (was 7s+ for full scan).
-        # Exclude specs/repos/ — machine-generated engineering tool outputs.
+        # Exclude .planning/archive/ — machine-generated engineering tool outputs.
         git diff --name-only -z HEAD~1..HEAD --diff-filter=ACM -- \
-            '.claude/skills' 'specs' 'config' \
+            '.claude/skills' '.planning' 'config' \
             2>/dev/null || true
     fi
 }

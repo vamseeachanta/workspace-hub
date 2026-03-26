@@ -1,7 +1,7 @@
 # registry.yaml — Single source of truth for all workstations.
 # Read by: scripts/cron/setup-cron.sh, scripts/operations/workstation-status.sh
 # HARD RULE: all machine identity/capability data lives here.
-# Hardware specs remain in specs/modules/hardware-inventory/ (detailed assessments).
+# Hardware specs remain in .planning/archive/modules/hardware-inventory/ (detailed assessments).
 
 machines:
   dev-primary:

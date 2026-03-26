@@ -109,7 +109,7 @@ Agents do not share memory. Pass context via artifacts.
 
 | Method | Use Case |
 |--------|----------|
-| File artifacts | `specs/modules/feature.md` |
+| File artifacts | `.planning/ phase artifacts` |
 | Git history | Commit messages, diffs |
 | Shared namespace | `swarm/session/[id]` |
 
@@ -129,7 +129,7 @@ Agents do not share memory. Pass context via artifacts.
 ```bash
 # 1. Plan
 User: /plan "Add user preferences API"
-# Output: specs/modules/user-preferences-api.md
+# Output: .planning/ phase plan
 
 # 2. TDD
 User: /tdd
