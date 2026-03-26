@@ -37,6 +37,9 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - Used var for browser compatibility matching existing codebase
 - collapseCheck defaults E=207000 MPa, nu=0.3 when not provided
 
+### Phase 03 Plan 02 Decisions
+- [Phase 03]: All pricing CTAs route to contact.html -- consultation-based pricing, no payment infrastructure per D-07
+
 ### Quick Tasks Completed
 
 | # | Description | Date | Commit | Directory |
