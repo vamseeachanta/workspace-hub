@@ -1,0 +1,279 @@
+# Resource-Intelligence Knowledge Store Schema
+# Version: 1.0.0
+# ADR: ADR-005
+# Compatible with: .claude/knowledge/index.json pattern
+#
+# Purpose: Structured capture of knowledge extracted from documents,
+# standards, data files, and external sources. Replaces ephemeral
+# "work-done" summaries in MEMORY.md with durable, queryable entries.
+#
+# Storage: flat-file YAML entries in .claude/knowledge/entries/resources/
+# Index: entries added to .claude/knowledge/index.json (same as ADR/GOT/PAT/TIP)
+
+# --- JSON Schema-style validation (expressed in YAML) ---
+
+schema:
+  $schema: "https://json-schema.org/draft/2020-12/schema"
+  title: "Resource-Intelligence Entry"
+  description: "Knowledge extracted from documents, standards, and external sources"
+  type: object
+
+  required:
+    - id
+    - type
+    - entry_type
+    - title
+    - source
+    - domain
+    - confidence
+    - provenance
+    - created
+    - status
+
+  properties:
+
+    # --- Identity (compatible with index.json) ---
+
+    id:
+      type: string
+      pattern: "^RES-\\d{3}$"
+      description: "Unique identifier. Prefix RES- with zero-padded 3-digit number."
+      examples: ["RES-001", "RES-042"]
+
+    type:
+      type: string
+      const: "resource"
+      description: "Entry type for index.json. Always 'resource' for this schema."
+
+    entry_type:
+      type: string
+      enum: [finding, datapoint, procedure, reference, lesson]
+      description: |
+        finding    — insight or conclusion drawn from a source
+        datapoint  — specific numeric value, threshold, or constant
+        procedure  — step-by-step method extracted from a standard or manual
+        reference  — pointer to an authoritative section for future lookup
+        lesson     — what went wrong or right when applying source knowledge
+
+    title:
+      type: string
+      maxLength: 120
+      description: "One-line summary of what was learned."
+
+    body:
+      type: string
+      description: "Detailed explanation. Markdown permitted. Optional for datapoints."
+
+    # --- Source Metadata ---
+
+    source:
+      type: object
+      required: [name, source_kind]
+      properties:
+        name:
+          type: string
+          description: "Document title or filename."
+        source_kind:
+          type: string
+          enum: [pdf, standard, webpage, dataset, codebase, manual, paper, report, email]
+        url:
+          type: string
+          format: uri
+          description: "URL if web-accessible. Optional."
+        file_path:
+          type: string
+          description: "Relative path within a repo, or absolute path on disk. Optional."
+        page:
+          type: [integer, string]
+          description: "Page number or range (e.g., 42, '42-45'). Optional."
+        section:
+          type: string
+          description: "Section heading or clause number (e.g., 'Table 5.3', 'Sec 4.2.1'). Optional."
+        edition:
+          type: string
+          description: "Version, edition, or revision date of the source. Optional."
+        retrieved:
+          type: string
+          format: date
+          description: "Date the source was accessed or parsed. Optional."
+
+    # --- Domain Tags ---
+
+    domain:
+      type: object
+      required: [primary]
+      properties:
+        primary:
+          type: string
+          description: "Top-level engineering domain (e.g., 'offshore-engineering', 'fatigue', 'hydrodynamics')."
+        sub_domain:
+          type: string
+          description: "Narrower topic (e.g., 'mooring-analysis', 'sn-curves', 'viv'). Optional."
+
+    tags:
+      type: array
+      items:
+        type: string
+      description: "Free-form tags for search. Compatible with index.json tags field."
+
+    repos:
+      type: array
+      items:
+        type: string
+      description: "Repositories where this knowledge applies. Compatible with index.json."
+
+    category:
+      type: string
+      description: "Category for index.json grouping (e.g., 'data', 'architecture', 'tooling')."
+
+    # --- Confidence & Provenance ---
+
+    confidence:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: |
+        How certain is this entry:
+          1.0  — verified against primary source, cross-checked
+          0.9  — high confidence, read directly from authoritative source
+          0.7  — medium, inferred or from secondary source
+          0.5  — low, extracted by agent without human review
+        Maps to labels: verified (>=0.9), high (0.7-0.89), medium (0.5-0.69), low (<0.5)
+
+    provenance:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          enum: [manual, doc-intelligence, agent-session, hybrid]
+          description: |
+            manual           — human read the source and wrote the entry
+            doc-intelligence — automated PDF/doc parsing pipeline
+            agent-session    — AI agent extracted during a conversation
+            hybrid           — agent extracted, human reviewed and edited
+        session_id:
+          type: string
+          description: "Claude session or conversation ID, if applicable. Optional."
+        agent_model:
+          type: string
+          description: "Model that performed extraction (e.g., 'claude-opus-4-6'). Optional."
+        reviewed_by:
+          type: string
+          description: "Human reviewer name or handle. Optional."
+        review_date:
+          type: string
+          format: date
+          description: "Date of human review. Optional."
+
+    # --- Relationships (compatible with index.json 'related' field) ---
+
+    related:
+      type: array
+      items:
+        type: string
+        pattern: "^(ADR|GOT|PAT|TIP|RES)-\\d{3}$"
+      description: "IDs of related knowledge entries."
+
+    supersedes:
+      type: string
+      pattern: "^RES-\\d{3}$"
+      description: "ID of an older entry this one replaces. Optional."
+
+    # --- Staleness Indicators ---
+
+    created:
+      type: string
+      format: date
+
+    last_validated:
+      type: string
+      format: date
+      description: "Last date someone confirmed this entry is still accurate."
+
+    ttl_days:
+      type: integer
+      minimum: 1
+      description: |
+        Suggested time-to-live in days before revalidation.
+        Standards/codes: 365-730 (editions change slowly).
+        Tool versions: 90-180 (software updates faster).
+        Project data: 30-90 (context drifts).
+        Optional — omit for entries that do not expire.
+
+    status:
+      type: string
+      enum: [active, stale, superseded, archived]
+
+    # --- Usage Tracking ---
+
+    access_count:
+      type: integer
+      minimum: 0
+      default: 0
+      description: "Number of times this entry was retrieved or referenced."
+
+    last_accessed:
+      type: string
+      format: date
+      description: "Date of most recent retrieval. Optional until first access."
+
+    # --- File Location (for index.json) ---
+
+    file:
+      type: string
+      description: "Relative path to the entry Markdown file from repo root."
+
+# --- Example Entry ---
+
+example:
+  id: "RES-001"
+  type: "resource"
+  entry_type: "datapoint"
+  title: "DNV-RP-C203 SN curve T parameter for tubular joints in seawater with CP"
+  body: |
+    Table 2-2 of DNV-RP-C203 (2021 edition) specifies the T-curve parameters
+    for tubular joints in seawater with cathodic protection:
+      log_a1 = 12.164, m1 = 3.0, log_a2 = 16.106, m2 = 5.0
+      Fatigue limit at 1e7 cycles: 52.63 MPa
+  source:
+    name: "DNV-RP-C203 Fatigue Design of Offshore Steel Structures"
+    source_kind: standard
+    section: "Table 2-2"
+    edition: "2021-09"
+    retrieved: "2026-03-25"
+  domain:
+    primary: "fatigue"
+    sub_domain: "sn-curves"
+  tags: [dnv, sn-curve, tubular-joint, cathodic-protection, seawater]
+  repos: [digitalmodel]
+  category: data
+  confidence: 1.0
+  provenance:
+    method: manual
+    reviewed_by: vamsee
+    review_date: "2026-03-25"
+  related: [PAT-002]
+  created: "2026-03-25"
+  last_validated: "2026-03-25"
+  ttl_days: 730
+  status: active
+  access_count: 0
+  file: ".claude/knowledge/entries/resources/RES-001-dnv-rpc203-t-curve-params.md"
+
+# --- Index Integration ---
+# Each RES entry gets a row in .claude/knowledge/index.json with these fields:
+#   id, type, title, category, tags, repos, confidence, created,
+#   last_validated, source_type (maps from provenance.method), related,
+#   status, access_count, file
+# The full entry lives in the Markdown file; index.json is the lightweight lookup.
+
+# --- Directory Layout ---
+# .claude/knowledge/
+#   index.json                          <- add RES entries here
+#   entries/
+#     decisions/  ADR-NNN-*.md
+#     gotchas/    GOT-NNN-*.md
+#     patterns/   PAT-NNN-*.md
+#     tips/       TIP-NNN-*.md
+#     resources/  RES-NNN-*.md          <- new directory for this schema

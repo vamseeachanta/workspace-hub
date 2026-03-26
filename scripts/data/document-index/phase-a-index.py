@@ -30,6 +30,11 @@ logger = logging.getLogger(__name__)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 HUB_ROOT = SCRIPT_DIR.parents[2]
+
+# provenance.py lives alongside this script (same directory)
+sys.path.insert(0, str(SCRIPT_DIR))
+from provenance import apply_provenance_to_pipeline  # noqa: E402
+
 DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
 HASH_CHUNK_SIZE = 65536
 PROGRESS_INTERVAL = 1000
@@ -355,16 +360,27 @@ def main() -> int:
             )
         all_new.extend(records)
 
-    all_new = deduplicate_records(all_new, seen_hashes)
-    logger.info("Total new/updated records: %d", len(all_new))
+    logger.info("Total new records scanned: %d", len(all_new))
+
+    # Merge duplicates using provenance tracking (replaces legacy deduplicate_records)
+    source_priority = cfg.get("deduplication", {}).get("source_priority", None)
+    if args.force:
+        merged_index = apply_provenance_to_pipeline({}, all_new, source_priority)
+    else:
+        merged_index = apply_provenance_to_pipeline(existing, all_new, source_priority)
 
     if args.dry_run:
-        logger.info("Dry run -- not writing index")
-        for rec in all_new[:10]:
+        logger.info("Dry run -- not writing index (%d merged records)", len(merged_index))
+        for rec in list(merged_index.values())[:10]:
             print(json.dumps(rec, indent=2))
         return 0
 
-    total = write_index(index_path, existing, all_new, args.force)
+    # Write merged index
+    index_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(index_path, "w") as f:
+        for rec in merged_index.values():
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    total = len(merged_index)
     logger.info("Index written: %s (%d total records)", index_path, total)
     return 0
 

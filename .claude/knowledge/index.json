@@ -1,18 +1,18 @@
 {
   "metadata": {
-    "generated_at": "2026-02-22T15:01:38-06:00",
-    "entry_count": 11,
-    "active_count": 11,
+    "generated_at": "2026-03-25T00:00:00-05:00",
+    "entry_count": 12,
+    "active_count": 12,
     "errors": 0,
     "avg_confidence": 0.93,
     "type_counts": {
-      "decision": 4,
+      "decision": 5,
       "gotcha": 3,
       "pattern": 2,
       "tip": 2
     },
     "category_counts": {
-      "architecture": 2,
+      "architecture": 3,
       "data": 3,
       "data-governance": 1,
       "skills": 1,
@@ -115,7 +115,7 @@
         "worldenergydata",
         "digitalmodel"
       ],
-      "confidence": 0.90,
+      "confidence": 0.9,
       "created": "2026-02-08",
       "last_validated": "2026-02-08",
       "source_type": "session",
@@ -279,7 +279,7 @@
     {
       "id": "TIP-002",
       "type": "tip",
-      "title": "workspace-hub pre-commit hook takes 5+ min — use TaskOutput with 300s timeout",
+      "title": "workspace-hub pre-commit hook takes 5+ min \u2014 use TaskOutput with 300s timeout",
       "category": "tooling",
       "tags": [
         "git",
@@ -300,6 +300,32 @@
       "status": "active",
       "access_count": 0,
       "file": ".claude/knowledge/entries/tips/TIP-002-precommit-hook-timeout.md"
+    },
+    {
+      "id": "ADR-005",
+      "type": "decision",
+      "title": "Resource-intelligence schema for document-sourced knowledge",
+      "category": "architecture",
+      "tags": [
+        "knowledge-management",
+        "resource-intelligence",
+        "schema",
+        "document-extraction"
+      ],
+      "repos": [
+        "workspace-hub"
+      ],
+      "confidence": 0.9,
+      "created": "2026-03-25",
+      "last_validated": "2026-03-25",
+      "source_type": "session",
+      "related": [
+        "ADR-002",
+        "ADR-004"
+      ],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/decisions/ADR-005-resource-intelligence-schema.md"
     }
   ]
 }

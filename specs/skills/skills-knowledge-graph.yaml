@@ -1,0 +1,1164 @@
+# Skills Knowledge Graph v2
+# Enhanced graph for workspace-hub issue #1100
+# Supersedes: .claude/skills/SKILLS_GRAPH.yaml (v1, 4 edges only)
+
+schema_version: "2.0.0"
+generated_at: "2026-03-25"
+generated_by: "issue-1100"
+source: "SKILLS_INDEX.md + SKILL.md frontmatter + manual annotation"
+
+# ─────────────────────────────────────────────
+# Domain taxonomy
+# ─────────────────────────────────────────────
+domains:
+  marine_offshore:
+    label: "Marine & Offshore Engineering"
+    sub_domains:
+      - mooring
+      - riser
+      - structural
+      - fatigue
+      - viv
+      - hydrodynamics
+      - aqwa
+      - signal
+
+  energy_data:
+    label: "Energy Data & Economics"
+    sub_domains:
+      - production_data
+      - economics
+      - incidents
+      - visualization
+      - web_scraping
+
+  document_generation:
+    label: "Document Generation"
+    sub_domains:
+      - pdf
+      - docx
+      - pptx
+      - xlsx
+      - reports
+
+  development:
+    label: "Development & Tooling"
+    sub_domains:
+      - testing
+      - pipelines
+      - mcp
+      - skills
+      - workflows
+
+  business:
+    label: "Business Administration"
+    sub_domains:
+      - invoicing
+      - tax
+      - expenses
+
+  data_processing:
+    label: "Data Processing & Visualization"
+    sub_domains:
+      - transformation
+      - plotly
+      - dashboards
+
+  workspace_ops:
+    label: "Workspace Operations"
+    sub_domains:
+      - git_sync
+      - compliance
+      - orchestration
+      - cli
+
+  design:
+    label: "Communication & Design"
+    sub_domains:
+      - brand
+      - art
+      - frontend
+      - comms
+
+  gis:
+    label: "GIS & Geospatial"
+    sub_domains:
+      - crs
+      - formats
+      - blender
+      - qgis
+
+# ─────────────────────────────────────────────
+# Skill nodes — 51 skills across 5 repos
+# ─────────────────────────────────────────────
+nodes:
+
+  # ── workspace-hub / Builders ──────────────
+  - id: "workspace-hub/skill-creator"
+    repo: workspace-hub
+    category: builders
+    domain: development
+    sub_domains: [skills]
+    input_types: [user_prompt, skill_template]
+    output_types: [skill_md, directory_structure]
+    capabilities:
+      - "Scaffold new Claude Code skills with SKILL.md, triggers, examples"
+      - "Enforce skill file structure conventions"
+    python_packages: []
+
+  - id: "workspace-hub/web-artifacts-builder"
+    repo: workspace-hub
+    category: builders
+    domain: development
+    sub_domains: [skills, workflows]
+    input_types: [user_prompt, design_spec]
+    output_types: [html_file]
+    capabilities:
+      - "Build self-contained interactive web apps as single HTML files"
+      - "Embed CSS, JS, and assets inline"
+    python_packages: []
+
+  # ── workspace-hub / Communication ─────────
+  - id: "workspace-hub/brand-guidelines"
+    repo: workspace-hub
+    category: communication
+    domain: design
+    sub_domains: [brand]
+    input_types: [brand_brief, logo_assets]
+    output_types: [brand_guide_doc, style_tokens]
+    capabilities:
+      - "Create visual identity guidelines (colors, typography, logo usage)"
+      - "Define voice and tone standards"
+    python_packages: []
+
+  - id: "workspace-hub/doc-coauthoring"
+    repo: workspace-hub
+    category: communication
+    domain: document_generation
+    sub_domains: [docx, reports]
+    input_types: [draft_document, feedback_notes]
+    output_types: [revised_document, change_log]
+    capabilities:
+      - "Collaborative document editing with tracked changes"
+      - "Iterative refinement with suggestion mode"
+    python_packages: [python-docx]
+
+  - id: "workspace-hub/internal-comms"
+    repo: workspace-hub
+    category: communication
+    domain: design
+    sub_domains: [comms]
+    input_types: [announcement_brief, audience_context]
+    output_types: [memo, newsletter, announcement]
+    capabilities:
+      - "Draft professional memos, announcements, newsletters"
+      - "Adapt tone for different internal audiences"
+    python_packages: []
+
+  - id: "workspace-hub/slack-gif-creator"
+    repo: workspace-hub
+    category: communication
+    domain: design
+    sub_domains: [art, comms]
+    input_types: [user_prompt, image_assets]
+    output_types: [gif_file]
+    capabilities:
+      - "Create custom animated GIFs for Slack reactions"
+      - "Generate celebration and response animations"
+    python_packages: [Pillow]
+
+  # ── workspace-hub / Content Design ────────
+  - id: "workspace-hub/algorithmic-art"
+    repo: workspace-hub
+    category: content_design
+    domain: design
+    sub_domains: [art]
+    input_types: [user_prompt, seed_value]
+    output_types: [html_file, p5js_sketch]
+    capabilities:
+      - "Generate p5.js generative art with seeded randomness"
+      - "Interactive parameter exploration"
+    python_packages: []
+
+  - id: "workspace-hub/canvas-design"
+    repo: workspace-hub
+    category: content_design
+    domain: design
+    sub_domains: [art]
+    input_types: [design_brief, reference_images]
+    output_types: [png_file, pdf_file]
+    capabilities:
+      - "Create original visual art in PNG and PDF formats"
+      - "Apply design philosophy principles to compositions"
+    python_packages: [Pillow]
+
+  - id: "workspace-hub/frontend-design"
+    repo: workspace-hub
+    category: content_design
+    domain: design
+    sub_domains: [frontend]
+    input_types: [design_spec, wireframe]
+    output_types: [html_file, css_file, component_code]
+    capabilities:
+      - "Create production-grade web interfaces"
+      - "Responsive layouts with modern CSS"
+    python_packages: []
+
+  - id: "workspace-hub/theme-factory"
+    repo: workspace-hub
+    category: content_design
+    domain: design
+    sub_domains: [brand, frontend]
+    input_types: [theme_selection, customization_params]
+    output_types: [style_tokens, css_variables, theme_config]
+    capabilities:
+      - "Apply 10 pre-set professional themes to slides, documents, reports"
+      - "Generate consistent color palettes and typography scales"
+    python_packages: []
+
+  # ── workspace-hub / Development ───────────
+  - id: "workspace-hub/data-pipeline-processor"
+    repo: workspace-hub
+    category: development
+    domain: data_processing
+    sub_domains: [transformation]
+    input_types: [csv_data, json_data, yaml_config]
+    output_types: [csv_data, json_data, parquet_data]
+    capabilities:
+      - "Process data through transformation pipelines"
+      - "Validate, clean, and export data with configurable steps"
+    python_packages: [pandas, pydantic]
+
+  - id: "workspace-hub/engineering-report-generator"
+    repo: workspace-hub
+    category: development
+    domain: document_generation
+    sub_domains: [reports]
+    input_types: [analysis_results, yaml_config, csv_data]
+    output_types: [html_report, plotly_figures]
+    capabilities:
+      - "Generate engineering analysis reports"
+      - "Embed interactive Plotly visualizations in HTML"
+    python_packages: [plotly, jinja2, pandas]
+
+  - id: "workspace-hub/mcp-builder"
+    repo: workspace-hub
+    category: development
+    domain: development
+    sub_domains: [mcp]
+    input_types: [api_spec, tool_definitions]
+    output_types: [mcp_server_code, tool_schema]
+    capabilities:
+      - "Build Model Context Protocol servers"
+      - "Define tool schemas and transport handlers"
+    python_packages: [mcp]
+
+  - id: "workspace-hub/parallel-file-processor"
+    repo: workspace-hub
+    category: development
+    domain: data_processing
+    sub_domains: [transformation]
+    input_types: [file_list, processing_config]
+    output_types: [processed_files, aggregation_report]
+    capabilities:
+      - "Process multiple files in parallel (2-3x performance)"
+      - "Aggregate results with progress tracking"
+    python_packages: [concurrent.futures]
+
+  - id: "workspace-hub/webapp-testing"
+    repo: workspace-hub
+    category: development
+    domain: development
+    sub_domains: [testing]
+    input_types: [url, test_spec]
+    output_types: [test_results, screenshots]
+    capabilities:
+      - "End-to-end web testing with Playwright"
+      - "Visual regression and functional testing"
+    python_packages: [playwright]
+
+  - id: "workspace-hub/yaml-workflow-executor"
+    repo: workspace-hub
+    category: development
+    domain: development
+    sub_domains: [workflows]
+    input_types: [yaml_config]
+    output_types: [workflow_results, log_output]
+    capabilities:
+      - "Execute configuration-driven analysis workflows"
+      - "Chain processing steps defined in YAML"
+    python_packages: [pyyaml]
+
+  # ── workspace-hub / Document Handling ─────
+  - id: "workspace-hub/docx"
+    repo: workspace-hub
+    category: document_handling
+    domain: document_generation
+    sub_domains: [docx]
+    input_types: [text_content, template_docx, yaml_config]
+    output_types: [docx_file]
+    capabilities:
+      - "Create, read, and edit Word documents"
+      - "Template-based document generation"
+      - "Table and image insertion"
+    python_packages: [python-docx]
+
+  - id: "workspace-hub/pdf"
+    repo: workspace-hub
+    category: document_handling
+    domain: document_generation
+    sub_domains: [pdf]
+    input_types: [pdf_file, text_content, html_content]
+    output_types: [pdf_file, extracted_text, extracted_tables]
+    capabilities:
+      - "Extract text and tables from PDFs"
+      - "Create PDFs from HTML or text"
+      - "Merge, split, and manipulate PDF files"
+    python_packages: [pypdf, pdfplumber, weasyprint]
+
+  - id: "workspace-hub/pptx"
+    repo: workspace-hub
+    category: document_handling
+    domain: document_generation
+    sub_domains: [pptx]
+    input_types: [slide_content, template_pptx, yaml_config]
+    output_types: [pptx_file]
+    capabilities:
+      - "Create and edit PowerPoint presentations"
+      - "Template-based slide generation"
+      - "Chart and image embedding"
+    python_packages: [python-pptx]
+
+  - id: "workspace-hub/xlsx"
+    repo: workspace-hub
+    category: document_handling
+    domain: document_generation
+    sub_domains: [xlsx]
+    input_types: [tabular_data, yaml_config, csv_data]
+    output_types: [xlsx_file]
+    capabilities:
+      - "Create and manipulate Excel spreadsheets"
+      - "Formula insertion and conditional formatting"
+      - "Multi-sheet workbooks with charts"
+    python_packages: [openpyxl]
+
+  # ── workspace-hub / Tools ─────────────────
+  - id: "workspace-hub/ai-tool-assessment"
+    repo: workspace-hub
+    category: tools
+    domain: workspace_ops
+    sub_domains: [compliance]
+    input_types: [subscription_data, usage_logs]
+    output_types: [assessment_report]
+    capabilities:
+      - "Assess AI tool subscriptions and usage patterns"
+      - "Cost-effectiveness analysis and recommendations"
+    python_packages: []
+
+  # ── workspace-hub / Operations ────────────
+  - id: "workspace-hub/agent-orchestration"
+    repo: workspace-hub
+    category: workspace_ops
+    domain: workspace_ops
+    sub_domains: [orchestration]
+    input_types: [task_spec, agent_config]
+    output_types: [orchestration_results, agent_logs]
+    capabilities:
+      - "Orchestrate AI agents via Claude Flow"
+      - "Swarm coordination and multi-agent workflows"
+      - "Task decomposition and parallel execution"
+    python_packages: []
+
+  - id: "workspace-hub/compliance-check"
+    repo: workspace-hub
+    category: workspace_ops
+    domain: workspace_ops
+    sub_domains: [compliance]
+    input_types: [codebase_path, rule_set]
+    output_types: [compliance_report, violation_list]
+    capabilities:
+      - "Verify coding standards and AI guidelines"
+      - "Enforce workspace compliance rules"
+    python_packages: []
+
+  - id: "workspace-hub/repo-sync"
+    repo: workspace-hub
+    category: workspace_ops
+    domain: workspace_ops
+    sub_domains: [git_sync]
+    input_types: [repo_list, sync_config]
+    output_types: [sync_status, conflict_report]
+    capabilities:
+      - "Synchronize 26+ Git repositories"
+      - "Bulk pull, push, and status operations"
+    python_packages: []
+
+  - id: "workspace-hub/sparc-workflow"
+    repo: workspace-hub
+    category: workspace_ops
+    domain: development
+    sub_domains: [workflows]
+    input_types: [task_description]
+    output_types: [spec, pseudocode, architecture, refinement, completion]
+    capabilities:
+      - "Apply SPARC methodology (Spec, Pseudocode, Architecture, Refinement, Completion)"
+      - "Systematic TDD-driven development workflow"
+    python_packages: []
+
+  - id: "workspace-hub/workspace-cli"
+    repo: workspace-hub
+    category: workspace_ops
+    domain: workspace_ops
+    sub_domains: [cli]
+    input_types: [cli_command]
+    output_types: [cli_output]
+    capabilities:
+      - "Unified CLI for repository management"
+      - "System configuration and status"
+    python_packages: []
+
+  # ── digitalmodel ──────────────────────────
+  - id: "digitalmodel/orcaflex-modeling"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [mooring, riser, structural, hydrodynamics]
+    input_types: [yaml_config, orcaflex_model, csv_data]
+    output_types: [orcaflex_results, dat_files, sim_files]
+    capabilities:
+      - "Setup and configure OrcaFlex hydrodynamic simulations"
+      - "Universal runner for batch simulation execution"
+      - "Model parameterization from YAML configs"
+    python_packages: [OrcFxAPI]
+
+  - id: "digitalmodel/orcaflex-post-processing"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [mooring, riser, structural]
+    input_types: [sim_files, orcaflex_results, yaml_config]
+    output_types: [statistics_csv, html_report, plotly_figures]
+    capabilities:
+      - "Extract statistics from OrcaFlex results"
+      - "Generate graphs and HTML reports via OPP"
+      - "Batch post-processing across load cases"
+    python_packages: [OrcFxAPI, plotly, pandas]
+
+  - id: "digitalmodel/mooring-design"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [mooring, hydrodynamics]
+    input_types: [yaml_config, environmental_data, vessel_data]
+    output_types: [mooring_config, analysis_report, orcaflex_model]
+    capabilities:
+      - "Design CALM, SALM, catenary, and spread mooring systems"
+      - "Apply DNV, API, ABS standards for mooring analysis"
+      - "Generate OrcaFlex mooring models"
+    python_packages: [OrcFxAPI, numpy]
+
+  - id: "digitalmodel/catenary-riser"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [riser, structural]
+    input_types: [yaml_config, riser_properties, environmental_data]
+    output_types: [riser_config, orcaflex_model, analysis_report]
+    capabilities:
+      - "Analyze catenary and lazy wave riser configurations"
+      - "Generate OrcaFlex riser models from parameters"
+      - "Optimize riser geometry and buoyancy"
+    python_packages: [OrcFxAPI, numpy]
+
+  - id: "digitalmodel/structural-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [structural, fatigue]
+    input_types: [load_data, section_properties, material_data]
+    output_types: [stress_results, utilization_ratios, analysis_report]
+    capabilities:
+      - "Stress calculations for tubular and non-tubular sections"
+      - "Buckling checks per DNV, API, ISO standards"
+      - "Combined loading assessment"
+    python_packages: [numpy, pandas]
+
+  - id: "digitalmodel/fatigue-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [fatigue, structural]
+    input_types: [stress_history, sn_curve_params, joint_data]
+    output_types: [fatigue_life, damage_summary, analysis_report]
+    capabilities:
+      - "Fatigue damage calculation using 221 S-N curves from 17 standards"
+      - "Miner's rule cumulative damage summation"
+      - "Weld class and SCF application"
+    python_packages: [numpy, pandas]
+
+  - id: "digitalmodel/viv-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [viv, riser, hydrodynamics]
+    input_types: [current_profile, riser_properties, modal_data]
+    output_types: [viv_response, fatigue_damage, analysis_report]
+    capabilities:
+      - "Vortex-induced vibration assessment for risers"
+      - "VIV fatigue damage estimation"
+      - "Strake and suppression device evaluation"
+    python_packages: [numpy]
+
+  - id: "digitalmodel/hydrodynamics"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [hydrodynamics, aqwa]
+    input_types: [wave_data, vessel_geometry, current_data]
+    output_types: [hydrodynamic_coefficients, rao_data, wave_spectra]
+    capabilities:
+      - "Manage hydrodynamic coefficients (Cd, Cm, Ca)"
+      - "Wave spectra generation and manipulation"
+      - "RAO interpolation and OCIMF loading calculation"
+    python_packages: [numpy, scipy]
+
+  - id: "digitalmodel/aqwa-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [aqwa, hydrodynamics]
+    input_types: [aqwa_model, vessel_geometry]
+    output_types: [rao_data, hydrodynamic_coefficients, aqwa_results]
+    capabilities:
+      - "Integrate with AQWA for diffraction/radiation analysis"
+      - "Extract RAOs and hydrodynamic databases"
+      - "Convert AQWA output to OrcaFlex format"
+    python_packages: []
+
+  - id: "digitalmodel/signal-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [signal, fatigue]
+    input_types: [time_series_data, csv_data]
+    output_types: [spectral_results, cycle_counts, statistics]
+    capabilities:
+      - "Signal processing (FFT, filtering, windowing)"
+      - "Rainflow cycle counting per ASTM E1049-85"
+      - "Spectral analysis and statistical characterization"
+    python_packages: [numpy, scipy, pandas]
+
+  # ── worldenergydata ───────────────────────
+  - id: "worldenergydata/bsee-data-extractor"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [production_data]
+    input_types: [api_number, block_id, lease_id, field_name]
+    output_types: [production_csv, well_metadata]
+    capabilities:
+      - "Extract BSEE (US Gulf of Mexico) production data"
+      - "Query by API number, block, lease, or field"
+      - "Local caching for repeated queries"
+    python_packages: [pandas, requests]
+
+  - id: "worldenergydata/sodir-data-extractor"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [production_data]
+    input_types: [field_name, wellbore_id]
+    output_types: [production_csv, field_metadata]
+    capabilities:
+      - "Extract Norwegian SODIR production and field data"
+      - "Access wellbore, facility, and pipeline information"
+    python_packages: [pandas, requests]
+
+  - id: "worldenergydata/fdas-economics"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [economics]
+    input_types: [field_parameters, cost_estimates, price_scenarios]
+    output_types: [economic_model, cash_flow_table, sensitivity_results]
+    capabilities:
+      - "Offshore field development economic analysis"
+      - "Calculate NPV, MIRR, IRR, payback period"
+      - "Multi-scenario price and cost sensitivity"
+    python_packages: [numpy, pandas]
+
+  - id: "worldenergydata/npv-analyzer"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [economics]
+    input_types: [cash_flow_data, discount_rate, price_scenarios]
+    output_types: [npv_results, tornado_chart, cash_flow_plot]
+    capabilities:
+      - "NPV analysis for oil and gas assets"
+      - "Cash flow modeling with price scenario overlays"
+      - "Sensitivity analysis and visualization"
+    python_packages: [numpy, pandas, plotly]
+
+  - id: "worldenergydata/well-production-dashboard"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [production_data, visualization]
+    input_types: [production_csv, well_metadata]
+    output_types: [html_dashboard, plotly_figures]
+    capabilities:
+      - "Interactive well production dashboards"
+      - "Real-time monitoring displays"
+      - "Production forecasting and decline curves"
+    python_packages: [plotly, dash, pandas]
+
+  - id: "worldenergydata/marine-safety-incidents"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [incidents]
+    input_types: [date_range, region, incident_type]
+    output_types: [incident_database, analysis_report, heatmap]
+    capabilities:
+      - "Collect marine safety incident data from 7 global authorities"
+      - "Incident trend analysis and classification"
+      - "Geographic and temporal incident mapping"
+    python_packages: [pandas, requests, plotly]
+
+  - id: "worldenergydata/energy-data-visualizer"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [visualization]
+    input_types: [production_csv, field_metadata, time_series_data]
+    output_types: [plotly_figures, html_dashboard]
+    capabilities:
+      - "Create interactive visualizations for energy production data"
+      - "Field comparison charts and trend plots"
+    python_packages: [plotly, pandas]
+
+  - id: "worldenergydata/field-analyzer"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [production_data, visualization]
+    input_types: [field_name, production_csv]
+    output_types: [field_report, benchmarking_results, plotly_figures]
+    capabilities:
+      - "Analyze oil and gas field performance"
+      - "Production trend analysis and peer benchmarking"
+    python_packages: [pandas, plotly]
+
+  - id: "worldenergydata/web-scraper-energy"
+    repo: worldenergydata
+    category: energy_data
+    domain: energy_data
+    sub_domains: [web_scraping, production_data]
+    input_types: [url, scrape_config]
+    output_types: [scraped_data, csv_data]
+    capabilities:
+      - "Web scraping for energy data sources"
+      - "Navigate regulatory websites and extract tabular data"
+    python_packages: [requests, beautifulsoup4, selenium]
+
+  # ── aceengineer-admin ─────────────────────
+  - id: "aceengineer-admin/invoice-automation"
+    repo: aceengineer-admin
+    category: business
+    domain: business
+    sub_domains: [invoicing]
+    input_types: [yaml_config, client_data, hours_log]
+    output_types: [docx_invoice, pdf_invoice]
+    capabilities:
+      - "Generate professional invoices from YAML configuration"
+      - "Template-based invoice creation with python-docx"
+      - "Automatic calculation of totals and tax"
+    python_packages: [python-docx, pyyaml]
+
+  - id: "aceengineer-admin/tax-preparation"
+    repo: aceengineer-admin
+    category: business
+    domain: business
+    sub_domains: [tax]
+    input_types: [financial_records, prior_year_returns]
+    output_types: [tax_documents, cpa_package]
+    capabilities:
+      - "Prepare Form 1120 and Texas franchise tax documents"
+      - "Assemble CPA review packages"
+      - "Reconcile income and expense categories"
+    python_packages: [pandas, openpyxl]
+
+  - id: "aceengineer-admin/expense-tracking"
+    repo: aceengineer-admin
+    category: business
+    domain: business
+    sub_domains: [expenses]
+    input_types: [bank_statements, receipt_images, csv_data]
+    output_types: [categorized_expenses, expense_report]
+    capabilities:
+      - "Import and categorize business expenses"
+      - "Bank statement parsing and reconciliation"
+      - "Monthly and annual expense analysis"
+    python_packages: [pandas, openpyxl]
+
+  # ── assetutilities ────────────────────────
+  - id: "assetutilities/data-management"
+    repo: assetutilities
+    category: utilities
+    domain: data_processing
+    sub_domains: [transformation]
+    input_types: [csv_data, json_data, yaml_config]
+    output_types: [csv_data, json_data, transformed_data]
+    capabilities:
+      - "Data file management and organization"
+      - "Format conversion and transformation utilities"
+    python_packages: [pandas, pyyaml]
+
+  - id: "assetutilities/pdf-utilities"
+    repo: assetutilities
+    category: utilities
+    domain: document_generation
+    sub_domains: [pdf]
+    input_types: [pdf_file]
+    output_types: [pdf_file, extracted_text]
+    capabilities:
+      - "PDF processing utilities (merge, split, extract)"
+      - "Lightweight alternative to full pdf skill"
+    python_packages: [pypdf]
+
+  - id: "assetutilities/plotly-visualization"
+    repo: assetutilities
+    category: utilities
+    domain: data_processing
+    sub_domains: [plotly]
+    input_types: [csv_data, dataframe, yaml_config]
+    output_types: [plotly_figures, html_file]
+    capabilities:
+      - "Interactive Plotly visualization generation"
+      - "Configurable chart types from data and YAML specs"
+    python_packages: [plotly, pandas]
+
+# ─────────────────────────────────────────────
+# Relationship edges
+# ─────────────────────────────────────────────
+# Types:
+#   feeds        — output of A is input to B
+#   dependency   — A requires B to function
+#   composition  — A and B commonly used together in sequence
+#   alternative  — A can substitute for B
+#   see_also     — related reference
+#   shared_infra — A and B share packages or data formats
+
+edges:
+
+  # ── Marine/offshore pipeline flows ────────
+  - from: "digitalmodel/orcaflex-modeling"
+    to: "digitalmodel/orcaflex-post-processing"
+    type: feeds
+    note: "Simulation output (.sim) feeds into post-processing for statistics and reports"
+
+  - from: "digitalmodel/mooring-design"
+    to: "digitalmodel/orcaflex-modeling"
+    type: feeds
+    note: "Mooring configuration generates OrcaFlex model for dynamic analysis"
+
+  - from: "digitalmodel/catenary-riser"
+    to: "digitalmodel/orcaflex-modeling"
+    type: feeds
+    note: "Riser configuration generates OrcaFlex model for dynamic analysis"
+
+  - from: "digitalmodel/hydrodynamics"
+    to: "digitalmodel/orcaflex-modeling"
+    type: dependency
+    note: "OrcaFlex models require hydrodynamic coefficients and wave spectra"
+
+  - from: "digitalmodel/aqwa-analysis"
+    to: "digitalmodel/hydrodynamics"
+    type: feeds
+    note: "AQWA produces RAOs and hydrodynamic databases consumed by hydrodynamics skill"
+
+  - from: "digitalmodel/aqwa-analysis"
+    to: "digitalmodel/orcaflex-modeling"
+    type: feeds
+    note: "AQWA RAOs imported into OrcaFlex vessel types"
+
+  - from: "digitalmodel/orcaflex-post-processing"
+    to: "digitalmodel/fatigue-analysis"
+    type: feeds
+    note: "Post-processed stress histories feed fatigue damage calculations"
+
+  - from: "digitalmodel/signal-analysis"
+    to: "digitalmodel/fatigue-analysis"
+    type: feeds
+    note: "Rainflow cycle counts from signal analysis used in fatigue assessment"
+
+  - from: "digitalmodel/orcaflex-post-processing"
+    to: "digitalmodel/structural-analysis"
+    type: feeds
+    note: "Extracted loads feed structural stress and buckling checks"
+
+  - from: "digitalmodel/viv-analysis"
+    to: "digitalmodel/fatigue-analysis"
+    type: feeds
+    note: "VIV response amplitudes contribute to fatigue damage"
+
+  - from: "digitalmodel/viv-analysis"
+    to: "digitalmodel/catenary-riser"
+    type: composition
+    note: "VIV assessment commonly performed alongside riser analysis"
+
+  - from: "digitalmodel/structural-analysis"
+    to: "digitalmodel/fatigue-analysis"
+    type: composition
+    note: "Structural analysis results inform fatigue assessment locations"
+
+  # ── Energy data pipeline flows ────────────
+  - from: "worldenergydata/bsee-data-extractor"
+    to: "worldenergydata/field-analyzer"
+    type: feeds
+    note: "BSEE production data feeds field performance analysis"
+
+  - from: "worldenergydata/sodir-data-extractor"
+    to: "worldenergydata/field-analyzer"
+    type: feeds
+    note: "SODIR production data feeds field performance analysis"
+
+  - from: "worldenergydata/bsee-data-extractor"
+    to: "worldenergydata/well-production-dashboard"
+    type: feeds
+    note: "BSEE well data displayed in production dashboards"
+
+  - from: "worldenergydata/sodir-data-extractor"
+    to: "worldenergydata/well-production-dashboard"
+    type: feeds
+    note: "SODIR well data displayed in production dashboards"
+
+  - from: "worldenergydata/field-analyzer"
+    to: "worldenergydata/fdas-economics"
+    type: feeds
+    note: "Field production trends inform economic model inputs"
+
+  - from: "worldenergydata/field-analyzer"
+    to: "worldenergydata/energy-data-visualizer"
+    type: feeds
+    note: "Field analysis results visualized interactively"
+
+  - from: "worldenergydata/fdas-economics"
+    to: "worldenergydata/npv-analyzer"
+    type: composition
+    note: "FDAS and NPV commonly used together for investment decisions"
+
+  - from: "worldenergydata/web-scraper-energy"
+    to: "worldenergydata/bsee-data-extractor"
+    type: feeds
+    note: "Web scraper can fetch raw data that BSEE extractor processes"
+
+  - from: "worldenergydata/web-scraper-energy"
+    to: "worldenergydata/sodir-data-extractor"
+    type: feeds
+    note: "Web scraper can fetch raw data that SODIR extractor processes"
+
+  - from: "worldenergydata/bsee-data-extractor"
+    to: "worldenergydata/sodir-data-extractor"
+    type: alternative
+    note: "Both extract production data; BSEE for US GoM, SODIR for Norway"
+
+  - from: "worldenergydata/fdas-economics"
+    to: "worldenergydata/npv-analyzer"
+    type: alternative
+    note: "Both perform economic analysis; FDAS is field-level, NPV is asset-level"
+
+  # ── Document generation compositions ──────
+  - from: "workspace-hub/engineering-report-generator"
+    to: "workspace-hub/pdf"
+    type: composition
+    note: "Engineering reports often exported as PDF"
+
+  - from: "workspace-hub/engineering-report-generator"
+    to: "workspace-hub/docx"
+    type: composition
+    note: "Engineering reports sometimes exported as Word documents"
+
+  - from: "workspace-hub/xlsx"
+    to: "workspace-hub/engineering-report-generator"
+    type: feeds
+    note: "Spreadsheet data feeds report generation"
+
+  - from: "workspace-hub/theme-factory"
+    to: "workspace-hub/pptx"
+    type: composition
+    note: "Themes applied to presentation generation"
+
+  - from: "workspace-hub/theme-factory"
+    to: "workspace-hub/engineering-report-generator"
+    type: composition
+    note: "Themes applied to report styling"
+
+  - from: "workspace-hub/brand-guidelines"
+    to: "workspace-hub/theme-factory"
+    type: feeds
+    note: "Brand identity tokens feed theme generation"
+
+  - from: "workspace-hub/doc-coauthoring"
+    to: "workspace-hub/docx"
+    type: dependency
+    note: "Co-authoring relies on docx skill for document manipulation"
+
+  - from: "aceengineer-admin/invoice-automation"
+    to: "workspace-hub/docx"
+    type: dependency
+    note: "Invoice generation uses python-docx for document creation"
+
+  - from: "workspace-hub/pdf"
+    to: "assetutilities/pdf-utilities"
+    type: alternative
+    note: "Both handle PDF operations; workspace-hub/pdf is more comprehensive"
+
+  # ── Cross-domain data flows ───────────────
+  - from: "digitalmodel/orcaflex-post-processing"
+    to: "workspace-hub/engineering-report-generator"
+    type: feeds
+    note: "OrcaFlex results formatted into engineering reports"
+
+  - from: "assetutilities/plotly-visualization"
+    to: "workspace-hub/engineering-report-generator"
+    type: feeds
+    note: "Plotly figures embedded in engineering reports"
+
+  - from: "worldenergydata/energy-data-visualizer"
+    to: "assetutilities/plotly-visualization"
+    type: shared_infra
+    note: "Both use Plotly for interactive visualization"
+
+  - from: "workspace-hub/data-pipeline-processor"
+    to: "assetutilities/data-management"
+    type: shared_infra
+    note: "Both handle data transformation; pipeline-processor is workflow-oriented"
+
+  - from: "workspace-hub/parallel-file-processor"
+    to: "workspace-hub/data-pipeline-processor"
+    type: composition
+    note: "Parallel processing wraps pipeline processor for batch execution"
+
+  # ── Business flows ────────────────────────
+  - from: "aceengineer-admin/expense-tracking"
+    to: "aceengineer-admin/tax-preparation"
+    type: feeds
+    note: "Categorized expenses feed tax document preparation"
+
+  - from: "aceengineer-admin/invoice-automation"
+    to: "aceengineer-admin/tax-preparation"
+    type: feeds
+    note: "Invoice records contribute to revenue reporting for taxes"
+
+  - from: "aceengineer-admin/expense-tracking"
+    to: "workspace-hub/xlsx"
+    type: composition
+    note: "Expense reports commonly exported as Excel spreadsheets"
+
+  # ── Development/workspace flows ───────────
+  - from: "workspace-hub/skill-creator"
+    to: "workspace-hub/compliance-check"
+    type: composition
+    note: "New skills validated against compliance rules"
+
+  - from: "workspace-hub/yaml-workflow-executor"
+    to: "workspace-hub/data-pipeline-processor"
+    type: composition
+    note: "YAML workflows often orchestrate data pipeline steps"
+
+  - from: "workspace-hub/sparc-workflow"
+    to: "workspace-hub/webapp-testing"
+    type: composition
+    note: "SPARC TDD workflow uses testing skill for validation"
+
+  - from: "workspace-hub/agent-orchestration"
+    to: "workspace-hub/parallel-file-processor"
+    type: composition
+    note: "Multi-agent workflows may use parallel processing"
+
+  - from: "workspace-hub/repo-sync"
+    to: "workspace-hub/workspace-cli"
+    type: shared_infra
+    note: "Both operate on the multi-repo workspace infrastructure"
+
+  - from: "workspace-hub/frontend-design"
+    to: "workspace-hub/web-artifacts-builder"
+    type: composition
+    note: "Frontend designs packaged as self-contained web artifacts"
+
+  - from: "workspace-hub/algorithmic-art"
+    to: "workspace-hub/web-artifacts-builder"
+    type: composition
+    note: "Generative art delivered as interactive HTML artifacts"
+
+  # ── Preserved v1 see_also edges ───────────
+  - from: "eng/diffraction-spec-converter"
+    to: "engineering/marine-offshore/diffraction-analysis"
+    type: see_also
+    source_file: "eng/diffraction-spec-converter.md"
+    note: "WRK-240 — spec_converter skill; references existing diffraction-analysis master skill"
+
+  - from: "engineering/marine-offshore/cathodic-protection"
+    to: "engineering/asset-integrity/fitness-for-service"
+    type: see_also
+    source_file: "engineering/marine-offshore/cathodic-protection/SKILL.md"
+
+  - from: "engineering/marine-offshore/cathodic-protection"
+    to: "engineering/marine-offshore/risk-assessment"
+    type: see_also
+    source_file: "engineering/marine-offshore/cathodic-protection/SKILL.md"
+
+  - from: "engineering/marine-offshore/risk-assessment"
+    to: "engineering/asset-integrity/fitness-for-service"
+    type: see_also
+    source_file: "engineering/marine-offshore/risk-assessment/SKILL.md"
+
+  - from: "engineering/marine-offshore/risk-assessment"
+    to: "engineering/marine-offshore/cathodic-protection"
+    type: see_also
+    source_file: "engineering/marine-offshore/risk-assessment/SKILL.md"
+
+# ─────────────────────────────────────────────
+# Domain coverage matrix
+# ─────────────────────────────────────────────
+coverage:
+  marine_offshore:
+    skills:
+      - "digitalmodel/orcaflex-modeling"
+      - "digitalmodel/orcaflex-post-processing"
+      - "digitalmodel/mooring-design"
+      - "digitalmodel/catenary-riser"
+      - "digitalmodel/structural-analysis"
+      - "digitalmodel/fatigue-analysis"
+      - "digitalmodel/viv-analysis"
+      - "digitalmodel/hydrodynamics"
+      - "digitalmodel/aqwa-analysis"
+      - "digitalmodel/signal-analysis"
+    gaps:
+      - "Corrosion and cathodic protection analysis (exists as SKILL.md but not in SKILLS_INDEX)"
+      - "Risk-based inspection (RBI) planning"
+      - "Pipeline engineering (on-bottom stability, freespan)"
+      - "Installation analysis (lifting, lowering, towing)"
+      - "Geotechnical / foundation design (suction piles, anchors)"
+      - "Fitness-for-service assessment (API 579 / BS 7910)"
+
+  energy_data:
+    skills:
+      - "worldenergydata/bsee-data-extractor"
+      - "worldenergydata/sodir-data-extractor"
+      - "worldenergydata/fdas-economics"
+      - "worldenergydata/npv-analyzer"
+      - "worldenergydata/well-production-dashboard"
+      - "worldenergydata/marine-safety-incidents"
+      - "worldenergydata/energy-data-visualizer"
+      - "worldenergydata/field-analyzer"
+      - "worldenergydata/web-scraper-energy"
+    gaps:
+      - "UK NSTA / OGA production data extractor"
+      - "Brazil ANP production data extractor"
+      - "Reserves estimation and decline curve analysis"
+      - "Carbon emissions and ESG reporting"
+      - "Commodity price forecasting"
+
+  document_generation:
+    skills:
+      - "workspace-hub/docx"
+      - "workspace-hub/pdf"
+      - "workspace-hub/pptx"
+      - "workspace-hub/xlsx"
+      - "workspace-hub/doc-coauthoring"
+      - "workspace-hub/engineering-report-generator"
+      - "assetutilities/pdf-utilities"
+      - "aceengineer-admin/invoice-automation"
+    gaps:
+      - "LaTeX document generation"
+      - "Email template generation (HTML emails)"
+      - "Markdown-to-document conversion pipeline"
+
+  development:
+    skills:
+      - "workspace-hub/mcp-builder"
+      - "workspace-hub/webapp-testing"
+      - "workspace-hub/yaml-workflow-executor"
+      - "workspace-hub/skill-creator"
+      - "workspace-hub/web-artifacts-builder"
+      - "workspace-hub/sparc-workflow"
+    gaps:
+      - "CI/CD pipeline configuration (GitHub Actions authoring)"
+      - "Database migration management"
+      - "API documentation generation (OpenAPI / Swagger)"
+
+  business:
+    skills:
+      - "aceengineer-admin/invoice-automation"
+      - "aceengineer-admin/tax-preparation"
+      - "aceengineer-admin/expense-tracking"
+    gaps:
+      - "Time tracking and billable hours management"
+      - "Client contract and proposal generation"
+      - "Accounts receivable / payable tracking"
+
+  data_processing:
+    skills:
+      - "workspace-hub/data-pipeline-processor"
+      - "workspace-hub/parallel-file-processor"
+      - "assetutilities/data-management"
+      - "assetutilities/plotly-visualization"
+    gaps:
+      - "Database ETL connectors (PostgreSQL, SQLite)"
+      - "Parquet / Arrow native processing"
+      - "Data quality scoring and profiling"
+
+  workspace_ops:
+    skills:
+      - "workspace-hub/agent-orchestration"
+      - "workspace-hub/compliance-check"
+      - "workspace-hub/repo-sync"
+      - "workspace-hub/workspace-cli"
+      - "workspace-hub/ai-tool-assessment"
+    gaps:
+      - "Automated backup and disaster recovery"
+      - "Secret and credential management"
+      - "Cross-machine workspace state sync"
+
+  design:
+    skills:
+      - "workspace-hub/brand-guidelines"
+      - "workspace-hub/algorithmic-art"
+      - "workspace-hub/canvas-design"
+      - "workspace-hub/frontend-design"
+      - "workspace-hub/theme-factory"
+      - "workspace-hub/internal-comms"
+      - "workspace-hub/slack-gif-creator"
+    gaps:
+      - "Video editing and motion graphics"
+      - "3D rendering and Blender integration"
+      - "Social media content scheduling"
+
+  gis:
+    skills: []
+    gaps:
+      - "CRS transformation and coordinate utilities"
+      - "GeoJSON / Shapefile processing"
+      - "QGIS project generation"
+      - "Blender GIS visualization"
+      - "Subsea cable and pipeline route mapping"
+
+# ─────────────────────────────────────────────
+# Statistics
+# ─────────────────────────────────────────────
+stats:
+  total_nodes: 51
+  total_edges: 49
+  edge_type_counts:
+    feeds: 22
+    composition: 16
+    dependency: 3
+    alternative: 3
+    shared_infra: 3
+    see_also: 5
+  domains_covered: 8
+  domains_with_gaps_only: 1  # gis
+  repos: 5
