@@ -1,1 +1,0 @@
-../../../specs/modules/luminous-leaping-crescent.md
