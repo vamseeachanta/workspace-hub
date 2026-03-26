@@ -23,7 +23,7 @@ created: 2026-03-25
 | Preset | not applicable |
 | Component library | none (custom components, shadcn-style CSS variables) |
 | Icon library | lucide-react 0.279.0 |
-| Font | Inter (400, 500, 600, 700) + JetBrains Mono (400, 500, 600) |
+| Font | Inter (400, 600) + JetBrains Mono (400) |
 
 **Source:** Detected from `monitoring-dashboard/frontend/tailwind.config.js` and `index.css`. All values pre-populated from existing codebase.
 
@@ -51,13 +51,14 @@ Exceptions: metric-card uses `min-h-[120px]` (existing pattern). Chart container
 
 | Role | Size | Weight | Line Height | Font |
 |------|------|--------|-------------|------|
+| Small (labels, monospace timestamps, job names) | 12px | 400 | 1.4 | Inter / JetBrains Mono |
 | Body | 14px | 400 | 1.5 | Inter |
-| Label | 12px | 500 | 1.4 | Inter |
 | Heading | 20px | 600 | 1.2 | Inter |
-| Metric value | 24px (text-2xl) | 700 | 1.2 | Inter |
-| Monospace (timestamps, job names) | 13px | 400 | 1.4 | JetBrains Mono |
+| Metric value | 24px (text-2xl) | 600 | 1.2 | Inter |
 
-**Source:** Existing `MetricCard.tsx` uses `text-sm font-medium` for labels, `text-2xl font-bold` for values. Existing `tailwind.config.js` declares Inter and JetBrains Mono font families.
+**Weights used:** 400 (regular) for body, labels, monospace; 600 (semibold) for headings and metric values. Two weights total.
+
+**Source:** Existing `MetricCard.tsx` uses `text-sm font-medium` for labels, `text-2xl font-bold` for values. Existing `tailwind.config.js` declares Inter and JetBrains Mono font families. Consolidated from 5 sizes to 4 and from 4 weights to 2 per design contract constraints.
 
 ---
 
@@ -93,6 +94,8 @@ This phase adds one new page and reuses existing components.
 ### New Page: Pipeline Status (`/pipelines`)
 
 **Layout:** Sidebar + main content (reuse existing `Layout.tsx` shell).
+
+**Primary focal point:** Source Status Grid (Section 1). This is the first thing users see and the primary orientation element on the page. It occupies the top of the content area, uses the widest layout span, and each card carries a colored left border accent to draw visual attention to source health at a glance.
 
 #### Section 1: Source Status Grid
 - Grid of `MetricCard` components (reuse existing), one per data source
