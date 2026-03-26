@@ -31,7 +31,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Foundation fixes + EIA adapter wiring with Parquet output
-- [ ] 02-02-PLAN.md — BSEE adapter with per-dataset download and Parquet output
+- [x] 02-02-PLAN.md — BSEE adapter with per-dataset download and Parquet output
 - [ ] 02-03-PLAN.md — SODIR adapter with updated API URL and Parquet output
 - [ ] 02-04-PLAN.md — Staleness monitoring and email alerting
 - [ ] 02-05-PLAN.md — Curated manufacturer data CSVs and Tier 2 adapter scaffolding
