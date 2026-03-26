@@ -1,13 +1,24 @@
 # OSS Engineering Software Catalog
-# Generated: 2026-03-26
+# Updated: 2026-03-26
 # Source: GitHub API + web research
 # Issue: workspace-hub#1397
 
 metadata:
   generated: "2026-03-26"
-  total_libraries: 38
-  domains: [FEA, CFD, "O&G/Marine", CAD/CAE, GIS, "Doc Intelligence", "Data/Workflow"]
-  catalog_version: "1.0.0"
+  last_updated: "2026-03-26"
+  total_libraries: 117
+  domains:
+    - FEA
+    - CFD
+    - "O&G/Marine"
+    - CAD/CAE
+    - GIS
+    - "Doc Intelligence"
+    - "Data/Workflow"
+    - Visualization
+    - "Data Science"
+    - "Standards/Codes"
+  catalog_version: "2.0.0"
 
 libraries:
 
@@ -96,7 +107,7 @@ libraries:
     domain: FEA
     capabilities: >-
       Earthquake engineering FEA framework. Specializes in nonlinear structural analysis
-      for seismic evaluation — beams, columns, soil-structure, fiber sections, and
+      for seismic evaluation -- beams, columns, soil-structure, fiber sections, and
       performance-based earthquake engineering.
     download_size_estimate: "300 MB"
     integration_fit: high
@@ -140,7 +151,7 @@ libraries:
     domain: FEA
     capabilities: >-
       Multiphysics Object-Oriented Simulation Environment from Idaho National Lab.
-      Designed for tightly-coupled multiphysics — nuclear, thermal-hydraulics, fracture,
+      Designed for tightly-coupled multiphysics -- nuclear, thermal-hydraulics, fracture,
       porous media. Built on libMesh. Massive contributor base.
     download_size_estimate: "2 GB"
     integration_fit: medium
@@ -167,6 +178,184 @@ libraries:
     download_size_estimate: "400 MB"
     integration_fit: low
     integration_notes: "Pure C++ library with no Python bindings. Excellent for C++ projects."
+    cloned_at_ace: false
+
+  # --- NEW FEA entries (2026-03-26) ---
+
+  - name: Kratos Multiphysics
+    repo_url: https://github.com/KratosMultiphysics/Kratos
+    homepage: https://kratosmultiphysics.github.io/Kratos/
+    license: BSD-4-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: KratosMultiphysics (custom install)
+    maturity: production
+    stars: 1200
+    contributors: 100
+    primary_language: C++
+    domain: FEA
+    capabilities: >-
+      Multi-disciplinary simulation framework for structural mechanics, fluid dynamics,
+      contact mechanics, FSI, DEM, and coupled multiphysics. Extensive Python interface
+      covering problem setup, solving, and post-processing. HPC-capable.
+    download_size_estimate: "500 MB"
+    integration_fit: very-high
+    integration_notes: "Extensive Python interface. BSD license. Modular application design."
+    cloned_at_ace: false
+
+  - name: MFEM
+    repo_url: https://github.com/mfem/mfem
+    homepage: https://mfem.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: mfem
+    maturity: production
+    stars: 2100
+    contributors: 177
+    primary_language: C++
+    domain: FEA
+    capabilities: >-
+      Lightweight, scalable C++ library for finite element methods from LLNL. Supports
+      arbitrary high-order FE spaces, GPU acceleration (NVIDIA/AMD), and scales from
+      laptops to exascale supercomputers. PyMFEM wrapper on PyPI.
+    download_size_estimate: "200 MB"
+    integration_fit: high
+    integration_notes: "pip install mfem (PyMFEM). BSD license. Well-documented."
+    cloned_at_ace: false
+
+  - name: Firedrake
+    repo_url: https://github.com/firedrakeproject/firedrake
+    homepage: https://www.firedrakeproject.org
+    license: LGPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: firedrake
+    maturity: mature
+    stars: 645
+    contributors: 126
+    primary_language: Python
+    domain: FEA
+    capabilities: >-
+      Automated PDE solver using FEM with code generation from UFL variational forms.
+      Built on PETSc. Supports complex geometries, high-order elements, adjoint
+      computation via pyadjoint, and parallel execution.
+    download_size_estimate: "300 MB"
+    integration_fit: very-high
+    integration_notes: "Python-native. pip-installable. UFL form language. Tight NumPy/SciPy interop."
+    cloned_at_ace: false
+
+  - name: scikit-fem
+    repo_url: https://github.com/kinnala/scikit-fem
+    homepage: null
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: scikit-fem
+    maturity: mature
+    stars: 613
+    contributors: 20
+    primary_language: Python
+    domain: FEA
+    capabilities: >-
+      Pure Python FEM assembly library with minimal dependencies (NumPy, SciPy only).
+      Transforms bilinear forms into sparse matrices. Supports triangular, quadrilateral,
+      tetrahedral, and hexahedral meshes with arbitrary-order elements.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. pip install. Minimal deps. BSD license. Excellent for prototyping."
+    cloned_at_ace: false
+
+  - name: SfePy
+    repo_url: https://github.com/sfepy/sfepy
+    homepage: https://sfepy.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: sfepy
+    maturity: mature
+    stars: 821
+    contributors: 30
+    primary_language: Python
+    domain: FEA
+    capabilities: >-
+      Simple Finite Elements in Python for solving coupled PDEs by FEM in 1D/2D/3D.
+      Covers elasticity, piezoelectricity, diffusion, Navier-Stokes, and homogenization.
+      Built on NumPy/SciPy.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Python-native. pip-installable. BSD license. Problem definition via Python dicts."
+    cloned_at_ace: false
+
+  - name: NGSolve
+    repo_url: https://github.com/NGSolve/ngsolve
+    homepage: https://ngsolve.org
+    license: LGPL-2.1
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: ngsolve
+    maturity: production
+    stars: 536
+    contributors: 33
+    primary_language: C++
+    domain: FEA
+    capabilities: >-
+      High-performance multiphysics FEM for solid mechanics, fluid dynamics, and
+      electromagnetics. Includes Netgen mesh generator with OpenCascade CAD support.
+      Full Python frontend with Jupyter notebook integration.
+    download_size_estimate: "300 MB"
+    integration_fit: very-high
+    integration_notes: "pip-installable. Full Python frontend. Jupyter support. Includes mesher."
+    cloned_at_ace: false
+
+  - name: FreeFEM
+    repo_url: https://github.com/FreeFem/FreeFem-sources
+    homepage: https://freefem.org
+    license: LGPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pyfreefem (third-party)
+    maturity: production
+    stars: 906
+    contributors: 31
+    primary_language: C++
+    domain: FEA
+    capabilities: >-
+      2D and 3D PDE solver with its own DSL (.edp files) and a large library of finite
+      elements. Interfaced with PETSc, MUMPS, and HPDDM for parallel solving. Used
+      by thousands of researchers.
+    download_size_estimate: "200 MB"
+    integration_fit: medium
+    integration_notes: "Python wrapper exists (pyfreefem) but primary interface is its own DSL."
+    cloned_at_ace: false
+
+  - name: OpenRadioss
+    repo_url: https://github.com/OpenRadioss/OpenRadioss
+    homepage: https://openradioss.org
+    license: AGPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: false
+    python_package: null
+    maturity: production
+    stars: 783
+    contributors: 30
+    primary_language: Fortran
+    domain: FEA
+    capabilities: >-
+      Industry-proven FEA solver for dynamic event analysis (crash/safety, impact/shock,
+      drop testing, FSI). Originally Altair Radioss, open-sourced 2022. Explicit time
+      integration. Supports LS-DYNA input format conversion.
+    download_size_estimate: "500 MB"
+    integration_fit: low
+    integration_notes: "Fortran codebase. AGPL license. No native Python API. Specialized for crash/impact."
     cloned_at_ace: false
 
   # ═══════════════════════════════════════════
@@ -259,6 +448,140 @@ libraries:
     integration_notes: "NekPy Python wrapper exists. GitLab-hosted. Academic/research focus."
     cloned_at_ace: false
 
+  # --- NEW CFD entries (2026-03-26) ---
+
+  - name: PyFR
+    repo_url: https://github.com/PyFR/PyFR
+    homepage: https://www.pyfr.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pyfr
+    maturity: mature
+    stars: 400
+    contributors: 10
+    primary_language: Python
+    domain: CFD
+    capabilities: >-
+      High-order flux reconstruction framework for compressible Euler and Navier-Stokes
+      on mixed unstructured grids. GPU-accelerated via CUDA/OpenCL/HIP. Targets
+      scale-resolving simulations on streaming architectures.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Python framework. GPU-accelerated. BSD license. pip-installable."
+    cloned_at_ace: false
+
+  - name: Dedalus
+    repo_url: https://github.com/DedalusProject/dedalus
+    homepage: https://dedalus-project.org
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: dedalus
+    maturity: mature
+    stars: 500
+    contributors: 15
+    primary_language: Python
+    domain: CFD
+    capabilities: >-
+      Flexible PDE framework using spectral methods. Symbolic equation specification
+      in plain text. Widely used in astrophysical, geophysical, and biological fluid
+      dynamics for convection, turbulence, and dynamo problems.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Python-native. Symbolic equation input. Conda/pip installable."
+    cloned_at_ace: false
+
+  - name: PhiFlow
+    repo_url: https://github.com/tum-pbs/PhiFlow
+    homepage: https://tum-pbs.github.io/PhiFlow/
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: phiflow
+    maturity: mature
+    stars: 1800
+    contributors: 10
+    primary_language: Python
+    domain: CFD
+    capabilities: >-
+      Differentiable PDE solving framework for ML applications. Supports NumPy,
+      TensorFlow, JAX, and PyTorch backends. Built-in fluid physics operations.
+      Same code runs 2D/3D, CPU/GPU. Enables end-to-end differentiable simulations.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Native Python. MIT license. pip-installable. ML-framework backends."
+    cloned_at_ace: false
+
+  - name: Code_Saturne
+    repo_url: https://github.com/code-saturne/code_saturne
+    homepage: https://www.code-saturne.org
+    license: GPL-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: null (built from source)
+    maturity: production
+    stars: 270
+    contributors: 40
+    primary_language: C/Fortran
+    domain: CFD
+    capabilities: >-
+      Industrial-strength general-purpose CFD solver from EDF for nuclear safety and
+      thermohydraulics. RANS, LES, conjugate heat transfer, and Lagrangian particle
+      tracking. Used in production nuclear engineering.
+    download_size_estimate: "300 MB"
+    integration_fit: medium
+    integration_notes: "Python scripting for case setup. Large codebase. EDF-developed."
+    cloned_at_ace: false
+
+  - name: AMReX
+    repo_url: https://github.com/AMReX-Codes/amrex
+    homepage: https://amrex-codes.github.io/amrex/
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: amrex (pyAMReX)
+    maturity: production
+    stars: 1500
+    contributors: 200
+    primary_language: C++/Fortran
+    domain: CFD
+    capabilities: >-
+      Block-structured adaptive mesh refinement framework for solving PDEs at exascale.
+      Foundation for many DOE combustion/astro/fluid codes (Pele, Castro, Nyx).
+      pyAMReX provides zero-copy GPU data access for ML/in-situ analysis.
+    download_size_estimate: "200 MB"
+    integration_fit: high
+    integration_notes: "pyAMReX Python bindings. BSD license. Exascale-capable AMR framework."
+    cloned_at_ace: false
+
+  - name: JAX-Fluids
+    repo_url: https://github.com/tumaer/JAXFLUIDS
+    homepage: https://jax-fluids.readthedocs.io
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: jaxfluids
+    maturity: growing
+    stars: 400
+    contributors: 5
+    primary_language: Python (JAX)
+    domain: CFD
+    capabilities: >-
+      Fully differentiable high-order CFD solver for 3D compressible single-phase and
+      two-phase flows in JAX. CPU/GPU/TPU native with automatic differentiation.
+      Level-set and diffuse-interface two-phase models.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Pure JAX. Differentiable. GPU/TPU native. Research-oriented."
+    cloned_at_ace: false
+
   # ═══════════════════════════════════════════
   # O&G / Marine / Subsea
   # ═══════════════════════════════════════════
@@ -304,7 +627,7 @@ libraries:
       MoorDyn modules.
     download_size_estimate: "200 MB"
     integration_fit: very-high
-    integration_notes: "Python bindings available. Comprehensive offshore wind/marine platform. Already cloned."
+    integration_notes: "Python bindings available. Comprehensive offshore wind/marine platform."
     cloned_at_ace: true
     ace_path: /mnt/ace/openfast
 
@@ -327,7 +650,7 @@ libraries:
       WEC-Sim, and other hydro codes.
     download_size_estimate: "20 MB"
     integration_fit: very-high
-    integration_notes: "Python bindings (moordyn). pip-installable. Core mooring analysis tool. Already cloned."
+    integration_notes: "Python bindings (moordyn). pip-installable. Core mooring analysis tool."
     cloned_at_ace: true
     ace_path: /mnt/ace/MoorDyn
 
@@ -346,11 +669,10 @@ libraries:
     domain: "O&G/Marine"
     capabilities: >-
       Python-based quasi-static mooring system design tool from NREL. Catenary equations,
-      system-level optimization, and integration with RAFT (Response Amplitudes of
-      Floating Turbines).
+      system-level optimization, and integration with RAFT.
     download_size_estimate: "5 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. pip-installable. Lightweight mooring design. Already cloned."
+    integration_notes: "Pure Python. pip-installable. Lightweight mooring design."
     cloned_at_ace: true
     ace_path: /mnt/ace/MoorPy
 
@@ -415,7 +737,7 @@ libraries:
       and nonlinear hydro.
     download_size_estimate: "100 MB"
     integration_fit: low
-    integration_notes: "MATLAB-only. No Python API. Would need MATLAB engine or port. Already cloned."
+    integration_notes: "MATLAB-only. No Python API. Would need MATLAB engine or port."
     cloned_at_ace: true
     ace_path: /mnt/ace/WEC-Sim
 
@@ -435,10 +757,10 @@ libraries:
     capabilities: >-
       Python BEM solver for linear potential flow based on Nemoh. Computes
       hydrodynamic coefficients (added mass, damping, excitation forces) for
-      floating or submerged bodies. Core tool for wave energy and offshore.
+      floating or submerged bodies.
     download_size_estimate: "30 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python with Fortran backend. pip-installable. Core hydro tool. Already cloned."
+    integration_notes: "Pure Python with Fortran backend. pip-installable. Core hydro tool."
     cloned_at_ace: true
     ace_path: /mnt/ace/capytaine
 
@@ -457,11 +779,10 @@ libraries:
     domain: "O&G/Marine"
     capabilities: >-
       Hydrodynamic Analysis of Marine Structures. BEM solver for wave diffraction
-      and radiation of 3D floating/submerged structures. Deep-water and finite-depth
-      Green functions. Alternative to commercial WAMIT/AQWA.
+      and radiation of 3D floating/submerged structures.
     download_size_estimate: "10 MB"
     integration_fit: medium
-    integration_notes: "pyHAMS wrapper on conda-forge. Apache-2.0 (more permissive than Capytaine GPL). Already cloned."
+    integration_notes: "pyHAMS wrapper on conda-forge. Apache-2.0 (more permissive than Capytaine GPL)."
     cloned_at_ace: true
     ace_path: /mnt/ace/HAMS
 
@@ -480,13 +801,538 @@ libraries:
     domain: "O&G/Marine"
     capabilities: >-
       Open-source reservoir simulation suite (OPM Flow). Eclipse-compatible reservoir
-      simulator for oil/gas production. Includes opm-simulators, opm-grid, ResInsight
-      (3D visualization). Full ECLIPSE deck parser.
+      simulator for oil/gas production. Includes ResInsight 3D visualization. Full
+      ECLIPSE deck parser.
     download_size_estimate: "500 MB"
     integration_fit: high
-    integration_notes: "Python bindings for deck parsing. Production reservoir simulator. Already cloned."
+    integration_notes: "Python bindings for deck parsing. Production reservoir simulator."
     cloned_at_ace: true
     ace_path: /mnt/ace/opm-common
+
+  # --- NEW O&G/Marine entries (2026-03-26) ---
+
+  - name: RAFT
+    repo_url: https://github.com/WISDEM/RAFT
+    homepage: https://openraft.readthedocs.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: OpenRAFT
+    maturity: growing
+    stars: 37
+    contributors: 10
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Frequency-domain dynamics model for floating wind turbines. Computes response
+      spectra accounting for platform hydrodynamics (via pyHAMS), quasi-static mooring
+      (via MoorPy), and rotor aerodynamics (via CCBlade).
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Integrates MoorPy + pyHAMS. Level 1 model in WEIS."
+    cloned_at_ace: false
+
+  - name: WISDEM
+    repo_url: https://github.com/WISDEM/WISDEM
+    homepage: https://www.nrel.gov/research/software/nrel-wisdem-nrel-wind-integrated-system-design-and-engineering-model
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: wisdem
+    maturity: mature
+    stars: 172
+    contributors: 40
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Integrated wind plant cost-of-energy model built on OpenMDAO. Covers rotor,
+      drivetrain, tower, and plant-level design including financial modeling. Enables
+      multidisciplinary optimization.
+    download_size_estimate: "100 MB"
+    integration_fit: very-high
+    integration_notes: "Python-native. OpenMDAO-based. NREL-maintained."
+    cloned_at_ace: false
+
+  - name: WEIS
+    repo_url: https://github.com/WISDEM/WEIS
+    homepage: https://weis.readthedocs.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: weis
+    maturity: growing
+    stars: 66
+    contributors: 50
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Multi-fidelity co-design framework for floating offshore wind turbines integrating
+      OpenFAST, WISDEM, and ROSCO. Controls co-design optimization by coupling
+      aero-servo-hydro-elastic simulation with gradient-based optimization.
+    download_size_estimate: "500 MB"
+    integration_fit: very-high
+    integration_notes: "Python-native. DOE WETO Software Stack. Couples OpenFAST+WISDEM+ROSCO."
+    cloned_at_ace: false
+
+  - name: WELIB
+    repo_url: https://github.com/ebranlard/welib
+    homepage: null
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: welib
+    maturity: growing
+    stars: 109
+    contributors: 5
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Wind energy Python/MATLAB tools for aero-servo-hydro-elasticity: BEM, dynamic
+      stall, structural dynamics (beam FEM), hydrodynamic wave loads, and OpenFAST
+      file format I/O.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT license. pip-installable. Compact utility library."
+    cloned_at_ace: false
+
+  - name: ROSCO
+    repo_url: https://github.com/NREL/ROSCO
+    homepage: https://rosco.readthedocs.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: rosco
+    maturity: mature
+    stars: 149
+    contributors: 20
+    primary_language: Fortran/Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Reference wind turbine controller framework for fixed and floating offshore
+      turbines. Python toolbox for tuning and analysis. Modular controller blocks
+      (pitch, torque, yaw, floating feedback).
+    download_size_estimate: "20 MB"
+    integration_fit: high
+    integration_notes: "Python toolbox + Fortran controller. Widely used with OpenFAST."
+    cloned_at_ace: false
+
+  - name: FLORIS
+    repo_url: https://github.com/NREL/floris
+    homepage: https://nrel.github.io/floris/
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: floris
+    maturity: production
+    stars: 260
+    contributors: 30
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Controls-focused wind farm simulation incorporating steady-state engineering
+      wake models (Jensen, Gaussian) for power prediction and layout/yaw optimization.
+      Vectorized Python framework for rapid wind farm design iteration.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. pip-installable. Apache-2.0. Active since 2013."
+    cloned_at_ace: false
+
+  - name: PyWake
+    repo_url: https://github.com/DTUWindEnergy/PyWake
+    homepage: https://topfarm.pages.windenergy.dtu.dk/PyWake/
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: py-wake
+    maturity: production
+    stars: 100
+    contributors: 15
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      DTU Wind Energy wake simulation tool computing flow fields, turbine power, and
+      AEP using engineering wake models. Integrates with TOPFARM for layout optimization.
+      Vectorized framework for rapid design studies.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT license. pip-installable."
+    cloned_at_ace: false
+
+  - name: windpowerlib
+    repo_url: https://github.com/wind-python/windpowerlib
+    homepage: https://windpowerlib.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: windpowerlib
+    maturity: mature
+    stars: 367
+    contributors: 20
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Wind turbine and wind farm power output modelling using manufacturer power curves
+      and meteorological data. Pre-built data for many commercial turbines.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT license. pip-installable. Energy yield estimation."
+    cloned_at_ace: false
+
+  - name: WOMBAT
+    repo_url: https://github.com/WISDEM/WOMBAT
+    homepage: https://wisdem.github.io/WOMBAT/
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: wombat
+    maturity: growing
+    stars: 26
+    contributors: 5
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Discrete event simulation for wind farm O&M logistics, crew transfers, vessel
+      availability, and component failure/repair. Built on SimPy. Outputs time-based
+      availability and annual operating costs.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. pip-installable. Apache-2.0."
+    cloned_at_ace: false
+
+  - name: OpenOA
+    repo_url: https://github.com/NREL/OpenOA
+    homepage: https://www.nrel.gov/wind/openoa.html
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: openoa
+    maturity: mature
+    stars: 50
+    contributors: 15
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Framework for assessing operational wind plant performance using SCADA, met tower,
+      and reanalysis data. Power curve fitting, energy ratio analysis, and gap-fill
+      methods.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. BSD-3. pip-installable. NREL-maintained."
+    cloned_at_ace: false
+
+  - name: FAModel
+    repo_url: https://github.com/FloatingArrayDesign/FAModel
+    homepage: null
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: famodel
+    maturity: growing
+    stars: 15
+    contributors: 8
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      High-level library for modeling floating wind arrays. Combines site conditions
+      with turbine, mooring, and cable layout descriptions. Integrates RAFT, MoorPy,
+      and FLORIS. IEA Wind Task 49 ontology.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Apache-2.0. Integrates multiple NREL tools."
+    cloned_at_ace: false
+
+  - name: windIO
+    repo_url: https://github.com/IEAWindSystems/windIO
+    homepage: https://ieawindsystems.github.io/windIO
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: windio
+    maturity: growing
+    stars: 30
+    contributors: 15
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Standardized YAML data schemas for wind energy system inputs/outputs. Validation
+      functions and common ontology for turbine geometry, aerodynamics, plant layout.
+      Enables interoperability between WISDEM, WEIS, OpenFAST.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Apache-2.0. Interoperability standard."
+    cloned_at_ace: false
+
+  - name: pyHAMS
+    repo_url: https://github.com/WISDEM/pyHAMS
+    homepage: null
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pyHAMS
+    maturity: growing
+    stars: 15
+    contributors: 5
+    primary_language: Python/Fortran
+    domain: "O&G/Marine"
+    capabilities: >-
+      Python wrapper around HAMS BEM solver. Compiles and calls Fortran BEM code from
+      Python for potential flow diffraction/radiation problems. Used by RAFT as default
+      hydrodynamic solver.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Python wrapper. Apache-2.0. Used by RAFT."
+    cloned_at_ace: false
+
+  - name: Nemoh
+    repo_url: https://github.com/BEMRosetta/Nemoh
+    homepage: https://lheea.ec-nantes.fr/software/nemoh
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: false
+    python_package: null
+    maturity: mature
+    stars: 75
+    contributors: 10
+    primary_language: Fortran
+    domain: "O&G/Marine"
+    capabilities: >-
+      First open-source BEM code for computing first-order wave loads on offshore
+      structures. Foundation code that Capytaine was built upon as a Python rewrite.
+    download_size_estimate: "20 MB"
+    integration_fit: medium
+    integration_notes: "No Python API. Use Capytaine instead for Python workflows."
+    cloned_at_ace: false
+
+  - name: BEMRosetta
+    repo_url: https://github.com/BEMRosetta/BEMRosetta
+    homepage: https://bemrosetta.github.io
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: null
+    maturity: mature
+    stars: 115
+    contributors: 10
+    primary_language: C++
+    domain: "O&G/Marine"
+    capabilities: >-
+      Hydrodynamic coefficients viewer and converter supporting WAMIT, AQWA, Nemoh,
+      HAMS, and OpenFAST formats. Time-domain results viewer and mesh converter.
+    download_size_estimate: "50 MB"
+    integration_fit: medium
+    integration_notes: "Python glue code available. Format converter between BEM tools."
+    cloned_at_ace: false
+
+  - name: DualSPHysics
+    repo_url: https://github.com/DualSPHysics/DualSPHysics
+    homepage: https://dual.sphysics.org
+    license: LGPL-2.1
+    latest_version: null
+    latest_release_date: null
+    python_api: false
+    python_package: null
+    maturity: production
+    stars: 687
+    contributors: 235
+    primary_language: C++/CUDA
+    domain: "O&G/Marine"
+    capabilities: >-
+      GPU-accelerated SPH solver for free-surface flows, wave-structure interaction,
+      and coastal/offshore engineering. 100x GPU speedup. Supports mooring lines,
+      floating bodies 6-DOF, and MoorDyn coupling.
+    download_size_estimate: "200 MB"
+    integration_fit: medium
+    integration_notes: "No native Python API. Post-processing Python tools available. LGPL."
+    cloned_at_ace: false
+
+  - name: REEF3D
+    repo_url: https://github.com/REEF3D/REEF3D
+    homepage: https://reef3d.wordpress.com
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: false
+    python_package: null
+    maturity: mature
+    stars: 121
+    contributors: 10
+    primary_language: C++
+    domain: "O&G/Marine"
+    capabilities: >-
+      Hydrodynamics framework for marine, coastal, and hydraulic engineering CFD.
+      Level-set and VOF free-surface methods, floating body dynamics 6-DOF, sediment
+      transport. OpenFAST coupling via REEF2FAST.
+    download_size_estimate: "50 MB"
+    integration_fit: medium
+    integration_notes: "No Python API. Conda package available. OpenFAST coupling."
+    cloned_at_ace: false
+
+  - name: Thetis
+    repo_url: https://github.com/thetisproject/thetis
+    homepage: https://thetisproject.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: thetis
+    maturity: mature
+    stars: 75
+    contributors: 20
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Unstructured-grid coastal ocean model built on Firedrake. 2D depth-averaged and
+      3D baroclinic solvers, wetting/drying, scalar transport, and adjoint capabilities.
+      Tidal energy resource assessment and estuary modeling.
+    download_size_estimate: "20 MB"
+    integration_fit: high
+    integration_notes: "Python-native. MIT license. Built on Firedrake FEM."
+    cloned_at_ace: false
+
+  - name: Proteus
+    repo_url: https://github.com/erdc/proteus
+    homepage: https://proteustoolkit.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: proteus
+    maturity: mature
+    stars: 90
+    contributors: 20
+    primary_language: Python/C++
+    domain: "O&G/Marine"
+    capabilities: >-
+      ERDC computational toolkit for coastal/hydraulic engineering. FEM, FVM, and BEM
+      for wave breaking, sediment transport, and fluid-structure interaction.
+    download_size_estimate: "100 MB"
+    integration_fit: high
+    integration_notes: "Python-native. MIT license. US Army ERDC-developed."
+    cloned_at_ace: false
+
+  - name: py-fatigue
+    repo_url: https://github.com/OWI-Lab/py_fatigue
+    homepage: https://owi-lab.github.io/py_fatigue/
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: py-fatigue
+    maturity: growing
+    stars: 30
+    contributors: 5
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Fatigue analysis library for cyclic stress analysis, rainflow counting, SN curves,
+      and Paris' law crack growth. Developed by OWI-Lab specifically for offshore wind
+      structural health monitoring.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. pip-installable. Offshore wind focused."
+    cloned_at_ace: false
+
+  - name: pyLife
+    repo_url: https://github.com/boschresearch/pylife
+    homepage: https://pylife.readthedocs.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pylife
+    maturity: mature
+    stars: 165
+    contributors: 20
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      General-purpose fatigue and reliability library from Bosch Research. S-N curves,
+      Woehler analysis, rainflow counting, Miner's rule damage accumulation. Integrates
+      with pandas DataFrames.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Apache-2.0. pip-installable. pandas-integrated."
+    cloned_at_ace: false
+
+  - name: pycatenary
+    repo_url: https://github.com/tridelat/pycatenary
+    homepage: null
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pycatenary
+    maturity: growing
+    stars: 20
+    contributors: 3
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Lightweight Python library for catenary equations (elastic and rigid cables at
+      static equilibrium). Seabed contact, multisegmented lines, 2D/3D coordinates.
+    download_size_estimate: "1 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable. Quick mooring preliminary design."
+    cloned_at_ace: false
+
+  - name: OCEANLYZ
+    repo_url: https://github.com/akarimp/Oceanlyz
+    homepage: https://oceanlyz.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: oceanlyz
+    maturity: growing
+    stars: 34
+    contributors: 3
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Ocean wave analyzing toolbox for spectral and zero-crossing analysis of wave
+      sensor data. Calculates Hs, Tp, Tm. Separates wind-sea from swell. Corrects
+      for pressure attenuation.
+    download_size_estimate: "5 MB"
+    integration_fit: high
+    integration_notes: "Pure Python. MIT. pip-installable."
+    cloned_at_ace: false
+
+  - name: OSP (libcosim)
+    repo_url: https://github.com/open-simulation-platform/libcosim
+    homepage: https://open-simulation-platform.github.io
+    license: MPL-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: libcosimpy
+    maturity: mature
+    stars: 40
+    contributors: 15
+    primary_language: C++
+    domain: "O&G/Marine"
+    capabilities: >-
+      Maritime industry co-simulation platform for coupling FMU models in plug-and-play
+      configurations. Backed by DNV and NTNU. Simulating marine operations, vessel
+      systems, and offshore installations. FMI 2.0 standard.
+    download_size_estimate: "50 MB"
+    integration_fit: high
+    integration_notes: "Python bindings (libcosimpy). DNV-backed. FMI 2.0 support."
+    cloned_at_ace: false
 
   # ═══════════════════════════════════════════
   # CAD / CAE
@@ -507,11 +1353,10 @@ libraries:
     domain: CAD/CAE
     capabilities: >-
       Full parametric 3D CAD modeller. Part design, assembly, FEM (via CalculiX),
-      BIM/architecture, CAM, and drafting workbenches. Extensive Python scripting
-      and macro system. Huge community.
+      BIM/architecture, CAM, and drafting workbenches. Extensive Python scripting.
     download_size_estimate: "1 GB"
     integration_fit: very-high
-    integration_notes: "Full Python API. Can run headless. Import/export STEP, IGES, STL. Geometry engine."
+    integration_notes: "Full Python API. Can run headless. Import/export STEP, IGES, STL."
     cloned_at_ace: false
 
   - name: OpenSCAD
@@ -529,10 +1374,10 @@ libraries:
     domain: CAD/CAE
     capabilities: >-
       Programmer's CAD tool. Script-based 3D modelling using CSG and extrusion.
-      Ideal for parametric design and 3D printing. No GUI modelling — code only.
+      Ideal for parametric design and 3D printing.
     download_size_estimate: "50 MB"
     integration_fit: medium
-    integration_notes: "No Python API but can be driven via CLI. Script-based input. Good for parametric geometry."
+    integration_notes: "No Python API but can be driven via CLI. Script-based input."
     cloned_at_ace: false
 
   - name: BRL-CAD
@@ -550,7 +1395,7 @@ libraries:
     domain: CAD/CAE
     capabilities: >-
       US Army-developed solid modelling system. CSG-based with ray tracing, analysis,
-      and geometric conversion tools. 40+ year history. Very robust geometry kernel.
+      and geometric conversion tools.
     download_size_estimate: "200 MB"
     integration_fit: low
     integration_notes: "Tcl scripting primarily. No Python API. Legacy codebase."
@@ -572,10 +1417,9 @@ libraries:
     capabilities: >-
       Pre/post-processing platform integrating Code_Aster FEA. CAD geometry, meshing
       (via SMESH), FEA setup, and result visualization. Full Python scripting.
-      EDF-developed, widely used in nuclear and energy sectors.
     download_size_estimate: "3 GB"
     integration_fit: high
-    integration_notes: "Full Python API. Headless mode available. Large download. Bundles Code_Aster + SMESH."
+    integration_notes: "Full Python API. Headless mode available. Bundles Code_Aster + SMESH."
     cloned_at_ace: false
 
   - name: gmsh
@@ -594,10 +1438,10 @@ libraries:
     capabilities: >-
       3D finite element mesh generator with built-in CAD engine and post-processor.
       Structured/unstructured meshing, STL/STEP/IGES import, scripting via .geo
-      files or Python/C++/Julia API. Industry standard for FEA meshing.
+      files or Python/C++/Julia API.
     download_size_estimate: "50 MB"
     integration_fit: very-high
-    integration_notes: "pip install gmsh. Excellent Python API. Core meshing tool. Already cloned."
+    integration_notes: "pip install gmsh. Excellent Python API. Core meshing tool."
     cloned_at_ace: true
     ace_path: /mnt/ace/gmsh
 
@@ -621,10 +1465,9 @@ libraries:
     capabilities: >-
       Leading open-source desktop GIS. Vector/raster analysis, map composition,
       WMS/WFS, spatial databases, 3D visualization. Massive plugin ecosystem.
-      PyQGIS for scripting and headless processing.
     download_size_estimate: "1 GB"
     integration_fit: very-high
-    integration_notes: "PyQGIS API. Processing framework for headless batch. Core GIS tool for digitalmodel."
+    integration_notes: "PyQGIS API. Processing framework for headless batch."
     cloned_at_ace: false
 
   - name: GRASS GIS
@@ -642,11 +1485,10 @@ libraries:
     domain: GIS
     capabilities: >-
       Geospatial processing engine for raster, vector, and 3D analysis. Terrain
-      modelling, hydrology, remote sensing, time series. Python scripting API.
-      Integrates with QGIS as a processing provider.
+      modelling, hydrology, remote sensing, time series.
     download_size_estimate: "200 MB"
     integration_fit: high
-    integration_notes: "Python API via grass.script. Command-line driven. Excellent for raster/terrain analysis."
+    integration_notes: "Python API via grass.script. Excellent for raster/terrain analysis."
     cloned_at_ace: false
 
   - name: PostGIS
@@ -664,10 +1506,244 @@ libraries:
     domain: GIS
     capabilities: >-
       Spatial extension for PostgreSQL. Geometry/geography types, spatial indexing,
-      raster support, topology, routing. Industry standard for geospatial databases.
+      raster support, topology, routing.
     download_size_estimate: "50 MB"
     integration_fit: very-high
-    integration_notes: "Accessed via Python SQL libraries. Foundation for spatial data storage in digitalmodel."
+    integration_notes: "Accessed via Python SQL libraries. Foundation for spatial data storage."
+    cloned_at_ace: false
+
+  # --- NEW GIS entries (2026-03-26) ---
+
+  - name: GDAL
+    repo_url: https://github.com/OSGeo/gdal
+    homepage: https://gdal.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: GDAL (osgeo)
+    maturity: production
+    stars: 5800
+    contributors: 603
+    primary_language: C++
+    domain: GIS
+    capabilities: >-
+      Foundational translator library for 200+ raster and vector geospatial formats.
+      Coordinate transformations, raster processing pipelines. Underpins Rasterio,
+      Fiona, GeoPandas.
+    download_size_estimate: "100 MB"
+    integration_fit: very-high
+    integration_notes: "Python bindings via osgeo. Ubiquitous in geospatial stack."
+    cloned_at_ace: false
+
+  - name: GeoPandas
+    repo_url: https://github.com/geopandas/geopandas
+    homepage: https://geopandas.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: geopandas
+    maturity: production
+    stars: 5100
+    contributors: 253
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Extends pandas with GeoSeries and GeoDataFrame for geospatial operations.
+      Loading, filtering, joining, and analyzing spatial engineering data.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Central to Python geospatial ecosystem. NumFOCUS-sponsored."
+    cloned_at_ace: false
+
+  - name: Shapely
+    repo_url: https://github.com/shapely/shapely
+    homepage: https://shapely.readthedocs.io
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: shapely
+    maturity: production
+    stars: 4400
+    contributors: 163
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Planar geometric object manipulation wrapping GEOS. Vectorized NumPy ufuncs
+      for buffer analysis, spatial intersections, proximity calculations.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Foundational Python geometry library."
+    cloned_at_ace: false
+
+  - name: Rasterio
+    repo_url: https://github.com/rasterio/rasterio
+    homepage: https://rasterio.readthedocs.io
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: rasterio
+    maturity: production
+    stars: 2500
+    contributors: 167
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Pythonic interface for geospatial raster datasets based on NumPy. Built on GDAL.
+      Critical for bathymetric grids, seabed classification, terrain models.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "NumPy-native. Seamless with scientific Python stack."
+    cloned_at_ace: false
+
+  - name: Fiona
+    repo_url: https://github.com/Toblerity/Fiona
+    homepage: https://fiona.readthedocs.io
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: fiona
+    maturity: production
+    stars: 1200
+    contributors: 80
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Clean Pythonic wrapper for GDAL/OGR vector data access. Reads/writes geographic
+      data files as GeoJSON-like dicts. Core dependency of GeoPandas.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python API. Core GeoPandas dependency."
+    cloned_at_ace: false
+
+  - name: pyproj
+    repo_url: https://github.com/pyproj4/pyproj
+    homepage: https://pyproj4.github.io/pyproj/
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pyproj
+    maturity: production
+    stars: 1200
+    contributors: 72
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Python interface to PROJ for cartographic projections and coordinate
+      transformations. CRS definitions, datum transformations, geodetic calculations.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Fundamental dependency for all Python GIS tools."
+    cloned_at_ace: false
+
+  - name: PyGMT
+    repo_url: https://github.com/GenericMappingTools/pygmt
+    homepage: https://www.pygmt.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pygmt
+    maturity: growing
+    stars: 850
+    contributors: 100
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Python interface for Generic Mapping Tools (GMT). Publication-quality maps with
+      bathymetric data, coastlines, topographic relief. Built-in earth/ocean relief.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Native Python API. Excellent for offshore/subsea mapping."
+    cloned_at_ace: false
+
+  - name: Verde
+    repo_url: https://github.com/fatiando/verde
+    homepage: https://www.fatiando.org/verde/
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: verde
+    maturity: growing
+    stars: 650
+    contributors: 30
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Spatial data processing and gridding with scikit-learn-style API. Trend removal,
+      cross-validation, interpolation of scattered data onto regular grids.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "scikit-learn API pattern. Designed for geophysics/earth science."
+    cloned_at_ace: false
+
+  - name: deck.gl (pydeck)
+    repo_url: https://github.com/visgl/deck.gl
+    homepage: https://deck.gl
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pydeck
+    maturity: production
+    stars: 14000
+    contributors: 285
+    primary_language: JavaScript/TypeScript
+    domain: GIS
+    capabilities: >-
+      WebGL2 visualization framework for large geospatial datasets. Interactive picking,
+      filtering, cartographic projections. Large point clouds and vessel tracks.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "pydeck Python package. Jupyter and Streamlit integration."
+    cloned_at_ace: false
+
+  - name: H3
+    repo_url: https://github.com/uber/h3
+    homepage: https://h3geo.org
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: h3
+    maturity: production
+    stars: 6100
+    contributors: 96
+    primary_language: C
+    domain: GIS
+    capabilities: >-
+      Hexagonal hierarchical geospatial indexing system. Multi-resolution spatial
+      indexing for aggregation, proximity analysis, and coverage calculations.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python bindings. Integrates with pandas/GeoPandas."
+    cloned_at_ace: false
+
+  - name: xarray-spatial
+    repo_url: https://github.com/makepath/xarray-spatial
+    homepage: https://xarray-spatial.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: xarray-spatial
+    maturity: growing
+    stars: 930
+    contributors: 40
+    primary_language: Python
+    domain: GIS
+    capabilities: >-
+      Raster-based spatial analytics using Numba/Dask. Hillshade, slope, aspect,
+      viewshed, proximity, zonal statistics on xarray DataArrays.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python/Numba. Integrates with xarray/Dask."
     cloned_at_ace: false
 
   # ═══════════════════════════════════════════
@@ -689,10 +1765,10 @@ libraries:
     domain: "Doc Intelligence"
     capabilities: >-
       High-accuracy PDF to Markdown+JSON converter. Uses surya OCR for layout
-      detection. Handles tables, equations, figures. Very fast batch processing.
+      detection. Handles tables, equations, figures.
     download_size_estimate: "2 GB (with models)"
     integration_fit: very-high
-    integration_notes: "pip install marker-pdf. Core doc intelligence tool for engineering PDF extraction."
+    integration_notes: "pip install marker-pdf. Core doc intelligence tool."
     cloned_at_ace: false
 
   - name: docling
@@ -711,10 +1787,10 @@ libraries:
     capabilities: >-
       IBM document parsing framework. Converts PDF, DOCX, PPTX, XLSX to structured
       output. Table extraction, OCR, layout understanding. LangChain/LlamaIndex
-      integration for RAG pipelines.
+      integration.
     download_size_estimate: "500 MB (with models)"
     integration_fit: very-high
-    integration_notes: "pip install docling. Broadest format support. Best for enterprise doc pipelines."
+    integration_notes: "pip install docling. Broadest format support."
     cloned_at_ace: false
 
   - name: surya
@@ -732,11 +1808,10 @@ libraries:
     domain: "Doc Intelligence"
     capabilities: >-
       OCR engine with layout analysis, reading order detection, and table recognition
-      in 90+ languages. ML-based. Powers marker for PDF conversion. Standalone
-      or as a library.
+      in 90+ languages. Powers marker for PDF conversion.
     download_size_estimate: "1.5 GB (with models)"
     integration_fit: very-high
-    integration_notes: "pip install surya-ocr. Powers marker. Use for OCR of scanned engineering docs."
+    integration_notes: "pip install surya-ocr. Powers marker."
     cloned_at_ace: false
 
   - name: nougat
@@ -754,11 +1829,10 @@ libraries:
     domain: "Doc Intelligence"
     capabilities: >-
       Neural Optical Understanding for Academic Documents (Meta Research). Converts
-      academic PDFs to Markdown preserving math/equations. Transformer-based.
-      Good for LaTeX-heavy scientific papers.
+      academic PDFs to Markdown preserving math/equations.
     download_size_estimate: "1 GB (with models)"
     integration_fit: medium
-    integration_notes: "Good for academic/scientific PDFs. Superseded by marker/docling for general use."
+    integration_notes: "Good for academic/scientific PDFs. Superseded by marker/docling."
     cloned_at_ace: false
 
   - name: unstructured
@@ -776,11 +1850,10 @@ libraries:
     domain: "Doc Intelligence"
     capabilities: >-
       ETL pipeline for converting documents to structured data. PDF, DOCX, HTML,
-      images, email. Partitioning, chunking, embedding. LangChain integration.
-      Enterprise platform available.
+      images, email. Partitioning, chunking, embedding.
     download_size_estimate: "500 MB"
     integration_fit: high
-    integration_notes: "pip install unstructured. Good ETL pipeline. Overlaps with docling for PDF."
+    integration_notes: "pip install unstructured. Good ETL pipeline."
     cloned_at_ace: false
 
   # ═══════════════════════════════════════════
@@ -802,11 +1875,10 @@ libraries:
     domain: "Data/Workflow"
     capabilities: >-
       Industry-standard workflow orchestration platform. DAG-based scheduling,
-      monitoring, and dependency management. Massive operator ecosystem (AWS, GCP,
-      Kubernetes, etc.). Web UI for monitoring.
+      monitoring, and dependency management. Massive operator ecosystem.
     download_size_estimate: "200 MB"
     integration_fit: high
-    integration_notes: "pip install apache-airflow. Heavy but battle-tested. Good for production pipelines."
+    integration_notes: "pip install apache-airflow. Heavy but battle-tested."
     cloned_at_ace: false
 
   - name: Prefect
@@ -824,11 +1896,10 @@ libraries:
     domain: "Data/Workflow"
     capabilities: >-
       Modern Python workflow orchestration. Decorator-based task/flow definitions,
-      automatic retries, caching, observability. Lighter than Airflow. Good for
-      data science and ML workflows.
+      automatic retries, caching, observability.
     download_size_estimate: "100 MB"
     integration_fit: very-high
-    integration_notes: "pip install prefect. Pythonic API. Better fit than Airflow for engineering workflows."
+    integration_notes: "pip install prefect. Pythonic API. Better for engineering workflows."
     cloned_at_ace: false
 
   - name: DVC (Data Version Control)
@@ -846,10 +1917,10 @@ libraries:
     domain: "Data/Workflow"
     capabilities: >-
       Git-like version control for data and ML models. Tracks large files, datasets,
-      and experiment pipelines. S3/GCS/Azure storage backends. Integrates with Git.
+      and experiment pipelines. S3/GCS/Azure storage backends.
     download_size_estimate: "50 MB"
     integration_fit: very-high
-    integration_notes: "pip install dvc. Essential for versioning large engineering datasets and models."
+    integration_notes: "pip install dvc. Essential for versioning large engineering datasets."
     cloned_at_ace: false
 
   - name: MLflow
@@ -866,10 +1937,722 @@ libraries:
     primary_language: Python
     domain: "Data/Workflow"
     capabilities: >-
-      AI/ML lifecycle management platform. Experiment tracking, model registry,
-      deployment, evaluation. Supports PyTorch, TensorFlow, scikit-learn, LLMs.
-      REST API and Python client.
+      AI/ML lifecycle management. Experiment tracking, model registry, deployment,
+      evaluation.
     download_size_estimate: "100 MB"
     integration_fit: high
-    integration_notes: "pip install mlflow. Good for tracking engineering model experiments and results."
+    integration_notes: "pip install mlflow. Good for tracking engineering model experiments."
+    cloned_at_ace: false
+
+  # --- NEW Data/Workflow entries (2026-03-26) ---
+
+  - name: Dagster
+    repo_url: https://github.com/dagster-io/dagster
+    homepage: https://dagster.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: dagster
+    maturity: production
+    stars: 14300
+    contributors: 290
+    primary_language: Python
+    domain: "Data/Workflow"
+    capabilities: >-
+      Asset-oriented data orchestration. Software-defined assets with types, metadata,
+      and lineage. Built-in observability and testing framework.
+    download_size_estimate: "100 MB"
+    integration_fit: very-high
+    integration_notes: "pip install dagster. Stronger data engineering semantics than Airflow."
+    cloned_at_ace: false
+
+  - name: Kedro
+    repo_url: https://github.com/kedro-org/kedro
+    homepage: https://kedro.org
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: kedro
+    maturity: production
+    stars: 8500
+    contributors: 200
+    primary_language: Python
+    domain: "Data/Workflow"
+    capabilities: >-
+      Opinionated framework for production-ready data science pipelines. Modular nodes,
+      data catalog abstraction, pipeline visualization (Kedro-Viz).
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "pip install kedro. Reproducible, maintainable analysis pipelines."
+    cloned_at_ace: false
+
+  - name: Hamilton
+    repo_url: https://github.com/DAGWorks-Inc/hamilton
+    homepage: https://hamilton.dagworks.io
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: sf-hamilton
+    maturity: growing
+    stars: 1800
+    contributors: 80
+    primary_language: Python
+    domain: "Data/Workflow"
+    capabilities: >-
+      Micro-framework turning Python functions into DAGs of dataflow. Dependencies
+      declared via parameter names. Self-documenting, testable data transformations.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Lightweight. Zero-infrastructure. Ideal for engineering calculation chains."
+    cloned_at_ace: false
+
+  - name: Great Expectations
+    repo_url: https://github.com/great-expectations/great_expectations
+    homepage: https://greatexpectations.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: great-expectations
+    maturity: production
+    stars: 8600
+    contributors: 400
+    primary_language: Python
+    domain: "Data/Workflow"
+    capabilities: >-
+      Data quality and validation framework. Define expectations about datasets
+      (schema, ranges, distributions) and automatically validate incoming data.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "pip install great-expectations. Critical for engineering data quality."
+    cloned_at_ace: false
+
+  - name: Pandera
+    repo_url: https://github.com/unionai-oss/pandera
+    homepage: https://pandera.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pandera
+    maturity: mature
+    stars: 4300
+    contributors: 120
+    primary_language: Python
+    domain: "Data/Workflow"
+    capabilities: >-
+      Lightweight DataFrame validation. Type-annotated schemas for pandas, Polars,
+      PySpark, Modin DataFrames. Validates column types and value ranges.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "pip install pandera. Inline engineering data validation."
+    cloned_at_ace: false
+
+  # ═══════════════════════════════════════════
+  # Visualization — NEW DOMAIN (2026-03-26)
+  # ═══════════════════════════════════════════
+
+  - name: ParaView
+    repo_url: https://github.com/Kitware/ParaView
+    homepage: https://www.paraview.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: paraview (bundled)
+    maturity: production
+    stars: 1600
+    contributors: 211
+    primary_language: C++
+    domain: Visualization
+    capabilities: >-
+      Industry-standard scientific visualization for extremely large datasets. Parallel
+      processing, time-series animation, Python scripting (pvpython). CFD/FEA post-processing.
+    download_size_estimate: "500 MB"
+    integration_fit: very-high
+    integration_notes: "Python scripting built-in. Handles CFD/FEA formats natively."
+    cloned_at_ace: false
+
+  - name: VTK
+    repo_url: https://github.com/Kitware/VTK
+    homepage: https://vtk.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: vtk
+    maturity: production
+    stars: 2200
+    contributors: 300
+    primary_language: C++
+    domain: Visualization
+    capabilities: >-
+      Core 3D rendering engine behind ParaView and PyVista. Isosurface extraction,
+      streamlines, volume rendering, mesh processing.
+    download_size_estimate: "200 MB"
+    integration_fit: very-high
+    integration_notes: "Python wheels on PyPI. Underpins scientific 3D visualization."
+    cloned_at_ace: false
+
+  - name: PyVista
+    repo_url: https://github.com/pyvista/pyvista
+    homepage: https://pyvista.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pyvista
+    maturity: mature
+    stars: 3600
+    contributors: 204
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Streamlined Pythonic VTK interface for 3D plotting and mesh analysis. Subsea
+      pipeline meshes, terrain models, FEA results, point cloud data. Jupyter integration.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python API. MIT license. Excellent Jupyter integration."
+    cloned_at_ace: false
+
+  - name: Plotly
+    repo_url: https://github.com/plotly/plotly.py
+    homepage: https://plotly.com/python/
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: plotly
+    maturity: production
+    stars: 18400
+    contributors: 280
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Interactive browser-based graphing. 30+ chart types including 3D surfaces,
+      contour plots, geographic maps. Standalone HTML or Jupyter/Dash integration.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Native Python. Self-contained HTML output. Integrates with Dash."
+    cloned_at_ace: false
+
+  - name: Dash
+    repo_url: https://github.com/plotly/dash
+    homepage: https://dash.plotly.com
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: dash
+    maturity: production
+    stars: 24500
+    contributors: 200
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Production-grade Python framework for analytical web applications. Built on
+      Plotly.js and Flask. Complex callbacks, multi-tab layouts.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Python-only development. Production-ready dashboards."
+    cloned_at_ace: false
+
+  - name: Panel
+    repo_url: https://github.com/holoviz/panel
+    homepage: https://panel.holoviz.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: panel
+    maturity: mature
+    stars: 5100
+    contributors: 200
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Full-featured dashboarding framework from HoloViz. Wraps any Python viz library
+      (Plotly, Bokeh, Matplotlib, PyVista). Multi-page apps entirely in Python.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Wraps any viz library. WASM support via PyScript."
+    cloned_at_ace: false
+
+  - name: Streamlit
+    repo_url: https://github.com/streamlit/streamlit
+    homepage: https://streamlit.io
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: streamlit
+    maturity: production
+    stars: 44000
+    contributors: 330
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Most popular Python framework for transforming scripts into interactive web apps.
+      Simple top-to-bottom execution model. Rapid prototyping for data dashboards.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Minimal learning curve. Rapid prototyping. Snowflake-backed."
+    cloned_at_ace: false
+
+  - name: meshio
+    repo_url: https://github.com/nschloe/meshio
+    homepage: null
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: meshio
+    maturity: mature
+    stars: 2300
+    contributors: 58
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Mesh I/O supporting 25+ formats (Abaqus, ANSYS, Nastran, Gmsh, VTK, STL,
+      Exodus, CGNS, XDMF). Format conversion with unified Python interface.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Essential glue for multi-tool engineering workflows."
+    cloned_at_ace: false
+
+  - name: trimesh
+    repo_url: https://github.com/mikedh/trimesh
+    homepage: https://trimesh.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: trimesh
+    maturity: mature
+    stars: 3500
+    contributors: 206
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Loading, processing, and analyzing triangular meshes. STL, PLY, OBJ, GLTF
+      import/export. Boolean operations, convex hulls, ray queries.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. Minimal dependencies. Widely used for 3D geometry."
+    cloned_at_ace: false
+
+  - name: Open3D
+    repo_url: https://github.com/isl-org/Open3D
+    homepage: https://www.open3d.org
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: open3d
+    maturity: production
+    stars: 12200
+    contributors: 300
+    primary_language: C++
+    domain: Visualization
+    capabilities: >-
+      3D data processing: point cloud processing, registration, segmentation, surface
+      reconstruction, GPU-accelerated operations. LiDAR surveys and 3D scan processing.
+    download_size_estimate: "200 MB"
+    integration_fit: very-high
+    integration_notes: "Comprehensive Python API. GPU acceleration. Intel ISL-developed."
+    cloned_at_ace: false
+
+  - name: Bokeh
+    repo_url: https://github.com/bokeh/bokeh
+    homepage: https://bokeh.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: bokeh
+    maturity: production
+    stars: 20400
+    contributors: 600
+    primary_language: TypeScript/Python
+    domain: Visualization
+    capabilities: >-
+      Interactive visualization for web browsers. High-performance over large or
+      streaming datasets. Real-time monitoring dashboards. NumFOCUS-sponsored.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Python-first design. Bokeh server for live apps. Panel builds on it."
+    cloned_at_ace: false
+
+  - name: vedo
+    repo_url: https://github.com/marcomusy/vedo
+    homepage: https://vedo.embl.es
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: vedo
+    maturity: mature
+    stars: 2200
+    contributors: 50
+    primary_language: Python
+    domain: Visualization
+    capabilities: >-
+      Scientific analysis and visualization of 3D data based on VTK/NumPy. Mesh
+      morphing, analysis tools. Clean one-liner API.
+    download_size_estimate: "20 MB"
+    integration_fit: high
+    integration_notes: "Lightweight VTK wrapper. Good for quick prototyping."
+    cloned_at_ace: false
+
+  # ═══════════════════════════════════════════
+  # Data Science — NEW DOMAIN (2026-03-26)
+  # ═══════════════════════════════════════════
+
+  - name: NumPy
+    repo_url: https://github.com/numpy/numpy
+    homepage: https://numpy.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: numpy
+    maturity: production
+    stars: 31700
+    contributors: 1800
+    primary_language: Python/C
+    domain: "Data Science"
+    capabilities: >-
+      Fundamental N-dimensional array computation. Vectorized math, linear algebra,
+      random number generation. The array protocol all scientific libraries depend on.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Foundation of the entire scientific Python stack."
+    cloned_at_ace: false
+
+  - name: SciPy
+    repo_url: https://github.com/scipy/scipy
+    homepage: https://scipy.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: scipy
+    maturity: production
+    stars: 14200
+    contributors: 1500
+    primary_language: Python/C/Fortran
+    domain: "Data Science"
+    capabilities: >-
+      Optimization, integration, interpolation, eigenvalue problems, FFT, signal
+      processing, sparse matrices, and spatial data structures.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Backbone for any engineering computation pipeline."
+    cloned_at_ace: false
+
+  - name: pandas
+    repo_url: https://github.com/pandas-dev/pandas
+    homepage: https://pandas.pydata.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pandas
+    maturity: production
+    stars: 47800
+    contributors: 3400
+    primary_language: Python/Cython
+    domain: "Data Science"
+    capabilities: >-
+      Standard tabular data manipulation. DataFrames and Series for time-series,
+      data wrangling, merging, aggregation.
+    download_size_estimate: "30 MB"
+    integration_fit: very-high
+    integration_notes: "Essential for engineering data pipelines."
+    cloned_at_ace: false
+
+  - name: Polars
+    repo_url: https://github.com/pola-rs/polars
+    homepage: https://pola.rs
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: polars
+    maturity: production
+    stars: 37700
+    contributors: 500
+    primary_language: Rust
+    domain: "Data Science"
+    capabilities: >-
+      Ultra-fast DataFrame library. Lazy evaluation, query optimization, multi-threaded.
+      10-100x faster than pandas for large datasets.
+    download_size_estimate: "30 MB"
+    integration_fit: very-high
+    integration_notes: "MIT license. pip-installable. Drop-in for large simulation outputs."
+    cloned_at_ace: false
+
+  - name: xarray
+    repo_url: https://github.com/pydata/xarray
+    homepage: https://xarray.dev
+    license: Apache-2.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: xarray
+    maturity: production
+    stars: 3200
+    contributors: 450
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      N-dimensional labeled arrays with dimension names and coordinate labels.
+      Critical for CFD field outputs, climate/ocean data, and multi-parameter sweeps.
+      Dask integration for out-of-core computation.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Central to multidimensional engineering data handling."
+    cloned_at_ace: false
+
+  - name: Dask
+    repo_url: https://github.com/dask/dask
+    homepage: https://www.dask.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: dask
+    maturity: production
+    stars: 13600
+    contributors: 600
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      Parallel computing scaling NumPy, pandas, and scikit-learn to multi-core/clusters.
+      Out-of-core processing of datasets larger than RAM.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Essential for large simulation post-processing."
+    cloned_at_ace: false
+
+  - name: SymPy
+    repo_url: https://github.com/sympy/sympy
+    homepage: https://www.sympy.org
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: sympy
+    maturity: production
+    stars: 14000
+    contributors: 1200
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      Computer algebra system. Symbolic differentiation, integration, equation solving,
+      matrix algebra, and code generation.
+    download_size_estimate: "20 MB"
+    integration_fit: very-high
+    integration_notes: "Invaluable for deriving governing equations and verifying calculations."
+    cloned_at_ace: false
+
+  - name: Pint
+    repo_url: https://github.com/hgrecco/pint
+    homepage: https://pint.readthedocs.io
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: pint
+    maturity: production
+    stars: 2700
+    contributors: 150
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      Physical quantity and unit handling. Defines, operates on, and converts between
+      physical units (meters, psi, kN) with NumPy integration.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Prevents unit-conversion errors in engineering calculations."
+    cloned_at_ace: false
+
+  - name: uncertainties
+    repo_url: https://github.com/lmfit/uncertainties
+    homepage: null
+    license: BSD-3-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: uncertainties
+    maturity: production
+    stars: 620
+    contributors: 84
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      Transparent error propagation. Numbers carry uncertainties with automatic
+      derivative computation.
+    download_size_estimate: "2 MB"
+    integration_fit: very-high
+    integration_notes: "Essential for engineering tolerance and uncertainty tracking."
+    cloned_at_ace: false
+
+  - name: Numba
+    repo_url: https://github.com/numba/numba
+    homepage: https://numba.pydata.org
+    license: BSD-2-Clause
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: numba
+    maturity: production
+    stars: 10700
+    contributors: 300
+    primary_language: Python
+    domain: "Data Science"
+    capabilities: >-
+      LLVM-based JIT compiler for Python/NumPy. @jit decorator compiles to machine
+      code for C/Fortran-level performance.
+    download_size_estimate: "50 MB"
+    integration_fit: very-high
+    integration_notes: "Enables high-performance custom solvers in pure Python."
+    cloned_at_ace: false
+
+  # ═══════════════════════════════════════════
+  # Standards & Codes — NEW DOMAIN (2026-03-26)
+  # ═══════════════════════════════════════════
+
+  - name: PyNite
+    repo_url: https://github.com/JWock82/Pynite
+    homepage: https://pynite.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: PyNiteFEA
+    maturity: mature
+    stars: 635
+    contributors: 15
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      3D structural engineering FEA library. Beams, columns, plates, shells with
+      load combinations, P-delta analysis, modal analysis. PDF reports. Designed
+      by a practicing PE/SE for code-compliant structural analysis.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable. Code-compliant structural."
+    cloned_at_ace: false
+
+  - name: sectionproperties
+    repo_url: https://github.com/robbievanleeuwen/section-properties
+    homepage: https://sectionproperties.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: sectionproperties
+    maturity: mature
+    stars: 550
+    contributors: 40
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      Geometric and warping section properties of arbitrary cross-sections via FEM.
+      Area, moments of inertia, section moduli, torsion constants for AISC, Eurocode,
+      AS standards compliance.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable."
+    cloned_at_ace: false
+
+  - name: fluids
+    repo_url: https://github.com/CalebBell/fluids
+    homepage: https://fluids.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: fluids
+    maturity: production
+    stars: 425
+    contributors: 20
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      Comprehensive fluid dynamics library: piping design, friction factors, fittings,
+      valves, compressible flow, orifice plates, relief valves, two-phase flow.
+      Implements Crane TP-410, API, ASME correlations.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable. No compiled dependencies."
+    cloned_at_ace: false
+
+  - name: ht
+    repo_url: https://github.com/CalebBell/ht
+    homepage: https://ht.readthedocs.io
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: ht
+    maturity: mature
+    stars: 232
+    contributors: 10
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      Heat transfer library: conduction, convection, radiation, boiling, condensation,
+      heat exchangers (TEMA), insulation, fins. Part of ChEDL ecosystem.
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable. Pairs with fluids package."
+    cloned_at_ace: false
+
+  - name: ANYstructure
+    repo_url: https://github.com/audunarn/ANYstructure
+    homepage: null
+    license: MIT
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: ANYstructure
+    maturity: growing
+    stars: 56
+    contributors: 3
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      Steel structure design for plate fields and cylinders with weight optimization.
+      Calculations based on DNV standards. Buckling, fatigue, and plate design checks
+      per DNV-OS/RP standards.
+    download_size_estimate: "10 MB"
+    integration_fit: very-high
+    integration_notes: "Pure Python. MIT. pip-installable. DNV standards-based."
+    cloned_at_ace: false
+
+  - name: PSI (Pipe Stress Infinity)
+    repo_url: https://github.com/denisgomes/psi
+    homepage: https://openpipestress.com
+    license: GPL-3.0
+    latest_version: null
+    latest_release_date: null
+    python_api: true
+    python_package: null (source install)
+    maturity: experimental
+    stars: 55
+    contributors: 5
+    primary_language: Python
+    domain: "Standards/Codes"
+    capabilities: >-
+      Open-source pipe stress analysis with B31.1 power piping code support. Python
+      scripting for piping models, loads, and code stress evaluation. Open alternative
+      to CAESAR II.
+    download_size_estimate: "5 MB"
+    integration_fit: high
+    integration_notes: "Python-native. GPL-3.0. Early stage but unique capability."
     cloned_at_ace: false

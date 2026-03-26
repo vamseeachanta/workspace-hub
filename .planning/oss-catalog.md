@@ -8,14 +8,17 @@
 
 | Domain | Count | Key Tools |
 |--------|-------|-----------|
-| FEA | 7 | FEniCSx, MOOSE, OpenSees, Elmer, deal.II, CalculiX, Code_Aster |
-| CFD | 4 | OpenFOAM, SU2, Nektar++, Palabos |
-| O&G/Marine | 10 | OpenFAST, Capytaine, MoorDyn, MoorPy, OpenDrift, HAMS, WEC-Sim, OPM, MAP++, Ashes* |
-| CAD/CAE | 5 | FreeCAD, gmsh, Salome-Meca, OpenSCAD, BRL-CAD |
-| GIS | 3 | QGIS, PostGIS, GRASS GIS |
+| FEA | 15 | FEniCSx, MOOSE, Kratos, MFEM, Firedrake, scikit-fem, NGSolve, SfePy, OpenSees, Elmer, deal.II, CalculiX, Code_Aster, FreeFEM, OpenRadioss |
+| CFD | 10 | OpenFOAM, SU2, PyFR, PhiFlow, Dedalus, JAX-Fluids, AMReX, Code_Saturne, Nektar++, Palabos |
+| O&G/Marine | 34 | OpenFAST, Capytaine, MoorDyn, MoorPy, OpenDrift, FLORIS, WISDEM, WEIS, RAFT, PyWake, windpowerlib, WELIB, ROSCO, WOMBAT, OpenOA, FAModel, windIO, pyHAMS, py-fatigue, pyLife, pycatenary, OCEANLYZ, Thetis, Proteus, OSP, DualSPHysics, REEF3D, Nemoh, BEMRosetta, HAMS, OPM, WEC-Sim, MAP++, Ashes* |
+| CAD/CAE | 6 | FreeCAD, gmsh, Salome-Meca, OpenSCAD, BRL-CAD |
+| GIS | 15 | QGIS, PostGIS, GRASS GIS, GDAL, GeoPandas, Shapely, Rasterio, Fiona, pyproj, PyGMT, Verde, deck.gl, H3, xarray-spatial |
 | Doc Intelligence | 5 | docling, marker, surya, unstructured, nougat |
-| Data/Workflow | 4 | Airflow, Prefect, DVC, MLflow |
-| **Total** | **38** | |
+| Data/Workflow | 9 | Prefect, Dagster, Kedro, Airflow, DVC, MLflow, Hamilton, Great Expectations, Pandera |
+| Visualization | 13 | ParaView, VTK, PyVista, Plotly, Dash, Panel, Streamlit, Bokeh, meshio, trimesh, Open3D, vedo |
+| Data Science | 11 | NumPy, SciPy, pandas, Polars, xarray, Dask, SymPy, Pint, uncertainties, Numba |
+| Standards/Codes | 6 | fluids, ht, PyNite, sectionproperties, ANYstructure, PSI |
+| **Total** | **117** | |
 
 *Ashes is NOT open-source (proprietary, free for academic use only).
 
@@ -32,75 +35,135 @@
 | gmsh | `/mnt/ace/gmsh` | CAD/CAE |
 | opm-common | `/mnt/ace/opm-common` | O&G/Marine |
 
-**8 of 38 libraries already cloned** (21%) — all in the O&G/Marine and CAD/CAE domains.
+**8 of 117 libraries already cloned** (7%).
 
 ---
 
-## Top 10 for Immediate digitalmodel Integration
+## Delta Summary (2026-03-26)
 
-Ranked by: Python API quality, pip-installability, domain relevance to offshore/subsea engineering, community maturity, and existing ecosystem fit.
+### Added: 79 new libraries
 
-### 1. Capytaine (BEM Hydrodynamics) — ALREADY CLONED
-- **Why**: Core hydrodynamic coefficient solver. Pure Python + Fortran backend. pip-installable. Computes added mass, damping, excitation forces for floating structures.
-- **Action**: Wire into digitalmodel as hydrodynamics module.
+**FEA (+8)**:
+- Kratos Multiphysics — BSD-4, multi-disciplinary simulation, extensive Python interface
+- MFEM — BSD-3, LLNL FEM library, pip-installable PyMFEM
+- Firedrake — LGPL-3, automated PDE solver with code generation from UFL
+- scikit-fem — BSD-3, pure Python FEM assembly, minimal deps
+- SfePy — BSD-3, Python-native coupled PDE solver
+- NGSolve — LGPL-2.1, multiphysics FEM with built-in Netgen mesher
+- FreeFEM — LGPL-3, 2D/3D PDE solver with DSL
+- OpenRadioss — AGPL-3, industrial crash/impact explicit FEA
 
-### 2. MoorDyn (Mooring Dynamics) — ALREADY CLONED
-- **Why**: Lumped-mass mooring model with Python bindings. Couples with OpenFAST. Essential for mooring analysis in subsea/floating platform design.
-- **Action**: Create Python wrapper module in digitalmodel for mooring simulations.
+**CFD (+6)**:
+- PyFR — BSD-3, high-order flux reconstruction, GPU-accelerated
+- Dedalus — GPL-3, spectral PDE framework, symbolic equations
+- PhiFlow — MIT, differentiable PDE solving with ML backends
+- Code_Saturne — GPL-2, EDF industrial CFD solver
+- AMReX — BSD-3, exascale AMR framework with pyAMReX
+- JAX-Fluids — GPL-3, fully differentiable compressible CFD in JAX
 
-### 3. OpenDrift (Ocean Trajectory Modelling)
-- **Why**: Pure Python, pip-installable. Oil spill tracking, environmental dispersion, SAR drift modelling. Direct relevance to O&G operations and environmental compliance.
-- **Action**: Clone to `/mnt/ace/opendrift`, integrate as environmental module.
+**O&G/Marine (+24)**:
+- RAFT — Apache-2, floating wind turbine frequency-domain dynamics
+- WISDEM — Apache-2, wind plant cost-of-energy optimization (NREL)
+- WEIS — Apache-2, multi-fidelity floating offshore wind co-design
+- WELIB — MIT, wind energy utility library
+- ROSCO — Apache-2, reference wind turbine controller
+- FLORIS — Apache-2, wind farm wake modeling and optimization
+- PyWake — MIT, DTU wind farm wake simulation
+- windpowerlib — MIT, wind power output modelling
+- WOMBAT — Apache-2, wind farm O&M simulation
+- OpenOA — BSD-3, operational wind plant performance assessment
+- FAModel — Apache-2, floating wind array modeling
+- windIO — Apache-2, standardized wind energy data schemas
+- pyHAMS — Apache-2, Python wrapper for HAMS BEM solver
+- Nemoh — Apache-2, original open-source BEM code
+- BEMRosetta — GPL-3, BEM coefficients viewer/converter
+- DualSPHysics — LGPL-2.1, GPU-accelerated SPH for marine
+- REEF3D — GPL-3, marine/coastal hydrodynamics CFD
+- Thetis — MIT, coastal ocean model on Firedrake
+- Proteus — MIT, ERDC coastal engineering toolkit
+- py-fatigue — GPL-3, offshore wind fatigue analysis
+- pyLife — Apache-2, fatigue and reliability (Bosch Research)
+- pycatenary — MIT, catenary equations for mooring design
+- OCEANLYZ — MIT, ocean wave spectral analysis
+- OSP/libcosim — MPL-2, DNV maritime co-simulation platform
 
-### 4. gmsh (Mesh Generation) — ALREADY CLONED
-- **Why**: `pip install gmsh` — excellent Python API. Industry-standard FEA/CFD mesh generator. Required by every simulation workflow.
-- **Action**: Already available. Ensure digitalmodel meshing module wraps gmsh API.
+**GIS (+12)**:
+- GDAL — MIT, foundational raster/vector format library
+- GeoPandas — BSD-3, spatial DataFrames
+- Shapely — BSD-3, planar geometry operations
+- Rasterio — BSD-3, Pythonic raster data access
+- Fiona — BSD-3, Pythonic vector data access
+- pyproj — MIT, coordinate transformations
+- PyGMT — BSD-3, publication-quality maps
+- Verde — BSD-3, spatial gridding with scikit-learn API
+- deck.gl/pydeck — MIT, WebGL geospatial visualization
+- H3 — Apache-2, hexagonal geospatial indexing
+- xarray-spatial — MIT, raster spatial analytics
 
-### 5. FEniCSx (FEM PDE Solver)
-- **Why**: First-class Python API for custom PDE problems. Automatic code generation from variational forms. Enables bespoke structural/thermal analyses.
-- **Action**: Clone to `/mnt/ace/dolfinx`, create digitalmodel FEA adapter.
+**Visualization (+13, new domain)**:
+- ParaView — BSD-3, industry-standard scientific visualization
+- VTK — BSD-3, core 3D rendering engine
+- PyVista — MIT, Pythonic VTK wrapper
+- Plotly — MIT, interactive browser-based graphing
+- Dash — MIT, analytical web applications
+- Panel — BSD-3, HoloViz dashboarding framework
+- Streamlit — Apache-2, script-to-app framework
+- Bokeh — BSD-3, interactive web visualization
+- meshio — MIT, 25+ mesh format I/O
+- trimesh — MIT, triangular mesh processing
+- Open3D — MIT, 3D data processing with GPU
+- vedo — MIT, scientific 3D visualization
 
-### 6. docling (Document Intelligence)
-- **Why**: 56k stars, MIT license, IBM-backed. Converts PDF/DOCX/PPTX to structured data. Essential for extracting data from engineering standards and specifications.
-- **Action**: Clone, integrate into doc-intelligence pipeline.
+**Data Science (+11, new domain)**:
+- NumPy, SciPy, pandas, Polars, xarray, Dask, SymPy, Pint, uncertainties, Numba
 
-### 7. marker (PDF to Markdown)
-- **Why**: 33k stars. High-accuracy PDF extraction. Powers engineering document analysis for standards, datasheets, and technical reports.
-- **Action**: Clone, integrate as PDF extraction layer alongside docling.
+**Standards/Codes (+6, new domain)**:
+- PyNite — MIT, structural engineering FEA
+- sectionproperties — MIT, cross-section property calculator
+- fluids — MIT, piping/fluid dynamics (Crane/API/ASME)
+- ht — MIT, heat transfer correlations (TEMA)
+- ANYstructure — MIT, DNV-based steel structure design
+- PSI — GPL-3, pipe stress analysis (B31.1)
 
-### 8. DVC (Data Version Control)
-- **Why**: Git-like versioning for large engineering datasets, simulation results, and model files. Apache-2.0. pip-installable.
-- **Action**: Adopt for versioning simulation inputs/outputs across projects.
+**Data/Workflow (+5)**:
+- Dagster — Apache-2, asset-oriented data orchestration
+- Kedro — Apache-2, opinionated data science pipelines
+- Hamilton — BSD-3, micro-framework for dataflow DAGs
+- Great Expectations — Apache-2, data quality validation
+- Pandera — MIT, DataFrame validation
 
-### 9. Prefect (Workflow Orchestration)
-- **Why**: Modern Pythonic workflow engine. Decorator-based. Lighter than Airflow. Ideal for orchestrating simulation pipelines (mesh → solve → post-process).
-- **Action**: Evaluate as pipeline orchestrator for digitalmodel batch workflows.
+### Changed: 0 existing entries modified
 
-### 10. OpenFAST (Wind/Marine Turbine Sim) — ALREADY CLONED
-- **Why**: Comprehensive aero-hydro-servo-elastic simulation. Python bindings. Critical for offshore wind and floating platform engineering.
-- **Action**: Already cloned. Ensure Python bindings are exposed in digitalmodel.
+### Removed: 0 entries removed
 
 ---
 
-## Integration Priority Matrix
+## High-Priority Clone Candidates
 
-| Priority | Library | Python API | pip-install | Already Cloned | Stars |
-|----------|---------|-----------|-------------|----------------|-------|
-| P0 | Capytaine | native | yes | yes | 206 |
-| P0 | MoorDyn | bindings | yes | yes | 96 |
-| P0 | gmsh | native | yes | yes | — |
-| P1 | OpenDrift | native | yes | no | 300 |
-| P1 | FEniCSx | native | yes | no | 1,088 |
-| P1 | docling | native | yes | no | 56,556 |
-| P1 | marker | native | yes | no | 33,079 |
-| P2 | DVC | CLI+API | yes | no | 15,478 |
-| P2 | Prefect | native | yes | no | 21,966 |
-| P2 | OpenFAST | bindings | partial | yes | 877 |
+Libraries recommended for cloning to `/mnt/ace/` (Python API, high integration fit, not yet cloned):
+
+| Library | Domain | License | Why |
+|---------|--------|---------|-----|
+| OpenDrift | O&G/Marine | GPL-2 | Oil spill & drift modelling, pure Python |
+| FEniCSx | FEA | LGPL-3 | Core PDE solver, first-class Python API |
+| docling | Doc Intelligence | MIT | 56k stars, broadest document parsing |
+| marker | Doc Intelligence | GPL-3 | High-accuracy PDF extraction |
+| FLORIS | O&G/Marine | Apache-2 | Wind farm wake optimization |
+| RAFT | O&G/Marine | Apache-2 | Floating turbine dynamics |
+| WISDEM | O&G/Marine | Apache-2 | Wind plant system design |
+| scikit-fem | FEA | BSD-3 | Pure Python FEM, minimal deps |
+| meshio | Visualization | MIT | Multi-format mesh I/O glue |
+| PyVista | Visualization | MIT | Pythonic 3D visualization |
+
+**Do NOT clone without confirmation.**
+
+---
 
 ## Next Steps
 
-1. Clone P1 libraries to `/mnt/ace/`
-2. Run doc-intelligence extraction on cloned repos
-3. Create digitalmodel adapter modules for P0 libraries
-4. Evaluate Prefect vs Airflow for pipeline orchestration
+1. Clone high-priority candidates to `/mnt/ace/` (pending confirmation)
+2. Wire doc-intelligence tools (docling, marker) into extraction pipelines
+3. Evaluate Dagster vs Prefect vs Kedro for pipeline orchestration
+4. Create digitalmodel adapter modules for P0 libraries
 5. Set up DVC for simulation data versioning
+6. Integrate standards/codes tools (fluids, ht, sectionproperties) for automated compliance
