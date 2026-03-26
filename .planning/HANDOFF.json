@@ -1,40 +1,34 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-26T15:09:03.661Z",
-  "phase": "ad-hoc",
-  "phase_name": "batch-processing-coverage",
-  "phase_dir": ".planning",
-  "plan": 1,
-  "task": 5,
-  "total_tasks": 9,
+  "timestamp": "2026-03-26T18:21:53Z",
+  "phase": "02",
+  "phase_name": "accelerate-worldenergydata-pipelines",
+  "phase_dir": ".planning/phases/02-accelerate-worldenergydata-pipelines",
+  "plan": 6,
+  "task": 3,
+  "total_tasks": 3,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "#1401: ace_project Phase B worker + batch launch", "status": "done", "commit": "725bb3e4"},
-    {"id": 2, "name": "#1399: va-hdd-2 config + discovery (already in ace_project)", "status": "done", "commit": "725bb3e4"},
-    {"id": 3, "name": "#1293: Batch deep extraction on 146 naval arch manifests", "status": "done", "commit": "725bb3e4"},
-    {"id": 4, "name": "#1323: Textbook worked examples (107 -> 423, target 150+)", "status": "done", "commit": "725bb3e4"},
-    {"id": 5, "name": "Fix batch JSON parse error (first-line stdout)", "status": "done", "commit": "auto-sync pending"},
-    {"id": 6, "name": "Fix pytest promoter for structured JSONL records", "status": "done", "commit": "auto-sync pending"},
-    {"id": 7, "name": "Promote 423 worked examples to 12 pytest test files", "status": "done", "commit": "auto-sync pending"}
+    {"id": "02-01", "name": "EIA adapter wiring + Parquet output", "status": "done", "commit": "71e3503"},
+    {"id": "02-02", "name": "BSEE adapter with per-dataset download", "status": "done", "commit": "df4896c"},
+    {"id": "02-03", "name": "SODIR adapter with new API URL", "status": "done", "commit": "4d0362b"},
+    {"id": "02-04", "name": "Staleness monitoring and email alerting", "status": "done", "commit": "9a8b6b9"},
+    {"id": "02-05", "name": "Curated data CSVs and Tier 2 stubs", "status": "done", "commit": "e251faf"},
+    {"id": "02-06", "name": "Integration wiring and pipeline test", "status": "done", "commit": "cabcd9c"}
   ],
-  "remaining_tasks": [
-    {"id": 8, "name": "#1436: Restart ace_project batch with parse fix", "status": "not_started"},
-    {"id": 9, "name": "#1439: Commit 8 working tree triage groups", "status": "not_started"}
-  ],
+  "remaining_tasks": [],
   "blockers": [],
   "human_actions_pending": [],
   "decisions": [
-    {"decision": "va-hdd-2 already indexed as ace_project", "rationale": "/mnt/ace/data covers va-hdd-2 — no separate Phase A needed", "phase": "ad-hoc"},
-    {"decision": "Added Format E parser (Problem/Exercise)", "rationale": "Many textbooks use Problem/Exercise instead of Example — captured 316 additional worked examples", "phase": "ad-hoc"},
-    {"decision": "Promoter reads structured JSONL directly", "rationale": "Deep extraction produces structured records with number/title/expected_value — no need to regex-parse text", "phase": "ad-hoc"}
+    {"decision": "Parquet utility uses snappy compression via pyarrow", "rationale": "Cross-adapter consistency", "phase": "02"},
+    {"decision": "SODIR base URL updated to factmaps.sodir.no", "rationale": "Old API deprecated", "phase": "02"},
+    {"decision": "Staleness thresholds: SODIR 36h, BSEE 10d, EIA 45d", "rationale": "Match publication cadences per D-13", "phase": "02"},
+    {"decision": "AlertSender with SMTP graceful fallback", "rationale": "Log-only when no SMTP configured", "phase": "02"},
+    {"decision": "Tier 2 stubs return status=skipped", "rationale": "Avoid triggering monitoring alerts for unimplemented sources", "phase": "02"}
   ],
   "uncommitted_files": [
-    "scripts/data/doc_intelligence/run_promotion.py",
-    "scripts/data/doc_intelligence/curate_tdd_fixtures.py",
-    "scripts/data/doc_intelligence/promoters/worked_examples.py",
-    "scripts/data/document-index/phase-b-claude-worker.py",
-    "tests/promoted/naval-architecture/*.py"
+    "scripts/data/document-index/phase-b-claude-worker.py"
   ],
-  "next_action": "Kill running ace_project shards (PIDs in logs), then restart with: bash scripts/data/document-index/launch-batch.sh 10 ace_project",
-  "context_notes": "10 ace_project shards still running with old parse bug (~14% error rate). Fix committed but not active until restart. The curate_tdd_fixtures.py must be re-run after any index_builder --force run since the builder overwrites worked_examples.jsonl to 107 (shallow only)."
+  "next_action": "Run /gsd:verify-work 2 or spawn verifier to create VERIFICATION.md, then mark phase complete in ROADMAP",
+  "context_notes": "All 6 plans executed successfully across 2 waves (4 parallel + 2 parallel). 56+ new tests all passing. Phase execution is done but formal verification was skipped (user rejected verifier agent). ROADMAP has all plans checked but phase not marked complete. Resume should verify and close out Phase 02, then proceed to Phase 03 (GTM/marketing)."
 }
