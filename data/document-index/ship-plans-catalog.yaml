@@ -1,0 +1,3754 @@
+schema_version: '1.0'
+generated: '2026-03-25'
+source_directory: /mnt/ace/O&G-Standards/SNAME/ship-plans/
+total_plans: 110
+total_pages: 986
+summary:
+  by_vessel_type:
+    Submarine: 13
+    Battleship: 9
+    Aircraft Carrier: 9
+    Destroyer: 8
+    Transport: 3
+    Unknown: 3
+    USCG Lighthouse Tender: 3
+    Salvage Ship: 2
+    Minesweeping Trawler: 2
+    Collier: 1
+    Large Cruiser: 1
+    Auxiliary Aircraft Carrier: 1
+    General Stores Issue Ship: 1
+    USS Alligator (First US Navy Submarine): 1
+    Minesweeper: 1
+    Fleet Oiler: 1
+    Attack Transport: 1
+    High-Speed Transport: 1
+    Barracks Ship: 1
+    Repair Ship: 1
+    Cable Repair Ship: 1
+    Internal Combustion Engine Repair Ship: 1
+    Cruiser: 1
+    Heavy Cruiser: 1
+    Castle-class Corvette: 1
+    Battle Cruiser: 1
+    Guided Missile Cruiser: 1
+    Coast Guard Ship: 1
+    Light Cruiser: 1
+    Escort Aircraft Carrier: 1
+    Light Aircraft Carrier: 1
+    Anti-Submarine Warfare Carrier: 1
+    Destroyer Escort: 1
+    High-Speed Minesweeper: 1
+    Harbor Minesweeper: 1
+    Corvette: 1
+    Landing Ship Dock: 1
+    Landing Ship Medium: 1
+    Landing Ship Tank: 1
+    USNS Marine Raven (Transport): 1
+    Minesweeper Coastal: 1
+    Minesweeper Ocean: 1
+    Submarine Chaser: 1
+    Patrol Craft Escort: 1
+    Eagle Boat: 1
+    Patrol Gunboat: 1
+    PT Boat (Motor Torpedo Boat): 1
+    Destroyer Tender: 1
+    River-class Frigate: 1
+    NS Savannah (Nuclear Merchant Ship): 1
+    Guided Missile Submarine: 1
+    Radar Picket Submarine: 1
+    Target/Training Submarine: 1
+    Tribal-class Destroyer: 1
+    USCG Cutter: 1
+    USCG Buoy Tender (Seagoing): 1
+    USCG Buoy Tender (Inland): 1
+    USCG Buoy Tender (Coastal): 1
+    USCG Buoy Tender (River): 1
+    USCG Medium Endurance Cutter: 1
+    USCG Patrol Boat: 1
+    USCG Patrol Craft: 1
+    Submersible Craft: 1
+    Covered Lighter: 1
+    Gasoline Barge: 1
+    Seaplane Wrecking Derrick: 1
+    Large Harbor Tug: 1
+  by_content_type:
+    raster_scan: 107
+    mixed: 3
+  with_extractable_text: 26
+  page_count_range: 1-22
+  ships_with_name: 110
+  ships_with_navy_yard: 61
+  ships_with_lines_plan: 3
+  vision_enriched: 110
+  name_sources:
+    vision: 63
+    web_lookup: 44
+ships:
+- hull_designation: AC-3
+  hull_code: AC
+  hull_number: 3
+  vessel_type: Collier
+  ship_name: USS Jupiter
+  source_pdf: ac3.pdf
+  page_count: 4
+  page_size_pts: 7245x2065
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425191621-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: ACR-13
+  hull_code: ACR
+  hull_number: 13
+  vessel_type: Large Cruiser
+  ship_name: USS Montana
+  source_pdf: acr13.pdf
+  page_count: 9
+  page_size_pts: 5525x2074
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425173935-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: ACV-6
+  hull_code: ACV
+  hull_number: 6
+  vessel_type: Auxiliary Aircraft Carrier
+  ship_name: USS Altamaha
+  source_pdf: acv6.pdf
+  page_count: 15
+  page_size_pts: 1944x510
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090221091116-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Ingalls Shipbuilding Corp, Pascagoula
+  buships_number: ACV6-S0103-11043
+  name_source: web_lookup
+- hull_designation: AKS-20
+  hull_code: AKS
+  hull_number: 20
+  vessel_type: General Stores Issue Ship
+  ship_name: USS Cargo Supply
+  source_pdf: aks20.pdf
+  page_count: 12
+  page_size_pts: 1290x623
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090713115834-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Hurley Marine Works, Oakland, CA
+  buships_number: AKS-20-S0103-617348
+- hull_designation: ALLIGATOR
+  hull_code: ALLIGATOR
+  hull_number: null
+  vessel_type: USS Alligator (First US Navy Submarine)
+  ship_name: USS Alligator
+  source_pdf: alligator.pdf
+  page_count: 4
+  page_size_pts: 4608x740
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100308202902-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: AM-55
+  hull_code: AM
+  hull_number: 55
+  vessel_type: Minesweeper
+  ship_name: USS Raven
+  source_pdf: am55.pdf
+  page_count: 8
+  page_size_pts: 2605x630
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090205202729-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Norfolk Navy Yard
+  buships_number: '37261'
+- hull_designation: AO-106
+  hull_code: AO
+  hull_number: 106
+  vessel_type: Fleet Oiler
+  ship_name: USS Navasota
+  source_pdf: ao106.pdf
+  page_count: 11
+  page_size_pts: 1582x614
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090115183053-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Long Beach Naval Shipyard
+  buships_number: AO106-S0103-863683
+  name_source: web_lookup
+- hull_designation: AP-71
+  hull_code: AP
+  hull_number: 71
+  vessel_type: Transport
+  ship_name: USS Lyon
+  source_pdf: ap71.pdf
+  page_count: 7
+  page_size_pts: 959x630
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719113935-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: AP-110
+  hull_code: AP
+  hull_number: 110
+  vessel_type: Transport
+  ship_name: USS General John Pope
+  source_pdf: ap110.pdf
+  page_count: 14
+  page_size_pts: 1521x612
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090827132205-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Federal Shipbuilding & Drydock Co., Kearny, NJ
+  buships_number: AP-110-S0101-58186
+  name_source: web_lookup
+- hull_designation: AP-130
+  hull_code: AP
+  hull_number: 130
+  vessel_type: Transport
+  ship_name: USS General G. O. Squier
+  source_pdf: ap130.pdf
+  page_count: 3
+  page_size_pts: 5348x2124
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20110905164233-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: APA-170
+  hull_code: APA
+  hull_number: 170
+  vessel_type: Attack Transport
+  ship_name: USS Gosper
+  source_pdf: apa170.pdf
+  page_count: 13
+  page_size_pts: 2115x584
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090712102924-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: US Naval Repair Base, San Diego, CA
+  buships_number: APA170-S0107-505892
+  name_source: web_lookup
+- hull_designation: APD-89
+  hull_code: APD
+  hull_number: 89
+  vessel_type: High-Speed Transport
+  ship_name: USS Ruchamkin
+  source_pdf: apd89.pdf
+  page_count: 10
+  page_size_pts: 1270x669
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20081225183850-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Bethlehem Steel, Quincy, MA
+  name_source: web_lookup
+- hull_designation: APL-24
+  hull_code: APL
+  hull_number: 24
+  vessel_type: Barracks Ship
+  ship_name: USS APL-24
+  source_pdf: apl24.pdf
+  page_count: 4
+  page_size_pts: 2075x648
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719152409-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: APL29-S0107-434200
+  name_source: web_lookup
+- hull_designation: AR-17
+  hull_code: AR
+  hull_number: 17
+  vessel_type: Repair Ship
+  ship_name: HMS Assistance
+  source_pdf: ar17.pdf
+  page_count: 12
+  page_size_pts: 1065x335
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090205071913-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Maryland Drydock Company, Baltimore, MD
+  name_source: web_lookup
+- hull_designation: ARC-3
+  hull_code: ARC
+  hull_number: 3
+  vessel_type: Cable Repair Ship
+  ship_name: USS Aeolus
+  source_pdf: arc3.pdf
+  page_count: 10
+  page_size_pts: 2377x907
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719081729-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: ARG-2
+  hull_code: ARG
+  hull_number: 2
+  vessel_type: Internal Combustion Engine Repair Ship
+  ship_name: USS Luzon
+  source_pdf: arg2.pdf
+  page_count: 9
+  page_size_pts: 2912x500
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719084726-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: ARS-5
+  hull_code: ARS
+  hull_number: 5
+  vessel_type: Salvage Ship
+  ship_name: USS Diver
+  source_pdf: ars5.pdf
+  page_count: 1
+  page_size_pts: 6540x2107
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20110512060927-07'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Mare Island Navy Yard
+  name_source: web_lookup
+- hull_designation: ARS-38
+  hull_code: ARS
+  hull_number: 38
+  vessel_type: Salvage Ship
+  ship_name: USS Bolster
+  source_pdf: ars38.pdf
+  page_count: 1
+  page_size_pts: 1224x792
+  content_type: mixed
+  has_extractable_text: false
+  pdf_creation_date: D:20161218105445
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: BB-34
+  hull_code: BB
+  hull_number: 34
+  vessel_type: Battleship
+  ship_name: USS New York
+  source_pdf: bb34.pdf
+  page_count: 13
+  page_size_pts: 1222x788
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091211090021-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard Puget Sound
+  buships_number: '139957'
+- hull_designation: BB-35
+  hull_code: BB
+  hull_number: 35
+  vessel_type: Battleship
+  ship_name: USS Texas
+  source_pdf: bb35.pdf
+  page_count: 13
+  page_size_pts: 6569x1366
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20120830122300-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard Puget Sound
+  buships_number: '17021'
+- hull_designation: BB-42
+  hull_code: BB
+  hull_number: 42
+  vessel_type: Battleship
+  ship_name: USS Idaho
+  source_pdf: bb42.pdf
+  page_count: 9
+  page_size_pts: 2881x589
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090909191157-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: '208709'
+- hull_designation: BB-45
+  hull_code: BB
+  hull_number: 45
+  vessel_type: Battleship
+  ship_name: USS Colorado
+  source_pdf: bb45.pdf
+  page_count: 1
+  page_size_pts: 8414x2602
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090906011936-07'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+  has_lines_plan: true
+- hull_designation: BB-48
+  hull_code: BB
+  hull_number: 48
+  vessel_type: Battleship
+  ship_name: USS West Virginia
+  source_pdf: bb48.pdf
+  page_count: 13
+  page_size_pts: 9206x2223
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090906173802-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard Puget Sound
+  buships_number: '112567'
+- hull_designation: BB-49
+  hull_code: BB
+  hull_number: 49
+  vessel_type: Battleship
+  ship_name: USS South Dakota (cancelled)
+  source_pdf: bb49.pdf
+  page_count: 8
+  page_size_pts: 7215x2065
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100429170439-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  vision_notes: South Dakota class BB-49 to BB-54 (cancelled). Faired lines plan.
+  name_source: web_lookup
+- hull_designation: BB-62
+  hull_code: BB
+  hull_number: 62
+  vessel_type: Battleship
+  ship_name: USS New Jersey
+  source_pdf: bb62.pdf
+  page_count: 18
+  page_size_pts: 4648x1096
+  content_type: mixed
+  has_extractable_text: false
+  pdf_creation_date: D:20040310155453-05'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Long Beach Naval Shipyard
+- hull_designation: BB-63
+  hull_code: BB
+  hull_number: 63
+  vessel_type: Battleship
+  ship_name: USS Missouri
+  source_pdf: bb63.pdf
+  page_count: 17
+  page_size_pts: 2189x348
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20020617112340-10'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: New York Naval Shipyard
+- hull_designation: BB-64
+  hull_code: BB
+  hull_number: 64
+  vessel_type: Battleship
+  ship_name: USS Wisconsin
+  source_pdf: bb64.pdf
+  page_count: 15
+  page_size_pts: 4373x657
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100427185158-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: New York Naval Shipyard
+- hull_designation: C-6
+  hull_code: C
+  hull_number: 6
+  vessel_type: Cruiser
+  ship_name: USS Olympia
+  source_pdf: c6.pdf
+  page_count: 10
+  page_size_pts: 769x304
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090910081139-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Union Iron Works, San Francisco
+- hull_designation: CA-34
+  hull_code: CA
+  hull_number: 34
+  vessel_type: Heavy Cruiser
+  ship_name: USS Astoria
+  source_pdf: ca34.pdf
+  page_count: 12
+  page_size_pts: 2914x632
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091027192557-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard New York
+- hull_designation: CASTLE
+  hull_code: CASTLE
+  hull_number: null
+  vessel_type: Castle-class Corvette
+  ship_name: HMS Castle Class Corvette
+  source_pdf: castle.pdf
+  page_count: 1
+  page_size_pts: 3634x2556
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20110707194829-04'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: CC-2
+  hull_code: CC
+  hull_number: 2
+  vessel_type: Battle Cruiser
+  ship_name: USS Northampton
+  source_pdf: cc2.pdf
+  page_count: 19
+  page_size_pts: 1500x605
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090725223125-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  - page: 19
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Puget Sound Naval Shipyard
+  buships_number: CC2-845-1126520
+- hull_designation: CG-11
+  hull_code: CG
+  hull_number: 11
+  vessel_type: Guided Missile Cruiser
+  ship_name: USS Chicago
+  source_pdf: cg11.pdf
+  page_count: 16
+  page_size_pts: 1869x631
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100121194735-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: CG11-845-1072834
+- hull_designation: CGS-119
+  hull_code: CGS
+  hull_number: 119
+  vessel_type: Coast Guard Ship
+  ship_name: CGS Alexander Henry
+  source_pdf: cgs119.pdf
+  page_count: 2
+  page_size_pts: 2592x1954
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20100220175301-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Collingwood Shipyards
+- hull_designation: CL-89
+  hull_code: CL
+  hull_number: 89
+  vessel_type: Light Cruiser
+  ship_name: USS Miami
+  source_pdf: cl89.pdf
+  page_count: 13
+  page_size_pts: 1895x625
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090114074500-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Cramp Shipbuilding Company
+  buships_number: '726'
+- hull_designation: CV-2
+  hull_code: CV
+  hull_number: 2
+  vessel_type: Aircraft Carrier
+  ship_name: USS Lexington
+  source_pdf: cv2.pdf
+  page_count: 17
+  page_size_pts: 4283x637
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100429163417-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: CV-3
+  hull_code: CV
+  hull_number: 3
+  vessel_type: Aircraft Carrier
+  ship_name: USS Saratoga
+  source_pdf: cv3.pdf
+  page_count: 19
+  page_size_pts: 4248x639
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090115112429-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  - page: 19
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: CV-4
+  hull_code: CV
+  hull_number: 4
+  vessel_type: Aircraft Carrier
+  ship_name: USS Ranger
+  source_pdf: cv4.pdf
+  page_count: 14
+  page_size_pts: 3835x656
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425154346-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Newport News Shipbuilding
+- hull_designation: CV-5
+  hull_code: CV
+  hull_number: 5
+  vessel_type: Aircraft Carrier
+  ship_name: USS Yorktown
+  source_pdf: cv5.pdf
+  page_count: 17
+  page_size_pts: 5038x816
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425183239-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Newport News Shipbuilding
+- hull_designation: CV-7
+  hull_code: CV
+  hull_number: 7
+  vessel_type: Aircraft Carrier
+  ship_name: USS Wasp
+  source_pdf: cv7.pdf
+  page_count: 18
+  page_size_pts: 3951x633
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425185008-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: CV-12
+  hull_code: CV
+  hull_number: 12
+  vessel_type: Aircraft Carrier
+  ship_name: USS Hornet
+  source_pdf: cv12.pdf
+  page_count: 1
+  page_size_pts: 2591x3170
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:200810101710
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: CV-41
+  hull_code: CV
+  hull_number: 41
+  vessel_type: Aircraft Carrier
+  ship_name: USS Midway
+  source_pdf: cv41.pdf
+  page_count: 18
+  page_size_pts: 4959x720
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20081230160600-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Newport News Shipbuilding
+- hull_designation: CV-60
+  hull_code: CV
+  hull_number: 60
+  vessel_type: Aircraft Carrier
+  ship_name: USS Saratoga
+  source_pdf: cv60.pdf
+  page_count: 19
+  page_size_pts: 2738x937
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100611115421-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  - page: 19
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: New York Naval Shipyard, Brooklyn, NY
+- hull_designation: CV-60
+  hull_code: CV
+  hull_number: 60
+  vessel_type: Aircraft Carrier
+  ship_name: USS Saratoga
+  source_pdf: cv60color.pdf
+  page_count: 8
+  page_size_pts: 1123x1672
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100614061409-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  vision_notes: Color damage control diagram
+- hull_designation: CVE-90
+  hull_code: CVE
+  hull_number: 90
+  vessel_type: Escort Aircraft Carrier
+  ship_name: USS Thetis Bay
+  source_pdf: cve90.pdf
+  page_count: 17
+  page_size_pts: 1478x632
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090804175738-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: US Naval Repair Base, San Diego, CA
+  buships_number: CVE90-S0107-506078
+  name_source: web_lookup
+- hull_designation: CVE53-D79
+  hull_code: CVE53-D79
+  hull_number: null
+  vessel_type: Unknown
+  ship_name: USS Willapa / HMS Puncher
+  source_pdf: cve53-d79.pdf
+  page_count: 17
+  page_size_pts: 1326x615
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718162532-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: CVL-26
+  hull_code: CVL
+  hull_number: 26
+  vessel_type: Light Aircraft Carrier
+  ship_name: USS Monterey
+  source_pdf: cvl26.pdf
+  page_count: 17
+  page_size_pts: 1405x621
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090209113514-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: New York Shipbuilding Corp.
+- hull_designation: CVS-36
+  hull_code: CVS
+  hull_number: 36
+  vessel_type: Anti-Submarine Warfare Carrier
+  ship_name: USS Antietam
+  source_pdf: cvs36.pdf
+  page_count: 17
+  page_size_pts: 5337x812
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100429160310-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard, New York
+  name_source: web_lookup
+- hull_designation: DD-1
+  hull_code: DD
+  hull_number: 1
+  vessel_type: Destroyer
+  ship_name: USS Bainbridge
+  source_pdf: dd1.pdf
+  page_count: 3
+  page_size_pts: 4999x1508
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719113453-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: DD-376
+  hull_code: DD
+  hull_number: 376
+  vessel_type: Destroyer
+  ship_name: USS Cushing
+  source_pdf: dd376.pdf
+  page_count: 8
+  page_size_pts: 4099x1372
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100425195041-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: DD-445
+  hull_code: DD
+  hull_number: 445
+  vessel_type: Destroyer
+  ship_name: USS Fletcher
+  source_pdf: dd445.pdf
+  page_count: 1
+  page_size_pts: 4952x2020
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090901171540-07'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Federal Shipbuilding & Dry Dock Co., Kearny, NJ
+- hull_designation: DD-502
+  hull_code: DD
+  hull_number: 502
+  vessel_type: Destroyer
+  ship_name: USS Sigsbee
+  source_pdf: dd502.pdf
+  page_count: 12
+  page_size_pts: 1570x606
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20081230171335-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard, New York
+  buships_number: '464936'
+  name_source: web_lookup
+- hull_designation: DD-616
+  hull_code: DD
+  hull_number: 616
+  vessel_type: Destroyer
+  ship_name: USS Nields
+  source_pdf: dd616.pdf
+  page_count: 10
+  page_size_pts: 1616x819
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20081208162644-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Bethlehem Steel, Fore River Yard, Quincy, MA
+- hull_designation: DD-618
+  hull_code: DD
+  hull_number: 618
+  vessel_type: Destroyer
+  ship_name: USS Davison
+  source_pdf: dd618.pdf
+  page_count: 10
+  page_size_pts: 1201x629
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090219163214-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard, New York
+  buships_number: '574561'
+  name_source: web_lookup
+- hull_designation: DD-692
+  hull_code: DD
+  hull_number: 692
+  vessel_type: Destroyer
+  ship_name: USS Allen M. Sumner
+  source_pdf: dd692.pdf
+  page_count: 2
+  page_size_pts: 4912x2111
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090901165253-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: DD-765
+  hull_code: DD
+  hull_number: 765
+  vessel_type: Destroyer
+  ship_name: USS Keppler
+  source_pdf: dd765.pdf
+  page_count: 12
+  page_size_pts: 2132x780
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20081209095415-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: DD765-S0103-433692
+  name_source: web_lookup
+- hull_designation: DE-701
+  hull_code: DE
+  hull_number: 701
+  vessel_type: Destroyer Escort
+  ship_name: USS Whitman
+  source_pdf: de701.pdf
+  page_count: 10
+  page_size_pts: 1220x629
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090803221322-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Bay City (Defoe Shipbuilding Co.)
+  name_source: web_lookup
+- hull_designation: DMS-5
+  hull_code: DMS
+  hull_number: 5
+  vessel_type: High-Speed Minesweeper
+  ship_name: USS Palmer
+  source_pdf: dms5.pdf
+  page_count: 8
+  page_size_pts: 711x207
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718204603-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Norfolk Navy Yard
+  buships_number: '91013'
+- hull_designation: EC2-S-C1
+  hull_code: EC2-S-C1
+  hull_number: null
+  vessel_type: Unknown
+  ship_name: Liberty Cargo Ship
+  source_pdf: ec2-s-c1.pdf
+  page_count: 5
+  page_size_pts: 1937x830
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20120329195100-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  has_lines_plan: true
+  vision_notes: Body plan with frame sections
+- hull_designation: HMB-1
+  hull_code: HMB
+  hull_number: 1
+  vessel_type: Harbor Minesweeper
+  ship_name: Hughes Mining Barge
+  source_pdf: hmb1.pdf
+  page_count: 2
+  page_size_pts: 3182x2448
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091101132627-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: J-311
+  hull_code: J
+  hull_number: 311
+  vessel_type: Minesweeping Trawler
+  ship_name: Minesweeper, 1939 Programme
+  source_pdf: j311.pdf
+  page_count: 3
+  page_size_pts: 3677x1531
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20100223075758-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Royal Navy
+- hull_designation: J-337
+  hull_code: J
+  hull_number: 337
+  vessel_type: Minesweeping Trawler
+  ship_name: RN J-337
+  source_pdf: j337.pdf
+  page_count: 2
+  page_size_pts: 5758x2448
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20100221192113-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Royal Navy
+  name_source: web_lookup
+- hull_designation: K-124
+  hull_code: K
+  hull_number: 124
+  vessel_type: Corvette
+  ship_name: K-class Corvette
+  source_pdf: k124.pdf
+  page_count: 2
+  page_size_pts: 4290x2592
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20100221185953-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Royal Navy
+- hull_designation: LSD-21
+  hull_code: LSD
+  hull_number: 21
+  vessel_type: Landing Ship Dock
+  ship_name: USS Fort Mandan
+  source_pdf: lsd21.pdf
+  page_count: 12
+  page_size_pts: 1164x631
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090222155334-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: LSD21-S0103-66H02
+  name_source: web_lookup
+- hull_designation: LSM-354
+  hull_code: LSM
+  hull_number: 354
+  vessel_type: Landing Ship Medium
+  ship_name: USS LSM-354
+  source_pdf: lsm354.pdf
+  page_count: 7
+  page_size_pts: 2578x630
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090205081900-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: LST-983
+  hull_code: LST
+  hull_number: 983
+  vessel_type: Landing Ship Tank
+  ship_name: USS Middlesex County
+  source_pdf: lst983.pdf
+  page_count: 9
+  page_size_pts: 1608x626
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090116131639-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Norfolk Navy Yard
+  buships_number: LST983-S0103-1021024
+  name_source: web_lookup
+- hull_designation: MARINE-RAVEN
+  hull_code: MARINE-RAVEN
+  hull_number: null
+  vessel_type: USNS Marine Raven (Transport)
+  ship_name: USAT Marine Raven
+  source_pdf: marine-raven.pdf
+  page_count: 7
+  page_size_pts: 5509x1179
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20120319114400-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: MCB-143
+  hull_code: MCB
+  hull_number: 143
+  vessel_type: Minesweeper Coastal
+  ship_name: HMCS Gaspe
+  source_pdf: mcb143.pdf
+  page_count: 1
+  page_size_pts: 3056x2034
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20110903175446-07'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Davie Shipbuilding Ltd., Lauzon, QC
+- hull_designation: MSO-438
+  hull_code: MSO
+  hull_number: 438
+  vessel_type: Minesweeper Ocean
+  ship_name: USS Esteem
+  source_pdf: mso438.pdf
+  page_count: 10
+  page_size_pts: 1225x588
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090224153139-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Long Beach Naval Shipyard
+  buships_number: MSO438-50103-1588106
+  name_source: web_lookup
+- hull_designation: PC-483
+  hull_code: PC
+  hull_number: 483
+  vessel_type: Submarine Chaser
+  ship_name: USS PC-483
+  source_pdf: pc483.pdf
+  page_count: 8
+  page_size_pts: 1144x625
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090113094752-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  vision_notes: PC-483 through PC-487
+  name_source: web_lookup
+- hull_designation: PCE-874
+  hull_code: PCE
+  hull_number: 874
+  vessel_type: Patrol Craft Escort
+  ship_name: USS Pascagoula
+  source_pdf: pce874.pdf
+  page_count: 6
+  page_size_pts: 3591x978
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090225205751-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: PCE874-50103-4241
+  name_source: web_lookup
+- hull_designation: PE-60
+  hull_code: PE
+  hull_number: 60
+  vessel_type: Eagle Boat
+  ship_name: USS Eagle No. 60
+  source_pdf: pe60.pdf
+  page_count: 10
+  page_size_pts: 2844x1067
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090719105649-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: PG-50
+  hull_code: PG
+  hull_number: 50
+  vessel_type: Patrol Gunboat
+  ship_name: USS Erie
+  source_pdf: pg50.pdf
+  page_count: 11
+  page_size_pts: 1315x630
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090826122411-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard New York
+  buships_number: '243111'
+- hull_designation: PTBOAT
+  hull_code: PTBOAT
+  hull_number: null
+  vessel_type: PT Boat (Motor Torpedo Boat)
+  ship_name: PT-564
+  source_pdf: ptboat.pdf
+  page_count: 10
+  page_size_pts: 3605x1985
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090414111201-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Higgins Industries, New Orleans
+  buships_number: PT-564-50103-769679
+- hull_designation: R-338
+  hull_code: R
+  hull_number: 338
+  vessel_type: Destroyer Tender
+  ship_name: NOAA Gordon Gunter
+  source_pdf: r338.pdf
+  page_count: 13
+  page_size_pts: 2484x1620
+  content_type: mixed
+  has_extractable_text: false
+  pdf_creation_date: D:20080702122515-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Art Anderson Associates
+- hull_designation: RIVER
+  hull_code: RIVER
+  hull_number: null
+  vessel_type: River-class Frigate
+  ship_name: River Class Frigates
+  source_pdf: river.pdf
+  page_count: 2
+  page_size_pts: 3739x2372
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20110903182152-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: S26-SS131
+  hull_code: S26-SS131
+  hull_number: null
+  vessel_type: Unknown
+  ship_name: USS S-26
+  source_pdf: s26-ss131.pdf
+  page_count: 5
+  page_size_pts: 4374x876
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718113733-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: SAVANNAH
+  hull_code: SAVANNAH
+  hull_number: null
+  vessel_type: NS Savannah (Nuclear Merchant Ship)
+  ship_name: N.S. Savannah
+  source_pdf: savannah.pdf
+  page_count: 12
+  page_size_pts: 2948x628
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20110905161807-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: New York Shipbuilding
+- hull_designation: SS-1
+  hull_code: SS
+  hull_number: 1
+  vessel_type: Submarine
+  ship_name: USS Holland
+  source_pdf: ss1.pdf
+  page_count: 3
+  page_size_pts: 3138x2222
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091102132805-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: SS-167
+  hull_code: SS
+  hull_number: 167
+  vessel_type: Submarine
+  ship_name: USS Narwhal
+  source_pdf: ss167.pdf
+  page_count: 2
+  page_size_pts: 2096x393
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091102143934-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: SS-170
+  hull_code: SS
+  hull_number: 170
+  vessel_type: Submarine
+  ship_name: USS Cachalot
+  source_pdf: ss170.pdf
+  page_count: 2
+  page_size_pts: 3088x992
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091102153132-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: SS-190
+  hull_code: SS
+  hull_number: 190
+  vessel_type: Submarine
+  ship_name: USS Squalus/Sailfish
+  source_pdf: ss190.pdf
+  page_count: 7
+  page_size_pts: 1337x631
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718132304-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Electric Boat Company, Groton
+  buships_number: '249390'
+- hull_designation: SS-298
+  hull_code: SS
+  hull_number: 298
+  vessel_type: Submarine
+  ship_name: USS Lionfish
+  source_pdf: ss298.pdf
+  page_count: 8
+  page_size_pts: 1320x624
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091101123732-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard, Portsmouth, NH
+  buships_number: SS298-S0103-70321
+- hull_designation: SS-339
+  hull_code: SS
+  hull_number: 339
+  vessel_type: Submarine
+  ship_name: USS Catfish
+  source_pdf: ss339.pdf
+  page_count: 9
+  page_size_pts: 2875x657
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090422172859-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Electric Boat Company, Groton, CT
+  buships_number: 2421-179
+  name_source: web_lookup
+- hull_designation: SS-343
+  hull_code: SS
+  hull_number: 343
+  vessel_type: Submarine
+  ship_name: USS Clamagore
+  source_pdf: ss343.pdf
+  page_count: 8
+  page_size_pts: 1384x639
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20131204155904-05'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Charleston Naval Shipyard
+  buships_number: SS343-S0107-234330
+  name_source: web_lookup
+- hull_designation: SS-350
+  hull_code: SS
+  hull_number: 350
+  vessel_type: Submarine
+  ship_name: USS Dogfish
+  source_pdf: ss350.pdf
+  page_count: 9
+  page_size_pts: 1308x631
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091102173340-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Electric Boat Company, Groton, CT
+  buships_number: 2421-190
+  name_source: web_lookup
+- hull_designation: SS-376
+  hull_code: SS
+  hull_number: 376
+  vessel_type: Submarine
+  ship_name: USS Mapiro
+  source_pdf: ss376.pdf
+  page_count: 8
+  page_size_pts: 1298x606
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718154201-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: San Francisco Naval Shipyard
+  name_source: web_lookup
+- hull_designation: SS-381
+  hull_code: SS
+  hull_number: 381
+  vessel_type: Submarine
+  ship_name: USS Sand Lance
+  source_pdf: ss381.pdf
+  page_count: 7
+  page_size_pts: 1330x633
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20071207100900-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Navy Yard, Portsmouth, NH
+  buships_number: SS381-S0103-68101
+  name_source: web_lookup
+- hull_designation: SS-394
+  hull_code: SS
+  hull_number: 394
+  vessel_type: Submarine
+  ship_name: USS Razorback
+  source_pdf: ss394.pdf
+  page_count: 8
+  page_size_pts: 2897x612
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090909171841-05'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Naval Shipyard, Portsmouth, NH
+  buships_number: SS394-S0103-56631
+  name_source: web_lookup
+- hull_designation: SS-481
+  hull_code: SS
+  hull_number: 481
+  vessel_type: Submarine
+  ship_name: USS Requin
+  source_pdf: ss481.pdf
+  page_count: 9
+  page_size_pts: 5131x1184
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100325154009-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Naval Shipyard, Portsmouth, NH
+  buships_number: SS481-S0109-934700
+  name_source: web_lookup
+- hull_designation: SS-563
+  hull_code: SS
+  hull_number: 563
+  vessel_type: Submarine
+  ship_name: USS Tang
+  source_pdf: ss563.pdf
+  page_count: 22
+  page_size_pts: 4167x841
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090519181534-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  - page: 12
+    type: drawing
+  - page: 13
+    type: drawing
+  - page: 14
+    type: drawing
+  - page: 15
+    type: drawing
+  - page: 16
+    type: drawing
+  - page: 17
+    type: drawing
+  - page: 18
+    type: drawing
+  - page: 19
+    type: drawing
+  - page: 20
+    type: drawing
+  - page: 21
+    type: drawing
+  - page: 22
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  has_lines_plan: true
+  vision_notes: Lines/body plan drawing
+  name_source: web_lookup
+- hull_designation: SSG-577
+  hull_code: SSG
+  hull_number: 577
+  vessel_type: Guided Missile Submarine
+  ship_name: USS Growler
+  source_pdf: ssg577.pdf
+  page_count: 8
+  page_size_pts: 1447x627
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100623115523-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Naval Shipyard, Portsmouth, NH
+  buships_number: SSG577-845-1608697
+  name_source: web_lookup
+- hull_designation: SSR-481
+  hull_code: SSR
+  hull_number: 481
+  vessel_type: Radar Picket Submarine
+  ship_name: USS Requin
+  source_pdf: ssr481.pdf
+  page_count: 9
+  page_size_pts: 2170x1120
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20100313182531-05'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Naval Shipyard, Portsmouth, NH
+  buships_number: SSR481-S0103-934700
+  name_source: web_lookup
+- hull_designation: SST-2
+  hull_code: SST
+  hull_number: 2
+  vessel_type: Target/Training Submarine
+  ship_name: USS Marlin
+  source_pdf: sst2.pdf
+  page_count: 8
+  page_size_pts: 1728x641
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090909171752-05'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Electric Boat Division, Groton, CT
+  name_source: web_lookup
+- hull_designation: TRIBAL
+  hull_code: TRIBAL
+  hull_number: null
+  vessel_type: Tribal-class Destroyer
+  ship_name: HMCS Tribal-class
+  source_pdf: tribal.pdf
+  page_count: 6
+  page_size_pts: 7065x1450
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20110903183901-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WAGL-212
+  hull_code: WAGL
+  hull_number: 212
+  vessel_type: USCG Lighthouse Tender
+  ship_name: USCGC Fir
+  source_pdf: wagl212.pdf
+  page_count: 10
+  page_size_pts: 2332x636
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001122729-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WAGL-330
+  hull_code: WAGL
+  hull_number: 330
+  vessel_type: USCG Lighthouse Tender
+  ship_name: Jonquil
+  source_pdf: wagl330.pdf
+  page_count: 10
+  page_size_pts: 1013x480
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090718165337-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WAGL-686
+  hull_code: WAGL
+  hull_number: 686
+  vessel_type: USCG Lighthouse Tender
+  ship_name: Red Birch
+  source_pdf: wagl686.pdf
+  page_count: 6
+  page_size_pts: 3418x896
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001110633-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WAL-605
+  hull_code: WAL
+  hull_number: 605
+  vessel_type: USCG Cutter
+  ship_name: USLHS Relief
+  source_pdf: wal605.pdf
+  page_count: 7
+  page_size_pts: 1379x629
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090124095505-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: WLB-307
+  hull_code: WLB
+  hull_number: 307
+  vessel_type: USCG Buoy Tender (Seagoing)
+  ship_name: USCGC Planetree
+  source_pdf: wlb307.pdf
+  page_count: 6
+  page_size_pts: 2078x736
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090219202806-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WLI-65303
+  hull_code: WLI
+  hull_number: 65303
+  vessel_type: USCG Buoy Tender (Inland)
+  ship_name: USCGC Blackberry
+  source_pdf: wli65303.pdf
+  page_count: 5
+  page_size_pts: 2504x1543
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001124119-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  name_source: web_lookup
+- hull_designation: WLM-688
+  hull_code: WLM
+  hull_number: 688
+  vessel_type: USCG Buoy Tender (Coastal)
+  ship_name: USCGC Red Cedar
+  source_pdf: wlm688.pdf
+  page_count: 6
+  page_size_pts: 3747x1095
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001111222-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+- hull_designation: WLR-311
+  hull_code: WLR
+  hull_number: 311
+  vessel_type: USCG Buoy Tender (River)
+  ship_name: CGC Sumac
+  source_pdf: wlr311.pdf
+  page_count: 7
+  page_size_pts: 2228x1472
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001125742-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: USCG HQ, Washington DC
+- hull_designation: WMEC-628
+  hull_code: WMEC
+  hull_number: 628
+  vessel_type: USCG Medium Endurance Cutter
+  ship_name: USCGC Durable
+  source_pdf: wmec628.pdf
+  page_count: 6
+  page_size_pts: 3156x2596
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090917095019-04'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: USCG HQ, Washington DC
+  name_source: web_lookup
+- hull_designation: WPB-82301
+  hull_code: WPB
+  hull_number: 82301
+  vessel_type: USCG Patrol Boat
+  ship_name: USCGC Point Caution
+  source_pdf: wpb82301.pdf
+  page_count: 5
+  page_size_pts: 1509x751
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090730091922-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: 7th District, Miami, FL
+  name_source: web_lookup
+- hull_designation: WPC-627
+  hull_code: WPC
+  hull_number: 627
+  vessel_type: USCG Patrol Craft
+  ship_name: USCGC Vigorous
+  source_pdf: wpc627.pdf
+  page_count: 11
+  page_size_pts: 2302x628
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091001115039-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  - page: 10
+    type: drawing
+  - page: 11
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: USCG Yard, Curtis Bay, MD
+- hull_designation: X-5
+  hull_code: X
+  hull_number: 5
+  vessel_type: Submersible Craft
+  ship_name: HMS X5-X10
+  source_pdf: x5.pdf
+  page_count: 1
+  page_size_pts: 2631x1136
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20120119132711-05'00'
+  plates:
+  - page: 1
+    type: combined_sheet
+  dimensions: null
+  extraction_status: vision_enriched
+  vision_notes: British X-Craft midget submarines
+- hull_designation: YF-732
+  hull_code: YF
+  hull_number: 732
+  vessel_type: Covered Lighter
+  ship_name: USS YF-732
+  source_pdf: yf732.pdf
+  page_count: 9
+  page_size_pts: 1350x633
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090713110906-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Cramp Shipbuilding Co.
+  name_source: web_lookup
+- hull_designation: YOG-86
+  hull_code: YOG
+  hull_number: 86
+  vessel_type: Gasoline Barge
+  ship_name: YOG-86
+  source_pdf: yog86.pdf
+  page_count: 9
+  page_size_pts: 836x480
+  content_type: raster_scan
+  has_extractable_text: true
+  pdf_creation_date: D:20090222150102-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  - page: 9
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: YOG86-50103-310783
+  name_source: web_lookup
+- hull_designation: YSD-76
+  hull_code: YSD
+  hull_number: 76
+  vessel_type: Seaplane Wrecking Derrick
+  ship_name: YSD-76
+  source_pdf: ysd76.pdf
+  page_count: 8
+  page_size_pts: 1129x659
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20090713103317-07'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  navy_yard: Missouri Valley Bridge & Iron Co., Leavenworth, KS
+  buships_number: '620491'
+  name_source: web_lookup
+- hull_designation: YTB-142
+  hull_code: YTB
+  hull_number: 142
+  vessel_type: Large Harbor Tug
+  ship_name: USS Nokomis
+  source_pdf: ytb142.pdf
+  page_count: 8
+  page_size_pts: 1992x670
+  content_type: raster_scan
+  has_extractable_text: false
+  pdf_creation_date: D:20091203083557-08'00'
+  plates:
+  - page: 1
+    type: cover
+  - page: 2
+    type: data_sheet_or_profile
+  - page: 3
+    type: drawing
+  - page: 4
+    type: drawing
+  - page: 5
+    type: drawing
+  - page: 6
+    type: drawing
+  - page: 7
+    type: drawing
+  - page: 8
+    type: drawing
+  dimensions: null
+  extraction_status: vision_enriched
+  buships_number: '364388'
