@@ -258,6 +258,52 @@ class LooseNumberedParser:
         )]
 
 
+# ── Format E: Problem / Exercise / Sample Problem ─────────────────
+
+_FMT_E_RE = re.compile(
+    r"(?:Problem|Exercise|Sample\s+Problem|Worked\s+Example)"
+    r"\s+([\d]+(?:\.[\d]+)*)\s*(?:[:\-\.]\s*(.+?))?$",
+    re.MULTILINE | re.IGNORECASE,
+)
+
+
+class ProblemExerciseParser:
+    """Parses ``Problem N.N``, ``Exercise N.N``, ``Sample Problem N.N``.
+
+    Catches textbooks that use "Problem" or "Exercise" instead of "Example".
+    """
+
+    def can_parse(self, text: str) -> bool:
+        has_problem = bool(_FMT_E_RE.search(text))
+        has_equals = bool(re.search(r"=\s*[\d,]+(?:\.\d+)?", text))
+        return has_problem and has_equals
+
+    def parse(self, text: str, source: dict, domain: str) -> list[dict]:
+        results = []
+        for m in _FMT_E_RE.finditer(text):
+            number = m.group(1)
+            title = (m.group(2) or "").strip()
+            if not title:
+                end = m.end()
+                next_lines = text[end:end + 200].strip().split("\n")
+                prose = " ".join(
+                    ln.strip() for ln in next_lines[:3] if ln.strip()
+                )
+                title = prose[:80].rstrip(".")
+
+            # Extract answer from text after this match
+            after_text = text[m.start():]
+            expected, unit = _extract_final_answer(after_text)
+            if expected is None:
+                continue
+            inputs = parse_prose_inputs(after_text)
+            results.append(_build_result(
+                number, title, source, domain,
+                expected, unit, inputs, "problem_exercise",
+            ))
+        return results
+
+
 # ── Dispatcher ──────────────────────────────────────────────────────
 
 _PARSERS: list[ExampleParserStrategy] = [
@@ -265,6 +311,7 @@ _PARSERS: list[ExampleParserStrategy] = [
     TupperBiranParser(),
     AttwoodPNAParser(),
     LooseNumberedParser(),
+    ProblemExerciseParser(),
 ]
 
 

@@ -1151,10 +1151,10 @@ coverage:
 # ─────────────────────────────────────────────
 stats:
   total_nodes: 51
-  total_edges: 49
+  total_edges: 52
   edge_type_counts:
-    feeds: 22
-    composition: 16
+    feeds: 23
+    composition: 15
     dependency: 3
     alternative: 3
     shared_infra: 3

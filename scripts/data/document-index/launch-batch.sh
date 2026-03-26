@@ -4,7 +4,7 @@
 # Run from workspace-hub root in a SEPARATE terminal (not inside Claude Code):
 #   bash scripts/data/document-index/launch-batch.sh [shards=10] [source=all]
 #
-# Sources: all | og_standards | ace_standards | workspace_spec
+# Sources: all | og_standards | ace_standards | ace_project | dde_project | workspace_spec
 # Logs:    data/document-index/logs/claude-shard-N-YYYYMMDD-HHMMSS.log
 # Monitor: tail -f data/document-index/logs/claude-shard-*.log
 # Status:  grep -h "COMPLETE\|progress\|shard" data/document-index/logs/claude-shard-*.log

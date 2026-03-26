@@ -81,7 +81,7 @@
 ## Smart Agent Router (v2.0)
 
 - **Entry point**: `scripts/coordination/routing/route.sh` *verified: 2026-03-15*
-- **Model registry**: `config/agents/model-registry.yaml` (5 models across 3 providers)
+- **Model registry**: `config/agents/model-registry.yaml` (5 models across 3 providers) *verified: 2026-03-26*
 - **EWMA engine**: `scripts/coordination/routing/lib/model_registry.sh` *verified: 2026-03-25*
 - **Config**: `config/agents/routing-config.yaml` *verified: 2026-03-15*
 - Adaptive routing: EWMA alpha=0.3, seed=3.0, min_ratings=3, poor_threshold=2.5

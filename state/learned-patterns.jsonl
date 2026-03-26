@@ -3490,3 +3490,765 @@
   "wrk": "workspace-hub-1291",
   "stage": 4
 }
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 20
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 20
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 20
+}

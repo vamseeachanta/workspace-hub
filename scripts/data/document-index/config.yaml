@@ -46,6 +46,14 @@ sources:
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
 
+  va_hdd_2:
+    enabled: true
+    paths:
+      - /mnt/ace/data/va-hdd-2
+    host: dev-primary
+    source_type: va_hdd_2
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
+
   workspace_spec:
     enabled: true
     paths:
@@ -158,6 +166,7 @@ deduplication:
     - ace_standards
     - ace_project
     - dde_project
+    - va_hdd_2
     - workspace_spec
     - api_metadata
 

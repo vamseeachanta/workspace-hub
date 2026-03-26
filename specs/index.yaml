@@ -1,32 +1,32 @@
-generated: '2026-03-25'
-total_specs: 1926
+generated: '2026-03-26'
+total_specs: 2011
 by_category:
   archive: 13
   data-sources: 13
-  modules: 369
-  other: 61
+  modules: 421
+  other: 93
   repos: 1344
   templates: 20
-  wrk: 106
+  wrk: 107
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
   aceengineer-website: 19
   achantas-data: 5
   acma-projects: 29
-  assethold: 24
-  assetutilities: 52
+  assethold: 45
+  assetutilities: 101
   client_projects: 7
   digitalmodel: 905
   doris: 9
   frontierdeepwater: 11
-  hobbies: 7
+  hobbies: 14
   investments: 1
   pdf-large-reader: 1
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 410
+  workspace-hub: 418
   worldenergydata: 370
 by_wrk:
   WRK-0: 8
@@ -382,7 +382,7 @@ by_wrk:
   WRK-1358: 1
   WRK-1360: 1
   WRK-1362: 4
-  WRK-1363: 1
+  WRK-1363: 2
   WRK-1364: 1
   WRK-1366: 1
   WRK-1369: 2
@@ -390,7 +390,10 @@ by_wrk:
   WRK-1371: 3
   WRK-1372: 2
   WRK-1380: 2
-  WRK-1384: 1
+  WRK-1384: 3
+  WRK-1398: 1
+  WRK-1404: 2
+  WRK-1405: 1
   WRK-5002: 1
   WRK-5035: 1
   WRK-5036: 3
@@ -467,6 +470,16 @@ specs:
   - WRK-384
   - WRK-385
   mtime: '2026-02-24'
+- path: specs/architecture/resource-intelligence-schema.yaml
+  title: Resource Intelligence Schema
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - architecture
+  - resource-intelligence-schema
+  wrk_refs: []
+  mtime: '2026-03-26'
 - path: specs/architecture/work-queue-codex-parity.md
   title: 'Work-Queue Workflow: Claude / Codex CLI Parity Audit'
   description: '**WRK**: WRK-264 **Date**: 2026-02-24 **Status**: Complete **References**: `scripts/agents/`, `.codex/config.toml`,
@@ -907,6 +920,17 @@ specs:
   - subsea
   wrk_refs: []
   mtime: '2026-03-17'
+- path: specs/catalog/open-source-engineering-catalog.yaml
+  title: Open Source Engineering Catalog
+  description: '{''total_libraries'': 57, ''by_domain'': {''fea_structural'': 8, ''cfd'': 6, ''oil_and_gas'': 5, ''cad_geometry'':
+    6, ''gis_geospatial'': 7, ''data_science'': 8, ''marine_offshore'': 6, ''hydrodynamics'': 6, ''pipeline_fl'
+  category: other
+  repo: workspace-hub
+  tags:
+  - catalog
+  - open-source-engineering-catalog
+  wrk_refs: []
+  mtime: '2026-03-26'
 - path: specs/client-demos/brochure-client1-rigid-jumper-pipeline.md
   title: Engineering AI Assistant
   description: '*Powered by large language model technology with deep offshore engineering context*'
@@ -1976,6 +2000,17 @@ specs:
   - integrate-engineering-units-into-diffraction-analysis
   wrk_refs: []
   mtime: '2026-02-18'
+- path: specs/modules/jaunty-sparking-hollerith.md
+  title: Review scheduled tasks & fix daily summaries not surfacing
+  description: This machine is `ace-linux-1` but the entire scheduling infrastructure expects `dev-primary`. Hostname-to-role
+    mapping is **scattered across 6+ files** with no single source of truth.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - jaunty-sparking-hollerith
+  wrk_refs:
+  - WRK-1398
+  mtime: '2026-03-25'
 - path: specs/modules/jaunty-wibbling-wren.md
   title: 'WRK-1059 Plan: Reference Documentation Quality Checks'
   description: 'WRK-1058 added `--docs` to `check-all.sh` covering: ruff D docstrings (warn-only), README section validation
@@ -1988,6 +2023,18 @@ specs:
   - WRK-1058
   - WRK-1059
   mtime: '2026-03-09'
+- path: specs/modules/jiggly-honking-hedgehog.md
+  title: 'WRK-1404: Organize /mnt/ace/docs/ subfolders and deduplicate engineering references'
+  description: The local-analysis relocation (WRK-1384/1396) surfaced 9 subfolders in `/mnt/ace/docs/` that need review. Some
+    contain misplaced code/repos, some have duplicates, and `rearrange-data/` is a 187MB d...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - jiggly-honking-hedgehog
+  wrk_refs:
+  - WRK-1384
+  - WRK-1404
+  mtime: '2026-03-25'
 - path: specs/modules/jiggly-knitting-brooks.md
   title: 'Plan: WRK-597 Geotechnical Module — Phase Split, Skills, Package Adoption'
   description: WRK-597 defines a geotechnical module covering 5 sub-domains (foundations, piles, anchors, on-bottom stability,
@@ -3004,6 +3051,17 @@ specs:
   - work-queue-skill-workspace-hub
   wrk_refs: []
   mtime: '2026-01-29'
+- path: specs/modules/workspace-hub-1405-learning-infra-assessment.md
+  title: 'WRK-1405: Learning Infrastructure Assessment for Latest AI Models'
+  description: Do we have sufficient learning infrastructure to improve our work with the latest models (Claude 4.5/4.6, Gemini
+    2.5, Codex)?
+  category: modules
+  repo: workspace-hub
+  tags:
+  - workspace-hub-1405-learning-infra-assessment
+  wrk_refs:
+  - WRK-1405
+  mtime: '2026-03-25'
 - path: specs/modules/workspace-hub-module-based-refactoring.md
   title: 'Module-Based Refactoring Plan: workspace-hub'
   description: '**Version**: 1.0.0 **Module**: workspace-hub-module-refactor **Session ID**: workspace-hub-discipline-refactor
@@ -3232,6 +3290,17 @@ specs:
   wrk_refs:
   - WRK-133
   mtime: '2026-02-13'
+- path: specs/modules/wrk-1363-llm-domain-tag-riser-eng-job.md
+  title: 'WRK-1363: LLM domain-tag riser-eng-job literature for digitalmodel cross-reference'
+  description: Classify ~15,000 PDF/DOC/DOCX files from 4 riser engineering project archives using LLM-based domain tagging,
+    then create cross-reference index mapping each document to one or more digitalmodel dom...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1363-llm-domain-tag-riser-eng-job
+  wrk_refs:
+  - WRK-1363
+  mtime: '2026-03-25'
 - path: specs/modules/wrk-138-ffs-module-roadmap.md
   title: 'Fitness-for-Service Module Roadmap: Wall Thickness Grid, Industry Targeting, Asset Lifecycle'
   description: Enhance pyintegrity FFS module with UT grid-based Level 1/2 acceptance workflow, industry-specific parameter
@@ -3265,8 +3334,7 @@ specs:
   mtime: '2026-03-23'
 - path: specs/modules/wrk-1384-local-analysis-relocation.md
   title: 'WRK-1384: Review local-analysis folders for relocation to knowledge center'
-  description: Inventory all folders/files in `/mnt/remote/ace-linux-2/local-analysis` (excluding workspace-hub), classify
-    by type, and produce a relocation plan mapping items to `/mnt/ace/` knowledge center.
+  description: 'confirmed_by: user confirmed_at: 2026-03-24T23:30:00Z decision: passed'
   category: modules
   repo: workspace-hub
   tags:
@@ -21474,14 +21542,14 @@ specs:
   mtime: '2026-03-20'
 - path: specs/skills/script-conversion-candidates.md
   title: Skill Script Conversion Candidates
-  description: 'Generated: 2026-03-15T14:38:23Z Total skills scanned: 409'
+  description: 'Generated: 2026-03-26T07:03:24Z Total skills scanned: 2727'
   category: other
   repo: workspace-hub
   tags:
   - script-conversion-candidates
   - skills
   wrk_refs: []
-  mtime: '2026-03-15'
+  mtime: '2026-03-26'
 - path: specs/skills/skill-eval-framework.md
   title: Skill Eval Framework
   description: Provide a deterministic, schema-validated mechanism to verify that SKILL.md files meet documented capability
@@ -21507,6 +21575,16 @@ specs:
   - WRK-624
   - WRK-1010
   mtime: '2026-03-20'
+- path: specs/skills/skills-knowledge-graph.yaml
+  title: Skills Knowledge Graph
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - skills
+  - skills-knowledge-graph
+  wrk_refs: []
+  mtime: '2026-03-26'
 - path: specs/skills/evals/comprehensive-learning.yaml
   title: Comprehensive Learning
   description: ''
@@ -21786,6 +21864,19 @@ specs:
   - workspace-hub-1362
   wrk_refs:
   - WRK-1362
+  mtime: '2026-03-25'
+- path: specs/wrk/workspace-hub-1404/plan.md
+  title: 'WRK-1404: Organize /mnt/ace/docs/ subfolders and deduplicate engineering references'
+  description: The local-analysis relocation (WRK-1384/1396) surfaced 9 subfolders in `/mnt/ace/docs/` that need review. Some
+    contain misplaced code/repos, some have duplicates, and `rearrange-data/` is a 187MB d...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - workspace-hub-1404
+  wrk_refs:
+  - WRK-1384
+  - WRK-1404
   mtime: '2026-03-25'
 - path: specs/wrk/WRK-1003/plan.md
   title: WRK-1003 Execution Plan
@@ -23085,7 +23176,7 @@ specs:
   - digitalmodel
   - module-registry
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-03-26'
 - path: digitalmodel/specs/modules/hydrodynamics.md
   title: 'Module: hydrodynamics'
   description: '**Path**: `src/digitalmodel/hydrodynamics/` **Status**: active **Last updated**: 2026-02-24'
@@ -25198,6 +25289,736 @@ specs:
   - worldenergydata
   wrk_refs: []
   mtime: '2026-03-15'
+- path: assetutilities/specs/2025-07-26-git-bash-development-setup/spec.md
+  title: Spec Requirements Document
+  description: Establish Git Bash as the primary terminal and console environment for the AssetUtilities Python project, providing
+    automated setup, customizations, and best practices that work efficiently for dev...
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-26-git-bash-development-setup/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/2025-07-26-git-bash-development-setup/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-26-git-bash-development-setup/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/2025-07-26-git-bash-development-setup/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-26-git-bash-development-setup/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/2025-07-26-git-bash-development-setup/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-29-agent-os-integration/spec.md
+  title: Spec Requirements Document
+  description: '**Prompt for Future Reuse:** ``` Set up buildermethods Agent OS (https://github.com/buildermethods/agent-os)
+    for this repository with comprehensive team collaboration features. Execute the followin...'
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-29-agent-os-integration/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/2025-07-29-agent-os-integration/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-29-agent-os-integration/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for Agent OS integration in this repository, as detailed in @.agent-os/specs/2025-07-29-agent-os-integration/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-29-agent-os-integration/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the test coverage details for the spec detailed in @.agent-os/specs/2025-07-29-agent-os-integration/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-31-multiprocessing-research/spec.md
+  title: Spec Requirements Document
+  description: Conduct comprehensive research on high-level methods for task parallelization and collation of findings, covering
+    single computer and distributed infrastructure approaches for both in-house and clo...
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-31-multiprocessing-research/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/2025-07-31-multiprocessing-research/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-31-multiprocessing-research/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/2025-07-31-multiprocessing-research/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-07-31-multiprocessing-research/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/2025-07-31-multiprocessing-research/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-08-01-git-sub-agent/spec.md
+  title: Spec Requirements Document
+  description: Implement a Git sub-agent bash script that automates trunk-based development workflows by handling branch creation,
+    change staging, commit creation, pull request management, and automated merging t...
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-08-01-git-sub-agent/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/2025-08-01-git-sub-agent/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/2025-08-01-git-sub-agent/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/2025-08-01-git-sub-agent/spec.md
+  category: other
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/spec.md
+  title: Spec Requirements Document
+  description: '**Original Request:** /create-specs, add a /create-specs sub-agent such that all (existing, this and future)
+    specs contain prompt summary for future reuse, executive summary section, mermaid charts...'
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/task_summary.md
+  title: Task Summary
+  description: This is the implementation summary for the spec detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - task_summary
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/ai-persistence-spec.md
+  title: AI Persistence Specification
+  description: This specification defines the AI agent persistence system across system, user, and repository levels.
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - ai-persistence-spec
+  - assetutilities
+  - enhanced-create-specs
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/cross-repo-spec.md
+  title: Cross-Repository Integration Specification
+  description: This specification defines the cross-repository referencing system for the enhanced create-specs workflow.
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - cross-repo-spec
+  - enhanced-create-specs
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/prompt-evolution-spec.md
+  title: Prompt Evolution Tracking Specification
+  description: This is the prompt evolution tracking specification for the enhanced create-specs system detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - prompt-evolution-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/repository-sub-agents-spec.md
+  title: Repository-Specific Sub-Agents Specification
+  description: This is the sub-agent specification for repository-specific functionality detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - repository-sub-agents-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/enhanced-create-specs/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/agent-os/enhanced-create-specs/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - enhanced-create-specs
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/spec.md
+  title: 'Slash Command: /create-module-agent'
+  description: The `/create-module-agent` slash command provides a streamlined interface for creating specialized AI agents
+    within the Agent OS ecosystem. It automates the creation of module-specific agents with ...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/agent-os/slash-commands/create-module-agent/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - slash-commands
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md
+  title: Context Optimization and Caching
+  description: Context optimization ensures agents have fast access to relevant documentation and knowledge without processing
+    overhead. The system creates optimized, searchable indices and caches processed conte...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - context-optimization
+  - create-module-agent
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md
+  title: 'Implementation Details: /create-module-agent'
+  description: '```python def handle_create_module_agent(module_name: str, **options): """ Main handler for /create-module-agent
+    slash command'
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - implementation
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md
+  title: Integration with Enhanced Create-Specs Workflow
+  description: The `/create-module-agent` command seamlessly integrates with the enhanced create-specs workflow, enabling
+    agents to leverage prompt evolution tracking, executive summaries, mermaid diagrams, and c...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - integration
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md
+  title: Agent Template System
+  description: The agent template system provides predefined configurations and patterns for common agent types. Templates
+    accelerate agent creation by providing domain-specific context, prompts, and response pat...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md
+  title: Workflow Refresh Specification
+  description: This specification defines workflow refresh behaviors for the `/create-spec` slash command across all Agent
+    OS repositories. It ensures consistent spec creation processes and maintains alignment wi...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-module-agent
+  - slash-commands
+  - workflow-refresh
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/agent-os/slash-commands/create-spec/spec.md
+  title: 'Slash Command: /create-spec'
+  description: The `/create-spec` slash command creates comprehensive specifications for new features with automatic workflow
+    refresh capabilities. This enhanced version includes continuous spec updating, executi...
+  category: modules
+  repo: assetutilities
+  tags:
+  - agent-os
+  - assetutilities
+  - create-spec
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/spec.md
+  title: Spec Requirements Document
+  description: '**Original Request:** Create a user authentication system with secure login, signup, password reset functionality,
+    and user profile management.'
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - spec
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/task_summary.md
+  title: Task Summary
+  description: This is the implementation summary for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - task_summary
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - tasks
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - api-spec
+  - assetutilities
+  - authentication
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/sub-specs/database-schema.md
+  title: Database Schema
+  description: This is the database schema implementation for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - database-schema
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - technical-spec
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/authentication/user-auth-system/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/authentication/user-auth-system/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - authentication
+  - tests
+  - user-auth-system
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  title: Spec Requirements Document
+  description: '**Original Request:** For a naval architecture engineering consulting company, suggest summary of methods
+    (and why?) to achieve the following:'
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - enterprise-consulting
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - enterprise-consulting
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/sub-specs/ai-transition-spec.md
+  title: AI Transition Specification
+  description: This is the AI transformation roadmap for the spec detailed in @.agent-os/specs/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - ai-transition-spec
+  - assetutilities
+  - enterprise-consulting
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/sub-specs/api-spec.md
+  title: API Specification
+  description: This is the API specification for the spec detailed in @.agent-os/specs/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - api-spec
+  - assetutilities
+  - enterprise-consulting
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - enterprise-consulting
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @specs/modules/enterprise-consulting/2025-08-29-naval-arch-qms-ai-transformation/spec.md
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - enterprise-consulting
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/zip-utilities/parallel-processing/spec.md
+  title: Zip Utilities Parallel Processing Specification
+  description: '**Original User Request:** ``` make lines 53 to 62 to parallel process. Use same architecture as digitalmodel
+    spec D:\github\digitalmodel\.ai\specs\modules\parallel_processing_opp.md ```'
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - parallel-processing
+  - spec
+  - zip-utilities
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/zip-utilities/parallel-processing/task-summary.md
+  title: 'Task Summary: Zip Utilities Parallel Processing Implementation'
+  description: Successfully implemented parallel processing for zip utilities, transforming sequential file processing bottleneck
+    into efficient concurrent operations. The implementation follows the digitalmodel ...
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - parallel-processing
+  - task-summary
+  - zip-utilities
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/zip-utilities/parallel-processing/sub-specs/technical-spec.md
+  title: 'Technical Specification: Zip Utilities Parallel Processing'
+  description: '**File Modified:** `src/assetutilities/modules/zip_utilities/zip_utilities.py` **Lines Refactored:** 53-62
+    (original sequential loop) **Lines Added:** ~80 new lines of code **Breaking Changes:** No...'
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - parallel-processing
+  - technical-spec
+  - zip-utilities
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assetutilities/specs/modules/zip-utilities/parallel-processing/sub-specs/tests.md
+  title: 'Test Specification: Zip Utilities Parallel Processing'
+  description: '```mermaid graph TD A[Unit Tests - 70%] --> B[Integration Tests - 20%] B --> C[End-to-End Tests - 10%]'
+  category: modules
+  repo: assetutilities
+  tags:
+  - assetutilities
+  - parallel-processing
+  - tests
+  - zip-utilities
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/2025-07-30-agent-os-integration/spec.md
+  title: Spec Requirements Document
+  description: Complete the buildermethods Agent OS integration for the AssetHold Python package, establishing structured
+    development workflows, comprehensive product documentation, and Python package-specific de...
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/2025-07-30-agent-os-integration/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/2025-07-30-agent-os-integration/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/2025-07-30-agent-os-integration/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/2025-07-30-agent-os-integration/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/2025-07-30-agent-os-integration/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/2025-07-30-agent-os-integration/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/FRAMEWORK_OVERVIEW.md
+  title: Commercial Property Valuation Framework - Overview
+  description: The **Commercial Property Valuation Framework** is a comprehensive, generic system for evaluating and comparing
+    commercial real estate investments across **all property types**. It transforms the F...
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - framework_overview
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/spec.md
+  title: Spec Requirements Document
+  description: Develop a comprehensive, generic commercial property valuation and comparison framework that systematically
+    evaluates any commercial real estate investment opportunity across all property types (re...
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/commercial-property-valuation-framework/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/sub-specs/database-schema.md
+  title: Database Schema
+  description: This is the database schema implementation for the spec detailed in @.agent-os/specs/commercial-property-valuation-framework/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - database-schema
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/commercial-property-valuation-framework/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/commercial-property-valuation-framework/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/commercial-property-valuation-framework/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - commercial-property-valuation-framework
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/family-dollar-valuation-model/spec.md
+  title: Spec Requirements Document
+  description: Develop a specialized implementation of the Commercial Property Valuation Framework specifically for Family
+    Dollar (and similar convenience store) properties. This implementation inherits the core ...
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - family-dollar-valuation-model
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/family-dollar-valuation-model/tasks.md
+  title: Spec Tasks
+  description: These are the tasks to be completed for the spec detailed in @.agent-os/specs/family-dollar-valuation-model/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - family-dollar-valuation-model
+  - tasks
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/family-dollar-valuation-model/sub-specs/technical-spec.md
+  title: Technical Specification
+  description: This is the technical specification for the spec detailed in @.agent-os/specs/family-dollar-valuation-model/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - family-dollar-valuation-model
+  - technical-spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/family-dollar-valuation-model/sub-specs/tests.md
+  title: Tests Specification
+  description: This is the tests coverage details for the spec detailed in @.agent-os/specs/family-dollar-valuation-model/spec.md
+  category: other
+  repo: assethold
+  tags:
+  - assethold
+  - family-dollar-valuation-model
+  - tests
+  wrk_refs: []
+  mtime: '2026-03-26'
 - path: assethold/specs/modules/hidden-sprouting-stream.md
   title: 'WRK-189-ext: HTML Report, UV Environment, Sectioned Data, Stock Comparison Design'
   description: 'The daily strategy tool works end-to-end (live run confirmed, 170 tests passing). Three enhancements are needed:'
@@ -25209,6 +26030,103 @@ specs:
   wrk_refs:
   - WRK-189
   mtime: '2026-02-18'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/spec.md
+  title: 'Slash Command: /create-module-agent'
+  description: The `/create-module-agent` slash command provides a streamlined interface for creating specialized AI agents
+    within the Agent OS ecosystem. It automates the creation of module-specific agents with ...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-module-agent
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md
+  title: Context Optimization and Caching
+  description: Context optimization ensures agents have fast access to relevant documentation and knowledge without processing
+    overhead. The system creates optimized, searchable indices and caches processed conte...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - context-optimization
+  - create-module-agent
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md
+  title: 'Implementation Details: /create-module-agent'
+  description: '```python def handle_create_module_agent(module_name: str, **options): """ Main handler for /create-module-agent
+    slash command'
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-module-agent
+  - implementation
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md
+  title: Integration with Enhanced Create-Specs Workflow
+  description: The `/create-module-agent` command seamlessly integrates with the enhanced create-specs workflow, enabling
+    agents to leverage prompt evolution tracking, executive summaries, mermaid diagrams, and c...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-module-agent
+  - integration
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md
+  title: Agent Template System
+  description: The agent template system provides predefined configurations and patterns for common agent types. Templates
+    accelerate agent creation by providing domain-specific context, prompts, and response pat...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-module-agent
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md
+  title: 'Workflow Refresh: Continuous Spec Update and Execution'
+  description: The workflow refresh system provides a continuous cycle of spec updating and execution, ensuring that specifications
+    remain current with implementation changes and that execution follows the latest...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-module-agent
+  - slash-commands
+  - workflow-refresh
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: assethold/specs/modules/agent-os/slash-commands/create-spec/spec.md
+  title: 'Slash Command: /create-spec'
+  description: The `/create-spec` slash command creates comprehensive specifications for new features with automatic workflow
+    refresh capabilities. This enhanced version includes continuous spec updating, executi...
+  category: modules
+  repo: assethold
+  tags:
+  - agent-os
+  - assethold
+  - create-spec
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
 - path: doris/specs/pipeline/pressure-containment.md
   title: Pressure Containment Checks — Design Specification
   description: '**Module**: `doris.pipeline.pressure_containment` **WRK**: WRK-329 **Standards**: DNV-ST-F101 (2021), API
@@ -25247,3 +26165,100 @@ specs:
   wrk_refs:
   - WRK-306
   mtime: '2026-02-24'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/spec.md
+  title: 'Slash Command: /create-module-agent'
+  description: The `/create-module-agent` slash command provides a streamlined interface for creating specialized AI agents
+    within the Agent OS ecosystem. It automates the creation of module-specific agents with ...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-module-agent
+  - hobbies
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md
+  title: Context Optimization and Caching
+  description: Context optimization ensures agents have fast access to relevant documentation and knowledge without processing
+    overhead. The system creates optimized, searchable indices and caches processed conte...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - context-optimization
+  - create-module-agent
+  - hobbies
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md
+  title: 'Implementation Details: /create-module-agent'
+  description: '```python def handle_create_module_agent(module_name: str, **options): """ Main handler for /create-module-agent
+    slash command'
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-module-agent
+  - hobbies
+  - implementation
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md
+  title: Integration with Enhanced Create-Specs Workflow
+  description: The `/create-module-agent` command seamlessly integrates with the enhanced create-specs workflow, enabling
+    agents to leverage prompt evolution tracking, executive summaries, mermaid diagrams, and c...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-module-agent
+  - hobbies
+  - integration
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md
+  title: Agent Template System
+  description: The agent template system provides predefined configurations and patterns for common agent types. Templates
+    accelerate agent creation by providing domain-specific context, prompts, and response pat...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-module-agent
+  - hobbies
+  - slash-commands
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md
+  title: 'Workflow Refresh: Continuous Spec Update and Execution'
+  description: The workflow refresh system provides a continuous cycle of spec updating and execution, ensuring that specifications
+    remain current with implementation changes and that execution follows the latest...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-module-agent
+  - hobbies
+  - slash-commands
+  - workflow-refresh
+  wrk_refs: []
+  mtime: '2026-03-26'
+- path: hobbies/specs/modules/agent-os/slash-commands/create-spec/spec.md
+  title: 'Slash Command: /create-spec'
+  description: The `/create-spec` slash command creates comprehensive specifications for new features with automatic workflow
+    refresh capabilities. This enhanced version includes continuous spec updating, executi...
+  category: modules
+  repo: hobbies
+  tags:
+  - agent-os
+  - create-spec
+  - hobbies
+  - slash-commands
+  - spec
+  wrk_refs: []
+  mtime: '2026-03-26'

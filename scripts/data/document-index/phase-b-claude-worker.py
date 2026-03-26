@@ -325,7 +325,8 @@ def main() -> int:
     parser.add_argument("--shard", type=int, required=True)
     parser.add_argument("--total", type=int, required=True)
     parser.add_argument("--source",
-                        choices=["og_standards", "ace_standards", "workspace_spec", "all"],
+                        choices=["og_standards", "ace_standards", "ace_project",
+                                 "dde_project", "va_hdd_2", "workspace_spec", "all"],
                         default="all")
     parser.add_argument("--org", default=None,
                         help="Process only this organization (e.g. API, DNV, ISO)")
@@ -406,13 +407,19 @@ def main() -> int:
                 logger.info("%s progress: done=%d skipped=%d errors=%d",
                             source_name, done, skipped, errors)
 
-    # Priority order: workspace_spec (small, fast) → og_standards → ace_standards
+    # Priority order: workspace_spec (small, fast) → og_standards → ace_standards → ace_project → dde_project
     if args.source in ("workspace_spec", "all"):
         run_index("workspace_spec")
     if args.source in ("og_standards", "all"):
         run_og()
     if args.source in ("ace_standards", "all"):
         run_index("ace_standards")
+    if args.source in ("ace_project", "all"):
+        run_index("ace_project")
+    if args.source in ("dde_project", "all"):
+        run_index("dde_project")
+    if args.source in ("va_hdd_2", "all"):
+        run_index("va_hdd_2")
 
     logger.info("Shard %d COMPLETE: done=%d skipped=%d errors=%d",
                 args.shard, done, skipped, errors)

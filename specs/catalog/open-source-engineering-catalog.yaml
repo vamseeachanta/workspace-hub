@@ -1,0 +1,1436 @@
+# Open-Source Engineering Software Catalog
+# For ACE Ecosystem Integration (digitalmodel, worldenergydata, assetutilities)
+# Reference: workspace-hub issue #1397
+
+schema_version: "1.0.0"
+generated_at: "2026-03-25"
+catalog_purpose: "Open-source engineering software for ACE ecosystem integration"
+
+domains:
+  # ---------------------------------------------------------------------------
+  fea_structural:
+    description: "Finite Element Analysis & Structural Engineering"
+    libraries:
+      - name: FEniCSx (DOLFINx)
+        url: https://github.com/FEniCS/dolfinx
+        project_url: https://fenicsproject.org/
+        license: "LGPL-3.0-or-later"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Variational form-based PDE solving"
+          - "Parallel computing with MPI"
+          - "Mixed finite elements"
+          - "Nonlinear problems with Newton solvers"
+          - "Mesh generation and refinement"
+          - "Time-dependent and eigenvalue problems"
+        relevance_to_ace: >
+          General-purpose FEA foundation for structural mechanics in
+          digitalmodel. Covers linear/nonlinear static and dynamic analysis
+          of offshore structures, risers, and subsea equipment.
+        integration_notes: >
+          Native Python API makes it straightforward to wrap inside
+          digitalmodel modules. DOLFINx meshes can be generated from Gmsh
+          or Salome geometry pipelines. Results exportable to XDMF/VTK
+          for post-processing.
+
+      - name: CalculiX
+        url: https://www.calculix.de/
+        project_url: https://www.dhondt.de/
+        license: "GPL-2.0-or-later"
+        maturity: stable
+        python_api: cli-only
+        community: medium
+        capabilities:
+          - "Abaqus-compatible input format"
+          - "Linear and nonlinear static/dynamic analysis"
+          - "Contact mechanics"
+          - "Thermal analysis"
+          - "Frequency and buckling analysis"
+          - "Plasticity and creep models"
+        relevance_to_ace: >
+          Abaqus-compatible solver enables reuse of existing offshore
+          engineering FE models. Ideal for structural checks on jacket
+          structures, risers, and subsea manifolds within digitalmodel.
+        integration_notes: >
+          Drive via subprocess from Python using pycalculix or custom
+          wrappers. PrePoMax provides GUI pre/post-processing. Input deck
+          generation can be scripted from digitalmodel geometry modules.
+
+      - name: Code_Aster
+        url: https://code-aster.org/
+        project_url: https://www.code-aster.org/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: bindings
+        community: large
+        capabilities:
+          - "Thermo-mechanical analysis"
+          - "Fatigue and fracture mechanics"
+          - "Contact and friction"
+          - "Seismic analysis"
+          - "Fluid-structure interaction"
+          - "Cable and beam elements"
+        relevance_to_ace: >
+          Strong fatigue and fracture capabilities directly applicable to
+          riser fatigue life assessment, weld integrity, and SCF analysis
+          in digitalmodel's structural modules.
+        integration_notes: >
+          Salome-Meca bundles geometry + meshing + solving. Python
+          command files (.comm) can be generated programmatically. Pairs
+          with Salome for geometry import from CAD models.
+
+      - name: OpenSees
+        url: https://github.com/OpenSees/OpenSees
+        project_url: https://opensees.berkeley.edu/
+        license: "GPL-3.0"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Nonlinear structural analysis"
+          - "Earthquake engineering simulation"
+          - "Fiber-section beam-column elements"
+          - "Soil-structure interaction"
+          - "Performance-based engineering"
+          - "Parallel and sequential analysis"
+        relevance_to_ace: >
+          Seismic and dynamic analysis of offshore platforms and jackets.
+          Soil-structure interaction modeling relevant to pile foundations
+          and mudmat design in digitalmodel.
+        integration_notes: >
+          OpenSeesPy provides full Python scripting. Can be combined with
+          digitalmodel's geotechnical modules for integrated pile-soil
+          analysis. Output compatible with NumPy/Pandas workflows.
+
+      - name: Kratos Multiphysics
+        url: https://github.com/KratosMultiphysics/Kratos
+        project_url: https://kratosmultiphysics.github.io/Kratos/
+        license: "BSD-4-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Multi-physics coupled simulations"
+          - "Structural mechanics"
+          - "Fluid dynamics"
+          - "Fluid-structure interaction"
+          - "Contact mechanics"
+          - "Shape optimization"
+          - "HPC parallel computing"
+        relevance_to_ace: >
+          Multi-physics coupling (FSI, thermal-structural) directly
+          applicable to VIV analysis, riser-wave interaction, and thermal
+          analysis of subsea flowlines in digitalmodel.
+        integration_notes: >
+          Extensive Python interface; pip-installable. Modular application
+          design aligns with digitalmodel's module architecture. BSD
+          license allows commercial integration.
+
+      - name: SfePy
+        url: https://github.com/sfepy/sfepy
+        project_url: https://sfepy.org/
+        license: "BSD-3-Clause"
+        maturity: maturing
+        python_api: native
+        community: small
+        capabilities:
+          - "Pure Python FEM framework"
+          - "Linear elasticity and hyperelasticity"
+          - "Acoustic and piezoelectric problems"
+          - "Homogenization"
+          - "Time-dependent and eigenvalue problems"
+        relevance_to_ace: >
+          Lightweight, pure-Python FEM solver useful for rapid prototyping
+          of structural analysis within digitalmodel without heavy
+          external dependencies.
+        integration_notes: >
+          pip-installable, direct NumPy/SciPy integration. Problem
+          definitions in Python dictionaries make it easy to embed in
+          digitalmodel calculation chains.
+
+      - name: GetFEM
+        url: https://getfem.org/
+        project_url: https://getfem.org/
+        license: "LGPL-3.0-or-later"
+        maturity: stable
+        python_api: bindings
+        community: small
+        capabilities:
+          - "Generic finite element library"
+          - "Contact and friction mechanics"
+          - "Model bricks architecture"
+          - "Level-set integration (XFEM)"
+          - "Plasticity and large deformations"
+        relevance_to_ace: >
+          XFEM capabilities useful for crack propagation studies in
+          offshore structural components. Contact mechanics for connector
+          and clamp analysis.
+        integration_notes: >
+          Python interface via getfem module. Can be combined with Gmsh
+          for meshing. LGPL license allows library linking without
+          copyleft restrictions on calling code.
+
+      - name: MOOSE
+        url: https://github.com/idaholab/moose
+        project_url: https://mooseframework.inl.gov/
+        license: "LGPL-2.1-or-later"
+        maturity: stable
+        python_api: bindings
+        community: large
+        capabilities:
+          - "Multiphysics simulation framework"
+          - "Coupled thermo-mechanical analysis"
+          - "Porous flow and geomechanics"
+          - "Phase-field fracture"
+          - "Automatic differentiation"
+          - "Massively parallel (MPI + threads)"
+        relevance_to_ace: >
+          Coupled thermo-mechanical and porous flow capabilities relevant
+          to wellbore integrity, cementing analysis, and geomechanics in
+          digitalmodel's subsea and well engineering modules.
+        integration_notes: >
+          Python utilities for input generation and post-processing.
+          Physics modules (PorousFlow, TensorMechanics) map to ACE
+          engineering domains. Input files can be templated from
+          digitalmodel parameters.
+
+  # ---------------------------------------------------------------------------
+  cfd:
+    description: "Computational Fluid Dynamics"
+    libraries:
+      - name: OpenFOAM
+        url: https://gitlab.com/openfoam/core/openfoam
+        project_url: https://www.openfoam.com/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: cli-only
+        community: large
+        capabilities:
+          - "Incompressible and compressible flow"
+          - "Multiphase flow (VOF, Euler-Euler)"
+          - "Turbulence modeling (RANS, LES, DES)"
+          - "Heat transfer and conjugate heat transfer"
+          - "Mesh motion and dynamic mesh"
+          - "Chemical reactions and combustion"
+          - "Lagrangian particle tracking"
+        relevance_to_ace: >
+          Primary CFD tool for VIV studies, current loading on subsea
+          structures, pipeline scouring, and riser hydrodynamic analysis.
+          Directly relevant to digitalmodel's marine engineering modules.
+        integration_notes: >
+          Drive via PyFoam or custom Python wrappers. Case directory
+          structure can be templated from digitalmodel parameters.
+          Results postprocessable with ParaView and VTK Python bindings.
+          Note: migrated from GitHub to GitLab in 2025.
+
+      - name: SU2
+        url: https://github.com/su2code/SU2
+        project_url: https://su2code.github.io/
+        license: "LGPL-2.1"
+        maturity: stable
+        python_api: bindings
+        community: large
+        capabilities:
+          - "Compressible and incompressible flow"
+          - "Aerodynamic shape optimization"
+          - "Conjugate heat transfer"
+          - "Turbomachinery flows"
+          - "Adjoint-based design"
+          - "Multiphysics coupling"
+        relevance_to_ace: >
+          Shape optimization capabilities applicable to hydrodynamic
+          optimization of risers, fairings, and subsea structure
+          geometries in digitalmodel.
+        integration_notes: >
+          Python wrapper (SU2_CFD) and mesh tools available. Can read
+          Gmsh and CGNS meshes. Adjoint solver enables gradient-based
+          optimization integrated into digitalmodel design workflows.
+
+      - name: Palabos
+        url: https://gitlab.com/unigespc/palabos
+        project_url: https://palabos.unige.ch/
+        license: "AGPL-3.0"
+        maturity: maturing
+        python_api: bindings
+        community: medium
+        capabilities:
+          - "Lattice Boltzmann method"
+          - "Multiphase and multicomponent flows"
+          - "Thermal flows"
+          - "Fluid-structure interaction"
+          - "Porous media flows"
+          - "Parallel computation (MPI)"
+        relevance_to_ace: >
+          LBM approach useful for pore-scale flow simulation in reservoir
+          rocks and complex geometry flows relevant to O&G production
+          systems. Complements traditional CFD methods.
+        integration_notes: >
+          C++ library with Python bindings. Minimal external dependencies.
+          Can couple with digitalmodel for pore-scale analysis in
+          reservoir characterization workflows.
+
+      - name: PyFR
+        url: https://github.com/PyFR/PyFR
+        project_url: https://www.pyfr.org/
+        license: "BSD-3-Clause"
+        maturity: maturing
+        python_api: native
+        community: medium
+        capabilities:
+          - "High-order flux reconstruction"
+          - "GPU acceleration (CUDA, OpenCL, HIP)"
+          - "Scale-resolving simulations (DNS, LES)"
+          - "Unstructured mixed-element grids"
+          - "Cross-platform portability"
+        relevance_to_ace: >
+          GPU-accelerated high-fidelity CFD for detailed turbulence
+          studies on offshore structure wake flows and vortex shedding
+          analysis beyond RANS capabilities.
+        integration_notes: >
+          Pure Python driver with GPU backends. Gmsh mesh import
+          supported. BSD license enables commercial use. Can complement
+          OpenFOAM for cases requiring higher-order accuracy.
+
+      - name: Nektar++
+        url: https://gitlab.nektar.info/nektar/nektar
+        project_url: https://www.nektar.info/
+        license: "MIT"
+        maturity: stable
+        python_api: bindings
+        community: medium
+        capabilities:
+          - "Spectral/hp element methods"
+          - "Incompressible and compressible Navier-Stokes"
+          - "Advection-diffusion equations"
+          - "Cardiac electrophysiology"
+          - "Acoustic solvers"
+          - "High-order mesh generation"
+        relevance_to_ace: >
+          High-order spectral methods for accurate wave-structure
+          interaction simulations and acoustic noise prediction from
+          subsea equipment.
+        integration_notes: >
+          Python bindings available. NekMesh utility for high-order mesh
+          generation from CAD. MIT license allows unrestricted
+          integration with ACE codebase.
+
+      - name: Basilisk
+        url: https://github.com/comphy-lab/basilisk-C
+        project_url: https://basilisk.fr/
+        license: "GPL-3.0"
+        maturity: maturing
+        python_api: cli-only
+        community: medium
+        capabilities:
+          - "Adaptive mesh refinement (AMR)"
+          - "Multiphase flows with surface tension"
+          - "Free-surface flows"
+          - "Solid-fluid interaction"
+          - "Electrohydrodynamics"
+          - "Cartesian grid methods"
+        relevance_to_ace: >
+          AMR and free-surface capabilities ideal for wave breaking,
+          sloshing in tanks, and green water loading simulations relevant
+          to FPSO and platform design in digitalmodel.
+        integration_notes: >
+          C-based with scripting via its own language. Output in VTK
+          format for Python post-processing. Successor to Gerris; well
+          suited for free-surface problems that complement OpenFOAM.
+
+  # ---------------------------------------------------------------------------
+  oil_and_gas:
+    description: "Oil & Gas / Petroleum Engineering"
+    libraries:
+      - name: OPM Flow
+        url: https://github.com/OPM/opm-simulators
+        project_url: https://opm-project.org/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: bindings
+        community: medium
+        capabilities:
+          - "Black-oil reservoir simulation"
+          - "Compositional simulation"
+          - "Polymer and solvent flooding"
+          - "CO2 storage modeling"
+          - "Eclipse deck compatibility"
+          - "MPI parallel simulation"
+        relevance_to_ace: >
+          Eclipse-compatible reservoir simulator directly applicable to
+          worldenergydata's production and reserves analysis. Enables
+          reservoir simulation from BSEE/SODIR data.
+        integration_notes: >
+          Python bindings via opm-python. Eclipse input format compatibility
+          means existing industry models work directly. ResInsight provides
+          visualization. Data pipelines from worldenergydata can feed
+          reservoir parameters.
+
+      - name: ResInsight
+        url: https://github.com/OPM/ResInsight
+        project_url: https://resinsight.org/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: bindings
+        community: medium
+        capabilities:
+          - "3D reservoir model visualization"
+          - "Eclipse and OPM result reading"
+          - "Well log and completion visualization"
+          - "Summary plot and curve plotting"
+          - "Geomechanics result visualization"
+          - "Python scripting interface"
+        relevance_to_ace: >
+          Visualization frontend for OPM reservoir results. Enables
+          interactive exploration of production data from worldenergydata
+          in a geospatial context.
+        integration_notes: >
+          Python API (rips module) for scripted post-processing. Can read
+          Eclipse EGRID/INIT/UNRST files. Embeddable in analysis
+          pipelines alongside worldenergydata data extraction.
+
+      - name: MRST
+        url: https://github.com/SINTEF-AppliedCompSci/MRST
+        project_url: https://www.sintef.no/projectweb/mrst/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: none
+        community: medium
+        capabilities:
+          - "Reservoir simulation prototyping"
+          - "Grid handling and processing"
+          - "Multiscale methods"
+          - "CO2 storage modeling"
+          - "History matching"
+          - "Diagnostics and flow analysis"
+          - "~65 add-on modules"
+        relevance_to_ace: >
+          Rapid prototyping of reservoir models. Rich library of reservoir
+          simulation methods applicable to worldenergydata field analysis.
+          MATLAB-based but with GNU Octave compatibility.
+        integration_notes: >
+          MATLAB/Octave-based; no direct Python API. Can be called from
+          Python via Oct2Py bridge. Results exportable to formats readable
+          by pandas/xarray. Consider OPM Flow for production Python
+          integration instead.
+
+      - name: DWSIM
+        url: https://github.com/DanWBR/dwsim
+        project_url: https://dwsim.org/
+        license: "GPL-3.0"
+        maturity: stable
+        python_api: none
+        community: medium
+        capabilities:
+          - "Process simulation (steady-state and dynamic)"
+          - "Thermodynamic property packages"
+          - "Unit operations library"
+          - "Chemical reaction modeling"
+          - "PFD creation and editing"
+          - "Experiment data regression"
+        relevance_to_ace: >
+          Chemical process simulation for topside processing, gas
+          treatment, and separation systems. Relevant to production
+          facility design in digitalmodel.
+        integration_notes: >
+          .NET/Mono based; limited direct Python integration. Can be
+          driven via COM automation or CLI. Consider coupling with
+          assetutilities for property calculations. Thermodynamic
+          packages useful as reference data.
+
+      - name: Whitson+
+        url: https://github.com/whitson-org
+        project_url: https://whitson.com/
+        license: "Various (check per-repo)"
+        maturity: maturing
+        python_api: native
+        community: small
+        capabilities:
+          - "PVT analysis and EOS modeling"
+          - "Phase behavior calculations"
+          - "Production data analysis"
+          - "Rate-transient analysis"
+        relevance_to_ace: >
+          PVT and phase behavior tools relevant to wellstream
+          characterization and flow assurance in digitalmodel's
+          production engineering modules.
+        integration_notes: >
+          Python-native where available. Check individual repo licenses
+          before integration. PVT calculations can feed into
+          assetutilities fluid property modules.
+
+  # ---------------------------------------------------------------------------
+  cad_geometry:
+    description: "CAD & Geometry Processing"
+    libraries:
+      - name: OpenCASCADE / PythonOCC
+        url: https://github.com/tpaviot/pythonocc-core
+        project_url: https://dev.opencascade.org/
+        license: "LGPL-3.0 (PythonOCC) / LGPL-2.1 (OCCT)"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "B-Rep solid modeling"
+          - "STEP/IGES/BREP import/export"
+          - "Boolean operations"
+          - "Filleting, chamfering, shelling"
+          - "Surface and curve modeling"
+          - "Mesh visualization"
+        relevance_to_ace: >
+          Core geometry kernel for parametric modeling of offshore
+          structures, risers, connectors, and subsea equipment in
+          digitalmodel. STEP exchange enables interop with commercial CAD.
+        integration_notes: >
+          PythonOCC provides full Python bindings to OCCT. pip-installable
+          via conda-forge. Geometry can feed directly into Gmsh for
+          meshing and then to FEA solvers. LGPL allows library use
+          without copyleft on application code.
+
+      - name: FreeCAD
+        url: https://github.com/FreeCAD/FreeCAD
+        project_url: https://www.freecad.org/
+        license: "LGPL-2.0-or-later"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Parametric 3D modeling"
+          - "Part design and assembly"
+          - "FEM workbench (CalculiX integration)"
+          - "Draft and architecture tools"
+          - "Spreadsheet-driven parameters"
+          - "Extensive addon ecosystem"
+        relevance_to_ace: >
+          Full parametric CAD platform for designing offshore structures
+          and equipment. FEM workbench enables quick structural checks.
+          Python API allows scripted geometry generation from digitalmodel
+          parameters.
+        integration_notes: >
+          Complete Python scripting via FreeCAD module. Can be run
+          headless for batch geometry generation. Exports STEP/IGES for
+          downstream FEA. Built on OpenCASCADE kernel.
+
+      - name: CadQuery
+        url: https://github.com/CadQuery/cadquery
+        project_url: https://cadquery.readthedocs.io/
+        license: "Apache-2.0"
+        maturity: maturing
+        python_api: native
+        community: medium
+        capabilities:
+          - "Fluent API for parametric CAD"
+          - "Code-first 3D modeling"
+          - "STEP/STL/AMF export"
+          - "Assemblies and constraints"
+          - "Sketch-based modeling"
+          - "Based on OpenCASCADE (OCP)"
+        relevance_to_ace: >
+          Code-first CAD approach aligns perfectly with digitalmodel's
+          programmatic workflow. Ideal for parametric generation of
+          connectors, flanges, clamps, and structural joints.
+        integration_notes: >
+          pip-installable. Pure Python API on top of OCP (OpenCASCADE).
+          Models are Python scripts, enabling version control and
+          parameterization from digitalmodel design databases. Apache
+          license allows unrestricted use.
+
+      - name: Gmsh
+        url: https://gitlab.onelab.info/gmsh/gmsh
+        project_url: https://gmsh.info/
+        license: "GPL-2.0-or-later (with linking exception)"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "1D/2D/3D mesh generation"
+          - "CAD engine (OpenCASCADE integration)"
+          - "Structured and unstructured meshing"
+          - "High-order element generation"
+          - "Built-in post-processing"
+          - "STEP/IGES/BREP import"
+        relevance_to_ace: >
+          Essential meshing tool bridging CAD geometry to FEA/CFD solvers.
+          Required by FEniCSx, OpenFOAM, and other solvers in the ACE
+          analysis pipeline.
+        integration_notes: >
+          pip-installable Python API (gmsh module). Scriptable mesh
+          generation from digitalmodel geometry. Outputs MSH, VTK, MED,
+          and other formats. Linking exception allows use as a library
+          without full GPL propagation.
+
+      - name: Salome-Meca
+        url: https://www.salome-platform.org/
+        project_url: https://www.salome-platform.org/
+        license: "LGPL-2.1 (Salome) / GPL-3.0 (Code_Aster)"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Integrated CAD/mesh/solve platform"
+          - "Geometry creation and import"
+          - "Mesh generation (SMESH, Netgen, MeshGems)"
+          - "Code_Aster structural solver"
+          - "Code_Saturne CFD solver"
+          - "Python scripting throughout"
+        relevance_to_ace: >
+          All-in-one platform for structural analysis workflows. Geometry
+          to mesh to solve in a single environment. Relevant to complex
+          offshore structure analysis in digitalmodel.
+        integration_notes: >
+          Full Python scripting of geometry, meshing, and solver setup.
+          Can be run headless. Salome geometry interops with Gmsh and
+          other meshing tools. Large learning curve but comprehensive.
+
+      - name: Netgen/NGSolve
+        url: https://github.com/NGSolve/ngsolve
+        project_url: https://ngsolve.org/
+        license: "LGPL-2.1 (Netgen) / LGPL-2.1 (NGSolve)"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Automatic mesh generation (2D/3D)"
+          - "High-order finite elements"
+          - "Structural mechanics"
+          - "Electromagnetics"
+          - "Fluid dynamics"
+          - "Coupled multi-physics"
+        relevance_to_ace: >
+          High-performance meshing and FEM solving with excellent Python
+          integration. Applicable to electromagnetics analysis of subsea
+          cables and connectors in digitalmodel.
+        integration_notes: >
+          pip-installable. Jupyter notebook integration for interactive
+          analysis. Python-first workflow matches digitalmodel's design
+          philosophy. LGPL license allows library use.
+
+  # ---------------------------------------------------------------------------
+  gis_geospatial:
+    description: "GIS & Geospatial Analysis"
+    libraries:
+      - name: GDAL/OGR
+        url: https://github.com/OSGeo/gdal
+        project_url: https://gdal.org/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Raster and vector data translation"
+          - "200+ format support"
+          - "Coordinate system transformations"
+          - "Raster processing and warping"
+          - "OGR vector operations"
+          - "Virtual raster (VRT) format"
+        relevance_to_ace: >
+          Foundation for all geospatial data handling in worldenergydata.
+          Essential for processing bathymetry, lease block boundaries,
+          pipeline routes, and platform locations from BSEE/BOEM data.
+        integration_notes: >
+          Python bindings via osgeo module or rasterio/fiona wrappers.
+          Underlying engine for most Python GIS libraries. Required
+          dependency for geopandas, rasterio, and fiona.
+
+      - name: GeoPandas
+        url: https://github.com/geopandas/geopandas
+        project_url: https://geopandas.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Spatial operations on DataFrames"
+          - "Geometric operations (buffer, union, intersection)"
+          - "Spatial joins and overlays"
+          - "File I/O (Shapefile, GeoJSON, GeoParquet)"
+          - "CRS management"
+          - "Integration with matplotlib"
+        relevance_to_ace: >
+          Primary tool for spatial analysis of well locations, lease
+          blocks, pipeline corridors, and platform positions in
+          worldenergydata. Enables spatial queries on BSEE/BOEM datasets.
+        integration_notes: >
+          Extends pandas with geometry column. Direct integration with
+          worldenergydata DataFrames. Spatial indexing via rtree/pygeos.
+          Outputs to GeoParquet for efficient storage.
+
+      - name: Rasterio
+        url: https://github.com/rasterio/rasterio
+        project_url: https://rasterio.readthedocs.io/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Raster data reading and writing"
+          - "Windowed reading for large files"
+          - "Coordinate reference system handling"
+          - "Raster reprojection and resampling"
+          - "Masking and clipping"
+          - "Cloud-optimized GeoTIFF support"
+        relevance_to_ace: >
+          Processing bathymetry rasters, seabed survey data, and
+          environmental data layers for offshore site characterization
+          in worldenergydata.
+        integration_notes: >
+          Pythonic wrapper over GDAL raster functionality. NumPy array
+          interface for raster data. Integrates with xarray via
+          rioxarray extension for multi-dimensional analysis.
+
+      - name: Shapely
+        url: https://github.com/shapely/shapely
+        project_url: https://shapely.readthedocs.io/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Geometric object creation and manipulation"
+          - "Spatial predicates (contains, intersects, etc.)"
+          - "Geometric operations (buffer, convex hull)"
+          - "Linear referencing"
+          - "Prepared geometry for performance"
+          - "STRtree spatial index"
+        relevance_to_ace: >
+          Core geometry library underpinning GeoPandas. Used for pipeline
+          route geometry, lease block boundary analysis, and exclusion
+          zone calculations in worldenergydata.
+        integration_notes: >
+          Based on GEOS library. Direct NumPy integration via vectorized
+          operations. Foundation geometry type for all GIS operations in
+          the ACE ecosystem.
+
+      - name: Fiona
+        url: https://github.com/Toblerity/Fiona
+        project_url: https://fiona.readthedocs.io/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Vector data reading and writing"
+          - "OGR format support via GDAL"
+          - "Schema inspection"
+          - "Streaming record access"
+          - "CRS handling"
+        relevance_to_ace: >
+          Low-level vector I/O for Shapefile, GeoJSON, GeoPackage
+          formats. Backend for GeoPandas file operations. Relevant to
+          worldenergydata's spatial data pipelines.
+        integration_notes: >
+          Pythonic wrapper around OGR. Used as I/O backend by GeoPandas.
+          Useful for streaming large spatial datasets that don't fit in
+          memory.
+
+      - name: PyProj
+        url: https://github.com/pyproj4/pyproj
+        project_url: https://pyproj4.github.io/pyproj/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Coordinate transformations"
+          - "Geodetic calculations"
+          - "CRS definitions and conversion"
+          - "Great circle distances"
+          - "Area calculations on ellipsoid"
+          - "PROJ library bindings"
+        relevance_to_ace: >
+          Essential for coordinate system transformations between UTM,
+          geographic, and project-specific CRS used in BSEE/BOEM/SODIR
+          datasets within worldenergydata.
+        integration_notes: >
+          Underlies CRS handling in GeoPandas and Rasterio. Direct use
+          for geodetic distance calculations between platforms, wells,
+          and pipeline nodes.
+
+      - name: QGIS (Python API)
+        url: https://github.com/qgis/QGIS
+        project_url: https://qgis.org/
+        license: "GPL-2.0-or-later"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Full GIS platform with Python scripting"
+          - "Processing toolbox (500+ algorithms)"
+          - "Plugin development in Python"
+          - "Map composition and printing"
+          - "Spatial database connectivity"
+          - "WMS/WFS service support"
+        relevance_to_ace: >
+          Full GIS platform for interactive visualization and analysis
+          of offshore spatial data. Processing toolbox provides
+          geoprocessing algorithms beyond what GeoPandas offers.
+        integration_notes: >
+          PyQGIS scripting for automation. Processing algorithms callable
+          from standalone scripts. Useful as visualization frontend for
+          worldenergydata spatial outputs. Plugin ecosystem extendable.
+
+  # ---------------------------------------------------------------------------
+  data_science:
+    description: "Data Science & Scientific Computing"
+    libraries:
+      - name: NumPy
+        url: https://github.com/numpy/numpy
+        project_url: https://numpy.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "N-dimensional array operations"
+          - "Linear algebra (BLAS/LAPACK)"
+          - "FFT and signal processing"
+          - "Random number generation"
+          - "Broadcasting and vectorization"
+          - "C/Fortran interop"
+        relevance_to_ace: >
+          Foundation dependency for all numerical computation in
+          digitalmodel, worldenergydata, and assetutilities. Every
+          engineering calculation module depends on NumPy arrays.
+        integration_notes: >
+          Already a core dependency across the ACE ecosystem. Standard
+          array interchange format. Basis for SciPy, Pandas, and all
+          scientific Python libraries used in ACE.
+
+      - name: SciPy
+        url: https://github.com/scipy/scipy
+        project_url: https://scipy.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Optimization (minimize, curve_fit)"
+          - "Interpolation (1D, 2D, N-D)"
+          - "Signal processing"
+          - "Sparse matrices"
+          - "ODE/PDE integration"
+          - "Statistical functions"
+        relevance_to_ace: >
+          Core scientific library for optimization, interpolation, and
+          numerical integration in digitalmodel calculation modules.
+          Used in catenary analysis, fatigue curve fitting, and
+          statistical analysis of environmental data.
+        integration_notes: >
+          Already a core dependency. Sparse matrix support essential for
+          FEA assembly. Optimization routines used in design optimization
+          workflows. Signal processing for time-series analysis.
+
+      - name: Pandas
+        url: https://github.com/pandas-dev/pandas
+        project_url: https://pandas.pydata.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "DataFrame and Series data structures"
+          - "Time series functionality"
+          - "GroupBy operations"
+          - "I/O (CSV, Excel, Parquet, SQL)"
+          - "Missing data handling"
+          - "Merge/join operations"
+        relevance_to_ace: >
+          Primary data manipulation library across the ACE ecosystem.
+          All worldenergydata datasets flow through pandas DataFrames.
+          digitalmodel module I/O heavily relies on pandas.
+        integration_notes: >
+          Already a core dependency. Standard data interchange format
+          in the ACE ecosystem. Parquet serialization for efficient
+          storage. Excel I/O for engineering spreadsheet integration.
+
+      - name: Polars
+        url: https://github.com/pola-rs/polars
+        project_url: https://pola.rs/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Lazy and eager evaluation"
+          - "Multi-threaded query engine"
+          - "Apache Arrow columnar format"
+          - "Streaming for out-of-core data"
+          - "SQL interface"
+          - "Rust-powered performance"
+        relevance_to_ace: >
+          High-performance alternative to pandas for large-scale data
+          processing in worldenergydata. Particularly relevant for
+          processing millions of BSEE production records and EIA
+          datasets where pandas hits memory limits.
+        integration_notes: >
+          Drop-in replacement for pandas in data-heavy pipelines.
+          Arrow-based interchange with pandas via .to_pandas() /
+          .from_pandas(). Consider for worldenergydata ETL pipelines
+          processing large BSEE/SODIR datasets.
+
+      - name: Xarray
+        url: https://github.com/pydata/xarray
+        project_url: https://xarray.dev/
+        license: "Apache-2.0"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Labeled N-dimensional arrays"
+          - "NetCDF/HDF5/Zarr I/O"
+          - "GroupBy and resampling"
+          - "Coordinate-aware operations"
+          - "Dask integration for parallel compute"
+          - "CF conventions support"
+        relevance_to_ace: >
+          Essential for multi-dimensional oceanographic, metocean, and
+          environmental data in worldenergydata. Handles gridded
+          bathymetry, wave climate, and current data with labeled
+          dimensions.
+        integration_notes: >
+          Standard format for climate/ocean data (NetCDF via xarray).
+          Dask backend enables out-of-core processing. rioxarray
+          extension adds geospatial capabilities. Ideal for metocean
+          data in worldenergydata.
+
+      - name: Dask
+        url: https://github.com/dask/dask
+        project_url: https://dask.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Parallel DataFrame (pandas-like)"
+          - "Parallel arrays (NumPy-like)"
+          - "Task scheduling and graphs"
+          - "Distributed computing"
+          - "Out-of-core computation"
+          - "Integration with scikit-learn"
+        relevance_to_ace: >
+          Scales pandas/NumPy workflows beyond single-machine memory.
+          Relevant for processing large worldenergydata datasets
+          (full BSEE production history, EIA time series) that exceed
+          RAM.
+        integration_notes: >
+          Drop-in parallel replacement for pandas/NumPy. Dask DataFrames
+          partition large worldenergydata CSV/Parquet files. Dask arrays
+          enable large-scale matrix operations in digitalmodel FEA.
+
+      - name: PyArrow
+        url: https://github.com/apache/arrow
+        project_url: https://arrow.apache.org/
+        license: "Apache-2.0"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Apache Arrow columnar format"
+          - "Parquet read/write"
+          - "IPC and Flight protocols"
+          - "Compute functions"
+          - "Dataset API for partitioned data"
+          - "Zero-copy interop with pandas/polars"
+        relevance_to_ace: >
+          High-performance data serialization backbone. Parquet format
+          via PyArrow is the recommended storage format for
+          worldenergydata curated datasets.
+        integration_notes: >
+          Backend for pandas Parquet I/O and Polars data interchange.
+          Dataset API for reading partitioned worldenergydata archives.
+          Arrow Flight for potential data service architecture.
+
+      - name: Vaex
+        url: https://github.com/vaexio/vaex
+        project_url: https://vaex.io/
+        license: "MIT"
+        maturity: maturing
+        python_api: native
+        community: medium
+        capabilities:
+          - "Out-of-core DataFrame operations"
+          - "Memory-mapped file access"
+          - "Lazy expressions"
+          - "Fast aggregations and statistics"
+          - "Visualization of billion-row datasets"
+          - "HDF5 and Arrow backends"
+        relevance_to_ace: >
+          Memory-efficient exploration of very large datasets.
+          Alternative to Dask for interactive analysis of
+          worldenergydata production records without loading
+          full datasets into RAM.
+        integration_notes: >
+          HDF5 and Arrow backends for zero-copy data access.
+          Useful for interactive exploration of large BSEE datasets.
+          Note: community is smaller than Polars/Dask; evaluate
+          long-term maintenance.
+
+  # ---------------------------------------------------------------------------
+  marine_offshore:
+    description: "Marine & Offshore Engineering"
+    libraries:
+      - name: OpenFAST
+        url: https://github.com/OpenFAST/openfast
+        project_url: https://openfast.readthedocs.io/
+        license: "Apache-2.0"
+        maturity: stable
+        python_api: bindings
+        community: medium
+        capabilities:
+          - "Aero-hydro-servo-elastic simulation"
+          - "Floating and fixed offshore wind turbines"
+          - "Mooring dynamics (MoorDyn module)"
+          - "Hydrodynamics (HydroDyn module)"
+          - "Structural dynamics (ElastoDyn, BeamDyn)"
+          - "Control system modeling (ServoDyn)"
+        relevance_to_ace: >
+          Comprehensive offshore wind turbine simulation directly
+          applicable to floating wind and marine energy projects.
+          Mooring and hydrodynamic modules relevant to general offshore
+          engineering in digitalmodel.
+        integration_notes: >
+          Python interface via openfast-python. HydroDyn and MoorDyn
+          modules can be used standalone for general offshore
+          hydrodynamic and mooring analysis. FAST.Farm extends to
+          wind farm scale. Apache license allows commercial use.
+
+      - name: MoorDyn
+        url: https://github.com/FloatingArrayDesign/MoorDyn
+        project_url: https://moordyn.readthedocs.io/
+        license: "BSD-3-Clause"
+        maturity: maturing
+        python_api: bindings
+        community: small
+        capabilities:
+          - "Lumped-mass mooring dynamics"
+          - "Seabed contact and friction"
+          - "Multi-line configurations"
+          - "Coupled and standalone operation"
+          - "C++ and Fortran implementations"
+          - "Real-time capable"
+        relevance_to_ace: >
+          Mooring line dynamics for FPSO, spar, semi-sub, and TLP
+          analysis. Directly applicable to digitalmodel's mooring
+          engineering modules for dynamic mooring analysis.
+        integration_notes: >
+          Python bindings via moordyn package (pip-installable). C++
+          version (MoorDyn-C) more flexible for custom couplings.
+          Fortran version integrated into OpenFAST. BSD license
+          allows commercial use.
+
+      - name: MoorPy
+        url: https://github.com/NREL/MoorPy
+        project_url: https://moorpy.readthedocs.io/
+        license: "Apache-2.0"
+        maturity: maturing
+        python_api: native
+        community: small
+        capabilities:
+          - "Quasi-static mooring analysis"
+          - "Mooring system design"
+          - "Catenary and taut line equations"
+          - "System stiffness and equilibrium"
+          - "Visualization tools"
+          - "Pure Python implementation"
+        relevance_to_ace: >
+          Lightweight pure-Python mooring analysis tool for preliminary
+          design. Faster than MoorDyn for static/quasi-static checks.
+          Ideal for digitalmodel's mooring pre-design workflows.
+        integration_notes: >
+          pip-installable, pure Python. Direct NumPy/Matplotlib
+          integration. Can be used as a rapid screening tool before
+          detailed MoorDyn dynamic analysis. Apache license allows
+          unrestricted use.
+
+      - name: MAP++
+        url: https://github.com/old-NWTC/MAP
+        project_url: https://www.nrel.gov/wind/nwtc/map-plus-plus
+        license: "Apache-2.0"
+        maturity: stable
+        python_api: bindings
+        community: small
+        capabilities:
+          - "Quasi-static mooring analysis"
+          - "Multi-element mooring lines"
+          - "Seabed contact modeling"
+          - "External force application"
+          - "OpenFAST integration"
+        relevance_to_ace: >
+          Quasi-static mooring module used within OpenFAST. Alternative
+          to MoorDyn for cases where dynamics are not critical.
+          Applicable to preliminary mooring design in digitalmodel.
+        integration_notes: >
+          Python wrapper via pyMAP. Now primarily maintained within
+          OpenFAST repository. For new projects, consider MoorPy or
+          MoorDyn as more actively maintained alternatives.
+
+      - name: QBlade (Community Edition)
+        url: https://qblade.org/
+        project_url: https://qblade.org/
+        license: "Academic Public License (non-commercial)"
+        maturity: stable
+        python_api: cli-only
+        community: medium
+        capabilities:
+          - "Aero-hydro-servo-elastic simulation"
+          - "Blade design and optimization"
+          - "BEM and vortex methods"
+          - "Floating wind turbine analysis"
+          - "GPU-accelerated (30x real-time)"
+          - "Integrated pre/post-processing"
+        relevance_to_ace: >
+          Wind turbine simulation with strong floating offshore
+          capabilities. Relevant for offshore wind analysis in
+          digitalmodel. Note: non-commercial license limits use.
+        integration_notes: >
+          CLI-driven for batch simulations. Non-commercial license
+          restricts commercial ACE use; Enterprise Edition (QBlade-EE)
+          available for commercial projects. Evaluate alongside
+          OpenFAST for offshore wind analysis needs.
+
+      - name: RAFT (Response Amplitudes of Floating Turbines)
+        url: https://github.com/WISDEM/RAFT
+        project_url: https://openfast.readthedocs.io/
+        license: "Apache-2.0"
+        maturity: maturing
+        python_api: native
+        community: small
+        capabilities:
+          - "Frequency-domain floating platform analysis"
+          - "Response amplitude operators (RAOs)"
+          - "Platform motion analysis"
+          - "Mooring system quasi-static analysis"
+          - "Coupled aero-hydro analysis"
+        relevance_to_ace: >
+          Rapid frequency-domain analysis for floating structures.
+          Applicable to FPSO, floating wind, and spar motion analysis
+          in digitalmodel's marine engineering modules.
+        integration_notes: >
+          Pure Python with NumPy/SciPy. Uses Capytaine or HAMS for
+          BEM data. Can serve as a fast screening tool before detailed
+          OpenFAST time-domain simulations.
+
+  # ---------------------------------------------------------------------------
+  hydrodynamics:
+    description: "Hydrodynamics & Wave Modeling"
+    libraries:
+      - name: Capytaine
+        url: https://github.com/capytaine/capytaine
+        project_url: https://capytaine.github.io/stable/
+        license: "GPL-3.0-or-later"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "3D BEM solver (linear potential flow)"
+          - "Wave diffraction and radiation"
+          - "Added mass and damping coefficients"
+          - "Wave excitation forces"
+          - "Irregular frequency removal"
+          - "Based on Nemoh (full Python rewrite)"
+        relevance_to_ace: >
+          Primary open-source BEM solver for computing hydrodynamic
+          coefficients of offshore structures (FPSOs, semi-subs, spars).
+          Essential input for motion analysis in digitalmodel's marine
+          engineering modules.
+        integration_notes: >
+          pip-installable, native Python API. Outputs directly to
+          xarray datasets. Results feed into OpenFAST/RAFT/WEC-Sim
+          for time/frequency-domain analysis. NREL-funded development
+          ensures alignment with OpenFAST ecosystem.
+
+      - name: HAMS
+        url: https://github.com/YingyiLiu/HAMS
+        project_url: https://github.com/YingyiLiu/HAMS
+        license: "Apache-2.0"
+        maturity: maturing
+        python_api: cli-only
+        community: small
+        capabilities:
+          - "Frequency-domain BEM solver"
+          - "Wave diffraction and radiation"
+          - "Added mass and damping"
+          - "Wave excitation forces"
+          - "Free-surface and body surface integrals"
+          - "Alternative to WAMIT/AQWA"
+        relevance_to_ace: >
+          Open-source alternative to commercial BEM solvers (WAMIT,
+          AQWA, Hydrostar). Computes hydrodynamic coefficients for
+          offshore floating structure analysis in digitalmodel.
+        integration_notes: >
+          Fortran-based, driven via input files. Python wrapper
+          (pyHAMS) available for integration. Can be used as
+          alternative to Capytaine; compare results for validation.
+          Apache license more permissive than Capytaine's GPL.
+
+      - name: Bemio
+        url: https://github.com/WEC-Sim/bemio
+        project_url: https://wec-sim.github.io/bemio/
+        license: "Apache-2.0"
+        maturity: experimental
+        python_api: native
+        community: small
+        capabilities:
+          - "BEM output file reader (NEMOH, WAMIT, AQWA)"
+          - "Mesh format conversion (STL, VTK, WAMIT)"
+          - "HDF5 standardized output format"
+          - "Hydrodynamic coefficient visualization"
+          - "Pre/post-processing for BEM solvers"
+        relevance_to_ace: >
+          Bridges multiple BEM solvers by standardizing output format.
+          Useful for comparing Capytaine/HAMS results with commercial
+          solver outputs in digitalmodel validation workflows.
+        integration_notes: >
+          Python-based. Note: requires Python 2.7 (legacy project).
+          Consider using Capytaine's built-in I/O or BEMRosetta as
+          more actively maintained alternatives for BEM data handling.
+
+      - name: WEC-Sim
+        url: https://github.com/WEC-Sim/WEC-Sim
+        project_url: https://wec-sim.github.io/WEC-Sim/
+        license: "Apache-2.0"
+        maturity: stable
+        python_api: none
+        community: medium
+        capabilities:
+          - "Wave energy converter simulation"
+          - "Time-domain hydrodynamic modeling"
+          - "Multi-body dynamics (Simscape)"
+          - "Mooring dynamics (MoorDyn integration)"
+          - "PTO modeling"
+          - "Nonlinear hydrostatics"
+        relevance_to_ace: >
+          Time-domain multi-body hydrodynamic simulation. While focused
+          on wave energy, the underlying methods (Cummins equation,
+          radiation/diffraction) apply to general floating body dynamics
+          relevant to digitalmodel.
+        integration_notes: >
+          MATLAB/Simulink-based; no direct Python API. Uses BEM data
+          from Capytaine/HAMS/WAMIT. For Python-native workflows,
+          consider using Capytaine + custom time-domain solvers or
+          OpenFAST HydroDyn module instead.
+
+      - name: OceanWave3D
+        url: https://github.com/apengsigkarup/OceanWave3D-Fortran90
+        project_url: http://www2.compute.dtu.dk/~apek/OceanWave3D/
+        license: "LGPL-3.0"
+        maturity: maturing
+        python_api: none
+        community: small
+        capabilities:
+          - "Fully nonlinear wave simulation"
+          - "3D potential flow wave modeling"
+          - "Variable bathymetry"
+          - "Wave generation and absorption"
+          - "Efficient sigma-transform solver"
+          - "Deep to shallow water"
+        relevance_to_ace: >
+          High-fidelity nonlinear wave generation for detailed wave
+          loading studies. Can provide incident wave fields for CFD
+          or BEM analysis in digitalmodel's wave loading workflows.
+        integration_notes: >
+          Fortran 90 code; no Python API. Drive via subprocess and
+          file I/O. Can couple with OpenFOAM via waves2Foam for
+          combined wave generation and CFD. DTU-developed research tool.
+
+      - name: BEMRosetta
+        url: https://github.com/BEMRosetta/BEMRosetta
+        project_url: https://github.com/BEMRosetta/BEMRosetta
+        license: "GPL-3.0"
+        maturity: maturing
+        python_api: none
+        community: small
+        capabilities:
+          - "BEM output viewer and converter"
+          - "Supports WAMIT, AQWA, Nemoh, Capytaine, HAMS"
+          - "Hydrodynamic coefficient visualization"
+          - "Mesh viewing and conversion"
+          - "QTF handling"
+          - "Multi-solver comparison"
+        relevance_to_ace: >
+          Universal BEM data viewer and converter. Useful for validating
+          Capytaine/HAMS results against commercial solver outputs in
+          digitalmodel QA workflows.
+        integration_notes: >
+          C++ with GUI. More actively maintained than Bemio for BEM
+          data handling. Can export to formats readable by Python.
+          Useful as a standalone validation tool alongside the ACE
+          Python pipeline.
+
+  # ---------------------------------------------------------------------------
+  # Additional domain: pipeline and flow assurance
+  pipeline_flow_assurance:
+    description: "Pipeline Engineering & Flow Assurance"
+    libraries:
+      - name: AweSim (Awesome Simulations)
+        url: https://github.com/SINTEF/thermopack
+        project_url: https://thermopack.readthedocs.io/
+        license: "MIT"
+        maturity: maturing
+        python_api: native
+        community: small
+        capabilities:
+          - "Equations of state (cubic, SAFT-VR Mie, CPA)"
+          - "Flash calculations"
+          - "Phase equilibrium"
+          - "Thermodynamic properties"
+          - "Multicomponent mixtures"
+        relevance_to_ace: >
+          Thermodynamic property calculations for flow assurance in
+          digitalmodel's pipeline engineering modules. Phase equilibrium
+          for hydrate prediction, wax deposition, and slug flow analysis.
+        integration_notes: >
+          pip-installable Python API (thermopack). Direct NumPy
+          integration for property arrays. MIT license allows
+          unrestricted use. Can replace proprietary PVT packages
+          in assetutilities.
+
+      - name: Thermo
+        url: https://github.com/CalebBell/thermo
+        project_url: https://thermo.readthedocs.io/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Chemical engineering thermodynamics"
+          - "Property estimation (1000+ chemicals)"
+          - "Flash calculations"
+          - "Activity coefficient models"
+          - "Equation of state models"
+          - "Transport properties"
+        relevance_to_ace: >
+          Comprehensive chemical property database and calculation
+          library. Relevant to fluid characterization, material
+          selection, and process calculations in digitalmodel and
+          assetutilities.
+        integration_notes: >
+          pip-installable, pure Python. Companion library fluids
+          provides pipe flow calculations. Direct integration with
+          pandas DataFrames for bulk property lookups.
+
+      - name: Fluids
+        url: https://github.com/CalebBell/fluids
+        project_url: https://fluids.readthedocs.io/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: medium
+        capabilities:
+          - "Pipe flow calculations"
+          - "Pressure drop correlations"
+          - "Two-phase flow models"
+          - "Valve sizing"
+          - "Pump curves"
+          - "Drag coefficient correlations"
+        relevance_to_ace: >
+          Directly applicable to pipeline hydraulics calculations in
+          digitalmodel. Pressure drop, flow regime, and sizing
+          calculations for subsea pipelines and risers.
+        integration_notes: >
+          pip-installable, pure Python. Works with thermo library for
+          fluid properties. Comprehensive correlation library that can
+          validate digitalmodel's pipeline calculation modules.
+
+  # ---------------------------------------------------------------------------
+  # Additional domain: visualization
+  visualization:
+    description: "Scientific Visualization & Post-Processing"
+    libraries:
+      - name: PyVista
+        url: https://github.com/pyvista/pyvista
+        project_url: https://pyvista.org/
+        license: "MIT"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "3D visualization of meshes and point clouds"
+          - "VTK Python wrapper"
+          - "Interactive plotting"
+          - "Mesh operations (clip, slice, threshold)"
+          - "FEA/CFD result visualization"
+          - "Jupyter integration"
+        relevance_to_ace: >
+          Primary 3D visualization library for FEA/CFD results in
+          digitalmodel. Visualize stress fields, deformed shapes,
+          flow fields, and mesh quality.
+        integration_notes: >
+          pip-installable. Reads VTK, STL, PLY, OBJ formats. Direct
+          NumPy array interface. Jupyter widget for interactive
+          exploration. Pairs with all FEA/CFD solvers that output VTK.
+
+      - name: ParaView (Python)
+        url: https://github.com/Kitware/ParaView
+        project_url: https://www.paraview.org/
+        license: "BSD-3-Clause"
+        maturity: stable
+        python_api: native
+        community: large
+        capabilities:
+          - "Large-scale scientific visualization"
+          - "Parallel rendering"
+          - "Python scripting (pvpython)"
+          - "Pipeline-based processing"
+          - "In-situ visualization (Catalyst)"
+          - "OpenFOAM/FEniCS native readers"
+        relevance_to_ace: >
+          Industry-standard post-processing for CFD and FEA results.
+          Essential companion to OpenFOAM and FEniCSx workflows in
+          digitalmodel.
+        integration_notes: >
+          pvpython for scripted visualization. ParaView Catalyst for
+          in-situ rendering during simulations. Can be scripted from
+          digitalmodel to generate automated reports with 3D views.
+
+# =============================================================================
+# Summary statistics
+# =============================================================================
+summary:
+  total_libraries: 57
+  by_domain:
+    fea_structural: 8
+    cfd: 6
+    oil_and_gas: 5
+    cad_geometry: 6
+    gis_geospatial: 7
+    data_science: 8
+    marine_offshore: 6
+    hydrodynamics: 6
+    pipeline_flow_assurance: 3
+    visualization: 2
+  by_license_family:
+    permissive: 32  # MIT, BSD, Apache
+    weak_copyleft: 9  # LGPL
+    strong_copyleft: 14  # GPL, AGPL
+    other: 2  # Academic Public License, mixed
+  by_python_api:
+    native: 36
+    bindings: 11
+    cli_only: 5
+    none: 5
+  by_maturity:
+    stable: 42
+    maturing: 14
+    experimental: 1
+  ace_priority_recommendations:
+    tier_1_immediate:
+      - "Capytaine — BEM hydrodynamic coefficients for floating structures"
+      - "OpenFAST — coupled aero-hydro-servo-elastic offshore simulation"
+      - "MoorDyn/MoorPy — mooring dynamics and quasi-static analysis"
+      - "Gmsh — mesh generation for FEA/CFD pipelines"
+      - "FEniCSx — general-purpose FEA with native Python API"
+      - "Polars — high-performance data processing for worldenergydata"
+      - "Fluids + Thermo — pipeline hydraulics and fluid properties"
+    tier_2_strategic:
+      - "OPM Flow — open-source reservoir simulation for worldenergydata"
+      - "CadQuery — programmatic CAD for parametric offshore components"
+      - "Kratos Multiphysics — multi-physics FSI and optimization"
+      - "PyVista — 3D visualization of engineering analysis results"
+      - "ThermoP pack — equation of state for flow assurance"
+    tier_3_exploratory:
+      - "OpenFOAM — CFD for detailed VIV and flow studies"
+      - "Code_Aster — fatigue and fracture mechanics"
+      - "Basilisk — free-surface wave impact simulations"
+      - "HAMS — alternative BEM solver for validation"
