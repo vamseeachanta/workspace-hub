@@ -20,13 +20,22 @@ Plans:
 - [x] 01-05-PLAN.md — Integration: validate manifests, update registry, cross-module tests
 
 ### Phase 2: Accelerate worldenergydata pipelines
-**Goal:** Reliable, current energy data feeds — EIA, BSEE, global production
+**Goal:** Wire stub adapters to real data clients, add staleness monitoring and email alerting, curate manufacturer data for digitalmodel
 **Why:** Data freshness and reliability is table stakes for credibility with clients; stale data = no trust
 **Must-haves:**
 - Audit current pipeline reliability (what breaks, how often, how stale)
 - Fix or rebuild flaky data ingestion
 - Add monitoring/alerting for data freshness
-**UAT:** All active data sources updating on schedule with <24hr staleness
+**UAT:** All active data sources updating on schedule with staleness matching each source's publication cadence
+**Plans:** 6 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Foundation fixes + EIA adapter wiring with Parquet output
+- [ ] 02-02-PLAN.md — BSEE adapter with per-dataset download and Parquet output
+- [ ] 02-03-PLAN.md — SODIR adapter with updated API URL and Parquet output
+- [ ] 02-04-PLAN.md — Staleness monitoring and email alerting
+- [ ] 02-05-PLAN.md — Curated manufacturer data CSVs and Tier 2 adapter scaffolding
+- [ ] 02-06-PLAN.md — Integration: status enrichment, scheduler wiring, full pipeline test
 
 ### Phase 3: GTM and marketing — aceengineer-website
 **Goal:** Position aceengineer.com as the go-to platform for offshore engineering calculations
