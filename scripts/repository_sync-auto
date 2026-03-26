@@ -44,6 +44,13 @@ _auto_sync_one() {
         echo "$repo|dry-run|dry-run|dry-run|dry-run" > "$result_file"; return 0
     fi
 
+    # Pull first (rebase + autostash) so local branch is up-to-date before committing
+    if ! git pull --rebase --autostash 2>/dev/null; then
+        # Abort any in-progress rebase to leave repo in a clean state
+        git rebase --abort 2>/dev/null || true
+        echo "$repo|false|false|false|warn-pull-failed" > "$result_file"; return 0
+    fi
+
     git add -A 2>/dev/null
 
     if [ -n "$(git status --porcelain)" ]; then
@@ -51,13 +58,8 @@ _auto_sync_one() {
         if git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
             committed=true
         else
-            # Early return: do not pull/push if commit failed
             echo "$repo|$staged|false|false|commit-failed" > "$result_file"; return 0
         fi
-    fi
-
-    if ! git pull --ff-only 2>/dev/null; then
-        echo "$repo|$staged|$committed|false|warn-pull-failed" > "$result_file"; return 0
     fi
 
     local push_out
@@ -83,6 +85,13 @@ _auto_sync_hub() {
 
     # Clear stale index lock that parallel Phase 1 workers may leave behind
     rm -f "$WORKSPACE_ROOT/.git/index.lock" 2>/dev/null || true
+
+    # Pull first (rebase + autostash) so local branch is up-to-date before committing
+    if ! git pull --rebase --autostash 2>/dev/null; then
+        git rebase --abort 2>/dev/null || true
+        echo -e "${YELLOW}⚠ workspace-hub: pull failed, skipping commit/push${NC}"; return 1
+    fi
+
     git add -A 2>/dev/null
 
     if [ -z "$(git status --porcelain)" ]; then
@@ -94,10 +103,6 @@ _auto_sync_hub() {
         echo -e "${GREEN}✓ workspace-hub: committed${NC}"
     else
         echo -e "${RED}✗ workspace-hub: commit failed — $commit_err${NC}"; return 1
-    fi
-
-    if ! git pull --ff-only 2>/dev/null; then
-        echo -e "${YELLOW}⚠ workspace-hub: pull failed, skipping push${NC}"; return 1
     fi
 
     if git push 2>/dev/null; then
