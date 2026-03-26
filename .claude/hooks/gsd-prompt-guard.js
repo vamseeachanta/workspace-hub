@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// gsd-hook-version: 1.28.0
+// gsd-hook-version: 1.29.0
 // GSD Prompt Injection Guard — PreToolUse hook
 // Scans file content being written to .planning/ for prompt injection patterns.
 // Defense-in-depth: catches injected instructions before they enter agent context.
