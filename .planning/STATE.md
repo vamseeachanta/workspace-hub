@@ -49,6 +49,8 @@ Phase 02 — Wave 1 complete (4/6 plans), proceeding to Wave 2
 - BSEE adapter uses inline df.to_parquet() to avoid cross-plan dependency
 - Each BSEE dataset processed independently with partial failure tolerance
 - BSEE adapter uses stdlib logging (not loguru) to match scheduler patterns
+- SODIR adapter uses client.get() with table query param for uniform endpoint handling
+- Partial failure returns success status since data was written for remaining endpoints
 
 ## Session
 
