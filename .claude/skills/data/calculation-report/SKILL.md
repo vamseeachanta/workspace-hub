@@ -107,3 +107,7 @@ done
 ```bash
 uv run --no-project --with PyYAML --with pytest python -m pytest tests/reporting/test_generate_calc_report.py -v
 ```
+
+## See also
+
+- [data/dark-intel](https://github.com/vamseeachanta/data/tree/main/dark-intel) — dark intelligence archive with worked examples and reference data used in calculation reports

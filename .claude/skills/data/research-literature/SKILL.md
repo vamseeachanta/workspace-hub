@@ -259,3 +259,7 @@ implementation_target:
 - [ ] Download script generated via `--generate-download-script`
 - [ ] Download script manually curated with discovered URLs
 - [ ] Downloads validated with `file *.pdf` (no HTML/WAF responses)
+
+## See also
+
+- [data/dark-intel](https://github.com/vamseeachanta/data/tree/main/dark-intel) — dark intelligence archive where research materials and worked examples are stored

@@ -41,3 +41,7 @@ scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]
 - [ ] INDEX regenerated
 - [ ] Hub state committed or intentionally left uncommitted
 ```
+
+## See also
+
+- [data repo](https://github.com/vamseeachanta/data) — document index, standards ledger, and research briefs consumed by queue items
