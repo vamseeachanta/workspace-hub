@@ -1,6 +1,3 @@
-[features]
-codex_hooks = true
-
 # Codex workspace configuration
 # Adopts Codex 0.102.0 native multi-agent role definitions
 # WRK-238: implemented 2026-02-24
@@ -8,6 +5,9 @@ codex_hooks = true
 
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
+
+[features]
+codex_hooks = true
 
 [settings]
 max_threads = 12  # Enable higher parallel agent throughput (default is 6)
