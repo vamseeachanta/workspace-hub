@@ -15,7 +15,6 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from pypdf import PdfReader
 import importlib.util
 
 logging.basicConfig(
@@ -49,18 +48,18 @@ PROMPT = (
 )
 
 def extract_pdf_text(path: str, max_pages: int = 2) -> str:
-    text = ""
     try:
-        reader = PdfReader(path)
-        for i, page in enumerate(reader.pages):
-            if i >= max_pages:
-                break
-            extracted = page.extract_text()
-            if extracted:
-                text += extracted + "\n"
+        r = subprocess.run(
+            ["pdftotext", "-f", "1", "-l", str(max_pages), "-q", path, "-"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout[:6000]
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        logging.debug(f"Failed to read PDF {path}: {e}")
     except Exception as e:
         logging.debug(f"Failed to read PDF {path}: {e}")
-    return text[:6000]
+    return ""
 
 def claude_classify(text: str, filename: str) -> dict:
     if not text.strip():

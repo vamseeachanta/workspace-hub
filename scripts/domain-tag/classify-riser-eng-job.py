@@ -139,6 +139,31 @@ def classify_file(filepath: str, project: str) -> dict:
         "domains": sorted(domains),
     }
 
+def apply_llm_overrides(results: list, source_dir: str) -> list:
+    """Read LLM classifications from llm-classifications dir and apply them."""
+    import hashlib
+    import json
+    
+    llm_dir = Path(source_dir) / "llm-classifications"
+    if not llm_dir.is_dir():
+        return results
+        
+    for r in results:
+        if r["doc_type"] == "unknown" and r["path"].lower().endswith(".pdf"):
+            sha = hashlib.sha256(r["path"].encode('utf-8')).hexdigest()
+            llm_file = llm_dir / f"{sha}.json"
+            if llm_file.exists():
+                try:
+                    with open(llm_file, 'r') as jf:
+                        llm_data = json.load(jf)
+                        if "doc_type" in llm_data and llm_data["doc_type"] != "unknown":
+                            r["doc_type"] = llm_data["doc_type"]
+                        if "domains" in llm_data and isinstance(llm_data["domains"], list):
+                            valid_domains = [d for d in llm_data["domains"] if isinstance(d, str)]
+                            r["domains"] = sorted(list(set(r["domains"] + valid_domains)))
+                except Exception:
+                    pass
+    return results
 
 def scan_and_classify(source_dir: str) -> list:
     """Scan source directory and classify all literature files."""
@@ -220,6 +245,7 @@ def main():
 
     print(f"Scanning {args.source}...")
     results = scan_and_classify(args.source)
+    results = apply_llm_overrides(results, args.source)
     print(f"Classified {len(results)} literature files")
 
     if not results:

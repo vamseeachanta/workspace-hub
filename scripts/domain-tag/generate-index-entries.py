@@ -50,6 +50,23 @@ def generate_entries():
 
             project = get_project(fpath)
             classification = classify_file(fpath, project)
+
+            if classification["doc_type"] == "unknown" and ext == ".pdf":
+                import hashlib
+                sha = hashlib.sha256(fpath.encode('utf-8')).hexdigest()
+                llm_file = os.path.join(SOURCE_DIR, "llm-classifications", f"{sha}.json")
+                if os.path.exists(llm_file):
+                    try:
+                        with open(llm_file, 'r') as jf:
+                            llm_data = json.load(jf)
+                            if "doc_type" in llm_data and llm_data["doc_type"] != "unknown":
+                                classification["doc_type"] = llm_data["doc_type"]
+                            if "domains" in llm_data and isinstance(llm_data["domains"], list):
+                                valid_domains = [d for d in llm_data["domains"] if isinstance(d, str)]
+                                classification["domains"] = sorted(list(set(classification["domains"] + valid_domains)))
+                    except Exception:
+                        pass
+
             primary_domain = classification["domains"][0] if classification["domains"] else "risers"
 
             entries.append({
