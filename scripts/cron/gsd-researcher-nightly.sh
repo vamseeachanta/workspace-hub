@@ -30,7 +30,7 @@ done
 mkdir -p "$LOG_DIR" "$OUTPUT_DIR"
 LOG_FILE="${LOG_DIR}/${DATE}.log"
 
-log() { echo "[gsd-researcher] $(date -u +%H:%M:%S) $*" | tee -a "$LOG_FILE"; }
+log() { echo "[gsd-researcher] $(date -u +%H:%M:%S) $*" >> "$LOG_FILE"; }
 
 # ── Hostname guard (reads from workstation registry) ─────────────────────────
 source "${WS_HUB}/scripts/lib/workstation-lib.sh"
