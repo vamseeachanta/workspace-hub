@@ -18,6 +18,12 @@ machines:
       languages: [python3, bash]
       tools: [uv, git]
       gpu: false
+    storage:
+      local: /mnt/local-analysis          # ext4, primary work partition
+      knowledge: /mnt/ace                  # ext4, knowledge center (NFS-exported)
+      remote_mounts:
+        - /mnt/remote/ace-linux-2/dde      # sshfs to ace-linux-2:/mnt/dde
+        - /mnt/remote/ace-linux-2/local-analysis
     repos:
       - worldenergydata
       - digitalmodel
@@ -43,6 +49,10 @@ machines:
       languages: [python3, bash]
       tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, uv, git]
       gpu: nvidia-t400
+    storage:
+      local: /mnt/dde                     # primary work partition
+      knowledge: null                      # NFS client — mounts ace-linux-1:/mnt/ace
+      remote_mounts: []
     repos:
       - digitalmodel
       - worldenergydata
@@ -64,6 +74,10 @@ machines:
       languages: [bash]  # git-bash / MINGW64
       tools: [orcaflex, ansys]
       gpu: false
+    storage:
+      local: 'D:\'                        # primary drive
+      knowledge: null                      # no NFS — standalone
+      remote_mounts: []
     repos:
       - OGManufacturing
     notes: >
@@ -86,6 +100,10 @@ machines:
       gpu: false
     repos:
       - OGManufacturing
+    storage:
+      local: 'D:\'
+      knowledge: null
+      remote_mounts: []
     notes: >
       Secondary Windows workstation. Mirrors licensed-win-1 capabilities.
 
