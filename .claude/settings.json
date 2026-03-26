@@ -1,63 +1,36 @@
-// Claude Code ? Global Settings
-// Last reviewed: 2025
-// Schema: https://json.schemastore.org/claude-code-settings.json
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-
-  // ??? General ?????????????????????????????????????????????????????????????
   "language": "english",
-  "autoUpdatesChannel": "latest",          // Track latest stable releases
-  "cleanupPeriodDays": 90,                 // Retain session data for 90 days
-  "respectGitignore": true,                // Never expose .gitignored files to agent
-
-  // ??? Attribution ?????????????????????????????????????????????????????????
+  "autoUpdatesChannel": "latest",
+  "cleanupPeriodDays": 90,
+  "respectGitignore": true,
   "attribution": {
-    "commit": "",                          // Optional: add commit message prefix
-    "pr": ""                               // Optional: add PR description prefix
+    "commit": "",
+    "pr": ""
   },
-  "includeCoAuthoredBy": true,             // Add Co-authored-by trailer to commits
-  "includeGitInstructions": true,          // Inject CLAUDE.md git instructions
-
-  // ??? Environment ?????????????????????????????????????????????????????????
+  "includeCoAuthoredBy": true,
+  "includeGitInstructions": true,
   "env": {
-    "MAX_TEAMMATES": "10"                  // Cap concurrent subagents in multi-agent mode
+    "MAX_TEAMMATES": "10"
   },
-
-  // ??? Permissions ?????????????????????????????????????????????????????????
-  // defaultMode "auto" lets Claude decide when to ask for permission.
-  // skipDangerousModePermissionPrompt + skipAutoPermissionPrompt bypass
-  // confirmation dialogs ? intentional for trusted workstation use.
-  // Revisit if agent is ever run against production systems.
   "permissions": {
-    "allow": [],                           // No tools pre-approved; hooks provide guardrails
+    "allow": [],
     "defaultMode": "auto"
   },
   "skipDangerousModePermissionPrompt": true,
   "skipAutoPermissionPrompt": true,
-
-  // ??? Deny List ???????????????????????????????????????????????????????????
-  // Blocklist for Bash commands the agent must never run.
-  // Uses prefix matching: "Bash(cmd:*)" blocks any use of that command.
   "deny": [
-
-    // --- Filesystem destruction ---
-    "Bash(rm -rf /)",                      // Root wipe
-    "Bash(rm -rf ~:*)",                    // Home directory wipe
-    "Bash(rm -rf .:*)",                    // Current directory wipe
-    "Bash(dd if=/dev/zero:*)",             // Disk zeroing
-    "Bash(mkfs:*)",                        // Filesystem format
-    "Bash(shred:*)",                       // Secure file deletion
-
-    // --- Privilege escalation ---
-    "Bash(sudo:*)",                        // Superuser execution
-    "Bash(su :*)",                         // Switch user
-    "Bash(pkexec:*)",                      // Polkit privilege escalation
-    "Bash(doas:*)",                        // sudo alternative
-
-    // --- Unsafe permissions ---
-    "Bash(chmod 777:*)",                   // World-writable permissions
-
-    // --- Inline code execution (arbitrary code injection) ---
+    "Bash(rm -rf /)",
+    "Bash(rm -rf ~:*)",
+    "Bash(rm -rf .:*)",
+    "Bash(dd if=/dev/zero:*)",
+    "Bash(mkfs:*)",
+    "Bash(shred:*)",
+    "Bash(sudo:*)",
+    "Bash(su :*)",
+    "Bash(pkexec:*)",
+    "Bash(doas:*)",
+    "Bash(chmod 777:*)",
     "Bash(eval:*)",
     "Bash(sh -c:*)",
     "Bash(bash -c:*)",
@@ -67,43 +40,25 @@
     "Bash(perl -e:*)",
     "Bash(ruby -e:*)",
     "Bash(node -e:*)",
-
-    // --- Pipe-to-shell (remote code execution) ---
     "Bash(curl * | bash:*)",
     "Bash(curl * | sh:*)",
     "Bash(wget * -O- | bash:*)",
     "Bash(wget * -O- | sh:*)",
     "Bash(| bash:*)",
     "Bash(| sh:*)",
-
-    // --- Network exfiltration / reverse shells ---
-    "Bash(nc:*)",                          // Netcat
-    "Bash(ncat:*)",                        // Ncat
-    "Bash(base64:*)",                      // Encode + exfiltrate data
-    "Bash(xxd:*)",                         // Hex dump sensitive files
-
-    // --- Git safety ---
-    "Bash(git push --force:*)",            // Force push (destructive history rewrite)
-    "Bash(git push -f:*)",                 // Shorthand force push
-    "Bash(git push --force-with-lease:*)", // Safer but still force ? blocked for agent use
-    "Bash(git -c core.hooksPath:*)",       // Hook path hijacking
-    "Bash(git -c core.hookspath:*)",       // Case variant
-
-    // --- System manipulation ---
-    // NOTE: crontab and systemctl are blocked to prevent agent from modifying
-    // scheduled jobs or services on ace-linux-2. Remove if legitimate automation
-    // tasks require them, and guard with an allow rule instead.
+    "Bash(nc:*)",
+    "Bash(ncat:*)",
+    "Bash(base64:*)",
+    "Bash(xxd:*)",
+    "Bash(git push --force:*)",
+    "Bash(git push -f:*)",
+    "Bash(git push --force-with-lease:*)",
+    "Bash(git -c core.hooksPath:*)",
+    "Bash(git -c core.hookspath:*)",
     "Bash(crontab:*)",
     "Bash(systemctl:*)"
-
   ],
-
-  // ??? Hooks ???????????????????????????????????????????????????????????????
-  // Lifecycle hooks for guardrails, monitoring, and session quality tracking.
-  // All hooks should have a timeout to prevent blocking.
   "hooks": {
-
-    // Runs before any Write or Edit ? prompt injection guard
     "PreToolUse": [
       {
         "matcher": "Write|Edit",
@@ -116,8 +71,6 @@
         ]
       }
     ],
-
-    // Runs after writes/edits/agent tasks ? captures corrections + monitors context
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -125,7 +78,7 @@
           {
             "type": "command",
             "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\"",
-            "timeout": 10                  // Added: prevent blocking on slow writes
+            "timeout": 10
           }
         ]
       },
@@ -140,8 +93,6 @@
         ]
       }
     ],
-
-    // Runs before context compaction ? logs context budget state
     "PreCompact": [
       {
         "matcher": ".*",
@@ -149,13 +100,11 @@
           {
             "type": "command",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/context-budget-monitor.sh\" 2>/dev/null || true",
-            "timeout": 10                  // Added: prevent blocking before compaction
+            "timeout": 10
           }
         ]
       }
     ],
-
-    // Runs at session end ? consume signals + emit quality metrics
     "Stop": [
       {
         "matcher": ".*",
@@ -163,52 +112,40 @@
           {
             "type": "command",
             "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
-            "timeout": 10,                 // Added: prevent blocking on session close
+            "timeout": 10,
             "statusMessage": "Capturing session signals"
           },
           {
             "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
-            "timeout": 10,                 // Added: prevent blocking on session close
+            "timeout": 10,
             "statusMessage": "Emitting session quality signals"
           }
         ]
       }
     ],
-
-    // Runs at session start ? checks for GSD plugin updates
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "node .claude/hooks/gsd-check-update.js",
-            "timeout": 15                  // Added: network check may be slow
+            "timeout": 15
           }
         ]
       }
     ]
-
   },
-
   "disableAllHooks": false,
-
-  // ??? Sandbox ?????????????????????????????????????????????????????????????
-  // Disabled: running on trusted workstation (ace-linux-2).
-  // Enable if agent is ever used in untrusted or multi-user environments.
   "sandbox": {
     "enabled": false
   },
-
-  // ??? Reasoning & Performance ?????????????????????????????????????????????
-  "alwaysThinkingEnabled": true,           // Extended reasoning always on
-  "effortLevel": "high",                   // Thorough responses; consistent with fastMode: false
-  "fastMode": false,                       // Prioritize quality over speed
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
+  "fastMode": false,
   "fastModePerSessionOptIn": false,
-  "useAutoModeDuringPlan": true,           // Auto model selection during planning phase
-  "showThinkingSummaries": true,           // Show reasoning summaries in UI
-
-  // ??? UI & Display ????????????????????????????????????????????????????????
+  "useAutoModeDuringPlan": true,
+  "showThinkingSummaries": true,
   "defaultView": "transcript",
   "spinnerTipsEnabled": true,
   "syntaxHighlightingDisabled": false,
@@ -216,25 +153,15 @@
   "prefersReducedMotion": false,
   "promptSuggestionEnabled": true,
   "showClearContextOnPlanAccept": false,
-
-  // ??? Status Line ?????????????????????????????????????????????????????????
   "statusLine": {
     "type": "command",
     "command": "node .claude/hooks/gsd-statusline.js"
   },
-
-  // ??? Memory & Context ????????????????????????????????????????????????????
-  "autoMemoryEnabled": true,               // Auto-generate memory from sessions
-  "autoDreamEnabled": true,                // Background context processing
-
-  // ??? Voice & Channels ????????????????????????????????????????????????????
+  "autoMemoryEnabled": true,
+  "autoDreamEnabled": true,
   "voiceEnabled": true,
-  "channelsEnabled": true,                // Native multi-agent channels (experimental)
-
-  // ??? Plans ???????????????????????????????????????????????????????????????
-  "plansDirectory": ".planning",           // Store plan files in .planning/
-
-  // ??? Plugins ?????????????????????????????????????????????????????????????
+  "channelsEnabled": false,
+  "plansDirectory": ".planning",
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
@@ -246,8 +173,6 @@
     "hookify@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
-
-  // Plugin marketplace source ? Anthropic official plugins repo
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
@@ -256,5 +181,4 @@
       }
     }
   }
-
 }
