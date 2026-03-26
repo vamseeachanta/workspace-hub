@@ -84,10 +84,11 @@ Plans:
 - Document technical debt and architecture improvements needed
 - Create actionable roadmap within the digitalmodel repo
 **UAT:** Updated README/vision doc and roadmap committed to digitalmodel repo, priorities aligned with aceengineer.com GTM
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+- [ ] 06-01-PLAN.md — Tiered roadmap (ROADMAP.md) + module-registry.yaml maturity refresh
+- [ ] 06-02-PLAN.md — Vision direction (CALCULATIONS-VISION.md) + README trim + CHANGELOG update
 
 ## Backlog
 
