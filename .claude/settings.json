@@ -1,24 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "language": "english",
-  "autoUpdatesChannel": "latest",
   "cleanupPeriodDays": 90,
-  "respectGitignore": true,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "includeCoAuthoredBy": true,
-  "includeGitInstructions": true,
   "env": {
     "MAX_TEAMMATES": "10"
   },
   "permissions": {
-    "allow": [],
     "defaultMode": "auto"
   },
-  "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
   "deny": [
     "Bash(rm -rf /)",
     "Bash(rm -rf ~:*)",
@@ -136,31 +124,11 @@
       }
     ]
   },
-  "disableAllHooks": false,
-  "sandbox": {
-    "enabled": false
-  },
-  "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
-  "fastMode": false,
-  "fastModePerSessionOptIn": false,
-  "useAutoModeDuringPlan": true,
   "showThinkingSummaries": true,
-  "defaultView": "transcript",
-  "spinnerTipsEnabled": true,
-  "syntaxHighlightingDisabled": false,
-  "terminalTitleFromRename": true,
-  "prefersReducedMotion": false,
-  "promptSuggestionEnabled": true,
-  "showClearContextOnPlanAccept": false,
   "statusLine": {
     "type": "command",
     "command": "node .claude/hooks/gsd-statusline.js"
   },
-  "autoMemoryEnabled": true,
-  "autoDreamEnabled": true,
-  "voiceEnabled": true,
-  "channelsEnabled": false,
   "plansDirectory": ".planning",
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
