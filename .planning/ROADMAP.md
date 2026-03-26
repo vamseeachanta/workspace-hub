@@ -52,7 +52,7 @@ Plans:
 Plans:
 - [ ] 03-01-PLAN.md — Calculator engines: OBS (DNV-RP-F109) + wall thickness (ASME B31.4) with TDD
 - [ ] 03-02-PLAN.md — Site-wide updates: nav, landing page value prop, pricing page, footer
-- [ ] 03-03-PLAN.md — Calculator pages, calculator index update, sitemap, visual verification
+- [x] 03-03-PLAN.md — Calculator pages, calculator index update, sitemap, visual verification
 
 ### Phase 4: Client acquisition — 3-5 clients + broad individual user base
 **Goal:** 3-5 paying clients (consultancies, operators) and a growing base of individual engineers using the platform
