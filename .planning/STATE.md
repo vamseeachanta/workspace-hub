@@ -3,7 +3,7 @@ status: executing
 milestone: v1.0
 phase: "01"
 phase_name: accelerate-digitalmodel-development
-last_activity: 2026-03-25
+last_activity: 2026-03-26
 ---
 
 # Project State
@@ -12,10 +12,10 @@ last_activity: 2026-03-25
 Phase 01: Accelerate digitalmodel development
 
 ## Current Position
-Phase 01 — Plan 04 next (5 plans total, 3 complete)
+Phase 01 — Plan 05 next (5 plans total, 4 complete)
 
 ## Progress
-- Plans: 3/5 complete
+- Plans: 4/5 complete
 
 ## Decisions
 - Edition field typed as int|str to handle year-only and month-specific editions
@@ -27,7 +27,10 @@ Phase 01 — Plan 04 next (5 plans total, 3 complete)
 - Burst check uses effective thickness (t - corrosion_allowance) per ASME B31.4 S403.2.1
 - Zero effective thickness returns inf utilisation rather than raising exception
 - Collapse and propagation use nominal wall thickness consistent with B31.8 pattern
+- Wave spectrum provided via injectable callable for scatter fatigue decoupling
+- Zero Hs sea states produce zero damage silently (calm sea valid in scatter tables)
+- Transfer function accepts both callable and ndarray forms
 
 ## Session
-- Last session: 2026-03-25T23:16:49Z
-- Stopped at: Completed 01-03-PLAN.md (ASME B31.4 wall thickness code)
+- Last session: 2026-03-26T00:17:42Z
+- Stopped at: Completed 01-04-PLAN.md (scatter diagram fatigue analysis)
