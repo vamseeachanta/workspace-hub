@@ -30,7 +30,7 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
-- [ ] 02-04-PLAN.md — Staleness monitoring and email alerting
+- [x] 02-04-PLAN.md — Staleness monitoring and email alerting
 - [x] 02-05-PLAN.md — Curated manufacturer data CSVs and Tier 2 adapter scaffolding
 - [ ] 02-06-PLAN.md — Integration: status enrichment, scheduler wiring, full pipeline test
 
