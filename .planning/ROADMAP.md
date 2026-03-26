@@ -47,6 +47,12 @@ Plans:
 - SEO and content strategy targeting offshore/subsea engineering keywords
 - Pricing/access model (freemium? subscription? per-calculation?)
 **UAT:** Website live with clear value prop, at least 3 calculation demos, and a signup/contact flow
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Calculator engines: OBS (DNV-RP-F109) + wall thickness (ASME B31.4) with TDD
+- [ ] 03-02-PLAN.md — Site-wide updates: nav, landing page value prop, pricing page, footer
+- [ ] 03-03-PLAN.md — Calculator pages, calculator index update, sitemap, visual verification
 
 ### Phase 4: Client acquisition — 3-5 clients + broad individual user base
 **Goal:** 3-5 paying clients (consultancies, operators) and a growing base of individual engineers using the platform
@@ -67,6 +73,21 @@ Plans:
 - Output to `.planning/research/` for periodic review
 - Domain-specific research: new standards, competitor tools, industry trends
 **UAT:** Nightly job running, research artifacts accumulating, at least one insight actioned
+
+### Phase 6: Update plan and vision for digitalmodel repo
+**Goal:** Define the updated roadmap, architecture vision, and development priorities for the digitalmodel repo
+**Why:** Phase 1 shipped 3 new calculation modules, but the repo needs a refreshed plan reflecting current capabilities, market direction, and technical debt
+**Must-haves:**
+- Audit current state: modules, test coverage, architecture, open issues
+- Define updated vision: what digitalmodel should become (library vs platform vs API)
+- Prioritize next calculation modules based on client demand and aceengineer.com needs
+- Document technical debt and architecture improvements needed
+- Create actionable roadmap within the digitalmodel repo
+**UAT:** Updated README/vision doc and roadmap committed to digitalmodel repo, priorities aligned with aceengineer.com GTM
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
 
 ## Backlog
 
