@@ -1,0 +1,110 @@
+# registry.yaml — Single source of truth for all workstations.
+# Read by: scripts/cron/setup-cron.sh, scripts/operations/workstation-status.sh
+# HARD RULE: all machine identity/capability data lives here.
+# Hardware specs remain in specs/modules/hardware-inventory/ (detailed assessments).
+
+machines:
+  dev-primary:
+    hostname: ace-linux-1
+    hostname_aliases: [vamsee-linux1]
+    os: linux
+    role: primary-dev
+    workspace_root: /mnt/local-analysis/workspace-hub
+    schedule_variant: full
+    ssh: ace-linux-1
+    tailscale_ip: 10.1.0.1
+    capabilities:
+      agent_clis: [claude, gemini]
+      languages: [python3, bash]
+      tools: [uv, git]
+      gpu: false
+    repos:
+      - worldenergydata
+      - digitalmodel
+      - assetutilities
+      - assethold
+      - workspace-hub
+      - OGManufacturing
+    notes: >
+      Primary dev workstation. All nightly scheduled tasks run here.
+      NFS server for /mnt/ace knowledge center.
+
+  dev-secondary:
+    hostname: ace-linux-2
+    hostname_aliases: []
+    os: linux
+    role: secondary-dev
+    workspace_root: /mnt/workspace-hub
+    schedule_variant: contribute
+    ssh: ace-linux-2
+    tailscale_ip: 10.1.0.2
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, uv, git]
+      gpu: nvidia-t400
+    repos:
+      - digitalmodel
+      - worldenergydata
+    notes: >
+      Secondary dev workstation. Open-source FEA/CFD simulation stack.
+      NFS client, memory backup target.
+
+  licensed-win-1:
+    hostname: licensed-win-1
+    hostname_aliases: []
+    os: windows
+    role: simulation-license-host
+    workspace_root: 'D:\workspace-hub'
+    schedule_variant: contribute-minimal
+    ssh: null  # no SSH — physical/GUI access only
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude, codex, gemini]
+      languages: [bash]  # git-bash / MINGW64
+      tools: [orcaflex, ansys]
+      gpu: false
+    repos:
+      - OGManufacturing
+    notes: >
+      Windows workstation. Hosts OrcaFlex and ANSYS licenses.
+      No SSH — access physically or via GUI. Git Bash (MINGW64) for scripts.
+
+  licensed-win-2:
+    hostname: licensed-win-2
+    hostname_aliases: []
+    os: windows
+    role: simulation-secondary
+    workspace_root: 'D:\workspace-hub'
+    schedule_variant: contribute-minimal
+    ssh: null
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude, codex, gemini]
+      languages: [bash]
+      tools: [orcaflex, ansys]
+      gpu: false
+    repos:
+      - OGManufacturing
+    notes: >
+      Secondary Windows workstation. Mirrors licensed-win-1 capabilities.
+
+  gali-linux-compute-1:
+    hostname: shoerack
+    hostname_aliases: []
+    os: linux
+    role: gpu-compute
+    workspace_root: null  # not yet configured
+    schedule_variant: none
+    ssh: null  # access method TBD (Tailscale or direct LAN)
+    tailscale_ip: null
+    capabilities:
+      agent_clis: []  # not yet set up
+      languages: [python3, bash]
+      tools: [cuda]
+      gpu: rtx-3090x2
+    repos: []
+    notes: >
+      GPU compute node — 2x RTX 3090 (48 GB VRAM), 128 GB RAM.
+      Not yet onboarded to workspace-hub. Route heavy ML/CUDA workloads here.
+      Boot drive at 89% — needs cleanup before heavy use.

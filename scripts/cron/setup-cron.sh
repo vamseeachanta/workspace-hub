@@ -21,6 +21,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
 SCHEDULE_FILE="${WORKSPACE_HUB}/config/scheduled-tasks/schedule-tasks.yaml"
+REGISTRY="${WORKSPACE_HUB}/config/workstations/registry.yaml"
 
 DRY_RUN=false
 for arg in "$@"; do
@@ -35,17 +36,39 @@ fi
 HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
 HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
 
-# ── Determine cron_variant from hostname ─────────────────────────────────────
-case "$HOSTNAME_SHORT" in
-  dev-primary|ace-linux-1)   CRON_VARIANT="full" ;;
-  dev-secondary|ace-linux-2) CRON_VARIANT="contribute" ;;
-  licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
-  *)
+# ── Determine cron_variant from registry ─────────────────────────────────────
+if [[ -f "$REGISTRY" ]]; then
+  CRON_VARIANT=$(uv run --no-project python -c "
+import yaml
+with open('${REGISTRY}') as f:
+    data = yaml.safe_load(f)
+host = '${HOSTNAME_SHORT}'
+for name, m in data.get('machines', {}).items():
+    candidates = [m['hostname']] + m.get('hostname_aliases', [])
+    candidates = [c.lower() for c in candidates]
+    if host in candidates:
+        print(m.get('schedule_variant', 'contribute'))
+        break
+else:
+    print('__unknown__')
+" 2>/dev/null)
+  if [[ "$CRON_VARIANT" == "__unknown__" ]]; then
     echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
-    echo "      Update the case statement in this script if this is a new machine."
+    echo "      Add this machine to: config/workstations/registry.yaml"
     CRON_VARIANT="contribute"
-    ;;
-esac
+  fi
+else
+  echo "WARN: registry not found at ${REGISTRY} — falling back to hostname case match"
+  case "$HOSTNAME_SHORT" in
+    dev-primary|ace-linux-1)   CRON_VARIANT="full" ;;
+    dev-secondary|ace-linux-2) CRON_VARIANT="contribute" ;;
+    licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
+    *)
+      echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
+      CRON_VARIANT="contribute"
+      ;;
+  esac
+fi
 
 echo "Host: ${HOSTNAME_SHORT} → cron_variant: ${CRON_VARIANT}"
 

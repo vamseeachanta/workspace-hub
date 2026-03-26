@@ -32,16 +32,12 @@ LOG_FILE="${LOG_DIR}/${DATE}.log"
 
 log() { echo "[gsd-researcher] $(date -u +%H:%M:%S) $*" | tee -a "$LOG_FILE"; }
 
-# ── Hostname guard ───────────────────────────────────────────────────────────
-HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
-HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
-case "$HOSTNAME_SHORT" in
-    dev-primary|ace-linux-1) ;;
-    *)
-        log "SKIP: not dev-primary (hostname=$HOSTNAME_SHORT)"
-        exit 0
-        ;;
-esac
+# ── Hostname guard (reads from workstation registry) ─────────────────────────
+source "${WS_HUB}/scripts/lib/workstation-lib.sh"
+if ! ws_is "full"; then
+    log "SKIP: not a full-variant machine (hostname=$(hostname -s), variant=$(ws_variant))"
+    exit 0
+fi
 
 # ── Git pull ─────────────────────────────────────────────────────────────────
 log "Starting nightly research"

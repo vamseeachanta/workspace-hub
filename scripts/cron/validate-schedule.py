@@ -8,18 +8,32 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
+REGISTRY_FILE = REPO_ROOT / "config" / "workstations" / "registry.yaml"
 
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
-VALID_MACHINES = {
-    "dev-primary",
-    "ace-linux-1",
-    "dev-secondary",
-    "ace-linux-2",
-    "licensed-win-1",
-    "licensed-win-2",
-    "gali-linux-compute-1",
-}
+
+
+def _load_valid_machines() -> set[str]:
+    """Build valid machine names from the workstation registry."""
+    if not REGISTRY_FILE.exists():
+        # Fallback if registry is missing
+        return {
+            "dev-primary", "ace-linux-1", "dev-secondary", "ace-linux-2",
+            "licensed-win-1", "licensed-win-2", "gali-linux-compute-1",
+        }
+    with open(REGISTRY_FILE) as f:
+        data = yaml.safe_load(f)
+    machines: set[str] = set()
+    for name, m in data.get("machines", {}).items():
+        machines.add(name)
+        machines.add(m["hostname"])
+        for alias in m.get("hostname_aliases", []):
+            machines.add(alias)
+    return machines
+
+
+VALID_MACHINES = _load_valid_machines()
 
 
 def validate_cron_field(value: str) -> bool:
