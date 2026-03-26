@@ -30,9 +30,12 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
+- [x] 02-01-PLAN.md — Foundation fixes + EIA adapter wiring with Parquet output
+- [x] 02-02-PLAN.md — BSEE adapter with per-dataset download and Parquet output
+- [x] 02-03-PLAN.md — SODIR adapter with updated API URL and Parquet output
 - [x] 02-04-PLAN.md — Staleness monitoring and email alerting
 - [x] 02-05-PLAN.md — Curated manufacturer data CSVs and Tier 2 adapter scaffolding
-- [ ] 02-06-PLAN.md — Integration: status enrichment, scheduler wiring, full pipeline test
+- [x] 02-06-PLAN.md — Integration: status enrichment, scheduler wiring, full pipeline test
 
 ### Phase 3: GTM and marketing — aceengineer-website
 **Goal:** Position aceengineer.com as the go-to platform for offshore engineering calculations
