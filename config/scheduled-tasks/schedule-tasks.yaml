@@ -1,7 +1,13 @@
 # schedule-tasks.yaml — Single source of truth for all scheduled tasks.
-# Read by: scripts/cron/setup-cron.sh, scripts/cron/validate-schedule.py
+# Read by: scripts/cron/setup-cron.sh, scripts/cron/validate-schedule.py,
+#          scripts/operations/workstation-dispatch.sh
 # HARD RULE: all cron/task-scheduler entries must be declared here.
 # Do NOT add entries directly to crontab or Windows Task Scheduler.
+#
+# Fields:
+#   machines:  explicit machine list (used by cron to decide where to install)
+#   requires:  capability list (used by dispatcher to find best-fit machine)
+#   prefer:    optional machine hint for dispatcher when multiple match
 
 tasks:
   # ── dev-primary: full variant ─────────────────────────────────────────────
@@ -10,6 +16,8 @@ tasks:
     label: Performance benchmark regression check
     schedule: "30 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
@@ -23,6 +31,8 @@ tasks:
     label: Nightly GSD domain researcher
     schedule: "35 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [claude, python3, uv]
+    prefer: dev-primary
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
@@ -36,6 +46,7 @@ tasks:
     label: Dependency health check
     schedule: "0 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/quality/dep-health.sh
@@ -48,6 +59,7 @@ tasks:
     label: Comprehensive learning pipeline
     schedule: "0 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron/comprehensive-learning-nightly.sh
@@ -60,6 +72,7 @@ tasks:
     label: Documentation drift baseline refresh
     schedule: "30 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv]
     command: >-
       cd $WORKSPACE_HUB &&
       uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline
@@ -72,6 +85,7 @@ tasks:
     label: Agent capability radar HTML
     schedule: "30 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       uv run --no-project python $WORKSPACE_HUB/scripts/ai/generate-agent-radar.py
@@ -84,6 +98,7 @@ tasks:
     label: AI CLI version check
     schedule: "15 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    requires: [claude, gemini]
     command: >-
       cd $WORKSPACE_HUB &&
       timeout 60 bash scripts/maintenance/ai-tools-status.sh
@@ -96,6 +111,7 @@ tasks:
     label: Model ID refresh
     schedule: "30 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron/update-model-ids.sh
@@ -108,6 +124,7 @@ tasks:
     label: Harness file lean-out audit
     schedule: "30 3 * * 1"
     machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron/harness-lean-out.sh
@@ -120,6 +137,7 @@ tasks:
     label: Skills curation
     schedule: "0 4 * * 1"
     machines: [dev-primary, ace-linux-1]
+    requires: [claude, bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron/skills-curation.sh
@@ -132,6 +150,7 @@ tasks:
     label: Notification log 7-day retention
     schedule: "30 4 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [bash]
     command: >-
       cd $WORKSPACE_HUB &&
       find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
@@ -143,6 +162,7 @@ tasks:
     label: Morning session signal analysis
     schedule: "0 3 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/analysis/session-analysis.sh
@@ -155,6 +175,8 @@ tasks:
     label: Claude memory backup to ace-linux-2
     schedule: "0 5 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [bash]
+    prefer: dev-primary
     command: >-
       rsync -a --delete ~/.claude/projects/
       ace-linux-2:~/workspace-hub-backup/claude-projects/
@@ -167,6 +189,7 @@ tasks:
     label: Daily productivity summary
     schedule: "0 6 * * *"
     machines: [dev-primary, ace-linux-1]
+    requires: [python3, bash, git]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
@@ -182,6 +205,7 @@ tasks:
     label: Repository sync
     schedule: "0 */4 * * *"
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron-repository-sync.sh
@@ -197,6 +221,7 @@ tasks:
     label: Repository sync (Windows)
     schedule: "every 4 hours"
     machines: [licensed-win-1, licensed-win-2]
+    requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
       bash.exe -c "cd /path/to/workspace-hub && bash scripts/cron-repository-sync.sh"
@@ -208,6 +233,7 @@ tasks:
     label: Session state commit (Windows)
     schedule: "daily 03:00"
     machines: [licensed-win-1, licensed-win-2]
+    requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
       bash.exe -c "cd /path/to/workspace-hub &&

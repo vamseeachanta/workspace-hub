@@ -36,6 +36,28 @@ def _load_valid_machines() -> set[str]:
 VALID_MACHINES = _load_valid_machines()
 
 
+def _load_valid_capabilities() -> set[str]:
+    """Build valid capability names from the workstation registry."""
+    if not REGISTRY_FILE.exists():
+        return set()
+    with open(REGISTRY_FILE) as f:
+        data = yaml.safe_load(f)
+    caps: set[str] = set()
+    for _name, m in data.get("machines", {}).items():
+        c = m.get("capabilities", {})
+        for key in ("agent_clis", "languages", "tools"):
+            caps.update(c.get(key, []))
+        gpu = c.get("gpu")
+        if gpu and gpu is not True:
+            caps.add(gpu)
+        if gpu:
+            caps.add("gpu")
+    return caps
+
+
+VALID_CAPABILITIES = _load_valid_capabilities()
+
+
 def validate_cron_field(value: str) -> bool:
     """Check that a cron field has valid structure (not full semantic validation)."""
     parts = value.split(",")
@@ -107,6 +129,10 @@ def main() -> int:
         for machine in task.get("machines", []):
             if machine not in VALID_MACHINES:
                 errors.append(f"{tid}: unknown machine '{machine}'")
+
+        for cap in task.get("requires", []):
+            if VALID_CAPABILITIES and cap not in VALID_CAPABILITIES:
+                errors.append(f"{tid}: unknown capability '{cap}' in requires")
 
         if scheduler == "cron":
             cron_errors = validate_cron_expression(task.get("schedule", ""))
