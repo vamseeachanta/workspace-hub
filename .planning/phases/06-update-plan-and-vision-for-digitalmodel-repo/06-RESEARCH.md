@@ -239,6 +239,60 @@ each traceable to an international engineering standard. It feeds into:
 - Not a monolithic application
 ```
 
+## Document Intelligence as Input Pipeline
+
+The workspace-hub has a comprehensive document intelligence platform that feeds directly into digitalmodel modules. The vision and roadmap must account for this as a primary data source.
+
+### What Exists
+| Component | Location | Scale | Purpose |
+|-----------|----------|-------|---------|
+| Corpus index | `data/document-index/index.jsonl` | 1,033,933 docs | Master document catalog with domain, readability, org |
+| Extraction indexes | `data/doc-intelligence/*.jsonl` | 6 content types | constants (4.9 MB), equations (2.0 MB), requirements (12 MB), definitions, procedures, worked examples |
+| Deep extraction reports | `data/doc-intelligence/deep/` | 9+ major standards | Per-standard YAML manifests (API 579-1, DNV RP series, ISO standards) |
+| Promoted tables | `data/doc-intelligence/promoted-tables/` | CSV artifacts | Tables extracted and promoted from standards for direct code use |
+| Naval architecture catalog | `data/doc-intelligence/naval-architecture-catalog.yaml` | 144 docs | 110 ship plans, 21 textbooks, 65 hull codes |
+| Standards transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | 425 standards | Maps standards → target repos/modules |
+
+### Pipeline Architecture (7-phase)
+- Phase A: Corpus scan → index.jsonl (1M+ records)
+- Phase B: LLM extraction + classification (Claude CLI worker)
+- Phase C: Domain classification
+- Phase D: Data source specs
+- Phase E: Backfill index fields
+- Phase F-G: Enrichment and readability assessment
+
+### How It Feeds digitalmodel
+1. **Reference data for calculations:** Extracted constants, equations, and procedures from engineering standards become inputs to digitalmodel calculation modules (e.g., CP design parameters from DNV-RP-B401)
+2. **Test fixtures:** Worked examples extracted from standards serve as TDD test cases for calculation implementations (e.g., 82 naval architecture worked examples)
+3. **Gap identification:** The standards-transfer-ledger maps 425 standards to target repos — digitalmodel's 455 standards gaps should cross-reference this ledger
+4. **Module validation:** Deep extraction reports contain reference values that can validate calculation module outputs
+5. **Maturity signal:** Extraction yield metrics (69-93% for tables, 0% for equations/constants via text) inform which modules have sufficient reference data to implement
+
+### Key Metrics for Roadmap
+| Metric | Value | Relevance to digitalmodel |
+|--------|-------|--------------------------|
+| Standards with promoted data | 3 (DNV-RP-B401, DNV-RP-C203, DNV-RP-F109) | These 3 are ready for direct code promotion |
+| Extraction readiness | 96.7% of corpus | Most documents classifiable for domain routing |
+| Table yield | 69-93% | Tables are the reliable extraction target |
+| Equation yield | 0% | Cannot automate equation extraction — manual reference needed |
+| Worked examples | 82 (naval arch) | Below 150-200 target; gap in textbook problem sets |
+
+### Implications for Vision/Roadmap
+- The roadmap should reference document intelligence as the **upstream data pipeline** for new calculation modules
+- Tier 1 modules (OrcaFlex, CP) should note which doc-intelligence artifacts already exist to support them
+- The vision should acknowledge the extraction→promotion→implementation workflow as the standard path for new modules
+- Tech debt audit should check whether module-registry.yaml `data_sources` fields align with doc-intelligence extraction status
+- `data-needs.yaml` in digitalmodel/specs/ tracks lifecycle data dependencies — roadmap should connect these to doc-intelligence delivery status
+
+### Scripts & Skills to Reference
+| Tool | Path | Purpose |
+|------|------|---------|
+| doc-extraction skill | `.claude/skills/engineering/doc-extraction/SKILL.md` | Main extraction workflow with domain sub-skills |
+| doc-intelligence-promotion skill | `.claude/skills/data/doc-intelligence-promotion/SKILL.md` | Tables→CSV, equations→Python, procedures→YAML |
+| document-index-pipeline skill | `.claude/skills/data/document-index-pipeline/SKILL.md` | 7-phase batch indexing orchestration |
+| Platform design spec | `docs/superpowers/specs/2026-03-12-doc-intelligence-platform-design.md` | Architecture: extraction manifest schema, federated indexes, promotion pipeline |
+| Data intelligence map | `docs/document-intelligence/data-intelligence-map.md` | Registry of all data intelligence artifacts |
+
 ## State of the Art
 
 | Old Approach | Current Approach | When Changed | Impact |
@@ -365,6 +419,11 @@ None -- this phase produces documentation, not code. No test infrastructure need
 - `.planning/phases/03-gtm-and-marketing-aceengineer-website/03-CONTEXT.md` -- GTM decisions
 - `digitalmodel/CHANGELOG.md` -- last entry Oct 2025
 - GitHub Issues -- 50+ open issues in digitalmodel repo
+- `data/document-index/index.jsonl` -- 1M+ document corpus index
+- `data/doc-intelligence/*.jsonl` -- extracted constants, equations, requirements, procedures, definitions, worked examples
+- `data/document-index/standards-transfer-ledger.yaml` -- 425 standards → repo/module mapping
+- `docs/superpowers/specs/2026-03-12-doc-intelligence-platform-design.md` -- doc-intelligence platform architecture
+- `docs/document-intelligence/data-intelligence-map.md` -- data intelligence artifact registry
 
 ### Tertiary (LOW confidence)
 - Module maturity assessments in module-registry.yaml may be stale (generated Feb 2026, some modules may have changed)
