@@ -63,3 +63,23 @@ Plans:
 - Output to `.planning/research/` for periodic review
 - Domain-specific research: new standards, competitor tools, industry trends
 **UAT:** Nightly job running, research artifacts accumulating, at least one insight actioned
+
+## Backlog
+
+### Phase 999.1: Ship Plan CAD Pipeline — Curve reconstruction for 3D hull lofting (BACKLOG)
+
+**Goal:** Reconstruct continuous hull curves from fragmented skeleton vectorization, enabling 3D hull surface generation via FreeCAD/Gmsh
+**Context:** WRK-5055 Phase 1 complete — 110 SNAME ship plans cataloged, 986 pages scanned, skeleton DXFs generated for all profiles and 3 lines plans (BB-45 USS Colorado, EC2-S-C1 Liberty Ship, SS-563 USS Tang). FreeCAD `Part.makeLoft()` proven functional but current vectorization produces fragmented pixel-edge traces unsuitable for direct lofting.
+**Requirements:**
+- Region segmentation: separate body plan / half-breadth / sheer plan views by pixel position
+- Curve reconstruction: join fragments via directional continuity into continuous B-splines
+- Curve classification: distinguish cross-sections from waterlines / buttocks / grid / text
+- Coordinate transform: pixel space → real units using known ship dimensions
+- 3D placement: position cross-sections at longitudinal stations
+- Install FreeCAD Ship Workbench addon (or upgrade to FreeCAD 1.0+)
+**Consider:** geomdl/NURBS-Python for pure-Python curve fitting, Gmsh `addThruSections` for direct hull surface lofting
+**Prerequisites:** ship-plans-catalog.yaml (110 vessels), skeleton DXFs for 3 lines plans, FreeCAD loft API proven
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with $gsd-review-backlog when ready)
