@@ -145,8 +145,8 @@ auto_sync_all() {
         printf "\r  Proceeding...              \n\n"
     fi
 
-    # Phase 1: parallel submodule sync
-    echo -e "${BLUE}Phase 1: syncing ${#initialized[@]} submodule(s) in parallel...${NC}"
+    # Phase 1: parallel repo sync
+    echo -e "${BLUE}Phase 1: syncing ${#initialized[@]} repo(s) in parallel...${NC}"
     declare -A _pids
     for repo in "${initialized[@]}"; do
         local safe; safe="$(printf '%s' "$repo" | _sha256 | cut -d' ' -f1)"
@@ -158,7 +158,7 @@ auto_sync_all() {
         wait "${_pids[$repo]}" || true   # errors captured in result files; don't abort
     done
 
-    # Phase 2: hub sync (after all submodule commits land)
+    # Phase 2: hub sync (after all repo commits land)
     echo -e "${BLUE}Phase 2: syncing workspace-hub...${NC}"
     local hub_result="ok"
     _auto_sync_hub "$date_str" "$dry_run" || hub_result="failed"

@@ -25,7 +25,6 @@ if ! source "$(dirname "${BASH_SOURCE[0]}")/repository_sync-auto"; then
     echo "Error: failed to load repository_sync-auto helper" >&2
     exit 1
 fi
-GITMODULES_FILE="$WORKSPACE_ROOT/.gitmodules"
 REPO_CONFIG_FILE="$WORKSPACE_ROOT/config/repos.conf"
 
 # Arrays to store repo information
@@ -119,7 +118,7 @@ ${BOLD}COMMANDS:${NC}
         Edit repository configuration file
 
     ${CYAN}refresh${NC}
-        Refresh repository list from .gitmodules
+        Refresh repository list from repos.conf
 
     ${CYAN}help${NC}
         Show this help message
@@ -163,30 +162,29 @@ ${BOLD}QUICK REFERENCE:${NC}
 EOF
 }
 
-# Function to parse .gitmodules and extract submodule information
-parse_submodules() {
-    if [ ! -f "$GITMODULES_FILE" ]; then
-        echo -e "${RED}✗ No .gitmodules file found at: $GITMODULES_FILE${NC}"
+# Function to parse repos.conf and extract repo information
+parse_repos() {
+    if [ ! -f "$REPO_CONFIG_FILE" ]; then
+        echo -e "${RED}✗ No repos.conf file found at: $REPO_CONFIG_FILE${NC}"
+        echo -e "${YELLOW}Create one with: repository_sync config${NC}"
         return 1
     fi
 
-    # Read submodule names and URLs from .gitmodules
-    while IFS= read -r line; do
-        if [[ "$line" =~ submodule\.(.*)\.(path|url) ]]; then
-            local name="${BASH_REMATCH[1]}"
-            local key="${BASH_REMATCH[2]}"
-            local value="${line#*=}"
+    # Read repo names and URLs from repos.conf
+    # Format: repo_name=git_url (non-comment, non-empty lines)
+    while IFS='=' read -r name url; do
+        # Skip comments and empty lines
+        [[ -z "$name" || "$name" =~ ^[[:space:]]*# ]] && continue
+        # Trim whitespace
+        name="$(echo "$name" | xargs)"
+        url="$(echo "$url" | xargs)"
+        [ -z "$name" ] && continue
 
-            if [[ "$key" == "path" ]]; then
-                # Add to ALL_REPOS if not already present
-                if [[ ! " ${ALL_REPOS[*]} " =~ " ${name} " ]]; then
-                    ALL_REPOS+=("$name")
-                fi
-            elif [[ "$key" == "url" ]]; then
-                REPO_URLS["$name"]="$value"
-            fi
+        if [[ ! " ${ALL_REPOS[*]} " =~ " ${name} " ]]; then
+            ALL_REPOS+=("$name")
         fi
-    done < <(git config --file "$GITMODULES_FILE" --list)
+        [ -n "$url" ] && REPO_URLS["$name"]="$url"
+    done < "$REPO_CONFIG_FILE"
 
     # Default all repos to Uncategorized (load_repo_config assigns real categories)
     for repo in "${ALL_REPOS[@]}"; do
@@ -211,7 +209,7 @@ load_repo_config() {
             local repo_name="${BASH_REMATCH[1]}"
             local category="${BASH_REMATCH[2]}"
 
-            # Only categorize repos that exist in .gitmodules
+            # Only categorize repos that exist in ALL_REPOS
             if [[ ! " ${ALL_REPOS[*]} " =~ " ${repo_name} " ]]; then
                 continue
             fi
@@ -240,21 +238,18 @@ create_config_template() {
     mkdir -p "$(dirname "$REPO_CONFIG_FILE")"
 
     cat > "$REPO_CONFIG_FILE" << 'EOF'
-# Repository Category Configuration
-# URLs are read from .gitmodules (source of truth)
-# This file assigns categories to repos for filtering
-#
-# Format: comment lines with # repo_name (Category)
+# Repository Configuration
+# Format: repo_name=git_url
+# Category annotations: # repo_name (Category) on line before the entry
 # Valid categories: Personal, Work, Both
 #
 # Example:
 # # digitalmodel (Work)
-# # hobbies (Personal)
-# # aceengineer-website (Both)
+# digitalmodel=https://github.com/user/digitalmodel.git
 
 EOF
 
-    # Add entries for all submodules
+    # Add entries for all repos
     for repo in "${ALL_REPOS[@]}"; do
         echo "# $repo (Uncategorized)" >> "$REPO_CONFIG_FILE"
     done
@@ -263,15 +258,15 @@ EOF
     echo -e "${YELLOW}Edit the file to set categories (Personal, Work, Both)${NC}"
 }
 
-# Function to check if repo exists (handles both submodule .git files and standalone .git dirs)
+# Function to check if repo exists locally
 repo_exists() {
     local repo_name="$1"
     local repo_path="$WORKSPACE_ROOT/$repo_name"
 
     if [ -e "$repo_path/.git" ]; then
-        return 0  # Exists (submodule .git file or standalone .git directory)
+        return 0  # Has .git directory
     else
-        return 1  # Does not exist or not initialized
+        return 1  # Does not exist or not a git repo
     fi
 }
 
@@ -303,24 +298,29 @@ check_git_status() {
     cd "$WORKSPACE_ROOT"
 }
 
-# Function to initialize a submodule
+# Function to clone a repository
 clone_repo() {
     local repo_name="$1"
     local repo_path="$WORKSPACE_ROOT/$repo_name"
 
     if repo_exists "$repo_name"; then
-        echo -e "${YELLOW}⊘ $repo_name already initialized, skipping${NC}"
+        echo -e "${YELLOW}⊘ $repo_name already exists, skipping${NC}"
         return 0
     fi
 
-    echo -e "${BLUE}→ Initializing submodule $repo_name...${NC}"
+    local url="${REPO_URLS[$repo_name]:-}"
+    if [ -z "$url" ]; then
+        echo -e "${RED}✗ No URL configured for $repo_name in repos.conf${NC}"
+        return 1
+    fi
 
-    cd "$WORKSPACE_ROOT"
-    if git submodule update --init "$repo_name" 2>/dev/null; then
-        echo -e "${GREEN}✓ Successfully initialized $repo_name${NC}"
+    echo -e "${BLUE}→ Cloning $repo_name...${NC}"
+
+    if git clone "$url" "$repo_path" 2>/dev/null; then
+        echo -e "${GREEN}✓ Successfully cloned $repo_name${NC}"
         return 0
     else
-        echo -e "${RED}✗ Failed to initialize $repo_name${NC}"
+        echo -e "${RED}✗ Failed to clone $repo_name${NC}"
         return 1
     fi
 }
@@ -1425,7 +1425,7 @@ show_configuration_menu() {
                 pause
                 ;;
             2)
-                parse_submodules
+                parse_repos
                 load_repo_config
                 echo -e "${GREEN}✓ Repository list refreshed${NC}"
                 pause
@@ -1444,8 +1444,8 @@ show_configuration_menu() {
 main() {
     cd "$WORKSPACE_ROOT"
 
-    # Parse submodules from .gitmodules
-    parse_submodules
+    # Parse repos from repos.conf
+    parse_repos
 
     # Load categories from config
     load_repo_config
@@ -1552,7 +1552,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
             load_repo_config
             ;;
         refresh|reload)
-            parse_submodules
+            parse_repos
             load_repo_config
             echo -e "${GREEN}✓ Repository list refreshed${NC}"
             ;;

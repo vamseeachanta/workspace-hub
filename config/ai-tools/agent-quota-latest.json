@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-03-25T13:58:23-05:00",
+  "timestamp": "2026-03-25T20:30:00-05:00",
   "agents": [
     {
       "provider": "claude",
       "tier": "max",
       "weekly_limit": 20000,
-      "week_pct": null,
+      "week_pct": 40,
       "five_hour_pct": null,
-      "pct_remaining": null,
+      "pct_remaining": 60,
       "hours_to_reset": null,
-      "resets_at": "",
-      "source": "unavailable"
+      "resets_at": "2026-03-27T05:00:00-05:00",
+      "source": "user_reported"
     },
     {
       "provider": "codex",
