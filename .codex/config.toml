@@ -4,7 +4,7 @@
 # WRK-304: fixed [model] table → scalar per CLI 0.104 expectation 2026-02-24
 
 model = "gpt-5.4"
-model_reasoning_effort = true
+model_reasoning_effort = "medium"
 
 [features]
 codex_hooks = true
@@ -125,6 +125,6 @@ config_file = "/mnt/local-analysis/workspace-hub/.codex/agents/gsd-verifier.toml
 
 
 # GSD Hooks
-[[hooks]]
-event = "SessionStart"
-command = "node /mnt/local-analysis/workspace-hub/.codex/get-shit-done/hooks/gsd-update-check.js"
+# [[hooks]]
+# event = "SessionStart"
+# command = "node /mnt/local-analysis/workspace-hub/.codex/get-shit-done/hooks/gsd-update-check.js"
