@@ -393,8 +393,9 @@ jscpd-report/
 .claude-flow/
 dryrun_debug.log
 
-# Repo spec mirrors — large; excluded from hub git (each repo tracks its own content)
-specs/repos/*/
+# Legacy specs/ directory — migrated to .planning/ (2026-03-26)
+# Only untracked engineering data in specs/repos/ remains on disk
+specs/
 
 # Data cache files — runtime generated, not for version control
 data/modules/**/cache/
