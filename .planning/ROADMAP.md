@@ -55,15 +55,21 @@ Plans:
 - [x] 03-03-PLAN.md — Calculator pages, calculator index update, sitemap, visual verification
 
 ### Phase 4: Client acquisition — 3-5 clients + broad individual user base
-**Goal:** 3-5 paying clients (consultancies, operators) and a growing base of individual engineers using the platform
+**Goal:** Working enterprise funnel (calculator -> case study -> contact) with measurable conversion tracking, prospect pipeline management, and case study sales collateral
 **Why:** Clients validate commercial value; individual users build community, word-of-mouth, and long-tail revenue
 **Must-haves:**
-- Identify target segments: enterprise (small consultancies, operators) + individual (independent engineers, students, training)
-- Enterprise outreach (LinkedIn, industry conferences, direct contacts)
-- Individual growth (SEO, open-access tier, engineering community engagement)
-- Onboarding flow — from signup to first successful calculation
-- Feedback loop — capture what users need that doesn't exist yet
-**UAT:** 3+ paying clients (or committed pilots), measurable individual user signups trending upward
+- Case studies paired with calculators as enterprise sales collateral
+- Enhanced calculator CTAs linking to specific case studies
+- Contact form project type selector for lead qualification
+- GA4 enhanced event tracking across enterprise funnel
+- GitHub Issues prospect pipeline for manual outreach tracking
+**UAT:** 3+ paying clients (or committed pilots), measurable GA4 traffic and calculator usage trending upward
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Case studies: OBS assessment + multi-code wall thickness comparison + index/sitemap update
+- [ ] 04-02-PLAN.md — Contact form project type selector + GA4 enhanced events on calculators and pricing
+- [ ] 04-03-PLAN.md — Wire calculator CTAs to case studies, scroll depth tracking, GitHub Issues pipeline, visual verification
 
 ### Phase 5: Nightly research automation
 **Goal:** Keep PROJECT.md and domain context enriched automatically
