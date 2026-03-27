@@ -68,7 +68,7 @@ Plans:
 
 Plans:
 - [ ] 04-01-PLAN.md — Case studies: OBS assessment + multi-code wall thickness comparison + index/sitemap update
-- [ ] 04-02-PLAN.md — Contact form project type selector + GA4 enhanced events on calculators and pricing
+- [x] 04-02-PLAN.md — Contact form project type selector + GA4 enhanced events on calculators and pricing
 - [ ] 04-03-PLAN.md — Wire calculator CTAs to case studies, scroll depth tracking, GitHub Issues pipeline, visual verification
 
 ### Phase 5: Nightly research automation
