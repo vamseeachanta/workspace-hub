@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 04
 last_updated: "2026-03-27T06:12:33.902Z"
-last_activity: 2026-03-27 - Completed Phase 04 Plan 01 (2 case studies + index/sitemap update)
+last_activity: 2026-03-27 - Completed Phase 04 Wave 1 (plans 01 + 02)
 progress:
   total_phases: 7
   completed_phases: 3
@@ -20,14 +20,14 @@ Phase 04: Client acquisition — case studies and enterprise funnel
 
 ## Current Position
 
-Phase 04 — Plan 1/3 complete
+Phase 04 — Plans 01 + 02 complete (Wave 1), Plan 03 remaining (Wave 2)
 
 ## Progress
 
 - Phase 01: Accelerate digitalmodel development ✓ (5/5 plans)
 - Phase 02: Accelerate worldenergydata pipelines ✓ (6/6 plans, verified 2026-03-26)
 - Phase 03: GTM and marketing — 3/3 plans complete, pending verification
-- Phase 04: Client acquisition — 1/3 plans complete
+- Phase 04: Client acquisition — 2/3 plans complete (04-01, 04-02)
 
 ## Decisions
 
@@ -55,6 +55,12 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - Used indexOf instead of includes for browser compat in GA4 referrer detection
 - Removed Subsea Pipeline Integrity from coming-soon (now covered by OBS case study)
 
+### Phase 04 Plan 02 Decisions
+- Used var throughout new JS code for browser compatibility matching existing codebase
+- All GA4 event calls guarded with typeof gtag !== undefined
+- Added typeof gtag guard to fatigue-life calculator_use event that was missing it
+- Added pricing_cta_click tracking to bottom CTA in addition to 3 tier CTAs
+
 ### Quick Tasks Completed
 
 | # | Description | Date | Commit | Directory |
@@ -74,4 +80,4 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 ## Session
 
-Last activity: 2026-03-27 - Completed Phase 04 Plan 01 (2 case studies + index/sitemap update)
+Last activity: 2026-03-27 - Completed Phase 04 Wave 1 (plans 01 + 02: case studies, contact form, GA4 tracking)
