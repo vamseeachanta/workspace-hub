@@ -132,7 +132,9 @@ def claude_summarise(text: str, meta: dict) -> Optional[dict]:
         if raw.startswith("```"):
             lines = raw.strip().split("\n")
             raw = "\n".join(lines[1:-1] if lines[-1].startswith("```") else lines[1:])
-        return json.loads(raw.strip())
+        # LLM may return multiple JSON objects; take only the first
+        raw_first = raw.strip().splitlines()[0] if raw.strip() else "{}"
+        return json.loads(raw_first)
 
     except subprocess.TimeoutExpired:
         logging.warning("claude timeout after %ds", CLAUDE_TIMEOUT)
