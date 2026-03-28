@@ -55,6 +55,21 @@ tasks:
     is_claude_task: false
     description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
 
+  - id: harness-update
+    label: AI harness tools daily update
+    schedule: "15 1 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git, npm]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/harness-update.sh
+      >> $WORKSPACE_HUB/logs/maintenance/harness-update-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/harness-update-*.log
+    is_claude_task: false
+    description: Daily best-effort update of AI harness tools (GStack, Hermes, Superpowers, GSD); runs at 01:15 before main pipeline.
+
   - id: comprehensive-learning
     label: Comprehensive learning pipeline
     schedule: "0 2 * * *"

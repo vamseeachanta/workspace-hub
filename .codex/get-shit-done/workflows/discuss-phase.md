@@ -254,6 +254,98 @@ Structure the extracted information:
 **If no prior context exists:** Continue without — this is expected for early phases.
 </step>
 
+<step name="product_validation">
+**Product validation** — optional step that runs the 6 Forcing Questions to pressure-test
+whether this phase solves a real problem before diving into implementation decisions.
+
+**Trigger:** Only runs when `--product` flag is present in {{GSD_ARGS}}.
+If `--product` is absent, skip this step entirely.
+
+**Smart routing by phase type:**
+After reading the phase description from ROADMAP.md, classify:
+- **User-facing feature** (UI, API, CLI command users invoke) → ask Q1-Q4
+- **Infrastructure/internal** (CI, refactoring, migrations, tooling) → ask Q2, Q4 only
+- **Research/exploration phase** → ask Q1, Q6 only
+
+**Smart skip from prior context:** If PROJECT.md or REQUIREMENTS.md already contains
+specific answers (revenue numbers, named customers, user research findings), skip
+those questions and note: "Already answered in PROJECT.md: [summary]"
+
+**The Six Forcing Questions:**
+
+Ask relevant questions **ONE AT A TIME** via AskUserQuestion. Push on vague answers.
+
+#### Q1: Demand Reality
+- header: "Demand"
+- question: "What's the strongest evidence someone actually wants this — not 'is interested' but would be upset if it disappeared?"
+- Push for: specific behavior, usage patterns, someone building workflow around it
+- Red flags: "people say it's interesting", waitlist signups, hypothetical demand
+
+#### Q2: Status Quo
+- header: "Status Quo"
+- question: "What are users doing right now to solve this — even badly? What does that cost them?"
+- Push for: specific workflow, hours spent, tools duct-taped together
+- Red flags: "nothing exists" (if truly no workaround, the pain may not be real)
+
+#### Q3: Desperate Specificity
+- header: "Who"
+- question: "Name the actual person who needs this most. What's their role? What problem does this solve for them specifically?"
+- Push for: a name, a role, a specific consequence they face
+- Red flags: category-level answers ("enterprises", "developers", "marketing teams")
+
+#### Q4: Narrowest Wedge
+- header: "Wedge"
+- question: "What's the smallest version of this that delivers real value — not after the full build, but as a first cut?"
+- Push for: one feature, one workflow, something shippable in days
+- Red flags: "we need to build the full thing first"
+
+#### Q5: Observation
+- header: "Observed"
+- question: "Have you watched someone use this (or a prototype) without helping them? What surprised you?"
+- Push for: a specific surprise, something that contradicted assumptions
+- Red flags: "we sent a survey", "nothing surprising" (means not watching closely enough)
+
+#### Q6: Future-Fit
+- header: "Future"
+- question: "If the world looks different in 3 years, does this become more essential or less?"
+- Push for: specific thesis about how the user's world changes
+- Red flags: "the market is growing" (every competitor can cite the same stat)
+
+**Anti-sycophancy during validation:** Take a position on every answer. Do not say:
+- "That's an interesting approach" → instead take a position
+- "There are many ways to think about this" → pick one, state what evidence would change your mind
+- "That could work" → say whether it WILL work based on evidence, and what's missing
+
+**After questions:** Summarize findings as premises the user must confirm:
+
+```
+PRODUCT VALIDATION SUMMARY:
+
+Demand:    [Strong / Weak / Unverified] — [one-line evidence]
+Status quo: [Clear alternative / No workaround / Unknown]
+Specificity: [Named user / Category only / Hypothetical]
+Wedge:     [Defined / Too broad / Missing]
+
+Premises:
+1. [statement] — agree/disagree?
+2. [statement] — agree/disagree?
+```
+
+Use AskUserQuestion:
+- header: "Validation"
+- question: "Do these premises match your understanding?"
+- options: "Yes, proceed to implementation discussion" / "Let me correct some"
+
+If corrections → loop on specific premises. Then proceed to cross_reference_todos.
+
+**Auto mode (`--auto`):** Skip product validation entirely (auto is for execution speed,
+not product thinking). Log: `[auto] Skipping product validation (use --product interactively).`
+
+**Output:** Store product validation findings internally as `<product_validation>` for
+inclusion in CONTEXT.md. This gives downstream agents (researcher, planner) the "why"
+behind the "what".
+</step>
+
 <step name="cross_reference_todos">
 Check if any pending todos are relevant to this phase's scope. Surfaces backlog items that might otherwise be missed.
 
@@ -759,6 +851,23 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 
 </domain>
 
+[If product_validation was gathered (--product flag was used):]
+<product_validation>
+## Product Validation
+
+**Demand:** [Strong/Weak/Unverified] — [evidence summary]
+**Status quo:** [What users do now]
+**Specificity:** [Named user or category]
+**Wedge:** [Smallest valuable version]
+
+### Premises
+1. [Confirmed premise]
+2. [Confirmed premise]
+
+</product_validation>
+
+[If --product was not used, omit this section entirely.]
+
 <decisions>
 ## Implementation Decisions
 
@@ -1032,6 +1141,7 @@ Route to `confirm_creation` step (existing behavior — show manual next steps).
 <success_criteria>
 - Phase validated against roadmap
 - Prior context loaded (PROJECT.md, REQUIREMENTS.md, STATE.md, prior CONTEXT.md files)
+- Product validation completed if --product flag used (forcing questions, premises confirmed)
 - Already-decided questions not re-asked (carried forward from prior phases)
 - Codebase scouted for reusable assets, patterns, and integration points
 - Gray areas identified through intelligent analysis with code and prior decision annotations
