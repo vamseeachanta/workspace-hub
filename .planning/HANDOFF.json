@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-03-28T17:04:24.639Z",
+  "phase": "5",
+  "phase_name": "Nightly research automation",
+  "phase_dir": ".planning/phases/05-nightly-research-automation",
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "workflow": "discuss-phase",
+  "workflow_step": "discuss_areas (Research sources — 1 of 4 areas)",
+  "completed_tasks": [
+    {"id": "gray-area-selection", "name": "Select gray areas to discuss", "status": "done", "result": "All 4 selected: Research sources, Insight actioning, Domain coverage, Research lifecycle"},
+    {"id": "research-sources-q1", "name": "Research sources: training vs web search", "status": "done", "result": "Hybrid by domain — standards+python=training knowledge, ai-tooling=web search"}
+  ],
+  "remaining_tasks": [
+    {"id": "research-sources-q2", "name": "Research sources: web search mechanism for ai-tooling", "status": "not_started", "note": "User wanted to clarify before answering — options were: claude --allowedTools, Claude Code triggers, or You decide"},
+    {"id": "insight-actioning", "name": "Discuss: Insight actioning workflow", "status": "not_started"},
+    {"id": "domain-coverage", "name": "Discuss: Domain coverage gaps", "status": "not_started"},
+    {"id": "research-lifecycle", "name": "Discuss: Research lifecycle automation", "status": "not_started"},
+    {"id": "write-context", "name": "Write 05-CONTEXT.md", "status": "not_started"},
+    {"id": "write-discussion-log", "name": "Write 05-DISCUSSION-LOG.md", "status": "not_started"},
+    {"id": "git-commit", "name": "Commit context artifacts", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "Hybrid web search by domain: standards and python-ecosystem use training knowledge (slow-moving), ai-tooling uses web search (fast-changing)", "rationale": "User chose hybrid approach over training-only or full web search", "phase": "5"}
+  ],
+  "uncommitted_files": [".claude/skills/gsd-discuss-phase/SKILL.md"],
+  "next_action": "Resume discuss-phase for Phase 5 — clarify and answer the web search mechanism question (claude --allowedTools vs Claude Code triggers vs You decide), then continue with remaining 3 gray areas: Insight actioning, Domain coverage, Research lifecycle",
+  "context_notes": "Phase 5 has significant existing infrastructure: gsd-researcher-nightly.sh script, cron installed at 01:35 UTC, 3 research artifacts already in .planning/research/, domain rotation (Mon/Thu=standards, Tue/Fri=python-ecosystem, Wed/Sat=ai-tooling, Sun=synthesis). Discussion is about closing gaps: web search for fast-moving domains, insight actioning workflow, domain coverage expansion, and research lifecycle automation. The codebase scout revealed schedule-tasks.yaml, setup-cron.sh, notify.sh, workstation-lib.sh as key integration points."
+}
