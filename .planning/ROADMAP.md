@@ -132,3 +132,20 @@ Plans:
 
 Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
+
+### Phase 999.3: CAD/CAM & Manufacturing Vision (BACKLOG)
+
+**Goal:** Define and implement CAD/CAM and manufacturing capabilities — bridging engineering calculations to fabrication-ready outputs
+**Context:** Complements existing CAD-DEVELOPMENTS repo and OGManufacturing package. The ship plan CAD pipeline (999.1) demonstrates the need for geometry-to-manufacturing workflows. digitalmodel calculations currently stop at analysis results — this phase extends through to fabrication outputs.
+**Requirements:**
+- CAD model generation from calculation outputs (e.g., wall thickness -> pipe specification -> 3D model)
+- Manufacturing-aware design checks (weldability, material availability, fabrication tolerances)
+- Integration with FreeCAD for parametric modeling and drawing generation
+- Bill of materials (BOM) generation from design specifications
+- DXF/STEP/IGES export for shop floor consumption
+**Consider:** FreeCAD Python API for parametric modeling, OGManufacturing package as foundation, link to ship plan pipeline (999.1) for hull manufacturing
+**Prerequisites:** digitalmodel Phase 6 vision, CAD-DEVELOPMENTS repo audit, OGManufacturing package assessment
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with $gsd-review-backlog when ready)
