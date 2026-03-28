@@ -132,9 +132,13 @@ def claude_summarise(text: str, meta: dict) -> Optional[dict]:
         if raw.startswith("```"):
             lines = raw.strip().split("\n")
             raw = "\n".join(lines[1:-1] if lines[-1].startswith("```") else lines[1:])
-        # LLM may return multiple JSON objects; take only the first
-        raw_first = raw.strip().splitlines()[0] if raw.strip() else "{}"
-        return json.loads(raw_first)
+        # Claude may return JSON followed by extra text — try full parse, then first line
+        cleaned = raw.strip()
+        try:
+            return json.loads(cleaned)
+        except json.JSONDecodeError:
+            first_raw_line = cleaned.splitlines()[0] if cleaned else ""
+            return json.loads(first_raw_line)
 
     except subprocess.TimeoutExpired:
         logging.warning("claude timeout after %ds", CLAUDE_TIMEOUT)
@@ -281,9 +285,23 @@ def process_og_row(row: tuple, validate: bool = False) -> bool:
     return True
 
 
+PATH_REMAPS = [
+    ("/mnt/remote/ace-linux-2/dde/", "/mnt/dde/"),
+    ("/mnt/remote/dev-secondary/dde/", "/mnt/dde/"),
+]
+
+
+def _remap_path(path: str) -> str:
+    """Resolve cross-host mount paths to local equivalents."""
+    for remote, local in PATH_REMAPS:
+        if path.startswith(remote):
+            return local + path[len(remote):]
+    return path
+
+
 def process_index_record(rec: dict) -> bool:
     sha = rec.get("content_hash", "")
-    path = rec.get("path", "")
+    path = _remap_path(rec.get("path", ""))
     source = rec.get("source", "")
     if not sha or not needs_llm(sha):
         return False
