@@ -1,8 +1,8 @@
 ---
 name: "gsd-discuss-phase"
-description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (the agent picks recommended defaults)."
+description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (Claude picks recommended defaults)."
 metadata:
-  short-description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (the agent picks recommended defaults)."
+  short-description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (Claude picks recommended defaults)."
 ---
 
 <codex_skill_adapter>
@@ -50,11 +50,12 @@ Extract implementation decisions that downstream agents need — researcher and 
 
 **How it works:**
 1. Load prior context (PROJECT.md, REQUIREMENTS.md, STATE.md, prior CONTEXT.md files)
-2. Scout codebase for reusable assets and patterns
-3. Analyze phase — skip gray areas already decided in prior phases
-4. Present remaining gray areas — user selects which to discuss
-5. Deep-dive each selected area until satisfied
-6. Create CONTEXT.md with decisions that guide research and planning
+2. Product validation via 6 forcing questions (optional, `--product` flag)
+3. Scout codebase for reusable assets and patterns
+4. Analyze phase — skip gray areas already decided in prior phases
+5. Present remaining gray areas — user selects which to discuss
+6. Deep-dive each selected area until satisfied
+7. Create CONTEXT.md with decisions that guide research and planning
 
 **Output:** `{phase_num}-CONTEXT.md` — decisions clear enough that downstream agents can act without asking the user again
 </objective>
@@ -86,6 +87,7 @@ If `DISCUSS_MODE` is `"discuss"` (or unset, or any other value): Read and execut
 
 <success_criteria>
 - Prior context loaded and applied (no re-asking decided questions)
+- Product validation completed if --product flag used (6 forcing questions, premises confirmed)
 - Gray areas identified through intelligent analysis
 - User chose which areas to discuss
 - Each selected area explored until satisfied
