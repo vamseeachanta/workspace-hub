@@ -48,7 +48,7 @@ Define the updated roadmap, architecture vision, and development priorities for 
 - **D-26:** **Formalize CHANGELOG.md** using Keep a Changelog format. Required for proper PyPI releases.
 
 ### OrcaFlex Scope
-- **D-27:** OrcaFlex scope is **model generation automation**: YAML config -> .dat/.sim file generation. Post-processing is a future milestone.
+- **D-27:** OrcaFlex scope is **full pipeline**: `.yaml` high-level config → pure `.yaml` OrcaFlex input → external processing (pure `.yaml` → `.dat`, `.sim` → postprocess → summary → insights).
 - **D-28:** Target **subsea pipelines/risers** first. Start with **1-2 canonical configurations** (e.g., static catenary riser, simple pipeline).
 - **D-29:** **Standalone module** within digitalmodel/orcaflex/. Clean separation from structural analysis modules.
 - **D-30:** **Include OrcaWave** (vessel hull analysis) in the Orca suite roadmap item. OrcaWave feeds vessel RAOs into OrcaFlex.
