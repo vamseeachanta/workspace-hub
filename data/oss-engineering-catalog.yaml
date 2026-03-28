@@ -655,7 +655,7 @@ libraries:
     ace_path: /mnt/ace/MoorDyn
 
   - name: MoorPy
-    repo_url: https://github.com/NREL/MoorPy
+    repo_url: https://github.com/NatLabRockies/MoorPy
     homepage: null
     license: BSD-3-Clause
     latest_version: v1.2.1
@@ -663,7 +663,7 @@ libraries:
     python_api: true
     python_package: moorpy
     maturity: growing
-    stars: 50
+    stars: 51
     contributors: 15
     primary_language: Python
     domain: "O&G/Marine"
