@@ -115,3 +115,20 @@ Plans:
 
 Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
+
+### Phase 999.2: Wind Energy, Turbines & Fitness-for-Service Vision (BACKLOG)
+
+**Goal:** Add calculation modules for wind/turbine structures and fitness-for-service assessments, targeting marine structures and ships first, then extending to wind energy and structural integrity assessment
+**Context:** Extends digitalmodel's engineering domain beyond current offshore/subsea focus. Fitness-for-service (API 579-1/ASME FFS-1) is a natural complement to existing wall thickness and fatigue modules. Wind turbine foundation analysis (monopiles, jackets) overlaps with existing DNV expertise.
+**Requirements:**
+- Fitness-for-service assessment modules (API 579-1/ASME FFS-1): crack-like flaws, metal loss, creep damage
+- Marine structure/ship structural assessment as first priority
+- Wind turbine foundation analysis: monopile, jacket, gravity-based
+- Turbine tower fatigue and buckling checks per relevant standards (DNV-ST-0126, IEC 61400)
+- Integration with existing digitalmodel calculation framework and standards traceability manifests
+**Consider:** Phased rollout — marine FFS first, then wind/turbine as separate sub-phases
+**Prerequisites:** digitalmodel Phase 6 vision complete, existing fatigue and wall thickness modules as foundation
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with $gsd-review-backlog when ready)
