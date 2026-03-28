@@ -2,36 +2,38 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 04
-last_updated: "2026-03-27T06:12:33.902Z"
-last_activity: 2026-03-27 - Completed Phase 04 Wave 1 (plans 01 + 02)
+status: Phase 04 Complete
+last_updated: "2026-03-28T03:31:46.279Z"
+last_activity: 2026-03-28 - Completed Phase 04 Plan 03 (enterprise funnel wiring, prospect pipeline) -- Phase 04 complete
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 19
-  completed_plans: 15
+  completed_plans: 17
 ---
 
 # Project State
 
 ## Current Focus
 
-Phase 04: Client acquisition — case studies and enterprise funnel
+Phase 04 complete — ready for Phase 05
 
 ## Current Position
 
-Phase 04 — Plans 01 + 02 complete (Wave 1), Plan 03 remaining (Wave 2)
+Phase 04 complete (3/3 plans). Next: Phase 05.
 
 ## Progress
 
 - Phase 01: Accelerate digitalmodel development ✓ (5/5 plans)
 - Phase 02: Accelerate worldenergydata pipelines ✓ (6/6 plans, verified 2026-03-26)
 - Phase 03: GTM and marketing — 3/3 plans complete, pending verification
-- Phase 04: Client acquisition — 2/3 plans complete (04-01, 04-02)
+- Phase 04: Client acquisition ✓ (3/3 plans: case studies, GA4 tracking, enterprise funnel)
 
 ## Decisions
 
 Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
+
+- [Phase 04]: Used funnel_step event for calculator-to-case-study links to distinguish funnel progression from generic CTA clicks
 
 ### Phase 03 Plan 01 Decisions
 
@@ -56,10 +58,17 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - Removed Subsea Pipeline Integrity from coming-soon (now covered by OBS case study)
 
 ### Phase 04 Plan 02 Decisions
+
 - Used var throughout new JS code for browser compatibility matching existing codebase
 - All GA4 event calls guarded with typeof gtag !== undefined
 - Added typeof gtag guard to fatigue-life calculator_use event that was missing it
 - Added pricing_cta_click tracking to bottom CTA in addition to 3 tier CTAs
+
+### Phase 04 Plan 03 Decisions
+
+- Used funnel_step event (not cta_click) for calculator-to-case-study links to distinguish funnel progression
+- Scroll tracking uses var and default scroll listener for browser compat
+- GitHub Issues pipeline in workspace-hub repo (private) for prospect tracking
 
 ### Quick Tasks Completed
 
@@ -80,4 +89,4 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 ## Session
 
-Last activity: 2026-03-27 - Completed Phase 04 Wave 1 (plans 01 + 02: case studies, contact form, GA4 tracking)
+Last activity: 2026-03-28 - Completed Phase 04 Plan 03 (enterprise funnel wiring, prospect pipeline) -- Phase 04 complete
