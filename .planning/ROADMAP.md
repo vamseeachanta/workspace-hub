@@ -72,13 +72,18 @@ Plans:
 - [x] 04-03-PLAN.md — Wire calculator CTAs to case studies, scroll depth tracking, GitHub Issues pipeline, visual verification
 
 ### Phase 5: Nightly research automation
-**Goal:** Keep PROJECT.md and domain context enriched automatically
+**Goal:** Keep PROJECT.md and domain context enriched automatically via weekday-only 4-domain researcher with quality controls and staleness monitoring
 **Why:** Brownfield project needs continuous context refresh without manual effort
 **Must-haves:**
 - Scheduled GSD researcher agents running nightly
 - Output to `.planning/research/` for periodic review
 - Domain-specific research: new standards, competitor tools, industry trends
 **UAT:** Nightly job running, research artifacts accumulating, at least one insight actioned
+**Plans:** 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Enhance researcher: 4-domain weekday rotation, model selection, web search, validation, pruning
+- [ ] 05-02-PLAN.md — Staleness check script, schedule-tasks.yaml registration, README update
 
 ### Phase 6: Update plan and vision for digitalmodel repo
 **Goal:** Define the updated roadmap, architecture vision, and development priorities for the digitalmodel repo
