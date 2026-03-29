@@ -108,6 +108,12 @@
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Emitting session quality signals"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-stop.sh\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking for skill creation opportunities"
           }
         ]
       }
@@ -119,6 +125,11 @@
             "type": "command",
             "command": "node .claude/hooks/gsd-check-update.js",
             "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-start.sh\" 2>/dev/null || true",
+            "timeout": 5
           }
         ]
       }

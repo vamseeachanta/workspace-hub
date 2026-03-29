@@ -149,3 +149,37 @@ Plans:
 
 Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
+
+### Phase 999.4: Extend Autoresearch to Agent & Template Definitions (BACKLOG)
+
+**Goal:** Generalize the skill-autoresearch loop to iterate on agent definitions, research templates, and workflow configs — not just skills
+**Context:** Current `skill-autoresearch-nightly.sh` only targets `.claude/skills/` files. The same accept/reject-on-metric pattern (inspired by karpathy/autoresearch) applies to agent prompts in `.claude/agents/`, research templates in `.claude/get-shit-done/templates/`, and planning configs. Each target type needs its own eval function (agent eval, template coverage check, etc.).
+**Requirements:**
+- Abstract the autoresearch loop into a generic runner that accepts a target type + eval function
+- Add agent definition evaluation (clarity, tool usage accuracy, output quality scoring)
+- Add template evaluation (section completeness, example quality)
+- Results tracked per-target-type in `.claude/state/skill-autoresearch/`
+- Same safety model: branch isolation, never auto-merge, human reviews next morning
+**Consider:** Start with agents (highest leverage), then templates. Reuse existing `results.tsv` schema with a `target_type` column.
+**Prerequisites:** Stable agent eval criteria, current skill-autoresearch proven reliable over 2+ weeks
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with $gsd-review-backlog when ready)
+
+### Phase 999.5: High-Iteration Autoresearch with Compounding Improvements (BACKLOG)
+
+**Goal:** Increase autoresearch iteration depth from single-pass to multi-cycle per target per night (~10-12 iterations/target), enabling compounding improvements
+**Context:** karpathy/autoresearch runs ~12 experiments/hour (~100 overnight). Our current loop does one pass per skill. With a 180s budget per iteration, we could fit ~10 iterations per skill per night within API budget constraints. Key insight: improvements compound — iteration N builds on accepted changes from iteration N-1.
+**Requirements:**
+- Configurable iteration count per target (default 5, max 12)
+- Sequential accept/reject within a single target: accepted changes carry forward, rejected changes revert
+- Budget guard: configurable max API spend per night, abort when reached
+- Diminishing returns detection: stop early if 3 consecutive iterations show no improvement
+- Summary report: iterations run, accepted/rejected counts, cumulative improvement per target
+**Consider:** Start conservative (3 iterations) and increase as cost/quality tradeoffs become clear. Track cost-per-improvement to find the sweet spot.
+**Prerequisites:** Phase 999.4 (generic autoresearch runner), 30-day baseline of single-pass results to measure compounding benefit
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with $gsd-review-backlog when ready)
