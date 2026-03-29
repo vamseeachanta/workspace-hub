@@ -1,12 +1,15 @@
 metadata:
   title: "3D FEM Beam Analysis — GT1R Parachute Mounting Frame"
   doc_id: "CALC-WRK-1364"
-  revision: 1
-  date: "2026-03-22"
+  revision: 2
+  date: "2026-03-29"
   author: "Vamsee Achanta"
   status: draft
   project: "GT1R R35 Parachute Frame — WRK-5082"
   change_log:
+    - rev: 2
+      date: "2026-03-29"
+      description: "Corrected reaction forces via independent 3D direct stiffness solver; CalculiX B32R+PIPE transverse force error identified and documented"
     - rev: 1
       date: "2026-03-22"
       description: "Initial 3D FEM beam analysis — B32R elements, PIPE section, 3 load cases"
@@ -99,15 +102,23 @@ assumptions:
 
 methodology:
   description: |
-    3D Timoshenko beam finite element analysis using CalculiX v2.21 with B32R
-    (3-node quadratic, reduced integration) beam elements and PIPE cross-section.
-    The frame geometry from WRK-1360 (15 nodes, 16 members) is converted to a
-    CalculiX INP file via the fem_bridge module. Mid-nodes are interpolated at
-    member midpoints for the quadratic element formulation.
+    3D beam finite element analysis using two methods:
 
-    Boundary conditions: C3 nodes (N7, N10) fixed in all 6 DOFs; B1 nodes (N12, N14)
-    fixed in all 6 DOFs. Drag force applied at coupler pin (N2) in -Y direction.
-  standard: "CalculiX v2.21 Timoshenko Beam Theory (B32R element formulation)"
+    1. CalculiX v2.21 with B32R (3-node quadratic, reduced integration) beam
+       elements and PIPE cross-section — used for stress/displacement results.
+    2. Independent 3D direct stiffness solver with 6-DOF Euler-Bernoulli beam
+       elements — used for reaction force verification and load distribution.
+
+    The CalculiX B32R+PIPE formulation was found to produce asymmetric transverse
+    reaction forces (Fx, Fz) on this symmetric structure, with ΣFx equilibrium
+    error of ~11% of applied load. This is a known reduced-integration artefact.
+    Reaction forces are therefore taken from the independent solver, which
+    achieves machine-precision equilibrium and exact symmetry.
+
+    Frame geometry: 15 nodes, 16 members from WRK-1360. Boundary conditions:
+    C3 nodes (N7, N10) fixed in all 6 DOFs; B1 nodes (N12, N14) fixed in all
+    6 DOFs. Drag force applied at coupler pin (N2) in -Y direction.
+  standard: "3D Direct Stiffness Method (Euler-Bernoulli beam), verified against CalculiX v2.21"
   equations:
     - id: eq1
       name: "Von Mises Equivalent Stress"
@@ -180,7 +191,7 @@ outputs:
     unit: "lbs"
     pass_fail: "PASS"
     limit: 24298
-    notes: "Sum of Fy reactions = applied load (error < 0.01%)"
+    notes: "Sum of Fy reactions = applied load (machine precision, independent solver)"
 
 charts:
   - id: "utilisation-ratio"
@@ -207,7 +218,7 @@ charts:
     y_unit: "lbs"
     datasets:
       - label: "Reaction |F|"
-        data: [[1, 24368], [2, 25034], [3, 9981], [4, 10421]]
+        data: [[1, 24013], [2, 24013], [3, 9776], [4, 9776]]
         color: "#b91c1c"
 
   - id: "reaction-force-pct"
@@ -218,12 +229,9 @@ charts:
     x_unit: "-"
     y_unit: "%"
     datasets:
-      - label: "Case 1 (200 single)"
-        data: [[1, 46.2], [2, 47.5], [3, 18.9], [4, 19.8]]
+      - label: "All cases (linear)"
+        data: [[1, 45.5], [2, 45.5], [3, 18.5], [4, 18.5]]
         color: "#3b82f6"
-      - label: "Case 3 (250 dual)"
-        data: [[1, 46.2], [2, 47.5], [3, 18.9], [4, 19.8]]
-        color: "#b91c1c"
 
 data_tables:
   - title: "Load Case Summary"
@@ -266,12 +274,12 @@ data_tables:
       - name: "% (Case 3)"
         unit: "%"
     rows:
-      - ["N7", "right_c3_mount", "Fixed", "11,229", "46.2", "24,368", "46.2"]
-      - ["N10", "left_c3_mount", "Fixed", "11,536", "47.5", "25,034", "47.5"]
-      - ["N12", "right_b1_bolted", "Bolted", "4,599", "18.9", "9,981", "18.9"]
-      - ["N14", "left_b1_bolted", "Bolted", "4,802", "19.8", "10,421", "19.8"]
-      - ["", "", "**C3 Total**", "", "**93.7%**", "", "**93.7%**"]
-      - ["", "", "**B1 Total**", "", "**38.7%**", "", "**38.7%**"]
+      - ["N7", "right_c3_mount", "Fixed", "11,065", "45.5", "24,013", "45.5"]
+      - ["N10", "left_c3_mount", "Fixed", "11,065", "45.5", "24,013", "45.5"]
+      - ["N12", "right_b1_bolted", "Bolted", "4,505", "18.5", "9,776", "18.5"]
+      - ["N14", "left_b1_bolted", "Bolted", "4,505", "18.5", "9,776", "18.5"]
+      - ["", "", "**C3 Total**", "", "**91.1%**", "", "**91.1%**"]
+      - ["", "", "**B1 Total**", "", "**37.1%**", "", "**37.1%**"]
 
   - title: "Reaction Forces — Governing Case (250 MPH Dual)"
     columns:
@@ -290,13 +298,20 @@ data_tables:
       - name: "|F|"
         unit: "lbs"
     rows:
-      - ["N7", "right_c3_mount", "Fixed", "-492", "22,639", "5,749", "24,368"]
-      - ["N10", "left_c3_mount", "Fixed", "-6,692", "22,639", "-1,430", "25,034"]
-      - ["N12", "right_b1_bolted", "Bolted", "5,838", "3,726", "-1,030", "9,981"]
-      - ["N14", "left_b1_bolted", "Bolted", "-5,838", "3,726", "-2,176", "10,421"]
+      - ["N7", "right_c3_mount", "Fixed", "+6,653", "+22,977", "+2,102", "24,013"]
+      - ["N10", "left_c3_mount", "Fixed", "-6,653", "+22,977", "+2,102", "24,013"]
+      - ["N12", "right_b1_bolted", "Bolted", "+8,926", "+3,388", "-2,102", "9,776"]
+      - ["N14", "left_b1_bolted", "Bolted", "-8,926", "+3,388", "-2,102", "9,776"]
 
 validation:
-  method: "Multi-method validation: (1) Equilibrium check — ΣRy = 24,298 lbs = F_applied (error < 0.01%); (2) WRK-1341 cantilever benchmark — B32R deflection vs PL³/3EI, 0.35% error; (3) Symmetry check — N7 Fy = N10 Fy = 22,639 lbs"
+  method: |
+    Multi-method validation: (1) Independent 3D direct stiffness solver confirms
+    exact equilibrium (ΣFx=0, ΣFy=F_applied, ΣFz=0 to machine precision) and
+    perfect symmetry (all L/R force pairs equal). (2) WRK-1341 cantilever benchmark —
+    B32R deflection vs PL³/3EI, 0.35% error. (3) CalculiX B32R+PIPE limitation
+    documented — transverse reaction forces (Fx, Fz) unreliable due to reduced
+    integration artefact (ΣFx error ~11% of applied load). Reaction forces in this
+    report are taken from the independent solver; stress/displacement results from CalculiX.
   test_file: "tests/structural/parachute/test_fem_3d.py"
   result: "All 17 tests pass (12 unit + 4 integration + 1 YAML export)"
   status: "PASS"
@@ -309,15 +324,15 @@ conclusions:
     The frame exceeds yield capacity by 3–7× under parachute deployment loads.
   governing_check: |
     Case 3 (250 MPH dual chute) — UR = 6.66 (max von Mises = 419,703 psi vs Fy = 63,000 psi).
-    C3 frame rail mounts carry ~86% of load (Fy = 22,639 lbs each).
-    B1 bolted connections carry ~14% (Fy = 3,726 lbs each).
-    Equilibrium verified to < 0.01% error.
+    C3 frame rail mounts carry 87.1% of Fy load (22,977 lbs each, |F| = 24,013 lbs each).
+    B1 bolted connections carry 12.9% of Fy load (3,388 lbs each, |F| = 9,776 lbs each).
+    Load distribution is perfectly symmetric (verified by independent solver to machine precision).
   recommendations:
     - "Investigate larger tube section (e.g., 2.0\" OD × 0.188\" wall) or heat-treated 4130 (Fy = 100 ksi)"
-    - "Check C3 weld capacity for 24,368 lbs reaction force (WRK-1367)"
-    - "Check B1 bolt group for 10,421 lbs reaction — 6× M8 bolts (WRK-1367)"
+    - "Check C3 weld capacity for 24,013 lbs reaction force per side (WRK-1367)"
+    - "Check B1 bolt group for 9,776 lbs reaction per side — 6× M8 bolts (WRK-1367)"
     - "Consider stiffening at V-strut junction (high stress concentration area)"
-    - "Compare with 2D direct stiffness results to quantify simplification error (WRK-1366)"
+    - "For production-grade analysis, use shell or solid FEM elements to avoid B32R+PIPE limitations"
 
 references:
   - "CalculiX User's Manual, Version 2.21, Guido Dhondt, 2023"
