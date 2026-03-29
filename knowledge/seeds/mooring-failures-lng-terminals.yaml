@@ -1,0 +1,1126 @@
+---
+# mooring-failures-lng-terminals.yaml — Mooring line failure incidents and investigations at LNG terminals
+# Queried by: bash scripts/knowledge/query-knowledge.sh --category mooring-failures
+# Legal: no client identifiers; all data from public sources, conference papers, and investigation reports
+entries:
+
+  # ═══════════════════════════════════════════════════════════════
+  # NW SHELF LNG (WOODSIDE) — WITHNELL BAY, KARRATHA
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-nws-lng-overview
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "NW Shelf LNG mooring failures — overview of multi-year investigation programme"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      The Karratha Gas Plant (KGP) at Withnell Bay, Mermaid Sound, operated by Woodside
+      Energy on the North West Shelf of Australia, has three LNG loading jetties in open water.
+      The facility has exported LNG since 1989, loading a vessel every 24-36 hours. Multiple
+      mooring line break incidents occurred at NWS LNG since 2005. After another break in 2012,
+      a significant investigation effort was launched. In 2014, Woodside launched a VERY deep
+      investigation after 3 mooring lines parted in long-period swell of just ~50mm height —
+      demonstrating that even extremely small long-period swells can excite resonant vessel
+      motions and cause catastrophic mooring line failure. In 2015, Dom Allery (NW Shelf Port
+      Operations Superintendent) presented the findings at a SIGTTO Panel meeting.
+    patterns:
+      - "Long-period swell (~20s period) at very low amplitude (~50mm) can part mooring lines via resonance"
+      - "Mermaid Sound is protected from S Indian Ocean swell by islands to the west; swell enters from the north"
+      - "Waves refract along the slopes of the navigation channel to the KGP terminal"
+      - "After Pluto LNG channel was dredged, more westerly waves were observed that were not captured by the permanent wave buoy"
+      - "Long-period swell events can make LNG loading impossible for a full week, forcing production ramp-backs"
+    follow_ons:
+      - type: reference
+        title: "Woodside 'Swell time' article — operational response to long-period swell"
+        url: "https://www.woodside.com/media-centre/news-stories/story/swell-time"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Woodside 'Ocean wave' article — SLAM wave forecasting project with UWA"
+        url: "https://www.woodside.com/media-centre/news-stories/story/ocean-wave"
+        added_at: "2026-03-29"
+
+  - id: MOORING-nws-lng-sigtto-2015
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "Dom Allery SIGTTO Panel 2015 — NWS LNG mooring line failure presentation"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      In 2015, Dom Allery (NW Shelf Port Operations Superintendent, Woodside Energy) spoke
+      at a SIGTTO Panel meeting about mooring line failures at one of their berths. He
+      described multiple line break incidents at NWS LNG since 2005. After another break in
+      2012, a significant effort was launched. He noted that in 2014, Woodside had launched
+      a very deep investigation after 3 lines parted in long-period swell of just ~50mm height.
+      SIGTTO panel presentations are generally not published openly — they are available only
+      to SIGTTO members through their internal archives. Dom Allery subsequently moved to
+      freelance consulting (Allery Marine and Maritime Pty Ltd, Greater Perth Area).
+    patterns:
+      - "SIGTTO panel materials are member-only; contact secretariat@sigtto.org for archives"
+      - "SIGTTO Regional Panel meetings held in Houston, London, and Singapore"
+      - "The Singapore panel would be the natural venue for an Australian terminal operator"
+    follow_ons:
+      - type: reference
+        title: "SIGTTO Spring 2015 Newsletter"
+        url: "https://www.sigtto.com/media/1373/sigtto-spring-2015-web.pdf"
+        added_at: "2026-03-29"
+
+  - id: MOORING-nws-lng-2014-incident
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "NWS LNG 2014 — 3 mooring lines parted in ~50mm long-period swell"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      In 2014, three mooring lines parted at one of the Withnell Bay LNG berths during a
+      long-period swell event with wave heights of approximately 50mm. The seemingly benign
+      conditions masked the real mechanism: even very small long-period swells excite resonant
+      surge, sway, and yaw motions at the natural frequency of the vessel-mooring system,
+      amplifying forces far beyond what the wave height alone would suggest. This is the core
+      physics of infragravity wave / long-period swell interaction with moored vessels.
+      Second-order difference frequency forces on an LNG carrier increase dramatically with
+      increasing wave period in shallow water, creating large low-frequency motions that
+      impose extreme loads on mooring lines. Woodside launched an extensive forensic
+      investigation using specialist consultants. The Aktis Hydraulics forensic investigation
+      of "three independent events" of mooring line failure at an LNG terminal due to long
+      swell diffracting around a detached breakwater is strongly consistent with this event.
+    patterns:
+      - "50mm swell height can generate catastrophic mooring loads through resonance amplification"
+      - "Second-order difference frequency forces increase dramatically with wave period in shallow water"
+      - "Infragravity waves (periods 25-250s) cause harbour seiching and resonance amplification"
+      - "Yaw motions are dominant for maximum line forces in breast lines for 125,000m3 LNG carrier at jetty"
+      - "Bound waves and low-frequency drift forces are the key physics, not the direct wave force"
+    follow_ons:
+      - type: reference
+        title: "Aktis Hydraulics — Forensic investigation into LNG mooring line failure"
+        url: "https://aktishydraulics.com/portfolio-item/lng_failure_pacific/"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # TECHNICAL PAPERS — NWS / WITHNELL BAY
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-nws-paper-vandermolen-2003
+    type: career
+    category: mooring-failures
+    subcategory: technical-paper
+    title: "Van der Molen & Ligteringen (2003) — Behavior of a Moored LNG Ship in Swell Waves"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      "Behavior of a Moored LNG Ship in Swell Waves" by van der Molen & Ligteringen (2003),
+      published in Journal of Waterway, Port, Coastal and Ocean Engineering. Based on prototype
+      measurements at the Withnell Bay LNG jetty. Found that yaw motions are dominant for
+      maximum line forces in breast lines for a 125,000m3 LNG carrier moored to a jetty
+      exposed to swell. Showed 10-20% underestimation in calculated maximum forces compared
+      to prototype measurements.
+    patterns:
+      - "Yaw motions dominate maximum breast line forces for LNG carriers at swell-exposed jetties"
+      - "Calculated maximum mooring forces underestimate prototype measurements by 10-20%"
+    follow_ons:
+      - type: reference
+        title: "Van der Molen & Ligteringen (2003) — ResearchGate"
+        url: "https://www.researchgate.net/publication/239388605_Behavior_of_a_Moored_LNG_Ship_in_Swell_Waves"
+        added_at: "2026-03-29"
+
+  - id: MOORING-nws-paper-channel-refraction
+    type: career
+    category: mooring-failures
+    subcategory: technical-paper
+    title: "Van der Molen, Garber et al. — Channel Wave Refraction Effect on Moored LNG Carriers"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      "Channel Wave Refraction Effect on Moored LNG Carriers" by van der Molen, Garber et al.,
+      presented at ICCE (International Conference on Coastal Engineering). Addresses the
+      discovery that after the Pluto LNG Plant channel was dredged to the south-west of KGP,
+      more westerly waves were observed by local pilots that were not consistently captured at
+      the permanent wave buoy near the terminal. A single uni-directional swell spectrum close
+      to the channel alignment was historically assumed for mooring assessments — this proved
+      inadequate after the new channel changed wave propagation patterns.
+    patterns:
+      - "Dredging new channels can alter wave propagation and create unexpected mooring loads at existing berths"
+      - "A single uni-directional swell spectrum assumption can be dangerously inadequate"
+      - "Permanent wave buoys may not capture all directional wave components affecting mooring"
+    follow_ons:
+      - type: reference
+        title: "Channel Wave Refraction — ICCE proceedings"
+        url: "https://icce-ojs-tamu.tdl.org/icce/article/download/12760/12033"
+        added_at: "2026-03-29"
+
+  - id: MOORING-nws-paper-otc-16718
+    type: career
+    category: mooring-failures
+    subcategory: technical-paper
+    title: "Grant & Holboke (2004) OTC 16718 — Shallow Water Effects on Low-Frequency Wave Excitation"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      "Shallow Water Effects on Low-Frequency Wave Excitation of Moored Ships" by Grant &
+      Holboke (2004), OTC Paper 16718-MS. Demonstrates how bound waves and second-order
+      difference frequency forces on an LNG carrier increase with increasing wave period,
+      particularly relevant to shallow water berths like Withnell Bay. This paper provides
+      the theoretical framework for understanding why very small long-period swells can
+      generate catastrophic mooring loads.
+    patterns:
+      - "Second-order difference frequency forces on LNG carriers increase with wave period in shallow water"
+      - "Bound waves amplify low-frequency drift forces at shallow berths"
+    follow_ons:
+      - type: reference
+        title: "OTC 16718-MS — OnePetro"
+        url: "https://onepetro.org/OTCONF/proceedings-abstract/04OTC/All-04OTC/OTC-16718-MS/35027"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # WAVE FORECASTING — SLAM PROJECT (UWA + WOODSIDE)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-nws-slam-project
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "SLAM project (UWA + Woodside) — Swell-Local Adjustment via Monitoring for NWS"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      The SLAM (Swell-Local Adjustment via Monitoring) project, led by UWA's Jeff Hansen
+      in collaboration with Woodside, aims to improve forecasting accuracy for long-period
+      swell events affecting the NW Shelf LNG operations. Uses machine learning and data from
+      floating wave buoys to provide better advance warning of mooring-critical swell conditions.
+      Long-period swell at NW Australia originates from remote storm systems in the Southern
+      Indian Ocean, off southern Africa, and the Great Australian Bight. Average 1.7 large
+      tropical cyclones impact NWS per year.
+    patterns:
+      - "Remote storms thousands of km away generate long-period swell affecting NW Australia"
+      - "Machine learning + wave buoy data improves swell forecasting for terminal operations"
+    follow_ons:
+      - type: reference
+        title: "Jeff Hansen — UWA Research Repository"
+        url: "https://research-repository.uwa.edu.au/en/persons/jeff-hansen/"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # OTHER LNG TERMINAL MOORING FAILURES
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-zarga-milford-haven-2015
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "LNG Zarga at South Hook, Milford Haven (2015) — HMPE line failure, severe crew injury"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      On 2 March 2015, at South Hook LNG Terminal, Milford Haven, Wales, a deck officer on
+      the LNG carrier Zarga suffered severe head injuries when struck by a parted HMPE mooring
+      rope during berthing. The MAIB investigation found the rope was not fit for purpose — it
+      did not have the MBL specified at build. The predominant failure mode was axial compression
+      fatigue (ACF), previously unassociated with HMPE rope failures. The rope's tightly bound
+      jacketed construction increased the likelihood of ACF. Crew perception was that HMPE ropes
+      did not recoil on failure — this was incorrect.
+    patterns:
+      - "Axial compression fatigue (ACF) is a failure mode for jacketed HMPE mooring ropes"
+      - "Jacketed HMPE construction increases ACF likelihood vs non-jacketed"
+      - "HMPE ropes DO recoil on failure — crew perception of no snap-back is dangerously wrong"
+      - "MBL at delivery must be verified against specification — manufacturing QC gap caused this failure"
+    follow_ons:
+      - type: reference
+        title: "MAIB Report — Zarga mooring line failure"
+        url: "https://www.gov.uk/maib-reports/failure-of-mooring-line-on-board-lng-carrier-zarga-with-1-person-injured"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "MAIB Zarga Combined Annexes"
+        url: "https://assets.publishing.service.gov.uk/media/59400155ed915d20f8000229/Zarga_CombinedAnnexes.pdf"
+        added_at: "2026-03-29"
+
+  - id: MOORING-hmpe-industry-failures-2007-2011
+    type: career
+    category: mooring-failures
+    subcategory: industry-investigation
+    title: "HMPE mooring line failures industry-wide (2007-2011) — TTI/DSM Dyneema Users Group"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      During 2007-2011, approximately 3% of HMPE ropes in LNG service failed. Aft breast lines
+      failed 2x as often as other line positions. Tensions at failure were only 10-60% of MBL,
+      indicating premature degradation. Q-flex (216,000m3) and Q-max (266,000m3) carriers had a
+      disproportionate share of failures despite using more and larger lines (18-20 lines of 44mm
+      vs 16-18 of 42mm for conventional carriers). Three ports stood out for disproportionate
+      failures, one exposed to high swell/wave/current/wind loads. The 2011 Users Group
+      (coordinated by TTI/UK with DSM Dyneema) ruled out bending fatigue, tension fatigue,
+      creep rupture, hysteresis heating, chemical degradation, oxidation, and UV degradation.
+      Root causes identified: low HMPE content (to reduce cost), increased lay lengths creating
+      distortion, and axial compression fatigue.
+    patterns:
+      - "~3% HMPE rope failure rate in LNG service 2007-2011; aft breast lines fail 2x as often"
+      - "Failure tensions at 10-60% of MBL indicate premature rope degradation, not overload"
+      - "Q-flex/Q-max carriers had disproportionate failures despite more/larger lines"
+      - "Root causes: low HMPE content, increased lay lengths, axial compression fatigue"
+      - "Ruled out: bending fatigue, tension fatigue, creep, hysteresis, chemical degradation, UV"
+    follow_ons:
+      - type: reference
+        title: "Riviera — Solutions to LNG carrier mooring line failures identified"
+        url: "https://www.rivieramm.com/news-content-hub/news-content-hub/solutions-to-lng-carrier-mooring-line-failures-identified-41027"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Riviera — Maintenance factor in LNG mooring"
+        url: "https://www.rivieramm.com/news-content-hub/news-content-hub/maintenance-factor-looms-large-in-the-lng-mooring-system-equation-38229"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "gCaptain — Switching from jacketed HMPE to non-jacketed Dyneema SK78"
+        url: "https://gcaptain.com/enough-enough-switching-failure-prone-jacketed-hmpe-ropes-non-jacketed-ropes-dyneema-sk78/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-prelude-flng-2018
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Prelude FLNG — LNG carrier Gallina nylon line failure (2018, NOPSEMA Incident 5415)"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      On 19 May 2018, LNG carrier Gallina was moored with 16 mooring lines at Prelude FLNG.
+      At 19:40, mooring line 3 was found to have parted; further checks found all 16 lines had
+      been significantly damaged. Root cause was incompatibility of nylon rope with nylon liner
+      on the FLNG fairlead — small radius pressure points between rope and liner generated
+      excessive heat and abrasion when the nylon lines stretched under tension. NOPSEMA stated
+      there could have been a "complete mooring failure" with "potential for serious consequences"
+      if it had occurred during LNG transfer. Separately in 2019, before the first cargo was ever
+      loaded, the facility was shut down after steel mooring lines were wearing faster than
+      expected. All 16 mooring lines had to be replaced. NOPSEMA ordered a delay to startup
+      until June 2019.
+    patterns:
+      - "Heat and abrasion can cause nylon mooring line failure at FLNG side-by-side operations"
+      - "Nylon rope on nylon fairlead liner creates incompatible friction/heat buildup"
+      - "All 16 lines damaged in single event — systemic design failure, not individual line defect"
+      - "Steel mooring lines also wore faster than expected at Prelude — replaced before first cargo"
+    follow_ons:
+      - type: reference
+        title: "NOPSEMA Incident 5415 — Prelude FLNG"
+        url: "https://www.nopsema.gov.au/sites/default/files/documents/2021-04/RMS-extract-Prelude-FLNG-Incident-notification-5415.pdf"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "SPE JPT — The Many Growing Pains of Shell's Prelude FLNG Continue"
+        url: "https://jpt.spe.org/the-many-growing-pains-of-shells-prelude-flng-continue"
+        added_at: "2026-03-29"
+
+  - id: MOORING-ras-laffan-qatar
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Ras Laffan LNG (Qatar) — likely one of three ports with disproportionate HMPE failures"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Ras Laffan has six LNG berths, four capable of receiving Q-Max vessels (266,000m3). Each
+      berth has 12 sets of mooring hooks (125 tonne SWL). The Q-flex and Q-max vessels were
+      disproportionately involved in HMPE failures during 2007-2011. The Riviera/TTI analysis
+      identified "three ports with elevated failure rates": two with high Q-flex/Q-max traffic
+      (Ras Laffan and South Hook/Milford Haven are the obvious candidates), and one exposed to
+      elevated environmental loads (likely Withnell Bay/NW Shelf). No specific named incident
+      report found publicly, but circumstantial evidence (primary Q-max origin port,
+      disproportionate Q-flex/Q-max HMPE failures, SIGTTO/OCIMF involvement) strongly places
+      Ras Laffan as one of the three ports.
+    patterns:
+      - "Primary Q-max origin port with high-frequency LNG loading operations"
+      - "12 sets of 125t SWL mooring hooks per berth for Q-max vessels"
+    follow_ons: []
+
+  - id: MOORING-bw-fleet-spain-seven-lines
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "BW Fleet Management — 7 HMPE lines failed simultaneously in Spain"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      A BW Fleet Management LNG carrier lost seven HMPE mooring lines simultaneously during a
+      single berthing operation in Spain. This was the worst in a series of ongoing failures.
+      Root cause: jacketed HMPE rope construction hid internal core damage beneath the protective
+      jacket, preventing inspection and allowing deterioration to progress undetected to
+      catastrophic failure. BW FM subsequently replaced ALL jacketed HMPE mooring ropes
+      fleet-wide with non-jacketed Samson AmSteel-Blue ropes made with Dyneema SK78. After
+      two years of service (~1,500+ hours per vessel), they reported zero further incidents
+      at any port worldwide.
+    patterns:
+      - "Jacketed HMPE hides internal core damage — prevents visual inspection of deterioration"
+      - "7 simultaneous line failures = systemic rope degradation, not acute overload"
+      - "Non-jacketed Dyneema SK78 (Samson AmSteel-Blue) eliminated failures fleet-wide"
+      - "Fleet-wide rope replacement is the correct response to systemic jacketed HMPE failure"
+    follow_ons:
+      - type: reference
+        title: "gCaptain — switching from jacketed HMPE to non-jacketed Dyneema SK78"
+        url: "https://gcaptain.com/enough-enough-switching-failure-prone-jacketed-hmpe-ropes-non-jacketed-ropes-dyneema-sk78/"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Dyneema — Solving an industry-wide mooring challenge with Samson"
+        url: "https://www.dyneema.com/sectors/maritime/solving-an-industry-wide-mooring-challenge-with-samson"
+        added_at: "2026-03-29"
+
+  - id: MOORING-golar-freeze-elba-island-2006
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Golar Freeze at Elba Island/Southern LNG (2006) — passing vessel wake breakaway"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      While the LNG tanker Golar Freeze was discharging at Southern LNG terminal on Elba Island
+      in the Savannah River, Georgia, a river pilot passed the terminal at approximately 14 knots.
+      The passing vessel's wake knocked the Golar Freeze loose of some moorings, causing mooring
+      lines and the fuel hose to break, resulting in fire/explosion risk. The tanker pulled away
+      from the pier. Dock shut down for ~36 hours for USCG and FERC investigation. Southern LNG
+      subsequently spent $35 million to carve out a slip for two LNG carriers to get them off the
+      main river channel. Coast Guard mandated that passing ships be escorted at slow speed by
+      tugs whenever an LNG tanker was moored.
+    patterns:
+      - "Passing vessel wake at 14 knots sufficient to break LNG carrier moorings in river berth"
+      - "$35M remediation: carved dedicated slip to remove LNG berth from main river channel"
+      - "USCG mandated slow-speed escorted passing when LNG tanker moored"
+    follow_ons:
+      - type: reference
+        title: "Federal Register — Security Zone, Elba Island LNG mooring slip"
+        url: "https://www.federalregister.gov/documents/2007/01/09/07-38/security-zone-elba-island-lng-mooring-slip-savannah-river-savannah-ga"
+        added_at: "2026-03-29"
+
+  - id: MOORING-summit-fsru-bangladesh-2021
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Summit FSRU Bangladesh (2021) — mooring line tear, 3 months out of service"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      The Summit FSRU at Moheshkhali, Cox's Bazar, Bangladesh suffered a mooring line tear in
+      the last week of November 2021. Unable to conduct ship-to-ship LNG transfers until a new
+      mooring line was installed. This halved Bangladesh's LNG regasification capacity (~500,000
+      Mcf/d) and repair was not completed until mid-January 2022 — three months out of service,
+      causing gas shortages for power plants, industries, and households. Separately during
+      Cyclone Remal (May 2024), a floating pontoon broke loose and struck the Summit LNG
+      Terminal at Moheshkhali, causing significant damage.
+    patterns:
+      - "Single mooring line failure can halt entire FSRU operations for months"
+      - "FSRU mooring failure has national energy security consequences for import-dependent countries"
+      - "Cyclone damage to mooring infrastructure compounds existing vulnerability"
+    follow_ons:
+      - type: reference
+        title: "S&P Global — Bangladesh Summit FSRU mooring line damage"
+        url: "https://www.spglobal.com/commodity-insights/en/news-research/latest-news/lng/120121-bangladeshs-summit-fsru-to-halt-lng-imports-due-to-mooring-line-damage"
+        added_at: "2026-03-29"
+
+  - id: MOORING-asterix-busan-2023
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "MV Asterix at Busan (2023) — HMPE snap-back injury, TSB Canada M23F0012"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Canadian naval auxiliary vessel Asterix (23,136 GT) experienced a mooring line failure on
+      28 May 2023 at Busan Naval Base, Republic of Korea. A 30mm HMPE rope (Samson Quantum 12,
+      Dyneema SK78/polyester blend, 53.5t MBL) parted at a pedestal roller. The bosun sustained
+      serious chest, lung, and wrist injuries from the snap-back. Critically, crew believed HMPE
+      ropes would not snap back — a dangerous misconception reinforced by manufacturer marketing
+      claims. The automatic braking system also lacked a load-release mechanism. TSB Report
+      M23F0012.
+    patterns:
+      - "HMPE ropes DO snap back on failure — manufacturer claims of 'no snap-back' are misleading"
+      - "Pedestal rollers are a failure initiation point for HMPE ropes under tension"
+      - "Automatic braking systems need load-release mechanisms to prevent overload"
+    follow_ons:
+      - type: reference
+        title: "TSB Canada — Marine investigation M23F0012"
+        url: "https://www.tsb.gc.ca/eng/rapports-reports/marine/2023/m23f0012/m23f0012.html"
+        added_at: "2026-03-29"
+
+  - id: MOORING-ansac-splendor-longview-2018
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Ansac Splendor at Longview (2018) — spring line snap-back, 2 fatalities"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Bulk carrier Ansac Splendor (Panama-flagged, 581 ft) experienced a mooring line snap-back
+      at Berth 5, Port of Longview, Washington, on 28 June 2018 at 01:45. A spring line parted
+      at ~700 ft/sec (213 m/s). Two fatalities: longshoreman Byron Jacobs (34) and Chief Mate
+      Pingshan Li (41). Two others injured. No pilot or tugs were involved during a vessel
+      shifting operation. A $16M wrongful death lawsuit was filed. Not LNG-specific but
+      demonstrates the lethal energy stored in mooring lines.
+    patterns:
+      - "Mooring line snap-back velocity can reach 213 m/s (700 ft/sec) — instantly lethal"
+      - "Vessel shifting operations without pilot/tugs are high-risk for mooring line failure"
+    follow_ons: []
+
+  - id: MOORING-veracruz-five-failures-2024
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Veracruz Port, Mexico (2024-2025) — 5 mooring failures in 6 months"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Gard P&I documented five mooring line failures in six months at Veracruz port. In December
+      2024, a vessel broke all its lines and damaged multiple other vessels. Another vessel lost
+      six mooring lines including spares. Causes: ongoing port expansion (breakwater construction
+      creating wave reflection/amplification), cold fronts generating waves and winds exceeding
+      90 km/h (September-April), and the fact that Veracruz provides no spare mooring rope supply.
+    patterns:
+      - "Port expansion/breakwater construction can create wave reflection that worsens mooring loads"
+      - "Cold fronts generate combined wave/wind loads that exceed mooring capacity"
+      - "No spare rope supply at port compounds mooring line failure consequences"
+    follow_ons:
+      - type: reference
+        title: "Gard — Veracruz Port mooring line failures"
+        url: "https://gard.no/en/insights/veracruz-port-mooring-line-failures-due-to-port-expansion-and-weather/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-port-hedland-bhp
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "Port Hedland, WA — BHP mooring line failures, 35% reduction via monitoring"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      BHP experienced increasing frequency of mooring line failures at Port Hedland iron ore
+      terminals. Baird assessment found key root cause was poor quality/condition of mooring
+      lines, with many failures occurring at tensions over 50% of expected load capacity. Over
+      20 recommendations developed. BHP released a Port Hedland mooring line standard and
+      incentive scheme in 2018, achieving a 35% reduction in incident frequency. Baird supported
+      BHP from 2015 onward implementing real-time mooring tension monitoring systems. Not LNG
+      but directly relevant to mooring dynamics in exposed Australian ports near NWS.
+    patterns:
+      - "Real-time mooring tension monitoring reduced failure frequency by 35%"
+      - "Mooring line standard + incentive scheme is an effective operational mitigation"
+      - "Failures at >50% expected load capacity indicate line condition/quality issues"
+    follow_ons:
+      - type: reference
+        title: "Baird — Port Hedland passing ship and mooring incident study"
+        url: "https://www.baird.com/case-studies/port-hedland-passing-ship-and-mooring-incident-study/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-cyclone-narelle-wa-2026
+    type: career
+    category: mooring-failures
+    subcategory: incident
+    title: "Cyclone Narelle (March 2026) — Gorgon, Wheatstone, NWS LNG production interrupted"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Severe Tropical Cyclone Narelle (27 March 2026) impacted multiple WA LNG facilities.
+      Gorgon (Barrow Island): one train went offline, all three back online by 29 March.
+      Wheatstone (Onslow): equipment damage, "number of weeks" to full production. North West
+      Shelf (Karratha): production interrupted at KGP. Combined, these three projects represent
+      ~8.4% of global LNG trade. Specific mooring line failures not documented in public
+      reporting but production interruptions confirmed.
+    patterns:
+      - "TC impact on multiple WA LNG facilities simultaneously affects ~8.4% of global LNG trade"
+      - "Cyclone-driven production interruptions last days to weeks depending on facility"
+    follow_ons:
+      - type: reference
+        title: "LNG Prime — Chevron Gorgon/Wheatstone damage report"
+        url: "https://lngprime.com/australia-and-oceania/chevron-says-all-gorgon-lng-trains-operating-wheatstone-damaged/181665/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-tomakomai-japan
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "Tomakomai Port, Japan — long-period wave induced mooring problems"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Tomakomai Port in Japan is well-documented for long-period wave-induced mooring problems.
+      Cargo handling termination caused by large surge motions from resonance even when harbour
+      wave heights are very small — the same physics as the NWS LNG incidents. Demonstrates
+      this is a global problem at ports exposed to long-period swell.
+    patterns:
+      - "Same resonance mechanism as NWS: small long-period waves cause large vessel motions"
+      - "Cargo handling terminated even in apparently calm conditions due to long-period resonance"
+    follow_ons: []
+
+  # ═══════════════════════════════════════════════════════════════
+  # INDUSTRY GUIDELINES AND STANDARDS
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-ocimf-meg4
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "OCIMF MEG4 (2018) — Mooring Equipment Guidelines 4th Edition"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      OCIMF Mooring Equipment Guidelines 4th Edition (MEG4), published 2018. Extensively
+      updated to address lessons from HMPE mooring line failures, human-centred design,
+      new IMO regulations, and alternative mooring technologies. Introduced new terms for
+      condition monitoring and retirement criteria for mooring lines. Low-stiffness lines
+      absorb higher dynamic loads and are preferred for terminals susceptible to waves, swell,
+      or passing ship forces. Longer tails may be required due to longer wave periods. The
+      entire mooring deck is now treated as a danger zone (snap-back zone markings removed).
+      OCIMF published companion guidance "The Hazards of Snap-back" based on the Zarga
+      incident — the 44mm sheathed UHMPE line parted inboard from a pedestal fairlead; with
+      the Euroflex tail attached, the failed end snapped back over 15m in less than 1 second.
+    patterns:
+      - "MEG4 is the current OCIMF standard for mooring equipment and line management"
+      - "Addresses HMPE failure modes, condition monitoring, and retirement criteria"
+      - "Entire mooring deck is a danger zone — snap-back zone markings replaced with generic warning"
+      - "Low-stiffness lines preferred for terminals exposed to waves/swell/passing ships"
+      - "UHMPE with Euroflex tail snapped back 15m in <1 second in Zarga failure"
+    follow_ons:
+      - type: reference
+        title: "OCIMF MEG4"
+        url: "https://www.ocimf.org/publications/books/mooring-equipment-guidelines-meg4"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "OCIMF Snap-back Hazards guidance"
+        url: "https://www.ocimf.org/doclink/the-hazards-of-snap-back-initial-learnings-from-a-serious-incident-of-mooring-line-failure-2/"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "MEG4 Demystified — Virtue Marine"
+        url: "https://www.virtuemarine.nl/post/meg4-demystified-an-overview-of-mooring-equipment-standards"
+        added_at: "2026-03-29"
+
+  - id: MOORING-ocimf-effective-mooring-4th
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "OCIMF Effective Mooring 4th Edition (2019) — training guide aligned with MEG4"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      OCIMF Effective Mooring, 4th Edition (2019). Aligned with MEG4. Written for seafarers
+      as a training guide. Key update: the entire mooring deck is treated as a danger zone
+      (snap-back zone markings removed). Addresses human factors (communication, fatigue,
+      situational awareness). For technical dynamic mooring analysis detail, refers to MEG4.
+    patterns:
+      - "Training companion to MEG4 for seafarer-level mooring operations"
+      - "Human factors (fatigue, communication, situational awareness) explicitly addressed"
+    follow_ons:
+      - type: reference
+        title: "OCIMF Effective Mooring"
+        url: "https://www.ocimf.org/publications/books/effective-mooring"
+        added_at: "2026-03-29"
+
+  - id: MOORING-sigtto-terminal-guidelines-2024
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "SIGTTO Liquefied Gas Terminals (2024) — site selection, design and marine facilities"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      "Liquefied Gas Terminals: Site Selection, Design and Operation of Marine Facilities",
+      SIGTTO 1st Edition 2024. Replaces four earlier SIGTTO publications and covers mooring,
+      cargo transfer, environmental considerations for LNG, LPG, ammonia, and CO2 terminals.
+    patterns:
+      - "Consolidates SIGTTO guidance on terminal mooring design and operations"
+    follow_ons:
+      - type: reference
+        title: "SIGTTO Terminal Guidelines 2024"
+        url: "https://www.sigtto.org/publications/liquefied-gas-terminals-site-selection-design-and-operation-of-marine-facilities/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-imo-solas-2024
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "IMO SOLAS Regulation II-1/3-8 (Jan 2024) — safe mooring design requirements"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Amended SOLAS Regulation II-1/3-8 (Resolution MSC.474(102)) entered force 1 January 2024.
+      Requires design-based mooring arrangement for ships 3,000+ GT per MSC.1/Circ.1619,
+      inspection/maintenance regime per MSC.1/Circ.1620, retirement criteria when strength
+      reaches 75% of Ship Design MBL, and Line Management Plans with traceable certificates.
+    patterns:
+      - "SOLAS now mandates design-based mooring arrangements for ships 3,000+ GT"
+      - "Retirement at 75% of Ship Design MBL — mandatory since Jan 2024"
+      - "Line Management Plans with traceable certificates required"
+    follow_ons:
+      - type: reference
+        title: "Bureau Veritas — Safe Mooring entry into force"
+        url: "https://marine-offshore.bureauveritas.com/newsroom/safe-mooring-entry-force-1-january-2024-amended-solas-regulation-ii-13-8"
+        added_at: "2026-03-29"
+
+  - id: MOORING-ig-pandi-statistics
+    type: career
+    category: mooring-failures
+    subcategory: industry-investigation
+    title: "International Group P&I — 858 injuries, 31 fatalities in mooring ops (2016-2021)"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      858 injuries and 31 fatalities during mooring operations were reported to International
+      Group P&I Clubs in the five policy years 2016-2021. UK P&I breakdown: 53% of injuries
+      involve parted ropes/wires, 42% from lines that jumped/slipped off drum ends/bitts,
+      5% from equipment failure. Improper spooling accounts for 32% of documented failures;
+      mixed-material lines cause 28% of partings.
+    patterns:
+      - "~170 injuries and ~6 fatalities per year in mooring operations across IG P&I fleet"
+      - "53% injuries from parted ropes; 42% from lines jumping off equipment"
+      - "Improper spooling (32%) and mixed-material lines (28%) are major failure contributors"
+    follow_ons:
+      - type: reference
+        title: "IG P&I Clubs — Mooring Operation Safety"
+        url: "https://www.igpandi.org/article/mooring-operation-safety/"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "UK P&I — Understanding Mooring Incidents"
+        url: "https://www.ukpandi.com/fileadmin/uploads/ukpandi/Documents/imports/13108/bulletins/2937-understandingmooringincidents.pdf"
+        added_at: "2026-03-29"
+
+  - id: MOORING-dnv-norwegian-shelf-2022
+    type: career
+    category: mooring-failures
+    subcategory: industry-investigation
+    title: "DNV — 18 mooring component failures on Norwegian continental shelf"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      DNV completed a study commissioned by Norway's Petroleum Safety Authority examining
+      18 reported mooring component failures on the Norwegian continental shelf, mostly on
+      mobile offshore drilling units. Most common failure mechanism was hydrogen embrittlement
+      of high-strength mooring chains, with contributing factors of cathodic protection systems,
+      handling damage, and high tensile loading. Semi-submersible MODUs in the North Sea
+      experienced approximately three mooring failures every two years, far exceeding the design
+      target of one single-line failure per 10,000 operating years. Published December 2022.
+    patterns:
+      - "Hydrogen embrittlement of high-strength chain is primary failure mode on Norwegian shelf"
+      - "3 failures per 2 years vs design target of 1 per 10,000 years — orders of magnitude worse"
+      - "Cathodic protection systems, handling damage, and high tensile loading are contributing factors"
+    follow_ons:
+      - type: reference
+        title: "Offshore Magazine — DNV investigates mooring line failures"
+        url: "https://www.offshore-mag.com/business-briefs/equipment-engineering/article/14287387/dnv-investigates-mooring-lines-failures"
+        added_at: "2026-03-29"
+
+  - id: MOORING-dnv-os-e301
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "DNV-OS-E301 Position Mooring — dynamic amplification and nearshore gap"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      DNV-OS-E301 (Edition July 2021) covers position mooring systems for all floating offshore
+      units. Defines wave frequency motion (first-order wave loads) and low-frequency motion
+      (horizontal resonant oscillatory motion induced by oscillatory wind and second-order wave
+      loads). Explicitly recognizes infragravity waves (periods 20s to several minutes) on
+      low-sloping seabeds as relevant phenomena. DNV acknowledged existing rules did not fully
+      address nearshore mooring — this led to DNV Offshore Technical Guidance OTG-18 for
+      long-term nearshore positional mooring, specifically addressing FSRUs, FLNGs, and floating
+      storage units in shallow water at jetties/quayside.
+    patterns:
+      - "DNV-OS-E301 recognizes infragravity waves (20s to several minutes) as relevant to mooring"
+      - "Low-frequency motion from second-order wave loads causes resonant horizontal oscillation"
+      - "OTG-18 fills the nearshore mooring gap for FSRUs/FLNGs at jetties"
+    follow_ons:
+      - type: reference
+        title: "DNV-OS-E301 (2021 edition)"
+        url: "https://img.antpedia.com/standard/files/pdfs_ora/20230614/DNVGL/DNV-OS-E301-2021.pdf"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "DNV nearshore mooring guidance"
+        url: "https://www.dnv.com/expert-story/maritime-impact/New-guidance-on-nearshore-mooring-systems/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-api-rp-2sk
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "API RP 2SK 4th Edition (2024) — stationkeeping design, dynamic amplification"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      API RP 2SK, 4th Edition (February 2024) — Design and Analysis of Stationkeeping Systems
+      for Floating Structures. Critical finding: mean wave drift forces and low-frequency vessel
+      motions increase with decreasing wave period, meaning the N-year return period wave
+      condition may not yield the most onerous mooring responses. Requires good estimates of
+      low-frequency damping. Mooring line damping (mainly from drag force on line) can dominate
+      total damping of catenary moored systems. Realistic motion damping estimates are crucial
+      for predicting slowly varying resonant vessel motions. 4th edition updates: design limit
+      states aligned with ISO 19900, new normative guidelines for mooring design Robustness
+      Check, and Response Based Analysis methods.
+    patterns:
+      - "N-year return period wave may NOT be the most onerous mooring case — check shorter periods"
+      - "Mooring line damping from drag can dominate total system damping for catenary systems"
+      - "Realistic low-frequency damping estimates are crucial for resonant motion prediction"
+    follow_ons:
+      - type: reference
+        title: "API RP 2SK 4th Edition paper — ResearchGate"
+        url: "https://www.researchgate.net/publication/324732752_API_RP_2SK_4th_Edition_-_An_Updated_Stationkeeping_Standard_for_the_Global_Offshore_Environment"
+        added_at: "2026-03-29"
+
+  - id: MOORING-pianc-working-groups
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "PIANC Working Groups on mooring — WG 24, 115, 153B, 186, 212"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      PIANC WG 24 (1995): "Criteria for Movements of Moored Ships in Harbours" — foundational,
+      established motion thresholds as peak-to-peak at vessel CoG. WG 115 (2012): wave forces
+      on moored ships, induced motions, mooring/fender loads. WG 153B (Oct 2022): added LNG
+      terminal content to WG 153; covers site selection, mooring/berthing, structural/coastal/
+      geotechnical/seismic engineering, fire protection. WG 186 (Jan 2025): "Mooring of Large
+      Ships at Quay Walls" — case studies on passing ships, time-varying wind, waves; measures
+      for safe mooring. WG 212 (July 2023): successor to WG 24/115 — motion limits now defined
+      as amplitudes (not peak-to-peak) at loading location (not vessel CoG).
+    patterns:
+      - "WG 153B (2022) now covers LNG terminal marine infrastructure design"
+      - "WG 212 supersedes WG 24: motion limits as amplitudes at loading location"
+      - "WG 186 (2025) addresses mooring of large ships including passing ship effects"
+    follow_ons:
+      - type: reference
+        title: "PIANC WG 186 Press Release"
+        url: "https://www.pianc.org/wp-content/uploads/2025/01/MarCom-WG-186-Press-Release-v2.pdf"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "PIANC WG 212 Terms of Reference"
+        url: "https://pianc.org.au/wp-content/uploads/2020/10/TOR-212-update-WG-24-Criteria-for-acceptable-movement-of-ships-at-beths-final.pdf"
+        added_at: "2026-03-29"
+
+  - id: MOORING-bs-6349-rom-eau
+    type: career
+    category: mooring-failures
+    subcategory: standard
+    title: "BS 6349-4, Spanish ROM 2.0-11, German EAU 2012 — national mooring design standards"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      BS 6349-4:2014 (UK): Code of Practice for Design of Fendering and Mooring Systems.
+      Recommends Dynamic Mooring Analysis as most realistic method for expected mooring loads.
+      BS 6349-4:2026 in development. ROM 2.0-11 (Spain): Recommendations for Design and
+      Construction of Berthing and Mooring Structures. Recognises wave action + wind provoke
+      excessive moored ship movement. Widely adopted in South America and Caribbean. EAU 2012
+      (Germany): 11th edition of waterfront structure recommendations aligned with Eurocodes.
+      Safety factor 1.5 for bollards and anchors. Recognises long-period swell impact should be
+      accounted for via time-domain analysis.
+    patterns:
+      - "BS 6349-4 recommends Dynamic Mooring Analysis (DMA) as most realistic approach"
+      - "ROM 2.0-11 widely adopted in South America/Caribbean for port mooring design"
+      - "EAU 2012 safety factor 1.5 for bollards; requires time-domain analysis for long-period swell"
+    follow_ons:
+      - type: reference
+        title: "ROM 2.0-11 full document (English PDF)"
+        url: "https://widispe.puertos.es/rom/storage/public/docROM/ROM%202_0-11%20(EN).pdf"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHYSICS — LONG-PERIOD SWELL AND RESONANCE
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-physics-long-period-resonance
+    type: career
+    category: mooring-failures
+    subcategory: physics
+    title: "Long-period swell mooring resonance — why 50mm waves can part mooring lines"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      The mechanism by which very small long-period swells cause mooring line failure:
+      (1) Long-period ocean swells (T > 15-20s) propagate from remote storms thousands of km
+      away; (2) In shallow water, bound waves and second-order difference frequency forces
+      increase dramatically with increasing wave period; (3) These low-frequency forces excite
+      the natural resonance frequencies of the vessel-mooring system (surge ~100-200s, sway
+      ~50-150s, yaw ~50-100s); (4) Resonance amplification factors of 10-50x are possible,
+      meaning a 50mm wave can generate vessel motions equivalent to a 0.5-2.5m wave at
+      the resonant frequency; (5) The amplified motions impose extreme cyclic loads on
+      mooring lines, particularly aft breast lines; (6) Lines fail at 10-60% of MBL due to
+      fatigue accumulation or pre-existing degradation. Infragravity waves (periods 25-250s)
+      formed through subharmonic interactions of sea and swell components can also cause
+      harbour seiching that further amplifies resonance.
+    patterns:
+      - "Resonance amplification of 10-50x means 50mm swell can act like 0.5-2.5m at resonant frequency"
+      - "Natural periods: surge ~100-200s, sway ~50-150s, yaw ~50-100s for moored LNG carriers"
+      - "Aft breast lines are most vulnerable due to yaw motion dominance"
+      - "Infragravity waves (25-250s period) cause harbour seiching that amplifies resonance"
+      - "Remote storms in S Indian Ocean, off southern Africa, and Great Australian Bight generate NW Australia swell"
+    follow_ons:
+      - type: reference
+        title: "UWA — Nowcasting infragravity wave height within a harbour"
+        url: "https://research-repository.uwa.edu.au/en/publications/nowcasting-infragravity-wave-height-within-a-harbour-using-an-art"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Review of Long Wave Dynamics over Reefs and into Ports"
+        url: "https://www.mdpi.com/2077-1312/4/1/12"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # AKTIS HYDRAULICS FORENSIC INVESTIGATION
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-aktis-forensic-investigation
+    type: career
+    category: mooring-failures
+    subcategory: investigation
+    title: "Aktis Hydraulics — Forensic investigation into three LNG mooring line failure events"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Aktis Hydraulics conducted a forensic investigation into three independent events of
+      historic mooring line failure at an LNG terminal where long swells diffracted around a
+      detached breakwater and impacted mooring integrity. Used SWAN (wave hindcasting), SWASH
+      (long wave propagation), and ANSYS-AQWA (hydrodynamic loads). SWASH signals were
+      decomposed into phase-related systems diffracting around the breakwater heads. Fluid
+      column velocities and wave directional amplitudes were assessed to describe the cross-sea
+      behind the breakwater. The result was large resonance behaviour of the carrier at the
+      terminal, eventually leading to lines failing. The description of "detached breakwater"
+      and "three independent events" is strongly consistent with the NWS LNG incidents,
+      though the Aktis page does not name the terminal.
+    patterns:
+      - "SWAN + SWASH + ANSYS-AQWA methodology for forensic wave-mooring failure investigation"
+      - "Wave diffraction around breakwater heads creates cross-sea conditions behind breakwater"
+      - "Reconstructing wave conditions at time of failure is essential for forensic mooring analysis"
+    follow_ons:
+      - type: reference
+        title: "Aktis Hydraulics — LNG mooring line failure forensic investigation"
+        url: "https://aktishydraulics.com/portfolio-item/lng_failure_pacific/"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Aktis Hydraulics — Dynamic mooring analysis capability"
+        url: "https://aktishydraulics.com/capabilities/dynamic_mooring_analysis/"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # MONITORING SYSTEMS AND TECHNICAL SOLUTIONS
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-shore-tension-monitoring
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "Shore tension monitoring systems — Trelleborg, Mampaey, Straatman"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Trelleborg SmartHook: load cell in QRH pivot, local controller, monitoring software,
+      user-defined alarm limits with visual/audible warnings. Trelleborg supplies >60% of LNG
+      terminal mooring/monitoring systems and >80% of SSL transfer systems. Mampaey (now
+      Trelleborg): mooring load monitoring via PDAs/pagers, hooks 40-200t, electric/hydraulic
+      remote release. Notable: Piombino LNG (Italy) — 8 sets of double mooring hooks at 150t
+      SWL each with central monitoring. Straatman MLMS: special load cells in each hook,
+      continuous monitoring, client-specified alarms, built-in cutout for on-site calibration
+      without dismantling.
+    patterns:
+      - "Trelleborg dominates LNG terminal mooring monitoring: >60% market share"
+      - "Real-time load monitoring with alarm limits is baseline for modern LNG terminals"
+      - "On-site calibration capability avoids costly hook dismantling for recalibration"
+    follow_ons:
+      - type: reference
+        title: "Trelleborg SmartHook"
+        url: "https://www.trelleborg.com/en/marine-and-infrastructure/products-solutions-and-services/marine/docking-and-mooring/mooring-load-monitoring/smarthook-load-monitoring-system"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Mampaey Quick Release Mooring Hooks"
+        url: "https://mampaey.com/quick-release-mooring-hooks/"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Straatman MLMS"
+        url: "https://mfstraatman.com/en/mooring-and-berthing-systems/mooring-load-monitoring-system"
+        added_at: "2026-03-29"
+
+  - id: MOORING-management-software
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "Mooring management software — OPTIMOOR, BerthAlert, DHI MIKE 21"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      OPTIMOOR (Tension Technology International): comprehensive mooring analysis — static,
+      dynamic, wave response, STS, CBMs, SPMs, turret, passing ship, LNG bunkering. Companion
+      OPTI-LIFE provides automated rope monitoring with remaining life tracking. OMC
+      International BerthAlert: combines ship hydrodynamic modelling with measured/forecast
+      environmental data to determine mooring line forces and vessel motions. Validated at >600
+      vessels at >40 ports. Planning tools model vessels over 7-day horizon. DHI MIKE 21 Mooring
+      Analysis: integrated with wave/hydrodynamic models for spatially varying passing vessel
+      drawdown, mixed sea states, dynamic winds/currents.
+    patterns:
+      - "OPTIMOOR + OPTI-LIFE for mooring analysis and automated rope life tracking"
+      - "BerthAlert validated at 40+ ports for real-time mooring force prediction"
+      - "7-day planning horizon allows proactive mooring management"
+    follow_ons:
+      - type: reference
+        title: "OPTIMOOR — Tension Technology International"
+        url: "https://www.tensiontech.com/optimoor"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "OMC International BerthAlert"
+        url: "https://omcinternational.com/products/berth-alert/"
+        added_at: "2026-03-29"
+
+  - id: MOORING-automated-mooring-systems
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "Automated mooring — Cavotec MoorMaster, Trelleborg AutoMoor/DynaMoor"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Cavotec MoorMaster: automated vacuum mooring using shore-mounted vacuum pads that attach
+      directly to hull, mooring a ship in under 30 seconds without mooring lines. Over 430
+      systems installed worldwide. EX-certified for LNG. Surge motion reduction from ~1m
+      amplitude to 5cm. Trelleborg AutoMoor: rope-free automated mooring combining vacuum pad
+      and passive damping, reduces passing ship and long-period wave effects. Trelleborg
+      DynaMoor: intelligent dynamic mooring that actively maintains constant tension, with
+      continuous passive surge damping. Eliminates effect of passing ships and long-period
+      waves on moored vessels.
+    patterns:
+      - "MoorMaster reduces surge from ~1m to 5cm — 95% reduction in motion"
+      - "EX-certified vacuum mooring available for LNG applications"
+      - "DynaMoor actively maintains constant tension to damp long-period wave effects"
+      - "430+ MoorMaster systems installed globally"
+    follow_ons:
+      - type: reference
+        title: "Cavotec MoorMaster"
+        url: "https://www.cavotec.com/products/moormaster"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Trelleborg DynaMoor"
+        url: "https://www.trelleborg.com/en/marine-and-infrastructure/products-solutions-and-services/marine/docking-and-mooring/automated-mooring-systems/dynamoor"
+        added_at: "2026-03-29"
+
+  # ═══════════════════════════════════════════════════════════════
+  # GLOBAL PORTS WITH LONG-PERIOD SWELL MOORING PROBLEMS
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-geraldton-australia
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "Port of Geraldton, WA — long-period wave mooring failures and solutions"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Geraldton Harbour experiences frequent mooring line breakages from long-period waves
+      generated as swell propagates over wide shallow reef to the north/northwest. Long waves
+      refract on reef outskirts and channel side slopes, diffracting around the western
+      breakwater into port. Solutions investigated: breakwater extension (effective but cost-
+      prohibitive), pneumatic fenders + constant tension winches (50% increase in threshold
+      long wave height), nylon breast lines on brake winch, MoorMaster at Berth 7, ShoreTension
+      units (30-81% reduction in horizontal motions, average 61%). Critical finding: increasing
+      spring lines without maintaining sufficient pre-tension can WORSEN surge motions by
+      aligning natural resonance mode with infragravity wave frequency. ShoreTension deployed
+      for cruise ship berthing after estimated $6.2M lost from 18 cancelled visits over 4 years.
+    patterns:
+      - "More spring lines without pre-tension can WORSEN surge by tuning resonance to infragravity frequency"
+      - "ShoreTension units: 30-81% horizontal motion reduction (avg 61%)"
+      - "Breakwater extension effective but cost-prohibitive at reef fringe"
+      - "Combined approach needed: structural + operational + monitoring"
+    follow_ons:
+      - type: reference
+        title: "Geraldton mooring improvements (MDPI)"
+        url: "https://www.mdpi.com/2077-1312/4/1/3"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "DHI long-period wave mitigation study"
+        url: "https://www.dhigroup.com/projects/assessing-long-period-wave-mitigation-to-improve-port-operations"
+        added_at: "2026-03-29"
+
+  - id: MOORING-saldanha-bay-south-africa
+    type: career
+    category: mooring-failures
+    subcategory: terminal-investigation
+    title: "Saldanha Bay, South Africa — infragravity wave mooring problems, CSIR forecast tool"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Africa's largest iron ore export facility with deepest (23m draught) natural port in
+      Southern Africa. 990m jetty with two iron ore berths linked via 3.1km causeway/breakwater.
+      Infragravity waves (30-300s periods) are the main contributing factor to mooring problems.
+      Vessel motion during large environmental events can cause mooring line breakages. CSIR
+      developed a vessel motion forecast tool that predicts moored ship motions for current
+      and forecasted wave conditions, advising where ships of certain sizes and loading states
+      should be moored during long wave events.
+    patterns:
+      - "Infragravity waves (30-300s) are primary mooring hazard at Saldanha Bay"
+      - "Vessel-specific motion forecast tools enable proactive berth allocation"
+    follow_ons:
+      - type: reference
+        title: "CSIR vessel motion forecast tool"
+        url: "https://www.csir.co.za/new-vessel-motion-forecast-tool"
+        added_at: "2026-03-29"
+
+  - id: MOORING-peru-lng-shoretension
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "Peru LNG Terminal — ShoreTension VST system, 20% berth availability increase"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Peru LNG Terminal is protected by a detached breakwater against incident swells but
+      remained open to infragravity waves, causing vessel surge and only 68% berth availability.
+      In 2022, six Vertical ShoreTension (VST) units installed (4 on mooring dolphins, 2 on
+      breasting dolphins). Result: vessels loaded in approximately 20% larger swell conditions,
+      with reduced surge motions and mooring line forces. Berth availability increased by ~20%.
+    patterns:
+      - "Detached breakwater blocks direct swell but not infragravity waves"
+      - "VST units increased berth availability from 68% to ~88%"
+      - "Infrastructure solution at mooring dolphins — no vessel modification needed"
+    follow_ons:
+      - type: reference
+        title: "Peru LNG ShoreTension implementation — ResearchGate"
+        url: "https://www.researchgate.net/publication/380360179_Implementation_of_Vertical_ShoreTension_Dynamic_Mooring_System_at_Peru_LNG_Terminal"
+        added_at: "2026-03-29"
+
+  - id: MOORING-ngqura-south-africa
+    type: career
+    category: mooring-failures
+    subcategory: mitigation
+    title: "Port of Ngqura, South Africa — automated mooring after mooring line failures"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      Excessive vessel motions and mooring line failures at container berths D100 and D101
+      since the port's first operational winter. Solution: 26 Cavotec mooring units custom-
+      designed for the port's environmental conditions, plus hydraulic shore tension mooring
+      units.
+    patterns:
+      - "Automated mooring as a retrofit solution for persistent mooring failure problems"
+    follow_ons: []
+
+  # ═══════════════════════════════════════════════════════════════
+  # JOINT INDUSTRY PROJECTS
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: MOORING-jip-hawaiii
+    type: career
+    category: mooring-failures
+    subcategory: research
+    title: "JIP HAWAIII (Deltares/MARIN) — LNG mooring in shallow/intermediate water"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: mooring-failures-lng-terminals.yaml
+    context: >
+      JIP HawaIII (sHAllow WAter InItIative) is a multi-phase joint industry project by
+      Deltares and MARIN focused on mooring of LNG vessels in intermediate water depths
+      (15-40m). Addresses infragravity waves generated by wave component interactions in
+      shallow water (periods around 1 minute), to which moored LNG vessels are specifically
+      sensitive, leading to resonant behavior with excessive motions and mooring line forces.
+      Develops full design methodologies, performs scale model tests, and validates against
+      numerical results. Streamlined LNG carrier hulls have very low damping against
+      low-frequency surge motions, making them particularly vulnerable.
+    patterns:
+      - "LNG carriers uniquely vulnerable: streamlined hulls have very low surge damping"
+      - "Infragravity waves in 15-40m water depth drive resonant mooring behavior"
+      - "Scale model tests + numerical validation for design methodology"
+    follow_ons:
+      - type: reference
+        title: "Deltares JIP HAWAIII"
+        url: "https://www.deltares.nl/en/expertise/projects/jip-hawaiii-joint-industry-project-shallow-water-initiative"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "MARIN HAWA-III"
+        url: "https://www.marin.nl/en/jips/hawaiii"
+        added_at: "2026-03-29"
+      - type: reference
+        title: "Port Technology — Key research into LNG behaviour in shallow water"
+        url: "https://www.porttechnology.org/technical-papers/key_research_into_lng_behaviour_in_shallow_water/"
+        added_at: "2026-03-29"
