@@ -12,7 +12,7 @@ Requirements for OrcaWave Automation milestone. Each maps to roadmap phases.
 - [ ] **SPEC-01**: User can author a human/AI-readable problem description YAML with text blocks covering analysis intent, vessel, environment, and solver preferences
 - [ ] **SPEC-02**: Deterministic modular group functions — each handles one logical group of key-value pairs (environment, hull, mesh, frequencies, solver, constraints, etc.), independently testable, codifying the manual group-by-group workflow
 - [ ] **SPEC-03**: Generated OrcaWave input .yml validated via semantic comparison against existing 206+ example files — output must be as close as possible to the reference example it targets
-- [ ] **SPEC-04**: Frequency normalization enforced at API boundary (Hz descending → rad/s ascending with monotonicity assertions)
+- [ ] **SPEC-04**: Frequency normalization enforced at API boundary (Hz descending -> rad/s ascending with monotonicity assertions)
 - [ ] **SPEC-05**: QTF parameter guards prevent runtime errors when qtf_calculation=false
 
 ### Calculation Report
@@ -31,7 +31,7 @@ Requirements for OrcaWave Automation milestone. Each maps to roadmap phases.
 
 ### Batch Processing
 
-- [ ] **BATCH-01**: Batch execution of all existing examples (L00–L06) through pipeline with standardized reports
+- [ ] **BATCH-01**: Batch execution of all existing examples (L00-L06) through pipeline with standardized reports
 - [ ] **BATCH-02**: Fleet comparison dashboard — summary HTML with pass/fail QA gates and key metrics per case
 - [ ] **BATCH-03**: Per-case correctness gates (frequency monotonicity, heave RAO ~1.0 at low frequency, symmetric added mass matrix, metadata matching source model)
 
@@ -84,32 +84,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SPEC-01 | — | Pending |
-| SPEC-02 | — | Pending |
-| SPEC-03 | — | Pending |
-| SPEC-04 | — | Pending |
-| SPEC-05 | — | Pending |
-| REPT-01 | — | Pending |
-| REPT-02 | — | Pending |
-| REPT-03 | — | Pending |
-| REPT-04 | — | Pending |
-| REPT-05 | — | Pending |
-| SENS-01 | — | Pending |
-| SENS-02 | — | Pending |
-| SENS-03 | — | Pending |
-| BATCH-01 | — | Pending |
-| BATCH-02 | — | Pending |
-| BATCH-03 | — | Pending |
-| OFLEX-01 | — | Pending |
-| OFLEX-02 | — | Pending |
-| INFRA-01 | — | Pending |
-| INFRA-02 | — | Pending |
+| SPEC-01 | Phase 8 | Pending |
+| SPEC-02 | Phase 8 | Pending |
+| SPEC-03 | Phase 8 | Pending |
+| SPEC-04 | Phase 8 | Pending |
+| SPEC-05 | Phase 8 | Pending |
+| REPT-01 | Phase 9 | Pending |
+| REPT-02 | Phase 9 | Pending |
+| REPT-03 | Phase 9 | Pending |
+| REPT-04 | Phase 9 | Pending |
+| REPT-05 | Phase 9 | Pending |
+| SENS-01 | Phase 10 | Pending |
+| SENS-02 | Phase 10 | Pending |
+| SENS-03 | Phase 10 | Pending |
+| BATCH-01 | Phase 11 | Pending |
+| BATCH-02 | Phase 11 | Pending |
+| BATCH-03 | Phase 11 | Pending |
+| OFLEX-01 | Phase 12 | Pending |
+| OFLEX-02 | Phase 12 | Pending |
+| INFRA-01 | Phase 7 | Pending |
+| INFRA-02 | Phase 7 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 20 total
-- Mapped to phases: 0
-- Unmapped: 20 ⚠️
+- Mapped to phases: 20
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-30*
-*Last updated: 2026-03-30 after initial definition*
+*Last updated: 2026-03-30 after roadmap creation*

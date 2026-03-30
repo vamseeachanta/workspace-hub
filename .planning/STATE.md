@@ -1,59 +1,68 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: executing
-stopped_at: Completed 1000-03-PLAN.md (Phase 1000 complete)
-last_updated: "2026-03-30T11:30:08.682Z"
+milestone: v1.1
+milestone_name: OrcaWave Automation
+status: ready_to_plan
+stopped_at: Roadmap created for v1.1 (6 phases, 20 requirements mapped)
+last_updated: "2026-03-30"
 last_activity: 2026-03-30
 progress:
   total_phases: 6
-  completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Current Focus
 
-Phase 1000: Cross-AI Parallel Planning and Cross-Review for All Issue Workflows
+Phase 7: Solver Verification Gate (go/no-go for v1.1)
 
 ## Current Position
 
-Phase 1000 complete. All 3 plans executed: 01 (config contracts), 02 (cross-plan.sh), 03 (GSD skill integration).
+Phase 7 of 12 (Solver Verification Gate)
+Plan: 0 of ? in current phase
+Status: Ready to plan
+Last activity: 2026-03-30 — Roadmap created for v1.1 OrcaWave Automation
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-29)
 
 **Core value:** Tethering timeless engineering to a single source of truth
-**Current focus:** Cross-AI parallel planning and cross-review
+**Current focus:** OrcaWave Automation — automate full vessel hull analysis workflow
 
-## Progress
+## Performance Metrics
 
-- Phase 1000: Cross-AI parallel planning and cross-review [##########] 100% (3/3 plans)
+**Velocity (v1.0 baseline):**
+- v1.0 completed: 6 phases, 21 plans in 5 days
+- Phase 1000: 3 plans in 1 day
+
+**v1.1:** No plans executed yet.
 
 ## Accumulated Context
 
 ### Decisions
 
-- [Phase 1000]: cross_plan uses all 3 providers for enabled task types with Claude as synthesis agent
-- [Phase 1000]: 6 task types get null cross_plan (simple/focused), 5 get ensemble cross_plan
-- [Phase 1000]: research/docs uses gemini as single planner default; cross-plan overrides at runtime
-- [Phase 1000]: Modified .codex/ and .gemini/ tracked copies for GSD skill integration (canonical .claude/ is gitignored)
-- [Phase 1000]: Parallel review is default for Route B/C/REASONING; sequential fallback for Route A (SIMPLE)
-
-### Roadmap Evolution
-
-- Phase 1000 added: Cross-AI parallel planning and cross-review for all issue workflows (GitHub #1501)
+- [v1.1 Roadmap]: Phase 0 solver verification is go/no-go gate before development
+- [v1.1 Roadmap]: SPEC-01/02/03 (problem description YAML pipeline) is the core innovation
+- [v1.1 Roadmap]: License boundary — spec generation, reports, sensitivity, dashboards all license-free; only solver execution needs licensed-win-1
+- [v1.1 Roadmap]: Report template uses N/A for non-applicable sections, extensible via section registration
 
 ### Pending Todos
 
 1. Automate OrcaWave vessel hull analysis on licensed machine (tooling) -- this milestone
 2. Automate OrcaFlex model generation on licensed machine (tooling) -- after OrcaWave
 
+### Blockers/Concerns
+
+- licensed-win-1 readiness unknown — 8 pending action items from hardware inventory; Phase 7 will surface blockers
+
 ## Session
 
 Last activity: 2026-03-30
-Stopped at: Completed 1000-03-PLAN.md (Phase 1000 complete)
+Stopped at: Roadmap created for v1.1 OrcaWave Automation (6 phases, 20 requirements)
+Resume file: None
