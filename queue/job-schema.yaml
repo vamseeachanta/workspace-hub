@@ -1,0 +1,27 @@
+# Solver Job Schema
+# ABOUTME: Documents the YAML format for solver job files in queue/pending/
+# Submit jobs by creating a YAML file in queue/pending/
+# Filename convention: {timestamp}-{name}.yaml
+#
+# Workflow:
+#   1. Create a job YAML in queue/pending/ (use scripts/solver/submit-job.sh)
+#   2. licensed-win-1 polls via git pull every 30 minutes
+#   3. Queue processor runs each job with OrcFxAPI
+#   4. Results move to queue/completed/{job-name}/ or queue/failed/{job-name}/
+
+schema:
+  required:
+    solver: "orcawave | orcaflex"
+    input_file: "relative path to .owd or .dat input file (from repo root)"
+  optional:
+    output_dir: "where to save results (default: queue/completed/{job-name}/)"
+    export_excel: true  # also produce .xlsx alongside .owr
+    description: "human-readable job description"
+    submitted_by: "hostname of submitting machine (auto-filled by submit-job.sh)"
+    submitted_at: "UTC timestamp (auto-filled by submit-job.sh)"
+
+example:
+  solver: orcawave
+  input_file: docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+  export_excel: true
+  description: "L00 validation smoke test"
