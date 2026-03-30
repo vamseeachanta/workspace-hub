@@ -83,7 +83,7 @@ Plans:
 
 Plans:
 - [ ] 05-01-PLAN.md — Enhance researcher: 4-domain weekday rotation, model selection, web search, validation, pruning
-- [ ] 05-02-PLAN.md — Staleness check script, schedule-tasks.yaml registration, README update
+- [x] 05-02-PLAN.md — Staleness check script, schedule-tasks.yaml registration, README update
 
 ### Phase 6: Update plan and vision for digitalmodel repo
 **Goal:** Define the updated roadmap, architecture vision, and development priorities for the digitalmodel repo

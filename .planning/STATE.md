@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to plan
-last_updated: "2026-03-28T03:33:14.178Z"
+last_updated: "2026-03-30T01:03:06.323Z"
 last_activity: 2026-03-28
 progress:
-  total_phases: 7
+  total_phases: 11
   completed_phases: 4
-  total_plans: 19
-  completed_plans: 17
+  total_plans: 21
+  completed_plans: 18
 ---
 
 # Project State
@@ -34,6 +34,8 @@ Phase 04 complete (3/3 plans). Next: Phase 05.
 Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 - [Phase 04]: Used funnel_step event for calculator-to-case-study links to distinguish funnel progression from generic CTA clicks
+- [Phase 05]: 60-hour staleness threshold (not 36h) to avoid Monday false positives with weekday-only schedule
+- [Phase 05]: Staleness check as separate cron job (D-07) to detect when researcher itself fails to execute
 
 ### Phase 03 Plan 01 Decisions
 
