@@ -43,7 +43,7 @@ Requirements for OrcaWave Automation milestone. Each maps to roadmap phases.
 ### Infrastructure
 
 - [x] **INFRA-01**: All spec generation, report rendering, sensitivity planning, correctness gates, and dashboard generation runs license-free on any machine
-- [ ] **INFRA-02**: Only solver execution and result export requires licensed machine (`licensed-win-1`); results portable via .owr + Excel
+- [x] **INFRA-02**: Only solver execution and result export requires licensed machine (`licensed-win-1`); results portable via .owr + Excel
 
 ## v1.x Requirements
 
@@ -103,7 +103,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OFLEX-01 | Phase 12 | Pending |
 | OFLEX-02 | Phase 12 | Pending |
 | INFRA-01 | Phase 7 | Complete |
-| INFRA-02 | Phase 7 | Pending |
+| INFRA-02 | Phase 7 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 20 total

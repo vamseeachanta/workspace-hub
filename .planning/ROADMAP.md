@@ -28,7 +28,7 @@
 
 Plans:
 - [x] 07-01-PLAN.md — Module boundary refactoring + test infrastructure (solver/ subpackage, pytest markers)
-- [ ] 07-02-PLAN.md — Licensed-win-1 infrastructure verification (SSH, OrcFxAPI, Claude Code, uv)
+- [x] 07-02-PLAN.md — Licensed-win-1 infrastructure verification (SSH, OrcFxAPI, Claude Code, uv)
 - [ ] 07-03-PLAN.md — Smoke test execution (L00+L01) + artifact commit
 
 ## Backlog
