@@ -2,26 +2,26 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-30T01:06:55.972Z"
+status: In progress
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-03-30T01:30:54.796Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 11
   completed_phases: 5
   total_plans: 21
-  completed_plans: 19
+  completed_plans: 20
 ---
 
 # Project State
 
 ## Current Focus
 
-Phase 05: Nightly Research Automation (1/2 plans complete)
+Phase 06: Update plan and vision for digitalmodel repo (1/2 plans complete)
 
 ## Current Position
 
-Phase 05 in progress (1/2 plans). Plan 01 complete, Plan 02 next.
+Phase 06 in progress (1/2 plans). Plan 01 complete, Plan 02 next.
 
 ## Progress
 
@@ -30,6 +30,7 @@ Phase 05 in progress (1/2 plans). Plan 01 complete, Plan 02 next.
 - Phase 03: GTM and marketing — 3/3 plans complete, pending verification
 - Phase 04: Client acquisition ✓ (3/3 plans: case studies, GA4 tracking, enterprise funnel)
 - Phase 05: Nightly research automation — 1/2 plans complete
+- Phase 06: Update plan and vision for digitalmodel repo — 1/2 plans complete
 
 ## Decisions
 
@@ -38,6 +39,9 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - [Phase 04]: Used funnel_step event for calculator-to-case-study links to distinguish funnel progression from generic CTA clicks
 - [Phase 05]: 60-hour staleness threshold (not 36h) to avoid Monday false positives with weekday-only schedule
 - [Phase 05]: Staleness check as separate cron job (D-07) to detect when researcher itself fails to execute
+- [Phase 06]: OrcaFlex production-grade = 3 scenario templates + license-free tests + validated against 1 reference project
+- [Phase 06]: CP higher maturity = all clauses in implemented standards + worked-example tests + ABS GN full implementation
+- [Phase 06]: Stub modules (digitalmarketing, finance, project_management) marked as removal candidates
 
 ### Phase 03 Plan 01 Decisions
 
@@ -100,4 +104,4 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 ## Session
 
 Last activity: 2026-03-30
-Stopped at: Completed 05-01-PLAN.md
+Stopped at: Completed 06-01-PLAN.md
