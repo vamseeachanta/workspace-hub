@@ -3,26 +3,24 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 05
-last_updated: "2026-03-30T00:57:54.852Z"
+last_updated: "2026-03-30T01:04:40.525Z"
 last_activity: 2026-03-30
 progress:
   total_phases: 11
   completed_phases: 4
   total_plans: 21
-  completed_plans: 17
+  completed_plans: 18
 ---
 
 # Project State
 
 ## Current Focus
 
-Phase 04 complete — ready for Phase 05
+Phase 05: Nightly Research Automation (1/2 plans complete)
 
 ## Current Position
 
-Phase: 05 (nightly-research-automation) — EXECUTING
-Plan: 1 of 2
-Phase 04 complete (3/3 plans). Next: Phase 05.
+Phase 05 in progress (1/2 plans). Plan 01 complete, Plan 02 next.
 
 ## Progress
 
@@ -30,6 +28,7 @@ Phase 04 complete (3/3 plans). Next: Phase 05.
 - Phase 02: Accelerate worldenergydata pipelines ✓ (6/6 plans, verified 2026-03-26)
 - Phase 03: GTM and marketing — 3/3 plans complete, pending verification
 - Phase 04: Client acquisition ✓ (3/3 plans: case studies, GA4 tracking, enterprise funnel)
+- Phase 05: Nightly research automation — 1/2 plans complete
 
 ## Decisions
 
@@ -72,6 +71,12 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 - Scroll tracking uses var and default scroll listener for browser compat
 - GitHub Issues pipeline in workspace-hub repo (private) for prospect tracking
 
+### Phase 05 Plan 01 Decisions
+
+- Feed all prior research (all domains, last 7 days) to every domain scan, not just synthesis
+- Pruning integrated into researcher script (runs at end of each execution) rather than separate cron
+- Output validation accepts on second failure with warning rather than hard-failing
+
 ### Quick Tasks Completed
 
 | # | Description | Date | Commit | Directory |
@@ -92,3 +97,4 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 ## Session
 
 Last activity: 2026-03-30
+Stopped at: Completed 05-01-PLAN.md
