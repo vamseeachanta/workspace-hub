@@ -1777,11 +1777,15 @@ libraries:
     primary_language: Python
     domain: "Doc Intelligence"
     capabilities: >-
-      High-accuracy PDF to Markdown+JSON converter. Uses surya OCR for layout
-      detection. Handles tables, equations, figures.
-    download_size_estimate: "2 GB (with models)"
+      High-accuracy PDF/DOCX/PPTX/XLSX/HTML/EPUB to Markdown+JSON+HTML converter.
+      Uses surya OCR for layout detection, table recognition, and reading order in
+      90+ languages. Converts equations to LaTeX, extracts figures, strips headers/
+      footers. GPU-accelerated (~122 pages/sec on H100). CPU fallback available.
+    download_size_estimate: "3 GB (packages + models)"
     integration_fit: very-high
-    integration_notes: "pip install marker-pdf. Core doc intelligence tool."
+    integration_notes: "pip install marker-pdf. Installed at /mnt/local-analysis/marker-env/. Best for equation-heavy engineering docs. GPL-3.0 copyleft."
+    evaluation: "docs/research/marker-eval.md"
+    evaluated_date: "2026-03-30"
     cloned_at_ace: false
 
   - name: docling
