@@ -1,0 +1,3 @@
+# ABOUTME: Tracks which tips were shown on which dates to prevent repeats
+# ABOUTME: Auto-maintained by workflow-tip.sh — 30-day no-repeat window
+shown: []

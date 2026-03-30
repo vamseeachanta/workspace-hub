@@ -110,6 +110,13 @@ else
     echo "  WARNING: could not determine yesterday's date"
 fi
 
+# Step 9: harvest workflow-tip candidates from Wednesday ai-tooling research (best-effort)
+if [[ "$(date +%u)" -eq 3 ]]; then
+    echo "--- Workflow tip harvest $(date +%Y-%m-%dT%H:%M:%S) ---"
+    bash scripts/cron/harvest-workflow-tips.sh "$WORKSPACE_HUB" || \
+      echo "WARNING: workflow tip harvest failed — see above"
+fi
+
 # Step 3e: run pipeline (WRK-1076: notify on completion)
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 _nightly_exit=0
