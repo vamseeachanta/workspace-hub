@@ -122,9 +122,9 @@ Plans:
 **Goal:** Add cross-AI parallel planning (3 AIs plan independently, then merge via structured diff + synthesis) and parallel cross-review (switch from sequential to parallel invocation with tiered gates) to the GSD workflow as optional modes on existing skills
 **Requirements:** [XCONFIG-01, XCONFIG-02, XCONFIG-03, XREV-01, XREV-02, XPLAN-01, XPLAN-02, XPLAN-03, XSKILL-01, XSKILL-02]
 **Depends on:** Phase 999
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 - [ ] 1000-01-PLAN.md — Config contracts: routing-config.yaml cross_modes, behavior-contract.yaml cross_plan, agent-delegation-templates.md phase_0_plan
-- [ ] 1000-02-PLAN.md — cross-plan.sh: parallel dispatch, section extraction, structured diff merge with synthesis
+- [x] 1000-02-PLAN.md — cross-plan.sh: parallel dispatch, section extraction, structured diff merge with synthesis
 - [ ] 1000-03-PLAN.md — GSD skill integration: review.md parallel invocation, plan-phase.md cross-plan dispatch
