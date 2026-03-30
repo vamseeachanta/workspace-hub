@@ -40,7 +40,20 @@ tasks:
       >> $WORKSPACE_HUB/logs/research/$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/research/*.log
     is_claude_task: true
-    description: Nightly domain research rotating standards/python-ecosystem/ai-tooling; Sunday synthesis.
+    description: Weekday domain research rotating standards/python-ecosystem/ai-tooling/competitor-market; Friday synthesis. Sat/Sun off.
+
+  - id: research-staleness
+    label: Research artifact staleness check
+    schedule: "0 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/research-staleness-check.sh
+      >> $WORKSPACE_HUB/logs/research/staleness-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/research/staleness-*.log
+    is_claude_task: false
+    description: Daily 06:00 UTC staleness check; alerts via notify.sh if no research artifact in 60h.
 
   - id: dep-health
     label: Dependency health check
