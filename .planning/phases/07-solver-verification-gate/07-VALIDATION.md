@@ -38,12 +38,12 @@ created: 2026-03-30
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 07-01-01 | 01 | 1 | D-14 | integration | `uv sync --check` on licensed-win-1 | ❌ W0 | ⬜ pending |
-| 07-01-02 | 01 | 1 | D-06/D-08 | integration | `ssh licensed-win-1 "claude -p ..."` | ❌ W0 | ⬜ pending |
-| 07-02-01 | 02 | 1 | D-09/D-10 | integration | `python -c "import OrcFxAPI; ..."` on licensed-win-1 | ❌ W0 | ⬜ pending |
-| 07-02-02 | 02 | 1 | D-05/D-11 | artifact | `test -f tests/fixtures/*.owr` | ❌ W0 | ⬜ pending |
-| 07-03-01 | 03 | 2 | D-12/D-13 | unit | `uv run pytest tests/test_module_separation.py` | ❌ W0 | ⬜ pending |
-| 07-03-02 | 03 | 2 | D-16/D-17 | unit | `uv run pytest -m "not solver" -v` | ❌ W0 | ⬜ pending |
+| 07-01-01 | 01 | 1 | D-12/D-13 | unit | `cd digitalmodel && uv run python -c "from digitalmodel.hydrodynamics.diffraction import input_schemas, output_schemas"` | tests/hydrodynamics/diffraction/test_module_boundary.py | ⬜ pending |
+| 07-01-02 | 01 | 1 | D-16/D-17 | unit | `cd digitalmodel && uv run pytest tests/hydrodynamics/diffraction/test_module_boundary.py tests/hydrodynamics/diffraction/test_solver_fixtures.py -m "not solver" -x` | tests/hydrodynamics/diffraction/test_solver_fixtures.py | ⬜ pending |
+| 07-02-01 | 02 | 1 | D-06/D-08 | integration | `ssh ${SOLVER_HOST:-user@192.168.0.184} "echo SSH_OK"` | scripts/remote/verify-licensed-win-1.sh | ⬜ pending |
+| 07-02-02 | 02 | 1 | D-14/D-15 | integration | `bash scripts/remote/verify-licensed-win-1.sh` | scripts/remote/solver-dispatch.sh | ⬜ pending |
+| 07-03-01 | 03 | 2 | D-09/D-10 | integration | `cd digitalmodel && uv run python -m py_compile tests/solver/smoke_test.py && uv run pytest tests/solver/ --collect-only -q` | tests/solver/smoke_test.py | ⬜ pending |
+| 07-03-02 | 03 | 2 | D-04/D-05/D-11 | artifact | `cd digitalmodel && test -f tests/fixtures/solver/L00_test01.owr && test -f tests/fixtures/solver/L01_001_ship_raos.owr` | tests/fixtures/solver/*.owr | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -51,9 +51,9 @@ created: 2026-03-30
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_module_separation.py` — stubs for D-12/D-13 license boundary verification
-- [ ] `tests/conftest.py` — `@pytest.mark.solver` marker registration, reference fixture paths
-- [ ] SSH connectivity script — verify dev-primary → licensed-win-1 SSH path
+- [ ] `tests/hydrodynamics/diffraction/test_module_boundary.py` — stubs for D-12/D-13 license boundary verification (created by Plan 01 Task 2)
+- [ ] `tests/hydrodynamics/diffraction/conftest.py` — `@pytest.mark.solver` marker registration, reference fixture paths (created by Plan 01 Task 2)
+- [ ] `scripts/remote/verify-licensed-win-1.sh` — verify dev-primary -> licensed-win-1 SSH path (created by Plan 02 Task 2)
 
 *If none: "Existing infrastructure covers all phase requirements."*
 
