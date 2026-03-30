@@ -22,6 +22,7 @@ MIN_PLAN_BYTES=50        # Minimum bytes for valid plan output (Codex NO_OUTPUT 
 MIN_PROVIDERS=2          # Minimum successful plans required for merge
 SYNTHESIS_AGENT="claude" # Agent used for synthesizing divergent sections (per D-03)
 PLAN_SECTIONS=(objective tasks verification success_criteria)
+PROVIDER_TIMEOUT=120     # Per-provider timeout in seconds
 DRY_RUN=false
 VERBOSE=false
 PHASE=""
@@ -137,7 +138,7 @@ parse_args() {
 # ---------------------------------------------------------------------------
 setup_tmpdir() {
     TMPDIR=$(mktemp -d "/tmp/gsd-cross-plan-XXXXXX")
-    trap 'rm -rf "$TMPDIR"' EXIT ERR INT TERM
+    trap 'rm -rf "$TMPDIR"' EXIT
     log_verbose "Temp directory: $TMPDIR"
 }
 
@@ -193,15 +194,29 @@ dispatch_plan() {
         return 0
     fi
 
+    # Prompt delivery strategy per provider:
+    # - claude: embed file content in -p argument (avoids stdin pipe issues in
+    #   background subshells; prefix instruction prevents "---" being parsed as flag)
+    # - codex:  pipe via stdin with "-" sentinel (codex explicitly supports this)
+    # - gemini: pipe via stdin with -p instruction (gemini -p "val" conflicts
+    #   with positional args, so prompt goes through stdin; -p triggers headless mode)
+    local plan_instruction="Generate a plan based on the following input. Preserve the XML section tags (objective, tasks, verification, success_criteria)."
+    local prompt_content
+    prompt_content=$(cat "$prompt_file")
+
+    # Run each provider from /tmp to avoid workspace CLAUDE.md / skills loading
+    # overhead — plan generation is a pure-LLM task with no file system context needed.
     case "$provider" in
         claude)
-            claude -p -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
+            (cd /tmp && timeout "$PROVIDER_TIMEOUT" claude -p "${plan_instruction}
+
+${prompt_content}" --max-turns 2 </dev/null) > "$output_file" 2>"$err_file"
             ;;
         codex)
-            codex exec -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
+            (cd /tmp && echo "$prompt_content" | timeout "$PROVIDER_TIMEOUT" codex exec --skip-git-repo-check -) > "$output_file" 2>"$err_file"
             ;;
         gemini)
-            gemini -p -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
+            (cd /tmp && echo "$prompt_content" | timeout "$PROVIDER_TIMEOUT" gemini -p "$plan_instruction") > "$output_file" 2>"$err_file"
             ;;
         *)
             log_error "Unknown provider: $provider"
@@ -550,7 +565,7 @@ Output ONLY the merged section content (no wrapper tags, no explanation)."
 
     # Call synthesis agent
     local synthesis_output
-    synthesis_output=$(claude -p "$synthesis_prompt" --no-input 2>/dev/null) || {
+    synthesis_output=$(claude -p "$synthesis_prompt" 2>/dev/null) || {
         log_warning "Synthesis agent failed for section <$section>"
         return 1
     }
@@ -637,7 +652,7 @@ Output the complete merged plan (frontmatter + all sections)."
     fi
 
     local result
-    result=$(claude -p "$synthesis_prompt" --no-input 2>/dev/null) || {
+    result=$(claude -p "$synthesis_prompt" 2>/dev/null) || {
         log_error "Full-plan synthesis failed. Using base provider's plan as-is."
         local base_provider="${SUCCESSFUL_PROVIDERS[0]}"
         cp "$TMPDIR/${base_provider}-plan.md" "$OUTPUT_FILE"
