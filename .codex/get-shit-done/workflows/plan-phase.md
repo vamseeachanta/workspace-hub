@@ -24,6 +24,9 @@ Load all context in one call (paths only to minimize orchestrator context):
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS_RESEARCHER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `nyquist_validation_enabled`, `commit_docs`, `text_mode`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_reviews`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `phase_req_ids`.
@@ -301,6 +304,8 @@ Answer: "What do I need to know to PLAN this phase well?"
 - {state_path} (Project decisions and history)
 </files_to_read>
 
+${AGENT_SKILLS_RESEARCHER}
+
 <additional_context>
 **Phase description:** {phase_description}
 **Phase requirement IDs (MUST address):** {phase_req_ids}
@@ -342,7 +347,7 @@ If `research_enabled` is false and `nyquist_validation_enabled` is true: warn "N
 In that case: **skip validation-strategy creation entirely**. Do **not** expect `RESEARCH.md` or `VALIDATION.md` for this run, and continue to Step 6.
 
 ```bash
-grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null
+grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null || true
 ```
 
 **If found:**
@@ -412,7 +417,7 @@ Otherwise use AskUserQuestion:
 ## 6. Check Existing Plans
 
 ```bash
-ls "${PHASE_DIR}"/*-PLAN.md 2>/dev/null
+ls "${PHASE_DIR}"/*-PLAN.md 2>/dev/null || true
 ```
 
 **If exists AND `--reviews` flag:** Skip prompt — go straight to replanning (the purpose of `--reviews` is to replan with review feedback).
@@ -576,6 +581,8 @@ Planner prompt:
 - {CROSS_PLAN_INPUT} (Cross-plan merged output — multi-AI consensus reference, if exists)
 </files_to_read>
 
+${AGENT_SKILLS_PLANNER}
+
 **Phase requirement IDs (every ID MUST appear in a plan's `requirements` field):** {phase_req_ids}
 
 **Cross-plan reference:** If CROSS_PLAN_INPUT is provided, use it as a reference for plan structure and content. The cross-plan output represents merged consensus from 3 independent AI planners.
@@ -675,6 +682,8 @@ Checker prompt:
 - {research_path} (Technical Research — includes Validation Architecture)
 </files_to_read>
 
+${AGENT_SKILLS_CHECKER}
+
 **Phase requirement IDs (MUST ALL be covered):** {phase_req_ids}
 
 **Project instructions:** Read ./AGENTS.md if exists — verify plans honor project guidelines
@@ -720,6 +729,8 @@ Revision prompt:
 - {PHASE_DIR}/*-PLAN.md (Existing plans)
 - {context_path} (USER DECISIONS from $gsd-discuss-phase)
 </files_to_read>
+
+${AGENT_SKILLS_PLANNER}
 
 **Checker issues:** {structured_issues_from_checker}
 </revision_context>

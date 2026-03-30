@@ -63,6 +63,7 @@ Load all context in one call:
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init execute-phase "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-executor 2>/dev/null)
 ```
 
 Parse JSON for: `executor_model`, `verifier_model`, `commit_docs`, `parallelization`, `branching_strategy`, `branch_name`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `plans`, `incomplete_plans`, `plan_count`, `incomplete_count`, `state_exists`, `roadmap_exists`, `phase_req_ids`.
@@ -257,6 +258,8 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        - ./AGENTS.md (Project instructions, if exists — follow project-specific guidelines and coding conventions)
        - .claude/skills/ or .agents/skills/ (Project skills, if either exists — list skills, read SKILL.md for each, follow relevant rules during implementation)
        </files_to_read>
+
+       ${AGENT_SKILLS}
 
        <mcp_tools>
        If AGENTS.md or project instructions reference MCP tools (e.g. jCodeMunch, context7,
@@ -580,6 +583,10 @@ Use AskUserQuestion to present the options.
 <step name="verify_phase_goal">
 Verify phase achieved its GOAL, not just completed tasks.
 
+```bash
+VERIFIER_SKILLS=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-verifier 2>/dev/null)
+```
+
 ```
 Task(
   prompt="Verify phase {phase_number} goal achievement.
@@ -588,7 +595,8 @@ Phase goal: {goal from ROADMAP.md}
 Phase requirement IDs: {phase_req_ids}
 Check must_haves against actual codebase.
 Cross-reference requirement IDs from PLAN frontmatter against REQUIREMENTS.md — every ID MUST be accounted for.
-Create VERIFICATION.md.",
+Create VERIFICATION.md.
+${VERIFIER_SKILLS}",
   subagent_type="gsd-verifier",
   model="{verifier_model}"
 )

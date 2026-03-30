@@ -168,7 +168,7 @@ When `--repair` is active, detect and clean up:
 # Check for stale task directories (older than 24 hours)
 TASKS_DIR="/mnt/local-analysis/workspace-hub/.codex/tasks"
 if [ -d "$TASKS_DIR" ]; then
-  STALE_COUNT=$(find "$TASKS_DIR" -maxdepth 1 -type d -mtime +1 2>/dev/null | wc -l)
+  STALE_COUNT=$( (find "$TASKS_DIR" -maxdepth 1 -type d -mtime +1 2>/dev/null || true) | wc -l )
   if [ "$STALE_COUNT" -gt 0 ]; then
     echo "⚠️  Found $STALE_COUNT stale task directories in /mnt/local-analysis/workspace-hub/.codex/tasks/"
     echo "   These are leftover from crashed subagent sessions."

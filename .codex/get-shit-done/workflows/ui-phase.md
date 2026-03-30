@@ -8,6 +8,12 @@ UI-SPEC.md locks spacing, typography, color, copywriting, and design system deci
 @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/ui-brand.md
 </required_reading>
 
+<available_agent_types>
+Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
+- gsd-ui-researcher — Researches UI/UX approaches
+- gsd-ui-checker — Reviews UI implementation quality
+</available_agent_types>
+
 <process>
 
 ## 1. Initialize
@@ -15,6 +21,8 @@ UI-SPEC.md locks spacing, typography, color, copywriting, and design system deci
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS_UI=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-ui-researcher 2>/dev/null)
+AGENT_SKILLS_UI_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-ui-checker 2>/dev/null)
 ```
 
 Parse JSON for: `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_context`, `has_research`, `commit_docs`.
@@ -116,6 +124,8 @@ Answer: "What visual and interaction contracts does this phase need?"
 - {research_path} (Technical Research — stack decisions)
 </files_to_read>
 
+${AGENT_SKILLS_UI}
+
 <output>
 Write to: {phase_dir}/{padded_phase}-UI-SPEC.md
 Template: /mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/UI-SPEC.md
@@ -173,6 +183,8 @@ Check all 6 dimensions. Return APPROVED or BLOCKED.
 - {context_path} (USER DECISIONS — check compliance)
 - {research_path} (Technical Research — check stack alignment)
 </files_to_read>
+
+${AGENT_SKILLS_UI_CHECKER}
 
 <config>
 ui_safety_gate: {ui_safety_gate config value}

@@ -172,6 +172,18 @@ Fall back to single-provider sequential invocation (existing behavior, cheapest 
 gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-gemini-{phase}.md
 ```
 
+**the agent (separate session):**
+```bash
+claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > /tmp/gsd-review-claude-{phase}.md
+```
+
+**Codex:**
+```bash
+codex exec --skip-git-repo-check "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-codex-{phase}.md
+```
+
+If a CLI fails, log the error and continue with remaining CLIs.
+
 Display progress for both modes:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

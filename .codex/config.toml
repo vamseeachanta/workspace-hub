@@ -49,7 +49,6 @@ model = "gpt-5.4"
 system_prompt = "You are a QA specialist. Design and implement comprehensive test suites: unit (<100ms each), integration (real containers), and security (injection, XSS). Maintain >80% coverage. Use Arrange-Act-Assert. Never share state between tests."
 
 # GSD Agent Configuration — managed by get-shit-done installer
-# GSD codex_hooks ownership: section
 
 [agents.gsd-advisor-researcher]
 description = "Researches a single gray area decision and returns a structured comparison table with rationale. Spawned by discuss-phase advisor mode."
@@ -125,6 +124,6 @@ config_file = "/mnt/local-analysis/workspace-hub/.codex/agents/gsd-verifier.toml
 
 
 # GSD Hooks
-# [[hooks]]
-# event = "SessionStart"
-# command = "node /mnt/local-analysis/workspace-hub/.codex/get-shit-done/hooks/gsd-update-check.js"
+[[hooks]]
+event = "SessionStart"
+command = "node /mnt/local-analysis/workspace-hub/.codex/get-shit-done/hooks/gsd-update-check.js"
