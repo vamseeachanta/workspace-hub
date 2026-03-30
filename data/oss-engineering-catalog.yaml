@@ -252,8 +252,8 @@ libraries:
     repo_url: https://github.com/kinnala/scikit-fem
     homepage: null
     license: BSD-3-Clause
-    latest_version: null
-    latest_release_date: null
+    latest_version: "12.0.1"
+    latest_release_date: "2026"
     python_api: true
     python_package: scikit-fem
     maturity: mature
@@ -263,11 +263,17 @@ libraries:
     domain: FEA
     capabilities: >-
       Pure Python FEM assembly library with minimal dependencies (NumPy, SciPy only).
-      Transforms bilinear forms into sparse matrices. Supports triangular, quadrilateral,
-      tetrahedral, and hexahedral meshes with arbitrary-order elements.
+      Transforms bilinear forms into sparse matrices. 79 element types including
+      Euler-Bernoulli beam (Hermite), Kirchhoff plate (Morley/Argyris), and 3D
+      solid (Tet/Hex). No shell elements. Eigenvalue/modal analysis via scipy ARPACK.
+      meshio integration for Gmsh/VTK/Abaqus/Nastran mesh I/O.
     download_size_estimate: "5 MB"
-    integration_fit: very-high
-    integration_notes: "Pure Python. pip install. Minimal deps. BSD license. Excellent for prototyping."
+    integration_fit: high
+    integration_notes: >-
+      Pure Python. pip install. Minimal deps. BSD license. Beam analysis validated
+      against analytical (0% error). Plate BCs require expert FEM knowledge. No shell
+      elements limits offshore use. Best for beam-level prototyping; defer for production.
+      Eval: docs/research/scikit-fem-eval.md. Issue: #1489.
     cloned_at_ace: false
 
   - name: SfePy

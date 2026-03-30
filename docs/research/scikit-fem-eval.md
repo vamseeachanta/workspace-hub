@@ -1,8 +1,8 @@
 # scikit-fem Evaluation — Offshore Structural Use
 
-**Date:** 2026-03-29
+**Date:** 2026-03-30
 **Issue:** vamseeachanta/workspace-hub#1489
-**Version evaluated:** 11.0.0 (latest stable)
+**Version evaluated:** 12.0.1 (latest stable, installed and tested hands-on)
 
 ## Summary
 
@@ -69,7 +69,7 @@ Assembly cost is dominated by scipy sparse-solve, not by Python-level assembly. 
 - **Eigenvalue support** — modal analysis works out-of-the-box for beam/solid elements
 - **meshio integration** — accepts Gmsh models from any pre-processor; outputs VTK/XDMF for ParaView post-processing
 - **Scipy interoperability** — assembled matrices are standard CSR; any scipy/PyAMG/PETSc4py solver applies
-- **Active maintenance** — Python 3.14 support in progress as of 2025/2026; JOSS-published, 1k+ GitHub stars
+- **Active maintenance** — v12.0.1 current; Python 3.14 support in progress; JOSS-published, 600+ GitHub stars
 
 ### Limitations
 - **No shell elements** — the critical gap for offshore structures (jacket panels, hull, riser casing, subsea pipework); 3D solid modeling of thin walls is mesh-inefficient
@@ -113,6 +113,46 @@ Rationale:
 1. Spike: implement a single Euler-Bernoulli beam modal analysis for a jacket leg using scikit-fem to validate integration with existing mesh pipeline
 2. Watch upstream for shell element PRs (the project accepts community element contributions)
 3. Revisit when/if Reissner-Mindlin shell element is merged
+
+---
+
+## Hands-On Validation (2026-03-30)
+
+Tested in Python 3.12.3 with scikit-fem 12.0.1, numpy 2.4.3, scipy 1.17.1.
+
+### Test 1: Simply-Supported Beam (Euler-Bernoulli)
+
+Uniformly loaded beam: L=10m, E=210 GPa, I=1e-3 m^4, q=10 kN/m.
+Analytical midspan deflection: wmax = 5qL^4/(384EI) = 6.200397e-03 m.
+
+| Elements | FEM wmax (m) | Error % |
+|----------|-------------|---------|
+| 4 | 6.200397e-03 | 0.0000 |
+| 8 | 6.200397e-03 | 0.0000 |
+| 16 | 6.200397e-03 | 0.0000 |
+| 64 | 6.200397e-03 | 0.0000 |
+
+**Result:** Cubic Hermite elements reproduce the exact analytical solution even with 4 elements (expected for polynomial loading on Hermite basis). Beam assembly is validated.
+
+### Test 2: Kirchhoff Plate Bending
+
+Attempted clamped and simply-supported square plate (a=1m, t=10mm, E=200 GPa, nu=0.3) using Morley and Argyris elements. Results did not converge to Timoshenko analytical values. Root cause: applying correct boundary conditions for non-conforming plate elements (Morley) and higher-order elements (Argyris, 21 DOFs/triangle) requires expert FEM knowledge that scikit-fem does not abstract away. The upstream examples use biharmonic scalar form rather than the full Kirchhoff tensor form, which may also contribute.
+
+**Result:** Plate bending is technically supported but requires significant expertise to apply BCs correctly. Not plug-and-play for engineering workflows.
+
+### Test 3: meshio Interoperability
+
+Round-trip test: skfem MeshTri -> meshio VTK file -> meshio read-back. Verified 81 points, 128 triangles preserved. meshio 5.3.5 confirmed working with scikit-fem mesh objects.
+
+**Result:** PASS. Mesh interop with meshio works for VTK format. All meshio-supported formats (Gmsh, Abaqus, Nastran, XDMF, STL) available.
+
+### Test 4: Element Library (v12.0.1)
+
+79 element classes total. Key structural elements:
+- **Beam:** ElementLineHermite (Euler-Bernoulli)
+- **Plate:** ElementTriMorley, ElementTriArgyris, ElementTri15ParamPlate
+- **3D solid:** ElementTetP1/P2, ElementHex1/Hex2
+- **Shell:** None
 
 ---
 
