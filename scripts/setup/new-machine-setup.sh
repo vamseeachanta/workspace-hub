@@ -218,6 +218,18 @@ else
   log "Copied .env.example → .env — fill in required secrets before first session."
 fi
 
+# ── Step 8b: tmux config ──────────────────────────────────────────────────────
+step "8b. tmux config"
+if command -v tmux &>/dev/null; then
+  if [[ "$DRY_RUN" == "true" ]]; then
+    dry "bash scripts/setup/deploy-tmux.sh"
+  else
+    bash "${WORKSPACE_HUB}/scripts/setup/deploy-tmux.sh"
+  fi
+else
+  log "tmux not found — install with: sudo apt install tmux (Linux) or brew install tmux (macOS)"
+fi
+
 # ── Step 9: Verify ────────────────────────────────────────────────────────────
 step "9. Post-setup verification"
 if [[ "$DRY_RUN" == "true" ]]; then
