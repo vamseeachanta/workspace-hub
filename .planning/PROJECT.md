@@ -50,6 +50,43 @@ Engineering workspace orchestrating a portfolio of Python packages, data reposit
 - CLAUDE.md/AGENTS.md ≤ 20 lines — excess goes to skills/docs
 - Reviews: APPROVE/MINOR/MAJOR verdicts; resolve MAJOR before completion
 
+## Current State (v1.0 shipped 2026-03-30)
+
+Shipped v1.0 Foundation Sprint across 6 phases (21 plans) in 5 days.
+
+**What shipped:**
+- 3 new digitalmodel calculation modules (OBS, wall thickness, spectral fatigue) at 90.5% test coverage
+- EIA/BSEE/SODIR data pipelines with Parquet output, staleness monitoring, email alerting
+- aceengineer.com: interactive calculators, pricing page, GA4 tracking, Schema.org SEO
+- Enterprise funnel: case studies, calculator-to-case-study CTAs, contact form lead qualification, GitHub Issues prospect pipeline
+- Nightly 4-domain research automation with model selection, validation, and 90-day pruning
+- digitalmodel library-first vision, tiered development roadmap, trimmed README
+
+**Validated requirements (v1.0):**
+- ✓ 3+ new calculation modules with test coverage and standards traceability
+- ✓ All active data sources updating with staleness monitoring
+- ✓ Website with clear value prop, calculation demos, and contact flow
+- ✓ Enterprise funnel with case studies, GA4 tracking, and prospect pipeline
+- ✓ Nightly research automation running with quality controls
+- ✓ digitalmodel vision and roadmap refreshed
+
+**Next milestone focus:** TBD — start with `/gsd:new-milestone`
+
+## Key Decisions (v1.0)
+
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| Library-first digitalmodel (not platform/SaaS) | Focus on calculation accuracy, not infrastructure | ✓ Good |
+| OrcaFlex + CP as Tier 1 priorities | Highest client demand | ✓ Good |
+| var for browser compat in JS engines | Match existing aceengineer codebase | ✓ Good |
+| funnel_step event (not cta_click) for calculator→case study | Distinguish funnel progression from generic clicks | ✓ Good |
+| 60h staleness threshold (not 36h) | Avoid Monday false positives with weekday-only schedule | ✓ Good |
+| GitHub Issues for prospect pipeline | Private repo, no additional tooling needed | ✓ Good |
+| Consultation-based pricing (no payment infra) | Lower complexity, higher-value engagements | — Pending |
+
 ## Owner
 
 Vamsee — solo engineer, repo owner, all agent sessions.
+
+---
+*Last updated: 2026-03-30 after v1.0 milestone*

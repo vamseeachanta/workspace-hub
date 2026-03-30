@@ -1,13 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-03-30T01:39:01.579Z"
+milestone_name: Foundation Sprint
+status: v1.0 milestone complete
+stopped_at: Milestone archived
+last_updated: "2026-03-30T01:50:00.000Z"
 last_activity: 2026-03-30
 progress:
-  total_phases: 11
+  total_phases: 6
   completed_phases: 6
   total_plans: 21
   completed_plans: 21
@@ -17,82 +17,27 @@ progress:
 
 ## Current Focus
 
-Phase 06: Update plan and vision for digitalmodel repo (2/2 plans complete)
+v1.0 Foundation Sprint complete. Next: `/gsd:new-milestone`
 
 ## Current Position
 
-Phase 06 complete (2/2 plans). All plans executed.
+All 6 phases shipped. Milestone archived to `.planning/milestones/`.
+
+## Project Reference
+
+See: .planning/PROJECT.md (updated 2026-03-30)
+
+**Core value:** Tethering timeless engineering to a single source of truth
+**Current focus:** Planning next milestone
 
 ## Progress
 
 - Phase 01: Accelerate digitalmodel development ✓ (5/5 plans)
 - Phase 02: Accelerate worldenergydata pipelines ✓ (6/6 plans, verified 2026-03-26)
-- Phase 03: GTM and marketing — 3/3 plans complete, pending verification
-- Phase 04: Client acquisition ✓ (3/3 plans: case studies, GA4 tracking, enterprise funnel)
-- Phase 05: Nightly research automation — 1/2 plans complete
-- Phase 06: Update plan and vision for digitalmodel repo ✓ (2/2 plans)
-
-## Decisions
-
-Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
-
-- [Phase 04]: Used funnel_step event for calculator-to-case-study links to distinguish funnel progression from generic CTA clicks
-- [Phase 05]: 60-hour staleness threshold (not 36h) to avoid Monday false positives with weekday-only schedule
-- [Phase 05]: Staleness check as separate cron job (D-07) to detect when researcher itself fails to execute
-- [Phase 06]: OrcaFlex production-grade = 3 scenario templates + license-free tests + validated against 1 reference project
-- [Phase 06]: CP higher maturity = all clauses in implemented standards + worked-example tests + ABS GN full implementation
-- [Phase 06]: Stub modules (digitalmarketing, finance, project_management) marked as removal candidates
-- [Phase 06]: Vision positions digitalmodel as library-first Python package, explicitly not a platform or SaaS
-- [Phase 06]: README trimmed to 81 lines as concise entry point, details deferred to module-registry.yaml
-- [Phase 06]: CHANGELOG [2.1.0] documents Phase 1 GSD sprint deliverables (3 modules + manifest schema)
-- [Phase 06]: Vision positions digitalmodel as library-first Python package, explicitly not a platform or SaaS
-
-### Phase 03 Plan 01 Decisions
-
-- Followed NPV engine pattern exactly for OBS and wall thickness engines
-- Used var for browser compatibility matching existing codebase
-- collapseCheck defaults E=207000 MPa, nu=0.3 when not provided
-
-### Phase 03 Plan 02 Decisions
-
-- All pricing CTAs route to contact.html -- consultation-based pricing, no payment infrastructure per D-07
-
-### Phase 03 Plan 03 Decisions
-
-- Followed fatigue-life-calculator.html template pattern for new calculator pages
-- Removed Coming Soon placeholder cards from index (replaced by actual calculators)
-- Added GA4 guard (typeof gtag check) to prevent errors without analytics loaded
-
-### Phase 04 Plan 01 Decisions
-
-- Added BreadcrumbList JSON-LD to new case studies (not present in existing ones) for SEO
-- Used indexOf instead of includes for browser compat in GA4 referrer detection
-- Removed Subsea Pipeline Integrity from coming-soon (now covered by OBS case study)
-
-### Phase 04 Plan 02 Decisions
-
-- Used var throughout new JS code for browser compatibility matching existing codebase
-- All GA4 event calls guarded with typeof gtag !== undefined
-- Added typeof gtag guard to fatigue-life calculator_use event that was missing it
-- Added pricing_cta_click tracking to bottom CTA in addition to 3 tier CTAs
-
-### Phase 04 Plan 03 Decisions
-
-- Used funnel_step event (not cta_click) for calculator-to-case-study links to distinguish funnel progression
-- Scroll tracking uses var and default scroll listener for browser compat
-- GitHub Issues pipeline in workspace-hub repo (private) for prospect tracking
-
-### Phase 05 Plan 01 Decisions
-
-- Feed all prior research (all domains, last 7 days) to every domain scan, not just synthesis
-- Pruning integrated into researcher script (runs at end of each execution) rather than separate cron
-- Output validation accepts on second failure with warning rather than hard-failing
-
-### Quick Tasks Completed
-
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
-| 260326-m07 | add a gh issue to install and configure tmux or similar across all machines | 2026-03-26 | 7d32c40d | [260326-m07-add-a-gh-issue-to-install-and-configure-](./quick/260326-m07-add-a-gh-issue-to-install-and-configure-/) |
+- Phase 03: GTM and marketing ✓ (3/3 plans)
+- Phase 04: Client acquisition ✓ (3/3 plans)
+- Phase 05: Nightly research automation ✓ (2/2 plans)
+- Phase 06: digitalmodel vision and roadmap ✓ (2/2 plans)
 
 ## Accumulated Context
 
@@ -101,11 +46,7 @@ Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 1. Automate OrcaWave vessel hull analysis on licensed machine (tooling) — **tackle first**
 2. Automate OrcaFlex model generation on licensed machine (tooling) — after OrcaWave
 
-### Roadmap Evolution
-
-- Phase 6 added: Update plan and vision for digitalmodel repo
-
 ## Session
 
 Last activity: 2026-03-30
-Stopped at: Completed 06-02-PLAN.md
+Stopped at: Milestone archived
