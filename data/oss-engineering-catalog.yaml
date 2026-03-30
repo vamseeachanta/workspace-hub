@@ -1229,8 +1229,8 @@ libraries:
     repo_url: https://github.com/OWI-Lab/py_fatigue
     homepage: https://owi-lab.github.io/py_fatigue/
     license: GPL-3.0
-    latest_version: null
-    latest_release_date: null
+    latest_version: "2.1.0"
+    latest_release_date: "2025-10-02"
     python_api: true
     python_package: py-fatigue
     maturity: growing
@@ -1251,12 +1251,12 @@ libraries:
     repo_url: https://github.com/boschresearch/pylife
     homepage: https://pylife.readthedocs.io
     license: Apache-2.0
-    latest_version: null
-    latest_release_date: null
+    latest_version: "2.2.1"
+    latest_release_date: "2026-02-19"
     python_api: true
     python_package: pylife
     maturity: mature
-    stars: 165
+    stars: 179
     contributors: 20
     primary_language: Python
     domain: "O&G/Marine"
