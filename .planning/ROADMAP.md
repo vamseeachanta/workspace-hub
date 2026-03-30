@@ -99,7 +99,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Tiered roadmap (ROADMAP.md) + module-registry.yaml maturity refresh
-- [ ] 06-02-PLAN.md — Vision direction (CALCULATIONS-VISION.md) + README trim + CHANGELOG update
+- [x] 06-02-PLAN.md — Vision direction (CALCULATIONS-VISION.md) + README trim + CHANGELOG update
 
 ## Backlog
 
