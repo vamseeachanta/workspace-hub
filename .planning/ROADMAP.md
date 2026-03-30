@@ -18,16 +18,18 @@
 
 </details>
 
-### Phase 7: Pint — scan and retrofit remaining hardcoded unit conversions (#1500)
+### Phase 7: Solver Verification Gate — OrcFxAPI + remote execution go/no-go
 
-**Goal:** Replace all hardcoded unit conversion factors in `src/digitalmodel/` with Pint calls using the shared UnitRegistry
-**Depends on:** Phase 1 (digitalmodel acceleration), #1484 (shared UnitRegistry), #1485 (pipeline_skill.py retrofit)
-**Context:** `pipeline_skill.py` successfully converted — 8 hardcoded conversion sites replaced, 39 tests passing. Shared `UnitRegistry` module in place at `src/digitalmodel/units.py`. Benchmark (#1486) shows 1.3x overhead at 1M elements — acceptable.
+**Goal:** Verify OrcFxAPI loads/solves/exports on licensed-win-1, establish remote Claude Code execution from dev-primary, and enforce solver/non-solver module separation in codebase
+**Depends on:** Phase 1 (digitalmodel acceleration)
+**Requirements:** [INFRA-01, INFRA-02]
+**Context:** Go/no-go gate for v1.1 OrcaWave Automation milestone. Three verification pillars: (1) OrcFxAPI functional on licensed-win-1, (2) remote CC trigger from dev-primary, (3) clean solver/non-solver module boundary.
+**Plans:** 3 plans
 
 Plans:
-- [ ] Scan and triage hardcoded conversion factors across src/digitalmodel/
-- [ ] Retrofit modules with Pint Q_() calls (per-module, tests between each)
-- [ ] Explore config-driven unit parsing with ureg.parse_expression()
+- [ ] 07-01-PLAN.md — Module boundary refactoring + test infrastructure (solver/ subpackage, pytest markers)
+- [ ] 07-02-PLAN.md — Licensed-win-1 infrastructure verification (SSH, OrcFxAPI, Claude Code, uv)
+- [ ] 07-03-PLAN.md — Smoke test execution (L00+L01) + artifact commit
 
 ## Backlog
 
@@ -39,7 +41,7 @@ Plans:
 - Region segmentation: separate body plan / half-breadth / sheer plan views by pixel position
 - Curve reconstruction: join fragments via directional continuity into continuous B-splines
 - Curve classification: distinguish cross-sections from waterlines / buttocks / grid / text
-- Coordinate transform: pixel space → real units using known ship dimensions
+- Coordinate transform: pixel space -> real units using known ship dimensions
 - 3D placement: position cross-sections at longitudinal stations
 - Install FreeCAD Ship Workbench addon (or upgrade to FreeCAD 1.0+)
 **Consider:** geomdl/NURBS-Python for pure-Python curve fitting, Gmsh `addThruSections` for direct hull surface lofting
@@ -117,6 +119,18 @@ Plans:
 Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
+### Pint Unit Conversion Retrofit (BACKLOG)
+
+**Goal:** Replace all hardcoded unit conversion factors in `src/digitalmodel/` with Pint calls using the shared UnitRegistry
+**Depends on:** Phase 1 (digitalmodel acceleration), #1484 (shared UnitRegistry), #1485 (pipeline_skill.py retrofit)
+**Context:** `pipeline_skill.py` successfully converted — 8 hardcoded conversion sites replaced, 39 tests passing. Shared `UnitRegistry` module in place at `src/digitalmodel/units.py`. Benchmark (#1486) shows 1.3x overhead at 1M elements — acceptable.
+**Plans:** 0 plans
+
+Plans:
+- [ ] Scan and triage hardcoded conversion factors across src/digitalmodel/
+- [ ] Retrofit modules with Pint Q_() calls (per-module, tests between each)
+- [ ] Explore config-driven unit parsing with ureg.parse_expression()
+
 ## Progress
 
 | Phase | Milestone | Plans | Status | Completed |
@@ -127,4 +141,4 @@ Plans:
 | 4. Client acquisition | v1.0 | 3/3 | Complete | 2026-03-28 |
 | 5. Nightly research automation | v1.0 | 2/2 | Complete | 2026-03-28 |
 | 6. digitalmodel vision | v1.0 | 2/2 | Complete | 2026-03-29 |
-| 7. Pint unit conversion retrofit | — | 0/3 | Not planned | — |
+| 7. Solver verification gate | v1.1 | 0/3 | Planned | — |
