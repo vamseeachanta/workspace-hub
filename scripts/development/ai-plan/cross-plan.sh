@@ -195,13 +195,13 @@ dispatch_plan() {
 
     case "$provider" in
         claude)
-            claude -p "$(cat "$prompt_file")" --no-input > "$output_file" 2>"$err_file"
+            claude -p -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
             ;;
         codex)
-            codex exec --skip-git-repo-check "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
+            codex exec -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
             ;;
         gemini)
-            gemini -p "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
+            gemini -p -- "$(cat "$prompt_file")" > "$output_file" 2>"$err_file"
             ;;
         *)
             log_error "Unknown provider: $provider"
