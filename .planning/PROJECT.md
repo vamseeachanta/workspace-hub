@@ -70,7 +70,16 @@ Shipped v1.0 Foundation Sprint across 6 phases (21 plans) in 5 days.
 - ✓ Nightly research automation running with quality controls
 - ✓ digitalmodel vision and roadmap refreshed
 
-**Next milestone focus:** TBD — start with `/gsd:new-milestone`
+## Current Milestone: v1.1 OrcaWave Automation
+
+**Goal:** Automate the full OrcaWave vessel hull analysis workflow — from analysis type selection through to client-ready calculation reports — and prove it by generating reports for all existing examples.
+
+**Target features:**
+- Calculation report template refinement — redesign content flow for client experience: narrative structure, integrated RAO plots, hydro matrix presentation, QA summaries
+- Analysis workflow automation — deterministic pipeline: identify analysis type → match closest example YAML → parametric update → execute on licensed machine → extract results → generate report
+- Sensitivity analysis tooling — automated parameter sweeps to eliminate options before full analysis
+- Batch report generation — run all existing examples (L00–L06, benchmarks) through the pipeline, produce standardized calculation reports
+- OrcaFlex integration — results conversion to OrcaFlex vessel type format as part of the pipeline
 
 ## Key Decisions (v1.0)
 
@@ -88,5 +97,22 @@ Shipped v1.0 Foundation Sprint across 6 phases (21 plans) in 5 days.
 
 Vamsee — solo engineer, repo owner, all agent sessions.
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-30 after v1.0 milestone*
+*Last updated: 2026-03-29 after v1.1 milestone start*
