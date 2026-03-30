@@ -2,6 +2,7 @@
 name: aqwa-output
 description: AQWA output formats (RAO CSV, coefficient JSON), LIS parsing conventions,
   result validation, benchmark comparison vs OrcaWave, and validation criteria.
+type: reference
 version: 1.0.0
 updated: 2026-03-16
 category: engineering

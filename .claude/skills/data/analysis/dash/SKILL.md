@@ -3,6 +3,7 @@ name: dash
 version: 1.0.0
 description: Build production-grade interactive dashboards with Plotly Dash - enterprise
   features, callbacks, and scalable deployment
+type: reference
 author: workspace-hub
 category: data-analysis
 capabilities:

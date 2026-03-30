@@ -3,6 +3,7 @@ name: internal-comms
 description: Create professional internal communications including memos, announcements,
   newsletters, and company updates. Use for employee communications, policy announcements,
   team updates, and organizational messaging.
+type: reference
 version: 2.0.0
 category: business
 last_updated: 2026-01-02

@@ -3,6 +3,7 @@ name: orcaflex-operability
 description: Perform operability analysis combining multiple sea states to assess
   system availability and weather downtime. Generate operability envelopes, critical
   heading analysis, and downtime calculations from wave scatter diagrams.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

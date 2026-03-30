@@ -4,6 +4,7 @@ name: dnv
 version: "1.0.0"
 category: engineering
 description: "Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification"
+type: reference
 capabilities: []
 requires: []
 see_also: []

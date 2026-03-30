@@ -3,6 +3,7 @@ name: orcaflex-file-conversion
 description: Convert OrcaFlex files between formats (.dat, .yml, .sim) for digital
   analysis and automation. Supports bidirectional conversion, batch processing, and
   format standardization.
+type: reference
 version: 1.0.0
 updated: 2026-01-02
 category: engineering

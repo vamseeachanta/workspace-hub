@@ -2,6 +2,7 @@
 name: diffraction-analysis
 description: Master skill for hydrodynamic diffraction analysis - AQWA, OrcaWave,
   and BEMRosetta integration
+type: reference
 version: 1.0.0
 updated: 2026-01-27
 category: engineering

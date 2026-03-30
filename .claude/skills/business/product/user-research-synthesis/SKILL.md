@@ -1,6 +1,7 @@
 ---
 name: user-research-synthesis
 description: "Synthesize qualitative and quantitative user research into structured insights and opportunity areas"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

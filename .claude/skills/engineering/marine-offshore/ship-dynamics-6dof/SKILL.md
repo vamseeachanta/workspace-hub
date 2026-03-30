@@ -3,6 +3,7 @@ name: ship-dynamics-6dof
 version: 1.0.0
 description: 6DOF ship dynamics, equations of motion, seakeeping analysis, and natural
   frequency calculations
+type: reference
 author: workspace-hub
 category: engineering
 tags:

@@ -3,6 +3,7 @@ name: aqwa-batch-execution
 description: Run ANSYS AQWA analyses in batch/headless mode on Linux. Covers CLI execution,
   DAT input file structure, multi-stage analysis chaining, output file parsing, failure
   diagnosis, and HPC job scheduling.
+type: reference
 version: 1.1.0
 updated: 2026-02-24
 category: engineering

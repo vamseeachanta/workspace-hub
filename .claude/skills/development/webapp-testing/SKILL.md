@@ -3,6 +3,7 @@ name: webapp-testing
 description: Web application testing toolkit using Playwright with Python. Use for
   verifying frontend functionality, debugging UI behavior, capturing browser screenshots,
   viewing browser logs, and automating web interactions.
+type: reference
 version: 1.1.0
 category: development
 related_skills:

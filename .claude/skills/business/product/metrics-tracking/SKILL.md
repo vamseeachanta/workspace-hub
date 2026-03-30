@@ -2,6 +2,7 @@
 name: metrics-tracking
 description: Define, track, and analyze product metrics with frameworks for goal setting
   and dashboard design
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

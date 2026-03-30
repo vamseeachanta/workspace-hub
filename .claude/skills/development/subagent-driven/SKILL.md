@@ -2,6 +2,7 @@
 name: subagent-driven
 description: Execute implementation plans with structured subagent dispatch and two-stage
   review (spec compliance, then code quality). Based on obra/superpowers.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19

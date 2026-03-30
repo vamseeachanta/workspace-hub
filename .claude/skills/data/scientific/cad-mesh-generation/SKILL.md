@@ -4,6 +4,7 @@ version: 1.0.0
 category: data
 description: Generate parametric CAD geometry and finite element meshes using FreeCAD
   and GMSH
+type: reference
 capabilities: []
 requires: []
 see_also:

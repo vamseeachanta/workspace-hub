@@ -3,6 +3,7 @@ name: great-tables
 version: 1.0.0
 description: Publication-quality tables in Python with rich styling, formatting, conditional
   formatting, and export to HTML/images - inspired by R's gt package
+type: reference
 author: workspace-hub
 category: data-analysis
 capabilities:

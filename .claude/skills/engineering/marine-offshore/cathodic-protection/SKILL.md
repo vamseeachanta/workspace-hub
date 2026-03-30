@@ -4,6 +4,7 @@ description: Expert Electrical Engineer specializing in cathodic protection (CP)
   for oil and gas industry. Use for CP system design, corrosion prevention, sacrificial
   anode calculations, impressed current systems, pipeline integrity, coating defects,
   and NACE/ISO standards compliance.
+type: reference
 version: 1.2.0
 updated: 2026-02-20
 category: engineering

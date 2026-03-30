@@ -4,6 +4,7 @@ version: 1.1.0
 description: "Cross-platform hardware assessment and system maintenance \u2014 assess\
   \ hardware, update OS/tools/custom software, and track changes over time via JSON\
   \ changelogs"
+type: reference
 author: workspace-hub
 category: operations
 capabilities:

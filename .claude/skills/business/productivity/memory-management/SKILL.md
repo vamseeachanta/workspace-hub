@@ -2,6 +2,7 @@
 name: memory-management
 description: Two-tier memory system for decoding workplace shorthand, acronyms, nicknames,
   and internal language.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

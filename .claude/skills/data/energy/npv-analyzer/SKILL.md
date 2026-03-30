@@ -4,6 +4,7 @@ description: Perform NPV analysis and economic evaluation for oil & gas assets. 
   for cash flow modeling, price scenario analysis, Monte Carlo simulation, P10/P50/P90
   probabilistic analysis, working interest calculations, and financial metrics (IRR,
   payback, NPV) for field development projects.
+type: reference
 version: 1.0.0
 category: data/energy
 capabilities: []

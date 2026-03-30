@@ -2,6 +2,7 @@
 name: bemrosetta
 description: BEMRosetta hydrodynamic coefficient converter - AQWA to OrcaFlex workflow
   with QTF and mesh support
+type: reference
 version: 1.0.0
 updated: 2026-01-27
 category: engineering

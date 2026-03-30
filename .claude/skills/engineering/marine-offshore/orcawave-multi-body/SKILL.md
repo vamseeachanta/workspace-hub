@@ -3,6 +3,7 @@ name: orcawave-multi-body
 description: Multi-body hydrodynamic interaction specialist for OrcaWave. Handles
   coupled vessel analysis, side-by-side operations, FPSO-tanker interactions, gap
   resonance, and hydrodynamic shielding effects.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

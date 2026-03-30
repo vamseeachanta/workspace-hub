@@ -1,6 +1,7 @@
 ---
 name: module-lookup
 description: Query the digitalmodel module registry to discover modules by capability, standard, or maturity without reading source code.
+type: reference
 version: 1.0.0
 category: digitalmodel
 capabilities: []

@@ -3,6 +3,7 @@ name: pandas-data-processing
 version: 1.0.0
 description: Pandas for time series analysis, OrcaFlex results processing, and marine
   engineering data workflows
+type: reference
 author: workspace-hub
 category: data
 tags:

@@ -2,6 +2,7 @@
 
 name: scvi-tools
 description: "Deep learning for single-cell analysis using scvi-tools: data integration, batch correction, multi-modal analysis, reference mapping, and more."
+type: reference
 version: 1.0.0
 category: science
 last_updated: 2026-02-03

@@ -1,6 +1,7 @@
 ---
 name: reconciliation
 description: "Reconcile accounts by comparing GL balances to subledgers, bank statements, or third-party data."
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

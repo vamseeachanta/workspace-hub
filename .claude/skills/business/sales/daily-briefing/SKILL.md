@@ -1,6 +1,7 @@
 ---
 name: daily-briefing
 description: "Provide sales professionals with a prioritized daily action plan and pipeline overview"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

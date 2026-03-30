@@ -3,6 +3,7 @@
 
 name: energy-data-visualizer
 description: Interactive visualization for oil and gas production data analysis using Plotly dashboards
+type: reference
 capabilities: []
 requires: []
 see_also: []

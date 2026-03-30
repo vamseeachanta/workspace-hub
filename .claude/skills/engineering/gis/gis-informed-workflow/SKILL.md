@@ -5,6 +5,7 @@ category: engineering/gis
 description: "GIS-Informed Engineering Workflow \u2014 GIS site data to engineering\
   \ analysis inputs. Covers: bathymetry extraction, pipeline routing, well location\
   \ to OrcaFlex, metocean spatial analysis, and property valuation spatial overlays."
+type: reference
 tags:
 - gis
 - workflow

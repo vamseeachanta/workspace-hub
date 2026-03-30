@@ -4,6 +4,7 @@ version: 1.0.0
 category: development
 description: Optimize development environment, containers, CLI productivity, and git
   workflows using Docker, shell tooling, and editor customization.
+type: reference
 tags: []
 see_also:
 - devtools-available-skills

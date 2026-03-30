@@ -3,12 +3,14 @@ name: doc-research-download
 description: 'Repeatable workflow for domain documentation research WRKs: search for
   freely-available references, download PDFs via shared bash lib, catalogue into knowledge/seeds/<domain>-resources.yaml.
   Use when starting any WRK that collects and indexes domain reference documents.
+type: reference
 
   '
 version: 1.0.0
 category: data
 related_skills:
 - work-queue-workflow
+type: reference
 ---
 
 # Doc Research Download Skill

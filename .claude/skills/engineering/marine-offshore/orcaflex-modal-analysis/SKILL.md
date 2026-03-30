@@ -3,6 +3,7 @@ name: orcaflex-modal-analysis
 description: Perform modal and frequency analysis on OrcaFlex models to extract natural
   frequencies, mode shapes, and identify dominant DOF responses. Use for VIV assessment,
   resonance identification, and structural dynamics characterization.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

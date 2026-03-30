@@ -2,6 +2,7 @@
 
 name: single-cell-rna-qc
 description: "Performs quality control on single-cell RNA-seq data (.h5ad or .h5 files) using scverse best practices with MAD-based filtering and comprehensive visualizations."
+type: reference
 version: 1.0.0
 category: science
 last_updated: 2026-02-03

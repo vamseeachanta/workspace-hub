@@ -4,6 +4,7 @@ description: Deploy specialized AI agents to perform comprehensive, intelligent 
   reviews that go beyond traditional static analysis. Use for automated multi-agent
   review, security vulnerability analysis, performance bottleneck detection, and architecture
   pattern validation.
+type: reference
 capabilities: []
 requires: []
 see_also:

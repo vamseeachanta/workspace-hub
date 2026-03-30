@@ -2,6 +2,7 @@
 name: slack-gif-creator
 description: Create custom animated GIFs for Slack reactions and celebrations. Use
   for team milestones, custom emoji reactions, inside jokes, and workplace fun.
+type: reference
 version: 2.0.0
 category: business
 last_updated: 2026-01-02

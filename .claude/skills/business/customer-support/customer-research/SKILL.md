@@ -1,6 +1,7 @@
 ---
 name: customer-research
 description: "Investigate customer questions through multi-source research with confidence scoring and citations"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

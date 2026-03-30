@@ -5,6 +5,7 @@ description: 'Layer 3 domain sub-skill for extracting naval architecture data fr
   guidelines. Provides detection heuristics for stability constants, resistance equations,
   hull form coefficients, hydrostatic curves, IMO stability criteria, and structural
   scantling tables.
+type: reference
 
   '
 version: 1.0.0
@@ -39,6 +40,7 @@ see_also:
 - doc-extraction-naval-architecture-structural-scantling-tables
 - doc-extraction-naval-architecture-validation-rules
 - doc-extraction-naval-architecture-standards-reference
+type: reference
 ---
 
 # Doc Extraction Naval Architecture

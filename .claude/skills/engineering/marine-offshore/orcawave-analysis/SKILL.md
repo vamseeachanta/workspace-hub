@@ -4,6 +4,7 @@ description: Expert agent for OrcaWave diffraction/radiation analysis with deep 
   in marine hydrodynamics and panel method computations. Use for wave-structure interaction,
   added mass/damping calculations, QTF computation, and OrcaFlex hydrodynamic database
   generation.
+type: reference
 version: 1.0.0
 updated: 2025-01-02
 category: engineering

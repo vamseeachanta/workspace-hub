@@ -4,6 +4,7 @@ name: tax-preparation
 version: "1.0.0"
 category: business
 description: "Automate preparation of corporate tax documents including federal Form 1120, Texas franchise tax, and CPA review packages."
+type: reference
 tags: []
 scripts_exempt: true
 ---

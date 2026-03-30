@@ -2,6 +2,7 @@
 name: sodir-data-extractor
 description: Extract and process Norwegian Petroleum Directorate field and production
   data from SODIR
+type: reference
 capabilities: []
 requires: []
 see_also:

@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering/gis
 description: "Google Earth Engine AI Interface Skill \u2014 ee Python API, authentication,\
   \ image/collection operations, export workflows, GEBCO bathymetry, Sentinel, Landsat"
+type: reference
 tags:
 - gee
 - google-earth-engine

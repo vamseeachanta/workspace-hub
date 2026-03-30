@@ -2,6 +2,7 @@
 name: product-competitive-analysis
 description: Analyze competitors with feature comparison matrices, positioning analysis,
   and strategic implications
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

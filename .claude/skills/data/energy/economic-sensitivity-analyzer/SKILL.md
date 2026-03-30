@@ -4,6 +4,7 @@ version: 1.0.0
 category: data
 description: Perform advanced economic sensitivity analysis for oil & gas investments
   including spider diagrams, 2D surfaces, breakeven analysis, and decision tree analysis.
+type: reference
 command: /economic-sensitivity-analyzer
 author: worldenergydata
 tags:

@@ -3,6 +3,7 @@ name: orcaflex-vessel-setup
 description: Configure 6-DOF vessels in OrcaFlex with hydrodynamic properties, RAO
   import from AQWA, and vessel type creation. Covers initial position, orientation,
   calculation settings, and motion options.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

@@ -3,6 +3,7 @@ name: d3js
 version: 1.0.0
 description: Create custom, highly interactive data visualizations with D3.js (Data-Driven
   Documents)
+type: reference
 author: workspace-hub
 category: data-visualization
 tags:

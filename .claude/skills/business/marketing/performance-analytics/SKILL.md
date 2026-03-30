@@ -2,6 +2,7 @@
 name: performance-analytics
 description: Analyze marketing performance with key metrics, trend analysis, and optimization
   recommendations
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

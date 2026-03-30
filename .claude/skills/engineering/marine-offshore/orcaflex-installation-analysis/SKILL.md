@@ -4,6 +4,7 @@ description: Create and analyze OrcaFlex models for offshore installation sequen
   including subsea structure lowering, pipeline installation, and crane operations.
   Generate models at multiple water depths and orientations for installation feasibility
   studies.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

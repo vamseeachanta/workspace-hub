@@ -3,6 +3,7 @@ name: orcaflex-modeling
 description: Setup, configure, and run OrcaFlex hydrodynamic simulations using the
   universal runner. Use for marine/offshore analysis including static analysis, dynamic
   simulations, mooring analysis, and batch processing of OrcaFlex models.
+type: reference
 version: 2.0.0
 updated: 2025-01-02
 category: engineering

@@ -2,6 +2,7 @@
 name: canned-responses
 description: Generate templated responses for common legal inquiries and identify
   when situations require individualized attention
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -3,6 +3,7 @@ name: code-reviewer
 description: Comprehensive code review toolkit for evaluating quality across multiple
   languages. Use for PR analysis, quality checking, and generating review reports.
   Based on alirezarezvani/claude-skills.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19

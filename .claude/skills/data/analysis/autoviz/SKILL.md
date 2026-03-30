@@ -3,6 +3,7 @@ name: autoviz
 version: 1.0.0
 description: Automatic exploratory data analysis and visualization with a single line
   of code - generates comprehensive charts, detects patterns, and exports to HTML/notebooks
+type: reference
 author: workspace-hub
 category: data-analysis
 capabilities:

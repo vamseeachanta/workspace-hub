@@ -3,6 +3,7 @@ name: highcharts
 version: 1.0.0
 description: Create enterprise-grade interactive charts with Highcharts including
   stock and map visualizations
+type: reference
 author: workspace-hub
 category: data-visualization
 tags:

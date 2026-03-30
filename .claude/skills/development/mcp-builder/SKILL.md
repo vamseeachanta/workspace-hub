@@ -3,6 +3,7 @@ name: mcp-builder
 description: Guide for building high-quality Model Context Protocol (MCP) servers
   that allow LLMs to interact with external services. Use when creating new MCP integrations,
   tools, or servers for Claude or other AI systems.
+type: reference
 version: 1.2.0
 category: development
 related_skills:

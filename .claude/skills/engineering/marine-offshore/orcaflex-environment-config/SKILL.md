@@ -3,6 +3,7 @@ name: orcaflex-environment-config
 description: Configure OrcaFlex environmental conditions including wave spectra (JONSWAP,
   Dean Stream), current profiles, wind loading, and seabed properties for offshore
   analysis.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

@@ -3,6 +3,7 @@ name: ops-pyproject-toml
 version: 1.0.0
 description: Configure Python projects with pyproject.toml for modern packaging, tools,
   and dependency management
+type: reference
 author: workspace-hub
 category: operations
 tags:

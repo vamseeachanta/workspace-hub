@@ -3,6 +3,7 @@ name: engineering-chatbot-demo
 version: "1.0.0"
 category: business/client-demo
 description: "GTM demo execution for engineering AI chatbot presentations — system prompt authoring, demo scripting, ROI capture"
+type: reference
 capabilities:
   - system_prompt_design
   - demo_script_builder

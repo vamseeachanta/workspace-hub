@@ -3,6 +3,7 @@ name: mooring-analysis
 version: 1.0.0
 description: Mooring system design, analysis, and assessment for floating offshore
   platforms
+type: reference
 author: workspace-hub
 category: engineering
 tags:

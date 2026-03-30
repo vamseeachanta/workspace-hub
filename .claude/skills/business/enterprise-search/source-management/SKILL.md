@@ -1,6 +1,7 @@
 ---
 name: source-management
 description: "Manages connected MCP sources for enterprise search, including detection, priority ordering, and rate limiting."
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

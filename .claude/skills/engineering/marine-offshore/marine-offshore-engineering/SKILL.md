@@ -3,6 +3,7 @@ name: marine-offshore-engineering
 version: 1.0.0
 description: Marine and offshore engineering fundamentals for platform design, subsea
   systems, and regulatory compliance
+type: reference
 author: workspace-hub
 category: engineering
 tags:

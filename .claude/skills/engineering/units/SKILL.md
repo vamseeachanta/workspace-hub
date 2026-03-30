@@ -4,6 +4,7 @@ name: units
 version: "1.0.0"
 category: engineering
 description: "Unit-safe engineering calculations with provenance tracking, dimensional consistency verification, and unit conversion across SI, inch, and metric systems."
+type: reference
 tags: []
 scripts_exempt: true
 ---

@@ -2,6 +2,7 @@
 name: document-index-pipeline
 description: "Orchestrate the 7-phase document indexing pipeline (A\u2192G) for the 1M+ document corpus. Use when running\
   \ batch extraction, classification, or gap analysis on og_standards, ace_standards, or workspace_spec sources.\n"
+type: reference
 version: 1.0.0
 updated: 2026-03-15
 category: data

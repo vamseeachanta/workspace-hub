@@ -3,6 +3,7 @@ name: bsee-sodir-extraction
 version: 1.0.0
 description: Extract and process energy data from BSEE (Gulf of Mexico) and SODIR
   (Norway) regulatory databases
+type: reference
 author: workspace-hub
 category: data-analysis
 tags:

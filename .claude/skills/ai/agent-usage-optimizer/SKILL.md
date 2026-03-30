@@ -4,6 +4,7 @@ version: 1.0.0
 category: ai
 description: Reads quota state and recommends optimal Claude/Codex/Gemini allocation
   per task
+type: reference
 capabilities:
 - quota-aware routing
 - route-mapping

@@ -4,6 +4,7 @@ name: astm
 version: "1.0.0"
 category: engineering
 description: "Reference ASTM standards for material properties, testing methods, and design code compliance"
+type: reference
 capabilities: []
 requires: []
 see_also: []

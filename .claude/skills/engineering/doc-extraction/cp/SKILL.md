@@ -4,6 +4,7 @@ description: 'Layer 3 domain sub-skill for extracting cathodic protection data f
   DNV-RP-B401, DNV-RP-F103, and related CP standards. Provides CP-specific detection
   heuristics for anode calculations, coating breakdown factors, current density tables,
   and design life parameters.
+type: reference
 
   '
 version: 1.0.0
@@ -33,6 +34,7 @@ see_also:
 - doc-extraction-cp-dnv-rp-f103-extensions
 - doc-extraction-cp-validation-rules
 - doc-extraction-cp-standards-reference
+type: reference
 ---
 
 # Doc Extraction Cp

@@ -1,6 +1,7 @@
 ---
 name: naval-architect-expert
 description: Expert naval architect agent — dual persona covering engineering calculations and regulatory/legal compliance for ship design, stability, resistance, and classification society requirements
+type: reference
 ---
 
 # Naval Architecture Expert Agent

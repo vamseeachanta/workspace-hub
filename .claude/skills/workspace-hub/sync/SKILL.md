@@ -4,6 +4,7 @@ version: 1.0.0
 category: workspace
 description: Fast, verified multi-repo synchronization across all workspace-hub submodules
   including pull, push, and submodule pointer updates.
+type: reference
 tags: []
 see_also:
 - sync-error-handling

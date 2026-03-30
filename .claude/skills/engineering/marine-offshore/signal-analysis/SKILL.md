@@ -4,6 +4,7 @@ description: Perform signal processing, rainflow cycle counting, and spectral an
   for fatigue and time series data. Use for analyzing stress time histories, computing
   FFT/PSD, extracting fatigue cycles (ASTM E1049-85), and batch processing OrcaFlex
   signals.
+type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []

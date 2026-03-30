@@ -2,6 +2,7 @@
 name: stakeholder-comms
 description: Draft stakeholder updates tailored to audience -- executives, engineering,
   customers, or cross-functional partners
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -4,6 +4,7 @@ version: 1.0.0
 category: business
 description: Systematically modernize technology stacks by updating dependencies,
   replacing deprecated packages, and ensuring workspace-hub standards compliance.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

@@ -3,6 +3,7 @@ name: polars
 version: 1.0.0
 description: High-performance DataFrame library for fast data processing with lazy
   evaluation, parallel execution, and memory efficiency
+type: reference
 author: workspace-hub
 category: data-analysis
 capabilities:

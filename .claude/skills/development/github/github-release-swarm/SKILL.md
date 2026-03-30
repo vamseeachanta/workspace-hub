@@ -4,6 +4,7 @@ description: Orchestrate complex software releases using AI swarms that handle e
   from changelog generation to multi-platform deployment. Use for release planning,
   automated versioning, artifact building, progressive deployment, and multi-repo
   releases.
+type: reference
 capabilities: []
 requires: []
 see_also:

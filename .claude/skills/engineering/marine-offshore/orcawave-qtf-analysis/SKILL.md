@@ -3,6 +3,7 @@ name: orcawave-qtf-analysis
 description: Second-order wave force specialist for QTF (Quadratic Transfer Function)
   computation in OrcaWave. Handles mean drift, difference-frequency, sum-frequency
   forces, and slow-drift response analysis for offshore structures.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

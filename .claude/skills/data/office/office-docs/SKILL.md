@@ -4,6 +4,7 @@ version: 1.0.0
 category: data
 description: Automate Microsoft Office and PDF document workflows including generation,
   manipulation, and template-based document processing.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

@@ -3,6 +3,7 @@ name: dark-intelligence-workflow
 description: "Extract calculation methodology from legacy Excel/files into clean,\
   \ client-free dark intelligence archive \u2014 the canonical path for porting legacy\
   \ calculations to public repos while avoiding legal/IP issues.\n"
+type: reference
 version: 1.0.0
 category: data
 related_skills:

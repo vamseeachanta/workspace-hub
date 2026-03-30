@@ -4,6 +4,7 @@ description: Repository structure optimization and multi-repo management with sw
   coordination for scalable project architecture and development workflows. Use for
   structure analysis, template management, cross-repo synchronization, and architecture
   recommendations.
+type: reference
 capabilities: []
 requires: []
 see_also:

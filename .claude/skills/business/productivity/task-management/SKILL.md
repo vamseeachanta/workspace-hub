@@ -2,6 +2,7 @@
 
 name: task-management
 description: "Simple task management using a shared TASKS.md file for tracking commitments and action items."
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

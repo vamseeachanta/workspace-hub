@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering
 description: Domain expertise for drilling engineering covering well planning, hydraulics,
   well control, and drilling operations analysis.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

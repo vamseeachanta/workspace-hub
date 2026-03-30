@@ -4,6 +4,7 @@ description: Expert CAD Engineering Specialist with comprehensive knowledge of C
   systems, file formats, and conversion technologies. Use for CAD software guidance,
   file format conversions, technical drawings, 3D modeling, PDF to CAD conversions,
   and interoperability between open-source and proprietary CAD systems.
+type: reference
 version: 1.0.0
 updated: 2025-01-02
 category: engineering

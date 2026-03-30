@@ -3,6 +3,7 @@ name: github-project-board
 description: Synchronize AI swarms with GitHub Projects for visual task management
   and progress tracking. Use for project board automation, task synchronization, sprint
   management, and team coordination with GitHub Projects.
+type: reference
 capabilities: []
 requires: []
 see_also:

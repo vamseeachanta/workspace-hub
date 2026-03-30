@@ -2,6 +2,7 @@
 name: sql-queries
 description: Write correct, performant, readable SQL across all major data warehouse
   dialects
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

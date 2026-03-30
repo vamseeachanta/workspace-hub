@@ -5,6 +5,7 @@ category: workspace
 description: 'Clean code enforcement for workspace-hub Python repos: file/function
   size limits, God Object detection, naming rules, dead code removal, and refactor
   decision guidance. Consult before writing new modules or accepting large files.'
+type: reference
 invocation: /clean-code
 applies-to:
 - claude

@@ -3,6 +3,7 @@ name: competitive-analysis
 description: Competitive intelligence with positioning analysis, battlecards, and
   market monitoring. Use for competitor tracking, differentiation strategy, and win/loss
   analysis. Based on alirezarezvani/claude-skills.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

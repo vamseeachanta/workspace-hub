@@ -3,6 +3,7 @@ name: docker
 version: 1.0.0
 description: Complete Docker containerization patterns with multi-stage builds for
   development and production workflows
+type: reference
 author: workspace-hub
 category: operations
 capabilities:

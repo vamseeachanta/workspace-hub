@@ -4,6 +4,7 @@ name: production-engineering
 version: "1.0.0"
 category: engineering
 description: "Monitor and optimize well performance, production surveillance, and enhanced oil recovery operations"
+type: reference
 capabilities: []
 requires: []
 see_also: []

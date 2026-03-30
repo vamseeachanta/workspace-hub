@@ -3,6 +3,7 @@ name: engineering-report-generator
 description: Generate engineering analysis reports with interactive Plotly visualizations,
   standard report sections, and HTML export. Use for creating dashboards, analysis
   summaries, and technical documentation with charts.
+type: reference
 version: 1.1.0
 category: development
 related_skills:

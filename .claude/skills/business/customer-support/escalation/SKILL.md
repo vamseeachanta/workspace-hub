@@ -1,6 +1,7 @@
 ---
 name: escalation
 description: "Guide support teams on when and how to escalate issues effectively with structured briefs"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

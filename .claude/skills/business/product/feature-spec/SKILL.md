@@ -1,6 +1,7 @@
 ---
 name: feature-spec
 description: "Write structured product requirements documents (PRDs) with problem statements, user stories, requirements, and success metrics"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

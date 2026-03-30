@@ -3,6 +3,7 @@ name: numpy-numerical-analysis
 version: 1.0.0
 description: NumPy for matrix operations, FFT, linear algebra, and numerical computations
   in marine engineering
+type: reference
 author: workspace-hub
 category: data
 tags:

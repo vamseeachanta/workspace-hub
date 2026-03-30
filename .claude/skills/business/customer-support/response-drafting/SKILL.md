@@ -1,6 +1,7 @@
 ---
 name: response-drafting
 description: "Draft professional customer communications with empathy-first approach and clear next steps"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

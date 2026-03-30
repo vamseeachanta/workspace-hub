@@ -3,6 +3,7 @@ name: orcaflex-mooring-iteration
 description: Iterate mooring line lengths to achieve target pretensions using scipy
   optimization, Newton-Raphson, or EA-based methods. Use for mooring system design,
   pretension optimization, and CALM/SALM buoy configuration.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

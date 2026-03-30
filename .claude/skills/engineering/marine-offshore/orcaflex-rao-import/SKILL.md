@@ -3,6 +3,7 @@ name: orcaflex-rao-import
 description: Import RAO (Response Amplitude Operator) data from external sources including
   AQWA, OrcaFlex, and CSV files. Includes validation, interpolation, and conversion
   for OrcaFlex vessel type creation.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

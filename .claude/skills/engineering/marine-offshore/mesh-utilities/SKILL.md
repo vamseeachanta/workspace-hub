@@ -3,6 +3,7 @@ name: mesh-utilities
 version: 1.0.0
 description: Quick mesh inspection, conversion, quality checks, and coarsening for
   hydrodynamic solvers
+type: reference
 author: workspace-hub
 category: engineering-utilities
 tags:

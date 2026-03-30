@@ -4,6 +4,7 @@ name: api
 version: "1.0.0"
 category: engineering
 description: "Apply American Petroleum Institute codes and standards for offshore structures and production systems"
+type: reference
 capabilities: []
 requires: []
 see_also: []

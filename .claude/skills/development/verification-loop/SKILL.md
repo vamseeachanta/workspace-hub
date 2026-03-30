@@ -1,6 +1,7 @@
 ---
 name: verification-loop
 description: Six-phase quality gate for code changes. Runs build, typecheck, lint, test, security, and diff-review in sequence. Supports JavaScript/TypeScript, Python, and Rust with auto-detection and skip conditions.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-24

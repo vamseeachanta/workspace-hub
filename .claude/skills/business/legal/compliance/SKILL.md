@@ -2,6 +2,7 @@
 name: compliance
 description: Assist with privacy regulation compliance, DPA reviews, data subject
   requests, and regulatory monitoring
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

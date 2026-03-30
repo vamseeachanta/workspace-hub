@@ -2,6 +2,7 @@
 name: knowledge-synthesis
 description: Combines search results from multiple sources into coherent, deduplicated
   answers with source attribution and confidence scoring.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -4,6 +4,7 @@ description: Create interactive well production dashboards with real-time monito
   verification integration, economic metrics, and multi-format exports. Use for well
   performance analysis, field aggregation, production forecasting, and API-driven
   dashboards.
+type: reference
 capabilities: []
 requires: []
 see_also:

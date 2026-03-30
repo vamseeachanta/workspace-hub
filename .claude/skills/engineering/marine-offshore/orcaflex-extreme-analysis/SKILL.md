@@ -3,6 +3,7 @@ name: orcaflex-extreme-analysis
 description: Extract extreme response values with linked statistics from OrcaFlex
   simulations. Use for design load identification, max/min extraction with associated
   values, and extreme event characterization.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

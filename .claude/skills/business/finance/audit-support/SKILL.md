@@ -2,6 +2,7 @@
 name: audit-support
 description: Support SOX 404 compliance with control testing methodology, sample selection,
   and documentation standards.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

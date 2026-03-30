@@ -4,6 +4,7 @@ description: 'Classify and extract structured content from engineering documents
   a 3-layer taxonomy: generic content types, engineering patterns, and domain sub-skills.
   Use when ingesting standards, reports, or technical manuals into structured data
   for downstream analysis.
+type: reference
 
   '
 version: 1.0.0
@@ -35,6 +36,7 @@ see_also:
 - doc-extraction-output-schema
 - doc-extraction-domain-sub-skills
 - doc-extraction-hybrid-classification-strategy-wrk-1188-learning
+type: reference
 ---
 
 # Doc Extraction

@@ -2,6 +2,7 @@
 name: data-validation
 description: QA an analysis before sharing with stakeholders -- methodology checks,
   accuracy verification, and bias detection
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

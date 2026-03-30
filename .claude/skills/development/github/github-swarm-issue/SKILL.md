@@ -3,6 +3,7 @@ name: github-swarm-issue
 description: GitHub issue-based swarm coordination for intelligent task decomposition
   and progress tracking. Use for transforming issues into multi-agent tasks, automated
   triage, task breakdown, and issue lifecycle management.
+type: reference
 capabilities: []
 requires: []
 see_also:

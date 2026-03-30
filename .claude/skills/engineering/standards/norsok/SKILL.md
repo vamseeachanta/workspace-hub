@@ -4,6 +4,7 @@ name: norsok
 version: "1.0.0"
 category: engineering
 description: "Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design"
+type: reference
 capabilities: []
 requires: []
 see_also: []

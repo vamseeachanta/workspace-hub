@@ -3,6 +3,7 @@ name: orcaflex-results-comparison
 description: Compare results across multiple OrcaFlex simulations for design verification,
   sensitivity studies, and configuration comparison. Includes pretension, stiffness,
   and force distribution analysis.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

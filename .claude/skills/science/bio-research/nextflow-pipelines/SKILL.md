@@ -2,6 +2,7 @@
 name: nextflow-pipelines
 description: Run nf-core bioinformatics pipelines (rnaseq, sarek, atacseq) on sequencing
   data for gene expression, variant calling, and chromatin accessibility analyses.
+type: reference
 version: 1.0.0
 category: science
 last_updated: 2026-02-03

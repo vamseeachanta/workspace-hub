@@ -3,6 +3,7 @@ name: orcaflex-static-debug
 description: Troubleshoot and resolve OrcaFlex static analysis convergence issues.
   Diagnose common problems including line connectivity, tensions, environmental conditions,
   and numerical instabilities.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

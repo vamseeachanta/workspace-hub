@@ -4,6 +4,7 @@ description: "Generate visualizations from OrcaFlex and OrcaWave simulations usi
   \ the shared OrcFxAPI \u2014 model views (SaveModelView), time series plots, range\
   \ graphs, and interactive HTML reports. Covers both .dat/.sim (OrcaFlex) and .owd\
   \ (OrcaWave) files via the same API surface."
+type: reference
 version: 1.1.0
 updated: 2026-02-23
 category: engineering

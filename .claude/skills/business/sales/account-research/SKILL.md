@@ -1,6 +1,7 @@
 ---
 name: account-research
 description: "Gather actionable sales intelligence on companies and individuals before outreach"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

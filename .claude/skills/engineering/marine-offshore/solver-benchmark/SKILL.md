@@ -3,6 +3,7 @@ name: solver-benchmark
 version: 2.0.0
 description: Run N-way diffraction solver benchmarks comparing AQWA, OrcaWave, and
   BEMRosetta results
+type: reference
 author: workspace-hub
 category: engineering-utilities
 tags:

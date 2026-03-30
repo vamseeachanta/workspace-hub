@@ -2,6 +2,7 @@
 name: statistical-analysis
 description: Apply statistical methods including descriptive stats, trend analysis,
   outlier detection, and hypothesis testing
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

@@ -3,6 +3,7 @@ name: brand-guidelines
 description: Create and maintain brand guidelines including visual identity, voice
   and tone, and usage rules. Use for establishing brand standards, style guides, and
   ensuring brand consistency across materials.
+type: reference
 version: 2.0.0
 category: business
 last_updated: 2026-01-02

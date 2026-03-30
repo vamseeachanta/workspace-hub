@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering
 description: "OpenFOAM AI Interface Skill \u2014 case setup, CLI execution, output\
   \ parsing, failure diagnosis, validation"
+type: reference
 tags:
 - openfoam
 - cfd

@@ -3,6 +3,7 @@ name: echarts
 version: 1.0.0
 description: Create powerful interactive charts with Apache ECharts - balanced ease-of-use
   and customization
+type: reference
 author: workspace-hub
 category: data-visualization
 tags:

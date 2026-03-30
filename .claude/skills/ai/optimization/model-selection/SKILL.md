@@ -4,6 +4,7 @@ name: model-selection
 version: "1.0.0"
 category: ai
 description: "Guide AI model selection based on task complexity, cost constraints, and latency requirements"
+type: reference
 capabilities: []
 requires: []
 see_also: []

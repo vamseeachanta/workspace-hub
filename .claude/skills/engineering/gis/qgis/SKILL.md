@@ -5,6 +5,7 @@ category: engineering/gis
 description: "QGIS AI Interface Skill \u2014 PyQGIS headless automation, Processing\
   \ framework, vector/raster I/O, CRS transforms, well plotting from CSV, failure\
   \ diagnosis"
+type: reference
 tags:
 - qgis
 - gis

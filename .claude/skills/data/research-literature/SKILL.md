@@ -3,6 +3,7 @@ name: research-literature
 description: 'Systematize research and literature gathering for engineering categories
   — queries doc index, capability map, and standards ledger to produce structured
   research briefs for calculation implementation.
+type: reference
 
   '
 version: 1.0.0
@@ -16,6 +17,7 @@ triggers:
 - literature review
 - research brief
 - find standards for
+type: reference
 ---
 
 # Research & Literature Gathering Skill

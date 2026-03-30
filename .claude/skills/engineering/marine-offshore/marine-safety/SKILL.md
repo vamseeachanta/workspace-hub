@@ -4,6 +4,7 @@ name: marine-safety
 version: "1.0.0"
 category: engineering
 description: "Assess offshore asset integrity, corrosion management, and life extension for aging marine structures"
+type: reference
 capabilities: []
 requires: []
 see_also: []

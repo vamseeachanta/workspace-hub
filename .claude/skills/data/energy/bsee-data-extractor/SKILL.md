@@ -5,6 +5,7 @@ description: Extract and process BSEE (Bureau of Safety and Environmental Enforc
   Permit to Drill) data. Use for querying production data, well activities, drilling
   permits, completions, and workovers by API number, block, lease, or field with automatic
   data normalization and caching.
+type: reference
 version: 1.0.0
 category: data/energy
 capabilities: []

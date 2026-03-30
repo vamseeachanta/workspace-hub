@@ -2,6 +2,7 @@
 name: variance-analysis
 description: Decompose financial variances into drivers with narrative explanations
   and waterfall analysis.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

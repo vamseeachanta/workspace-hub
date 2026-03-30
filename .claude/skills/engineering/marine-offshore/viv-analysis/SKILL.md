@@ -4,6 +4,7 @@ description: Assess vortex-induced vibration (VIV) for risers and tubular member
   with natural frequency and safety factor calculations. Use for VIV susceptibility
   analysis, natural frequency calculation, vortex shedding assessment, and tubular
   member fatigue from VIV.
+type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []

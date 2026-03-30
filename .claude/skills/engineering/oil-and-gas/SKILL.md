@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering
 description: Domain expertise for petroleum engineering, reservoir analysis, production
   optimization, and energy industry operations across the full oil and gas value chain.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

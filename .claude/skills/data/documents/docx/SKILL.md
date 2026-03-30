@@ -4,6 +4,7 @@ description: Comprehensive Word document toolkit for reading, creating, and edit
   .docx files. Supports text extraction, document creation with python-docx, and tracked
   changes via redlining workflow. Use for legal, academic, or professional document
   manipulation.
+type: reference
 version: 1.1.0
 last_updated: 2026-01-02
 category: data

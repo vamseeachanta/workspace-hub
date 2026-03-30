@@ -4,6 +4,7 @@ name: data-management
 version: "1.0.0"
 category: data
 description: "Comprehensive DataFrame loading, filtering, transformation, and data pipeline management from Excel, CSV, and multiple sources with YAML-driven configuration."
+type: reference
 globs:
   - src/assetutilities/common/data_management.py
   - src/assetutilities/common/data.py

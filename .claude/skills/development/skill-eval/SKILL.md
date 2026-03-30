@@ -3,6 +3,7 @@ name: skill-eval
 description: Evaluate all workspace-hub skills for structural validity, content quality,
   cross-reference integrity, and registry consistency. Runs 18 checks across critical,
   warning, and info severity levels with actionable fix suggestions.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-29

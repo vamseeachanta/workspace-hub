@@ -3,6 +3,7 @@ name: social-media
 description: Social media marketing with campaign analysis, platform strategies, and
   engagement metrics. Use for social presence building, campaign tracking, and ROI
   analysis. Based on alirezarezvani/claude-skills.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-01-19

@@ -6,6 +6,7 @@ description: >
   Convert OrcaFlex .dat binary model files to enriched YAML fixtures using
   worldenergydata public databases (vessel fleet, riser components, pipe schedules).
   All stages run on licensed-win-1. Output committed to digitalmodel as test fixtures.
+type: reference
 triggers:
   - "orcaflex dat to yaml"
   - "enrich orcaflex"

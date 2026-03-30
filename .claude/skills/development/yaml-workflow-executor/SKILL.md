@@ -3,6 +3,7 @@ name: yaml-workflow-executor
 description: Execute configuration-driven analysis workflows from YAML files. Use
   for running analysis pipelines, data processing tasks, and automation workflows
   defined in YAML configuration.
+type: reference
 version: 1.1.0
 category: development
 related_skills:

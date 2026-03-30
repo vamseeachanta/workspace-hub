@@ -3,6 +3,7 @@ name: git-worktree-workflow
 description: Use git worktrees for parallel Claude Code workflows. Run multiple Claude
   instances on different features simultaneously without merge conflicts. Use for
   parallel development, multi-branch testing, and subagent workflows.
+type: reference
 version: 1.1.0
 last_updated: 2026-01-02
 category: development

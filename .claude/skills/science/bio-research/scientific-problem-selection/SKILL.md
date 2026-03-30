@@ -2,6 +2,7 @@
 name: scientific-problem-selection
 description: Systematic framework for scientific problem selection, project ideation,
   troubleshooting stuck projects, and strategic research decisions.
+type: reference
 version: 1.0.0
 category: science
 last_updated: 2026-02-03

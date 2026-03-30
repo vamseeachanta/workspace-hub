@@ -2,6 +2,7 @@
 name: knowledge-management
 description: Create, organize, and maintain support knowledge base content to reduce
   ticket volume
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

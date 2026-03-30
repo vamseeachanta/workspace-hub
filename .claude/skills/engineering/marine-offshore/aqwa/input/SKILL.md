@@ -2,6 +2,7 @@
 name: aqwa-input
 description: AQWA input file formats (LIS, DAT, MES), analysis type configurations,
   standalone DAT conventions, mesh quality rules, and complete workflow config examples.
+type: reference
 version: 1.0.0
 updated: 2026-03-16
 category: engineering

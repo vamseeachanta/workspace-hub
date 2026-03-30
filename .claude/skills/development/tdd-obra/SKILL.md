@@ -1,6 +1,7 @@
 ---
 name: tdd-obra
 description: Test-Driven Development methodology enforcing RED-GREEN-REFACTOR cycle. Use for writing tests first, preventing regression, and ensuring code correctness. Based on obra/superpowers.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19

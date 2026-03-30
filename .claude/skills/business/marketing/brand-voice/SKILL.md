@@ -2,6 +2,7 @@
 name: brand-voice
 description: Apply and enforce brand voice, style guide, and messaging pillars across
   content. Use for brand consistency, tone guidance, and terminology management.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

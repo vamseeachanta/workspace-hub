@@ -6,6 +6,7 @@ description: 'Create distinctive, production-grade frontend interfaces with expe
   systematic design tokens, WCAG accessibility, conversion optimization, and Tailwind/React
   best practices. Produces polished, memorable interfaces that avoid generic AI aesthetics
   while meeting professional standards.
+type: reference
 
   '
 version: 1.0.0
@@ -47,6 +48,7 @@ see_also:
 - elite-frontend-ux-8-anti-patterns-never-do
 - elite-frontend-ux-9-pre-delivery-checklist
 - elite-frontend-ux-10-implementation-order
+type: reference
 ---
 
 # Elite Frontend Ux

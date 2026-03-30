@@ -3,6 +3,7 @@ name: hydrodynamic-analysis
 version: 1.0.0
 description: Hydrodynamic analysis using BEM, RAOs, added mass, damping, and wave
   loads for offshore structures
+type: reference
 author: workspace-hub
 category: engineering
 tags:

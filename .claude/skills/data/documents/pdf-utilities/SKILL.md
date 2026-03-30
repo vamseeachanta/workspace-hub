@@ -3,6 +3,7 @@ name: pdf-utilities
 version: "1.0.0"
 category: data
 description: "Read, extract, edit, and manipulate PDF documents including table extraction, page manipulation, fillable forms, and comments."
+type: reference
 globs:
   - src/assetutilities/modules/pdf_utilities/**
 alwaysApply: false

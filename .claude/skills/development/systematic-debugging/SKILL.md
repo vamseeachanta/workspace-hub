@@ -3,6 +3,7 @@ name: systematic-debugging
 description: Four-phase debugging methodology emphasizing root cause analysis before
   fixes. Use for bug investigation, preventing random fixes, and systematic problem-solving.
   Based on obra/superpowers.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19

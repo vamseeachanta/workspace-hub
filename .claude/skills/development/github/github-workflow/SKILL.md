@@ -3,6 +3,7 @@ name: github-workflow
 description: GitHub Actions workflow automation for intelligent CI/CD pipelines with
   adaptive optimization. Use for workflow creation, pipeline optimization, security
   scanning, failure analysis, and automated deployment strategies.
+type: reference
 capabilities: []
 requires: []
 see_also:

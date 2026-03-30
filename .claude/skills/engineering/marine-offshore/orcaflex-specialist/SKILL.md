@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering
 description: Automate OrcaFlex marine simulations via Python API for mooring, riser,
   and installation analysis
+type: reference
 capabilities: []
 requires: []
 see_also:

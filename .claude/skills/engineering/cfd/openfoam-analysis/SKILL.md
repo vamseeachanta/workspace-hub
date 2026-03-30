@@ -5,6 +5,7 @@ description: >
   through meshing, solving, and post-processing to calculation report generation.
   Integrates with calculation-methodology (6-phase structure) and calculation-report
   (YAML → HTML rendering). Use when performing CFD analyses, not just setting up cases.
+type: reference
 version: 1.0.0
 updated: 2026-03-16
 category: engineering/cfd

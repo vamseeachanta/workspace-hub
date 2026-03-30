@@ -3,6 +3,7 @@ name: content-strategy
 description: Content marketing strategy with brand voice, editorial calendar, and
   content frameworks. Use for blog planning, content creation pipelines, and brand
   consistency. Based on alirezarezvani/claude-skills.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

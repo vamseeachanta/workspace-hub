@@ -1,6 +1,7 @@
 ---
 name: create-an-asset
 description: "Generate tailored sales assets including landing pages, decks, one-pagers, and workflow demos"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

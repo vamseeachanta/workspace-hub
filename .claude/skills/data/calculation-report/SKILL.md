@@ -2,6 +2,7 @@
 
 name: calculation-report
 description: Generate professional engineering calculation reports from YAML — renders LaTeX formulas, interactive charts, and pass/fail outputs as HTML using the warm-parchment design system
+type: reference
 version: "1.0.0"
 triggers:
   - calculation report

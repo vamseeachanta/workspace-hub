@@ -1,6 +1,7 @@
 ---
 name: gitignore-scaffold
 description: Gitignore pattern setup and directory scaffolding — covers negation patterns, .gitkeep tracking, and git check-ignore verification workflows
+type: reference
 version: 1.0.0
 category: development
 capabilities:

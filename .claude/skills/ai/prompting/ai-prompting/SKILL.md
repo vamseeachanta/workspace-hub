@@ -4,6 +4,7 @@ version: 1.0.0
 category: ai
 description: LLM application patterns, prompt optimization techniques, and AI-powered
   data analysis workflows.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

@@ -3,6 +3,7 @@ name: background-service-manager
 description: Create and manage long-running background processes with start/stop/status
   controls, logging, and monitoring. Use for batch processing jobs, data pipelines,
   continuous services, or any long-running tasks.
+type: reference
 version: 2.0.0
 category: operations
 last_updated: 2026-01-02

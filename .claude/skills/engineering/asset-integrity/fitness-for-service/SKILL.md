@@ -4,6 +4,7 @@ description: 'Expert FFS engineer applying API 579-1/ASME FFS-1 methodology to c
   and damaged offshore equipment. Use for RSF calculations, MAWP re-rating, remaining
   life projection, UT grid inspection data, run-repair-replace decisions, and Level
   1/2/3 assessment workflows.
+type: reference
 
   '
 version: 1.0.0
@@ -43,6 +44,7 @@ capabilities:
 requires: []
 tags: []
 scripts_exempt: true
+type: reference
 ---
 
 ## When to Use

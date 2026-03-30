@@ -1,6 +1,7 @@
 ---
 name: interactive-dashboard-builder
 description: "Create self-contained HTML/JavaScript dashboards with Chart.js, filters, and professional styling"
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

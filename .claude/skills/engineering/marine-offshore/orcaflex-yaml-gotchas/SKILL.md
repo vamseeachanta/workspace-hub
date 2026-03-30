@@ -3,6 +3,7 @@ name: orcaflex-yaml-gotchas
 description: Production-proven OrcaFlex YAML traps and solutions covering dormant
   properties, boolean mismatches, section ordering, Pydantic integration, and section
   name aliases.
+type: reference
 version: 1.0.0
 updated: 2026-02-10
 category: engineering

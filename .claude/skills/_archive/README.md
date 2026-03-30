@@ -1,18 +1,17 @@
 # Archived Skills
 
-Skills moved here during zombie cleanup (WRK-094 Phase 2, 2026-02-12).
+## Archive History
 
-These skills were identified as unused/redundant and archived to reduce clutter.
-They are preserved here for reference and can be restored if needed.
+| Date | Batch | Count | Criteria |
+|------|-------|-------|----------|
+| 2026-02-12 | WRK-094 Phase 2 | ~50 | Zombie cleanup — no references, superseded, duplicate, aspirational |
+| 2026-03-30 | Stale skill audit | 2,137 | No meaningful content changes in >90 days (only bulk metadata updates) |
 
-## Archive Criteria
+## Archive Criteria (2026-03-30)
 
-- **No references** in CLAUDE.md, agent-skills-map.yaml, or active work queue items
-- **Superseded** by built-in Claude Code capabilities (Task tool, etc.)
-- **Duplicate** of another skill in a different category
-- **Aspirational** design docs never implemented as executable skills
-- **Auto-generated** commit pattern records with no executable content
-- **Third-party tool wrappers** for tools not used in the workspace
+- **Stale >90 days** — only touched by bulk operations (auto-sync, metadata fixes, schema alignment) since 2025-12-30
+- Skills were auto-generated and never received targeted content updates
+- Domain structure preserved under `_archive/` for easy restoration
 
 ## Restoring a Skill
 

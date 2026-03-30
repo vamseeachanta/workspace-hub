@@ -3,6 +3,7 @@ name: data-pipeline-processor
 description: Process data files through transformation pipelines with validation,
   cleaning, and export. Use for CSV/Excel/JSON data processing, encoding handling,
   batch operations, and data transformation workflows.
+type: reference
 version: 1.1.0
 category: development
 related_skills:

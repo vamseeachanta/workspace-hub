@@ -4,6 +4,7 @@ name: maritime-legal
 version: "1.0.0"
 category: engineering/maritime-legal
 description: "AI-assisted maritime legal and casualty consulting — engineering-technical interface with admiralty proceedings"
+type: reference
 capabilities:
   - casualty_investigation_support
   - expert_witness_report

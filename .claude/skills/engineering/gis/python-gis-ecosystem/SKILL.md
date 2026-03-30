@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering/gis
 description: "Python GIS Ecosystem Skill \u2014 GDAL/OGR, Fiona, Shapely, Rasterio,\
   \ GeoPandas, pyproj, Folium, xarray/rioxarray, Cartopy \u2014 foundational GIS libraries"
+type: reference
 tags:
 - geopandas
 - shapely

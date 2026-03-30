@@ -4,6 +4,7 @@ description: PowerPoint presentation toolkit for creating new presentations, edi
   existing ones, and using templates. Supports HTML-to-PPTX conversion, slide manipulation,
   and professional design. Use when building presentations, slide decks, or visual
   reports.
+type: reference
 version: 1.1.0
 last_updated: 2026-01-02
 category: data

@@ -4,6 +4,7 @@ name: iso
 version: "1.0.0"
 category: engineering
 description: "Apply ISO standards for materials, corrosion, safety, and oil and gas industry compliance"
+type: reference
 capabilities: []
 requires: []
 see_also: []

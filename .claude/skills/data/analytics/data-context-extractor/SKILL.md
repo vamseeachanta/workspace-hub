@@ -2,6 +2,7 @@
 name: data-context-extractor
 description: Generate or improve a company-specific data analysis skill by extracting
   tribal knowledge from analysts
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

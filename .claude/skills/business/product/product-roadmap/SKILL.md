@@ -4,6 +4,7 @@ version: 1.1.0
 category: business
 description: Plan and track product capabilities, phases, and feature priorities across
   workspace repositories
+type: reference
 last_updated: 2026-02-03
 capabilities: []
 requires: []

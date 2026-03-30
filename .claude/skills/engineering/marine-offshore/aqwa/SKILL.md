@@ -3,6 +3,7 @@ name: aqwa-analysis
 description: Integrate with AQWA hydrodynamic software for RAO computation, damping
   analysis, and coefficient extraction. Hub skill — delegates to aqwa-input, aqwa-output,
   aqwa-reference for details.
+type: reference
 version: 4.0.0
 updated: 2026-03-16
 category: engineering

@@ -2,6 +2,7 @@
 name: shell-tdd
 description: Shell-based TDD test harness patterns — pass/fail counters, common assertions,
   set -e gotchas, and exit code conventions for bash test scripts
+type: reference
 version: 1.0.0
 category: development
 capabilities:

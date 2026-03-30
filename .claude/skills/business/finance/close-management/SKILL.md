@@ -2,6 +2,7 @@
 name: close-management
 description: Manage the month-end close process with task sequencing, dependencies,
   and status tracking.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -3,6 +3,7 @@ name: orcaflex-batch-manager
 description: Manage large-scale OrcaFlex batch processing with parallel execution,
   adaptive worker scaling, memory optimization, and progress tracking for efficient
   simulation campaigns.
+type: reference
 version: 1.0.0
 updated: 2026-01-17
 category: engineering

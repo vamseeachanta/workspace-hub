@@ -4,6 +4,7 @@ description: Analyze catenary and lazy wave riser configurations for static shap
   forces, and OrcaFlex model generation. Use for riser static configuration analysis,
   catenary force calculations, lazy wave design, and generating OrcaFlex models from
   catenary parameters.
+type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []

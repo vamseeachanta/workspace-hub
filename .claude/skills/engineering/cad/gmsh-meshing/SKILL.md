@@ -4,6 +4,7 @@ version: 1.0.0
 category: engineering
 description: "gmsh Meshing Skill \u2014 CLI, .geo scripting, Python API, and solver\
   \ integration"
+type: reference
 tags:
 - gmsh
 - mesh

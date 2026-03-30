@@ -5,6 +5,7 @@ description: >
   Claude-in-Chrome extension. Opens the report in a browser, takes screenshots,
   checks key DOM elements, and produces a PASS/FAIL verdict. Generic by default;
   module-specific check lists extend the base set.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-02-19

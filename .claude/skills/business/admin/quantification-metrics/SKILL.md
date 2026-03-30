@@ -4,6 +4,7 @@ version: 1.0.0
 category: business
 description: Calculate and present quantifiable metrics for features, products, and
   initiatives including ROI, time savings, and adoption metrics.
+type: reference
 tags: []
 scripts_exempt: true
 see_also:

@@ -2,6 +2,7 @@
 name: aqwa-reference
 description: AQWA solver stages (RESTART), OPTIONS keywords, FIDP/FISK external
   damping/stiffness cards, backend bugs, and MCP tool integration patterns.
+type: reference
 version: 2.0.0
 updated: 2026-03-16
 category: engineering

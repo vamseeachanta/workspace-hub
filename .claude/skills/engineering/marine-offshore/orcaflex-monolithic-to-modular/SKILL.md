@@ -2,6 +2,7 @@
 name: orcaflex-monolithic-to-modular
 description: Convert monolithic OrcaFlex models (.dat/.yml) to spec-driven modular
   format with semantic validation for round-trip fidelity.
+type: reference
 version: 2.0.0
 updated: 2026-02-10
 category: engineering

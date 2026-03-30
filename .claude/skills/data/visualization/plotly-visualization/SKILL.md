@@ -4,6 +4,7 @@ name: plotly-visualization
 version: "1.0.0"
 category: data
 description: "Generate interactive Plotly and Matplotlib visualizations from DataFrames with configurable templates and multi-format support."
+type: reference
 globs:
   - src/assetutilities/common/visualization/**
   - src/assetutilities/common/visualizations.py

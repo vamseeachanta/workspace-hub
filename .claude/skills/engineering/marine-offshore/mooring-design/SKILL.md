@@ -3,6 +3,7 @@ name: mooring-design
 description: Design and analyze mooring systems including CALM and SALM buoys, catenary
   moorings, and spread mooring configurations. Covers mooring line design, safety
   factors, environmental loading, and compliance with DNV, API, and ABS standards.
+type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []

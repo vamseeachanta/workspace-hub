@@ -3,6 +3,7 @@ name: yaml-configuration
 version: 1.0.0
 description: YAML for configuration-driven engineering workflows, model setup, and
   analysis parameters
+type: reference
 author: workspace-hub
 category: data
 tags:

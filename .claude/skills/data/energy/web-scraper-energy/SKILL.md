@@ -2,6 +2,7 @@
 name: web-scraper-energy
 description: Web scraping workflows for energy data collection from BSEE and BOEM
   using Scrapy
+type: reference
 capabilities: []
 requires: []
 see_also:

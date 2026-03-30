@@ -3,6 +3,7 @@ name: wave-theory
 version: 1.0.0
 description: Ocean wave theory including wave spectra, statistics, irregular seas,
   and wave transformation for offshore engineering
+type: reference
 author: workspace-hub
 category: engineering
 tags:

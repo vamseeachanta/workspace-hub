@@ -3,6 +3,7 @@ name: parallel-file-processor
 description: Process multiple files in parallel with aggregation and progress tracking.
   Use for batch file operations, directory scanning, ZIP handling, and parallel data
   processing with 2-3x performance improvement.
+type: reference
 version: 1.1.0
 category: development
 related_skills:

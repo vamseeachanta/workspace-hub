@@ -2,6 +2,7 @@
 name: financial-statements
 description: Generate income statements, balance sheets, and cash flow statements
   with GAAP presentation and period-over-period comparison.
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

@@ -3,6 +3,7 @@ name: orcaflex-jumper-analysis
 version: "1.0.0"
 category: engineering
 description: "Rigid and flexible jumper modelling in OrcaFlex covering installation analysis, in-place analysis, VIV screening, and fatigue assessment."
+type: reference
 invocation: /orcaflex-jumper-analysis
 applies-to: [claude, codex, gemini]
 auto_generated: true

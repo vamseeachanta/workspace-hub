@@ -1,6 +1,7 @@
 ---
 name: repo-sync
 description: "Smart repository synchronization across workspace-hub ecosystem — diagnoses and fixes pull failures (detached HEAD, diverged branches, uncommitted changes)"
+type: reference
 version: 1.1.0
 category: workspace-hub
 last_updated: 2026-02-14

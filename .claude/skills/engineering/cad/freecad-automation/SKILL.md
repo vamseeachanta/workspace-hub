@@ -4,6 +4,7 @@ description: AI-powered automation agent for FreeCAD CAD operations including na
   language processing, batch processing, parametric design, and marine engineering
   applications. Use for CAD automation, drawing generation, FEM preprocessing, and
   integration with offshore analysis tools.
+type: reference
 version: 2.0.0
 updated: 2026-03-16
 category: engineering

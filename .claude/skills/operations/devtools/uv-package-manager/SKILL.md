@@ -3,6 +3,7 @@ name: ops-uv-package-manager
 version: 1.0.0
 description: UV for fast Python package management, virtual environments, and project
   workflows
+type: reference
 author: workspace-hub
 category: operations
 tags:

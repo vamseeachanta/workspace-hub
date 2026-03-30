@@ -4,6 +4,7 @@ version: 1.0.0
 category: data
 description: Integrate offshore engineering software APIs with mock testing for OrcaFlex,
   AQWA, and WAMIT
+type: reference
 capabilities: []
 requires: []
 see_also:

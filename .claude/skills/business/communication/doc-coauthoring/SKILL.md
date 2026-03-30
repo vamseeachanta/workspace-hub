@@ -3,6 +3,7 @@ name: doc-coauthoring
 description: Collaborate on documents with tracked changes, suggestions, and iterative
   refinement. Use for reviewing drafts, providing editorial feedback, and collaborative
   document development.
+type: reference
 version: 2.0.0
 category: business
 last_updated: 2026-01-02

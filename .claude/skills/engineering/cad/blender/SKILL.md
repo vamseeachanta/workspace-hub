@@ -3,6 +3,7 @@ name: blender-interface
 description: "AI interface skill for Blender 3D \u2014 headless CLI execution, Python\
   \ bpy API, mesh import/export, rendering, and integration with engineering analysis\
   \ workflows."
+type: reference
 version: 1.1.0
 updated: 2026-02-24
 category: engineering

@@ -2,6 +2,7 @@
 
 name: remote-desktop
 description: Connect to dev-secondary graphical desktop from dev-primary via VNC over SSH tunnel
+type: reference
 version: "1.0.0"
 category: workspace-hub
 ---

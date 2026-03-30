@@ -2,6 +2,7 @@
 name: data-exploration
 description: Profile and explore datasets to understand their shape, quality, and
   patterns before analysis
+type: reference
 version: 1.0.0
 category: data-analytics
 last_updated: 2026-02-03

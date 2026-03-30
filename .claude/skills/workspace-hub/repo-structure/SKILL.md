@@ -5,6 +5,7 @@ category: workspace
 description: Canonical source layout, test mirroring, root cleanliness, gitignore,
   docs classification, and committed artifact rules for all workspace-hub tier-1 repos.
   Consult before creating directories or files in any submodule.
+type: reference
 invocation: /repo-structure
 applies-to:
 - claude

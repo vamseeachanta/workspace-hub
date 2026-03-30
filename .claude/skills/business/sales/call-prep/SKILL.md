@@ -1,6 +1,7 @@
 ---
 name: call-prep
 description: "Prepare sales professionals for meetings with structured briefings and discovery questions"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

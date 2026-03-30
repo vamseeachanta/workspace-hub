@@ -3,6 +3,7 @@ name: github-swarm-pr
 description: Pull request swarm management for multi-agent code review and validation.
   Use for coordinated PR reviews, automated validation, PR-based swarm creation, and
   intelligent merge workflows.
+type: reference
 capabilities: []
 requires: []
 see_also:

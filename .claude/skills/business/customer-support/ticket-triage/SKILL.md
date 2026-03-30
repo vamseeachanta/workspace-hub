@@ -1,6 +1,7 @@
 ---
 name: ticket-triage
 description: "Categorize, prioritize, and route support tickets based on severity and type"
+type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03

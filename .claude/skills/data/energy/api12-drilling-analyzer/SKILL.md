@@ -3,6 +3,7 @@ name: api12-drilling-analyzer
 description: Analyze drilling performance and metrics using API 12-digit well numbering
   system. Use for drilling time analysis, cost benchmarking, well comparison, sidetracks
   tracking, and drilling efficiency metrics across GOM fields.
+type: reference
 capabilities: []
 requires: []
 see_also:

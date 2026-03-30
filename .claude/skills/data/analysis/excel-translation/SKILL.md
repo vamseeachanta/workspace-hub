@@ -4,6 +4,7 @@ name: excel-translation
 version: "1.0.0"
 category: data
 description: "Batch translate engineering Excel calculation files from Spanish to English preserving formulas"
+type: reference
 capabilities: []
 requires: []
 see_also: []

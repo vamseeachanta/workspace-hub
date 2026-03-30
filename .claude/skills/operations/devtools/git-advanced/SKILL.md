@@ -3,6 +3,7 @@ name: git-advanced
 version: 1.0.0
 description: Advanced git workflows including rebase, worktrees, bisect, hooks, and
   monorepo patterns
+type: reference
 author: workspace-hub
 category: operations
 capabilities:

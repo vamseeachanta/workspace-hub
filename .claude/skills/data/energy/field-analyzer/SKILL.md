@@ -2,6 +2,7 @@
 name: field-analyzer
 description: Deepwater field-specific analysis for major Gulf of Mexico developments
   and production aggregation
+type: reference
 capabilities: []
 requires: []
 see_also:

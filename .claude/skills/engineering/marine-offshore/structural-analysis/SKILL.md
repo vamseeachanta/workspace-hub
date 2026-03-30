@@ -11,6 +11,7 @@ description: >
   loading stress checks, Euler and DNV column buckling, beam deflection
   formulae, tubular joint T/Y capacity (DNV-RP-C203), ULS interaction
   (linear + Eurocode), ALS dented pipe assessment, stiffened panel buckling.
+type: reference
 tags:
   - structural
   - mechanics

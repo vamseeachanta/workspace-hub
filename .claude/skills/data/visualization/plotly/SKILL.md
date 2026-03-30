@@ -3,6 +3,7 @@ name: plotly
 version: 1.0.0
 description: Create interactive scientific and analytical charts with Plotly (JavaScript
   & Python)
+type: reference
 author: workspace-hub
 category: data-visualization
 tags:

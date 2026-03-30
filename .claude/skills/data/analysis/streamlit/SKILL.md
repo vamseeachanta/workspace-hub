@@ -3,6 +3,7 @@ name: streamlit
 version: 1.0.0
 description: Build interactive data applications and dashboards with pure Python -
   no frontend experience required
+type: reference
 author: workspace-hub
 category: data-analysis
 capabilities:

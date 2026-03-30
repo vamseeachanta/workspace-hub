@@ -3,6 +3,7 @@ name: cli-productivity
 version: 1.0.0
 description: Essential CLI tools and shell productivity patterns for efficient terminal
   workflows
+type: reference
 author: workspace-hub
 category: operations
 capabilities:

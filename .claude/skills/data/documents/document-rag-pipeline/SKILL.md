@@ -4,6 +4,7 @@ description: Build complete document knowledge bases with PDF text extraction, O
   for scanned documents, vector embeddings, and semantic search. Use this for creating
   searchable document libraries from folders of PDFs, technical standards, or any
   document collection.
+type: reference
 version: 1.1.0
 last_updated: 2026-01-02
 category: data

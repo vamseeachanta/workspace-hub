@@ -3,6 +3,7 @@ name: writing-plans
 description: Create detailed implementation plans with granular, actionable tasks
   (2-5 min each). Use for multi-step development tasks requiring clear guidance. Based
   on obra/superpowers.
+type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19
