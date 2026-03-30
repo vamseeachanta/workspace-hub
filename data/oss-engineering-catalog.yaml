@@ -2463,7 +2463,7 @@ libraries:
     repo_url: https://github.com/hgrecco/pint
     homepage: https://pint.readthedocs.io
     license: BSD-3-Clause
-    latest_version: null
+    latest_version: "0.25.3"
     latest_release_date: null
     python_api: true
     python_package: pint
@@ -2473,11 +2473,11 @@ libraries:
     primary_language: Python
     domain: "Data Science"
     capabilities: >-
-      Physical quantity and unit handling. Defines, operates on, and converts between
-      physical units (meters, psi, kN) with NumPy integration.
+      Physical unit handling with NumPy integration. Defines, operates on, and converts
+      between physical units (meters, psi, kN). Category: units / physical quantities.
     download_size_estimate: "5 MB"
     integration_fit: very-high
-    integration_notes: "Prevents unit-conversion errors in engineering calculations."
+    integration_notes: "Evaluated, recommended for adoption. Prevents unit-conversion errors in engineering calculations. Evaluation: digitalmodel docs/integrations/pint-evaluation.md"
     cloned_at_ace: false
 
   - name: uncertainties
@@ -2552,8 +2552,8 @@ libraries:
     repo_url: https://github.com/robbievanleeuwen/section-properties
     homepage: https://sectionproperties.readthedocs.io
     license: MIT
-    latest_version: null
-    latest_release_date: null
+    latest_version: "3.10.2"
+    latest_release_date: "2026-03-01"
     python_api: true
     python_package: sectionproperties
     maturity: mature
@@ -2567,7 +2567,7 @@ libraries:
       AS standards compliance.
     download_size_estimate: "10 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. MIT. pip-installable."
+    integration_notes: "Pure Python. MIT. pip-installable. Code-compliant structural. Evaluated 2026-03-29: <2% error on geometric props, <0.4% on CHS vs analytical."
     cloned_at_ace: false
 
   - name: fluids
