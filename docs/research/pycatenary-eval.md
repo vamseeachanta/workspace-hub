@@ -1,8 +1,8 @@
 # pycatenary Evaluation — Mooring Line Catenary Solver
 
 **Issue:** workspace-hub#1488
-**Date:** 2026-03-29
-**Evaluator:** research agent
+**Date:** 2026-03-30 (updated with live test results; original eval 2026-03-29)
+**Evaluator:** research agent + live validation agent
 
 ---
 
@@ -65,6 +65,65 @@ pycatenary (`tridelat/pycatenary`) is a pure-Python, MIT-licensed catenary solve
 4. **Single catenary shape** — Even multi-segment lines follow one continuous catenary arc; no intermediate attachment points to structure.
 5. **No clump-weight / buoy mid-line objects** — MoorPy explicitly models these; pycatenary approximates via segment weight changes only.
 6. **No dynamic solver** — Quasi-static only, consistent with its scope, but notable.
+
+---
+
+## Live Validation Results (2026-03-30)
+
+pycatenary v1.0.0 was pip-installed and tested against analytical catenary equations
+and the digitalmodel `CatenarySolver` (source-level comparison; runtime cross-check
+blocked by NumPy 2.x vs system matplotlib incompatibility in digitalmodel).
+
+### Test configuration: 500m water depth mooring
+
+| Parameter | Value |
+|---|---|
+| Water depth | 500 m |
+| Fairlead depth | 20 m (below surface) |
+| Anchor radius | 1500 m (horizontal) |
+| Line length | 1800 m (unstretched) |
+| Submerged weight | 1500 N/m (R4 chain ~127mm) |
+| EA | 1.5e9 N |
+
+### Results
+
+| Metric | Elastic (EA=1.5e9) | Rigid (no EA) |
+|---|---|---|
+| H_fairlead | 210,515 N (210.5 kN) | 211,130 N (211.1 kN) |
+| V_fairlead | 906,134 N (906.1 kN) | 906,878 N (906.9 kN) |
+| T_fairlead | 930,266 N (930.3 kN) | 931,130 N (931.1 kN) |
+| T_anchor | 210,515 N (210.5 kN) | 211,130 N (211.1 kN) |
+| Catenary param a | -- | 140.8 m |
+| Lifted length | -- | 604.6 m |
+| Grounded length | -- | 1195.4 m |
+
+### Analytical identity checks
+
+- **T = H + w*h** (rigid catenary with seabed): 211,130 + 1500 x 480 = 931,130 N. pycatenary returns 931,130 N. **Exact match.**
+- **T = sqrt(H^2 + V^2)** (elastic): 930,266 N vs pycatenary 930,266 N. **Exact match.**
+- **Elastic vs rigid delta**: H differs by -0.29%, V by -0.08%, T by -0.09%. Physically correct -- elastic line stretches, reducing tension.
+
+### Additional tests passed
+
+- 3D mooring line (README example) -- converged, forces physically reasonable
+- 2D catenary line -- converged
+- Multi-segment line (chain + polyester rope, 3 segments) -- converged, 657.8 kN fairlead tension
+- Tension distribution along line -- constant in grounded section, increasing toward fairlead
+
+### Comparison with digitalmodel CatenarySolver (source analysis)
+
+Both tools solve the same general catenary BVP (3-equation system for H, x1, x2 using scipy). Key differences:
+
+| Aspect | pycatenary | digitalmodel solver |
+|---|---|---|
+| Multi-segment | Native support | Not implemented |
+| 3D geometry | Native (projects to 2D internally) | 2D only |
+| Elastic stretch | Per-segment elongation | Average tension approximation |
+| Seabed contact | Floor detection built-in | water_depth parameter, manual |
+| API | OOP, clean | Dataclass in/out, functional |
+| Maturity | v1.0.0, published, tested | In-house, less exercised |
+
+pycatenary's multi-segment and 3D support are improvements over the in-house solver. However, MoorPy remains the more complete tool for system-level work.
 
 ---
 
