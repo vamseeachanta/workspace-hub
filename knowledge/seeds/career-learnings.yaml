@@ -210,3 +210,43 @@ entries:
       - "P50 = median estimate; P90 = 90th percentile (conservative)"
       - "Arps hyperbolic: q = qi / (1 + b*Di*t)^(1/b); b=1 for tight oil"
     follow_ons: []
+
+  - id: CAREER-drilling-ai-dwop
+    type: career
+    category: engineering
+    subcategory: drilling
+    title: "AI in Drill Well on Paper (DWOP) — GenAI for automated well planning"
+    learned_at: "2026-03-29T00:00:00Z"
+    source: career-learnings.yaml
+    context: >
+      Drill Well on Paper (DWOP) is a pre-spud planning exercise where the well is 'drilled
+      on paper' before mobilisation — engineers walk through every section, identifying risks
+      and setting parameters. Traditionally experience-driven and manual. Akshay Manjramkar
+      (Jindal Drilling) presented at an IADC session on applying GenAI to DWOP: automated well
+      program parsing, execution-ready plan generation, and standardised workflows. Claimed
+      ~98% faster planning cycles. Commentary from experienced practitioners was more nuanced:
+      Peter Aird stressed that a clear project scope must come before any AI tool. John de Wardt
+      (drilling automation pioneer) cautioned that competent domain knowledge is a prerequisite —
+      walk before you run. Mohamed Tirab noted that real value emerges from bridging planning
+      intent with execution feedback loops. Gavin Humphreys raised data sourcing and quality
+      as the actual bottleneck for training AI models in drilling.
+    patterns:
+      - "DWOP is a pre-spud planning exercise — walk through every section on paper before drilling"
+      - "AI DWOP value proposition: parse existing well programs, generate execution plans, standardise workflows"
+      - "98% faster claim should be treated sceptically — speed without domain competence is dangerous in drilling"
+      - "Domain experts (Aird, de Wardt) consistently caution: AI augments, does not replace drilling judgment"
+      - "Data quality and sourcing is the bottleneck for AI in drilling, not the algorithm"
+      - "Planning-to-execution feedback loop is where real value compounds — not just faster plan generation"
+    follow_ons:
+      - type: reference
+        title: "Akshay Manjramkar LinkedIn post — AI in DWOP (IADC session)"
+        url: "https://www.linkedin.com/posts/akshay-manjramkarr_is-drilling-engineering-evolving-how-is-ugcPost-7443016468268490753-BIDm"
+        added_at: "2026-03-29"
+      - type: person
+        title: "John de Wardt — drilling automation thought leader, early advocate for well construction automation"
+        url: ~
+        added_at: "2026-03-29"
+      - type: person
+        title: "Peter Aird — well engineering and well control author (Well Control for Completions and Interventions)"
+        url: ~
+        added_at: "2026-03-29"
