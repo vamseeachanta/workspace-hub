@@ -25,9 +25,10 @@ Additionally, enforce solver/non-solver module separation in codebase and establ
 - **D-05:** Smoke test artifacts (L00 + L01 .owr and Excel) committed to digitalmodel repo as permanent test fixtures for downstream phases
 
 ### Remote Execution Model
-- **D-06:** Claude Code on licensed-win-1 as the solver execution agent, triggered remotely from dev-primary
-- **D-07:** Remote CC trigger from dev-primary is a HARD REQUIREMENT for Phase 7 — block until it works. Not a nice-to-have
-- **D-08:** Phase 7 has two verification gates: (1) OrcFxAPI functional on licensed-win-1, (2) remote CC trigger from dev-primary to licensed-win-1
+- **D-06:** Claude Code on licensed-win-1 as the solver execution agent, polled via Windows Task Scheduler every 30 minutes
+- **D-07:** Remote CC trigger from dev-primary is a HARD REQUIREMENT for Phase 7 — satisfied via git-based pull queue (corporate firewall blocks inbound SSH)
+- **D-08:** Phase 7 has two verification gates: (1) OrcFxAPI functional on licensed-win-1, (2) queue-based CC trigger works (dev-primary submits job → licensed-win-1 pulls and processes)
+- **D-18:** Pull-based queue architecture — dev-primary commits job YAML to queue/pending/, licensed-win-1 polls via git pull + Task Scheduler, no inbound connections needed
 
 ### Smoke Test Scope
 - **D-09:** Run L00 (simplest) and L01 (moderate) benchmark cases through solver, producing reference .owr + Excel artifacts
