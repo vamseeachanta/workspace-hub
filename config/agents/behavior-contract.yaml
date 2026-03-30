@@ -80,57 +80,73 @@ provider_assignment:
       secondary: null
       rationale: "Small, isolated feature. Single file. Codex is fastest and cheapest."
       quality_gate: codex_approve
+      cross_plan: null
     feature_route_b:
       primary: codex
       secondary: claude
       rationale: "Medium feature. Codex implements; Claude plans and reviews."
       quality_gate: claude_approve
+      cross_plan: [claude, codex, gemini]
+      synthesis_agent: claude
     feature_route_c:
       primary: claude
       secondary: codex
       tertiary: gemini
       rationale: "Complex multi-module feature. Claude architects; Codex implements; Gemini reviews."
       quality_gate: two_of_three_approve
+      cross_plan: [claude, codex, gemini]
+      synthesis_agent: claude
     bugfix:
       primary: codex
       secondary: claude
       rationale: "Codex diagnoses and fixes in isolation; Claude reviews if cross-cutting."
       quality_gate: codex_approve
+      cross_plan: null
     refactor:
       primary: codex
       secondary: gemini
       rationale: "Codex restructures; Gemini summarizes scope and produces change summary doc."
       quality_gate: codex_approve
+      cross_plan: null
     test_writing:
       primary: codex
       secondary: claude
       rationale: "Codex is strongest on TDD generation; Claude reviews edge-case coverage."
       quality_gate: codex_approve
+      cross_plan: null
     research:
       primary: gemini
       secondary: claude
       rationale: "Gemini's 1M-token context excels at corpus synthesis; Claude synthesizes findings."
       quality_gate: claude_approve
+      cross_plan: [claude, codex, gemini]
+      synthesis_agent: claude
     docs:
       primary: gemini
       secondary: claude
       rationale: "Gemini drafts from large-context sources; Claude edits for conciseness/rules."
       quality_gate: claude_approve
+      cross_plan: null
     architecture:
       primary: claude
       secondary: gemini
       rationale: "Claude reasons across modules; Gemini cross-checks against specs/standards."
       quality_gate: two_of_three_approve
+      cross_plan: [claude, codex, gemini]
+      synthesis_agent: claude
     integration:
       primary: claude
       secondary: codex
       rationale: "Claude handles cross-module wiring; Codex implements discrete connectors."
       quality_gate: claude_approve
+      cross_plan: [claude, codex, gemini]
+      synthesis_agent: claude
     debugging:
       primary: codex
       secondary: claude
       rationale: "Codex does focused code trace; Claude escalates if systemic."
       quality_gate: codex_approve
+      cross_plan: null
 
 session_locking:
   description: >-

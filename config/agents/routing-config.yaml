@@ -72,3 +72,15 @@ models:
   adaptive_routing:
     enabled: true
     ewma_override: false  # Set true to override registry EWMA params here
+
+cross_modes:
+  cross_plan:
+    SIMPLE: false       # Route A: single planner sufficient
+    STANDARD: false     # Route B: single planner (cross-plan optional)
+    COMPLEX: true       # Route C: all 3 plan independently, Claude synthesizes
+    REASONING: true     # Full ensemble planning
+  cross_review:
+    SIMPLE: false       # Route A: single-provider review only
+    STANDARD: true      # Route B: 2-of-3 cross-review
+    COMPLEX: true       # Route C: full 3-of-3 with synthesis
+    REASONING: true     # Full 3-of-3 cross-review
