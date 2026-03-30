@@ -5,19 +5,19 @@
 
 ## Role Matrix
 
-| Task Type    | Primary | Secondary | Tertiary | Quality Gate     |
-|--------------|---------|-----------|----------|------------------|
-| feature/A    | codex   | —         | —        | codex approve    |
-| feature/B    | codex   | claude    | —        | claude approve   |
-| feature/C    | claude  | codex     | gemini   | 2-of-3 approve   |
-| bugfix       | codex   | claude    | —        | codex approve    |
-| refactor     | codex   | gemini    | —        | codex approve    |
-| test-writing | codex   | claude    | —        | codex approve    |
-| research     | gemini  | claude    | —        | claude approve   |
-| docs         | gemini  | claude    | —        | claude approve   |
-| architecture | claude  | gemini    | —        | 2-of-3 approve   |
-| integration  | claude  | codex     | —        | claude approve   |
-| debugging    | codex   | claude    | —        | codex approve    |
+| Task Type    | Plan                       | Primary | Secondary | Tertiary | Quality Gate     |
+|--------------|----------------------------|---------|-----------|----------|------------------|
+| feature/A    | codex                      | codex   | —         | —        | codex approve    |
+| feature/B    | [claude, codex, gemini]    | codex   | claude    | —        | claude approve   |
+| feature/C    | [claude, codex, gemini]    | claude  | codex     | gemini   | 2-of-3 approve   |
+| bugfix       | codex                      | codex   | claude    | —        | codex approve    |
+| refactor     | codex                      | codex   | gemini    | —        | codex approve    |
+| test-writing | codex                      | codex   | claude    | —        | codex approve    |
+| research     | gemini                     | gemini  | claude    | —        | claude approve   |
+| docs         | gemini                     | gemini  | claude    | —        | claude approve   |
+| architecture | [claude, codex, gemini]    | claude  | gemini    | —        | 2-of-3 approve   |
+| integration  | [claude, codex, gemini]    | claude  | codex     | —        | claude approve   |
+| debugging    | codex                      | codex   | claude    | —        | codex approve    |
 
 **Rationale:** Codex for focused single-file code/test; Claude for multi-module arch/integration;
 Gemini for 1M-token research/docs synthesis.
@@ -31,6 +31,7 @@ Gemini for 1M-token research/docs synthesis.
 ### feature/A
 ```yaml
 task_agents:
+  phase_0_plan: codex   # Single planner (Route A, no cross-plan)
   phase_1: codex    # implement + tests
   phase_2: codex    # cross-review
 ```
@@ -38,6 +39,7 @@ task_agents:
 ### feature/B
 ```yaml
 task_agents:
+  phase_0_plan: [claude, codex, gemini]  # Cross-plan: all 3 independent; Claude synthesizes
   phase_1: claude   # plan + spec
   phase_2: codex    # implement + test
   phase_3: claude   # review
@@ -46,6 +48,7 @@ task_agents:
 ### feature/C
 ```yaml
 task_agents:
+  phase_0_plan: [claude, codex, gemini]  # Cross-plan: all 3 independent; Claude synthesizes
   phase_1: claude   # architecture + spec
   phase_2: codex    # implement modules
   phase_3: claude   # integration wiring
@@ -56,6 +59,7 @@ task_agents:
 ### bugfix
 ```yaml
 task_agents:
+  phase_0_plan: codex   # Single planner (simple task)
   phase_1: codex    # diagnose + fix
   phase_2: codex    # regression tests
   phase_3: claude   # review (cross-cutting only)
@@ -64,6 +68,7 @@ task_agents:
 ### refactor
 ```yaml
 task_agents:
+  phase_0_plan: codex   # Single planner
   phase_1: codex    # restructure
   phase_2: gemini   # change-summary doc
   phase_3: codex    # verify tests green
@@ -72,6 +77,7 @@ task_agents:
 ### test-writing
 ```yaml
 task_agents:
+  phase_0_plan: codex   # Single planner
   phase_1: codex    # generate tests (TDD)
   phase_2: claude   # review edge-case coverage
 ```
@@ -79,13 +85,19 @@ task_agents:
 ### research / docs
 ```yaml
 task_agents:
+  phase_0_plan: gemini   # Single planner (research = gemini lead)
   phase_1: gemini   # gather / draft
   phase_2: claude   # distill / edit for rule compliance
 ```
 
+> **Note:** For research tasks where cross-plan IS enabled in behavior-contract.yaml,
+> the delegation template shows the default single planner. Cross-plan mode overrides
+> this at runtime when routing-config.yaml enables it.
+
 ### architecture / integration
 ```yaml
 task_agents:
+  phase_0_plan: [claude, codex, gemini]  # Cross-plan: all 3 independent; Claude synthesizes
   phase_1: claude   # design + spec
   phase_2: gemini   # cross-check standards   # or codex for integration
   phase_3: claude   # finalize + cross-review
@@ -118,6 +130,23 @@ bash scripts/review/cross-review.sh <spec-or-diff> all
 **`two_of_three_approve`** (feature/C, architecture) — All three providers review;
 at least 2 must return `APPROVE`/`MINOR`. One `MAJOR` with the other two `APPROVE` still fails.
 Codex `NO_OUTPUT` + Claude+Gemini `APPROVE` → `CONDITIONAL_PASS`.
+
+---
+
+## Cross-Plan Mode
+
+When cross-plan is enabled (see `routing-config.yaml` `cross_modes.cross_plan`), ALL providers
+in `phase_0_plan` plan independently in isolation (no visibility into others' plans per D-05).
+Claude synthesizes the merged plan via structured diff pre-filtering (auto-merge agreed sections,
+LLM synthesis for divergent sections per D-04).
+
+Cross-plan activation is determined by route tier, NOT by task type directly:
+- Route A (SIMPLE): Single planner only
+- Route B (STANDARD): Single planner default, cross-plan optional
+- Route C (COMPLEX): Cross-plan enabled
+- Route REASONING: Cross-plan enabled
+
+Script: `scripts/development/ai-plan/cross-plan.sh`
 
 ---
 
