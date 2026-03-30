@@ -29,7 +29,13 @@ see_also:
 - code-reviewer-recommendations
 - code-reviewer-test-coverage
 - code-reviewer-typescriptjavascript
-tags: []
+tags:
+- code-review
+- security
+- performance
+- quality
+- pull-request
+- multi-language
 ---
 
 # Code Reviewer

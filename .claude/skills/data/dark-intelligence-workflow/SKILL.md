@@ -9,6 +9,12 @@ related_skills:
 - research-literature
 - calculation-report
 - legal-sanity-scan
+tags:
+- excel
+- legacy-extraction
+- engineering-calculations
+- ip-compliance
+- methodology-archive
 triggers:
 - dark intelligence
 - extract from excel
