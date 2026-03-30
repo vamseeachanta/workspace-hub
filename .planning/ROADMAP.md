@@ -6,8 +6,19 @@
 
 ## Phases
 
+### Phase 1000: Cross-AI Parallel Planning and Cross-Review (IN PROGRESS)
+
+**Goal:** Add cross-AI parallel planning and parallel cross-review to the GSD issue workflow
+**Context:** GitHub #1501. Extends existing infrastructure with optional modes for multi-provider planning and review.
+**Plans:** 1/3 complete
+
+Plans:
+- [x] Plan 01: Config contracts (routing-config, behavior-contract, delegation templates) -- completed 2026-03-30
+- [ ] Plan 02: cross-plan.sh script
+- [ ] Plan 03: GSD skill integration
+
 <details>
-<summary>✅ v1.0 Foundation Sprint (Phases 1-6) — SHIPPED 2026-03-30</summary>
+<summary>v1.0 Foundation Sprint (Phases 1-6) -- SHIPPED 2026-03-30</summary>
 
 - [x] Phase 1: Accelerate digitalmodel development (5/5 plans) — completed 2026-03-25
 - [x] Phase 2: Accelerate worldenergydata pipelines (6/6 plans) — completed 2026-03-26
@@ -116,6 +127,7 @@ Plans:
 | 4. Client acquisition | v1.0 | 3/3 | Complete | 2026-03-28 |
 | 5. Nightly research automation | v1.0 | 2/2 | Complete | 2026-03-28 |
 | 6. digitalmodel vision | v1.0 | 2/2 | Complete | 2026-03-29 |
+| 1000. Cross-AI parallel planning | — | 1/3 | In Progress | — |
 
 ### Phase 1000: Cross-AI parallel planning and cross-review for all issue workflows
 
@@ -125,6 +137,6 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 1000-01-PLAN.md — Config contracts: routing-config.yaml cross_modes, behavior-contract.yaml cross_plan, agent-delegation-templates.md phase_0_plan
+- [x] 1000-01-PLAN.md — Config contracts: routing-config.yaml cross_modes, behavior-contract.yaml cross_plan, agent-delegation-templates.md phase_0_plan
 - [ ] 1000-02-PLAN.md — cross-plan.sh: parallel dispatch, section extraction, structured diff merge with synthesis
 - [ ] 1000-03-PLAN.md — GSD skill integration: review.md parallel invocation, plan-phase.md cross-plan dispatch
