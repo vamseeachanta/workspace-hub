@@ -70,7 +70,7 @@ log_info()    { echo -e "${BLUE}[INFO]  $1${NC}"; }
 log_success() { echo -e "${GREEN}[OK]    $1${NC}"; }
 log_warning() { echo -e "${YELLOW}[WARN]  $1${NC}"; }
 log_error()   { echo -e "${RED}[ERROR] $1${NC}" >&2; }
-log_verbose() { [[ "$VERBOSE" == "true" ]] && echo -e "${MAGENTA}[DEBUG] $1${NC}"; }
+log_verbose() { [[ "$VERBOSE" == "true" ]] && echo -e "${MAGENTA}[DEBUG] $1${NC}" || true; }
 
 # ---------------------------------------------------------------------------
 # Argument parsing
@@ -149,10 +149,18 @@ declare -a AVAILABLE_PROVIDERS=()
 detect_clis() {
     local count=0
 
+    if [[ "$DRY_RUN" == "true" ]]; then
+        # In dry-run mode, assume all providers are available (CLI calls are mocked)
+        AVAILABLE_PROVIDERS=(claude codex gemini)
+        count=3
+        log_info "DRY-RUN: all 3 providers assumed available (CLI calls are mocked)"
+        return 0
+    fi
+
     for provider in claude codex gemini; do
         if command -v "$provider" >/dev/null 2>&1; then
             AVAILABLE_PROVIDERS+=("$provider")
-            ((count++))
+            ((count++)) || true
             log_verbose "Found CLI: $provider"
         else
             log_warning "CLI not found: $provider"
@@ -267,7 +275,7 @@ validate_outputs() {
         fi
 
         SUCCESSFUL_PROVIDERS+=("$provider")
-        ((valid_count++))
+        ((valid_count++)) || true
         log_success "$provider: valid plan output (${file_size} bytes)"
     done
 
@@ -293,8 +301,28 @@ validate_outputs() {
 # ---------------------------------------------------------------------------
 extract_section() {
     local file="$1" tag="$2"
-    # Extract content between <tag> and </tag>, excluding the tags themselves
-    sed -n "/<${tag}>/,/<\/${tag}>/p" "$file" | sed '1d;$d'
+    # Extract content between <tag> and </tag>, excluding the tags themselves.
+    # Handles both single-line (<tag>content</tag>) and multi-line forms.
+    # NOTE: GNU sed range /<start>/,/<end>/ does NOT close when both match
+    # the same line, so we detect single-line form first.
+
+    # Check for single-line form: <tag>content</tag> on one line
+    local single_line
+    single_line=$(grep "<${tag}>.*</${tag}>" "$file" 2>/dev/null || true)
+    if [[ -n "$single_line" ]]; then
+        echo "$single_line" | sed "s/.*<${tag}>//;s/<\/${tag}>.*//"
+        return 0
+    fi
+
+    # Multi-line form: extract lines between <tag> and </tag>
+    local raw
+    raw=$(sed -n "/<${tag}>/,/<\/${tag}>/p" "$file" 2>/dev/null || true)
+    if [[ -z "$raw" ]]; then
+        return 0
+    fi
+
+    # Strip the opening and closing tag lines
+    echo "$raw" | sed '1d;$d'
 }
 
 extract_frontmatter() {
@@ -330,7 +358,7 @@ compare_sections() {
 
             if [[ -s "$section_file" ]]; then
                 section_files+=("$section_file")
-                ((extracted_count++))
+                ((extracted_count++)) || true
             else
                 log_verbose "  $provider: no content for <$section>"
             fi
@@ -492,7 +520,7 @@ synthesize_section() {
 ${content}
 
 "
-            ((provider_count++))
+            ((provider_count++)) || true
         fi
     done
 
@@ -550,12 +578,12 @@ check_structure() {
 
         for section in "${PLAN_SECTIONS[@]}"; do
             if grep -q "<${section}>" "$plan_file" 2>/dev/null; then
-                ((tag_count++))
+                ((tag_count++)) || true
             fi
         done
 
         if [[ $tag_count -ge 2 ]]; then
-            ((providers_with_tags++))
+            ((providers_with_tags++)) || true
         else
             log_warning "$provider: only $tag_count/${#PLAN_SECTIONS[@]} section tags found (possible malformed output)"
         fi
