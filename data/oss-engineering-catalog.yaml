@@ -1561,21 +1561,28 @@ libraries:
     repo_url: https://github.com/shapely/shapely
     homepage: https://shapely.readthedocs.io
     license: BSD-3-Clause
-    latest_version: null
-    latest_release_date: null
+    latest_version: "2.1.2"
+    latest_release_date: "2025-12-01"
     python_api: true
     python_package: shapely
     maturity: production
-    stars: 4400
+    stars: 4100
     contributors: 163
     primary_language: Python
     domain: GIS
     capabilities: >-
-      Planar geometric object manipulation wrapping GEOS. Vectorized NumPy ufuncs
-      for buffer analysis, spatial intersections, proximity calculations.
+      Planar geometric object manipulation wrapping GEOS. v2.x vectorized NumPy
+      ufuncs deliver 4-100x speedup over 1.x for buffer analysis, spatial
+      intersections, and proximity calculations. OverlayNG backend provides
+      robust precision-model-aware set operations. STRtree spatial index with
+      predicate filtering and query_nearest() for efficient nearest-neighbour
+      queries.
     download_size_estimate: "10 MB"
     integration_fit: very-high
-    integration_notes: "Foundational Python geometry library."
+    integration_notes: >-
+      v2.x bundles GEOS in binary wheels. Core geometry primitive for offshore
+      site layout (exclusion zones, cable routing, turbine spacing). Integrates
+      with GeoPandas, pyproj, Rasterio.
     cloned_at_ace: false
 
   - name: Rasterio
@@ -2227,8 +2234,8 @@ libraries:
     repo_url: https://github.com/mikedh/trimesh
     homepage: https://trimesh.org
     license: MIT
-    latest_version: null
-    latest_release_date: null
+    latest_version: "4.11.5"
+    latest_release_date: "2026-03-01"
     python_api: true
     python_package: trimesh
     maturity: mature
@@ -2237,11 +2244,17 @@ libraries:
     primary_language: Python
     domain: Visualization
     capabilities: >-
-      Loading, processing, and analyzing triangular meshes. STL, PLY, OBJ, GLTF
-      import/export. Boolean operations, convex hulls, ray queries.
+      Loading, processing, and analyzing triangular meshes. Mesh repair: fix normals,
+      fill holes, merge vertices, remove degenerate faces. Watertight validation
+      (is_watertight, is_winding_consistent). Boolean ops (union/difference/intersection)
+      via Manifold3D backend. Format conversion: STL, OBJ, PLY, GLTF, OFF import and
+      export. Convex hull, ray queries, volume and mass properties (watertight meshes).
     download_size_estimate: "10 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. Minimal dependencies. Widely used for 3D geometry."
+    integration_notes: >-
+      Pure Python (numpy only). Mesh repair and format conversion for hull geometry
+      pipeline. STL export hand-off to Capytaine BEM. Boolean ops via
+      `pip install manifold3d`.
     cloned_at_ace: false
 
   - name: Open3D
