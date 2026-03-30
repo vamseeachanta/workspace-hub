@@ -35,6 +35,8 @@ Phase 05 in progress (1/2 plans). Plan 01 complete, Plan 02 next.
 Carried from Phase 01-02 — see ROADMAP.md verification reports for full logs.
 
 - [Phase 04]: Used funnel_step event for calculator-to-case-study links to distinguish funnel progression from generic CTA clicks
+- [Phase 05]: 60-hour staleness threshold (not 36h) to avoid Monday false positives with weekday-only schedule
+- [Phase 05]: Staleness check as separate cron job (D-07) to detect when researcher itself fails to execute
 
 ### Phase 03 Plan 01 Decisions
 
