@@ -128,14 +128,22 @@ _run_codex() {
 _run_gemini() {
     local stance="$1"
     local out="${RESULTS_DIR}/gemini-${stance}.md"
+    local err="${RESULTS_DIR}/gemini-${stance}.err"
     local prompt_file="${PROMPTS_DIR}/gemini-${stance}.md"
     [[ -f "$prompt_file" ]] || { echo "ERROR: missing prompt ${prompt_file}" > "$out"; return 0; }
     command -v gemini >/dev/null 2>&1 || { echo "NO_OUTPUT: gemini CLI unavailable" > "$out"; return 0; }
     # gemini: -p takes instruction; context piped via stdin
+    # Separate stderr from stdout to detect exit-0-on-capacity-error (#1326)
     echo "$SHARED_CONTEXT" \
         | _timeout "$ENSEMBLE_TIMEOUT" gemini -p "$(cat "$prompt_file")" -y \
-        > "$out" 2>&1 \
+        > "$out" 2>"$err" \
         || echo "ERROR: gemini ${stance} exited $?" >> "$out"
+    # Detect empty stdout with capacity errors on stderr (gemini exits 0)
+    local out_size; out_size=$(wc -c < "$out" 2>/dev/null || echo 0)
+    if [[ $out_size -lt 50 ]] && grep -qE "RESOURCE_EXHAUSTED|MODEL_CAPACITY_EXHAUSTED|429" "$err" 2>/dev/null; then
+        echo "NO_OUTPUT: gemini capacity exhausted (exit 0, stderr has 429)" > "$out"
+        head -3 "$err" | sed 's/^/# /' >> "$out"
+    fi
 }
 
 # --- Parallel execution ------------------------------------------------------

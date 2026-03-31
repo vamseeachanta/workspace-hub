@@ -1,0 +1,62 @@
+# Dagster Evaluation Results
+# Issue: #1456
+# Date: 2026-03-31
+
+tool:
+  name: Dagster
+  version: 1.12.21
+  repo: https://github.com/dagster-io/dagster
+  license: Apache-2.0
+  python_compat: "3.9-3.14"
+
+install:
+  method: "uv pip install dagster dagster-webserver"
+  venv_size: "156 MB"
+  dependency_count: 73
+  install_time: "~30s"
+
+evaluation:
+  assets_defined: 3
+  pipeline: "raw_well_data → validated_wells → production_summary"
+  tests: "5/5 pass"
+  ui_startup: "~40s to HTTP 200"
+  pipeline_execution: "~3s (3-asset chain)"
+  peak_memory: "77 MB"
+  daemons_launched:
+    - AssetDaemon
+    - BackfillDaemon
+    - FreshnessDaemon
+    - QueuedRunCoordinatorDaemon
+    - SchedulerDaemon
+    - SensorDaemon
+
+comparison_vs_prefect:
+  dagster_strengths:
+    - Asset-oriented model (declare what data exists, not how to run)
+    - Built-in lineage graph in UI
+    - Type-checked asset dependencies
+    - MaterializeResult with rich metadata for observability
+    - Integrated scheduling and backfill without external components
+    - Assets are plain testable Python functions
+  prefect_strengths:
+    - Simpler decorator-based API (lower learning curve)
+    - Lighter weight for task-oriented workflows
+    - Better for imperative "do X then Y" workflows
+    - Smaller install footprint (~100 MB vs 156 MB)
+  recommendation: >-
+    Dagster is the better fit for engineering data pipelines where the focus
+    is on data assets (datasets, models, reports) rather than task execution.
+    The asset model maps directly to engineering workflows like
+    extract-validate-aggregate. Prefect remains better for general-purpose
+    task orchestration (cron jobs, notifications, CI-like workflows).
+
+fit_for_workspace:
+  existing_pipeline_framework: "scripts/data/pipeline/ (custom ETL)"
+  migration_effort: low
+  notes: >-
+    The existing PipelineOrchestrator (extract→transform→load) maps cleanly
+    to Dagster's asset model. Each ETL stage becomes a software-defined asset
+    with automatic lineage. The custom state/manifest tracking is replaced by
+    Dagster's built-in materialization history and metadata.
+
+verdict: adopt-for-data-pipelines

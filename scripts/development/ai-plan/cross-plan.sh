@@ -217,6 +217,12 @@ ${prompt_content}" --max-turns 2 </dev/null) > "$output_file" 2>"$err_file"
             ;;
         gemini)
             (cd /tmp && echo "$prompt_content" | timeout "$PROVIDER_TIMEOUT" gemini -p "$plan_instruction") > "$output_file" 2>"$err_file"
+            # Detect exit-0-on-capacity-error: gemini returns 0 but empty stdout (#1326)
+            local _gout_size; _gout_size=$(wc -c < "$output_file" 2>/dev/null || echo 0)
+            if [[ $_gout_size -lt $MIN_PLAN_BYTES ]] && grep -qE "RESOURCE_EXHAUSTED|MODEL_CAPACITY_EXHAUSTED|429" "$err_file" 2>/dev/null; then
+                log_warning "gemini: capacity exhausted (exit 0 but empty stdout), retrying with gemini-2.5-flash"
+                (cd /tmp && echo "$prompt_content" | timeout "$PROVIDER_TIMEOUT" gemini -p "$plan_instruction" -m gemini-2.5-flash) > "$output_file" 2>"$err_file"
+            fi
             ;;
         *)
             log_error "Unknown provider: $provider"

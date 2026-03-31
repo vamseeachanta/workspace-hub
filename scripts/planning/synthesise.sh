@@ -29,6 +29,14 @@ for f in "${RESULTS_DIR}"/*.md; do
         echo "    skip $(basename "$f") (${size}B / ${first_line:0:40})" >&2
         continue
     fi
+    # Detect YOLO-only output: file has Gemini status lines but no model content (#1326)
+    if grep -qE "^YOLO mode is enabled|^Loaded cached credentials" "$f" 2>/dev/null; then
+        local_meaningful=$(grep -cvE "^(YOLO|Loaded cached|#|$)" "$f" 2>/dev/null || echo 0)
+        if [[ $local_meaningful -lt 3 ]]; then
+            echo "    skip $(basename "$f") (YOLO-only output, no model content)" >&2
+            continue
+        fi
+    fi
     {
         echo "=== AGENT: $(basename "$f" .md) ==="
         cat "$f"

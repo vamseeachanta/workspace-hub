@@ -189,9 +189,10 @@ echo "Debug: GEMINI_CMD='$GEMINI_CMD'"
 TEMP_PROMPT_FILE=""
 TEMP_GEMINI_OUT=""
 TEMP_DIFF_FILE=""
+TEMP_GEMINI_ERR=""
 
 cleanup() {
-    rm -f "$TEMP_PROMPT_FILE" "$TEMP_GEMINI_OUT" "$TEMP_DIFF_FILE"
+    rm -f "$TEMP_PROMPT_FILE" "$TEMP_GEMINI_OUT" "$TEMP_DIFF_FILE" "$TEMP_GEMINI_ERR"
 }
 trap cleanup EXIT
 
@@ -224,33 +225,47 @@ TEMP_GEMINI_OUT=$(mktemp)
 # Disable exit on error for this command
 set +e
 
-# Run Gemini using pipe from file
-# We use 'cat' to pipe, which avoids argument length limits and shell expansion issues
-cat "$TEMP_PROMPT_FILE" | "$GEMINI_CMD" > "$TEMP_GEMINI_OUT" 2>&1
+# Run Gemini using pipe from file — separate stdout/stderr (#1326)
+# Gemini CLI can exit 0 with capacity errors on stderr and empty stdout.
+TEMP_GEMINI_ERR=$(mktemp)
+cat "$TEMP_PROMPT_FILE" | "$GEMINI_CMD" > "$TEMP_GEMINI_OUT" 2>"$TEMP_GEMINI_ERR"
 EXIT_CODE=$?
 
 # Re-enable exit on error
 set -e
 
 REVIEW_OUTPUT=$(cat "$TEMP_GEMINI_OUT")
+REVIEW_STDERR=$(cat "$TEMP_GEMINI_ERR" 2>/dev/null || echo "")
 
 if [ $EXIT_CODE -ne 0 ]; then
     echo -e "${RED}Gemini review failed (Exit Code: $EXIT_CODE).${NC}"
-    echo "Output:"
-    echo "$REVIEW_OUTPUT"
-    # Fallback: if gemini failed, maybe it's the environment?
+    [ -n "$REVIEW_STDERR" ] && echo "Stderr:" && echo "$REVIEW_STDERR" | head -10
+    rm -f "$TEMP_GEMINI_ERR"
     exit 1
 fi
 
+# Detect exit-0-on-capacity-error (#1326): gemini exits 0 but stdout empty
+# while stderr has RESOURCE_EXHAUSTED / 429 errors
+if [ -z "$REVIEW_OUTPUT" ] || [ "$(printf '%s' "$REVIEW_OUTPUT" | wc -c)" -lt 50 ]; then
+    if echo "$REVIEW_STDERR" | grep -Eq "RESOURCE_EXHAUSTED|MODEL_CAPACITY_EXHAUSTED|429|No capacity available"; then
+        echo -e "${YELLOW}Gemini capacity exhausted (exit 0 but empty output). Retrying with gemini-2.5-flash...${NC}"
+        cat "$TEMP_PROMPT_FILE" | "$GEMINI_CMD" -m gemini-2.5-flash > "$TEMP_GEMINI_OUT" 2>"$TEMP_GEMINI_ERR"
+        REVIEW_OUTPUT=$(cat "$TEMP_GEMINI_OUT")
+        REVIEW_STDERR=$(cat "$TEMP_GEMINI_ERR" 2>/dev/null || echo "")
+    fi
+fi
+rm -f "$TEMP_GEMINI_ERR"
+
 if [ -z "$REVIEW_OUTPUT" ]; then
      echo -e "${RED}Gemini returned empty output.${NC}"
+     [ -n "$REVIEW_STDERR" ] && echo "Stderr: $(echo "$REVIEW_STDERR" | head -5)"
      exit 1
 fi
 
 if echo "$REVIEW_OUTPUT" | grep -Eq "RESOURCE_EXHAUSTED|No capacity available|Error executing tool"; then
     echo -e "${RED}Gemini review failed due to capacity or tool errors.${NC}"
     echo "Output:"
-    echo "$REVIEW_OUTPUT"
+    echo "$REVIEW_OUTPUT" | head -20
     exit 1
 fi
 

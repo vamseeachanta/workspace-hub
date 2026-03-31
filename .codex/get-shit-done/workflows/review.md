@@ -140,8 +140,8 @@ trap 'rm -rf "$REVIEW_TMPDIR"' EXIT ERR INT TERM
 
 declare -A REVIEW_PIDS
 
-# Gemini
-gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > "$REVIEW_TMPDIR/gemini.md" &
+# Gemini — separate stderr to detect exit-0-on-capacity-error (#1326)
+gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" > "$REVIEW_TMPDIR/gemini.md" 2>"$REVIEW_TMPDIR/gemini.err" &
 REVIEW_PIDS[gemini]=$!
 
 # Claude (separate session)
@@ -155,6 +155,14 @@ REVIEW_PIDS[codex]=$!
 # Wait for all — capture individual exit codes
 for provider in "${!REVIEW_PIDS[@]}"; do
   if wait "${REVIEW_PIDS[$provider]}" 2>/dev/null; then
+    # Validate Gemini output: detect empty stdout with capacity errors on stderr (#1326)
+    if [[ "$provider" == "gemini" ]]; then
+      local gsize=$(wc -c < "$REVIEW_TMPDIR/gemini.md" 2>/dev/null || echo 0)
+      if [[ $gsize -lt 50 ]] && grep -qE "RESOURCE_EXHAUSTED|MODEL_CAPACITY_EXHAUSTED|429" "$REVIEW_TMPDIR/gemini.err" 2>/dev/null; then
+        echo -e "  ${YELLOW}gemini capacity exhausted, retrying with gemini-2.5-flash${NC}"
+        gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" -m gemini-2.5-flash > "$REVIEW_TMPDIR/gemini.md" 2>"$REVIEW_TMPDIR/gemini.err"
+      fi
+    fi
     cp "$REVIEW_TMPDIR/${provider}.md" "/tmp/gsd-review-${provider}-{phase}.md"
     echo -e "  ${GREEN}${provider} review completed${NC}"
   else
@@ -169,7 +177,13 @@ Fall back to single-provider sequential invocation (existing behavior, cheapest 
 
 ```bash
 # Sequential invocation — single provider for Route A
-gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-gemini-{phase}.md
+# Separate stderr to detect exit-0-on-capacity-error (#1326)
+gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" > /tmp/gsd-review-gemini-{phase}.md 2>/tmp/gsd-review-gemini-{phase}.err
+gsize=$(wc -c < /tmp/gsd-review-gemini-{phase}.md 2>/dev/null || echo 0)
+if [[ $gsize -lt 50 ]] && grep -qE "RESOURCE_EXHAUSTED|MODEL_CAPACITY_EXHAUSTED|429" /tmp/gsd-review-gemini-{phase}.err 2>/dev/null; then
+  gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" -m gemini-2.5-flash > /tmp/gsd-review-gemini-{phase}.md 2>/tmp/gsd-review-gemini-{phase}.err
+fi
+rm -f /tmp/gsd-review-gemini-{phase}.err
 ```
 
 **the agent (separate session):**
