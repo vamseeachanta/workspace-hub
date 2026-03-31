@@ -87,6 +87,8 @@ docs/
 
 ### Standards & Compliance
 
+- [AI Review Routing Policy](standards/AI_REVIEW_ROUTING_POLICY.md) — provider roles, review defaults, Gemini trigger rules
+- [Control-Plane Contract](standards/CONTROL_PLANE_CONTRACT.md) — canonical entry points and provider adapters
 - 📁 [File Organization Standards](modules/standards/FILE_ORGANIZATION_STANDARDS.md)
 - 📝 [Logging Standards](modules/standards/LOGGING_STANDARDS.md)
 - ✅ [Testing Framework Standards](modules/standards/TESTING_FRAMEWORK_STANDARDS.md)

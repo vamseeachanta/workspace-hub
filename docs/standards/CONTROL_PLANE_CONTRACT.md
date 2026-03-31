@@ -39,9 +39,14 @@ Provider-specific configuration lives in dedicated directories. These are **adap
 | Path | Status | Disposition |
 |------|--------|-------------|
 | `.agent-os/` | **Legacy** | Present in 3 of 4 starter repos (worldenergydata, assethold, assetutilities). NOT at workspace-hub root. Content (mission, tech-stack, roadmap, decisions) should migrate to `AGENTS.md` or `docs/`. No new repos should create `.agent-os/`. |
+| `.hive-mind/` | **Legacy** | Claude Flow Hive Mind system. Frozen — see `LEGACY.md` in directory. Do not extend. |
+| `.swarm/` | **Legacy** | Swarm coordination data. Frozen — see `LEGACY.md` in directory. Do not extend. |
+| `.SLASH_COMMAND_ECOSYSTEM/` | **Legacy** | Slash command registry and modules. Frozen — see `LEGACY.md` in directory. Slash commands are optional frontends, not core architecture. |
 | `.specify/` | **Retired** | Not found in any active repo. Do not create. |
 | SPARC methodology refs | **Historical** | Replaced by GSD workflow. |
 | Claude Flow / swarm refs | **Historical** | Replaced by direct provider adapter model. |
+
+See also: [AI Review Routing Policy](AI_REVIEW_ROUTING_POLICY.md) for provider roles and review defaults.
 
 ## Reading Order for AI Agents
 
