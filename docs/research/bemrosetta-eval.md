@@ -1,8 +1,8 @@
 # BEMRosetta Evaluation — Hydrodynamic Coefficient QA Tool
 
-**Date:** 2026-03-29
+**Date:** 2026-03-30 (updated from 2026-03-29 initial web-only research)
 **Issue:** vamseeachanta/workspace-hub#1490
-**Evaluated by:** Research agent (web-only, no installation)
+**Evaluated by:** Research agent (web research + repo analysis, no installation)
 
 ---
 
@@ -41,6 +41,36 @@ BEMRosetta ships three non-GUI interfaces:
 3. **Python glue code** — wraps the DLL; allows scripted load/convert/save workflows from Python. No published `pip` package; requires local build or pre-built binary bundle. API surface is thin — load a file, access coefficient arrays, save to another format.
 
 **Assessment:** Headless use is supported but not polished. The Python bindings are glue-level (not a full SDK), and the CLI lacks published documentation. Scripted format conversion (e.g., Capytaine .nc → WAMIT for OpenFAST) is the strongest headless use case.
+
+### CLI Flags (from test/test.bat)
+
+```
+bemrosetta_cl -i <input_file> -r -c <output_file>
+
+  -i   Load input file (Nemoh.cal, Capytaine .nc, WAMIT .out, etc.)
+  -r   Report/display model data
+  -c   Convert and save to output format (inferred from extension)
+       Can be repeated: -c file.1 -c file.dat
+```
+
+Example: `bemrosetta_cl -i "examples/capytaine/Potentials_0_0_0/Potentials.nc" -r -c "output/ellip.1" -c "output/ellip.dat"`
+
+Note from maintainers: "It has been a long time since any features were added to the command line application. If you want it to be improved, please pull your requests."
+
+### Capytaine Example Files in Repo
+
+The repo ships Capytaine examples with real `.nc` output files under `examples/capytaine/`:
+- `Potentials_0_0_0/` — includes `Potentials.nc`, `Potentials.py`, `Capytaine_bat.bat`, and mesh subdir
+- `Potentials_10_0_0/`
+- `Potentials_10_5_8/`
+- `Multibody/`
+- `Orca/`
+
+These confirm end-to-end Capytaine .nc read support within BEMRosetta.
+
+### Sep 2025 Release Notes
+
+The September 2025 release added Capytaine improvements (center_of_buoyancy support) and WAMIT improvements (better frequency/wave-number handling), indicating active maintenance of the Capytaine compatibility path.
 
 ---
 
@@ -87,9 +117,20 @@ BEMRosetta is the right tool for two specific tasks: (1) converting Capytaine `.
 
 - The Capytaine 2.3.1 `.nc` compatibility is confirmed against a live test case.
 - A wrapper script or Makefile target encapsulating the CLI conversion step is established.
-- The need for cross-solver visual QA is driven by an actual project deliverable.
+- The need for cross-solver visual QA is driven by an actual project deliverable (e.g., #464-467 BEM benchmarking phase).
+
+The Sep 2025 release's Capytaine improvements (center_of_buoyancy) reduce the compatibility risk, but live validation against Capytaine 2.3.1 output from our benchmarks is still required.
 
 For immediate needs, Capytaine's native xarray post-processing plus custom matplotlib scripts covers the QA use case with zero binary dependencies.
+
+### Integration Path (when triggered)
+
+1. Clone BEMRosetta to `/mnt/local-analysis/BEMRosetta`
+2. Build Linux CLI binary (`bemrosetta_cl`) from source
+3. Test: load existing Capytaine 2.3.1 `.nc` output from `/mnt/local-analysis/capytaine-env/`
+4. Test: convert `.nc` → WAMIT `.1` format, validate coefficient values
+5. Wrap CLI in a shell script under `scripts/tools/bemrosetta-convert.sh`
+6. Add to catalog with `cloned_at_ace: true` and full integration notes
 
 ---
 

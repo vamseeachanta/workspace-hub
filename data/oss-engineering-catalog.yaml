@@ -1128,20 +1128,29 @@ libraries:
     homepage: https://bemrosetta.github.io
     license: GPL-3.0
     latest_version: null
-    latest_release_date: null
+    latest_release_date: "2025-09"
     python_api: true
     python_package: null
     maturity: mature
-    stars: 115
-    contributors: 10
+    stars: 101
+    contributors: 4
     primary_language: C++
     domain: "O&G/Marine"
     capabilities: >-
       Hydrodynamic coefficients viewer and converter supporting WAMIT, AQWA, Nemoh,
-      HAMS, and OpenFAST formats. Time-domain results viewer and mesh converter.
+      Capytaine (.nc), HAMS, OrcaFlex, Hydrostar, Diodore, Bemio HDF5, and OpenFAST
+      HydroDyn formats. GUI for cross-solver QA overlays (added mass, damping,
+      excitation forces). CLI binary (bemrosetta_cl) for headless format conversion.
+      Mesh viewer/healer. State-space export via FOAMM. Irregular frequency removal.
+      Time-domain simulation viewer (OpenFAST, AQWA Naut, CSV).
     download_size_estimate: "50 MB"
     integration_fit: medium
-    integration_notes: "Python glue code available. Format converter between BEM tools."
+    integration_notes: >-
+      Python glue code (DLL wrapper, not pip-installable). CLI: bemrosetta_cl -i <input>
+      -r -c <output>. Reads Capytaine .nc (Sep 2025 update added center_of_buoyancy).
+      Key value: Capytaine .nc → WAMIT format conversion for OpenFAST HydroDyn pipeline.
+      Defer until concrete OpenFAST pipeline need. Eval: docs/research/bemrosetta-eval.md.
+      Issue: #1490.
     cloned_at_ace: false
 
   - name: DualSPHysics
@@ -1790,7 +1799,7 @@ libraries:
 
   - name: docling
     repo_url: https://github.com/docling-project/docling
-    homepage: null
+    homepage: https://docling-project.github.io/docling/
     license: MIT
     latest_version: v2.82.0
     latest_release_date: "2026-03-25"
@@ -1802,12 +1811,17 @@ libraries:
     primary_language: Python
     domain: "Doc Intelligence"
     capabilities: >-
-      IBM document parsing framework. Converts PDF, DOCX, PPTX, XLSX to structured
-      output. Table extraction, OCR, layout understanding. LangChain/LlamaIndex
-      integration.
+      IBM document parsing framework (Linux Foundation AAIF). Converts PDF, DOCX, PPTX,
+      XLSX, HTML, images, LaTeX, audio to structured output (Markdown, JSON, DoclingDocument).
+      Uses DocLayNet for layout analysis, TableFormer for table extraction (94-97.9% accuracy),
+      Granite-Docling-258M VLM. Built-in OCR (EasyOCR, Tesseract). Native LangChain
+      (DoclingLoader) and LlamaIndex (DoclingReader, DoclingNodeParser) integration.
+      Document-native RAG chunking via quackling. ~0.49s/page on L4 GPU.
     download_size_estimate: "500 MB (with models)"
     integration_fit: very-high
-    integration_notes: "pip install docling. Broadest format support."
+    integration_notes: "pip install docling. Broadest format support. MIT license. Best for RAG pipelines and table-heavy docs. Use alongside marker for equation-heavy engineering PDFs."
+    evaluation: "docs/research/docling-eval.md"
+    evaluated_date: "2026-03-30"
     cloned_at_ace: false
 
   - name: surya
