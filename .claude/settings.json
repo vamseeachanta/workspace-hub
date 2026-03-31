@@ -57,6 +57,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/skill-content-pretooluse.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PostToolUse": [
