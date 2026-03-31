@@ -7,7 +7,7 @@
 #   2. Each run: git pull -> python process-queue.py -> logs to queue/solver-queue.log
 #   3. If task already exists, updates it in place
 
-$RepoPath = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+$RepoPath = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $TaskName = "SolverQueue"
 $PythonScript = Join-Path $RepoPath "scripts\solver\process-queue.py"
 $LogFile = Join-Path $RepoPath "queue\solver-queue.log"
@@ -34,7 +34,7 @@ $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument @"
 # Trigger: every 30 minutes, indefinitely
 $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
     -RepetitionInterval (New-TimeSpan -Minutes 30) `
-    -RepetitionDuration ([TimeSpan]::MaxValue)
+    -RepetitionDuration (New-TimeSpan -Days 3650)
 
 # Settings: run whether logged in or not, don't stop if running longer than default
 $Settings = New-ScheduledTaskSettingsSet `
