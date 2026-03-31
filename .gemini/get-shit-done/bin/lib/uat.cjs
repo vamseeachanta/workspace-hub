@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { output, error, getMilestonePhaseFilter, planningDir, toPosixPath } = require('./core.cjs');
 const { extractFrontmatter } = require('./frontmatter.cjs');
+const { requireSafePath, sanitizeForDisplay } = require('./security.cjs');
 
 function cmdAuditUat(cwd, raw) {
   const phasesDir = path.join(planningDir(cwd), 'phases');
@@ -88,6 +89,93 @@ function cmdAuditUat(cwd, raw) {
   }
 
   output({ results, summary }, raw);
+}
+
+function cmdRenderCheckpoint(cwd, options = {}, raw) {
+  const filePath = options.file;
+  if (!filePath) {
+    error('UAT file required: use uat render-checkpoint --file <path>');
+  }
+
+  const resolvedPath = requireSafePath(filePath, cwd, 'UAT file', { allowAbsolute: true });
+  if (!fs.existsSync(resolvedPath)) {
+    error(`UAT file not found: ${filePath}`);
+  }
+
+  const content = fs.readFileSync(resolvedPath, 'utf-8');
+  const currentTest = parseCurrentTest(content);
+
+  if (currentTest.complete) {
+    error('UAT session is already complete; no pending checkpoint to render');
+  }
+
+  const checkpoint = buildCheckpoint(currentTest);
+  output({
+    file_path: toPosixPath(path.relative(cwd, resolvedPath)),
+    test_number: currentTest.number,
+    test_name: currentTest.name,
+    checkpoint,
+  }, raw, checkpoint);
+}
+
+function parseCurrentTest(content) {
+  const currentTestMatch = content.match(/##\s*Current Test\s*(?:\n<!--[\s\S]*?-->)?\n([\s\S]*?)(?=\n##\s|$)/i);
+  if (!currentTestMatch) {
+    error('UAT file is missing a Current Test section');
+  }
+
+  const section = currentTestMatch[1].trimEnd();
+  if (!section.trim()) {
+    error('Current Test section is empty');
+  }
+
+  if (/\[testing complete\]/i.test(section)) {
+    return { complete: true };
+  }
+
+  const numberMatch = section.match(/^number:\s*(\d+)\s*$/m);
+  const nameMatch = section.match(/^name:\s*(.+)\s*$/m);
+  const expectedBlockMatch = section.match(/^expected:\s*\|\n([\s\S]*?)(?=^\w[\w-]*:\s)/m)
+    || section.match(/^expected:\s*\|\n([\s\S]+)/m);
+  const expectedInlineMatch = section.match(/^expected:\s*(.+)\s*$/m);
+
+  if (!numberMatch || !nameMatch || (!expectedBlockMatch && !expectedInlineMatch)) {
+    error('Current Test section is malformed');
+  }
+
+  let expected;
+  if (expectedBlockMatch) {
+    expected = expectedBlockMatch[1]
+      .split('\n')
+      .map(line => line.replace(/^ {2}/, ''))
+      .join('\n')
+      .trim();
+  } else {
+    expected = expectedInlineMatch[1].trim();
+  }
+
+  return {
+    complete: false,
+    number: parseInt(numberMatch[1], 10),
+    name: sanitizeForDisplay(nameMatch[1].trim()),
+    expected: sanitizeForDisplay(expected),
+  };
+}
+
+function buildCheckpoint(currentTest) {
+  return [
+    '╔══════════════════════════════════════════════════════════════╗',
+    '║  CHECKPOINT: Verification Required                           ║',
+    '╚══════════════════════════════════════════════════════════════╝',
+    '',
+    `**Test ${currentTest.number}: ${currentTest.name}**`,
+    '',
+    currentTest.expected,
+    '',
+    '──────────────────────────────────────────────────────────────',
+    'Type `pass` or describe what\'s wrong.',
+    '──────────────────────────────────────────────────────────────',
+  ].join('\n');
 }
 
 function parseUatItems(content) {
@@ -186,4 +274,9 @@ function categorizeItem(result, reason, blockedBy) {
   return 'unknown';
 }
 
-module.exports = { cmdAuditUat };
+module.exports = {
+  cmdAuditUat,
+  cmdRenderCheckpoint,
+  parseCurrentTest,
+  buildCheckpoint,
+};

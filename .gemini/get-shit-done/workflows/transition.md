@@ -41,8 +41,8 @@ Mark current phase complete and advance to next. This is the natural point where
 Before transition, read project state:
 
 ```bash
-cat .planning/STATE.md 2>/dev/null
-cat .planning/PROJECT.md 2>/dev/null
+cat .planning/STATE.md 2>/dev/null || true
+cat .planning/PROJECT.md 2>/dev/null || true
 ```
 
 Parse current position to verify we're transitioning the right phase.
@@ -55,8 +55,8 @@ Note accumulated context that may need updating after transition.
 Check current phase has all plan summaries:
 
 ```bash
-ls .planning/phases/XX-current/*-PLAN.md 2>/dev/null | sort
-ls .planning/phases/XX-current/*-SUMMARY.md 2>/dev/null | sort
+(ls .planning/phases/XX-current/*-PLAN.md 2>/dev/null || true) | sort
+(ls .planning/phases/XX-current/*-SUMMARY.md 2>/dev/null || true) | sort
 ```
 
 **Verification logic:**
@@ -69,7 +69,7 @@ ls .planning/phases/XX-current/*-SUMMARY.md 2>/dev/null | sort
 <config-check>
 
 ```bash
-cat .planning/config.json 2>/dev/null
+cat .planning/config.json 2>/dev/null || true
 ```
 
 </config-check>
@@ -151,7 +151,7 @@ Wait for user decision.
 Check for lingering handoffs:
 
 ```bash
-ls .planning/phases/XX-current/.continue-here*.md 2>/dev/null
+ls .planning/phases/XX-current/.continue-here*.md 2>/dev/null || true
 ```
 
 If found, delete them — phase is complete, handoffs are stale.
@@ -429,7 +429,7 @@ Read ROADMAP.md to get the next phase's name and goal.
 **Check if next phase has CONTEXT.md:**
 
 ```bash
-ls .planning/phases/*[X+1]*/*-CONTEXT.md 2>/dev/null
+ls .planning/phases/*[X+1]*/*-CONTEXT.md 2>/dev/null || true
 ```
 
 **If next phase exists:**

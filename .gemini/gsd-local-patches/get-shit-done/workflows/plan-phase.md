@@ -24,9 +24,6 @@ Load all context in one call (paths only to minimize orchestrator context):
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_RESEARCHER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
-AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `nyquist_validation_enabled`, `commit_docs`, `text_mode`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_reviews`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `phase_req_ids`.
@@ -37,7 +34,10 @@ Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_
 
 ## 2. Parse and Normalize Arguments
 
-Extract from $ARGUMENTS: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`, `--prd <filepath>`, `--reviews`, `--text`).
+Extract from $ARGUMENTS: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`, `--prd <filepath>`, `--reviews`, `--text`, `--cross-plan`, `--tier <TIER>`).
+
+- `--cross-plan` → forces cross-plan mode regardless of tier (set `CROSS_PLAN_FORCED=true`)
+- `--tier TIER` → override auto-detected tier (SIMPLE, STANDARD, COMPLEX, REASONING); set `TIER_OVERRIDE`
 
 Set `TEXT_MODE=true` if `--text` is present in $ARGUMENTS OR `text_mode` from init JSON is `true`. When `TEXT_MODE` is active, replace every `AskUserQuestion` call with a plain-text numbered list and ask the user to type their choice number. This is required for Claude Code remote sessions (`/rc` mode) where TUI menus don't work through the Claude App.
 
@@ -301,8 +301,6 @@ Answer: "What do I need to know to PLAN this phase well?"
 - {state_path} (Project decisions and history)
 </files_to_read>
 
-${AGENT_SKILLS_RESEARCHER}
-
 <additional_context>
 **Phase description:** {phase_description}
 **Phase requirement IDs (MUST address):** {phase_req_ids}
@@ -344,7 +342,7 @@ If `research_enabled` is false and `nyquist_validation_enabled` is true: warn "N
 In that case: **skip validation-strategy creation entirely**. Do **not** expect `RESEARCH.md` or `VALIDATION.md` for this run, and continue to Step 6.
 
 ```bash
-grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null || true
+grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null
 ```
 
 **If found:**
@@ -414,7 +412,7 @@ Otherwise use AskUserQuestion:
 ## 6. Check Existing Plans
 
 ```bash
-ls "${PHASE_DIR}"/*-PLAN.md 2>/dev/null || true
+ls "${PHASE_DIR}"/*-PLAN.md 2>/dev/null
 ```
 
 **If exists AND `--reviews` flag:** Skip prompt — go straight to replanning (the purpose of `--reviews` is to replan with review feedback).
@@ -460,6 +458,93 @@ If missing and Nyquist is still enabled/applicable — ask user:
 
 Proceed to Step 8 only if user selects 2 or 3.
 
+## 7.6. Check Cross-Plan Mode (check_cross_plan_mode)
+
+Determine if cross-plan mode is enabled for this phase. Cross-plan mode dispatches 3 AI CLIs (Claude, Codex, Gemini) to independently create plans, then merges them via structured diff (per D-03, D-04, D-05). It activates based on route tier from routing-config.yaml, or can be forced with `--cross-plan` flag.
+
+**Step 1: Check for --cross-plan flag**
+
+```bash
+CROSS_PLAN_FORCED=false
+if [[ "$ARGUMENTS" =~ --cross-plan ]]; then
+  CROSS_PLAN_FORCED=true
+fi
+```
+
+**Step 2: Determine route tier**
+
+Heuristic: phases with 3+ plans = COMPLEX, 1-2 = STANDARD. Can be overridden by `--tier` flag.
+
+```bash
+if [ -n "$TIER_OVERRIDE" ]; then
+  PLAN_TIER="$TIER_OVERRIDE"
+elif [ "${plan_count:-0}" -ge 3 ]; then
+  PLAN_TIER="COMPLEX"
+else
+  PLAN_TIER="STANDARD"
+fi
+```
+
+**Step 3: Read cross_modes.cross_plan from routing-config.yaml**
+
+```bash
+CROSS_PLAN_ENABLED=$(python3 -c "
+import yaml
+with open('config/agents/routing-config.yaml') as f:
+    cfg = yaml.safe_load(f)
+print(cfg.get('cross_modes', {}).get('cross_plan', {}).get('$PLAN_TIER', 'false'))
+" 2>/dev/null || echo "false")
+```
+
+**Step 4: Override if --cross-plan flag was used**
+
+```bash
+if [ "$CROSS_PLAN_FORCED" = "true" ]; then
+  CROSS_PLAN_ENABLED="true"
+fi
+```
+
+**Step 5: If cross-plan enabled, dispatch cross-plan.sh**
+
+```bash
+if [ "$CROSS_PLAN_ENABLED" = "true" ]; then
+  echo -e "Cross-plan mode: enabled (tier: $PLAN_TIER)"
+
+  # Build the planning prompt (same prompt that would be sent to the single planner)
+  # Write prompt to temp file
+  cat > "/tmp/gsd-plan-prompt-${padded_phase}.md" <<PROMPT_EOF
+Phase ${phase_number}: ${phase_name}
+Goal: ${goal}
+
+Context: ${context_path}
+Research: ${research_path}
+Requirements: ${requirements_path}
+PROMPT_EOF
+
+  # Invoke cross-plan.sh
+  bash "$(git rev-parse --show-toplevel)/scripts/development/ai-plan/cross-plan.sh" \
+    --phase "$padded_phase" \
+    --prompt "/tmp/gsd-plan-prompt-${padded_phase}.md" \
+    --output "${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md" \
+    --tier "$PLAN_TIER" \
+    --verbose
+
+  # Check output
+  if [ -s "${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md" ]; then
+    CROSS_PLAN_INPUT="${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md"
+    echo -e "Cross-plan merge complete: ${CROSS_PLAN_INPUT}"
+  else
+    echo -e "Cross-plan output empty or missing — falling back to single-planner mode"
+    CROSS_PLAN_INPUT=""
+  fi
+else
+  echo -e "Cross-plan mode: disabled (tier: $PLAN_TIER)"
+  CROSS_PLAN_INPUT=""
+fi
+```
+
+**Step 6: If cross-plan is disabled, skip entirely — existing single-planner flow continues unchanged.**
+
 ## 8. Spawn gsd-planner Agent
 
 Display banner:
@@ -488,11 +573,12 @@ Planner prompt:
 - {uat_path} (UAT Gaps - if --gaps)
 - {reviews_path} (Cross-AI Review Feedback - if --reviews)
 - {UI_SPEC_PATH} (UI Design Contract — visual/interaction specs, if exists)
+- {CROSS_PLAN_INPUT} (Cross-plan merged output — multi-AI consensus reference, if exists)
 </files_to_read>
 
-${AGENT_SKILLS_PLANNER}
-
 **Phase requirement IDs (every ID MUST appear in a plan's `requirements` field):** {phase_req_ids}
+
+**Cross-plan reference:** If CROSS_PLAN_INPUT is provided, use it as a reference for plan structure and content. The cross-plan output represents merged consensus from 3 independent AI planners.
 
 **Project instructions:** Read ./CLAUDE.md if exists — follow project-specific guidelines
 **Project skills:** Check .claude/skills/ or .agents/skills/ directory (if either exists) — read SKILL.md files, plans should account for project skill rules
@@ -589,8 +675,6 @@ Checker prompt:
 - {research_path} (Technical Research — includes Validation Architecture)
 </files_to_read>
 
-${AGENT_SKILLS_CHECKER}
-
 **Phase requirement IDs (MUST ALL be covered):** {phase_req_ids}
 
 **Project instructions:** Read ./CLAUDE.md if exists — verify plans honor project guidelines
@@ -636,8 +720,6 @@ Revision prompt:
 - {PHASE_DIR}/*-PLAN.md (Existing plans)
 - {context_path} (USER DECISIONS from /gsd:discuss-phase)
 </files_to_read>
-
-${AGENT_SKILLS_PLANNER}
 
 **Checker issues:** {structured_issues_from_checker}
 </revision_context>
@@ -850,6 +932,8 @@ If freezes persist, try `--skip-research` to reduce the agent chain from 3 to 2 
 - [ ] Research completed (unless --skip-research or --gaps or exists)
 - [ ] gsd-phase-researcher spawned with CONTEXT.md
 - [ ] Existing plans checked
+- [ ] Cross-plan mode checked if routing-config.yaml enables it for detected tier
+- [ ] Cross-plan output (if generated) used as planner input reference
 - [ ] gsd-planner spawned with CONTEXT.md + RESEARCH.md
 - [ ] Plans created (PLANNING COMPLETE or CHECKPOINT handled)
 - [ ] gsd-plan-checker spawned with CONTEXT.md

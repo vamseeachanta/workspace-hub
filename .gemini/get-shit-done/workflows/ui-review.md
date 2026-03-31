@@ -6,6 +6,11 @@ Retroactive 6-pillar visual audit of implemented frontend code. Standalone comma
 @/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/references/ui-brand.md
 </required_reading>
 
+<available_agent_types>
+Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
+- gsd-ui-auditor — Audits UI against design requirements
+</available_agent_types>
+
 <process>
 
 ## 0. Initialize
@@ -13,6 +18,7 @@ Retroactive 6-pillar visual audit of implemented frontend code. Standalone comma
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS_UI_REVIEWER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-ui-reviewer 2>/dev/null)
 ```
 
 Parse: `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `commit_docs`.
@@ -79,6 +85,8 @@ Conduct 6-pillar visual audit of Phase {phase_number}: {phase_name}
 - {ui_spec_path} (UI Design Contract — audit baseline, if exists)
 - {context_path} (User decisions, if exists)
 </files_to_read>
+
+${AGENT_SKILLS_UI_REVIEWER}
 
 <config>
 phase_dir: {phase_dir}

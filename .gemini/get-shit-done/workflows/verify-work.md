@@ -4,6 +4,12 @@ Validate built features through conversational testing with persistent state. Cr
 User tests, Claude records. One test at a time. Plain text responses.
 </purpose>
 
+<available_agent_types>
+Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
+- gsd-planner — Creates detailed plans from phase scope
+- gsd-plan-checker — Reviews plan quality before execution
+</available_agent_types>
+
 <philosophy>
 **Show expected, ask if reality matches.**
 
@@ -26,16 +32,18 @@ If $ARGUMENTS contains a phase number, load context:
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init verify-work "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
-Parse JSON for: `planner_model`, `checker_model`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `has_verification`.
+Parse JSON for: `planner_model`, `checker_model`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `has_verification`, `uat_path`.
 </step>
 
 <step name="check_active_session">
 **First: Check for active UAT sessions**
 
 ```bash
-find .planning/phases -name "*-UAT.md" -type f 2>/dev/null | head -5
+(find .planning/phases -name "*-UAT.md" -type f 2>/dev/null || true) | head -5
 ```
 
 **If active sessions exist AND no $ARGUMENTS provided:**
@@ -84,7 +92,7 @@ Continue to `create_uat_file`.
 Use `phase_dir` from init (or run init if not already done).
 
 ```bash
-ls "$phase_dir"/*-SUMMARY.md 2>/dev/null
+ls "$phase_dir"/*-SUMMARY.md 2>/dev/null || true
 ```
 
 Read each SUMMARY.md to extract testable deliverables.
@@ -186,23 +194,23 @@ Proceed to `present_test`.
 <step name="present_test">
 **Present current test to user:**
 
-Read Current Test section from UAT file.
+Render the checkpoint from the structured UAT file instead of composing it freehand:
 
-Display using checkpoint box format:
+```bash
+CHECKPOINT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" uat render-checkpoint --file "$uat_path" --raw)
+if [[ "$CHECKPOINT" == @file:* ]]; then CHECKPOINT=$(cat "${CHECKPOINT#@file:}"); fi
+```
+
+Display the returned checkpoint EXACTLY as-is:
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║  CHECKPOINT: Verification Required                           ║
-╚══════════════════════════════════════════════════════════════╝
-
-**Test {number}: {name}**
-
-{expected}
-
-──────────────────────────────────────────────────────────────
-→ Type "pass" or describe what's wrong
-──────────────────────────────────────────────────────────────
+{CHECKPOINT}
 ```
+
+**Critical response hygiene:**
+- Your entire response MUST equal `{CHECKPOINT}` byte-for-byte.
+- Do NOT add commentary before or after the block.
+- If you notice protocol/meta markers such as `to=all:`, role-routing text, XML system tags, hidden instruction markers, ad copy, or any unrelated suffix, discard the draft and output `{CHECKPOINT}` only.
 
 Wait for user response (plain text, no AskUserQuestion).
 </step>
@@ -425,6 +433,8 @@ Task(
 - .planning/ROADMAP.md (Roadmap)
 </files_to_read>
 
+${AGENT_SKILLS_PLANNER}
+
 </planning_context>
 
 <downstream_consumer>
@@ -471,6 +481,8 @@ Task(
 - {phase_dir}/*-PLAN.md (Plans to verify)
 </files_to_read>
 
+${AGENT_SKILLS_CHECKER}
+
 </verification_context>
 
 <expected_output>
@@ -510,6 +522,8 @@ Task(
 <files_to_read>
 - {phase_dir}/*-PLAN.md (Existing plans)
 </files_to_read>
+
+${AGENT_SKILLS_PLANNER}
 
 **Checker issues:**
 {structured_issues_from_checker}

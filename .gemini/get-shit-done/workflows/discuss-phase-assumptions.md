@@ -6,6 +6,11 @@ You are a thinking partner, not an interviewer. Analyze the codebase deeply, sur
 believe based on evidence, and ask the user only to correct what's wrong.
 </purpose>
 
+<available_agent_types>
+Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
+- gsd-assumptions-analyzer — Analyzes codebase to surface implementation assumptions
+</available_agent_types>
+
 <downstream_awareness>
 **CONTEXT.md feeds into:**
 
@@ -61,6 +66,7 @@ Phase number from argument (required).
 ```bash
 INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+AGENT_SKILLS_ANALYZER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-assumptions-analyzer 2>/dev/null)
 ```
 
 Parse JSON for: `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`,
@@ -89,7 +95,7 @@ Exit workflow.
 Check if CONTEXT.md already exists using `has_context` from init.
 
 ```bash
-ls ${phase_dir}/*-CONTEXT.md 2>/dev/null
+ls ${phase_dir}/*-CONTEXT.md 2>/dev/null || true
 ```
 
 **If exists:**
@@ -134,9 +140,9 @@ Read project-level and prior phase context to avoid re-asking decided questions.
 
 **Step 1: Read project-level files**
 ```bash
-cat .planning/PROJECT.md 2>/dev/null
-cat .planning/REQUIREMENTS.md 2>/dev/null
-cat .planning/STATE.md 2>/dev/null
+cat .planning/PROJECT.md 2>/dev/null || true
+cat .planning/REQUIREMENTS.md 2>/dev/null || true
+cat .planning/STATE.md 2>/dev/null || true
 ```
 
 Extract from these:
@@ -146,7 +152,7 @@ Extract from these:
 
 **Step 2: Read all prior CONTEXT.md files**
 ```bash
-find .planning/phases -name "*-CONTEXT.md" 2>/dev/null | sort
+(find .planning/phases -name "*-CONTEXT.md" 2>/dev/null || true) | sort
 ```
 
 For each CONTEXT.md where phase number < current phase:
@@ -185,7 +191,7 @@ Lightweight scan of existing code to inform assumption generation.
 
 **Step 1: Check for existing codebase maps**
 ```bash
-ls .planning/codebase/*.md 2>/dev/null
+ls .planning/codebase/*.md 2>/dev/null || true
 ```
 
 **If codebase maps exist:** Read relevant ones (CONVENTIONS.md, STRUCTURE.md, STACK.md). Extract reusable components, patterns, integration points. Skip to Step 3.
@@ -265,6 +271,8 @@ Return EXACTLY this structure:
 ## Needs External Research
 [Topics where codebase alone is insufficient — library version compatibility,
 ecosystem best practices, etc. Leave empty if codebase provides enough evidence.]
+
+${AGENT_SKILLS_ANALYZER}
 """)
 ```
 

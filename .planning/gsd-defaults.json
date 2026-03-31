@@ -19,5 +19,6 @@
   "hooks": {
     "context_warnings": true,
     "context_warning_threshold": 30
-  }
+  },
+  "resolve_model_ids": "omit"
 }
