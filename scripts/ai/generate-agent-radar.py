@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# dependencies = ["pyyaml"]
+# ///
 """Generate AI Agent Capability Radar HTML from YAML config.
 
 Usage:
