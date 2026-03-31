@@ -111,8 +111,9 @@ but no adversarial provider (codex, gemini, openai) was detected.
 Per CROSS_REVIEW_POLICY.md, one independent adversarial review is required.
 
 To unblock:
-  1. Run: /gsd:review --phase ${PHASE_NUM:-<N>} --codex
-  2. Or manually add adversarial review content to ${phase_dir}/REVIEWS.md
+  1. Run: /codex:adversarial-review (plan review)
+  2. Run: /gsd:review --phase ${PHASE_NUM:-<N>} --codex
+  3. Or manually add adversarial review content to ${phase_dir}/REVIEWS.md
 
 Policy: docs/modules/ai/CROSS_REVIEW_POLICY.md
 Issue: #1537
@@ -124,7 +125,7 @@ WARNING: REVIEWS.md exists at ${phase_dir}/REVIEWS.md
 but no adversarial provider (codex, gemini, openai) was detected.
 
 Per CROSS_REVIEW_POLICY.md, one independent adversarial review is required.
-Consider running: /gsd:review --phase ${PHASE_NUM:-<N>} --codex
+Consider running: /codex:adversarial-review or /gsd:review --phase ${PHASE_NUM:-<N>} --codex
 
 Use --strict to make this a blocking error.
 MSG
@@ -141,8 +142,9 @@ BLOCKED: No REVIEWS.md found at ${phase_dir}/REVIEWS.md
 Per CROSS_REVIEW_POLICY.md, phase execution requires adversarial plan review.
 
 To unblock, do one of:
-  1. Run: /gsd:review --phase ${PHASE_NUM:-<N>} --codex
-  2. Manually create ${phase_dir}/REVIEWS.md with adversarial review content
+  1. Run: /codex:adversarial-review (plan review)
+  2. Run: /gsd:review --phase ${PHASE_NUM:-<N>} --codex
+  3. Manually create ${phase_dir}/REVIEWS.md with adversarial review content
 
 Policy: docs/modules/ai/CROSS_REVIEW_POLICY.md
 Issue: #1537

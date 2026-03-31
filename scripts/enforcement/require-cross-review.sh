@@ -148,8 +148,8 @@ BLOCKED: No cross-review evidence found.
 Per CROSS_REVIEW_POLICY.md, PRs require adversarial review before creation.
 
 To unblock, do one of:
-  1. Run: /gsd:review --phase <N> --codex
-  2. Run Codex review manually and save to .planning/phases/<phase>/REVIEWS.md
+  1. Run: /codex:adversarial-review --base main
+  2. Run: /gsd:review --phase <N> --codex
   3. For non-GSD work, save review artifacts to .claude/reports/
 
 Policy: docs/modules/ai/CROSS_REVIEW_POLICY.md
@@ -167,6 +167,7 @@ In --strict mode, reviews must contain evidence of an external provider (Codex, 
 Self-review by Claude does not satisfy the cross-review policy.
 
 To unblock, re-run the review using Codex or Gemini:
+  /codex:adversarial-review --base main
   /gsd:review --phase <N> --codex
 
 Policy: docs/modules/ai/CROSS_REVIEW_POLICY.md
