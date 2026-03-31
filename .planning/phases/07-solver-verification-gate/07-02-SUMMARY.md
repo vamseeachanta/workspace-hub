@@ -42,7 +42,7 @@ patterns-established:
 requirements-completed: [INFRA-02]
 
 duration: 3min
-completed: 2026-03-30
+completed: 2026-03-31
 ---
 
 # Phase 07 Plan 02: Queue Infrastructure Summary
@@ -54,7 +54,7 @@ completed: 2026-03-30
 - **Duration:** 3 min
 - **Started:** 2026-03-30T22:25:39Z
 - **Completed:** 2026-03-30T22:28:30Z
-- **Tasks:** 1 of 2 (Task 2 is checkpoint:human-action -- awaiting user setup on licensed-win-1)
+- **Tasks:** 2 of 2 (fully complete)
 - **Files created:** 7
 
 ## Accomplishments
@@ -69,7 +69,7 @@ Each task was committed atomically:
 
 1. **Task 1: Create queue infrastructure and scripts** - `bc3d654b` (feat)
 
-**Task 2: One-time Task Scheduler setup on licensed-win-1** - checkpoint:human-action (awaiting user)
+**Task 2: One-time Task Scheduler setup on licensed-win-1** - `f11988d1` (fix) — bugs found and fixed during setup
 
 ## Files Created/Modified
 - `queue/pending/.gitkeep` - Pending jobs directory marker
@@ -105,24 +105,26 @@ Each task was committed atomically:
 ## Issues Encountered
 None
 
-## User Setup Required
+## Task 2 Completion (2026-03-31, ACMA-ANSYS05)
 
-**Task 2 is a checkpoint:human-action.** User must perform one-time setup on licensed-win-1:
+Two bugs discovered and fixed in `setup-scheduler.ps1` during setup on licensed-win-1:
 
-1. Pull latest repo on licensed-win-1
-2. Run `setup-scheduler.ps1` as Administrator
-3. Verify task created with `Get-ScheduledTask -TaskName 'SolverQueue'`
-4. Test manual run and check logs
-5. Verify OrcFxAPI is importable
+1. **Path bug**: `Split-Path -Parent` called 3× from `$PSScriptRoot` → resolved to `D:\` instead of `D:\workspace-hub`. Fixed to 2×.
+2. **Duration overflow**: `[TimeSpan]::MaxValue` serialises to `P99999999DT23H59M59S`, exceeding Task Scheduler XML limit (HRESULT 0x80041318). Fixed to `New-TimeSpan -Days 3650` (10 years).
+
+**Verification on ACMA-ANSYS05:**
+- `Get-ScheduledTask -TaskName 'SolverQueue'` → State: **Ready**
+- Manual run log: `[2026-03-31T06:11:19Z] No pending jobs` (correct — queue is empty)
+- OrcFxAPI: **DLL version 11.6c** importable
 
 ## Known Stubs
-None -- all scripts are fully functional (queue processor handles empty queue gracefully).
+None — all scripts fully functional.
 
 ## Next Phase Readiness
-- Queue infrastructure committed and ready for use
-- Task Scheduler setup awaiting user action on licensed-win-1
-- Once Task 2 completes, queue-based solver dispatch is live for Phase 07-03
+- Queue infrastructure live on licensed-win-1
+- Task Scheduler polling every 30 minutes
+- Phase 07-03 can proceed
 
 ---
 *Phase: 07-solver-verification-gate*
-*Completed: 2026-03-30 (Task 1 only; Task 2 awaiting user action)*
+*Completed: 2026-03-31*
