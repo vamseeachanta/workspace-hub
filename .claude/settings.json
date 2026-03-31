@@ -7,45 +7,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "deny": [
-    "Bash(rm -rf /)",
-    "Bash(rm -rf ~:*)",
-    "Bash(rm -rf .:*)",
-    "Bash(dd if=/dev/zero:*)",
-    "Bash(mkfs:*)",
-    "Bash(shred:*)",
-    "Bash(sudo:*)",
-    "Bash(su :*)",
-    "Bash(pkexec:*)",
-    "Bash(doas:*)",
-    "Bash(chmod 777:*)",
-    "Bash(eval:*)",
-    "Bash(sh -c:*)",
-    "Bash(bash -c:*)",
-    "Bash(zsh -c:*)",
-    "Bash(python -c:*)",
-    "Bash(python3 -c:*)",
-    "Bash(perl -e:*)",
-    "Bash(ruby -e:*)",
-    "Bash(node -e:*)",
-    "Bash(curl * | bash:*)",
-    "Bash(curl * | sh:*)",
-    "Bash(wget * -O- | bash:*)",
-    "Bash(wget * -O- | sh:*)",
-    "Bash(| bash:*)",
-    "Bash(| sh:*)",
-    "Bash(nc:*)",
-    "Bash(ncat:*)",
-    "Bash(base64:*)",
-    "Bash(xxd:*)",
-    "Bash(git push --force:*)",
-    "Bash(git push -f:*)",
-    "Bash(git push --force-with-lease:*)",
-    "Bash(git -c core.hooksPath:*)",
-    "Bash(git -c core.hookspath:*)",
-    "Bash(crontab:*)",
-    "Bash(systemctl:*)"
-  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -155,12 +116,10 @@
       }
     ]
   },
-  "showThinkingSummaries": true,
   "statusLine": {
     "type": "command",
     "command": "node .claude/hooks/gsd-statusline.js"
   },
-  "plansDirectory": ".planning",
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
@@ -170,7 +129,8 @@
     "playground@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -179,5 +139,46 @@
         "repo": "anthropics/claude-plugins-official"
       }
     }
-  }
+  },
+  "plansDirectory": ".planning",
+  "showThinkingSummaries": true,
+  "deny": [
+    "Bash(rm -rf /)",
+    "Bash(rm -rf ~:*)",
+    "Bash(rm -rf .:*)",
+    "Bash(dd if=/dev/zero:*)",
+    "Bash(mkfs:*)",
+    "Bash(shred:*)",
+    "Bash(sudo:*)",
+    "Bash(su :*)",
+    "Bash(pkexec:*)",
+    "Bash(doas:*)",
+    "Bash(chmod 777:*)",
+    "Bash(eval:*)",
+    "Bash(sh -c:*)",
+    "Bash(bash -c:*)",
+    "Bash(zsh -c:*)",
+    "Bash(python -c:*)",
+    "Bash(python3 -c:*)",
+    "Bash(perl -e:*)",
+    "Bash(ruby -e:*)",
+    "Bash(node -e:*)",
+    "Bash(curl * | bash:*)",
+    "Bash(curl * | sh:*)",
+    "Bash(wget * -O- | bash:*)",
+    "Bash(wget * -O- | sh:*)",
+    "Bash(| bash:*)",
+    "Bash(| sh:*)",
+    "Bash(nc:*)",
+    "Bash(ncat:*)",
+    "Bash(base64:*)",
+    "Bash(xxd:*)",
+    "Bash(git push --force:*)",
+    "Bash(git push -f:*)",
+    "Bash(git push --force-with-lease:*)",
+    "Bash(git -c core.hooksPath:*)",
+    "Bash(git -c core.hookspath:*)",
+    "Bash(crontab:*)",
+    "Bash(systemctl:*)"
+  ]
 }
