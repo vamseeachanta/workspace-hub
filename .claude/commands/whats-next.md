@@ -69,6 +69,10 @@ for iss in issues:
     machine_match = re.search(r'\*\*Machine:\*\*\s*(.+)', body)
     machines = machine_match.group(1).strip() if machine_match else ''
 
+    # Skip issues claimed by any machine (wip:* label)
+    if any(l.startswith('wip:') for l in labels):
+        continue
+
     # Extract categories
     cats = [l for l in labels if l.startswith('cat:') or l.startswith('domain:')]
 
@@ -95,10 +99,11 @@ for r in results:
 
 Apply these filters in order:
 
-1. **Exclude machine-locked issues** — if `Machine:` field exists and does NOT include
+1. **Exclude claimed issues** — if any `wip:*` label is present, skip it (another machine is working on it).
+2. **Exclude machine-locked issues** — if `Machine:` field exists and does NOT include
    this host's alias (dev-primary for ace-linux-1, dev-secondary for ace-linux-2), skip it.
-2. **Exclude issues requiring licensed Windows software** (ANSYS, etc.) unless on a Windows host.
-3. **Exclude issues in `archived` or `wontfix` state**.
+3. **Exclude issues requiring licensed Windows software** (ANSYS, etc.) unless on a Windows host.
+4. **Exclude issues in `archived` or `wontfix` state**.
 4. **Prefer issues that are**:
    - Higher priority (critical > high > medium > low > none)
    - Self-contained (can complete in one agent session)
@@ -132,6 +137,9 @@ Claude Code terminal on this machine. Each prompt must include:
 **Working directory:** /mnt/local-analysis/workspace-hub
 **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/NNN
 
+### First action — claim the issue
+gh issue edit NNN --add-label "wip:{{hostname}}"
+
 ### Context
 <2-3 sentences summarizing the issue and any dependencies>
 
@@ -147,6 +155,9 @@ Claude Code terminal on this machine. Each prompt must include:
 - Follow CLAUDE.md and .claude/rules/ conventions
 - Commit with descriptive message referencing #NNN
 - Push to main when done (single-session work)
+
+### Last action — release the claim
+gh issue edit NNN --remove-label "wip:{{hostname}}"
 
 ### Constraints
 - Do NOT create new repos or branches for this work
@@ -171,6 +182,8 @@ Terminal 5: Issue #NNN — <short title>
 </process>
 
 <critical_rules>
+- Agent prompts MUST include claim (`gh issue edit NNN --add-label "wip:<hostname>"`) as first action
+  and release (`--remove-label`) as last action — this prevents other machines from picking the same issue
 - ALWAYS fetch fresh from GitHub — never use cached issue data
 - ALWAYS check machine capabilities before recommending compute-heavy issues
 - Agent prompts must include a research phase FIRST (per user feedback)
