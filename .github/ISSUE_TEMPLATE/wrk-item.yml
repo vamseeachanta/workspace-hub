@@ -111,3 +111,15 @@ body:
       placeholder: "e.g., workspace-hub#123, digitalmodel#7"
     validations:
       required: false
+
+  - type: checkboxes
+    id: completion-gates
+    attributes:
+      label: Completion Gates (per CROSS_REVIEW_POLICY.md)
+      description: "Check each gate before closing. Enforced by scripts/enforcement/ hooks."
+      options:
+        - label: "Plan reviewed by adversarial provider (Codex or Gemini)"
+        - label: "Implementation cross-reviewed by adversarial provider"
+        - label: "Tests added/updated alongside implementation (TDD)"
+        - label: "Non-code artifacts (docs, scripts, config) reviewed"
+        - label: "REVIEWS.md or review report saved to phase dir / .claude/reports/"
