@@ -2611,22 +2611,26 @@ libraries:
     repo_url: https://github.com/CalebBell/fluids
     homepage: https://fluids.readthedocs.io
     license: MIT
-    latest_version: null
-    latest_release_date: null
+    latest_version: "1.3.0"
+    latest_release_date: "2025-10-25"
     python_api: true
     python_package: fluids
     maturity: production
-    stars: 425
+    stars: 423
     contributors: 20
     primary_language: Python
     domain: "Standards/Codes"
     capabilities: >-
       Comprehensive fluid dynamics library: piping design, friction factors, fittings,
       valves, compressible flow, orifice plates, relief valves, two-phase flow.
-      Implements Crane TP-410, API, ASME correlations.
+      Implements Crane TP-410, API 520/521, ASME, ISO 5167, IEC 60534 correlations.
+      18+ modules covering friction, fittings, piping schedules, safety valves,
+      control valves, flow meters, compressible flow, two-phase, drag, atmosphere,
+      geometry, packed beds, open channel, pumps, separators, ejectors, mixing.
+      Part of ChEDL ecosystem (chemicals, thermo, ht).
     download_size_estimate: "5 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. MIT. pip-installable. No compiled dependencies."
+    integration_notes: "Pure Python. MIT. pip-installable. No compiled deps. Optional NumPy/SciPy/Numba. Evaluated 2026-03-30: 18+ modules, Crane TP-410 worked examples, API 520 relief valve sizing, SI-unit convention. See docs/research/fluids-eval.md."
     cloned_at_ace: false
 
   - name: ht
