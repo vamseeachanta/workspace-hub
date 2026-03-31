@@ -35,7 +35,7 @@ modules/
 
 ## 📦 Managed Repositories
 
-This hub manages 26+ independent Git repositories while maintaining their autonomy. Each repository:
+This hub manages 25 independent Git repositories while maintaining their autonomy. Each repository:
 - Maintains its own Git history
 - Has independent remote connections
 - Can be managed individually
@@ -102,10 +102,8 @@ See `modules/config/` for all configuration files.
 
 Detailed documentation available in `modules/documentation/`.
 
-- **[Skills Index](docs/SKILLS_INDEX.md)** - Complete catalog of 51 Claude Code skills across all repositories
+- **[Skills Index](docs/SKILLS_INDEX.md)** - Complete catalog of Claude Code skills across all repositories
 - **[Repository Overview](docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md)** - Repository relationships & navigation
-- **Digital Twin Feed**: [digitaltwinfeed/README.md](digitaltwinfeed/README.md)
-- **Doris**: [doris/README.md](doris/README.md)
 
 ## AI Review Workflows
 

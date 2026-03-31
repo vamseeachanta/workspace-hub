@@ -400,6 +400,10 @@ jscpd-report/
 .claude-flow/
 dryrun_debug.log
 
+# Root artifact guardrails — prevent shell residue from being committed (#1534)
+*.btr
+--version.*
+
 # Legacy specs/ directory — migrated to .planning/ (2026-03-26)
 # Only untracked engineering data in specs/repos/ remains on disk
 specs/

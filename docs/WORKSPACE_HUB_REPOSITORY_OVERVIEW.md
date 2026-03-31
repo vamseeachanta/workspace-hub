@@ -1,24 +1,24 @@
 # Workspace-Hub Repository Overview
 
-> Comprehensive guide to the workspace-hub ecosystem and its 26+ managed repositories
+> Comprehensive guide to the workspace-hub ecosystem and its 25 managed repositories
 >
 > **Purpose**: This document helps humans and AI agents understand the workspace-hub structure, repository relationships, and navigation patterns.
 >
-> Version: 1.0.0
-> Last Updated: 2025-12-23
+> Version: 2.0.0
+> Last Updated: 2026-03-31
 
 ---
 
 ## What is Workspace-Hub?
 
-**Workspace-Hub** is a centralized repository management system that enables collaboration across 26+ independent Git repositories through unified automation, synchronization, and orchestration tools.
+**Workspace-Hub** is a centralized repository management system that enables collaboration across 25 independent Git repositories through unified automation, synchronization, and orchestration tools.
 
 ### Key Characteristics
 
-- **Multi-Repository Management**: Single control plane for 26+ repositories
+- **Multi-Repository Management**: Single control plane for 25 repositories
 - **Repository Independence**: Each repo maintains its own history, access controls, and workflows
 - **Unified Tooling**: Shared standards, scripts, and configurations
-- **AI-Native Development**: SPARC methodology with Claude Flow orchestration
+- **AI-Native Development**: GSD workflow with multi-provider AI agent support (Claude, Codex, Gemini)
 - **Modular Architecture**: 8 specialized modules for different concerns
 
 ---
@@ -27,19 +27,21 @@
 
 ```
 workspace-hub/                    # Central management hub
-├── .agent-os/                    # Agent OS configuration
-│   └── product/                  # Mission, tech-stack, roadmap
+├── AGENTS.md                     # Canonical workflow contract
+├── .claude/                      # Claude provider adapter (skills, rules, docs)
+├── .codex/                       # Codex provider adapter
+├── .gemini/                      # Gemini provider adapter
 ├── docs/                         # Centralized documentation
 ├── modules/                      # Functional modules
 ├── scripts/                      # Automation scripts
 ├── config/                       # Shared configurations
 ├── templates/                    # Document templates
 │
-├── [26+ managed repositories]/   # Individual project repositories
+├── [25 managed repositories]/    # Individual project repositories
 │   ├── Work repositories         # Professional/client projects
 │   └── Personal repositories     # Personal projects
 │
-└── CLAUDE.md                     # AI agent configuration
+└── CLAUDE.md                     # Claude-specific configuration
 ```
 
 ---
@@ -53,27 +55,28 @@ Repositories are organized into **Work** (professional/client) and **Personal** 
 | Repository | Description | Domain |
 |------------|-------------|--------|
 | **digitalmodel** | Engineering Asset Lifecycle Management - Single source of truth for offshore, subsea, and marine engineering analysis | Marine/Offshore Engineering |
-| **energy** | Energy sector analysis and data processing | Energy Industry |
 | **worldenergydata** | Comprehensive Python data library for energy industry (BSEE, production data, etc.) | Energy Data |
 | **assetutilities** | Utilities for day-to-day business task automation | Utilities/Tools |
+| **assethold** | Asset portfolio financial analysis (stocks, real estate) | Finance/Business |
 | **frontierdeepwater** | Frontier Deepwater company documents and projects | Client Work |
 | **doris** | Doris project work and documentation | Client Work |
 | **saipem** | Saipem project work (umbilical installation analysis) | Client Work |
 | **acma-projects** | ACMA Inc. high-level project data and action lists | Project Management |
 | **seanation** | SeaNation project work | Client Work |
 | **rock-oil-field** | Rock oil field analysis and documentation | Oil & Gas |
-| **ai-native-traditional-eng** | AI-native approaches for traditional engineering workflows | AI/Engineering |
 | **client_projects** | Client project management and documentation | Project Management |
 | **teamresumes** | Team resume management | HR/Admin |
-| **pyproject-starter** | Python project starter template | Development Tools |
-| **assethold** | Asset holding and management | Business |
 | **OGManufacturing** | Oil & Gas manufacturing documentation | Manufacturing |
+| **CAD-DEVELOPMENTS** | CAD development work and documentation | Engineering/CAD |
+| **heavyequipemnt-rag** | Heavy equipment RAG (retrieval-augmented generation) | AI/Engineering |
+| **simpledigitalmarketing** | Digital marketing content and tools | Marketing |
 
 ### Personal Repositories
 
 | Repository | Description | Domain |
 |------------|-------------|--------|
 | **aceengineer-admin** | ACE Engineer administrative tools | Personal/Admin |
+| **aceengineer-strategy** | ACE Engineer business strategy | Personal/Strategy |
 | **aceengineer-website** | ACE Engineer company website (www.aceengineer.com) | Website |
 | **achantas-data** | Personal data management | Personal |
 | **achantas-media** | Media and content management | Personal |
@@ -81,12 +84,6 @@ Repositories are organized into **Work** (professional/client) and **Personal** 
 | **investments** | Investment tracking and analysis | Personal Finance |
 | **sabithaandkrishnaestates** | Estate management | Personal |
 | **sd-work** | Side work and projects | Personal |
-
-### Mixed (Work + Personal)
-
-| Repository | Description |
-|------------|-------------|
-| **aceengineer-website** | Also serves professional purposes |
 
 ---
 
@@ -98,17 +95,15 @@ Repositories are organized into **Work** (professional/client) and **Personal** 
 workspace-hub (Central Hub)
     │
     ├── Standards & Configuration
-    │   ├── CLAUDE.md → Propagated to all repos
-    │   ├── .agent-os/ → Shared Agent OS config
+    │   ├── AGENTS.md → Canonical workflow contract
+    │   ├── .claude/, .codex/, .gemini/ → Provider adapters
     │   └── docs/modules/standards/ → Shared standards
     │
     ├── Utility Libraries
-    │   ├── assetutilities → Used by: digitalmodel, energy, worldenergydata
-    │   └── pyproject-starter → Template for new projects
+    │   └── assetutilities → Used by: digitalmodel, worldenergydata
     │
     ├── Engineering Analysis
     │   ├── digitalmodel → Core engineering analysis
-    │   ├── energy → Energy sector analysis
     │   └── worldenergydata → Energy data library
     │
     └── Client Projects
@@ -124,10 +119,6 @@ workspace-hub (Central Hub)
 ```
 worldenergydata (Data Source)
         │
-        ├──► energy (Analysis)
-        │        │
-        │        └──► Client reports & dashboards
-        │
         └──► digitalmodel (Engineering Models)
                  │
                  └──► Project-specific analyses
@@ -139,7 +130,6 @@ worldenergydata (Data Source)
 assetutilities
     │
     ├──► digitalmodel (Engineering utilities)
-    ├──► energy (Data processing utilities)
     ├──► worldenergydata (Data utilities)
     └──► [Other repos as needed]
 ```
@@ -165,29 +155,22 @@ Workspace-hub contains 8 specialized modules:
 
 ## AI Agent Integration
 
-### SPARC Methodology
+### GSD Workflow
 
-All repositories follow the SPARC development methodology:
-- **S**pecification: Requirements definition
-- **P**seudocode: Algorithm design
-- **A**rchitecture: System design
-- **R**efinement: TDD implementation
-- **C**ompletion: Production-ready code
+All repositories use the GSD (Get Stuff Done) framework for AI-assisted development:
+- **Plan before acting** — explicit plan + user approval before implementation
+- **TDD mandatory** — tests before implementation
+- **Multi-provider support** — Claude (.claude/), Codex (.codex/), Gemini (.gemini/)
+- **Canonical entry point** — AGENTS.md defines the workflow contract per repo
 
-### Claude Flow Orchestration
+### Control-Plane Contract
 
-- **54+ specialized agents** available for different tasks
-- **Swarm coordination** with hierarchical, mesh, and adaptive topologies
-- **Multi-model support**: Claude, OpenAI GPT, Google Gemini
-
-### Key Agent Categories
-
-| Category | Agents | Purpose |
-|----------|--------|---------|
-| **Core** | coder, reviewer, tester, planner, researcher | Development |
-| **SPARC** | specification, pseudocode, architecture, refinement | Methodology |
-| **GitHub** | pr-manager, code-review-swarm, issue-tracker | Git workflows |
-| **Specialized** | backend-dev, ml-developer, cicd-engineer | Domain-specific |
+Each repo provides AI agents with context through:
+- `AGENTS.md` — canonical workflow contract (what the repo does, how to work in it)
+- `.claude/CLAUDE.md` — Claude-specific configuration and rules
+- `.codex/` — Codex provider adapter
+- `.gemini/` — Gemini provider adapter
+- `.mcp.json` — MCP (Model Context Protocol) settings (where applicable)
 
 ---
 
@@ -219,20 +202,18 @@ user_prompt.md → YAML config → Pseudocode → TDD → Implementation
 
 | Purpose | Path |
 |---------|------|
-| Central configuration | `workspace-hub/CLAUDE.md` |
-| Documentation index | `workspace-hub/docs/README.md` |
-| AI guidelines | `workspace-hub/docs/modules/ai/AI_AGENT_GUIDELINES.md` |
-| Development workflow | `workspace-hub/docs/modules/workflow/DEVELOPMENT_WORKFLOW.md` |
-| Product mission | `workspace-hub/.agent-os/product/mission.md` |
-| Tech stack | `workspace-hub/.agent-os/product/tech-stack.md` |
-| Skills library | `workspace-hub/.claude/skills/` |
+| Workflow contract | `AGENTS.md` |
+| Claude configuration | `CLAUDE.md` / `.claude/` |
+| Documentation index | `docs/README.md` |
+| Skills library | `.claude/skills/` |
+| Rules | `.claude/rules/` |
 
 ### Understanding a Repository
 
 When working with any repository:
 
-1. **Read CLAUDE.md** first (repo-specific configuration)
-2. **Check .agent-os/** for product context (if exists)
+1. **Read AGENTS.md** first (canonical workflow contract)
+2. **Read CLAUDE.md** (Claude-specific configuration)
 3. **Review README.md** for project overview
 4. **Check docs/** for detailed documentation
 5. **Review src/** for code structure
@@ -275,22 +256,19 @@ When working with any repository:
 
 ## Repository Locations
 
-All repositories are located under:
-```
-/mnt/github/workspace-hub/
-```
+All repositories are located as subdirectories of the workspace-hub root.
 
 ### Finding a Repository
 
 ```bash
-# List all repositories
-ls -d /mnt/github/workspace-hub/*/
+# List all repositories (from workspace-hub root)
+ls -d */
 
 # Find repository by name
-ls -d /mnt/github/workspace-hub/*model*/
+ls -d *model*/
 
 # Check if repo exists
-[ -d /mnt/github/workspace-hub/digitalmodel ] && echo "exists"
+[ -d digitalmodel ] && echo "exists"
 ```
 
 ---
@@ -344,6 +322,7 @@ uv pip upgrade
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2025-12-23 | Initial comprehensive overview |
+| 2.0.0 | 2026-03-31 | Reconciled inventory (25 repos), removed stale .agent-os/SPARC/Claude Flow refs, updated control-plane to AGENTS.md + provider adapters (#1531) |
 
 ---
 
