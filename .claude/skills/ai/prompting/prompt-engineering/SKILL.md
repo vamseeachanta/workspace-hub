@@ -8,6 +8,11 @@ category: ai-prompting
 type: skill
 trigger: manual
 auto_execute: false
+tags: [prompting, chain-of-thought, few-shot, zero-shot, persona, llm]
+related_skills:
+- ai-prompting
+- dspy
+- langchain
 capabilities:
 - chain_of_thought
 - few_shot_learning

@@ -5,7 +5,10 @@ version: "1.0.0"
 category: business
 description: "Track, categorize, and analyze business expenses including credit card statement import and monthly expense reports."
 type: reference
-tags: []
+tags: [finance, expenses, credit-card, reporting, bookkeeping]
+related_skills:
+- tax-preparation
+- invoice-automation
 scripts_exempt: true
 ---
 

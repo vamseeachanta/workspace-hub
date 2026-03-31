@@ -38,7 +38,8 @@ description: One-line description of what this skill does and when to use it.
 version: 1.0.0
 category: builders
 last_updated: 2026-01-02
-related_skills:
+tags: [discovery-keyword, tool-name, use-case]        # optional, free-form
+related_skills:                                        # optional, by skill name
   - related-skill-1
   - related-skill-2
 ---
