@@ -1128,29 +1128,20 @@ libraries:
     homepage: https://bemrosetta.github.io
     license: GPL-3.0
     latest_version: null
-    latest_release_date: "2025-09"
+    latest_release_date: null
     python_api: true
     python_package: null
     maturity: mature
-    stars: 101
-    contributors: 4
+    stars: 115
+    contributors: 10
     primary_language: C++
     domain: "O&G/Marine"
     capabilities: >-
       Hydrodynamic coefficients viewer and converter supporting WAMIT, AQWA, Nemoh,
-      Capytaine (.nc), HAMS, OrcaFlex, Hydrostar, Diodore, Bemio HDF5, and OpenFAST
-      HydroDyn formats. GUI for cross-solver QA overlays (added mass, damping,
-      excitation forces). CLI binary (bemrosetta_cl) for headless format conversion.
-      Mesh viewer/healer. State-space export via FOAMM. Irregular frequency removal.
-      Time-domain simulation viewer (OpenFAST, AQWA Naut, CSV).
+      HAMS, and OpenFAST formats. Time-domain results viewer and mesh converter.
     download_size_estimate: "50 MB"
     integration_fit: medium
-    integration_notes: >-
-      Python glue code (DLL wrapper, not pip-installable). CLI: bemrosetta_cl -i <input>
-      -r -c <output>. Reads Capytaine .nc (Sep 2025 update added center_of_buoyancy).
-      Key value: Capytaine .nc → WAMIT format conversion for OpenFAST HydroDyn pipeline.
-      Defer until concrete OpenFAST pipeline need. Eval: docs/research/bemrosetta-eval.md.
-      Issue: #1490.
+    integration_notes: "Python glue code available. Format converter between BEM tools."
     cloned_at_ace: false
 
   - name: DualSPHysics
@@ -1799,7 +1790,7 @@ libraries:
 
   - name: docling
     repo_url: https://github.com/docling-project/docling
-    homepage: https://docling-project.github.io/docling/
+    homepage: null
     license: MIT
     latest_version: v2.82.0
     latest_release_date: "2026-03-25"
@@ -1811,17 +1802,12 @@ libraries:
     primary_language: Python
     domain: "Doc Intelligence"
     capabilities: >-
-      IBM document parsing framework (Linux Foundation AAIF). Converts PDF, DOCX, PPTX,
-      XLSX, HTML, images, LaTeX, audio to structured output (Markdown, JSON, DoclingDocument).
-      Uses DocLayNet for layout analysis, TableFormer for table extraction (94-97.9% accuracy),
-      Granite-Docling-258M VLM. Built-in OCR (EasyOCR, Tesseract). Native LangChain
-      (DoclingLoader) and LlamaIndex (DoclingReader, DoclingNodeParser) integration.
-      Document-native RAG chunking via quackling. ~0.49s/page on L4 GPU.
+      IBM document parsing framework. Converts PDF, DOCX, PPTX, XLSX to structured
+      output. Table extraction, OCR, layout understanding. LangChain/LlamaIndex
+      integration.
     download_size_estimate: "500 MB (with models)"
     integration_fit: very-high
-    integration_notes: "pip install docling. Broadest format support. MIT license. Best for RAG pipelines and table-heavy docs. Use alongside marker for equation-heavy engineering PDFs."
-    evaluation: "docs/research/docling-eval.md"
-    evaluated_date: "2026-03-30"
+    integration_notes: "pip install docling. Broadest format support."
     cloned_at_ace: false
 
   - name: surya
@@ -1981,22 +1967,31 @@ libraries:
     repo_url: https://github.com/dagster-io/dagster
     homepage: https://dagster.io
     license: Apache-2.0
-    latest_version: null
-    latest_release_date: null
+    latest_version: "1.12.21"
+    latest_release_date: "2026-03-26"
     python_api: true
     python_package: dagster
+    python_compat: "3.9-3.14"
     maturity: production
-    stars: 14300
+    stars: 15200
     contributors: 290
     primary_language: Python
     domain: "Data/Workflow"
     capabilities: >-
       Asset-oriented data orchestration. Software-defined assets with types, metadata,
-      and lineage. Built-in observability and testing framework.
-    download_size_estimate: "100 MB"
+      and lineage. Built-in observability and testing framework. Integrated scheduling,
+      sensors, and backfill management.
+    download_size_estimate: "156 MB (with webserver)"
     integration_fit: very-high
-    integration_notes: "pip install dagster. Stronger data engineering semantics than Airflow."
+    integration_notes: >-
+      pip install dagster dagster-webserver. Evaluated 2026-03-31 (#1456):
+      5/5 tests pass, UI launches in ~40s, pipeline runs in ~3s, ~77 MB peak RAM.
+      Stronger data semantics than Airflow. Asset model maps well to engineering
+      extract-validate-aggregate pipelines.
     cloned_at_ace: false
+    evaluated: true
+    evaluated_at: "2026-03-31"
+    evaluation_issue: 1456
 
   - name: Kedro
     repo_url: https://github.com/kedro-org/kedro
@@ -2237,8 +2232,8 @@ libraries:
     repo_url: https://github.com/nschloe/meshio
     homepage: null
     license: MIT
-    latest_version: null
-    latest_release_date: null
+    latest_version: "5.3.5"
+    latest_release_date: "2024-01-31"
     python_api: true
     python_package: meshio
     maturity: mature
@@ -2247,11 +2242,15 @@ libraries:
     primary_language: Python
     domain: Visualization
     capabilities: >-
-      Mesh I/O supporting 25+ formats (Abaqus, ANSYS, Nastran, Gmsh, VTK, STL,
-      Exodus, CGNS, XDMF). Format conversion with unified Python interface.
+      Mesh I/O supporting 42+ formats (Abaqus, ANSYS, Nastran, Gmsh, VTK, STL,
+      Exodus, CGNS, XDMF, MED, OBJ, OFF, PLY, SU2, TetGen, FLAC3D, Netgen).
+      Format conversion with unified Python interface. CLI via meshio convert.
     download_size_estimate: "5 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. Essential glue for multi-tool engineering workflows."
+    integration_notes: >-
+      Pure Python. Essential glue for multi-tool engineering workflows.
+      Evaluated 2026-03-31: 6/6 round-trip format tests pass, STL->VTK->Gmsh chain validated.
+      See scripts/examples/meshio_format_evaluation.py (#1449).
     cloned_at_ace: false
 
   - name: trimesh
@@ -2611,26 +2610,22 @@ libraries:
     repo_url: https://github.com/CalebBell/fluids
     homepage: https://fluids.readthedocs.io
     license: MIT
-    latest_version: "1.3.0"
-    latest_release_date: "2025-10-25"
+    latest_version: null
+    latest_release_date: null
     python_api: true
     python_package: fluids
     maturity: production
-    stars: 423
+    stars: 425
     contributors: 20
     primary_language: Python
     domain: "Standards/Codes"
     capabilities: >-
       Comprehensive fluid dynamics library: piping design, friction factors, fittings,
       valves, compressible flow, orifice plates, relief valves, two-phase flow.
-      Implements Crane TP-410, API 520/521, ASME, ISO 5167, IEC 60534 correlations.
-      18+ modules covering friction, fittings, piping schedules, safety valves,
-      control valves, flow meters, compressible flow, two-phase, drag, atmosphere,
-      geometry, packed beds, open channel, pumps, separators, ejectors, mixing.
-      Part of ChEDL ecosystem (chemicals, thermo, ht).
+      Implements Crane TP-410, API, ASME correlations.
     download_size_estimate: "5 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. MIT. pip-installable. No compiled deps. Optional NumPy/SciPy/Numba. Evaluated 2026-03-30: 18+ modules, Crane TP-410 worked examples, API 520 relief valve sizing, SI-unit convention. See docs/research/fluids-eval.md."
+    integration_notes: "Pure Python. MIT. pip-installable. No compiled dependencies."
     cloned_at_ace: false
 
   - name: ht
