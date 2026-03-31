@@ -404,6 +404,9 @@ dryrun_debug.log
 *.btr
 --version.*
 
+# GSD cost events — runtime data, not for version control
+.planning/cost-events.jsonl
+
 # Legacy specs/ directory — migrated to .planning/ (2026-03-26)
 # Only untracked engineering data in specs/repos/ remains on disk
 specs/
