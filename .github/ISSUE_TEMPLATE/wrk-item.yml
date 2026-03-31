@@ -116,10 +116,14 @@ body:
     id: completion-gates
     attributes:
       label: Completion Gates (per CROSS_REVIEW_POLICY.md)
-      description: "Check each gate before closing. Enforced by scripts/enforcement/ hooks."
+      description: >
+        Check each gate before closing. These are enforced automatically by Claude hooks (#1537).
+        Policy: docs/modules/ai/CROSS_REVIEW_POLICY.md |
+        Scripts: scripts/enforcement/require-plan-review.sh, require-cross-review.sh, require-verify-artifacts.sh |
+        Hook: .claude/hooks/cross-review-gate.sh
       options:
-        - label: "Plan reviewed by adversarial provider (Codex or Gemini)"
-        - label: "Implementation cross-reviewed by adversarial provider"
-        - label: "Tests added/updated alongside implementation (TDD)"
-        - label: "Non-code artifacts (docs, scripts, config) reviewed"
+        - label: "Plan reviewed by adversarial provider — gate: scripts/enforcement/require-plan-review.sh"
+        - label: "Implementation cross-reviewed by adversarial provider — gate: scripts/enforcement/require-cross-review.sh"
+        - label: "Tests added/updated alongside implementation (TDD) — gate: scripts/enforcement/require-verify-artifacts.sh"
+        - label: "Non-code artifacts (docs, scripts, config) reviewed — gate: scripts/enforcement/require-verify-artifacts.sh"
         - label: "REVIEWS.md or review report saved to phase dir / .claude/reports/"
