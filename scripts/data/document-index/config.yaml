@@ -141,7 +141,7 @@ cad_extensions:
 
 output:
   index_path: data/document-index/index.jsonl
-  summaries_dir: data/document-index/summaries
+  summaries_dir: /mnt/remote/ace-linux-1/ace/data/document-index/summaries
   enhancement_plan: data/document-index/enhancement-plan.yaml
   registry_path: data/document-index/registry.yaml
 

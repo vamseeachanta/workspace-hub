@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 SHARD_FILE = '/mnt/local-analysis/workspace-hub/data/document-index/shards/ace-shard-04.json'
-OUT_DIR = '/mnt/local-analysis/workspace-hub/data/document-index/summaries'
+OUT_DIR = os.environ.get("SUMMARIES_DIR", "/mnt/remote/ace-linux-1/ace/data/document-index/summaries")
 TIMESTAMP = '2026-02-24T00:00:00Z'
 
 # ---------------------------------------------------------------------------

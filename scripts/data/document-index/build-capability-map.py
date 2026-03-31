@@ -35,7 +35,8 @@ logger = logging.getLogger(__name__)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 HUB_ROOT = SCRIPT_DIR.parents[2]
-SUMMARIES_DIR = HUB_ROOT / "data/document-index/summaries"
+_DEFAULT_SUMMARIES = "/mnt/remote/ace-linux-1/ace/data/document-index/summaries"
+SUMMARIES_DIR = Path(os.environ.get("SUMMARIES_DIR", _DEFAULT_SUMMARIES))
 CAP_MAP_DIR = HUB_ROOT / "specs/capability-map"
 
 # doc→repo→module mapping rules

@@ -160,3 +160,23 @@ Every `.gitignore`'d data directory MUST contain a `README.md` with:
 ### Pre-Commit Guard
 
 Repos should configure a pre-commit hook or CI check that blocks commits containing files > 50MB that are not tracked by Git LFS. This prevents accidental large data commits.
+
+---
+
+## Generated Data — Physical Placement Map
+
+Pipeline-generated artifacts that exceed git thresholds live on the ace NFS drive. Scripts use `$SUMMARIES_DIR` env var or read from `config.yaml` to resolve paths.
+
+| Artifact | Ace Drive Path | Generator Script | Notes |
+|----------|---------------|-----------------|-------|
+| Document summaries (Phase B) | `/mnt/remote/ace-linux-1/ace/data/document-index/summaries/` | `phase-b-claude-worker.py`, `summarise-worker.py` | ~155MB, thousands of JSON files |
+| Document index | In-repo: `data/document-index/index.jsonl` | `phase-b-extract.py` | Lightweight ledger, committed |
+| Standards inventory DB | `/mnt/ace/O&G-Standards/_inventory.db` | External | SQLite, read-only from scripts |
+| Research literature | `/mnt/ace/docs/domains/<domain>/literature/` | Per-domain `download-literature.sh` | Tier 2a |
+
+### Path Resolution Convention
+
+Scripts should resolve generated-data paths in this order:
+1. **Env var** (`$SUMMARIES_DIR`) — for CI or cross-machine overrides
+2. **Config file** (`config.yaml` → `output.summaries_dir`) — for pipeline scripts
+3. **Default** (`/mnt/remote/ace-linux-1/ace/data/document-index/summaries`) — hardcoded fallback
