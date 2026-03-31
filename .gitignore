@@ -47,6 +47,10 @@ lib/
 !scripts/improve/lib/
 !scripts/lib/
 !scripts/work-queue/lib/
+# GSD bin/lib — runtime libraries needed across machines
+!.claude/get-shit-done/bin/lib/
+!.codex/get-shit-done/bin/lib/
+!.gemini/get-shit-done/bin/lib/
 lib64/
 parts/
 sdist/
@@ -131,6 +135,9 @@ coverage.xml
 !.claude/README.md
 !.claude/global/
 !.claude/commands/
+# GSD framework - consistent across machines
+!.claude/get-shit-done/
+!.claude/agents/
 !.claude/hooks/
 !.claude/rules/
 !.claude/skill-registry.yaml
