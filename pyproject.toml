@@ -23,6 +23,9 @@ workqueue = [
     "bleach>=6.0",
     "PyYAML>=6.0",
 ]
+docling = [
+    "docling>=2.82",
+]
 
 [project.scripts]
 ace = "src.ace.cli:main"

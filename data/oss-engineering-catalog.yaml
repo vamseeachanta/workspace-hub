@@ -6,7 +6,7 @@
 metadata:
   generated: "2026-03-26"
   last_updated: "2026-03-26"
-  total_libraries: 117
+  total_libraries: 118
   domains:
     - FEA
     - CFD
@@ -1340,6 +1340,28 @@ libraries:
     integration_notes: "Python bindings (libcosimpy). DNV-backed. FMI 2.0 support."
     cloned_at_ace: false
 
+  - name: fluids
+    repo_url: https://github.com/CalebBell/fluids
+    homepage: https://fluids.readthedocs.io
+    license: MIT
+    latest_version: "1.3.0"
+    latest_release_date: "2025-01-01"
+    python_api: true
+    python_package: fluids
+    maturity: production
+    stars: 425
+    contributors: 20
+    primary_language: Python
+    domain: "O&G/Marine"
+    capabilities: >-
+      Fluid dynamics and piping design library. Darcy-Weisbach friction factors (29+
+      correlations), Crane TP-410 fitting K-factors, API 520/526 relief valve sizing,
+      compressible flow, pipe schedules. Part of ChEDL ecosystem (pairs with ht).
+    download_size_estimate: "5 MB"
+    integration_fit: very-high
+    integration_notes: "Evaluated, recommended for adoption. Pure Python, no compiled deps. Evaluation: digitalmodel docs/integrations/fluids-evaluation.md"
+    cloned_at_ace: false
+
   # ═══════════════════════════════════════════
   # CAD / CAE
   # ═══════════════════════════════════════════
@@ -1792,7 +1814,7 @@ libraries:
     repo_url: https://github.com/docling-project/docling
     homepage: null
     license: MIT
-    latest_version: v2.82.0
+    latest_version: v2.83.0
     latest_release_date: "2026-03-25"
     python_api: true
     python_package: docling
@@ -1802,12 +1824,14 @@ libraries:
     primary_language: Python
     domain: "Doc Intelligence"
     capabilities: >-
-      IBM document parsing framework. Converts PDF, DOCX, PPTX, XLSX to structured
-      output. Table extraction, OCR, layout understanding. LangChain/LlamaIndex
-      integration.
-    download_size_estimate: "500 MB (with models)"
+      IBM document parsing framework. Converts PDF, DOCX, PPTX, XLSX, HTML to structured
+      Markdown/JSON/dict output. Table extraction, OCR, layout understanding. LangChain/
+      LlamaIndex integration. Headings, lists, tables preserved accurately.
+    download_size_estimate: "5 GB (venv with PyTorch + models)"
     integration_fit: very-high
-    integration_notes: "pip install docling. Broadest format support."
+    integration_notes: "uv add docling or pip install docling. Broadest format support. MIT license."
+    evaluation: "docs/integrations/docling-evaluation.md"
+    evaluated_date: "2026-03-31"
     cloned_at_ace: false
 
   - name: surya
