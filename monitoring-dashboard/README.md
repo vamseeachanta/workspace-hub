@@ -70,9 +70,9 @@ monitoring-dashboard/
 
 ### Installation
 
-1. **Install dependencies**:
+1. **Install dependencies** (uses lockfile for reproducible builds):
    ```bash
-   npm install
+   npm ci
    ```
 
 2. **Build shared package**:
@@ -271,6 +271,14 @@ Modify the design system in:
 - `frontend/tailwind.config.js` - Colors and design tokens
 - `frontend/src/index.css` - CSS custom properties
 - `frontend/src/hooks/useTheme.tsx` - Theme logic
+
+## Dependency Pinning Policy
+
+All frontend dependencies are pinned to exact versions (no `^` or `~` ranges) to prevent
+supply-chain drift from automatic minor/patch upgrades. See [#1513](../../issues/1513).
+
+- **Update process**: bump versions explicitly via PR after reviewing changelogs and release notes.
+- **Lockfile**: once generated (`npm install` from workspace root or via pnpm), commit `package-lock.json` / `pnpm-lock.yaml` so that `npm ci` / `pnpm install --frozen-lockfile` produces reproducible builds.
 
 ## Contributing
 
