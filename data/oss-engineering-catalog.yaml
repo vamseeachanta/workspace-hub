@@ -2251,8 +2251,8 @@ libraries:
     integration_fit: very-high
     integration_notes: >-
       Pure Python. Essential glue for multi-tool engineering workflows.
-      Evaluated 2026-03-31: 6/6 round-trip format tests pass, STL->VTK->Gmsh chain validated.
-      See scripts/examples/meshio_format_evaluation.py (#1449).
+      Evaluated 2026-03-31: 5/5 round-trip format tests pass (VTK, STL, Gmsh, Abaqus, VTU).
+      8 integration tests pass. See digitalmodel/scripts/integrations/meshio_evaluation.py (#1449).
     cloned_at_ace: false
 
   - name: trimesh
