@@ -10,7 +10,8 @@ invoke: /repo-sync
 capabilities: []
 requires: []
 see_also: []
-tags: []
+tags: [git, sync, multi-repo, automation]
+related_skills: [repo-structure, ecosystem-terminology]
 ---
 
 # Repo Sync

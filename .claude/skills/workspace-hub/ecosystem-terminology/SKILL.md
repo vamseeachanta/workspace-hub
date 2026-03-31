@@ -24,6 +24,7 @@ triggers:
 related_skills:
 - workstations
 - repo-structure
+tags: [naming, conventions, repos, acronyms, reference]
 type: reference
 ---
 

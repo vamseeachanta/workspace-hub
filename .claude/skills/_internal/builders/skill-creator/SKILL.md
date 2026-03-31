@@ -13,7 +13,7 @@ related_skills:
 - mcp-builder
 - skill-learner
 - improve
-tags: []
+tags: [skill-authoring, template, frontmatter, schema]
 see_also:
 - skill-creator-official-plugin-reference
 - skill-creator-canonical-reference
