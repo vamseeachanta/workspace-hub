@@ -65,24 +65,24 @@ monitoring-dashboard/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ and npm
+- Node.js 18+ and pnpm (`npm i -g pnpm`)
 - Redis (optional, uses in-memory fallback)
 
 ### Installation
 
 1. **Install dependencies** (uses lockfile for reproducible builds):
    ```bash
-   npm ci
+   pnpm install --frozen-lockfile
    ```
 
 2. **Build shared package**:
    ```bash
-   npm run build:shared
+   pnpm run build:shared
    ```
 
 3. **Start development servers**:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 This will start:
