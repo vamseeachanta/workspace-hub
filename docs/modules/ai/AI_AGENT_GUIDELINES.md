@@ -11,56 +11,42 @@
 
 ## 🚨 CROSS-REVIEW POLICY (MANDATORY)
 
-**ALL work performed by Claude Code or Google Gemini MUST be reviewed by OpenAI Codex.**
+Use the current minimal review-routing policy from `docs/modules/ai/CROSS_REVIEW_POLICY.md`.
 
 ### Core Rule
 
-Before presenting ANY work to the user, Claude Code and Google Gemini must:
+Before presenting higher-risk work to the user:
 
-1. **Commit changes** immediately after task completion
-2. **Submit for Codex review** via post-commit hook
-3. **Implement feedback** from Codex (maximum 3 iterations)
-4. **Present to user** only after Codex approval OR 3 iterations complete
+1. **Claude Code is the default orchestrator**
+2. **Codex is the default adversarial reviewer** for implementation diffs, tests, and concrete artifacts
+3. **Gemini is an optional third reviewer** for architecture-heavy, research-heavy, ambiguous, or otherwise high-stakes work
+4. **Use two-provider review by default**
+5. **Use three-provider review only when justified**
 
 ### Review Workflow
 
 ```mermaid
 flowchart TD
-    A["🤖 Claude/Gemini<br/>performs task"] --> B["📝 Commit changes"]
-    B --> C["📋 Codex reviews"]
-    C --> D{{"Feedback?"}}
-    D -->|"No ✓"| E["✅ Present to user<br/>(APPROVED)"]
-    D -->|"Yes"| F["🔨 Implement fixes"]
-    F --> G{{"Iteration < 3?"}}
-    G -->|"Yes"| H["📤 Re-commit"]
-    H --> C
-    G -->|"No"| I["⚠️ Present to user<br/>(LIMIT REACHED)"]
-
-    style A fill:#e1f5fe,stroke:#01579b
-    style C fill:#fff3e0,stroke:#e65100
-    style E fill:#c8e6c9,stroke:#2e7d32
-    style I fill:#ffecb3,stroke:#ff6f00
+    A["Claude orchestrates"] --> B["Implementation produced"]
+    B --> C["Codex adversarial review"]
+    C --> D{"Need third angle?"}
+    D -->|"No"| E["Present with two-provider review"]
+    D -->|"Yes"| F["Gemini third review"]
+    F --> G["Present with three-provider review"]
 ```
 
-**Iteration States:**
-| Iteration | Status | Action |
-|-----------|--------|--------|
-| 1 | First review | Codex reviews original commit |
-| 2 | Second review | Codex reviews fix commit |
-| 3 | Final review | Last chance for approval |
-| 3+ | Limit reached | Present to user regardless |
+Gemini trigger examples:
+
+- architecture-heavy change
+- research-heavy or synthesis-heavy work
+- weak local verification relative to risk
+- unresolved ambiguity after the first adversarial review
 
 ### Commands
 
 ```bash
-# Trigger cross-review loop
-./scripts/ai-review/cross-review-loop.sh --max-iterations 3
-
-# Check review status
-./scripts/ai-review/review-manager.sh list
-
-# Check iteration status
-./scripts/ai-review/review-manager.sh iteration-status <review_id>
+# Review policy reference
+open docs/modules/ai/CROSS_REVIEW_POLICY.md
 ```
 
 **Full policy documentation:** @docs/modules/ai/CROSS_REVIEW_POLICY.md

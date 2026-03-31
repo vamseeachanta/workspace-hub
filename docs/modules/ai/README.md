@@ -32,6 +32,15 @@ This directory contains all documentation related to AI agents, Claude configura
 | [AI_development_tools.md](AI_development_tools.md) | AI tools, memberships, and platforms |
 | [AI_HELPER_EXAMPLES.md](AI_HELPER_EXAMPLES.md) | Example AI interactions |
 
+### Review Routing
+
+| File | Description |
+|------|-------------|
+| [MINIMAL_HARNESS_OPERATING_MODEL_2026-03.md](MINIMAL_HARNESS_OPERATING_MODEL_2026-03.md) | Current 30-60 day operating model for Claude, Codex, and Gemini |
+| [CROSS_REVIEW_POLICY.md](CROSS_REVIEW_POLICY.md) | Current review-routing policy: two-provider default, three-provider only when justified |
+| [CODEX_REVIEW_WORKFLOW.md](CODEX_REVIEW_WORKFLOW.md) | Default adversarial review workflow for implementation artifacts |
+| [GEMINI_REVIEW_WORKFLOW.md](GEMINI_REVIEW_WORKFLOW.md) | Optional third-reviewer workflow for architecture/research-heavy work |
+
 ## Quick Start for AI Agents
 
 All AI agents (Claude, OpenAI, Factory.ai) must:
