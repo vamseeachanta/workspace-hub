@@ -40,10 +40,10 @@ workspace-hub/                   ← hub root (git repo with submodules)
     improve/                     ← session improvement + lib/
     operations/compliance/       ← legal scan, spec validation
     maintenance/                 ← model audit, ecosystem propagation
-  specs/                         ← formal specs
-    wrk/WRK-NNN/                ← per-item execution specs (Route C)
-    repos/<repo>/                ← repo-specific domain specs
-    templates/                   ← spec templates
+  .planning/                     ← active plans & specs (GSD framework)
+    phases/                      ← phase-level plans
+    milestones/                  ← milestone tracking
+    archive/                     ← completed plans
   data/                          ← datasets (raw/, processed/, results/)
   logs/                          ← runtime logs (gitignored)
   <repo-submodules>/             ← all submodule repos (lowercase-kebab)

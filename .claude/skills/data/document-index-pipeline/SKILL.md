@@ -26,7 +26,7 @@ triggers:
 Phase A: index.jsonl (1M records)     — deterministic scan
 Phase B: summaries/<sha>.json         — LLM discipline + deterministic ASTM
 Phase C: enhancement-plan.yaml        — domain classification
-Phase D: specs/data-sources/<repo>.yaml — legal-gated
+Phase D: .planning/data-sources/<repo>.yaml — legal-gated
 Phase E: backpopulate index.jsonl     — deterministic heuristics
 Phase F: WRK items from gaps          — deterministic
 Phase G: standards-transfer-ledger    — deterministic merge

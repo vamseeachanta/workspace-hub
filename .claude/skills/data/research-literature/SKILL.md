@@ -79,7 +79,7 @@ Identify what is implemented vs. gap in the target repo:
 ```bash
 uv run --no-project python -c "
 import yaml
-with open('specs/capability-map/digitalmodel.yaml') as f:
+with open('.planning/capability-map/digitalmodel.yaml') as f:
     data = yaml.safe_load(f)
 for m in data['modules']:
     if '<subcategory>' in m['module'] or '<category>' in m['module']:
@@ -94,7 +94,7 @@ may span repos.
 
 ### Step 4 — Produce the Research Brief
 
-Save as `specs/capability-map/research-briefs/<category>-<subcategory>.yaml`
+Save as `.planning/capability-map/research-briefs/<category>-<subcategory>.yaml`
 using the template below.
 
 ### Step 5 — Search University & Academic Resources
@@ -254,7 +254,7 @@ implementation_target:
 - [ ] University/academic resources searched (textbooks, coursework, OCW)
 - [ ] Worked examples with known answers identified for TDD tests
 - [ ] Coursework materials archived in `knowledge/dark-intelligence/<category>/`
-- [ ] Research brief YAML saved to `specs/capability-map/research-briefs/`
+- [ ] Research brief YAML saved to `.planning/capability-map/research-briefs/`
 - [ ] Download tasks identified with availability status
 - [ ] Brief reviewed for completeness before handing off to implementation WRK
 - [ ] Deep online research performed (WebSearch for free PDFs and papers)
