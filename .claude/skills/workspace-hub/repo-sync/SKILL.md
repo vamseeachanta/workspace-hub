@@ -145,3 +145,25 @@ Format as markdown table:
 - Use `--no-rebase` on all pulls to avoid rebase surprises on diverged repos
 - **Encoding check runs after every pull** — UTF-16 files from Windows editors
   crash `generate-index.py` and other parsers silently. Fix immediately on detection.
+
+## Iron Law
+
+> No destructive git operation (force-push, reset --hard, auto-resolve conflicts) shall be performed without explicit user confirmation — ever.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "The conflict is trivial — I can auto-resolve it" | Trivial-looking conflicts have destroyed production data. Stash pop conflicts go to the user, always. |
+| "Force-push is safe here because nobody else uses this branch" | You do not have full visibility into all machines and sessions using this repo. Assume others are active. |
+| "I need to reset --hard to get to a clean state" | Use `git stash` to preserve work, then pull. Hard reset is data destruction, not cleanup. |
+| "The encoding check is slow, I'll skip it this time" | UTF-16 files crash parsers silently. Skipping the check means shipping a time bomb. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "let me just force-push to fix this"
+- "I'll reset to a clean state"
+- "this merge conflict is simple enough to auto-resolve"
+- "skipping the encoding check to save time"
+- "nobody else is working on this repo"

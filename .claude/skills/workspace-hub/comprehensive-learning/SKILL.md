@@ -139,3 +139,24 @@ Script: `scripts/cron/comprehensive-learning-nightly.sh`
 - WRK-303: Ensemble planning → Planning Quality Loop (in references/pipeline-detail.md)
 - `/insights`, `/reflect`, `/knowledge`, `/improve`: individual pipeline stages
 - `scripts/planning/` — ensemble planning outputs harvested by Planning Quality Loop
+
+## Iron Law
+
+> No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "I'll just run a quick /reflect to capture this insight" | /reflect consumes significant context and token budget. The nightly pipeline captures the same signals from hooks and logs — for free. |
+| "The session is almost over, might as well run /improve now" | "Almost over" is when context is most valuable. Defer to nightly; hooks already captured the raw signals. |
+| "This learning will be lost if I don't process it now" | Stop hooks write raw signals in < 1 second. The nightly pipeline processes them. Nothing is lost by deferring. |
+| "The nightly cron might not run tonight" | Fix the cron job, do not work around it by running learning mid-session. Two problems are worse than one. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "let me quickly run /insights before we continue"
+- "I should capture this learning now"
+- "running /improve won't take long"
+- "the session is winding down anyway"

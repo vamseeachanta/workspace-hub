@@ -174,3 +174,25 @@ type: reference
 | `wrk-nnn` | `WRK-NNN` | Must be uppercase |
 | `stage_evidence` | `stage-evidence` | Hyphen-case for all YAML artefact names |
 | `user` (reviewer field) | `vamsee` | Human allowlist uses the name, not role |
+
+## Iron Law
+
+> No repo, package, machine, file, or identifier shall be referenced by a non-canonical name — check this skill's tables before writing any name.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "The user typed it this way, I'm just matching their input" | You are the enforcement layer. Correct non-canonical names silently — do not propagate errors. |
+| "It's just a comment / commit message, not code" | Non-canonical names in prose train future agents (and humans) to use the wrong name. Every occurrence matters. |
+| "I know the right name, this is close enough" | `asset_utilities` breaks imports. `digital-model` breaks directory lookups. Close enough is broken. |
+| "There's no entry in the table for this" | If it is not in the table, check `.gitmodules` for the exact spelling. Never guess. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "I think the repo is called..."
+- "the package name is probably..."
+- using underscores in a repo name without checking
+- using PascalCase for a package import
+- referencing a machine as "ace1" or "linux-1"

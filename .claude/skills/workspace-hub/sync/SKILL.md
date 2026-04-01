@@ -156,6 +156,27 @@ Use the script where it works. Fall back to manual git commands per-repo when th
 - NEVER skip repos silently — report every repo's status
 - NEVER use `git add -A` without first running `git status`
 
+## Iron Law
+
+> No sync shall be reported as successful without completing Phase 7 verification and confirming all four success criteria pass — ever.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "All the pushes succeeded so it's done" | Push success does not equal sync success. Detached HEADs, dirty repos, and pointer mismatches are invisible without verification. |
+| "Verification is redundant — I watched each step succeed" | Individual step success does not guarantee end-state correctness. Verification checks the final state, not the steps. |
+| "I'll skip verification because the user is waiting" | A false-positive "sync complete" causes harder-to-debug failures later. The 10 seconds verification takes prevents hours of debugging. |
+| "Only one repo changed, no need for full verification" | Submodule pointers and cross-repo state can break from a single repo change. Always verify all four criteria. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "sync looks good" (without running `git submodule status`)
+- "all repos pulled successfully, we're done"
+- "skipping verification to save time"
+- "probably fine — no errors were reported"
+
 ## Sub-Skills
 
 - [Error Handling](error-handling/SKILL.md)
