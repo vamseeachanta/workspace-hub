@@ -3,13 +3,14 @@
 # ABOUTME: Pipes PROJECT.md + ROADMAP.md as context to claude CLI
 # Issue: #1434
 #
-# Domain rotation (weekday-only):
+# Domain rotation:
 #   Mon = standards (offshore/subsea)
 #   Tue = python-ecosystem
 #   Wed = ai-tooling (Claude, GSD, MCP)
 #   Thu = competitor/market (Sesam, SACS, OrcaFlex, etc.)
 #   Fri = synthesis (week review + action table)
-#   Sat/Sun = off (no API cost)
+#   Sat = skill-design (agent skill authoring patterns, low-cost haiku)
+#   Sun = off (no API cost)
 #
 # Usage: bash scripts/cron/gsd-researcher-nightly.sh [--dry-run]
 
@@ -20,10 +21,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DATE=$(date -u +%Y-%m-%d)
 DAY_NUM=$(date +%u)  # 1=Mon, 7=Sun
-TIME_BUDGET=180
+TIME_BUDGET=300
 DRY_RUN=false
 LOG_DIR="${WS_HUB}/logs/research"
 OUTPUT_DIR="${WS_HUB}/.planning/research"
+MAX_CONTEXT_CHARS=120000
 
 for arg in "$@"; do
     [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
@@ -82,8 +84,9 @@ case "$DAY_NUM" in
     3) DOMAIN="ai-tooling" ;;
     4) DOMAIN="competitor-market" ;;
     5) DOMAIN="synthesis" ;;
-    6|7)
-        log "SKIP: weekend (day=${DAY_NUM})"
+    6) DOMAIN="skill-design" ;;
+    7)
+        log "SKIP: Sunday (day=${DAY_NUM})"
         exit 0
         ;;
 esac
@@ -188,6 +191,19 @@ Report pricing changes, new capabilities, deprecated features, and any shifts th
 
 ${OUTPUT_FORMAT}"
         ;;
+    skill-design)
+        PROMPT="You are a research assistant tracking agent skill design and authoring patterns. Given the project context below, search your knowledge for recent developments relevant to this project's skill system. Focus on:
+- Latest Anthropic Claude skill authoring patterns (CLAUDE.md, AGENTS.md)
+- Community best practices for AGENTS.md and CLAUDE.md in production repos
+- Agent skill specification updates or emerging standards across vendors
+- Progressive disclosure patterns for agent instructions (directory scoping, context-aware loading)
+- Skill testing and evaluation approaches (canary tasks, regression testing, metrics)
+- Multi-agent skill coordination (delegation boundaries, skill registries, inheritance)
+
+Report only findings from the past 3 months that are relevant to the skill architecture described in the project context.
+
+${OUTPUT_FORMAT}"
+        ;;
     synthesis)
         PROMPT="You are synthesizing this week's research findings for an engineering team. Review all research reports from this week (provided below) and produce a weekly synthesis.
 
@@ -231,17 +247,62 @@ if [[ "$DRY_RUN" == true ]]; then
 fi
 
 # ── Output validation (D-12) ─────────────────────────────────────────────────
+trim_to_heading() {
+    local file="$1"
+    local tmp
+    tmp=$(mktemp)
+    awk '
+        /^# Research: / || /^# Weekly Research Synthesis / {seen=1}
+        seen {print}
+    ' "$file" > "$tmp"
+    if [[ -s "$tmp" ]]; then
+        mv "$tmp" "$file"
+    else
+        rm -f "$tmp"
+    fi
+}
+
 validate_output() {
     local file="$1"
+    local domain="$2"
     local missing=()
-    grep -qi "key findings" "$file"        || missing+=("Key Findings")
-    grep -qi "relevance" "$file"           || missing+=("Relevance")
-    grep -qi "recommended actions" "$file" || missing+=("Recommended Actions")
+
+    if [[ "$domain" == "synthesis" ]]; then
+        grep -qi "action table" "$file"              || missing+=("Action Table")
+        grep -qi "top 3 insights" "$file"            || missing+=("Top 3 Insights")
+        grep -qi "cross-domain connections" "$file"  || missing+=("Cross-Domain Connections")
+        grep -qi "detailed action items" "$file"     || missing+=("Detailed Action Items")
+    else
+        grep -qi "key findings" "$file"        || missing+=("Key Findings")
+        grep -qi "relevance" "$file"           || missing+=("Relevance")
+        grep -qi "recommended actions" "$file" || missing+=("Recommended Actions")
+    fi
+
     if [[ ${#missing[@]} -gt 0 ]]; then
         echo "${missing[*]}"
         return 1
     fi
     return 0
+}
+
+run_claude() {
+    local context="$1"
+    echo "$context" | timeout "$TIME_BUDGET" claude -p "$PROMPT" \
+        --model "$MODEL" \
+        --tools "Read,WebSearch" \
+        --allowedTools "Read WebSearch" \
+        --max-budget-usd "$BUDGET" \
+        --no-session-persistence \
+        2>>"$LOG_FILE"
+}
+
+build_reduced_context() {
+    local base_context="$1"
+    if [[ ${#base_context} -le $MAX_CONTEXT_CHARS ]]; then
+        printf '%s' "$base_context"
+    else
+        printf '%s' "${base_context:0:$MAX_CONTEXT_CHARS}"
+    fi
 }
 
 # ── Research call ────────────────────────────────────────────────────────────
@@ -252,17 +313,17 @@ if ! command -v claude >/dev/null 2>&1; then
 fi
 
 log "Calling claude (timeout=${TIME_BUDGET}s, model=${MODEL}, budget=\$${BUDGET})..."
-RESULT=$(echo "$CONTEXT" | timeout "$TIME_BUDGET" claude -p "$PROMPT" \
-    --model "$MODEL" \
-    --tools "Read,WebSearch" \
-    --allowedTools "Read WebSearch" \
-    --max-budget-usd "$BUDGET" \
-    --no-session-persistence \
-    2>>"$LOG_FILE") || {
-    log "ERROR: claude call failed or timed out"
-    bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "claude timeout or error" || true
-    exit 1
-}
+RESULT=$(run_claude "$CONTEXT") || RESULT=""
+if [[ -z "$RESULT" ]]; then
+    log "WARNING: primary claude call failed or timed out — retrying once with reduced context"
+    REDUCED_CONTEXT=$(build_reduced_context "$CONTEXT")
+    RESULT=$(run_claude "$REDUCED_CONTEXT") || RESULT=""
+    if [[ -z "$RESULT" ]]; then
+        log "ERROR: claude call failed or timed out after retry"
+        bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "claude timeout or error after retry" || true
+        exit 1
+    fi
+fi
 
 # ── Write output ─────────────────────────────────────────────────────────────
 if [[ -z "$RESULT" ]]; then
@@ -271,27 +332,23 @@ if [[ -z "$RESULT" ]]; then
     exit 1
 fi
 echo "$RESULT" > "$OUTPUT_FILE"
+trim_to_heading "$OUTPUT_FILE"
 
 # Validate output structure (D-12)
-MISSING=$(validate_output "$OUTPUT_FILE") || {
-    log "WARNING: output missing sections: ${MISSING} — retrying once"
-    RESULT=$(echo "$CONTEXT" | timeout "$TIME_BUDGET" claude -p "$PROMPT" \
-        --model "$MODEL" \
-        --tools "Read,WebSearch" \
-        --allowedTools "Read WebSearch" \
-        --max-budget-usd "$BUDGET" \
-        --no-session-persistence \
-        2>>"$LOG_FILE") || {
+MISSING=$(validate_output "$OUTPUT_FILE" "$DOMAIN") || {
+    log "WARNING: output missing sections: ${MISSING} — retrying once with reduced context"
+    REDUCED_CONTEXT=$(build_reduced_context "$CONTEXT")
+    RESULT=$(run_claude "$REDUCED_CONTEXT") || RESULT=""
+    if [[ -z "$RESULT" ]]; then
         log "ERROR: retry claude call failed"
         bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "retry failed for domain=${DOMAIN}" || true
         exit 1
-    }
-    if [[ -n "$RESULT" ]]; then
-        echo "$RESULT" > "$OUTPUT_FILE"
-        MISSING=$(validate_output "$OUTPUT_FILE") || {
-            log "WARNING: retry still missing sections: ${MISSING} — accepting output anyway"
-        }
     fi
+    echo "$RESULT" > "$OUTPUT_FILE"
+    trim_to_heading "$OUTPUT_FILE"
+    MISSING=$(validate_output "$OUTPUT_FILE" "$DOMAIN") || {
+        log "WARNING: retry still missing sections: ${MISSING} — accepting output anyway"
+    }
 }
 log "Research written to: ${OUTPUT_FILE} ($(wc -l < "$OUTPUT_FILE") lines)"
 
