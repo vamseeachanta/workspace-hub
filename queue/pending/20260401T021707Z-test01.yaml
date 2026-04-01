@@ -1,0 +1,6 @@
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+export_excel: true
+description: "L00 re-run for xlsx export"
+submitted_by: ace-linux-1
+submitted_at: 20260401T021707Z
