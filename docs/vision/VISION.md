@@ -58,6 +58,14 @@ The ecosystem is operating at **Level 2–3 overall** — automated pipelines ex
 assist, and the nightly learning pipeline is predictive. The gap to Level 4 is real and
 closable within 12–18 months given the existing agent infrastructure.
 
+### What v1.0 Proved (shipped 2026-03-30)
+
+The v1.0 Foundation Sprint (6 phases, 21 plans, 5 days) validated three assumptions:
+
+1. **AI-assisted sprint velocity is real.** 3 new calculation modules (OBS, wall thickness, spectral fatigue) shipped at 90.5% test coverage with standards traceability — each module from zero to production in under one day.
+2. **The traceability chain works end-to-end.** Standard clause to implementation to test to report — demonstrated across DNV-RP-F109, ASME B31.4, and Dirlik/TB spectral methods.
+3. **Cross-machine solver dispatch is viable without SSH.** The git-based pull queue (Phase 7) proved that corporate firewall constraints can be satisfied with a polling architecture — no inbound connections needed.
+
 ---
 
 ## The 6-Level Autonomy Framework
@@ -116,7 +124,7 @@ The gaps between current state and Level 4 autonomous operation:
 | **Surrogate models** | Full physics runs only; expensive design-space exploration | Train AI surrogate on existing run library; query model for fast parametrics | new WRK |
 | **Autonomous report generation** | Human must review and approve every output | AI drafts, cross-reviews, and delivers validated engineering report; human spot-checks | new WRK |
 | **Self-healing workflows** | Manual debugging when a solver or pipeline fails | Error signals → diagnostic agent → fix → re-run; escalate only if stuck | WRK-304 (partial) |
-| **Trust architecture formalisation** | Plan gate + WRK trail exist but are not documented as a governance model | Write and publish the governance model: approval logic, audit format, rollback rules | new WRK |
+| **Trust architecture formalisation** | Governance model documented in docs/governance/TRUST-ARCHITECTURE.md (WRK-381): action classification (A/B/C), plan gate rules, audit trail format, rollback rules, escalation triggers | Closed (v1.0) | WRK-381 (delivered) |
 
 ---
 
@@ -156,6 +164,20 @@ The gaps between current state and Level 4 autonomous operation:
   orchestrator selects based on cost, speed, and past accuracy
 - **External Engineering as a Service**: AI-orchestrated workflows exposed as a service
   offering via aceengineer-website — clients submit briefs, receive validated deliverables
+
+---
+
+## Measurable L4 Indicators
+
+Progress toward Level 4 autonomy is tracked by three quantitative metrics:
+
+| Metric | L3 Baseline (current) | L4 Target | Measurement Method |
+|--------|----------------------|-----------|-------------------|
+| **% solver runs initiated by schedule vs human** | ~0% (all human-initiated) | >50% of routine analyses | Count queue/completed/ jobs by trigger type (manual vs scheduled) |
+| **Time-to-first-result per workflow type** | Hours (human in loop) | <30 min for routine workflows | Timestamp delta: job submission to report generation |
+| **Report drafts needing zero human edits** | ~0% (all reviewed) | >30% of routine reports | Track reports shipped without modification after AI draft |
+
+These metrics become actionable once the solver queue (Phase 7) is processing jobs regularly. Initial baselining begins with the first OrcaWave batch run.
 
 ---
 
@@ -214,4 +236,4 @@ Predictions 2026; IDC AI-Driven Manufacturing 2025; Siemens CES 2026 press relea
 Ansys 2025 R2 release notes; WEF Lighthouse Factory programme; SPE Drillbotics guidelines
 2025-2026 (drillbotics.com).*
 
-*Last updated: 2026-02-24 | WRK-373, WRK-375 | Maintained in workspace-hub/docs/vision/*
+*Last updated: 2026-03-31 | Post-v1.0 refresh | Maintained in workspace-hub/docs/vision/*
