@@ -33,9 +33,22 @@ with open(sys.argv[1]) as f:
 
 ts        = data.get("timestamp", "")
 src       = os.path.basename(sys.argv[1])
-age       = int(time.time() - os.path.getmtime(sys.argv[1]))
+# Use JSON timestamp for age (file mtime can be refreshed by git without data changing)
+from datetime import datetime, timezone
+try:
+    ts_dt = datetime.fromisoformat(ts)
+    age = int((datetime.now(timezone.utc) - ts_dt.astimezone(timezone.utc)).total_seconds())
+except (ValueError, TypeError):
+    age = int(time.time() - os.path.getmtime(sys.argv[1]))
 age_label = f"{age//60}m ago" if age < 3600 else f"{age//3600}h ago"
+stale     = age > 48 * 3600  # >48 hours = stale
+stale_days = age // 86400
+if stale:
+    age_label = f"⚠ stale ({stale_days}d old)"
 print(f"_Source: {src}  |  Updated: {ts} ({age_label})_")
+if stale:
+    print("")
+    print(f"> **⚠ Quota data is {stale_days} days old.** Run `bash scripts/ai/assessment/query-quota.sh` to refresh.")
 print("")
 print("| Agent | % Used | % Remaining | Bar | Resets In | Notes |")
 print("|-------|--------|-------------|-----|-----------|-------|")
@@ -69,6 +82,8 @@ for agent in data.get("agents", []):
         pct_used  = 100 - remaining
 
     notes = warn(pct_used)
+    if stale:
+        notes = "⚠ stale" + (f" {notes}" if notes else "")
     if prov == "claude":
         s = agent.get("sonnet_pct")
         if s is not None:

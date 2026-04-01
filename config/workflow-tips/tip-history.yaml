@@ -3,3 +3,7 @@
 shown:
   - date: 2026-04-01
     tips: [gsd-note, gsd-pause-resume]
+  - date: 2026-04-01
+    tips: [cc-batch, gsd-workstreams]
+  - date: 2026-04-01
+    tips: [cc-mobile, cc-hooks]

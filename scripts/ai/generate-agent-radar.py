@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # /// script
+# requires-python = ">=3.10"
 # dependencies = ["pyyaml"]
 # ///
 """Generate AI Agent Capability Radar HTML from YAML config.

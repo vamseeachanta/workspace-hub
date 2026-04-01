@@ -42,6 +42,65 @@ run_section() {
     echo ""
 }
 
+# ── auto-populate priorities from GH issues, roadmap, or fallback ─────────────
+generate_priorities() {
+    local items=()
+
+    # Source 1: GitHub issues assigned to user with priority:high or P1 label
+    if command -v gh &>/dev/null; then
+        local gh_json
+        # Try priority:high first, then P1, dedup by number
+        gh_json=$(
+            { gh issue list --assignee @me --label "priority:high" \
+                  --state open --limit 3 --json number,title 2>/dev/null || echo '[]'
+              gh issue list --assignee @me --label "P1" \
+                  --state open --limit 3 --json number,title 2>/dev/null || echo '[]'
+            } | python3 -c "
+import json,sys
+seen,out=set(),[]
+for line in sys.stdin:
+    for item in json.loads(line.strip()):
+        if item['number'] not in seen:
+            seen.add(item['number']); out.append(item)
+for item in out[:3]: print(f\"{item['number']}\t{item['title']}\")
+" 2>/dev/null || true
+        )
+        while IFS=$'\t' read -r number title; do
+            [[ -n "$title" ]] && items+=("$title (#$number)")
+        done <<< "$gh_json"
+        # If no P1 hits, try without label filter (top 3 assigned)
+        if [[ ${#items[@]} -eq 0 ]]; then
+            while IFS=$'\t' read -r number title; do
+                [[ -n "$title" ]] && items+=("$title (#$number)")
+            done < <(gh issue list --assignee @me --state open --limit 3 \
+                        --json number,title \
+                        --jq '.[] | [.number, .title] | @tsv' 2>/dev/null || true)
+        fi
+    fi
+
+    # Source 2: GSD roadmap — incomplete phase plans
+    if [[ ${#items[@]} -lt 3 ]]; then
+        local roadmap="$WORKSPACE_ROOT/.planning/ROADMAP.md"
+        if [[ -f "$roadmap" ]]; then
+            while IFS= read -r line && [[ ${#items[@]} -lt 3 ]]; do
+                # Extract incomplete plan items: "- [ ] 07-03-PLAN.md — description"
+                if [[ "$line" =~ ^-\ \[\ \]\ (.+) ]]; then
+                    items+=("${BASH_REMATCH[1]}")
+                fi
+            done < "$roadmap"
+        fi
+    fi
+
+    # Source 3: Final fallback
+    while [[ ${#items[@]} -lt 3 ]]; do
+        items+=("Review /today and set priorities")
+    done
+
+    for i in 1 2 3; do
+        printf "%d. [ ] %s\n" "$i" "${items[$((i-1))]}"
+    done
+}
+
 # ── generate daily log ────────────────────────────────────────────────────────
 generate_daily() {
     local out="$DAILY_LOG_DIR/${TODAY}.md"
@@ -71,7 +130,7 @@ generate_daily() {
 
         echo "## Today's Priorities"
         echo ""
-        printf "1. [ ] \n2. [ ] \n3. [ ] \n"
+        generate_priorities
         echo ""
         echo "## Notes"
         echo ""
