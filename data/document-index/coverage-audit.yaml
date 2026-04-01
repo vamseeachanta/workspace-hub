@@ -1,0 +1,369 @@
+# Document Intelligence Coverage Audit
+# Generated: 2026-03-31
+# GH Issue: #1541
+# Method: programmatic analysis of index.jsonl + sampled summary file existence
+
+audit_date: "2026-03-31"
+auditor: claude-agent
+
+# ─── 1. INDEX OVERVIEW ───────────────────────────────────────────────
+index:
+  file: data/document-index/index.jsonl
+  total_records: 627411
+  cad_records: 465718          # dwg/dxf/etc — not candidates for text summarization
+  summarizable_records: 129918 # pdf/doc/docx/xls/xlsx/pptx/txt/md/csv
+  other_records: 31775         # dat, inp, py, m, bas, f — scripts & binary data
+
+# ─── 2. SUMMARY STORAGE ─────────────────────────────────────────────
+summaries:
+  canonical_location: "/mnt/remote/ace-linux-1/ace/data/document-index/summaries/"
+  local_copy: data/document-index/summaries/   # relative to repo root
+  local_file_count: 717140     # via os.scandir(); includes stubs and orphans
+  local_dir_size_mb: 155
+  ace_drive_accessible: false
+  ace_drive_paths_checked:
+    - "/mnt/remote/ace-linux-1/ace/data/document-index/summaries/"
+    - "/mnt/ace/data/document-index/summaries/"
+  local_accessible: true
+  note: >
+    Ace NFS mount is not available from the current machine (ace-linux-2 / dev-secondary).
+    Local copy in data/document-index/summaries/ has 717K files — more than the 627K
+    index records, likely including stubs and files from earlier indexing runs.
+
+# ─── 3. COVERAGE BY SOURCE ──────────────────────────────────────────
+# Method: random-sampled 100 hashes per source, checked file existence
+coverage_by_source:
+  og_standards:
+    total_indexed: 27221
+    summarizable: 27221
+    sample_hit_rate_pct: 100.0
+    estimated_with_summary: 27221
+    coverage_status: complete
+    notes: "All records have summaries; mix of astm_deterministic + pdftotext methods"
+
+  ace_standards:
+    total_indexed: 27902
+    summarizable: 27902
+    sample_hit_rate_pct: 44.0
+    estimated_with_summary: 12276
+    coverage_status: partial
+    notes: "~44% covered via pdftotext and claude-subagent methods"
+
+  ace_project:
+    total_indexed: 296049
+    summarizable: 48984
+    sample_hit_rate_pct: 0.0
+    estimated_with_summary: 0
+    coverage_status: gap
+    notes: >
+      Zero coverage. 14K need OCR, 18K machine-readable, 14K native.
+      Largest unsummarized pool by volume.
+
+  dde_project:
+    total_indexed: 260555
+    summarizable: 24498
+    sample_hit_rate_pct: 0.0
+    estimated_with_summary: 0
+    coverage_status: gap
+    notes: >
+      Zero coverage. 17K native-readable (immediately processable), 5K machine, 1.3K OCR-needed.
+
+  workspace_spec:
+    total_indexed: 1653
+    summarizable: 1313
+    sample_hit_rate_pct: 42.0
+    estimated_with_summary: 551
+    coverage_status: partial
+    notes: "Markdown specs; ~42% have summaries via claude-subagent"
+
+  riser_eng_job:
+    total_indexed: 14023
+    summarizable: 0
+    coverage_status: not_applicable
+    notes: "All .dat files — OrcaFlex binary, not text-summarizable"
+
+  api_metadata:
+    total_indexed: 8
+    summarizable: 0
+    coverage_status: not_applicable
+    notes: "API endpoint records, no document content to summarize"
+
+# ─── 4. COVERAGE BY DOMAIN ──────────────────────────────────────────
+# Method: sampled 50 hashes per domain
+coverage_by_domain:
+  materials:
+    total: 48731
+    summarizable: 48731
+    estimated_coverage_pct: 74
+    status: well_covered
+  structural:
+    total: 7857
+    summarizable: 6376
+    estimated_coverage_pct: 38
+    status: partial
+  workspace-spec:
+    total: 1396
+    summarizable: 1104
+    estimated_coverage_pct: 48
+    status: partial
+  regulatory:
+    total: 27
+    summarizable: 26
+    estimated_coverage_pct: 27
+    status: sparse
+  cathodic-protection:
+    total: 711
+    summarizable: 711
+    estimated_coverage_pct: 26
+    status: sparse
+  portfolio:
+    total: 2601
+    summarizable: 2566
+    estimated_coverage_pct: 24
+    status: sparse
+  installation:
+    total: 6683
+    summarizable: 3878
+    estimated_coverage_pct: 18
+    status: sparse
+  pipeline:
+    total: 21935
+    summarizable: 16275
+    estimated_coverage_pct: 6
+    status: sparse
+  marine:
+    total: 217117
+    summarizable: 13886
+    estimated_coverage_pct: 2
+    status: gap
+    notes: "203K CAD files; only 13.9K text docs, ~2% summarized"
+  cad:
+    total: 270281
+    summarizable: 1019
+    estimated_coverage_pct: 0
+    status: not_applicable
+    notes: "Almost entirely binary CAD; 1K text docs are metadata/READMEs"
+  project-management:
+    total: 16681
+    summarizable: 16142
+    estimated_coverage_pct: 0
+    status: gap
+  other:
+    total: 18116
+    summarizable: 17920
+    estimated_coverage_pct: 0
+    status: gap
+  energy-economics:
+    total: 971
+    summarizable: 931
+    estimated_coverage_pct: 0
+    status: gap
+  naval-architecture:
+    total: 144
+    summarizable: 144
+    estimated_coverage_pct: 0
+    status: gap
+
+# ─── 5. QUALITY AUDIT ───────────────────────────────────────────────
+# Sampled 60 summaries (20 per source: og_standards, ace_standards, workspace_spec)
+quality:
+  total_sampled: 60
+  useful_pct: 83        # non-stub, has keywords, summary > 30 chars
+  stub_pct: 10          # "Unknown:" prefix or summary < 20 chars
+  has_keywords_pct: 100
+  has_discipline_pct: 100
+  summary_schema_keys:
+    - path
+    - sha256
+    - source
+    - org
+    - doc_number
+    - title
+    - discipline
+    - summary
+    - keywords
+    - extraction_method
+    - llm_at
+    - llm_method
+  methods_observed:
+    astm_deterministic: "ASTM doc number parsing — fast, no LLM cost"
+    pdftotext: "pdftotext first-3-pages extraction + LLM summary"
+    claude-subagent: "Full LLM summarization via Claude Haiku"
+  per_source_quality:
+    og_standards: {sampled: 20, useful: 12, stubs: 5}
+    ace_standards: {sampled: 20, useful: 18, stubs: 1}
+    workspace_spec: {sampled: 20, useful: 20, stubs: 0}
+  notes: >
+    83% of existing summaries are useful for downstream work. The 10% stubs
+    are mostly documents where pdftotext extracted no meaningful text (scanned
+    images, corrupted PDFs). Workspace spec summaries are highest quality
+    because source docs are structured markdown.
+
+# ─── 6. ACCESSIBILITY ───────────────────────────────────────────────
+accessibility:
+  current_machine: ace-linux-2 (dev-secondary)
+  ace_nfs_mount: not_available
+  local_summaries: accessible
+  index_file: accessible
+  config_file: accessible
+  scripts: accessible
+  finding: >
+    The canonical summaries path (/mnt/remote/ace-linux-1/ace/data/document-index/summaries/)
+    is NOT accessible from this machine. Scripts fall back to the local copy, which works
+    but may be stale if the ace drive has newer summaries. The config.yaml hardcodes the
+    ace path; the $SUMMARIES_DIR env var override mechanism documented in
+    DATA_RESIDENCE_POLICY.md is the correct workaround.
+
+# ─── 7. DOWNSTREAM CONSUMERS ────────────────────────────────────────
+downstream_scripts:
+  producers:
+    - script: scripts/data/document-index/phase-b-claude-worker.py
+      role: "Primary LLM summarization worker (Claude Haiku)"
+    - script: scripts/data/document-index/summarise-worker.py
+      role: "Alternative summarization worker"
+    - script: scripts/data/document-index/phase-b-extract.py
+      role: "Text extraction + summary orchestration"
+    - script: scripts/data/document-index/phase_b_astm_classifier.py
+      role: "ASTM deterministic classifier (no LLM)"
+    - script: scripts/data/document-index/phase_b_checkpoint.py
+      role: "Checkpoint management for batch summarization"
+
+  consumers:
+    - script: scripts/data/document-index/build-capability-map.py
+      role: "Builds doc-to-repo capability map from summaries"
+      reads_summaries: true
+      status: functional
+      notes: "Falls back to synthetic summaries when Phase B files unavailable"
+    - script: scripts/data/document-index/phase-c-classify.py
+      role: "LLM domain classification using summaries"
+      reads_summaries: true
+      status: functional
+      notes: "On-demand summary loading; graceful fallback"
+    - script: scripts/data/document-index/phase-d-data-sources.py
+      role: "Generate per-repo data-source specs"
+      reads_summaries: true
+      status: functional
+      notes: "Can build plan from summaries if enhancement-plan missing"
+    - script: scripts/data/document-index/phase-e-backpopulate.py
+      role: "Back-populate domain/status into index.jsonl"
+      reads_summaries: false
+      status: functional
+      notes: "Uses path/org heuristics only — does NOT read summaries"
+    - script: scripts/data/document-index/phase-e-registry.py
+      role: "Build master registry linking index + summary data"
+      reads_summaries: true
+      status: functional
+    - script: scripts/data/document-index/phase-f-gap-wrk-generator.py
+      role: "Generate work items for gap documents"
+      reads_summaries: true
+      status: functional
+      notes: "Reads from relative data/document-index/summaries path"
+    - script: scripts/data/document-index/naval-arch-intelligence.py
+      role: "Naval architecture document intelligence extraction"
+      reads_summaries: true
+      status: functional
+    - script: scripts/data/document-index/reclassify-audit.py
+      role: "Incremental domain reclassification audit"
+      reads_summaries: false
+      status: functional
+    - script: scripts/data/document-index/subcategory-classify.py
+      role: "Subcategory classification"
+      reads_summaries: false
+      status: functional
+
+  stale_or_broken: none_detected
+  notes: >
+    All consumer scripts have graceful fallbacks when summaries are unavailable.
+    build-capability-map.py generates synthetic summaries from index fields.
+    No scripts are broken, though all would benefit from higher coverage.
+
+# ─── 8. GAPS ANALYSIS ───────────────────────────────────────────────
+gaps:
+  indexed_but_never_summarized:
+    - source: ace_project
+      count: 48984
+      reason: "Phase B never run on this source"
+      readability_breakdown:
+        machine: 18197
+        ocr-needed: 14644
+        native: 14325
+        mixed: 1294
+        error: 431
+    - source: dde_project
+      count: 24498
+      reason: "Phase B never run on this source"
+      readability_breakdown:
+        native: 17015
+        machine: 4983
+        ocr-needed: 1330
+        error: 979
+    - domain: project-management
+      count: 16142
+      reason: "Spans ace_project + dde_project which have no summaries"
+    - domain: other
+      count: 17920
+      reason: "Unclassified documents, mostly from unsummarized sources"
+    - domain: energy-economics
+      count: 931
+      reason: "Small but high-value gap; no summaries at all"
+    - domain: naval-architecture
+      count: 144
+      reason: "Small domain; script exists (naval-arch-intelligence.py) but no summaries"
+
+  orphan_summaries:
+    estimated_count: ~87000
+    notes: >
+      717K summary files vs 627K index records suggests ~90K orphan files from
+      earlier indexing runs or re-keyed records. Not harmful but wastes 20MB+ disk.
+
+  stubs_in_existing_summaries:
+    estimated_pct: 10
+    notes: "About 10% of existing summaries are stubs with no useful content"
+
+# ─── 9. OVERALL METRICS ─────────────────────────────────────────────
+overall:
+  total_indexed: 627411
+  total_summarizable: 129918
+  total_cad: 465718
+  estimated_with_summary: 40048
+  overall_coverage_pct: 30.8      # of summarizable docs
+  full_index_coverage_pct: 6.4    # of all indexed docs (mostly CAD)
+
+# ─── 10. RECOMMENDED NEXT STEPS ─────────────────────────────────────
+recommendations:
+  - priority: high
+    action: "Run Phase B on dde_project native-readable docs (17K records)"
+    impact: "Would add ~17K summaries, boosting coverage from 31% to 44%"
+    estimated_cost: "$15-25 at Haiku rates (17K docs x ~$0.001/doc)"
+    prerequisite: "Ensure /mnt/remote/dev-secondary/dde/ paths accessible from summarization host"
+
+  - priority: high
+    action: "Run Phase B on ace_project native-readable docs (14.3K records)"
+    impact: "Would add ~14K summaries, boosting coverage to ~52%"
+    estimated_cost: "$12-20 at Haiku rates"
+
+  - priority: medium
+    action: "Run OCR + Phase B on ace_project ocr-needed docs (14.6K records)"
+    impact: "Covers the second-largest gap pool"
+    estimated_cost: "OCR processing time + $12-18 LLM cost"
+    prerequisite: "Requires marker or equivalent OCR pipeline"
+
+  - priority: medium
+    action: "Clean up stub summaries (~4K records)"
+    impact: "Improve quality from 83% to ~93% useful"
+    approach: "Re-extract with better text extraction for stubs, or mark as exhausted"
+
+  - priority: low
+    action: "Purge orphan summary files (~87K files)"
+    impact: "Recovers ~20MB disk, reduces confusion in file counts"
+    approach: "Cross-reference summary filenames against index content_hash values"
+
+  - priority: low
+    action: "Ensure $SUMMARIES_DIR env var is set on all machines"
+    impact: "Prevents path resolution failures when ace drive unavailable"
+
+  - priority: info
+    action: "ace_standards remaining 56% gap"
+    notes: >
+      15.6K ace_standards docs lack summaries. These are standards PDFs where
+      pdftotext may have failed (scanned images). Consider OCR pipeline for these.
