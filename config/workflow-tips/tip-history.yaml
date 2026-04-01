@@ -1,3 +1,5 @@
 # ABOUTME: Tracks which tips were shown on which dates to prevent repeats
 # ABOUTME: Auto-maintained by workflow-tip.sh — 30-day no-repeat window
-shown: []
+shown:
+  - date: 2026-04-01
+    tips: [gsd-note, gsd-pause-resume]
