@@ -1,10 +1,10 @@
 assethold:
-  drift_score: 1.0
+  drift_score: 0.9542
 assetutilities:
-  drift_score: 1.0
+  drift_score: 0.8607
 digitalmodel:
-  drift_score: 1.0
+  drift_score: 0.7304
 ogmanufacturing:
   drift_score: 0.0
 worldenergydata:
-  drift_score: 1.0
+  drift_score: 0.7701
