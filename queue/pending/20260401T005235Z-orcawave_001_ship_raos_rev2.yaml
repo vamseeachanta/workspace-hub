@@ -1,0 +1,6 @@
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L01_aqwa_benchmark/orcawave_001_ship_raos_rev2.owr
+export_excel: true
+description: "L01 ship RAOs smoke test (re-extract from existing .owr)"
+submitted_by: ace-linux-1
+submitted_at: 20260401T005235Z
