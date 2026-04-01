@@ -5,45 +5,7 @@ metadata:
   short-description: "Systematic debugging with persistent state across context resets"
 ---
 
-<codex_skill_adapter>
-## A. Skill Invocation
-- This skill is invoked by mentioning `$gsd-debug`.
-- Treat all user text after `$gsd-debug` as `{{GSD_ARGS}}`.
-- If no arguments are present, treat `{{GSD_ARGS}}` as empty.
-
-## B. AskUserQuestion → request_user_input Mapping
-GSD workflows use `AskUserQuestion` (Claude Code syntax). Translate to Codex `request_user_input`:
-
-Parameter mapping:
-- `header` → `header`
-- `question` → `question`
-- Options formatted as `"Label" — description` → `{label: "Label", description: "description"}`
-- Generate `id` from header: lowercase, replace spaces with underscores
-
-Batched calls:
-- `AskUserQuestion([q1, q2])` → single `request_user_input` with multiple entries in `questions[]`
-
-Multi-select workaround:
-- Codex has no `multiSelect`. Use sequential single-selects, or present a numbered freeform list asking the user to enter comma-separated numbers.
-
-Execute mode fallback:
-- When `request_user_input` is rejected (Execute mode), present a plain-text numbered list and pick a reasonable default.
-
-## C. Task() → spawn_agent Mapping
-GSD workflows use `Task(...)` (Claude Code syntax). Translate to Codex collaboration tools:
-
-Direct mapping:
-- `Task(subagent_type="X", prompt="Y")` → `spawn_agent(agent_type="X", message="Y")`
-- `Task(model="...")` → omit (Codex uses per-role config, not inline model selection)
-- `fork_context: false` by default — GSD agents load their own context via `<files_to_read>` blocks
-
-Parallel fan-out:
-- Spawn multiple agents → collect agent IDs → `wait(ids)` for all to complete
-
-Result parsing:
-- Look for structured markers in agent output: `CHECKPOINT`, `PLAN COMPLETE`, `SUMMARY`, etc.
-- `close_agent(id)` after collecting results from each agent
-</codex_skill_adapter>
+See [references/codex-adapter.md](references/codex-adapter.md) for the Codex skill adapter (AskUserQuestion/Task mapping).
 
 <objective>
 Debug issues using scientific method with subagent isolation.
@@ -99,32 +61,7 @@ After all gathered, confirm ready to investigate.
 
 ## 3. Spawn gsd-debugger Agent
 
-Fill prompt and spawn:
-
-```markdown
-<objective>
-Investigate issue: {slug}
-
-**Summary:** {trigger}
-</objective>
-
-<symptoms>
-expected: {expected}
-actual: {actual}
-errors: {errors}
-reproduction: {reproduction}
-timeline: {timeline}
-</symptoms>
-
-<mode>
-symptoms_prefilled: true
-goal: find_and_fix
-</mode>
-
-<debug_file>
-Create: .planning/debug/{slug}.md
-</debug_file>
-```
+See [references/debugger-prompt.md](references/debugger-prompt.md) for the full debugger agent prompt template.
 
 ```
 Task(
@@ -139,50 +76,20 @@ Task(
 
 **If `## ROOT CAUSE FOUND`:**
 - Display root cause and evidence summary
-- Offer options:
-  - "Fix now" - spawn fix subagent
-  - "Plan fix" - suggest $gsd-plan-phase --gaps
-  - "Manual fix" - done
+- Offer: "Fix now" (spawn fix subagent), "Plan fix" ($gsd-plan-phase --gaps), "Manual fix" (done)
 
 **If `## CHECKPOINT REACHED`:**
-- Present checkpoint details to user
-- Get user response
-- If checkpoint type is `human-verify`:
-  - If user confirms fixed: continue so agent can finalize/resolve/archive
-  - If user reports issues: continue so agent returns to investigation/fixing
+- Present checkpoint details to user, get response
+- If `human-verify`: user confirms fixed -> finalize; user reports issues -> return to investigation
 - Spawn continuation agent (see step 5)
 
 **If `## INVESTIGATION INCONCLUSIVE`:**
 - Show what was checked and eliminated
-- Offer options:
-  - "Continue investigating" - spawn new agent with additional context
-  - "Manual investigation" - done
-  - "Add more context" - gather more symptoms, spawn again
+- Offer: "Continue investigating", "Manual investigation", "Add more context"
 
 ## 5. Spawn Continuation Agent (After Checkpoint)
 
-When user responds to checkpoint, spawn fresh agent:
-
-```markdown
-<objective>
-Continue debugging {slug}. Evidence is in the debug file.
-</objective>
-
-<prior_state>
-<files_to_read>
-- .planning/debug/{slug}.md (Debug session state)
-</files_to_read>
-</prior_state>
-
-<checkpoint_response>
-**Type:** {checkpoint_type}
-**Response:** {user_response}
-</checkpoint_response>
-
-<mode>
-goal: find_and_fix
-</mode>
-```
+See [references/debugger-prompt.md](references/debugger-prompt.md) for the continuation prompt template.
 
 ```
 Task(
