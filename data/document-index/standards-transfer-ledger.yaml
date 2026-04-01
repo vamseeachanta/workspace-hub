@@ -24,7 +24,7 @@ standards:
 - id: API-INSP-570
   title: API_Insp_570_(2001)
   org: API
-  domain: pipeline
+  domain: regulatory
   doc_path: ''
   doc_paths: []
   status: reference
@@ -411,7 +411,7 @@ standards:
 - id: API-STD-594
   title: API Std 594 (1997).pdf
   org: API
-  domain: pipeline
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 594 (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 594 (1997).pdf
@@ -427,7 +427,7 @@ standards:
 - id: API-STD-599-(1994)
   title: Metal Plug Valves—Flanged and Welding Ends
   org: API
-  domain: pipeline
+  domain: process
   doc_path: ''
   doc_paths: []
   status: reference
@@ -443,7 +443,7 @@ standards:
 - id: API-STD-609
   title: API Std 609 (1997).pdf
   org: API
-  domain: pipeline
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 609 (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 609 (1997).pdf
@@ -459,7 +459,7 @@ standards:
 - id: API.1104.1999
   title: api.1104.1999
   org: API
-  domain: pipeline
+  domain: materials
   doc_path: ''
   doc_paths: []
   status: reference
@@ -952,7 +952,7 @@ standards:
 - id: API-INSP-510
   title: API_Insp_510_(2001)
   org: API
-  domain: structural
+  domain: regulatory
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1191,7 +1191,7 @@ standards:
 - id: API-RP-650-2003
   title: API-650_2003
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1207,7 +1207,7 @@ standards:
 - id: API-SPEC-12B
   title: API_Spec_12B_(1995)
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1223,7 +1223,7 @@ standards:
 - id: API-SPEC-12D
   title: API_Spec_12D_(1994)
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1239,7 +1239,7 @@ standards:
 - id: API-SPEC-12F
   title: API_Spec_12F_(1994)
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1254,7 +1254,7 @@ standards:
 - id: API-SPEC-12J
   title: API_Spec_12J_(1989)
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1286,7 +1286,7 @@ standards:
 - id: API-STD-620
   title: API Std 620 (2002).pdf
   org: API
-  domain: structural
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 620 (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 620 (2002).pdf
@@ -1302,7 +1302,7 @@ standards:
 - id: API-STD-653
   title: API Std 653 (2001).pdf
   org: API
-  domain: structural
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 653 (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 653 (2001).pdf
@@ -1318,7 +1318,7 @@ standards:
 - id: API-STD-653-3RD-ED-&-ADD
   title: API_STD_653_3rd_Ed_&_Add_(2001_&_2003)_Tank_Inspection,_Repair,_Alteration_and_Reconstruction
   org: API
-  domain: structural
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -1444,7 +1444,7 @@ standards:
 - id: ASTM-A131
   title: ASTM A131 (2004) Std Specification for Structural Steel for Ships.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A131/ASTM A131 (2004) Std Specification for Structural Steel
     for Ships.pdf
   doc_paths:
@@ -1461,7 +1461,7 @@ standards:
 - id: ASTM-A36
   title: ASTM A36M-04 (2004) Standard Specification for Carbon Structural Steel.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A36/ASTM A36M-04 (2004) Standard Specification for Carbon Structural
     Steel.pdf
   doc_paths:
@@ -1480,7 +1480,7 @@ standards:
   title: ASTM A6M-01a (2001) Standard Specification for General Requirements for Rolled Structural Steel Bars, Plates, Shapes,
     and Sheet Piling.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A6/ASTM A6M-01a (2001) Standard Specification for General Requirements
     for Rolled Structural Steel Bars, Plates, Shapes, and Sheet Piling.pdf
   doc_paths:
@@ -1552,7 +1552,7 @@ standards:
 - id: ASTM-E1450
   title: ASTM E1450 (2003) Standard Test Method for Tension Testing of Structural Alloys in Liquid Helium.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1450 (2003) Standard Test Method for Tension Testing of Structural Alloys in Liquid Helium.pdf
   doc_paths:
@@ -1570,7 +1570,7 @@ standards:
 - id: ASTM-E1681
   title: ASTM E1681 (2003) Standard Test Method for Determining Threshold Stress Intensity Factor for Environment.PDF
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1681 (2003) Standard Test Method for Determining Threshold Stress Intensity Factor for Environment.PDF
   doc_paths:
@@ -1606,7 +1606,7 @@ standards:
 - id: ASTM-E190
   title: ASTM E190 (2003) Std Test Method for Guided Bend Test for Ductility of Welds.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E190 (2003) Std Test Method for Guided Bend Test for Ductility of Welds.pdf
   doc_paths:
@@ -1624,7 +1624,7 @@ standards:
 - id: ASTM-E1928
   title: ASTM E1928 (2007) Standard Practice for Estimating the Approximate Residual Circumferential Stress inStraight.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1928 (2007) Standard Practice for Estimating the Approximate Residual Circumferential Stress inStraight.pdf
   doc_paths:
@@ -1678,7 +1678,7 @@ standards:
 - id: ASTM-E2015
   title: ASTM E2015(2004) Standard Guide for Preparation of Plastics and Polymeric Specimens for Microstructural Examination.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E2015(2004) Standard Guide for Preparation of Plastics and Polymeric Specimens for Microstructural Examination.pdf
   doc_paths:
@@ -1880,7 +1880,7 @@ standards:
 - id: ASTM-E837
   title: ASTM E837 (2001) Std Test Method for Determining Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E837 (2001) Std Test Method for Determining Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
   doc_paths:
@@ -2053,7 +2053,7 @@ standards:
 - id: ISO-129
   title: ISO 129.pdf
   org: ISO
-  domain: structural
+  domain: cad
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 129.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 129.pdf
@@ -2084,7 +2084,7 @@ standards:
 - id: ISO-2768-PT-1-2ND-ED
   title: ISO_2768_Pt_1_2nd_Ed_(1993)_Tolerances_for_linear_and_angular_dimensions_without_individual_tolerance_indications
   org: ISO
-  domain: structural
+  domain: cad
   doc_path: ''
   doc_paths: []
   status: reference
@@ -2310,7 +2310,7 @@ standards:
 - id: API-RP-603
   title: API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
   org: API
-  domain: cathodic-protection
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/STA/API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/STA/API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
@@ -2761,7 +2761,7 @@ standards:
 - id: API-RP-14C
   title: API RP 14C (2001).pdf
   org: API
-  domain: marine
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14C (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14C (2001).pdf
@@ -2777,7 +2777,7 @@ standards:
 - id: API-RP-14J
   title: API RP 14J (2001).pdf
   org: API
-  domain: marine
+  domain: regulatory
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14J (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14J (2001).pdf
@@ -2960,7 +2960,7 @@ standards:
 - id: ASTM-A508
   title: ASTM A508 (1999) Std Spec for Quenched and Tempered Vacumn-Treated Carbon and Alloy Steel Forgings for Pressure Vessels.pdf
   org: ASTM
-  domain: marine
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A508/ASTM A508 (1999) Std Spec for Quenched and Tempered Vacumn-Treated
     Carbon and Alloy Steel Forgings for Pressure Vessels.pdf
   doc_paths:
@@ -2978,7 +2978,7 @@ standards:
 - id: ASTM-A541
   title: ASTM A541 (1999) Std Spec for Quenched and Tempered Carbon and Alloy Steel Forgings for Pressure Vessel Components.pdf
   org: ASTM
-  domain: marine
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A541/ASTM A541 (1999) Std Spec for Quenched and Tempered Carbon
     and Alloy Steel Forgings for Pressure Vessel Components.pdf
   doc_paths:
@@ -2996,7 +2996,7 @@ standards:
 - id: ASTM-A859
   title: ASTM A859.pdf
   org: ASTM
-  domain: marine
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A859.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A859.pdf
@@ -3411,7 +3411,7 @@ standards:
 - id: API-RP-591
   title: API RP 591 (1998).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 591 (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 591 (1998).pdf
@@ -3427,7 +3427,7 @@ standards:
 - id: API-RP-621
   title: API RP 621 (2002).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 621 (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 621 (2002).pdf
@@ -3443,7 +3443,7 @@ standards:
 - id: API-RP-652
   title: API RP 652 (1997).pdf
   org: API
-  domain: materials
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 652 (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 652 (1997).pdf
@@ -3459,7 +3459,7 @@ standards:
 - id: API-RP-687
   title: API RP 687 (2001).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 687 (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 687 (2001).pdf
@@ -3475,7 +3475,7 @@ standards:
 - id: API-SPEC-12GDU
   title: API_Spec_12GDU_(1990)
   org: API
-  domain: materials
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -3491,7 +3491,7 @@ standards:
 - id: API-SPEC-12L
   title: API_Spec_12L_(1994)
   org: API
-  domain: materials
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -3506,7 +3506,7 @@ standards:
 - id: API-SPEC-12P
   title: API_Spec_12P_(1995)
   org: API
-  domain: materials
+  domain: installation
   doc_path: ''
   doc_paths: []
   status: reference
@@ -3538,7 +3538,7 @@ standards:
 - id: API-STD-526
   title: API Std 526 (2002).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 526 (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 526 (2002).pdf
@@ -3554,7 +3554,7 @@ standards:
 - id: API-STD-530
   title: API Std 530 (1996).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 530 (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 530 (1996).pdf
@@ -3570,7 +3570,7 @@ standards:
 - id: API-STD-560
   title: API Std 560 (2001).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 560 (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 560 (2001).pdf
@@ -3586,7 +3586,7 @@ standards:
 - id: API-STD-589
   title: API Std 589 (1998).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 589 (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 589 (1998).pdf
@@ -3602,7 +3602,7 @@ standards:
 - id: API-STD-598
   title: API Std 598 (1996).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 598 (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 598 (1996).pdf
@@ -3618,7 +3618,7 @@ standards:
 - id: API-STD-602
   title: API Std 602 (1998).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 602 (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 602 (1998).pdf
@@ -3634,7 +3634,7 @@ standards:
 - id: API-STD-603
   title: API Std 603 (2001).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 603 (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 603 (2001).pdf
@@ -3650,7 +3650,7 @@ standards:
 - id: API-STD-608
   title: API Std 608 (1995).pdf
   org: API
-  domain: materials
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 608 (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 608 (1995).pdf
@@ -4109,7 +4109,7 @@ standards:
 - id: API-RP-1104
   title: API 1104_wE1.pdf
   org: API
-  domain: pipeline
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 1104_wE1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 1104_wE1.pdf
@@ -4125,7 +4125,7 @@ standards:
 - id: API-RP-1114
   title: API RP 1114 (1994).pdf
   org: API
-  domain: process
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1114 (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1114 (1994).pdf
@@ -4141,7 +4141,7 @@ standards:
 - id: API-RP-1141
   title: API RP 1141 (1994).pdf
   org: API
-  domain: process
+  domain: regulatory
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1141 (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1141 (1994).pdf
@@ -4157,7 +4157,7 @@ standards:
 - id: API-RP-12N
   title: API RP 12N (1994).pdf
   org: API
-  domain: process
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12N (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12N (1994).pdf
@@ -4173,7 +4173,7 @@ standards:
 - id: API-RP-12R1
   title: API RP 12R1 (1997).pdf
   org: API
-  domain: process
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12R1 (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12R1 (1997).pdf
@@ -4302,7 +4302,7 @@ standards:
 - id: API-RP-2016
   title: API RP 2016 Guidelines and Procedures for Entering and Cleaning Petroleum Storage Tanks (1st 2001 112p).pdf
   org: API
-  domain: regulatory
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2016 Guidelines and Procedures for Entering
     and Cleaning Petroleum Storage Tanks (1st 2001 112p).pdf
   doc_paths:
@@ -4321,7 +4321,7 @@ standards:
 - id: API-RP-2210
   title: API RP 2210 (2000).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2210 (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2210 (2000).pdf
@@ -4439,7 +4439,7 @@ standards:
 - id: API-RP-531M
   title: API RP 531M (1980).pdf
   org: API
-  domain: drilling
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 531M (1980).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 531M (1980).pdf
@@ -4567,7 +4567,7 @@ standards:
 - id: API-RP-573
   title: API RP 573 (1991).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 573 (1991).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 573 (1991).pdf
@@ -4583,7 +4583,7 @@ standards:
 - id: API-RP-574
   title: API RP 574 (1998).pdf
   org: API
-  domain: regulatory
+  domain: pipeline
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 574 (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 574 (1998).pdf
@@ -4615,7 +4615,7 @@ standards:
 - id: API-RP-576
   title: API RP 576 (2000).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 576 (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 576 (2000).pdf
@@ -4647,7 +4647,7 @@ standards:
 - id: API-RP-5CT
   title: API 5CT.PDF
   org: API
-  domain: materials
+  domain: drilling
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5CT.PDF
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5CT.PDF
@@ -4715,7 +4715,7 @@ standards:
 - id: API-RP-6A
   title: API 6A.pdf
   org: API
-  domain: materials
+  domain: drilling
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6A.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6A.pdf
@@ -4731,7 +4731,7 @@ standards:
 - id: API-RP-6AF
   title: API 6AF.pdf
   org: API
-  domain: materials
+  domain: drilling
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6AF.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6AF.pdf
@@ -4747,7 +4747,7 @@ standards:
 - id: API-RP-6ASECTION
   title: API 6ASECTION 2.pdf
   org: API
-  domain: materials
+  domain: drilling
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6ASECTION 2.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6ASECTION 2.pdf
@@ -5013,7 +5013,7 @@ standards:
 - id: API-STD-650
   title: API Std 650 (2001).pdf
   org: API
-  domain: process
+  domain: installation
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 650 (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 650 (2001).pdf
@@ -5269,7 +5269,7 @@ standards:
 - id: ASTM-A487
   title: ASTM A487 (1998) Std Spec for Steel Castings Suitable for Pressure Service.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A487/ASTM A487 (1998) Std Spec for Steel Castings Suitable
     for Pressure Service.pdf
   doc_paths:
@@ -5287,7 +5287,7 @@ standards:
 - id: ASTM-A521
   title: ASTM A521 (2006) Std Spec for Steel, Closed-Impression Die Forgings for General Industrial Use.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A521/ASTM A521 (2006) Std Spec for Steel, Closed-Impression
     Die Forgings for General Industrial Use.pdf
   doc_paths:
@@ -5326,7 +5326,7 @@ standards:
 - id: ASTM-A703
   title: ASTM A703 (2001) Std Spec for Steel Castings, General Requirements, for Pressure Containing Parts.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A703/ASTM A703 (2001) Std Spec for Steel Castings, General
     Requirements, for Pressure Containing Parts.pdf
   doc_paths:
@@ -5380,7 +5380,7 @@ standards:
 - id: ASTM-A745
   title: ASTM A745 (2009) Std Practice for Ultrasonic Examination of Austenitic Steel Forgings.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A745/ASTM A745 (2009) Std Practice for Ultrasonic Examination
     of Austenitic Steel Forgings.pdf
   doc_paths:
@@ -5398,7 +5398,7 @@ standards:
 - id: ASTM-A788
   title: ASTM A788 (2011) Std Spec for Steel Forgings, General Requirements.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A788/ASTM A788 (2011) Std Spec for Steel Forgings, General
     Requirements.pdf
   doc_paths:
@@ -5452,7 +5452,7 @@ standards:
 - id: ASTM-E1077
   title: ASTM E1077-01 (2005) Standard Test Methods for Estimating the Depth of Decarburization of Steel Specimens.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1077-01 (2005) Standard Test Methods for Estimating the Depth of Decarburization of Steel Specimens.pdf
   doc_paths:
@@ -5650,7 +5650,7 @@ standards:
 - id: ASTM-E1457
   title: ASTM E1457 (2007) Standard Test Method for Measurement of Creep Crack Growth Times in Metals.pdf
   org: ASTM
-  domain: materials
+  domain: structural
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1457 (2007) Standard Test Method for Measurement of Creep Crack Growth Times in Metals.pdf
   doc_paths:
@@ -6227,7 +6227,7 @@ standards:
 - id: ASTM-E915
   title: ASTM E915 (2002) Standard Test Method for Verifying the Alignment of X-Ray Diffraction Instrumentation.PDF
   org: ASTM
-  domain: marine
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E915 (2002) Standard Test Method for Verifying the Alignment of X-Ray Diffraction Instrumentation.PDF
   doc_paths:
@@ -6245,7 +6245,7 @@ standards:
 - id: ASTM-E975
   title: ASTM E975 (2003) Standard Practice for X-Ray Determination of Retained Austenite in Steel with Near Random.pdf
   org: ASTM
-  domain: structural
+  domain: materials
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E975 (2003) Standard Practice for X-Ray Determination of Retained Austenite in Steel with Near Random.pdf
   doc_paths:
@@ -6903,7 +6903,7 @@ standards:
 - id: API-RP-14C-7TH-ED
   title: API_RP_14C_7th_Ed_(2007)_Analysis,_Design,_Installation,_and_Testing_of_Basic_Surface_Safety_Systems_for_Offshore_Production_Platforms
   org: API
-  domain: regulatory
+  domain: process
   doc_path: ''
   doc_paths: []
   status: reference
@@ -6950,7 +6950,7 @@ standards:
 - id: API-RP-1621
   title: API RP 1621 (1993).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1621 (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1621 (1993).pdf
@@ -6966,7 +6966,7 @@ standards:
 - id: API-RP-2350
   title: API RP 2350 (1996).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2350 (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2350 (1996).pdf
@@ -6982,7 +6982,7 @@ standards:
 - id: API-RP-536
   title: API RP 536 (1998).pdf
   org: API
-  domain: regulatory
+  domain: process
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 536 (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 536 (1998).pdf
@@ -7030,7 +7030,7 @@ standards:
 - id: ASTM-E1544
   title: ASTM E1544 (2004) Standard Practice for Construction of a Stepped Block and Its Use to Estimate Errors.PDF
   org: ASTM
-  domain: cad
+  domain: structural
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM
     E1544 (2004) Standard Practice for Construction of a Stepped Block and Its Use to Estimate Errors.PDF
   doc_paths:

@@ -3,7 +3,7 @@
 # ABOUTME: Sources: direct PDFs (SNAME, Tupper, Biran), Internet Archive, maritime.org ship plans
 # Usage: bash scripts/data/naval-architecture/download-naval-arch-docs.sh [--dry-run]
 
-set -euo pipefail
+set -uo pipefail
 
 DEST="/mnt/ace/docs/_standards/SNAME"
 LOG_DIR="$(git rev-parse --show-toplevel)/.claude/work-queue/assets/WRK-1151"

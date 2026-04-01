@@ -2,6 +2,10 @@
 # ABOUTME: Shared download helpers — source this file; set LOG_FILE and DRY_RUN before sourcing
 # Usage: source scripts/lib/download-helpers.sh
 # Callers must export: LOG_FILE (path), DRY_RUN (true|false)
+#
+# IMPORTANT: download() returns 1 on failure. Callers using set -e must guard
+# each call with "|| true" or "|| log ..." to prevent script abort on download
+# failure. Recommended caller pattern: set -uo pipefail (without -e).
 
 log() {
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*" | tee -a "${LOG_FILE}"

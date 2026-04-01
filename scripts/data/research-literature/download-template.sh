@@ -3,7 +3,7 @@
 # ABOUTME: Placeholders: {{DOMAIN}}, {{DEST}}, {{URLS}} — filled by research-domain.py
 # Usage: bash download-literature.sh [--dry-run]
 
-set -euo pipefail
+set -uo pipefail
 
 DEST="{{DEST}}"
 LOG_DIR="$(git rev-parse --show-toplevel)/.claude/work-queue/assets"
