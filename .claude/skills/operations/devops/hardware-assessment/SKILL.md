@@ -38,6 +38,7 @@ see_also:
 - hardware-assessment-output-schema-v10
 - hardware-assessment-linux
 - hardware-assessment-workflow-multi-machine-inventory
+freedom: low
 ---
 
 # Hardware Assessment

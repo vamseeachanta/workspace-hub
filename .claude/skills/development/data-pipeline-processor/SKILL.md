@@ -17,6 +17,7 @@ see_also:
 - data-pipeline-processor-execution-checklist
 - data-pipeline-processor-metrics
 tags: []
+freedom: medium
 ---
 
 # Data Pipeline Processor

@@ -27,6 +27,7 @@ see_also:
 - pdf-quick-reference
 - pdf-dependencies
 tags: []
+freedom: medium
 ---
 
 # Pdf

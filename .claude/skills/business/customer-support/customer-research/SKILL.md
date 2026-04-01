@@ -15,6 +15,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+freedom: high
 ---
 
 # Customer Research Skill Overview

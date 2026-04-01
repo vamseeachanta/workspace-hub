@@ -12,6 +12,7 @@ requires: []
 see_also: []
 tags: [git, sync, multi-repo, automation]
 related_skills: [repo-structure, ecosystem-terminology]
+freedom: low
 ---
 
 # Repo Sync

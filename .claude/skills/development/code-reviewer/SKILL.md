@@ -37,6 +37,7 @@ tags:
 - quality
 - pull-request
 - multi-language
+freedom: high
 ---
 
 # Code Reviewer

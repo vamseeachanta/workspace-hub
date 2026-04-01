@@ -25,6 +25,7 @@ capabilities: []
 requires: []
 see_also: []
 tags: []
+freedom: low
 ---
 
 # Verification Loop Skill

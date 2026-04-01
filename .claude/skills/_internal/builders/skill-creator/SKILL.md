@@ -71,6 +71,7 @@ version: 1.0.0
 category: [builders|tools|content-design|communication|meta]
 tags: [topic-keyword, tool-name, use-case]  # discovery tags for search/filtering
 related_skills: [companion-skill-name]     # cross-references to sibling skills
+freedom: medium  # high = open-ended (brainstorming, research); medium = structured output (reports, templates); low = strict procedure (deploy, migrate, verify)
 ---
 
 # My New Skill

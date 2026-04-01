@@ -19,6 +19,7 @@ see_also:
 - systematic-debugging-error-handling
 - systematic-debugging-metrics
 tags: []
+freedom: high
 ---
 
 # Systematic Debugging

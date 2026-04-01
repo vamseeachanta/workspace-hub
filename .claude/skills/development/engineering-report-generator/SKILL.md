@@ -17,6 +17,7 @@ see_also:
 - engineering-report-generator-execution-checklist
 - engineering-report-generator-metrics
 tags: []
+freedom: medium
 ---
 
 # Engineering Report Generator

@@ -17,6 +17,7 @@ see_also:
 tags: []
 category: development
 version: 1.0.0
+freedom: low
 ---
 
 # Github Release Manager

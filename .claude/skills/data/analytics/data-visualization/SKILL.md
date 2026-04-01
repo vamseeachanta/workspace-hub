@@ -20,6 +20,7 @@ see_also:
 - data-visualization-color
 - data-visualization-color-blindness
 tags: []
+freedom: medium
 ---
 
 # Data Visualization

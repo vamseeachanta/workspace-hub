@@ -238,3 +238,13 @@ The three highest-leverage improvements for the workspace-hub skill ecosystem:
 1. **Description quality**: Audit all 479 skill descriptions for CSO compliance (triggering conditions only, third-person, keyword-rich, no workflow summaries)
 2. **Progressive disclosure**: Split oversized skills into SKILL.md overview + reference files; enforce 500-line limit on SKILL.md body
 3. **Discipline skill hardening**: Add rationalization tables, red flags lists, and iron laws to any skill that enforces constraints
+
+---
+
+## 8. Cross-Skill Reference Convention
+
+Standard patterns for referencing other skills:
+- **Frontmatter**: `related_skills: [skill-a, skill-b]` for soft associations
+- **Prerequisites**: `**REQUIRED BACKGROUND:** skill-name` in body
+- **Dependencies**: `**REQUIRED SUB-SKILL:** skill-name` in body
+- **Never**: `@skill-name` force-loading (burns context)

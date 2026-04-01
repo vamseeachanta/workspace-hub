@@ -18,6 +18,7 @@ triggers:
 - research brief
 - find standards for
 type: reference
+freedom: high
 ---
 
 # Research & Literature Gathering Skill

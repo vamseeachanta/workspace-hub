@@ -16,6 +16,7 @@ see_also:
 - brainstorming-best-practices
 - brainstorming-error-handling
 - brainstorming-metrics
+freedom: high
 ---
 
 # Brainstorming

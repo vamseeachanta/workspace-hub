@@ -22,6 +22,7 @@ see_also:
 - xlsx-check-for-errors
 - xlsx-workflow
 tags: []
+freedom: medium
 ---
 
 # Xlsx
