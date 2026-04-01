@@ -1,7 +1,6 @@
 ---
 name: state-directory-manager-1-xdg-base-directory-standard
-description: 'Sub-skill of state-directory-manager: 1. XDG Base Directory Standard
-  (+2).'
+description: 'XDG Base Directory compliant state management. Use when setting up config, data, state, or cache directories per the XDG specification.'
 version: 1.0.0
 category: _core
 type: reference

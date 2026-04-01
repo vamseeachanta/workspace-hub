@@ -1,6 +1,6 @@
 ---
 name: mkdocs-success
-description: 'Sub-skill of mkdocs: Success.'
+description: 'MkDocs success admonition syntax. Use when indicating completed actions or successful outcomes in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

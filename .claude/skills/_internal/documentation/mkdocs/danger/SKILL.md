@@ -1,6 +1,6 @@
 ---
 name: mkdocs-danger
-description: 'Sub-skill of mkdocs: Danger.'
+description: 'MkDocs danger admonition syntax. Use when writing critical warnings about data loss or security risks in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

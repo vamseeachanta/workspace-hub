@@ -1,6 +1,6 @@
 ---
 name: mkdocs-note
-description: 'Sub-skill of mkdocs: Note.'
+description: 'MkDocs note admonition syntax. Use when highlighting important information readers should pay attention to in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

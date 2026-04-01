@@ -1,6 +1,6 @@
 ---
 name: mkdocs-warning
-description: 'Sub-skill of mkdocs: Warning.'
+description: 'MkDocs warning admonition syntax. Use when alerting readers to potential issues or cautions in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

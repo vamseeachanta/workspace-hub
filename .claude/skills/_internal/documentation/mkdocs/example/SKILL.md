@@ -1,6 +1,6 @@
 ---
 name: mkdocs-example
-description: 'Sub-skill of mkdocs: Example.'
+description: 'MkDocs example admonition syntax. Use when inserting code examples or worked demonstrations in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

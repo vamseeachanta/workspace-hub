@@ -1,6 +1,6 @@
 ---
 name: mkdocs-quote
-description: 'Sub-skill of mkdocs: Quote.'
+description: 'MkDocs quote admonition syntax. Use when embedding notable quotations or citations in MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference

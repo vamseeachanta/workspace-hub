@@ -1,7 +1,6 @@
 ---
 name: parallel-batch-executor-1-basic-parallel-execution-with-xargs
-description: 'Sub-skill of parallel-batch-executor: 1. Basic Parallel Execution with
-  xargs (+2).'
+description: 'Parallel batch processing with xargs. Use when running commands concurrently over a list of items with controlled parallelism.'
 version: 1.0.0
 category: _core
 type: reference

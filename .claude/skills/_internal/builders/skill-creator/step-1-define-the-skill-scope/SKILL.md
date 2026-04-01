@@ -1,6 +1,6 @@
 ---
 name: skill-creator-step-1-define-the-skill-scope
-description: 'Sub-skill of skill-creator: Step 1: Define the Skill Scope (+2).'
+description: 'Define skill scope and write frontmatter. Use when creating a new skill to establish problem, inputs, outputs, and YAML metadata.'
 version: 2.2.0
 category: _internal
 type: reference

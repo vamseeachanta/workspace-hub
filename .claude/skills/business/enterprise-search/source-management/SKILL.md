@@ -1,6 +1,6 @@
 ---
 name: source-management
-description: "Manages connected MCP sources for enterprise search, including detection, priority ordering, and rate limiting."
+description: "Configure and query MCP data sources for enterprise search. Use when checking which sources (chat, email, cloud storage, CRM, knowledge base) are connected, connecting new ones, or tuning query priority and rate limits."
 type: reference
 version: 1.0.0
 category: business

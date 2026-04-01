@@ -1,6 +1,6 @@
 ---
 name: skill-creator-step-1-name
-description: 'Sub-skill of skill-creator: Step 1: [Name] (+2).'
+description: 'Skill-creator checklist template. Use when scaffolding a new skill with step-by-step instructions and verification items.'
 version: 2.2.0
 category: _internal
 type: reference

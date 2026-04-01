@@ -1,6 +1,6 @@
 ---
 name: mkdocs-info
-description: 'Sub-skill of mkdocs: Info.'
+description: 'MkDocs info admonition syntax. Use when adding supplementary information blocks to MkDocs documentation.'
 version: 1.0.0
 category: _internal
 type: reference
