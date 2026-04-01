@@ -44,7 +44,7 @@ Use mesh utilities when you need to:
 ## Related Skills
 
 - **hydrodynamic-analysis** - BEM theory, RAOs, added mass/damping
-- **orcaflex-specialist** - OrcaFlex integration
+- **orcaflex/specialist** - OrcaFlex integration
 - **gmsh-meshing** - Advanced mesh generation
 
 ---

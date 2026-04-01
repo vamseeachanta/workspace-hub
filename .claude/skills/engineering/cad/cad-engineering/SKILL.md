@@ -54,7 +54,7 @@ scripts_exempt: true
 
 - [freecad-automation](../freecad-automation/SKILL.md) - FreeCAD operations
 - [gmsh-meshing](../gmsh-meshing/SKILL.md) - Mesh generation from CAD
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Marine analysis integration
+- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Marine analysis integration
 - [structural-analysis](../structural-analysis/SKILL.md) - FEM preprocessing
 
 ## References

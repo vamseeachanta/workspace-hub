@@ -108,7 +108,7 @@ builder.add_buoyancy_section(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
+- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Run OrcaFlex simulations
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Fatigue at critical locations
 - [structural-analysis](../structural-analysis/SKILL.md) - Stress verification
 

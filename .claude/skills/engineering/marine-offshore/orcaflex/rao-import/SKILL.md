@@ -144,7 +144,7 @@ raw_raos = processor.import_from_aqwa("data/vessel.lis")
 ## Related Skills
 
 - [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Apply imported RAOs
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - Generate RAOs from diffraction
+- [orcawave/analysis](../orcawave/analysis/SKILL.md) - Generate RAOs from diffraction
 - [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA-specific processing
 - [hydrodynamics](../hydrodynamics/SKILL.md) - Hydrodynamic coefficient management
 

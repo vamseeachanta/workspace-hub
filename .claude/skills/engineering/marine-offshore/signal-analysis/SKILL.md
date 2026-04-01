@@ -114,7 +114,7 @@ data = reader.read("data/measurements.csv")
 ## Related Skills
 
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Use rainflow cycles for fatigue damage calculation
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract time histories from OrcaFlex
+- [orcaflex/post-processing](../orcaflex/post-processing/SKILL.md) - Extract time histories from OrcaFlex
 - [structural-analysis](../structural-analysis/SKILL.md) - Stress analysis for signal generation
 
 ## References

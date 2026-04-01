@@ -52,12 +52,12 @@ This skill provides guidance on hydrodynamic diffraction/radiation analysis usin
 | Skill | Description |
 |-------|-------------|
 | **aqwa-analysis** | AQWA .LIS processing and RAO extraction |
-| **orcawave-analysis** | OrcaWave diffraction/radiation analysis |
+| **orcawave/analysis** | OrcaWave diffraction/radiation analysis |
 | **bemrosetta** | AQWA → OrcaFlex converter with QTF support |
 | **hydrodynamics** | 6×6 matrices, wave spectra, OCIMF loading |
-| **orcaflex-rao-import** | Multi-format RAO import to OrcaFlex |
-| **orcawave-to-orcaflex** | OrcaWave to OrcaFlex conversion |
-| **orcawave-aqwa-benchmark** | Cross-validation comparison |
+| **orcaflex/rao-import** | Multi-format RAO import to OrcaFlex |
+| **orcawave/to-orcaflex** | OrcaWave to OrcaFlex conversion |
+| **orcawave/aqwa-benchmark** | Cross-validation comparison |
 
 ## References
 

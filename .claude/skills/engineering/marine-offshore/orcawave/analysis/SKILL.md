@@ -120,7 +120,7 @@ mesh_sizes = [2.0, 1.5, 1.0, 0.75, 0.5]
 
 - [diffraction-analysis](../diffraction-analysis/SKILL.md) - **Master skill** for all diffraction workflows
 - [bemrosetta](../bemrosetta/SKILL.md) - AQWA → OrcaFlex conversion with QTF and mesh support
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Apply hydrodynamic database in OrcaFlex
+- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Apply hydrodynamic database in OrcaFlex
 - [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA validation and comparison
 - [gmsh-meshing](../gmsh-meshing/SKILL.md) - Panel mesh generation
 - [hydrodynamics](../hydrodynamics/SKILL.md) - Coefficient management

@@ -137,4 +137,4 @@ aqwa_results = converter.convert_to_unified_schema(water_depth=30.0)
 - [aqwa](../SKILL.md) — Hub skill with Python API
 - [aqwa/input](../input/SKILL.md) — Input formats and configurations
 - [aqwa/reference](../reference/SKILL.md) — Solver stages and OPTIONS keywords
-- [orcawave-analysis](../../orcawave-analysis/SKILL.md) — OrcaWave benchmark validation
+- [orcawave/analysis](../../orcawave/analysis/SKILL.md) — OrcaWave benchmark validation

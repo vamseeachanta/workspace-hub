@@ -32,7 +32,7 @@ tools:
 - Glob
 - Task
 related_skills:
-- orcaflex-specialist
+- orcaflex/specialist
 - structural-analysis
 - mooring-analysis
 - hydrodynamic-analysis

@@ -356,9 +356,9 @@ Total diffraction module test files: 26. Total diffraction tests: ~566.
 
 - `.claude/skills/diffraction-analysis/SKILL.md` — broad diffraction workflow (AQWA, OrcaWave, BEMRosetta)
 - `.claude/skills/aqwa-analysis/SKILL.md` — AQWA-specific result extraction
-- `.claude/skills/orcawave-analysis/SKILL.md` — OrcaWave run configuration and QTF
-- `.claude/skills/orcawave-aqwa-benchmark/SKILL.md` — cross-solver comparison framework
-- `.claude/skills/orcawave-to-orcaflex/SKILL.md` — OrcaWave → OrcaFlex export
+- `.claude/skills/orcawave/analysis/SKILL.md` — OrcaWave run configuration and QTF
+- `.claude/skills/orcawave/aqwa-benchmark/SKILL.md` — cross-solver comparison framework
+- `.claude/skills/orcawave/to-orcaflex/SKILL.md` — OrcaWave → OrcaFlex export
 
 ---
 

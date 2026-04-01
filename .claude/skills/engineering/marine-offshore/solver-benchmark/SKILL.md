@@ -70,7 +70,7 @@ uv run python scripts/benchmark/run_3way_benchmark.py \
 
 - **mesh-utilities** - Mesh inspection and conversion (`/mesh`)
 - **hydrodynamic-analysis** - BEM theory and RAO analysis
-- **orcaflex-specialist** - OrcaFlex integration
+- **orcaflex/specialist** - OrcaFlex integration
 
 ## Sub-Skills
 

@@ -119,7 +119,7 @@ slow_drift.load_qtf("results/fpso_qtf.yml")
 - [orcawave-analysis](../orcawave-analysis/SKILL.md) - First-order diffraction analysis
 - [mooring-design](../mooring-design/SKILL.md) - Mooring system design
 - [hydrodynamics](../hydrodynamics/SKILL.md) - Wave loading management
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Time-domain simulation
+- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Time-domain simulation
 
 ## References
 

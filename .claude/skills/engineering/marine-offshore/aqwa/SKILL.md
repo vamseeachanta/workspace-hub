@@ -137,7 +137,7 @@ preprocess.generate_input(
 - [aqwa/batch-execution](batch-execution/SKILL.md) — Batch run orchestration
 - [diffraction-analysis](../diffraction-analysis/SKILL.md) — **Master skill** for all diffraction workflows
 - [bemrosetta](../bemrosetta/SKILL.md) — AQWA to OrcaFlex conversion
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) — Benchmark validation
+- [orcawave/analysis](../orcawave/analysis/SKILL.md) — Benchmark validation
 
 ## References
 

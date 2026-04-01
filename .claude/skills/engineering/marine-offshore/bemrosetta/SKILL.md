@@ -140,9 +140,9 @@ validator = CoefficientValidator(
 ## Related Skills
 
 - **aqwa-analysis** - AQWA .LIS processing and RAO extraction
-- **orcawave-analysis** - OrcaWave diffraction/radiation analysis
-- **orcawave-to-orcaflex** - OrcaWave to OrcaFlex conversion
-- **orcaflex-rao-import** - Multi-format RAO import
+- **orcawave/analysis** - OrcaWave diffraction/radiation analysis
+- **orcawave/to-orcaflex** - OrcaWave to OrcaFlex conversion
+- **orcaflex/rao-import** - Multi-format RAO import
 - **hydrodynamics** - 6x6 matrices and wave spectra
 - **diffraction-analysis** - Master skill for diffraction workflows
 

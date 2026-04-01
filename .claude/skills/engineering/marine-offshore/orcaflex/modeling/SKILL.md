@@ -65,7 +65,7 @@ scripts_exempt: true
 ## Related Skills
 
 - [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Post-process simulation results
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - Diffraction/radiation analysis
+- [orcawave/analysis](../orcawave/analysis/SKILL.md) - Diffraction/radiation analysis
 - [mooring-design](../mooring-design/SKILL.md) - Mooring system design
 - [structural-analysis](../structural-analysis/SKILL.md) - Structural verification
 - [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA benchmark validation

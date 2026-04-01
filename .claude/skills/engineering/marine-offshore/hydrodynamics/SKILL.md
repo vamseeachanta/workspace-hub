@@ -157,7 +157,7 @@ from digitalmodel.marine_ops.marine_analysis.rao_quality_report import RAOQualit
 - [diffraction-analysis](../diffraction-analysis/SKILL.md) - **Master skill** for all diffraction workflows
 - [aqwa-analysis](../aqwa-analysis/SKILL.md) - Extract coefficients from AQWA
 - [bemrosetta](../bemrosetta/SKILL.md) - AQWA → OrcaFlex conversion with QTF and mesh support
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Apply in OrcaFlex models
+- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Apply in OrcaFlex models
 - [viv-analysis](../viv-analysis/SKILL.md) - Hydrodynamic coefficient usage
 
 ## References

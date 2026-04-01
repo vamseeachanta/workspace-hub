@@ -150,7 +150,7 @@ with GMSHMeshGenerator() as gen:
 - [gmsh-meshing](../gmsh-meshing/SKILL.md) - Advanced mesh generation
 - [cad-engineering](../cad-engineering/SKILL.md) - General CAD expertise
 - [blender-interface](../blender/SKILL.md) - 3D visualization
-- [orcaflex-modeling](../../marine-offshore/orcaflex-modeling/SKILL.md) - Hydrodynamic analysis
+- [orcaflex/modeling](../../marine-offshore/orcaflex/modeling/SKILL.md) - Hydrodynamic analysis
 
 ## References
 
