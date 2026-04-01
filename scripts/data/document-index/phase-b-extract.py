@@ -255,7 +255,8 @@ def main() -> int:
 
     cfg = load_config(args.config)
     index_path = HUB_ROOT / cfg["output"]["index_path"]
-    summaries_dir = HUB_ROOT / cfg["output"]["summaries_dir"]
+    _sdir = cfg["output"]["summaries_dir"]
+    summaries_dir = Path(_sdir) if os.path.isabs(_sdir) else HUB_ROOT / _sdir
     llm_cfg = cfg.get("llm", {})
     skip_below = llm_cfg.get("skip_below_words", 100)
     batch_size = llm_cfg.get("batch_size", 50)

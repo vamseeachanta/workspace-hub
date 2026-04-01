@@ -19,7 +19,8 @@ import yaml
 SCRIPT_DIR = Path(__file__).resolve().parent
 HUB_ROOT = SCRIPT_DIR.parents[2]
 INDEX_PATH = HUB_ROOT / "data" / "document-index" / "index.jsonl"
-SUMMARIES_DIR = HUB_ROOT / "data" / "document-index" / "summaries"
+_DEFAULT_SUMMARIES = "/mnt/remote/ace-linux-1/ace/data/document-index/summaries"
+SUMMARIES_DIR = Path(os.environ.get("SUMMARIES_DIR", _DEFAULT_SUMMARIES))
 
 # USN Hull Classification System
 # Reference: https://en.wikipedia.org/wiki/Hull_classification_symbol

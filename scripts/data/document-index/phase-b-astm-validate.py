@@ -31,7 +31,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 HUB_ROOT = Path(__file__).resolve().parents[3]
-SUMMARIES_DIR = HUB_ROOT / "data/document-index/summaries"
+_DEFAULT_SUMMARIES = "/mnt/remote/ace-linux-1/ace/data/document-index/summaries"
+SUMMARIES_DIR = Path(os.environ.get("SUMMARIES_DIR", _DEFAULT_SUMMARIES))
 
 
 def load_astm_hashes_with_llm(

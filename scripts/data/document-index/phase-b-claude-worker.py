@@ -33,7 +33,8 @@ logging.basicConfig(
 HUB_ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = Path("/mnt/ace/O&G-Standards/_inventory.db")
 INDEX_PATH = HUB_ROOT / "data/document-index/index.jsonl"
-SUMMARIES_DIR = HUB_ROOT / "data/document-index/summaries"
+_DEFAULT_SUMMARIES = "/mnt/remote/ace-linux-1/ace/data/document-index/summaries"
+SUMMARIES_DIR = Path(os.environ.get("SUMMARIES_DIR", _DEFAULT_SUMMARIES))
 
 MAX_TEXT_CHARS = 5000   # ~1200 tokens — cover page + abstract + scope
 CLAUDE_TIMEOUT = 90     # seconds per call
