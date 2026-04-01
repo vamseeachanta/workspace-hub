@@ -9,7 +9,7 @@ version: 1.1.0
 last_updated: 2026-01-02
 category: data
 related_skills:
-- pdf-text-extractor
+- pdf/text-extractor
 - semantic-search-setup
 - rag-system-builder
 - knowledge-base-builder
@@ -85,7 +85,7 @@ uv pip install PyMuPDF pytesseract Pillow sentence-transformers numpy tqdm
 
 ## Related Skills
 
-- `pdf-text-extractor` - Just text extraction
+- `pdf/text-extractor` - Just text extraction
 - `semantic-search-setup` - Just embeddings/search
 - `rag-system-builder` - Add LLM Q&A layer
 - `knowledge-base-builder` - Simpler document catalog

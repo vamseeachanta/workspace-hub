@@ -1,5 +1,5 @@
 ---
-name: python-scientific-computing-1-numpy-numerical-arrays-and-linear-algebra
+name: python-scicomp-1-numpy-arrays-linear-algebra
 description: 'Sub-skill of python-scientific-computing: 1. NumPy - Numerical Arrays
   and Linear Algebra (+2).'
 version: 1.0.0

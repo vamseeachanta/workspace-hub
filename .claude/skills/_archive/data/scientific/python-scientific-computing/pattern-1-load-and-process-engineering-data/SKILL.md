@@ -1,5 +1,5 @@
 ---
-name: python-scientific-computing-pattern-1-load-and-process-engineering-data
+name: python-scicomp-pattern1-load-process-eng-data
 description: 'Sub-skill of python-scientific-computing: Pattern 1: Load and Process
   Engineering Data (+2).'
 version: 1.0.0

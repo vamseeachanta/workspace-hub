@@ -10,7 +10,7 @@ category: data
 related_skills:
 - knowledge-base-builder
 - semantic-search-setup
-- pdf-text-extractor
+- pdf/text-extractor
 - document-rag-pipeline
 capabilities: []
 requires: []
@@ -74,7 +74,7 @@ print(response.content[0].text)
 
 - `knowledge-base-builder` - Build the document database first
 - `semantic-search-setup` - Generate vector embeddings
-- `pdf-text-extractor` - Extract text from PDFs
+- `pdf/text-extractor` - Extract text from PDFs
 - `document-rag-pipeline` - Complete end-to-end pipeline
 
 ## Version History

@@ -1,5 +1,5 @@
 ---
-name: instrument-data-allotrope-tier-1-native-allotropy-parsing-preferred
+name: allotrope-tier1-native-parsing-preferred
 description: 'Sub-skill of instrument-data-allotrope: Tier 1: Native allotropy parsing
   (PREFERRED) (+2).'
 version: 1.0.0

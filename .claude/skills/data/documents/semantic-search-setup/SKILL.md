@@ -10,7 +10,7 @@ category: data
 related_skills:
 - knowledge-base-builder
 - rag-system-builder
-- pdf-text-extractor
+- pdf/text-extractor
 capabilities: []
 requires: []
 see_also:
@@ -58,7 +58,7 @@ print(f"Similarity: {similarity:.3f}")  # ~0.85
 
 - `knowledge-base-builder` - Build the document database first
 - `rag-system-builder` - Add AI Q&A on top of semantic search
-- `pdf-text-extractor` - Extract text from PDFs
+- `pdf/text-extractor` - Extract text from PDFs
 
 ## Version History
 

@@ -1,5 +1,5 @@
 ---
-name: python-scientific-computing-example-1-marine-engineering-catenary-mooring-line
+name: python-scicomp-ex1-marine-catenary-mooring
 description: 'Sub-skill of python-scientific-computing: Example 1: Marine Engineering
   - Catenary Mooring Line (+5).'
 version: 1.0.0

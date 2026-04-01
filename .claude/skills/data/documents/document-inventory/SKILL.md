@@ -9,7 +9,7 @@ last_updated: 2026-01-02
 category: data
 related_skills:
 - knowledge-base-builder
-- pdf-text-extractor
+- pdf/text-extractor
 - semantic-search-setup
 capabilities: []
 requires: []
@@ -166,7 +166,7 @@ python inventory.py export inventory.csv --db inventory.db
 ## Related Skills
 
 - `knowledge-base-builder` - Build searchable database after inventory
-- `pdf-text-extractor` - Extract text from inventoried PDFs
+- `pdf/text-extractor` - Extract text from inventoried PDFs
 - `semantic-search-setup` - Add AI search capabilities
 
 ## Version History

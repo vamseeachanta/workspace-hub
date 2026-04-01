@@ -10,9 +10,9 @@
 | [knowledge-base-builder](knowledge-base-builder/SKILL.md) | Build searchable knowledge bases from document collections (PDFs, Word, text fil | — |
 | [md-to-pdf](md-to-pdf/SKILL.md) |  | — |
 | [pdf](pdf/SKILL.md) | Comprehensive PDF manipulation toolkit with OpenAI Codex integration for intelli | — |
-| [pdf-large-reader](pdf-large-reader/SKILL.md) | pdf-large-reader Skill | — |
-| [pdf-text-extractor](pdf-text-extractor/SKILL.md) | Extract text from PDF files with intelligent chunking and metadata preservation. | — |
-| [pdf-utilities](pdf-utilities/SKILL.md) |  | — |
+| [pdf/large-reader](pdf/large-reader/SKILL.md) | pdf/large-reader Skill | — |
+| [pdf/text-extractor](pdf/text-extractor/SKILL.md) | Extract text from PDF files with intelligent chunking and metadata preservation. | — |
+| [pdf/utilities](pdf/utilities/SKILL.md) |  | — |
 | [pptx](pptx/SKILL.md) | PowerPoint presentation toolkit for creating new presentations, editing existing | — |
 | [rag-system-builder](rag-system-builder/SKILL.md) | Build Retrieval-Augmented Generation (RAG) Q&A systems with Claude or OpenAI. Us | — |
 | [semantic-search-setup](semantic-search-setup/SKILL.md) | Setup vector embeddings and semantic search for document collections. Use for AI | — |

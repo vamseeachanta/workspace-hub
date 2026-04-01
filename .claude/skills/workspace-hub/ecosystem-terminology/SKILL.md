@@ -68,7 +68,7 @@ type: reference
 | frontierdeepwater | `frontierdeepwater` | data | frontier_deepwater, FrontierDeepwater |
 | hobbies | `hobbies` | personal | — |
 | investments | `investments` | finance | — |
-| pdf-large-reader | `pdf-large-reader` | tools | pdf_large_reader |
+| pdf/large-reader | `pdf/large-reader` | tools | pdf_large_reader |
 | pyproject-starter | `pyproject-starter` | template | pyproject_starter |
 | rock-oil-field | `rock-oil-field` | data | rock_oil_field |
 | sabithaandkrishnaestates | `sabithaandkrishnaestates` | personal | sabithaandkrishna-estates |

@@ -8,7 +8,7 @@ version: 1.1.0
 last_updated: 2026-01-02
 category: data
 related_skills:
-- pdf-text-extractor
+- pdf/text-extractor
 - semantic-search-setup
 - rag-system-builder
 capabilities: []
@@ -185,7 +185,7 @@ python index.py --db knowledge.db
 
 - `semantic-search-setup` - Add vector embeddings for AI search
 - `rag-system-builder` - Build AI Q&A on top of knowledge base
-- `pdf-text-extractor` - Detailed PDF extraction options
+- `pdf/text-extractor` - Detailed PDF extraction options
 
 ## Version History
 

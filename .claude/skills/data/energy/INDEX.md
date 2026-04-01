@@ -12,9 +12,9 @@
 | [field-analyzer](field-analyzer/SKILL.md) | Field Analyzer (user) | — |
 | [hse-risk-analyzer](hse-risk-analyzer/SKILL.md) | Analyze BSEE HSE (Health, Safety, Environment) incident data for risk assessment | — |
 | [marine-safety-incidents](marine-safety-incidents/SKILL.md) | Collect, analyze, and report marine safety incident data from 7 global maritime  | — |
-| [metocean-data-fetcher](metocean-data-fetcher/SKILL.md) | Fetch real-time and historical metocean data from NDBC, CO-OPS, Open-Meteo, ERDD | — |
-| [metocean-statistics](metocean-statistics/SKILL.md) | Statistical analysis of metocean data including extreme value analysis, return p | — |
-| [metocean-visualizer](metocean-visualizer/SKILL.md) | Create interactive metocean visualizations including time series plots, wave ros | — |
+| [metocean/data-fetcher](metocean/data-fetcher/SKILL.md) | Fetch real-time and historical metocean data from NDBC, CO-OPS, Open-Meteo, ERDD | — |
+| [metocean/statistics](metocean/statistics/SKILL.md) | Statistical analysis of metocean data including extreme value analysis, return p | — |
+| [metocean/visualizer](metocean/visualizer/SKILL.md) | Create interactive metocean visualizations including time series plots, wave ros | — |
 | [npv-analyzer](npv-analyzer/SKILL.md) |  | — |
 | [production-forecaster](production-forecaster/SKILL.md) |  | — |
 | [sodir-data-extractor](sodir-data-extractor/SKILL.md) | SODIR Data Extractor (user) | — |

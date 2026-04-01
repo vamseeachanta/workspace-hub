@@ -8,7 +8,7 @@ version: 2.0.0
 category: operations
 last_updated: 2026-01-02
 related_skills:
-- pdf-text-extractor
+- pdf/text-extractor
 - semantic-search-setup
 - knowledge-base-builder
 capabilities: []
@@ -169,7 +169,7 @@ logging.basicConfig(
 
 ## Related Skills
 
-- [pdf-text-extractor](../../document-handling/pdf-text-extractor/SKILL.md) - Long-running extraction job
+- [pdf/text-extractor](../../document-handling/pdf/text-extractor/SKILL.md) - Long-running extraction job
 - [semantic-search-setup](../../document-handling/semantic-search-setup/SKILL.md) - Embedding generation service
 - [knowledge-base-builder](../../document-handling/knowledge-base-builder/SKILL.md) - Background indexing
 
