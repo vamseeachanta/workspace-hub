@@ -34,13 +34,13 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
 PROMPT="Archive stale skills (unused >90 days), validate frontmatter (name, description, type fields) on all .claude/skills/ files, and report findings."
-CLAUDE_CMD=(claude --dangerously-skip-permissions --print "$PROMPT")
+CLAUDE_CMD=(claude -p "$PROMPT" --dangerously-skip-permissions)
 
 cd "$WORKSPACE_HUB"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   printf 'Working directory: %s\n' "$WORKSPACE_HUB"
-  printf 'Command: claude --dangerously-skip-permissions --print "%s"\n' "$PROMPT"
+  printf 'Command: claude -p "%s" --dangerously-skip-permissions\n' "$PROMPT"
   exit 0
 fi
 
