@@ -69,8 +69,8 @@ name: my-new-skill
 description: Action-oriented description. Use for X, Y, and Z.
 version: 1.0.0
 category: [builders|tools|content-design|communication|meta]
-tags: [topic-keyword, tool-name, use-case]
-related_skills: [companion-skill-name]
+tags: [topic-keyword, tool-name, use-case]  # discovery tags for search/filtering
+related_skills: [companion-skill-name]     # cross-references to sibling skills
 ---
 
 # My New Skill

@@ -15,7 +15,12 @@ see_also:
 - orcaflex-post-processing-csv-output
 - orcaflex-post-processing-parallel-processing-details
 - orcaflex-post-processing-common-vessel-variables
-tags: []
+tags: [marine, offshore, orcaflex, post-processing, results, statistics]
+related_skills:
+- orcaflex-modeling
+- orcaflex-batch-manager
+- orcaflex-extreme-analysis
+- orcaflex-results-comparison
 scripts_exempt: true
 category: engineering
 version: 1.0.0

@@ -33,7 +33,12 @@ see_also:
 - orcaflex-modeling-common-issues
 - orcaflex-modeling-swarm-coordination
 - orcaflex-modeling-external-documentation
-tags: []
+tags: [marine, offshore, orcaflex, hydrodynamic, mooring, simulation]
+related_skills:
+- orcaflex-post-processing
+- orcaflex-batch-manager
+- orcaflex-environment-config
+- orcaflex-vessel-setup
 scripts_exempt: true
 ---
 
