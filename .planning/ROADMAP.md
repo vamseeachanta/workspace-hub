@@ -18,7 +18,7 @@
 
 </details>
 
-### Phase 7: Solver Verification Gate — OrcFxAPI + remote execution go/no-go
+### Phase 7: Solver Verification Gate — OrcFxAPI + remote execution go/no-go [H1]
 
 **Goal:** Verify OrcFxAPI loads/solves/exports on licensed-win-1, establish remote Claude Code execution from dev-primary, and enforce solver/non-solver module separation in codebase
 **Depends on:** Phase 1 (digitalmodel acceleration)
@@ -34,6 +34,8 @@ Plans:
 ## Backlog
 
 ### Phase 999.1: Ship Plan CAD Pipeline — Curve reconstruction for 3D hull lofting (BACKLOG)
+<!-- H2: geometry reconstruction for autonomous hull lofting -->
+<!-- WRK rubric: 1/4 (no named gap, no autonomy lift, no SPA loop, no time-to-result) -->
 
 **Goal:** Reconstruct continuous hull curves from fragmented skeleton vectorization, enabling 3D hull surface generation via FreeCAD/Gmsh
 **Context:** WRK-5055 Phase 1 complete — 110 SNAME ship plans cataloged, 986 pages scanned, skeleton DXFs generated for all profiles and 3 lines plans (BB-45 USS Colorado, EC2-S-C1 Liberty Ship, SS-563 USS Tang). FreeCAD `Part.makeLoft()` proven functional but current vectorization produces fragmented pixel-edge traces unsuitable for direct lofting.
@@ -52,6 +54,8 @@ Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
 ### Phase 999.2: Wind Energy, Turbines & Fitness-for-Service Vision (BACKLOG)
+<!-- H2: new engineering domain expansion -->
+<!-- WRK rubric: 1/4 (no named gap, potential L2→L3 for new domain, no SPA, no time-to-result) -->
 
 **Goal:** Add calculation modules for wind/turbine structures and fitness-for-service assessments, targeting marine structures and ships first, then extending to wind energy and structural integrity assessment
 **Context:** Extends digitalmodel's engineering domain beyond current offshore/subsea focus. Fitness-for-service (API 579-1/ASME FFS-1) is a natural complement to existing wall thickness and fatigue modules. Wind turbine foundation analysis (monopiles, jackets) overlaps with existing DNV expertise.
@@ -69,6 +73,8 @@ Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
 ### Phase 999.3: CAD/CAM & Manufacturing Vision (BACKLOG)
+<!-- H2: calculation-to-fabrication pipeline -->
+<!-- WRK rubric: 0/4 (no named gap, no autonomy lift, no SPA, no time-to-result) -->
 
 **Goal:** Define and implement CAD/CAM and manufacturing capabilities — bridging engineering calculations to fabrication-ready outputs
 **Context:** Complements existing CAD-DEVELOPMENTS repo and OGManufacturing package. The ship plan CAD pipeline (999.1) demonstrates the need for geometry-to-manufacturing workflows. digitalmodel calculations currently stop at analysis results — this phase extends through to fabrication outputs.
@@ -86,6 +92,8 @@ Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
 ### Phase 999.4: Extend Autoresearch to Agent & Template Definitions (BACKLOG)
+<!-- H1: AI interface skills for P1/P2 tools -->
+<!-- WRK rubric: 3/4 (closes self-healing gap, L3→L4 lift, tightens SPA, reduces time-to-result) -->
 
 **Goal:** Generalize the skill-autoresearch loop to iterate on agent definitions, research templates, and workflow configs — not just skills
 **Context:** Current `skill-autoresearch-nightly.sh` only targets `.claude/skills/` files. The same accept/reject-on-metric pattern (inspired by karpathy/autoresearch) applies to agent prompts in `.claude/agents/`, research templates in `.claude/get-shit-done/templates/`, and planning configs. Each target type needs its own eval function (agent eval, template coverage check, etc.).
@@ -103,6 +111,8 @@ Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
 ### Phase 999.5: High-Iteration Autoresearch with Compounding Improvements (BACKLOG)
+<!-- H1: compounding improvement loop -->
+<!-- WRK rubric: 4/4 (closes self-healing gap, L3→L4 lift, tightens SPA, reduces time-to-result) -->
 
 **Goal:** Increase autoresearch iteration depth from single-pass to multi-cycle per target per night (~10-12 iterations/target), enabling compounding improvements
 **Context:** karpathy/autoresearch runs ~12 experiments/hour (~100 overnight). Our current loop does one pass per skill. With a 180s budget per iteration, we could fit ~10 iterations per skill per night within API budget constraints. Key insight: improvements compound — iteration N builds on accepted changes from iteration N-1.
@@ -120,6 +130,7 @@ Plans:
 - [ ] TBD (promote with $gsd-review-backlog when ready)
 
 ### Pint Unit Conversion Retrofit (BACKLOG)
+<!-- H1: technical debt closure -->
 
 **Goal:** Replace all hardcoded unit conversion factors in `src/digitalmodel/` with Pint calls using the shared UnitRegistry
 **Depends on:** Phase 1 (digitalmodel acceleration), #1484 (shared UnitRegistry), #1485 (pipeline_skill.py retrofit)
