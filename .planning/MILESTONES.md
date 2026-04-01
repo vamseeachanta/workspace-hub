@@ -2,7 +2,7 @@
 
 ## v1.0 Foundation Sprint (Shipped: 2026-03-30)
 
-**Phases completed:** 9 phases, 21 plans, 47 tasks
+**Phases completed:** 6 phases, 21 plans, 47 tasks
 
 **Key accomplishments:**
 
