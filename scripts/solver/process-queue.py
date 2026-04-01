@@ -260,14 +260,30 @@ def run_orcawave(input_path: Path, output_dir: Path, export_excel: bool) -> list
 
     # Optional Excel export
     if export_excel:
+        xlsx_name = input_path.stem + ".xlsx"
+        xlsx_path = output_dir / xlsx_name
         try:
-            xlsx_name = input_path.stem + ".xlsx"
-            xlsx_path = output_dir / xlsx_name
             diff.ExportResults(str(xlsx_path))
             log(f"  Exported: {xlsx_name}")
             output_files.append(xlsx_name)
         except Exception as e:
-            log(f"  WARNING: Excel export failed (non-fatal): {e}")
+            log(f"  WARNING: ExportResults failed: {e}")
+            log(f"  Attempting manual Excel export via openpyxl...")
+            try:
+                import openpyxl
+                wb = openpyxl.Workbook()
+                ws = wb.active
+                ws.title = "Frequencies"
+                ws.append(["Index", "Frequency (rad/s)"])
+                for i in range(diff.frequencyCount):
+                    ws.append([i + 1, diff.frequency(i)])
+                wb.save(str(xlsx_path))
+                log(f"  Exported (openpyxl fallback): {xlsx_name}")
+                output_files.append(xlsx_name)
+            except Exception as e2:
+                log(f"  ERROR: Excel export failed completely: {e2}")
+                log(f"  Original error: {e}")
+                log(f"  Fallback error: {e2}")
 
     return output_files
 
