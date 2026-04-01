@@ -1,0 +1,283 @@
+# Summary Extraction Plan — Actionable Data from Document Summaries
+# GH Issue: #1542
+# Depends on: #1541 (coverage audit)
+# Generated: 2026-03-31
+
+issue: 1542
+title: "Extract actionable data from document summaries into repo workflows"
+created: "2026-03-31"
+coverage_audit_ref: data/document-index/coverage-audit.yaml
+
+# ─── CURRENT STATE ──────────────────────────────────────────────────────
+current_state:
+  summaries_available: 40048
+  summarizable_total: 129918
+  coverage_pct: 30.8
+  useful_quality_pct: 83
+  ledger_total: 425
+  ledger_gaps: 235
+  ledger_gaps_without_notes: 230
+  key_finding: >
+    The standards-transfer-ledger has 235 gap entries, 230 of which have no
+    notes/description. Summaries for og_standards (100% covered) and
+    ace_standards (44% covered) could populate those gaps immediately.
+    The capability-map script already works but outputs to a directory that
+    does not yet exist (specs/capability-map/).
+
+# ─── PRIORITIZED ACTIONS ───────────────────────────────────────────────
+# Ranked by value-to-effort ratio for current project work.
+# Scale: effort = low/medium/high, value = low/medium/high
+
+actions:
+  - rank: 1
+    id: ledger-enrichment
+    title: "Standards cross-reference: enrich ledger gaps from summaries"
+    value: high
+    effort: low
+    description: >
+      The standards-transfer-ledger.yaml has 235 gap entries, but 230 lack
+      any notes or description. Phase B summaries already contain title,
+      discipline, org, doc_number, summary text, and keywords for ~39K
+      standards documents. A join script can match ledger entries by
+      doc_number/org to summary files and backfill the notes, discipline,
+      and domain fields — making gaps actionable for WRK generation.
+    rationale: >
+      The ledger is the primary input for phase-f-gap-wrk-generator.py,
+      which creates WRK items for unimplemented standards. Right now 230
+      gap entries are opaque (no description), so WRK items would lack
+      context. Enriching them from summaries makes the entire gap-to-WRK
+      pipeline more useful with no schema changes.
+    blockers: []
+    dependencies:
+      - "Summaries accessible at data/document-index/summaries/ (confirmed)"
+      - "Ledger accessible at data/document-index/standards-transfer-ledger.yaml (confirmed)"
+    next_steps:
+      - step: 1
+        action: "Write scripts/data/document-index/enrich-ledger-from-summaries.py"
+        detail: >
+          For each ledger entry with status=gap and empty notes:
+          1. Load index.jsonl, find records matching the entry's id/org
+          2. Look up the content_hash in summaries/ directory
+          3. If a useful summary exists (>30 chars, non-stub), copy summary
+             text into ledger notes, update discipline if blank
+          4. Write enriched ledger back
+        estimated_lines: ~120
+      - step: 2
+        action: "Run enrichment, verify coverage improvement"
+        detail: >
+          Target: reduce gaps_without_notes from 230 to <50.
+          og_standards has 100% summary coverage, so all API/ASTM/DNV/BS
+          standards in the ledger that come from og_standards should get notes.
+      - step: 3
+        action: "Re-run build-ledger.py to ensure no conflicts"
+        detail: >
+          build-ledger.py merges enhancement-plan + data-sources + WRK items.
+          The enrichment script should write to a separate field or be
+          integrated as a fourth merge source in build-ledger.py.
+    coverage_gap_impact: >
+      og_standards (100% covered) accounts for most ledger standards.
+      ace_standards (44%) covers the rest. The 56% ace gap means some
+      entries won't get enriched — these are likely scanned PDFs needing OCR.
+
+  - rank: 2
+    id: capability-map-refresh
+    title: "Capability map enrichment: run build-capability-map.py with current paths"
+    value: high
+    effort: low
+    description: >
+      build-capability-map.py is fully functional but has two path issues:
+      (1) SUMMARIES_DIR defaults to /mnt/remote/ace-linux-1/... which is
+      not accessible from ace-linux-2; (2) output dir specs/capability-map/
+      does not exist yet. The script already has a CAPMAP_USE_PHASE_B env var
+      to enable reading real summaries (default: synthetic from index fields).
+    rationale: >
+      The capability map is a doc-to-repo-module mapping that feeds directly
+      into phase-f-gap-wrk-generator.py for WRK item generation. Running it
+      would produce structured YAML files for digitalmodel, worldenergydata,
+      and assetutilities — each showing which standards map to which code
+      modules and which are implemented vs gap.
+    blockers: []
+    next_steps:
+      - step: 1
+        action: "Run with synthetic summaries (default, no I/O bottleneck)"
+        detail: >
+          SUMMARIES_DIR=data/document-index/summaries python
+          scripts/data/document-index/build-capability-map.py --dry-run
+          Verify output looks reasonable, then run without --dry-run.
+      - step: 2
+        action: "Optionally re-run with CAPMAP_USE_PHASE_B=1 for richer matching"
+        detail: >
+          With Phase B summaries, the scorer uses real discipline labels,
+          keywords, and summary text instead of path-inferred heuristics.
+          This should improve matching accuracy especially for ambiguous
+          standards (e.g., API 579 which spans structural + materials).
+      - step: 3
+        action: "Cross-reference capability map output with ledger"
+        detail: >
+          The capability map assigns standards to specific repo modules.
+          Merge this module assignment back into the ledger so gap WRK
+          items include target module information.
+    notes: >
+      The script processes 55K records (og + ace standards). Synthetic mode
+      takes seconds; Phase B mode could take 7+ minutes due to per-file I/O.
+
+  - rank: 3
+    id: search-index
+    title: "Search/retrieval: build lightweight search index over summaries"
+    value: medium
+    effort: medium
+    description: >
+      Build a searchable index over the 40K summaries for agent use during
+      planning and implementation. When an agent needs to find relevant
+      standards for a task (e.g., "find all documents about fatigue analysis"),
+      it could query this index instead of scanning 700K+ files.
+    rationale: >
+      Agents currently have no programmatic way to search the document
+      corpus. The capability map provides module-level mapping, but agents
+      working on specific technical problems need ad-hoc search. A simple
+      inverted index over summary keywords + discipline + org would cover
+      most use cases.
+    blockers: []
+    dependencies:
+      - "Summaries accessible locally (confirmed)"
+    approach:
+      option_a:
+        name: "JSONL keyword index"
+        detail: >
+          Flatten all summaries into a single JSONL with fields:
+          sha, title, discipline, org, doc_number, keywords[], summary_snippet.
+          Agents search with grep/jq. ~5MB file, instant to load.
+        effort: low
+        limitation: "No fuzzy matching, no ranking"
+      option_b:
+        name: "SQLite FTS5 index"
+        detail: >
+          Load summaries into SQLite with FTS5 full-text search. Supports
+          ranked results, phrase matching, boolean queries. query-ledger.py
+          already demonstrates the CLI-query pattern.
+        effort: medium
+        limitation: "Requires sqlite3 (available), ~20MB database"
+      recommendation: >
+        Start with option_a (JSONL) as it can be built in under 50 lines
+        and agents can consume it immediately. Promote to option_b if
+        search quality becomes a bottleneck.
+    next_steps:
+      - step: 1
+        action: "Write scripts/data/document-index/build-summary-index.py"
+        detail: "Scan summaries/, emit one JSONL line per useful summary"
+      - step: 2
+        action: "Output to data/document-index/summary-search-index.jsonl"
+
+  - rank: 4
+    id: domain-resource-packs
+    title: "Domain-specific resource packs: curated reading lists per domain"
+    value: medium
+    effort: medium
+    description: >
+      Auto-generate per-domain YAML files listing the most relevant
+      documents with their summaries, organized by subdiscipline. These
+      serve as curated reading lists for agents and humans working in
+      a specific domain (e.g., pipeline engineering, marine operations).
+    rationale: >
+      The coverage audit shows materials (74% covered) and structural (38%)
+      are the best-served domains. Resource packs for these domains would
+      be immediately useful. Sparse domains (marine 2%, pipeline 6%) would
+      need more Phase B coverage first.
+    blockers:
+      - "Low coverage in pipeline (6%), marine (2%), installation (18%) limits usefulness for those domains"
+    dependencies:
+      - "Rank 1 (ledger enrichment) improves quality of resource packs"
+    next_steps:
+      - step: 1
+        action: "Write scripts/data/document-index/build-domain-packs.py"
+        detail: >
+          Group summaries by domain, filter to useful ones, sort by
+          confidence/relevance, output to specs/domain-packs/<domain>.yaml.
+          Include: doc count, coverage %, top standards, summary snippets.
+      - step: 2
+        action: "Generate packs for well-covered domains first: materials, structural"
+      - step: 3
+        action: "Link to capability map modules where applicable"
+
+  - rank: 5
+    id: deep-extraction
+    title: "Data extraction pipeline: extract numeric values from high-value standards"
+    value: high
+    effort: high
+    description: >
+      For high-value standards (API, DNV, ASTM), extract specific numeric
+      values (safety factors, allowable stresses, material properties,
+      design formulas) into structured YAML. This goes beyond summaries
+      into actual engineering data extraction.
+    rationale: >
+      This is the highest-value outcome but also the highest effort. The
+      infrastructure partially exists: scripts/data/doc_intelligence/ has
+      deep_extract.py, extract_engineering_constants.py, chart_extractor.py,
+      and assess-deep-extraction-yield.py. The yield assessment script
+      (WRK-1246) already measures table/equation density by source.
+      However, this requires document access (ace NFS mount) and significant
+      LLM cost for extraction.
+    blockers:
+      - "Ace NFS mount not accessible from current machine (ace-linux-2)"
+      - "High LLM cost for per-table extraction (~$0.01-0.05 per table)"
+      - "Requires validation pipeline to verify extracted values"
+    dependencies:
+      - "doc_intelligence orchestrator and schema modules must be working"
+      - "Access to original PDF files (not just summaries)"
+    next_steps:
+      - step: 1
+        action: "Run assess-deep-extraction-yield.py on accessible sources"
+        detail: >
+          Get baseline yield metrics: what % of standards have extractable
+          tables, equations, constants. This tells us ROI before committing.
+      - step: 2
+        action: "Pilot extraction on 10-20 high-priority standards from ledger"
+        detail: >
+          Select standards with status=done in ledger (29 entries) —
+          these are already implemented in code, so extracted values can
+          be validated against existing implementations.
+      - step: 3
+        action: "Build validation pipeline comparing extracted values to code"
+    notes: >
+      The doc_intelligence directory has 20+ scripts. The orchestrator
+      pattern (extract_document → manifest_to_dict) is established.
+      assess-deep-extraction-yield.py provides the assessment framework.
+
+# ─── COVERAGE GAP IMPACT ───────────────────────────────────────────────
+coverage_gaps_from_1541:
+  impact_on_actions:
+    ledger_enrichment: >
+      og_standards (100%) covers most ledger entries. ace_standards (44%)
+      is the main gap — 15.6K docs lack summaries, many likely scanned.
+      Impact: ~5-10 ledger entries may not get enriched.
+    capability_map: >
+      The capability map processes og + ace standards. The 44% ace gap
+      means some standards won't have rich discipline/keyword data, falling
+      back to path-based heuristics (which the script already handles).
+    search_index: >
+      Only 40K of 130K summarizable docs are indexed. The search index
+      will miss 69% of the corpus. Still useful for standards (well covered)
+      but poor for project documents (0% coverage).
+    domain_packs: >
+      Materials (74%) and structural (38%) are viable now.
+      Pipeline (6%) and marine (2%) need Phase B runs first.
+    deep_extraction: >
+      Requires original files, not summaries. Coverage gap is irrelevant
+      here — the blocker is file access, not summary coverage.
+
+  recommended_coverage_priorities:
+    - "Run Phase B on dde_project native-readable (17K docs, +13% coverage)"
+    - "Run Phase B on ace_project native-readable (14K docs, +11% coverage)"
+    - "Re-extract ace_standards stubs (improve quality from 83% to 93%)"
+
+# ─── EXECUTION PLAN ────────────────────────────────────────────────────
+execution_sequence:
+  immediate:
+    - "Rank 1: enrich-ledger-from-summaries.py (1-2 hours to write + run)"
+    - "Rank 2: run build-capability-map.py with correct SUMMARIES_DIR (30 min)"
+  next_sprint:
+    - "Rank 3: build-summary-index.py JSONL mode (1-2 hours)"
+    - "Rank 4: build-domain-packs.py for materials + structural (half day)"
+  future:
+    - "Rank 5: deep extraction pilot on 10-20 done standards (1-2 days)"
+    - "Expand Phase B coverage to dde_project + ace_project (separate issue)"

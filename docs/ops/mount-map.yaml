@@ -1,0 +1,280 @@
+# mount-map.yaml — NFS/SSHFS mount inventory for workspace-hub infrastructure
+# Generated: 2026-03-31
+# Issue: #1543
+#
+# This machine: ace-linux-2
+# Topology: ace-linux-1 (dev-primary), ace-linux-2 (dev-secondary)
+
+schema_version: "1.0.0"
+generated: "2026-03-31"
+current_host: ace-linux-2
+
+# ── Discovered mounts (from `mount` and `df -hT`) ────────────────────────────
+
+mounts:
+  - id: local_analysis
+    mount_point: /mnt/local-analysis
+    source: /dev/sda2
+    fs_type: fuseblk (NTFS)
+    size: 932G
+    used: 47G
+    scope: local disk on ace-linux-2
+    description: >
+      Local analysis drive. Contains workspace-hub checkout, Python virtual
+      environments (capytaine-env, marker-env, fluids-env, sectionprops-env),
+      and cloud sync folders (Dropbox, OneDrive).
+    key_subdirectories:
+      - workspace-hub          # main repo checkout
+      - capytaine-env          # Capytaine 2.3.1, Python 3.12
+      - marker-env             # marker 1.10.2
+      - fluids-env             # fluids/piping design
+      - sectionprops-env       # section properties
+    env_var: LOCAL_ANALYSIS_ROOT
+
+  - id: ace_nfs
+    mount_point: /mnt/remote/ace-linux-1/ace
+    source: ace-linux-1:/mnt/ace
+    fs_type: nfs4
+    nfs_version: "4.2"
+    size: 7.3T
+    used: 4.6T
+    scope: NFS from ace-linux-1 (dev-primary)
+    description: >
+      Primary data drive on ace-linux-1. Standards libraries, project archives,
+      simulation tools (capytaine, HAMS, MoorDyn, OpenFAST), and the
+      document-intelligence corpus.
+    key_subdirectories:
+      - docs                   # project documents, standards
+      - "O&G-Standards"        # oil & gas standards library
+      - data/document-index    # document-intelligence index (remote copy)
+      - digitalmodel           # digital model project archives
+      - Production             # production data
+      - capytaine              # capytaine mesh/result data
+      - HAMS                   # HAMS solver data
+      - MoorDyn                # mooring dynamics
+      - MoorPy                 # mooring analysis
+      - openfast               # OpenFAST models
+      - client_projects        # client project archives
+    env_var: ACE_DATA_ROOT
+    aliases:
+      - /mnt/ace               # used in mounted-source-registry.yaml (ace-linux-1 local path)
+      - /mnt/ace-data          # symlink on ace-linux-1
+
+  - id: ace_sshfs
+    mount_point: /mnt/remote/ace-linux-1/local-analysis
+    source: vamsee@ace-linux-1:/mnt/local-analysis
+    fs_type: fuse.sshfs
+    size: 932G
+    used: 69G
+    scope: SSHFS from ace-linux-1
+    description: >
+      ace-linux-1's local-analysis drive mounted via SSHFS. Provides access
+      to the workspace-hub checkout on ace-linux-1 and its venvs. Configured
+      with systemd automount (idle-timeout=60s, mount-timeout=30s).
+    key_subdirectories:
+      - workspace-hub          # ace-linux-1's repo checkout
+    env_var: REMOTE_LOCAL_ANALYSIS_ROOT
+
+  - id: dde_drive
+    mount_point: /mnt/dde
+    source: local/USB drive
+    fs_type: unknown (likely NTFS)
+    scope: local on ace-linux-2
+    description: >
+      External/secondary drive containing legacy engineering documents,
+      Orcaflex models, and reference literature. Not NFS-shared.
+    key_subdirectories:
+      - documents
+      - dropbox_contents
+      - Literature
+      - Orcaflex
+      - "0000 O&G"            # legacy O&G documents
+      - g-drive
+      - o-drive
+    env_var: DDE_ROOT
+
+  - id: workspace_hub_nfs
+    mount_point: /mnt/workspace-hub
+    source: "symlink or bind mount to /mnt/local-analysis/workspace-hub (or NFS on ace-linux-1)"
+    fs_type: varies by host
+    scope: convenience alias
+    description: >
+      Quick-access path to the workspace-hub repo. On ace-linux-2 this is
+      a bind/symlink to /mnt/local-analysis/workspace-hub. On ace-linux-1
+      it may be an NFS mount from ace-linux-2.
+    env_var: WORKSPACE_HUB_ROOT
+
+# ── Cross-machine mount map ──────────────────────────────────────────────────
+#
+# Scripts in check-network-mounts.sh define these expected mounts per host:
+#
+#   dev-primary (ace-linux-1):
+#     /mnt/remote/ace-linux-2/local-analysis  (SSHFS from ace-linux-2)
+#     /mnt/remote/ace-linux-2/dde             (SSHFS from ace-linux-2)
+#
+#   ace-linux-2:
+#     /mnt/workspace-hub                       (NFS/bind from dev-primary)
+#     /mnt/remote/dev-primary/local-analysis   (SSHFS from dev-primary)
+#     /mnt/remote/dev-primary/ace              (SSHFS from dev-primary)
+
+# ── Path alias mapping ───────────────────────────────────────────────────────
+# These aliases appear in code and configs. Map them to canonical mount points.
+
+path_aliases:
+  /mnt/ace:
+    canonical_on: ace-linux-1
+    maps_to_on_ace_linux_2: /mnt/remote/ace-linux-1/ace
+    used_in:
+      - data/document-index/mounted-source-registry.yaml
+      - digitalmodel/scripts/python/digitalmodel/index_assets.py
+      - digitalmodel/tests (literature references)
+
+  /mnt/ace-data:
+    canonical_on: ace-linux-1
+    note: symlink to /mnt/ace on ace-linux-1
+    maps_to_on_ace_linux_2: /mnt/remote/ace-linux-1/ace
+
+  /mnt/github:
+    canonical_on: ace-linux-1 (legacy)
+    note: >
+      Legacy path used in scripts/automation/ and scripts/coordination/git/.
+      References /mnt/github/workspace-hub, /mnt/github/github, etc.
+      Should be migrated to use WORKSPACE_HUB_ROOT or REPO_ROOT.
+    used_in:
+      - scripts/automation/*.sh (6+ files)
+      - scripts/coordination/git/*.sh (6+ files)
+
+# ── Path resolution test results (ace-linux-2, 2026-03-31) ──────────────────
+
+path_resolution_tests:
+  - path: /mnt/local-analysis/workspace-hub
+    exists: true
+    note: primary repo checkout on this machine
+
+  - path: /mnt/remote/ace-linux-1/ace
+    exists: true
+    note: NFS4 mount, healthy
+
+  - path: /mnt/remote/ace-linux-1/local-analysis
+    exists: true
+    note: SSHFS mount, healthy
+
+  - path: /mnt/dde
+    exists: true
+    note: local drive with legacy documents
+
+  - path: /mnt/workspace-hub
+    exists: true
+    note: convenience path, accessible
+
+  - path: /mnt/ace
+    exists: false
+    note: only valid on ace-linux-1 (local path)
+
+  - path: /mnt/github
+    exists: false
+    note: legacy path referenced in 12+ scripts; never valid on ace-linux-2
+
+  - path: /mnt/ace-data
+    exists: false
+    note: symlink only on ace-linux-1
+
+# ── Hardcoded path audit ────────────────────────────────────────────────────
+# Files with hardcoded /mnt/ paths that should migrate to env vars
+
+hardcoded_path_findings:
+  - category: venv shebangs (low risk, auto-generated)
+    pattern: "#!/mnt/local-analysis/workspace-hub/digitalmodel/.venv/bin/python"
+    files: digitalmodel/.venv/bin/*.py
+    action: none (auto-generated by pip)
+
+  - category: legacy /mnt/github references (medium risk)
+    pattern: '/mnt/github/workspace-hub'
+    files:
+      - scripts/automation/agent_orchestrator.sh
+      - scripts/automation/deploy_orchestration_all_repos.sh
+      - scripts/automation/gate_pass_review.sh
+      - scripts/automation/install_factory_all_repos.sh
+      - scripts/automation/install_factory_enhanced.sh
+      - scripts/automation/setup_agent_links.sh
+      - scripts/automation/setup_claude_memory_all_repos.sh
+      - scripts/automation/sync_agent_configs.sh
+      - scripts/automation/update_ai_agents_daily.sh
+      - scripts/coordination/git/check_trunk_status.sh
+      - scripts/coordination/git/push_all_repos.sh
+      - scripts/coordination/git/quick_trunk_cleanup.sh
+      - scripts/coordination/git/setup-trunk-flow.sh
+      - scripts/coordination/git/sync_all_repos.sh
+      - scripts/coordination/git/sync_and_commit_all.sh
+      - scripts/coordination/git/sync_orchestration_all_repos.sh
+    action: migrate to WORKSPACE_HUB_ROOT or $(git rev-parse --show-toplevel)
+
+  - category: test fixtures with absolute paths (low risk)
+    pattern: '/mnt/local-analysis/workspace-hub/digitalmodel/...'
+    files: digitalmodel/tests/asset_integrity/test_data/**/*.yml
+    action: consider relative paths or REPO_ROOT variable
+
+  - category: codex agent configs (medium risk)
+    pattern: '/mnt/local-analysis/workspace-hub/.codex/...'
+    files: .codex/agents/*.toml
+    action: migrate to WORKSPACE_HUB_ROOT
+
+  - category: capytaine env paths (low risk)
+    pattern: '/mnt/local-analysis/capytaine-env/...'
+    files: digitalmodel/tests/hydrodynamics/capytaine/test_*_benchmark.py
+    action: migrate to CAPYTAINE_ENV var
+
+  - category: mounted-source-registry /mnt/ace references (expected)
+    pattern: '/mnt/ace/...'
+    files: data/document-index/mounted-source-registry.yaml
+    action: references ace-linux-1 local paths; correct for that host context
+
+# ── Canonical layout convention (#1544) ─────────────────────────────────────
+# All data on the ace drive should follow this structure.
+# See docs/ops/drive-layout-migration.yaml for the full migration plan.
+
+canonical_layout:
+  convention: "${ACE_DATA_ROOT}/<repo-name>/<domain>/..."
+  env_var: ACE_DATA_ROOT
+  default: /mnt/ace
+  remote_mount: /mnt/remote/ace-linux-1/ace
+  rules:
+    - "Top level = GitHub repo name (workspace-hub, digitalmodel, capytaine, etc.)"
+    - "Second level = domain or functional area"
+    - "Scripts must use ${ACE_DATA_ROOT:-/mnt/ace} — never hardcode the mount prefix"
+    - "Remote hosts mount the same tree, so relative paths below ACE_DATA_ROOT are portable"
+  already_aligned:
+    - digitalmodel
+    - capytaine
+    - HAMS
+    - MoorDyn
+    - MoorPy
+    - openfast
+    - WEC-Sim
+    - aceengineer-admin
+    - saipem
+    - 2H
+    - doris
+    - frontierdeepwater
+    - seanation
+    - worldenergydata
+    - rock-oil-field
+    - gmsh
+    - opm-common
+    - 0_mrv
+  needs_restructuring:
+    - current: O&G-Standards
+      proposed: workspace-hub/standards/og/
+    - current: docs
+      proposed: workspace-hub/project-docs/
+    - current: data
+      proposed: workspace-hub/data/
+    - current: Production
+      proposed: workspace-hub/production/
+    - current: umbilical
+      proposed: workspace-hub/umbilical/
+    - current: client_projects
+      proposed: workspace-hub/client-projects/
+    - current: scripts
+      proposed: workspace-hub/scripts/
+  migration_plan_ref: docs/ops/drive-layout-migration.yaml
