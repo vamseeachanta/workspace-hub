@@ -1672,8 +1672,11 @@ libraries:
       bathymetric data, coastlines, topographic relief. Built-in earth/ocean relief.
     download_size_estimate: "50 MB"
     integration_fit: very-high
-    integration_notes: "Native Python API. Excellent for offshore/subsea mapping."
+    integration_notes: "Native Python API. Excellent for offshore/subsea mapping. Requires GMT system lib."
     cloned_at_ace: false
+    evaluation_status: blocked
+    evaluation_issue: 1455
+    evaluation_notes: "Blocked on GMT system library install. Tests and eval script ready."
 
   - name: Verde
     repo_url: https://github.com/fatiando/verde
