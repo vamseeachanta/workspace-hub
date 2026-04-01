@@ -2608,7 +2608,10 @@ libraries:
       AS standards compliance.
     download_size_estimate: "10 MB"
     integration_fit: very-high
-    integration_notes: "Pure Python. MIT. pip-installable. Code-compliant structural. Evaluated 2026-03-29: <2% error on geometric props, <0.4% on CHS vs analytical."
+    integration_notes: "Pure Python. MIT. pip-installable. Code-compliant structural. Evaluated 2026-03-31 (#1452): <2% error on geometric props, <0.4% on CHS vs analytical. 15 integration tests passing. Added to digitalmodel/pyproject.toml."
+    evaluation_status: integrated
+    evaluation_date: "2026-03-31"
+    evaluation_issue: 1452
     cloned_at_ace: false
 
   - name: fluids
