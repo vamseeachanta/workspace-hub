@@ -1,0 +1,30 @@
+version: 1
+skill_name: orchestrator-routing
+skill_path: .claude/skills/workspace-hub/agent-teams/orchestrator-routing/SKILL.md
+tests:
+  - test_id: orch-route-int-01
+    description: Skill describes the routing pattern for task delegation
+    prompt: >
+      You have loaded the orchestrator-routing skill. Explain how the main
+      orchestrator routes tasks to subagents.
+    expected_patterns:
+      - "[Oo]rchestrat"
+      - "[Ss]ubagent"
+      - "[Rr]out"
+      - "[Dd]elegat"
+    unexpected_patterns:
+      - "I don't understand"
+      - "undefined"
+    timeout: 60
+  - test_id: orch-route-int-02
+    description: Skill covers parallel execution and background concepts
+    prompt: >
+      You have loaded the orchestrator-routing skill. How should the
+      orchestrator handle multiple parallel tasks while staying responsive?
+    expected_patterns:
+      - "[Pp]arallel"
+      - "[Rr]esponsive"
+    unexpected_patterns:
+      - "cannot handle"
+      - "not possible"
+    timeout: 60
