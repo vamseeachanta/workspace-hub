@@ -24,7 +24,7 @@
   - `OPTIONS GOON` continues past non-fatal errors but NOT mesh FATAL errors
   - Executable: `$AQWA_HOME/bin/winx64/Aqwa.exe` (set `AQWA_HOME` env var)
 - **BEMRosetta**: CLI does mesh conversion only (`-mesh` mode)
-  - Executable: `$BEMROSETTA_HOME/BEMRosetta_cl.exe`
+- Executable: `$BEMROSETTA_HOME/BEMRosetta_cl.exe` *stale: 2026-04-02*
   - Nemoh is the open-source solver BEMRosetta wraps
 
 ## Debugging Protocol
