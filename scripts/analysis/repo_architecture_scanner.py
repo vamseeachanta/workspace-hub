@@ -123,14 +123,20 @@ def find_entry_points(repo_path: Path) -> list[str]:
     # Find all __main__.py (excluding virtualenvs)
     for main_file in repo_path.rglob("__main__.py"):
         if not _skip_venv(main_file):
-            entry_points.append(str(main_file))
+            try:
+                entry_points.append(str(main_file.relative_to(repo_path)))
+            except ValueError:
+                entry_points.append(str(main_file))
 
-    # Find scripts/*.py
+    # Find scripts/*.py (top-level only, skip deep legacy trees)
     scripts_dir = repo_path / "scripts"
     if scripts_dir.is_dir():
-        for script in scripts_dir.rglob("*.py"):
+        for script in sorted(scripts_dir.glob("*.py")):
             if not _skip_venv(script):
-                entry_points.append(str(script))
+                try:
+                    entry_points.append(str(script.relative_to(repo_path)))
+                except ValueError:
+                    entry_points.append(str(script))
 
     # Check pyproject.toml for [project.scripts]
     pyproject = repo_path / "pyproject.toml"
