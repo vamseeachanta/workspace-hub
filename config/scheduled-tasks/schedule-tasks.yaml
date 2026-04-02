@@ -263,6 +263,19 @@ tasks:
     is_claude_task: false
     description: Daily productivity review; generates logs/daily/YYYY-MM-DD.md at 6 AM.
 
+  - id: review-audit
+    label: Daily review compliance audit
+    schedule: "30 6 * * *"
+    machines: [ace-linux-1]
+    requires: [bash, git, gh]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/review-audit.sh
+      >> $WORKSPACE_HUB/logs/maintenance/review-audit-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/review-audit-*.log
+    is_claude_task: false
+    description: Daily audit (06:30) of commit review compliance; creates GitHub issue if below 80%.
+
   # ── dev-primary + dev-secondary: shared ─────────────────────────────────────
 
   - id: repository-sync
