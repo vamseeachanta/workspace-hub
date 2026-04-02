@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # cross-review-gate.sh — Claude PreToolUse hook
 # Fires before Bash commands; blocks PR creation without cross-review evidence
-# Also gates verification completion claims
-# Issue: #1537
+# Also gates verification completion claims and surfaces routing recommendations
+# Issues: #1537, #1515
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+REPO_ROOT="${REPO_ROOT_OVERRIDE:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 
 # Read tool input from stdin (Claude hook protocol)
 INPUT=$(cat)
@@ -20,15 +20,33 @@ if [[ "$TOOL_NAME" != "Bash" || -z "$COMMAND" ]]; then
   exit 0
 fi
 
-# --- Gate 1: PR creation requires cross-review ---
+# --- Helper: get routing recommendation for current diff ---
+get_routing_recommendation() {
+  local diff
+  diff="$(git diff HEAD~1..HEAD 2>/dev/null || git diff --cached 2>/dev/null || true)"
+  if [[ -n "$diff" ]]; then
+    echo "$diff" | uv run python "${REPO_ROOT}/scripts/ai/review_routing_gate.py" --stdin 2>/dev/null || true
+  fi
+}
+
+# --- Gate 1: PR creation requires cross-review + routing recommendation ---
 if echo "$COMMAND" | grep -qE 'gh\s+pr\s+create'; then
+  # Always compute routing recommendation (even if review passes)
+  ROUTING_REC=$(get_routing_recommendation)
+  REVIEWERS=$(echo "$ROUTING_REC" | jq -r '.reviewers // [] | join(", ")' 2>/dev/null || echo "codex")
+  PRIORITY=$(echo "$ROUTING_REC" | jq -r '.priority // "normal"' 2>/dev/null || echo "normal")
+  TRIGGERS=$(echo "$ROUTING_REC" | jq -r '.triggers_matched // [] | join(", ")' 2>/dev/null || echo "none")
+
   if ! bash "${REPO_ROOT}/scripts/enforcement/require-cross-review.sh" 2>&1; then
-    echo '{"decision": "block", "reason": "Cross-review required before PR creation. Run /gsd:review --codex or create review artifacts first. See #1537."}' >&2
+    REASON="Cross-review required before PR creation. Recommended reviewers: ${REVIEWERS} (priority: ${PRIORITY}). Triggers: ${TRIGGERS}. Run /gsd:review --codex or create review artifacts first. Policy: AI_REVIEW_ROUTING_POLICY.md (#1515, #1537)"
+    echo "{\"decision\": \"block\", \"reason\": \"${REASON}\"}" >&2
     # Output block decision for Claude hook protocol
-    cat <<'JSON'
-{"decision": "block", "reason": "Cross-review required before PR creation. Run /gsd:review --phase <N> --codex or save review artifacts. Policy: CROSS_REVIEW_POLICY.md (#1537)"}
-JSON
+    printf '{"decision": "block", "reason": "%s"}\n' "$REASON"
     exit 0
+  fi
+  # Review exists — surface routing recommendation as informational stderr
+  if [[ -n "$ROUTING_REC" ]]; then
+    echo "[review-routing] Recommended: ${REVIEWERS} | Priority: ${PRIORITY} | Triggers: ${TRIGGERS}" >&2
   fi
 fi
 

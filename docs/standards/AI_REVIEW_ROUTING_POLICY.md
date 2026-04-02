@@ -64,10 +64,33 @@ New workflow logic belongs in `.claude/` (skills, rules, hooks) with thin adapte
 
 ## Enforcement
 
-This policy is currently **advisory** (Level 0 — Prose). Promotion path:
+This policy is enforced at **Level 3 — Hook** (strongest). Promotion history:
 
-- Level 1: Micro-skill that surfaces routing reminders at review stage entry
-- Level 2: Script that checks PR metadata for review-provider annotations
-- Level 3: Hook that blocks completion without documented review provider
+| Level | Status | Artifact |
+|-------|--------|----------|
+| Level 0 — Prose | ✅ Done (2026-03-31) | This document |
+| Level 1 — Micro-skill | ✅ Done | Routing reminders surfaced at review stage entry |
+| Level 2 — Script | ✅ Done (2026-04-01) | `scripts/ai/review_routing_gate.py` — analyzes diffs, recommends reviewers |
+| Level 3 — Hook | ✅ Done (2026-04-01) | `.claude/hooks/cross-review-gate.sh` — blocks PR creation without review, surfaces routing recommendation |
+
+### How it works
+
+1. **On `gh pr create`**: The PreToolUse hook runs the routing gate against the current diff
+2. **Routing gate** analyzes the diff for Gemini trigger conditions (see above)
+3. **Block decision**: If no cross-review evidence exists, the hook blocks with a message including recommended reviewers
+4. **Pass-through**: If review evidence exists, the hook logs the routing recommendation to stderr for visibility
+
+### Running manually
+
+```bash
+# Analyze a diff for routing recommendation:
+git diff main...HEAD | scripts/ai/review-routing-gate.sh --stdin
+
+# Audit overall compliance:
+scripts/ai/verify-adversarial-reviews.sh --days 30 --verbose
+
+# Check a specific PR:
+uv run python scripts/ai/review_routing_gate.py --pr 42
+```
 
 See [patterns.md](../../.claude/rules/patterns.md) for the enforcement gradient.
