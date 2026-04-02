@@ -232,6 +232,50 @@ If "Run discuss-phase first":
   ```
   **Exit the plan-phase workflow. Do not continue.**
 
+## 4.5. Data Intelligence Lookup
+
+**Optional enrichment step.** Query the workspace data intelligence layer for
+domain-specific context. This surfaces relevant standards, worked examples, test
+vectors, and document counts that can inform research and planning quality.
+
+```bash
+# Attempt to resolve domain from phase name, CONTEXT.md, or roadmap description
+PHASE_DOMAIN=""
+# Check if phase name or description contains a known domain keyword
+DOMAIN_KEYWORDS="marine pipeline structural materials cathodic-protection installation drilling process cad regulatory"
+PHASE_NAME_LOWER=$(echo "${phase_name}" | tr '[:upper:]' '[:lower:]')
+for kw in $DOMAIN_KEYWORDS; do
+  if echo "${PHASE_NAME_LOWER}" | grep -q "$kw"; then
+    PHASE_DOMAIN="$kw"
+    break
+  fi
+done
+
+# If domain resolved, run data intelligence lookup
+if [[ -n "$PHASE_DOMAIN" ]]; then
+  DATA_INTEL=$(uv run --no-project python "/mnt/local-analysis/workspace-hub/scripts/session/data-intelligence-context.py" \
+    --domain "$PHASE_DOMAIN" --format json 2>/dev/null || echo "{}")
+fi
+```
+
+When `DATA_INTEL` is non-empty, extract and inject into the research and planner prompts:
+- **standards_count**: Number of industry standards in the domain
+- **gap_count**: Standards not yet captured (potential future WRK items)
+- **worked_examples_count**: Available calculation examples for validation
+- **test_vectors**: Curated test fixtures available (gold/silver/bronze counts)
+- **document_pages**: Total indexed pages for the domain
+
+Display a brief summary if data intelligence was found:
+```
+Data Intelligence: {domain} — {standards_count} standards ({gap_count} gaps), {worked_examples_count} worked examples, {test_vectors_count} test vectors
+```
+
+**Integration with downstream agents:**
+- Research prompt (`<additional_context>`) gains a `<data_intelligence>` block with standards list and worked example sources
+- Planner prompt gains awareness of available test vectors for verification tasks
+
+See `/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/data-intelligence.md` for full reference.
+
 ## 5. Handle Research
 
 **Skip if:** `--gaps` flag or `--skip-research` flag or `--reviews` flag.
@@ -307,6 +351,13 @@ Answer: "What do I need to know to PLAN this phase well?"
 
 **Project instructions:** Read ./AGENTS.md if exists — follow project-specific guidelines
 **Project skills:** Check .claude/skills/ or .agents/skills/ directory (if either exists) — read SKILL.md files, research should account for project skill patterns
+
+**Data intelligence (if available):** ${DATA_INTEL:-none}
+If data intelligence is present, use it to:
+- Reference relevant industry standards during research
+- Note available worked examples and test vectors for validation planning
+- Check gap standards that may indicate areas needing new implementations
+See: /mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/data-intelligence.md
 </additional_context>
 
 <output>

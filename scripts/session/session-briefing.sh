@@ -31,6 +31,17 @@ else
   echo "  (all providers within limits)"
 fi
 
+# --- Section: Data Intelligence ---
+echo ""
+DATA_INTEL="${SCRIPT_DIR}/data-intelligence-context.sh"
+if [[ -f "$DATA_INTEL" ]]; then
+  # shellcheck disable=SC2086
+  intel_out=$(bash "$DATA_INTEL" $CATEGORY_FLAG 2>/dev/null) || intel_out=""
+  if [[ -n "$intel_out" ]]; then
+    echo "$intel_out"
+  fi
+fi
+
 # --- Section: Top Unblocked ---
 echo ""
 echo "## Top Unblocked"
