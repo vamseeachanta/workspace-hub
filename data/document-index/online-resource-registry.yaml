@@ -1,0 +1,3396 @@
+generated: '2026-04-02T04:25:44'
+total_entries: 247
+summary:
+  by_type:
+    tool: 97
+    github_repo: 56
+    paper: 31
+    data_api: 31
+    tutorial: 15
+    standard_portal: 9
+    professional_body: 4
+    course_material: 3
+    library: 1
+  by_domain:
+    naval_architecture: 40
+    structural: 30
+    oil_and_gas: 29
+    marine: 27
+    hydrodynamics: 25
+    general: 20
+    data_science: 19
+    pipeline: 13
+    cfd: 12
+    sustainability: 10
+    cad: 10
+    orcaflex: 5
+    materials: 3
+    visualization: 2
+    subsea: 1
+    regulatory: 1
+  by_download_status:
+    not_started: 230
+    downloaded: 17
+entries:
+- id: awesome_mcp_servers
+  url: https://github.com/punkpeye/awesome-mcp-servers
+  name: Awesome MCP Servers (Community GitHub Catalog)
+  type: github_repo
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Curated community list of MCP servers covering data science, databases, web search, file systems, and API-access
+    servers. Companion: mcpservers.org (270+ remote servers). Regular PRs add new domain-specific servers. Cross-reference
+    with official registry for completeness.
+
+    '
+- id: iogp_publications
+  url: https://www.iogp.org/bookstore/
+  name: IOGP Publications Library
+  type: professional_body
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '200+ freely downloadable publications. Annual Safety Performance Indicators (2025 data scope published), Tier 1/2
+    PSE reports, well control incident sharing portal, occupational safety statistics since 1985. HSE statistics cover the
+    largest O&G industry incident database globally. No API but structured PDF/Excel downloads. Essential for safety KPI benchmarking.
+
+    '
+- id: mcp_official_registry
+  url: https://registry.modelcontextprotocol.io
+  name: MCP Official Registry (modelcontextprotocol.io)
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Official community-driven MCP server registry launched September 2025. ~2000 servers; 407% growth since launch.
+    Backed by Anthropic, GitHub, PulseMCP, Microsoft. API at registry endpoint for programmatic server discovery. MCP donated
+    to Agentic AI Foundation (AAIF/Linux Foundation) December 2025. MCP spec 2025-11-25 is current. Essential reference for
+    discovering engineering and data-science MCP servers.
+
+    '
+- id: copernicus_cds
+  url: https://cds.climate.copernicus.eu/
+  name: Copernicus Climate Data Store (CDS) API
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'ERA5 reanalysis 1940-present (hourly, global, 31 km). New ecmwf-datastores-client Python package (async, metadata,
+    REST). CMIP6 projections in CDS. Seven ERA5 catalogue entries plus ERA5-Land. CDS API uses dataset IDs for programmatic
+    access. Key for offshore metocean hindcasts.
+
+    '
+- id: cmems_marine_service
+  url: https://data.marine.copernicus.eu/products
+  name: Copernicus Marine Service (CMEMS) Data Store
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml; /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: 'Free and open marine data: hindcasts, nowcasts, forecasts. Products include global ocean physics reanalysis (1/12
+    degree, T/S/U/V/SSH/ice), wave multi-year (first extension to 1967, 2025), IBI wave interim (monthly batch), sea surface
+    salinity (SMAP/SMOS, 1/8 degree). June 2025 update cycle. Python copernicus-marine-client for download. Essential for
+    metocean module.
+
+    '
+- id: cds_climate_copernicus_eu_datasets_reanalysis_era5_single_le_3fd8e2
+  url: https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels
+  name: ERA5 Reanalysis (ECMWF/Copernicus CDS)
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Global hourly atmospheric reanalysis 1940-present; wind, wave, pressure for metocean design — complements existing
+    NDBC/CO-OPS obs
+- id: noaa_ndbc
+  url: https://www.ndbc.noaa.gov/
+  name: NOAA NDBC Buoy Data (THREDDS/OPeNDAP)
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'THREDDS/OPeNDAP and HTTP data services. Python library ndbc-api on PyPI for structured access. NOAA Open Data Dissemination
+    (NODD) program publishes petabyte-scale data in Zarr and Cloud-Optimized GeoTIFF via STAC APIs. DODS server at dods.ndbc.noaa.gov.
+    Real-time + historical to 1970s. Station data: waves, met, ADCP.
+
+    '
+- id: open_meteo_realtime
+  url: https://open-meteo.com/en/docs/marine-weather-api
+  name: Open-Meteo Real-Time Marine Weather (no key)
+  type: tutorial
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: "Real-time and forecast ocean wave parameters (Hs, Tp, direction, swell separation). No API key or registration.\
+    \ 16-day forecast, global, 1-11 km. JSON API. Perfect for agent weather-window queries with zero auth overhead. AGPLv3\
+    \ open source.\n | No API key or registration for non-commercial use. Marine API: wave height, peak period, wave direction,\
+    \ swell separation. 16-day forecast, global, 1-11 km. JSON API. AGPLv3 open source on GitHub. Ideal for agent real-time\
+    \ weather-window queries with zero auth overhead.\n"
+- id: the_well
+  url: https://polymathic-ai.org/the_well/
+  name: The Well
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '15 TB physics simulation dataset covering fluid dynamics, acoustics, MHD, reaction-diffusion, and astrophysics.
+    CC BY 4.0 data license permits commercial use with attribution. HF streaming via WellDataset avoids bulk download. Pretrained
+    FNO/TFNO/UNet baselines available per dataset on Hugging Face (updated March 2025). Smoke test passed on dev-secondary
+    (uv, Python 3.11).
+
+    '
+- id: github_com_polymathicai_the_well_f7f69e
+  url: https://github.com/PolymathicAI/the_well
+  name: The Well (github)
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '15 TB physics simulation dataset covering fluid dynamics, acoustics, MHD, reaction-diffusion, and astrophysics.
+    CC BY 4.0 data license permits commercial use with attribution. HF streaming via WellDataset avoids bulk download. Pretrained
+    FNO/TFNO/UNet baselines available per dataset on Hugging Face (updated March 2025). Smoke test passed on dev-secondary
+    (uv, Python 3.11).
+
+    '
+- id: huggingface_co_collections_polymathic_ai_the_well_67e129f4ca_39bbd3
+  url: https://huggingface.co/collections/polymathic-ai/the-well-67e129f4ca23e0447395d74c
+  name: The Well (huggingface)
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '15 TB physics simulation dataset covering fluid dynamics, acoustics, MHD, reaction-diffusion, and astrophysics.
+    CC BY 4.0 data license permits commercial use with attribution. HF streaming via WellDataset avoids bulk download. Pretrained
+    FNO/TFNO/UNet baselines available per dataset on Hugging Face (updated March 2025). Smoke test passed on dev-secondary
+    (uv, Python 3.11).
+
+    '
+- id: arxiv_org_abs_2412_00568_2f5c34
+  url: https://arxiv.org/abs/2412.00568
+  name: The Well (paper)
+  type: paper
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '15 TB physics simulation dataset covering fluid dynamics, acoustics, MHD, reaction-diffusion, and astrophysics.
+    CC BY 4.0 data license permits commercial use with attribution. HF streaming via WellDataset avoids bulk download. Pretrained
+    FNO/TFNO/UNet baselines available per dataset on Hugging Face (updated March 2025). Smoke test passed on dev-secondary
+    (uv, Python 3.11).
+
+    '
+- id: wavespectra
+  url: https://github.com/wavespectra/wavespectra
+  name: wavespectra (Ocean Wave Spectra Library)
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'xarray-based Python library for ocean wave spectral data. v4.4.2 (March 2025). 15+ format readers: WW3, SWAN, ERA5,
+    NDBC. 60+ spectral parameter methods. Partitioning: PTM1-5, watershed, wave age. Directly fills wave_spectra gap in digitalmodel/hydrodynamics
+    and metocean module (see WRK-383). MIT, 20 contributors.
+
+    '
+- id: wavespectra_agent
+  url: https://wavespectra.readthedocs.io/
+  name: wavespectra Python Library (Agent Integration)
+  type: tutorial
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'xarray-based wave spectra I/O and analysis (v4.4.2, 2025). Reads ERA5, WW3, SWAN, NDBC. 60+ spectral parameter methods.
+    Fills the wave_spectra module gap in hydrodynamics. pip install wavespectra. 20 contributors, MIT licence. Canonical tool
+    for JONSWAP/PM spectra and parametric fitting.
+
+    '
+- id: sodir_factpages
+  url: https://factpages.sodir.no/
+  name: SODIR / NPD FactPages REST API
+  type: data_api
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Norwegian Offshore Directorate FactPages: Norwegian Continental Shelf data synchronised daily. REST API and OData
+    endpoints. Diskos NDR (cloud, Landmark) has open API. 30,000+ datasets publicly accessible (2023). 6000 additional datasets
+    from relinquished areas. FactMaps GIS also available.
+
+    '
+- id: data_boem_gov_87af18
+  url: https://www.data.boem.gov/
+  name: BOEM (Bureau of Ocean Energy Management)
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Offshore lease data, well APIs, platform permits — complements existing BSEE production data | BOEM and BSEE GIS
+    data: OCS lease blocks, platforms, pipelines, wells, bathymetry layers. ArcGIS REST services (gis.boem.gov/arcgis/rest/)
+    and shapefile downloads. Gulf of Mexico topographic features updated February 2025. Lease Area Block query at data.bsee.gov.
+    Official Protraction Diagrams (OPDs) and leasing maps downloadable. Key for spatial analysis of offshore infrastructure.
+
+    '
+- id: rigcount_bakerhughes_com_1a81d9
+  url: https://rigcount.bakerhughes.com/
+  name: Baker Hughes Rig Count
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Industry-standard drilling activity indicator; weekly NA count + monthly international; free Excel download
+- id: eia_api_v2
+  url: https://www.eia.gov/opendata/
+  name: EIA Open Data API v2
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Full RESTful API v2 (v2.1.10, October 2025). Datasets: coal, crude-oil-imports, electricity, international, natural-gas,
+    nuclear-outages, petroleum, SEDS, STEO, densified-biomass, total-energy, AEO, IEO, state CO2. Hierarchical dataset discovery
+    via parent-node enumeration. API browser at eia.gov/opendata/browser/. Free key at eia.gov/opendata/.
+
+    '
+- id: spe_onepetro
+  url: https://onepetro.org/
+  name: SPE OnePetro — Society of Petroleum Engineers
+  type: paper
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '80,000+ documents. SPE Journal has gold OA tier. SPE Distinguished Lecturer slides free at dl.spe.org. OTC, IPTC,
+    ATCE papers generally require purchase. Abstract-level search free to all. Author preprints may appear on OSTI or institutional
+    repos. No documented public search API.
+
+    '
+- id: bsee_data_center
+  url: https://www.data.bsee.gov/
+  name: BSEE Data Center
+  type: data_api
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'US BSEE offshore production, well, platform, and pipeline data. Production data updated 2025-11-15; OCS multiregional
+    data 2025-09-29. Well API query at data.bsee.gov/Well/API/Default.aspx. Bulk CSV/Excel download; contact TDM@bsee.gov
+    for custom requests. No formal REST API but structured URL-addressable endpoints. Essential for worldenergydata/bsee module.
+
+    '
+- id: asme_jomae_omae
+  url: https://asmedigitalcollection.asme.org/offshoremechanics
+  name: ASME Digital Collection — JOMAE and OMAE Proceedings
+  type: paper
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'JOMAE: premier ASME offshore journal, 6x/year since 1987. OMAE 2025 in Vancouver (44th conference); 2026 Japan,
+    2027 Netherlands. Also relevant: J. Pressure Vessel Technology, J. Energy Resources Technology. ASME has explicit OA program;
+    JOMAE articles individually OA-flagged. Historical pre-ASME OMAE papers may be on OnePetro or institutional repos.
+
+    '
+- id: dnv_standards_explorer
+  url: https://standards.dnv.com/explorer/
+  name: DNV Rules and Standards Explorer
+  type: standard_portal
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Free full-text search across 650+ DNV rules and standards. July 2025 edition (119 documents) entered into force
+    2026-01-01. Active amendment/errata notifications via the explorer. Industry hearing documents published here for comment
+    (78 documents, March-April 2025 hearing period). Replaces legacy Veracity portal. No API but structured document URLs.
+
+    '
+- id: api_addenda_errata
+  url: https://www.api.org/products-and-services/standards/addenda-and-errata
+  name: API Standards Addenda and Errata Portal
+  type: standard_portal
+  domain: subsea
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 5
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Free addenda and errata for all API standards. API STD 620 12th ed received Addenda 1-4 and Errata 1 through February
+    2025. API Spec Q1 10th ed Addendum 2 June 2025. Companion: MyCommittees platform tracks in-progress revisions. 2025 publications
+    catalog PDF available. Essential for currency checks.
+
+    '
+- id: github_com_cadquery_cadquery_4e7f72
+  url: https://github.com/CadQuery/cadquery
+  name: CadQuery
+  type: github_repo
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Pure Python API on top of OCP (OpenCASCADE). Models are Python scripts, enabling version control
+    and parameterization from digitalmodel design databases. Apache license allows unrestricted use.
+
+    '
+- id: cadquery_readthedocs_io_7ef5b8
+  url: https://cadquery.readthedocs.io/
+  name: CadQuery (docs)
+  type: tutorial
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Pure Python API on top of OCP (OpenCASCADE). Models are Python scripts, enabling version control
+    and parameterization from digitalmodel design databases. Apache license allows unrestricted use.
+
+    '
+- id: gitlab_onelab_info_gmsh_gmsh_103731
+  url: https://gitlab.onelab.info/gmsh/gmsh
+  name: Gmsh
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable Python API (gmsh module). Scriptable mesh generation from digitalmodel geometry. Outputs MSH, VTK,
+    MED, and other formats. Linking exception allows use as a library without full GPL propagation.
+
+    '
+- id: github_com_ngsolve_ngsolve_288b5d
+  url: https://github.com/NGSolve/ngsolve
+  name: Netgen/NGSolve
+  type: github_repo
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Jupyter notebook integration for interactive analysis. Python-first workflow matches digitalmodel''s
+    design philosophy. LGPL license allows library use.
+
+    '
+- id: ngsolve_org_fd5181
+  url: https://ngsolve.org/
+  name: Netgen/NGSolve (docs)
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Jupyter notebook integration for interactive analysis. Python-first workflow matches digitalmodel''s
+    design philosophy. LGPL license allows library use.
+
+    '
+- id: github_com_tpaviot_pythonocc_core_504a5b
+  url: https://github.com/tpaviot/pythonocc-core
+  name: OpenCASCADE / PythonOCC
+  type: github_repo
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'PythonOCC provides full Python bindings to OCCT. pip-installable via conda-forge. Geometry can feed directly into
+    Gmsh for meshing and then to FEA solvers. LGPL allows library use without copyleft on application code.
+
+    '
+- id: dev_opencascade_org_e0222f
+  url: https://dev.opencascade.org/
+  name: OpenCASCADE / PythonOCC (docs)
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'PythonOCC provides full Python bindings to OCCT. pip-installable via conda-forge. Geometry can feed directly into
+    Gmsh for meshing and then to FEA solvers. LGPL allows library use without copyleft on application code.
+
+    '
+- id: salome_platform_org_0b6416
+  url: https://www.salome-platform.org/
+  name: Salome-Meca
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Full Python scripting of geometry, meshing, and solver setup. Can be run headless. Salome geometry interops with
+    Gmsh and other meshing tools. Large learning curve but comprehensive.
+
+    '
+- id: semantic_scholar_api
+  url: https://api.semanticscholar.org/api-docs/
+  name: Semantic Scholar Academic Graph API
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '200M+ papers all disciplines. RESTful API for paper search (year, field-of- study, OA filter), author queries, citation
+    graphs. S2AG dataset downloadable monthly. Semantic Scholar MCP server available on lobehub for direct LLM integration.
+    No auth for basic queries.
+
+    '
+- id: semantic_scholar_mcp
+  url: https://lobehub.com/mcp/fujishigetemma-semantic-scholar-mcp
+  name: Semantic Scholar MCP Server
+  type: tool
+  domain: cad
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'MCP server wrapping Semantic Scholar Academic Graph API. Enables LLM agents to search 200M+ engineering papers from
+    Claude Code or other MCP clients. Listed at mcpservers.org. Direct integration for engineering literature retrieval in
+    agent workflows.
+
+    '
+- id: github_com_comphy_lab_basilisk_c_ee8eb3
+  url: https://github.com/comphy-lab/basilisk-C
+  name: Basilisk
+  type: github_repo
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'C-based with scripting via its own language. Output in VTK format for Python post-processing. Successor to Gerris;
+    well suited for free-surface problems that complement OpenFOAM.
+
+    '
+- id: basilisk_fr_a025bf
+  url: https://basilisk.fr/
+  name: Basilisk (docs)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'C-based with scripting via its own language. Output in VTK format for Python post-processing. Successor to Gerris;
+    well suited for free-surface problems that complement OpenFOAM.
+
+    '
+- id: gitlab_nektar_info_nektar_nektar_62fddc
+  url: https://gitlab.nektar.info/nektar/nektar
+  name: Nektar++
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings available. NekMesh utility for high-order mesh generation from CAD. MIT license allows unrestricted
+    integration with ACE codebase.
+
+    '
+- id: nektar_info_394a79
+  url: https://www.nektar.info/
+  name: Nektar++ (docs)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings available. NekMesh utility for high-order mesh generation from CAD. MIT license allows unrestricted
+    integration with ACE codebase.
+
+    '
+- id: gitlab_com_openfoam_core_openfoam_3e2868
+  url: https://gitlab.com/openfoam/core/openfoam
+  name: OpenFOAM
+  type: github_repo
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drive via PyFoam or custom Python wrappers. Case directory structure can be templated from digitalmodel parameters.
+    Results postprocessable with ParaView and VTK Python bindings. Note: migrated from GitHub to GitLab in 2025.
+
+    '
+- id: openfoam_esi
+  url: https://www.openfoam.com/
+  name: OpenFOAM (OpenCFD / ESI fork)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Primary industry fork of OpenFOAM. Version v2506 (Keysight-OpenCFD, 2025). Turbulence, heat transfer, multiphase,
+    acoustics solvers. Couples with CalculiX via preCICE for FSI. CastNet GUI by DHCAE for pre/post processing. Offshore hydrodynamics
+    and diffuser/riser flow applications.
+
+    '
+- id: gitlab_com_unigespc_palabos_c8f759
+  url: https://gitlab.com/unigespc/palabos
+  name: Palabos
+  type: github_repo
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'C++ library with Python bindings. Minimal external dependencies. Can couple with digitalmodel for pore-scale analysis
+    in reservoir characterization workflows.
+
+    '
+- id: palabos_unige_ch_012ffa
+  url: https://palabos.unige.ch/
+  name: Palabos (docs)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'C++ library with Python bindings. Minimal external dependencies. Can couple with digitalmodel for pore-scale analysis
+    in reservoir characterization workflows.
+
+    '
+- id: github_com_pyfr_pyfr_6d763e
+  url: https://github.com/PyFR/PyFR
+  name: PyFR
+  type: github_repo
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pure Python driver with GPU backends. Gmsh mesh import supported. BSD license enables commercial use. Can complement
+    OpenFOAM for cases requiring higher-order accuracy.
+
+    '
+- id: pyfr_org_ab7dfa
+  url: https://www.pyfr.org/
+  name: PyFR (docs)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pure Python driver with GPU backends. Gmsh mesh import supported. BSD license enables commercial use. Can complement
+    OpenFOAM for cases requiring higher-order accuracy.
+
+    '
+- id: github_com_su2code_su2_b6c716
+  url: https://github.com/su2code/SU2
+  name: SU2
+  type: github_repo
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python wrapper (SU2_CFD) and mesh tools available. Can read Gmsh and CGNS meshes. Adjoint solver enables gradient-based
+    optimization integrated into digitalmodel design workflows.
+
+    '
+- id: su2code_github_io_6ea1df
+  url: https://su2code.github.io/
+  name: SU2 (docs)
+  type: tool
+  domain: cfd
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: "Python wrapper (SU2_CFD) and mesh tools available. Can read Gmsh and CGNS meshes. Adjoint solver enables gradient-based\
+    \ optimization integrated into digitalmodel design workflows.\n | Open-source multiphysics PDE solver and design optimization\
+    \ on unstructured meshes. Aerodynamic shape optimization, compressible/incompressible flows, electrodynamics, chemically\
+    \ reacting flows. C++ and Python. SU2 Foundation is a registered non-profit. Active GitHub development. Complements OpenFOAM\
+    \ for adjoint-based shape optimization tasks.\n"
+- id: github_com_dask_dask_70ea2c
+  url: https://github.com/dask/dask
+  name: Dask
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drop-in parallel replacement for pandas/NumPy. Dask DataFrames partition large worldenergydata CSV/Parquet files.
+    Dask arrays enable large-scale matrix operations in digitalmodel FEA.
+
+    '
+- id: dask_org_503161
+  url: https://dask.org/
+  name: Dask (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drop-in parallel replacement for pandas/NumPy. Dask DataFrames partition large worldenergydata CSV/Parquet files.
+    Dask arrays enable large-scale matrix operations in digitalmodel FEA.
+
+    '
+- id: github_com_numpy_numpy_15e1bf
+  url: https://github.com/numpy/numpy
+  name: NumPy
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency across the ACE ecosystem. Standard array interchange format. Basis for SciPy, Pandas,
+    and all scientific Python libraries used in ACE.
+
+    '
+- id: numpy_org_ea41b7
+  url: https://numpy.org/
+  name: NumPy (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency across the ACE ecosystem. Standard array interchange format. Basis for SciPy, Pandas,
+    and all scientific Python libraries used in ACE.
+
+    '
+- id: github_com_pandas_dev_pandas_b15359
+  url: https://github.com/pandas-dev/pandas
+  name: Pandas
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency. Standard data interchange format in the ACE ecosystem. Parquet serialization for efficient
+    storage. Excel I/O for engineering spreadsheet integration.
+
+    '
+- id: pandas_pydata_org_580279
+  url: https://pandas.pydata.org/
+  name: Pandas (docs)
+  type: data_api
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency. Standard data interchange format in the ACE ecosystem. Parquet serialization for efficient
+    storage. Excel I/O for engineering spreadsheet integration.
+
+    '
+- id: github_com_pola_rs_polars_31eb79
+  url: https://github.com/pola-rs/polars
+  name: Polars
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drop-in replacement for pandas in data-heavy pipelines. Arrow-based interchange with pandas via .to_pandas() / .from_pandas().
+    Consider for worldenergydata ETL pipelines processing large BSEE/SODIR datasets.
+
+    '
+- id: pola_rs_7519fe
+  url: https://pola.rs/
+  name: Polars (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drop-in replacement for pandas in data-heavy pipelines. Arrow-based interchange with pandas via .to_pandas() / .from_pandas().
+    Consider for worldenergydata ETL pipelines processing large BSEE/SODIR datasets.
+
+    '
+- id: github_com_apache_arrow_bb32ad
+  url: https://github.com/apache/arrow
+  name: PyArrow
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Backend for pandas Parquet I/O and Polars data interchange. Dataset API for reading partitioned worldenergydata
+    archives. Arrow Flight for potential data service architecture.
+
+    '
+- id: arrow_apache_org_f22228
+  url: https://arrow.apache.org/
+  name: PyArrow (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Backend for pandas Parquet I/O and Polars data interchange. Dataset API for reading partitioned worldenergydata
+    archives. Arrow Flight for potential data service architecture.
+
+    '
+- id: github_com_rasterio_rasterio_4d6080
+  url: https://github.com/rasterio/rasterio
+  name: Rasterio
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pythonic wrapper over GDAL raster functionality. NumPy array interface for raster data. Integrates with xarray via
+    rioxarray extension for multi-dimensional analysis.
+
+    '
+- id: rasterio_readthedocs_io_7056a5
+  url: https://rasterio.readthedocs.io/
+  name: Rasterio (docs)
+  type: tutorial
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pythonic wrapper over GDAL raster functionality. NumPy array interface for raster data. Integrates with xarray via
+    rioxarray extension for multi-dimensional analysis.
+
+    '
+- id: github_com_shapely_shapely_84e4ee
+  url: https://github.com/shapely/shapely
+  name: Shapely
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Based on GEOS library. Direct NumPy integration via vectorized operations. Foundation geometry type for all GIS
+    operations in the ACE ecosystem.
+
+    '
+- id: shapely_readthedocs_io_ff5b3a
+  url: https://shapely.readthedocs.io/
+  name: Shapely (docs)
+  type: tutorial
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Based on GEOS library. Direct NumPy integration via vectorized operations. Foundation geometry type for all GIS
+    operations in the ACE ecosystem.
+
+    '
+- id: github_com_vaexio_vaex_819f43
+  url: https://github.com/vaexio/vaex
+  name: Vaex
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'HDF5 and Arrow backends for zero-copy data access. Useful for interactive exploration of large BSEE datasets. Note:
+    community is smaller than Polars/Dask; evaluate long-term maintenance.
+
+    '
+- id: vaex_io_e026f2
+  url: https://vaex.io/
+  name: Vaex (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'HDF5 and Arrow backends for zero-copy data access. Useful for interactive exploration of large BSEE datasets. Note:
+    community is smaller than Polars/Dask; evaluate long-term maintenance.
+
+    '
+- id: github_com_pydata_xarray_42806d
+  url: https://github.com/pydata/xarray
+  name: Xarray
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Standard format for climate/ocean data (NetCDF via xarray). Dask backend enables out-of-core processing. rioxarray
+    extension adds geospatial capabilities. Ideal for metocean data in worldenergydata.
+
+    '
+- id: xarray_dev_1ad670
+  url: https://xarray.dev/
+  name: Xarray (docs)
+  type: tool
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Standard format for climate/ocean data (NetCDF via xarray). Dask backend enables out-of-core processing. rioxarray
+    extension adds geospatial capabilities. Ideal for metocean data in worldenergydata.
+
+    '
+- id: lasio
+  url: https://github.com/kinverarity1/lasio
+  name: lasio (LAS File I/O for Well Logs)
+  type: github_repo
+  domain: data_science
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Python 3.7+ library for reading/writing LAS 1.2 and 2.0 files (borehole logs). Pandas DataFrame integration. Active
+    releases (v0.32). Companion library welly adds curve/well/project management. Critical for well log data ingestion in
+    worldenergydata.
+
+    '
+- id: irena_stat
+  url: https://www.irena.org/Data/Downloads/IRENASTAT
+  name: IRENA Renewable Energy Statistics (IRENASTAT)
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'International Renewable Energy Agency IRENASTAT: power-generation capacity (2015-2024) and actual generation (2015-2023)
+    for 150+ countries. Published annually in March (capacity) and July (generation + balances). Off-grid renewable statistics
+    (December 2025) cover solar, hydro, bioenergy, wind capacity 2015-2024. IRENASTAT Online Data Query Tool for interactive
+    access. CSV/Excel download; no documented REST API.
+
+    '
+- id: mcpmarket_catalog
+  url: https://mcpmarket.com/categories/data-science-ml
+  name: MCPMarket.com Data Science and ML Catalog
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '5804+ MCP server listings. Data Science & ML category well-populated. Browse by use case. Useful for discovering
+    domain-specific MCP servers (weather, geospatial, scientific data APIs). Regular community contributor updates.
+
+    '
+- id: usgs_sciencebase
+  url: https://www.usgs.gov/tools/sciencebase
+  name: USGS ScienceBase Catalog API
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'REST API (JSON) for USGS scientific data catalog. Covers geospatial, geological, seismic, environmental datasets.
+    Cloud-based OGC/ESRI update summer 2025. Python and R modules on GitHub. Earthquake catalog FDSN API at earthquake.usgs.gov/fdsnws/event/1/.
+    Geoscience catalog at geo-nsdi.er.usgs.gov.
+
+    '
+- id: arXiv_api
+  url: https://arxiv.org/help/api
+  name: arXiv API (Metadata and Feed Access)
+  type: paper
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'arXiv API provides structured metadata (title, abstract, authors, DOI links) for all preprints via Atom/JSON feeds.
+    No auth required. Query by category (cs.CE, physics.geo-ph, eess.SP), author, keyword, date range. Enables agents to retrieve
+    cutting-edge research preprints directly during planning and module implementation tasks. Rate limit: 3 req/s per IP.
+
+    '
+- id: ansyshelp_ansys_com_account_secured_c079f1
+  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
+  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: AQWA Reference Manual - Commands and workflow reference
+- id: ansyshelp_ansys_com_account_secured_5f7d31
+  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
+  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: ANSYS AQWA Theory Manual - Complete theoretical background
+- id: docs_python_org_ab8704
+  url: https://docs.python.org
+  name: https://docs.python.org
+  type: tutorial
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/web-test-module/context/external/web/web_resources.yaml
+  notes: Python official documentation
+- id: ansys_com_products_structures_ansys_aqwa_b635e4
+  url: https://www.ansys.com/products/structures/ansys-aqwa
+  name: https://www.ansys.com/products/structures/ansys-aqwa
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: ANSYS AQWA Product Page - Overview and capabilities
+- id: api_org_products_and_services_standards_important_standards__839ba5
+  url: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
+  name: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
+  type: standard_portal
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: API RP 2SK - Station keeping design and analysis
+- id: github_com_bemrosetta_bemrosetta_77615d
+  url: https://github.com/BEMRosetta/BEMRosetta
+  name: BEMRosetta
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'C++ with GUI. More actively maintained than Bemio for BEM data handling. Can export to formats readable by Python.
+    Useful as a standalone validation tool alongside the ACE Python pipeline.
+
+    '
+- id: github_com_wec_sim_bemio_c5a940
+  url: https://github.com/WEC-Sim/bemio
+  name: Bemio
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python-based. Note: requires Python 2.7 (legacy project). Consider using Capytaine''s built-in I/O or BEMRosetta
+    as more actively maintained alternatives for BEM data handling.
+
+    '
+- id: wec_sim_github_io_bemio_371e9d
+  url: https://wec-sim.github.io/bemio/
+  name: Bemio (docs)
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python-based. Note: requires Python 2.7 (legacy project). Consider using Capytaine''s built-in I/O or BEMRosetta
+    as more actively maintained alternatives for BEM data handling.
+
+    '
+- id: github_com_capytaine_capytaine_2896ad
+  url: https://github.com/capytaine/capytaine
+  name: Capytaine
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, native Python API. Outputs directly to xarray datasets. Results feed into OpenFAST/RAFT/WEC-Sim
+    for time/frequency-domain analysis. NREL-funded development ensures alignment with OpenFAST ecosystem.
+
+    '
+- id: capytaine_github_io_stable_9f853c
+  url: https://capytaine.github.io/stable/
+  name: Capytaine (docs)
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, native Python API. Outputs directly to xarray datasets. Results feed into OpenFAST/RAFT/WEC-Sim
+    for time/frequency-domain analysis. NREL-funded development ensures alignment with OpenFAST ecosystem.
+
+    '
+- id: github_com_yingyiliu_hams_38a725
+  url: https://github.com/YingyiLiu/HAMS
+  name: HAMS
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Fortran-based, driven via input files. Python wrapper (pyHAMS) available for integration. Can be used as alternative
+    to Capytaine; compare results for validation. Apache license more permissive than Capytaine''s GPL.
+
+    '
+- id: noaa_coops_realtime
+  url: https://tidesandcurrents.noaa.gov/
+  name: NOAA CO-OPS Real-Time Water Levels
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Real-time water levels, tide predictions, currents at NOAA gauge stations. Derived Product API: extreme water level
+    probabilities, SLR projections. JSON, CSV, XML, NetCDF output. Python py_noaa on GitHub. Critical for marine operations
+    and tidal window planning.
+
+    '
+- id: noaa_coops_api
+  url: https://api.tidesandcurrents.noaa.gov/api/prod/
+  name: NOAA CO-OPS Tides and Currents API
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'REST API for water levels, tide predictions, currents, salinity, winds at NOAA gauge stations. Metadata API at mdapi
+    endpoint. Derived Product API: extreme water level probabilities, SLR projections, high-tide flooding forecasts. Output:
+    CSV, XML, JSON, NetCDF. Python py_noaa on GitHub. Moved to cloud 2024. Free, no auth.
+
+    '
+- id: github_com_apengsigkarup_oceanwave3d_fortran90_adcbca
+  url: https://github.com/apengsigkarup/OceanWave3D-Fortran90
+  name: OceanWave3D
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Fortran 90 code; no Python API. Drive via subprocess and file I/O. Can couple with OpenFOAM via waves2Foam for combined
+    wave generation and CFD. DTU-developed research tool.
+
+    '
+- id: www2_compute_dtu_dk_apek_oceanwave3d_476a9d
+  url: http://www2.compute.dtu.dk/~apek/OceanWave3D/
+  name: OceanWave3D (docs)
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Fortran 90 code; no Python API. Drive via subprocess and file I/O. Can couple with OpenFOAM via waves2Foam for combined
+    wave generation and CFD. DTU-developed research tool.
+
+    '
+- id: github_com_wec_sim_wec_sim_bbb849
+  url: https://github.com/WEC-Sim/WEC-Sim
+  name: WEC-Sim
+  type: github_repo
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'MATLAB/Simulink-based; no direct Python API. Uses BEM data from Capytaine/HAMS/WAMIT. For Python-native workflows,
+    consider using Capytaine + custom time-domain solvers or OpenFAST HydroDyn module instead.
+
+    '
+- id: wec_sim_github_io_wec_sim_2d2c8b
+  url: https://wec-sim.github.io/WEC-Sim/
+  name: WEC-Sim (docs)
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'MATLAB/Simulink-based; no direct Python API. Uses BEM data from Capytaine/HAMS/WAMIT. For Python-native workflows,
+    consider using Capytaine + custom time-domain solvers or OpenFAST HydroDyn module instead.
+
+    '
+- id: arxiv_cs_ce
+  url: https://arxiv.org/list/cs.CE/recent
+  name: arXiv cs.CE (Computational Engineering)
+  type: paper
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Active preprint feed for computational engineering. 2025 content: physics- informed neural operators, ML-based ROM
+    for structural mechanics, SPH mesh-order reduction. arXiv API (arxiv.org/help/api) provides Atom/JSON feeds by category.
+    physics.geo-ph and eess.SP are adjacent categories.
+
+    '
+- id: doaj_offshore_journals
+  url: https://doaj.org/
+  name: DOAJ — Open Access Offshore/Marine Engineering Journals
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Directory of Open Access Journals (21,000+ journals). Key fully-OA offshore and marine engineering titles: International
+    Journal of Naval Architecture and Ocean Engineering; International Journal of Coastal and Offshore Engineering; Journal
+    of Marine Science and Engineering (MDPI); Journal of Ocean Engineering and Science; Journal of Naval Architecture and
+    Marine Engineering. All peer-reviewed, no subscription required, full-text free. DOAJ API at doaj.org/api/ for programmatic
+    journal and article search.
+
+    '
+- id: isope
+  url: https://www.isope.org/proceedings/
+  name: ISOPE (International Ocean and Polar Engineering Conference)
+  type: paper
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '35th ISOPE 2025: Seoul/Goyang, Korea (June 1-6, 2025). Abstract pages free. Indexed in Web of Science, SCOPUS, Compendex.
+    IJOPE (journal) published by ISOPE. Content spans offshore structures, mooring, ocean energy, ice, polar. Largest open
+    offshore conference paper pool in terms of accessibility.
+
+    '
+- id: github_com_old_nwtc_map_a58731
+  url: https://github.com/old-NWTC/MAP
+  name: MAP++
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python wrapper via pyMAP. Now primarily maintained within OpenFAST repository. For new projects, consider MoorPy
+    or MoorDyn as more actively maintained alternatives.
+
+    '
+- id: nrel_gov_wind_nwtc_map_plus_plus_876dcf
+  url: https://www.nrel.gov/wind/nwtc/map-plus-plus
+  name: MAP++ (docs)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python wrapper via pyMAP. Now primarily maintained within OpenFAST repository. For new projects, consider MoorPy
+    or MoorDyn as more actively maintained alternatives.
+
+    '
+- id: moordyn_readthedocs_io_6224ca
+  url: https://moordyn.readthedocs.io/
+  name: MoorDyn (docs)
+  type: tutorial
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings via moordyn package (pip-installable). C++ version (MoorDyn-C) more flexible for custom couplings.
+    Fortran version integrated into OpenFAST. BSD license allows commercial use.
+
+    '
+- id: moordyn
+  url: https://github.com/FloatingArrayDesign/MoorDyn
+  name: MoorDyn Lumped-Mass Mooring Model
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Lumped-mass dynamic mooring line model. Python package (moordyn on PyPI), 2025 updates. Shared library for coupling
+    with structural codes. Used for floating wind and FPSO mooring dynamics. Addresses gap in mooring_analysis module (WRK-383
+    gap item).
+
+    '
+- id: moordyn_pypi
+  url: https://pypi.org/project/moordyn/
+  name: MoorDyn Python Package (PyPI moordyn)
+  type: library
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'pip install moordyn. Python bindings to the MoorDyn C++ lumped-mass mooring dynamics library. 2025 updates on PyPI.
+    Used for floating offshore wind and FPSO mooring dynamic analysis. Direct agent integration: agents can invoke moordyn
+    simulations from Python scripts in digitalmodel workflows.
+
+    '
+- id: moorpy_nrel
+  url: https://github.com/NREL/MoorPy
+  name: MoorPy (NREL Quasi-Static Mooring)
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'NREL Python library for quasi-static mooring design. Line tension, catenary shape, system stiffness matrices. Part
+    of WETO software stack. OSTI biblio 1810090. Pairs with MoorDyn for dynamic analysis. Both fill the mooring_analysis module
+    gap identified in WRK-383.
+
+    '
+- id: moorpy_readthedocs_io_72500d
+  url: https://moorpy.readthedocs.io/
+  name: MoorPy (docs)
+  type: tutorial
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, pure Python. Direct NumPy/Matplotlib integration. Can be used as a rapid screening tool before
+    detailed MoorDyn dynamic analysis. Apache license allows unrestricted use.
+
+    '
+- id: osti_gov
+  url: https://www.osti.gov/
+  name: OSTI.gov (DOE Scientific and Technical Information)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '4M+ records: DOE R&D reports, journal articles, datasets, software. OAI-PMH harvesting for full-text DOE reports.
+    DOE 2024 public access plan mandates immediate open access to publications and underlying data. Covers offshore, energy,
+    materials, environmental sciences. MoorPy and other NREL tools here.
+
+    '
+- id: otc_onepetro
+  url: https://onepetro.org/OTC
+  name: OTC / OTC Brasil / OTC Asia — OnePetro
+  type: paper
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'OTC Houston largest offshore industry conference globally. OTC 2025 papers DOI-cited on OnePetro from May 2025.
+    OTC Brasil (Rio) and OTC Asia (KL) separate tracks. Author preprints sometimes on OSTI or ResearchGate.
+
+    '
+- id: github_com_openfast_openfast_28c94c
+  url: https://github.com/OpenFAST/openfast
+  name: OpenFAST
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python interface via openfast-python. HydroDyn and MoorDyn modules can be used standalone for general offshore hydrodynamic
+    and mooring analysis. FAST.Farm extends to wind farm scale. Apache license allows commercial use.
+
+    '
+- id: openfast_readthedocs_io_e17d21
+  url: https://openfast.readthedocs.io/
+  name: OpenFAST (docs)
+  type: tutorial
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python interface via openfast-python. HydroDyn and MoorDyn modules can be used standalone for general offshore hydrodynamic
+    and mooring analysis. FAST.Farm extends to wind farm scale. Apache license allows commercial use.
+
+    '
+- id: qblade_org_5c9f5a
+  url: https://qblade.org/
+  name: QBlade (Community Edition)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'CLI-driven for batch simulations. Non-commercial license restricts commercial ACE use; Enterprise Edition (QBlade-EE)
+    available for commercial projects. Evaluate alongside OpenFAST for offshore wind analysis needs.
+
+    '
+- id: github_com_qgis_qgis_f63402
+  url: https://github.com/qgis/QGIS
+  name: QGIS (Python API)
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'PyQGIS scripting for automation. Processing algorithms callable from standalone scripts. Useful as visualization
+    frontend for worldenergydata spatial outputs. Plugin ecosystem extendable.
+
+    '
+- id: qgis_org_adc2fb
+  url: https://qgis.org/
+  name: QGIS (Python API) (docs)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'PyQGIS scripting for automation. Processing algorithms callable from standalone scripts. Useful as visualization
+    frontend for worldenergydata spatial outputs. Plugin ecosystem extendable.
+
+    '
+- id: github_com_wisdem_raft_d6ba8f
+  url: https://github.com/WISDEM/RAFT
+  name: RAFT (Response Amplitudes of Floating Turbines)
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pure Python with NumPy/SciPy. Uses Capytaine or HAMS for BEM data. Can serve as a fast screening tool before detailed
+    OpenFAST time-domain simulations.
+
+    '
+- id: zenodo
+  url: https://zenodo.org/
+  name: Zenodo Research Repository
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'CERN/OpenAIRE repository. DOI-minted papers, datasets, software. REST API at zenodo.org/api/records. Hosts MoorPy,
+    wavespectra, and many engineering datasets. Search by keyword: "offshore", "fatigue", "corrosion", "mooring". CC licences.
+    Good for published datasets accompanying journal papers.
+
+    '
+- id: api_org_products_and_services_standards_66556d
+  url: https://www.api.org/products-and-services/standards
+  name: https://www.api.org/products-and-services/standards
+  type: standard_portal
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
+  notes: API standards for offshore structures and mooring systems
+- id: ansys_com_training_center_course_catalog_structures_36d6b4
+  url: https://www.ansys.com/training-center/course-catalog/structures/introduction-to-ansys-aqwa
+  name: https://www.ansys.com/training-center/course-catalog/structures/introduction-to-ansys-aqwa
+  type: course_material
+  domain: materials
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: ANSYS AQWA Training Course - Official training materials
+- id: ww2_eagle_org_content_dam_eagle_063ed3
+  url: https://ww2.eagle.org/content/dam/eagle/rules-and-guides/current/other/1-rules-for-building-and-classing-marine-vessels-2024/1-mvr-part-4-jan24.pdf
+  name: ABS Marine Vessel Rules — Part 4 (2024)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: ABS WAF blocks wget. Download manually via browser from eagle.org.
+- id: ww2_eagle_org_content_dam_eagle_cca9ee
+  url: https://ww2.eagle.org/content/dam/eagle/rules-and-resources/RuleManager2/intro/Intro%20to%20ABS%20Rules%20and%20Guides-Jul25.pdf
+  name: ABS — Introduction to Rules and Guides
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/ABS-Intro-to-Rules-and-Guides.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Overview of ABS classification rules and guides.
+- id: aaltodoc_aalto_fi_items_8562f849_caf4_48af_9340_b981be1f64c4_60a705
+  url: https://aaltodoc.aalto.fi/items/8562f849-caf4-48af-9340-b981be1f64c4
+  name: Aalto University — Lecture Notes on Basic Naval Architecture (2021, CC BY)
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Spyros Hirdaris. 160 pages. Ship design spiral, resistance estimation (Holtrop).
+- id: marine_offshore_bureauveritas_com_rules_guidelines_74d0ef
+  url: https://marine-offshore.bureauveritas.com/rules-guidelines
+  name: Bureau Veritas — Rules, Rule Notes & Guidance Notes (130+ publications)
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: All in-force rules/guidance notes as free PDFs.
+- id: classnk_com_hp_en_rules_5ee244
+  url: https://www.classnk.com/hp/en/rules/tech_rules.aspx
+  name: ClassNK — Technical Rules and Guidance (complete set)
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Free PDF download, no registration for most. Full classification rules.
+- id: rules_dnv_com_docs_pdf_dnvpm_8a23de
+  url: https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2007-10/RP-C205.pdf
+  name: DNV-RP-C205 Environmental Conditions and Environmental Loads
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/DNV-RP-C205-Environmental-Conditions-Loads-2007.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Older edition. Key reference for wave/wind/current load specifications.
+- id: rules_dnv_com_docs_pdf_dnvpm_596b83
+  url: https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2010-04/RP-H103.pdf
+  name: DNV-RP-H103 Modelling and Analysis of Marine Operations
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/DNV-RP-H103-Marine-Operations-2010.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Older edition. Marine operations modelling and analysis.
+- id: apps_dtic_mil_sti_pdfs_ada452843_pdf_b3c700
+  url: https://apps.dtic.mil/sti/pdfs/ADA452843.pdf
+  name: DTIC — Engineering for Ship Production
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: DTIC blocks wget. Download manually via browser.
+- id: apps_dtic_mil_sti_tr_pdf_a066f6
+  url: https://apps.dtic.mil/sti/tr/pdf/ADA047494.pdf
+  name: DTIC — Small Craft Design Guide (1977)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: DTIC blocks wget. Download manually via browser.
+- id: maritime_mutual_com_wp_content_uploads_2020_58e84a
+  url: https://maritime-mutual.com/wp-content/uploads/2020/06/Vol_3_2014_Guidelines_on_Intact_Stabili.pdf
+  name: IMO Guidelines on Intact Stability 2014
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Download failed via wget. Try manually.
+- id: archive_org_search_5cd9c0
+  url: https://archive.org/search?query=naval+architecture&mediatype=texts
+  name: Internet Archive — Naval Architecture Collection
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: 'Large collection including Comstock 1942, PNA Vol II (freely downloadable). Gillmer, Baxter, Lewis, PNA Vol III
+    are borrow-only (restricted access).
+
+    '
+- id: home_hvl_no_ansatte_gste_ftp_9e319d
+  url: https://home.hvl.no/ansatte/gste/ftp/MarinLab_files/Litteratur/IntroductionToNavalArchitecture_Tupper1996.pdf
+  name: Introduction to Naval Architecture
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Tupper-1996.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Standard undergraduate introduction. Covers all core NA disciplines.
+- id: archive_org_details_comstock1942navalarchitecture_7fdd81
+  url: https://archive.org/details/Comstock1942NavalArchitecture
+  name: Introduction to Naval Architecture
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Comstock-1942.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Classic 1942 SNAME text. Public domain. OCR'd text version.
+- id: archive_org_details_introductiontona0000gill_fa812a
+  url: https://archive.org/details/introductiontona0000gill
+  name: Introduction to Naval Architecture — Gillmer & Johnson
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Borrow-only on archive.org.
+- id: hec_lrfoundation_org_uk_archive_library_digital_resources_20dd90
+  url: https://hec.lrfoundation.org.uk/archive-library/digital-resources
+  name: Lloyd's Register Foundation Heritage & Education Centre
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Historic Lloyd's Register editions, ship plans, survey reports.
+- id: archive_org_details_lloyds_register_rules_and_regulations_fo_588748
+  url: https://archive.org/details/lloyds-register-rules-and-regulations-for-the-classification-of-ships-july-2022_202310
+  name: Lloyd's Register — Rules for Classification (July 2022, Internet Archive)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Complete classification rules archived on Internet Archive.
+- id: ocw_mit_edu_courses_2_019_design_of_ocean_systems_spring_201_a1d8cd
+  url: https://ocw.mit.edu/courses/2-019-design-of-ocean-systems-spring-2011/pages/lecture-notes/
+  name: MIT OCW 2.019 — Design of Ocean Systems Lecture Notes
+  type: course_material
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Seakeeping, offshore structures, FPSO, drift loads.
+- id: ocw_mit_edu_courses_2_20_marine_hydrodynamics_13_021_spring__e38a01
+  url: https://ocw.mit.edu/courses/2-20-marine-hydrodynamics-13-021-spring-2005/pages/lecture-notes/
+  name: MIT OCW 2.20 — Marine Hydrodynamics Lecture Notes (24 PDFs)
+  type: course_material
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: MIT OpenCourseWare. Companion to Newman's textbook (already in collection).
+- id: maritime_optima_insights
+  url: https://maritimeoptima.com/insights/how-are-sea-routes-affected-by-events-and-anti-shipping-activities
+  name: Maritime Optima — Sea Routes and Anti-Shipping Activity Analysis
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Maritime Optima insights article on how geopolitical events and anti-shipping activities (e.g., Houthi Red Sea attacks,
+    Strait of Hormuz disruptions) alter global sea routes. Maritime Optima platform provides voyage analytics, port call data,
+    and route risk scoring. Relevant to marine ops risk, vessel routing decisions, offshore installation supply chain impact
+    analysis, and freight market context. Full platform API available (commercial); the insights series documents real-world
+    routing shifts useful as reference cases.
+
+    '
+- id: archives_gov_research_cartographic_ship_plans_556438
+  url: https://www.archives.gov/research/cartographic/ship-plans
+  name: National Archives — Ship Plans
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Naval engineering drawings 1790s–Korean War. Free browse, prints on request.
+- id: ftp_idu_ac_id_wp_content_uploads_ebook_1e7f47
+  url: https://ftp.idu.ac.id/wp-content/uploads/ebook/tdg/ADNVANCED%20MILITARY%20PLATFORM%20DESIGN/Principles%20of%20Naval%20Architecture%20(Second%20Revision),%20Volume%20I.pdf
+  name: Principles of Naval Architecture (Second Revision), Volume I
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Second revision edition of Vol I.
+- id: rexresearch1_com_boatshipbuildinglibrary_principlesnavalarch_bb284d
+  url: https://rexresearch1.com/BoatShipBuildingLibrary/PrinciplesNavalArchitShipResistanceFlow.pdf
+  name: Principles of Naval Architecture Series — Ship Resistance and Flow
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Principles-Naval-Architecture-Ship-Resistance-Flow.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Part of the newer SNAME Principles series covering ship resistance and computational methods.
+- id: navalifpe_wordpress_com_wp_content_uploads_2011_1f52ef
+  url: https://navalifpe.wordpress.com/wp-content/uploads/2011/09/principles-of-naval-architecture-vol-1-sname.pdf
+  name: Principles of Naval Architecture, Volume I — Stability and Strength
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol1-SNAME.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Classic SNAME 3-volume set. Vol I covers buoyancy, stability, subdivisions, ship forms.
+- id: navalifpe_files_wordpress_com_2011_09_principles_of_naval_ar_a24b50
+  url: https://navalifpe.files.wordpress.com/2011/09/principles-of-naval-architecture-vol-2-sname.pdf
+  name: Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-SNAME.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: SNAME 3-volume set Vol II.
+- id: archive_org_details_principles_of_naval_architecture_vol_ii__690020
+  url: https://archive.org/details/principles-of-naval-architecture-vol-ii-resistance-propulsion-and-vibration
+  name: Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration (Internet Archive scan)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Higher-quality archive.org scan — same content as Vol2-SNAME.pdf but better OCR.
+- id: samgongustofa_is_media_english_solas_2020_consolidated_editi_c2f86d
+  url: https://www.samgongustofa.is/media/english/SOLAS-2020-Consolidated-Edition.pdf
+  name: SOLAS 2020 Consolidated Edition
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/SOLAS-2020-Consolidated-Edition.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Consolidated SOLAS convention text.
+- id: home_hvl_no_ansatte_gste_ftp_8dab16
+  url: https://home.hvl.no/ansatte/gste/ftp/mas124_intro_marinteknikk/Litteratur/Kompendier_Books/Ship_hydrostatics_and_stability_Biran.pdf
+  name: Ship Hydrostatics and Stability
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-Biran.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Rigorous treatment of hydrostatics and stability. Used in HVL MarinLab course.
+- id: rexresearch1_com_boatshipbuildinglibrary_shiphydrostaticssta_24e8cc
+  url: https://rexresearch1.com/BoatShipBuildingLibrary/ShipHydrostaticsStability.pdf
+  name: Ship Hydrostatics and Stability (2nd Edition)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-2ndEd.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Updated 2nd edition — includes new IMO stability regulations and parametric resonance.
+- id: rexresearch1_com_boatshipbuildinglibrary_shipstructuralanaly_00116e
+  url: https://rexresearch1.com/BoatShipBuildingLibrary/ShipStructuralAnalysisDesign.pdf
+  name: Ship Structural Analysis and Design
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Ship-Structural-Analysis-Design-Hughes-Paik.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: SNAME publication. ~650 pages. Hull girder analysis, ultimate strength, finite elements.
+- id: dieselduck_info_historical_06_20books_1899_20therory_20of_20_b72aa1
+  url: https://www.dieselduck.info/historical/06%20books/1899%20Therory%20of%20Naval%20Architecture.pdf
+  name: Text-book of Theoretical Naval Architecture
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/Theoretical-Naval-Architecture-Attwood-1899.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Public domain. Classical foundational text.
+- id: assets_publishing_service_gov_uk_media_6441189f22ef3b000f66f_f2721e
+  url: https://assets.publishing.service.gov.uk/media/6441189f22ef3b000f66f5dc/MSIS43_Intact_Stability_R05.23.pdf
+  name: 'UK MCA MSIS43 — Instructions to Surveyors: Intact Stability'
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/hydrostatics-stability/UK-MCA-MSIS43-Intact-Stability-Guidance.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Official UK MCA guidance on intact stability requirements and survey procedures.
+- id: usgs_earthquake_feed
+  url: https://earthquake.usgs.gov/earthquakes/feed/
+  name: USGS Earthquake Hazards Real-Time Feed
+  type: data_api
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Real-time GeoJSON, ATOM, CSV feeds (past hour/day/week/month, by magnitude). FDSN REST API for historical queries
+    by magnitude, depth, region, time. No auth. Relevant to offshore geohazard assessment, seabed instability, and subsea
+    infrastructure risk. ENS provides email/SMS alerts.
+
+    '
+- id: usna_edu_naoe_files_documents_b7b08d
+  url: https://www.usna.edu/NAOE/_files/documents/Courses/EN400/EN400_Course_Notes,_Summer_2020.pdf
+  name: USNA EN400 — Principles of Ship Performance (Course Notes)
+  type: paper
+  domain: naval_architecture
+  local_backup_path: /mnt/ace/docs/_standards/SNAME/textbooks/USNA-EN400-Principles-Ship-Performance-2020.pdf
+  download_status: downloaded
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Comprehensive single-PDF course textbook. Excellent coverage of all core NA topics.
+- id: libguides_usna_edu_c_php_b43f5d
+  url: https://libguides.usna.edu/c.php?g=410506&p=8554464
+  name: USNA Nimitz Library — Naval Architecture & Ocean Engineering Guide
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Links to ship registers, LOC resources, Lloyd's Register Foundation, National Archives plans.
+- id: libguides_usna_edu_c_php_094bcb
+  url: https://libguides.usna.edu/c.php?g=410506&p=2795318
+  name: USNA Nimitz Library — Naval Architecture Tools & Databases
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Knovel access, ABS Rules, US Army Corps Coastal Engineering Manual, key textbook list.
+- id: deepblue_lib_umich_edu_handle_2027_42_809_346fa4
+  url: https://deepblue.lib.umich.edu/handle/2027.42/809
+  name: University of Michigan — Basic Naval Architecture Vol I & II
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: Deep Blue redirects wget. Download manually via browser.
+- id: api_mycommittees
+  url: https://mycommittees.api.org/myc-standards
+  name: API MyCommittees Standards Tracking
+  type: standard_portal
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Tracks API committee activities, new editions in development, ballot status, and forthcoming changes before publication.
+    Registration free. Useful for anticipating standard revisions that affect module acceptance criteria.
+
+    '
+- id: github_com_osgeo_gdal_c8e9e6
+  url: https://github.com/OSGeo/gdal
+  name: GDAL/OGR
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings via osgeo module or rasterio/fiona wrappers. Underlying engine for most Python GIS libraries. Required
+    dependency for geopandas, rasterio, and fiona.
+
+    '
+- id: gdal_org_5e9e56
+  url: https://gdal.org/
+  name: GDAL/OGR (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings via osgeo module or rasterio/fiona wrappers. Underlying engine for most Python GIS libraries. Required
+    dependency for geopandas, rasterio, and fiona.
+
+    '
+- id: github_com_geopandas_geopandas_765c63
+  url: https://github.com/geopandas/geopandas
+  name: GeoPandas
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Extends pandas with geometry column. Direct integration with worldenergydata DataFrames. Spatial indexing via rtree/pygeos.
+    Outputs to GeoParquet for efficient storage.
+
+    '
+- id: geopandas_org_bd5fb8
+  url: https://geopandas.org/
+  name: GeoPandas (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Extends pandas with geometry column. Direct integration with worldenergydata DataFrames. Spatial indexing via rtree/pygeos.
+    Outputs to GeoParquet for efficient storage.
+
+    '
+- id: github_com_sintef_appliedcompsci_mrst_b3f60d
+  url: https://github.com/SINTEF-AppliedCompSci/MRST
+  name: MRST
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'MATLAB/Octave-based; no direct Python API. Can be called from Python via Oct2Py bridge. Results exportable to formats
+    readable by pandas/xarray. Consider OPM Flow for production Python integration instead.
+
+    '
+- id: sintef_no_projectweb_mrst_03c6da
+  url: https://www.sintef.no/projectweb/mrst/
+  name: MRST (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'MATLAB/Octave-based; no direct Python API. Can be called from Python via Oct2Py bridge. Results exportable to formats
+    readable by pandas/xarray. Consider OPM Flow for production Python integration instead.
+
+    '
+- id: github_com_opm_opm_simulators_ccde4a
+  url: https://github.com/OPM/opm-simulators
+  name: OPM Flow
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings via opm-python. Eclipse input format compatibility means existing industry models work directly.
+    ResInsight provides visualization. Data pipelines from worldenergydata can feed reservoir parameters.
+
+    '
+- id: opm_project_org_20cd50
+  url: https://opm-project.org/
+  name: OPM Flow (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python bindings via opm-python. Eclipse input format compatibility means existing industry models work directly.
+    ResInsight provides visualization. Data pipelines from worldenergydata can feed reservoir parameters.
+
+    '
+- id: github_com_pyproj4_pyproj_7a8674
+  url: https://github.com/pyproj4/pyproj
+  name: PyProj
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Underlies CRS handling in GeoPandas and Rasterio. Direct use for geodetic distance calculations between platforms,
+    wells, and pipeline nodes.
+
+    '
+- id: pyproj4_github_io_pyproj_eb3197
+  url: https://pyproj4.github.io/pyproj/
+  name: PyProj (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Underlies CRS handling in GeoPandas and Rasterio. Direct use for geodetic distance calculations between platforms,
+    wells, and pipeline nodes.
+
+    '
+- id: github_com_opm_resinsight_8623bb
+  url: https://github.com/OPM/ResInsight
+  name: ResInsight
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python API (rips module) for scripted post-processing. Can read Eclipse EGRID/INIT/UNRST files. Embeddable in analysis
+    pipelines alongside worldenergydata data extraction.
+
+    '
+- id: resinsight_org_616cf0
+  url: https://resinsight.org/
+  name: ResInsight (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python API (rips module) for scripted post-processing. Can read Eclipse EGRID/INIT/UNRST files. Embeddable in analysis
+    pipelines alongside worldenergydata data extraction.
+
+    '
+- id: github_com_whitson_org_01e0c5
+  url: https://github.com/whitson-org
+  name: Whitson+
+  type: github_repo
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python-native where available. Check individual repo licenses before integration. PVT calculations can feed into
+    assetutilities fluid property modules.
+
+    '
+- id: whitson_com_0238dd
+  url: https://whitson.com/
+  name: Whitson+ (docs)
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python-native where available. Check individual repo licenses before integration. PVT calculations can feed into
+    assetutilities fluid property modules.
+
+    '
+- id: dnv_com_oilgas_download_dnv_rp_c205_environmental_conditions_312208
+  url: https://www.dnv.com/oilgas/download/dnv-rp-c205-environmental-conditions-and-environmental-loads.html
+  name: https://www.dnv.com/oilgas/download/dnv-rp-c205-environmental-conditions-and-environmental-loads.html
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: DNV-RP-C205 Environmental loads for AQWA analysis
+- id: dnv_com_rules_standards_7b3848
+  url: https://www.dnv.com/rules-standards/
+  name: https://www.dnv.com/rules-standards/
+  type: standard_portal
+  domain: orcaflex
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml;
+    /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
+  notes: DNV offshore standards for OrcaFlex analysis validation
+- id: orcina_com_softwareproducts_orcaflex_documentation_9eb495
+  url: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
+  name: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
+  type: tool
+  domain: orcaflex
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
+  notes: OrcaFlex Python API documentation
+- id: orcina_com_resources_examples_0dfd1e
+  url: https://www.orcina.com/resources/examples/
+  name: https://www.orcina.com/resources/examples/
+  type: tool
+  domain: orcaflex
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
+  notes: OrcaFlex example models and case studies
+- id: orcina_com_resources_papers_9ecd5d
+  url: https://www.orcina.com/resources/papers/
+  name: https://www.orcina.com/resources/papers/
+  type: tool
+  domain: orcaflex
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
+  notes: Technical papers and validation studies for OrcaFlex
+- id: orcina_com_webhelp_orcaflex_251e1a
+  url: https://www.orcina.com/webhelp/OrcaFlex/
+  name: https://www.orcina.com/webhelp/OrcaFlex/
+  type: tutorial
+  domain: orcaflex
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
+  notes: OrcaFlex official documentation and API reference
+- id: github_com_sintef_thermopack_805919
+  url: https://github.com/SINTEF/thermopack
+  name: AweSim (Awesome Simulations)
+  type: github_repo
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. MIT license allows unrestricted
+    use. Can replace proprietary PVT packages in assetutilities.
+
+    '
+- id: thermopack_readthedocs_io_b37eb9
+  url: https://thermopack.readthedocs.io/
+  name: AweSim (Awesome Simulations) (docs)
+  type: tutorial
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. MIT license allows unrestricted
+    use. Can replace proprietary PVT packages in assetutilities.
+
+    '
+- id: github_com_danwbr_dwsim_04373d
+  url: https://github.com/DanWBR/dwsim
+  name: DWSIM
+  type: github_repo
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: '.NET/Mono based; limited direct Python integration. Can be driven via COM automation or CLI. Consider coupling with
+    assetutilities for property calculations. Thermodynamic packages useful as reference data.
+
+    '
+- id: dwsim_org_0ccbbd
+  url: https://dwsim.org/
+  name: DWSIM (docs)
+  type: tool
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: '.NET/Mono based; limited direct Python integration. Can be driven via COM automation or CLI. Consider coupling with
+    assetutilities for property calculations. Thermodynamic packages useful as reference data.
+
+    '
+- id: github_com_toblerity_fiona_ff37ff
+  url: https://github.com/Toblerity/Fiona
+  name: Fiona
+  type: github_repo
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pythonic wrapper around OGR. Used as I/O backend by GeoPandas. Useful for streaming large spatial datasets that
+    don''t fit in memory.
+
+    '
+- id: fiona_readthedocs_io_d0e99d
+  url: https://fiona.readthedocs.io/
+  name: Fiona (docs)
+  type: tutorial
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Pythonic wrapper around OGR. Used as I/O backend by GeoPandas. Useful for streaming large spatial datasets that
+    don''t fit in memory.
+
+    '
+- id: github_com_calebbell_fluids_d20262
+  url: https://github.com/CalebBell/fluids
+  name: Fluids
+  type: github_repo
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, pure Python. Works with thermo library for fluid properties. Comprehensive correlation library
+    that can validate digitalmodel''s pipeline calculation modules.
+
+    '
+- id: fluids_readthedocs_io_44ca41
+  url: https://fluids.readthedocs.io/
+  name: Fluids (docs)
+  type: tutorial
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, pure Python. Works with thermo library for fluid properties. Comprehensive correlation library
+    that can validate digitalmodel''s pipeline calculation modules.
+
+    '
+- id: gebco_2025_bathymetry
+  url: https://www.gebco.net/data-products/gridded-bathymetry-data
+  name: GEBCO_2025 Global Bathymetry Grid
+  type: data_api
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'GEBCO_2025 Grid published August 2025 (7th Seabed 2030 release). Global terrain model at 15 arc-second resolution.
+    NetCDF or GeoTIFF tile download at download.gebco.net. OPeNDAP subset access. Maintained by BODC. Beta portal replacing
+    current app early 2026. Critical for subsea routing, pipeline design, installation planning.
+
+    '
+- id: github_com_calebbell_thermo_cb4e92
+  url: https://github.com/CalebBell/thermo
+  name: Thermo
+  type: github_repo
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, pure Python. Companion library fluids provides pipe flow calculations. Direct integration with
+    pandas DataFrames for bulk property lookups.
+
+    '
+- id: thermo_readthedocs_io_4f5992
+  url: https://thermo.readthedocs.io/
+  name: Thermo (docs)
+  type: tutorial
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, pure Python. Companion library fluids provides pipe flow calculations. Direct integration with
+    pandas DataFrames for bulk property lookups.
+
+    '
+- id: imo_gisis
+  url: https://gisis.imo.org/Public/Default.aspx
+  name: IMO GISIS Public Portal
+  type: standard_portal
+  domain: regulatory
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Marine Casualties and Incidents (MCI) module: 4000+ records 2008-2024, exportable to Excel/CSV. Marine Safety Investigation
+    Reports searchable and downloadable. No REST API documented; web portal export only. Free account registration expands
+    available modules.
+
+    '
+- id: calculix_de_10b661
+  url: https://www.calculix.de/
+  name: CalculiX
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drive via subprocess from Python using pycalculix or custom wrappers. PrePoMax provides GUI pre/post-processing.
+    Input deck generation can be scripted from digitalmodel geometry modules.
+
+    '
+- id: dhondt_de_533f1e
+  url: https://www.dhondt.de/
+  name: CalculiX (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Drive via subprocess from Python using pycalculix or custom wrappers. PrePoMax provides GUI pre/post-processing.
+    Input deck generation can be scripted from digitalmodel geometry modules.
+
+    '
+- id: code_aster_org_4b2dab
+  url: https://code-aster.org/
+  name: Code_Aster
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: "Salome-Meca bundles geometry + meshing + solving. Python command files (.comm) can be generated programmatically.\
+    \ Pairs with Salome for geometry import from CAD models.\n | EDF (France) open-source FEM code. Large-scale structural,\
+    \ thermal, and seismic analysis. Strong nuclear/offshore heritage. Python scripting interface. Salome-Meca bundle provides\
+    \ pre/post processing. Mature industrial code with extensive verification. Relevant to topside structural and thermal\
+    \ fatigue.\n"
+- id: code_aster_org_1ee234
+  url: https://www.code-aster.org/
+  name: Code_Aster (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Salome-Meca bundles geometry + meshing + solving. Python command files (.comm) can be generated programmatically.
+    Pairs with Salome for geometry import from CAD models.
+
+    '
+- id: github_com_fenics_dolfinx_4b2031
+  url: https://github.com/FEniCS/dolfinx
+  name: FEniCSx (DOLFINx)
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Native Python API makes it straightforward to wrap inside digitalmodel modules. DOLFINx meshes can be generated
+    from Gmsh or Salome geometry pipelines. Results exportable to XDMF/VTK for post-processing.
+
+    '
+- id: fenicsproject_org_903758
+  url: https://fenicsproject.org/
+  name: FEniCSx (DOLFINx) (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: "Native Python API makes it straightforward to wrap inside digitalmodel modules. DOLFINx meshes can be generated\
+    \ from Gmsh or Salome geometry pipelines. Results exportable to XDMF/VTK for post-processing.\n | FEniCSx v0.10 released\
+    \ October 2025. DOLFINx provides C++ and Python API for PDE-based FEM. Complex number support, wide cell types, parallel\
+    \ MPI. Suited to custom constitutive models and coupled physics such as cathodic protection modelling.\n"
+- id: github_com_freecad_freecad_e35a7d
+  url: https://github.com/FreeCAD/FreeCAD
+  name: FreeCAD
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Complete Python scripting via FreeCAD module. Can be run headless for batch geometry generation. Exports STEP/IGES
+    for downstream FEA. Built on OpenCASCADE kernel.
+
+    '
+- id: freecad_org_0c7f6c
+  url: https://www.freecad.org/
+  name: FreeCAD (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Complete Python scripting via FreeCAD module. Can be run headless for batch geometry generation. Exports STEP/IGES
+    for downstream FEA. Built on OpenCASCADE kernel.
+
+    '
+- id: getfem_org_045775
+  url: https://getfem.org/
+  name: GetFEM
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python interface via getfem module. Can be combined with Gmsh for meshing. LGPL license allows library linking without
+    copyleft restrictions on calling code.
+
+    '
+- id: gmsh
+  url: https://gmsh.info/
+  name: Gmsh 3D Mesh Generator
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: '3D FEM mesh generator with built-in pre/post processing. Latest v4.15.1 (February 2026). Python, C++, C, Julia,
+    Fortran API. Parametric geometry, structured/unstructured/hybrid meshes, high-order elements, STL remeshing. pip install
+    gmsh. Integrates with FEniCS, OpenFOAM, scikit-gmsh wrapper.
+
+    '
+- id: iacs_unified_requirements
+  url: https://iacs.org.uk/publications/unified-requirements/
+  name: IACS Unified Requirements and Blue Book
+  type: standard_portal
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'All IACS Unified Requirements (URs) and Unified Interpretations (UIs) are freely downloadable. Blue Book (complete
+    UR/UI) free at iacs.org.uk/publications. UR E26/27 cybersecurity requirements (2024) notable recent addition. Provides
+    minimum classification standards; each member society (LR, BV, DNV, ABS, ClassNK) may exceed these.
+
+    '
+- id: github_com_kratosmultiphysics_kratos_a02f32
+  url: https://github.com/KratosMultiphysics/Kratos
+  name: Kratos Multiphysics
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Extensive Python interface; pip-installable. Modular application design aligns with digitalmodel''s module architecture.
+    BSD license allows commercial integration.
+
+    '
+- id: kratosmultiphysics_github_io_kratos_0de0d3
+  url: https://kratosmultiphysics.github.io/Kratos/
+  name: Kratos Multiphysics (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Extensive Python interface; pip-installable. Modular application design aligns with digitalmodel''s module architecture.
+    BSD license allows commercial integration.
+
+    '
+- id: github_com_idaholab_moose_14e2d1
+  url: https://github.com/idaholab/moose
+  name: MOOSE
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Python utilities for input generation and post-processing. Physics modules (PorousFlow, TensorMechanics) map to
+    ACE engineering domains. Input files can be templated from digitalmodel parameters.
+
+    '
+- id: mooseframework_inl_gov_42a9af
+  url: https://mooseframework.inl.gov/
+  name: MOOSE (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml; /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: "Python utilities for input generation and post-processing. Physics modules (PorousFlow, TensorMechanics) map to\
+    \ ACE engineering domains. Input files can be templated from digitalmodel parameters.\n | Idaho National Laboratory multiphysics\
+    \ FEM. Primary domain: nuclear, but strong geomechanics and thermal-structural modules. Python-controllable. Suited to\
+    \ coupled thermo-hydro-mechanical problems in wellbore and reservoir contexts.\n"
+- id: github_com_opensees_opensees_62c46f
+  url: https://github.com/OpenSees/OpenSees
+  name: OpenSees
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'OpenSeesPy provides full Python scripting. Can be combined with digitalmodel''s geotechnical modules for integrated
+    pile-soil analysis. Output compatible with NumPy/Pandas workflows.
+
+    '
+- id: opensees_berkeley_edu_9f7abb
+  url: https://opensees.berkeley.edu/
+  name: OpenSees (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'OpenSeesPy provides full Python scripting. Can be combined with digitalmodel''s geotechnical modules for integrated
+    pile-soil analysis. Output compatible with NumPy/Pandas workflows.
+
+    '
+- id: github_com_kitware_paraview_73d952
+  url: https://github.com/Kitware/ParaView
+  name: ParaView (Python)
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pvpython for scripted visualization. ParaView Catalyst for in-situ rendering during simulations. Can be scripted
+    from digitalmodel to generate automated reports with 3D views.
+
+    '
+- id: paraview_org_680d50
+  url: https://www.paraview.org/
+  name: ParaView (Python) (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pvpython for scripted visualization. ParaView Catalyst for in-situ rendering during simulations. Can be scripted
+    from digitalmodel to generate automated reports with 3D views.
+
+    '
+- id: github_com_scipy_scipy_1731c9
+  url: https://github.com/scipy/scipy
+  name: SciPy
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency. Sparse matrix support essential for FEA assembly. Optimization routines used in design
+    optimization workflows. Signal processing for time-series analysis.
+
+    '
+- id: scipy_org_c38aca
+  url: https://scipy.org/
+  name: SciPy (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'Already a core dependency. Sparse matrix support essential for FEA assembly. Optimization routines used in design
+    optimization workflows. Signal processing for time-series analysis.
+
+    '
+- id: github_com_sfepy_sfepy_12fb39
+  url: https://github.com/sfepy/sfepy
+  name: SfePy
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, direct NumPy/SciPy integration. Problem definitions in Python dictionaries make it easy to embed
+    in digitalmodel calculation chains.
+
+    '
+- id: sfepy_org_a3f6b3
+  url: https://sfepy.org/
+  name: SfePy (docs)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable, direct NumPy/SciPy integration. Problem definitions in Python dictionaries make it easy to embed
+    in digitalmodel calculation chains.
+
+    '
+- id: climate_trace_api
+  url: https://climatetrace.org/data
+  name: Climate TRACE Facility-Level Emissions (Beta API)
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '352M+ asset-level emissions (release v5.3.0, Jan 2025, through Nov 2025). Monthly source-level emissions for O&G
+    sectors 2021-2025. Beta REST API: sector/owner/location search and aggregated country queries. CSV regional download available.
+    Low volume recommended for API use.
+
+    '
+- id: climate_trace_registry
+  url: https://climatetrace.org/
+  name: Climate TRACE Open Emissions Registry
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '352M+ assets, sector and facility-level emissions. O&G refining, upstream, transport. Beta REST API. Monthly data
+    2021-2025. Regional CSV download. Unique asset-level granularity for attribution and ESG benchmarking.
+
+    '
+- id: edgar_2025
+  url: https://edgar.jrc.ec.europa.eu/
+  name: EDGAR 2025 Greenhouse Gas Emissions Database
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'EU JRC EDGAR_2025_GHG: 1970-2024 data (published 2025). CO2, CH4, N2O, F-gases per sector/country. IPCC methodology
+    Tier 1/2. Available via JRC Data Catalogue and World Bank Data 360. Structured NetCDF/CSV download. Reference dataset
+    for national inventory cross-checking.
+
+    '
+- id: fossil_fuel_registry
+  url: https://fossilfuelregistry.org/
+  name: Global Registry of Fossil Fuels (Carbon Tracker)
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'First open-source global database of oil, gas, coal production and reserves in CO2-equivalent. 50,000+ fields, 89
+    countries, 75% global production. Registry Emissions Model (38 MB): full scope 1/2/3 lifecycle. O&G Supply Chain Carbon
+    Intensity Model (13 MB): 2200 oil + 1140 gas projects ranked by carbon intensity. CC BY-SA.
+
+    '
+- id: iea_methane_tracker
+  url: https://www.iea.org/data-and-statistics/data-tools/methane-tracker-data-explorer
+  name: IEA Global Methane Tracker 2025
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Country and regional energy sector methane emissions, updated annually. 2025 update: country-level historical data,
+    open-access abatement model, satellite + measurement-campaign data. Downloadable dataset CSV/Excel. No API documented.
+    Critical for upstream O&G ESG reporting modules.
+
+    '
+- id: nsta_uk_ndr
+  url: https://www.nstauthority.co.uk/data-and-insights/data/
+  name: NSTA UK National Data Repository
+  type: data_api
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'North Sea Transition Authority (UK) has released 400+ GB of freely available exploration data. PEARS system administers
+    licences. December 2025 carbon storage licensing round opened 14 locations. Portal provides open well, seismic, and geological
+    data from the UK North Sea.
+
+    '
+- id: github_com_pyvista_pyvista_3b1b2e
+  url: https://github.com/pyvista/pyvista
+  name: PyVista
+  type: github_repo
+  domain: visualization
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Reads VTK, STL, PLY, OBJ formats. Direct NumPy array interface. Jupyter widget for interactive
+    exploration. Pairs with all FEA/CFD solvers that output VTK.
+
+    '
+- id: pyvista_org_75bcf2
+  url: https://pyvista.org/
+  name: PyVista (docs)
+  type: tool
+  domain: visualization
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
+  notes: 'pip-installable. Reads VTK, STL, PLY, OBJ formats. Direct NumPy array interface. Jupyter widget for interactive
+    exploration. Pairs with all FEA/CFD solvers that output VTK.
+
+    '
+- id: blm_gov_services_national_data_dd0cc5
+  url: https://www.blm.gov/services/national-data
+  name: BLM Federal Land Records
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Federal mineral leases, mining claims, land use data — partially referenced in landman module but not ingested
+- id: energyinst_org_statistical_review_d12812
+  url: https://www.energyinst.org/statistical-review
+  name: BP Statistical Review of World Energy
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Now published by Energy Institute; 70+ years of global energy production, consumption, reserves, prices — free Excel
+    download
+- id: opengeosys
+  url: https://www.opengeosys.org/
+  name: OpenGeoSys (THM/C Geomechanics)
+  type: tool
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'THMC simulation for porous and fractured media. Helmholtz RSE-listed. OGS-6 on GitHub with CI/CD. Applications:
+    CO2 storage, geothermal, nuclear waste, wellbore integrity. 2025 publication: Python-based FEFLOW-to-OGS converter. Relevant
+    to subsurface wellbore integrity and cement seal modelling.
+
+    '
+- id: catalystcoop_pudl_readthedocs_io_70ea46
+  url: https://catalystcoop-pudl.readthedocs.io/
+  name: PUDL (Public Utility Data Liberation)
+  type: tutorial
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Cleaned and normalized US energy data from EIA, FERC, EPA; includes EIA bulk API integration
+- id: worldbank_indicators_api
+  url: https://datahelpdesk.worldbank.org/knowledgebase/articles/898599
+  name: World Bank Open Data Indicators API
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '1400 time-series indicators for 217 economies, 50+ years. REST API at api.worldbank.org/v2/. Key energy indicators:
+    energy use per capita, electricity access, renewable energy share, CO2/GDP. October 2025 update includes new poverty,
+    food security, financial inclusion data. No auth required. JSON/XML/CSV output.
+
+    '
+- id: psmsl_sea_level
+  url: https://psmsl.org/data/obtaining/
+  name: PSMSL Sea Level Data
+  type: data_api
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Global monthly and annual mean sea level records from tide gauges since 1933. Data updated within 30 days (confirmed
+    Feb 2026). R and Python libraries for download. Works with BODC, UHSLC, VLIZ for high-frequency (<= hourly) data. No formal
+    REST API but structured station-ID download URLs.
+
+    '
+- id: aishub_api
+  url: https://www.aishub.net/api
+  name: AISHub Free Vessel Tracking API
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Free AIS data sharing service. JSON/XML/CSV API for real-time vessel positions globally. Access requires user to
+    stream live AIS data to AISHub. Relevant to marine operations planning, vessel tracking near offshore installations, and
+    incident proximity analysis.
+
+    '
+- id: base_bielefeld
+  url: https://api.base-search.net/
+  name: BASE (Bielefeld Academic Search Engine)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '12,000+ content providers, 400M+ documents. OAI-PMH harvesting. HTTP API for non-commercial use. Covers grey literature,
+    theses, and repositories not in commercial databases. Useful for offshore engineering theses and institutional preprints.
+
+    '
+- id: core_ac_uk
+  url: https://core.ac.uk/
+  name: CORE.ac.uk Open Research Aggregator
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '402M open access articles from 14,000+ repositories. Strong UK coverage (Cranfield, Imperial, Strathclyde offshore
+    engineering). REST API with real-time metadata and full-text access. Unique for institutional repositories not indexed
+    in commercial databases.
+
+    '
+- id: imarest_archive
+  url: https://archive.imarest.org/
+  name: IMarEST Digital Archive and Journals
+  type: professional_body
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Digital Archive: free access to historical IMarEST proceedings, magazines, and journals. Current journals via Taylor
+    & Francis subscription. IMO submissions by IMarEST sometimes free. Relevant to marine engineering and offshore operations.
+    Watch: INEC, WMTC proceedings.
+
+    '
+- id: openaire_explore
+  url: https://explore.openaire.eu/
+  name: OpenAIRE EXPLORE
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'EU open science infrastructure. Aggregates publications, datasets, software from Horizon Europe-funded projects
+    including offshore wind, green hydrogen, and subsea projects. API at api.openaire.eu. Links publications to datasets (ScholeXplorer).
+    FAIR-compliant metadata. Key for EU-funded offshore engineering research discovery.
+
+    '
+- id: openaire_api_agent
+  url: https://api.openaire.eu/
+  name: OpenAIRE Research Graph API (EU Open Research)
+  type: tool
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'REST API for EU Horizon Europe-funded research outputs. Covers offshore wind, hydrogen, subsea cable, and carbon
+    capture. Links publications to datasets (ScholeXplorer). Metadata and full-text links. Useful for EU-funded offshore engineering
+    preprints not in commercial databases.
+
+    '
+- id: openei_energy_data
+  url: https://openei.org/
+  name: OpenEI (Open Energy Information — NREL/DOE)
+  type: data_api
+  domain: marine
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'NREL/DOE open energy data portal. Datasets: utility rates, building energy, offshore wind, solar, geothermal. PRIMRE
+    (Primary Reference Materials Repository for Energy) hosts MoorDyn, MoorPy, and other offshore renewable energy tools.
+    MediaWiki API available. Complementary to EIA for offshore renewable context.
+
+    '
+- id: ampp_knowledge_hub
+  url: https://www.ampp.org/technical-research/impact/corrosion-basics
+  name: AMPP / NACE Knowledge Hub
+  type: tool
+  domain: materials
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'AMPP Knowledge Hub (2025) unifies NACE and AMPP content. Non-members access Corrosion Basics and some open articles.
+    CORROSION journal has selective OA. Standards (SP0169 pipeline CP, SP0176 offshore CP) require purchase. Relevant to cathodic
+    protection and corrosion modules.
+
+    '
+- id: twi_job_knowledge
+  url: https://www.twi-global.com/technical-knowledge/job-knowledge
+  name: TWI Job Knowledge Series
+  type: tool
+  domain: materials
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Welding processes, inspection, materials, and joining technology knowledge base. Free for registered users. Technical
+    Knowledge library includes FAQs, best practice guides on weld integrity, corrosion, and inspection. No API. Relevant to
+    weld quality and fracture mechanics modules.
+
+    '
+- id: rina_publications
+  url: https://rina.org.uk/publications/rina-transactions/
+  name: RINA — Royal Institution of Naval Architects
+  type: professional_body
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: '5000+ peer-reviewed papers since 1860. IJME published 4x/year via T&F. From 2025 RINA consolidates Ship & Boat International,
+    Warship Technology, Shiprepair & Maintenance into a single publication. Journal of Sailing Technology: fully open access,
+    peer-reviewed, no author/reader fees.
+
+    '
+- id: usgs_eq_geojson
+  url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+  name: USGS Earthquake Real-Time GeoJSON Feed
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Real-time GeoJSON feeds by time window and magnitude threshold. FDSN event API for historical queries. No auth.
+    Relevant to offshore geohazard monitoring, seabed instability, and subsea infrastructure risk assessment.
+
+    '
+- id: aisstream_websocket
+  url: https://aisstream.io/
+  name: aisstream.io WebSocket AIS Feed
+  type: tool
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Free WebSocket API for global real-time AIS data streaming. Vessel positions, identity, port calls. Open-source
+    GitHub codebase. Low-latency streaming format suits event-driven agent architectures. No data contribution required unlike
+    AISHub.
+
+    '
+- id: anp_brazil_portal
+  url: https://www.gov.br/anp/en
+  name: ANP Brazil — National Petroleum Agency Portal
+  type: standard_portal
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'ANP BDEP holds geophysical, geological, and geochemical data for Brazilian sedimentary basins. Monthly Oil and Gas
+    Production Bulletins (August 2025: 5.084 million boe/d). Pre-salt blocks data increasingly public. No documented REST
+    API; structured CSV/Excel downloads. Repository at re3data r3d100010989.
+
+    '
+- id: eia_petroleum_weekly
+  url: https://www.eia.gov/petroleum/supply/weekly/
+  name: EIA Weekly Petroleum Status Report Feed
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Weekly US crude oil and petroleum product inventories, imports, exports, production. Published every Wednesday (delayed
+    by one day if federal holiday). Data available via EIA API v2 under petroleum/supply series. RSS feed available. Relevant
+    for production forecasting and market context modules.
+
+    '
+- id: iso_15926_osdu
+  url: https://15926.org/
+  name: ISO 15926 Ontology and OSDU Data Platform
+  type: tool
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'ISO 15926: OWL ontology for oil and gas plant lifecycle data integration. ISO/TS 15926-12 (OWL implementation).
+    OSDU (Open Subsurface Data Universe Forum) builds on 15926 + Energistics (PRODML, RESQML, WITSML) for subsurface data
+    exchange. PPDM glossaries complement. Relevant for standardised data exchange between modules.
+
+    '
+- id: jodidata_org_4ac2a0
+  url: https://www.jodidata.org/
+  name: JODI Oil World Database
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Joint Organisations Data Initiative — monthly oil supply/demand for 100+ countries; free public access
+- id: asb_opec_org_data_asb_data_php_5988b0
+  url: https://asb.opec.org/data/ASB_Data.php
+  name: OPEC Monthly Oil Market Report
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Global crude production by OPEC members; ASB data download available for historical series
+- id: energy_usgs_gov_naga_map_e7aa7c
+  url: https://energy.usgs.gov/naga-map/
+  name: USGS National/World Oil & Gas Assessment
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Undiscovered resource estimates for ~170 basins; downloadable assessment datasets and spatial data
+- id: ntsb_carol
+  url: https://data.ntsb.gov/carol-main-public/basic-search
+  name: NTSB CAROL Marine Accident Database
+  type: data_api
+  domain: pipeline
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'CAROL system: marine investigations 2010-present. Keyword, basic, and query- builder search. NTSB 2025-2026 Open
+    Data Plan commits to formal API for marine, rail, pipeline, and highway datasets. Currently bulk CSV via web interface;
+    formal API in development.
+
+    '
+- id: nasa_pcoe_data
+  url: https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/
+  name: NASA Prognostics Center of Excellence Data Repository
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'IMS bearing run-to-failure dataset (3 tests, 20 kHz, 4 bearings) and FEMTO/PRONOSTIA bearing dataset. Reference
+    benchmarks for RUL prediction ML models. Also: battery, turbofan engine, electronics degradation. Relevant to predictive
+    maintenance for rotating offshore equipment. Data at data.nasa.gov and Kaggle mirror.
+
+    '
+- id: opensees
+  url: https://opensees.github.io/
+  name: OpenSees (Seismic Structural/Geotechnical FEM)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'FEM framework for seismic response of structural and geotechnical systems. Strong Python API (OpenSeesPy). Relevant
+    to jacket structure dynamic analysis and geotechnical pile modelling. Offshore community extensions exist.
+
+    '
+- id: openturns
+  url: https://openturns.github.io/
+  name: OpenTURNS (Uncertainty and Reliability)
+  type: tool
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Python/C++ platform for uncertainty analysis and reliability. Monte Carlo, FORM/SORM, Kriging, polynomial chaos
+    expansion. Relevant to structural reliability and fatigue life UQ in offshore structures.
+
+    '
+- id: salib
+  url: https://github.com/SALib/SALib
+  name: SALib (Sensitivity Analysis Library)
+  type: github_repo
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Sobol, Morris, FAST, DGSM, PAWN, HDMR, fractional factorial sensitivity analysis. Active PyPI. Useful for UQ in
+    fatigue, riser, mooring simulations. JOSS paper 10.21105/joss.00097.
+
+    '
+- id: sname_publications
+  url: https://sname.org/publications
+  name: SNAME — Society of Naval Architects and Marine Engineers
+  type: professional_body
+  domain: structural
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'T&R Bulletins cover structural FEA, hydrodynamics, materials, marine ops. 2025 new T&R Bulletin 2-36: Guidelines
+    for Structural Finite Element Analysis of Marine Structures. Journal of Ship Research and Marine Technology are subscription-based.
+    SNAME ICCAS proceedings via member access.
+
+    '
+- id: carbon_monitor
+  url: https://carbonmonitor.org/
+  name: Carbon Monitor Near-Real-Time CO2 Emissions
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Daily CO2 emission estimates since Jan 2019. Power generation (31 countries, hourly), industry, ground transport
+    (416 cities), aviation, buildings (206 countries). Published in Nature Scientific Data. Carbon Monitor Cities: 1500-city
+    dataset. 2025 preliminary: +0.6% YoY. No formal API; CSV download.
+
+    '
+- id: ipcc_interactive_atlas
+  url: https://interactive-atlas.ipcc.ch/
+  name: IPCC WG1 Interactive Atlas (CMIP6 Projections)
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 3
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'AR6 WG1 Interactive Atlas: CMIP5, CMIP6, CORDEX projections. 22 climate variables and indices. DataLab (Python/R)
+    for programmatic analysis. IPCC-WGI/Atlas GitHub repo provides code and reference grids. Copernicus Interactive Climate
+    Atlas (updated May 2025) is an alternative interface. CMIP6 projections also in Copernicus CDS.
+
+    '
+- id: carbon_intensity_uk
+  url: https://www.carbonintensity.org.uk/
+  name: Carbon Intensity API (UK National Grid)
+  type: tool
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 2
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'UK National Grid ESO real-time and forecast carbon intensity (gCO2/kWh). REST API, no auth. Useful for Scope 2 emissions
+    calculations for UK grid-connected onshore processing and LNG facilities.
+
+    '
+- id: nsidc_sea_ice
+  url: https://nsidc.org/data/
+  name: NSIDC Sea Ice Data (NOAA/NASA)
+  type: data_api
+  domain: sustainability
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 2
+  source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
+  notes: 'Arctic and Antarctic sea ice extent, concentration, thickness. Earthdata login (free). NSIDC-0051 passive microwave
+    sea ice concentration is the reference dataset. Relevant to arctic offshore operations and icebreaker routing.
+
+    '
+- id: rystadenergy_com_be6ac8
+  url: https://www.rystadenergy.com/
+  name: Rystad Energy UCube (limited free tier)
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Industry-leading upstream database; limited free data available; commercial subscription for full access
+- id: wiki_seg_org_wiki_open_data_7a4162
+  url: https://wiki.seg.org/wiki/Open_data
+  name: SEG Open Data Catalog
+  type: data_api
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Curated geophysical datasets — seismic, well logs; useful for subsurface modeling validation
+- id: github_com_softwareunderground_awesome_open_geoscience_02f23a
+  url: https://github.com/softwareunderground/awesome-open-geoscience
+  name: Software Underground awesome-open-geoscience
+  type: github_repo
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Curated index of open geoscience tools and datasets; useful as discovery layer for new data sources
+- id: gisis_imo_org_5db4e8
+  url: https://gisis.imo.org/
+  name: IMO GISIS
+  type: data_api
+  domain: naval_architecture
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Global shipping incident database; oil pollution equipment; requires registration; limited programmatic access
+- id: arxiv_org_abs_2410_09032_f21ee2
+  url: https://arxiv.org/abs/2410.09032
+  name: Alberta Wells Satellite Dataset
+  type: paper
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Satellite imagery for pinpointing oil and gas wells in Alberta; academic dataset for remote sensing
+- id: huggingface_co_datasets_gainenergy_oilandgas_engineering_dat_d63da6
+  url: https://huggingface.co/datasets/GainEnergy/oilandgas-engineering-dataset
+  name: GainEnergy Oil & Gas Engineering Dataset (Hugging Face)
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Open engineering Q&A and data for ML applications in oil and gas
+- id: iea_org_data_and_statistics_52a9b6
+  url: https://www.iea.org/data-and-statistics
+  name: IEA Monthly Oil Data Service
+  type: data_api
+  domain: oil_and_gas
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 1
+  source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
+  notes: Comprehensive OECD oil supply/demand data; requires paid subscription for full access
