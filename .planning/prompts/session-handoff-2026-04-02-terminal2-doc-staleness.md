@@ -48,6 +48,11 @@
    - Removed: .agent-os, Claude Flow, SPARC, consensus agents, Flow-Nexus, swarm diagrams
    - Added: Provider adapter model, GSD workflow, actual directory tree (52 top-level dirs)
 
+**Follow-up fixes (second pass):**
+- SKILLS_INDEX.md (`a744896a`): marked sparc subcategory as "legacy — retained for reference only"
+- TIER2_REPOSITORY_INDEX.md (`0a66ec02`): adjusted config requirements 52h→43h for 10 active repos
+- workspace-hub-structure.md (`0ca43cd8`): removed last `.agent-os` literal reference from notes
+
 **Net:** ~1,420 lines stale content removed, ~478 lines current content added
 
 ---
