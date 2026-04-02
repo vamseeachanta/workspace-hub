@@ -190,9 +190,18 @@ def generate_markdown(packages: list[dict[str, Any]]) -> str:
     lines.append("")
 
     counts = Counter(p["status"] for p in packages)
+    total = len(packages)
+    prod_n = counts.get("PRODUCTION", 0)
+    dev_n = counts.get("DEVELOPMENT", 0)
+    skel_n = counts.get("SKELETON", 0)
+    gap_n = counts.get("GAP", 0)
+
+    lines.append(f"**{prod_n}/{total} PRODUCTION, {dev_n}/{total} DEVELOPMENT, "
+                 f"{skel_n}/{total} SKELETON, {gap_n}/{total} GAP**")
+    lines.append("")
     lines.append("## Summary")
     lines.append("")
-    lines.append(f"- **Total packages**: {len(packages)}")
+    lines.append(f"- **Total packages**: {total}")
     for status in ["PRODUCTION", "DEVELOPMENT", "SKELETON", "GAP"]:
         emoji = _status_emoji(status)
         lines.append(f"- {emoji} **{counts.get(status, 0)} {status}**")
