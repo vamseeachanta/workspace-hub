@@ -1,0 +1,116 @@
+generated: '2026-04-02T11:40:37'
+total: 33
+summary:
+  unclassified: 11
+  mooring: 8
+  marine_operations: 7
+  subsea: 3
+  geotechnical: 1
+  environmental: 1
+  hydrodynamics: 1
+  structural: 1
+entries:
+- id: 095-OTC-2001
+  title: Alternative Tensioning System for Spar Top Tensioned Risers
+  subdomain: subsea
+- id: 15OTC-CFP-WEB
+  title: 15otc_cfp_web
+  subdomain: unclassified
+- id: 2008-INTRO-TO-API-RP-2MET
+  title: 2008_Intro_to_API_RP_2MET
+  subdomain: marine_operations
+- id: A1865-1-STEVENS
+  title: a1865_1_Stevens
+  subdomain: geotechnical
+- id: A1895-1-VANZWEITEN
+  title: a1895_1_VanZweiten
+  subdomain: environmental
+- id: ABS-GUI-00
+  title: ABS_GUI_00_(1994)_Guide_for_Thrusters_and_Dynamic_Positioning_Systems
+  subdomain: mooring
+- id: ABS-GUI-002
+  title: ABS_GUI_002_(1994)_Guide_for_Building_and_Classing_Floating_Production_Storage_Systems
+  subdomain: unclassified
+- id: AERIAL-OF-PELICAN-POINT[1]
+  title: aerial_of_Pelican_Point[1]
+  subdomain: unclassified
+- id: API-RP-1141-(1994)
+  title: Guidelines for Confined Space Entry On Board Tank Ships in The Petroleum
+    Industry
+  subdomain: marine_operations
+- id: API-RP-17A
+  title: API RP 17A.pdf
+  subdomain: unclassified
+- id: API-RP-2I
+  title: API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating
+    Structures.pdf
+  subdomain: mooring
+- id: API-RP-2MET-1ST-EDITION-NOV-20
+  title: API_RP_2MET_1st_Edition_Nov_2014
+  subdomain: marine_operations
+- id: API-RP-2P
+  title: API 2P.pdf
+  subdomain: mooring
+- id: API-RP-2RD-1ST-ED.
+  title: API_RP_2RD_1st_Ed._(1998)_Design_of_Risers_for_FPSs_and_TLPs
+  subdomain: subsea
+- id: API-RP-2SK-2ND-ED
+  title: API_RP_2SK_2nd_Ed_(1996)_Design_and_Analysis_of_Stationkeeping_Systems_for_Floating_Structures
+  subdomain: mooring
+- id: API-RP-2SM
+  title: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation
+    and Maintenance of Synthetic Fiber Ropes for Offshore Mooring.pdf
+  subdomain: mooring
+- id: API-RP-2T-1ST-ED
+  title: API_RP_2T_1st_Ed_(1987)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
+  subdomain: unclassified
+- id: API-RP-2T-2ND-ED
+  title: API_RP_2T_2nd_Ed_(1997)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
+  subdomain: marine_operations
+- id: API-RP-572
+  title: API RP 572 (2001).pdf
+  subdomain: marine_operations
+- id: DNV-OS-E301
+  title: DNV OS E301 (2010) Position Mooring.pdf
+  subdomain: mooring
+- id: FEBRUARY-1994
+  title: ABS Guide for Building and Classing Floating Production Installations
+  subdomain: marine_operations
+- id: GUDMESTAD,-O.T.,-ET-AL---REGUL
+  title: Regular Water Wave Kinematics
+  subdomain: unclassified
+- id: MARINE-RENEWABLE-ENERGY-–-OCEA
+  title: Marine_Renewable_Energy_–_Ocean_Current_Turbine_Mooring_Considerations
+  subdomain: mooring
+- id: MINUTES-OF-28TH-WG7-MEETING--
+  title: Minutes_of_28th_WG7_meeting_-_Hamburg_October_2010
+  subdomain: unclassified
+- id: N/A
+  title: Comparison of models for vortex induced vibrations of slender marine structures
+  subdomain: subsea
+- id: OTC-13109
+  title: Sensitivity of SCR Response and Fatigue Life to Variations in Hydrodynamic
+    Loading at Low Keulegan-Carpenter Numbers
+  subdomain: hydrodynamics
+- id: OTC-2015-COPRI-MRE-SPECIAL-SES
+  title: OTC_2015_COPRI_MRE_Special_Session_Rv4
+  subdomain: unclassified
+- id: OTC-26035-MS-MORING-SYSTEMS
+  title: OTC-26035-MS_Moring_Systems
+  subdomain: mooring
+- id: OTC-4587
+  title: Improved Wave Kinematics From Wave Staff Arrays
+  subdomain: marine_operations
+- id: OTC-5468
+  title: Fatigue Life Analysis of Production Risers
+  subdomain: structural
+- id: PIERSON,-JR.,-W.J.,-ET-AL,-196
+  title: A Proposed Spectral Form for Fully Developed Wind Seas Based on the Similarity
+    Theory of S. A. Kitaigorodskii
+  subdomain: unclassified
+- id: PUB101-FPSO-DLA
+  title: Pub101_FPSO_DLA
+  subdomain: unclassified
+- id: API-RP-2T
+  title: API 2T.pdf
+  subdomain: unclassified
