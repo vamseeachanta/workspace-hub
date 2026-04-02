@@ -104,7 +104,11 @@ for task in data.get('tasks', []):
         continue
     if hostname not in task.get('machines', []):
         continue
-    schedule = task['schedule']
+    # Support per-machine staggered schedules (#1668)
+    sbm = task.get('schedule_by_machine', {})
+    schedule = sbm.get(hostname, task.get('schedule', ''))
+    if not schedule:
+        continue
     command = task['command']
     # Expand \$WORKSPACE_HUB and \$LOG variables
     command = command.replace('\$WORKSPACE_HUB', hub)
