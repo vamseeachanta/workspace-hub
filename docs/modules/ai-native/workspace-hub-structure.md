@@ -1,196 +1,120 @@
 # Workspace Hub File Structure
 
-## Overview
-This document provides a visual representation of the workspace-hub directory structure using Mermaid diagrams.
+> **Last Updated:** 2026-04-02
+>
+> Visual representation of the workspace-hub directory structure.
 
-## Directory Structure Diagram
+## Top-Level Directory Structure
 
 ```mermaid
 graph TB
     WH[workspace-hub/]
 
-    WH --> CONF["📁 Configuration<br/>────────────<br/>.agent-os/<br/>.claude/<br/>CLAUDE.md"]
+    WH --> CONFIG["📁 Configuration<br/>────────────<br/>.claude/<br/>.codex/<br/>.gemini/<br/>config/<br/>AGENTS.md"]
 
-    WH --> PROJ["🚀 Projects<br/>────────────<br/>aceengineer-admin/<br/>aceengineercode/<br/>aceengineer-website/<br/>achantas-data/<br/>achantas-media/<br/>acma-projects/<br/>client_projects/<br/>frontierdeepwater/<br/>OGManufacturing/"]
+    WH --> TIER1["🚀 Tier-1 Repos<br/>────────────<br/>digitalmodel/<br/>assetutilities/<br/>assethold/<br/>worldenergydata/"]
 
-    WH --> UTIL["🛠️ Utilities<br/>────────────<br/>assethold/<br/>assetutilities/<br/>coordination/<br/>monitoring-dashboard/<br/>pyproject-starter/"]
+    WH --> TIER2["📦 Tier-2 Repos<br/>────────────<br/>aceengineer-admin/<br/>aceengineer-website/<br/>aceengineer-strategy/<br/>frontierdeepwater/<br/>doris/ seanation/<br/>saipem/ rock-oil-field/<br/>OGManufacturing/<br/>client_projects/"]
 
-    WH --> AIML["🤖 AI/ML<br/>────────────<br/>ai-native-traditional-eng/<br/>digitalmodel/<br/>doris/<br/>energy/<br/>investments/"]
+    WH --> INFRA["🛠️ Infrastructure<br/>────────────<br/>scripts/<br/>tests/<br/>templates/<br/>tools/<br/>src/"]
 
-    WH --> BUILD["📦 Build/System<br/>────────────<br/>dist/<br/>docker/<br/>docs/<br/>examples/<br/>node_modules/<br/>coverage/<br/>memory/<br/>modules/<br/>src/<br/>tests/"]
+    WH --> DATA["📊 Data & Knowledge<br/>────────────<br/>data/<br/>knowledge/<br/>knowledge-base/<br/>docs/<br/>reports/<br/>notes/"]
+
+    WH --> OTHER["📂 Other<br/>────────────<br/>achantas-data/<br/>achantas-media/<br/>acma-projects/<br/>investments/<br/>hobbies/<br/>_archive/"]
 
     style WH fill:#f9f,stroke:#333,stroke-width:4px
-    style CONF fill:#bbf,stroke:#333,stroke-width:2px
-    style PROJ fill:#bfb,stroke:#333,stroke-width:2px
-    style UTIL fill:#fbf,stroke:#333,stroke-width:2px
-    style AIML fill:#ffb,stroke:#333,stroke-width:2px
-    style BUILD fill:#bff,stroke:#333,stroke-width:2px
+    style CONFIG fill:#bbf,stroke:#333,stroke-width:2px
+    style TIER1 fill:#bfb,stroke:#333,stroke-width:2px
+    style TIER2 fill:#fbf,stroke:#333,stroke-width:2px
+    style INFRA fill:#ffb,stroke:#333,stroke-width:2px
+    style DATA fill:#bff,stroke:#333,stroke-width:2px
+    style OTHER fill:#ddd,stroke:#333,stroke-width:2px
 ```
 
-## Expanded Directory Tree
+## Claude Configuration Structure
 
 ```mermaid
 graph TB
-    ROOT["/"]
+    CLAUDE[📁 .claude/]
 
-    ROOT --> C1[📁 .agent-os/]
-    C1 --> C1A["• commands/<br/>• resources/<br/>• specs/"]
+    CLAUDE --> SKILLS["skills/<br/>568 active + 2,166 archived"]
+    CLAUDE --> STATE["state/<br/>Runtime reports & data"]
+    CLAUDE --> RULES["rules/<br/>Behavioral constraints"]
+    CLAUDE --> GSD["get-shit-done/<br/>GSD workflow data"]
+    CLAUDE --> COMMANDS["commands/<br/>Slash commands"]
+    CLAUDE --> KNOWLEDGE["knowledge/<br/>Domain knowledge"]
+    CLAUDE --> WORKTREES["worktrees/<br/>Git worktree configs"]
+    CLAUDE --> OTHER2["agents/ config/ docs/<br/>hooks/ memory/ plans/<br/>reports/ templates/<br/>tools/ workflows/"]
 
-    ROOT --> C2[📁 .claude/]
-    C2 --> C2A["• agents/<br/>• checkpoints/<br/>• commands/<br/>• helpers/"]
-
-    ROOT --> P1[🚀 ACE Engineer]
-    P1 --> P1A["• aceengineer-admin/<br/>• aceengineercode/<br/>• aceengineer-website/"]
-
-    ROOT --> P2[🚀 Achantas]
-    P2 --> P2A["• achantas-data/<br/>• achantas-media/"]
-
-    ROOT --> P3[🚀 Other Projects]
-    P3 --> P3A["• acma-projects/<br/>• client_projects/<br/>• frontierdeepwater/<br/>• OGManufacturing/"]
-
-    ROOT --> U1[🛠️ Assets]
-    U1 --> U1A["• assethold/<br/>• assetutilities/"]
-
-    ROOT --> U2[🛠️ Dev Tools]
-    U2 --> U2A["• coordination/<br/>• monitoring-dashboard/<br/>• pyproject-starter/"]
-
-    ROOT --> A1[🤖 AI Projects]
-    A1 --> A1A["• ai-native-traditional-eng/<br/>• digitalmodel/<br/>• doris/"]
-
-    ROOT --> A2[📊 Domain]
-    A2 --> A2A["• energy/<br/>• investments/<br/>• hobbies/"]
-
-    ROOT --> B1[📦 Build]
-    B1 --> B1A["• dist/<br/>• node_modules/<br/>• coverage/"]
-
-    ROOT --> B2[📄 Docs/Support]
-    B2 --> B2A["• docs/<br/>• examples/<br/>• docker/<br/>• memory/<br/>• modules/<br/>• src/<br/>• tests/"]
-
-    style ROOT fill:#f96,stroke:#333,stroke-width:3px
+    style CLAUDE fill:#f96,stroke:#333,stroke-width:3px
+    style SKILLS fill:#9cf,stroke:#333,stroke-width:2px
+    style GSD fill:#9fc,stroke:#333,stroke-width:2px
 ```
 
-## Detailed Configuration Structure
+## Provider Adapter Model
 
 ```mermaid
-graph TB
-    CONFIG[📁 Configuration Files]
+graph LR
+    AGENTS[AGENTS.md<br/>Canonical Entry Point]
 
-    CONFIG --> AGOS[.agent-os/]
-    CONFIG --> CLAUDE[.claude/]
+    AGENTS --> CLAUDE[".claude/<br/>Claude Code adapter<br/>Skills, rules, state"]
+    AGENTS --> CODEX[".codex/<br/>Codex adapter<br/>Review config"]
+    AGENTS --> GEMINI[".gemini/<br/>Gemini adapter<br/>Review config"]
 
-    AGOS --> AOSUB[Agent OS]
-    AOSUB --> AOCMD[commands/]
-    AOSUB --> AORES[resources/]
-    AOSUB --> AOSPEC[specs/]
-
-    CLAUDE --> CLSUB[Claude Structure]
-    CLSUB --> AGENTS[agents/]
-    CLSUB --> CHECK[checkpoints/]
-    CLSUB --> CLCMD[commands/]
-    CLSUB --> HELP[helpers/]
-
-    AGENTS --> AGTYPES[Agent Types]
-    AGTYPES --> AGCORE["✅ core/<br/>• coder<br/>• planner<br/>• researcher<br/>• reviewer<br/>• tester"]
-    AGTYPES --> AGCON["🔗 consensus/<br/>• byzantine<br/>• raft<br/>• gossip<br/>• quorum"]
-    AGTYPES --> AGGH["📦 github/<br/>• pr-manager<br/>• issue-tracker<br/>• release-manager"]
-    AGTYPES --> AGFN["☁️ flow-nexus/<br/>• workflow<br/>• sandbox<br/>• neural<br/>• swarm"]
-    AGTYPES --> AGSPARC["📐 sparc/<br/>• specification<br/>• pseudocode<br/>• architecture<br/>• refinement"]
-
-    style CONFIG fill:#f96,stroke:#333,stroke-width:3px
-    style AGTYPES fill:#9cf,stroke:#333,stroke-width:2px
+    style AGENTS fill:#f96,stroke:#333,stroke-width:3px
+    style CLAUDE fill:#9cf,stroke:#333,stroke-width:2px
+    style CODEX fill:#9fc,stroke:#333,stroke-width:2px
+    style GEMINI fill:#fc9,stroke:#333,stroke-width:2px
 ```
 
 ## Key Directory Purposes
 
-### 📁 Configuration Directories
-- **`.agent-os/`**: Agent OS configuration and specifications
-- **`.claude/`**: Claude Code agent definitions and helpers
-- **`CLAUDE.md`**: Main Claude configuration file
+### 📁 Configuration
+- **`.claude/`**: Claude Code config — skills, rules, state, GSD workflow
+- **`.codex/`**: OpenAI Codex adapter for code review
+- **`.gemini/`**: Google Gemini adapter for triggered reviews
+- **`config/`**: Central configuration (schedule-tasks.yaml, quality baselines)
+- **`AGENTS.md`**: Canonical entry point (Control-Plane Contract)
 
-### 🚀 Project Directories
-- **`aceengineer-*`**: ACE Engineer related projects (admin, code, website)
-- **`achantas-*`**: Achantas data and media projects
+### 🚀 Tier-1 Repositories (Core Engineering)
+- **`digitalmodel/`**: Engineering simulation (OrcaFlex, OrcaWave, FreeCAD)
+- **`assetutilities/`**: Shared Python utilities
+- **`assethold/`**: Asset management library
+- **`worldenergydata/`**: Energy industry data and analysis
+
+### 📦 Tier-2 Repositories (Business & Projects)
+- **`aceengineer-admin/`**: Business administration automation
+- **`aceengineer-website/`**: Company website (Flask)
+- **`aceengineer-strategy/`**: Business strategy
+- **`frontierdeepwater/`**: Marine engineering project
+- **`doris/`**: Marine domain project
+- **`seanation/`**: Drilling domain project
+- **`saipem/`**: Construction/engineering domain
+- **`rock-oil-field/`**: Oil field analysis
+- **`OGManufacturing/`**: Manufacturing domain
+- **`client_projects/`**: Client project collection
+
+### 🛠️ Infrastructure
+- **`scripts/`**: Automation scripts (quality checks, operations, cron)
+- **`tests/`**: Test suites (pytest)
+- **`templates/`**: Project templates
+- **`tools/`**: Utility tools
+- **`src/`**: Workspace-hub Python source
+
+### 📊 Data & Knowledge
+- **`data/`**: Shared data files
+- **`knowledge/`**: Domain knowledge base
+- **`knowledge-base/`**: Structured knowledge
+- **`docs/`**: Documentation tree (standards, research, plans, reports)
+- **`reports/`**: Generated reports
+- **`notes/`**: Working notes
+
+### 📂 Other
+- **`achantas-data/`**, **`achantas-media/`**: Personal data/media
 - **`acma-projects/`**: ACMA project collection
-- **`client_projects/`**: Client-specific projects
-- **`frontierdeepwater/`**: Frontier deepwater project
-- **`OGManufacturing/`**: Oil & Gas manufacturing
-
-### 🛠️ Utility Directories
-- **`assethold/`, `assetutilities/`**: Asset management utilities
-- **`coordination/`**: Project coordination tools
-- **`monitoring-dashboard/`**: System monitoring
-- **`pyproject-starter/`**: Python project templates
-
-### 🤖 AI/ML Directories
-- **`ai-native-traditional-eng/`**: AI native engineering
-- **`digitalmodel/`**: Digital modeling projects
-- **`doris/`**: Doris AI system
-
-### 📊 Domain-Specific
-- **`energy/`**: Energy sector projects
 - **`investments/`**: Investment tracking
-- **`hobbies/`**: Personal hobby projects
-
-### 📦 Build/System
-- **`dist/`**: Distribution builds
-- **`docker/`**: Docker configurations
-- **`docs/`**: Documentation
-- **`examples/`**: Code examples
-- **`node_modules/`**: Node dependencies
-- **`coverage/`**: Test coverage reports
-- **`memory/`**: Memory storage
-- **`modules/`**: Project modules
-
-## Agent Hierarchy
-
-```mermaid
-graph LR
-    AGENTROOT[Claude Agents]
-
-    AGENTROOT --> CORE[Core Agents]
-    CORE --> C1[coder]
-    CORE --> C2[planner]
-    CORE --> C3[researcher]
-    CORE --> C4[reviewer]
-    CORE --> C5[tester]
-
-    AGENTROOT --> CONSENSUS[Consensus]
-    CONSENSUS --> CON1[byzantine-coordinator]
-    CONSENSUS --> CON2[raft-manager]
-    CONSENSUS --> CON3[gossip-coordinator]
-    CONSENSUS --> CON4[quorum-manager]
-
-    AGENTROOT --> GITHUB[GitHub]
-    GITHUB --> GH1[pr-manager]
-    GITHUB --> GH2[issue-tracker]
-    GITHUB --> GH3[release-manager]
-    GITHUB --> GH4[workflow-automation]
-
-    AGENTROOT --> FLOWNEXUS[Flow-Nexus]
-    FLOWNEXUS --> FN1[workflow]
-    FLOWNEXUS --> FN2[sandbox]
-    FLOWNEXUS --> FN3[neural-network]
-    FLOWNEXUS --> FN4[swarm]
-
-    AGENTROOT --> SPARC[SPARC]
-    SPARC --> SP1[specification]
-    SPARC --> SP2[pseudocode]
-    SPARC --> SP3[architecture]
-    SPARC --> SP4[refinement]
-
-    AGENTROOT --> SWARM[Swarm]
-    SWARM --> SW1[hierarchical-coordinator]
-    SWARM --> SW2[mesh-coordinator]
-    SWARM --> SW3[adaptive-coordinator]
-
-    style AGENTROOT fill:#f96,stroke:#333,stroke-width:3px
-    style CORE fill:#9cf,stroke:#333,stroke-width:2px
-    style CONSENSUS fill:#fc9,stroke:#333,stroke-width:2px
-    style GITHUB fill:#9fc,stroke:#333,stroke-width:2px
-    style FLOWNEXUS fill:#c9f,stroke:#333,stroke-width:2px
-    style SPARC fill:#f9c,stroke:#333,stroke-width:2px
-    style SWARM fill:#cf9,stroke:#333,stroke-width:2px
-```
+- **`hobbies/`**: Personal projects
+- **`_archive/`**: Archived content
 
 ## Development Workflow
 
@@ -198,80 +122,36 @@ graph LR
 flowchart TB
     START[Start Development]
 
-    START --> INIT[Initialize Project]
-    INIT --> AGENTSEL[Select Agents]
+    START --> PLAN[Plan — explicit plan + approval]
+    PLAN --> TDD[Write Tests First — TDD mandatory]
+    TDD --> IMPL[Implement]
+    IMPL --> COMMIT["Commit to main + push"]
 
-    AGENTSEL --> SPARC{Use SPARC?}
-    SPARC -->|Yes| SPARCFLOW[SPARC Workflow]
-    SPARC -->|No| DIRECTDEV[Direct Development]
+    COMMIT --> REVIEW{Review needed?}
+    REVIEW -->|Yes| CODEX_REVIEW["Codex reviews<br/>(AI Review Routing)"]
+    REVIEW -->|No| DONE[Done]
 
-    SPARCFLOW --> SPEC[Specification]
-    SPEC --> PSEUDO[Pseudocode]
-    PSEUDO --> ARCH[Architecture]
-    ARCH --> REFINE[Refinement]
-    REFINE --> COMPLETE[Completion]
-
-    DIRECTDEV --> SPAWN[Spawn Agents]
-    SPAWN --> COORD[Coordinate via MCP]
-    COORD --> EXEC[Execute with Task Tool]
-
-    COMPLETE --> TEST[Testing]
-    EXEC --> TEST
-
-    TEST --> REVIEW[Code Review]
-    REVIEW --> DEPLOY[Deploy]
-
-    DEPLOY --> MONITOR[Monitor]
-    MONITOR --> END[End]
+    CODEX_REVIEW --> VERDICT{Verdict}
+    VERDICT -->|APPROVE/MINOR| DONE
+    VERDICT -->|MAJOR| IMPL
 
     style START fill:#9f9,stroke:#333,stroke-width:3px
-    style END fill:#f99,stroke:#333,stroke-width:3px
-    style SPARCFLOW fill:#99f,stroke:#333,stroke-width:2px
-```
-
-## Key Integration Points
-
-```mermaid
-graph TD
-    CLAUDE[Claude Code]
-    MCP[MCP Tools]
-    TASK[Task Tool]
-
-    CLAUDE --> TASK
-    TASK --> AGENTS[Agent Execution]
-
-    MCP --> COORD[Coordination]
-    COORD --> SWARMCTRL[Swarm Control]
-
-    AGENTS --> FILES[File Operations]
-    AGENTS --> BASH[Bash Commands]
-    AGENTS --> GIT[Git Operations]
-
-    SWARMCTRL --> MEMORY[Memory Management]
-    SWARMCTRL --> NEURAL[Neural Training]
-    SWARMCTRL --> GITHUB[GitHub Integration]
-
-    FILES --> PROJECT[Project Files]
-    BASH --> BUILD[Build Process]
-    GIT --> REPO[Repository]
-
-    style CLAUDE fill:#f96,stroke:#333,stroke-width:3px
-    style MCP fill:#69f,stroke:#333,stroke-width:3px
-    style TASK fill:#9f6,stroke:#333,stroke-width:3px
+    style DONE fill:#9f9,stroke:#333,stroke-width:3px
+    style TDD fill:#99f,stroke:#333,stroke-width:2px
 ```
 
 ## Notes
 
-- **Workspace Hub** serves as a centralized development environment
-- **Agent OS** provides the framework for agent-based development
-- **Claude Flow** handles orchestration and coordination
-- **SPARC methodology** ensures systematic development
-- Projects are organized by domain and purpose
-- Configuration files control agent behavior and workflows
+- **AGENTS.md** is the canonical entry point — all provider adapters extend it
+- **GSD workflow** is the standard task execution framework
+- **GitHub Issues** are the single source of truth for task tracking
+- **`uv run`** is always used for Python — never bare `python3`
+- **Legacy paths** (`.agent-os/`, `.hive-mind/`, `.swarm/`) are frozen — do not extend
+- Projects are organized by tier (1-3) based on engineering criticality
 
 This structure enables:
-1. **Parallel Development**: Multiple projects can be worked on simultaneously
-2. **Agent Coordination**: Different agents handle specific aspects
-3. **Systematic Approach**: SPARC ensures thorough planning and execution
-4. **Scalability**: Easy to add new projects and agents
-5. **Maintainability**: Clear organization and separation of concerns
+1. **Multi-provider AI** — Claude, Codex, and Gemini work from the same codebase
+2. **Skills-based automation** — 568 active skills covering engineering, data, business
+3. **Quality enforcement** — automated staleness, drift, and complexity checks
+4. **Cron automation** — scheduled tasks via `config/schedule-tasks.yaml`
+5. **TDD workflow** — tests before implementation, always
