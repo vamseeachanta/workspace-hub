@@ -1,0 +1,33 @@
+# Hermes Agent — shared config template
+# Managed by workspace-hub; synced via scripts/_core/sync-agent-configs.sh
+# Machine-specific overrides (auth, paths) are preserved during merge.
+#
+# DO NOT put API keys or tokens here — those go in ~/.hermes/auth.json and ~/.hermes/.env
+#
+model:
+  default: claude-opus-4-6
+  provider: anthropic
+fallback_providers: []
+credential_pool_strategies: {}
+toolsets:
+- hermes-cli
+agent:
+  max_turns: 90
+  tool_use_enforcement: auto
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+  env_passthrough: []
+  persistent_shell: true
+browser:
+  inactivity_timeout: 120
+  command_timeout: 30
+  record_sessions: false
+  allow_private_urls: false
+checkpoints:
+  enabled: true
+  max_snapshots: 50
+file_read_max_chars: 100000
+compression:
+  enabled: true

@@ -71,7 +71,7 @@ tasks:
   - id: harness-update
     label: AI harness tools daily update
     schedule: "15 1 * * *"
-    machines: [dev-primary, ace-linux-1]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
     requires: [bash, git, npm]
     prefer: dev-primary
     command: >-

@@ -33,10 +33,14 @@ done
 CLAUDE_TEMPLATE="$WS_HUB/config/agents/claude/settings.json"
 CODEX_TEMPLATE="$WS_HUB/config/agents/codex/config.toml"
 GEMINI_TEMPLATE="$WS_HUB/config/agents/gemini/settings.json"
+HERMES_TEMPLATE="$WS_HUB/config/agents/hermes/config.yaml.template"
+HERMES_SOUL_TEMPLATE="$WS_HUB/config/agents/hermes/SOUL.md"
 
 CLAUDE_TARGET="$HOME/.claude/settings.json"
 CODEX_TARGET="$HOME/.codex/config.toml"
 GEMINI_TARGET="$HOME/.gemini/settings.json"
+HERMES_TARGET="$HOME/.hermes/config.yaml"
+HERMES_SOUL_TARGET="$HOME/.hermes/SOUL.md"
 
 changed=0
 skipped=0
@@ -208,6 +212,74 @@ EOF
     fi
 }
 
+sync_hermes_yaml_config() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+
+    ensure_parent_dir "$target"
+
+    # Hermes config is YAML — no jq merge available.
+    # Strategy: if target doesn't exist, copy template.
+    # If target exists and is identical, skip.
+    # If target exists and differs, only overwrite with --force.
+    # (Hermes stores auth in separate auth.json/.env, so config.yaml is safe to replace.)
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create)"
+        else
+            cp "$template" "$target"
+            log_change "$label -> $target (create)"
+        fi
+        return
+    fi
+
+    if cmp -s "$template" "$target"; then
+        log_skip "$label -> $target (already current)"
+        return
+    fi
+
+    if [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (overwrite)"
+        else
+            cp "$template" "$target"
+            log_change "$label -> $target (overwrite)"
+        fi
+    else
+        log_skip "$label -> $target (differs, use --force to overwrite)"
+    fi
+}
+
+sync_hermes_plain_file() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+
+    ensure_parent_dir "$target"
+
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create)"
+        else
+            cp "$template" "$target"
+            log_change "$label -> $target (create)"
+        fi
+        return
+    fi
+
+    if cmp -s "$template" "$target"; then
+        log_skip "$label -> $target (already current)"
+    else
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (update)"
+        else
+            cp "$template" "$target"
+            log_change "$label -> $target (update)"
+        fi
+    fi
+}
+
 sync_repo_codex_configs() {
     local ws_root="$1"
     local list_file="$ws_root/config/sync-items.json"
@@ -244,6 +316,14 @@ sync_json_merge "$CLAUDE_TEMPLATE" "$CLAUDE_TARGET" "Claude settings"
 sync_codex_managed_config "$CODEX_TEMPLATE" "$CODEX_TARGET" "Codex config"
 sync_json_merge "$GEMINI_TEMPLATE" "$GEMINI_TARGET" "Gemini settings"
 sync_repo_codex_configs "$WS_HUB"
+
+# Hermes — sync config.yaml and SOUL.md if templates exist
+if [[ -f "$HERMES_TEMPLATE" ]]; then
+    sync_hermes_yaml_config "$HERMES_TEMPLATE" "$HERMES_TARGET" "Hermes config"
+fi
+if [[ -f "$HERMES_SOUL_TEMPLATE" ]]; then
+    sync_hermes_plain_file "$HERMES_SOUL_TEMPLATE" "$HERMES_SOUL_TARGET" "Hermes SOUL.md"
+fi
 
 echo
 echo "=== Summary ==="
