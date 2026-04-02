@@ -1,6 +1,6 @@
 # Tier 2 Repository Index & Deployment Status
 
-**Assessment Date**: 2026-01-13 | **Status**: Phase 1c Complete | **Approval Status**: PENDING
+**Assessment Date**: 2026-04-02 | **Refreshed**: 2026-04-02 | **Status**: Phase 1c Complete (Q2 Refresh)
 
 ---
 
@@ -10,7 +10,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│         TIER 2 REPOSITORIES: 12 TOTAL          │
+│   TIER 2 REPOSITORIES: 12 (10 present, 2 removed) │
 ├─────────────────────────────────────────────────┤
 │ 🟢 HIGH READINESS (80%+):   6 repos - Ready   │
 │ 🟡 MEDIUM READINESS (70-79%): 4 repos - Some  │
@@ -26,29 +26,13 @@
 
 ## Complete Repository Inventory
 
-### 1. Energy
+### 1. Energy ⚠️ REMOVED
 
 ```
 Repo:              energy
-Category:          Work (Tier 2)
-Current Branch:    main ✅
-Repository Size:   5.4 GB
-Python Version:    3.9+
-Test Files:        1 (test_smoke.py) ✅
-pyproject.toml:    ✅ Present
-pytest.ini:        ❌ Missing
-Readiness:         85% 🟢 HIGH
-Priority:          4
-Est. Deploy Time:  2-3 days
-Status:            Smoke test exists, needs pytest.ini + coverage
-Deployment Ready:  YES (Phase 2)
+Status:            ❌ Directory no longer present in workspace-hub (as of 2026-04-02)
+Notes:             Energy domain data now consolidated under worldenergydata
 ```
-
-**Deployment Details:**
-- Python files: 64
-- Project name: "energy"
-- Key dependencies: gitpython, python-certifi-win32
-- Special notes: Large repository, energy domain expertise needed
 
 ---
 
@@ -275,31 +259,13 @@ Deployment Ready:  YES (Phase 3)
 
 ---
 
-### 10. AI-Native-Traditional-Eng
+### 10. AI-Native-Traditional-Eng ⚠️ REMOVED
 
 ```
 Repo:              ai-native-traditional-eng
-Category:          Work (Tier 2)
-Current Branch:    main ✅
-Repository Size:   12 MB ⭐⭐ (SMALLEST - IDEAL FOR PILOT)
-Python Version:    3.9+
-Test Files:        1 (test_smoke.py) ✅
-pyproject.toml:    ✅ Present
-pytest.ini:        ❌ Missing
-Readiness:         85% 🟢 HIGH
-Priority:          2
-Est. Deploy Time:  1-2 days ✨ FASTEST
-Status:            Perfect pilot candidate
-Deployment Ready:  YES (Phase 1 - SECOND)
+Status:            ❌ Directory no longer present in workspace-hub (as of 2026-04-02)
+Notes:             Content likely merged into digitalmodel or docs/modules/ai-native/
 ```
-
-**Deployment Details:**
-- Python files: 65
-- Project name: "ai-native-traditional-eng"
-- Key dependencies: gitpython, python-certifi-win32
-- Special notes: Smallest repo, well-organized
-- AI-native methodology focus
-- Risk: Low - ideal testing patterns reference
 
 ---
 
@@ -439,7 +405,7 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 
 | Metric | Value |
 |--------|-------|
-| Total Repositories | 12 |
+| Total Repositories | 12 (10 present, 2 removed) |
 | Total Size | ~58.7 GB |
 | Average Size | 4.9 GB |
 | Total Python Files | ~768 |
@@ -524,9 +490,9 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 ---
 
 **Document**: Tier 2 Repository Index
-**Date**: 2026-01-13
+**Date**: 2026-01-13 (refreshed 2026-04-02)
 **Phase**: 1c Assessment Complete
-**Approval Required**: YES - Before proceeding to Phase 1 Pilot
+**Note**: 2 repos (energy, ai-native-traditional-eng) removed from workspace since original assessment
 
 ---
 
