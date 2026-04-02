@@ -1,0 +1,392 @@
+[
+  {
+    "source": "workflow_pattern",
+    "domain": "digitalmodel/src",
+    "frequency": 130,
+    "sessions_count": 3,
+    "suggested_name": "digitalmodel-src-workflow",
+    "rationale": "Repeating 15-step manual workflow in 'digitalmodel/src' across 3 sessions (130 occurrences). Pattern: Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Rea",
+    "priority_score": 390,
+    "example_sequences": [
+      "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read"
+    ]
+  },
+  {
+    "source": "coverage_gap",
+    "domain": "scripts/cron",
+    "frequency": 119,
+    "suggested_name": "cron-automation",
+    "rationale": "Directory 'scripts/cron' has 119 tool calls across sessions but no matching skill.",
+    "priority_score": 119,
+    "example_sequences": []
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "vamseeachanta",
+    "frequency": 22,
+    "sessions_count": 3,
+    "suggested_name": "vamseeachanta-workflow",
+    "rationale": "Repeating 7-step manual workflow in 'vamseeachanta' across 3 sessions (22 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 66,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "coverage_gap",
+    "domain": "scripts/knowledge",
+    "frequency": 41,
+    "suggested_name": "knowledge-automation",
+    "rationale": "Directory 'scripts/knowledge' has 41 tool calls across sessions but no matching skill.",
+    "priority_score": 41,
+    "example_sequences": []
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "scripts/skills",
+    "frequency": 13,
+    "sessions_count": 3,
+    "suggested_name": "scripts-skills-workflow",
+    "rationale": "Repeating 5-step manual workflow in 'scripts/skills' across 3 sessions (13 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 39,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "digitalmodel/tests",
+    "frequency": 19,
+    "sessions_count": 2,
+    "suggested_name": "digitalmodel-tests-workflow",
+    "rationale": "Repeating 5-step manual workflow in 'digitalmodel/tests' across 2 sessions (19 occurrences). Pattern: Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "priority_score": 38,
+    "example_sequences": [
+      "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read"
+    ]
+  },
+  {
+    "source": "coverage_gap",
+    "domain": "docs/superpowers",
+    "frequency": 33,
+    "suggested_name": "superpowers-automation",
+    "rationale": "Directory 'docs/superpowers' has 33 tool calls across sessions but no matching skill.",
+    "priority_score": 33,
+    "example_sequences": []
+  },
+  {
+    "source": "coverage_gap",
+    "domain": "scripts/learning",
+    "frequency": 32,
+    "suggested_name": "learning-automation",
+    "rationale": "Directory 'scripts/learning' has 32 tool calls across sessions but no matching skill.",
+    "priority_score": 32,
+    "example_sequences": []
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "src/digitalmodel",
+    "frequency": 16,
+    "sessions_count": 2,
+    "suggested_name": "src-digitalmodel-workflow",
+    "rationale": "Repeating 8-step manual workflow in 'src/digitalmodel' across 2 sessions (16 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 32,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "/tmp",
+    "frequency": 10,
+    "sessions_count": 3,
+    "suggested_name": "tmp-workflow",
+    "rationale": "Repeating 10-step manual workflow in '/tmp' across 3 sessions (10 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 30,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "repos/vamseeachanta",
+    "frequency": 13,
+    "sessions_count": 2,
+    "suggested_name": "repos-vamseeachanta-workflow",
+    "rationale": "Repeating 5-step manual workflow in 'repos/vamseeachanta' across 2 sessions (13 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 26,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "examples/reporting",
+    "frequency": 12,
+    "sessions_count": 2,
+    "suggested_name": "examples-reporting-workflow",
+    "rationale": "Repeating 7-step manual workflow in 'examples/reporting' across 2 sessions (12 occurrences). Pattern: Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "priority_score": 24,
+    "example_sequences": [
+      "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read"
+    ]
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "tests",
+    "frequency": 10,
+    "sessions_count": 2,
+    "suggested_name": "tests-workflow",
+    "rationale": "Repeating 7-step manual workflow in 'tests' across 2 sessions (10 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 20,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "data/scientific/pandas-data-processing",
+    "frequency": 10,
+    "suggested_name": "pandas-data-processing-integration",
+    "rationale": "Hot skill 'pandas-data-processing' (calls_in_period=10) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 20,
+    "example_sequences": []
+  },
+  {
+    "source": "workflow_pattern",
+    "domain": "scripts/session",
+    "frequency": 9,
+    "sessions_count": 2,
+    "suggested_name": "scripts-session-workflow",
+    "rationale": "Repeating 5-step manual workflow in 'scripts/session' across 2 sessions (9 occurrences). Pattern: Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "priority_score": 18,
+    "example_sequences": [
+      "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash"
+    ]
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "operations/automation/github-actions",
+    "frequency": 7,
+    "suggested_name": "github-actions-integration",
+    "rationale": "Hot skill 'github-actions' (calls_in_period=7) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 14,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "gsd-plan-phase",
+    "frequency": 7,
+    "suggested_name": "gsd-plan-phase-integration",
+    "rationale": "Hot skill 'gsd-plan-phase' (calls_in_period=7) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 14,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "data/documents/knowledge-base-builder",
+    "frequency": 7,
+    "suggested_name": "knowledge-base-builder-integration",
+    "rationale": "Hot skill 'knowledge-base-builder' (calls_in_period=7) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 14,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "data/visualization/plotly",
+    "frequency": 7,
+    "suggested_name": "plotly-integration",
+    "rationale": "Hot skill 'plotly' (calls_in_period=7) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 14,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/product/competitive-analysis",
+    "frequency": 6,
+    "suggested_name": "competitive-analysis-integration",
+    "rationale": "Hot skill 'competitive-analysis' (calls_in_period=6) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 12,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/content-design/frontend-design",
+    "frequency": 6,
+    "suggested_name": "frontend-design-integration",
+    "rationale": "Hot skill 'frontend-design' (calls_in_period=6) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 12,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/customer-support/knowledge-management",
+    "frequency": 6,
+    "suggested_name": "knowledge-management-integration",
+    "rationale": "Hot skill 'knowledge-management' (calls_in_period=6) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 12,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "development/tdd-obra",
+    "frequency": 6,
+    "suggested_name": "tdd-obra-integration",
+    "rationale": "Hot skill 'tdd-obra' (calls_in_period=6) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 12,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "development/webapp-testing",
+    "frequency": 6,
+    "suggested_name": "webapp-testing-integration",
+    "rationale": "Hot skill 'webapp-testing' (calls_in_period=6) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 12,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/sales/account-research",
+    "frequency": 5,
+    "suggested_name": "account-research-integration",
+    "rationale": "Hot skill 'account-research' (calls_in_period=5) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 10,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/finance/audit-support",
+    "frequency": 5,
+    "suggested_name": "audit-support-integration",
+    "rationale": "Hot skill 'audit-support' (calls_in_period=5) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 10,
+    "example_sequences": []
+  },
+  {
+    "source": "discoverability_gap",
+    "domain": "business/communication/brand-guidelines",
+    "frequency": 5,
+    "suggested_name": "brand-guidelines-integration",
+    "rationale": "Hot skill 'brand-guidelines' (calls_in_period=5) is never directly invoked via Skill/skill_view in session logs. Possible discoverability or auto-loading issue.",
+    "priority_score": 10,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "_core/bash/usage-tracker/5-trend-analysis",
+    "frequency": 0,
+    "suggested_name": "5-trend-analysis-revival",
+    "rationale": "Skill '5-trend-analysis' (tier=dead, path=_core/bash/usage-tracker/5-trend-analysis) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "data/energy/bsee-data-extractor",
+    "frequency": 0,
+    "suggested_name": "bsee-data-extractor-revival",
+    "rationale": "Skill 'bsee-data-extractor' (tier=dead, path=data/energy/bsee-data-extractor) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "development/github/code-review",
+    "frequency": 0,
+    "suggested_name": "code-review-revival",
+    "rationale": "Skill 'code-review' (tier=dead, path=development/github/code-review) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "_internal/builders/skill-creator/content-quality",
+    "frequency": 0,
+    "suggested_name": "content-quality-revival",
+    "rationale": "Skill 'content-quality' (tier=dead, path=_internal/builders/skill-creator/content-quality) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "data/analysis/data-analysis",
+    "frequency": 0,
+    "suggested_name": "data-analysis-revival",
+    "rationale": "Skill 'data-analysis' (tier=dead, path=data/analysis/data-analysis) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "data/analytics/data-context-extractor",
+    "frequency": 0,
+    "suggested_name": "data-context-extractor-revival",
+    "rationale": "Skill 'data-context-extractor' (tier=dead, path=data/analytics/data-context-extractor) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "engineering/marine-offshore/diffraction-analysis",
+    "frequency": 0,
+    "suggested_name": "diffraction-analysis-revival",
+    "rationale": "Skill 'diffraction-analysis' (tier=dead, path=engineering/marine-offshore/diffraction-analysis) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "engineering/financial-analysis",
+    "frequency": 0,
+    "suggested_name": "financial-analysis-revival",
+    "rationale": "Skill 'financial-analysis' (tier=dead, path=engineering/financial-analysis) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "gsd-ui-review",
+    "frequency": 0,
+    "suggested_name": "gsd-ui-review-revival",
+    "rationale": "Skill 'gsd-ui-review' (tier=dead, path=gsd-ui-review) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "_core/context-management/learning-from-past-work",
+    "frequency": 0,
+    "suggested_name": "learning-from-past-work-revival",
+    "rationale": "Skill 'learning-from-past-work' (tier=dead, path=_core/context-management/learning-from-past-work) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "_internal/workflows/legal-sanity-review",
+    "frequency": 0,
+    "suggested_name": "legal-sanity-review-revival",
+    "rationale": "Skill 'legal-sanity-review' (tier=dead, path=_internal/workflows/legal-sanity-review) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "data/office/office-docs",
+    "frequency": 0,
+    "suggested_name": "office-docs-revival",
+    "rationale": "Skill 'office-docs' (tier=dead, path=data/office/office-docs) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  },
+  {
+    "source": "dead_skill_resurrection",
+    "domain": "_internal/meta/discipline-refactor/phase-1-analysis",
+    "frequency": 0,
+    "suggested_name": "phase-1-analysis-revival",
+    "rationale": "Skill 'phase-1-analysis' (tier=dead, path=_internal/meta/discipline-refactor/phase-1-analysis) covers a domain with active work. Consider resurrecting or merging into a live skill.",
+    "priority_score": 5,
+    "example_sequences": []
+  }
+]
