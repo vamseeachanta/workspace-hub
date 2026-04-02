@@ -1,13 +1,29 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
 > Generated: 2026-04-02
-> Total scans to date: 1
+> Total scans to date: 2
+
+## Scan History
+
+| Date | Total Jobs | New | Returning | Companies |
+|------|-----------|-----|-----------|-----------|
+| 2026-04-02 | 1 | 1 | 0 | 1 |
+| 2026-04-02 | 708 | 707 | 1 | 460 |
+
+## 🔥 Persistent Openings — Hard to Fill = Consulting Gold
+
+These jobs have appeared in multiple scans. The company CANNOT fill them.
+They are the most likely to accept a consulting alternative.
+
+| Weeks Seen | Title | Company | Score | First Seen |
+|------------|-------|---------|-------|------------|
+| 2 | Senior Mooring Engineer | Hanwha Ocean | 125 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **1** unique job postings tracked all-time
-- **1** unique companies seen
-- **1** scans completed
+- **708** unique job postings tracked all-time
+- **460** unique companies seen
+- **2** scans completed
 
 ---
 
