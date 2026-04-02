@@ -547,23 +547,44 @@ function cmdStateSnapshot(cwd, raw) {
   }
 
   const content = fs.readFileSync(statePath, 'utf-8');
+  const fm = extractFrontmatter(content);
 
-  // Extract basic fields
-  const currentPhase = stateExtractField(content, 'Current Phase');
-  const currentPhaseName = stateExtractField(content, 'Current Phase Name');
-  const totalPhasesRaw = stateExtractField(content, 'Total Phases');
-  const currentPlan = stateExtractField(content, 'Current Plan');
-  const totalPlansRaw = stateExtractField(content, 'Total Plans in Phase');
-  const status = stateExtractField(content, 'Status');
-  const progressRaw = stateExtractField(content, 'Progress');
-  const lastActivity = stateExtractField(content, 'Last Activity');
-  const lastActivityDesc = stateExtractField(content, 'Last Activity Description');
-  const pausedAt = stateExtractField(content, 'Paused At');
+  const currentPositionMatch = content.match(/##\s*Current Position\s*\n([\s\S]*?)(?=\n##|$)/i);
+  const currentPosition = currentPositionMatch ? currentPositionMatch[1] : '';
+  const phaseLineMatch = currentPosition.match(/^Phase:\s*([^\n]+)$/im);
+  const planLineMatch = currentPosition.match(/^Plan:\s*(\d+)\s+of\s+(\d+)$/im);
+  const frontmatterProgress = (fm.progress && typeof fm.progress === 'object') ? fm.progress : {};
+
+  // Extract basic fields (frontmatter first, then current sections/legacy body fields)
+  const currentPhase = fm.current_phase
+    || (phaseLineMatch ? ((phaseLineMatch[1].match(/^(\d+(?:\.\d+)*)/) || [])[1] || null) : null)
+    || stateExtractField(content, 'Current Phase');
+  const currentPhaseName = fm.current_phase_name
+    || (phaseLineMatch ? ((phaseLineMatch[1].match(/^\d+(?:\.\d+)*\s*\(([^)]+)\)/) || [])[1] || null) : null)
+    || stateExtractField(content, 'Current Phase Name');
+  const totalPhasesRaw = fm.total_phases || frontmatterProgress.total_phases || stateExtractField(content, 'Total Phases');
+  const currentPlan = fm.current_plan || (planLineMatch ? planLineMatch[1] : null) || stateExtractField(content, 'Current Plan');
+  const totalPlansRaw = fm.total_plans_in_phase || frontmatterProgress.total_plans || (planLineMatch ? planLineMatch[2] : null) || stateExtractField(content, 'Total Plans in Phase');
+  const status = fm.status || stateExtractField(content, 'Status');
+  const progressRaw = fm.progress_percent || stateExtractField(content, 'Progress');
+  const lastActivity = fm.last_activity || stateExtractField(content, 'Last Activity');
+  const lastActivityDesc = fm.last_activity_desc || stateExtractField(content, 'Last Activity Description');
+  const pausedAt = fm.paused_at || stateExtractField(content, 'Paused At');
 
   // Parse numeric fields
   const totalPhases = totalPhasesRaw ? parseInt(totalPhasesRaw, 10) : null;
   const totalPlansInPhase = totalPlansRaw ? parseInt(totalPlansRaw, 10) : null;
-  const progressPercent = progressRaw ? parseInt(progressRaw.replace('%', ''), 10) : null;
+  let progressPercent = progressRaw ? parseInt(String(progressRaw).replace('%', ''), 10) : null;
+  if ((progressPercent === null || Number.isNaN(progressPercent))
+      && frontmatterProgress.total_plans !== undefined
+      && frontmatterProgress.completed_plans !== undefined) {
+    const completedPlans = parseInt(frontmatterProgress.completed_plans, 10);
+    const totalPlans = parseInt(frontmatterProgress.total_plans, 10);
+    if (!Number.isNaN(completedPlans) && !Number.isNaN(totalPlans) && totalPlans > 0) {
+      progressPercent = Math.round((completedPlans / totalPlans) * 100);
+    }
+  }
+  if (Number.isNaN(progressPercent)) progressPercent = null;
 
   // Extract decisions table
   const decisions = [];

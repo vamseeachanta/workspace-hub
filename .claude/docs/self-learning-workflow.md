@@ -48,7 +48,7 @@ REPEAT — system improves with every session
 | `skills-curation` | Weekly | New skills from signals + online research |
 | `agentic-horizon` | Weekly | Horizon reassessment of all WRK items |
 | `session-bootstrap` | Once per machine | Historical baseline |
-| `work-queue` | Per session | WRK item creation and processing |
+| `work-queue` | Per session | Legacy WRK compatibility processing; new intake is GitHub issues |
 | `claude-reflect` | Daily/weekly | Feeds into session-analysis context |
 | `improve` | Session end | Prompted improvement, feeds candidates |
 
@@ -58,7 +58,7 @@ Each existing workflow document slots into the loop as follows:
 
 | Document | Location | Position in loop | Status |
 |----------|----------|-----------------|--------|
-| process.md | .claude/work-queue/ | WRK item lifecycle | Current |
+| process.md | .claude/work-queue/ | Legacy WRK lifecycle reference | Legacy |
 | session-lifecycle.md | .claude/docs/ | Full session flow | Needs update for WRK-230/231 |
 | claude-reflect SKILL.md | .claude/skills/.../ | 5AM cron step | Current |
 | skill-learner SKILL.md | .claude/skills/.../ | Consumer of session-analysis | Review needed |
@@ -71,6 +71,6 @@ Complexity lives elsewhere:
 - Knowledge graphs: `.claude/skills/SKILLS_GRAPH.yaml`
 - Skill scorecards: `.claude/state/skill-scores.yaml`
 - Candidate queues: `.claude/state/candidates/`
-- WRK item detail: `.claude/work-queue/`
+- Legacy WRK compatibility detail: `.claude/work-queue/` (historical / hook-driven only)
 
 This document is the map. The detail is in the territory.

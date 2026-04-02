@@ -1,47 +1,67 @@
 # Work Queue Workflow
 
-Canonical linear workflow for every `WRK-*` item:
+Status: Legacy compatibility note
+
+## Canonical tracking model
+
+Workspace-hub now tracks work in GitHub issues.
+
+Canonical flow:
 
 ```text
-CAPTURE -> TRIAGE -> PLAN -> CLAIM -> IMPLEMENT -> CROSS-REVIEW -> CLOSE -> ARCHIVE
-   |         |        |       |          |              |             |         |
- pending/  pending/ pending/ working/  working/      working/       done/    archive/
+GitHub Issue -> TRIAGE -> GSD PLAN (.planning/) -> IMPLEMENT -> CROSS-REVIEW -> CLOSE ISSUE
 ```
 
-## Stage Contract
+This aligns with:
+- `AGENTS.md` — "Tasks tracked as GitHub issues — no local work-queue"
+- GSD workflow as the active planning/execution framework
+- `.planning/` as the canonical location for active planning artifacts
 
-| Stage | Folder | Required outcome |
-|-------|--------|------------------|
-| Capture | `pending/` | WRK created with baseline frontmatter |
-| Triage | `pending/` | Priority, complexity, route, provider, computer assigned |
-| Plan | `pending/` or `.planning/` | Plan drafted and approved |
-| Claim | `working/` | Active ownership and readiness confirmed |
-| Implement | `working/` | Files changed and tests run |
-| Cross-Review | `working/` | Required reviews collected and major findings resolved |
-| Close | `done/` | Frontmatter updated, file moved, index regenerated |
-| Archive | `archive/` | Merge and sync complete; item archived |
+## What is legacy
 
-## Close Command
+Older local queue surfaces such as:
+- `.claude/work-queue/`
+- `pending/`, `working/`, `done/`, `archive/`
+- `scripts/work-queue/*`
 
-Use the closure helper rather than manual queue edits:
+are retained only for compatibility with older hooks, reports, or historical artifacts. They are not the canonical source of truth for new work intake.
+
+## Current execution contract
+
+| Stage | Canonical location | Required outcome |
+|-------|--------------------|------------------|
+| Capture | GitHub issue | Issue created with priority / complexity / route / machine context |
+| Triage | GitHub issue | Scope, dependencies, provider, and machine assignment clarified |
+| Plan | `.planning/` | GSD plan/spec drafted and approved |
+| Implement | repo files + issue/plan links | Files changed and tests run |
+| Cross-Review | review artifacts / issue comments | Required reviews collected and major findings resolved |
+| Close | GitHub issue | Issue updated/closed with evidence and links |
+
+## Legacy closure helper
+
+The local closure helper remains available for compatibility only:
 
 ```bash
 scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]
 ```
 
-## Completion Checklist
+Do not treat it as the canonical completion path for new work unless a legacy workflow explicitly requires it.
+
+## Completion checklist for current workflow
 
 ```markdown
 ## Completion Checklist
 - [ ] Implementation committed: <hash>
 - [ ] Tests pass: <command + result>
 - [ ] Cross-review passed: <paths or summary>
-- [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=<hash>
-- [ ] File moved to `done/`
-- [ ] INDEX regenerated
-- [ ] Hub state committed or intentionally left uncommitted
+- [ ] GSD planning artifacts updated if needed
+- [ ] GitHub issue updated with final evidence / links
+- [ ] Issue closed or explicitly deferred with next step
 ```
 
 ## See also
 
-- [data repo](https://github.com/vamseeachanta/data) — document index, standards ledger, and research briefs consumed by queue items
+- `AGENTS.md`
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+- `docs/modules/ai/MINIMAL_HARNESS_ARCHITECTURE_2026-03.md`
+- [data repo](https://github.com/vamseeachanta/data) — document index, standards ledger, and research briefs consumed by execution work

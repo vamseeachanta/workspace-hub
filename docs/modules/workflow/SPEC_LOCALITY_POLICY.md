@@ -20,8 +20,12 @@ All new planning and specification artifacts are centralized in `workspace-hub`.
 
 ## Work Queue Integration
 
-- `WRK-*.md` files must exist only under `.claude/work-queue/`.
-- Route C work should set `spec_ref` to `.planning/ (GSD phases)<slug>.md`.
+Canonical tracking is now GitHub issues plus GSD planning artifacts.
+
+- New work intake should be created as GitHub issues, not new local `WRK-*.md` queue files.
+- Active execution specs belong in `.planning/`.
+- Route C work should set `spec_ref` to the relevant `.planning/` phase/spec artifact.
+- Existing `.claude/work-queue/` content is legacy compatibility data, not the canonical intake path.
 
 ## Migration Guidance
 

@@ -19,7 +19,7 @@ workspace-hub/                   ← hub root (git repo with submodules)
         drilling/, financial-analysis/, oil-and-gas/
         marine-offshore/, cad/, structural/, fatigue/
       data/, ai/, science/, operations/, workspace-hub/
-    work-queue/                  ← work items (hub-central)
+    work-queue/                  ← legacy compatibility data for older hooks/reports
       pending/, working/, archived/, blocked/
   .codex/                        ← Codex provider config
     skills → ../.claude/skills   ← SYMLINK to hub skills
@@ -125,7 +125,7 @@ Document intelligence pipeline (parallel story) owns this. Cross-reference: `doc
 2. `.codex/skills` → `../.claude/skills` (hub), `../../.claude/skills` (submodules)
 3. `.gemini/skills` → same as above
 4. `config/agents/model-registry.yaml` — single source of truth for model IDs
-5. `.claude/work-queue/` — referenced by hooks and session scripts
+5. `.claude/work-queue/` — legacy compatibility surface still referenced by some hooks/session scripts; not canonical intake for new work
 6. `scripts/agents/lib/` — negated in gitignore (`!scripts/agents/lib/`)
 7. `scripts/coordination/routing/lib/` — negated in gitignore
 8. `scripts/improve/lib/` — negated in gitignore
