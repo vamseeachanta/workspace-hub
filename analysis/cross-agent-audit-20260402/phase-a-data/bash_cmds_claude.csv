@@ -1,0 +1,434 @@
+command,count
+ls,5658
+grep/search,4934
+uv run,4849
+cat <file>,4075
+find,3054
+bash,2700
+#,1574
+sed,1240
+cd <dir>,979
+git add,875
+ssh,785
+head <file>,731
+git log,604
+mkdir,563
+sleep,521
+git status,461
+wc,460
+gh issue,418
+for,391
+git diff,329
+git push,277
+python,256
+cp,235
+echo,222
+timeout,211
+git commit,204
+git show,186
+git -C,182
+PYTHONPATH=src,179
+rm,159
+xdg-open,157
+mv,149
+gh api,147
+chmod,127
+tail <file>,119
+ps,101
+gh run,72
+git stash,63
+COMMIT=$(git,59
+which,52
+lsof,51
+git ls-files,49
+codex,48
+git rev-parse,43
+du,35
+date,33
+NOW=$(date,31
+RUN_ID=$(gh,31
+kill,30
+git -c,26
+hostname,25
+claude,24
+crontab,22
+git checkout,21
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1120,21
+pwd,20
+scripts/review/submit-to-codex.sh,19
+"CLAUDE_SESSION_ID=""session-$(date",19
+time,18
+scripts/review/cross-review.sh,18
+git branch,17
+git rm,16
+git submodule,15
+awk,15
+AD=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1052,15
+git remote,15
+export,14
+git check-ignore,13
+PYTHONPATH=scripts/work-queue:$PYTHONPATH,13
+HASH=$(git,12
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054,12
+PYTHON=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11,12
+./scripts/repository_sync,11
+printf,11
+stat,11
+CODEX_TIMEOUT_SECONDS=180,11
+test,11
+"CLAUDE_SESSION_ID=""5e6adc33-fc6c-404f-9aeb-a8a6627672d1""",11
+PYTHONPATH=scripts,11
+touch,10
+uv tool,10
+file,10
+df,10
+"PYTHONPATH=""scripts""",10
+pip,10
+PYTHONPATH=.,10
+git reset,9
+set,9
+diff,9
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1075,9
+pgrep,9
+bats,9
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1135/evidence,9
+jq,8
+SESSION_ID=$(date,8
+"SESSION_ID=""session-$(date",8
+scp,8
+git fetch,8
+git rev-list,8
+"SRC=""/mnt/remote/ace-linux-2/local-analysis""",8
+FORCE_RERUN=true,8
+gh repo,7
+env,7
+code,7
+"NOW=""2026-03-11T13:30:00Z""",7
+FILE_AGE=$((,7
+command,6
+WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub,6
+SESSION_ID=$(cat,6
+scripts/review/submit-to-gemini.sh,6
+"PYTHONPATH=""src:../assetutilities/src""",6
+git worktree,6
+git ls-tree,6
+mount,6
+scripts/work-queue/clear-active-wrk.sh,6
+gh label,6
+"D=""/mnt/ace/docs""",6
+gemini,5
+scripts/legal/legal-sanity-scan.sh,5
+.claude/hooks/check-encoding.sh,5
+"SESSION_ID=""$(date",5
+"PYTHONPATH=""/mnt/local-analysis/workspace-hub/assetutilities/.venv/lib/python3.11/site-packages""",5
+TIMESTAMP=$(date,5
+git pull,5
+COMMIT_HASH=$(git,5
+"NOW=""2026-03-11T13:00:00Z""",5
+TMPDIR_BASE=$(mktemp,5
+dmesg,5
+current_branch=$(git,5
+commit_hash=$(git,5
+GIT_TERMINAL_PROMPT=0,5
+"PROMPT=""$(cat",4
+"CLAUDECODE=""""",4
+"NOW=""2026-03-09T01:30:00Z""",4
+LOG_DIR=/mnt/local-analysis/workspace-hub/.claude/work-queue/logs,4
+wait;,4
+REPO_ROOT=/mnt/local-analysis/workspace-hub,4
+jobs,4
+git config,4
+PYTHONPATH=/mnt/local-analysis/workspace-hub/digitalmodel/src,4
+"COMMIT_HASH=""5995d67f2877c86cebecfc9b7a09f870e8345bf9""",4
+"NOW=""2026-03-10T11:40:00Z""",4
+BRANCH=$(git,4
+CURRENT_COMMIT=$(git,4
+"SESSION_ID=""session-20260310-100000""",4
+git read-tree,4
+TMP=$(mktemp,4
+"KNOWLEDGE_BASE_DIR=""/mnt/local-analysis/workspace-hub/knowledge-base""",4
+"ASSETS="".claude/work-queue/assets/WRK-1059""",4
+"NOW=""2026-03-11T$(date",4
+uv pip,4
+PYTHONPATH=/mnt/local-analysis/workspace-hub/scripts,4
+nohup,4
+/mnt/local-analysis/workspace-hub/.venv/bin/python,4
+lsmod,4
+scripts/work-queue/set-active-wrk.sh,4
+"CLAUDE_SESSION_ID=""wrk1295-$(date",4
+wait,3
+git merge,3
+ws=$(mktemp,3
+"NOW=""2026-03-09T01:20:00Z""",3
+"CLAUDE_SESSION_ID=""session-wrk-1023-$(date",3
+strings,3
+npm,3
+"NOW=""2026-03-09T06:30:00Z""",3
+ln,3
+uv --version,3
+"PYTHONPATH=""digitalmodel/src:assetutilities/src""",3
+CLAUDE_SESSION_ID=20260309-191000-claude,3
+"RESULTS_DIR=""/mnt/local-analysis/workspace-hub/scripts/review/results""",3
+VENV_SITE=/mnt/local-analysis/workspace-hub/assetutilities/.venv/lib/python3.11/site-packages,3
+RAW_FILE=$(mktemp),3
+uvx,3
+"NOW=""2026-03-10T11:30:00Z""",3
+HEAD=$(git,3
+unzip,3
+"PLAN_CONTENT=""$(cat",3
+tmpdir=$(mktemp,3
+wget,3
+pstree,3
+"EVIDENCE=""/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1153/evidence""",3
+WORKSPACE_HUB=/mnt/local-analysis/workspace-hub,3
+lsblk,3
+sqlite3,3
+f=$(find,3
+git diff-tree,3
+git cat-file,3
+"DEST=""/mnt/ace/digitalmodel/docs/domains/structural-parachute/literature""",3
+xrandr,3
+ping,3
+nvidia-smi,3
+dpkg,3
+lspci,3
+modinfo,3
+systemctl,3
+DISPLAY=:0,3
+journalctl,3
+scripts/agents/work.sh,3
+gh auth,3
+.venv/bin/python3,3
+git format-patch,3
+"SRC=""/mnt/remote/ace-linux-2/local-analysis/Temp""",3
+"REVIEW_PROMPT=""You",2
+"REVIEW_PROMPT=""Review",2
+source,2
+"T5_WRK=""WRK-TEST-RACE""",2
+PLAN=$(cat,2
+EVIDENCE=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054/evidence,2
+"SHA=""95d41cfbb1d6c66d7d3ad66f42505cb5bbfe7f13""",2
+"PLAN_FILE=""/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1062/plan_claude.md""",2
+"REVIEW_FILE=""/mnt/local-analysis/workspace-hub/scripts/review/results/wrk-1062-phase-1-review-input.md""",2
+(crontab,2
+SESSION_ID=20260309-191000-claude,2
+while,2
+CODEX_TIMEOUT_SECONDS=120,2
+"GEMINI_PROMPT=""Review",2
+"ARCHIVE_DIR="".claude/work-queue/archive/2026-03""",2
+sudo,2
+snap,2
+HEAD_HASH=$(timeout,2
+CLAUDE_MODEL=claude-opus-4-6,2
+apt,2
+shellcheck,2
+CLAUDE_SESSION_ID=session-2026-03-10-wrk1053,2
+"NOW=""2026-03-11T11:00:00Z""",2
+"CLAUDE_SESSION_ID=""$(date",2
+"NOW=""2026-03-11T19:00:00Z""",2
+SKIP_PUSH=1,2
+LOG_FILE=/tmp/test-dl.log,2
+PYTHONPATH=digitalmodel/src,2
+"DM=""https://github.com/vamseeachanta/digitalmodel/blob/main""",2
+tailscale,2
+status=$(grep,2
+"HOSTNAME=""dev-primary""",2
+TS=$(date,2
+"DIR=""data/doc-intelligence/deep/tables/fatigue""",2
+git rebase,2
+"TMPDIR_TEST=""$(mktemp",2
+loginctl,2
+gh project,2
+"PROJECT_ID=""PVT_kwHOAWFUhc4BSMpF""",2
+total=0,2
+git mv,2
+OUTPUT_DIR=/tmp/gt1r-frame,2
+"CLAUDE_SESSION_ID=""wrk-5124-$(date",2
+"CLAUDE_SESSION_ID=""dev-primary-20260323""",2
+"PYTHONPATH=""$(git",2
+"latest=""/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260302.jsonl""",1
+"ORCH_DIR=""/mnt/local-analysis/workspace-hub/logs/orchestrator""",1
+md5sum,1
+"PATH=""/usr/local/bin:/usr/bin:/bin""",1
+fuser,1
+"REVIEW_CONTENT=""$(cat",1
+"GATE_LOGGER=""scripts/work-queue/log-gate-event.sh""",1
+scripts/agents/session.sh,1
+REPO=/mnt/local-analysis/workspace-hub,1
+PACKAGE=$(cat,1
+"f="".claude/work-queue/working/WRK-1011.md""",1
+"COMMIT=""ac544ce16e82e36c68b0438e13317004e48b350a""",1
+"CHECKPOINT="".claude/work-queue/assets/WRK-1040/checkpoint.yaml""",1
+"SESS=""${CLAUDE_SESSION_ID:-wrk1035-session-20260308}""",1
+pandoc,1
+xxd,1
+provider=claude,1
+CURRENT=$(date,1
+NEXT_ID=$(bash,1
+HASH_NOW=$(git,1
+"T5_WRK=""WRK-9997""",1
+COMMIT1=$(git,1
+LAST=$(git,1
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1057,1
+PLAN_FILE=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1055/wrk-1055-engineering-mcp-servers.md,1
+REVIEW_INPUT=/tmp/wrk-1055-plan-review-input.md,1
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054/evidence,1
+"WORKFLOW_HTML="".claude/work-queue/assets/WRK-1054/workflow-final-review.html""",1
+LATEST=$(ls,1
+TMPDIR_FIXTURE=$(mktemp,1
+"PLAN_CONTENT=""#",1
+"CLAUDE_SESSION_ID=""session-20260309-112800""",1
+WRK=/mnt/local-analysis/workspace-hub/.claude/work-queue/working/WRK-1068.md,1
+REVIEW_CONTENT=$(cat,1
+ACTUAL_NOW=$(date,1
+"COMMIT=""2e26a7880e4f4ea194deff64727792a2f1b9e0e4""",1
+"REVIEW_FILE=""/mnt/local-analysis/workspace-hub/scripts/review/results/wrk-1062-phase-2-review-input.md""",1
+"NOW=""2026-03-09T07:45:00Z""",1
+scripts/work-queue/archive-item.sh,1
+"LOG_DIR=""/mnt/local-analysis/workspace-hub/.claude/work-queue/logs""",1
+~/.npm-global/bin/codex,1
+MONTH=$(date,1
+LAST_COMMIT=$(git,1
+REVIEW_PROMPT=$(cat,1
+"NOW=""2026-03-09T18:05:00Z""",1
+"output=""$(uv",1
+"FIXTURE_ROOT=""$(mktemp",1
+apt-cache,1
+GIT_OPTIONAL_LOCKS=0,1
+VENV=/mnt/local-analysis/workspace-hub/assetutilities/.venv,1
+VENV_PY=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11,1
+PY=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11,1
+"PREFIX=""20260309T210428Z-wrk-1087-phase-1-review-input.md-implementation""",1
+PYTHONPATH=/mnt/local-analysis/workspace-hub/digitalmodel/src:/mnt/local-analysis/workspace-hub/assetutilities/src,1
+scripts/review/submit-to-claude.sh,1
+CLOSE_COMMIT=$(git,1
+CURRENT_HASH=$(git,1
+"MEMORY_ROOT=""/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory""",1
+LATEST_CODEX=$(ls,1
+"SKIP_MYPY_REASON=""smoke-test",1
+TaskOutput,1
+SESSION_ID=$(uv,1
+SKIP_CROSS_REPO_CHECK=1,1
+QUALITY_REPO_ROOT=/tmp,1
+apt-get,1
+TMPDIR=$(mktemp,1
+/tmp/bats-core/bin/bats,1
+QUALITY_REPO_ROOT=/mnt/local-analysis/workspace-hub,1
+node,1
+"HEAD_HASH=""ecb2a94c7696c266c08749b0a7ba3b1a746f26f8""",1
+CONTENT=$(cat,1
+"SESSION_ID=""wrk-1095-$(date",1
+"SESSION_ID=""2026-03-10T13:45:00Z-orchestrator""",1
+"out=""""",1
+"OLD_COMMIT=""cd83a7ce""",1
+"SESSION_ID=""claude-$(date",1
+SLIM_ADAPTER='#,1
+"NOW=""2026-03-10T00:00:00Z""",1
+CLAUDE_SESSION_ID=wrk-1041-session-$(date,1
+ARCHIVE=/mnt/local-analysis/workspace-hub/.claude/state/pending-reviews/archive,1
+LIFECYCLE=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1115/WRK-1115-lifecycle.html,1
+"CYCLE=""2026-03-11-wrk-1084-A""",1
+"LOGS="".claude/work-queue/logs""",1
+"NOW=""2026-03-11T13:35:00Z""",1
+"NOW=""2026-03-11T13:40:00Z""",1
+"CYCLE=""cycle-$(date",1
+CHILD_A=$(bash,1
+"CHILD_A=""WRK-1129"";",1
+ACTUAL_TIME=$(date,1
+ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1135,1
+"BASE="".claude/work-queue/assets/WRK-1135""",1
+"NOW=""$(date",1
+"ASSETS="".claude/work-queue/assets/WRK-1132""",1
+"CLAUDE_SESSION_ID=""wrk1130-session-$(date",1
+TMPDIR_ROOT=$(mktemp,1
+"NOW=""2026-03-12T03:45:00Z""",1
+TMP3=$(mktemp,1
+WRK_FILE=scripts/session/tests/fixtures/repo_map/WRK-9901.md,1
+"SCRIPT_DIR=""scripts/session""",1
+"BASE=""https://ftp.idu.ac.id/wp-content/uploads/ebook/tdg/ADNVANCED%20MILITARY%20PLATFORM%20DESIGN""",1
+"BASE=""https://home.hvl.no/ansatte/gste/ftp/MarinLab_files/Litteratur""",1
+"WORK_QUEUE_ROOT="".claude/work-queue""",1
+git merge-base,1
+[[,1
+"line=""-",1
+"TD=""$(mktemp",1
+"TS=""2026-03-13T00:55:49Z""",1
+tree,1
+"CLAUDE_SESSION_ID=""$(cat",1
+PYTHONPATH=scripts/work-queue,1
+readlink,1
+"TS=""2026-03-13T08:20:00Z""",1
+"NOW=""2026-03-13T08:30:00Z""",1
+basename,1
+"REVIEW_CYCLE=""wrk-1012-$(date",1
+COMMIT_SHA=$(git,1
+tput,1
+"CLAUDE_SESSION_ID=""98c382a1-0090-4600-982f-f453ec5739c7""",1
+gsettings,1
+findmnt,1
+scripts/reporting/generate-calc-report.py,1
+SMOKE_DEBUG=1,1
+gh release,1
+pytest,1
+"STAGES=""1",1
+smbclient,1
+nmap,1
+gio,1
+"PYTHONPATH=""worldenergydata/src:assetutilities/src""",1
+fail=0;,1
+ssh-keyscan,1
+"B401=""/mnt/ace/O&G-Standards/raw/0000",1
+new_commit=$(git,1
+"ASSETS=""/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1190""",1
+"LOGS=""/mnt/local-analysis/workspace-hub/.claude/work-queue/logs""",1
+"CYCLE_ID=""wrk1247-$(date",1
+/mnt/local-analysis/workspace-hub/.venv/bin/python3,1
+git filter-branch,1
+rmdir,1
+inotifywait,1
+ss,1
+PYTHONPATH=scripts/data/document-index,1
+DEST=/mnt/ace/digitalmodel/docs/domains/hydrodynamics/literature,1
+"base=""/tmp/claude-1000/-mnt-local-analysis-workspace-hub/54281044-0be7-45f4-9658-7d64bb40f24e/tasks""",1
+tmp=$(mktemp,1
+TMPD=$(mktemp,1
+/usr/sbin/dkms,1
+uname,1
+x11vnc,1
+scripts/work-queue/is-human-gate.sh,1
+WORKTREE=$(find,1
+(find,1
+result=$(gh,1
+"CLAUDE_SESSION_ID=""session-20260319-wrk5082""",1
+pkill,1
+SKIP_ISSUE_REF_CHECK=1,1
+conda,1
+WRK_ID=WRK-5105,1
+gh pr,1
+BASE64=$(base64,1
+/mnt/workspace-hub/digitalmodel/.venv/bin/python3,1
+PASS=0;,1
+/home/vamsee/miniforge3/bin/python3,1
+ITEM1_OUTPUT=$(bash,1
+ITEM2_OUTPUT=$(bash,1
+"UPDATER=""uv",1
+count=0;,1
+"REPO=""vamseeachanta/workspace-hub""",1
+FILE_AGE_S=$((,1
+"CLAUDE_SESSION_ID=""$(hostname)-$(date",1
+"UV_CACHE_DIR="".uv-cache""",1
+git gc,1
+git count-objects,1
+git bundle,1
+now=$(date,1
+"CLAUDE_SESSION_ID=""claude-$(date",1
+pdftotext,1
+TEMPLATE='#,1
+HOOK='#!/usr/bin/env,1
+comm,1
+rsync,1
+smbstatus,1
+WRK=1357,1
+hostname;,1
+git status;,1
+profile=$(gsettings,1
