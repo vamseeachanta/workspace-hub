@@ -30,8 +30,11 @@ from scripts.data.doc_intelligence.schema import CellFormula, FormulaPayload
 POC_LIST = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc" / "poc-file-list.yaml"
 OUTPUT_DIR = REPO_ROOT / "knowledge" / "dark-intelligence" / "xlsx-poc"
 
-# Limit file size to avoid memory issues on large files
-MAX_SIZE_MB = 15
+# Limit file size — raised from 15MB to 50MB (#1619)
+# Large engineering spreadsheets (structural calculations, cost models) can exceed 15MB.
+# The FormulaXlsxParser uses openpyxl read_only mode for the data pass, making
+# 50MB feasible without excessive memory consumption.
+MAX_SIZE_MB = 50
 
 
 def sanitize_stem(filename: str) -> str:
