@@ -213,6 +213,19 @@ tasks:
     is_claude_task: false
     description: Daily backup of claude auto-memory to ace-linux-2.
 
+  - id: cron-health
+    label: Cron job health check
+    schedule: "45 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/monitoring/cron-health-check.sh
+      >> $WORKSPACE_HUB/logs/quality/cron-health-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/cron-health-*.log
+    is_claude_task: false
+    description: Daily 05:45 UTC health check of all cron jobs; reads schedule-tasks.yaml, flags stale/missing/erroring runs, writes JSON report to .claude/state/cron-health/.
+
   - id: daily-today
     label: Daily productivity summary
     schedule: "0 6 * * *"
