@@ -14,4 +14,5 @@
 ## Policies
 - Reviews: verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
 - Review routing: [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates, Codex reviews, Gemini on triggers only
+- Subagent isolation: execution stages use fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
 - Secrets: never hardcode API keys/tokens — use environment variables
