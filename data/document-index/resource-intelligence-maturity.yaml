@@ -1,5 +1,5 @@
-generated: "2026-02-28T00:00:00Z"
-version: "1.0.0"
+generated: "2026-04-01T19:05:00Z"
+version: "1.1.0"
 schema_version: "1.0.0"
 target_window: "3 months"
 target_start: "2026-03-01"
@@ -11,11 +11,32 @@ metric:
 tracking:
   canonical_markdown_ref: data/document-index/resource-intelligence-maturity.md
 status:
-  documents_in_scope: 5
-  documents_marked_read: 0
-  documents_marked_read_percent: 0
-  key_calculations_implemented: []
-  followup_wrks: []
+  documents_in_scope: 425
+  documents_marked_read: 29
+  documents_marked_read_percent: 6.8
+  key_calculations_implemented:
+    - cathodic-protection (9 done, 47.4% of domain)
+    - pipeline (12 done, 21.8% of domain)
+    - structural (4 done, 5.6% of domain)
+    - marine (4 done, 12.1% of domain)
+  followup_wrks:
+    - WRK-1179 (data audit and reclassification)
+  standards_domains: 10
+  standards_reclassification_complete: true
+  former_other_count: 166
+  current_other_count: 0
+  new_domains_created:
+    - process (55 standards)
+    - drilling (9 standards)
+  index_summary_coverage_percent: 61.9
+  total_index_records: 1033933
+  total_index_summaries: 639585
+  gap_standards: 235
+  reference_standards: 138
+  wrk_captured_standards: 23
 notes:
   - "YAML is the source of truth."
   - "Markdown summary must link here and must not diverge."
+  - "2026-04-01: Updated after standards reclassification. 'other' domain fully eliminated."
+  - "2026-04-01: 76 standards reclassified into proper engineering domains."
+  - "2026-04-01: Two new domains created: process (55), drilling (9)."

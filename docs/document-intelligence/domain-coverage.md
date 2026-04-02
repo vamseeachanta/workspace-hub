@@ -1,6 +1,6 @@
 # Document Intelligence — Domain Coverage Report
 
-> Generated: 2026-04-01T23:42:28Z
+> Generated: 2026-04-02T00:04:01Z
 > Source: `data/document-index/standards-transfer-ledger.yaml`
 > Re-generate: `uv run --no-project python scripts/data/document-index/generate-coverage-report.py`
 
