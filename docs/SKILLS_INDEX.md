@@ -1,268 +1,320 @@
 # Workspace Hub Skills Index
 
-> Complete catalog of Claude Code skills across all workspace-hub repositories
+> Complete catalog of Claude Code skills in the workspace-hub skill tree
 >
-> **Total Skills:** 51 across 5 repositories
-> **Last Updated:** 2025-12-25
-
-## Quick Navigation
-
-| Repository | Skills | Domain |
-|------------|--------|--------|
-| [workspace-hub](#workspace-hub-central-skills) | 25 | Infrastructure, development tools, document handling |
-| [digitalmodel](#digitalmodel-skills) | 10 | Marine/offshore engineering, OrcaFlex analysis |
-| [worldenergydata](#worldenergydata-skills) | 10 | Oil & gas production, energy data analysis |
-| [aceengineer-admin](#aceengineer-admin-skills) | 3 | Business administration, financial automation |
-| [assetutilities](#assetutilities-skills) | 3 | Data management, visualization utilities |
+> **Total Skills:** 2,734 (568 active, 2,166 archived)
+> **Last Updated:** 2026-04-02
+> **Location:** `.claude/skills/`
 
 ---
 
-## Workspace Hub (Central Skills)
+## Summary
 
-**Location:** `/mnt/github/workspace-hub/.claude/skills/`
-
-### Builders (2 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **skill-creator** | Create new Claude Code skills with proper structure, documentation, and best practices |
-| **web-artifacts-builder** | Build self-contained interactive web applications as single HTML files |
-
-### Communication (4 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **brand-guidelines** | Create and maintain brand guidelines including visual identity, voice and tone, and usage rules |
-| **doc-coauthoring** | Collaborate on documents with tracked changes, suggestions, and iterative refinement |
-| **internal-comms** | Create professional internal communications including memos, announcements, newsletters |
-| **slack-gif-creator** | Create custom animated GIFs for Slack reactions and celebrations |
-
-### Content Design (4 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **algorithmic-art** | Create generative art using p5.js with seeded randomness and interactive exploration |
-| **canvas-design** | Create original visual art in PNG and PDF formats using design philosophy principles |
-| **frontend-design** | Create distinctive, production-grade web interfaces with high design quality |
-| **theme-factory** | Professional styling toolkit with 10 pre-set themes for slides, documents, reports |
-
-### Development (6 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **data-pipeline-processor** | Process data files through transformation pipelines with validation, cleaning, and export |
-| **engineering-report-generator** | Generate engineering analysis reports with interactive Plotly visualizations |
-| **mcp-builder** | Guide for building high-quality Model Context Protocol (MCP) servers |
-| **parallel-file-processor** | Process multiple files in parallel with aggregation and progress tracking (2-3x performance) |
-| **webapp-testing** | Web application testing toolkit using Playwright with Python |
-| **yaml-workflow-executor** | Execute configuration-driven analysis workflows from YAML files |
-
-### Document Handling (4 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **docx** | Comprehensive Word document toolkit for reading, creating, and editing .docx files |
-| **pdf** | Comprehensive PDF manipulation toolkit for extracting text/tables, creating, merging/splitting |
-| **pptx** | PowerPoint presentation toolkit for creating, editing, and template-based presentations |
-| **xlsx** | Excel spreadsheet toolkit for creating, reading, and manipulating .xlsx files with formulas |
-
-### Tools (1 skill)
-
-| Skill | Description |
-|-------|-------------|
-| **ai-tool-assessment** | Assess and report on AI tool subscriptions, usage patterns, and cost-effectiveness |
-
-### Workspace Hub Operations (5 skills)
-
-| Skill | Description |
-|-------|-------------|
-| **agent-orchestration** | Orchestrate AI agents using Claude Flow, swarm coordination, and multi-agent workflows |
-| **compliance-check** | Verify and enforce coding standards, AI guidelines, and workspace compliance |
-| **repo-sync** | Manage and synchronize multiple Git repositories (26+ repos) with bulk operations |
-| **sparc-workflow** | Apply SPARC methodology for systematic development and TDD workflows |
-| **workspace-cli** | Use the workspace-hub unified CLI for repository management and system configuration |
+| Category | Active Skills | Description |
+|----------|:---:|-------------|
+| `_core` | 2 | Bash utilities, context management |
+| `_internal` | 4 | Framework builders, documentation, meta, workflows |
+| `ai` | 3 | Agent usage optimization, AI prompting |
+| `business` | 12 | Admin, finance, marketing, sales, legal, productivity |
+| `data` | 15 | Analysis, visualization, documents, energy, research |
+| `development` | 27 | Code review, dev tools, GitHub, testing, planning |
+| `digitalmodel` | 2 | Module lookup, naval architecture |
+| `engineering` | 12 | CAD, CFD, drilling, marine-offshore, standards |
+| `gsd-*` | 57 | GSD workflow commands |
+| `operations` | 3 | DevOps, automation |
+| `science` | 1 | Bio-research |
+| `workspace-hub` | 11 | Repo sync, portfolio steering, ecosystem terms |
+| `_archive` | 2,166 | Retired/superseded skills |
 
 ---
 
-## Digitalmodel Skills
+## Core & Internal
 
-**Location:** `/mnt/github/workspace-hub/digitalmodel/.claude/skills/`
-**Domain:** Marine & Offshore Engineering
-
-| Skill | Description |
-|-------|-------------|
-| **orcaflex-modeling** | Setup, configure, and run OrcaFlex hydrodynamic simulations with universal runner |
-| **orcaflex-post-processing** | Post-process OrcaFlex results using OPP for statistics, graphs, and HTML reports |
-| **mooring-design** | Design and analyze mooring systems (CALM, SALM, catenary, spread mooring) per DNV/API/ABS |
-| **catenary-riser** | Analyze catenary and lazy wave riser configurations with OrcaFlex model generation |
-| **structural-analysis** | Structural analysis with stress calculations, buckling checks per DNV/API/ISO standards |
-| **fatigue-analysis** | Fatigue analysis using 221 S-N curves from 17 international standards |
-| **viv-analysis** | Vortex-induced vibration assessment for risers and tubular members |
-| **hydrodynamics** | Manage hydrodynamic coefficients, wave spectra, RAO interpolation, OCIMF loading |
-| **aqwa-analysis** | Integrate with AQWA software for RAO computation and hydrodynamic coefficient extraction |
-| **signal-analysis** | Signal processing, rainflow cycle counting (ASTM E1049-85), and spectral analysis |
-
----
-
-## Worldenergydata Skills
-
-**Location:** `/mnt/github/workspace-hub/worldenergydata/.claude/skills/`
-**Domain:** Oil & Gas Production Data Analysis
+### `_core/` (2 skills)
 
 | Skill | Description |
 |-------|-------------|
-| **bsee-data-extractor** | Extract BSEE production data by API number, block, lease, or field with caching |
-| **sodir-data-extractor** | Extract Norwegian SODIR production and field data |
-| **fdas-economics** | Offshore field development economic analysis with NPV, MIRR, IRR, payback |
-| **npv-analyzer** | NPV analysis for oil & gas assets with cash flow modeling and price scenarios |
-| **well-production-dashboard** | Interactive well production dashboards with real-time monitoring and forecasting |
-| **marine-safety-incidents** | Collect and analyze marine safety incident data from 7 global maritime authorities |
-| **energy-data-visualizer** | Create interactive visualizations for energy production and field data |
-| **field-analyzer** | Analyze oil & gas field performance with production trends and benchmarking |
-| **web-scraper-energy** | Web scraping utilities for energy data sources and regulatory websites |
+| `bash` | Shell scripting patterns and utilities |
+| `context-management` | Context window optimization and management |
 
----
-
-## Aceengineer-admin Skills
-
-**Location:** `/mnt/github/workspace-hub/aceengineer-admin/.claude/skills/`
-**Domain:** Engineering Consulting Business Administration
+### `_internal/` (4 skills)
 
 | Skill | Description |
 |-------|-------------|
-| **invoice-automation** | Generate professional invoices using YAML configuration and python-docx templates |
-| **tax-preparation** | Prepare corporate tax documents (Form 1120, Texas franchise tax) with CPA packages |
-| **expense-tracking** | Track, categorize, and analyze business expenses with statement import |
+| `builders` | Skill and artifact creation frameworks |
+| `documentation` | Documentation generation patterns |
+| `meta` | Skill system metadata and governance |
+| `workflows` | Internal workflow orchestration |
 
 ---
 
-## Assetutilities Skills
-
-**Location:** `/mnt/github/workspace-hub/assetutilities/.claude/skills/`
-**Domain:** Data Processing Utilities
+## AI (3 skills)
 
 | Skill | Description |
 |-------|-------------|
-| **data-management** | Data file management, transformation, and organization utilities |
-| **pdf-utilities** | PDF processing utilities for common operations |
-| **plotly-visualization** | Interactive Plotly visualization generation for data analysis |
+| `agent-usage-optimizer` | Optimize AI agent subscription usage across providers |
+| `optimization` | AI model and prompt optimization techniques |
+| `prompting` | Prompt engineering patterns and templates |
 
 ---
 
-## Skills by Category
+## Business (12 skills)
 
-### Engineering & Analysis
-- digitalmodel: orcaflex-modeling, orcaflex-post-processing, mooring-design, catenary-riser, structural-analysis, fatigue-analysis, viv-analysis, hydrodynamics, aqwa-analysis, signal-analysis
+| Skill | Description |
+|-------|-------------|
+| `admin` | Business administration workflows |
+| `client-demo` | Client demonstration preparation |
+| `communication` | Professional communications (memos, newsletters) |
+| `content-design` | Content creation and design systems |
+| `customer-support` | Customer support workflows |
+| `enterprise-search` | Enterprise knowledge search |
+| `finance` | Financial analysis and reporting |
+| `legal` | Legal document handling |
+| `marketing` | Marketing content and strategy |
+| `product` | Product management workflows |
+| `productivity` | Productivity tools and automation |
+| `sales` | Sales process and pipeline management |
 
-### Data & Visualization
-- workspace-hub: data-pipeline-processor, engineering-report-generator, parallel-file-processor
-- worldenergydata: bsee-data-extractor, sodir-data-extractor, well-production-dashboard, energy-data-visualizer, field-analyzer
-- assetutilities: data-management, plotly-visualization
+---
 
-### Document Generation
-- workspace-hub: docx, pdf, pptx, xlsx
-- aceengineer-admin: invoice-automation
-- assetutilities: pdf-utilities
+## Data (15 skills)
 
-### Business & Finance
-- worldenergydata: fdas-economics, npv-analyzer
-- aceengineer-admin: tax-preparation, expense-tracking
+| Skill | Description |
+|-------|-------------|
+| `analysis` | General data analysis patterns |
+| `analytics` | Analytics dashboards and reporting |
+| `calculation-report` | Calculation report generation |
+| `dark-intelligence-workflow` | Intelligence gathering workflows |
+| `doc-intelligence-promotion` | Document intelligence promotion |
+| `doc-research-download` | Document research and download |
+| `document-index-pipeline` | Document indexing pipeline |
+| `documents` | Document processing (docx, pdf, pptx, xlsx) |
+| `energy` | Energy sector data processing |
+| `engineering` | Engineering data analysis |
+| `office` | Office document manipulation |
+| `research-and-literature-gathering` | Research literature collection |
+| `research-literature` | Academic research processing |
+| `scientific` | Scientific data processing |
+| `visualization` | Data visualization (Plotly, charts) |
 
-### Development Tools
-- workspace-hub: mcp-builder, webapp-testing, yaml-workflow-executor, skill-creator, web-artifacts-builder
+---
 
-### Workspace Operations
-- workspace-hub: agent-orchestration, compliance-check, repo-sync, sparc-workflow, workspace-cli
+## Development (27 skills)
 
-### Communication & Design
-- workspace-hub: brand-guidelines, doc-coauthoring, internal-comms, slack-gif-creator, algorithmic-art, canvas-design, frontend-design, theme-factory
+| Skill | Description |
+|-------|-------------|
+| `automation` | Build and deployment automation |
+| `code-reviewer` | Code review checklists and patterns |
+| `data-pipeline-processor` | Data transformation pipeline execution |
+| `devtools` | Developer tooling and utilities |
+| `documentation` | Developer documentation generation |
+| `elite-frontend-ux` | High-quality frontend/UX patterns |
+| `engineering-report-generator` | Engineering report with Plotly visualizations |
+| `git-worktree-workflow` | Git worktree parallel development |
+| `github` | GitHub CLI and API patterns |
+| `gitignore-scaffold` | .gitignore scaffolding for projects |
+| `html-report-verify` | HTML report verification |
+| `mcp-builder` | MCP server development guide |
+| `parallel-file-processor` | Parallel file processing (2-3x perf) |
+| `planning` | Implementation planning patterns |
+| `plugin-management` | Plugin lifecycle management |
+| `python-testing` | Python testing patterns (pytest) |
+| `quality` | Code quality enforcement |
+| `security` | Security review and hardening |
+| `skill-creator` | Create new Claude Code skills |
+| `test-writing` | Test-driven development patterns |
+| `tui-builder` | Terminal UI development |
+| `typescript` | TypeScript development patterns |
+| `uv-management` | UV package manager workflows |
+| `web-artifacts-builder` | Self-contained web app builder |
+| `web-scraping` | Web scraping utilities |
+| `webapp-testing` | Web app testing with Playwright |
+| `yaml-workflow-executor` | YAML-driven workflow execution |
 
-### Safety & Compliance
-- worldenergydata: marine-safety-incidents
-- workspace-hub: compliance-check, ai-tool-assessment
+---
+
+## Digitalmodel (2 skills)
+
+| Skill | Description |
+|-------|-------------|
+| `module-lookup` | DigitalModel module discovery and lookup |
+| `naval-architect-expert` | Naval architecture domain expertise |
+
+---
+
+## Engineering (12 skills)
+
+| Skill | Description |
+|-------|-------------|
+| `asset-integrity` | Asset integrity management |
+| `cad` | CAD automation (FreeCAD, parametric design) |
+| `cfd` | Computational fluid dynamics (OpenFOAM) |
+| `doc-extraction` | Engineering document data extraction |
+| `drilling` | Drilling engineering operations |
+| `financial-analysis` | Engineering project economics |
+| `gis` | Geographic information systems |
+| `marine-offshore` | Marine/offshore engineering (mooring, risers, VIV) |
+| `maritime-legal` | Maritime regulations and legal |
+| `oil-and-gas` | Oil & gas production operations |
+| `standards` | Engineering standards (DNV, API, ISO) |
+| `units` | Unit conversion and validation |
+
+---
+
+## GSD Workflow Commands (57 skills)
+
+The GSD (Get Shit Done) framework provides workflow commands as skills.
+Each `gsd-*` directory contains a single `SKILL.md`.
+
+### Task Execution
+| Command | Description |
+|---------|-------------|
+| `gsd-do` | Route freeform text to the right GSD command |
+| `gsd-fast` | Quick task execution mode |
+| `gsd-quick` | Rapid task dispatch |
+| `gsd-next` | Pick and execute next task |
+| `gsd-autonomous` | Autonomous task execution |
+
+### Project Management
+| Command | Description |
+|---------|-------------|
+| `gsd-new-project` | Initialize a new GSD project |
+| `gsd-new-milestone` | Create a new milestone |
+| `gsd-new-workspace` | Create a new workspace |
+| `gsd-complete-milestone` | Mark milestone complete |
+| `gsd-milestone-summary` | Summarize milestone status |
+
+### Phase Management
+| Command | Description |
+|---------|-------------|
+| `gsd-add-phase` | Add a phase to a milestone |
+| `gsd-plan-phase` | Plan phase details |
+| `gsd-execute-phase` | Execute a phase |
+| `gsd-discuss-phase` | Discuss phase approach |
+| `gsd-validate-phase` | Validate phase completion |
+| `gsd-remove-phase` | Remove a phase |
+| `gsd-insert-phase` | Insert a phase at position |
+| `gsd-research-phase` | Research phase requirements |
+| `gsd-ui-phase` | Phase UI rendering |
+
+### Task Tracking
+| Command | Description |
+|---------|-------------|
+| `gsd-add-todo` | Add a todo item |
+| `gsd-add-backlog` | Add to backlog |
+| `gsd-check-todos` | Check pending todos |
+| `gsd-review-backlog` | Review backlog items |
+| `gsd-progress` | Show progress report |
+| `gsd-stats` | Project statistics |
+
+### Quality & Review
+| Command | Description |
+|---------|-------------|
+| `gsd-review` | Review work quality |
+| `gsd-verify-work` | Verify completed work |
+| `gsd-audit-milestone` | Audit milestone quality |
+| `gsd-audit-uat` | User acceptance testing |
+| `gsd-add-tests` | Add tests to codebase |
+| `gsd-ui-review` | UI review process |
+
+### Operations
+| Command | Description |
+|---------|-------------|
+| `gsd-help` | GSD help and command reference |
+| `gsd-health` | System health check |
+| `gsd-debug` | Debug GSD issues |
+| `gsd-forensics` | Deep investigation of issues |
+| `gsd-cleanup` | Clean up artifacts |
+| `gsd-update` | Update GSD framework |
+| `gsd-ship` | Ship/deploy changes |
+
+### Workflow Control
+| Command | Description |
+|---------|-------------|
+| `gsd-pause-work` | Pause current work |
+| `gsd-resume-work` | Resume paused work |
+| `gsd-thread` | Thread management |
+| `gsd-workstreams` | Manage parallel workstreams |
+| `gsd-pr-branch` | PR and branch workflow |
+| `gsd-reapply-patches` | Reapply patches after conflict |
+
+### Other
+| Command | Description |
+|---------|-------------|
+| `gsd-note` | Add a note |
+| `gsd-plant-seed` | Plant a seed idea for later |
+| `gsd-session-report` | Generate session report |
+| `gsd-settings` | GSD settings management |
+| `gsd-set-profile` | Set user profile |
+| `gsd-profile-user` | View user profile |
+| `gsd-join-discord` | Join Discord community |
+| `gsd-list-workspaces` | List available workspaces |
+| `gsd-list-phase-assumptions` | List phase assumptions |
+| `gsd-plan-milestone-gaps` | Identify gaps in milestones |
+| `gsd-map-codebase` | Map codebase structure |
+| `gsd-manager` | GSD manager mode |
+
+---
+
+## Operations (3 skills)
+
+| Skill | Description |
+|-------|-------------|
+| `automation` | Operational automation patterns |
+| `devops` | DevOps and infrastructure |
+| `devtools` | Operational developer tools |
+
+---
+
+## Science (1 skill)
+
+| Skill | Description |
+|-------|-------------|
+| `bio-research` | Biological research data processing |
+
+---
+
+## Workspace Hub (11 skills)
+
+| Skill | Description |
+|-------|-------------|
+| `agent-teams` | AI agent team coordination |
+| `clean-code` | Code cleanliness standards |
+| `comprehensive-learning` | Learning and knowledge capture |
+| `ecosystem-terminology` | Workspace-hub terminology guide |
+| `improve` | Self-improvement workflows |
+| `playwright` | Browser automation with Playwright |
+| `remote-desktop` | Remote desktop management |
+| `repo-portfolio-steering` | Repository portfolio management |
+| `repo-structure` | Repository structure conventions |
+| `repo-sync` | Multi-repo synchronization |
+| `sync` | Configuration sync utilities |
 
 ---
 
 ## Usage
 
-### Invoking Skills
+Skills are loaded automatically by Claude Code when task patterns match skill triggers.
 
-Skills can be invoked in Claude Code conversations:
+```bash
+# List available skills
+find .claude/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
 
-```
-# By name
-/skill-name
+# View a specific skill
+cat .claude/skills/engineering/marine-offshore/SKILL.md
 
-# With context
-Use the mooring-design skill to analyze the CALM buoy configuration
-
-# Chaining skills
-First use bsee-data-extractor to get production data, then npv-analyzer for economics
-```
-
-### Creating New Skills
-
-Use the `skill-creator` skill in workspace-hub:
-
-```
-/skill-creator
-```
-
-This will guide you through creating properly structured skills with:
-- SKILL.md documentation
-- Trigger conditions
-- Core capabilities
-- Usage examples
-- Dependencies
-
----
-
-## Skill File Structure
-
-Each skill follows this structure:
-
-```
-.claude/skills/
-└── skill-name/
-    └── SKILL.md          # Skill definition and documentation
-```
-
-### SKILL.md Format
-
-```yaml
----
-name: skill-name
-description: Brief description of what the skill does
----
-
-# Skill Name
-
-Detailed description...
-
-## Trigger Conditions
-When to activate...
-
-## Core Capabilities
-1. Capability one
-2. Capability two
-
-## Usage Examples
-```code examples```
-
-## Dependencies
-- Required packages
-- Related skills
+# Run GSD command
+/gsd:help
 ```
 
 ---
 
 ## Related Documentation
 
-- [Claude Code Skills Guide](https://docs.anthropic.com/en/docs/claude-code/skills)
-- [Workspace Hub CLAUDE.md](/mnt/github/workspace-hub/CLAUDE.md)
-- [AI Agent Guidelines](/mnt/github/workspace-hub/docs/modules/ai/AI_AGENT_GUIDELINES.md)
-- [Development Workflow](/mnt/github/workspace-hub/docs/modules/workflow/DEVELOPMENT_WORKFLOW.md)
+- [Workspace Hub Capabilities Summary](WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)
+- [Control Plane Contract](standards/CONTROL_PLANE_CONTRACT.md)
+- [AI Agent Guidelines](modules/ai/AI_AGENT_GUIDELINES.md)
 
 ---
 
-*This index is auto-generated. To update, run skills discovery across repositories.*
+*Generated from `.claude/skills/` tree on 2026-04-02.*
