@@ -15,11 +15,14 @@
         "WBJNJournal",
         "WBJNReader"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 429,
+      "quality_score": 3.5,
+      "test_source_ratio": 0.6
     },
     {
       "name": "asset_integrity",
-      "status": "DEVELOPMENT",
+      "status": "PRODUCTION",
       "file_count": 52,
       "test_count": 16,
       "key_classes": [
@@ -72,7 +75,10 @@
         "WorkingWithYAML",
         "objdict"
       ],
-      "docstring_pct": 21
+      "docstring_pct": 92,
+      "loc": 8763,
+      "quality_score": 9.49,
+      "test_source_ratio": 0.31
     },
     {
       "name": "benchmarks",
@@ -88,7 +94,10 @@
         "SeedEquivalenceResult",
         "TimeDomainStats"
       ],
-      "docstring_pct": 75
+      "docstring_pct": 75,
+      "loc": 682,
+      "quality_score": 3.52,
+      "test_source_ratio": 1.5
     },
     {
       "name": "cathodic_protection",
@@ -101,7 +110,21 @@
         "ImpressedCurrentGroundBed",
         "RectifierOutput"
       ],
-      "docstring_pct": 100
+      "docstring_pct": 100,
+      "loc": 857,
+      "quality_score": 2.33,
+      "test_source_ratio": 0.8
+    },
+    {
+      "name": "data_models",
+      "status": "SKELETON",
+      "file_count": 2,
+      "test_count": 0,
+      "key_classes": [],
+      "docstring_pct": 50,
+      "loc": 20,
+      "quality_score": 0.0,
+      "test_source_ratio": 0.0
     },
     {
       "name": "data_systems",
@@ -160,7 +183,10 @@
         "VesselScraper",
         "WireRopeDatabaseClient"
       ],
-      "docstring_pct": 38
+      "docstring_pct": 38,
+      "loc": 11124,
+      "quality_score": 4.17,
+      "test_source_ratio": 0.14
     },
     {
       "name": "drilling_riser",
@@ -168,7 +194,10 @@
       "file_count": 5,
       "test_count": 4,
       "key_classes": [],
-      "docstring_pct": 100
+      "docstring_pct": 100,
+      "loc": 380,
+      "quality_score": 5.26,
+      "test_source_ratio": 0.8
     },
     {
       "name": "fatigue",
@@ -176,7 +205,10 @@
       "file_count": 7,
       "test_count": 5,
       "key_classes": [],
-      "docstring_pct": 86
+      "docstring_pct": 86,
+      "loc": 940,
+      "quality_score": 3.72,
+      "test_source_ratio": 0.71
     },
     {
       "name": "field_development",
@@ -188,7 +220,10 @@
         "PlatformSchematic",
         "SubseaTiebackSchematic"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 1391,
+      "quality_score": 0.79,
+      "test_source_ratio": 0.09
     },
     {
       "name": "geotechnical",
@@ -210,7 +245,10 @@
         "SuctionAnchorResult",
         "VerticalStabilityResult"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 768,
+      "quality_score": 0.65,
+      "test_source_ratio": 0.2
     },
     {
       "name": "gis",
@@ -242,7 +280,10 @@
         "TemporalLayer",
         "WellLayer"
       ],
-      "docstring_pct": 88
+      "docstring_pct": 88,
+      "loc": 4137,
+      "quality_score": 5.03,
+      "test_source_ratio": 0.31
     },
     {
       "name": "hydrodynamics",
@@ -537,7 +578,10 @@
         "_CleanDumper",
         "_CoordMapper"
       ],
-      "docstring_pct": 65
+      "docstring_pct": 65,
+      "loc": 43160,
+      "quality_score": 40.08,
+      "test_source_ratio": 0.58
     },
     {
       "name": "infrastructure",
@@ -672,7 +716,10 @@
         "well",
         "wellmap"
       ],
-      "docstring_pct": 61
+      "docstring_pct": 61,
+      "loc": 30820,
+      "quality_score": 12.31,
+      "test_source_ratio": 0.14
     },
     {
       "name": "marine_ops",
@@ -860,7 +907,10 @@
         "WireRopeProperties",
         "for"
       ],
-      "docstring_pct": 67
+      "docstring_pct": 67,
+      "loc": 31106,
+      "quality_score": 21.44,
+      "test_source_ratio": 0.49
     },
     {
       "name": "naval_architecture",
@@ -870,7 +920,10 @@
       "key_classes": [
         "FourQuadrantPropeller"
       ],
-      "docstring_pct": 5
+      "docstring_pct": 5,
+      "loc": 24485,
+      "quality_score": 1.03,
+      "test_source_ratio": 0.57
     },
     {
       "name": "nde",
@@ -880,7 +933,10 @@
       "key_classes": [
         "AcousticScatteringLoader"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 152,
+      "quality_score": 1.97,
+      "test_source_ratio": 0.33
     },
     {
       "name": "orcaflex",
@@ -900,7 +956,10 @@
         "StaticConfigSectionConfig",
         "TimeSeriesConfig"
       ],
-      "docstring_pct": 100
+      "docstring_pct": 100,
+      "loc": 645,
+      "quality_score": 2.17,
+      "test_source_ratio": 0.07
     },
     {
       "name": "orcawave",
@@ -920,7 +979,10 @@
         "ReportConfig",
         "SectionConfig"
       ],
-      "docstring_pct": 100
+      "docstring_pct": 100,
+      "loc": 863,
+      "quality_score": 4.52,
+      "test_source_ratio": 0.23
     },
     {
       "name": "power",
@@ -969,7 +1031,10 @@
         "TopologyValidator",
         "UPSModule"
       ],
-      "docstring_pct": 100
+      "docstring_pct": 100,
+      "loc": 2272,
+      "quality_score": 10.87,
+      "test_source_ratio": 0.68
     },
     {
       "name": "production_engineering",
@@ -1003,7 +1068,10 @@
         "WellType",
         "WorkflowStage"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 1301,
+      "quality_score": 4.3,
+      "test_source_ratio": 0.88
     },
     {
       "name": "reservoir",
@@ -1011,7 +1079,10 @@
       "file_count": 2,
       "test_count": 1,
       "key_classes": [],
-      "docstring_pct": 50
+      "docstring_pct": 50,
+      "loc": 129,
+      "quality_score": 1.55,
+      "test_source_ratio": 0.5
     },
     {
       "name": "signal_processing",
@@ -1042,12 +1113,15 @@
         "TimeSeriesComponentsAdapter",
         "TimeSeriesProcessor"
       ],
-      "docstring_pct": 81
+      "docstring_pct": 81,
+      "loc": 6166,
+      "quality_score": 4.82,
+      "test_source_ratio": 0.41
     },
     {
       "name": "solvers",
       "status": "PRODUCTION",
-      "file_count": 309,
+      "file_count": 310,
       "test_count": 89,
       "key_classes": [
         "AdvancedMemoryOptimizer",
@@ -1176,6 +1250,7 @@
         "FormatConverter",
         "FormatType",
         "FreeSurfaceElevation",
+        "FrequencySweep",
         "GMSHMeshGenerator",
         "General",
         "GeneralBuilder",
@@ -1220,6 +1295,8 @@
         "GroupingConfig",
         "GroupsBuilder",
         "HTMLReporter",
+        "HeadingSweep",
+        "HullParameterSweep",
         "HumanReadableFormatter",
         "HybridExecutor",
         "HybridOrcaFlexProcessor",
@@ -1365,6 +1442,7 @@
         "ParallelConfig",
         "ParallelIOProcessor",
         "ParameterRange",
+        "ParametricSpecGenerator",
         "ParametricStudy",
         "PathResolver",
         "PerformanceMonitor",
@@ -1511,7 +1589,10 @@
         "YamlConverter",
         "_NoAliasDumper"
       ],
-      "docstring_pct": 63
+      "docstring_pct": 63,
+      "loc": 56784,
+      "quality_score": 48.59,
+      "test_source_ratio": 0.29
     },
     {
       "name": "specialized",
@@ -1541,7 +1622,10 @@
         "TemporalLayer",
         "WellLayer"
       ],
-      "docstring_pct": 79
+      "docstring_pct": 79,
+      "loc": 4104,
+      "quality_score": 64.13,
+      "test_source_ratio": 0.84
     },
     {
       "name": "specs",
@@ -1553,11 +1637,14 @@
         "ModuleManifest",
         "StandardRef"
       ],
-      "docstring_pct": 50
+      "docstring_pct": 50,
+      "loc": 63,
+      "quality_score": 3.17,
+      "test_source_ratio": 0.5
     },
     {
       "name": "structural",
-      "status": "DEVELOPMENT",
+      "status": "PRODUCTION",
       "file_count": 191,
       "test_count": 42,
       "key_classes": [
@@ -1773,11 +1860,14 @@
         "WallThicknessResult",
         "YieldCriterion"
       ],
-      "docstring_pct": 37
+      "docstring_pct": 71,
+      "loc": 38620,
+      "quality_score": 20.77,
+      "test_source_ratio": 0.22
     },
     {
       "name": "subsea",
-      "status": "DEVELOPMENT",
+      "status": "PRODUCTION",
       "file_count": 65,
       "test_count": 19,
       "key_classes": [
@@ -1855,7 +1945,10 @@
         "VortexSheddingResult",
         "WallThicknessSizingWorkflow"
       ],
-      "docstring_pct": 28
+      "docstring_pct": 60,
+      "loc": 12722,
+      "quality_score": 9.71,
+      "test_source_ratio": 0.29
     },
     {
       "name": "visualization",
@@ -1981,13 +2074,16 @@
         "VolumeCondition",
         "WaterLevel"
       ],
-      "docstring_pct": 80
+      "docstring_pct": 80,
+      "loc": 18706,
+      "quality_score": 4.79,
+      "test_source_ratio": 0.29
     },
     {
       "name": "web",
-      "status": "SKELETON",
+      "status": "DEVELOPMENT",
       "file_count": 69,
-      "test_count": 0,
+      "test_count": 5,
       "key_classes": [
         "AppIndex",
         "GoMFieldsCharts",
@@ -2000,7 +2096,10 @@
         "dropDownSelectionForm",
         "textBoxSubmitForm"
       ],
-      "docstring_pct": 1
+      "docstring_pct": 1,
+      "loc": 2690,
+      "quality_score": 12.83,
+      "test_source_ratio": 0.07
     },
     {
       "name": "well",
@@ -2020,7 +2119,10 @@
         "WarrenROP",
         "WellboreHydraulics"
       ],
-      "docstring_pct": 0
+      "docstring_pct": 0,
+      "loc": 1323,
+      "quality_score": 2.12,
+      "test_source_ratio": 0.57
     },
     {
       "name": "workflows",
@@ -2204,14 +2306,19 @@
         "WorkflowTask",
         "WorkflowTemplate"
       ],
-      "docstring_pct": 60
+      "docstring_pct": 60,
+      "loc": 26185,
+      "quality_score": 10.89,
+      "test_source_ratio": 0.34
     }
   ],
   "summary": {
-    "total": 30,
-    "PRODUCTION": 11,
-    "DEVELOPMENT": 18,
+    "total": 31,
+    "PRODUCTION": 14,
+    "DEVELOPMENT": 16,
     "SKELETON": 1,
-    "GAP": 0
+    "GAP": 0,
+    "total_loc": 331787,
+    "avg_quality_score": 10.34
   }
 }

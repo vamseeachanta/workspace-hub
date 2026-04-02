@@ -151,12 +151,17 @@ def scan_packages(repo_path: Path) -> list[dict[str, Any]]:
         ) if py_files else True
 
         all_classes = []
+        total_loc = 0
         for f in py_files:
             all_classes.extend(_extract_classes(f))
+            total_loc += _count_lines(f)
 
         status = _classify_maturity(
             file_count, test_count, docstring_pct, all_files_tiny, only_init,
         )
+
+        quality_score = compute_quality_score(test_count, file_count, total_loc)
+        test_source_ratio = compute_test_source_ratio(test_count, file_count)
 
         packages.append({
             "name": entry.name,
@@ -165,9 +170,67 @@ def scan_packages(repo_path: Path) -> list[dict[str, Any]]:
             "test_count": test_count,
             "key_classes": sorted(set(all_classes)),
             "docstring_pct": docstring_pct,
+            "loc": total_loc,
+            "quality_score": quality_score,
+            "test_source_ratio": test_source_ratio,
         })
 
     return packages
+
+
+def compute_quality_score(
+    test_count: int, file_count: int, loc: int,
+) -> float:
+    """Compute LOC-weighted quality score.
+
+    Formula: tests * files / total_loc * 100
+    Returns 0.0 if loc is zero.
+    """
+    if loc == 0:
+        return 0.0
+    return round(test_count * file_count / loc * 100, 2)
+
+
+def compute_test_source_ratio(
+    test_count: int, file_count: int,
+) -> float:
+    """Compute test-to-source ratio.
+
+    Formula: test_count / file_count
+    Returns 0.0 if file_count is zero.
+    """
+    if file_count == 0:
+        return 0.0
+    return round(test_count / file_count, 2)
+
+
+def compute_trend(
+    package_name: str,
+    current_score: float,
+    previous_snapshot: dict | None,
+) -> str:
+    """Compute trend symbol by comparing current score to previous.
+
+    Returns:
+        '↑' if improved, '↓' if regressed, '→' if unchanged,
+        'NEW' if package not in previous, '—' if no previous snapshot.
+    """
+    if previous_snapshot is None:
+        return "—"
+
+    prev_packages = {
+        p["name"]: p for p in previous_snapshot.get("packages", [])
+    }
+
+    if package_name not in prev_packages:
+        return "NEW"
+
+    prev_score = prev_packages[package_name].get("quality_score", 0.0)
+    if current_score > prev_score:
+        return "↑"
+    elif current_score < prev_score:
+        return "↓"
+    return "→"
 
 
 def _status_emoji(status: str) -> str:
@@ -180,7 +243,10 @@ def _status_emoji(status: str) -> str:
     }.get(status, "\u26aa")
 
 
-def generate_markdown(packages: list[dict[str, Any]]) -> str:
+def generate_markdown(
+    packages: list[dict[str, Any]],
+    previous_snapshot: dict | None = None,
+) -> str:
     """Generate the module status matrix markdown report."""
     lines: list[str] = []
 
@@ -210,20 +276,27 @@ def generate_markdown(packages: list[dict[str, Any]]) -> str:
     lines.append("## Package Status Table")
     lines.append("")
     lines.append(
-        "| Package | Status | Files | Tests | Docstring % | Key Classes |"
+        "| Package | Status | Files | Tests | LOC | Docstring % "
+        "| Quality Score | Test/Src | Trend | Key Classes |"
     )
     lines.append(
-        "|---------|--------|------:|------:|------------:|-------------|"
+        "|---------|--------|------:|------:|----:|------------:"
+        "|-------------:|---------:|:-----:|-------------|"
     )
     for pkg in sorted(packages, key=lambda p: p["name"]):
         emoji = _status_emoji(pkg["status"])
         classes_str = ", ".join(pkg["key_classes"][:5])
         if len(pkg["key_classes"]) > 5:
             classes_str += f" (+{len(pkg['key_classes']) - 5} more)"
+        loc = pkg.get("loc", 0)
+        quality = pkg.get("quality_score", 0.0)
+        ratio = pkg.get("test_source_ratio", 0.0)
+        trend = compute_trend(pkg["name"], quality, previous_snapshot)
         lines.append(
             f"| {pkg['name']} | {emoji} {pkg['status']} | "
             f"{pkg['file_count']} | {pkg['test_count']} | "
-            f"{pkg['docstring_pct']}% | {classes_str} |"
+            f"{loc:,} | {pkg['docstring_pct']}% | "
+            f"{quality:.1f} | {ratio:.2f} | {trend} | {classes_str} |"
         )
     lines.append("")
 
@@ -248,8 +321,14 @@ def generate_markdown(packages: list[dict[str, Any]]) -> str:
 
 
 def generate_json_output(packages: list[dict[str, Any]]) -> str:
-    """Generate structured JSON output."""
+    """Generate structured JSON output with quality scores for trend tracking."""
     counts = Counter(p["status"] for p in packages)
+    total_loc = sum(p.get("loc", 0) for p in packages)
+    avg_quality = (
+        sum(p.get("quality_score", 0.0) for p in packages) / len(packages)
+        if packages
+        else 0.0
+    )
     data = {
         "packages": sorted(packages, key=lambda p: p["name"]),
         "summary": {
@@ -258,6 +337,8 @@ def generate_json_output(packages: list[dict[str, Any]]) -> str:
             "DEVELOPMENT": counts.get("DEVELOPMENT", 0),
             "SKELETON": counts.get("SKELETON", 0),
             "GAP": counts.get("GAP", 0),
+            "total_loc": total_loc,
+            "avg_quality_score": round(avg_quality, 2),
         },
     }
     return json.dumps(data, indent=2, default=str)
@@ -289,13 +370,21 @@ def main():
     output_dir = Path(args.output_dir) if args.output_dir else Path("docs/reports")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    md = generate_markdown(packages)
+    # Load previous JSON snapshot for trend comparison
+    json_file = output_dir / "module-status-matrix.json"
+    previous_snapshot = None
+    if json_file.exists():
+        try:
+            previous_snapshot = json.loads(json_file.read_text())
+        except (json.JSONDecodeError, OSError):
+            previous_snapshot = None
+
+    md = generate_markdown(packages, previous_snapshot)
     md_file = output_dir / "module-status-matrix.md"
     md_file.write_text(md)
     print(f"Written: {md_file}")
 
     json_str = generate_json_output(packages)
-    json_file = output_dir / "module-status-matrix.json"
     json_file.write_text(json_str)
     print(f"Written: {json_file}")
 
