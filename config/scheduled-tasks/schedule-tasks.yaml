@@ -271,6 +271,46 @@ tasks:
 
   # ── Windows: contribute-minimal ──────────────────────────────────────────
 
+  - id: architecture-scan
+    label: Weekly architecture scanner
+    schedule: "0 2 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      git pull origin main --rebase &&
+      uv run --no-project python scripts/analysis/architecture-scanner.py &&
+      git add -A docs/architecture/ &&
+      git diff --staged --quiet ||
+      (git commit -m 'chore: weekly architecture scan report' && git push origin main)
+      >> $WORKSPACE_HUB/logs/quality/architecture-scan-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/architecture-scan-*.log
+    is_claude_task: false
+    description: Weekly architecture scan (Sunday 02:00 UTC); runs scanner, commits updated reports, pushes.
+
+  - id: staleness-scan
+    label: Weekly doc staleness scanner
+    schedule: "0 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      git pull origin main --rebase &&
+      uv run --no-project python scripts/docs/staleness-scanner.py &&
+      git add -A docs/dashboards/doc-freshness-dashboard.md &&
+      git diff --staged --quiet ||
+      (git commit -m 'chore: weekly staleness scan freshness dashboard' && git push origin main)
+      >> $WORKSPACE_HUB/logs/quality/staleness-scan-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/staleness-scan-*.log
+    is_claude_task: false
+    description: Weekly doc staleness scan (Sunday 03:00 UTC); runs scanner, commits freshness dashboard, pushes.
+
+  # ── Windows: contribute-minimal ──────────────────────────────────────────
+
   - id: win-repository-sync
     label: Repository sync (Windows)
     schedule: "every 4 hours"
