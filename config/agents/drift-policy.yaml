@@ -1,0 +1,45 @@
+# drift-policy.yaml — Per-tool classification of post-update file changes.
+# Read by: scripts/cron/harness-update.sh (drift check), scripts/maintenance/ai-tools-status.sh
+hermes:
+  tool_dir: "~/.hermes/hermes-agent"
+  install_type: git
+  machine_specific:
+    - path: "hermes"
+      reason: "Shebang must point to local venv python"
+  portable:
+    - path: "package-lock.json"
+      reason: "npm dependency lock"
+  never_sync:
+    - "auth.json"
+    - ".env"
+    - "memories/"
+    - "sessions/"
+    - "skills/"
+    - "config.yaml"
+
+gstack:
+  tool_dir: "~/.claude/skills/gstack"
+  install_type: git
+  machine_specific: []
+  portable:
+    - path: "*"
+
+claude_code:
+  install_type: npm
+  package: "@anthropic-ai/claude-code"
+
+codex:
+  install_type: npm
+  package: "@openai/codex"
+
+gemini:
+  install_type: npm
+  package: "@google/gemini-cli"
+
+gsd:
+  install_type: npm
+  package: "get-shit-done-cc"
+
+superpowers:
+  install_type: claude_plugin
+  tool_dir: "~/.claude/plugins/superpowers"

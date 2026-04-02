@@ -10,7 +10,7 @@ CONFIG="$REPO_ROOT/scripts/readiness/harness-config.yaml"
 OUTPUT="$REPO_ROOT/config/ai_agents/ai-tools-status.yaml"
 NPM_PATH="\$HOME/.npm-global/bin:\$HOME/.local/bin:\$PATH"
 
-TOOLS=(uv python3 claude codex gemini gh git node)
+TOOLS=(uv python3 claude codex gemini gh git node hermes gsd)
 
 # ── helpers ─────────────────────────────────────────────────────────────────
 
@@ -213,6 +213,41 @@ fi
       [[ "$raw" == "UNREACHABLE" || "$raw" == "MISSING" || -z "$raw" ]] && raw=""
       sv=$(extract_semver "$raw" || true)
       echo "      ${machine}: \"${sv:-null}\""
+    done
+  done
+
+  # ── working-tree drift for git-based tools (#1668 Phase 3) ───────────────
+  echo ""
+  echo "working_tree_drift:"
+  echo "  description: \"Dirty file counts in git-based AI tools\""
+  GIT_TOOL_DIRS=("hermes:~/.hermes/hermes-agent" "gstack:~/.claude/skills/gstack")
+  for entry in "${GIT_TOOL_DIRS[@]}"; do
+    local_tool="${entry%%:*}"
+    local_dir="${entry##*:}"
+    echo "  ${local_tool}:"
+    echo "    tool_dir: \"${local_dir}\""
+    echo "    machines:"
+    for machine in "${MACHINES[@]}"; do
+      [[ "${MACHINE_REACHABLE[$machine]:-false}" == "true" ]] || continue
+      local_ssh=$(machine_field "$machine" "ssh_target")
+      if [[ "$local_ssh" == "null" || -z "$local_ssh" ]]; then
+        real_dir="${local_dir/#~/$HOME}"
+        if [[ -d "$real_dir/.git" ]]; then
+          dirty_count=$(git -C "$real_dir" status --porcelain 2>/dev/null | wc -l)
+          echo "      ${machine}: {dirty_files: ${dirty_count}, reachable: true}"
+        else
+          echo "      ${machine}: {dirty_files: null, reachable: true, note: \"not installed\"}"
+        fi
+      else
+        # Remote: check .git exists first, THEN count dirty files
+        remote_count=$(ssh -o ConnectTimeout=5 -o BatchMode=yes "$local_ssh" \
+          "dir=\"${local_dir/#~/'\$HOME'}\"; dir=\$(eval echo \"\$dir\"); [ -d \"\$dir/.git\" ] && git -C \"\$dir\" status --porcelain 2>/dev/null | wc -l || echo -1" 2>/dev/null || echo "-1")
+        if [[ "$remote_count" == "-1" ]]; then
+          echo "      ${machine}: {dirty_files: null, reachable: true, note: \"not installed\"}"
+        else
+          echo "      ${machine}: {dirty_files: ${remote_count}, reachable: true}"
+        fi
+      fi
     done
   done
 } > "$OUTPUT" || die "Failed to write $OUTPUT"

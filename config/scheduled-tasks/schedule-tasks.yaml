@@ -69,9 +69,16 @@ tasks:
     description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
 
   - id: harness-update
-    label: AI harness tools daily update
-    schedule: "15 1 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    label: AI harness tools daily update (staggered canary)
+    schedule_by_machine:
+      dev-primary: "15 1 * * *"      # 01:15 — canary
+      ace-linux-1: "15 1 * * *"
+      dev-secondary: "45 1 * * *"    # 01:45 — after canary
+      ace-linux-2: "45 1 * * *"
+      licensed-win-1: "15 2 * * *"   # 02:15 — after Linux
+      licensed-win-2: "15 2 * * *"
+    schedule: "15 1 * * *"           # fallback
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, licensed-win-1, licensed-win-2]
     requires: [bash, git, npm]
     prefer: dev-primary
     command: >-
@@ -81,7 +88,10 @@ tasks:
       >> $WORKSPACE_HUB/logs/maintenance/harness-update-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/maintenance/harness-update-*.log
     is_claude_task: false
-    description: Daily best-effort update of AI harness tools (GStack, Hermes, Superpowers, GSD); runs at 01:15 before main pipeline.
+    description: >-
+      Daily AI harness lifecycle — all 7 tools. Staggered canary: dev-primary 01:15,
+      dev-secondary 01:45, Windows 02:15. Health checks, rollback, drift, alerting.
+      Issues: #1668, #1672-#1675.
 
   - id: comprehensive-learning
     label: Comprehensive learning pipeline
