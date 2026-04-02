@@ -367,9 +367,95 @@ def generate_markdown(
     return "\n".join(lines)
 
 
+def build_reverse_index(
+    packages: list[dict[str, Any]],
+) -> dict[str, list[str]]:
+    """Build a reverse index: symbol_name → list of package names exporting it.
+
+    Combines public_classes and public_functions.  Deduplicates so each
+    package appears at most once per symbol.
+    """
+    index: dict[str, list[str]] = defaultdict(list)
+    for pkg in packages:
+        seen_symbols: set[str] = set()
+        for symbol in pkg.get("public_classes", []) + pkg.get("public_functions", []):
+            if symbol not in seen_symbols:
+                seen_symbols.add(symbol)
+                index[symbol].append(pkg["name"])
+    return dict(index)
+
+
+def detect_collisions(
+    packages: list[dict[str, Any]],
+) -> dict[str, list[str]]:
+    """Detect cross-package API name collisions.
+
+    Returns a dict of symbol_name → list of packages that export it,
+    filtered to only symbols exported by 2+ packages.
+    """
+    index = build_reverse_index(packages)
+    return {
+        symbol: pkgs
+        for symbol, pkgs in index.items()
+        if len(pkgs) >= 2
+    }
+
+
+def generate_collision_report(
+    packages: list[dict[str, Any]],
+    top_n: int = 20,
+) -> str:
+    """Generate a markdown section reporting cross-package API name collisions.
+
+    Returns a markdown string with collision details.
+    """
+    collisions = detect_collisions(packages)
+    lines: list[str] = []
+
+    lines.append("## Cross-Package API Name Collisions")
+    lines.append("")
+
+    if not collisions:
+        lines.append("No cross-package API name collisions detected.")
+        lines.append("")
+        return "\n".join(lines)
+
+    total_collisions = len(collisions)
+    lines.append(
+        f"**{total_collisions} symbols** are exported by 2+ packages."
+    )
+    lines.append("")
+
+    # Sort by number of packages (descending), then alphabetically
+    sorted_collisions = sorted(
+        collisions.items(),
+        key=lambda x: (-len(x[1]), x[0]),
+    )
+
+    # Top-N table
+    display = sorted_collisions[:top_n]
+    lines.append(f"### Top {min(top_n, len(display))} Most Common Collisions")
+    lines.append("")
+    lines.append("| Symbol | Packages | Count |")
+    lines.append("|--------|----------|------:|")
+    for symbol, pkgs in display:
+        pkg_list = ", ".join(sorted(pkgs))
+        lines.append(f"| `{symbol}` | {pkg_list} | {len(pkgs)} |")
+    lines.append("")
+
+    if len(sorted_collisions) > top_n:
+        lines.append(
+            f"*... and {len(sorted_collisions) - top_n} more colliding symbols.*"
+        )
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 def scan_repo(
     repo_path: Path,
     output_dir: Path | None = None,
+    detect_collisions_flag: bool = False,
 ) -> str:
     """Full pipeline: discover packages, build graph, generate reports."""
     repo_path = Path(repo_path).resolve()
@@ -380,6 +466,12 @@ def scan_repo(
 
     md = generate_markdown(repo_name, packages, graph)
     yaml_str = generate_yaml_report(packages, graph)
+
+    # Collision detection
+    collision_md = ""
+    if detect_collisions_flag:
+        collision_md = generate_collision_report(packages)
+        md = md.rstrip("\n") + "\n\n" + collision_md
 
     if output_dir:
         output_dir = Path(output_dir)
@@ -404,6 +496,16 @@ def scan_repo(
     print(f"Public API surface: {total_pub} symbols")
     print(f"Dependency edges: {dep_edges}")
 
+    if detect_collisions_flag:
+        collisions = detect_collisions(packages)
+        print(f"API name collisions: {len(collisions)} symbols in 2+ packages")
+        sorted_collisions = sorted(
+            collisions.items(),
+            key=lambda x: (-len(x[1]), x[0]),
+        )
+        for symbol, pkgs in sorted_collisions[:20]:
+            print(f"  {symbol}: {', '.join(sorted(pkgs))}")
+
     return md
 
 
@@ -422,6 +524,12 @@ def main():
         default=None,
         help="Output directory for reports (default: docs/architecture)",
     )
+    parser.add_argument(
+        "--detect-collisions",
+        action="store_true",
+        default=False,
+        help="Detect and report cross-package API name collisions",
+    )
     args = parser.parse_args()
 
     repo = Path(args.repo_path)
@@ -430,7 +538,7 @@ def main():
         sys.exit(1)
 
     output_dir = Path(args.output_dir) if args.output_dir else Path("docs/architecture")
-    scan_repo(repo, output_dir)
+    scan_repo(repo, output_dir, detect_collisions_flag=args.detect_collisions)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ summary:
   total_modules: 1590
   total_classes: 2089
   total_functions: 1957
-  total_loc: 331664
+  total_loc: 331750
   public_api_classes: 1940
   public_api_functions: 1335
 packages:
@@ -2502,7 +2502,7 @@ packages:
   modules: 191
   classes: 249
   functions: 264
-  loc: 38555
+  loc: 38620
   public_classes:
   - APIRP
   - API_RP_16Q
@@ -2886,7 +2886,7 @@ packages:
   modules: 65
   classes: 76
   functions: 129
-  loc: 12701
+  loc: 12722
   public_classes:
   - APISTD2RDCalculations
   - AnchorProperties
