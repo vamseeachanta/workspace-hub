@@ -174,6 +174,19 @@ tasks:
     is_claude_task: true
     description: Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
 
+  - id: claude-plugin-audit
+    label: Claude plugin weekly audit
+    schedule: "45 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, claude]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      timeout 120 bash scripts/maintenance/claude-plugin-audit.sh
+      >> $WORKSPACE_HUB/logs/maintenance/claude-plugin-audit-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/claude-plugin-audit-*.log
+    is_claude_task: false
+    description: Weekly audit (Sunday 03:45) of installed Claude plugins — version currency, skill overlaps, deprecations.
+
   - id: notification-purge
     label: Notification log 7-day retention
     schedule: "30 4 * * *"
