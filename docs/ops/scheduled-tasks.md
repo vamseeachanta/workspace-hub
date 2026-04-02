@@ -17,6 +17,7 @@
 
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
+| 01:15 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
 | 01:00 daily | dep-health | Dependency health + CVE check | `logs/quality/dep-health-cron.log` |
 | 01:30 daily | benchmark-regression | Performance benchmark regression | `logs/quality/benchmark-*.log` |
 | 02:00 daily | comprehensive-learning | 10-phase nightly learning pipeline | `.claude/state/learning-reports/cron.log` |
@@ -28,6 +29,13 @@
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
+| */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+
+## Task Schedule (ace-linux-2 / dev-secondary — contribute variant)
+
+| Time | ID | Description | Log |
+|------|-----|-------------|-----|
+| 01:15 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
 
 ## Comprehensive Learning Sub-Steps (02:00)
@@ -64,6 +72,13 @@ bash scripts/cron/setup-cron.sh
 # Check current crontab
 crontab -l
 ```
+
+## Audit Notes (2026-04-01)
+
+- `harness-update` added to ace-linux-2 (was ace-linux-1 only) — updates GStack, Hermes, Superpowers, GSD daily at 01:15
+- Hermes config templates added to `config/agents/hermes/` — synced via `sync-agent-configs.sh`
+- ace-linux-2 NVIDIA kernel module missing for 6.17.0-20 — tracked in #1581
+- Hermes install on ace-linux-2 — tracked in #1582
 
 ## Audit Notes (2026-03-25)
 
