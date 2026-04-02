@@ -41,3 +41,4 @@ skills:
     - __WS_HUB_PATH__/worldenergydata/.claude/skills
     - __WS_HUB_PATH__/achantas-data/.claude/skills
     - __WS_HUB_PATH__/assetutilities/.claude/skills
+    - __WS_HUB_PATH__/digitalmodel/.claude/skills
