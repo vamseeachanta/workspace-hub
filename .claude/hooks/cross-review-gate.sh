@@ -70,4 +70,12 @@ JSON
   fi
 fi
 
+# --- Gate 4: TDD pairing check on commit commands ---
+if echo "$COMMAND" | grep -qE 'git\s+commit'; then
+  TDD_OUTPUT=$(bash "${REPO_ROOT}/scripts/enforcement/require-tdd-pairing.sh" --staged 2>&1) || true
+  if echo "$TDD_OUTPUT" | grep -q "WARNING"; then
+    echo "$TDD_OUTPUT" >&2
+  fi
+fi
+
 exit 0

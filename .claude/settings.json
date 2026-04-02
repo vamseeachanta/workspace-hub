@@ -60,6 +60,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/tool-call-ceiling.sh",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "PreCompact": [
