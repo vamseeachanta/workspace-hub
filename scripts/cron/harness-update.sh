@@ -80,19 +80,60 @@ write_transaction() {
 
 health_check_hermes() {
   local venv_python="${HOME}/.hermes/hermes-agent/.venv/bin/python3"
+  local hermes_dir="${HOME}/.hermes/hermes-agent"
+  local hermes_config="${HOME}/.hermes/config.yaml"
+  local fail=0
+
+  # Core binary checks
   if [[ ! -x "$venv_python" ]]; then
     log "HEALTH" "Hermes: venv python not found at $venv_python"
-    return 1
+    fail=1
   fi
   if ! "$venv_python" -c "from hermes_cli.main import main; print('ok')" &>/dev/null; then
     log "HEALTH" "Hermes: import chain broken (hermes_cli.main)"
-    return 1
+    fail=1
   fi
   if ! hermes --version &>/dev/null; then
     log "HEALTH" "Hermes: --version failed"
-    return 1
+    fail=1
   fi
-  return 0
+
+  # Patch applied check — verify EXCLUDED_SKILL_DIRS has _archive
+  local skill_utils="$hermes_dir/agent/skill_utils.py"
+  if [[ -f "$skill_utils" ]]; then
+    if ! grep -q '_archive' "$skill_utils" 2>/dev/null; then
+      log "HEALTH" "Hermes: exclude-archive-skill-dirs patch NOT applied"
+      fail=1
+    fi
+  fi
+
+  # External skills dir reachable
+  if [[ -f "$hermes_config" ]] && command -v python3 >/dev/null 2>&1; then
+    local ext_dirs
+    ext_dirs=$(python3 -c "
+import yaml
+with open('$hermes_config') as f:
+    cfg = yaml.safe_load(f) or {}
+for d in (cfg.get('skills') or {}).get('external_dirs') or []:
+    print(d)
+" 2>/dev/null || true)
+    if [[ -n "$ext_dirs" ]]; then
+      while IFS= read -r d; do
+        if [[ ! -d "$d" ]]; then
+          log "HEALTH" "Hermes: external_skills_dir not found: $d"
+          fail=1
+        elif [[ -z "$(find "$d" -name 'SKILL.md' -maxdepth 3 2>/dev/null | head -1)" ]]; then
+          log "HEALTH" "Hermes: external_skills_dir has no SKILL.md files: $d"
+          fail=1
+        fi
+      done <<< "$ext_dirs"
+    else
+      log "HEALTH" "Hermes: no external_dirs configured in config.yaml"
+      # Not a hard failure — just informational
+    fi
+  fi
+
+  return $fail
 }
 
 health_check_claude() {
@@ -235,6 +276,19 @@ update_gstack() {
   check_drift "$dir" "GStack"
 }
 
+sync_hermes_config() {
+  # Sync Hermes config from workspace-hub template (with ws_hub_path substitution)
+  local sync_script="${WORKSPACE_HUB}/scripts/_core/sync-agent-configs.sh"
+  if [[ -f "$sync_script" ]]; then
+    log "Hermes: syncing config from workspace-hub template"
+    if [[ "$DRY_RUN" == "true" ]]; then
+      bash "$sync_script" --dry-run 2>&1 | grep -i hermes | tee -a "$LOG_FILE"
+    else
+      bash "$sync_script" 2>&1 | grep -i hermes | tee -a "$LOG_FILE"
+    fi
+  fi
+}
+
 update_hermes() {
   if ! command -v hermes &>/dev/null; then
     log "Hermes: not installed — skipping"; record "Hermes" "-" "-" "not-installed"; return
@@ -247,6 +301,7 @@ update_hermes() {
   fi
   log "Hermes: updating via hermes update"
   if hermes update 2>&1 | tee -a "$LOG_FILE"; then
+    # Apply local patches (survive upstream updates)
     if [[ -d "$PATCH_DIR" ]]; then
       for pf in "$PATCH_DIR"/*.patch; do
         [[ -f "$pf" ]] || continue
@@ -258,6 +313,8 @@ update_hermes() {
         fi
       done
     fi
+    # Sync managed config (external_dirs, model defaults, etc.)
+    sync_hermes_config
     after=$(hermes --version 2>/dev/null | head -1 || echo "unknown")
     if health_check_hermes; then
       local s; [[ "$before" == "$after" ]] && s="up-to-date" || s="updated"

@@ -50,6 +50,17 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
 
+hermes:
+  external_skills_dir_suffix: .claude/skills   # appended to ws_hub_path per workstation
+  patch_file: config/agents/hermes/patches/exclude-archive-skill-dirs.patch
+  config_template: config/agents/hermes/config.yaml.template
+  health_checks:
+    - binary_exists        # hermes --version
+    - venv_import          # hermes_cli.main importable
+    - patch_applied        # EXCLUDED_SKILL_DIRS contains _archive
+    - external_skills_dir  # skills.external_dirs path exists and has SKILL.md files
+    - config_managed_keys  # managed keys match template values
+
 prerequisites:
   - jq
   - git

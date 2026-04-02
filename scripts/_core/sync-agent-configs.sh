@@ -212,6 +212,35 @@ EOF
     fi
 }
 
+resolve_ws_hub_path() {
+    # Determine workspace-hub path for this machine from harness-config.yaml.
+    local config="$WS_HUB/scripts/readiness/harness-config.yaml"
+    local hostname_short
+    hostname_short="$(hostname -s)"
+    local ws_path=""
+
+    if [[ -f "$config" ]] && command -v python3 >/dev/null 2>&1; then
+        ws_path=$(python3 -c "
+import yaml, socket
+hostname = socket.gethostname().split('.')[0]
+with open('$config') as f:
+    cfg = yaml.safe_load(f)
+for name, ws in (cfg.get('workstations') or {}).items():
+    ws_path = ws.get('ws_hub_path') or ''
+    # Match by hostname prefix in workstation name, or by explicit lookup
+    if ws_path and hostname.lower() in name.lower():
+        print(ws_path)
+        break
+" 2>/dev/null || true)
+    fi
+
+    # Fallback: use the workspace-hub we're running from
+    if [[ -z "$ws_path" ]]; then
+        ws_path="$WS_HUB"
+    fi
+    echo "$ws_path"
+}
+
 sync_hermes_yaml_config() {
     local template="$1"
     local target="$2"
@@ -219,36 +248,87 @@ sync_hermes_yaml_config() {
 
     ensure_parent_dir "$target"
 
-    # Hermes config is YAML — no jq merge available.
-    # Strategy: if target doesn't exist, copy template.
-    # If target exists and is identical, skip.
-    # If target exists and differs, only overwrite with --force.
-    # (Hermes stores auth in separate auth.json/.env, so config.yaml is safe to replace.)
+    # Resolve __WS_HUB_PATH__ placeholder to machine-specific path
+    local ws_hub_path
+    ws_hub_path="$(resolve_ws_hub_path)"
+    local resolved_template
+    resolved_template="$(mktemp)"
+    sed "s|__WS_HUB_PATH__|${ws_hub_path}|g" "$template" > "$resolved_template"
+
     if [[ ! -f "$target" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
-            log_change "$label -> $target (create)"
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
         else
-            cp "$template" "$target"
-            log_change "$label -> $target (create)"
+            cp "$resolved_template" "$target"
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
         fi
+        rm -f "$resolved_template"
         return
     fi
 
-    if cmp -s "$template" "$target"; then
+    # Smart merge: update managed keys from template, preserve machine-specific overrides.
+    # Managed keys: model, agent, terminal (subset), browser, checkpoints, compression, skills.
+    # Machine-specific (preserved): terminal.backend, terminal.cwd, anything not in template.
+    if command -v python3 >/dev/null 2>&1; then
+        local merged
+        merged="$(mktemp)"
+        python3 -c "
+import yaml, sys
+
+def deep_merge(base, overlay):
+    \"\"\"Merge overlay into base. Overlay wins for scalars; recurse for dicts.\"\"\"
+    result = dict(base)
+    for k, v in overlay.items():
+        if k in result and isinstance(result[k], dict) and isinstance(v, dict):
+            result[k] = deep_merge(result[k], v)
+        else:
+            result[k] = v
+    return result
+
+with open('$target') as f:
+    existing = yaml.safe_load(f) or {}
+with open('$resolved_template') as f:
+    template = yaml.safe_load(f) or {}
+
+merged = deep_merge(existing, template)
+
+with open('$merged', 'w') as f:
+    yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+" 2>/dev/null
+
+        if [[ -s "$merged" ]]; then
+            if cmp -s "$merged" "$target"; then
+                rm -f "$merged" "$resolved_template"
+                log_skip "$label -> $target (already current)"
+                return
+            fi
+            if [[ "$DRY_RUN" == "true" ]]; then
+                rm -f "$merged" "$resolved_template"
+                log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
+            else
+                mv "$merged" "$target"
+                rm -f "$resolved_template"
+                log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
+            fi
+            return
+        fi
+        rm -f "$merged"
+    fi
+
+    # Fallback: cmp + force (no python available for merge)
+    if cmp -s "$resolved_template" "$target"; then
         log_skip "$label -> $target (already current)"
-        return
-    fi
-
-    if [[ "$FORCE" == "true" ]]; then
+    elif [[ "$FORCE" == "true" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
-            log_change "$label -> $target (overwrite)"
+            log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
         else
-            cp "$template" "$target"
-            log_change "$label -> $target (overwrite)"
+            cp "$resolved_template" "$target"
+            log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
         fi
     else
         log_skip "$label -> $target (differs, use --force to overwrite)"
     fi
+    rm -f "$resolved_template"
 }
 
 sync_hermes_plain_file() {

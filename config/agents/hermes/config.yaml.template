@@ -32,7 +32,7 @@ file_read_max_chars: 100000
 compression:
   enabled: true
 # Skills: wire workspace-hub ecosystem skills into Hermes as read-only external dir.
-# Path is machine-specific — sync script should resolve per-workstation ws_hub_path.
+# __WS_HUB_PATH__ is resolved per-machine by sync-agent-configs.sh using harness-config.yaml.
 skills:
   external_dirs:
-    - /mnt/local-analysis/workspace-hub/.claude/skills
+    - __WS_HUB_PATH__/.claude/skills
