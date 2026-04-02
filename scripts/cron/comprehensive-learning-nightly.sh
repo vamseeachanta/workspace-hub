@@ -38,6 +38,16 @@ rsync -az --timeout=30 \
   licensed-win-1:.claude/state/sessions/ \
   "$WORKSPACE_HUB/.claude/state/sessions-archive/licensed-win-1/" 2>/dev/null || true
 
+# Step 2b: export Hermes sessions to orchestrator JSONL (best-effort — #1719)
+echo "--- Hermes session export $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/cron/hermes-session-export.sh 2>&1 || \
+  echo "WARNING: Hermes session export failed"
+
+# Step 2c: sync Hermes memory to Claude state (best-effort — #1719)
+echo "--- Agent memory sync $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/cron/sync-agent-memories.sh 2>&1 || \
+  echo "WARNING: agent memory sync failed"
+
 # Step 3a: portfolio signals update (best-effort — WRK-1020)
 LOG_FILE="logs/portfolio-signals/$(date +%Y-%m-%d).log"
 mkdir -p "$(dirname "$LOG_FILE")"
@@ -112,6 +122,17 @@ if [[ -n "$YESTERDAY" ]]; then
     fi
 else
     echo "  WARNING: could not determine yesterday's date"
+fi
+
+# Step 3f: Phase 1b — scan Hermes sessions for drift (best-effort — #1719)
+echo "--- Hermes drift scan $(date +%Y-%m-%dT%H:%M:%S) ---"
+YESTERDAY_DATE=$(date -d "yesterday" +%Y%m%d 2>/dev/null || date -v-1d +%Y%m%d 2>/dev/null || echo "")
+HERMES_ORCH="logs/orchestrator/hermes/session_${YESTERDAY_DATE}.jsonl"
+if [[ -n "$YESTERDAY_DATE" && -f "$HERMES_ORCH" ]]; then
+    bash scripts/session/detect-drift.sh --log "$HERMES_ORCH" --provider hermes --no-git || true
+    echo "  Hermes drift scan complete for ${YESTERDAY_DATE}"
+else
+    echo "  No Hermes orchestrator log found for ${YESTERDAY_DATE:-unknown}"
 fi
 
 # Step 9: harvest workflow-tip candidates from Wednesday ai-tooling research (best-effort)

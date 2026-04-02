@@ -21,8 +21,11 @@ Invoke `/insights`. Sources:
 - `~/.gemini/tmp/<project>/chats/session-*.json`             (native Gemini CLI sessions)
 - `logs/orchestrator/codex/WRK-*.log`                        (cross-review verdicts — populated by submit-to-codex.sh)
 - `logs/orchestrator/gemini/WRK-*.log`                       (cross-review verdicts — populated by submit-to-gemini.sh)
+- `logs/orchestrator/hermes/session_YYYYMMDD.jsonl`          (Hermes tool-call stream, exported by hermes-session-export.sh)
+- `~/.hermes/sessions/*.json`                                (native Hermes session format — rich conversation JSON)
+- `logs/orchestrator/hermes/skill-patches.jsonl`             (skill modification tracking — populated by track-skill-patches.sh post-commit hook)
 
-Note: native session dirs (`~/.codex/`, `~/.gemini/`) are always populated when the CLIs are used
+Note: native session dirs (`~/.codex/`, `~/.gemini/`, `~/.hermes/`) are always populated when the CLIs are used
 and are the primary source for AI activity. Orchestrator dirs contain only cross-review invocations.
 Use orchestrator logs for WRK-specific verdicts; use native logs for broader usage pattern analysis.
 
@@ -73,8 +76,8 @@ If a signal is absent for a check, skip the check and log
    `scripts/work-queue/build-session-gate-analysis.py` before coverage audits so
    weekly numbers reflect current signal contract.
 5. **Track per-agent source coverage:** Always include source breakdown
-   (`claude-native`, `codex-native`, `gemini-native`) to detect provider-specific
-   drift even when aggregate coverage looks healthy.
+   (`claude-native`, `codex-native`, `gemini-native`, `hermes-native`) to detect
+   provider-specific drift even when aggregate coverage looks healthy.
 6. **Emit daily gate-init/gate-missing matrix:** In Phase 1 output, include a
    per-agent-by-day table for `init`, `set_active_wrk`, and any missing mandatory
    signals so workflow drift is visible before close.
@@ -98,6 +101,7 @@ bash scripts/session/detect-drift.sh --log "$LAST_LOG" --since "$YESTERDAY"
 |----------|-----------|------|
 | `claude` (default) | Flat JSONL: `{"cmd": "...", "path": "..."}` | `--provider claude` (or omit) |
 | `codex` | Envelope JSONL: `{"type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":"{\"cmd\":\"...\"}"}}` | `--provider codex` |
+| `hermes` | Exported JSONL from session export | `--provider hermes` |
 
 Codex logs live at `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`. The nightly cron
 scans yesterday's Codex sessions automatically (Step 3c in `comprehensive-learning-nightly.sh`).
@@ -714,6 +718,10 @@ rsync -az --no-delete --timeout=30 \
   licensed-win-1:.claude/state/sessions/ \
   .claude/state/sessions-archive/licensed-win-1/ 2>/dev/null || true
 
+# Step 2b: export Hermes sessions — best-effort
+# Converts native ~/.hermes/sessions/*.json to JSONL for pipeline consumption
+bash scripts/agents/hermes-session-export.sh 2>/dev/null || true
+
 # Step 3: run pipeline
 exec claude --skill comprehensive-learning
 ```
@@ -777,6 +785,10 @@ the long-term store.
   dev-secondary/      # rsync'd nightly by dev-primary cron
   licensed-win-1/     # rsync'd when reachable
   licensed-win-2/       # rsync'd when reachable
+
+logs/orchestrator/hermes/
+  session_YYYYMMDD.jsonl   # exported from ~/.hermes/sessions/ by hermes-session-export.sh
+  skill-patches.jsonl      # skill modification log from post-commit hook (track-skill-patches.sh)
 ```
 
 **Why keep raw sessions:** As agent capabilities improve, re-running analysis on
@@ -795,6 +807,13 @@ ssh-copy-id <user>@dev-secondary      # authorize dev-primary on dev-secondary
 ssh-copy-id <user>@licensed-win-1     # authorize dev-primary on licensed-win-1
 # Test: ssh dev-secondary "ls ~/.claude/state/sessions/" should succeed without password
 ```
+
+**Hermes session export:** Hermes sessions live in `~/.hermes/sessions/*.json` in
+rich conversation JSON format. The `hermes-session-export.sh` script converts these
+to flat JSONL at `logs/orchestrator/hermes/session_YYYYMMDD.jsonl` for pipeline
+consumption. The post-commit hook `scripts/hooks/track-skill-patches.sh` additionally
+tracks any `.claude/skills/` modifications to `logs/orchestrator/hermes/skill-patches.jsonl`,
+regardless of which agent made the change.
 
 **Retention:** no automated purge policy — dev-primary HDD capacity governs.
 Review annually; oldest sessions can be compressed (`gzip *.jsonl`) if space tightens.

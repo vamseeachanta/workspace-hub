@@ -31,8 +31,13 @@ checkpoints:
 file_read_max_chars: 100000
 compression:
   enabled: true
-# Skills: wire workspace-hub ecosystem skills into Hermes as read-only external dir.
+# Skills: wire workspace-hub ecosystem skills into Hermes as read-only external dirs.
 # __WS_HUB_PATH__ is resolved per-machine by sync-agent-configs.sh using harness-config.yaml.
+# Includes workspace-hub root + nested repos with their own skill libraries.
 skills:
   external_dirs:
     - __WS_HUB_PATH__/.claude/skills
+    - __WS_HUB_PATH__/CAD-DEVELOPMENTS/.claude/skills
+    - __WS_HUB_PATH__/worldenergydata/.claude/skills
+    - __WS_HUB_PATH__/achantas-data/.claude/skills
+    - __WS_HUB_PATH__/assetutilities/.claude/skills
