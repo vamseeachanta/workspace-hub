@@ -28,12 +28,6 @@ capabilities:
 - failure-diagnosis
 - validation
 requires: []
-see_also:
-- qgis-11-pyqgis-application-bootstrap-headless
-- qgis-21-qgisprocess-cli-headless
-- qgis-31-read-features-from-output-layer
-- qgis-4-failure-diagnosis
-- qgis-checklist
 updated: '2026-02-24'
 scripts_exempt: true
 ---

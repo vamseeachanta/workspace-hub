@@ -12,12 +12,6 @@ related_skills:
 - parallel-file-processor
 capabilities: []
 requires: []
-see_also:
-- webapp-testing-static-html
-- webapp-testing-wait-for-dynamic-content
-- webapp-testing-start-server-before-testing
-- webapp-testing-assertion-examples
-- webapp-testing-slow-motion
 tags: []
 ---
 

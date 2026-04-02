@@ -7,18 +7,6 @@ description: Calculate and present quantifiable metrics for features, products, 
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- quantification-metrics-1-time-savings-calculation
-- quantification-metrics-step-1-establish-baseline
-- quantification-metrics-time-savings-template
-- quantification-metrics-featureprocess-name
-- quantification-metrics-featureinitiative-name
-- quantification-metrics-processfeature-name
-- quantification-metrics-revenue-impact
-- quantification-metrics-timeline
-- quantification-metrics-time-savings
-- quantification-metrics-validation-checklist
-- quantification-metrics-feature-automated-invoice-generation
 ---
 
 # Quantification Metrics

@@ -13,17 +13,6 @@ related_skills:
 - canvas-design
 capabilities: []
 requires: []
-see_also:
-- frontend-design-before-coding-design-direction
-- frontend-design-typography
-- frontend-design-generic-ai-aesthetics
-- frontend-design-implementation-philosophy
-- frontend-design-cards-with-character
-- frontend-design-tailwind-css-custom-config
-- frontend-design-execution-checklist
-- frontend-design-common-issues
-- frontend-design-metrics
-- frontend-design-philosophy
 tags: []
 ---
 

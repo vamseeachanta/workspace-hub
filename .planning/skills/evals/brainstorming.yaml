@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: brainstorming
+skill_path: .claude/skills/_internal/workflows/brainstorming/SKILL.md
+evals:
+- eval_id: brai-cap-01
+  eval_type: capability
+  description: Core sections documented for brainstorming
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## The Brainstorming Process'
+    - '## Key Principles'
+- eval_id: brai-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for brainstorming
+  checks:
+    required_sections:
+    - '## Question Templates'
+    - '## Post-Design Actions'
+    - '## Related Skills'

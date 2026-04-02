@@ -13,10 +13,6 @@ related_skills:
 - code-reviewer
 capabilities: []
 requires: []
-see_also:
-- subagent-driven-best-practices
-- subagent-driven-error-handling
-- subagent-driven-metrics
 tags: []
 ---
 

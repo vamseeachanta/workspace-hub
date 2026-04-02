@@ -14,20 +14,6 @@ related_skills:
 - frontend-design
 capabilities: []
 requires: []
-see_also:
-- seo-optimizer-score-components-0-100
-- seo-optimizer-funnel-based-targeting
-- seo-optimizer-keyword-clustering
-- seo-optimizer-title-tag
-- seo-optimizer-core-web-vitals
-- seo-optimizer-crawlability
-- seo-optimizer-indexability
-- seo-optimizer-performance
-- seo-optimizer-architecture
-- seo-optimizer-required-for-aceengineer
-- seo-optimizer-content-optimization-template
-- seo-optimizer-target-keywords
-- seo-optimizer-weekly-checks
 tags: []
 ---
 

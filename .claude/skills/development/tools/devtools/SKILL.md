@@ -6,15 +6,6 @@ description: Optimize development environment, containers, CLI productivity, and
   workflows using Docker, shell tooling, and editor customization.
 type: reference
 tags: []
-see_also:
-- devtools-available-skills
-- devtools-containerization
-- devtools-skill-selection-guide
-- devtools-environment-configuration
-- devtools-integration-with-workspace-hub
-- devtools-testing-devtools-skills
-- devtools-contributing
-- devtools-related-resources
 ---
 
 # Devtools

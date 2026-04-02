@@ -10,11 +10,6 @@ version: 1.0.0
 category: data/energy
 capabilities: []
 requires: []
-see_also:
-- bsee-data-extractor-data-types-supported
-- bsee-data-extractor-data-models
-- bsee-data-extractor-query-configuration
-- bsee-data-extractor-basic-queries
 tags: []
 ---
 

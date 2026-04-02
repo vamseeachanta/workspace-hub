@@ -24,15 +24,6 @@ triggers:
 - 3D modeling
 capabilities: []
 requires: []
-see_also:
-- cad-engineering-version-metadata
-- cad-engineering-100-2026-01-07
-- cad-engineering-open-source-cad-expertise
-- cad-engineering-conversion-strategy-selection
-- cad-engineering-step-to-dxf
-- cad-engineering-technical-drawing-analysis
-- cad-engineering-swarm-coordination
-- cad-engineering-lossy-conversions
 tags: []
 scripts_exempt: true
 ---

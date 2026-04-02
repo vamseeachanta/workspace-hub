@@ -24,13 +24,6 @@ capabilities:
 - failure_diagnosis
 - validation
 requires: []
-see_also:
-- blender-interface-scene-setup-via-python-script
-- blender-interface-cli-headless-execution
-- blender-interface-render-output-locations
-- blender-interface-common-failures
-- blender-interface-mesh-quality-checks
-- blender-interface-orcaflex-results-to-blender-visualization
 tags: []
 scripts_exempt: true
 ---

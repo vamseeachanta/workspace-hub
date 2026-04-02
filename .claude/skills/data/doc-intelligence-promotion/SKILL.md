@@ -1,13 +1,23 @@
 ---
 name: doc-intelligence-promotion
-description: Post-processing pipeline for document extraction — tables to CSV, calc reports from extracted data, charts to calibration metadata. Includes table→YAML→code→calc-report workflow.
+description: "Post-processing pipeline for document extraction \u2014 tables to CSV,\
+  \ calc reports from extracted data, charts to calibration metadata. Includes table\u2192\
+  YAML\u2192code\u2192calc-report workflow."
 version: 1.1.0
 category: data
 type: skill
 trigger: manual
 auto_execute: false
-tools: [Read, Write, Edit, Bash, Grep, Glob]
-related_skills: [doc-extraction, dark-intelligence-workflow, document-batch]
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+related_skills:
+- doc-extraction
+- dark-intelligence-workflow
 ---
 
 # Document Intelligence Promotion

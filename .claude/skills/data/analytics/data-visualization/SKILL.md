@@ -13,12 +13,6 @@ related_skills:
 - interactive-dashboard-builder
 capabilities: []
 requires: []
-see_also:
-- data-visualization-choose-by-data-relationship
-- data-visualization-setup-and-style
-- data-visualization-number-formatting-helpers
-- data-visualization-color
-- data-visualization-color-blindness
 tags: []
 freedom: medium
 ---

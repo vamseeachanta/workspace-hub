@@ -9,17 +9,11 @@ version: 1.1.0
 last_updated: 2026-01-02
 category: data
 related_skills:
-- pdf/text-extractor
 - semantic-search-setup
 - rag-system-builder
 - knowledge-base-builder
 capabilities: []
 requires: []
-see_also:
-- document-rag-pipeline-architecture
-- document-rag-pipeline-step-1-database-schema
-- document-rag-pipeline-complete-pipeline-script
-- document-rag-pipeline-performance-metrics-real-world
 tags: []
 ---
 

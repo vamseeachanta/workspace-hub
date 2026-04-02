@@ -1,6 +1,8 @@
 ---
 name: orchestrator-routing
-description: "Main orchestrator as lightweight router — stay responsive to user messages while subagents do heavy work; route tasks to appropriate agents based on workload"
+description: "Main orchestrator as lightweight router \u2014 stay responsive to user\
+  \ messages while subagents do heavy work; route tasks to appropriate agents based\
+  \ on workload"
 version: 1.0.0
 category: workspace-hub
 author: workspace-hub
@@ -8,16 +10,16 @@ type: skill
 last_updated: 2026-02-19
 wrk_ref: WRK-212
 related_skills:
-  - agent-teams
-  - ecosystem-health
-  - improve
+- agent-teams
+- improve
 tags:
-  - orchestration
-  - routing
-  - agent-teams
-  - responsiveness
-  - delegation
-platforms: [all]
+- orchestration
+- routing
+- agent-teams
+- responsiveness
+- delegation
+platforms:
+- all
 capabilities: []
 requires: []
 see_also: []

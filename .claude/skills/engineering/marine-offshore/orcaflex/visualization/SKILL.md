@@ -23,12 +23,6 @@ triggers:
 - diffraction mesh view
 capabilities: []
 requires: []
-see_also:
-- orcaflex-visualization-version-metadata
-- orcaflex-visualization-110-2026-02-23
-- orcaflex-visualization-orcawave-mesh-export-via-diffraction
-- orcaflex-visualization-model-views
-- orcaflex-visualization-image-outputs
 tags: []
 scripts_exempt: true
 ---

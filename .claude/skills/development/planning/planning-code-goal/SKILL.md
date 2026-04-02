@@ -23,7 +23,6 @@ tools:
 - Task
 related_skills:
 - planning-goal
-- sparc-workflow
 - testing-tdd-london
 hooks:
   pre: 'echo "Starting SPARC-GOAP code planning session..."
@@ -35,11 +34,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- planning-code-goal-sparc-phases-in-goal-planning
-- planning-code-goal-implementation-pattern
-- planning-code-goal-code-quality-metrics
-- planning-code-goal-mcp-tools
 tags: []
 ---
 

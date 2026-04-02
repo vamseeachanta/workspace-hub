@@ -38,17 +38,6 @@ related_skills:
 - openpyxl
 - pypdf
 requires: []
-see_also:
-- docx-templates-1-basic-template-rendering
-- docx-templates-2-loops-and-iterations
-- docx-templates-3-conditional-content
-- docx-templates-4-table-generation
-- docx-templates-5-image-insertion
-- docx-templates-6-mail-merge-and-batch-generation
-- docx-templates-database-integration
-- docx-templates-fastapi-service
-- docx-templates-1-template-design
-- docx-templates-template-variables-not-rendering
 scripts_exempt: true
 ---
 

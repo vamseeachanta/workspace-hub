@@ -16,13 +16,6 @@ triggers:
 - parametric model generation
 capabilities: []
 requires: []
-see_also:
-- orcaflex-model-generator-builder-registry-pattern
-- orcaflex-model-generator-pipeline-builders-order-10-50
-- orcaflex-model-generator-spec-variants
-- orcaflex-model-generator-from-specyml-file
-- orcaflex-model-generator-mergeobject
-- orcaflex-model-generator-3-way-benchmark
 tags: []
 ---
 

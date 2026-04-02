@@ -26,22 +26,6 @@ capabilities:
 - failure_diagnosis
 - validation
 requires: []
-see_also:
-- freecad-automation-version-metadata
-- freecad-automation-200-2026-03-16
-- freecad-automation-core-capabilities
-- freecad-automation-command-line-interface
-- freecad-automation-batch-processing-patterns
-- freecad-automation-output-formats
-- freecad-automation-swarm-coordination
-- freecad-automation-performance-metrics
-- freecad-automation-freecad-import-error
-- freecad-automation-extract-geometry-properties
-- freecad-automation-common-failures
-- freecad-automation-geometry-validation-checks
-- freecad-automation-parametric-hull-workflow
-- freecad-automation-fem-chain-workflow
-- freecad-automation-design-table-studies
 tags: []
 scripts_exempt: true
 ---

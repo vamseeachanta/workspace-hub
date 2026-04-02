@@ -27,16 +27,6 @@ capabilities:
 - failure-diagnosis
 - validation
 requires: []
-see_also:
-- openfoam-installation
-- openfoam-11-case-directory-structure
-- openfoam-15-fvsolution
-- openfoam-19-blockmeshdict
-- openfoam-21-environment-setup
-- openfoam-31-solver-log-residual-format
-- openfoam-41-error-message-format
-- openfoam-51-y-verification
-- openfoam-61-upstream-gmsh-to-openfoam
 scripts_exempt: true
 ---
 

@@ -16,11 +16,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- pyproject-toml-complete-pyprojecttoml-template
-- pyproject-toml-1-build-system
-- pyproject-toml-pytest
-- pyproject-toml-example-1-data-processing-library
 ---
 
 # Pyproject Toml

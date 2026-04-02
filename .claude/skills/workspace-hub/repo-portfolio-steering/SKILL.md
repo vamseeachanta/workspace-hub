@@ -1,23 +1,29 @@
 ---
 name: repo-portfolio-steering
-description: Generate a one-page portfolio steering report for workspace-hub. Use when the user invokes /repo-portfolio-steering, asks about harness vs engineering balance, wants a portfolio health check, or asks which repos to fund next. Reports on portfolio steering, GTM readiness, and provider activity balance.
+description: Generate a one-page portfolio steering report for workspace-hub. Use
+  when the user invokes /repo-portfolio-steering, asks about harness vs engineering
+  balance, wants a portfolio health check, or asks which repos to fund next. Reports
+  on portfolio steering, GTM readiness, and provider activity balance.
 version: 1.0.0
 category: workspace-hub
 type: skill
 trigger: manual
 auto_execute: false
-harness_threshold: 0.30
+harness_threshold: 0.3
 capabilities:
-  - harness_balance_check
-  - gtm_readiness_ranking
-  - provider_activity_analysis
-  - next_actions_recommendation
-tools: [Read, Bash, Glob]
-related_skills: [session-start, resource-intelligence, work-queue, comprehensive-learning]
+- harness_balance_check
+- gtm_readiness_ranking
+- provider_activity_analysis
+- next_actions_recommendation
+tools:
+- Read
+- Bash
+- Glob
+related_skills:
+- comprehensive-learning
 scripts:
-  - scripts/skills/repo-portfolio-steering/compute-balance.py
+- scripts/skills/repo-portfolio-steering/compute-balance.py
 requires: []
-see_also: [session-start, work-queue]
 tags: []
 ---
 

@@ -30,12 +30,6 @@ triggers:
 - API 579
 - corrosion damage assessment
 - remaining life
-see_also:
-- cathodic-protection-version-metadata
-- cathodic-protection-120-2026-02-20
-- cathodic-protection-cathodic-protection-systems
-- cathodic-protection-example-ship-hull-abs-gn-ships-2018
-- cathodic-protection-cp-system-design-process
 capabilities:
 - ABS_gn_ships_2018: "Ship hull SACP design \u2014 bracelet/flush anodes, aluminium\
     \ alloy, ABS GN Ships 2017"

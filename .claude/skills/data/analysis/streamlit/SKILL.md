@@ -37,14 +37,6 @@ related_skills:
 - plotly
 - pandas-data-processing
 requires: []
-see_also:
-- streamlit-1-basic-application-structure
-- streamlit-3-layout-and-organization
-- streamlit-4-data-visualization
-- streamlit-6-session-state
-- streamlit-8-advanced-features
-- streamlit-1-use-caching-appropriately
-- streamlit-common-issues
 scripts_exempt: true
 ---
 

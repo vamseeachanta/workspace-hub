@@ -1,9 +1,10 @@
 ---
 name: pdf
-description: Comprehensive PDF manipulation toolkit. For batch/bulk extraction (1K+ PDFs),
-  use pdftotext (poppler) via subprocess — fastest and most reliable at scale. For
-  single-document understanding, OpenAI Codex PDF-to-Markdown gives best results.
-  Also supports text/table extraction, PDF creation, merging/splitting, and forms.
+description: "Comprehensive PDF manipulation toolkit. For batch/bulk extraction (1K+\
+  \ PDFs), use pdftotext (poppler) via subprocess \u2014 fastest and most reliable\
+  \ at scale. For single-document understanding, OpenAI Codex PDF-to-Markdown gives\
+  \ best results. Also supports text/table extraction, PDF creation, merging/splitting,\
+  \ and forms."
 type: reference
 version: 1.2.2
 last_updated: 2026-01-04
@@ -15,17 +16,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also:
-- pdf-why-convert-to-markdown-first
-- pdf-openai-codex-conversion
-- pdf-pypdf-core-pdf-operations
 - pdf-pdftotext-poppler
-- pdf-why-use-pdf-large-reader
-- pdf-ocr-for-scanned-documents
-- pdf-execution-checklist
-- pdf-common-errors
-- pdf-metrics
-- pdf-quick-reference
-- pdf-dependencies
 tags: []
 freedom: medium
 ---

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: cowork-plugin-customizer
+skill_path: .claude/skills/development/plugin-management/cowork-plugin-customizer/SKILL.md
+evals:
+- eval_id: cpc-cap-01
+  eval_type: capability
+  description: Core sections documented for cowork-plugin-customizer
+  checks:
+    required_sections:
+    - '## Overview'
+    - '## Customization Workflow'
+    - '## Summary Output'
+    - '## Packaging the Plugin'
+    - '## From searching Slack'
+- eval_id: cpc-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for cowork-plugin-customizer
+  checks:
+    required_sections:
+    - '## From searching documents'
+    - '## From your answers'
+    - '## Additional Resources'

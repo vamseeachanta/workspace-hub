@@ -33,16 +33,6 @@ platforms:
 related_skills:
 - python-docx
 requires: []
-see_also:
-- pypdf-1-pdf-merging
-- pypdf-2-pdf-splitting
-- pypdf-3-page-rotation-and-transformation
-- pypdf-4-watermarking-and-stamping
-- pypdf-5-text-extraction-and-metadata
-- pypdf-6-encryption-and-form-filling
-- pypdf-batch-pdf-processing-pipeline
-- pypdf-1-memory-management
-- pypdf-common-issues
 scripts_exempt: true
 ---
 

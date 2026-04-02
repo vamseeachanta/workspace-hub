@@ -15,23 +15,6 @@ related_skills:
 - scientific-problem-selection
 capabilities: []
 requires: []
-see_also:
-- clinical-trial-protocol-execution-control-read-this-first
-- clinical-trial-protocol-what-this-skill-does
-- clinical-trial-protocol-waypoint-based-design
-- clinical-trial-protocol-how-to-use
-- clinical-trial-protocol-startup-welcome-and-mode-selection
-- clinical-trial-protocol-intervention-overview
-- clinical-trial-protocol-similar-clinical-trials
-- clinical-trial-protocol-fda-regulatory-pathway
-- clinical-trial-protocol-fda-guidance-documents
-- clinical-trial-protocol-study-design-recommendations
-- clinical-trial-protocol-key-insights-and-recommendations
-- clinical-trial-protocol-full-workflow-logic
-- clinical-trial-protocol-waypoint-file-formats
-- clinical-trial-protocol-mcp-server-unavailable
-- clinical-trial-protocol-disclaimers
-- clinical-trial-protocol-implementation-requirements
 tags: []
 scripts_exempt: true
 ---

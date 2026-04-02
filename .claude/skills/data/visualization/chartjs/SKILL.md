@@ -18,13 +18,6 @@ platforms:
 - javascript
 capabilities: []
 requires: []
-see_also:
-- chartjs-example-1-multi-dataset-line-chart
-- chartjs-available-chart-types
-- chartjs-custom-colors
-- chartjs-cdn-quick-start
-- chartjs-chartjs-zoom-plugin
-- chartjs-performance-tips
 scripts_exempt: true
 ---
 

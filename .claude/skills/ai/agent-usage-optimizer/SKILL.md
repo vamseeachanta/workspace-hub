@@ -11,17 +11,6 @@ capabilities:
 - headroom display
 requires:
 - ~/.cache/agent-quota.json
-see_also:
-- agent-usage-optimizer-usage
-- agent-usage-optimizer-what-it-does
-- agent-usage-optimizer-step-1-read-and-validate-quota-cache
-- agent-usage-optimizer-step-2-display-quota-headroom
-- agent-usage-optimizer-baseline-route-mapping-quota-agnostic-defaults
-- agent-usage-optimizer-keyword-route-classification
-- agent-usage-optimizer-step-5-work-queue-integration
-- agent-usage-optimizer-provider-capability-reference
-- agent-usage-optimizer-hours-to-reset-estimation
-- agent-usage-optimizer-complexity-tier-model-mapping
 tags:
 - quota-management
 - multi-provider

@@ -6,14 +6,6 @@ description: Comprehensive GitHub integration modes for workflow orchestration, 
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-modes-1-gh-coordinator
-- github-modes-5-repo-architect
-- github-modes-8-sync-coordinator
-- github-modes-batch-operations
-- github-modes-swarm-coordination
-- github-modes-automated-issue-management
-- github-modes-configuration-options
 tags: []
 category: development
 version: 1.0.0

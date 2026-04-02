@@ -15,12 +15,6 @@ related_skills:
 - audit-support
 capabilities: []
 requires: []
-see_also:
-- financial-statements-standard-format-classification-of-expenses-by-func
-- financial-statements-standard-format-classified-balance-sheet
-- financial-statements-standard-format-indirect-method
-- financial-statements-period-end-adjustments
-- financial-statements-variance-calculation
 tags: []
 ---
 

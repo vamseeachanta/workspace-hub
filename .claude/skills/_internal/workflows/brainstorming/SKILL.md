@@ -9,7 +9,6 @@ last_updated: 2026-01-19
 source: https://github.com/obra/superpowers
 related_skills:
 - writing-plans
-- sparc-workflow
 - product-roadmap
 tags: []
 see_also:

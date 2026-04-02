@@ -39,17 +39,6 @@ related_skills:
 - git-advanced
 - docker
 requires: []
-see_also:
-- vscode-extensions-1-essential-extensions-by-category
-- vscode-extensions-2-settings-configuration
-- vscode-extensions-3-language-specific-settings
-- vscode-extensions-4-keybindings-configuration
-- vscode-extensions-5-custom-snippets
-- vscode-extensions-6-workspace-configuration
-- vscode-extensions-7-profile-management
-- vscode-extensions-git-workflow-integration
-- vscode-extensions-1-extension-management
-- vscode-extensions-common-issues
 scripts_exempt: true
 ---
 

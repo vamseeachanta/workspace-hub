@@ -13,14 +13,6 @@ related_skills:
 - pdf
 capabilities: []
 requires: []
-see_also:
-- xlsx-financial-model-color-standards
-- xlsx-with-pandas
-- xlsx-with-pandas
-- xlsx-cell-styles
-- xlsx-charts
-- xlsx-check-for-errors
-- xlsx-workflow
 tags: []
 freedom: medium
 ---

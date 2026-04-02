@@ -7,12 +7,6 @@ type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []
-see_also:
-- hydrodynamics-version-metadata
-- hydrodynamics-100-2026-01-07
-- hydrodynamics-1-coefficient-database-management
-- hydrodynamics-wave-spectrum-types
-- hydrodynamics-coefficient-database-json
 tags: []
 scripts_exempt: true
 category: engineering

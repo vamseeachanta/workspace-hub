@@ -6,14 +6,6 @@ description: Statistical analysis of metocean data including extreme value analy
 type: reference
 capabilities: []
 requires: []
-see_also:
-- metocean-statistics-temporal-statistics
-- metocean-statistics-metocean-stats-package
-- metocean-statistics-site-conditions-assessment
-- metocean-statistics-complete-analysis-pipeline
-- metocean-statistics-extreme-value-analysis-configuration
-- metocean-statistics-return-period-table-csv
-- metocean-statistics-1-design-criteria-development
 tags: []
 category: data
 version: 1.0.0

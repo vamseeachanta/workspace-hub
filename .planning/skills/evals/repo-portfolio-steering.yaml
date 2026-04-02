@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: repo-portfolio-steering
+skill_path: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+evals:
+- eval_id: rps-cap-01
+  eval_type: capability
+  description: Core sections documented for repo-portfolio-steering
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## 5 Output Sections'
+    - '## Session-Start Integration'
+    - '## Runtime Inputs'
+    - '## Acceptance Criteria'
+- eval_id: rps-proc-01
+  eval_type: procedural
+  description: Key commands documented for repo-portfolio-steering
+  checks:
+    required_commands:
+    - uv run --no-project python scripts/skills/repo-portfolio-steering/compute-balance.py
+    - uv run --no-project python scripts/skills/repo-portfolio-steering/compute-balance.py --threshold 0.25
+    - python scripts/skills/repo-portfolio-steering/compute-balance.py

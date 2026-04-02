@@ -12,10 +12,6 @@ related_skills:
 - parallel-file-processor
 capabilities: []
 requires: []
-see_also:
-- data-pipeline-processor-error-handling
-- data-pipeline-processor-execution-checklist
-- data-pipeline-processor-metrics
 tags: []
 freedom: medium
 ---

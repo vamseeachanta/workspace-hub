@@ -6,15 +6,6 @@ description: GitHub issue-based swarm coordination for intelligent task decompos
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-swarm-issue-swarm-task-breakdown
-- github-swarm-issue-task
-- github-swarm-issue-3-progress-tracking
-- github-swarm-issue-issue-templates-for-swarms
-- github-swarm-issue-multi-agent-issue-processing
-- github-swarm-issue-github-actions-integration
-- github-swarm-issue-bug-reports
-- github-swarm-issue-metrics-and-analytics
 tags: []
 category: development
 version: 1.0.0

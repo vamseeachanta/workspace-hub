@@ -6,11 +6,6 @@ description: Multi-repository synchronization coordinator for version alignment,
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-sync-1-synchronize-package-dependencies
-- github-sync-swarm-coordinated-sync
-- github-sync-version-alignment-strategy
-- github-sync-sync-quality-metrics
 tags: []
 category: development
 version: 1.0.0

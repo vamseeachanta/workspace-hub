@@ -13,11 +13,6 @@ related_skills:
 - interactive-dashboard-builder
 capabilities: []
 requires: []
-see_also:
-- sql-queries-postgresql-including-aurora-rds-supabase-neon
-- sql-queries-bigquery-google-cloud
-- sql-queries-window-functions
-- sql-queries-error-handling-and-debugging
 tags: []
 ---
 

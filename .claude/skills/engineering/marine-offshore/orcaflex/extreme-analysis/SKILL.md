@@ -18,12 +18,6 @@ triggers:
 - peak extraction
 capabilities: []
 requires: []
-see_also:
-- orcaflex-extreme-analysis-version-metadata
-- orcaflex-extreme-analysis-100-2026-01-17
-- orcaflex-extreme-analysis-linked-statistics
-- orcaflex-extreme-analysis-linked-statistics-csv
-- orcaflex-extreme-analysis-1-design-load-identification
 tags: []
 scripts_exempt: true
 ---

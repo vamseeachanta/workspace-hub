@@ -1,23 +1,18 @@
 ---
-
 name: maritime-legal
-version: "1.0.0"
+version: 1.0.0
 category: engineering/maritime-legal
-description: "AI-assisted maritime legal and casualty consulting — engineering-technical interface with admiralty proceedings"
+description: "AI-assisted maritime legal and casualty consulting \u2014 engineering-technical\
+  \ interface with admiralty proceedings"
 type: reference
 capabilities:
-  - casualty_investigation_support
-  - expert_witness_report
-  - admiralty_law_reference
-  - incident_database_query
-  - liability_framing
-  - regulatory_framework
+- casualty_investigation_support
+- expert_witness_report
+- admiralty_law_reference
+- incident_database_query
+- liability_framing
+- regulatory_framework
 requires: []
-see_also:
-  - engineering/marine-offshore/marine-safety
-  - data/energy/marine-safety-incidents
-  - engineering/marine-offshore/risk-assessment
-  - business/legal/compliance
 trigger: manual
 scripts_exempt: true
 ---

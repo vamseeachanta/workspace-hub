@@ -37,9 +37,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- sparc-architecture-execution-checklist
-- sparc-architecture-error-handling
 tags: []
 ---
 

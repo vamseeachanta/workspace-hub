@@ -19,12 +19,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- mooring-analysis-1-mooring-types
-- mooring-analysis-3-mooring-line-components
-- mooring-analysis-5-installation-and-pretensioning
-- mooring-analysis-application-1-fpso-12-line-mooring
-- mooring-analysis-key-design-steps
 scripts_exempt: true
 ---
 

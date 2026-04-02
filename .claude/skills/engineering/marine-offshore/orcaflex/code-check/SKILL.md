@@ -18,8 +18,6 @@ triggers:
 - design verification
 capabilities: []
 requires: []
-see_also:
-- orcaflex-code-check-error-handling
 tags: []
 scripts_exempt: true
 ---

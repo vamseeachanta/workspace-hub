@@ -19,10 +19,6 @@ platforms:
 - windows
 capabilities: []
 requires: []
-see_also:
-- ops-uv-package-manager-1-project-initialization
-- ops-uv-package-manager-5-running-scripts-and-commands
-- ops-uv-package-manager-1-version-pinning
 ---
 
 # Ops Uv Package Manager

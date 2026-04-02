@@ -13,16 +13,6 @@ applies-to:
 - gemini
 capabilities: []
 requires: []
-see_also:
-- repo-structure-tier-classification-determines-which-rules-apply
-- repo-structure-canonical-structure
-- repo-structure-allowed-at-repo-root
-- repo-structure-gitignore-enforcement-root-level-output-artifacts
-- repo-structure-allowed-in-docs
-- repo-structure-agent-infrastructure-rules
-- repo-structure-compliance-quick-check
-- repo-structure-never-tests-inside-src
-- repo-structure-see-also
 tags: []
 ---
 

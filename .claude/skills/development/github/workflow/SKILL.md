@@ -6,9 +6,6 @@ description: GitHub Actions workflow automation for intelligent CI/CD pipelines 
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-workflow-best-practices
-- github-workflow-error-handling
 tags: []
 category: development
 version: 1.0.0

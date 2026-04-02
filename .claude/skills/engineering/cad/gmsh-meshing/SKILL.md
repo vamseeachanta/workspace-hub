@@ -26,14 +26,6 @@ depends_on:
 - mesh-utilities
 capabilities: []
 requires: []
-see_also:
-- gmsh-meshing-executable
-- gmsh-meshing-batch-meshing
-- gmsh-meshing-geometry-primitives
-- gmsh-meshing-initialization-and-model-management
-- gmsh-meshing-box-barge-surface-mesh-bem
-- gmsh-meshing-export-to-aqwa-dat-format
-- gmsh-meshing-quality-metrics
 scripts_exempt: true
 ---
 

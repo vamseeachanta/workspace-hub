@@ -9,15 +9,9 @@ last_updated: 2026-01-02
 category: data
 related_skills:
 - knowledge-base-builder
-- pdf/text-extractor
 - semantic-search-setup
 capabilities: []
 requires: []
-see_also:
-- document-inventory-execution-checklist
-- document-inventory-error-handling
-- document-inventory-metrics
-- document-inventory-dependencies
 tags: []
 ---
 

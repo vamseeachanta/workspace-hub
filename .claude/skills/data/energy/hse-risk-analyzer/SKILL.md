@@ -6,8 +6,6 @@ description: Analyze BSEE HSE (Health, Safety, Environment) incident data for ri
 type: reference
 capabilities: []
 requires: []
-see_also:
-- hse-risk-analyzer-basic-operator-safety-assessment
 tags: []
 category: data
 version: 1.0.0

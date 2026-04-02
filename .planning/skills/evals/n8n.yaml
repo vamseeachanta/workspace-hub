@@ -1,0 +1,15 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: n8n
+skill_path: .claude/skills/operations/automation/n8n/SKILL.md
+evals:
+- eval_id: n8n-cap-01
+  eval_type: capability
+  description: Core sections documented for n8n
+  checks:
+    required_sections:
+    - '## When to Use This Skill'
+    - '## Prerequisites'
+    - '## Version History'
+    - '## Resources'
+    - '## Sub-Skills'

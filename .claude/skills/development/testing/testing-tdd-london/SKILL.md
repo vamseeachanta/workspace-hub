@@ -28,11 +28,6 @@ hooks:
   post: "echo \"London School TDD complete - mocks verified\"\nif [ -f \"package.json\"\
     \ ]; then\n  npm test --if-present\nfi\n"
 requires: []
-see_also:
-- testing-tdd-london-london-vs-chicago-school
-- testing-tdd-london-1-outside-in-development
-- testing-tdd-london-metrics-success-criteria
-- testing-tdd-london-mcp-tools
 tags: []
 ---
 

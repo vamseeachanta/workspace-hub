@@ -15,13 +15,6 @@ related_skills:
 - meeting-briefing
 capabilities: []
 requires: []
-see_also:
-- canned-responses-template-organization
-- canned-responses-1-data-subject-requests-dsrs
-- canned-responses-required-customization
-- canned-responses-universal-escalation-triggers-apply-to-all-categor
-- canned-responses-step-1-define-the-use-case
-- canned-responses-use-when
 tags: []
 ---
 

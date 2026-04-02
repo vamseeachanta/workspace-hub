@@ -39,9 +39,6 @@ related_skills:
 - bash-cli-framework
 - git-sync-manager
 requires: []
-see_also:
-- github-actions-whats-changed
-- github-actions-5-reusable-workflows
 scripts_exempt: true
 ---
 

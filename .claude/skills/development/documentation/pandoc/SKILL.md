@@ -43,11 +43,6 @@ related_skills:
 - mkdocs
 - sphinx
 - marp
-see_also:
-- pandoc-background
-- pandoc-subsection
-- pandoc-2-image-management
-- pandoc-related-resources
 ---
 
 # Pandoc

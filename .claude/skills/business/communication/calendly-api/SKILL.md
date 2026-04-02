@@ -40,17 +40,6 @@ related_skills:
 - teams-api
 - github-actions
 requires: []
-see_also:
-- calendly-api-1-user-and-organization-management
-- calendly-api-2-event-types
-- calendly-api-3-scheduled-events
-- calendly-api-4-invitees
-- calendly-api-5-webhooks
-- calendly-api-6-scheduling-links-and-routing
-- calendly-api-slack-notification-integration
-- calendly-api-github-actions-integration
-- calendly-api-1-rate-limiting
-- calendly-api-common-issues
 scripts_exempt: true
 ---
 

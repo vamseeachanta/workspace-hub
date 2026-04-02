@@ -7,16 +7,6 @@ description: LLM application patterns, prompt optimization techniques, and AI-po
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- ai-prompting-available-skills
-- ai-prompting-application-frameworks
-- ai-prompting-choose-langchain-when
-- ai-prompting-langchain-rag-pipeline
-- ai-prompting-rag-architecture
-- ai-prompting-structured-output
-- ai-prompting-integration-with-workspace-hub
-- ai-prompting-testing-ai-applications
-- ai-prompting-related-resources
 ---
 
 # Ai Prompting

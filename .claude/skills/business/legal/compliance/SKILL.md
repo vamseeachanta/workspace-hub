@@ -15,11 +15,6 @@ related_skills:
 - meeting-briefing
 capabilities: []
 requires: []
-see_also:
-- compliance-gdpr-general-data-protection-regulation
-- compliance-required-elements-gdpr-article-28
-- compliance-request-intake
-- compliance-what-to-monitor
 tags: []
 ---
 

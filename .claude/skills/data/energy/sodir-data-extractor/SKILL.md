@@ -5,8 +5,6 @@ description: Extract and process Norwegian Petroleum Directorate field and produ
 type: reference
 capabilities: []
 requires: []
-see_also:
-- sodir-data-extractor-best-practices
 tags: []
 category: data
 version: 1.0.0

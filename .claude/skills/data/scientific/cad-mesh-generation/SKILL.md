@@ -7,8 +7,6 @@ description: Generate parametric CAD geometry and finite element meshes using Fr
 type: reference
 capabilities: []
 requires: []
-see_also:
-- cad-mesh-generation-1-parametric-design
 tags: []
 ---
 

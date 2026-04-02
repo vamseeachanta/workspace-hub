@@ -7,8 +7,6 @@ description: Integrate offshore engineering software APIs with mock testing for 
 type: reference
 capabilities: []
 requires: []
-see_also:
-- api-integration-1-api-availability-checking
 tags: []
 ---
 

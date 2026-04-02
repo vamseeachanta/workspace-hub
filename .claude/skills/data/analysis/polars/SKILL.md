@@ -35,15 +35,6 @@ related_skills:
 - streamlit
 - dash
 requires: []
-see_also:
-- polars-1-dataframe-creation-and-io
-- polars-2-lazy-evaluation-and-query-optimization
-- polars-3-expression-api
-- polars-4-groupby-and-aggregations
-- polars-6-joins-and-concatenation
-- polars-polars-with-plotly-visualization
-- polars-1-use-lazy-evaluation-by-default
-- polars-common-issues
 scripts_exempt: true
 ---
 

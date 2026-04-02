@@ -1,8 +1,8 @@
 ---
 name: orcawave-multi-body
-description: Multi-body hydrodynamic interaction analysis in OrcaWave. Use when
-  setting up coupled vessel models, side-by-side operations, FPSO-tanker interactions,
-  gap resonance studies, or hydrodynamic shielding calculations.
+description: Multi-body hydrodynamic interaction analysis in OrcaWave. Use when setting
+  up coupled vessel models, side-by-side operations, FPSO-tanker interactions, gap
+  resonance studies, or hydrodynamic shielding calculations.
 type: reference
 version: 1.0.0
 updated: 2026-01-17
@@ -18,12 +18,6 @@ triggers:
 - offloading operation
 capabilities: []
 requires: []
-see_also:
-- orcawave-multi-body-version-metadata
-- orcawave-multi-body-common-scenarios
-- orcawave-multi-body-multi-body-analysis-configuration
-- orcawave-multi-body-cli-usage
-- orcawave-multi-body-export-for-time-domain
 tags: []
 scripts_exempt: true
 ---

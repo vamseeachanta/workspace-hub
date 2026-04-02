@@ -6,11 +6,6 @@ description: Perform offshore field development economic analysis with NPV, MIRR
 type: reference
 capabilities: []
 requires: []
-see_also:
-- fdas-economics-1-financial-metrics-calculation
-- fdas-economics-development-systems
-- fdas-economics-financial-metrics-json
-- fdas-economics-validation
 tags: []
 category: data
 version: 1.0.0

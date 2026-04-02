@@ -6,19 +6,6 @@ description: Generate professional documentation, technical writing, and present
   from code using MkDocs, Sphinx, and related tools.
 type: reference
 tags: []
-see_also:
-- documentation-available-skills
-- documentation-static-site-generators
-- documentation-skill-selection-guide
-- documentation-project-structure
-- documentation-agenda
-- documentation-docusaurus-setup
-- documentation-integration-with-workspace-hub
-- documentation-step-1
-- documentation-3-automated-api-documentation
-- documentation-testing-documentation
-- documentation-contributing
-- documentation-related-resources
 ---
 
 # Documentation

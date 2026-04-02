@@ -19,4 +19,7 @@ uv run --no-project python "${WS_HUB}/scripts/skills/check_retirement_candidates
 echo "--- [skill-curation] Script conversion scan ---"
 bash "${WS_HUB}/scripts/skills/identify-script-candidates.sh" || true
 
+echo "--- [skill-curation] Rot detection ---"
+uv run --no-project python "${WS_HUB}/scripts/skills/detect-skill-rot.py" --apply || true
+
 echo "--- [skill-curation] Done $(date -u +%Y-%m-%dT%H:%M:%SZ) ---"

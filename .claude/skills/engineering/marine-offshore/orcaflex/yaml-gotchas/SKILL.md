@@ -18,25 +18,6 @@ triggers:
 - OrcaFlex SaveData
 capabilities: []
 requires: []
-see_also:
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-symptom
-- orcaflex-yaml-gotchas-safe-yaml-builder-pattern
-- orcaflex-yaml-gotchas-execution-validating-generated-yaml
 tags: []
 scripts_exempt: true
 ---

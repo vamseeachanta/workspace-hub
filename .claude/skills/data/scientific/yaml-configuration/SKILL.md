@@ -18,11 +18,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- yaml-configuration-example-1-orcaflex-mooring-configuration
-- yaml-configuration-loading-yaml-in-python
-- yaml-configuration-pattern-1-configuration-hierarchy
-- yaml-configuration-installation
 ---
 
 # Yaml Configuration

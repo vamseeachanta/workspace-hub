@@ -43,12 +43,6 @@ related_skills:
 - api-integration
 - github-actions
 requires: []
-see_also:
-- trello-api-example-1-sprint-board-automation
-- trello-api-sprint-goals
-- trello-api-example-2-card-migration-tool
-- trello-api-summary
-- trello-api-cards-by-list
 scripts_exempt: true
 ---
 

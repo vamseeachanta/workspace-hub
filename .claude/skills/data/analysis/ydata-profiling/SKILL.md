@@ -41,15 +41,6 @@ related_skills:
 - great-tables
 - streamlit
 requires: []
-see_also:
-- ydata-profiling-1-basic-profile-report-generation
-- ydata-profiling-3-missing-value-analysis
-- ydata-profiling-5-large-dataset-handling
-- ydata-profiling-6-comparison-reports
-- ydata-profiling-7-html-report-customization
-- ydata-profiling-ydata-profiling-with-streamlit
-- ydata-profiling-1-use-minimal-mode-for-large-datasets
-- ydata-profiling-common-issues
 scripts_exempt: true
 ---
 

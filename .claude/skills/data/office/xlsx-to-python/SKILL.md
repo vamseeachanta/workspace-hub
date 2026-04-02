@@ -43,19 +43,6 @@ tags:
 - tdd
 - dark-intelligence
 scripts_exempt: true
-see_also:
-- xlsx-to-python-core-principle-excel-values-test-data
-- xlsx-to-python-recommended-stack
-- xlsx-to-python-openpyxl-limitation
-- xlsx-to-python-step-1-dual-pass-loading
-- xlsx-to-python-step-6-calculation-block-detection
-- xlsx-to-python-test-assertion-patterns-by-data-type
-- xlsx-to-python-dark-intelligence-archive-generation
-- xlsx-to-python-using-formulas-for-complex-workbooks
-- xlsx-to-python-why-parametric-variations-are-required
-- xlsx-to-python-research-finding-no-existing-library-does-this
-- xlsx-to-python-integration-with-existing-pipeline
-- xlsx-to-python-checklist
 ---
 
 # Xlsx To Python

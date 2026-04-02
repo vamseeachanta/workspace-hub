@@ -34,16 +34,6 @@ related_skills:
 - cli-productivity
 - git-advanced
 requires: []
-see_also:
-- docker-1-basic-dockerfile-patterns
-- docker-2-multi-stage-builds
-- docker-3-docker-compose-for-development
-- docker-4-networking-patterns
-- docker-6-development-workflow-scripts
-- docker-1-cicd-pipeline-integration
-- docker-4-database-migration-pattern
-- docker-1-image-optimization
-- docker-common-issues-and-solutions
 scripts_exempt: true
 ---
 

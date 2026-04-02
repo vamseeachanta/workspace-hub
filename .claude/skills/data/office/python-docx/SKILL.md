@@ -35,17 +35,6 @@ related_skills:
 - pypdf
 - openpyxl
 requires: []
-see_also:
-- python-docx-1-basic-document-creation
-- python-docx-2-advanced-paragraph-formatting
-- python-docx-3-table-creation-and-formatting
-- python-docx-4-headers-footers-and-page-setup
-- python-docx-5-image-insertion-and-positioning
-- python-docx-6-style-management-and-custom-styles
-- python-docx-report-generation-from-database
-- python-docx-batch-document-generation
-- python-docx-1-document-structure
-- python-docx-common-issues
 scripts_exempt: true
 ---
 

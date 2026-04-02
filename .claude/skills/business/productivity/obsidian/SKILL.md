@@ -40,17 +40,6 @@ related_skills:
 - yaml-configuration
 - git-sync-manager
 requires: []
-see_also:
-- obsidian-summary
-- obsidian-related-concepts
-- obsidian-sources
-- obsidian-applications
-- obsidian-3-tags-and-properties-frontmatter
-- obsidian-5-dataview-plugin
-- obsidian-6-templater-plugin
-- obsidian-7-sync-strategies
-- obsidian-5-maintenance-routines
-- obsidian-essential-plugins
 scripts_exempt: true
 ---
 

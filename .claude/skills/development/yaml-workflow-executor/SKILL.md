@@ -12,11 +12,6 @@ related_skills:
 - parallel-file-processor
 capabilities: []
 requires: []
-see_also:
-- yaml-workflow-executor-core-pattern
-- yaml-workflow-executor-configuration-loader
-- yaml-workflow-executor-basic-structure
-- yaml-workflow-executor-command-line-interface
 tags: []
 ---
 

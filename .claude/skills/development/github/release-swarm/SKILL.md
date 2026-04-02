@@ -7,14 +7,6 @@ description: Orchestrate complex software releases using AI swarms that handle e
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-release-swarm-release-agents
-- github-release-swarm-1-release-planning
-- github-release-swarm-release-configuration
-- github-release-swarm-progressive-deployment
-- github-release-swarm-swarm-coordination
-- github-release-swarm-github-actions-workflow
-- github-release-swarm-hotfix-process
 tags: []
 category: development
 version: 1.0.0

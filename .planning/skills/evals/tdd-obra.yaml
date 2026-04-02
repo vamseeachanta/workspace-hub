@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: tdd-obra
+skill_path: .claude/skills/development/tdd-obra/SKILL.md
+evals:
+- eval_id: to-cap-01
+  eval_type: capability
+  description: Core sections documented for tdd-obra
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Iron Law'
+    - '## Red-Green-Refactor Cycle'
+- eval_id: to-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for tdd-obra
+  checks:
+    required_sections:
+    - '## Why Tests-After Fails'
+    - '## Common Rationalizations (All Invalid)'
+    - '## Bug Fix Pattern'

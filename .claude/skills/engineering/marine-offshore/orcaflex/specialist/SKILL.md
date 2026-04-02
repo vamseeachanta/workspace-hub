@@ -7,8 +7,6 @@ description: Automate OrcaFlex marine simulations via Python API for mooring, ri
 type: reference
 capabilities: []
 requires: []
-see_also:
-- orcaflex-specialist-1-model-organization
 tags: []
 scripts_exempt: true
 ---

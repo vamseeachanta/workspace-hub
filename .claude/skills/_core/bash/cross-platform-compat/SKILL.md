@@ -8,19 +8,28 @@ category: _core/bash
 type: skill
 trigger: manual
 auto_execute: false
-platforms: [linux, macos, windows_gitbash]
+platforms:
+- linux
+- macos
+- windows_gitbash
 capabilities:
-  - cross_platform
-  - windows_gitbash_compat
-  - portable_arithmetic
-  - python_resolver
-  - os_detection
-tags: [bash, cross-platform, windows, git-bash, portable, bc, python3, nproc]
+- cross_platform
+- windows_gitbash_compat
+- portable_arithmetic
+- python_resolver
+- os_detection
+tags:
+- bash
+- cross-platform
+- windows
+- git-bash
+- portable
+- bc
+- python3
+- nproc
 related_skills:
-  - bash-script-framework
-  - bash-cli-framework
-see_also:
-  - _core/bash/bash-script-framework
+- bash-script-framework
+- bash-cli-framework
 ---
 
 # Cross-Platform Bash Compatibility

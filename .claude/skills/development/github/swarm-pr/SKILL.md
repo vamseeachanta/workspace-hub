@@ -6,16 +6,6 @@ description: Pull request swarm management for multi-agent code review and valid
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-swarm-pr-merge-status
-- github-swarm-pr-automatic-agent-assignment
-- github-swarm-pr-multi-agent-pr-coordination
-- github-swarm-pr-github-actions-integration
-- github-swarm-pr-summary
-- github-swarm-pr-swarm-configuration
-- github-swarm-pr-tasks-for-swarm
-- github-swarm-pr-2-status-checks
-- github-swarm-pr-metrics-and-reporting
 tags: []
 category: development
 version: 1.0.0

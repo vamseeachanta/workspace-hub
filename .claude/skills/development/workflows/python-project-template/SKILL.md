@@ -20,18 +20,7 @@ tools:
 - Read
 related_skills:
 - pytest-fixture-generator
-- repo-readiness
-- agent-os-framework
 requires: []
-see_also:
-- python-project-template-project-structure-generated
-- python-project-template-1-pyprojecttoml
-- python-project-template-project-overview
-- python-project-template-critical-rules
-- python-project-template-file-organization
-- python-project-template-key-commands
-- python-project-template-4-core-module-template
-- python-project-template-with-repo-readiness
 tags: []
 ---
 

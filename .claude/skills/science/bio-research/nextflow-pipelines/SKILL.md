@@ -15,18 +15,6 @@ related_skills:
 - scientific-problem-selection
 capabilities: []
 requires: []
-see_also:
-- nextflow-pipelines-workflow-checklist
-- nextflow-pipelines-step-0-acquire-data-geosra-only
-- nextflow-pipelines-docker-issues
-- nextflow-pipelines-step-2-select-pipeline
-- nextflow-pipelines-step-3-run-test-profile
-- nextflow-pipelines-generate-automatically
-- nextflow-pipelines-5a-check-genome-availability
-- nextflow-pipelines-check-completion
-- nextflow-pipelines-disclaimer
-- nextflow-pipelines-attribution
-- nextflow-pipelines-licenses
 tags: []
 scripts_exempt: true
 ---

@@ -20,15 +20,6 @@ platforms:
 - r
 capabilities: []
 requires: []
-see_also:
-- plotly-example-1-3d-scatter-plot
-- plotly-dashboard-with-plotly-dash
-- plotly-vertical-legends-avoid-toolbar-clash
-- plotly-basic-charts
-- plotly-javascript-cdn
-- plotly-performance-tips
-- plotly-html-recommended-for-reports
-- plotly-built-in-templates
 scripts_exempt: true
 ---
 

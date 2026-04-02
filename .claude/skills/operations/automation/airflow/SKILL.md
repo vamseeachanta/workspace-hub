@@ -43,8 +43,6 @@ related_skills:
 - python-scientific-computing
 - pandas-data-processing
 scripts_exempt: true
-see_also:
-- airflow-2-advanced-operators
 ---
 
 # Airflow

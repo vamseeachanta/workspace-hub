@@ -6,12 +6,6 @@ description: Cross-repository swarm orchestration for organization-wide automati
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-multi-repo-multi-repo-configuration
-- github-multi-repo-eventually-consistent
-- github-multi-repo-swarm-coordination
-- github-multi-repo-microservices-coordination
-- github-multi-repo-multi-repo-dashboard
 tags: []
 category: development
 version: 1.0.0

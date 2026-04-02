@@ -18,15 +18,6 @@ triggers:
 - segment configuration
 capabilities: []
 requires: []
-see_also:
-- orcaflex-line-wizard-version-metadata
-- orcaflex-line-wizard-100-2026-01-17
-- orcaflex-line-wizard-calculation-modes
-- orcaflex-line-wizard-yaml-based-line-setup
-- orcaflex-line-wizard-common-line-setup-properties
-- orcaflex-line-wizard-with-mooring-iteration
-- orcaflex-line-wizard-common-errors-and-fixes
-- orcaflex-line-wizard-post-wizard-checks
 tags: []
 scripts_exempt: true
 ---

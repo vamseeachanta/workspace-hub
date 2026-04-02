@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: skill-creator
+skill_path: .claude/skills/_internal/builders/skill-creator/SKILL.md
+evals:
+- eval_id: sc-cap-01
+  eval_type: capability
+  description: Core sections documented for skill-creator
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Prerequisites'
+    - '## Version History'
+- eval_id: sc-proc-01
+  eval_type: procedural
+  description: Key commands documented for skill-creator
+  checks:
+    required_commands:
+    - bash scripts/`, `uv run`, or `bash .claude/skills/

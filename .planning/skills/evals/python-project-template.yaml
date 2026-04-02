@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: python-project-template
+skill_path: .claude/skills/development/workflows/python-project-template/SKILL.md
+evals:
+- eval_id: ppt-cap-01
+  eval_type: capability
+  description: Core sections documented for python-project-template
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## References'
+    - '## Prerequisites'
+- eval_id: ppt-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for python-project-template
+  checks:
+    required_sections:
+    - '## Related Skills'
+    - '## Version History'
+    - '## Sub-Skills'

@@ -13,19 +13,6 @@ applies-to:
 - gemini
 capabilities: []
 requires: []
-see_also:
-- clean-code-hard-limits-zero-tolerance
-- clean-code-quick-scan-commands
-- clean-code-file-size-decision-tree
-- clean-code-pattern-1-responsibility-split-most-common
-- clean-code-naming-rules-enforcement
-- clean-code-dead-code-identification-and-removal
-- clean-code-god-object-detection
-- clean-code-top-p1-candidates-2026-02-25-audit
-- clean-code-pre-commit-integration
-- clean-code-git-plumbing-for-repos-with-large-pack-files
-- clean-code-step-1-api-compatibility-check-mandatory-before-wr
-- clean-code-see-also
 updated: 2026-02-25
 changelog: "v2.1.0 \u2014 Module Migration Shim Protocol (WRK-602): API compat check,\
   \ diverged-API handling, patch.object scope for shim modules; v2.0.0 \u2014 God\

@@ -12,11 +12,6 @@ related_skills:
 - engineering-report-generator
 capabilities: []
 requires: []
-see_also:
-- parallel-file-processor-core-pattern
-- parallel-file-processor-core-components
-- parallel-file-processor-basic-configuration
-- parallel-file-processor-mode-selection
 tags: []
 ---
 

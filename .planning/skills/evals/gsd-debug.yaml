@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: gsd-debug
+skill_path: .claude/skills/gsd-debug/SKILL.md
+evals:
+- eval_id: gd-cap-01
+  eval_type: capability
+  description: Core sections documented for gsd-debug
+  checks:
+    required_sections:
+    - '## 0. Initialize Context'
+    - '## 1. Check Active Sessions'
+    - '## 2. Gather Symptoms (if new issue)'
+    - '## 3. Spawn gsd-debugger Agent'
+    - '## 4. Handle Agent Return'
+- eval_id: gd-proc-01
+  eval_type: procedural
+  description: Key commands documented for gsd-debug
+  checks:
+    required_commands:
+    - /gsd-tools

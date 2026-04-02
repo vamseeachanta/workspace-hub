@@ -18,15 +18,6 @@ triggers:
 - structural dynamics
 capabilities: []
 requires: []
-see_also:
-- orcaflex-modal-analysis-version-metadata
-- orcaflex-modal-analysis-100-2026-01-17
-- orcaflex-modal-analysis-1-static-equilibrium-modal-analysis
-- orcaflex-modal-analysis-mode-shapes-csv
-- orcaflex-modal-analysis-dof-percentage-calculation
-- orcaflex-modal-analysis-common-errors-and-fixes
-- orcaflex-modal-analysis-expected-frequency-ranges
-- orcaflex-modal-analysis-with-viv-analysis
 tags: []
 scripts_exempt: true
 ---

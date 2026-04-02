@@ -8,12 +8,13 @@ category: _internal
 last_updated: 2026-03-05
 official_plugin: skill-creator@claude-plugin-directory
 related_skills:
-- session-start
-- sparc-workflow
 - mcp-builder
-- skill-learner
 - improve
-tags: [skill-authoring, template, frontmatter, schema]
+tags:
+- skill-authoring
+- template
+- frontmatter
+- schema
 see_also:
 - skill-creator-official-plugin-reference
 - skill-creator-canonical-reference

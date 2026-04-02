@@ -7,14 +7,6 @@ description: Domain expertise for petroleum engineering, reservoir analysis, pro
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- oil-and-gas-reservoir-engineering
-- oil-and-gas-api-standards
-- oil-and-gas-economic-evaluation
-- oil-and-gas-volumetrics
-- oil-and-gas-core-libraries
-- oil-and-gas-bsee-module
-- oil-and-gas-usage
 ---
 
 # Oil And Gas

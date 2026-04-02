@@ -18,12 +18,6 @@ triggers:
 - mooring comparison
 capabilities: []
 requires: []
-see_also:
-- orcaflex-results-comparison-version-metadata
-- orcaflex-results-comparison-100-2026-01-17
-- orcaflex-results-comparison-1-pretension-comparison
-- orcaflex-results-comparison-comparison-bar-chart
-- orcaflex-results-comparison-comparison-summary-table
 tags: []
 scripts_exempt: true
 ---

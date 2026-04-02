@@ -7,14 +7,6 @@ description: Repository structure optimization and multi-repo management with sw
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-repo-architect-core-capabilities
-- github-repo-architect-1-repository-structure-analysis
-- github-repo-architect-4-cross-repository-synchronization
-- github-repo-architect-monorepo-structure
-- github-repo-architect-swarm-coordination
-- github-repo-architect-architecture-health-metrics
-- github-repo-architect-integration-with-other-skills
 tags: []
 category: development
 version: 1.0.0

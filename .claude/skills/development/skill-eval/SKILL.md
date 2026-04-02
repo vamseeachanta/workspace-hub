@@ -19,8 +19,6 @@ tools:
 - Grep
 related_skills:
 - skill-creator
-- compliance-check
-- repo-capability-map
 - verification-loop
 requires: []
 see_also: []

@@ -7,17 +7,6 @@ description: Intelligent issue management and project coordination with automate
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-issue-tracker-core-capabilities
-- github-issue-tracker-1-create-issue-with-swarm-tracking
-- github-issue-tracker-objectives
-- github-issue-tracker-3-automated-progress-updates
-- github-issue-tracker-integration-issue-template
-- github-issue-tracker-overview
-- github-issue-tracker-problem-description
-- github-issue-tracker-swarm-coordination
-- github-issue-tracker-integration-with-other-skills
-- github-issue-tracker-automatic-tracking-of
 tags: []
 category: development
 version: 1.0.0

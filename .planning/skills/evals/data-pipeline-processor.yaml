@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: data-pipeline-processor
+skill_path: .claude/skills/development/data-pipeline-processor/SKILL.md
+evals:
+- eval_id: dpp-cap-01
+  eval_type: capability
+  description: Core sections documented for data-pipeline-processor
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## YAML Configuration Format'
+    - '## Implementation'
+    - '## Core Pattern'
+- eval_id: dpp-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for data-pipeline-processor
+  checks:
+    required_sections:
+    - '## Related Skills'
+    - '## Version History'
+    - '## Sub-Skills'

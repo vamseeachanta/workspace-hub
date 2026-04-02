@@ -8,15 +8,10 @@ version: 2.0.0
 category: operations
 last_updated: 2026-01-02
 related_skills:
-- pdf/text-extractor
 - semantic-search-setup
 - knowledge-base-builder
 capabilities: []
 requires: []
-see_also:
-- background-service-manager-execution-checklist
-- background-service-manager-error-handling
-- background-service-manager-metrics
 tags: []
 scripts_exempt: true
 ---

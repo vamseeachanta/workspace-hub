@@ -5,8 +5,6 @@ description: Deepwater field-specific analysis for major Gulf of Mexico developm
 type: reference
 capabilities: []
 requires: []
-see_also:
-- field-analyzer-best-practices
 tags: []
 category: data
 version: 1.0.0

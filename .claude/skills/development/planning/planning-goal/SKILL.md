@@ -23,8 +23,6 @@ tools:
 - Task
 related_skills:
 - planning-code-goal
-- sparc-workflow
-- agent-orchestration
 hooks:
   pre: 'echo "Starting GOAP planning session..."
 
@@ -35,13 +33,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- planning-goal-goap-algorithm
-- planning-goal-implementation-pattern
-- planning-goal-configuration
-- planning-goal-example-1-software-deployment
-- planning-goal-metrics-success-criteria
-- planning-goal-mcp-tools
 tags: []
 ---
 

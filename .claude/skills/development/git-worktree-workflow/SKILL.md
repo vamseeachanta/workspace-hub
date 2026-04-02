@@ -9,18 +9,9 @@ last_updated: 2026-01-02
 category: development
 related_skills:
 - repo-sync
-- sparc-workflow
-- agent-orchestration
 - git-worktree-workflow
 capabilities: []
 requires: []
-see_also:
-- git-worktree-workflow-what-is-a-worktree
-- git-worktree-workflow-create-a-worktree
-- git-worktree-workflow-pattern-1-feature-review
-- git-worktree-workflow-claudemd-configuration
-- git-worktree-workflow-headless-mode-in-worktrees
-- git-worktree-workflow-github-actions-parallel-jobs
 tags: []
 ---
 

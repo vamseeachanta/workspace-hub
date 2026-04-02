@@ -1,0 +1,22 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orcaflex-modeling
+skill_path: .claude/skills/engineering/marine-offshore/orcaflex/modeling/SKILL.md
+evals:
+- eval_id: om-cap-01
+  eval_type: capability
+  description: Core sections documented for orcaflex-modeling
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## References'
+    - '## Prerequisites'
+    - '## Related Skills'
+    - '## Version History'
+- eval_id: om-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for orcaflex-modeling
+  checks:
+    required_sections:
+    - '## Sub-Skills'
+    - '## Sub-Skills'

@@ -5,8 +5,6 @@ description: Web scraping workflows for energy data collection from BSEE and BOE
 type: reference
 capabilities: []
 requires: []
-see_also:
-- web-scraper-energy-best-practices
 tags: []
 category: data
 version: 1.0.0

@@ -13,13 +13,6 @@ related_skills:
 - theme-factory
 capabilities: []
 requires: []
-see_also:
-- canvas-design-step-1-design-philosophy-md
-- canvas-design-visual-supremacy
-- canvas-design-using-python-pilpillow
-- canvas-design-geometric-minimalism
-- canvas-design-png-format
-- canvas-design-philosophy
 tags: []
 ---
 

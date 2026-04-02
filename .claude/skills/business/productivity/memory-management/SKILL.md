@@ -11,36 +11,6 @@ related_skills:
 - task-management
 capabilities: []
 requires: []
-see_also:
-- memory-management-the-goal
-- memory-management-architecture
-- memory-management-lookup-flow
-- memory-management-file-locations
-- memory-management-working-memory-format-claudemd
-- memory-management-me
-- memory-management-people
-- memory-management-terms
-- memory-management-projects
-- memory-management-preferences
-- memory-management-deep-memory-format-memory
-- memory-management-acronyms
-- memory-management-internal-terms
-- memory-management-nicknames-full-names
-- memory-management-project-codenames
-- memory-management-communication
-- memory-management-context
-- memory-management-notes
-- memory-management-what-it-is
-- memory-management-key-people
-- memory-management-context
-- memory-management-tools-systems
-- memory-management-teams
-- memory-management-processes
-- memory-management-decoding-user-input-tiered-lookup
-- memory-management-bootstrapping
-- memory-management-conventions
-- memory-management-what-goes-where
-- memory-management-promotion-demotion
 tags: []
 scripts_exempt: true
 ---

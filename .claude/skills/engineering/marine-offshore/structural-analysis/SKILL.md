@@ -1,28 +1,26 @@
 ---
-
 name: structural-analysis
-version: "1.1.0"
+version: 1.1.0
 category: engineering
-description: >
-  Structural analysis for marine and offshore structures per DNV/API/ISO codes.
-  Use when performing ULS/ALS limit state checks, column buckling, beam deflection,
-  tubular joint capacity (DNV-RP-C203), or stiffened panel analysis.
-  Covers section properties, combined loading, and ALS dented pipe assessment.
+description: 'Structural analysis for marine and offshore structures per DNV/API/ISO
+  codes. Use when performing ULS/ALS limit state checks, column buckling, beam deflection,
+  tubular joint capacity (DNV-RP-C203), or stiffened panel analysis. Covers section
+  properties, combined loading, and ALS dented pipe assessment.
+
+  '
 type: reference
 tags:
-  - structural
-  - mechanics
-  - dnv
-  - buckling
-  - uls
-  - als
-  - beam-theory
-  - stress-analysis
+- structural
+- mechanics
+- dnv
+- buckling
+- uls
+- als
+- beam-theory
+- stress-analysis
 created: 2026-01-06
 updated: 2026-03-08
 requires: []
-see_also:
-  - ../fatigue-analysis/SKILL.md
 scripts_exempt: true
 ---
 

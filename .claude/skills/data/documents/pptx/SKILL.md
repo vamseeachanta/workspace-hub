@@ -14,12 +14,6 @@ related_skills:
 - xlsx
 capabilities: []
 requires: []
-see_also:
-- pptx-basic-creation-with-python-pptx
-- pptx-before-writing-code
-- pptx-read-and-modify
-- pptx-apply-template
-- pptx-unpack-presentation
 tags: []
 ---
 

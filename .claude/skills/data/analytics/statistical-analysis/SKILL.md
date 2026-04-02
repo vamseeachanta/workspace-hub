@@ -13,12 +13,6 @@ related_skills:
 - data-visualization
 capabilities: []
 requires: []
-see_also:
-- statistical-analysis-central-tendency
-- statistical-analysis-identifying-trends
-- statistical-analysis-statistical-methods
-- statistical-analysis-when-to-use
-- statistical-analysis-correlation-is-not-causation
 tags: []
 ---
 

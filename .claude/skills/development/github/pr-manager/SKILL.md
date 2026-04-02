@@ -6,9 +6,6 @@ description: Comprehensive pull request management with swarm coordination for a
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-pr-manager-best-practices
-- github-pr-manager-error-handling
 tags: []
 category: development
 version: 1.0.0

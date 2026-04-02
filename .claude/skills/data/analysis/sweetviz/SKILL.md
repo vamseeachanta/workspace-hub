@@ -41,16 +41,6 @@ related_skills:
 - polars
 - great-tables
 requires: []
-see_also:
-- sweetviz-1-basic-eda-report-analyze
-- sweetviz-2-target-variable-analysis
-- sweetviz-3-dataset-comparison-compare
-- sweetviz-4-intra-set-comparison-compareintra
-- sweetviz-6-pairwise-analysis-control
-- sweetviz-sweetviz-with-streamlit
-- sweetviz-sweetviz-in-data-pipeline
-- sweetviz-1-use-target-analysis-for-ml-projects
-- sweetviz-common-issues
 scripts_exempt: true
 ---
 

@@ -17,13 +17,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- ship-dynamics-6dof-1-6-degrees-of-freedom
-- ship-dynamics-6dof-3-natural-frequencies-and-periods
-- ship-dynamics-6dof-5-time-domain-simulation
-- ship-dynamics-6dof-6-seakeeping-analysis
-- ship-dynamics-6dof-example-1-full-6dof-simulation
-- ship-dynamics-6dof-example-2-natural-frequency-sensitivity-study
 scripts_exempt: true
 ---
 

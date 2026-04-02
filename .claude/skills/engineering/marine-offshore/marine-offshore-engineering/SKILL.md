@@ -19,12 +19,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- marine-offshore-engineering-1-platform-types
-- marine-offshore-engineering-5-regulatory-framework
-- marine-offshore-engineering-application-1-fpso-preliminary-design
-- marine-offshore-engineering-1-buoyancy-and-stability
-- marine-offshore-engineering-typical-project-phases
 scripts_exempt: true
 ---
 

@@ -18,21 +18,6 @@ triggers:
 - digitally analyze OrcaFlex files
 capabilities: []
 requires: []
-see_also:
-- orcaflex-file-conversion-version-metadata
-- orcaflex-file-conversion-100-2026-01-07
-- orcaflex-file-conversion-orcaflex-file-types
-- orcaflex-file-conversion-pattern-based-conversion
-- orcaflex-file-conversion-conversion-report-markdown
-- orcaflex-file-conversion-summary
-- orcaflex-file-conversion-success-rate-989
-- orcaflex-file-conversion-conversion-report-json
-- orcaflex-file-conversion-example-orcaflex-yaml-output
-- orcaflex-file-conversion-yaml-structure-validation
-- orcaflex-file-conversion-adding-conversion-to-universal-cli
-- orcaflex-file-conversion-1-version-control-preparation
-- orcaflex-file-conversion-common-issues
-- orcaflex-file-conversion-benchmarks
 tags: []
 scripts_exempt: true
 ---

@@ -39,14 +39,6 @@ related_skills:
 - obsidian
 - notion-api
 requires: []
-see_also:
-- todoist-api-example-1-gtd-weekly-review-automation
-- todoist-api-overdue-tasks-lenreportoverdue
-- todoist-api-upcoming-this-week-lenreportupcoming
-- todoist-api-waiting-for-lenreportwaitingfor
-- todoist-api-example-2-project-template-creator
-- todoist-api-summary
-- todoist-api-overdue-tasks
 scripts_exempt: true
 ---
 

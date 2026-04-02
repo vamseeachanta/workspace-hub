@@ -29,12 +29,6 @@ capabilities:
 - failure-diagnosis
 - validation
 requires: []
-see_also:
-- google-earth-engine-11-authentication
-- google-earth-engine-21-load-and-clip-bathymetry-gebco
-- google-earth-engine-31-parse-getinfo-results
-- google-earth-engine-4-failure-diagnosis
-- google-earth-engine-checklist
 updated: '2026-02-24'
 scripts_exempt: true
 ---

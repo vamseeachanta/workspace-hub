@@ -20,11 +20,7 @@ tools:
 - Bash
 related_skills:
 - python-project-template
-- repo-readiness
 requires: []
-see_also:
-- pytest-fixture-generator-execution-checklist
-- pytest-fixture-generator-error-handling
 tags: []
 ---
 

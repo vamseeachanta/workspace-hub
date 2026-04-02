@@ -16,19 +16,6 @@ related_skills:
 - scientific-problem-selection
 capabilities: []
 requires: []
-see_also:
-- instrument-data-allotrope-workflow-overview
-- instrument-data-allotrope-output-format-selection
-- instrument-data-allotrope-calculated-data-handling
-- instrument-data-allotrope-validation
-- instrument-data-allotrope-supported-instruments
-- instrument-data-allotrope-tier-1-native-allotropy-parsing-preferred
-- instrument-data-allotrope-pre-parsing-checklist
-- instrument-data-allotrope-common-mistakes-to-avoid
-- instrument-data-allotrope-code-export-for-data-engineers
-- instrument-data-allotrope-file-structure
-- instrument-data-allotrope-example-1-vi-cell-blu-file
-- instrument-data-allotrope-installing-allotropy
 tags: []
 scripts_exempt: true
 ---

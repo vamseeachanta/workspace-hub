@@ -7,10 +7,11 @@ applies-to:
 - codex
 - gemini
 invocation: /playwright
-description: >
-  Playwright CLI recipes for E2E testing, screenshots, PDF export, and
-  accessibility audits. Use instead of browser MCP tools for deterministic,
-  token-efficient browser automation.
+description: 'Playwright CLI recipes for E2E testing, screenshots, PDF export, and
+  accessibility audits. Use instead of browser MCP tools for deterministic, token-efficient
+  browser automation.
+
+  '
 type: reference
 triggers:
 - playwright
@@ -22,7 +23,6 @@ triggers:
 - headless browser
 related_skills:
 - webapp-testing
-- gsd-ui-auditor
 ---
 
 # Playwright CLI Skill

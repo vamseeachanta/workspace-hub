@@ -35,16 +35,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- sparc-specification-sparc-specification-phase
-- sparc-specification-requirements-document-structure
-- sparc-specification-configuration
-- sparc-specification-example-1-api-requirements
-- sparc-specification-11-purpose
-- sparc-specification-21-authentication
-- sparc-specification-31-performance
-- sparc-specification-metrics-success-criteria
-- sparc-specification-mcp-tools
 tags: []
 ---
 

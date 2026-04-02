@@ -1,9 +1,10 @@
 ---
 name: pdf-text-extractor
-description: Extract text from PDF files with intelligent chunking and metadata preservation.
-  For batch extraction (1K+ PDFs), use pdftotext (poppler) via subprocess — see pdf skill
-  Tool Selection table. For single-doc quality, use Codex or PyMuPDF. Supports technical
-  documents, standards libraries, research papers, or any PDF collection.
+description: "Extract text from PDF files with intelligent chunking and metadata preservation.\
+  \ For batch extraction (1K+ PDFs), use pdftotext (poppler) via subprocess \u2014\
+  \ see pdf skill Tool Selection table. For single-doc quality, use Codex or PyMuPDF.\
+  \ Supports technical documents, standards libraries, research papers, or any PDF\
+  \ collection."
 type: reference
 version: 1.2.0
 last_updated: 2026-01-04
@@ -16,11 +17,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also:
-- pdf-text-extractor-features
-- pdf-text-extractor-dependencies
 - pdf-text-extractor-readability-classification
-- pdf-text-extractor-encrypted-pdfs
-- pdf-text-extractor-example-usage
 tags: []
 ---
 

@@ -9,9 +9,6 @@ version: 1.0.0
 category: data/energy
 capabilities: []
 requires: []
-see_also:
-- npv-analyzer-example-1-simple-npv-calculation
-- npv-analyzer-model-setup
 tags: []
 ---
 

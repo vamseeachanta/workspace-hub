@@ -13,12 +13,6 @@ related_skills:
 - data-validation
 capabilities: []
 requires: []
-see_also:
-- data-context-extractor-how-it-works
-- data-context-extractor-phase-1-database-connection-discovery
-- data-context-extractor-step-1-load-existing-skill
-- data-context-extractor-for-table-documentation
-- data-context-extractor-quality-checklist
 tags: []
 ---
 

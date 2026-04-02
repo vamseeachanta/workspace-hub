@@ -8,11 +8,6 @@ type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []
-see_also:
-- catenary-riser-version-metadata
-- catenary-riser-100-2026-01-07
-- catenary-riser-1-simple-catenary-analysis
-- catenary-riser-catenary-shape-csv
 tags: []
 scripts_exempt: true
 category: engineering

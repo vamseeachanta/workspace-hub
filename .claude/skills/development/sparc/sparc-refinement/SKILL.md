@@ -42,11 +42,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- sparc-refinement-sparc-refinement-phase
-- sparc-refinement-red-phase-write-failing-tests
-- sparc-refinement-metrics-success-criteria
-- sparc-refinement-mcp-tools
 tags: []
 ---
 

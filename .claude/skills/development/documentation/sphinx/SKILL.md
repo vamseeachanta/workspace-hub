@@ -41,15 +41,6 @@ related_skills:
 - mkdocs
 - pandoc
 - docusaurus
-see_also:
-- sphinx-features
-- sphinx-quick-example
-- sphinx-admonitions
-- sphinx-cross-references
-- sphinx-math-support
-- sphinx-task-lists
-- sphinx-7-intersphinx-cross-references
-- sphinx-related-resources
 ---
 
 # Sphinx

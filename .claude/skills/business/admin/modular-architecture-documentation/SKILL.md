@@ -7,15 +7,6 @@ description: Systematically document multi-module system architectures including
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- modular-architecture-documentation-1-module-definition-framework
-- modular-architecture-documentation-decision
-- modular-architecture-documentation-tech-stackmd-modular-architecture-section
-- modular-architecture-documentation-overview
-- modular-architecture-documentation-decision
-- modular-architecture-documentation-overview
-- modular-architecture-documentation-decision
-- modular-architecture-documentation-success-criteria
 ---
 
 # Modular Architecture Documentation

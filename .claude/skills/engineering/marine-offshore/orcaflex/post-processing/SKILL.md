@@ -7,15 +7,13 @@ type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []
-see_also:
-- orcaflex-post-processing-version-metadata
-- orcaflex-post-processing-100-2026-01-07
-- orcaflex-post-processing-1-summary-statistics
-- orcaflex-post-processing-complete-post-processing-configuration
-- orcaflex-post-processing-csv-output
-- orcaflex-post-processing-parallel-processing-details
-- orcaflex-post-processing-common-vessel-variables
-tags: [marine, offshore, orcaflex, post-processing, results, statistics]
+tags:
+- marine
+- offshore
+- orcaflex
+- post-processing
+- results
+- statistics
 related_skills:
 - orcaflex-modeling
 - orcaflex-batch-manager

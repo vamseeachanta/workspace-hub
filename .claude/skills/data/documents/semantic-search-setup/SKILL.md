@@ -10,16 +10,8 @@ category: data
 related_skills:
 - knowledge-base-builder
 - rag-system-builder
-- pdf/text-extractor
 capabilities: []
 requires: []
-see_also:
-- semantic-search-setup-how-semantic-search-works
-- semantic-search-setup-model-selection
-- semantic-search-setup-step-1-install-dependencies
-- semantic-search-setup-1-cpu-vs-gpu
-- semantic-search-setup-status-monitoring
-- semantic-search-setup-example-usage
 tags: []
 ---
 

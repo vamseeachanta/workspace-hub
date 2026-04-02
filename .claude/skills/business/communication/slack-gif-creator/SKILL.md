@@ -12,11 +12,6 @@ related_skills:
 - algorithmic-art
 capabilities: []
 requires: []
-see_also:
-- slack-gif-creator-execution-checklist
-- slack-gif-creator-error-handling
-- slack-gif-creator-metrics
-- slack-gif-creator-dependencies
 tags: []
 scripts_exempt: true
 ---

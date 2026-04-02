@@ -45,18 +45,6 @@ related_skills:
 - activepieces
 - windmill
 scripts_exempt: true
-see_also:
-- n8n-1-basic-workflow-structure
-- n8n-2-webhook-triggers
-- n8n-3-scheduled-workflows
-- n8n-4-conditional-branching-and-error-handling
-- n8n-5-data-transformation-with-code-node
-- n8n-7-custom-node-development
-- n8n-8-workflow-templates-and-subworkflows
-- n8n-integration-with-slack-google-sheets-and-email
-- n8n-integration-with-github-and-jira
-- n8n-1-workflow-organization
-- n8n-common-issues
 ---
 
 # N8N

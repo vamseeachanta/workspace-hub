@@ -40,17 +40,6 @@ related_skills:
 - dspy
 - prompt-engineering
 scripts_exempt: true
-see_also:
-- agenta-1-prompt-versioning-and-management
-- agenta-2-ab-testing-prompts
-- agenta-3-evaluation-metrics-and-testing
-- agenta-4-playground-and-experimentation
-- agenta-5-model-comparison
-- agenta-6-self-hosted-deployment
-- agenta-fastapi-integration
-- agenta-langchain-integration
-- agenta-1-prompt-versioning-strategy
-- agenta-connection-issues
 ---
 
 # Agenta

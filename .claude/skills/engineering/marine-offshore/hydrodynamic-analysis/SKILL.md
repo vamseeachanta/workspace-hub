@@ -20,13 +20,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- hydrodynamic-analysis-1-boundary-element-method-bem
-- hydrodynamic-analysis-3-added-mass-and-damping
-- hydrodynamic-analysis-5-hydrostatic-stiffness
-- hydrodynamic-analysis-application-1-complete-rao-analysis
-- hydrodynamic-analysis-application-3-added-mass-convergence-check
-- hydrodynamic-analysis-wamit-workflow
 scripts_exempt: true
 ---
 

@@ -43,18 +43,6 @@ related_skills:
 - api-integration
 - windmill
 scripts_exempt: true
-see_also:
-- activepieces-1-basic-flow-structure
-- activepieces-2-webhook-triggers
-- activepieces-3-scheduled-flows
-- activepieces-4-branching-and-conditional-logic
-- activepieces-5-loop-and-iteration
-- activepieces-6-custom-piece-development
-- activepieces-7-approval-flows
-- activepieces-8-error-handling-and-retry-logic
-- activepieces-integration-with-notion-and-slack
-- activepieces-1-flow-organization
-- activepieces-common-issues
 ---
 
 # Activepieces

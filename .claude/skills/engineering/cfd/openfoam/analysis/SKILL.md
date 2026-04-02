@@ -1,38 +1,52 @@
 ---
 name: openfoam-analysis
-description: >
-  End-to-end CFD analysis workflow using OpenFOAM — from problem definition
-  through meshing, solving, and post-processing to calculation report generation.
-  Integrates with calculation-methodology (6-phase structure) and calculation-report
-  (YAML → HTML rendering). Use when performing CFD analyses, not just setting up cases.
+description: "End-to-end CFD analysis workflow using OpenFOAM \u2014 from problem\
+  \ definition through meshing, solving, and post-processing to calculation report\
+  \ generation. Integrates with calculation-methodology (6-phase structure) and calculation-report\
+  \ (YAML \u2192 HTML rendering). Use when performing CFD analyses, not just setting\
+  \ up cases.\n"
 type: reference
 version: 1.0.0
 updated: 2026-03-16
 category: engineering/cfd
 triggers:
-  - cfd analysis
-  - openfoam analysis
-  - run cfd
-  - cfd calculation
-  - flow simulation
-  - drag calculation
-  - wave loading cfd
-  - openfoam run
-tags: [openfoam, cfd, analysis, workflow, calculation, marine, drag, vof, convergence]
-platforms: [linux]
+- cfd analysis
+- openfoam analysis
+- run cfd
+- cfd calculation
+- flow simulation
+- drag calculation
+- wave loading cfd
+- openfoam run
+tags:
+- openfoam
+- cfd
+- analysis
+- workflow
+- calculation
+- marine
+- drag
+- vof
+- convergence
+platforms:
+- linux
 depends_on:
-  - openfoam
-  - gmsh-meshing
-  - calculation-methodology
-  - calculation-report
+- openfoam
+- gmsh-meshing
+- calculation-methodology
+- calculation-report
 capabilities:
-  - analysis_execution
-  - convergence_monitoring
-  - post_processing
-  - calculation_report_generation
+- analysis_execution
+- convergence_monitoring
+- post_processing
+- calculation_report_generation
 requires:
-  - OpenFOAM v2312
-see_also: [openfoam, gmsh-meshing, freecad-automation, calculation-methodology, calculation-report]
+- OpenFOAM v2312
+see_also:
+- openfoam
+- gmsh-meshing
+- freecad-automation
+- calculation-report
 ---
 
 # OpenFOAM Analysis Workflow

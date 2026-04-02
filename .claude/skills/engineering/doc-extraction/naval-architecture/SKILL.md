@@ -4,8 +4,7 @@ description: 'Layer 3 domain sub-skill for extracting naval architecture data fr
   SNAME PNA, IMO stability codes, IACS structural rules, and classification society
   guidelines. Provides detection heuristics for stability constants, resistance equations,
   hull form coefficients, hydrostatic curves, IMO stability criteria, and structural
-  scantling tables.
-type: reference
+  scantling tables. type: reference
 
   '
 version: 1.0.0
@@ -34,12 +33,6 @@ capabilities:
 requires: []
 tags: []
 scripts_exempt: true
-see_also:
-- doc-extraction-naval-architecture-source-code-alignment
-- doc-extraction-naval-architecture-stability-constants
-- doc-extraction-naval-architecture-structural-scantling-tables
-- doc-extraction-naval-architecture-validation-rules
-- doc-extraction-naval-architecture-standards-reference
 type: reference
 ---
 

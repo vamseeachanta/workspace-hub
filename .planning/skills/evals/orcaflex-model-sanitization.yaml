@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orcaflex-model-sanitization
+skill_path: .claude/skills/engineering/marine-offshore/orcaflex/model-sanitization/SKILL.md
+evals:
+- eval_id: oms-cap-01
+  eval_type: capability
+  description: Core sections documented for orcaflex-model-sanitization
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## Sanitization Pipeline'
+    - '## Commands'
+    - '## Audit Output'
+    - '## Deny List Integration'
+- eval_id: oms-proc-01
+  eval_type: procedural
+  description: Key commands documented for orcaflex-model-sanitization
+  checks:
+    required_commands:
+    - uv run python scripts/sanitize_s7_models.py
+    - bash scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
+    - python scripts/sanitize_s7_models.py

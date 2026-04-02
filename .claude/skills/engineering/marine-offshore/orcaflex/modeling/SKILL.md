@@ -19,21 +19,13 @@ triggers:
 - .sim simulation files
 capabilities: []
 requires: []
-see_also:
-- orcaflex-modeling-version-metadata
-- orcaflex-modeling-200-2026-01-07
-- orcaflex-modeling-domain-expertise
-- orcaflex-modeling-standardized-folder-structure
-- orcaflex-modeling-basic-analysis-configuration
-- orcaflex-modeling-command-line-interface
-- orcaflex-modeling-batch-processing
-- orcaflex-modeling-static-analysis
-- orcaflex-modeling-vessel-loading
-- orcaflex-modeling-license-check
-- orcaflex-modeling-common-issues
-- orcaflex-modeling-swarm-coordination
-- orcaflex-modeling-external-documentation
-tags: [marine, offshore, orcaflex, hydrodynamic, mooring, simulation]
+tags:
+- marine
+- offshore
+- orcaflex
+- hydrodynamic
+- mooring
+- simulation
 related_skills:
 - orcaflex-post-processing
 - orcaflex-batch-manager

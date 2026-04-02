@@ -12,13 +12,6 @@ related_skills:
 - git-worktree-workflow
 capabilities: []
 requires: []
-see_also:
-- mcp-builder-phase-1-deep-research-and-planning
-- mcp-builder-language-choice
-- mcp-builder-pagination
-- mcp-builder-integration-with-claude-code
-- mcp-builder-mcpjson-for-team-sharing
-- mcp-builder-security-best-practices
 tags: []
 ---
 

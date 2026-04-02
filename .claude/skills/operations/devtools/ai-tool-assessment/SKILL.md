@@ -8,14 +8,8 @@ category: operations
 last_updated: 2026-01-02
 related_skills:
 - background-service-manager
-- session-start
 capabilities: []
 requires: []
-see_also:
-- ai-tool-assessment-execution-checklist
-- ai-tool-assessment-error-handling
-- ai-tool-assessment-metrics
-- ai-tool-assessment-best-practices
 tags: []
 scripts_exempt: true
 ---

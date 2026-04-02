@@ -1,8 +1,8 @@
 ---
 name: orcawave-damping-sweep
-description: Viscous damping analysis for OrcaWave. Use when running parametric
-  damping sweeps, optimizing roll damping coefficients, computing critical damping,
-  or comparing damping results with model test data for vessel motion tuning.
+description: Viscous damping analysis for OrcaWave. Use when running parametric damping
+  sweeps, optimizing roll damping coefficients, computing critical damping, or comparing
+  damping results with model test data for vessel motion tuning.
 type: reference
 version: 1.0.0
 updated: 2026-01-17
@@ -18,13 +18,6 @@ triggers:
 - model test comparison
 capabilities: []
 requires: []
-see_also:
-- orcawave-damping-sweep-version-metadata
-- orcawave-damping-sweep-total-damping-composition
-- orcawave-damping-sweep-damping-sweep-configuration
-- orcawave-damping-sweep-cli-usage
-- orcawave-damping-sweep-typical-values-by-vessel-type
-- orcawave-damping-sweep-damping-related-properties
 tags: []
 scripts_exempt: true
 ---

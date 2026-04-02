@@ -10,19 +10,9 @@ category: data
 related_skills:
 - knowledge-base-builder
 - semantic-search-setup
-- pdf/text-extractor
 - document-rag-pipeline
 capabilities: []
 requires: []
-see_also:
-- rag-system-builder-architecture
-- rag-system-builder-step-1-vector-embeddings-table
-- rag-system-builder-system-prompt-template
-- rag-system-builder-1-cache-embeddings
-- rag-system-builder-example-usage
-- rag-system-builder-advanced-hybrid-search-bm25-vector
-- rag-system-builder-advanced-reranking
-- rag-system-builder-streaming-responses
 tags: []
 ---
 

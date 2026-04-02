@@ -18,13 +18,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- wave-theory-1-regular-wave-theory
-- wave-theory-2-wave-spectra
-- wave-theory-3-wave-statistics
-- wave-theory-4-time-series-generation
-- wave-theory-6-extreme-value-analysis
-- wave-theory-example-1-complete-wave-analysis
 scripts_exempt: true
 ---
 

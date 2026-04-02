@@ -1,13 +1,12 @@
 ---
 name: comprehensive-learning
-description: 'Single fire-and-forget command that runs the full session learning pipeline:
-  insights → reflect → knowledge → improve → action-candidates → report. All machines
-  run local Phases 1–9 against logs/orchestrator/ and commit derived state. dev-primary
-  additionally runs Phase 10a (cross-machine compilation) and Phase 10 (report). Safe
-  for cron scheduling. Use when session ends, nightly cron fires, or you want to harvest
-  learnings from recent sessions. Replaces running 4 skills manually.
-
-  '
+description: "Single fire-and-forget command that runs the full session learning pipeline:\
+  \ insights \u2192 reflect \u2192 knowledge \u2192 improve \u2192 action-candidates\
+  \ \u2192 report. All machines run local Phases 1\u20139 against logs/orchestrator/\
+  \ and commit derived state. dev-primary additionally runs Phase 10a (cross-machine\
+  \ compilation) and Phase 10 (report). Safe for cron scheduling. Use when session\
+  \ ends, nightly cron fires, or you want to harvest learnings from recent sessions.\
+  \ Replaces running 4 skills manually.\n"
 version: 2.5.0
 updated: 2026-03-09
 category: workspace-hub
@@ -24,10 +23,7 @@ tools:
 - Task
 related_skills:
 - improve
-- claude-reflect
 - knowledge-management
-- session-end
-- workstations
 capabilities:
 - session-learning
 - ecosystem-improvement

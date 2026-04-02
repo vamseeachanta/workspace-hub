@@ -13,12 +13,6 @@ related_skills:
 - web-artifacts-builder
 capabilities: []
 requires: []
-see_also:
-- algorithmic-art-phase-1-algorithmic-philosophy
-- algorithmic-art-core-principle-seeded-reproducibility
-- algorithmic-art-template-structure
-- algorithmic-art-noise-fields
-- algorithmic-art-philosophy-driven-implementation
 tags: []
 ---
 

@@ -17,14 +17,6 @@ triggers:
 - OrcaFlex vessel setup
 capabilities: []
 requires: []
-see_also:
-- orcawave-to-orcaflex-version-metadata
-- orcawave-to-orcaflex-workflow-overview
-- orcawave-to-orcaflex-standard-export-configuration
-- orcawave-to-orcaflex-supported-output-formats
-- orcawave-to-orcaflex-cli-usage
-- orcawave-to-orcaflex-pre-export-validation
-- orcawave-to-orcaflex-generated-yaml-structure
 tags: []
 scripts_exempt: true
 ---

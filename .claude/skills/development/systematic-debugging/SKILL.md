@@ -14,10 +14,6 @@ related_skills:
 - code-reviewer
 capabilities: []
 requires: []
-see_also:
-- systematic-debugging-best-practices
-- systematic-debugging-error-handling
-- systematic-debugging-metrics
 tags: []
 freedom: high
 ---

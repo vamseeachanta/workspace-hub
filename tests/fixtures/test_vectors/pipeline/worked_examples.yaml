@@ -1,0 +1,160 @@
+metadata:
+  domain: pipeline
+  generated_by: scripts/curate_worked_examples.py
+  generated_at: '2026-04-01T23:50:13.709414+00:00'
+  issue: '#1294 (WRK-1370)'
+  total_vectors: 10
+  source: data/doc-intelligence/worked_examples.jsonl
+test_vectors:
+- id: WE-B-0003
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p153
+    extraction: deep
+  description: 'In conventional airplanes, the fuselage may
+
+    be set to an angle in the order of m'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 0.035
+  input_count: 27
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0004
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p296
+    extraction: deep
+  description: 'For a supervelocity ratio AV/V — 0.1, we
+
+    solid investigated) is called the criti'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 2.1
+  input_count: 20
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0005
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p304
+    extraction: deep
+  description: By plotting the critical Mach number of 31, for example). Reference (30,d) also
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 107.0
+  input_count: 47
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0006
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p151
+    extraction: deep
+  description: 'In conventional airplanes, the fuselage may
+
+    be set to an angle in the order of m'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 0.035
+  input_count: 68
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0007
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p152
+    extraction: deep
+  description: 'In conventional airplanes, the fuselage may
+
+    be set to an angle in the order of m'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 0.3
+  input_count: 83
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0008
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p294
+    extraction: deep
+  description: 'For a supervelocity ratio AV/V — 0.1, we
+
+    solid investigated) is called the criti'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 2.1
+  input_count: 74
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0009
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p295
+    extraction: deep
+  description: 'For a supervelocity ratio AV/V — 0.1, we
+
+    solid investigated) is called the criti'
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 30.0
+  input_count: 63
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0010
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p302
+    extraction: deep
+  description: By plotting the critical Mach number of 31, for example). Reference (30,d) also
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 107.0
+  input_count: 63
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0011
+  source:
+    book: Fluid-Dynamic-Drag-Hoerner-1965
+    example_number: p303
+    extraction: deep
+  description: By plotting the critical Mach number of 31, for example). Reference (30,d) also
+  domain: pipeline
+  topic: general
+  expected_output:
+    value: 0.5
+  input_count: 69
+  quality_score: 80
+  quality_tier: gold
+- id: WE-A-0006
+  source:
+    document: Fluid-Dynamic-Drag-Hoerner-1965.pdf
+    page: 133
+  description: to the wake
+  domain: pipeline
+  topic: resistance
+  extracted_results:
+  - name: '1'
+    value: 1.2
+    unit: ''
+  - name: '007'
+    value: 0.0055
+    unit: ''
+  - name: k
+    value: 0.13
+    unit: ''
+  - name: where k
+    value: 2.0
+    unit: as
+  quality_score: 46
+  raw_text_length: 3723
+  quality_tier: gold

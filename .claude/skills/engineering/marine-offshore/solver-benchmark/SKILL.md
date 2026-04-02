@@ -19,20 +19,6 @@ platforms:
 invocation: /benchmark-solvers
 capabilities: []
 requires: []
-see_also:
-- solver-benchmark-solver-paths
-- solver-benchmark-benchmark-workflow
-- solver-benchmark-output-structure
-- solver-benchmark-consensus-levels
-- solver-benchmark-creating-benchmark-specs
-- solver-benchmark-available-hull-geometries
-- solver-benchmark-programmatic-usage
-- solver-benchmark-multisolvercomparator
-- solver-benchmark-orcawave-via-orcfxapi
-- solver-benchmark-pre-flight-validation-checklist
-- solver-benchmark-correlation-thresholds
-- solver-benchmark-mandatory-checks-before-committing-reports
-- solver-benchmark-related-work-items
 ---
 
 # Solver Benchmark

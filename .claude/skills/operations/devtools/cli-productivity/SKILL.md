@@ -39,15 +39,6 @@ related_skills:
 - git-advanced
 - bash-cli-framework
 requires: []
-see_also:
-- cli-productivity-1-jq-json-processing
-- cli-productivity-3-ripgrep-rg-fast-search
-- cli-productivity-5-bat-better-cat
-- cli-productivity-8-shell-aliases-and-functions
-- cli-productivity-1-complete-shell-configuration
-- cli-productivity-3-interactive-script-template
-- cli-productivity-1-tool-selection-guidelines
-- cli-productivity-common-issues
 scripts_exempt: true
 ---
 

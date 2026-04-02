@@ -47,18 +47,6 @@ related_skills:
 - airflow
 - yaml-configuration
 scripts_exempt: true
-see_also:
-- windmill-1-python-scripts
-- windmill-2-typescriptdeno-scripts
-- windmill-3-go-scripts
-- windmill-4-bash-scripts
-- windmill-5-flow-orchestration
-- windmill-6-schedule-management
-- windmill-7-approval-flows
-- windmill-8-resource-and-secrets-management
-- windmill-integration-with-database-and-slack
-- windmill-1-script-organization
-- windmill-common-issues
 ---
 
 # Windmill

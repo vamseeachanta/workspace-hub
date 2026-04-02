@@ -39,16 +39,6 @@ related_skills:
 - streamlit
 - plotly
 requires: []
-see_also:
-- great-tables-1-basic-table-creation
-- great-tables-2-column-formatting
-- great-tables-3-styling-and-colors
-- great-tables-4-conditional-formatting
-- great-tables-5-grouped-rows-and-columns
-- great-tables-6-footnotes-and-annotations
-- great-tables-great-tables-with-streamlit
-- great-tables-1-keep-tables-focused
-- great-tables-common-issues
 scripts_exempt: true
 ---
 

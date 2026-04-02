@@ -7,15 +7,6 @@ type: reference
 updated: '2026-01-07'
 capabilities: []
 requires: []
-see_also:
-- mooring-design-version-metadata
-- mooring-design-100-2026-01-07
-- mooring-design-calm-buoy-systems
-- mooring-design-mooring-system-configuration
-- mooring-design-yaml-configuration
-- mooring-design-dnv-os-e301-position-mooring
-- mooring-design-common-errors-and-fixes
-- mooring-design-design-check-matrix
 tags: []
 scripts_exempt: true
 category: engineering

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: bash-script-framework
+skill_path: .claude/skills/_core/bash/bash-script-framework/SKILL.md
+evals:
+- eval_id: bsf-cap-01
+  eval_type: capability
+  description: Core sections documented for bash-script-framework
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## References'
+    - '## Prerequisites'
+- eval_id: bsf-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for bash-script-framework
+  checks:
+    required_sections:
+    - '## Directory Structure'
+    - '## Core Templates'
+    - '## Related Skills'

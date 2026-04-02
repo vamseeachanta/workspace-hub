@@ -9,8 +9,7 @@ applies-to:
 invocation: /ecosystem-terminology
 description: 'Canonical names, abbreviations, and relationship vocabulary for the
   workspace-hub ecosystem. Load this when naming repos, modules, machines, files,
-  or expanding acronyms to ensure consistency across humans and agents.
-type: reference
+  or expanding acronyms to ensure consistency across humans and agents. type: reference
 
   '
 triggers:
@@ -22,9 +21,13 @@ triggers:
 - what does it mean
 - naming convention
 related_skills:
-- workstations
 - repo-structure
-tags: [naming, conventions, repos, acronyms, reference]
+tags:
+- naming
+- conventions
+- repos
+- acronyms
+- reference
 type: reference
 ---
 

@@ -39,15 +39,6 @@ related_skills:
 - dspy
 - pandasai
 scripts_exempt: true
-see_also:
-- langchain-1-basic-chain-composition
-- langchain-2-agent-with-tools
-- langchain-3-conversation-memory
-- langchain-4-rag-retrieval-augmented-generation
-- langchain-5-document-processing
-- langchain-6-streaming-responses
-- langchain-1-error-handling
-- langchain-rate-limit-errors
 ---
 
 # Langchain

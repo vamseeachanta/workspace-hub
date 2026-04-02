@@ -1,0 +1,46 @@
+metadata:
+  generated_by: scripts/curate_worked_examples.py
+  generated_at: '2026-04-01T23:50:13.726449+00:00'
+  issue: '#1294 (WRK-1370)'
+  description: Curated test vectors from worked examples extracted by doc-intelligence
+    pipeline
+summary:
+  total_source_records: 423
+  total_curated: 255
+  total_rejected: 201
+  en400_examples_included: 33
+  schema_a_curated: 62
+  schema_b_curated: 160
+  schema_b_duplicates_removed: 156
+  rejected_low_quality: 45
+  rejected_no_domain: 0
+  curation_rate: 60.3%
+quality_tiers:
+  gold:
+    count: 203
+    description: Highest quality - suitable as regression test vectors
+  silver:
+    count: 37
+    description: Good quality - suitable as validation examples
+  bronze:
+    count: 15
+    description: Acceptable - suitable as reference/documentation
+domains:
+  marine:
+    count: 235
+    fixture_file: tests/fixtures/test_vectors/marine/worked_examples.yaml
+    gold: 188
+    silver: 33
+    bronze: 14
+  pipeline:
+    count: 10
+    fixture_file: tests/fixtures/test_vectors/pipeline/worked_examples.yaml
+    gold: 10
+    silver: 0
+    bronze: 0
+  structural:
+    count: 10
+    fixture_file: tests/fixtures/test_vectors/structural/worked_examples.yaml
+    gold: 5
+    silver: 4
+    bronze: 1

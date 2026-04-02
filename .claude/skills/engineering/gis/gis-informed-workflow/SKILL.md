@@ -32,13 +32,6 @@ capabilities:
 requires:
 - python-gis-ecosystem
 - google-earth-engine
-see_also:
-- gis-informed-workflow-pipeline-overview
-- gis-informed-workflow-11-workflow-trigger-points
-- gis-informed-workflow-21-step-1-fetch-bathymetry-via-gee
-- gis-informed-workflow-artefacts-produced
-- gis-informed-workflow-4-failure-diagnosis
-- gis-informed-workflow-checklist
 updated: '2026-02-24'
 scripts_exempt: true
 ---

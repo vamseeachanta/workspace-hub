@@ -14,22 +14,6 @@ related_skills:
 - subagent-driven
 capabilities: []
 requires: []
-see_also:
-- code-reviewer-1-code-quality
-- code-reviewer-step-1-context-gathering
-- code-reviewer-step-2-high-level-analysis
-- code-reviewer-severity-levels
-- code-reviewer-general
-- code-reviewer-code-smells
-- code-reviewer-review-report-template
-- code-reviewer-summary
-- code-reviewer-statistics
-- code-reviewer-finding-title
-- code-reviewer-mediumlow-findings
-- code-reviewer-positive-observations
-- code-reviewer-recommendations
-- code-reviewer-test-coverage
-- code-reviewer-typescriptjavascript
 tags:
 - code-review
 - security

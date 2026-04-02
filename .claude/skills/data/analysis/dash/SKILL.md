@@ -37,9 +37,6 @@ related_skills:
 - polars
 - pandas-data-processing
 requires: []
-see_also:
-- dash-example-1-sales-analytics-dashboard
-- dash-gunicorn-production-server
 scripts_exempt: true
 ---
 

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: web-artifacts-builder
+skill_path: .claude/skills/_internal/builders/web-artifacts-builder/SKILL.md
+evals:
+- eval_id: wab-cap-01
+  eval_type: capability
+  description: Core sections documented for web-artifacts-builder
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Related Skills'
+    - '## Version History'
+- eval_id: wab-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for web-artifacts-builder
+  checks:
+    required_sections:
+    - '## Sub-Skills'
+    - '## Sub-Skills'
+    - '## Sub-Skills'

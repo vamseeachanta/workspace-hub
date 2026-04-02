@@ -37,9 +37,6 @@ hooks:
 
     '
 requires: []
-see_also:
-- sparc-pseudocode-execution-checklist
-- sparc-pseudocode-error-handling
 tags: []
 ---
 

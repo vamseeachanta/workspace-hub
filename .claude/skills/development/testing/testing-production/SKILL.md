@@ -37,11 +37,6 @@ hooks:
   post: "echo \"Production validation complete\"\nif [ -f \"package.json\" ]; then\n\
     \  npm run test:production --if-present\n  npm run test:e2e --if-present\nfi\n"
 requires: []
-see_also:
-- testing-production-production-validation-vs-unit-testing
-- testing-production-1-implementation-completeness-check
-- testing-production-metrics-success-criteria
-- testing-production-mcp-tools
 tags: []
 ---
 

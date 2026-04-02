@@ -20,12 +20,6 @@ triggers:
 - watertight mesh
 capabilities: []
 requires: []
-see_also:
-- orcawave-mesh-generation-version-metadata
-- orcawave-mesh-generation-standard-mesh-generation
-- orcawave-mesh-generation-panel-quality-thresholds
-- orcawave-mesh-generation-cli-usage
-- orcawave-mesh-generation-integration-with-gmsh-meshing-skill
 tags: []
 scripts_exempt: true
 ---

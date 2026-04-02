@@ -35,19 +35,6 @@ platforms:
 related_skills:
 - pandoc
 - mkdocs
-see_also:
-- marp-slide-2-key-points
-- marp-2-frontmatter-configuration
-- marp-7-images-and-backgrounds
-- marp-8-math-equations
-- marp-inline-math
-- marp-9-mermaid-diagrams
-- marp-flowchart
-- marp-10-cli-usage
-- marp-left-column
-- marp-right-column
-- marp-3-image-guidelines
-- marp-related-resources
 ---
 
 # Marp

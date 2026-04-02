@@ -5,20 +5,16 @@ category: business
 description: Integrate team communication, collaboration tools, and scheduling workflows
   across platforms like Slack, email, and calendar systems.
 type: reference
-tags: [slack, email, calendar, collaboration, messaging]
+tags:
+- slack
+- email
+- calendar
+- collaboration
+- messaging
 related_skills:
 - calendly-api
 - brand-guidelines
 scripts_exempt: true
-see_also:
-- communication-available-skills
-- communication-messaging-platforms
-- communication-skill-selection-guide
-- communication-webhook-setup
-- communication-integration-with-workspace-hub
-- communication-testing-communication-skills
-- communication-contributing
-- communication-related-resources
 ---
 
 # Communication

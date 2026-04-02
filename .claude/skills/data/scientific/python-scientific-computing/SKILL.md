@@ -18,12 +18,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- python-scientific-computing-example-1-marine-engineering-catenary-mooring-line
-- python-scientific-computing-pattern-1-load-and-process-engineering-data
-- python-scientific-computing-installation
-- python-scientific-computing-csv-data-processing
-- python-scientific-computing-performance-tips
 ---
 
 # Python Scientific Computing

@@ -5,8 +5,6 @@ category: engineering
 description: Perform probabilistic risk assessment with Monte Carlo simulations for
   offshore marine operations
 type: reference
-see_also:
-- risk-assessment-1-sample-size-selection
 capabilities: []
 requires: []
 tags: []

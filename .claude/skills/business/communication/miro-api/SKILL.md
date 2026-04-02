@@ -40,17 +40,6 @@ related_skills:
 - notion-api
 - github-actions
 requires: []
-see_also:
-- miro-api-1-board-management
-- miro-api-2-sticky-notes-and-cards
-- miro-api-3-shapes-and-drawing
-- miro-api-4-connectors-and-lines
-- miro-api-5-frames-and-organization
-- miro-api-6-text-and-images
-- miro-api-github-actions-integration
-- miro-api-sprint-retrospective-automation
-- miro-api-1-rate-limiting
-- miro-api-common-issues
 scripts_exempt: true
 ---
 

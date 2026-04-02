@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: ops-uv-package-manager
+skill_path: .claude/skills/operations/devtools/uv-package-manager/SKILL.md
+evals:
+- eval_id: oupm-cap-01
+  eval_type: capability
+  description: Core sections documented for ops-uv-package-manager
+  checks:
+    required_sections:
+    - '## When to Use This Skill'
+    - '## Development Commands'
+    - '## Complete Examples'
+    - '## Common Commands Reference'
+    - '## Installation'
+- eval_id: oupm-proc-01
+  eval_type: procedural
+  description: Key commands documented for ops-uv-package-manager
+  checks:
+    required_commands:
+    - uv run pytest tests/ -v
+    - uv run ruff check src/
+    - uv run black src/ tests/

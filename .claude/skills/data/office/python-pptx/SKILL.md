@@ -35,16 +35,6 @@ related_skills:
 - openpyxl
 - plotly
 requires: []
-see_also:
-- python-pptx-1-basic-presentation-creation
-- python-pptx-2-advanced-text-formatting
-- python-pptx-3-chart-generation
-- python-pptx-4-table-creation
-- python-pptx-5-image-and-shape-manipulation
-- python-pptx-6-template-based-generation
-- python-pptx-data-driven-presentation-from-database
-- python-pptx-1-template-design
-- python-pptx-common-issues
 scripts_exempt: true
 ---
 

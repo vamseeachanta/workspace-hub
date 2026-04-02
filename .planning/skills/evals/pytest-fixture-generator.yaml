@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: pytest-fixture-generator
+skill_path: .claude/skills/development/testing/pytest-fixture-generator/SKILL.md
+evals:
+- eval_id: pfg-cap-01
+  eval_type: capability
+  description: Core sections documented for pytest-fixture-generator
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Common Fixtures Reference'
+    - '## Prerequisites'
+- eval_id: pfg-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for pytest-fixture-generator
+  checks:
+    required_sections:
+    - '## Generated Files'
+    - '## Marker Reference'
+    - '## Related Skills'

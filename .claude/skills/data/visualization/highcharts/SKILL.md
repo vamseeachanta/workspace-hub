@@ -19,15 +19,6 @@ platforms:
 - typescript
 capabilities: []
 requires: []
-see_also:
-- highcharts-example-1-stock-chart-with-time-series
-- highcharts-basic-charts
-- highcharts-cdn
-- highcharts-typescript-support
-- highcharts-boost-module-large-datasets
-- highcharts-theming
-- highcharts-licensing
-- highcharts-performance-tips
 scripts_exempt: true
 ---
 

@@ -10,7 +10,6 @@ last_updated: 2026-03-10
 wrk_ref: WRK-212
 related_skills:
 - orchestrator-routing
-- ecosystem-health
 - improve
 - repo-sync
 tags:
@@ -23,18 +22,6 @@ platforms:
 - all
 capabilities: []
 requires: []
-see_also:
-- agent-teams-core-constraint
-- agent-teams-workspace-work-profile-updated-2026-03-10
-- agent-teams-activation
-- agent-teams-decision-matrix-team-vs-sequential
-- agent-teams-1-create-team
-- agent-teams-dm-default-always-prefer
-- agent-teams-agent-types-for-common-tasks
-- agent-teams-work-queue-integration
-- agent-teams-subagent-startup-convention
-- agent-teams-idle-state
-- agent-teams-related
 ---
 
 # Agent Teams

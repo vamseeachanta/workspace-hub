@@ -7,13 +7,6 @@ description: Deploy specialized AI agents to perform comprehensive, intelligent 
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-code-review-security-agent
-- github-code-review-1-multi-agent-review-system
-- github-code-review-review-configuration
-- github-code-review-swarm-coordination
-- github-code-review-github-actions-integration
-- github-code-review-security-issue
 tags: []
 category: development
 version: 1.0.0

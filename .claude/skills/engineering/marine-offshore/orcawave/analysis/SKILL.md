@@ -21,19 +21,6 @@ triggers:
 - frequency domain analysis
 capabilities: []
 requires: []
-see_also:
-- orcawave-analysis-version-metadata
-- orcawave-analysis-100-2026-01-07
-- orcawave-analysis-core-capabilities
-- orcawave-analysis-performance-targets
-- orcawave-analysis-standard-analysis
-- orcawave-analysis-integration-targets
-- orcawave-analysis-workflow-support
-- orcawave-analysis-swarm-coordination
-- orcawave-analysis-license-issues
-- orcawave-analysis-orcfxapi-result-extraction
-- orcawave-analysis-diffractionspec-conventions-specyml-to-orcawave
-- orcawave-analysis-orcawave-api-properties-reference
 tags: []
 scripts_exempt: true
 ---

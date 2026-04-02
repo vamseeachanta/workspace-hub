@@ -36,16 +36,6 @@ related_skills:
 - python-docx
 - plotly
 requires: []
-see_also:
-- openpyxl-1-basic-workbook-creation
-- openpyxl-2-advanced-cell-formatting
-- openpyxl-3-chart-generation
-- openpyxl-4-conditional-formatting
-- openpyxl-5-large-dataset-handling-with-streaming
-- openpyxl-6-pivot-table-creation
-- openpyxl-pandas-integration
-- openpyxl-1-memory-management
-- openpyxl-common-issues
 scripts_exempt: true
 ---
 

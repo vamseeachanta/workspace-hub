@@ -37,10 +37,6 @@ related_skills:
 - langchain
 - prompt-engineering
 scripts_exempt: true
-see_also:
-- dspy-dspy-philosophy
-- dspy-example-1-engineering-report-analysis-pipeline
-- dspy-integration-with-langchain
 ---
 
 # Dspy

@@ -8,11 +8,18 @@ category: ai-prompting
 type: skill
 trigger: manual
 auto_execute: false
-tags: [prompting, chain-of-thought, few-shot, zero-shot, persona, llm]
+tags:
+- prompting
+- llm
+- chain-of-thought
+- few-shot
+- zero-shot
+- system-prompts
+- personas
+- evaluation
 related_skills:
-- ai-prompting
-- dspy
 - langchain
+- dspy
 capabilities:
 - chain_of_thought
 - few_shot_learning
@@ -28,53 +35,10 @@ tools:
 - Write
 - Bash
 - Grep
-tags:
-- prompting
-- llm
-- chain-of-thought
-- few-shot
-- zero-shot
-- system-prompts
-- personas
-- evaluation
 platforms:
 - python
 - api
-related_skills:
-- langchain
-- dspy
 requires: []
-see_also:
-- prompt-engineering-anatomy-of-a-prompt
-- prompt-engineering-understanding
-- prompt-engineering-approach
-- prompt-engineering-calculation
-- prompt-engineering-verification
-- prompt-engineering-4-system-prompt-design
-- prompt-engineering-expertise
-- prompt-engineering-communication-style
-- prompt-engineering-constraints
-- prompt-engineering-your-task
-- prompt-engineering-response-format
-- prompt-engineering-guidelines
-- prompt-engineering-your-task
-- prompt-engineering-response-format
-- prompt-engineering-5-persona-design
-- prompt-engineering-background
-- prompt-engineering-notable-experience
-- prompt-engineering-communication-style
-- prompt-engineering-approach
-- prompt-engineering-communication-adaptation
-- prompt-engineering-6-structured-output
-- prompt-engineering-example-1-multi-stage-document-processor
-- prompt-engineering-summary
-- prompt-engineering-findings
-- prompt-engineering-recommendations
-- prompt-engineering-openai-integration
-- prompt-engineering-input
-- prompt-engineering-task
-- prompt-engineering-output-format
-- prompt-engineering-3-provide-context
 scripts_exempt: true
 ---
 

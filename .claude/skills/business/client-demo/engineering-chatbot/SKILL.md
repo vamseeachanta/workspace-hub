@@ -1,21 +1,18 @@
 ---
 name: engineering-chatbot-demo
-version: "1.0.0"
+version: 1.0.0
 category: business/client-demo
-description: "GTM demo execution for engineering AI chatbot presentations — system prompt authoring, demo scripting, ROI capture"
+description: "GTM demo execution for engineering AI chatbot presentations \u2014 system\
+  \ prompt authoring, demo scripting, ROI capture"
 type: reference
 capabilities:
-  - system_prompt_design
-  - demo_script_builder
-  - calculation_template_builder
-  - knowledge_base_structuring
-  - pilot_feedback_capture
-  - chatbot_pitch_delivery
+- system_prompt_design
+- demo_script_builder
+- calculation_template_builder
+- knowledge_base_structuring
+- pilot_feedback_capture
+- chatbot_pitch_delivery
 requires: []
-see_also:
-  - ai/prompting/prompt-engineering
-  - data/documents/rag-system-builder
-  - business/communication/teams-api
 trigger: manual
 ---
 

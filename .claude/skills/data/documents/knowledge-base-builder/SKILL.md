@@ -8,17 +8,10 @@ version: 1.1.0
 last_updated: 2026-01-02
 category: data
 related_skills:
-- pdf/text-extractor
 - semantic-search-setup
 - rag-system-builder
 capabilities: []
 requires: []
-see_also:
-- knowledge-base-builder-execution-checklist
-- knowledge-base-builder-error-handling
-- knowledge-base-builder-metrics
-- knowledge-base-builder-best-practices
-- knowledge-base-builder-dependencies
 tags: []
 ---
 

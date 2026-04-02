@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orcaflex-post-processing
+skill_path: .claude/skills/engineering/marine-offshore/orcaflex/post-processing/SKILL.md
+evals:
+- eval_id: opp-cap-01
+  eval_type: capability
+  description: Core sections documented for orcaflex-post-processing
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## Python API'
+    - '## References'
+    - '## Prerequisites'
+    - '## Related Skills'
+- eval_id: opp-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for orcaflex-post-processing
+  checks:
+    required_sections:
+    - '## Sub-Skills'
+    - '## Sub-Skills'
+    - '## Sub-Skills'

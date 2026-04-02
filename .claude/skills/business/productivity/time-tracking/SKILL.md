@@ -41,10 +41,6 @@ related_skills:
 - notion-api
 - api-integration
 requires: []
-see_also:
-- time-tracking-example-1-weekly-time-report-generator
-- time-tracking-hours-by-day
-- time-tracking-top-categories
 scripts_exempt: true
 ---
 

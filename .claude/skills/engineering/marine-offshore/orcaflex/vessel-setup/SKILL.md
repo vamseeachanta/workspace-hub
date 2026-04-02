@@ -18,12 +18,6 @@ triggers:
 - AQWA vessel import
 capabilities: []
 requires: []
-see_also:
-- orcaflex-vessel-setup-version-metadata
-- orcaflex-vessel-setup-100-2026-01-17
-- orcaflex-vessel-setup-vessel-object
-- orcaflex-vessel-setup-vessel-properties-yaml
-- orcaflex-vessel-setup-1-fpso-with-aqwa-hydrodynamics
 tags: []
 scripts_exempt: true
 ---

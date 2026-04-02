@@ -6,9 +6,6 @@ description: Analyze drilling performance and metrics using API 12-digit well nu
 type: reference
 capabilities: []
 requires: []
-see_also:
-- api12-drilling-analyzer-example-1-parse-and-analyze-api-numbers
-- api12-drilling-analyzer-api-number-handling
 tags: []
 category: data
 version: 1.0.0

@@ -13,17 +13,6 @@ related_skills:
 - skill-creator
 capabilities: []
 requires: []
-see_also:
-- doc-coauthoring-1-suggestion-mode
-- doc-coauthoring-content-feedback
-- doc-coauthoring-phase-1-initial-read-through
-- doc-coauthoring-overall-impressions
-- doc-coauthoring-section-section-name
-- doc-coauthoring-changes-made
-- doc-coauthoring-the-sandwich-method-for-sensitive-feedback
-- doc-coauthoring-technical-documents
-- doc-coauthoring-naming-convention
-- doc-coauthoring-document-change-log
 tags: []
 scripts_exempt: true
 ---

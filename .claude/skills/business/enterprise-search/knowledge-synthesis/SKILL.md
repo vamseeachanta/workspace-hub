@@ -12,14 +12,6 @@ related_skills:
 - source-management
 capabilities: []
 requires: []
-see_also:
-- knowledge-synthesis-the-goal
-- knowledge-synthesis-cross-source-deduplication
-- knowledge-synthesis-attribution-format
-- knowledge-synthesis-freshness
-- knowledge-synthesis-for-small-result-sets-1-5-results
-- knowledge-synthesis-synthesis-workflow
-- knowledge-synthesis-anti-patterns
 tags: []
 ---
 

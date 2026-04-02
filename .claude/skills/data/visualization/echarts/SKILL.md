@@ -19,14 +19,6 @@ platforms:
 - typescript
 capabilities: []
 requires: []
-see_also:
-- echarts-example-1-loading-data-from-csv
-- echarts-basic-charts
-- echarts-typescript-support
-- echarts-cdn
-- echarts-animation-configuration
-- echarts-event-handling
-- echarts-performance-tips
 scripts_exempt: true
 ---
 

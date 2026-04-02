@@ -19,13 +19,6 @@ triggers:
 - causality check
 capabilities: []
 requires: []
-see_also:
-- bemrosetta-version
-- bemrosetta-100-2026-01-27
-- bemrosetta-parsing
-- bemrosetta-cli-commands
-- bemrosetta-data-models
-- bemrosetta-with-diffraction-module
 tags: []
 scripts_exempt: true
 ---

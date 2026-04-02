@@ -17,13 +17,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- numpy-numerical-analysis-1-array-creation-and-operations
-- numpy-numerical-analysis-3-6dof-equations-of-motion
-- numpy-numerical-analysis-4-fft-and-frequency-analysis
-- numpy-numerical-analysis-5-linear-algebra-operations
-- numpy-numerical-analysis-6-numerical-integration
-- numpy-numerical-analysis-1-use-vectorization
 ---
 
 # Numpy Numerical Analysis

@@ -32,26 +32,11 @@ tools:
 - Glob
 - Task
 related_skills:
-- orcaflex/specialist
 - structural-analysis
 - mooring-analysis
 - hydrodynamic-analysis
 capabilities: []
 requires: []
-see_also:
-- fe-analyst-1-fea-fundamentals-for-slender-structures
-- fe-analyst-what-to-document
-- fe-analyst-what-to-document
-- fe-analyst-bc-types-in-orcaflex
-- fe-analyst-orcaflex-discretization
-- fe-analyst-what-to-document
-- fe-analyst-environmental-load-summary
-- fe-analyst-static-analysis
-- fe-analyst-key-results-to-extract-and-plot
-- fe-analyst-dnv-os-f101-pipeline-code-checks
-- fe-analyst-plot-types-per-section
-- fe-analyst-12-standards-reference
-- fe-analyst-13-common-fea-mistakes-and-remedies
 scripts_exempt: true
 ---
 

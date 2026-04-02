@@ -18,13 +18,6 @@ triggers:
 - seabed properties
 capabilities: []
 requires: []
-see_also:
-- orcaflex-environment-config-version-metadata
-- orcaflex-environment-config-100-2026-01-17
-- orcaflex-environment-config-wave-types
-- orcaflex-environment-config-environment-yaml-output
-- orcaflex-environment-config-common-errors-and-fixes
-- orcaflex-environment-config-environment-sanity-checks
 tags: []
 scripts_exempt: true
 ---

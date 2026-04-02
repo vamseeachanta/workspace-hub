@@ -41,16 +41,6 @@ related_skills:
 - github-actions
 - python-scientific-computing
 requires: []
-see_also:
-- slack-api-1-basic-slack-bot-with-bolt
-- slack-api-2-block-kit-messages
-- slack-api-3-interactive-components-and-actions
-- slack-api-4-modals-and-views
-- slack-api-5-slash-commands
-- slack-api-6-webhooks-and-incoming-messages
-- slack-api-github-actions-integration
-- slack-api-1-rate-limiting
-- slack-api-common-issues
 scripts_exempt: true
 ---
 

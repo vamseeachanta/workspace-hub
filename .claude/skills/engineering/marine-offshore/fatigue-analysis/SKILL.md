@@ -18,11 +18,6 @@ platforms:
 - engineering
 capabilities: []
 requires: []
-see_also:
-- fatigue-analysis-1-s-n-curve-fundamentals
-- fatigue-analysis-2-rainflow-counting
-- fatigue-analysis-4-spectral-fatigue-analysis
-- fatigue-analysis-example-1-complete-fatigue-assessment
 scripts_exempt: true
 ---
 

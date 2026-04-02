@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: ecosystem-terminology
+skill_path: .claude/skills/workspace-hub/ecosystem-terminology/SKILL.md
+evals:
+- eval_id: et-cap-01
+  eval_type: capability
+  description: Core sections documented for ecosystem-terminology
+  checks:
+    required_sections:
+    - '## 1 — Canonical Repo Names'
+    - '## 2 — Relationship Vocabulary'
+    - '## 3 — File / Directory Naming'
+    - '## 4 — Acronyms & Abbreviations'
+    - '## 5 — Machines / People'
+- eval_id: et-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for ecosystem-terminology
+  checks:
+    required_sections:
+    - '## 6 — Do-Not-Use List'
+    - '## Iron Law'
+    - '## Rationalization Defense'

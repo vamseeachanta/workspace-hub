@@ -6,16 +6,6 @@ description: Workflow automation, CI/CD pipelines, and task orchestration patter
   across platforms like n8n, GitHub Actions, and Make.
 type: reference
 tags: []
-see_also:
-- automation-available-skills
-- automation-low-code-visual-automation
-- automation-choose-n8n-when
-- automation-n8n-webhook-workflow
-- automation-webhook-to-workflow-pattern
-- automation-error-handling
-- automation-integration-with-workspace-hub
-- automation-testing-automation
-- automation-related-resources
 ---
 
 # Automation

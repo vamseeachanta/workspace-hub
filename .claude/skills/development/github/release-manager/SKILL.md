@@ -7,13 +7,6 @@ description: Automated release coordination and deployment with swarm orchestrat
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-release-manager-core-capabilities
-- github-release-manager-1-coordinated-release-preparation
-- github-release-manager-semantic-versioning
-- github-release-manager-swarm-coordination
-- github-release-manager-github-actions-integration
-- github-release-manager-release-quality-metrics
 tags: []
 category: development
 version: 1.0.0

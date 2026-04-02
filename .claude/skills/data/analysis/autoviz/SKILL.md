@@ -41,16 +41,6 @@ related_skills:
 - plotly
 - streamlit
 requires: []
-see_also:
-- autoviz-1-basic-one-line-eda
-- autoviz-2-chart-format-and-output-options
-- autoviz-4-feature-analysis-and-distribution-plots
-- autoviz-5-correlation-detection
-- autoviz-6-outlier-detection-and-highlighting
-- autoviz-7-export-to-html-and-notebooks
-- autoviz-autoviz-with-streamlit
-- autoviz-1-sample-large-datasets
-- autoviz-common-issues
 scripts_exempt: true
 ---
 

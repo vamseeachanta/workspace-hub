@@ -6,15 +6,6 @@ description: Synchronize AI swarms with GitHub Projects for visual task manageme
 type: reference
 capabilities: []
 requires: []
-see_also:
-- github-project-board-status-mapping
-- github-project-board-swarm-board-synchronization
-- github-project-board-auto-assignment-rules
-- github-project-board-generate-board-analytics
-- github-project-board-summary
-- github-project-board-status-distribution
-- github-project-board-kpi-tracking
-- github-project-board-configuration-options
 tags: []
 category: development
 version: 1.0.0

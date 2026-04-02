@@ -18,12 +18,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- bsee-sodir-extraction-1-bsee-data-extraction
-- bsee-sodir-extraction-2-sodirnpd-data-extraction-norway
-- bsee-sodir-extraction-3-combined-analysis
-- bsee-sodir-extraction-4-npv-analysis-with-regulatory-data
-- bsee-sodir-extraction-1-rate-limiting
 scripts_exempt: true
 ---
 

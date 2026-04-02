@@ -15,12 +15,6 @@ related_skills:
 - close-management
 capabilities: []
 requires: []
-see_also:
-- audit-support-overview
-- audit-support-random-selection
-- audit-support-workpaper-requirements
-- audit-support-deficiency
-- audit-support-it-general-controls-itgcs
 tags: []
 ---
 

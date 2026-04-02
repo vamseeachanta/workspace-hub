@@ -7,12 +7,6 @@ description: Create interactive well production dashboards with real-time monito
 type: reference
 capabilities: []
 requires: []
-see_also:
-- well-production-dashboard-1-basic-well-dashboard
-- well-production-dashboard-command-line-interface
-- well-production-dashboard-rest-api-endpoints
-- well-production-dashboard-export-formats
-- well-production-dashboard-configuration-options
 tags: []
 category: data
 version: 1.0.0

@@ -14,10 +14,6 @@ related_skills:
 - subagent-driven
 capabilities: []
 requires: []
-see_also:
-- writing-plans-best-practices
-- writing-plans-error-handling
-- writing-plans-metrics
 tags: []
 ---
 

@@ -12,14 +12,6 @@ related_skills:
 - knowledge-synthesis
 capabilities: []
 requires: []
-see_also:
-- search-strategy-the-goal
-- search-strategy-step-1-identify-query-type
-- search-strategy-chat
-- search-strategy-relevance-scoring
-- search-strategy-handling-ambiguity
-- search-strategy-query-broadening
-- search-strategy-parallel-execution
 tags: []
 ---
 

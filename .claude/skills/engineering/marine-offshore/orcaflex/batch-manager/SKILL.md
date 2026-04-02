@@ -18,12 +18,13 @@ triggers:
 - job queue
 capabilities: []
 requires: []
-see_also:
-- orcaflex-batch-manager-version-metadata
-- orcaflex-batch-manager-100-2026-01-17
-- orcaflex-batch-manager-parallel-execution
-- orcaflex-batch-manager-batch-results-json
-tags: [marine, offshore, orcaflex, batch-processing, parallel, simulation]
+tags:
+- marine
+- offshore
+- orcaflex
+- batch-processing
+- parallel
+- simulation
 related_skills:
 - orcaflex-modeling
 - orcaflex-post-processing

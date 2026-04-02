@@ -39,14 +39,6 @@ platforms:
 related_skills:
 - mkdocs
 - sphinx
-see_also:
-- docusaurus-5-mdx-and-react-components
-- docusaurus-6-admonitions
-- docusaurus-whats-new
-- docusaurus-8-versioning
-- docusaurus-subsection-h3
-- docusaurus-custom-homepage
-- docusaurus-related-resources
 ---
 
 # Docusaurus

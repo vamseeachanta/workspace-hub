@@ -37,15 +37,6 @@ related_skills:
 - cli-productivity
 - github-actions
 requires: []
-see_also:
-- git-advanced-1-interactive-rebase
-- git-advanced-3-git-bisect
-- git-advanced-6-git-hooks
-- git-advanced-7-git-aliases
-- git-advanced-9-monorepo-patterns
-- git-advanced-1-complete-gitconfig
-- git-advanced-1-commit-history
-- git-advanced-common-issues
 scripts_exempt: true
 ---
 

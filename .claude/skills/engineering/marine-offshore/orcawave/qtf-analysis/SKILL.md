@@ -19,12 +19,6 @@ triggers:
 - full QTF
 capabilities: []
 requires: []
-see_also:
-- orcawave-qtf-analysis-version-metadata
-- orcawave-qtf-analysis-force-components
-- orcawave-qtf-analysis-qtf-analysis-configuration
-- orcawave-qtf-analysis-available-data
-- orcawave-qtf-analysis-cli-usage
 tags: []
 scripts_exempt: true
 ---

@@ -21,18 +21,6 @@ triggers:
 - AQWA pipeline
 capabilities: []
 requires: []
-see_also:
-- aqwa-batch-execution-version-metadata
-- aqwa-batch-execution-aqwa-programs-and-analysis-sequence
-- aqwa-batch-execution-locating-the-executable
-- aqwa-batch-execution-deck-0-job-control-mandatory-for-all-runs
-- aqwa-batch-execution-detecting-success-vs-failure
-- aqwa-batch-execution-debug-sequence
-- aqwa-batch-execution-license-architecture
-- aqwa-batch-execution-python-subprocess-pattern
-- aqwa-batch-execution-no-dedicated-python-package
-- aqwa-batch-execution-validation-checklist
-- aqwa-batch-execution-integration-with-downstream-tools
 tags: []
 scripts_exempt: true
 ---

@@ -9,7 +9,6 @@ category: data
 related_skills:
 - research-literature
 - calculation-report
-- legal-sanity-scan
 tags:
 - excel
 - legacy-extraction
@@ -22,12 +21,6 @@ triggers:
 - port legacy calculation
 - archive calculation
 - extract methodology
-see_also:
-- dark-intelligence-workflow-inputs
-- dark-intelligence-workflow-step-1-identify
-- dark-intelligence-workflow-step-6-implement
-- dark-intelligence-workflow-integration-points
-- dark-intelligence-workflow-ac-checklist
 ---
 
 # Dark Intelligence Workflow

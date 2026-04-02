@@ -13,11 +13,6 @@ related_skills:
 - canvas-design
 capabilities: []
 requires: []
-see_also:
-- theme-factory-1-ocean-depths
-- theme-factory-step-1-display-theme-showcase
-- theme-factory-htmlcss
-- theme-factory-request-details
 tags: []
 ---
 

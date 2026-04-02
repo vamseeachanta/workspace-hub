@@ -17,9 +17,7 @@ tools:
 - Glob
 - Task
 related_skills:
-- claude-reflect
 - knowledge-management
-- skill-learner
 - skill-creator
 capabilities:
 - config_improvement
@@ -36,15 +34,6 @@ tags:
 platforms:
 - all
 requires: []
-see_also:
-- improve-trigger-conditions
-- improve-phase-1-collect-gather-session-signals
-- improve-decision-logic-scoring
-- improve-creating-new-skills
-- improve-integration
-- improve-scope
-- improve-related-commands
-- improve-manual-vs-automatic-invocation
 ---
 
 # Improve

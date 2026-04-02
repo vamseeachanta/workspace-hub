@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: writing-plans
+skill_path: .claude/skills/development/planning/writing-plans/SKILL.md
+evals:
+- eval_id: wp-cap-01
+  eval_type: capability
+  description: Core sections documented for writing-plans
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Architecture'
+    - '## Core Principles'
+- eval_id: wp-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for writing-plans
+  checks:
+    required_sections:
+    - '## Plan Structure'
+    - '## Goal'
+    - '## Tech Stack'

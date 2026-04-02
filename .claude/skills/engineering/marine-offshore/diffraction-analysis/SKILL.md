@@ -18,18 +18,6 @@ triggers:
 - frequency domain
 capabilities: []
 requires: []
-see_also:
-- diffraction-analysis-version
-- diffraction-analysis-when-to-use-each-module
-- diffraction-analysis-diffractionresults-structure
-- diffraction-analysis-workflow-1-aqwa-analysis-only
-- diffraction-analysis-aqwa-module
-- diffraction-analysis-orcaflex-vessel-type-yaml
-- diffraction-analysis-coefficient-validation
-- diffraction-analysis-required-report-structure-single-page-html
-- diffraction-analysis-canonical-specyml-format-diffractionspec
-- diffraction-analysis-module-locations
-- diffraction-analysis-unit-conversion-traps
 tags: []
 scripts_exempt: true
 ---

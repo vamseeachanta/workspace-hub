@@ -15,13 +15,6 @@ related_skills:
 - legal-risk-assessment
 capabilities: []
 requires: []
-see_also:
-- meeting-briefing-step-1-identify-the-meeting
-- meeting-briefing-briefing-template
-- meeting-briefing-meeting-details
-- meeting-briefing-deal-review-meetings
-- meeting-briefing-duringafter-the-meeting
-- meeting-briefing-action-item-best-practices
 tags: []
 ---
 

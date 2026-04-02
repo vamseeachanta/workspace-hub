@@ -7,14 +7,6 @@ description: Domain expertise for drilling engineering covering well planning, h
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- drilling-well-planning-and-design
-- drilling-api-standards
-- drilling-drilling-optimization
-- drilling-drilling-hydraulics
-- drilling-common-problems
-- drilling-bsee-drilling-data
-- drilling-usage
 ---
 
 # Drilling

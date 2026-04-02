@@ -15,12 +15,6 @@ related_skills:
 - meeting-briefing
 capabilities: []
 requires: []
-see_also:
-- legal-risk-assessment-severity-x-likelihood-matrix
-- legal-risk-assessment-green-low-risk-score-1-4
-- legal-risk-assessment-risk-assessment-memo-format
-- legal-risk-assessment-1-risk-description
-- legal-risk-assessment-mandatory-engagement
 tags: []
 ---
 

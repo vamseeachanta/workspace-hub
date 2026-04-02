@@ -7,16 +7,6 @@ description: Automate Microsoft Office and PDF document workflows including gene
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- office-docs-available-skills
-- office-docs-document-creation
-- office-docs-choose-python-docx-when
-- office-docs-python-docx-report-generation
-- office-docs-document-generation-pipeline
-- office-docs-error-handling
-- office-docs-integration-with-workspace-hub
-- office-docs-testing-document-generation
-- office-docs-related-resources
 ---
 
 # Office Docs

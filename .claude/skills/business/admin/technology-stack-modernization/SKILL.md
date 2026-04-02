@@ -7,20 +7,6 @@ description: Systematically modernize technology stacks by updating dependencies
 type: reference
 tags: []
 scripts_exempt: true
-see_also:
-- technology-stack-modernization-1-dependency-version-assessment
-- technology-stack-modernization-tech-stack-migration-checklist
-- technology-stack-modernization-phase-1-assessment
-- technology-stack-modernization-phase-2-package-manager-migration
-- technology-stack-modernization-phase-3-dependency-updates
-- technology-stack-modernization-phase-4-visualization-migration
-- technology-stack-modernization-phase-5-development-tools
-- technology-stack-modernization-phase-6-modern-python-features
-- technology-stack-modernization-phase-7-testing-validation
-- technology-stack-modernization-dependency-update-template
-- technology-stack-modernization-current-state
-- technology-stack-modernization-workspace-hub-compliance
-- technology-stack-modernization-success-criteria
 ---
 
 # Technology Stack Modernization

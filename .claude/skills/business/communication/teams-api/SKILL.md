@@ -40,16 +40,6 @@ related_skills:
 - slack-api
 - github-actions
 requires: []
-see_also:
-- teams-api-1-microsoft-graph-api-client
-- teams-api-2-adaptive-cards
-- teams-api-3-incoming-webhooks
-- teams-api-4-bot-framework-integration
-- teams-api-5-proactive-messaging
-- teams-api-6-meeting-automation
-- teams-api-azure-devops-pipeline-integration
-- teams-api-1-rate-limiting
-- teams-api-common-issues
 scripts_exempt: true
 ---
 

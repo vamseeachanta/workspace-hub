@@ -15,19 +15,6 @@ related_skills:
 - instrument-data-allotrope
 capabilities: []
 requires: []
-see_also:
-- scientific-problem-selection-getting-started
-- scientific-problem-selection-initial-prompt
-- scientific-problem-selection-initial-prompt
-- scientific-problem-selection-initial-prompt
-- scientific-problem-selection-the-central-insight
-- scientific-problem-selection-the-9-skills-overview
-- scientific-problem-selection-skill-workflow
-- scientific-problem-selection-key-design-principles
-- scientific-problem-selection-graduate-students-primary-audience
-- scientific-problem-selection-reference-materials
-- scientific-problem-selection-immediate-after-completing-workflow
-- scientific-problem-selection-foundational-reference
 tags: []
 scripts_exempt: true
 ---

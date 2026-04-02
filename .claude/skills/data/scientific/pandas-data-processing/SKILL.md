@@ -17,13 +17,6 @@ platforms:
 - python
 capabilities: []
 requires: []
-see_also:
-- pandas-data-processing-1-time-series-analysis
-- pandas-data-processing-2-statistical-analysis
-- pandas-data-processing-3-data-transformation
-- pandas-data-processing-4-multi-file-processing
-- pandas-data-processing-5-groupby-operations
-- pandas-data-processing-1-memory-efficiency
 ---
 
 # Pandas Data Processing

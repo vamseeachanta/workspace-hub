@@ -23,11 +23,6 @@ platforms:
 invocation: /mesh
 capabilities: []
 requires: []
-see_also:
-- mesh-utilities-1-quick-mesh-inspection
-- mesh-utilities-batch-quality-check
-- mesh-utilities-pre-solver-checklist
-- mesh-utilities-cli-usage
 ---
 
 # Mesh Utilities

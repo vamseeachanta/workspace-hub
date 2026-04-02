@@ -17,9 +17,6 @@ platforms:
 - javascript
 capabilities: []
 requires: []
-see_also:
-- d3js-1-data-binding
-- d3js-1-use-proper-margins-convention
 scripts_exempt: true
 ---
 

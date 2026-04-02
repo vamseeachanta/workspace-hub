@@ -1,0 +1,15 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orcaflex-batch-manager
+skill_path: .claude/skills/engineering/marine-offshore/orcaflex/batch-manager/SKILL.md
+evals:
+- eval_id: obm-cap-01
+  eval_type: capability
+  description: Core sections documented for orcaflex-batch-manager
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## Python API'
+    - '## References'
+    - '## Related Skills'
+    - '## Sub-Skills'

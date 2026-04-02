@@ -32,12 +32,6 @@ related_skills:
 - docker
 - cli-productivity
 requires: []
-see_also:
-- hardware-assessment-scripts
-- hardware-assessment-linux-hardware-assesssh
-- hardware-assessment-output-schema-v10
-- hardware-assessment-linux
-- hardware-assessment-workflow-multi-machine-inventory
 freedom: low
 ---
 

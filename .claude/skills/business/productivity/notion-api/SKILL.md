@@ -40,8 +40,6 @@ related_skills:
 - todoist-api
 - obsidian
 requires: []
-see_also:
-- notion-api-example-1-task-management-system
 scripts_exempt: true
 ---
 

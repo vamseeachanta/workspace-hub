@@ -34,13 +34,6 @@ capabilities:
 - failure-diagnosis
 - validation
 requires: []
-see_also:
-- python-gis-ecosystem-11-install
-- python-gis-ecosystem-21-coordinate-reference-system-transforms-pyproj-g
-- python-gis-ecosystem-31-export-vector-to-file
-- python-gis-ecosystem-4-failure-diagnosis
-- python-gis-ecosystem-checklist
-- python-gis-ecosystem-cross-repo-context
 updated: '2026-02-24'
 scripts_exempt: true
 ---

@@ -6,8 +6,6 @@ description: Fast, verified multi-repo synchronization across all workspace-hub 
   including pull, push, and submodule pointer updates.
 type: reference
 tags: []
-see_also:
-- sync-error-handling
 ---
 
 # Sync

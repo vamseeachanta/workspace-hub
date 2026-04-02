@@ -15,12 +15,6 @@ related_skills:
 - audit-support
 capabilities: []
 requires: []
-see_also:
-- close-management-pre-close-last-2-3-business-days-of-the-month
-- close-management-dependency-map
-- close-management-close-status-dashboard
-- close-management-typical-5-day-close-calendar
-- close-management-common-bottlenecks-and-solutions
 tags: []
 ---
 

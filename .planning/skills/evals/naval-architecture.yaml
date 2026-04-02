@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: naval-architecture
+skill_path: .claude/skills/engineering/marine-offshore/naval-architecture/SKILL.md
+evals:
+- eval_id: na-cap-01
+  eval_type: capability
+  description: Core sections documented for naval-architecture
+  checks:
+    required_sections:
+    - '## Section 9: Reference Bibliography'
+    - '## Activation'
+    - '## Physics Causal Chain'
+    - '## Section 1: Hydrostatics & Initial Stability'
+    - '## Section 2: Seakeeping Fundamentals'
+- eval_id: na-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for naval-architecture
+  checks:
+    required_sections:
+    - '## Section 3: Hydrodynamic Coefficients'
+    - '## Section 4: Roll Damping Components (DNV-RP-C205 S7)'
+    - '## Section 5: Motion Criteria'

@@ -7,21 +7,8 @@ type: reference
 version: 1.1.0
 category: business
 last_updated: 2026-01-21
-related_skills:
-- context-management
 capabilities: []
 requires: []
-see_also:
-- today-morning-flow
-- today-daily-review-process
-- today-completed-yesterday
-- today-summary
-- today-priorities
-- today-notes
-- today-data-sources-configuration
-- today-installation
-- today-morning-ritual
-- today-output-locations
 tags: []
 scripts_exempt: true
 ---

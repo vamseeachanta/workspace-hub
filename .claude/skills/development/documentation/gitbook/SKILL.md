@@ -36,11 +36,6 @@ related_skills:
 - docusaurus
 - sphinx
 - pandoc
-see_also:
-- gitbook-getting-started
-- gitbook-user-guide
-- gitbook-api-reference
-- gitbook-example-1-documentation-site-builder
 ---
 
 # GitBook

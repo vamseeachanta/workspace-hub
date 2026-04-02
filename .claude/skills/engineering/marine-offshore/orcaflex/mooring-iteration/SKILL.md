@@ -19,13 +19,6 @@ triggers:
 - SALM mooring
 capabilities: []
 requires: []
-see_also:
-- orcaflex-mooring-iteration-version-metadata
-- orcaflex-mooring-iteration-100-2026-01-17
-- orcaflex-mooring-iteration-1-scipy-optimization-recommended
-- orcaflex-mooring-iteration-scipy-method
-- orcaflex-mooring-iteration-iteration-result
-- orcaflex-mooring-iteration-with-mooring-design
 tags: []
 scripts_exempt: true
 ---

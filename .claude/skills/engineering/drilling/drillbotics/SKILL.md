@@ -26,13 +26,6 @@ related_skills:
 - production-engineering
 - oil-and-gas
 requires: []
-see_also:
-- drillbotics-competition-overview
-- drillbotics-1-trajectory-planner
-- drillbotics-scoring-summary
-- drillbotics-open-source-building-blocks
-- drillbotics-ace-engineering-gap-vs-drillbotics-requirements
-- drillbotics-published-papers-mode-v
 tags: []
 scripts_exempt: true
 ---

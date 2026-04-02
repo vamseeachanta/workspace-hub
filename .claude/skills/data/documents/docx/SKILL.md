@@ -14,14 +14,6 @@ related_skills:
 - document-inventory
 capabilities: []
 requires: []
-see_also:
-- docx-core-capabilities
-- docx-extract-text-with-pandoc
-- docx-basic-document-creation
-- docx-modify-existing-document
-- docx-step-1-convert-to-markdown
-- docx-extract-metadata
-- docx-working-with-headersfooters
 tags: []
 ---
 

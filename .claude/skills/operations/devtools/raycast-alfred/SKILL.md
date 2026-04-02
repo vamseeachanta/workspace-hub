@@ -41,9 +41,6 @@ related_skills:
 - vscode-extensions
 - git-advanced
 requires: []
-see_also:
-- raycast-alfred-headers
-- raycast-alfred-6-keyboard-shortcuts-and-snippets
 scripts_exempt: true
 ---
 

@@ -2,8 +2,7 @@
 name: doc-extraction-drilling-riser
 description: 'Layer 3 domain sub-skill for extracting drilling riser data from API
   RP 16Q, DNV-RP-C205, and riser analysis reports. Provides detection heuristics for
-  VIV parameters, kill/choke line specs, and BOP stack configurations.
-type: reference
+  VIV parameters, kill/choke line specs, and BOP stack configurations. type: reference
 
   '
 version: 1.0.0
@@ -28,11 +27,6 @@ capabilities:
 requires: []
 tags: []
 scripts_exempt: true
-see_also:
-- doc-extraction-drilling-riser-source-code-alignment
-- doc-extraction-drilling-riser-viv-parameters
-- doc-extraction-drilling-riser-validation-rules
-- doc-extraction-drilling-riser-standards-reference
 type: reference
 ---
 

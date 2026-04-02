@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: subagent-driven
+skill_path: .claude/skills/development/subagent-driven/SKILL.md
+evals:
+- eval_id: sd-cap-01
+  eval_type: capability
+  description: Core sections documented for subagent-driven
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Overview'
+    - '## Process Flow'
+    - '## Detailed Process'
+- eval_id: sd-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for subagent-driven
+  checks:
+    required_sections:
+    - '## Task Extraction'
+    - '## Critical Rules'
+    - '## Review Order Rationale'

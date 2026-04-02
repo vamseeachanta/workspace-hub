@@ -6,11 +6,6 @@ description: Collect, analyze, and report marine safety incident data from 7 glo
 type: reference
 capabilities: []
 requires: []
-see_also:
-- marine-safety-incidents-1-incident-data-collection
-- marine-safety-incidents-cli-usage
-- marine-safety-incidents-data-sources
-- marine-safety-incidents-incident-csv
 tags: []
 category: data
 version: 1.0.0
