@@ -1,0 +1,1204 @@
+[
+  {
+    "name": "workspace-hub",
+    "path": "/mnt/local-analysis/workspace-hub",
+    "skills_count": 2879,
+    "skill_categories": [
+      "_archive",
+      "_core",
+      "_internal",
+      "ai",
+      "business",
+      "data",
+      "development",
+      "digitalmodel",
+      "eng",
+      "engineering",
+      "gsd-add-backlog",
+      "gsd-add-phase",
+      "gsd-add-tests",
+      "gsd-add-todo",
+      "gsd-audit-milestone",
+      "gsd-audit-uat",
+      "gsd-autonomous",
+      "gsd-check-todos",
+      "gsd-cleanup",
+      "gsd-complete-milestone",
+      "gsd-debug",
+      "gsd-discuss-phase",
+      "gsd-do",
+      "gsd-execute-phase",
+      "gsd-fast",
+      "gsd-forensics",
+      "gsd-health",
+      "gsd-help",
+      "gsd-insert-phase",
+      "gsd-join-discord",
+      "gsd-list-phase-assumptions",
+      "gsd-list-workspaces",
+      "gsd-manager",
+      "gsd-map-codebase",
+      "gsd-milestone-summary",
+      "gsd-new-milestone",
+      "gsd-new-project",
+      "gsd-new-workspace",
+      "gsd-next",
+      "gsd-note",
+      "gsd-pause-work",
+      "gsd-plan-milestone-gaps",
+      "gsd-plan-phase",
+      "gsd-plant-seed",
+      "gsd-pr-branch",
+      "gsd-profile-user",
+      "gsd-progress",
+      "gsd-quick",
+      "gsd-reapply-patches",
+      "gsd-remove-phase",
+      "gsd-remove-workspace",
+      "gsd-research-phase",
+      "gsd-resume-work",
+      "gsd-review",
+      "gsd-review-backlog",
+      "gsd-session-report",
+      "gsd-set-profile",
+      "gsd-settings",
+      "gsd-ship",
+      "gsd-stats",
+      "gsd-thread",
+      "gsd-ui-phase",
+      "gsd-ui-review",
+      "gsd-update",
+      "gsd-validate-phase",
+      "gsd-verify-work",
+      "gsd-workstreams",
+      "operations",
+      "science",
+      "workspace-hub"
+    ],
+    "commands_count": 2,
+    "commands_list": [
+      "today.md",
+      "whats-next.md"
+    ],
+    "docs_count": 30,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agent-composition.md",
+      "agent-delegation-templates.md",
+      "agents.md",
+      "archive-horizon-followups.md",
+      "codex-roles-vs-skills.md",
+      "command-registry.md",
+      "data-format-guide.md",
+      "design-patterns-examples.md",
+      "discipline-skill-template.md",
+      "discrepancy-notes.md",
+      "file-structure-skills-map.md",
+      "foundational-ai-skills.md",
+      "legal-scanning.md",
+      "mcp-servers.md",
+      "multi-machine-setup.md",
+      "new-machine-setup.md",
+      "on-demand-load-triggers.md",
+      "permission-model.md",
+      "permissions-extend.md",
+      "plugins-vs-skills.md",
+      "pr-process.md",
+      "provider-behavioral-differences.md",
+      "roadmap-2026-h1.md",
+      "rules-guide.md",
+      "self-learning-workflow.md",
+      "skill-content-security.md",
+      "skill-design-research.md",
+      "skill-metadata-schema.md",
+      "workspace-structure.md"
+    ],
+    "memory": {
+      "exists": true,
+      "count": 4
+    },
+    "state": {
+      "exists": true,
+      "count": 44
+    },
+    "rules": {
+      "exists": true,
+      "count": 3
+    },
+    "work_queue": {
+      "exists": true,
+      "count": 3,
+      "pending": 1
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 19,
+      "is_pointer": false,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 8,
+      "last_modified": "2026-03-31",
+      "references_wrk": false,
+      "has_repo_overrides": false
+    },
+    "git_activity_90d": 2477,
+    "tier": "tier-2"
+  },
+  {
+    "name": "CAD-DEVELOPMENTS",
+    "path": "/mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS",
+    "skills_count": 296,
+    "skill_categories": [
+      "_core",
+      "_internal",
+      "ai",
+      "business",
+      "coordination",
+      "data",
+      "development",
+      "engineering",
+      "operations",
+      "workspace-hub"
+    ],
+    "commands_count": 2,
+    "commands_list": [
+      "today.md",
+      "work.md"
+    ],
+    "docs_count": 8,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agent-composition.md",
+      "agents.md",
+      "command-registry.md",
+      "execution-patterns.md",
+      "foundational-ai-skills.md",
+      "mcp-tools.md",
+      "orchestrator-pattern.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": true,
+      "count": 2
+    },
+    "rules": {
+      "exists": true,
+      "count": 6
+    },
+    "work_queue": {
+      "exists": true,
+      "count": 5,
+      "pending": 54
+    },
+    "agents_md": {
+      "exists": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 99,
+      "last_modified": "2026-03-10",
+      "references_wrk": false,
+      "has_repo_overrides": false
+    },
+    "git_activity_90d": 265,
+    "tier": "tier-2"
+  },
+  {
+    "name": "aceengineer-website",
+    "path": "/mnt/local-analysis/workspace-hub/aceengineer-website",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 111,
+    "tier": "tier-2"
+  },
+  {
+    "name": "digitalmodel",
+    "path": "/mnt/local-analysis/workspace-hub/digitalmodel",
+    "skills_count": 3,
+    "skill_categories": [],
+    "commands_count": 9,
+    "commands_list": [
+      "analyze.md",
+      "clarify.md",
+      "constitution.md",
+      "implement.md",
+      "plan.md",
+      "specify.md",
+      "tasks.md",
+      "today.md",
+      "work.md"
+    ],
+    "docs_count": 19,
+    "docs_list": [
+      "AGENT_OS_COMMANDS.md",
+      "AI_GUIDELINES.md",
+      "ARCHITECTURE.md",
+      "COMMANDS_MATRIX.md",
+      "CONTEXT_LIMITS.md",
+      "ESCALATION_QUICK_REFERENCE.md",
+      "FOLDER_CONVENTIONS.md",
+      "UV_ENVIRONMENT.md",
+      "agent-os-readme.md",
+      "agents.md",
+      "ai-readme.md",
+      "execution-patterns.md",
+      "framework.md",
+      "integration.md",
+      "mcp-tools.md",
+      "migration-summary.md",
+      "project-context.md",
+      "slash-commands-registry.json",
+      "task_summary.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": true,
+      "count": 2,
+      "pending": 0
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 12,
+      "is_pointer": false,
+      "has_entry_points": true,
+      "has_test_command": true,
+      "has_depends_on": true
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 15,
+      "last_modified": "2026-03-10",
+      "references_wrk": true,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 92,
+    "tier": "tier-1"
+  },
+  {
+    "name": "assetutilities",
+    "path": "/mnt/local-analysis/workspace-hub/assetutilities",
+    "skills_count": 4,
+    "skill_categories": [
+      "data-management",
+      "pdf-utilities",
+      "plotly-visualization"
+    ],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 4,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 12,
+      "is_pointer": false,
+      "has_entry_points": true,
+      "has_test_command": true,
+      "has_depends_on": true
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 15,
+      "last_modified": "2026-03-26",
+      "references_wrk": true,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 82,
+    "tier": "tier-1"
+  },
+  {
+    "name": "assethold",
+    "path": "/mnt/local-analysis/workspace-hub/assethold",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 4,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 12,
+      "is_pointer": false,
+      "has_entry_points": true,
+      "has_test_command": true,
+      "has_depends_on": true
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 746,
+      "last_modified": "2026-03-25",
+      "references_wrk": true,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 62,
+    "tier": "tier-1"
+  },
+  {
+    "name": "sabithaandkrishnaestates",
+    "path": "/mnt/local-analysis/workspace-hub/sabithaandkrishnaestates",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 740,
+      "last_modified": "2026-03-25",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 35,
+    "tier": "tier-2"
+  },
+  {
+    "name": "teamresumes",
+    "path": "/mnt/local-analysis/workspace-hub/teamresumes",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 6,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "ai-orchestration.md",
+      "engineering-principles.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 740,
+      "last_modified": "2026-03-26",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 32,
+    "tier": "tier-2"
+  },
+  {
+    "name": "acma-projects",
+    "path": "/mnt/local-analysis/workspace-hub/acma-projects",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 4,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 30,
+    "tier": "tier-2"
+  },
+  {
+    "name": "achantas-data",
+    "path": "/mnt/local-analysis/workspace-hub/achantas-data",
+    "skills_count": 13,
+    "skill_categories": [
+      "guidelines",
+      "meta",
+      "optimization",
+      "product",
+      "workflows"
+    ],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 44,
+      "last_modified": "2026-03-26",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 27,
+    "tier": "tier-2"
+  },
+  {
+    "name": "worldenergydata",
+    "path": "/mnt/local-analysis/workspace-hub/worldenergydata",
+    "skills_count": 33,
+    "skill_categories": [
+      "_internal",
+      "api12-drilling-analyzer",
+      "bsee-data-extractor",
+      "context-management",
+      "economic-sensitivity-analyzer",
+      "energy-data-visualizer",
+      "fdas-economics",
+      "field-analyzer",
+      "hse-risk-analyzer",
+      "marine-safety-incidents",
+      "metocean-data-fetcher",
+      "metocean-statistics",
+      "metocean-visualizer",
+      "npv-analyzer",
+      "optimization",
+      "product",
+      "production-forecaster",
+      "sodir-data-extractor",
+      "web-scraper-energy",
+      "well-production-dashboard"
+    ],
+    "commands_count": 7,
+    "commands_list": [
+      "analyze.md",
+      "clarify.md",
+      "constitution.md",
+      "implement.md",
+      "plan.md",
+      "specify.md",
+      "tasks.md"
+    ],
+    "docs_count": 8,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "CROSS_REVIEW_POLICY.md",
+      "agents.md",
+      "ai-orchestration-reference.md",
+      "engineering-principles.md",
+      "execution-patterns.md",
+      "mcp-tools.md",
+      "memory-policies.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 13,
+      "is_pointer": false,
+      "has_entry_points": true,
+      "has_test_command": true,
+      "has_depends_on": true
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 19,
+      "last_modified": "2026-03-10",
+      "references_wrk": false,
+      "has_repo_overrides": false
+    },
+    "git_activity_90d": 21,
+    "tier": "tier-1"
+  },
+  {
+    "name": "investments",
+    "path": "/mnt/local-analysis/workspace-hub/investments",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 740,
+      "last_modified": "2026-03-26",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 17,
+    "tier": "tier-2"
+  },
+  {
+    "name": "sd-work",
+    "path": "/mnt/local-analysis/workspace-hub/sd-work",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 16,
+    "tier": "tier-2"
+  },
+  {
+    "name": "hobbies",
+    "path": "/mnt/local-analysis/workspace-hub/hobbies",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 752,
+      "last_modified": "2026-03-25",
+      "references_wrk": true,
+      "has_repo_overrides": false
+    },
+    "git_activity_90d": 13,
+    "tier": "tier-2"
+  },
+  {
+    "name": "aceengineer-admin",
+    "path": "/mnt/local-analysis/workspace-hub/aceengineer-admin",
+    "skills_count": 1,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 5,
+    "tier": "tier-2"
+  },
+  {
+    "name": "client_projects",
+    "path": "/mnt/local-analysis/workspace-hub/client_projects",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 5,
+    "tier": "tier-2"
+  },
+  {
+    "name": "OGManufacturing",
+    "path": "/mnt/local-analysis/workspace-hub/OGManufacturing",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 12,
+      "is_pointer": false,
+      "has_entry_points": true,
+      "has_test_command": true,
+      "has_depends_on": true
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "doris",
+    "path": "/mnt/local-analysis/workspace-hub/doris",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 2,
+    "docs_list": [
+      "ai-orchestration.md",
+      "engineering-principles.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "frontierdeepwater",
+    "path": "/mnt/local-analysis/workspace-hub/frontierdeepwater",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "rock-oil-field",
+    "path": "/mnt/local-analysis/workspace-hub/rock-oil-field",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 4,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 32,
+      "last_modified": "2026-02-17",
+      "references_wrk": true,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "saipem",
+    "path": "/mnt/local-analysis/workspace-hub/saipem",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 4,
+    "docs_list": [
+      "CONTEXT_LIMITS.md",
+      "agents.md",
+      "execution-patterns.md",
+      "mcp-tools.md"
+    ],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "seanation",
+    "path": "/mnt/local-analysis/workspace-hub/seanation",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 1,
+    "commands_list": [
+      "compound.md"
+    ],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 9,
+      "last_modified": "2026-03-23",
+      "references_wrk": false,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 4,
+    "tier": "tier-2"
+  },
+  {
+    "name": "aceengineer-strategy",
+    "path": "/mnt/local-analysis/workspace-hub/aceengineer-strategy",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": false
+    },
+    "claude_md": {
+      "exists": false
+    },
+    "git_activity_90d": 3,
+    "tier": "tier-2"
+  },
+  {
+    "name": "simpledigitalmarketing",
+    "path": "/mnt/local-analysis/workspace-hub/simpledigitalmarketing",
+    "skills_count": 0,
+    "skill_categories": [],
+    "commands_count": 0,
+    "commands_list": [],
+    "docs_count": 0,
+    "docs_list": [],
+    "memory": {
+      "exists": false
+    },
+    "state": {
+      "exists": false
+    },
+    "rules": {
+      "exists": false
+    },
+    "work_queue": {
+      "exists": false
+    },
+    "agents_md": {
+      "exists": true,
+      "lines": 10,
+      "is_pointer": true,
+      "has_entry_points": false,
+      "has_test_command": false,
+      "has_depends_on": false
+    },
+    "claude_md": {
+      "exists": true,
+      "lines": 32,
+      "last_modified": "2026-02-17",
+      "references_wrk": true,
+      "has_repo_overrides": true
+    },
+    "git_activity_90d": 1,
+    "tier": "tier-2"
+  }
+]
