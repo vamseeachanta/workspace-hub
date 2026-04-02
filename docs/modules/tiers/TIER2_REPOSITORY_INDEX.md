@@ -340,7 +340,7 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 | Order | Repository | Time | Reason |
 |-------|-----------|------|--------|
 | 1️⃣ | pyproject-starter | 1 day | Reference, has tests |
-| 2️⃣ | ai-native-traditional-eng | 1-2 days | Smallest, validates patterns |
+| ~~2️⃣~~ | ~~ai-native-traditional-eng~~ | — | ⚠️ REMOVED from workspace (as of 2026-04-02) |
 
 **Pilot Objectives:**
 - Establish testing patterns
@@ -355,7 +355,7 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 | Order | Repository | Time | Reason |
 |-------|-----------|------|--------|
 | 3️⃣ | frontierdeepwater | 2-3 days | Production-critical |
-| 4️⃣ | energy | 2-3 days | Important work repo |
+| ~~4️⃣~~ | ~~energy~~ | — | ⚠️ REMOVED; consolidated into worldenergydata (as of 2026-04-02) |
 | 5️⃣ | seanation | 2-3 days | Domain-specific |
 | 6️⃣ | doris | 2-3 days | Consolidation test |
 
@@ -432,13 +432,13 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 
 ## Configuration Requirements (TO BE DEPLOYED)
 
-### Per Repository (×12)
+### Per Repository (×10 active)
 - ✅ pytest.ini - 30 min
 - ✅ .coveragerc - 30 min
 - ✅ tests/conftest.py - 1 hour
 - ✅ .github/workflows/test.yml - 1 hour
 
-### Total Configuration Time: ~52 hours
+### Total Configuration Time: ~43 hours (adjusted for 10 active repos)
 
 ---
 
@@ -478,11 +478,11 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 
 ## Status Indicators
 
-**Current Status: ASSESSMENT COMPLETE ✅**
-- All 12 repositories assessed
+**Current Status: ASSESSMENT COMPLETE ✅ (Q2 2026 Refresh)**
+- All 12 repositories assessed (10 active, 2 removed from workspace)
 - Individual plans prepared
 - Risk analysis complete
-- Timeline established
+- Timeline established (adjusted for 10 active repos)
 - Awaiting approval
 
 **Next Status: PILOT DEPLOYMENT** (when approved)
@@ -490,7 +490,7 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 ---
 
 **Document**: Tier 2 Repository Index
-**Date**: 2026-01-13 (refreshed 2026-04-02)
+**Date**: 2026-04-02
 **Phase**: 1c Assessment Complete
 **Note**: 2 repos (energy, ai-native-traditional-eng) removed from workspace since original assessment
 
