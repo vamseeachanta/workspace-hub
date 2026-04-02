@@ -1,11 +1,11 @@
-generated: '2026-04-02T04:25:44'
+generated: '2026-04-02T04:28:12'
 total_entries: 247
 summary:
   by_type:
     tool: 97
     github_repo: 56
-    paper: 31
     data_api: 31
+    paper: 31
     tutorial: 15
     standard_portal: 9
     professional_body: 4
@@ -15,22 +15,23 @@ summary:
     naval_architecture: 40
     structural: 30
     oil_and_gas: 29
-    marine: 27
-    hydrodynamics: 25
-    general: 20
+    hydrodynamics: 28
+    marine: 28
     data_science: 19
+    general: 16
     pipeline: 13
     cfd: 12
-    sustainability: 10
     cad: 10
+    sustainability: 10
     orcaflex: 5
     materials: 3
     visualization: 2
     subsea: 1
     regulatory: 1
   by_download_status:
-    not_started: 230
+    not_started: 221
     downloaded: 17
+    reference_only: 9
 entries:
 - id: awesome_mcp_servers
   url: https://github.com/punkpeye/awesome-mcp-servers
@@ -1016,61 +1017,17 @@ entries:
     cutting-edge research preprints directly during planning and module implementation tasks. Rate limit: 3 req/s per IP.
 
     '
-- id: ansyshelp_ansys_com_account_secured_c079f1
-  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
-  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
-  type: tool
-  domain: general
-  local_backup_path: ''
-  download_status: not_started
-  last_checked: '2026-04-02'
-  relevance_score: 4
-  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: AQWA Reference Manual - Commands and workflow reference
-- id: ansyshelp_ansys_com_account_secured_5f7d31
-  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
-  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
-  type: tool
-  domain: general
-  local_backup_path: ''
-  download_status: not_started
-  last_checked: '2026-04-02'
-  relevance_score: 4
-  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: ANSYS AQWA Theory Manual - Complete theoretical background
 - id: docs_python_org_ab8704
   url: https://docs.python.org
   name: https://docs.python.org
   type: tutorial
   domain: general
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/web-test-module/context/external/web/web_resources.yaml
-  notes: Python official documentation
-- id: ansys_com_products_structures_ansys_aqwa_b635e4
-  url: https://www.ansys.com/products/structures/ansys-aqwa
-  name: https://www.ansys.com/products/structures/ansys-aqwa
-  type: tool
-  domain: general
-  local_backup_path: ''
-  download_status: not_started
-  last_checked: '2026-04-02'
-  relevance_score: 4
-  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: ANSYS AQWA Product Page - Overview and capabilities
-- id: api_org_products_and_services_standards_important_standards__839ba5
-  url: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
-  name: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
-  type: standard_portal
-  domain: general
-  local_backup_path: ''
-  download_status: not_started
-  last_checked: '2026-04-02'
-  relevance_score: 4
-  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: API RP 2SK - Station keeping design and analysis
+  notes: Python official documentation [web_test_module agent]
 - id: github_com_bemrosetta_bemrosetta_77615d
   url: https://github.com/BEMRosetta/BEMRosetta
   name: BEMRosetta
@@ -1256,6 +1213,39 @@ entries:
     physics.geo-ph and eess.SP are adjacent categories.
 
     '
+- id: ansyshelp_ansys_com_account_secured_c079f1
+  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
+  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_ref/aqwa_ref.html
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: reference_only
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: AQWA Reference Manual - Commands and workflow reference [aqwa agent]
+- id: ansyshelp_ansys_com_account_secured_5f7d31
+  url: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
+  name: https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/aqwa_theory/aqwa_theory.html
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: reference_only
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: ANSYS AQWA Theory Manual - Complete theoretical background [aqwa agent]
+- id: ansys_com_products_structures_ansys_aqwa_b635e4
+  url: https://www.ansys.com/products/structures/ansys-aqwa
+  name: https://www.ansys.com/products/structures/ansys-aqwa
+  type: tool
+  domain: hydrodynamics
+  local_backup_path: ''
+  download_status: reference_only
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: ANSYS AQWA Product Page - Overview and capabilities [aqwa agent]
 - id: doaj_offshore_journals
   url: https://doaj.org/
   name: DOAJ — Open Access Offshore/Marine Engineering Journals
@@ -1522,23 +1512,34 @@ entries:
   name: https://www.api.org/products-and-services/standards
   type: standard_portal
   domain: marine
-  local_backup_path: ''
+  local_backup_path: /mnt/ace/digitalmodel/marine/standards/
   download_status: not_started
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: API standards for offshore structures and mooring systems
+  notes: API standards for offshore structures and mooring systems [orcaflex agent]
+- id: api_org_products_and_services_standards_important_standards__839ba5
+  url: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
+  name: https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk
+  type: standard_portal
+  domain: marine
+  local_backup_path: /mnt/ace/digitalmodel/marine/standards/
+  download_status: not_started
+  last_checked: '2026-04-02'
+  relevance_score: 4
+  source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
+  notes: API RP 2SK - Station keeping design and analysis [aqwa agent]
 - id: ansys_com_training_center_course_catalog_structures_36d6b4
   url: https://www.ansys.com/training-center/course-catalog/structures/introduction-to-ansys-aqwa
   name: https://www.ansys.com/training-center/course-catalog/structures/introduction-to-ansys-aqwa
   type: course_material
   domain: materials
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: ANSYS AQWA Training Course - Official training materials
+  notes: ANSYS AQWA Training Course - Official training materials [aqwa agent]
 - id: ww2_eagle_org_content_dam_eagle_063ed3
   url: https://ww2.eagle.org/content/dam/eagle/rules-and-guides/current/other/1-rules-for-building-and-classing-marine-vessels-2024/1-mvr-part-4-jan24.pdf
   name: ABS Marine Vessel Rules — Part 4 (2024)
@@ -2163,68 +2164,68 @@ entries:
   name: https://www.dnv.com/oilgas/download/dnv-rp-c205-environmental-conditions-and-environmental-loads.html
   type: tool
   domain: oil_and_gas
-  local_backup_path: ''
+  local_backup_path: /mnt/ace/digitalmodel/hydrodynamics/standards/
   download_status: not_started
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
-  notes: DNV-RP-C205 Environmental loads for AQWA analysis
+  notes: DNV-RP-C205 Environmental loads for AQWA analysis [aqwa agent]
 - id: dnv_com_rules_standards_7b3848
   url: https://www.dnv.com/rules-standards/
   name: https://www.dnv.com/rules-standards/
   type: standard_portal
   domain: orcaflex
-  local_backup_path: ''
+  local_backup_path: /mnt/ace/digitalmodel/structural/standards/
   download_status: not_started
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml;
     /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
-  notes: DNV offshore standards for OrcaFlex analysis validation
+  notes: DNV offshore standards for OrcaFlex analysis validation [orcaflex agent]
 - id: orcina_com_softwareproducts_orcaflex_documentation_9eb495
   url: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
   name: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
   type: tool
   domain: orcaflex
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: OrcaFlex Python API documentation
+  notes: OrcaFlex Python API documentation [orcaflex agent]
 - id: orcina_com_resources_examples_0dfd1e
   url: https://www.orcina.com/resources/examples/
   name: https://www.orcina.com/resources/examples/
   type: tool
   domain: orcaflex
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: OrcaFlex example models and case studies
+  notes: OrcaFlex example models and case studies [orcaflex agent]
 - id: orcina_com_resources_papers_9ecd5d
   url: https://www.orcina.com/resources/papers/
   name: https://www.orcina.com/resources/papers/
   type: tool
   domain: orcaflex
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: Technical papers and validation studies for OrcaFlex
+  notes: Technical papers and validation studies for OrcaFlex [orcaflex agent]
 - id: orcina_com_webhelp_orcaflex_251e1a
   url: https://www.orcina.com/webhelp/OrcaFlex/
   name: https://www.orcina.com/webhelp/OrcaFlex/
   type: tutorial
   domain: orcaflex
   local_backup_path: ''
-  download_status: not_started
+  download_status: reference_only
   last_checked: '2026-04-02'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: OrcaFlex official documentation and API reference
+  notes: OrcaFlex official documentation and API reference [orcaflex agent]
 - id: github_com_sintef_thermopack_805919
   url: https://github.com/SINTEF/thermopack
   name: AweSim (Awesome Simulations)
