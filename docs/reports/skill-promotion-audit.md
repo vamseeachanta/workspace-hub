@@ -1,20 +1,26 @@
 # Skill Promotion Pipeline Audit
 
 **Issue:** #1426 — Accelerate correction-to-skill promotion pipeline (8% → 40% target)
-**Date:** 2026-04-01
+**Date:** 2026-04-01 (updated with correction data discovery)
 **Auditor:** Claude (automated)
 
 ## Current State
 
-### Session Signals Data
+### Correction Capture (ACTIVE — discovered post-initial-audit)
+
+The `capture-corrections.sh` PostToolUse hook has been capturing corrections since
+2026-01-21. Data lives in `.claude/state/corrections/` (NOT in `session-signals/`).
 
 | Metric | Count |
 |--------|-------|
-| Total session signal records | 208,630 |
-| `session_end` records | 344 |
-| `session_tool_summary` records | 7,299 |
-| Records with `correction_events` populated | **0** |
-| Records with `skill_invocations` populated | **0** |
+| Total corrections captured | 8,965 |
+| Unique files corrected | 3,127 |
+| Files with 10+ corrections | 122 |
+| Files with 5+ corrections | 418 |
+| Capture period | Jan 21 – Apr 1, 2026 |
+| Data size | 17 MB |
+
+**Monthly trend:** Jan: 559, Feb: 2,935, Mar: 5,456, Apr: 15 (partial)
 
 ### Skills Inventory
 
@@ -23,35 +29,56 @@
 | Total SKILL.md files (including archive) | 2,734 |
 | Active SKILL.md files (excluding `_archive/`) | 568 |
 | Skill-related commits since 2026-01-01 | 424 |
+| Skills with 5+ corrections (needing update) | 10 |
 
-### Diagnosis
+### Diagnosis (Revised)
 
-**The correction-to-skill promotion pipeline does not exist yet.**
+**The correction capture pipeline EXISTS and is active.** The missing link is
+the **candidate identification → promotion** pipeline. Corrections are captured
+but never analyzed for promotion opportunities.
 
-The `session_end` signal schema defines `correction_events` and `skill_invocations` arrays, but they are **always empty** across all 344 session records. The pipeline has the right schema but zero instrumentation.
+The `session-signals/correction_events[]` field is still empty — corrections go
+to a separate data store. This is a data integration gap, not a capture gap.
 
-**Current promotion rate: 0%** (not 8% — there is no measurable baseline because corrections are not being captured).
-
-Corrections are happening in sessions (users saying "remember this", "use uv run not python3", etc.) but the session-signal emitter does not detect or log them. Without capture, there is nothing to promote.
-
-## Gap Analysis
+## Gap Analysis (Revised)
 
 ```
 Correction happens in session
-        ↓ (NOT CAPTURED)
-session-signals correction_events: [] (always empty)
-        ↓ (NO PIPELINE)
-Skill promotion: never triggered automatically
-        ↓
-Skills created: only via manual agent effort or explicit user request
+        ↓ (CAPTURED ✓)
+.claude/state/corrections/ (8,965 records, 17MB)
+        ↓ (MISSING: candidate identification)
+Skill promotion candidates: not generated
+        ↓ (MISSING: promotion workflow)
+Skills created: only via manual agent effort
 ```
 
-### What's Missing
+### Top Correction Hotspots (Promotion Candidates)
 
-1. **Correction detection** — No NLP/pattern-matching in the session signal emitter to identify user corrections, preference statements, or "remember this" directives.
-2. **Signal-to-candidate pipeline** — No process to review captured corrections and nominate them as skill candidates.
-3. **Candidate-to-skill promotion** — No automated or semi-automated workflow to draft a SKILL.md from a correction pattern.
-4. **Feedback loop** — No tracking of which corrections recur (indicating a missed skill opportunity).
+| Corrections | Days | File |
+|------------|------|------|
+| 97 | 28 | MEMORY.md |
+| 93 | 7 | scripts/work-queue/generate-html-review.py |
+| 66 | 9 | scripts/work-queue/whats-next.sh |
+| 50 | 6 | scripts/work-queue/verify-gate-evidence.py |
+| 48 | 2 | digitalmodel wall_thickness_mt_report.py |
+
+### Skills Needing Update (Most-Corrected)
+
+| Corrections | Days | Skill |
+|------------|------|-------|
+| 50 | 15 | coordination/workspace/work-queue |
+| 38 | 4 | workspace-hub/comprehensive-learning |
+| 38 | 7 | workspace-hub/work-queue-workflow |
+| 23 | 5 | workspace-hub/workstations |
+| 23 | 5 | workspace-hub/workflow-html |
+
+### What's Now Available
+
+1. **Correction capture** ✓ — `capture-corrections.sh` hook (active since Jan 2026)
+2. **Candidate identification** ✓ — `scripts/enforcement/correction-to-skill-candidates.sh` (new)
+3. **Signal-to-candidate pipeline** — MISSING: automated periodic analysis
+4. **Candidate-to-skill promotion** — MISSING: workflow to draft SKILL.md from candidates
+5. **Feedback loop** — MISSING: track if promoted skills reduce correction frequency
 
 ## Recommendations to Hit 40%
 
