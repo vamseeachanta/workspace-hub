@@ -1,0 +1,37 @@
+{
+  "total_calls": 13554,
+  "tools": {
+    "Bash": 7358,
+    "Read": 2389,
+    "Write": 1709,
+    "Grep": 1410,
+    "Edit": 555,
+    "Task": 102
+  },
+  "hermes_tools": {
+    "terminal": 6691,
+    "read_file": 2044,
+    "search_files": 1410,
+    "write_file": 724,
+    "todo": 692,
+    "execute_code": 558,
+    "patch": 555,
+    "skill_view": 169,
+    "memory": 169,
+    "skill_manage": 124,
+    "delegate_task": 102
+  },
+  "models": {
+    "claude-opus-4-6": 12254,
+    "gpt-5.4": 1300
+  },
+  "session_count": 2,
+  "avg_calls_per_session": 6777.0,
+  "skill_usage_top": {
+    "gsd-operational-audit": 23,
+    "repo-architecture-analysis": 22,
+    "engineering-solver-domain-recon": 17,
+    "overnight-parallel-agent-prompts": 16,
+    "multi-provider-adversarial-review": 13
+  }
+}

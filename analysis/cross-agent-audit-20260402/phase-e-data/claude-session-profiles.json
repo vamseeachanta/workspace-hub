@@ -1,0 +1,42 @@
+{
+  "total_calls": 73646,
+  "tools": {
+    "Bash": 40093,
+    "Read": 13811,
+    "Edit": 6724,
+    "Write": 6436,
+    "Grep": 1758,
+    "Agent": 730,
+    "ToolSearch": 681,
+    "TaskUpdate": 541,
+    "WebSearch": 519,
+    "Glob": 392,
+    "TaskOutput": 323,
+    "Skill": 309,
+    "TaskCreate": 280,
+    "StructuredOutput": 257,
+    "WebFetch": 221
+  },
+  "repos": {
+    "workspace-hub": 70303,
+    "digitalmodel": 1900,
+    "assetutilities": 535,
+    "worldenergydata": 201,
+    "aceengineer-admin": 87,
+    "assethold": 38,
+    "OGManufacturing": 32,
+    "doris": 28
+  },
+  "session_count": 24,
+  "avg_calls_per_session": 3068.6,
+  "session_profiles": {
+    "avg_read_pct": 26.0,
+    "avg_write_pct": 18.0,
+    "avg_exec_pct": 52.7,
+    "avg_delegate_pct": 3.4,
+    "avg_rw_ratio": 1.57,
+    "research_heavy_sessions": 0,
+    "impl_heavy_sessions": 3,
+    "exec_heavy_sessions": 4
+  }
+}

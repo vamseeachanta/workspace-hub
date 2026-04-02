@@ -1,0 +1,57 @@
+{
+  "codex": {
+    "total_files": 410,
+    "wrk_files": 88,
+    "session_files": 1,
+    "other_files": 321,
+    "verdicts": {
+      "APPROVE": 35,
+      "MINOR": 24,
+      "REVISE/REVISION": 12,
+      "changes-requested": 11,
+      "MAJOR": 6,
+      "Request changes": 2,
+      "Other": 1
+    },
+    "issue_severities": {
+      "MEDIUM": 23,
+      "UNCLASSIFIED": 23,
+      "MAJOR": 2,
+      "LOW": 2
+    },
+    "avg_issues_per_review": 5.6
+  },
+  "gemini": {
+    "total_files": 219,
+    "wrk_files": 59,
+    "session_files": 0,
+    "other_files": 160,
+    "verdicts": {
+      "APPROVE": 48,
+      "MINOR": 5,
+      "MAJOR": 1,
+      "Unparsed": 5
+    }
+  },
+  "cross_review": {
+    "shared_wrk_count": 14,
+    "codex_only": 5,
+    "gemini_only": 2,
+    "shared_wrks": [
+      "WRK-624",
+      "WRK-658",
+      "WRK-691",
+      "WRK-1007",
+      "WRK-1017",
+      "WRK-1020",
+      "WRK-1075",
+      "WRK-1081",
+      "WRK-1105",
+      "WRK-1141",
+      "WRK-1142",
+      "WRK-1295",
+      "WRK-1381",
+      "WRK-9995"
+    ]
+  }
+}
