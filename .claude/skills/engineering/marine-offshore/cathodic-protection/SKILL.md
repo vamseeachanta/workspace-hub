@@ -61,6 +61,33 @@ scripts_exempt: true
 - [mooring-design](../mooring-design/SKILL.md) - Mooring system protection
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Corrosion-fatigue interaction
 
+## Package Structure
+
+The CP package lives at `digitalmodel/src/digitalmodel/cathodic_protection/`:
+
+| Module | Purpose |
+|--------|---------|
+| `__init__.py` | Unified exports from all sub-modules |
+| `api_rp_1632.py` | API RP 16Q32 calculations |
+| `iso_15589_2.py` | ISO 15589-2 pipeline CP |
+| `dnv_rp_b401.py` | DNV-RP-B401 offshore structures |
+| `marine_cp.py` | Multi-zone marine CP — temp/depth current density, calcareous deposits |
+| `marine_structure_cp.py` | Zone-based CP — ClimateRegion enum, anode distribution, retrofit (**overlaps marine_cp.py, consolidation tracked in #1702**) |
+| `pipeline_cp.py` | Pipeline-specific CP design |
+| `iccp_design.py` | Impressed current CP design |
+| `fuel_system_cp.py` | Fuel system ICCP (FuelPipeSegment, RectifierOutput) |
+| `anode_sizing.py` | Anode mass/geometry calculations |
+| `anode_depletion.py` | Anode consumption tracking |
+| `coating.py` | Coating breakdown factors |
+| `corrosion_rate.py` | Corrosion rate models |
+| `cp_monitoring.py` | CP monitoring systems |
+| `cp_reporting.py` | Report generation |
+| `cp_survey.py` | Survey data processing |
+| `stray_current.py` | AC/DC stray current analysis |
+
+Legacy router: `digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py`
+Tests: `digitalmodel/tests/specialized/cathodic_protection/`
+
 ## References
 
 - NACE International Standards
@@ -70,8 +97,6 @@ scripts_exempt: true
 - ABS GN Ships 2017 (289): Cathodic Protection of Ships
 - ABS GN Offshore Structures 2018 (306): Cathodic Protection of Offshore Structures
 - SNAME T&R R-21: Cathodic Protection of Marine Service
-- Code: `digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py`
-- Tests: `digitalmodel/tests/specialized/cathodic_protection/`
 
 ---
 
