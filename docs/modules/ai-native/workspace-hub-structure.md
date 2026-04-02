@@ -146,7 +146,7 @@ flowchart TB
 - **GSD workflow** is the standard task execution framework
 - **GitHub Issues** are the single source of truth for task tracking
 - **`uv run`** is always used for Python — never bare `python3`
-- **Legacy paths** (`.agent-os/`, `.hive-mind/`, `.swarm/`) are frozen — do not extend
+- **Legacy directories** from earlier iterations have been archived — do not extend
 - Projects are organized by tier (1-3) based on engineering criticality
 
 This structure enables:
