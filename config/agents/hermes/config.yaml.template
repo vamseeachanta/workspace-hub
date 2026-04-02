@@ -31,3 +31,8 @@ checkpoints:
 file_read_max_chars: 100000
 compression:
   enabled: true
+# Skills: wire workspace-hub ecosystem skills into Hermes as read-only external dir.
+# Path is machine-specific — sync script should resolve per-workstation ws_hub_path.
+skills:
+  external_dirs:
+    - /mnt/local-analysis/workspace-hub/.claude/skills
