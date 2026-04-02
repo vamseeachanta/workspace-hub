@@ -1,10 +1,10 @@
 summary:
-  total_packages: 30
-  total_modules: 1587
-  total_classes: 2085
-  total_functions: 1956
-  total_loc: 331491
-  public_api_classes: 1936
+  total_packages: 31
+  total_modules: 1590
+  total_classes: 2089
+  total_functions: 1957
+  total_loc: 331664
+  public_api_classes: 1940
   public_api_functions: 1335
 packages:
 - name: ansys
@@ -188,6 +188,15 @@ packages:
   - total_current_demand
   has_all: true
   has_tests: true
+- name: data_models
+  modules: 2
+  classes: 0
+  functions: 0
+  loc: 20
+  public_classes: []
+  public_functions: []
+  has_all: false
+  has_tests: false
 - name: data_systems
   modules: 58
   classes: 50
@@ -1655,7 +1664,7 @@ packages:
   - build_rao_plots
   - generate_orcawave_report
   has_all: false
-  has_tests: false
+  has_tests: true
 - name: power
   modules: 19
   classes: 40
@@ -1762,7 +1771,7 @@ packages:
   public_classes: []
   public_functions: []
   has_all: false
-  has_tests: false
+  has_tests: true
 - name: signal_processing
   modules: 27
   classes: 23
@@ -1811,10 +1820,10 @@ packages:
   has_all: false
   has_tests: true
 - name: solvers
-  modules: 309
-  classes: 477
-  functions: 254
-  loc: 56631
+  modules: 310
+  classes: 481
+  functions: 255
+  loc: 56784
   public_classes:
   - AdvancedMemoryOptimizer
   - AllVars
@@ -1942,6 +1951,7 @@ packages:
   - FormatConverter
   - FormatType
   - FreeSurfaceElevation
+  - FrequencySweep
   - GMSHMeshGenerator
   - General
   - GeneralBuilder
@@ -1986,6 +1996,8 @@ packages:
   - GroupingConfig
   - GroupsBuilder
   - HTMLReporter
+  - HeadingSweep
+  - HullParameterSweep
   - HumanReadableFormatter
   - HybridExecutor
   - HybridOrcaFlexProcessor
@@ -2131,6 +2143,7 @@ packages:
   - ParallelConfig
   - ParallelIOProcessor
   - ParameterRange
+  - ParametricSpecGenerator
   - ParametricStudy
   - PathResolver
   - PerformanceMonitor
@@ -3285,7 +3298,7 @@ packages:
   - unauthorized
   - update_task
   has_all: false
-  has_tests: false
+  has_tests: true
 - name: well
   modules: 7
   classes: 11
@@ -3568,6 +3581,7 @@ dependency_graph:
   - hydrodynamics
   solvers:
   - fatigue
+  - hydrodynamics
   - infrastructure
   - signal_processing
   specialized:
