@@ -1,0 +1,3988 @@
+{
+  "generated_at": "2026-04-02T00:14:20Z",
+  "total_skills": 567,
+  "git_lookback_days": 90,
+  "summary": {
+    "hot": 127,
+    "warm": 74,
+    "cold": 50,
+    "dead": 316
+  },
+  "hot": [
+    {
+      "skill": "pandas-data-processing",
+      "path": "data/scientific/pandas-data-processing",
+      "reference_count": 10,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "github-actions",
+      "path": "operations/automation/github-actions",
+      "reference_count": 7,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "gsd-plan-phase",
+      "path": "gsd-plan-phase",
+      "reference_count": 7,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "knowledge-base-builder",
+      "path": "data/documents/knowledge-base-builder",
+      "reference_count": 7,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "plotly",
+      "path": "data/visualization/plotly",
+      "reference_count": 7,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "api-integration",
+      "path": "data/scientific/api-integration",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "competitive-analysis",
+      "path": "business/marketing/competitive-analysis",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "competitive-analysis",
+      "path": "business/product/competitive-analysis",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "data-exploration",
+      "path": "data/analytics/data-exploration",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "frontend-design",
+      "path": "business/content-design/frontend-design",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "knowledge-management",
+      "path": "business/customer-support/knowledge-management",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "polars",
+      "path": "data/analysis/polars",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "semantic-search-setup",
+      "path": "data/documents/semantic-search-setup",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "streamlit",
+      "path": "data/analysis/streamlit",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "tdd-obra",
+      "path": "development/tdd-obra",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "webapp-testing",
+      "path": "development/webapp-testing",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "yaml-configuration",
+      "path": "data/scientific/yaml-configuration",
+      "reference_count": 6,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "account-research",
+      "path": "business/sales/account-research",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "audit-support",
+      "path": "business/finance/audit-support",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "brand-guidelines",
+      "path": "business/communication/brand-guidelines",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "call-prep",
+      "path": "business/sales/call-prep",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "canned-responses",
+      "path": "business/legal/canned-responses",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "cli-productivity",
+      "path": "operations/devtools/cli-productivity",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "clinical-trial-protocol",
+      "path": "science/bio-research/clinical-trial-protocol",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "close-management",
+      "path": "business/finance/close-management",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "competitive-intelligence",
+      "path": "business/sales/competitive-intelligence",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "compliance",
+      "path": "business/legal/compliance",
+      "reference_count": 5,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "content-strategy",
+      "path": "business/marketing/content-strategy",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "contract-review",
+      "path": "business/legal/contract-review",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "create-an-asset",
+      "path": "business/sales/create-an-asset",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "daily-briefing",
+      "path": "business/sales/daily-briefing",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "draft-outreach",
+      "path": "business/sales/draft-outreach",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "financial-statements",
+      "path": "business/finance/financial-statements",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "instrument-data-allotrope",
+      "path": "science/bio-research/instrument-data-allotrope",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "journal-entry-prep",
+      "path": "business/finance/journal-entry-prep",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "legal-risk-assessment",
+      "path": "business/legal/legal-risk-assessment",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "meeting-briefing",
+      "path": "business/legal/meeting-briefing",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "mkdocs",
+      "path": "_internal/documentation/mkdocs",
+      "reference_count": 5,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "nda-triage",
+      "path": "business/legal/nda-triage",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "nextflow-pipelines",
+      "path": "science/bio-research/nextflow-pipelines",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "reconciliation",
+      "path": "business/finance/reconciliation",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "scientific-problem-selection",
+      "path": "science/bio-research/scientific-problem-selection",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "scvi-tools",
+      "path": "science/bio-research/scvi-tools",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "single-cell-rna-qc",
+      "path": "science/bio-research/single-cell-rna-qc",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "variance-analysis",
+      "path": "business/finance/variance-analysis",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "yaml-workflow-executor",
+      "path": "development/yaml-workflow-executor",
+      "reference_count": 5,
+      "in_recent_commits": false,
+      "tier": "hot"
+    },
+    {
+      "skill": "data-validation",
+      "path": "data/analytics/data-validation",
+      "reference_count": 4,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "doc-extraction",
+      "path": "engineering/doc-extraction",
+      "reference_count": 4,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "improve",
+      "path": "workspace-hub/improve",
+      "reference_count": 4,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "calculation-report",
+      "path": "data/calculation-report",
+      "reference_count": 3,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "skill-creator",
+      "path": "_internal/builders/skill-creator",
+      "reference_count": 3,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "cathodic-protection",
+      "path": "engineering/marine-offshore/cathodic-protection",
+      "reference_count": 2,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "dash",
+      "path": "data/analysis/dash",
+      "reference_count": 2,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "pypdf",
+      "path": "data/office/pypdf",
+      "reference_count": 2,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "repo-structure",
+      "path": "workspace-hub/repo-structure",
+      "reference_count": 2,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "repo-sync",
+      "path": "workspace-hub/repo-sync",
+      "reference_count": 2,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "agent-teams",
+      "path": "workspace-hub/agent-teams",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "comprehensive-learning",
+      "path": "workspace-hub/comprehensive-learning",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "doc-research-download",
+      "path": "data/doc-research-download",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "drilling",
+      "path": "engineering/drilling",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "gitignore-scaffold",
+      "path": "development/gitignore-scaffold",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "html-report-verify",
+      "path": "development/html-report-verify",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "hydrodynamics",
+      "path": "engineering/marine-offshore/hydrodynamics",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "openfoam",
+      "path": "engineering/cfd/openfoam",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "research-literature",
+      "path": "data/research-literature",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "shell-tdd",
+      "path": "development/shell-tdd",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "xlsx",
+      "path": "data/documents/xlsx",
+      "reference_count": 1,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "agenta",
+      "path": "ai/prompting/agenta",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "analysis",
+      "path": "engineering/cfd/openfoam/analysis",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "analysis",
+      "path": "engineering/marine-offshore/orcawave/analysis",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "aqwa",
+      "path": "engineering/marine-offshore/aqwa",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "astm",
+      "path": "engineering/standards/astm",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "automation",
+      "path": "development/automation/automation",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "batch-execution",
+      "path": "engineering/marine-offshore/aqwa/batch-execution",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "bemrosetta",
+      "path": "engineering/marine-offshore/bemrosetta",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "clean-code",
+      "path": "workspace-hub/clean-code",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "context-management",
+      "path": "_core/context-management",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "devtools",
+      "path": "development/tools/devtools",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "document-index-pipeline",
+      "path": "data/document-index-pipeline",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "documentation",
+      "path": "development/documentation/documentation",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "drillbotics",
+      "path": "engineering/drilling/drillbotics",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "drilling-riser",
+      "path": "engineering/doc-extraction/drilling-riser",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "engineering-chatbot",
+      "path": "business/client-demo/engineering-chatbot",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "example",
+      "path": "_internal/documentation/mkdocs/example",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "examples",
+      "path": "_internal/builders/skill-creator/examples",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "examples",
+      "path": "_internal/documentation/mkdocs/examples",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "file-structure",
+      "path": "_internal/builders/skill-creator/file-structure",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "fitness-for-service",
+      "path": "engineering/asset-integrity/fitness-for-service",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "info",
+      "path": "_internal/documentation/mkdocs/info",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "input",
+      "path": "engineering/marine-offshore/aqwa/input",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "installation",
+      "path": "_internal/builders/skill-creator/installation",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "large-reader",
+      "path": "data/documents/pdf/large-reader",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "maritime-legal",
+      "path": "engineering/maritime-legal",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "mesh-utilities",
+      "path": "engineering/marine-offshore/mesh-utilities",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "metocean",
+      "path": "data/energy/metocean",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "metrics",
+      "path": "_internal/builders/skill-creator/metrics",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "metrics",
+      "path": "_internal/builders/web-artifacts-builder/metrics",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "metrics",
+      "path": "_internal/workflows/brainstorming/metrics",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "modes",
+      "path": "development/github/modes",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "module-lookup",
+      "path": "digitalmodel/module-lookup",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "multi-repo",
+      "path": "development/github/multi-repo",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "naval-architecture",
+      "path": "engineering/doc-extraction/naval-architecture",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "naval-architecture",
+      "path": "engineering/marine-offshore/naval-architecture",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "note",
+      "path": "_internal/documentation/mkdocs/note",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "operability",
+      "path": "engineering/marine-offshore/orcaflex/operability",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "orcaflex",
+      "path": "engineering/marine-offshore/orcaflex",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "orcawave",
+      "path": "engineering/marine-offshore/orcawave",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "output",
+      "path": "engineering/marine-offshore/aqwa/output",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "playwright",
+      "path": "workspace-hub/playwright",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "qgis",
+      "path": "engineering/gis/qgis",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "question",
+      "path": "_internal/documentation/mkdocs/question",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "quote",
+      "path": "_internal/documentation/mkdocs/quote",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "reference",
+      "path": "engineering/marine-offshore/aqwa/reference",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "repo-portfolio-steering",
+      "path": "workspace-hub/repo-portfolio-steering",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "rollback",
+      "path": "_internal/meta/discipline-refactor/rollback",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "skill-eval",
+      "path": "development/skill-eval",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "solver-benchmark",
+      "path": "engineering/marine-offshore/solver-benchmark",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "sync",
+      "path": "development/github/sync",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "sync",
+      "path": "workspace-hub/sync",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "today",
+      "path": "business/productivity/today",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "units",
+      "path": "engineering/units",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "utilities",
+      "path": "data/documents/pdf/utilities",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "versioning",
+      "path": "_internal/builders/skill-creator/versioning",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "visualization",
+      "path": "engineering/marine-offshore/orcaflex/visualization",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "warning",
+      "path": "_internal/documentation/mkdocs/warning",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "workflow",
+      "path": "development/github/workflow",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    },
+    {
+      "skill": "xlsx-to-python",
+      "path": "data/office/xlsx-to-python",
+      "reference_count": 0,
+      "in_recent_commits": true,
+      "tier": "hot"
+    }
+  ],
+  "warm": [
+    {
+      "skill": "canvas-design",
+      "path": "business/content-design/canvas-design",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "customer-research",
+      "path": "business/customer-support/customer-research",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "data-pipeline-processor",
+      "path": "development/data-pipeline-processor",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "docker",
+      "path": "operations/devtools/docker",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "engineering-report-generator",
+      "path": "development/engineering-report-generator",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "escalation",
+      "path": "business/customer-support/escalation",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "feature-spec",
+      "path": "business/product/feature-spec",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "git-advanced",
+      "path": "operations/devtools/git-advanced",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "langchain",
+      "path": "ai/prompting/langchain",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "metrics-tracking",
+      "path": "business/product/metrics-tracking",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "notion-api",
+      "path": "business/productivity/notion-api",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "openpyxl",
+      "path": "data/office/openpyxl",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "pandoc",
+      "path": "development/documentation/pandoc",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "parallel-file-processor",
+      "path": "development/parallel-file-processor",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "pdf",
+      "path": "data/documents/pdf",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "python-docx",
+      "path": "data/office/python-docx",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "response-drafting",
+      "path": "business/customer-support/response-drafting",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sphinx",
+      "path": "development/documentation/sphinx",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sql-queries",
+      "path": "data/analytics/sql-queries",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "theme-factory",
+      "path": "business/content-design/theme-factory",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "ticket-triage",
+      "path": "business/customer-support/ticket-triage",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "writing-plans",
+      "path": "development/planning/writing-plans",
+      "reference_count": 4,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "algorithmic-art",
+      "path": "business/content-design/algorithmic-art",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "bash-cli-framework",
+      "path": "_core/bash/bash-cli-framework",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "code-reviewer",
+      "path": "development/code-reviewer",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "docusaurus",
+      "path": "development/documentation/docusaurus",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "dspy",
+      "path": "ai/prompting/dspy",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "gsd-new-milestone",
+      "path": "gsd-new-milestone",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "internal-comms",
+      "path": "business/communication/internal-comms",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "planning-code-goal",
+      "path": "development/planning/planning-code-goal",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "prompt-engineering",
+      "path": "ai/prompting/prompt-engineering",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "rag-system-builder",
+      "path": "data/documents/rag-system-builder",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "seo-optimizer",
+      "path": "business/marketing/seo-optimizer",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "slack-api",
+      "path": "business/communication/slack-api",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sparc-architecture",
+      "path": "development/sparc/sparc-architecture",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sparc-pseudocode",
+      "path": "development/sparc/sparc-pseudocode",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sparc-refinement",
+      "path": "development/sparc/sparc-refinement",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "sparc-specification",
+      "path": "development/sparc/sparc-specification",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "statistical-analysis",
+      "path": "data/analytics/statistical-analysis",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "structural-analysis",
+      "path": "engineering/marine-offshore/structural-analysis",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "subagent-driven",
+      "path": "development/subagent-driven",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "systematic-debugging",
+      "path": "development/systematic-debugging",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "testing-tdd-london",
+      "path": "development/testing/testing-tdd-london",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "todoist-api",
+      "path": "business/productivity/todoist-api",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "ydata-profiling",
+      "path": "data/analysis/ydata-profiling",
+      "reference_count": 3,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "activepieces",
+      "path": "operations/automation/activepieces",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "autoviz",
+      "path": "data/analysis/autoviz",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "dark-intelligence-workflow",
+      "path": "data/dark-intelligence-workflow",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "data-visualization",
+      "path": "data/analytics/data-visualization",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "document-inventory",
+      "path": "data/documents/document-inventory",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "document-rag-pipeline",
+      "path": "data/documents/document-rag-pipeline",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "docx",
+      "path": "data/documents/docx",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "git-sync-manager",
+      "path": "_core/bash/git-sync-manager",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "great-tables",
+      "path": "data/analysis/great-tables",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "gsd-add-phase",
+      "path": "gsd-add-phase",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "gsd-audit-milestone",
+      "path": "gsd-audit-milestone",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "gsd-new-project",
+      "path": "gsd-new-project",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "interactive-dashboard-builder",
+      "path": "data/analytics/interactive-dashboard-builder",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "knowledge-synthesis",
+      "path": "business/enterprise-search/knowledge-synthesis",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "lead-generation",
+      "path": "business/marketing/lead-generation",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "marp",
+      "path": "development/documentation/marp",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "n8n",
+      "path": "operations/automation/n8n",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "obsidian",
+      "path": "business/productivity/obsidian",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "pptx",
+      "path": "data/documents/pptx",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "python-project-template",
+      "path": "development/workflows/python-project-template",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "python-scientific-computing",
+      "path": "data/scientific/python-scientific-computing",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "search-strategy",
+      "path": "business/enterprise-search/search-strategy",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "source-management",
+      "path": "business/enterprise-search/source-management",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "stakeholder-comms",
+      "path": "business/product/stakeholder-comms",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "teams-api",
+      "path": "business/communication/teams-api",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "testing-production",
+      "path": "development/testing/testing-production",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "verification-loop",
+      "path": "development/verification-loop",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "web-artifacts-builder",
+      "path": "_internal/builders/web-artifacts-builder",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    },
+    {
+      "skill": "windmill",
+      "path": "operations/automation/windmill",
+      "reference_count": 2,
+      "in_recent_commits": false,
+      "tier": "warm"
+    }
+  ],
+  "cold": [
+    {
+      "skill": "airflow",
+      "path": "operations/automation/airflow",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "background-service-manager",
+      "path": "operations/devtools/background-service-manager",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "bash-script-framework",
+      "path": "_core/bash/bash-script-framework",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "brainstorming",
+      "path": "_internal/workflows/brainstorming",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "brand-voice",
+      "path": "business/marketing/brand-voice",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "calendly-api",
+      "path": "business/communication/calendly-api",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "campaign-planning",
+      "path": "business/marketing/campaign-planning",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "catenary-riser",
+      "path": "engineering/marine-offshore/catenary-riser",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "doc-coauthoring",
+      "path": "business/communication/doc-coauthoring",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "doc-intelligence-promotion",
+      "path": "data/doc-intelligence-promotion",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "docx-templates",
+      "path": "data/office/docx-templates",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "ecosystem-terminology",
+      "path": "workspace-hub/ecosystem-terminology",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "freecad-automation",
+      "path": "engineering/cad/freecad-automation",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "git-worktree-workflow",
+      "path": "development/git-worktree-workflow",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gmsh-meshing",
+      "path": "engineering/cad/gmsh-meshing",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-add-backlog",
+      "path": "gsd-add-backlog",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-discuss-phase",
+      "path": "gsd-discuss-phase",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-execute-phase",
+      "path": "gsd-execute-phase",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-pause-work",
+      "path": "gsd-pause-work",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-plan-milestone-gaps",
+      "path": "gsd-plan-milestone-gaps",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-quick",
+      "path": "gsd-quick",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-resume-work",
+      "path": "gsd-resume-work",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-review",
+      "path": "gsd-review",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-review-backlog",
+      "path": "gsd-review-backlog",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-update",
+      "path": "gsd-update",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "gsd-verify-work",
+      "path": "gsd-verify-work",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "hydrodynamic-analysis",
+      "path": "engineering/marine-offshore/hydrodynamic-analysis",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "invoice-automation",
+      "path": "business/admin/invoice-automation",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "mcp-builder",
+      "path": "development/mcp-builder",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "memory-management",
+      "path": "business/productivity/memory-management",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "mooring-analysis",
+      "path": "engineering/marine-offshore/mooring-analysis",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "numpy-numerical-analysis",
+      "path": "data/scientific/numpy-numerical-analysis",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "oil-and-gas",
+      "path": "engineering/oil-and-gas",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "orchestrator-routing",
+      "path": "workspace-hub/agent-teams/orchestrator-routing",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "pandasai",
+      "path": "ai/prompting/pandasai",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "performance-analytics",
+      "path": "business/marketing/performance-analytics",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "planning-goal",
+      "path": "development/planning/planning-goal",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "product-roadmap",
+      "path": "business/product/product-roadmap",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "production-engineering",
+      "path": "engineering/marine-offshore/production-engineering",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "pytest-fixture-generator",
+      "path": "development/testing/pytest-fixture-generator",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "risk-assessment",
+      "path": "engineering/marine-offshore/risk-assessment",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "slack-gif-creator",
+      "path": "business/communication/slack-gif-creator",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "social-media",
+      "path": "business/marketing/social-media",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "success",
+      "path": "_internal/documentation/mkdocs/success",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "task-management",
+      "path": "business/productivity/task-management",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "tax-preparation",
+      "path": "business/admin/tax-preparation",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "trello-api",
+      "path": "business/productivity/trello-api",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "user-research-synthesis",
+      "path": "business/product/user-research-synthesis",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "viv-analysis",
+      "path": "engineering/marine-offshore/viv-analysis",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    },
+    {
+      "skill": "vscode-extensions",
+      "path": "operations/devtools/vscode-extensions",
+      "reference_count": 1,
+      "in_recent_commits": false,
+      "tier": "cold"
+    }
+  ],
+  "dead": [
+    {
+      "skill": "1-always-check-before-operating",
+      "path": "_core/bash/git-sync-manager/1-always-check-before-operating",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-always-provide-defaults",
+      "path": "_core/bash/json-config-loader/1-always-provide-defaults",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-always-set-a-default",
+      "path": "_core/bash/parallel-batch-executor/1-always-set-a-default",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-always-use-set-e",
+      "path": "_core/bash/bash-cli-framework/1-always-use-set-e",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-basic-menu-structure",
+      "path": "_core/bash/interactive-menu-builder/1-basic-menu-structure",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-basic-parallel-execution-with-xargs",
+      "path": "_core/bash/parallel-batch-executor/1-basic-parallel-execution-with-xargs",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-basic-usage-logging",
+      "path": "_core/bash/usage-tracker/1-basic-usage-logging",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-build-artifacts",
+      "path": "_internal/meta/repo-cleanup/1-build-artifacts",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-clear-triggering",
+      "path": "_internal/builders/skill-creator/1-clear-triggering",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-color-definitions",
+      "path": "_core/bash/bash-cli-framework/1-color-definitions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-consistent-navigation",
+      "path": "_core/bash/interactive-menu-builder/1-consistent-navigation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-documentation-structure",
+      "path": "_internal/documentation/mkdocs/1-documentation-structure",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-interactive-dashboard",
+      "path": "_internal/builders/web-artifacts-builder/1-interactive-dashboard",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-keyvalue-configuration-parsing",
+      "path": "_core/bash/json-config-loader/1-keyvalue-configuration-parsing",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-keyword-based-scoring",
+      "path": "_core/bash/complexity-scorer/1-keyword-based-scoring",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-project-initialization",
+      "path": "_internal/documentation/mkdocs/1-project-initialization",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-repository-discovery-from-gitignore",
+      "path": "_core/bash/git-sync-manager/1-repository-discovery-from-gitignore",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "1-xdg-base-directory-standard",
+      "path": "_core/bash/state-directory-manager/1-xdg-base-directory-standard",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "2-multi-level-menu-system",
+      "path": "_core/bash/interactive-menu-builder/2-multi-level-menu-system",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "2-multi-phase-sync-pattern",
+      "path": "_core/bash/git-sync-manager/2-multi-phase-sync-pattern",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-abbreviations",
+      "path": "_internal/documentation/mkdocs/3-abbreviations",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-context-aware-scoring",
+      "path": "_core/bash/complexity-scorer/3-context-aware-scoring",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-json-report-generation",
+      "path": "_core/bash/json-config-loader/3-json-report-generation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-multi-stage-workflow-architecture",
+      "path": "_internal/builders/skill-creator/3-multi-stage-workflow-architecture",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-navigation-structure",
+      "path": "_internal/documentation/mkdocs/3-navigation-structure",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-repository-status-check",
+      "path": "_core/bash/git-sync-manager/3-repository-status-check",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-table-display",
+      "path": "_core/bash/interactive-menu-builder/3-table-display",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "3-usage-summary-reports",
+      "path": "_core/bash/usage-tracker/3-usage-summary-reports",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "4-multi-section-ini-parsing",
+      "path": "_core/bash/json-config-loader/4-multi-section-ini-parsing",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "4-progress-tracking",
+      "path": "_core/bash/parallel-batch-executor/4-progress-tracking",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "4-state-file-operations",
+      "path": "_core/bash/state-directory-manager/4-state-file-operations",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-cache-management",
+      "path": "_core/bash/state-directory-manager/5-cache-management",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-confidence-scoring",
+      "path": "_core/bash/complexity-scorer/5-confidence-scoring",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-confirmation-dialogs",
+      "path": "_core/bash/interactive-menu-builder/5-confirmation-dialogs",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-environment-variable-configuration",
+      "path": "_core/bash/json-config-loader/5-environment-variable-configuration",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-error-handling",
+      "path": "_core/bash/bash-cli-framework/5-error-handling",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-safe-branch-operations",
+      "path": "_core/bash/git-sync-manager/5-safe-branch-operations",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "5-trend-analysis",
+      "path": "_core/bash/usage-tracker/5-trend-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "6-code-blocks-with-features",
+      "path": "_internal/documentation/mkdocs/6-code-blocks-with-features",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "6-yaml-configuration-via-yq",
+      "path": "_core/bash/json-config-loader/6-yaml-configuration-via-yq",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "7-mermaid-diagrams",
+      "path": "_internal/documentation/mkdocs/7-mermaid-diagrams",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "8-plugin-configuration",
+      "path": "_internal/documentation/mkdocs/8-plugin-configuration",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "aceengineer-website-update",
+      "path": "business/content-design/aceengineer-website-update",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "advanced-usage",
+      "path": "_internal/builders/skill-creator/advanced-usage",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "agent-directories",
+      "path": "_internal/meta/repo-cleanup/agent-directories",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "agent-usage-optimizer",
+      "path": "ai/agent-usage-optimizer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "ai-prompting",
+      "path": "ai/prompting/ai-prompting",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "ai-tool-assessment",
+      "path": "operations/devtools/ai-tool-assessment",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "api",
+      "path": "engineering/standards/api",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "api12-drilling-analyzer",
+      "path": "data/energy/api12-drilling-analyzer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "aqwa-benchmark",
+      "path": "engineering/marine-offshore/orcawave/aqwa-benchmark",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "bad-conceptual-only",
+      "path": "_internal/builders/skill-creator/bad-conceptual-only",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "basic-code-block",
+      "path": "_internal/documentation/mkdocs/basic-code-block",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "basic-template",
+      "path": "_internal/builders/web-artifacts-builder/basic-template",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "batch-manager",
+      "path": "engineering/marine-offshore/orcaflex/batch-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_core/bash/bash-script-framework/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_core/bash/complexity-scorer/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_core/bash/state-directory-manager/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_core/bash/usage-tracker/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_internal/builders/skill-creator/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_internal/meta/hidden-folder-audit/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_internal/meta/repo-cleanup/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "best-practices",
+      "path": "_internal/workflows/brainstorming/best-practices",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "blender",
+      "path": "engineering/cad/blender",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "bsee-data-extractor",
+      "path": "data/energy/bsee-data-extractor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "bsee-sodir-extraction",
+      "path": "data/analysis/bsee-sodir-extraction",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "cad-engineering",
+      "path": "engineering/cad/cad-engineering",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "cad-mesh-generation",
+      "path": "data/scientific/cad-mesh-generation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "canonical-reference",
+      "path": "_internal/builders/skill-creator/canonical-reference",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "chartjs",
+      "path": "data/visualization/chartjs",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "class-diagram",
+      "path": "_internal/documentation/mkdocs/class-diagram",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "code-annotations",
+      "path": "_internal/documentation/mkdocs/code-annotations",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "code-check",
+      "path": "engineering/marine-offshore/orcaflex/code-check",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "code-review",
+      "path": "development/github/code-review",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "collapsible-admonitions",
+      "path": "_internal/documentation/mkdocs/collapsible-admonitions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "common-cdn-libraries",
+      "path": "_internal/builders/web-artifacts-builder/common-cdn-libraries",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "common-errors",
+      "path": "_internal/builders/skill-creator/common-errors",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "common-hidden-folders",
+      "path": "_internal/meta/repo-cleanup/common-hidden-folders",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "common-hidden-folders-reference",
+      "path": "_internal/meta/hidden-folder-audit/common-hidden-folders-reference",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "common-issues",
+      "path": "_internal/documentation/mkdocs/common-issues",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "communication",
+      "path": "business/communication/communication",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "complexity-scorer",
+      "path": "_core/bash/complexity-scorer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "configuration-options",
+      "path": "_internal/builders/skill-creator/configuration-options",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "conflict-resolution-patterns",
+      "path": "_internal/meta/repo-cleanup/conflict-resolution-patterns",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "content-quality",
+      "path": "_internal/builders/skill-creator/content-quality",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "core-principles",
+      "path": "_internal/meta/discipline-refactor/core-principles",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "cowork-plugin-customizer",
+      "path": "development/plugin-management/cowork-plugin-customizer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "cp",
+      "path": "engineering/doc-extraction/cp",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "creative-skill-template",
+      "path": "_internal/builders/skill-creator/creative-skill-template",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "cross-platform-compat",
+      "path": "_core/bash/cross-platform-compat",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "d3js",
+      "path": "data/visualization/d3js",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "damping-sweep",
+      "path": "engineering/marine-offshore/orcawave/damping-sweep",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "danger",
+      "path": "_internal/documentation/mkdocs/danger",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "data-analysis",
+      "path": "data/analysis/data-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "data-context-extractor",
+      "path": "data/analytics/data-context-extractor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "data-fetcher",
+      "path": "data/energy/metocean/data-fetcher",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "data-management",
+      "path": "data/analysis/data-management",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "detailed-instructions",
+      "path": "_internal/builders/skill-creator/detailed-instructions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "diffraction-analysis",
+      "path": "engineering/marine-offshore/diffraction-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "discipline-refactor",
+      "path": "_internal/meta/discipline-refactor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "dnv",
+      "path": "engineering/standards/dnv",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "echarts",
+      "path": "data/visualization/echarts",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "economic-sensitivity-analyzer",
+      "path": "data/energy/economic-sensitivity-analyzer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "elite-frontend-ux",
+      "path": "development/elite-frontend-ux",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "energy-data-visualizer",
+      "path": "data/energy/energy-data-visualizer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "entity-relationship",
+      "path": "_internal/documentation/mkdocs/entity-relationship",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "environment-config",
+      "path": "engineering/marine-offshore/orcaflex/environment-config",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "error-handling",
+      "path": "_internal/builders/skill-creator/error-handling",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "error-handling",
+      "path": "_internal/builders/web-artifacts-builder/error-handling",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "error-handling",
+      "path": "_internal/workflows/brainstorming/error-handling",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "example-1-create-new-cli-tool",
+      "path": "_core/bash/bash-script-framework/example-1-create-new-cli-tool",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "example-1-scenario-name",
+      "path": "_internal/builders/skill-creator/example-1-scenario-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "excel-translation",
+      "path": "data/analysis/excel-translation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "execution-checklist",
+      "path": "_internal/builders/skill-creator/execution-checklist",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "execution-checklist",
+      "path": "_internal/builders/web-artifacts-builder/execution-checklist",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "expense-tracking",
+      "path": "business/admin/expense-tracking",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "extreme-analysis",
+      "path": "engineering/marine-offshore/orcaflex/extreme-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "fatigue-analysis",
+      "path": "engineering/marine-offshore/fatigue-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "fdas-economics",
+      "path": "data/energy/fdas-economics",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "fe-analyst",
+      "path": "engineering/marine-offshore/fe-analyst",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "field-analyzer",
+      "path": "data/energy/field-analyzer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "file-conversion",
+      "path": "engineering/marine-offshore/orcaflex/file-conversion",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "file-naming",
+      "path": "_internal/builders/web-artifacts-builder/file-naming",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "financial-analysis",
+      "path": "engineering/financial-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "flowchart",
+      "path": "_internal/documentation/mkdocs/flowchart",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "folders-to-delete-confirmed-safe",
+      "path": "_internal/meta/repo-cleanup/folders-to-delete-confirmed-safe",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "for-tracked-files-use-git-rm",
+      "path": "_internal/meta/repo-cleanup/for-tracked-files-use-git-rm",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gis-informed-workflow",
+      "path": "engineering/gis/gis-informed-workflow",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gitbook",
+      "path": "development/documentation/gitbook",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gitignore-updates",
+      "path": "_internal/meta/repo-cleanup/gitignore-updates",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "good-actionable",
+      "path": "_internal/builders/skill-creator/good-actionable",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "google-earth-engine",
+      "path": "engineering/gis/google-earth-engine",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-add-tests",
+      "path": "gsd-add-tests",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-add-todo",
+      "path": "gsd-add-todo",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-audit-uat",
+      "path": "gsd-audit-uat",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-autonomous",
+      "path": "gsd-autonomous",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-check-todos",
+      "path": "gsd-check-todos",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-cleanup",
+      "path": "gsd-cleanup",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-complete-milestone",
+      "path": "gsd-complete-milestone",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-debug",
+      "path": "gsd-debug",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-do",
+      "path": "gsd-do",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-fast",
+      "path": "gsd-fast",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-forensics",
+      "path": "gsd-forensics",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-health",
+      "path": "gsd-health",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-help",
+      "path": "gsd-help",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-insert-phase",
+      "path": "gsd-insert-phase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-join-discord",
+      "path": "gsd-join-discord",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-list-phase-assumptions",
+      "path": "gsd-list-phase-assumptions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-list-workspaces",
+      "path": "gsd-list-workspaces",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-manager",
+      "path": "gsd-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-map-codebase",
+      "path": "gsd-map-codebase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-milestone-summary",
+      "path": "gsd-milestone-summary",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-new-workspace",
+      "path": "gsd-new-workspace",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-next",
+      "path": "gsd-next",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-note",
+      "path": "gsd-note",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-plant-seed",
+      "path": "gsd-plant-seed",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-pr-branch",
+      "path": "gsd-pr-branch",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-profile-user",
+      "path": "gsd-profile-user",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-progress",
+      "path": "gsd-progress",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-reapply-patches",
+      "path": "gsd-reapply-patches",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-remove-phase",
+      "path": "gsd-remove-phase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-remove-workspace",
+      "path": "gsd-remove-workspace",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-research-phase",
+      "path": "gsd-research-phase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-session-report",
+      "path": "gsd-session-report",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-set-profile",
+      "path": "gsd-set-profile",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-settings",
+      "path": "gsd-settings",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-ship",
+      "path": "gsd-ship",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-stats",
+      "path": "gsd-stats",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-thread",
+      "path": "gsd-thread",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-ui-phase",
+      "path": "gsd-ui-phase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-ui-review",
+      "path": "gsd-ui-review",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-validate-phase",
+      "path": "gsd-validate-phase",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "gsd-workstreams",
+      "path": "gsd-workstreams",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "hardware-assessment",
+      "path": "operations/devops/hardware-assessment",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "hidden-folder-audit",
+      "path": "_internal/meta/hidden-folder-audit",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "highcharts",
+      "path": "data/visualization/highcharts",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "how-to-identify-disciplines",
+      "path": "_internal/meta/discipline-refactor/how-to-identify-disciplines",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "hse-risk-analyzer",
+      "path": "data/energy/hse-risk-analyzer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "inspiration-examples",
+      "path": "_internal/builders/skill-creator/inspiration-examples",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "installation-analysis",
+      "path": "engineering/marine-offshore/orcaflex/installation-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "instructions",
+      "path": "_internal/builders/skill-creator/instructions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "integration-with-python-package",
+      "path": "_internal/documentation/mkdocs/integration-with-python-package",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "interactive-menu-builder",
+      "path": "_core/bash/interactive-menu-builder",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "iso",
+      "path": "engineering/standards/iso",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "issue-tracker",
+      "path": "development/github/issue-tracker",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "json-config-loader",
+      "path": "_core/bash/json-config-loader",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "jumper-analysis",
+      "path": "engineering/marine-offshore/orcaflex/jumper-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "learning-from-past-work",
+      "path": "_core/context-management/learning-from-past-work",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "legal-sanity-review",
+      "path": "_internal/workflows/legal-sanity-review",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "line-highlighting",
+      "path": "_internal/documentation/mkdocs/line-highlighting",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "line-number-start",
+      "path": "_internal/documentation/mkdocs/line-number-start",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "line-numbers",
+      "path": "_internal/documentation/mkdocs/line-numbers",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "line-wizard",
+      "path": "engineering/marine-offshore/orcaflex/line-wizard",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "list-untracked-files",
+      "path": "_internal/meta/repo-cleanup/list-untracked-files",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "marine-offshore-engineering",
+      "path": "engineering/marine-offshore/marine-offshore-engineering",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "marine-safety",
+      "path": "engineering/marine-offshore/marine-safety",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "marine-safety-incidents",
+      "path": "data/energy/marine-safety-incidents",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "md-to-pdf",
+      "path": "data/documents/md-to-pdf",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "mermaid-conventions",
+      "path": "_internal/documentation/mermaid-conventions",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "mesh-generation",
+      "path": "engineering/marine-offshore/orcawave/mesh-generation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "migrate-agent-os-to-claude",
+      "path": "_internal/meta/hidden-folder-audit/migrate-agent-os-to-claude",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "miro-api",
+      "path": "business/communication/miro-api",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "modal-analysis",
+      "path": "engineering/marine-offshore/orcaflex/modal-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "model-generator",
+      "path": "engineering/marine-offshore/orcaflex/model-generator",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "model-sanitization",
+      "path": "engineering/marine-offshore/orcaflex/model-sanitization",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "model-selection",
+      "path": "ai/optimization/model-selection",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "modeling",
+      "path": "engineering/marine-offshore/orcaflex/modeling",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "modular-architecture-documentation",
+      "path": "business/admin/modular-architecture-documentation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "module-based-refactor",
+      "path": "_internal/meta/module-based-refactor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "monolithic-to-modular",
+      "path": "engineering/marine-offshore/orcaflex/monolithic-to-modular",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "mooring-design",
+      "path": "engineering/marine-offshore/mooring-design",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "mooring-iteration",
+      "path": "engineering/marine-offshore/orcaflex/mooring-iteration",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "multi-body",
+      "path": "engineering/marine-offshore/orcawave/multi-body",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "naval-architect-expert",
+      "path": "digitalmodel/naval-architect-expert",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "norsok",
+      "path": "engineering/standards/norsok",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "npv-analyzer",
+      "path": "data/energy/npv-analyzer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "office-docs",
+      "path": "data/office/office-docs",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "official-plugin-reference",
+      "path": "_internal/builders/skill-creator/official-plugin-reference",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "operation-1",
+      "path": "_internal/builders/skill-creator/operation-1",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "orcaflex-enrichment",
+      "path": "data/engineering/orcaflex-enrichment",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "orchestration-architecture",
+      "path": "_internal/meta/discipline-refactor/orchestration-architecture",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "parallel-batch-executor",
+      "path": "_core/bash/parallel-batch-executor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pdftotext-poppler",
+      "path": "data/documents/pdf/pdftotext-poppler",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "performance",
+      "path": "_internal/builders/web-artifacts-builder/performance",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "phase-1-analysis",
+      "path": "_internal/meta/discipline-refactor/phase-1-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "phase-1-name",
+      "path": "_internal/builders/skill-creator/phase-1-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "phase-2-planning",
+      "path": "_internal/meta/discipline-refactor/phase-2-planning",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "phase-3-execution",
+      "path": "_internal/meta/discipline-refactor/phase-3-execution",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "phase-4-validation",
+      "path": "_internal/meta/discipline-refactor/phase-4-validation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "plotly-visualization",
+      "path": "data/visualization/plotly-visualization",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "post-processing",
+      "path": "engineering/marine-offshore/orcaflex/post-processing",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pr-manager",
+      "path": "development/github/pr-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pre-audit",
+      "path": "_internal/meta/hidden-folder-audit/pre-audit",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pre-cleanup",
+      "path": "_internal/meta/repo-cleanup/pre-cleanup",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "principle-1-name",
+      "path": "_internal/builders/skill-creator/principle-1-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "process-skill-template",
+      "path": "_internal/builders/skill-creator/process-skill-template",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "product-documentation",
+      "path": "business/admin/product-documentation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "production-forecaster",
+      "path": "data/energy/production-forecaster",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "progress-tracking-commands",
+      "path": "_internal/meta/repo-cleanup/progress-tracking-commands",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "project-board",
+      "path": "development/github/project-board",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pyproject-toml",
+      "path": "development/devtools/pyproject-toml",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pyproject-toml",
+      "path": "operations/devtools/pyproject-toml",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "python-gis-ecosystem",
+      "path": "engineering/gis/python-gis-ecosystem",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "python-package",
+      "path": "_internal/meta/discipline-refactor/python-package",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "python-pptx",
+      "path": "data/office/python-pptx",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "pyvista-3d",
+      "path": "engineering/cad/pyvista-3d",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "qtf-analysis",
+      "path": "engineering/marine-offshore/orcawave/qtf-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "quality-checklist",
+      "path": "_internal/builders/skill-creator/quality-checklist",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "quantification-metrics",
+      "path": "business/admin/quantification-metrics",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "quick-reference",
+      "path": "_core/context-management/quick-reference",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "rao-import",
+      "path": "engineering/marine-offshore/orcaflex/rao-import",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "raycast-alfred",
+      "path": "operations/devtools/raycast-alfred",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "readability-classification",
+      "path": "data/documents/pdf/text-extractor/readability-classification",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "references-to-remove",
+      "path": "_internal/meta/repo-cleanup/references-to-remove",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "related-resources",
+      "path": "_internal/documentation/mkdocs/related-resources",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "release-manager",
+      "path": "development/github/release-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "release-swarm",
+      "path": "development/github/release-swarm",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "remote-desktop",
+      "path": "workspace-hub/remote-desktop",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "repo-architect",
+      "path": "development/github/repo-architect",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "repo-cleanup",
+      "path": "_internal/meta/repo-cleanup",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "response-format-rules",
+      "path": "_core/context-management/response-format-rules",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "results-comparison",
+      "path": "engineering/marine-offshore/orcaflex/results-comparison",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "scenario",
+      "path": "_internal/builders/skill-creator/scenario",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "section-2",
+      "path": "_internal/documentation/mkdocs/section-2",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "self-contained-architecture",
+      "path": "_internal/builders/web-artifacts-builder/self-contained-architecture",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "sequence-diagram",
+      "path": "_internal/documentation/mkdocs/sequence-diagram",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "ship-dynamics-6dof",
+      "path": "engineering/marine-offshore/ship-dynamics-6dof",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "signal-analysis",
+      "path": "engineering/marine-offshore/signal-analysis",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "size-limits-mandatory",
+      "path": "_core/context-management/size-limits-mandatory",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "skill-discovery",
+      "path": "_internal/builders/skill-creator/skill-discovery",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "sodir-data-extractor",
+      "path": "data/energy/sodir-data-extractor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "spec-audit",
+      "path": "engineering/marine-offshore/orcaflex/spec-audit",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "specialist",
+      "path": "engineering/marine-offshore/orcaflex/specialist",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "specsarchive",
+      "path": "_internal/meta/hidden-folder-audit/specsarchive",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "standard-folders-module-structure",
+      "path": "_internal/meta/discipline-refactor/standard-folders-module-structure",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "state-diagram",
+      "path": "_internal/documentation/mkdocs/state-diagram",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "state-directory-manager",
+      "path": "_core/bash/state-directory-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "static-debug",
+      "path": "engineering/marine-offshore/orcaflex/static-debug",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "statistics",
+      "path": "data/energy/metocean/statistics",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "step-1-define-the-skill-scope",
+      "path": "_internal/builders/skill-creator/step-1-define-the-skill-scope",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "step-1-inventory-all-hidden-folders",
+      "path": "_internal/meta/hidden-folder-audit/step-1-inventory-all-hidden-folders",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "step-1-name",
+      "path": "_internal/builders/skill-creator/step-1-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "structure-section-updates",
+      "path": "_internal/meta/repo-cleanup/structure-section-updates",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "style-1-name",
+      "path": "_internal/builders/skill-creator/style-1-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "subsection-11",
+      "path": "_internal/documentation/mkdocs/subsection-11",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "swarm-issue",
+      "path": "development/github/swarm-issue",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "swarm-pr",
+      "path": "development/github/swarm-pr",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "sweetviz",
+      "path": "data/analysis/sweetviz",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "tabbed-code-blocks",
+      "path": "_internal/documentation/mkdocs/tabbed-code-blocks",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "target-repository-structure",
+      "path": "_internal/meta/discipline-refactor/target-repository-structure",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "task-category-1",
+      "path": "_internal/builders/skill-creator/task-category-1",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "technical-implementation",
+      "path": "_internal/builders/skill-creator/technical-implementation",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "technical-skill-template",
+      "path": "_internal/builders/skill-creator/technical-skill-template",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "technology-stack-modernization",
+      "path": "business/admin/technology-stack-modernization",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "template-name",
+      "path": "_internal/builders/skill-creator/template-name",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "text-extractor",
+      "path": "data/documents/pdf/text-extractor",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "time-tracking",
+      "path": "business/productivity/time-tracking",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "tip",
+      "path": "_internal/documentation/mkdocs/tip",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "to-orcaflex",
+      "path": "engineering/marine-offshore/orcawave/to-orcaflex",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "usage-optimization",
+      "path": "ai/optimization/usage-optimization",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "usage-tracker",
+      "path": "_core/bash/usage-tracker",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "uv-package-manager",
+      "path": "development/devtools/uv-package-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "uv-package-manager",
+      "path": "operations/devtools/uv-package-manager",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "validatecontextsh",
+      "path": "_core/context-management/validatecontextsh",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "verification-checklist",
+      "path": "_internal/meta/discipline-refactor/verification-checklist",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "verify-hidden-folder-state",
+      "path": "_internal/meta/hidden-folder-audit/verify-hidden-folder-state",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "version-metadata",
+      "path": "_internal/meta/hidden-folder-audit/version-metadata",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "version-metadata",
+      "path": "_internal/meta/repo-cleanup/version-metadata",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "vessel-setup",
+      "path": "engineering/marine-offshore/orcaflex/vessel-setup",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "visualizer",
+      "path": "data/energy/metocean/visualizer",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "wave-theory",
+      "path": "engineering/marine-offshore/wave-theory",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "web-scraper-energy",
+      "path": "data/energy/web-scraper-energy",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "well-production-dashboard",
+      "path": "data/energy/well-production-dashboard",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "windows-task-scheduler",
+      "path": "_core/context-management/windows-task-scheduler",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "with-title",
+      "path": "_internal/documentation/mkdocs/with-title",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    },
+    {
+      "skill": "yaml-gotchas",
+      "path": "engineering/marine-offshore/orcaflex/yaml-gotchas",
+      "reference_count": 0,
+      "in_recent_commits": false,
+      "tier": "dead"
+    }
+  ]
+}
