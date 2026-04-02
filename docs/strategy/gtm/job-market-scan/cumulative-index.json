@@ -1,0 +1,32 @@
+{
+  "jobs": {
+    "bc50c4814f9b": {
+      "title": "Senior Mooring Engineer",
+      "company": "Hanwha Ocean",
+      "location": "Houston, TX",
+      "source": "linkedin",
+      "search_keyword": "OrcaFlex engineer",
+      "alignment_score": 125,
+      "first_seen": "2026-04-02",
+      "last_seen": "2026-04-02",
+      "seen_count": 1
+    }
+  },
+  "scan_history": [
+    {
+      "date": "2026-04-02",
+      "total_jobs": 1,
+      "new_jobs": 1,
+      "returning_jobs": 0,
+      "unique_companies": 1
+    }
+  ],
+  "company_history": {
+    "Hanwha Ocean": [
+      {
+        "date": "2026-04-02",
+        "count": 1
+      }
+    ]
+  }
+}

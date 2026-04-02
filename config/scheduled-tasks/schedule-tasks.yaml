@@ -323,6 +323,29 @@ tasks:
     is_claude_task: false
     description: Windows Task Scheduler — repo sync every 4 hours via Git Bash.
 
+  # ── GTM / Business Development ──────────────────────────────────────────
+
+  - id: gtm-job-market-scan
+    label: Weekly GTM job market scan refresh
+    schedule: "0 5 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/miniforge3/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/gtm/weekly-scan-refresh.sh
+      >> $WORKSPACE_HUB/logs/gtm/scan-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/gtm/scan-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 5AM UTC — scans LinkedIn, Indeed, Rigzone + 30 company
+      career pages for 22 engineering keywords. Tracks new vs returning
+      postings, generates dashboard, priority targets, trend report.
+      Commits results to main. Related: #1671, #1670, #1669.
+
+  # ── Windows machines ───────────────────────────────────────────────────
+
   - id: win-session-state-commit
     label: Session state commit (Windows)
     schedule: "daily 03:00"
