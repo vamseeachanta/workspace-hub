@@ -43,37 +43,16 @@ if ! ws_is "full"; then
     exit 0
 fi
 
-# ── Git helpers ──────────────────────────────────────────────────────────────
-GIT_LOCK="/tmp/workspace-hub-git.lock"
-FLOCK_TIMEOUT=120
-
-git_locked() {
-    # Run a git command under flock to avoid contention with other cron jobs
-    flock -w "$FLOCK_TIMEOUT" "$GIT_LOCK" "$@"
-}
-
-git_heal_index() {
-    # Recover from corrupt git index (e.g., truncated by concurrent writer)
-    if ! git status >/dev/null 2>&1; then
-        log "WARNING: git index corrupt — recovering with read-tree HEAD"
-        git read-tree HEAD 2>>"$LOG_FILE" || {
-            log "ERROR: git read-tree HEAD failed"
-            return 1
-        }
-    fi
-}
+# ── Git helpers (shared library) ─────────────────────────────────────────────
+# All cron scripts use the same lock + heal + retry-push library (#1548)
+GIT_SAFE_LOG_PREFIX="[gsd-researcher]"
+source "${WS_HUB}/scripts/cron/lib/git-safe.sh"
+git_safe_init "$WS_HUB" 2>>"$LOG_FILE"
 
 # ── Git pull ─────────────────────────────────────────────────────────────────
 log "Starting nightly research"
 cd "$WS_HUB" || { log "ERROR: cannot cd to $WS_HUB"; exit 1; }
-git_locked bash -c '
-    cd "'"$WS_HUB"'" || exit 1
-    # Heal index before pull
-    if ! git status >/dev/null 2>&1; then
-        git read-tree HEAD 2>>"'"$LOG_FILE"'" || true
-    fi
-    git pull --rebase --quiet 2>>"'"$LOG_FILE"'"
-' || {
+git_safe_pull 2>>"$LOG_FILE" || {
     log "WARNING: git pull failed — continuing with local state"
 }
 
@@ -352,41 +331,13 @@ MISSING=$(validate_output "$OUTPUT_FILE" "$DOMAIN") || {
 }
 log "Research written to: ${OUTPUT_FILE} ($(wc -l < "$OUTPUT_FILE") lines)"
 
-# ── Git commit (best-effort, locked) ─────────────────────────────────────────
-git_locked bash -c '
-    cd "'"$WS_HUB"'" || exit 1
-    LOG="'"$LOG_FILE"'"
-    OUTPUT="'"$OUTPUT_FILE"'"
-    DOMAIN="'"$DOMAIN"'"
-    DATE="'"$DATE"'"
-
-    # Heal index if corrupt
-    if ! git status >/dev/null 2>&1; then
-        echo "[gsd-researcher] $(date -u +%H:%M:%S) WARNING: git index corrupt before commit — recovering" >> "$LOG"
-        git read-tree HEAD 2>>"$LOG" || true
-    fi
-
-    git add "$OUTPUT" 2>>"$LOG" || exit 0
-    if git diff --staged --quiet 2>/dev/null; then
-        exit 0
-    fi
-
-    git commit -m "docs(research): ${DOMAIN} research ${DATE}" --quiet 2>>"$LOG" || {
-        echo "[gsd-researcher] $(date -u +%H:%M:%S) WARNING: git commit failed" >> "$LOG"
-        exit 0
-    }
-
-    # Pull --rebase to incorporate any commits pushed since our earlier pull
-    git pull --rebase --quiet 2>>"$LOG" || {
-        echo "[gsd-researcher] $(date -u +%H:%M:%S) WARNING: pre-push rebase failed — skipping push" >> "$LOG"
-        exit 0
-    }
-
-    git push --quiet 2>>"$LOG" || {
-        echo "[gsd-researcher] $(date -u +%H:%M:%S) WARNING: git push failed — will sync on next repo-sync" >> "$LOG"
-    }
-' || {
-    log "WARNING: git commit/push block failed or lock timed out"
+# ── Git commit + push (best-effort, via shared library) ──────────────────────
+cd "$WS_HUB"
+git_safe_commit "docs(research): ${DOMAIN} research ${DATE}" "$OUTPUT_FILE" 2>>"$LOG_FILE" || {
+    log "WARNING: git commit failed"
+}
+git_safe_push 2>>"$LOG_FILE" || {
+    log "WARNING: git push failed — will sync on next repo-sync cycle"
 }
 
 # ── Prune old research artifacts: 90 days for daily, 365 days for synthesis (D-08) ──

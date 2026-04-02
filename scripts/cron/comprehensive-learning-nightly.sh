@@ -20,7 +20,11 @@ ${PYTHON} -c "import yaml" 2>/dev/null || {
 
 # Step 1: pull derived state files (hard gate — pipeline must not run on stale state)
 mkdir -p "$WORKSPACE_HUB/.claude/state/learning-reports" 2>/dev/null
-git pull --no-rebase origin main
+# Use shared git-safe library for coordinated git access (#1548)
+GIT_SAFE_LOG_PREFIX="[comprehensive-learning]"
+source "${WORKSPACE_HUB}/scripts/cron/lib/git-safe.sh"
+git_safe_init "$WORKSPACE_HUB"
+git_safe_pull
 
 # Step 2: rsync raw sessions from contributor machines — each independently best-effort
 # ace-linux-2: sessions at /mnt/workspace-hub/.claude/state/sessions/ (not ~/.claude/state/)
@@ -53,11 +57,11 @@ bash scripts/automation/nightly-release-scan.sh || \
 # Auto-commit any WRK items created by the release scan (best-effort — must not abort nightly)
 if ! git diff --quiet .claude/work-queue/ config/ai-tools/release-scan-state.yaml 2>/dev/null; then
   {
-    git add config/ai-tools/release-scan-state.yaml .claude/work-queue/INDEX.md
-    # Stage only WRK files modified/created in the last 2 minutes (this scan run)
+    # Stage release-scan files, then use git-safe for commit/push (#1548)
     find .claude/work-queue/pending/ -name 'WRK-*.md' -mmin -2 -exec git add {} +
-    git commit -m "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
-    git push
+    git add config/ai-tools/release-scan-state.yaml .claude/work-queue/INDEX.md
+    git_safe_commit "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
+    git_safe_push
   } || echo "WARNING: release-scan auto-commit/push failed — changes remain local"
 fi
 
