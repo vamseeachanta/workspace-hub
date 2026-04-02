@@ -1,405 +1,467 @@
-# OrcaWave/OrcaFlex Domain Capability Roadmap
+# OrcaWave / OrcaFlex Domain Capability Roadmap
 
-> Generated: 2026-04-01 | Issue: #1572 | Cross-reference: docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md
+> **Date:** 2026-04-02  
+> **Issue:** #1572 (Domain-specific capability roadmaps)  
+> **Parent:** #1567 (Continuous Repo Architecture Intelligence)  
+> **Cross-reference:** docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md  
+> **Companion:** docs/assessments/hull-library-audit.md (hull library deep-dive)
 
-## Scale Summary
+---
 
-| Domain | Skills | Code Modules | LOC | Test Files | Open Issues |
-|--------|--------|-------------|-----|-----------|-------------|
-| OrcaWave (diffraction) | 8 skills | 55 modules | 21,904 | 38 | 9 |
-| OrcaWave (reporting) | (included above) | 13 modules | 1,033 | — | — |
-| OrcaFlex (solver) | 24 skills | 259 modules | 58,416 | 101 | 14 |
-| OrcaFlex (reporting) | (included above) | 14 modules | (above) | — | — |
-| Hull Library | — | 25 modules | ~8,100 | 34 | 4 |
-| Parametric Hull Analysis | — | 8 modules | ~2,000 | 1 | 2 |
-| **Total** | **32 skills** | **374 modules** | **~91,500** | **174** | **29** |
+## Executive Summary
+
+The OrcaWave/OrcaFlex domain encompasses **344 Python modules**, **43 AI agent skills**, **~100 test files**, and **13 spec.yml validation cases**. The codebase is organized into four major code areas:
+
+| Area | Modules | Purpose |
+|------|---------|---------|
+| `hydrodynamics/diffraction/` | 58 | Unified diffraction schema, multi-solver backend (AQWA + OrcaWave), benchmarking |
+| `solvers/orcaflex/` | 259 | Full OrcaFlex lifecycle: generate → validate → run → post-process → report |
+| `orcawave/` (reporting) | 13 | OrcaWave HTML reporting (8-section, Plotly) |
+| `orcaflex/` (reporting+QA) | 14 | OrcaFlex HTML reporting (8-section) + QA facade |
+
+Supporting infrastructure: `hull_library/` (25 modules, 7,656 LOC), `parametric_hull_analysis/` (7 modules, 1,983 LOC), solver queue (`scripts/solver/`, 4 files), dat-to-yaml pipeline (`scripts/data/orcaflex/`, 4 files).
+
+**Key finding:** The software is architecturally mature but has critical gaps in **end-to-end integration testing** (no real BEM runs through the pipeline) and **solver queue automation** (batch submission, result watching, and post-processing hooks not yet built).
 
 ---
 
 ## 1. OrcaWave Capabilities
 
-### 1.1 Skills Inventory
+### 1.1 AI Agent Skills (8 skills)
 
-| Skill | Type | Description |
-|-------|------|-------------|
-| `orcawave/` (root) | domain | Root skill linking all sub-skills |
-| `orcawave/analysis/` | reference | Expert agent for diffraction/radiation: wave-structure interaction, added mass/damping, QTF, hydrodynamic database generation |
-| `orcawave/aqwa-benchmark/` | reference | Cross-validation: OrcaWave vs AQWA. Statistical comparison, peak validation, automated benchmark reporting |
-| `orcawave/damping-sweep/` | reference | Viscous damping parametric studies: roll damping, critical damping, bilge keel effects, model test comparison |
-| `orcawave/mesh-generation/` | reference | Panel mesh generation: CAD/STL→GDF, convergence studies, waterline refinement, mesh quality validation |
-| `orcawave/multi-body/` | reference | Multi-body interactions: side-by-side, FPSO-tanker, gap resonance, hydrodynamic shielding |
-| `orcawave/qtf-analysis/` | reference | Second-order QTFs: mean drift, difference/sum frequency, slow drift, Newman approximation |
-| `orcawave/to-orcaflex/` | reference | OrcaWave→OrcaFlex: hydrodynamic database, RAO import, viscous damping, coordinate transforms |
+| Skill | Summary | Linked Code Modules | Open Issues |
+|-------|---------|--------------------| ------------|
+| `orcawave` (root) | Index/navigator for all sub-skills | — | — |
+| `orcawave/analysis` | Core diffraction/radiation: added mass, damping, QTF, batch, OrcaFlex export | `orcawave.orcawave_analysis`, `orcawave.batch`, `orcawave.orcaflex_export` | #22, #29 |
+| `orcawave/aqwa-benchmark` | Cross-validation: OrcaWave vs AQWA (5% tolerance) | `diffraction.comparison_framework`, converters | #21, #29 |
+| `orcawave/damping-sweep` | Viscous roll damping parametric: bilge keel, model test | `orcawave.damping` (DampingSweep, CriticalDampingCalculator) | — |
+| `orcawave/mesh-generation` | CAD/STL → GDF, waterline refinement, convergence studies | `orcawave.mesh`, `orcawave.converters` | — |
+| `orcawave/multi-body` | Side-by-side, FPSO-tanker, gap resonance, shielding | `orcawave.multibody` (MultiBodyAnalysis, GapResonanceAnalyzer) | — |
+| `orcawave/qtf-analysis` | Full QTF matrix, Newman approx, slow-drift, mean drift | `orcawave.qtf` (FullQTFComputation, MeanDriftAnalyzer) | — |
+| `orcawave/to-orcaflex` | .owr → OrcaFlex vessel types, RAO import, coord transforms | `diffraction.orcaflex_exporter`, `orcawave.rao_import` | — |
 
-### 1.2 Code Module Map
+### 1.2 Supporting Skills
 
-#### Core Pipeline: `hydrodynamics/diffraction/` (55 modules, 21,904 LOC)
+| Skill | Summary | Linked Code |
+|-------|---------|-------------|
+| `diffraction-analysis` | Master orchestrator: routes to AQWA/OrcaWave/BEMRosetta, defines DiffractionSpec | All diffraction modules |
+| `hydrodynamic-analysis` | BEM theory: RAO, added mass, damping, wave loading | Reference only |
+| `hydrodynamics` | Coefficient DB, wave spectra, OCIMF, RAO quality | `hydrodynamics.*` modules |
+| `naval-architecture` | Hydrostatics, stability, seakeeping, hull types | Reference only |
+| `solver-benchmark` | N-way cross-validation (AQWA/OrcaWave/BEMRosetta) | `MultiSolverComparator` |
+| `mesh-utilities` | Quick mesh inspect/convert/validate | Mesh tools |
 
-| Module | Lines | Purpose | Tests? |
-|--------|-------|---------|--------|
-| **input_schemas.py** | 789 | DiffractionSpec Pydantic v2 — spec.yml validation, unit conversion | test_input_schemas.py |
-| **orcawave_backend.py** | — | DiffractionSpec → OrcaWave native YAML conversion | test_orcawave_backend.py |
-| **orcawave_runner.py** | — | OrcaWave API execution wrapper | test_orcawave_runner.py |
-| **orcawave_batch_runner.py** | — | Batch execution of multiple OrcaWave runs | test_orcawave_batch_runner.py |
-| **orcawave_test_utilities.py** | — | Test helpers for OrcaWave validation | — |
-| **aqwa_backend.py** | — | DiffractionSpec → AQWA input conversion | test_aqwa_backend.py |
-| **aqwa_runner.py** | — | AQWA execution wrapper | test_aqwa_runner.py |
-| **aqwa_batch_runner.py** | — | Batch AQWA execution | test_aqwa_batch_runner.py |
-| **aqwa_ah1_parser.py** | — | AQWA .AH1 file parser | test_aqwa_ah1_parser.py |
-| **aqwa_lis_parser.py** | — | AQWA .LIS results parser | — |
-| **aqwa_converter.py** | — | AQWA format conversion utilities | — |
-| **aqwa_result_extractor.py** | — | Extract results from AQWA output | test_aqwa_result_extractor.py |
-| **batch_processor.py** | — | Generic batch processing framework | — |
-| **benchmark_runner.py** | — | Cross-solver benchmark orchestration | test_benchmark_runner.py |
-| **benchmark_plotter.py** | — | Benchmark RAO comparison plots | test_benchmark_plotter.py |
-| **benchmark_correlation.py** | — | Statistical correlation metrics | — |
-| **benchmark_dof_sections.py** | — | Per-DOF benchmark sections | — |
-| **benchmark_dof_tables.py** | — | Tabular DOF comparisons | — |
-| **benchmark_helpers.py** | — | Benchmark utility functions | — |
-| **benchmark_input_comparison.py** | — | Input file diff | — |
-| **benchmark_input_files.py** | — | Input file management | — |
-| **benchmark_input_reports.py** | — | Input comparison reports | — |
-| **benchmark_mesh_schematic.py** | — | Mesh visualization for benchmarks | — |
-| **benchmark_rao_helpers.py** | — | RAO extraction for benchmarks | — |
-| **benchmark_rao_plots.py** | — | RAO comparison plots | — |
-| **benchmark_rao_summary.py** | — | Summary statistics | — |
-| **comparison_framework.py** | — | Multi-solver comparison | — |
-| **multi_solver_comparator.py** | — | Side-by-side solver comparison | test_multi_solver_comparator.py |
-| **cli.py** | — | CLI entry point | test_cli_integration.py |
-| **diffraction_cli.py** | — | Diffraction-specific CLI | — |
-| **diffraction_units.py** | — | Unit conversion utilities | test_diffraction_units.py |
-| **geometry_quality.py** | — | Mesh quality assessment | — |
-| **gmsh_mesh_builder.py** | — | GMSH-based mesh generation | test_gmsh_mesh_builder.py |
-| **mesh_pipeline.py** | — | End-to-end mesh processing | test_mesh_pipeline.py |
-| **orcaflex_exporter.py** | — | Export to OrcaFlex format | — |
-| **output_schemas.py** | — | Result data models | — |
-| **output_validator.py** | — | Result validation | test_output_validator_resonance.py |
-| **polars_exporter.py** | — | Polars DataFrame export | test_polars_exporter.py |
-| **rao_plotter.py** | — | RAO visualization | test_rao_plotter.py |
-| **report_builders.py** | — | Report section builders | — |
-| **report_builders_header.py** | — | Report header generation | — |
-| **report_builders_hydrostatics.py** | — | Hydrostatics report sections | — |
-| **report_builders_responses.py** | — | Response report sections | — |
-| **report_computations.py** | — | Derived quantities | — |
-| **report_data_models.py** | — | Report data models | — |
-| **report_generator.py** | — | Full report generation | test_report_generator.py |
-| **result_extractor.py** | — | Generic result extraction | test_result_extractor.py |
-| **reverse_parsers.py** | — | OrcaWave output parsers | test_reverse_parsers.py |
-| **spec_converter.py** | — | Spec format conversion | — |
-| **wamit_reference_loader.py** | — | WAMIT reference data loading | — |
-| **solver/orcawave_converter.py** | — | Native OrcaWave conversion | — |
-| **solver/orcawave_data_extraction.py** | — | Data extraction from OrcaWave | — |
-| **solver/report_extractors.py** | — | Report extraction | — |
+### 1.3 Code Modules
 
-#### OrcaWave Reporting: `orcawave/reporting/` (13 modules, 1,033 LOC)
+#### `digitalmodel/src/digitalmodel/orcawave/` — Reporting (13 files)
 
-| Module | Purpose |
-|--------|---------|
-| `builder.py` | Report builder |
-| `config.py` | Report configuration |
-| `sections/rao_plots.py` | RAO plot sections |
-| `sections/hydro_matrices.py` | Added mass/damping matrix sections |
-| `sections/mean_drift.py` | Mean drift force sections |
-| `sections/multi_body.py` | Multi-body interaction sections |
-| `sections/panel_pressures.py` | Panel pressure visualization |
-| `sections/qa_summary.py` | QA summary sections |
-| `sections/qtf_heatmap.py` | QTF heatmap visualization |
-| `sections/model_summary.py` | Model overview sections |
+Builder-pattern HTML report generator with 8 sections:
 
-### 1.3 DiffractionSpec Pipeline (Core Workflow)
+| Section | Module | Content |
+|---------|--------|---------|
+| 1. Model Summary | `model_summary.py` | Body count, freq range, headings, water depth |
+| 2. RAO Plots | `rao_plots.py` | Interactive Plotly RAO per DOF, tabbed UI |
+| 3. Hydro Matrices | `hydro_matrices.py` | Added mass & damping diagonal line plots |
+| 4. Mean Drift | `mean_drift.py` | Mean drift table + polar plot |
+| 5. Panel Pressures | `panel_pressures.py` | Panel geometry stats (area, wetted surface) |
+| 6. Multi-Body | `multi_body.py` | Coupling matrix heatmap |
+| 7. QTF Heatmap | `qtf_heatmap.py` | QTF magnitude heatmap (ω₁ vs ω₂) |
+| 8. QA Summary | `qa_summary.py` | Pass/fail checks (RAOs finite, damping ≥0) |
 
+Entry point: `generate_orcawave_report(owr_path) → HTML`
+
+#### `hydrodynamics/diffraction/` — Core Pipeline (58 files)
+
+| Group | Files | Key Classes/Functions |
+|-------|-------|----------------------|
+| **Core Schema** | 4 | `DiffractionSpec`, `DiffractionResults`, `RAOSet`, `OutputValidator` |
+| **OrcaWave Backend** | 5 | `OrcaWaveRunner`, `OrcaWaveBatchRunner`, `OrcaWaveConverter` |
+| **AQWA Backend** | 7 | `AQWARunner`, `AQWABatchRunner`, `AQWAConverter`, `AQWALisParser` |
+| **Benchmark** | 13 | `BenchmarkRunner`, `BenchmarkPlotter`, correlation, RAO helpers |
+| **Multi-Solver** | 2 | `MultiSolverComparator`, `DiffractionComparator` |
+| **Report** | 7 | `ReportGenerator`, header/response/hydrostatics builders |
+| **Export** | 5 | `OrcaFlexExporter`, `PolarsExporter`, `RAOPlotter`, `SpecConverter` |
+| **Mesh** | 3 | `GmshMeshBuilder`, mesh pipeline, geometry quality checker |
+| **CLI** | 2 | CLI entry points for diffraction analysis |
+| **Batch** | 3 | `BatchProcessor`, units, WAMIT reference loader |
+| **Solver sub-pkg** | 3 | `OrcaWaveDataExtractor`, report extractors |
+
+**DiffractionSpec Pipeline (the key scaling lever):**
 ```
-spec.yml (20-30 lines, human/LLM authored)
-    ↓ DiffractionSpec.from_yaml()  [input_schemas.py — 789 lines Pydantic v2]
-    ↓ Validates: vessel, environment, frequencies, headings, solver options
-    ↓ Unit conversion: kg→te, kg/m³→te/m³ for OrcaFlex-SI
-    ↓
-OrcaWaveBackend.convert()  [orcawave_backend.py]
-    ↓ Generates: OrcaWave native YAML (~180 lines, %YAML 1.1 header)
-    ↓ Resolves: mesh paths, frequency lists, inertia tensors
-    ↓
-submit-job.sh → queue/ → licensed-win-1 polls → OrcFxAPI execution
-    ↓
-.owr result → result_extractor.py → RAOs, added mass, damping
-    ↓
-report_generator.py → HTML/PDF engineering report
+spec.yml (20-30 lines, human-authored)
+  → DiffractionSpec.from_yaml() (Pydantic v2 validation, 789 lines)
+  → OrcaWaveBackend.generate() (unit conversion, mesh path resolution)
+  → Native OrcaWave YAML (~180 lines)
+  → solver queue → licensed-win-1
+  → .owr result → OrcaWaveConverter → DiffractionResults
+  → HTML report / OrcaFlex export / RAO database
 ```
 
-**13 live spec.yml files** validated against this pipeline (L00 WAMIT validation × 10, L02 barge, L03 ship, L04 spar).
+### 1.4 Test Coverage
 
-### 1.4 Skill → Code → Test → Issue Mapping
+| Test Area | Files | Coverage |
+|-----------|-------|----------|
+| Diffraction (all solvers) | 32 | Schema, backend, benchmark, CLI, reports, RAO plotting |
+| OrcaWave workflows | 3 | COM connection, end-to-end, integration |
+| OrcaWave solver setup | 1 | Setup/fixture tests |
+| Specialized CLI | 1 | diffraction_cli |
 
-| Skill | Primary Code Modules | Tests | Open Issues |
-|-------|---------------------|-------|-------------|
-| analysis | input_schemas.py, orcawave_backend.py, orcawave_runner.py | 3 test files | #22 (parametric RAO), #29 (Unit Box benchmark) |
-| aqwa-benchmark | aqwa_backend.py, benchmark_runner.py, comparison_framework.py | 6 test files | #21 (SPM AQWA vs OrcaFlex) |
-| damping-sweep | (no dedicated module — part of input_schemas.py solver_options) | — | — |
-| mesh-generation | gmsh_mesh_builder.py, mesh_pipeline.py, geometry_quality.py + hull_library/ | 2 test files | — |
-| multi-body | input_schemas.py (bodies[] array), orcawave_backend.py | via test_input_schemas.py | — |
-| qtf-analysis | input_schemas.py (analysis_type: full_qtf), output_schemas.py | — | — |
-| to-orcaflex | orcaflex_exporter.py, spec_converter.py | — | — |
+**Total: 37 test files for OrcaWave/diffraction domain**
+
+### 1.5 Spec.yml Catalog (13 files)
+
+| Level | Cases | Type | Purpose |
+|-------|-------|------|---------|
+| L00 (10 cases) | 2.1-2.3, 2.6-2.9, 3.1-3.3 | WAMIT validation | Primitive geometries for solver verification |
+| L02 | Barge 80×40×10m | Benchmark | Standard diffraction |
+| L03 | Ship ~220m | Benchmark | Full QTF + roll damping |
+| L04 | Spar D=25m, T=110m | Benchmark | rad/s frequency input |
+
+### 1.6 OrcaWave Examples (L01-L06)
+
+| Example | Description | Key Content |
+|---------|-------------|-------------|
+| L01 | Default vessel | License test, API scripts, execution summary |
+| L02 | OC4 Semi-sub | .yml, .gdf, .owr, workspace |
+| L03 | Semi-sub multibody | Centre + outer column meshes (body + CS) |
+| L04 | Sectional bodies | Column + keystone + pontoon, static/dynamic workspaces |
+| L05 | Panel pressures | Same geometry, pressure output |
+| L06 | Full QTF | Run script only |
 
 ---
 
 ## 2. OrcaFlex Capabilities
 
-### 2.1 Skills Inventory (24 Skills)
+### 2.1 AI Agent Skills (25 skills)
 
-| Skill | Description |
-|-------|-------------|
-| `orcaflex/` (root) | Root: modeling, analysis, post-processing, validation |
-| `batch-manager/` | Large-scale batch processing with parallel execution |
-| `code-check/` | Verify results against industry standards (DNV, API, ISO) |
-| `environment-config/` | Environmental conditions: JONSWAP, PM, current profiles |
-| `extreme-analysis/` | Extreme response extraction with linked statistics |
-| `file-conversion/` | Format conversion: .dat ↔ .yml ↔ .sim |
-| `installation-analysis/` | Offshore installation sequence modeling |
-| `jumper-analysis/` | Rigid/flexible jumper: installation, in-place, VIV, fatigue |
-| `line-wizard/` | Line Setup Wizard: properties, segment types |
-| `modal-analysis/` | Natural frequencies and mode shapes |
-| `model-generator/` | Generate modular models from spec.yml (builder registry) |
-| `modeling/` | General setup, configuration, and execution |
-| `model-sanitization/` | Strip client data, convert binary→YAML, organize library |
-| `monolithic-to-modular/` | Convert monolithic .dat/.yml to spec-driven modular |
-| `mooring-iteration/` | Iterate line lengths for target pretensions (scipy) |
-| `operability/` | Multi-sea-state operability assessment |
-| `post-processing/` | OPP (OrcaFlex Post-Process) framework |
-| `rao-import/` | Import RAOs from external sources (OrcaWave, AQWA) |
-| `results-comparison/` | Cross-simulation comparison for design verification |
-| `spec-audit/` | Audit/classify/score spec.yml quality |
-| `specialist/` | Python API automation: mooring, riser, pipeline |
-| `static-debug/` | Static analysis convergence troubleshooting |
-| `vessel-setup/` | 6-DOF vessel configuration with hydrodynamic properties |
-| `visualization/` | OrcaFlex/OrcaWave simulation visualization |
-| `yaml-gotchas/` | Production-proven YAML traps and solutions |
+| Skill | Summary | Linked Code |
+|-------|---------|-------------|
+| `orcaflex` (root) | Index: 24 sub-skills across 6 categories | — |
+| **Modeling** | | |
+| `model-generator` | Spec.yml → modular YAML via builder registry | `modular_generator/` |
+| `modeling` | Universal runner: static/dynamic/batch | `universal/` |
+| `line-wizard` | Line Setup Wizard tension/length calculation | `orcaflex_model_linesetup_wizard` |
+| `vessel-setup` | 6-DOF vessel config, RAO import | `preprocess/load_vessel` |
+| `monolithic-to-modular` | .dat → spec-driven modular with semantic validation | `modular_generator.extractor` |
+| `model-sanitization` | Strip client data, legal scan, library ingest | `scripts/sanitize_s7_models.py` |
+| `yaml-gotchas` | 10+ production-proven YAML trap fixes | `modular_generator/` |
+| **Environment & Setup** | | |
+| `environment-config` | JONSWAP, current, wind, seabed config | `environment_components` |
+| `rao-import` | AQWA/OrcaFlex/CSV RAO import + validation | `marine_analysis.rao_processor` |
+| **Analysis** | | |
+| `batch-manager` | 100+ case batch with parallel + checkpointing | `batch_processor` |
+| `installation-analysis` | Structure lowering, splash zone, crane ops | `orcaflex_installation` |
+| `jumper-analysis` | Rigid/flexible: installation + in-place + VIV | `modular_generator` |
+| `mooring-iteration` | scipy/Newton-Raphson tension optimization | `mooring_tension_iteration/` |
+| `modal-analysis` | Natural frequencies, mode shapes, VIV screening | `orcaflex_modal_analysis` |
+| `operability` | Weather downtime, scatter diagram analysis | `operability_analysis` |
+| `extreme-analysis` | Max/min extraction with linked statistics | `opp_linkedstatistics` |
+| `specialist` | Expert OrcFxAPI patterns, Monte Carlo | OrcFxAPI direct |
+| **Post-Processing** | | |
+| `post-processing` | OPP framework: stats, range graphs, HTML reports | `opp`, `orcaflex_utilities` |
+| `visualization` | Model views, time series, polar, interactive HTML | `opp_visualization` |
+| **Validation** | | |
+| `code-check` | DNV/API/ISO capacity + safety factor checks | `structural_analysis.capacity` |
+| `results-comparison` | Cross-sim comparison: tension, stiffness | `orcaflex.analysis.comparative` |
+| `spec-audit` | Spec quality scoring (0-100), schema validation | `scripts/audit_spec_library.py` |
+| `static-debug` | Static convergence troubleshooting | Reference only |
+| **Utilities** | | |
+| `file-conversion` | .dat ↔ .yml ↔ .sim bidirectional (98.9% success) | `orcaflex_yml_converter` |
 
-### 2.2 Code Module Map
+### 2.2 Supporting Skills
 
-#### Core Solver: `solvers/orcaflex/` (259 modules, 58,416 LOC)
+| Skill | Summary | Linked Code |
+|-------|---------|-------------|
+| `mooring-analysis` | Station-keeping, catenary, anchor design (API/DNV/ISO) | Reference only |
+| `mooring-design` | CALM/SALM buoy, spread mooring, material selection | Reference only |
+| `catenary-riser` | Catenary + lazy wave riser: static shape, OrcaFlex export | `subsea.catenary.*` |
+| `viv-analysis` | VIV screening, fatigue damage (DNV-RP-F105) | `subsea.viv_analysis.*` |
 
-**Sub-packages and their scope:**
+### 2.3 Code Modules
 
-| Sub-Package | Modules | Purpose |
-|-------------|---------|---------|
-| `core/` | 10 | Base classes, configuration, registry, model interface, exceptions, logging |
-| `modular_generator/` | 30+ | Spec-driven model generation: builders (vessel, mooring, riser, environment, lines, etc.), routers (vessel, mooring), schema (campaign, equipment, simulation, riser, mooring, pipeline) |
-| `modular_input_validation/` | 12 | 3-level validation: L1 YAML syntax, L2 OrcaFlex compatibility, L3 physical checks |
-| `mooring_analysis/` | 14 | Comprehensive mooring: pretension, stiffness, fender forces, natural periods, group comparison, visualization |
-| `mooring_tension_iteration/` | 5 | Line length iteration for target pretension via scipy |
-| `format_converter/` | 10 | Bidirectional: single↔modular↔spec format conversion |
-| `analysis/` | 4 | Analysis engine: CLI, comparative, report generation |
-| `reporting/` | 40+ | Full engineering reports: extractors (geometry, BC, loads, materials, mesh, mooring, results), models (analysis, BC, design checks, fatigue, geometry, loads, materials, mesh, results), renderers (installation, jumper, mooring, pipeline, riser), section builders (15+) |
-| `examples_integration/` | 12 | Download, convert, analyze OrcaFlex example models |
-| `browser/` | 3 | Web-based OrcaFlex data viewer |
-| `universal/` | 6 | Universal runner: model discovery, batch processing, status reporting |
-| `post_process/` | 2 | Post-processing pipeline |
-| `post_results/` | 8 | Legacy post-processing (ASCII→DataFrame, fatigue, plotting) |
-| `utils/` | 2 | Validation utilities |
-| Top-level modules | 40+ | OrcaFlex analysis, parallel execution (3 versions), fatigue, modal, installation, operability, time series processing, visualization, file optimization, template generation, etc. |
+#### `digitalmodel/src/digitalmodel/orcaflex/` — Reporting + QA (14 files)
 
-#### OrcaFlex Reporting: `orcaflex/reporting/` (14 modules)
+Mirror of OrcaWave reporting but for time-domain results:
 
-| Module | Purpose |
-|--------|---------|
-| `sections/code_check.py` | Design code check sections |
-| `sections/modal_analysis.py` | Modal results |
-| `sections/model_summary.py` | Model overview |
-| `sections/mooring_loads.py` | Mooring load summary |
-| `sections/qa_summary.py` | QA results |
-| `sections/range_graphs.py` | Range graph sections |
-| `sections/static_config.py` | Static configuration |
-| `sections/time_series.py` | Time series plots |
-| `qa.py` | QA framework |
+| Section | Module | Content |
+|---------|--------|---------|
+| 1. Model Summary | `model_summary.py` | Object counts (lines/vessels/buoys), env params |
+| 2. Static Config | `static_config.py` | Line profiles, vessel positions |
+| 3. Time Series | `time_series.py` | Vessel DOFs, line tensions |
+| 4. Range Graphs | `range_graphs.py` | Arclength vs min/max envelope |
+| 5. Code Check | `code_check.py` | Utilization table (off by default) |
+| 6. Mooring Loads | `mooring_loads.py` | Fairlead tensions (off by default) |
+| 7. Modal Analysis | `modal_analysis.py` | Natural frequencies/periods (off by default) |
+| 8. QA Summary | `qa_summary.py` | QA results from JSON files |
 
-### 2.3 Solver Queue Pipeline
+#### `digitalmodel/src/digitalmodel/solvers/orcaflex/` — Full Lifecycle (259 files)
 
+| Subpackage | Files | Purpose |
+|-----------|-------|---------|
+| `core/` | 9 | Interfaces, base classes, component registry |
+| `universal/` | 6 | Universal runner: any dir, any machine |
+| `modular_generator/` | 30+ | Spec → modular YAML: builders, schema, routers |
+| `format_converter/` | 10 | Three-way conversion: spec ↔ modular ↔ monolithic |
+| `modular_input_validation/` | 10 | L1-L3 YAML validation + reporters |
+| `reporting/` | 20+ | Extract → Model → Render reports |
+| `mooring_analysis/` | 14 | Comprehensive mooring: stiffness, fenders, groups |
+| `mooring_tension_iteration/` | 5 | Automated tension optimization |
+| `analysis/` | 4 | Comparative analysis |
+| `examples_integration/` | 14 | Download/convert official Orcina examples |
+| Top-level | 40+ | OPP (8 files), converters, analysis, installation |
+| `post_results/` | 8 | Legacy post-processing |
+
+**Solver Queue Pipeline:**
 ```
-scripts/solver/submit-job.sh
-    ↓ Creates job YAML in queue/pending/
-    ↓ git commit + push
-    ↓
-licensed-win-1 polls (Task Scheduler, every 30 min)
-    ↓ scripts/solver/process-queue.py
-    ↓ Runs OrcFxAPI (OrcaWave or OrcaFlex)
-    ↓
-queue/completed/{job-id}/result.yaml
-    ↓ git commit + push from licensed-win-1
-```
-
-**Status:** 1 completed run (test01.owd, 7.8s), 1 failed (path error). Batch submission not yet built. No auto post-processing.
-
-### 2.4 dat-to-yaml Enrichment Pipeline
-
-```
-scripts/data/orcaflex/
-├── dat-to-yaml.py      # Convert binary .dat → human-readable .yml
-├── enrich-and-clean.py  # Sanitize, annotate, standardize YAML
-├── README.md            # Pipeline documentation
-└── _archive/anonymize-import.py  # Client data removal
+scripts/solver/submit-job.sh  → queue/pending/{job_id}.yaml
+scripts/solver/process-queue.py  (on licensed-win-1, polls every 30 min)
+  → runs OrcFxAPI → queue/completed/{job_id}/
+scripts/solver/setup-scheduler.ps1  (Windows Task Scheduler config)
 ```
 
-### 2.5 Skill → Code → Test → Issue Mapping (OrcaFlex)
+**Dat-to-YAML Pipeline:**
+```
+scripts/data/orcaflex/dat-to-yaml.py  — convert .dat to .yml
+scripts/data/orcaflex/enrich-and-clean.py  — add metadata, remove PII
+```
 
-| Skill | Primary Code Modules | Tests | Open Issues |
-|-------|---------------------|-------|-------------|
-| model-generator | modular_generator/ (30+ modules) | 15+ test files | #19 (modular pipeline) |
-| mooring-iteration | mooring_tension_iteration/ (5 modules) | — | — |
-| jumper-analysis | orcaflex_analysis.py, orcaflex_custom_analysis.py | — | #23 (rigid jumper) |
-| installation-analysis | orcaflex_installation.py, umbilical_* | — | #20 (deployment) |
-| file-conversion | format_converter/ (10 modules) | 7 test files | — |
-| code-check | reporting/models/design_checks.py | — | — |
-| batch-manager | universal/ (6 modules) | — | — |
-| post-processing | opp*.py (7 modules), post_process/ | — | — |
-| modal-analysis | orcaflex_modal_analysis.py | — | — |
-| extreme-analysis | opp_linkedstatistics.py | — | — |
-| operability | operability_analysis.py | — | — |
-| specialist | orcaflex.py, orcaflex_utilities.py | — | #24 (riser parametric) |
-| vessel-setup | preprocess/load_vessel.py | test_load_vessel_aqwa.py | — |
-| modeling | core/ (10 modules) | — | — |
-| rao-import | (linked to OrcaWave to-orcaflex) | — | — |
-| visualization | visualization.py, pipeline_schematic.py | — | — |
-| spec-audit | (uses modular_input_validation/) | — | — |
-| static-debug | (diagnostic, no dedicated module) | — | — |
-| yaml-gotchas | (reference skill, no code) | — | — |
+### 2.4 Test Coverage
+
+| Test Area | Files | Coverage |
+|-----------|-------|----------|
+| Solvers/OrcaFlex | 52 | format converter (7), modular generator (24), mooring analysis (5), reporting (12), examples (3), universal (1) |
+| OrcaFlex (top-level) | 14 | CLI, converter, hybrid, library, load, optimization, pipeline, template |
+| OrcaFlex reporting | 1 | orcaflex_reporting |
+| Signal processing | 1 | tension analysis |
+| Workflows (OrcaFlex) | 1 | template library |
+| Agent tests | 1 | orcaflex_agent |
+
+**Total: 70 test files for OrcaFlex domain**
 
 ---
 
 ## 3. Open GitHub Issues
 
-### OrcaWave/Diffraction Issues
+### 3.1 Direct OrcaWave/OrcaFlex Issues
 
-| # | Title | Priority | Status |
-|---|-------|----------|--------|
-| #22 | WRK-043: Parametric hull form analysis with RAO generation | low | Open — parent issue for hull_library |
-| #29 | WRK-099: Run 3-way benchmark on Unit Box hull | medium | Open — needs solver queue |
-| #21 | WRK-039: SPM project benchmarking - AQWA vs OrcaFlex | medium | Open |
-| #1464 | Capytaine BEM available for hull mesh wave load analysis | low | Open |
-| #1440 | Install Capytaine BEM solver into ACE ecosystem | — | Open |
-| #1314 | WRK-1372: Ship-specific hydrostatic data tables (DDG-51, FFG-7) | — | Open |
-| #1319 | WRK-1377: Hull form parametric design — Series 60 | — | Open |
-| #1291 | WRK-1339: Deepen naval architecture knowledge from SNAME | high | Open |
-| #1297 | WRK-1382: Naval architect expert skill | high | Open |
+| Issue | Title | Priority | Labels |
+|-------|-------|----------|--------|
+| #1572 | Domain-specific capability roadmaps — OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline | **high** | cat:engineering |
+| #1464 | Capytaine BEM available for hull mesh wave load analysis | low | cat:engineering |
+| #1440 | Install Capytaine BEM solver into ACE ecosystem | — | dev-secondary |
+| #1319 | Hull form parametric design — coefficients and Series 60 | — | wrk-item |
+| #1314 | Ship-specific hydrostatic data tables (DDG-51, FFG-7) | — | wrk-item |
+| #1292 | OrcaFlex parachute deployment template — time-domain snap load analysis | low | cat:engineering |
+| #1268 | CFD analysis plan — car + parachute aerodynamics, time-marching deployment | **high** | cat:engineering |
+| #1264 | OrcaFlex frame analysis | **high** | cat:engineering |
+| #1242 | Parachute frame force calculation — drag car parachute deployment | medium | structural-dynamics |
+| #569 | Vandiver (1987) hydrodynamic damping model implementation | **high** | archived |
+| #29 | Run 3-way benchmark on Unit Box hull | — | — |
+| #28 | OFFPIPE Integration — pipelay cross-validation against OrcaFlex | — | — |
+| #24 | OrcaFlex drilling and completion riser parametric analysis | — | — |
+| #23 | OrcaFlex rigid jumper analysis — stress and VIV | — | — |
+| #22 | Parametric hull form analysis with RAO generation | — | — |
+| #21 | SPM project benchmarking — AQWA vs OrcaFlex | — | — |
+| #20 | OrcaFlex structure deployment analysis — supply boat side deployment | — | — |
+| #19 | Modular OrcaFlex pipeline installation input with parametric campaign | — | — |
 
-### OrcaFlex Issues
+### 3.2 Related Infrastructure Issues
 
-| # | Title | Priority | Status |
-|---|-------|----------|--------|
-| #1264 | WRK-1365: OrcaFlex frame analysis (static) | high | Open — parachute frame |
-| #1292 | WRK-1342: OrcaFlex parachute deployment (dynamic snap loads) | medium | Open |
-| #1242 | WRK-5082: Parachute frame force calculation (parent) | — | Open |
-| #1265 | WRK-1366: 2D vs 3D comparison | — | Open |
-| #1267 | WRK-1368: Pipeline and engineering report | — | Open |
-| #19 | WRK-032: Modular OrcaFlex pipeline installation input | medium | Open |
-| #24 | WRK-046: OrcaFlex drilling/completion riser parametric | medium | Open |
-| #23 | WRK-045: OrcaFlex rigid jumper analysis | low | Open |
-| #20 | WRK-036: OrcaFlex structure deployment (supply boat) | low | Open |
-| #28 | WRK-075: OFFPIPE integration — pipelay cross-validation | low | Open |
-
-### Cross-Domain Issues
-
-| # | Title | Priority | Status |
-|---|-------|----------|--------|
-| #1572 | Domain-specific capability roadmaps | high | Open — this deliverable |
-| #1567 | Continuous Repo Architecture Intelligence | high | Open — parent |
-| #1360 | Extract algorithms from riser-eng-job archives | — | Open |
-| #1363 | LLM domain-tag riser-eng-job literature | — | Open |
-| #25 | WRK-047: OpenFOAM CFD analysis capability | low | Open |
-| #14 | WRK-1251: FreeCAD parametric engineering | medium | Open |
-| #1268 | WRK-5095: CFD car+parachute aerodynamics | — | Open |
-| #1444 | Integrate RAFT floating wind turbine | high | Open |
-| #1460 | Integrate WEIS floating wind co-design | medium | Open |
+| Issue | Title | Relationship |
+|-------|-------|-------------|
+| #1567 | Continuous Repo Architecture Intelligence | Parent of #1572 |
+| #1442 | Integrate FEniCSx PDE solver | Alternative BEM/FEM solver |
+| #1363 | LLM domain-tag riser-eng-job literature | Riser knowledge base |
+| #1360 | Extract algorithms from riser-eng-job archives | Riser methods |
 
 ---
 
-## 4. Gap Analysis: What's NOT Yet Automated
+## 4. Gap Analysis
 
-### OrcaWave Gaps
+### 4.1 What's NOT Yet Automated
 
-1. **No automated end-to-end pipeline** — spec.yml generation, submission, execution, result extraction, and reporting are all manual steps that could be chained.
+| Workflow | Current State | Gap | Impact |
+|----------|--------------|-----|--------|
+| **Parametric spec.yml generation** | Manual spec.yml authoring | No `parametric_spec_generator.py` | Blocks automated hull form sweeps (#22) |
+| **Solver queue batch submission** | Single-job `submit-job.sh` | No `submit-batch.sh` or YAML manifest | Can't submit parametric sweeps |
+| **Result watching + auto post-processing** | Manual check of `queue/completed/` | No `watch-results.sh` or `post-process-hook.py` | Manual intervention after every run |
+| **End-to-end BEM pipeline test** | Each component tested in isolation | No test runs DiffractionSpec → solver → results → report | Pipeline integration risk |
+| **Capytaine production integration** | Installed on dev-secondary | `sweep.py` imports but no end-to-end test | Open-source BEM not usable yet (#1464) |
+| **Series 60 hull forms** | Parametric space handles L/B/T/Cb | No Todd-Wigley form coefficients | Limited hull variety (#1319) |
+| **OrcaFlex frame analysis** | 2D frame solver exists in parachute/ | No OrcaFlex model builder for frames | Blocks #1264, #1292 |
+| **Cross-tool comparison** | Manual | No `CrossToolComparison` class | Can't validate 2D vs OrcaFlex vs CalculiX |
+| **RAO extraction from .owr** | OrcaWave reporting reads .owr | No standalone `RAOExtractor` for database population | RAO database can't be populated from runs |
+| **Automated benchmark runs** | Benchmark framework ready | No submitted jobs for Unit Box (#29) | 3-way benchmark stalled |
 
-2. **Parametric spec.yml generator missing** — Can't yet go from "sweep 5 hull lengths × 3 drafts" to "15 validated spec.yml files" automatically. The DiffractionSpec schema validates but doesn't generate.
+### 4.2 What's Missing for Production Use
 
-3. **No OrcaWave result parser on dev-primary** — Result extraction requires OrcFxAPI on licensed-win-1. No mechanism to extract RAOs from .owr files without the license.
+| Category | Missing | Priority |
+|----------|---------|----------|
+| **Hull Library** | Centralized hull parameter registry (`hull_registry.yaml`) | Medium |
+| **Hull Library** | Series 60 parent forms (#1319) | Medium |
+| **Hull Library** | Ship-specific hydrostatics DDG-51/FFG-7 (#1314) | Low |
+| **Parametric Analysis** | Tests for forward_speed, shallow_water, passing_ship_sweep, charts | Medium |
+| **Solver Queue** | Batch submission, result watcher, auto post-processing | **High** |
+| **Solver Queue** | Job status dashboard / health monitoring | Medium |
+| **OrcaWave Pipeline** | Parametric spec.yml generator | **High** |
+| **OrcaWave Pipeline** | RAO extractor → database pipeline | **High** |
+| **OrcaFlex** | Frame analysis model builder (#1264) | **High** |
+| **OrcaFlex** | Dynamic deployment model (#1292) | Medium |
+| **OrcaFlex** | Cross-tool comparison framework | Medium |
+| **Testing** | End-to-end pipeline integration test | **High** |
+| **Testing** | Parametric hull analysis dedicated test suite | Medium |
 
-4. **WAMIT validation not automated** — 10 L00 spec.yml files exist but no automated validation runner that compares OrcaWave results against WAMIT reference data.
+### 4.3 Skill → Code → Test Matrix (Key Gaps)
 
-5. **Capytaine integration incomplete** — Issues #1440 and #1464 are open. sweep.py references Capytaine but no proof of operational runs.
-
-6. **QTF post-processing thin** — qtf_heatmap.py exists in reporting but no automated QTF-specific analysis workflow.
-
-7. **Damping sweep has no dedicated code** — Skill exists but maps to solver_options in input_schemas.py. No automated damping coefficient optimization.
-
-### OrcaFlex Gaps
-
-1. **Solver queue not hardened** — Only 1 successful run. No batch submission, no auto post-processing, no result watching.
-
-2. **Mooring iteration not integrated with solver queue** — mooring_tension_iteration/ exists but requires live OrcFxAPI (can't run on dev-primary).
-
-3. **No installation analysis templates** — Skill and code exist but no example spec.yml for installation sequences.
-
-4. **Fatigue analysis incomplete** — orcaflex_fatigue_analysis.py exists but no SN curve library integration or standard-specific fatigue checkers.
-
-5. **No production VIV analysis** — Mentioned in jumper-analysis skill but no dedicated VIV module.
-
-6. **Engineering report automation partial** — Extensive reporting infrastructure (40+ modules) but no one-command "generate full report from simulation results."
-
-7. **Model library not populated** — format_converter and model_sanitization work but the actual library of reference models is sparse.
-
-### Cross-Domain Gaps
-
-1. **No unified workflow orchestrator** — OrcaWave→OrcaFlex handoff is manual. Need: spec.yml → OrcaWave → RAOs → OrcaFlex vessel type → time-domain simulation → report.
-
-2. **Hull library → DiffractionSpec bridge** — hull_library generates meshes and hull profiles, but no automated path to generate DiffractionSpec-compliant spec.yml from a hull catalog entry.
-
-3. **No design load case matrix** — Individual analyses work but no systematic DLC (Design Load Case) generation for standard compliance (e.g., DNV-OS-E301 mooring DLCs).
-
-4. **Riser engineering module thin** — #1360 (extract riser algorithms) and #1363 (tag riser literature) are prerequisites. The solvers/orcaflex has riser builders but no riser design workflow.
-
-5. **No CFD coupling** — #25 (OpenFOAM) and #1268 (car+parachute CFD) are open but no code exists.
+| Skill | Has Code Module | Has Tests | Gap |
+|-------|----------------|-----------|-----|
+| orcawave/analysis | ✅ | ✅ (3 workflow tests) | End-to-end with real solver |
+| orcawave/aqwa-benchmark | ✅ | ✅ (benchmark tests) | No submitted benchmark jobs |
+| orcawave/damping-sweep | ✅ | ❌ | No test file found |
+| orcawave/mesh-generation | ✅ | ✅ (mesh tests) | — |
+| orcawave/multi-body | ✅ | ✅ (L03 spec) | — |
+| orcawave/qtf-analysis | ✅ | ✅ (L03 spec has QTF) | — |
+| orcawave/to-orcaflex | ✅ | ❌ | No integration test for .owr → OrcaFlex |
+| orcaflex/model-generator | ✅ | ✅ (24 tests) | Well covered |
+| orcaflex/mooring-iteration | ✅ | ✅ (5 tests) | — |
+| orcaflex/batch-manager | ✅ | ✅ (via universal) | — |
+| orcaflex/installation-analysis | ✅ | ❌ | No dedicated test |
+| orcaflex/jumper-analysis | ✅ | ❌ | No dedicated test |
 
 ---
 
 ## 5. Cross-Reference with Intensive Plan
 
-### Plan Reference: docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md
+The [2026-04-01 Intensive Plan](../plans/2026-04-01-orcawave-orcaflex-intensive-plan.md) defines 3 waves. Status against this roadmap:
 
-| Wave | Plan Task | Current Status | Gap |
-|------|----------|----------------|-----|
-| Wave 1 | Solver queue hardening | 1 run complete, batch not built | Need batch submission, result watcher |
-| Wave 1 | Licensed-win-1 sync | Polling active, 1 completed job | Need health monitoring |
-| Wave 2 | Hull library audit | **DONE** — see docs/assessments/hull-library-audit.md | — |
-| Wave 2 | Parametric spec.yml generator | Not started | Bridge hull_library→DiffractionSpec |
-| Wave 2 | RAO extraction and database | RAODatabase schema exists, no OrcaWave extractor | Need .owr parser |
-| Wave 3 | OrcaFlex frame static (#1264) | 2D structural code exists (11 modules) | OrcaFlex model not built |
-| Wave 3 | OrcaFlex parachute dynamic (#1292) | Not started | Depends on Wave 3 static |
+### Wave 1: Solver Queue Hardening
 
-### Priority Recommendations (aligned with plan)
+| Task | Plan Status | Roadmap Finding |
+|------|-------------|-----------------|
+| 1.1 Licensed-win-1 assignment | Documented | 1 completed run, 1 failed run on record |
+| 1.2 Batch job submission | Planned | `submit-job.sh` exists, `submit-batch.sh` NOT built |
+| 1.3 Result watcher | Planned | NOT built |
+| 1.4 Submit benchmark jobs (#29) | Planned | NOT submitted |
 
-1. **Immediate** — Harden solver queue (batch submit, result watcher). This unblocks everything.
-2. **Short-term** — Build parametric spec.yml generator (bridge hull_library to DiffractionSpec). Small module (~200 lines), huge leverage.
-3. **Short-term** — Seed hull registry with 5–10 standard hull forms (barge, tanker, semi-sub, spar, FPSO).
-4. **Medium-term** — Automate OrcaWave→OrcaFlex handoff (RAO extraction → vessel type generation).
-5. **Medium-term** — Complete parachute frame analysis chain (static #1264, then dynamic #1292).
-6. **Longer-term** — Capytaine integration (#1440/#1464), DLC matrix generation, VIV module.
+### Wave 2: DiffractionSpec Pipeline Scaling
+
+| Task | Plan Status | Roadmap Finding |
+|------|-------------|-----------------|
+| 2.1 Audit hull library | **DONE** | See docs/assessments/hull-library-audit.md — 100% implemented |
+| 2.2 Parametric spec.yml generator | Planned | NOT built — hull_library has all prerequisites |
+| 2.3 RAO extraction + database + reports | Planned | RAODatabase exists (Parquet), extractor NOT built |
+| 2.4 Submit parametric batch | Planned | NOT submitted |
+
+### Wave 3: OrcaFlex Frame Analysis
+
+| Task | Plan Status | Roadmap Finding |
+|------|-------------|-----------------|
+| 3.1 Frame geometry extraction | Planned | 2D exists in parachute/, 3D geometry exists |
+| 3.2 Static frame model builder (#1264) | Planned | NOT built |
+| 3.3 Dynamic deployment model (#1292) | Planned | NOT built |
+| 3.4 Cross-tool comparison | Planned | NOT built |
+| 3.5 Submit frame jobs | Planned | NOT submitted |
+
+**Summary:** Wave 2 Task 2.1 (audit) is complete. Everything else in the plan is still pending implementation.
 
 ---
 
-## Appendix: File Counts
+## 6. Recommended Priorities
+
+### Immediate (Enables everything else)
+
+1. **Build `submit-batch.sh` + `batch-manifest.yaml`** — Unblocks all solver queue work
+2. **Build `watch-results.sh` + `post-process-hook.py`** — Automates result collection
+3. **Build `parametric_spec_generator.py`** — Generates spec.yml from sweep definitions
+
+### Short-Term (Validates the pipeline)
+
+4. **Submit Unit Box benchmark jobs (#29)** — Validates solver queue end-to-end
+5. **Build OrcaFlex frame model builder (#1264)** — Unblocks parachute analysis
+6. **Write integration test: DiffractionSpec → backend → mock solver → results**
+
+### Medium-Term (Scales the capability)
+
+7. **Build RAO extractor → database pipeline** — Populates RAODatabase from real runs
+8. **Add Series 60 hull forms (#1319)** — Expands parametric hull variety
+9. **Run small parametric sweep through full pipeline** — Proves the architecture
+10. **Build cross-tool comparison framework (#1242)** — 2D vs OrcaFlex vs CalculiX
+
+---
+
+## Appendix A: Complete Skills Inventory
+
+### OrcaWave Skills (8)
 
 ```
-OrcaWave skills:     8  (.claude/skills/engineering/marine-offshore/orcawave/)
-OrcaFlex skills:    24  (.claude/skills/engineering/marine-offshore/orcaflex/)
-Diffraction code:   55  (digitalmodel/src/digitalmodel/hydrodynamics/diffraction/)
-OrcaWave reporting: 13  (digitalmodel/src/digitalmodel/orcawave/)
-OrcaFlex solver:   259  (digitalmodel/src/digitalmodel/solvers/orcaflex/)
-OrcaFlex reporting: 14  (digitalmodel/src/digitalmodel/orcaflex/)
-Hull library:       25  (digitalmodel/src/digitalmodel/hydrodynamics/hull_library/)
-Parametric hull:     8  (digitalmodel/src/digitalmodel/hydrodynamics/parametric_hull_analysis/)
-Solver queue:        3  (scripts/solver/)
-dat-to-yaml:         4  (scripts/data/orcaflex/)
-Diffraction tests:  38  (digitalmodel/tests/hydrodynamics/diffraction/)
-OrcaFlex tests:    101  (digitalmodel/tests/solvers/orcaflex/ + tests/orcaflex/)
-Hull lib tests:     34  (digitalmodel/tests/hydrodynamics/hull_library/)
-Spec.yml files:     13  (digitalmodel/docs/domains/orcawave/)
-OrcaWave examples:   6  (L01-L06, digitalmodel/docs/domains/orcawave/examples/)
+.claude/skills/engineering/marine-offshore/orcawave/
+  SKILL.md                  -- Root index
+  analysis/SKILL.md         -- Core diffraction/radiation analysis
+  aqwa-benchmark/SKILL.md   -- OrcaWave vs AQWA cross-validation
+  damping-sweep/SKILL.md    -- Viscous roll damping parametric
+  mesh-generation/SKILL.md  -- CAD/STL → GDF mesh generation
+  multi-body/SKILL.md       -- STS, FPSO-tanker, gap resonance
+  qtf-analysis/SKILL.md     -- Full QTF, Newman approx, slow-drift
+  to-orcaflex/SKILL.md      -- .owr → OrcaFlex vessel type export
 ```
+
+### OrcaFlex Skills (25)
+
+```
+.claude/skills/engineering/marine-offshore/orcaflex/
+  SKILL.md                      -- Root index (24 sub-skills)
+  batch-manager/SKILL.md        -- 100+ case parallel batch
+  code-check/SKILL.md           -- DNV/API/ISO capacity checks
+  environment-config/SKILL.md   -- JONSWAP, current, wind, seabed
+  extreme-analysis/SKILL.md     -- Max/min with linked stats
+  file-conversion/SKILL.md      -- .dat ↔ .yml ↔ .sim (98.9%)
+  installation-analysis/SKILL.md -- Structure lowering, splash zone
+  jumper-analysis/SKILL.md      -- Rigid/flexible jumper lifecycle
+  line-wizard/SKILL.md          -- Line Setup Wizard
+  modal-analysis/SKILL.md       -- Natural freq, mode shapes, VIV
+  model-generator/SKILL.md      -- Spec → modular YAML (V2.0)
+  modeling/SKILL.md             -- Universal runner
+  model-sanitization/SKILL.md   -- Client data scrubbing
+  monolithic-to-modular/SKILL.md -- Extraction + semantic validation
+  mooring-iteration/SKILL.md    -- scipy/Newton tension optimization
+  operability/SKILL.md          -- Weather downtime analysis
+  post-processing/SKILL.md      -- OPP framework
+  rao-import/SKILL.md           -- AQWA/OrcaFlex/CSV RAO import
+  results-comparison/SKILL.md   -- Cross-sim comparison
+  spec-audit/SKILL.md           -- Quality scoring (0-100)
+  specialist/SKILL.md           -- Expert OrcFxAPI patterns
+  static-debug/SKILL.md         -- Convergence troubleshooting
+  vessel-setup/SKILL.md         -- 6-DOF vessel configuration
+  visualization/SKILL.md        -- Model views, plots, HTML
+  yaml-gotchas/SKILL.md         -- Production YAML trap catalog
+```
+
+### Marine-Offshore Supporting Skills (10)
+
+```
+.claude/skills/engineering/marine-offshore/
+  diffraction-analysis/SKILL.md    -- Master diffraction orchestrator
+  hydrodynamic-analysis/SKILL.md   -- BEM theory reference
+  hydrodynamics/SKILL.md           -- Coefficient DB, wave spectra
+  naval-architecture/SKILL.md      -- Hydrostatics, stability, seakeeping
+  solver-benchmark/SKILL.md        -- N-way cross-validation
+  mesh-utilities/SKILL.md          -- Quick mesh inspect/convert
+  mooring-analysis/SKILL.md        -- Mooring design reference
+  mooring-design/SKILL.md          -- CALM/SALM/spread design
+  catenary-riser/SKILL.md          -- Catenary + lazy wave riser
+  viv-analysis/SKILL.md            -- VIV screening + fatigue
+```
+
+## Appendix B: Module Counts
+
+| Directory | Python Files | Test Files | LOC (est.) |
+|-----------|-------------|------------|------------|
+| `orcawave/` | 13 | 3 | ~1,500 |
+| `orcaflex/` | 14 | 1 | ~1,800 |
+| `hydrodynamics/diffraction/` | 58 | 37 | ~15,000 |
+| `hydrodynamics/hull_library/` | 25 | 27 | ~7,656 |
+| `hydrodynamics/parametric_hull_analysis/` | 7 | 1 | ~1,983 |
+| `solvers/orcaflex/` | 259 | 70 | ~50,000+ |
+| `scripts/solver/` | 2 (+2 shell) | 0 | ~500 |
+| `scripts/data/orcaflex/` | 2 (+1 archived) | 0 | ~300 |
+| **Total** | **380** | **139** | **~79,000** |
