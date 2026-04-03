@@ -7,13 +7,18 @@ per entry.  All git/filesystem operations are mocked.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
+import sys
 import textwrap
 from pathlib import Path
 from unittest.mock import MagicMock, call, patch
 
 import pytest
 import yaml
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'scripts', 'solver'))
+from validate_manifest import validate_manifest
 
 
 # ---------------------------------------------------------------------------
@@ -136,11 +141,17 @@ def submit_batch(
     manifest_path: str | Path,
     repo_root: str | Path,
     dry_run: bool = False,
+    skip_validation: bool = False,
 ) -> list[dict]:
     """Submit all jobs from a batch manifest.
 
     Returns list of results: {job: dict, status: str, message: str}
     """
+    if not skip_validation:
+        validation = validate_manifest(Path(manifest_path))
+        if not validation.valid:
+            raise ValueError("Manifest validation failed")
+
     jobs = parse_batch_manifest(manifest_path)
     results = []
     repo = Path(repo_root)
@@ -320,6 +331,50 @@ class TestDryRunMode:
 
         assert results[0]["job"]["solver_type"] == "orcawave"
         assert results[0]["job"]["model_file"] == "test.owd"
+
+
+class TestValidationPreflight:
+    """Test validate_manifest pre-flight behavior."""
+
+    def test_rejects_empty_jobs_manifest(self, tmp_path: Path, repo_root: Path):
+        manifest = tmp_path / "manifest.yaml"
+        manifest.write_text(EMPTY_MANIFEST)
+
+        with pytest.raises(ValueError, match="Manifest validation failed"):
+            submit_batch(manifest, repo_root, dry_run=True)
+
+    def test_rejects_duplicate_job_names(self, tmp_path: Path, repo_root: Path):
+        manifest = tmp_path / "manifest.yaml"
+        manifest.write_text(textwrap.dedent("""\
+            schema_version: "1"
+            jobs:
+              - name: same-job
+                solver_type: orcawave
+                model_file: first.owd
+              - name: same-job
+                solver_type: orcaflex
+                model_file: second.dat
+        """))
+
+        with pytest.raises(ValueError, match="Manifest validation failed"):
+            submit_batch(manifest, repo_root, dry_run=True)
+
+    def test_skip_validation_allows_duplicate_job_names(self, tmp_path: Path, repo_root: Path):
+        manifest = tmp_path / "manifest.yaml"
+        manifest.write_text(textwrap.dedent("""\
+            schema_version: "1"
+            jobs:
+              - name: same-job
+                solver_type: orcawave
+                model_file: first.owd
+              - name: same-job
+                solver_type: orcaflex
+                model_file: second.dat
+        """))
+
+        results = submit_batch(manifest, repo_root, dry_run=True, skip_validation=True)
+        assert len(results) == 2
+        assert all(result["status"] == "dry-run" for result in results)
 
 
 class TestBatchSubmission:

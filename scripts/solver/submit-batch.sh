@@ -10,12 +10,25 @@ set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SUBMIT_SCRIPT="${SCRIPT_DIR}/submit-job.sh"
-MANIFEST="${1:?Usage: submit-batch.sh <manifest.yaml> [--dry-run]}"
+VALIDATE_SCRIPT="${SCRIPT_DIR}/validate_manifest.py"
+MANIFEST="${1:?Usage: submit-batch.sh <manifest.yaml> [--dry-run] [--skip-validation]}"
 DRY_RUN=false
+SKIP_VALIDATION=false
 
-if [[ "${2:-}" == "--dry-run" ]]; then
-    DRY_RUN=true
-fi
+for arg in "${@:2}"; do
+    case "$arg" in
+        --dry-run)
+            DRY_RUN=true
+            ;;
+        --skip-validation)
+            SKIP_VALIDATION=true
+            ;;
+        *)
+            echo "ERROR: Unknown option: $arg" >&2
+            exit 1
+            ;;
+    esac
+done
 
 if [[ ! -f "${MANIFEST}" ]]; then
     echo "ERROR: Manifest not found: ${MANIFEST}" >&2
@@ -26,6 +39,21 @@ if [[ ! -f "${SUBMIT_SCRIPT}" ]]; then
     echo "ERROR: submit-job.sh not found at: ${SUBMIT_SCRIPT}" >&2
     exit 1
 fi
+
+if [[ ! -f "${VALIDATE_SCRIPT}" ]]; then
+    echo "ERROR: validate_manifest.py not found at: ${VALIDATE_SCRIPT}" >&2
+    exit 1
+fi
+
+run_validation() {
+    if [[ "${SKIP_VALIDATION}" == "true" ]]; then
+        echo "Skipping manifest validation (--skip-validation)"
+        return 0
+    fi
+
+    echo "Running manifest validation pre-flight..."
+    uv run python "${VALIDATE_SCRIPT}" "${MANIFEST}"
+}
 
 parse_manifest() {
     uv run --no-project python - "$MANIFEST" <<'PY'
@@ -75,8 +103,10 @@ PY
 echo "=== Batch Submission ==="
 echo "Manifest: ${MANIFEST}"
 echo "Dry run:  ${DRY_RUN}"
+echo "Skip validation: ${SKIP_VALIDATION}"
 echo ""
 
+run_validation
 JOBS_JSON=$(parse_manifest)
 JOB_COUNT=$(printf '%s' "${JOBS_JSON}" | uv run --no-project python -c "import json,sys; print(len(json.load(sys.stdin)))")
 
