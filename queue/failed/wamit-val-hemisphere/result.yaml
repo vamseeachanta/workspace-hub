@@ -1,0 +1,9 @@
+status: failed
+processed_at: 2026-04-03T17:11:06Z
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.4/OrcaWave v11.0 files/Hemisphere.owd
+description: "WAMIT validation L00 case 2.4 — hemisphere"
+elapsed_seconds: 0.3
+error: "
+Error code: 63
+Operation not available (Cannot open file "D:\workspace-hub\digitalmodel\docs\domains\orcawave\L00_validation_wamit\2.4\OrcaWave v11.0 files\HemisphereAndLid0814.gdf". The system cannot find the file specified)"
