@@ -8,18 +8,18 @@
 
 ## Priority Matrix
 
-| # | Action | Priority | Effort | Value | Blocker |
-|---|--------|----------|--------|-------|---------|
-| 1 | Index conference papers (38,526 files) | P0-CRITICAL | Medium | VERY HIGH | None |
-| 2 | Add DDE drive to mounted-source-registry | P0-CRITICAL | Small | HIGH | None |
-| 3 | Migrate missing standards orgs from DDE | P1-HIGH | Medium | HIGH | Mount availability |
-| 4 | Cross-drive dedup audit | P1-HIGH | Medium | MEDIUM | Script needed |
-| 5 | Complete Phase B summarization (38% remaining) | P1-HIGH | Large | HIGH | Claude API quota |
-| 6 | Expand standards transfer ledger | P2-MEDIUM | Medium | MEDIUM | Manual curation |
-| 7 | Index DDE unique project files | P2-MEDIUM | Medium | MEDIUM | Dedup first (#4) |
-| 8 | Catalog DDE engineering literature | P2-MEDIUM | Small | MEDIUM | None |
-| 9 | Port FreeSpanVIVFatigue MATLAB to Python | P3-LOW | Large | MEDIUM | dark-intelligence skill |
-| 10 | Triage va-hdd-2 engineering content | P3-LOW | Small | LOW | None |
+| # | Action | Priority | Effort | Value | Status |
+|---|--------|----------|--------|-------|--------|
+| 1 | Index conference papers (38,526 files) | P0-CRITICAL | Medium | VERY HIGH | PREP DONE — 21,346 files batched (#1608) |
+| 2 | Add DDE drive to mounted-source-registry | P0-CRITICAL | Small | HIGH | DONE — #1756 closed, 11 sources |
+| 3 | Migrate missing standards orgs from DDE | P1-HIGH | Medium | HIGH | DONE — #1758 closed, 525 files/6GB migrated |
+| 4 | Cross-drive dedup audit | P1-HIGH | Medium | MEDIUM | SCRIPT DONE — #1757, needs full SHA run |
+| 5 | Complete Phase B summarization (38% remaining) | P1-HIGH | Large | HIGH | PENDING — Claude API quota |
+| 6 | Expand standards transfer ledger | P2-MEDIUM | Medium | MEDIUM | PENDING — #1612 |
+| 7 | Index DDE unique project files | P2-MEDIUM | Medium | MEDIUM | PENDING — needs full dedup (#4) |
+| 8 | Catalog DDE engineering literature | P2-MEDIUM | Small | MEDIUM | DONE — #1759 closed, 87 items cataloged |
+| 9 | Port FreeSpanVIVFatigue MATLAB to Python | P3-LOW | Large | MEDIUM | PENDING |
+| 10 | Triage va-hdd-2 engineering content | P3-LOW | Small | LOW | PENDING |
 
 ---
 
