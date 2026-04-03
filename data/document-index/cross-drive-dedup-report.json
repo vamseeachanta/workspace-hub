@@ -1,0 +1,29 @@
+{
+  "generated": "2026-04-03T13:02:34.932334+00:00",
+  "pairs_compared": [
+    {
+      "ace_path": "/mnt/ace/docs/",
+      "dde_path": "/mnt/remote/ace-linux-2/dde/documents/",
+      "label": "project-docs",
+      "ace_files": 1210175,
+      "dde_files": 940543
+    },
+    {
+      "ace_path": "/mnt/ace/O&G-Standards/",
+      "dde_path": "/mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/",
+      "label": "og-standards",
+      "ace_files": 57505,
+      "dde_files": 28251
+    }
+  ],
+  "summary": {
+    "total_ace_files": 1267680,
+    "total_dde_files": 968794,
+    "exact_duplicates": 0,
+    "name_size_matches": 0,
+    "unique_to_ace": 1267680,
+    "unique_to_dde": 0,
+    "dde_unique_size_bytes": 0
+  },
+  "unique_to_dde": []
+}
