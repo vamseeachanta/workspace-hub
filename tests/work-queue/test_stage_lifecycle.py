@@ -14,7 +14,10 @@ import textwrap
 
 # ── path setup ──────────────────────────────────────────────────────────────
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(REPO, "scripts", "work-queue"))
+WORK_QUEUE_DIR = os.path.join(REPO, "scripts", "work-queue")
+if not os.path.isdir(WORK_QUEUE_DIR):
+    pytest.skip("legacy scripts/work-queue/ implementation is not present in this checkout", allow_module_level=True)
+sys.path.insert(0, WORK_QUEUE_DIR)
 
 from gate_check import check_gate   # noqa: E402  (imported after path setup)
 from start_stage import build_prompt, route_stage  # noqa: E402

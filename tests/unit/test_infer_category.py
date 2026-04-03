@@ -10,6 +10,16 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
+
+
+WORK_QUEUE_SCRIPT = Path(__file__).resolve().parent.parent.parent / "scripts/work-queue/infer-category.py"
+if not WORK_QUEUE_SCRIPT.exists():
+    pytest.skip(
+        "legacy scripts/work-queue/infer-category.py is not present in this checkout",
+        allow_module_level=True,
+    )
+
 
 # ---------------------------------------------------------------------------
 # Module loader — needed because the filename has a hyphen

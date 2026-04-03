@@ -11,7 +11,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List
 
-import pdfplumber
+try:
+    import pdfplumber
+except ModuleNotFoundError:  # optional dependency during collection
+    pdfplumber = None
 
 from scripts.data.doc_intelligence.parsers.base import BaseParser
 from scripts.data.doc_intelligence.schema import (
@@ -113,6 +116,10 @@ class PdfParser(BaseParser):
         tables: List[ExtractedTable] = []
         figure_refs: List[ExtractedFigureRef] = []
         errors: List[str] = []
+
+        if pdfplumber is None:
+            errors.append("pdfplumber is not installed")
+            return DocumentManifest(metadata=meta, sections=sections, tables=tables, figure_refs=figure_refs, errors=errors)
 
         try:
             with pdfplumber.open(filepath) as pdf:

@@ -1,4 +1,6 @@
-import ee
+import pytest
+
+ee = pytest.importorskip("ee")
 
 def test_ee_import():
     print("Testing Google Earth Engine import...")

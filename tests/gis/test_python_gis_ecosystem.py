@@ -1,9 +1,12 @@
-import geopandas as gpd
-import pandas as pd
-from shapely.geometry import Point
-import rasterio
-import numpy as np
 import os
+
+import pytest
+
+pd = pytest.importorskip("pandas")
+gpd = pytest.importorskip("geopandas")
+pytest.importorskip("shapely.geometry")
+rasterio = pytest.importorskip("rasterio")
+np = pytest.importorskip("numpy")
 
 def test_vector_operations():
     print("Testing vector operations...")

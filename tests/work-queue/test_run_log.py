@@ -12,7 +12,10 @@ import pytest
 
 # Import path setup
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts" / "work-queue"))
+WORK_QUEUE_DIR = Path(__file__).parent.parent.parent / "scripts" / "work-queue"
+if not WORK_QUEUE_DIR.exists():
+    pytest.skip("legacy scripts/work-queue/ implementation is not present in this checkout", allow_module_level=True)
+sys.path.insert(0, str(WORK_QUEUE_DIR))
 
 from run_log import append_stage_event, read_completed_stages, should_skip_stage, hash_entry_files
 

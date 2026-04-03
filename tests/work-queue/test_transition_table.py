@@ -8,7 +8,11 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts" / "work-queue"))
+WORK_QUEUE_DIR = Path(__file__).parent.parent.parent / "scripts" / "work-queue"
+if not WORK_QUEUE_DIR.exists():
+    pytest.skip("legacy scripts/work-queue/ implementation is not present in this checkout", allow_module_level=True)
+
+sys.path.insert(0, str(WORK_QUEUE_DIR))
 
 from generate_transition_table import (
     load_stage_contracts,

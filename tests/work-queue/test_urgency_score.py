@@ -11,7 +11,10 @@ import pytest
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(REPO, "scripts", "work-queue"))
+WORK_QUEUE_DIR = os.path.join(REPO, "scripts", "work-queue")
+if not os.path.isdir(WORK_QUEUE_DIR):
+    pytest.skip("legacy scripts/work-queue/ implementation is not present in this checkout", allow_module_level=True)
+sys.path.insert(0, WORK_QUEUE_DIR)
 
 from urgency_score import (  # noqa: E402
     compute_score, parse_weights, score_age, score_blocked,
