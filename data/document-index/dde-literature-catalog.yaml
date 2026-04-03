@@ -1,0 +1,773 @@
+generated: '2026-04-03T12:53:54.947838+00:00'
+source_dirs:
+- /mnt/remote/ace-linux-2/dde/Literature/Engineering
+- /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas
+total_items: 87
+summary:
+  engineering_total_files: 2182
+  engineering_pdf_count: 823
+  engineering_size_mb: 8640
+  oil_gas_total_files: 9601
+  oil_gas_pdf_count: 4633
+  oil_gas_size_mb: 5980
+  combined_total_files: 11783
+  combined_pdf_count: 5456
+  combined_size_mb: 14620
+domain_taxonomy:
+- structural
+- cathodic-protection
+- pipeline
+- marine
+- installation
+- energy-economics
+- materials
+- regulatory
+- drilling
+- cad
+- hydrodynamics
+- reservoir
+digitalmodel_domains_available:
+- catenary
+- cathodic_protection
+- geotechnical
+- hydrodynamics
+- metocean
+- naval_architecture
+- orcaflex
+- orcawave
+- pipeline
+- structural
+- structural-parachute
+- subsea
+catalog:
+- filename: 1. Introduction to Petroleum Refinery Operations.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/1. Introduction to Petroleum Refinery Operations.pdf
+  size_mb: 0.5
+  file_type: pdf
+  domain: pipeline
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Aircan Flooding.xls
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Aircan Flooding.xls
+  size_mb: 0.0
+  file_type: xls
+  domain: materials
+  doc_type: dataset
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: dfd_flowassurance[1].pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/dfd_flowassurance[1].pdf
+  size_mb: 2.2
+  file_type: pdf
+  domain: hydrodynamics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Dnv-Rp-b401-Cathodic Protection Design.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Dnv-Rp-b401-Cathodic Protection Design.pdf
+  size_mb: 2.0
+  file_type: pdf
+  domain: cathodic-protection
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: eBook - Math - An Introduction to Statistics.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/eBook - Math - An Introduction to Statistics.pdf
+  size_mb: 1.7
+  file_type: pdf
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Engineering Alternative Energy (CRC;348 pg;1999) Wind and Solar Power Systems.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Engineering Alternative Energy (CRC;348 pg;1999) Wind and Solar Power Systems.pdf
+  size_mb: 39.0
+  file_type: pdf
+  domain: energy-economics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Engineering - Industrial Ventilation Design Guidebook.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Engineering - Industrial Ventilation Design Guidebook.pdf
+  size_mb: 70.3
+  file_type: pdf
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Engineering Manuals - Heat Transfer - Fundamentals Of Heat And Mass Transfer (Incropera).rar
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Engineering Manuals - Heat Transfer - Fundamentals Of Heat And Mass Transfer (Incropera).rar
+  size_mb: 31.6
+  file_type: rar
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Environmental Engineer's Handbook.zip
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Environmental Engineer's Handbook.zip
+  size_mb: 13.7
+  file_type: zip
+  domain: regulatory
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Environmental Guidelines-Oil And Gas.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Environmental Guidelines-Oil And Gas.pdf
+  size_mb: 0.2
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Foundations For Microwave Engineering - Collin.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Foundations For Microwave Engineering - Collin.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Fundamentals of reservoir engineering.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Fundamentals of reservoir engineering.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: reservoir
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: handbook of petroleum and natural gas.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/handbook of petroleum and natural gas.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Introductory Astronomy, Cosmology, Physics,   ! Excellent! Ebook.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Introductory Astronomy, Cosmology, Physics,   ! Excellent! Ebook.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: McNeel Rhinoceros - Advanced Training Series - 3D Modeling For The Marine Industry.rar
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/McNeel Rhinoceros - Advanced Training Series - 3D Modeling For The Marine Industry.rar
+  size_mb: 0.0
+  file_type: rar
+  domain: marine
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Mechanical Engineering - SAE - The Automotive Chassis.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Mechanical Engineering - SAE - The Automotive Chassis.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: structural
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Mechanical - Engineering The Nalco Guide to Boiler Failure Analysis.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Mechanical - Engineering The Nalco Guide to Boiler Failure Analysis.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: structural
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Modern Engineering Statistics - T. Ryan (Wiley, 2007) WW.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Modern Engineering Statistics - T. Ryan (Wiley, 2007) WW.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: ROV OPERATIONS.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/ROV OPERATIONS.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: marine
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Schaum's Outline - Engineering Statics And Dynamics.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Schaum's Outline - Engineering Statics And Dynamics.pdf
+  size_mb: 0.0
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Standard Handbook Of Petroleum & Natural Gas Engineering.rar
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Standard Handbook Of Petroleum & Natural Gas Engineering.rar
+  size_mb: 0.0
+  file_type: rar
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Tables of Math, Phisics and Chemistry Engineering Handbook.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Tables of Math, Phisics and Chemistry Engineering Handbook.pdf
+  size_mb: 4.6
+  file_type: pdf
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Tables of Math, Phisics & Chemistry Engineering Handbook.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Tables of Math, Phisics & Chemistry Engineering Handbook.pdf
+  size_mb: 4.6
+  file_type: pdf
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Us Army Course - Aviation Petroleum, Oil, And Lubricant (Pol) Operation, Maintenance, And Safety Av0550.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Us Army Course - Aviation Petroleum, Oil, And Lubricant (Pol) Operation, Maintenance,
+    And Safety Av0550.pdf
+  size_mb: 0.7
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: US Army course - Petroleum Storage Tanks QM4500.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/US Army course - Petroleum Storage Tanks QM4500.pdf
+  size_mb: 2.1
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: US Army - Military Petroleum Pipeline Systems FM 5-482.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/US Army - Military Petroleum Pipeline Systems FM 5-482.pdf
+  size_mb: 6.3
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: US Army - Petroleum Laboratory Testing and Operations FM 10-67-2.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/US Army - Petroleum Laboratory Testing and Operations FM 10-67-2.pdf
+  size_mb: 2.5
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: US Army - Petroleum Pipeline and Terminal Operating Units FM 10-416.pdf.zip
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/US Army - Petroleum Pipeline and Terminal Operating Units FM 10-416.pdf.zip
+  size_mb: 1.1
+  file_type: zip
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Water_Report.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Water_Report.pdf
+  size_mb: 1.4
+  file_type: pdf
+  domain: hydrodynamics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: '[DIRECTORY] Chemistry/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Chemistry
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~1 files
+- filename: '[DIRECTORY] Codes-ASME/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Codes-ASME
+  size_mb: 0.0
+  file_type: directory
+  domain: regulatory
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~8 files
+- filename: '[DIRECTORY] FFT/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/FFT
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~1 files
+- filename: '[DIRECTORY] Fluent-Gambit/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Fluent-Gambit
+  size_mb: 0.0
+  file_type: directory
+  domain: hydrodynamics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~120 files
+- filename: '[DIRECTORY] Friction/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Friction
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~5 files
+- filename: '[DIRECTORY] handbook of micro and nano tribology/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/handbook of micro and nano tribology
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~10 files
+- filename: '[DIRECTORY] Heat Transfer and Fluids/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Heat Transfer and Fluids
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~15 files
+- filename: '[DIRECTORY] Machinerys Handbook/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Machinerys Handbook
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~5 files
+- filename: '[DIRECTORY] Matlab/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Matlab
+  size_mb: 0.0
+  file_type: directory
+  domain: cad
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~20 files
+- filename: '[DIRECTORY] Mechanical/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Mechanical
+  size_mb: 0.0
+  file_type: directory
+  domain: structural
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~30 files
+- filename: '[DIRECTORY] O&G/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/O&G
+  size_mb: 0.0
+  file_type: directory
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~10 files
+- filename: '[DIRECTORY] Oil and Gas Codes/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Oil and Gas Codes
+  size_mb: 0.0
+  file_type: directory
+  domain: regulatory
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~15 files
+- filename: '[DIRECTORY] open channel flow/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/open channel flow
+  size_mb: 0.0
+  file_type: directory
+  domain: hydrodynamics
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~5 files
+- filename: '[DIRECTORY] OTC2004/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/OTC2004
+  size_mb: 0.0
+  file_type: directory
+  domain: marine
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~20 files
+- filename: '[DIRECTORY] PE Civil/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/PE Civil
+  size_mb: 0.0
+  file_type: directory
+  domain: structural
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~10 files
+- filename: '[DIRECTORY] Physics/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Physics
+  size_mb: 0.0
+  file_type: directory
+  domain: materials
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~10 files
+- filename: '[DIRECTORY] Riser Engineering/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Riser Engineering
+  size_mb: 0.0
+  file_type: directory
+  domain: marine
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~10 files
+- filename: '[DIRECTORY] Soil/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Soil
+  size_mb: 0.0
+  file_type: directory
+  domain: structural
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~5 files
+- filename: '[DIRECTORY] Structural/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Engineering/Structural
+  size_mb: 0.0
+  file_type: directory
+  domain: structural
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~400 files
+- filename: 2005-01 Pipeline And Gas Journal - Energy Experts At Odds Over World Oil Supply.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/2005-01 Pipeline And Gas Journal - Energy Experts At Odds Over World Oil Supply.pdf
+  size_mb: 0.7
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Advanced [petroleum] Reservoir Engineering - T. Ahmed, P. McKinney (Elsevier, 2005) WW.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Advanced [petroleum] Reservoir Engineering - T. Ahmed, P. McKinney (Elsevier, 2005)
+    WW.pdf
+  size_mb: 9.7
+  file_type: pdf
+  domain: reservoir
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: API 581 Liquid Ring Vacuum Pumps and Compressors for Petroleum, Services (1996).pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/API 581 Liquid Ring Vacuum Pumps and Compressors for Petroleum, Services (1996).pdf
+  size_mb: 4.7
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Applied Petroleum Reservoir Engineering.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Applied Petroleum Reservoir Engineering.pdf
+  size_mb: 13.1
+  file_type: pdf
+  domain: reservoir
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: committeev2.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/committeev2.pdf
+  size_mb: 0.7
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Energy Derivatives - Crude Oil and Gas.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Energy Derivatives - Crude Oil and Gas.pdf
+  size_mb: 0.3
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: financeint_2005_complete.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/financeint_2005_complete.pdf
+  size_mb: 3.0
+  file_type: pdf
+  domain: energy-economics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Follow the Money- A Guide to Monitoring Budgets and Oil and Gas Revenues.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Follow the Money- A Guide to Monitoring Budgets and Oil and Gas Revenues.pdf
+  size_mb: 1.0
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: gas_rock_supplement.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/gas_rock_supplement.pdf
+  size_mb: 1.0
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Hirsch Report - Feb 05 Us Dept Energy Peak Oil Study - Impacts, Mitigation And Risk Management.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Hirsch Report - Feb 05 Us Dept Energy Peak Oil Study - Impacts, Mitigation And Risk
+    Management.pdf
+  size_mb: 1.2
+  file_type: pdf
+  domain: energy-economics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Industry Oil & Gas - Global Oil And Gas Depletion Overview - R W Bentley (The Oil Depletion Analysis Centre) - 2002.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Industry Oil & Gas - Global Oil And Gas Depletion Overview - R W Bentley (The Oil Depletion
+    Analysis Centre) - 2002.pdf
+  size_mb: 0.5
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: InterviewingTipsforFinancialServices.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/InterviewingTipsforFinancialServices.pdf
+  size_mb: 0.1
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: '[PDF-ENG] Aleklett - 2004 - The Peak and Decline of World Production of Oil and Gas.pdf'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/[PDF-ENG] Aleklett - 2004 - The Peak and Decline of World Production of Oil and Gas.pdf
+  size_mb: 9.6
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Peak Oil World 2005-2009.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Peak Oil World 2005-2009.pdf
+  size_mb: 0.8
+  file_type: pdf
+  domain: energy-economics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Permaculture Magazine - Life after oil article.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Permaculture Magazine - Life after oil article.pdf
+  size_mb: 0.7
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Quantitative_Methods_in_Reservoir_Engineering.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Quantitative_Methods_in_Reservoir_Engineering.pdf
+  size_mb: 2.4
+  file_type: pdf
+  domain: reservoir
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Reservoir_Engineering_Handbook_2E.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Reservoir_Engineering_Handbook_2E.pdf
+  size_mb: 9.8
+  file_type: pdf
+  domain: reservoir
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Reservoir Engineering Handbook.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Reservoir Engineering Handbook.pdf
+  size_mb: 9.9
+  file_type: pdf
+  domain: reservoir
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Reservoir Engineering Handbook.rar
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Reservoir Engineering Handbook.rar
+  size_mb: 8.4
+  file_type: rar
+  domain: reservoir
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Rigtrain Manual.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Rigtrain Manual.pdf
+  size_mb: 78.0
+  file_type: pdf
+  domain: drilling
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Oil and Gas - Pipeline Repair Offshore.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Oil and Gas - Pipeline Repair Offshore.pdf
+  size_mb: 3.3
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Oil And Gas - Standard Handbook Of Petroleum & Natural Gas Engineering.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Oil And Gas - Standard Handbook Of Petroleum & Natural Gas Engineering.pdf
+  size_mb: 32.0
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Oil and Gas Well Drilling and Servicing.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Oil and Gas Well Drilling and Servicing.pdf
+  size_mb: 15.5
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Oil Price Credit Crunch  The Offshore Industry - 29 October 2008.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Oil Price Credit Crunch  The Offshore Industry - 29 October 2008.pdf
+  size_mb: 0.2
+  file_type: pdf
+  domain: marine
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: SummerPetroBooks_2008.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/SummerPetroBooks_2008.pdf
+  size_mb: 2.8
+  file_type: pdf
+  domain: materials
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: The Digital future of Oil and Gas in a Life Cycle Perspective.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/The Digital future of Oil and Gas in a Life Cycle Perspective.pdf
+  size_mb: 2.0
+  file_type: pdf
+  domain: pipeline
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Use Of International Standards By Oil And Gas Companies , Neil Reeve, 2005-10-25.pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Use Of International Standards By Oil And Gas Companies , Neil Reeve, 2005-10-25.pdf
+  size_mb: 1.1
+  file_type: pdf
+  domain: pipeline
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: Wiley Finance,.Energy and Power Risk Management - New Developments in Modeling, Pricing and Hedging.[2003.ISBN0471104000].pdf
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Wiley Finance,.Energy and Power Risk Management - New Developments in Modeling, Pricing
+    and Hedging.[2003.ISBN0471104000].pdf
+  size_mb: 6.4
+  file_type: pdf
+  domain: energy-economics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+- filename: '[DIRECTORY] 2006-07 Geotech Conference/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/2006-07 Geotech Conference
+  size_mb: 8.0
+  file_type: directory
+  domain: structural
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~7 files
+- filename: '[DIRECTORY] Annual Reports/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Annual Reports
+  size_mb: 36.0
+  file_type: directory
+  domain: energy-economics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~11 files
+- filename: '[DIRECTORY] IBM Report/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/IBM Report
+  size_mb: 2.0
+  file_type: directory
+  domain: energy-economics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~2 files
+- filename: '[DIRECTORY] Khori/BOOKS/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Khori/BOOKS
+  size_mb: 700.0
+  file_type: directory
+  domain: structural
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~200 files
+- filename: '[DIRECTORY] Khori/SPREADSHEET/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Khori/SPREADSHEET
+  size_mb: 200.0
+  file_type: directory
+  domain: structural
+  doc_type: dataset
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~500 files
+- filename: '[DIRECTORY] Khori/STRESS CONCENTRATION FACTOR/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Khori/STRESS CONCENTRATION FACTOR
+  size_mb: 20.0
+  file_type: directory
+  domain: structural
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~35 files
+- filename: '[DIRECTORY] Khori/STRUCTURAL BOOK/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/Khori/STRUCTURAL BOOK
+  size_mb: 800.0
+  file_type: directory
+  domain: structural
+  doc_type: textbook
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~100 files
+- filename: '[DIRECTORY] O&G Flowassurance/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/O&G Flowassurance
+  size_mb: 13.0
+  file_type: directory
+  domain: hydrodynamics
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~3 files
+- filename: '[DIRECTORY] OGF/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/OGF
+  size_mb: 200.0
+  file_type: directory
+  domain: marine
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~25 files
+- filename: '[DIRECTORY] OS/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/OS
+  size_mb: 250.0
+  file_type: directory
+  domain: marine
+  doc_type: reference
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~15 files
+- filename: '[DIRECTORY] PeakOil/'
+  path: /mnt/remote/ace-linux-2/dde/Literature/Oil and Gas/PeakOil
+  size_mb: 2.0
+  file_type: directory
+  domain: energy-economics
+  doc_type: paper
+  in_digitalmodel: false
+  migration_candidate: true
+  note: Contains ~4 files

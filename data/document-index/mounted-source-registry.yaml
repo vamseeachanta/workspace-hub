@@ -95,6 +95,56 @@ source_roots:
     fallback_posture: use indexed metadata and prior cached summaries when remote mount is unavailable
     cached_evidence_ttl: 7d
     degradation_rule: do not download blind duplicates; record source status as source_unavailable in resources.yaml and continue with indexed evidence only
+  - source_id: dde_standards_remote
+    document_intelligence_bucket: dde_standards
+    mount_root: /mnt/remote/ace-linux-2/dde/0000 O&G
+    local_or_remote: remote
+    canonical_storage_policy: legacy standards collection with unique orgs (ASME, AWS, NACE, ASCE, HSE, IEC, etc.) not present in /mnt/ace/O&G-Standards
+    provenance_rule: source of truth for 18 orgs not present in /mnt/ace/O&G-Standards; prefer /mnt/ace for overlapping orgs
+    dedup_rule: check /mnt/ace/O&G-Standards first; DDE is authoritative for missing orgs only
+    availability_check_ref: scripts/readiness/check-network-mounts.sh
+    fallback_posture: use indexed metadata when remote mount is unavailable
+    cached_evidence_ttl: 7d
+    structure: |
+      <org>/
+        <standard-file>.pdf
+      36 org dirs including 18 NOT in /mnt/ace: ASME, ASCE, AWS, NACE,
+      HSE, IEC, AISC, AMJIG, AMS, ANSI, AS, ASNT, AWHEM, CFR, FAA,
+      GLND, IADC-TPC, NFPA
+      Also has: Codes & Standards Database.xls (master index)
+  - source_id: dde_literature_remote
+    document_intelligence_bucket: dde_literature
+    mount_root: /mnt/remote/ace-linux-2/dde/Literature
+    local_or_remote: remote
+    canonical_storage_policy: historical literature collection (engineering, O&G, business, career)
+    provenance_rule: reference in place; prefer domain-organized copies in digitalmodel/docs/domains when available
+    dedup_rule: check digitalmodel/docs/domains literature first for engineering content
+    availability_check_ref: scripts/readiness/check-network-mounts.sh
+    fallback_posture: use indexed metadata when remote mount is unavailable
+    cached_evidence_ttl: 7d
+    structure: |
+      33 topic directories including:
+      Engineering/ - 50+ textbooks (heat transfer, reservoir eng, environmental)
+      Oil and Gas/ - 80+ O&G literature (reservoir eng, peak oil, pipeline)
+      Also: BookSummaries, Career, Finance, HBR, MBA, Safety Reviews, Software
+  - source_id: dde_engineering_remote
+    document_intelligence_bucket: dde_engineering
+    mount_root: /mnt/remote/ace-linux-2/dde
+    local_or_remote: remote
+    canonical_storage_policy: legacy engineering work archive (OrcaFlex models, MATLAB code, project backups)
+    provenance_rule: reference only; active work migrated to /mnt/ace repos
+    dedup_rule: check /mnt/ace project folders first; DDE is fallback for unmigrated content
+    availability_check_ref: scripts/readiness/check-network-mounts.sh
+    fallback_posture: use indexed metadata when remote mount is unavailable
+    cached_evidence_ttl: 7d
+    note: Includes FreeSpanVIVFatigue/ (13 MATLAB VIV scripts), o-drive/017 ODA (drilling analytics), o-drive/018 FFS (fitness for service), Orcaflex/ (drilling riser models), dropbox_contents/Engineering/ (project backups)
+    structure: |
+      documents/ - 99 project folders (0063-0200+)
+      Orcaflex/ - OrcaFlex .dat model files
+      FreeSpanVIVFatigue/ - 13 MATLAB scripts (2H VIV methodology)
+      o-drive/ - OneDrive archive (FFS, ODA, manuals)
+      dropbox_contents/ - Dropbox project backups
+      g-drive/ - Google Drive export (financials, doc register)
   - source_id: api_metadata_virtual
     document_intelligence_bucket: api_metadata
     mount_root: api://worldenergydata
