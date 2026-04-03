@@ -134,9 +134,10 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
                            "field", "record", "query", "param", "option", "flag"}:
                 body_refs.append(ref)
 
+        canonical_name = str(fm.get("name", skill_name)).strip() or skill_name
         skills[full_rel] = {
-            "name": fm.get("name", skill_name),
-            "short_name": skill_name,
+            "name": canonical_name,
+            "short_name": canonical_name.lower(),
             "path": rel_path,
             "full_rel": full_rel,
             "related_skills": related,

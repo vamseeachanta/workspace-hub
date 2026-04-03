@@ -59,25 +59,35 @@ def find_skill_files(skills_dir: Path) -> list[Path]:
 def main() -> int:
     args = parse_args()
     repo_root = Path.cwd()
-    skills_dir = repo_root / args.skills_dir
+    skills_dir = Path(args.skills_dir)
+    if not skills_dir.is_absolute():
+        skills_dir = repo_root / skills_dir
 
     if not skills_dir.exists():
         print(f"WARNING: skills directory not found: {skills_dir}", file=sys.stderr)
         return 0
 
     name_to_paths: dict[str, list[str]] = defaultdict(list)
+    leaf_to_paths: dict[str, list[str]] = defaultdict(list)
 
     for skill_md in find_skill_files(skills_dir):
         name = extract_name(skill_md)
-        if name:
+        try:
             rel = str(skill_md.relative_to(repo_root))
+        except ValueError:
+            rel = str(skill_md)
+        leaf = skill_md.parent.name.lower()
+        leaf_to_paths[leaf].append(rel)
+        if name:
             name_to_paths[name].append(rel)
 
     total = sum(len(v) for v in name_to_paths.values())
     print(f"Scanned {total} SKILL.md files across {len(name_to_paths)} unique names")
 
     duplicates = {name: paths for name, paths in name_to_paths.items() if len(paths) > 1}
-    if not duplicates:
+    leaf_collisions = {leaf: paths for leaf, paths in leaf_to_paths.items() if len(paths) > 1}
+
+    if not duplicates and not leaf_collisions:
         print("No duplicate skill names found.")
         return 0
 
@@ -85,7 +95,11 @@ def main() -> int:
         path_list = ", ".join(paths)
         print(f"WARNING: DUPLICATE skill name '{name}': {path_list}")
 
-    print(f"\n{len(duplicates)} duplicate name(s) found across {total} skills.")
+    for leaf, paths in sorted(leaf_collisions.items()):
+        path_list = ", ".join(paths)
+        print(f"WARNING: DUPLICATE leaf directory '{leaf}': {path_list}")
+
+    print(f"\n{len(duplicates)} duplicate name(s) and {len(leaf_collisions)} leaf collision(s) found across {total} skills.")
     return 0
 
 
