@@ -10,10 +10,11 @@ The provider where the session starts is the **orchestrator**. Other providers a
 - Subagents: execute delegated stages; cannot alter orchestration state.
 
 ## Source of Truth
-- Work lifecycle: `.claude/work-queue/process.md`
-- Work items: `.claude/work-queue/*/WRK-*.md`
+- Canonical intake/tracking: GitHub issues + approved `.planning/` artifacts
+- Legacy compatibility workflow state: `.claude/work-queue/process.md`
+- Legacy compatibility work items: `.claude/work-queue/*/WRK-*.md`
 - Behavior contract: `config/agents/behavior-contract.yaml`
-- Session state: `.claude/work-queue/session-state.yaml`
+- Legacy session state: `.claude/work-queue/session-state.yaml`
 
 ## Wrappers
 - `scripts/agents/session.sh` - initialize/show orchestrator lock.

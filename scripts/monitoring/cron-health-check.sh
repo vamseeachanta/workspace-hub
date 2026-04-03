@@ -47,11 +47,15 @@ fi
 
 # ── Parse schedule YAML ──────────────────────────────────────────────────────
 # Use Python to parse YAML and emit task records as tab-separated lines
-TASK_RECORDS=$(uv run --no-project python3 -c "
-import yaml, sys, json
+TASK_RECORDS=$(uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
+import sys
+from pathlib import Path
 
-with open('${SCHEDULE_FILE}') as f:
-    data = yaml.safe_load(f)
+import yaml
+
+schedule_path = Path(sys.argv[1])
+with schedule_path.open() as handle:
+    data = yaml.safe_load(handle)
 
 for task in data.get('tasks', []):
     tid = task.get('id', '')
@@ -62,16 +66,11 @@ for task in data.get('tasks', []):
     scheduler = task.get('scheduler', 'cron')
     is_claude = task.get('is_claude_task', False)
     description = task.get('description', '')
-
-    # Represent log as string (could be null/None)
     log_str = str(log_pattern) if log_pattern is not None else 'null'
-
-    # Machines as comma-separated
     machines_str = ','.join(machines)
-
     print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{description}')
-" 2>/dev/null)
-
+PY
+)
 if [[ -z "$TASK_RECORDS" ]]; then
     echo "[cron-health] ERROR: failed to parse schedule YAML"
     exit 1
@@ -95,22 +94,28 @@ resolve_machine_names() {
     host=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
     # Try to resolve from registry
     local names
-    names=$(uv run --no-project python3 -c "
+    names=$(uv run --no-project python - "${WS_HUB}/config/workstations/registry.yaml" "$host" <<'PY'
+import sys
+from pathlib import Path
+
 import yaml
+
+registry_path = Path(sys.argv[1])
+host = sys.argv[2]
 try:
-    with open('${WS_HUB}/config/workstations/registry.yaml') as f:
-        data = yaml.safe_load(f)
-    host = '${host}'
+    with registry_path.open() as handle:
+        data = yaml.safe_load(handle)
     results = []
-    for name, m in data.get('machines', {}).items():
-        candidates = [m.get('hostname', '')] + m.get('hostname_aliases', [])
-        candidates = [c.lower() for c in candidates]
+    for name, machine in data.get('machines', {}).items():
+        candidates = [machine.get('hostname', '')] + machine.get('hostname_aliases', [])
+        candidates = [candidate.lower() for candidate in candidates]
         if host in candidates:
             results.append(name)
     print(','.join(results) if results else '')
 except Exception:
     print('')
-" 2>/dev/null)
+PY
+)
     echo "$names"
 }
 

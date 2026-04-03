@@ -73,16 +73,18 @@ All scripts live in `scripts/data/document-index/`. Each phase is resume-safe an
 
 ### Phase F — WRK Item Generation (`phase-f-wrk-items.py`, 214 lines + `phase-f-gap-wrk-generator.py`, 398 lines)
 
-- **Purpose:** Creates WRK work items from document gaps identified in enhancement plan
+- **Purpose:** Creates WRK-style backlog candidates from document gaps identified in enhancement plan
 - **Input:** `enhancement-plan.yaml`
-- **Output:** WRK item YAML files in `.claude/work-queue/`
-- **Logic:** Reads gaps, creates pending WRK items for unimplemented standards, assigns to repos
+- **Legacy output:** WRK item YAML files in `.claude/work-queue/`
+- **Canonical tracking note:** New execution work should be represented as GitHub issues plus `.planning/` artifacts; `.claude/work-queue/` is legacy compatibility storage only.
+- **Logic:** Reads gaps, creates pending WRK-style records for unimplemented standards, assigns to repos
 
 ### Phase G — Pre-seeded Mission WRK Items (`phase-g-wrk-items.py`, 330 lines)
 
-- **Purpose:** Creates WRK items for known engineering gaps independent of document indexing
+- **Purpose:** Creates WRK-style backlog candidates for known engineering gaps independent of document indexing
 - **Input:** Hardcoded `REPO_MISSION_ITEMS` list of strategic gaps
-- **Output:** WRK item YAML files in `.claude/work-queue/`
+- **Legacy output:** WRK item YAML files in `.claude/work-queue/`
+- **Canonical tracking note:** Promote active items into GitHub issues before new execution; keep local WRK artifacts only for historical/compatibility workflows.
 - **Scope:** Pre-seeds items like "Expand S-N curve library from 17 to 20 standards", "CALM buoy mooring fatigue", etc.
 - **Repos covered:** digitalmodel (G-1 through G-6 groups), worldenergydata, assethold, doris, saipem
 
