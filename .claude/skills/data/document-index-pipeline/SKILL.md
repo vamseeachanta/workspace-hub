@@ -132,6 +132,52 @@ uv run --no-project python scripts/data/document-index/phase-f-gap-wrk-generator
 uv run --no-project python scripts/data/document-index/build-ledger.py
 ```
 
+## Mounted Sources (11 total, updated 2026-04-03)
+
+Registry: `data/document-index/mounted-source-registry.yaml`
+
+| Source ID | Mount | Type | Notes |
+|-----------|-------|------|-------|
+| workspace_hub_local | /mnt/local-analysis/workspace-hub | local | In-repo canonical |
+| ace_standards_local | /mnt/ace/docs/_standards | local | Symlink to O&G-Standards (17 orgs) |
+| og_standards_local | /mnt/ace/0000 O&G | local | Legacy standards |
+| ace_project_local | /mnt/ace/docs | local | 119 project folders + conferences/ |
+| research_literature_local | /mnt/ace-data/digitalmodel/docs/domains | local | Domain PDFs |
+| riser_eng_job_local | /mnt/ace/digitalmodel/.../riser-eng-job | local | 15,449 riser files |
+| dde_project_remote | env: DDE_PROJECT_REMOTE_ROOT | remote | Fallback to cache |
+| dde_standards_remote | /mnt/remote/ace-linux-2/dde/0000 O&G | remote | 36 org dirs (ASME,AWS,NACE,ASCE,HSE,IEC migrated to ACE 2026-04) |
+| dde_literature_remote | /mnt/remote/ace-linux-2/dde/Literature | remote | 33 topic dirs, 11K+ files |
+| dde_engineering_remote | /mnt/remote/ace-linux-2/dde | remote | MATLAB VIV code, OrcaFlex models |
+| api_metadata_virtual | api://worldenergydata | api | API metadata |
+
+### Conference Paper Indexing (38,526 files — 0% indexed)
+
+```bash
+# Generate batch file from catalog (high-priority conferences only)
+uv run --no-project python scripts/data/document-index/prep-conference-index.py --priority-only
+# Output: data/document-index/conference-index-batch.jsonl (21,346 files)
+# Catalog: data/document-index/conference-paper-catalog.yaml
+# Then feed into Phase A for indexing
+```
+
+### Cross-Drive Dedup Audit
+
+```bash
+# Dry run (file counts only — fast, validates mount access)
+uv run --no-project python scripts/data/document-index/cross-drive-dedup-audit.py --dry-run
+# Full audit (SHA-256 on name+size matches — ~30 min due to SSHFS)
+uv run --no-project python scripts/data/document-index/cross-drive-dedup-audit.py
+# Output: data/document-index/cross-drive-dedup-report.json
+```
+
+### Knowledge Map Quick Reference
+
+- `docs/document-intelligence/mount-drive-knowledge-map.md` — complete 4-mount catalog with "Where Is...?" guide
+- `docs/document-intelligence/dde-drive-catalog.md` — DDE drive inventory (18 unique standards orgs, MATLAB code)
+- `docs/document-intelligence/data-intelligence-map.md` — master registry of all data artifacts
+- `data/document-index/dde-standards-inventory.yaml` — DDE vs ACE standards comparison (21 missing orgs)
+- `data/document-index/conference-paper-catalog.yaml` — 30 conferences classified by domain + priority
+
 ## Key Patterns
 
 ### Claude CLI inside Claude Code
