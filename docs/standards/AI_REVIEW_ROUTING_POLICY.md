@@ -18,24 +18,22 @@
 
 ## Review Defaults
 
-- **Two-provider review by default**: Claude produces the plan or artifact; Codex provides adversarial review.
-- **Three-provider review only when justified**: Gemini is added as a third reviewer under specific trigger conditions (see below).
+- **Three-agent adversarial review by default**: Claude, Codex, and Gemini all review plan-stage and code/artifact-stage work unless the user explicitly scopes the review lane down.
+- **Claude remains the orchestrator**: Claude frames work, sequences execution, and synthesizes the combined review result.
+- **Codex remains the default implementation worker** for bounded coding, tests, and refactors.
+- **Gemini is no longer trigger-only** in this repository policy; it participates by default as the third adversarial reviewer because the user's stated preference is all-agent cross-review at both stages.
 - Plans get adversarial review by default for non-trivial work.
 - Code and deliverable artifacts get adversarial review before completion when the change is risky, architectural, cross-cutting, or hard to verify locally.
 
-## Gemini Third-Lane Trigger Rules
+## Optional Review Reduction Rules
 
-Add Gemini as a third reviewer when **any** of these conditions apply:
+A narrower review set is allowed only when the user explicitly asks for it or when one provider is unavailable.
 
-| Trigger | Rationale |
-|---------|-----------|
-| **Architecture-heavy change** | Cross-module or cross-repo structural change that benefits from an independent architectural perspective |
-| **Research-heavy task** | Task requires synthesizing multiple external sources, standards, or large documents where Gemini's context window adds material value |
-| **Ambiguous requirements** | Requirements are underspecified or contested — a third independent interpretation reduces risk |
-| **High-stakes delivery** | Change affects production systems, security boundaries, data integrity, or compliance — cost of error justifies extra review |
-| **Context saturation** | Claude's context is already saturated with task material — Gemini can process overflow without losing fidelity |
-
-**Do not add Gemini** for routine implementation, standard refactors, test additions, or documentation-only changes.
+| Reduction case | Allowed adjustment |
+|----------------|--------------------|
+| **User requests a faster/lighter pass** | Claude may reduce to two-agent review and document the reason |
+| **Provider unavailable / quota exhausted** | Continue with remaining agents, but record the missing reviewer |
+| **Purely clerical change** | Claude may waive one reviewer with explicit note in the completion summary |
 
 ## Routing Flow
 
@@ -43,10 +41,10 @@ Add Gemini as a third reviewer when **any** of these conditions apply:
 1. Claude frames the task (context, scope, plan)
 2. Claude decides execution path:
    a. Self-execute (trivial/orchestration work)
-   b. Route to Codex (bounded implementation, tests, refactors)
+   b. Route bounded implementation to Codex (and optionally parallel workers)
 3. Before completion, Claude routes review:
-   a. Default: Codex reviews (two-provider)
-   b. If trigger condition met: Codex + Gemini review (three-provider)
+   a. Default: Claude + Codex + Gemini all review
+   b. If one reviewer is waived, record the reason explicitly
 4. Resolve review findings before marking complete
 ```
 

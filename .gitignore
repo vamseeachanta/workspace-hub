@@ -159,6 +159,7 @@ coverage.xml
 
 # State sub-directories committed for cross-machine comprehensive-learning analysis
 # Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
+/docs/strategy/gtm/job-market-scan/archive/
 !.claude/state/candidates/
 !.claude/state/corrections/
 !.claude/state/patterns/

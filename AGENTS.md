@@ -13,6 +13,6 @@
 - Git: commit to `main` + push immediately; branch only for multi-session work
 ## Policies
 - Reviews: verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
-- Review routing: [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates, Codex reviews, Gemini on triggers only
+- Review routing: [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates; Claude, Codex, and Gemini all provide adversarial review for plan-stage and code/artifact-stage work by default
 - Subagent isolation: execution stages use fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
 - Secrets: never hardcode API keys/tokens — use environment variables

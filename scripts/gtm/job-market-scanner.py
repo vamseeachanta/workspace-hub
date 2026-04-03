@@ -36,7 +36,7 @@ import sys
 import time
 import urllib.parse
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
@@ -49,8 +49,11 @@ from bs4 import BeautifulSoup
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT_DIR = REPO_ROOT / "docs" / "strategy" / "gtm" / "job-market-scan"
 RAW_DIR = OUTPUT_DIR / "raw-results"
+ARCHIVE_DIR = OUTPUT_DIR / "archive"
 KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
 PROFILE_DIR = OUTPUT_DIR / "company-profiles"
+RAW_RETENTION_WEEKS = 12
+HISTORY_RETENTION_MONTHS = 6
 
 # Search keywords ordered by specificity (most niche first = highest value)
 KEYWORDS = [
@@ -965,6 +968,51 @@ def generate_priority_targets(result: dict, date_str: str):
 CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
 
 
+def enforce_retention_policy(date_str: str) -> dict:
+    """Archive raw GTM scan outputs and prune cumulative history beyond retention windows."""
+    current_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    raw_cutoff = current_date - timedelta(weeks=RAW_RETENTION_WEEKS)
+    history_cutoff = current_date - timedelta(days=HISTORY_RETENTION_MONTHS * 30)
+
+    archived_raw_results = 0
+    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+
+    for raw_file in RAW_DIR.glob("*.json"):
+        try:
+            file_date = datetime.strptime(raw_file.stem, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if file_date < raw_cutoff:
+            archived_path = ARCHIVE_DIR / raw_file.name
+            raw_file.replace(archived_path)
+            archived_raw_results += 1
+
+    cumulative = load_cumulative_index()
+    cumulative["scan_history"] = [
+        entry for entry in cumulative.get("scan_history", [])
+        if datetime.strptime(entry["date"], "%Y-%m-%d").date() >= history_cutoff
+    ]
+    for company, entries in list(cumulative.get("company_history", {}).items()):
+        filtered_entries = [
+            entry for entry in entries
+            if datetime.strptime(entry["date"], "%Y-%m-%d").date() >= history_cutoff
+        ]
+        if filtered_entries:
+            cumulative["company_history"][company] = filtered_entries
+        else:
+            del cumulative["company_history"][company]
+
+    CUMULATIVE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(CUMULATIVE_PATH, "w") as f:
+        json.dump(cumulative, f, indent=2, default=str)
+
+    return {
+        "archived_raw_results": archived_raw_results,
+        "retained_scan_history": len(cumulative.get("scan_history", [])),
+    }
+
+
 def load_cumulative_index() -> dict:
     """Load the cumulative index of all previously seen jobs."""
     if CUMULATIVE_PATH.exists():
@@ -1290,8 +1338,11 @@ def main():
     # Always update cumulative index and generate delta reports
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     history = update_cumulative_index(result, date_str)
+    retention = enforce_retention_policy(date_str)
     generate_new_this_week(history["new_jobs"], date_str)
     generate_trend_report(history["cumulative"], date_str)
+
+    print(f"  Raw archives moved: {retention['archived_raw_results']}")
 
     print(f"\n{'='*60}")
     print(f"  SCAN COMPLETE")
