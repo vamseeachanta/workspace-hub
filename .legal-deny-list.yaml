@@ -72,6 +72,15 @@ client_references:
   - pattern: "MC518"
     case_sensitive: true
     description: "Client block/lease designation"
+  - pattern: "2HSPANVIV"
+    case_sensitive: false
+    description: "2H Offshore proprietary VIV tool name — #1773 clean-room required"
+  - pattern: "2H Offshore"
+    case_sensitive: false
+    description: "2H Offshore Inc. — copyright holder of FreeSpanVIVFatigue code"
+  - pattern: "Shankar Sundararaman"
+    case_sensitive: false
+    description: "Original author of 2H VIV code — must not appear in clean-room impl"
 
 # ---------------------------------------------------------------------------
 # Proprietary platform/tool references

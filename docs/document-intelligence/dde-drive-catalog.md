@@ -105,7 +105,8 @@ ABSENT from `/mnt/ace/O&G-Standards/`:
 
 ### FreeSpanVIVFatigue/ (Pipeline VIV Fatigue Analysis)
 
-Based on 2H Offshore methodology:
+Implements DNV-RP-F105 pipeline free-span VIV fatigue methodology.
+**NOTE: Copyrighted code — clean-room reimplementation required (see #1773).**
 
 | Script | Purpose |
 |--------|---------|
