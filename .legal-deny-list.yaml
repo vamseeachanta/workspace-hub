@@ -1,41 +1,114 @@
 # =============================================================================
 # Global Legal Deny List — applies to ALL submodules
 # =============================================================================
-# Add patterns here that should be blocked workspace-wide.
+# Patterns here are scanned by scripts/legal/legal-sanity-scan.sh.
 # Per-project deny lists in each submodule extend (not replace) this file.
 #
 # Severity levels:
 #   block  — fail the scan, PR cannot proceed
 #   warn   — flag but allow to proceed
+#
+# IMPORTANT: These patterns catch client-identifiable content that must not
+# leak into public repos, data exports, or generated artifacts.
+# Internal documentation (docs/document-intelligence/*) that catalogs
+# drive structure is excluded — see exclusions below.
 # =============================================================================
 
-version: "1.0"
-updated: "2026-02-02"
+version: "2.0"
+updated: "2026-04-03"
 
-# Client project names and codenames
-client_references: []
-  # - pattern: "ACME_PROJECT"
-  #   case_sensitive: true
-  #   description: "Example client codename"
+# ---------------------------------------------------------------------------
+# Client project names and codenames (from /mnt/ace project folders)
+# ---------------------------------------------------------------------------
+# Add specific client project codenames here when porting client work.
+# Format: exact string match. Use case_sensitive: false for broad catch.
+#
+# NOTE: Generic project numbers (0111, 0127, etc.) are NOT blocked because
+# they are internal ACE numbering, not client-identifiable.
+# ---------------------------------------------------------------------------
+client_references:
+  - pattern: "Prelude FLNG"
+    case_sensitive: false
+    description: "Shell Prelude FLNG — client project"
+  - pattern: "West Boreas"
+    case_sensitive: false
+    description: "Shell West Boreas — client project"
+  - pattern: "Perdido"
+    case_sensitive: true
+    description: "Shell Perdido — client field name"
+  - pattern: "Caesar Tonga"
+    case_sensitive: false
+    description: "Chevron Caesar Tonga — client project"
+  - pattern: "Lucius PR-02"
+    case_sensitive: false
+    description: "Client well designation"
+  - pattern: "Matterhorn TLP"
+    case_sensitive: false
+    description: "Client platform name"
+  - pattern: "Horn Mountain"
+    case_sensitive: false
+    description: "BP Horn Mountain — client field"
+  - pattern: "Carcara"
+    case_sensitive: true
+    description: "KM Carcara — client project"
+  - pattern: "Yellowtail"
+    case_sensitive: true
+    description: "ExxonMobil Yellowtail — client project"
+  - pattern: "Piklis-1DL"
+    case_sensitive: false
+    description: "Client well identifier"
+  - pattern: "Jujak-1"
+    case_sensitive: false
+    description: "Client well identifier"
+  - pattern: "Moho Nord"
+    case_sensitive: false
+    description: "Total Moho Nord — client project"
+  - pattern: "Lakach"
+    case_sensitive: true
+    description: "Doris Lakach — client project"
+  - pattern: "61850_zama"
+    case_sensitive: false
+    description: "Doris Zama — client project number"
+  - pattern: "MC518"
+    case_sensitive: true
+    description: "Client block/lease designation"
 
+# ---------------------------------------------------------------------------
 # Proprietary platform/tool references
+# ---------------------------------------------------------------------------
 proprietary_tools: []
   # - pattern: "SomeProprietaryTool"
   #   case_sensitive: false
   #   description: "Example proprietary tool"
 
-# Client-specific infrastructure
+# ---------------------------------------------------------------------------
+# Client-specific infrastructure / user identifiers
+# ---------------------------------------------------------------------------
 client_infrastructure: []
   # - pattern: "client-vpc-123"
   #   case_sensitive: false
   #   description: "Example client infra"
 
+# ---------------------------------------------------------------------------
 # Files/paths excluded from scanning (glob patterns)
+# ---------------------------------------------------------------------------
+# IMPORTANT: Internal drive catalogs and knowledge maps are excluded because
+# they legitimately reference project/client folder names for navigation.
+# The legal gate for THOSE files is manual review, not pattern scanning.
+# ---------------------------------------------------------------------------
 exclusions:
   - ".legal-deny-list.yaml"
   - ".git/"
   - "*.lock"
   - "node_modules/"
   - "__pycache__/"
+  - "docs/document-intelligence/*.md"
+  - "data/document-index/conference-paper-catalog.yaml"
+  - "data/document-index/dde-*.yaml"
+  - "data/document-index/mounted-source-registry.yaml"
+  - "data/document-index/cross-drive-dedup-report.json"
+  - "scripts/legal/"
+  - "*.sim"
+  - "*.dat"
 
 default_severity: "block"

@@ -174,6 +174,12 @@ scan_directory() {
     [[ -n "$glob" ]] && excl_args+=("--glob" "!$glob")
   done < <(parse_exclusions "$global_list"; parse_exclusions "$local_list")
 
+  # Build exclusion pattern list for file filtering
+  local excl_patterns=()
+  while IFS= read -r glob; do
+    [[ -n "$glob" ]] && excl_patterns+=("$glob")
+  done < <(parse_exclusions "$global_list"; parse_exclusions "$local_list")
+
   # Determine file list
   local file_args=()
   if [[ "$DIFF_ONLY" == "true" ]]; then
@@ -181,7 +187,23 @@ scan_directory() {
     changed_files="$(cd "$scan_dir" && git diff --name-only HEAD 2>/dev/null || true)"
     [[ -z "$changed_files" ]] && return 0
     while IFS= read -r f; do
-      [[ -f "$scan_dir/$f" ]] && file_args+=("$scan_dir/$f")
+      [[ -f "$scan_dir/$f" ]] || continue
+      # Apply exclusion globs to diff-only file list
+      local excluded=false
+      for ep in "${excl_patterns[@]}"; do
+        case "$f" in
+          $ep|*/$ep) excluded=true; break ;;
+        esac
+        # Also match directory prefixes (e.g. "docs/document-intelligence/*.md")
+        if [[ "$ep" == *"*"* ]]; then
+          local ep_dir="${ep%/*}"
+          local ep_glob="${ep##*/}"
+          if [[ "$f" == $ep_dir/* ]] && [[ "$(basename "$f")" == $ep_glob ]]; then
+            excluded=true; break
+          fi
+        fi
+      done
+      $excluded || file_args+=("$scan_dir/$f")
     done <<< "$changed_files"
     [[ ${#file_args[@]} -eq 0 ]] && return 0
   fi
