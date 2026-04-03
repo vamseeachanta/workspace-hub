@@ -109,7 +109,7 @@ fi
 PROMPT_TEXT="${PROMPT}
 
 Return only JSON with these keys:
-- verdict: APPROVE | REQUEST_CHANGES | REJECT
+- verdict: APPROVE | MINOR | MAJOR | REJECT
 - summary: string
 - issues_found: string[]
 - suggestions: string[]

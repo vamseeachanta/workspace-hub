@@ -40,7 +40,7 @@ if [[ -n "$verdict_line" ]]; then
             echo "CONDITIONAL_PASS"
             exit 0
             ;;
-        *request_changes*|*request-changes*|*request\ changes*|*reject*|*major*)
+        *request_changes*|*request-changes*|*request\ changes*|*changes-requested*|*changes_requested*|*revision\ needed*|*revise*|*reject*|*major*)
             echo "MAJOR"
             exit 0
             ;;
@@ -48,7 +48,7 @@ if [[ -n "$verdict_line" ]]; then
             echo "MINOR"
             exit 0
             ;;
-        *approve*|*approved*|*pass*)
+        *no\ findings*|*no_findings*|*approve*|*approved*|*pass*)
             echo "APPROVE"
             exit 0
             ;;

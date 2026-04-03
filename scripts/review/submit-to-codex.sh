@@ -148,7 +148,7 @@ ${CONTENT_TEXT}"
 {
   "type": "object",
   "properties": {
-    "verdict": { "type": "string" },
+    "verdict": { "type": "string", "description": "Use APPROVE, MINOR, MAJOR, or REJECT" },
     "summary": { "type": "string" },
     "issues_found": { "type": "array", "items": { "type": "string" } },
     "suggestions": { "type": "array", "items": { "type": "string" } },

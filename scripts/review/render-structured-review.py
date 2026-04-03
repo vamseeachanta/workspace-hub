@@ -17,13 +17,16 @@ REQUIRED_KEYS = (
     "suggestions",
     "questions_for_author",
 )
-VALID_VERDICTS = frozenset(("APPROVE", "REQUEST_CHANGES", "REJECT"))
-# Some providers (Codex) use MAJOR/MINOR instead of REQUEST_CHANGES/APPROVE
+VALID_VERDICTS = frozenset(("APPROVE", "MINOR", "MAJOR", "REJECT"))
 _VERDICT_NORMALIZE = {
-    "MAJOR": "REQUEST_CHANGES",
-    "MINOR": "APPROVE",
+    "REQUEST_CHANGES": "MAJOR",
+    "CHANGES-REQUESTED": "MAJOR",
+    "CHANGES_REQUESTED": "MAJOR",
+    "REVISION NEEDED": "MAJOR",
+    "REVISE": "MAJOR",
     "NO CHANGES": "APPROVE",
     "NO_CHANGES": "APPROVE",
+    "NO FINDINGS": "APPROVE",
 }
 
 
