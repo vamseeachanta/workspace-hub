@@ -1,0 +1,6 @@
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+export_excel: true
+description: "WAMIT validation L00 case 2.1 — unit box (v2: xlsx export fixed)"
+submitted_by: licensed-win-1
+submitted_at: 2026-04-03T17:30:00Z
