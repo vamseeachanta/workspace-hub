@@ -1,6 +1,8 @@
 ---
 name: knowledge-pipeline
-description: Workflow for maintaining workspace-hub knowledge and learning pipelines across scripts/knowledge, scripts/learning, and docs/superpowers, including indexing, archive synthesis, issue updates, and pipeline troubleshooting.
+description: Workflow for maintaining workspace-hub knowledge and learning pipelines
+  across scripts/knowledge, scripts/learning, and docs/superpowers, including indexing,
+  archive synthesis, issue updates, and pipeline troubleshooting.
 version: 1.0.0
 category: data
 type: skill
@@ -17,9 +19,6 @@ tools:
 - Write
 - Bash
 - Grep
-related_skills:
-- knowledge-base-system
-- knowledge-manager
 requires: []
 tags:
 - knowledge

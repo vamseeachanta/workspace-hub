@@ -1,6 +1,8 @@
 ---
 name: digitalmodel-code-explorer
-description: Fast orientation guide for the digitalmodel codebase, with module lookup, source-to-test mapping, and targeted inspection patterns to avoid repeated bulk-reading of digitalmodel/src and tests.
+description: Fast orientation guide for the digitalmodel codebase, with module lookup,
+  source-to-test mapping, and targeted inspection patterns to avoid repeated bulk-reading
+  of digitalmodel/src and tests.
 version: 1.0.0
 category: digitalmodel
 type: skill
@@ -17,7 +19,6 @@ tools:
 - Grep
 - Bash
 related_skills:
-- repo-capability-map
 - module-lookup
 requires: []
 tags:

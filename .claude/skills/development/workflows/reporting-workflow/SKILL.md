@@ -1,6 +1,7 @@
 ---
 name: reporting-workflow
-description: End-to-end workflow for generating reports from data, validating outputs, running report-focused tests, and iterating on HTML/interactive reporting artifacts.
+description: End-to-end workflow for generating reports from data, validating outputs,
+  running report-focused tests, and iterating on HTML/interactive reporting artifacts.
 version: 1.0.0
 category: development
 type: skill
@@ -20,7 +21,6 @@ tools:
 related_skills:
 - html-report-verify
 - engineering-report-generator
-- interactive-report-generator
 requires: []
 tags:
 - reporting

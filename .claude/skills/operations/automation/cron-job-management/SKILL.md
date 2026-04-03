@@ -1,6 +1,8 @@
 ---
 name: cron-job-management
-description: Patterns for creating, testing, debugging, and maintaining cron-driven automation in workspace-hub, including log strategy, failure analysis, and safe git-aware job design.
+description: Patterns for creating, testing, debugging, and maintaining cron-driven
+  automation in workspace-hub, including log strategy, failure analysis, and safe
+  git-aware job design.
 version: 1.0.0
 category: operations
 type: skill
@@ -19,7 +21,6 @@ tools:
 - Grep
 related_skills:
 - github-actions
-- repo-readiness
 requires: []
 tags:
 - cron
