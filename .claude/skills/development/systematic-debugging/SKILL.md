@@ -1,12 +1,10 @@
 ---
 name: systematic-debugging
-description: Four-phase debugging methodology emphasizing root cause analysis before
-  fixes. Use for bug investigation, preventing random fixes, and systematic problem-solving.
-  Based on obra/superpowers.
+description: Four-phase debugging methodology emphasizing root cause analysis before fixes. Use for bug investigation, preventing random fixes, and systematic problem-solving.
 type: reference
-version: 1.0.0
+version: 1.1.0
 category: development
-last_updated: 2026-01-19
+last_updated: 2026-04-03
 source: https://github.com/obra/superpowers
 related_skills:
 - tdd-obra
@@ -20,156 +18,121 @@ freedom: high
 
 # Systematic Debugging
 
-## Overview
+## Core Rule
 
-This skill provides a structured four-phase debugging framework emphasizing root cause discovery before attempting fixes. Core principle: "Random fixes waste time and create new bugs. Quick patches mask underlying issues."
+Do not fix symptoms until you understand the root cause.
+
+Random fixes waste time, create regressions, and hide the real failure mode.
 
 ## Quick Start
 
-1. **Investigate** - Gather evidence, reproduce consistently
-2. **Analyze** - Compare with working patterns
-3. **Hypothesize** - Form and test specific theories
-4. **Implement** - Fix with test coverage
+1. Investigate
+2. Analyze patterns
+3. Form a hypothesis
+4. Implement one fix with test coverage
 
 ## When to Use
 
-- Bug reports requiring investigation
-- Test failures with unclear causes
-- Production incidents
-- Performance regressions
-- Integration failures
-- Any debugging that requires more than 5 minutes
+- bug reports needing investigation
+- failing tests with unclear causes
+- production incidents
+- performance regressions
+- integration failures
+- any debugging taking more than a few minutes
 
-## The Four Phases
+## Phase 1: Investigation
 
-### Phase 1: Root Cause Investigation
+Goal: understand what is actually failing before changing code.
 
-**Objective:** Understand the problem completely before attempting any fix.
+Checklist:
+- read the exact error message carefully
+- reproduce the issue consistently
+- inspect recent code/config/dependency changes
+- gather logs, traces, metrics, and intermediate state
+- for multi-component systems, trace data across each boundary
 
-Steps:
-1. Examine error messages thoroughly
-2. Reproduce the issue consistently
-3. Review recent changes (commits, configs, dependencies)
-4. Gather diagnostic evidence (logs, traces, metrics)
-5. For multi-component systems, add instrumentation at each boundary
+Questions:
+- what fails exactly?
+- what changed recently?
+- what input or state triggers the failure?
+- can it be reproduced reliably?
 
-**Questions to answer:**
-- What exactly is failing?
-- When did it start failing?
-- What changed recently?
-- Can I reproduce it reliably?
-### Phase 2: Pattern Analysis
+## Phase 2: Pattern Analysis
 
-**Objective:** Find working examples and understand differences.
+Goal: compare broken behavior against known-good behavior.
 
-Steps:
-1. Locate working examples in the codebase
-2. Compare against reference implementations completely
-3. Identify differences systematically
-4. Understand all dependencies
+Checklist:
+- find a working example in the codebase
+- compare inputs, outputs, assumptions, and dependencies
+- inspect configuration differences
+- look for invariant violations
 
-**Key comparisons:**
-- Working vs. broken code paths
-- Expected vs. actual behavior
-- Known good state vs. current state
-### Phase 3: Hypothesis and Testing
+## Phase 3: Hypothesis and Testing
 
-**Objective:** Form and validate theories before changing code.
+Goal: prove or disprove a specific theory.
 
-Steps:
-1. Formulate a specific hypothesis
-2. Design a test for the hypothesis
-3. Test with minimal changes (one variable at a time)
-4. Verify results before proceeding
+Hypothesis format:
+"The bug occurs because [condition] when [trigger], causing [symptom]."
 
-**Hypothesis format:**
-"The bug occurs because [condition] when [trigger], which causes [symptom]."
-### Phase 4: Implementation
+Rules:
+- test one variable at a time
+- prefer minimal experiments
+- if you do not know, say you do not know yet
+- do not stack speculative fixes
 
-**Objective:** Fix the root cause with proper verification.
+## Phase 4: Implementation
 
-Steps:
-1. Create a failing test case reproducing the bug
-2. Implement a single fix addressing the root cause
-3. Verify the test passes
-4. Verify no other tests broke
-5. Document the fix
+Goal: fix the root cause with regression protection.
 
-## Critical Safeguards
+Checklist:
+- write or update a failing test reproducing the bug
+- implement a single fix aimed at the root cause
+- verify the targeted test passes
+- verify broader tests still pass
+- document the fix if future maintainers need the context
 
-### Hard Stop Rule
+## Hard Stop Rule
 
-**If >= 3 fixes fail: STOP and question the architecture.**
+If three attempted fixes fail, stop and question the architecture instead of continuing to patch symptoms.
 
-When multiple fixes fail, the issue indicates deeper structural problems requiring discussion rather than continued symptom-patching.
-### Red Flags (Restart Process)
+## Red Flags
 
-- Proposing solutions before investigation
-- Attempting multiple simultaneous fixes
-- Assuming without verification
-- Skipping reproduction step
-- "It should work" without evidence
+Restart the process if you catch yourself:
+- proposing fixes before reproducing the problem
+- changing multiple things at once
+- assuming framework/tool behavior without checking
+- saying "it should work" without evidence
+- skipping the failing-test step for a bug fix
 
-## Debugging Anti-Patterns
+## Anti-Patterns
 
-| Anti-Pattern | Problem | Correct Approach |
-|--------------|---------|------------------|
-| Shotgun debugging | Random changes hoping something works | Systematic investigation |
-| Printf debugging only | Incomplete picture | Structured instrumentation |
-| Blame the framework | Avoids understanding | Verify framework behavior |
-| "Works on my machine" | Environment assumptions | Document exact repro steps |
-| Quick patch | Hides root cause | Find and fix actual cause |
+| Anti-pattern | Better approach |
+|---|---|
+| shotgun debugging | controlled investigation |
+| print-debugging only | structured instrumentation + comparison |
+| blame the framework | verify framework behavior explicitly |
+| works-on-my-machine reasoning | document exact repro inputs and runtime context |
 
-## Instrumentation Strategies
+## Good Debugging Artifacts
 
-### Logging Strategy
+- failing test case
+- repro command
+- captured logs / traces
+- working vs broken comparison note
+- concise root-cause statement
 
-```
-1. Entry/exit of suspected functions
-2. Input/output values at boundaries
-3. State changes at key points
-4. Timing information for performance issues
-```
-### Boundary Tracing
+## Agent Guidance
 
-For multi-component systems:
-```
-[Input] -> [Component A] -> [Component B] -> [Output]
-   ^            ^               ^              ^
-   |            |               |              |
- Check 1     Check 2         Check 3       Check 4
-```
+When delegating debugging work, require the delegate to return:
+- observed symptoms
+- hypothesis tested
+- evidence gathered
+- root cause found / not yet found
+- minimal verified fix
 
-Add verification at each boundary to isolate failure point.
+## Exit Condition
 
-## Debugging Checklist
-
-- [ ] Issue reproduced consistently
-- [ ] Recent changes reviewed
-- [ ] Error messages fully understood
-- [ ] Working comparison found
-- [ ] Hypothesis documented
-- [ ] Single-variable test performed
-- [ ] Root cause identified
-- [ ] Failing test written
-- [ ] Fix implemented
-- [ ] All tests pass
-- [ ] Fix documented
-
-## Related Skills
-
-- [tdd-obra](../tdd-obra/SKILL.md) - Test-first development
-- [writing-plans](../planning/writing-plans/SKILL.md) - Plan implementations
-- [code-reviewer](../code-reviewer/SKILL.md) - Code quality review
-
----
-
-## Version History
-
-- **1.0.0** (2026-01-19): Initial release adapted from obra/superpowers
-
-## Sub-Skills
-
-- [Best Practices](best-practices/SKILL.md)
-- [Error Handling](error-handling/SKILL.md)
-- [Metrics](metrics/SKILL.md)
+Debugging is complete only when:
+- root cause is identified or the unknown is explicitly stated
+- the fix is verified by tests or direct repro
+- no major regressions appear in adjacent behavior

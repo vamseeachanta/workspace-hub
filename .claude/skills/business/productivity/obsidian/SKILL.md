@@ -1,8 +1,7 @@
 ---
 name: obsidian
-version: 1.0.0
-description: Local-first knowledge management with markdown vaults, bidirectional
-  linking, plugin ecosystem, and flexible sync strategies
+version: 1.1.0
+description: Local-first knowledge management with markdown vaults, bidirectional linking, plugin ecosystem, and practical vault file operations.
 author: workspace-hub
 category: business
 type: skill
@@ -47,64 +46,97 @@ scripts_exempt: true
 
 ## When to Use
 
-### USE Obsidian when:
+Use Obsidian when you want a local-first markdown vault with links, durable files, and flexible automation. It fits personal knowledge management, project notes, research notes, journals, and operational runbooks.
 
-- Building a personal knowledge base or second brain
-- Implementing Zettelkasten or evergreen note systems
-- Need local-first, privacy-focused note-taking
-- Want full control over your data (plain markdown files)
-- Creating interlinked notes with graph visualization
-- Writing with markdown and want powerful editing
-- Need offline access to all your notes
-- Journaling with daily notes and templates
+Do not use it when you need live multi-user collaboration, database-style workflows, or permission-heavy enterprise knowledge bases.
 
-### DON'T USE Obsidian when:
+## Basic Vault Operations
 
-- Need real-time collaboration (use Notion, Google Docs)
-- Require database-style structured data (use Notion)
-- Need web-based access without sync setup
-- Team-wide knowledge base with permissions (use Confluence)
-- Simple note-taking without linking (use Apple Notes, Bear)
-
-## Prerequisites
+Typical vault path handling:
 
 ```bash
-# macOS via Homebrew
-brew install --cask obsidian
-
-# Linux (AppImage)
-wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.3/Obsidian-1.5.3.AppImage
-chmod +x Obsidian-1.5.3.AppImage
+export OBSIDIAN_VAULT_PATH="$HOME/Documents/Obsidian Vault"
+ls "$OBSIDIAN_VAULT_PATH"
+find "$OBSIDIAN_VAULT_PATH" -name '*.md' | head
 ```
 
-### Create Your First Vault
+Always quote vault paths because spaces are common.
+
+Read a note:
 
 ```bash
-mkdir -p ~/Documents/ObsidianVault
-cd ~/Documents/ObsidianVault
-mkdir -p "Daily Notes" "Templates" "Inbox" "Projects" "Areas" "Resources" "Archive"
-mkdir -p .obsidian
+cat "$OBSIDIAN_VAULT_PATH/Projects/My Project.md"
 ```
 
-*See sub-skills for full details.*
+Create a note:
 
-## Overview
+```bash
+cat > "$OBSIDIAN_VAULT_PATH/Inbox/New Note.md" <<'EOF'
+# New Note
 
-Obsidian is a markdown-based knowledge management tool with bidirectional linking, graph visualization, and an extensible plugin ecosystem. Key plugins: Dataview (queries), Templater (automation), and Git (sync).
+- idea
+- follow-up
+EOF
+```
+
+Append to a note:
+
+```bash
+echo "- next action" >> "$OBSIDIAN_VAULT_PATH/Projects/My Project.md"
+```
+
+Search by filename/content:
+
+```bash
+find "$OBSIDIAN_VAULT_PATH" -iname '*project*'
+grep -R "cathodic protection" "$OBSIDIAN_VAULT_PATH"
+```
+
+## Vault Structure
+
+A practical starting layout:
+
+```bash
+mkdir -p "$OBSIDIAN_VAULT_PATH"/{Inbox,Projects,Areas,Resources,Archive,Templates,"Daily Notes"}
+```
+
+## Linking Conventions
+
+Use wikilinks for concept connections:
+- `[[Project X]]`
+- `[[API 579]]`
+- `[[Meeting Notes 2026-04-03]]`
+
+Prefer stable note names over constantly-renamed files.
+
+## Plugins and Automation
+
+Common useful plugins:
+- Dataview for note queries
+- Templater for standardized note creation
+- Git for sync/versioning
+
+## Sync and Backups
+
+Recommended patterns:
+- Git for text-first technical vaults
+- cloud sync for personal/mobile access
+- periodic filesystem backup regardless of sync strategy
+
+## Practical Use Cases
+
+- project dashboards and action tracking
+- reading notes and literature synthesis
+- engineering reference capture
+- daily/weekly review notes
+- meeting notes linked to decisions and follow-ups
 
 ## Resources
 
-- [Obsidian Official](https://obsidian.md/)
-- [Obsidian Help](https://help.obsidian.md/)
-- [Obsidian Forum](https://forum.obsidian.md/)
-- [Dataview Documentation](https://blacksmithgu.github.io/obsidian-dataview/)
-- [Templater Documentation](https://silentvoid13.github.io/Templater/)
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2025-01-17 | Initial release with comprehensive Obsidian patterns |
+- https://obsidian.md/
+- https://help.obsidian.md/
+- https://blacksmithgu.github.io/obsidian-dataview/
+- https://silentvoid13.github.io/Templater/
 
 ## Sub-Skills
 
@@ -116,43 +148,3 @@ Obsidian is a markdown-based knowledge management tool with bidirectional linkin
 - [Related Concepts](related-concepts/SKILL.md)
 - [Sources](sources/SKILL.md)
 - [Applications](applications/SKILL.md)
-- [3. Tags and Properties (Frontmatter) (+1)](3-tags-and-properties-frontmatter/SKILL.md)
-- [Morning Review](morning-review/SKILL.md)
-- [Today's Focus](todays-focus/SKILL.md)
-- [Must Do (+2)](must-do/SKILL.md)
-- [Notes & Ideas](notes-ideas/SKILL.md)
-- [Meetings](meetings/SKILL.md)
-- [Journal](journal/SKILL.md)
-- [Evening Review](evening-review/SKILL.md)
-- [Attendees](attendees/SKILL.md)
-- [Agenda](agenda/SKILL.md)
-- [Discussion Notes](discussion-notes/SKILL.md)
-- [Decisions Made](decisions-made/SKILL.md)
-- [Action Items](action-items/SKILL.md)
-- [Follow-up](follow-up/SKILL.md)
-- [Status](status/SKILL.md)
-- [Key Resources](key-resources/SKILL.md)
-- [Milestones](milestones/SKILL.md)
-- [In Progress (+1)](in-progress/SKILL.md)
-- [Notes](notes/SKILL.md)
-- [Related](related/SKILL.md)
-- [Book Info](book-info/SKILL.md)
-- [Why I Read This](why-i-read-this/SKILL.md)
-- [Summary (3 sentences)](summary-3-sentences/SKILL.md)
-- [Key Ideas](key-ideas/SKILL.md)
-- [Favorite Quotes](favorite-quotes/SKILL.md)
-- [Chapter 1:](chapter-1/SKILL.md)
-- [How This Applies to My Life](how-this-applies-to-my-life/SKILL.md)
-- [Related Books](related-books/SKILL.md)
-- [5. Dataview Plugin](5-dataview-plugin/SKILL.md)
-- [6. Templater Plugin](6-templater-plugin/SKILL.md)
-- [7. Sync Strategies (+1)](7-sync-strategies/SKILL.md)
-- [Repository](repository/SKILL.md)
-- [Documentation](documentation/SKILL.md)
-- [Integration with Todoist](integration-with-todoist/SKILL.md)
-- [Integration with Notion Export](integration-with-notion-export/SKILL.md)
-- [5. Maintenance Routines](5-maintenance-routines/SKILL.md)
-- [Essential Plugins](essential-plugins/SKILL.md)
-- [Productivity](productivity/SKILL.md)
-- [Writing](writing/SKILL.md)
-- [Organization](organization/SKILL.md)

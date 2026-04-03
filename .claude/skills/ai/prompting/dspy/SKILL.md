@@ -1,8 +1,7 @@
 ---
 name: dspy
-description: Compile prompts into self-improving pipelines with signatures, modules,
-  optimizers, and programmatic prompt engineering
-version: 1.0.0
+description: Compile prompts into self-improving pipelines with signatures, modules, optimizers, evaluation, and reproducible prompt engineering workflows.
+version: 1.1.0
 author: workspace-hub
 category: ai-prompting
 type: skill
@@ -39,72 +38,132 @@ related_skills:
 scripts_exempt: true
 ---
 
-# Dspy
+# DSPy
+
+## Overview
+
+DSPy is for building LLM programs where prompt logic should be structured, testable, and optimizable instead of hand-tuned ad hoc. Use it when you need signatures, modules, evaluation, and optimizers working together as a program rather than a pile of prompts.
 
 ## Quick Start
 
 ```bash
-# Install DSPy
-pip install dspy-ai
-
-# Optional: For retrieval
-pip install chromadb faiss-cpu
-
-# Set API key
-export OPENAI_API_KEY="your-api-key"
+uv add dspy-ai
+export OPENAI_API_KEY="***"
 ```
 
-## When to Use This Skill
+Minimal example:
 
-**USE when:**
-- Need to optimize prompts programmatically rather than manually
-- Building pipelines where prompt quality is critical to success
-- Want reproducible, testable prompt engineering
-- Working with complex multi-step reasoning tasks
-- Need to automatically find effective few-shot examples
-- Building systems that improve with more training data
-- Require systematic evaluation and comparison of prompt strategies
-- Want to abstract away prompt engineering from application logic
+```python
+import dspy
 
-**DON'T USE when:**
-- Simple single-shot prompts that work well as-is
-- Need fine-grained control over exact prompt wording
-- Building applications with minimal LLM interactions
-- Prototyping where rapid iteration is more important than optimization
-- Resource-constrained environments (optimization requires API calls)
+lm = dspy.LM("openai/gpt-4.1-mini")
+dspy.configure(lm=lm)
 
-## Prerequisites
+class AnswerQuestion(dspy.Signature):
+    question = dspy.InputField()
+    answer = dspy.OutputField(desc="short factual answer")
 
-```bash
-# Core installation
-pip install dspy-ai>=2.4.0
-
-# For vector retrieval
-pip install chromadb>=0.4.0 faiss-cpu>=1.7.0
-
-# For different LLM providers
-pip install openai>=1.0.0 anthropic>=0.5.0
-
-# For evaluation
-pip install pandas>=2.0.0 scikit-learn>=1.0.0
-
-# Environment setup
-export OPENAI_API_KEY="sk-..."
-export ANTHROPIC_API_KEY="sk-ant-..."
+predict = dspy.Predict(AnswerQuestion)
+result = predict(question="What is vortex-induced vibration?")
+print(result.answer)
 ```
+
+## When to Use
+
+Use DSPy when:
+- prompt quality materially affects system quality
+- you want reproducible optimization instead of manual prompt edits
+- you need structured multi-step reasoning pipelines
+- you want train/dev sets and metrics to drive prompt/program improvement
+- you are building RAG, classification, extraction, or agent workflows with repeatable evaluation
+
+Do not use DSPy when:
+- a simple single prompt already works and is easy to maintain
+- exact wording control matters more than programmatic optimization
+- the workflow is too small to justify the abstraction
+
+## Core Concepts
+
+### 1. Signatures
+Define structured input/output contracts.
+
+```python
+class SummarizeSpec(dspy.Signature):
+    text = dspy.InputField()
+    summary = dspy.OutputField(desc="3-sentence summary")
+```
+
+### 2. Modules
+Compose behavior from signatures.
+- `dspy.Predict`
+- `dspy.ChainOfThought`
+- `dspy.ReAct`
+- custom `dspy.Module`
+
+### 3. Evaluation
+Use small but representative datasets and explicit metrics.
+
+### 4. Optimization
+Use optimizers when you have examples and a measurable target.
+Common patterns include BootstrapFewShot and MIPRO-style optimization depending on installed DSPy version.
+
+## Practical Workflow
+
+1. Start with the simplest working signature
+2. Build a baseline module with `Predict`
+3. Evaluate on a small labeled set
+4. Upgrade to `ChainOfThought` or multi-step modules only if needed
+5. Optimize with few-shot / compiler workflows
+6. Save the compiled program and test it like code
+
+## Example: Chain of Thought
+
+```python
+class MathReasoning(dspy.Signature):
+    problem = dspy.InputField()
+    solution = dspy.OutputField()
+
+solver = dspy.ChainOfThought(MathReasoning)
+print(solver(problem="A riser sees 3 cycles/min for 2 hours. How many cycles?").solution)
+```
+
+## Example: Retrieval-Augmented Pattern
+
+```python
+class AnswerWithContext(dspy.Signature):
+    context = dspy.InputField()
+    question = dspy.InputField()
+    answer = dspy.OutputField()
+```
+
+Use retrieved passages as explicit `context` instead of burying retrieval logic in prompt text.
+
+## Best Practices
+
+- Start simple, then optimize
+- Use descriptive output-field descriptions
+- Keep evaluation sets representative
+- Compare baseline vs optimized behavior explicitly
+- Save compiled/optimized programs
+- Treat DSPy modules as code artifacts with tests and metrics
+- Debug with small examples before scaling up
+
+## Common Failure Modes
+
+- Optimization not improving
+  - metric too weak
+  - examples not representative
+  - signature too vague
+- Over-complex pipeline
+  - reduce steps before adding optimizers
+- Hidden prompt drift
+  - save compiled artifacts and compare outputs over time
 
 ## Resources
 
-- **DSPy Documentation**: https://dspy-docs.vercel.app/
-- **DSPy GitHub**: https://github.com/stanfordnlp/dspy
-- **DSPy Paper**: https://arxiv.org/abs/2310.03714
-- **Examples**: https://github.com/stanfordnlp/dspy/tree/main/examples
-
----
-
-## Version History
-
-- **1.0.0** (2026-01-17): Initial release with signatures, modules, optimizers, and RAG
+- DSPy docs: https://dspy.ai/
+- GitHub: https://github.com/stanfordnlp/dspy
+- Paper: https://arxiv.org/abs/2310.03714
 
 ## Sub-Skills
 
@@ -115,9 +174,3 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 - [5. Evaluation and Metrics (+1)](5-evaluation-and-metrics/SKILL.md)
 - [1. Start Simple, Then Optimize (+2)](1-start-simple-then-optimize/SKILL.md)
 - [Optimization Not Improving (+2)](optimization-not-improving/SKILL.md)
-
-## Sub-Skills
-
-- [DSPy Philosophy](dspy-philosophy/SKILL.md)
-- [Example 1: Engineering Report Analysis Pipeline (+2)](example-1-engineering-report-analysis-pipeline/SKILL.md)
-- [Integration with LangChain (+1)](integration-with-langchain/SKILL.md)
