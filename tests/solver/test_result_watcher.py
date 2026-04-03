@@ -14,6 +14,9 @@ from unittest.mock import MagicMock, patch
 import pytest
 import yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+WATCH_RESULTS_SCRIPT = REPO_ROOT / "scripts" / "solver" / "watch-results.sh"
+
 
 # ---------------------------------------------------------------------------
 # Inline the post-processing logic so tests run without importing scripts/
@@ -227,6 +230,27 @@ class TestMetricExtraction:
         metrics = extract_metrics(data)
         assert "test01.owr" in metrics["output_files"]
         assert "test01.xlsx" in metrics["output_files"]
+
+
+class TestWatcherScriptSafety:
+    """Static checks for watcher locking and failure surfacing."""
+
+    def test_watch_results_uses_locking(self):
+        script = WATCH_RESULTS_SCRIPT.read_text()
+        assert "flock" in script or ".lock" in script
+
+    def test_watch_results_does_not_mask_git_pull_failures(self):
+        script = WATCH_RESULTS_SCRIPT.read_text()
+        assert "git pull origin main 2>/dev/null || true" not in script
+        assert "git pull origin main" in script
+
+    def test_watch_results_uses_uv_run_for_python(self):
+        script = WATCH_RESULTS_SCRIPT.read_text()
+        assert 'uv run python "${POST_PROCESS_SCRIPT}"' in script or 'uv run --no-project python "${POST_PROCESS_SCRIPT}"' in script
+
+    def test_watch_results_acquires_lock_before_resetting_failure_count(self):
+        script = WATCH_RESULTS_SCRIPT.read_text()
+        assert script.index("acquire_lock") < script.index("echo 0 > \"${PULL_FAILURE_COUNT_FILE}\"")
 
 
 class TestJSONLAppend:

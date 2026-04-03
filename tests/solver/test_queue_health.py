@@ -253,6 +253,10 @@ class TestScriptSafety:
         script = QUEUE_HEALTH_SCRIPT.read_text()
         assert "uv run --no-project python -" in script
 
+    def test_queue_health_reports_git_pull_failures(self):
+        script = QUEUE_HEALTH_SCRIPT.read_text()
+        assert "git_pull_failures" in script
+
 
 class TestHealthReportFormat:
     """Test report formatting."""
