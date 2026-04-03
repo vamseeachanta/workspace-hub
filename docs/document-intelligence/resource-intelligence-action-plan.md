@@ -201,15 +201,35 @@ uv run scripts/data/document-index/phase-b-claude-worker.py --shard 0 --total-sh
 
 ---
 
+## GitHub Issue Tracker
+
+All work items have corresponding GitHub issues:
+
+| Action | Issue(s) | Status |
+|--------|----------|--------|
+| Conference indexing | #1608, #1641, #1642 | PREP DONE, ready for Phase A |
+| DDE source registration | #1756 | CLOSED |
+| Standards migration (6 orgs) | #1758 | CLOSED |
+| Cross-drive dedup audit | #1757 | Script done, needs full run |
+| Phase B summarization | #1769 | Open — needs Claude API quota |
+| Standards ledger expansion | #1770, #1612 | Open |
+| Index DDE unique files | #1771 | Open — blocked by #1757 |
+| DDE literature catalog | #1759 | CLOSED |
+| OCR + index migrated orgs | #1772 | Open |
+| VIV MATLAB port | #1773 | Open — low priority |
+| va-hdd-2 triage | #1774 | Open — low priority |
+
+---
+
 ## Success Metrics
 
-| Metric | Current | Target | Timeline |
-|--------|---------|--------|----------|
-| Documents indexed | 1,033,933 | 1,072,459 (+38,526 conferences) | 2 weeks |
-| Phase B summaries | 61.9% | 80% | 1 month |
-| Standards in ledger | 425 (1.6%) | 1,000 (3.7%) | 1 month |
-| DDE indexed | 0% | 100% unique content | 1 month |
-| Conference papers indexed | 0% | 100% | 2 weeks |
-| Mounted sources registered | 8 | 11 (+3 DDE) | This week |
-| Standards orgs covered | 11 | 17 (+6 from DDE) | 2 weeks |
-| Domain coverage (done) | 6.8% | 15% | 3 months |
+| Metric | Baseline (Apr 2) | Current (Apr 3) | Target | Timeline |
+|--------|-------------------|------------------|--------|----------|
+| Documents indexed | 1,033,933 | 1,033,933 | 1,072,459 (+38K conf) | 2 weeks |
+| Phase B summaries | 61.9% | 61.9% | 90% | 1 month |
+| Standards in ledger | 425 (1.6%) | 425 | 1,274 (+849) | 1 month |
+| DDE sources registered | 0 | 3 (DONE) | 3 | DONE |
+| Conference papers batched | 0% | 100% (21,346 files) | Phase A run | 2 weeks |
+| Mounted sources | 8 | 11 (DONE) | 11 | DONE |
+| Standards orgs on /mnt/ace | 11 | 17 (DONE) | 17 | DONE |
+| Domain coverage (done) | 6.8% | 6.8% | 15% | 3 months |
