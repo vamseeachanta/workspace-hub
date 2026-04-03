@@ -1,2284 +1,2817 @@
-generated_at: '2026-04-02T00:14:20Z'
-total_skills: 380
+generated_at: '2026-04-03T04:07:53Z'
+total_skills: 402
 skills:
   account-research:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/account-research
   aceengineer-website-update:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/content-design/aceengineer-website-update
   activepieces:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: operations/automation/activepieces
   agent-teams:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: workspace-hub/agent-teams
   agent-usage-optimizer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: ai/agent-usage-optimizer
   agenta:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: ai/prompting/agenta
   ai-prompting:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: ai/prompting/ai-prompting
   ai-tool-assessment:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: operations/devtools/ai-tool-assessment
   airflow:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: operations/automation/airflow
   algorithmic-art:
-    baseline_usage_rate: 0.3
+    baseline_usage_rate: 0.2
     calls_in_period: 3
-    reference_count: 3
+    reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/content-design/algorithmic-art
-  analysis:
+  analyst:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/orcawave/analysis
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/analyst
   api:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/standards/api
+  api-docs:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/api-docs
   api-integration:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/scientific/api-integration
   api12-drilling-analyzer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/api12-drilling-analyzer
-  aqwa:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
+  aqwa-analysis:
+    baseline_usage_rate: 0.3
+    calls_in_period: 3
+    reference_count: 3
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/aqwa
-  aqwa-benchmark:
+  aqwa-batch-execution:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/aqwa-benchmark
+    framework_usage: false
+    tier: hot
+    path: engineering/marine-offshore/aqwa/batch-execution
+  aqwa-input:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/aqwa/input
+  aqwa-output:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/aqwa/output
+  aqwa-reference:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/aqwa/reference
+  architecture:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: hot
+    path: gsd-agents/architecture
   astm:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/standards/astm
   audit-support:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/audit-support
   automation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: development/automation/automation
   autoviz:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/analysis/autoviz
+  backend-dev:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/backend-dev
   background-service-manager:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: operations/devtools/background-service-manager
-  batch-execution:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/aqwa/batch-execution
-  batch-manager:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/batch-manager
   bemrosetta:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/bemrosetta
-  blender:
+  blender-interface:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/cad/blender
   brand-guidelines:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/communication/brand-guidelines
   brand-voice:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/marketing/brand-voice
   bsee-data-extractor:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/bsee-data-extractor
   bsee-sodir-extraction:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analysis/bsee-sodir-extraction
   cad-engineering:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/cad/cad-engineering
   cad-mesh-generation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/scientific/cad-mesh-generation
   calculation-report:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: hot
     path: data/calculation-report
   calendly-api:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/communication/calendly-api
   call-prep:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/call-prep
   campaign-planning:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/marketing/campaign-planning
   canned-responses:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/canned-responses
   canvas-design:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/content-design/canvas-design
   catenary-riser:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/catenary-riser
   cathodic-protection:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/cathodic-protection
   chartjs:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/visualization/chartjs
+  cicd-engineer:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/cicd-engineer
   clean-code:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: workspace-hub/clean-code
   cli-productivity:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: operations/devtools/cli-productivity
   clinical-trial-protocol:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/clinical-trial-protocol
   close-management:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/close-management
-  code-check:
+  code-review-swarm:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: engineering/marine-offshore/orcaflex/code-check
-  code-review:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/code-review
+    path: gsd-agents/code-review-swarm
   code-reviewer:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/code-reviewer
+  coder:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/coder
   communication:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/communication/communication
   competitive-analysis:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
-    path: business/product/competitive-analysis
+    path: business/marketing/competitive-analysis
   competitive-intelligence:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/competitive-intelligence
   compliance:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/compliance
   comprehensive-learning:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: workspace-hub/comprehensive-learning
   content-strategy:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/marketing/content-strategy
   contract-review:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/contract-review
   cowork-plugin-customizer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: development/plugin-management/cowork-plugin-customizer
-  cp:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/doc-extraction/cp
   create-an-asset:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/create-an-asset
+  cron-job-management:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: operations/automation/cron-job-management
   customer-research:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/customer-support/customer-research
   d3js:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/visualization/d3js
   daily-briefing:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/daily-briefing
-  damping-sweep:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/damping-sweep
   dark-intelligence-workflow:
-    baseline_usage_rate: 0.2
+    baseline_usage_rate: 0.3
     calls_in_period: 2
-    reference_count: 2
+    reference_count: 3
+    framework_usage: false
     tier: warm
     path: data/dark-intelligence-workflow
   dash:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: hot
     path: data/analysis/dash
   data-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analysis/data-analysis
   data-context-extractor:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analytics/data-context-extractor
   data-exploration:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/analytics/data-exploration
-  data-fetcher:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: data/energy/metocean/data-fetcher
   data-management:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analysis/data-management
   data-pipeline-processor:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: development/data-pipeline-processor
   data-validation:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: hot
     path: data/analytics/data-validation
   data-visualization:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/analytics/data-visualization
   devtools:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: development/tools/devtools
   diffraction-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/diffraction-analysis
+  digitalmodel-code-explorer:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: digitalmodel/code-explorer
   dnv:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/standards/dnv
   doc-coauthoring:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/communication/doc-coauthoring
   doc-extraction:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: hot
     path: engineering/doc-extraction
+  doc-extraction-cp:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/doc-extraction/cp
+  doc-extraction-drilling-riser:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/doc-extraction/drilling-riser
+  doc-extraction-naval-architecture:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/doc-extraction/naval-architecture
   doc-intelligence-promotion:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: data/doc-intelligence-promotion
   doc-research-download:
-    baseline_usage_rate: 0.1
+    baseline_usage_rate: 0.2
     calls_in_period: 1
-    reference_count: 1
+    reference_count: 2
+    framework_usage: false
     tier: hot
     path: data/doc-research-download
   docker:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: operations/devtools/docker
   document-index-pipeline:
-    baseline_usage_rate: 0.0
+    baseline_usage_rate: 0.1
     calls_in_period: 0
-    reference_count: 0
+    reference_count: 1
+    framework_usage: false
     tier: hot
     path: data/document-index-pipeline
   document-inventory:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/documents/document-inventory
   document-rag-pipeline:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/documents/document-rag-pipeline
   documentation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: development/documentation/documentation
   docusaurus:
-    baseline_usage_rate: 0.3
+    baseline_usage_rate: 0.2
     calls_in_period: 3
-    reference_count: 3
+    reference_count: 2
+    framework_usage: false
     tier: warm
     path: development/documentation/docusaurus
   docx:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/documents/docx
   docx-templates:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: data/office/docx-templates
   draft-outreach:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/sales/draft-outreach
   drillbotics:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/drilling/drillbotics
   drilling:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: engineering/drilling
-  drilling-riser:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/doc-extraction/drilling-riser
   dspy:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: ai/prompting/dspy
   echarts:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/visualization/echarts
   economic-sensitivity-analyzer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/economic-sensitivity-analyzer
   ecosystem-terminology:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: workspace-hub/ecosystem-terminology
   elite-frontend-ux:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: development/elite-frontend-ux
   energy-data-visualizer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/energy-data-visualizer
-  engineering-chatbot:
+  engineering-chatbot-demo:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: business/client-demo/engineering-chatbot
   engineering-report-generator:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.5
     calls_in_period: 4
-    reference_count: 4
-    tier: warm
+    reference_count: 5
+    framework_usage: false
+    tier: hot
     path: development/engineering-report-generator
-  environment-config:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/environment-config
   escalation:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
-    tier: warm
+    framework_usage: false
+    tier: hot
     path: business/customer-support/escalation
   excel-translation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analysis/excel-translation
   expense-tracking:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/admin/expense-tracking
-  extreme-analysis:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/extreme-analysis
   fatigue-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/fatigue-analysis
   fdas-economics:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/fdas-economics
   fe-analyst:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/fe-analyst
   feature-spec:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/product/feature-spec
   field-analyzer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/field-analyzer
-  file-conversion:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/file-conversion
   financial-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/financial-analysis
   financial-statements:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/financial-statements
   fitness-for-service:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/asset-integrity/fitness-for-service
   freecad-automation:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/cad/freecad-automation
   frontend-design:
-    baseline_usage_rate: 0.6
+    baseline_usage_rate: 0.5
     calls_in_period: 6
-    reference_count: 6
+    reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/content-design/frontend-design
   gis-informed-workflow:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/gis/gis-informed-workflow
   git-advanced:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: operations/devtools/git-advanced
   git-worktree-workflow:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: development/git-worktree-workflow
   gitbook:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: development/documentation/gitbook
   github-actions:
-    baseline_usage_rate: 0.7
+    baseline_usage_rate: 0.8
     calls_in_period: 7
-    reference_count: 7
+    reference_count: 8
+    framework_usage: false
     tier: hot
     path: operations/automation/github-actions
+  github-code-review:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/code-review
+  github-issue-tracker:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/issue-tracker
+  github-modes:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/modes
+  github-multi-repo:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/multi-repo
+  github-pr-manager:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/pr-manager
+  github-project-board:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/project-board
+  github-release-manager:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/release-manager
+  github-release-swarm:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/release-swarm
+  github-repo-architect:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/repo-architect
+  github-swarm-issue:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/swarm-issue
+  github-swarm-pr:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/swarm-pr
+  github-sync:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/sync
+  github-workflow:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/github/workflow
   gitignore-scaffold:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: development/gitignore-scaffold
   gmsh-meshing:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/cad/gmsh-meshing
   google-earth-engine:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/gis/google-earth-engine
   great-tables:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/analysis/great-tables
   gsd-add-backlog:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-add-backlog
   gsd-add-phase:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: true
     tier: warm
     path: gsd-add-phase
   gsd-add-tests:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-add-tests
   gsd-add-todo:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-add-todo
   gsd-audit-milestone:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: true
     tier: warm
     path: gsd-audit-milestone
   gsd-audit-uat:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-audit-uat
   gsd-autonomous:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-autonomous
   gsd-check-todos:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-check-todos
   gsd-cleanup:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-cleanup
   gsd-complete-milestone:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-complete-milestone
   gsd-debug:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-debug
   gsd-discuss-phase:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-discuss-phase
   gsd-do:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-do
   gsd-execute-phase:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-execute-phase
   gsd-fast:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-fast
   gsd-forensics:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-forensics
   gsd-health:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-health
   gsd-help:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-help
   gsd-insert-phase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-insert-phase
   gsd-join-discord:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-join-discord
   gsd-list-phase-assumptions:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-list-phase-assumptions
   gsd-list-workspaces:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-list-workspaces
   gsd-manager:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-manager
   gsd-map-codebase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-map-codebase
   gsd-milestone-summary:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-milestone-summary
   gsd-new-milestone:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: true
     tier: warm
     path: gsd-new-milestone
   gsd-new-project:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: true
     tier: warm
     path: gsd-new-project
   gsd-new-workspace:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-new-workspace
   gsd-next:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-next
   gsd-note:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-note
   gsd-pause-work:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-pause-work
   gsd-plan-milestone-gaps:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-plan-milestone-gaps
   gsd-plan-phase:
     baseline_usage_rate: 0.7
     calls_in_period: 7
     reference_count: 7
+    framework_usage: true
     tier: hot
     path: gsd-plan-phase
   gsd-plant-seed:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-plant-seed
   gsd-pr-branch:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-pr-branch
   gsd-profile-user:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-profile-user
   gsd-progress:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-progress
   gsd-quick:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-quick
   gsd-reapply-patches:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-reapply-patches
   gsd-remove-phase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-remove-phase
   gsd-remove-workspace:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-remove-workspace
   gsd-research-phase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-research-phase
   gsd-resume-work:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-resume-work
   gsd-review:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-review
   gsd-review-backlog:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-review-backlog
   gsd-session-report:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-session-report
   gsd-set-profile:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-set-profile
   gsd-settings:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-settings
   gsd-ship:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-ship
   gsd-stats:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-stats
   gsd-thread:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-thread
   gsd-ui-phase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-ui-phase
   gsd-ui-review:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-ui-review
   gsd-update:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-update
   gsd-validate-phase:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-validate-phase
   gsd-verify-work:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
-    tier: cold
+    framework_usage: true
+    tier: warm
     path: gsd-verify-work
   gsd-workstreams:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: true
+    tier: warm
     path: gsd-workstreams
   hardware-assessment:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: operations/devops/hardware-assessment
   highcharts:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/visualization/highcharts
   hse-risk-analyzer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/hse-risk-analyzer
   html-report-verify:
-    baseline_usage_rate: 0.1
+    baseline_usage_rate: 0.2
     calls_in_period: 1
-    reference_count: 1
+    reference_count: 2
+    framework_usage: false
     tier: hot
     path: development/html-report-verify
   hydrodynamic-analysis:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/hydrodynamic-analysis
   hydrodynamics:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/hydrodynamics
   improve:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.3
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
+    framework_usage: false
     tier: hot
     path: workspace-hub/improve
-  input:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/aqwa/input
-  installation-analysis:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/installation-analysis
   instrument-data-allotrope:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/instrument-data-allotrope
   interactive-dashboard-builder:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/analytics/interactive-dashboard-builder
   internal-comms:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: business/communication/internal-comms
   invoice-automation:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/admin/invoice-automation
   iso:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/standards/iso
-  issue-tracker:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/issue-tracker
   journal-entry-prep:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/journal-entry-prep
-  jumper-analysis:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/jumper-analysis
   knowledge-base-builder:
     baseline_usage_rate: 0.7
     calls_in_period: 7
     reference_count: 7
+    framework_usage: false
     tier: hot
     path: data/documents/knowledge-base-builder
   knowledge-management:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: business/customer-support/knowledge-management
+  knowledge-pipeline:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: data/knowledge-pipeline
   knowledge-synthesis:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/enterprise-search/knowledge-synthesis
   langchain:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: ai/prompting/langchain
-  large-reader:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: data/documents/pdf/large-reader
   lead-generation:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/marketing/lead-generation
   legal-risk-assessment:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/legal-risk-assessment
-  line-wizard:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/line-wizard
   marine-offshore-engineering:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/marine-offshore-engineering
   marine-safety:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/marine-safety
   marine-safety-incidents:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/marine-safety-incidents
   maritime-legal:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/maritime-legal
   marp:
-    baseline_usage_rate: 0.2
+    baseline_usage_rate: 0.1
     calls_in_period: 2
-    reference_count: 2
-    tier: warm
+    reference_count: 1
+    framework_usage: false
+    tier: cold
     path: development/documentation/marp
   mcp-builder:
-    baseline_usage_rate: 0.1
+    baseline_usage_rate: 0.0
     calls_in_period: 1
-    reference_count: 1
-    tier: cold
+    reference_count: 0
+    framework_usage: false
+    tier: dead
     path: development/mcp-builder
   md-to-pdf:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/documents/md-to-pdf
   meeting-briefing:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/meeting-briefing
   memory-management:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/productivity/memory-management
-  mesh-generation:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/mesh-generation
   mesh-utilities:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/mesh-utilities
   metocean:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: data/energy/metocean
+  metocean-data-fetcher:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: data/energy/metocean/data-fetcher
+  metocean-statistics:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: data/energy/metocean/statistics
+  metocean-visualizer:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: data/energy/metocean/visualizer
   metrics-tracking:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/product/metrics-tracking
   miro-api:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/communication/miro-api
-  modal-analysis:
+  ml-developer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: engineering/marine-offshore/orcaflex/modal-analysis
-  model-generator:
+    path: gsd-agents/ml-developer
+  mobile-dev:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: engineering/marine-offshore/orcaflex/model-generator
-  model-sanitization:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/model-sanitization
+    path: gsd-agents/mobile-dev
   model-selection:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: ai/optimization/model-selection
-  modeling:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/modeling
-  modes:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: development/github/modes
   modular-architecture-documentation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/admin/modular-architecture-documentation
   module-lookup:
-    baseline_usage_rate: 0.0
+    baseline_usage_rate: 0.1
     calls_in_period: 0
-    reference_count: 0
+    reference_count: 1
+    framework_usage: false
     tier: hot
     path: digitalmodel/module-lookup
-  monolithic-to-modular:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/monolithic-to-modular
   mooring-analysis:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/mooring-analysis
   mooring-design:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/mooring-design
-  mooring-iteration:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/mooring-iteration
-  multi-body:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/multi-body
-  multi-repo:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: development/github/multi-repo
   n8n:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: operations/automation/n8n
   naval-architect-expert:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: digitalmodel/naval-architect-expert
   naval-architecture:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/naval-architecture
   nda-triage:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/legal/nda-triage
   nextflow-pipelines:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/nextflow-pipelines
   norsok:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/standards/norsok
   notion-api:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/productivity/notion-api
   npv-analyzer:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/npv-analyzer
   numpy-numerical-analysis:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: data/scientific/numpy-numerical-analysis
   obsidian:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/productivity/obsidian
   office-docs:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/office/office-docs
   oil-and-gas:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/oil-and-gas
   openfoam:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: engineering/cfd/openfoam
+  openfoam-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: hot
+    path: engineering/cfd/openfoam/analysis
   openpyxl:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: data/office/openpyxl
-  operability:
+  ops-pyproject-toml:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/orcaflex/operability
+    framework_usage: false
+    tier: dead
+    path: operations/devtools/pyproject-toml
+  ops-uv-package-manager:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: operations/devtools/uv-package-manager
   orcaflex:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/orcaflex
+  orcaflex-batch-manager:
+    baseline_usage_rate: 0.2
+    calls_in_period: 2
+    reference_count: 2
+    framework_usage: false
+    tier: warm
+    path: engineering/marine-offshore/orcaflex/batch-manager
+  orcaflex-code-check:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/code-check
   orcaflex-enrichment:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/engineering/orcaflex-enrichment
+  orcaflex-environment-config:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/orcaflex/environment-config
+  orcaflex-extreme-analysis:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/orcaflex/extreme-analysis
+  orcaflex-file-conversion:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/file-conversion
+  orcaflex-installation-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/installation-analysis
+  orcaflex-jumper-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/jumper-analysis
+  orcaflex-line-wizard:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/line-wizard
+  orcaflex-modal-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/modal-analysis
+  orcaflex-model-generator:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/model-generator
+  orcaflex-model-sanitization:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/model-sanitization
+  orcaflex-modeling:
+    baseline_usage_rate: 0.2
+    calls_in_period: 2
+    reference_count: 2
+    framework_usage: false
+    tier: warm
+    path: engineering/marine-offshore/orcaflex/modeling
+  orcaflex-monolithic-to-modular:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/monolithic-to-modular
+  orcaflex-mooring-iteration:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/mooring-iteration
+  orcaflex-operability:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/orcaflex/operability
+  orcaflex-post-processing:
+    baseline_usage_rate: 0.2
+    calls_in_period: 2
+    reference_count: 2
+    framework_usage: false
+    tier: warm
+    path: engineering/marine-offshore/orcaflex/post-processing
+  orcaflex-rao-import:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/rao-import
+  orcaflex-results-comparison:
+    baseline_usage_rate: 0.2
+    calls_in_period: 2
+    reference_count: 2
+    framework_usage: false
+    tier: warm
+    path: engineering/marine-offshore/orcaflex/results-comparison
+  orcaflex-spec-audit:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/spec-audit
+  orcaflex-specialist:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/specialist
+  orcaflex-static-debug:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/static-debug
+  orcaflex-vessel-setup:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: engineering/marine-offshore/orcaflex/vessel-setup
+  orcaflex-visualization:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: hot
+    path: engineering/marine-offshore/orcaflex/visualization
+  orcaflex-yaml-gotchas:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcaflex/yaml-gotchas
   orcawave:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/orcawave
+  orcawave-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/analysis
+  orcawave-aqwa-benchmark:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/aqwa-benchmark
+  orcawave-damping-sweep:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/damping-sweep
+  orcawave-mesh-generation:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/mesh-generation
+  orcawave-multi-body:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/multi-body
+  orcawave-qtf-analysis:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/qtf-analysis
+  orcawave-to-orcaflex:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: engineering/marine-offshore/orcawave/to-orcaflex
   orchestrator-routing:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: workspace-hub/agent-teams/orchestrator-routing
-  output:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/aqwa/output
   pandas-data-processing:
     baseline_usage_rate: 1.0
     calls_in_period: 10
     reference_count: 10
+    framework_usage: false
     tier: hot
     path: data/scientific/pandas-data-processing
   pandasai:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: ai/prompting/pandasai
   pandoc:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.3
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/documentation/pandoc
   parallel-file-processor:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: development/parallel-file-processor
   pdf:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: data/documents/pdf
-  pdftotext-poppler:
+  pdf-large-reader:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
-    tier: dead
+    framework_usage: false
+    tier: hot
+    path: data/documents/pdf/large-reader
+  pdf-pdftotext-poppler:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
     path: data/documents/pdf/pdftotext-poppler
+  pdf-text-extractor:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: data/documents/pdf/text-extractor
+  pdf-text-extractor-readability-classification:
+    baseline_usage_rate: 0.1
+    calls_in_period: 1
+    reference_count: 1
+    framework_usage: false
+    tier: cold
+    path: data/documents/pdf/text-extractor/readability-classification
+  pdf-utilities:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: data/documents/pdf/utilities
   performance-analytics:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/marketing/performance-analytics
   planning-code-goal:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/planning/planning-code-goal
   planning-goal:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: development/planning/planning-goal
   playwright:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: workspace-hub/playwright
   plotly:
     baseline_usage_rate: 0.7
     calls_in_period: 7
     reference_count: 7
+    framework_usage: false
     tier: hot
     path: data/visualization/plotly
   plotly-visualization:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/visualization/plotly-visualization
   polars:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/analysis/polars
-  post-processing:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/post-processing
   pptx:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/documents/pptx
-  pr-manager:
+  product-competitive-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: development/github/pr-manager
+    path: business/product/competitive-analysis
   product-documentation:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/admin/product-documentation
   product-roadmap:
-    baseline_usage_rate: 0.1
+    baseline_usage_rate: 0.0
     calls_in_period: 1
-    reference_count: 1
-    tier: cold
+    reference_count: 0
+    framework_usage: false
+    tier: dead
     path: business/product/product-roadmap
   production-engineering:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/production-engineering
   production-forecaster:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/production-forecaster
-  project-board:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/project-board
   prompt-engineering:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: ai/prompting/prompt-engineering
   pypdf:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: hot
     path: data/office/pypdf
   pyproject-toml:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: operations/devtools/pyproject-toml
+    path: development/devtools/pyproject-toml
   pytest-fixture-generator:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: development/testing/pytest-fixture-generator
   python-docx:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: data/office/python-docx
   python-gis-ecosystem:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/gis/python-gis-ecosystem
   python-pptx:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/office/python-pptx
   python-project-template:
-    baseline_usage_rate: 0.2
+    baseline_usage_rate: 0.1
     calls_in_period: 2
-    reference_count: 2
-    tier: warm
+    reference_count: 1
+    framework_usage: false
+    tier: cold
     path: development/workflows/python-project-template
   python-scientific-computing:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: data/scientific/python-scientific-computing
   pyvista-3d:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/cad/pyvista-3d
   qgis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/gis/qgis
-  qtf-analysis:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/qtf-analysis
   quantification-metrics:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/admin/quantification-metrics
   rag-system-builder:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: data/documents/rag-system-builder
-  rao-import:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/rao-import
   raycast-alfred:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: operations/devtools/raycast-alfred
-  readability-classification:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: data/documents/pdf/text-extractor/readability-classification
   reconciliation:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/reconciliation
-  reference:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/aqwa/reference
-  release-manager:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/release-manager
-  release-swarm:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/release-swarm
   remote-desktop:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: workspace-hub/remote-desktop
-  repo-architect:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/repo-architect
   repo-portfolio-steering:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: workspace-hub/repo-portfolio-steering
   repo-structure:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: hot
     path: workspace-hub/repo-structure
   repo-sync:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: hot
     path: workspace-hub/repo-sync
+  reporting-workflow:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: development/workflows/reporting-workflow
+  research-and-literature-gathering:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: hot
+    path: data/research-and-literature-gathering
   research-literature:
-    baseline_usage_rate: 0.1
+    baseline_usage_rate: 0.2
     calls_in_period: 1
-    reference_count: 1
+    reference_count: 2
+    framework_usage: false
     tier: hot
     path: data/research-literature
   response-drafting:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/customer-support/response-drafting
-  results-comparison:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/results-comparison
   risk-assessment:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/risk-assessment
   scientific-problem-selection:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/scientific-problem-selection
   scvi-tools:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/scvi-tools
   search-strategy:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/enterprise-search/search-strategy
   semantic-search-setup:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/documents/semantic-search-setup
   seo-optimizer:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: business/marketing/seo-optimizer
   shell-tdd:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: development/shell-tdd
   ship-dynamics-6dof:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/ship-dynamics-6dof
   signal-analysis:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/signal-analysis
   single-cell-rna-qc:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: science/bio-research/single-cell-rna-qc
   skill-eval:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: development/skill-eval
   slack-api:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: business/communication/slack-api
   slack-gif-creator:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/communication/slack-gif-creator
   social-media:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/marketing/social-media
   sodir-data-extractor:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/sodir-data-extractor
   solver-benchmark:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/marine-offshore/solver-benchmark
   source-management:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/enterprise-search/source-management
   sparc-architecture:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/sparc/sparc-architecture
   sparc-pseudocode:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/sparc/sparc-pseudocode
   sparc-refinement:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/sparc/sparc-refinement
   sparc-specification:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/sparc/sparc-specification
-  spec-audit:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/spec-audit
-  specialist:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/specialist
   sphinx:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.3
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/documentation/sphinx
   sql-queries:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: data/analytics/sql-queries
   stakeholder-comms:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/product/stakeholder-comms
-  static-debug:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/static-debug
   statistical-analysis:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: data/analytics/statistical-analysis
-  statistics:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: data/energy/metocean/statistics
   streamlit:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/analysis/streamlit
   structural-analysis:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: engineering/marine-offshore/structural-analysis
   subagent-driven:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/subagent-driven
-  swarm-issue:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/swarm-issue
-  swarm-pr:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: development/github/swarm-pr
   sweetviz:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/analysis/sweetviz
   sync:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: workspace-hub/sync
+  system-architect:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/system-architect
   systematic-debugging:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/systematic-debugging
   task-management:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/productivity/task-management
   tax-preparation:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/admin/tax-preparation
+  tdd-london-swarm:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: gsd-agents/tdd-london-swarm
   tdd-obra:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: development/tdd-obra
   teams-api:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: business/communication/teams-api
   technology-stack-modernization:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/admin/technology-stack-modernization
   testing-production:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: development/testing/testing-production
   testing-tdd-london:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/testing/testing-tdd-london
-  text-extractor:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: data/documents/pdf/text-extractor
   theme-factory:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.3
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
+    framework_usage: false
     tier: warm
     path: business/content-design/theme-factory
   ticket-triage:
     baseline_usage_rate: 0.4
     calls_in_period: 4
     reference_count: 4
+    framework_usage: false
     tier: warm
     path: business/customer-support/ticket-triage
   time-tracking:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: business/productivity/time-tracking
-  to-orcaflex:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcawave/to-orcaflex
   today:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: business/productivity/today
   todoist-api:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: business/productivity/todoist-api
   trello-api:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/productivity/trello-api
   units:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: engineering/units
   usage-optimization:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: ai/optimization/usage-optimization
   user-research-synthesis:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: business/product/user-research-synthesis
-  utilities:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: data/documents/pdf/utilities
   uv-package-manager:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
-    path: operations/devtools/uv-package-manager
+    path: development/devtools/uv-package-manager
   variance-analysis:
     baseline_usage_rate: 0.5
     calls_in_period: 5
     reference_count: 5
+    framework_usage: false
     tier: hot
     path: business/finance/variance-analysis
   verification-loop:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: development/verification-loop
-  vessel-setup:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/vessel-setup
-  visualization:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: engineering/marine-offshore/orcaflex/visualization
-  visualizer:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: data/energy/metocean/visualizer
   viv-analysis:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: engineering/marine-offshore/viv-analysis
   vscode-extensions:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: cold
     path: operations/devtools/vscode-extensions
   wave-theory:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: engineering/marine-offshore/wave-theory
   web-scraper-energy:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/web-scraper-energy
   webapp-testing:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: development/webapp-testing
   well-production-dashboard:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: dead
     path: data/energy/well-production-dashboard
   windmill:
     baseline_usage_rate: 0.2
     calls_in_period: 2
     reference_count: 2
+    framework_usage: false
     tier: warm
     path: operations/automation/windmill
-  workflow:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: hot
-    path: development/github/workflow
   writing-plans:
-    baseline_usage_rate: 0.4
+    baseline_usage_rate: 0.3
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
+    framework_usage: false
     tier: warm
     path: development/planning/writing-plans
   xlsx:
     baseline_usage_rate: 0.1
     calls_in_period: 1
     reference_count: 1
+    framework_usage: false
     tier: hot
     path: data/documents/xlsx
   xlsx-to-python:
     baseline_usage_rate: 0.0
     calls_in_period: 0
     reference_count: 0
+    framework_usage: false
     tier: hot
     path: data/office/xlsx-to-python
   yaml-configuration:
     baseline_usage_rate: 0.6
     calls_in_period: 6
     reference_count: 6
+    framework_usage: false
     tier: hot
     path: data/scientific/yaml-configuration
-  yaml-gotchas:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    tier: dead
-    path: engineering/marine-offshore/orcaflex/yaml-gotchas
   yaml-workflow-executor:
-    baseline_usage_rate: 0.5
+    baseline_usage_rate: 0.4
     calls_in_period: 5
-    reference_count: 5
-    tier: hot
+    reference_count: 4
+    framework_usage: false
+    tier: warm
     path: development/yaml-workflow-executor
   ydata-profiling:
     baseline_usage_rate: 0.3
     calls_in_period: 3
     reference_count: 3
+    framework_usage: false
     tier: warm
     path: data/analysis/ydata-profiling
-scores: []

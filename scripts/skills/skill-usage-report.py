@@ -274,18 +274,20 @@ def classify_tiers(
         short_name = info["short_name"]
         refs = ref_counts.get(short_name, 0)
         in_git = short_name in git_mentioned
+        framework_usage = short_name.startswith("gsd-")
 
         entry = {
             "skill": short_name,
             "path": info["full_rel"],
             "reference_count": refs,
             "in_recent_commits": in_git,
+            "framework_usage": framework_usage,
         }
 
         if refs >= 5 or in_git:
             entry["tier"] = "hot"
             tiers["hot"].append(entry)
-        elif refs >= 2:
+        elif refs >= 2 or framework_usage:
             entry["tier"] = "warm"
             tiers["warm"].append(entry)
         elif refs == 1:
@@ -333,10 +335,12 @@ def generate_skill_scores(
         # Merge with existing scores if available
         existing = existing_scores.get(short_name, {})
 
+        framework_usage = short_name.startswith("gsd-")
         skills_data[short_name] = {
             "baseline_usage_rate": round(refs / max_refs, 4) if max_refs > 0 else 0.0,
             "calls_in_period": existing.get("calls_in_period", refs),
             "reference_count": refs,
+            "framework_usage": framework_usage,
             "tier": tier,
             "path": info["full_rel"],
         }
