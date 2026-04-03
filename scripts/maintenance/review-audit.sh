@@ -20,6 +20,8 @@ DATE_COMPACT="$(date +%Y%m%d)"
 LOG_DIR="$REPO_ROOT/logs/maintenance"
 JSON_OUTPUT="$LOG_DIR/review-audit-${DATE_COMPACT}.json"
 DRY_RUN="${DRY_RUN:-false}"
+GH_AUTHENTICATED="false"
+GH_AUTH_ERROR=""
 
 mkdir -p "$LOG_DIR"
 
@@ -169,6 +171,15 @@ fi
 
 UNREVIEWED_COUNT=${#UNREVIEWED_HASHES[@]}
 
+if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 && "$DRY_RUN" != "true" ]]; then
+    if gh auth status >/dev/null 2>&1; then
+        GH_AUTHENTICATED="true"
+    else
+        GH_AUTHENTICATED="false"
+        GH_AUTH_ERROR="gh CLI is not authenticated; cannot create or update review backlog issue"
+    fi
+fi
+
 # ── Output ────────────────────────────────────────────────────────────────────
 echo "Summary:"
 echo "  Total commits:        $TOTAL_COMMITS"
@@ -207,6 +218,7 @@ cat > "$JSON_OUTPUT" <<EOF
   "unreviewed_commits": $UNREVIEWED_COUNT,
   "compliance_percent": $COMPLIANCE,
   "threshold_percent": $REVIEW_COMPLIANCE_THRESHOLD,
+  "gh_authenticated": ${GH_AUTHENTICATED},
   "pass": $([ "$COMPLIANCE" -ge "$REVIEW_COMPLIANCE_THRESHOLD" ] && echo "true" || echo "false"),
   "unreviewed": [
 $(for i in "${!UNREVIEWED_HASHES[@]}"; do
@@ -226,7 +238,7 @@ echo ""
 echo "JSON summary written to: $JSON_OUTPUT"
 
 # ── Create GitHub issue if compliance is below threshold ──────────────────────
-if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 ]]; then
+if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 && -z "$GH_AUTH_ERROR" ]]; then
     ISSUE_TITLE="Review backlog: ${UNREVIEWED_COUNT} unreviewed commits from ${DATE}"
 
     # Build issue body
@@ -269,25 +281,36 @@ if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -g
         echo "$ISSUE_BODY"
     else
         echo ""
-        echo "Creating GitHub issue for review backlog..."
+        echo "Creating or updating GitHub issue for review backlog..."
 
         # Check if labels exist, create if not
         gh label create "review-backlog" --description "Commits lacking review evidence" --color "FBCA04" 2>/dev/null || true
 
-        ISSUE_URL="$(gh issue create \
-            --title "$ISSUE_TITLE" \
-            --body "$ISSUE_BODY" \
-            --label "maintenance" \
-            --label "review-backlog" \
-            2>&1)" || {
-            echo "WARNING: Failed to create GitHub issue: $ISSUE_URL" >&2
-            echo "(gh CLI may not be authenticated or repo may not have issues enabled)"
-        }
+        EXISTING_ISSUE_NUMBER="$(gh issue list --state open --label "review-backlog" --limit 1 --json number --jq '.[0].number' 2>/dev/null || true)"
 
-        if [[ -n "$ISSUE_URL" && "$ISSUE_URL" == http* ]]; then
-            echo "Issue created: $ISSUE_URL"
+        if [[ -n "$EXISTING_ISSUE_NUMBER" && "$EXISTING_ISSUE_NUMBER" != "null" ]]; then
+            gh issue comment "$EXISTING_ISSUE_NUMBER" --body "$ISSUE_BODY" >/dev/null
+            echo "Updated existing review backlog issue: #$EXISTING_ISSUE_NUMBER"
+        else
+            ISSUE_URL="$(gh issue create \
+                --title "$ISSUE_TITLE" \
+                --body "$ISSUE_BODY" \
+                --label "maintenance" \
+                --label "review-backlog" \
+                2>&1)" || {
+                echo "WARNING: Failed to create GitHub issue: $ISSUE_URL" >&2
+                echo "(gh CLI may not be authenticated or repo may not have issues enabled)"
+            }
+
+            if [[ -n "$ISSUE_URL" && "$ISSUE_URL" == http* ]]; then
+                echo "Issue created: $ISSUE_URL"
+            fi
         fi
     fi
+fi
+
+if [[ -n "$GH_AUTH_ERROR" ]]; then
+    die "$GH_AUTH_ERROR"
 fi
 
 echo ""
