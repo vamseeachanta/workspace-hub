@@ -5,56 +5,71 @@
 #
 # Reads a YAML manifest with a 'jobs' list, validates each entry,
 # then calls submit-job.sh for each job in sequence.
-# Requires: yq (or python3 + pyyaml as fallback)
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SUBMIT_SCRIPT="${SCRIPT_DIR}/submit-job.sh"
-
 MANIFEST="${1:?Usage: submit-batch.sh <manifest.yaml> [--dry-run]}"
 DRY_RUN=false
+
 if [[ "${2:-}" == "--dry-run" ]]; then
     DRY_RUN=true
 fi
 
-# Validate manifest exists
 if [[ ! -f "${MANIFEST}" ]]; then
     echo "ERROR: Manifest not found: ${MANIFEST}" >&2
     exit 1
 fi
 
-# Validate submit-job.sh exists
 if [[ ! -f "${SUBMIT_SCRIPT}" ]]; then
     echo "ERROR: submit-job.sh not found at: ${SUBMIT_SCRIPT}" >&2
     exit 1
 fi
 
-# Parse YAML manifest using Python (available everywhere we run)
 parse_manifest() {
-    python3 -c "
-import sys, yaml, json
-with open('${MANIFEST}') as f:
-    data = yaml.safe_load(f)
+    uv run --no-project python - "$MANIFEST" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+import yaml
+
+manifest_path = Path(sys.argv[1])
+with manifest_path.open() as handle:
+    data = yaml.safe_load(handle)
+
 if not isinstance(data, dict) or 'jobs' not in data:
-    print('ERROR: Manifest must contain a jobs key', file=sys.stderr)
+    print("ERROR: Manifest must contain a 'jobs' key", file=sys.stderr)
     sys.exit(1)
+
 jobs = data['jobs']
 if not isinstance(jobs, list):
-    print('ERROR: jobs must be a list', file=sys.stderr)
+    print("ERROR: 'jobs' must be a list", file=sys.stderr)
     sys.exit(1)
-for i, job in enumerate(jobs):
+
+for index, job in enumerate(jobs):
     if not isinstance(job, dict):
-        print(f'ERROR: Job {i} is not a mapping', file=sys.stderr)
+        print(f"ERROR: Job {index} is not a mapping", file=sys.stderr)
         sys.exit(1)
-    if 'solver' not in job:
-        print(f'ERROR: Job {i} missing solver field', file=sys.stderr)
+    if 'name' not in job:
+        print(f"ERROR: Job {index} missing name field", file=sys.stderr)
         sys.exit(1)
-    if 'input_file' not in job:
-        print(f'ERROR: Job {i} missing input_file field', file=sys.stderr)
+    if 'solver_type' not in job:
+        print(f"ERROR: Job {index} missing solver_type field", file=sys.stderr)
         sys.exit(1)
+    if 'model_file' not in job:
+        print(f"ERROR: Job {index} missing model_file field", file=sys.stderr)
+        sys.exit(1)
+    if job['solver_type'] not in {'orcawave', 'orcaflex'}:
+        print(
+            f"ERROR: Job {index} invalid solver_type '{job['solver_type']}'",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
 print(json.dumps(jobs))
-"
+PY
 }
 
 echo "=== Batch Submission ==="
@@ -62,23 +77,17 @@ echo "Manifest: ${MANIFEST}"
 echo "Dry run:  ${DRY_RUN}"
 echo ""
 
-# Parse and validate
 JOBS_JSON=$(parse_manifest)
-JOB_COUNT=$(echo "${JOBS_JSON}" | python3 -c "import sys, json; print(len(json.load(sys.stdin)))")
+JOB_COUNT=$(printf '%s' "${JOBS_JSON}" | uv run --no-project python -c "import json,sys; print(len(json.load(sys.stdin)))")
 
 echo "Found ${JOB_COUNT} job(s)"
 echo ""
 
-# Submit each job
 SUCCESS=0
 FAILED=0
 
-for i in $(seq 0 $((JOB_COUNT - 1))); do
-    SOLVER=$(echo "${JOBS_JSON}" | python3 -c "import sys, json; jobs=json.load(sys.stdin); print(jobs[${i}]['solver'])")
-    INPUT_FILE=$(echo "${JOBS_JSON}" | python3 -c "import sys, json; jobs=json.load(sys.stdin); print(jobs[${i}]['input_file'])")
-    DESCRIPTION=$(echo "${JOBS_JSON}" | python3 -c "import sys, json; jobs=json.load(sys.stdin); print(jobs[${i}].get('description', 'Batch job'))")
-
-    echo "[Job $((i + 1))/${JOB_COUNT}] ${SOLVER}: ${INPUT_FILE}"
+while IFS=$'\t' read -r JOB_NAME SOLVER INPUT_FILE DESCRIPTION; do
+    echo "[${JOB_NAME}] ${SOLVER}: ${INPUT_FILE}"
     echo "  Description: ${DESCRIPTION}"
 
     if [[ "${DRY_RUN}" == "true" ]]; then
@@ -94,7 +103,16 @@ for i in $(seq 0 $((JOB_COUNT - 1))); do
         fi
     fi
     echo ""
-done
+done < <(
+    printf '%s' "${JOBS_JSON}" | uv run --no-project python -c '
+import json
+import sys
+jobs = json.load(sys.stdin)
+for job in jobs:
+    description = job.get("description") or job["name"]
+    print(f"{job['"'"'name'"'"']}\t{job['"'"'solver_type'"'"']}\t{job['"'"'model_file'"'"']}\t{description}")
+'
+)
 
 echo "=== Summary ==="
 echo "Total: ${JOB_COUNT} | Submitted: ${SUCCESS} | Failed: ${FAILED}"

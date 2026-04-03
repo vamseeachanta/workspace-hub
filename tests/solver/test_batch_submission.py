@@ -21,38 +21,49 @@ import yaml
 # ---------------------------------------------------------------------------
 
 VALID_MANIFEST = textwrap.dedent("""\
+    schema_version: "1"
     jobs:
-      - solver: orcawave
-        input_file: docs/domains/orcawave/L00_validation_wamit/2.1/test01.owd
+      - name: l00-smoke-test
+        solver_type: orcawave
+        model_file: docs/domains/orcawave/L00_validation_wamit/2.1/test01.owd
         description: "L00 smoke test"
-      - solver: orcaflex
-        input_file: models/mooring_analysis.dat
+      - name: mooring-run
+        solver_type: orcaflex
+        model_file: models/mooring_analysis.dat
         description: "Mooring run"
-      - solver: orcawave
-        input_file: docs/domains/orcawave/L01/test02.owd
+      - name: l01-frequency-sweep
+        solver_type: orcawave
+        model_file: docs/domains/orcawave/L01/test02.owd
         description: "L01 frequency sweep"
 """)
 
 MINIMAL_MANIFEST = textwrap.dedent("""\
+    schema_version: "1"
     jobs:
-      - solver: orcawave
-        input_file: test.owd
+      - name: minimal-job
+        solver_type: orcawave
+        model_file: test.owd
 """)
 
 EMPTY_MANIFEST = textwrap.dedent("""\
+    schema_version: "1"
     jobs: []
 """)
 
 MISSING_SOLVER_MANIFEST = textwrap.dedent("""\
+    schema_version: "1"
     jobs:
-      - input_file: test.owd
+      - name: missing-solver
+        model_file: test.owd
         description: "Missing solver field"
 """)
 
 MISSING_INPUT_MANIFEST = textwrap.dedent("""\
+    schema_version: "1"
     jobs:
-      - solver: orcawave
-        description: "Missing input_file field"
+      - name: missing-model-file
+        solver_type: orcawave
+        description: "Missing model_file field"
 """)
 
 NO_JOBS_KEY_MANIFEST = textwrap.dedent("""\
@@ -86,7 +97,7 @@ def repo_root(tmp_path: Path) -> Path:
 def parse_batch_manifest(manifest_path: str | Path) -> list[dict]:
     """Parse a batch manifest YAML file and return list of job dicts.
 
-    Each job dict must have at least 'solver' and 'input_file' keys.
+    Each job dict must have at least 'name', 'solver_type', and 'model_file' keys.
     Raises ValueError for missing required fields or malformed YAML.
     """
     path = Path(manifest_path)
@@ -107,13 +118,15 @@ def parse_batch_manifest(manifest_path: str | Path) -> list[dict]:
     for i, job in enumerate(jobs):
         if not isinstance(job, dict):
             raise ValueError(f"Job {i} must be a mapping, got {type(job).__name__}")
-        if "solver" not in job:
-            raise ValueError(f"Job {i} missing required field: solver")
-        if "input_file" not in job:
-            raise ValueError(f"Job {i} missing required field: input_file")
-        if job["solver"] not in ("orcawave", "orcaflex"):
+        if "name" not in job:
+            raise ValueError(f"Job {i} missing required field: name")
+        if "solver_type" not in job:
+            raise ValueError(f"Job {i} missing required field: solver_type")
+        if "model_file" not in job:
+            raise ValueError(f"Job {i} missing required field: model_file")
+        if job["solver_type"] not in ("orcawave", "orcaflex"):
             raise ValueError(
-                f"Job {i} invalid solver '{job['solver']}' — must be 'orcawave' or 'orcaflex'"
+                f"Job {i} invalid solver '{job['solver_type']}' — must be 'orcawave' or 'orcaflex'"
             )
         validated.append(job)
     return validated
@@ -137,9 +150,9 @@ def submit_batch(
         raise FileNotFoundError(f"submit-job.sh not found at: {submit_script}")
 
     for job in jobs:
-        solver = job["solver"]
-        input_file = job["input_file"]
-        description = job.get("description", "Batch job")
+        solver = job["solver_type"]
+        input_file = job["model_file"]
+        description = job.get("description") or job["name"]
 
         if dry_run:
             results.append({
@@ -193,8 +206,8 @@ class TestManifestParsing:
         manifest.write_text(VALID_MANIFEST)
         jobs = parse_batch_manifest(manifest)
         assert len(jobs) == 3
-        assert jobs[0]["solver"] == "orcawave"
-        assert jobs[1]["solver"] == "orcaflex"
+        assert jobs[0]["solver_type"] == "orcawave"
+        assert jobs[1]["solver_type"] == "orcaflex"
         assert jobs[2]["description"] == "L01 frequency sweep"
 
     def test_parse_minimal_manifest(self, tmp_path: Path):
@@ -203,7 +216,7 @@ class TestManifestParsing:
         manifest.write_text(MINIMAL_MANIFEST)
         jobs = parse_batch_manifest(manifest)
         assert len(jobs) == 1
-        assert jobs[0]["solver"] == "orcawave"
+        assert jobs[0]["solver_type"] == "orcawave"
         assert "description" not in jobs[0]
 
     def test_parse_empty_jobs_list(self, tmp_path: Path):
@@ -233,23 +246,25 @@ class TestManifestValidation:
         """Job without 'solver' raises ValueError."""
         manifest = tmp_path / "manifest.yaml"
         manifest.write_text(MISSING_SOLVER_MANIFEST)
-        with pytest.raises(ValueError, match="missing required field: solver"):
+        with pytest.raises(ValueError, match="missing required field: solver_type"):
             parse_batch_manifest(manifest)
 
     def test_missing_input_file_field(self, tmp_path: Path):
         """Job without 'input_file' raises ValueError."""
         manifest = tmp_path / "manifest.yaml"
         manifest.write_text(MISSING_INPUT_MANIFEST)
-        with pytest.raises(ValueError, match="missing required field: input_file"):
+        with pytest.raises(ValueError, match="missing required field: model_file"):
             parse_batch_manifest(manifest)
 
     def test_invalid_solver_type(self, tmp_path: Path):
         """Job with unknown solver raises ValueError."""
         manifest = tmp_path / "manifest.yaml"
         manifest.write_text(textwrap.dedent("""\
+            schema_version: "1"
             jobs:
-              - solver: abaqus
-                input_file: model.inp
+              - name: invalid-solver
+                solver_type: abaqus
+                model_file: model.inp
         """))
         with pytest.raises(ValueError, match="invalid solver 'abaqus'"):
             parse_batch_manifest(manifest)
@@ -303,8 +318,8 @@ class TestDryRunMode:
         manifest.write_text(MINIMAL_MANIFEST)
         results = submit_batch(manifest, repo_root, dry_run=True)
 
-        assert results[0]["job"]["solver"] == "orcawave"
-        assert results[0]["job"]["input_file"] == "test.owd"
+        assert results[0]["job"]["solver_type"] == "orcawave"
+        assert results[0]["job"]["model_file"] == "test.owd"
 
 
 class TestBatchSubmission:
