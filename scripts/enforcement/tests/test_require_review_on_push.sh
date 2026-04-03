@@ -272,6 +272,64 @@ test_mixed_commits_warn_feat() {
 # =============================================================================
 # Test 6: Feature commit WITH review evidence passes
 # =============================================================================
+test_path_based_low_risk_docs_commit_passes() {
+  run_test "Feature-labeled docs-only commit is downgraded by path supplement"
+  setup_test_repo
+
+  local base_oid
+  base_oid="$(git rev-parse HEAD)"
+
+  mkdir -p docs
+  echo "doc change" > docs/guide.md
+  git add docs/guide.md
+  git commit -q -m "feat: update docs guide"
+
+  local head_oid
+  head_oid="$(git rev-parse HEAD)"
+
+  local output exit_code=0
+  output="$(run_script "$head_oid" "$base_oid")" || exit_code=$?
+
+  if [[ $exit_code -eq 0 ]] && echo "$output" | grep -q "PASS"; then
+    pass "Docs-only feat commit passes via path supplement"
+  else
+    fail "Expected PASS for docs-only feat commit, got exit ${exit_code}" "Output: $output"
+  fi
+
+  teardown_test_repo
+}
+
+# =============================================================================
+# Test 7: latency log is written
+# =============================================================================
+test_latency_log_written() {
+  run_test "Latency log written for review gate runs"
+  setup_test_repo
+
+  local base_oid
+  base_oid="$(git rev-parse HEAD)"
+  add_commit "feat: latency check"
+  local head_oid
+  head_oid="$(git rev-parse HEAD)"
+  local repo_dir
+  repo_dir="$(pwd)"
+
+  local output exit_code=0
+  output="$(run_script "$head_oid" "$base_oid")" || exit_code=$?
+
+  local latency_log="${repo_dir}/logs/hooks/review-gate-latency.jsonl"
+  if [[ -f "$latency_log" ]] && grep -q 'latency_ms' "$latency_log"; then
+    pass "Latency log created with latency_ms"
+  else
+    fail "Expected latency log at ${latency_log}" "Output: $output"
+  fi
+
+  teardown_test_repo
+}
+
+# =============================================================================
+# Test 8: Feature commit WITH review evidence passes
+# =============================================================================
 test_feature_with_evidence_passes() {
   run_test "Feature commit with git review evidence passes"
   setup_test_repo
@@ -317,6 +375,8 @@ main() {
   test_skip_bypass_logs
   test_strict_mode_blocks
   test_mixed_commits_warn_feat
+  test_path_based_low_risk_docs_commit_passes
+  test_latency_log_written
   test_feature_with_evidence_passes
 
   echo ""

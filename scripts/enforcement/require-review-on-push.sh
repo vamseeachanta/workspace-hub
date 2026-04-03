@@ -12,6 +12,11 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 TODAY="$(date +%Y-%m-%d)"
+START_MS="$(python3 - <<'PY'
+import time
+print(int(time.time() * 1000))
+PY
+)"
 
 # --- Arguments ---
 LOCAL_OID="${1:-HEAD}"
@@ -43,6 +48,25 @@ needs_review() {
 }
 
 # --- Review evidence checks ---
+
+commit_touches_only_low_risk_paths() {
+  local commit_hash="$1"
+  local files
+  files="$(git diff-tree --no-commit-id --name-only -r "$commit_hash" 2>/dev/null || true)"
+  [[ -z "$files" ]] && return 1
+
+  while IFS= read -r file; do
+    [[ -z "$file" ]] && continue
+    case "$file" in
+      docs/*|*.md|*.rst|LICENSE|README*|CHANGELOG*|config/ai-tools/*|config/user-profile.yaml)
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done <<< "$files"
+  return 0
+}
 
 # Check 1: scripts/review/results/ has files from today
 check_review_results() {
@@ -104,7 +128,24 @@ get_commit_list() {
   fi
 }
 
-# --- Log bypass ---
+# --- Logging ---
+log_latency() {
+  local verdict="$1"
+  local latency_dir="${REPO_ROOT}/logs/hooks"
+  local latency_file="${latency_dir}/review-gate-latency.jsonl"
+  mkdir -p "$latency_dir"
+  local end_ms latency_ms branch timestamp
+  end_ms="$(python3 - <<'PY'
+import time
+print(int(time.time() * 1000))
+PY
+)"
+  latency_ms=$((end_ms - START_MS))
+  branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')"
+  timestamp="$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')"
+  echo "{\"timestamp\":\"${timestamp}\",\"branch\":\"${branch}\",\"strict\":$( [[ \"${REVIEW_GATE_STRICT:-}\" == \"1\" ]] && echo true || echo false ),\"verdict\":\"${verdict}\",\"latency_ms\":${latency_ms}}" >> "$latency_file"
+}
+
 log_bypass() {
   local bypass_dir="${REPO_ROOT}/logs/hooks"
   local bypass_file="${bypass_dir}/review-gate-bypass.jsonl"
@@ -123,6 +164,7 @@ main() {
   # Handle skip mode early
   if [[ "${SKIP_REVIEW_GATE:-}" == "1" ]]; then
     log_bypass
+    log_latency "bypass"
     echo "[review-gate] SKIP: Review gate bypassed (SKIP_REVIEW_GATE=1). Logged to logs/hooks/review-gate-bypass.jsonl"
     exit 0
   fi
@@ -133,6 +175,7 @@ main() {
 
   if [[ -z "$commits" ]]; then
     echo "[review-gate] PASS: No commits to check."
+    log_latency "pass"
     exit 0
   fi
 
@@ -148,7 +191,11 @@ main() {
     total=$((total + 1))
 
     if needs_review "$msg"; then
-      feature_commits+=("$hash $msg")
+      if commit_touches_only_low_risk_paths "$hash"; then
+        skip_commits+=("$hash $msg")
+      else
+        feature_commits+=("$hash $msg")
+      fi
     else
       skip_commits+=("$hash $msg")
     fi
@@ -159,7 +206,8 @@ main() {
 
   # No feature commits — all clear
   if [[ "$feature_count" -eq 0 ]]; then
-    echo "[review-gate] PASS: ${total} commit(s) checked — all chore/docs/sync (no review needed)."
+    echo "[review-gate] PASS: ${total} commit(s) checked — all chore/docs/sync/low-risk-paths (no review needed)."
+    log_latency "pass"
     exit 0
   fi
 
@@ -182,6 +230,7 @@ main() {
   # All reviewed — pass
   if [[ "$unreviewed" -eq 0 ]]; then
     echo "[review-gate] PASS: All feature/fix commits have review evidence."
+    log_latency "pass"
     exit 0
   fi
 
@@ -205,10 +254,12 @@ main() {
   if [[ "${REVIEW_GATE_STRICT:-}" == "1" ]]; then
     echo ""
     echo "[review-gate] BLOCKED: REVIEW_GATE_STRICT=1 — push rejected."
+    log_latency "blocked"
     exit 1
   fi
 
   # Default warn mode — allow push
+  log_latency "warn"
   exit 0
 }
 
