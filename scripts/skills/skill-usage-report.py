@@ -78,14 +78,13 @@ def _skill_name_from_path(path: Path, skills_root: Path) -> str:
 def scan_skills(skills_dir: Path) -> dict[str, dict]:
     """Scan all SKILL.md files, returning {skill_name: {path, related_skills, see_also, body_refs}}.
 
-    Excludes _archive/ directories.
+    Excludes _archive/, _core/, and _internal/ directories.
     """
     skills: dict[str, dict] = {}
 
     for skill_md in sorted(skills_dir.rglob("SKILL.md")):
-        # Exclude _archive
         parts = skill_md.parts
-        if "_archive" in parts:
+        if any(excluded in parts for excluded in {"_archive", "_core", "_internal"}):
             continue
 
         rel_path = str(skill_md.relative_to(skills_dir))
