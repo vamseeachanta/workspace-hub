@@ -4,6 +4,8 @@ Updated: 2026-04-02
 Purpose: canonical navigation map for future OrcaWave/OrcaFlex work across digitalmodel and workspace-hub.
 Traceability: #1752 operator map, #1753 stale-doc repairs, #1754 reusable workflow skill.
 
+Related detailed reconciliation report: `docs/reports/digitalmodel-orcawave-orcaflex-issue-reconciliation.md`.
+
 ## 1. What this map is for
 
 Use this document before touching OrcaWave or OrcaFlex code. It is the current-state operator guide linking:
