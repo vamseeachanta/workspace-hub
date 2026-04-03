@@ -14,13 +14,11 @@ last_updated: "2026-02-24"
 # Scores data: config/ai-tools/agent-capability-scores.yaml
 # Regenerate: uv run --no-project python scripts/ai/generate-agent-radar.py
 #
-# WRK-235 Strategy Decision (2026-02-24): Maintain all three providers (Option A)
-# - Claude: orchestrator + primary executor
-# - Codex: cross-review hard gate (independent second opinion, budget cost tier)
-# - Gemini: research + large-doc processing (1M context window advantage)
-# Review trigger: if Claude reaches 1M context OR Codex cross-review quality drops
-# below Claude Sonnet level, consolidate. Evidence from WRK-237 cost tracking.
-# Next reassessment: 2026-06-06 (June first-Friday review)
+# Strategy note (updated 2026-04-03 after observed-behavior audit)
+# - Claude: orchestrator + primary executor across most active workflows
+# - Codex: cross-review hard gate and bounded second-lane implementation helper
+# - Gemini: third review lane and overflow/large-context option, but not the observed primary research engine
+# - Hermes: documentation, data analysis, skill management, and agentic orchestration specialist
 
 providers:
   claude:
@@ -59,22 +57,22 @@ providers:
     context_window:
       primary: 200000
     strengths:
-      - single-file focused code changes
-      - algorithm implementation
-      - test writing and TDD
+      - adversarial code review
+      - bounded implementation support
+      - focused test writing when explicitly assigned
       - refactoring and cleanup
       - configuration edits
     cost_tier: low
     primary_use_cases:
-      - "Focused implementation tasks (Route A/B)"
-      - "Writing and expanding test suites"
-      - "Bug fixes in isolated modules"
-      - "Code refactoring without architectural change"
+      - "Cross-review hard gate on plans and diffs"
+      - "Bounded implementation tasks when explicitly routed"
+      - "Focused test writing and cleanup work"
+      - "Alternative implementation perspective at low cost"
     horizon_2026_h1:
       trajectory: stable
       unique_value: "Independent cross-review perspective; budget cost tier (o4-mini)"
       strategy_role: cross_review_hard_gate
-      consolidation_candidate: true  # reassess June 2026 with WRK-237 cost data
+      consolidation_candidate: true
       consolidation_trigger: "Codex cross-review verdicts consistently match Claude Sonnet AND cost savings < overhead"
 
   gemini:
@@ -86,23 +84,46 @@ providers:
       primary: 1000000
       fast: 1000000
     strengths:
-      - research and information gathering
-      - data analysis and summarization
-      - content writing and documentation
-      - large document processing
-      - cross-reference and synthesis
+      - independent third-lane review
+      - large-context overflow analysis
+      - content drafting when explicitly routed
+      - broad synthesis as a supplementary reviewer
     cost_tier: medium
     primary_use_cases:
-      - "Research tasks and literature review"
-      - "Documentation and report generation"
-      - "Large-context analysis (specs, logs, data)"
-      - "Content creation and narrative writing"
+      - "Third adversarial review lane"
+      - "Large-context overflow analysis when routed"
+      - "Supplementary synthesis and documentation"
+      - "Fallback research pass when Hermes/Claude are saturated"
     horizon_2026_h1:
       trajectory: improving_rapidly
-      unique_value: "1M token context window — still ahead of Claude for large-doc work"
-      strategy_role: research_and_large_context
-      consolidation_candidate: true  # reassess June 2026
+      unique_value: "1M token context window — still useful as overflow capacity"
+      strategy_role: third_review_lane
+      consolidation_candidate: true
       consolidation_trigger: "Claude context window reaches 1M tokens AND Gemini adds no unique capability"
+
+  hermes:
+    display_name: "Hermes Agent"
+    model_ids:
+      primary: "gpt-5.4"
+    context_window:
+      primary: 200000
+    strengths:
+      - documentation and reporting
+      - data analysis and transformation
+      - skill creation and maintenance
+      - agent orchestration and delegation
+      - cross-repo synthesis
+    cost_tier: medium
+    primary_use_cases:
+      - "Documentation and report generation"
+      - "Data analysis and structured transformations"
+      - "Skill management and memory-driven maintenance"
+      - "Parallel delegation and orchestration workflows"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      unique_value: "Strong skill tooling, delegation, and document-heavy workflow support"
+      strategy_role: documentation_data_skill_specialist
+      consolidation_candidate: false
 
   openai:
     display_name: "OpenAI GPT"

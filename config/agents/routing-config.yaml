@@ -6,13 +6,13 @@ version: 2.0.0
 
 tiers:
   SIMPLE:
-    primary: codex
-    fallbacks: [gemini, claude]
+    primary: claude
+    fallbacks: [hermes, codex, gemini]
     max_context_tokens: 8000
     description: Short factual queries, status checks, simple lookups
   STANDARD:
-    primary: codex
-    fallbacks: [claude, gemini]
+    primary: claude
+    fallbacks: [codex, hermes, gemini]
     max_context_tokens: 32000
     description: Implementation tasks, bug fixes, refactoring
   COMPLEX:
@@ -32,7 +32,7 @@ dimensions:
     provider_signal: claude
   code_density:
     weight: 0.18
-    provider_signal: codex
+    provider_signal: claude
   architecture_scope:
     weight: 0.15
     provider_signal: claude
@@ -41,7 +41,7 @@ dimensions:
     provider_signal: codex
   research_analysis:
     weight: 0.10
-    provider_signal: gemini
+    provider_signal: hermes
   task_complexity:
     weight: 0.08
     provider_signal: tier
@@ -53,7 +53,7 @@ dimensions:
     provider_signal: all
   data_processing:
     weight: 0.04
-    provider_signal: gemini
+    provider_signal: hermes
   simple_indicators:
     weight: 0.02
     provider_signal: cheapest
