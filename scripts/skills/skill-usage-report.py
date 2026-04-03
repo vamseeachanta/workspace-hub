@@ -132,7 +132,10 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
                            "video", "audio", "schema", "table", "column", "row",
                            "field", "record", "query", "param", "option", "flag"}:
                 body_refs.append(ref)
-        for _label, link_target in re.findall(r'\[([^\]]+)\]\(([^)]+SKILL\.md)\)', text, flags=re.IGNORECASE):
+        for label, link_target in re.findall(r'\[([^\]]+)\]\(([^)]+SKILL\.md)\)', text, flags=re.IGNORECASE):
+            label_name = label.strip().replace('_', '-').lower()
+            if label_name:
+                body_refs.append(label_name)
             path_ref = Path(link_target)
             target_name = path_ref.parent.name.replace('_', '-').lower()
             if target_name:
