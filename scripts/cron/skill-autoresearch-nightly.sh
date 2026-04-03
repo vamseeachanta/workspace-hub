@@ -19,6 +19,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+source "${SCRIPT_DIR}/lib/git-safe.sh"
 DATE=$(date -u +%Y-%m-%d)
 BRANCH="autoresearch/skills-${DATE}"
 RESULTS_FILE="${WS_HUB}/.claude/state/skill-autoresearch/results.tsv"
@@ -58,6 +59,7 @@ echo "  Dry run: ${DRY_RUN}"
 
 # --- Ensure clean state ---
 cd "$WS_HUB"
+git_safe_init "$WS_HUB"
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
     echo "WARNING: working tree not clean — stashing changes"
     git stash --include-untracked -m "autoresearch-pre-stash-${DATE}" || true
@@ -211,8 +213,7 @@ print(d.get('summary', {}).get('issues', {}).get('critical', 0))
         echo -e "${DATE}\t${skill_name}\t${warnings_before}\t${warnings_after}\trevert-critical\t${DURATION}" >> "$RESULTS_FILE"
     elif [ "$warnings_after" -lt "$warnings_before" ]; then
         echo "  KEEP: warnings reduced ${warnings_before} -> ${warnings_after}"
-        git add "$SKILL_FILE"
-        git commit -m "autoresearch: improve ${skill_name} (warnings ${warnings_before}->${warnings_after})" --no-verify
+        git_safe_commit "autoresearch: improve ${skill_name} (warnings ${warnings_before}->${warnings_after})" "$SKILL_FILE"
         echo -e "${DATE}\t${skill_name}\t${warnings_before}\t${warnings_after}\tkept\t${DURATION}" >> "$RESULTS_FILE"
     else
         echo "  REVERT: no improvement (${warnings_before} -> ${warnings_after})"

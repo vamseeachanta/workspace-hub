@@ -303,11 +303,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      git pull origin main --rebase &&
-      uv run --no-project python scripts/analysis/architecture-scanner.py &&
-      git add -A docs/architecture/ &&
-      git diff --staged --quiet ||
-      (git commit -m 'chore: weekly architecture scan report' && git push origin main)
+      bash scripts/cron/architecture-scan-weekly.sh
       >> $WORKSPACE_HUB/logs/quality/architecture-scan-$(date +\%Y\%m\%d).log 2>&1
     log: logs/quality/architecture-scan-*.log
     is_claude_task: false
@@ -322,11 +318,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      git pull origin main --rebase &&
-      uv run --no-project python scripts/docs/staleness-scanner.py &&
-      git add -A docs/dashboards/doc-freshness-dashboard.md &&
-      git diff --staged --quiet ||
-      (git commit -m 'chore: weekly staleness scan freshness dashboard' && git push origin main)
+      bash scripts/cron/staleness-scan-weekly.sh
       >> $WORKSPACE_HUB/logs/quality/staleness-scan-$(date +\%Y\%m\%d).log 2>&1
     log: logs/quality/staleness-scan-*.log
     is_claude_task: false
@@ -396,10 +388,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      uv run --no-project python scripts/solver/results_dashboard.py &&
-      git add docs/solver/queue-dashboard.md &&
-      git diff --staged --quiet ||
-      (git commit -m 'chore(solver): daily dashboard regeneration' && git push origin main)
+      bash scripts/cron/solver-dashboard-daily.sh
       >> $WORKSPACE_HUB/logs/solver/dashboard-$(date +\%Y\%m\%d).log 2>&1
     log: logs/solver/dashboard-*.log
     is_claude_task: false
@@ -415,9 +404,7 @@ tasks:
     scheduler: windows-task-scheduler
     command: >-
       bash.exe -c "cd /path/to/workspace-hub &&
-      git add .claude/state/candidates/ .claude/state/corrections/ &&
-      git diff --staged --quiet ||
-      git commit -m 'chore: session learnings from %COMPUTERNAME%' && git push"
+      bash scripts/cron/win-session-state-commit.sh"
     log: null
     is_claude_task: false
     description: Windows Task Scheduler — daily commit of session-end state.

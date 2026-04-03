@@ -73,7 +73,7 @@
 #
 #   Task 2 — Session-end state commit (daily 03:00)
 #     Program:   bash.exe
-#     Arguments: -c "cd /path/to/workspace-hub && git add .claude/state/candidates/ .claude/state/corrections/ && git diff --staged --quiet || git commit -m 'chore: session learnings from %COMPUTERNAME%' && git push"
+#     Arguments: -c "cd /path/to/workspace-hub && bash scripts/cron/win-session-state-commit.sh"
 #     Trigger:   Daily 03:00
 #
 # For WSL, replace paths with WSL mount points (/mnt/d/...).
