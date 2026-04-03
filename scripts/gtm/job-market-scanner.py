@@ -137,29 +137,105 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-# Rate limiting
-REQUEST_DELAY = 2.0  # seconds between requests
+# Rate limiting and source policy
+REQUEST_DELAY = 2.0  # default seconds between requests
+SOURCE_RATE_LIMITS = {
+    "google": 3.0,
+    "google_direct": 3.0,
+    "indeed": 4.0,
+    "linkedin": 4.0,
+    "rigzone": 4.0,
+    "career_page": 3.0,
+    "example-board": 2.0,
+}
+SOURCE_ALLOWLIST = set(SOURCE_RATE_LIMITS)
+SOURCE_ALLOWED_DOMAINS = {
+    "google": {"www.google.com", "google.com"},
+    "google_direct": {"www.google.com", "google.com"},
+    "indeed": {"www.indeed.com", "indeed.com"},
+    "linkedin": {"www.linkedin.com", "linkedin.com"},
+    "rigzone": {"www.rigzone.com", "rigzone.com"},
+    "career_page": None,
+    "example-board": {"boards.example.com"},
+}
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def safe_request(url: str, params: dict | None = None, timeout: int = 15) -> requests.Response | None:
-    """Make a rate-limited HTTP request with error handling."""
-    time.sleep(REQUEST_DELAY)
-    try:
-        resp = requests.get(url, params=params, headers=HEADERS, timeout=timeout)
-        resp.raise_for_status()
-        return resp
-    except requests.RequestException as e:
-        print(f"  [WARN] Request failed: {e}")
+def safe_request(
+    url: str,
+    params: dict | None = None,
+    timeout: int = 15,
+    source: str | None = None,
+    max_attempts: int = 2,
+) -> requests.Response | None:
+    """Make a rate-limited HTTP request with basic compliance handling."""
+    parsed = urllib.parse.urlparse(url)
+    source_name = (source or parsed.netloc or "").lower()
+    if source_name and source_name not in SOURCE_ALLOWLIST:
+        print(f"  [WARN] Skipping disallowed source: {source_name}")
         return None
 
+    allowed_domains = SOURCE_ALLOWED_DOMAINS.get(source_name)
+    if allowed_domains is not None and parsed.netloc.lower() not in allowed_domains:
+        print(f"  [WARN] Skipping URL outside allowlist for {source_name}: {parsed.netloc}")
+        return None
 
-def job_id(title: str, company: str, location: str) -> str:
-    """Generate a unique ID for deduplication."""
+    delay = SOURCE_RATE_LIMITS.get(source_name, REQUEST_DELAY)
+    time.sleep(delay)
+
+    for attempt in range(1, max_attempts + 1):
+        try:
+            resp = requests.get(url, params=params, headers=HEADERS, timeout=timeout)
+            status_code = getattr(resp, "status_code", None)
+            headers = getattr(resp, "headers", {}) or {}
+            retry_after = headers.get("Retry-After")
+            if status_code in {429, 503} and attempt < max_attempts:
+                sleep_for = delay * (2 ** attempt)
+                if retry_after:
+                    try:
+                        sleep_for = max(sleep_for, float(retry_after))
+                    except ValueError:
+                        pass
+                print(f"  [WARN] {source_name or url} rate limited ({status_code}); retrying in {sleep_for}s")
+                time.sleep(sleep_for)
+                continue
+            resp.raise_for_status()
+            return resp
+        except requests.HTTPError as e:
+            print(f"  [WARN] Request failed: {e}")
+            return None
+        except requests.RequestException as e:
+            print(f"  [WARN] Request failed: {e}")
+            return None
+    return None
+
+
+def legacy_job_id(title: str, company: str, location: str) -> str:
+    """Generate the legacy deduplication key used before #1708."""
     raw = f"{title.lower().strip()}|{company.lower().strip()}|{location.lower().strip()}"
+    return hashlib.md5(raw.encode()).hexdigest()[:12]
+
+
+def job_id(
+    title: str,
+    company: str,
+    location: str,
+    source: str = "",
+    url: str = "",
+    posted_date: str = "",
+) -> str:
+    """Generate a unique ID for deduplication and repost tracking."""
+    raw = "|".join([
+        title.lower().strip(),
+        company.lower().strip(),
+        location.lower().strip(),
+        source.lower().strip(),
+        url.lower().strip(),
+        posted_date.lower().strip(),
+    ])
     return hashlib.md5(raw.encode()).hexdigest()[:12]
 
 
@@ -230,7 +306,7 @@ def scrape_google_jobs(keyword: str, location: str = "United States") -> list[di
     url = "https://www.google.com/search"
     params = {"q": query, "num": 20}
 
-    resp = safe_request(url, params)
+    resp = safe_request(url, params, source="google")
     if not resp:
         return jobs
 
@@ -274,7 +350,7 @@ def scrape_indeed(keyword: str, location: str = "United States") -> list[dict]:
     encoded_kw = urllib.parse.quote_plus(keyword)
     url = f"https://www.indeed.com/jobs?q={encoded_kw}&l={urllib.parse.quote_plus(location)}&sort=date"
 
-    resp = safe_request(url)
+    resp = safe_request(url, source="indeed")
     if not resp:
         return jobs
 
@@ -316,7 +392,7 @@ def scrape_rigzone(keyword: str) -> list[dict]:
     encoded_kw = urllib.parse.quote_plus(keyword)
     url = f"https://www.rigzone.com/oil/jobs/search/?keyword={encoded_kw}&sort=date"
 
-    resp = safe_request(url)
+    resp = safe_request(url, source="rigzone")
     if not resp:
         return jobs
 
@@ -360,7 +436,7 @@ def scrape_linkedin_search(keyword: str, location: str = "United States") -> lis
     }
     url = "https://www.linkedin.com/jobs/search/"
 
-    resp = safe_request(url, params)
+    resp = safe_request(url, params, source="linkedin")
     if not resp:
         return jobs
 
@@ -402,7 +478,7 @@ def scrape_google_direct(keyword: str) -> list[dict]:
     url = "https://www.google.com/search"
     params = {"q": query, "num": 15}
 
-    resp = safe_request(url, params)
+    resp = safe_request(url, params, source="google_direct")
     if not resp:
         return jobs
 
@@ -486,7 +562,7 @@ def scan_career_page(company: str, url: str, search_terms: list[str] | None = No
             "corrosion", "cathodic", "integrity", "python", "hydrodynamic"
         ]
 
-    resp = safe_request(url)
+    resp = safe_request(url, source="career_page")
     if not resp:
         return jobs
 
@@ -599,7 +675,14 @@ def run_scan(keywords: list[str] | None = None, limit: int | None = None,
             job["is_priority_company"] = is_priority_company(job.get("company", ""))
             job["alignment_score"] = score_job(job)
 
-            jid = job_id(job["title"], job.get("company", ""), job.get("location", ""))
+            jid = job_id(
+                job["title"],
+                job.get("company", ""),
+                job.get("location", ""),
+                source=job.get("source", ""),
+                url=job.get("url", ""),
+                posted_date=job.get("posted_date", ""),
+            )
             if jid not in seen_ids:
                 seen_ids.add(jid)
                 all_jobs.append(job)
@@ -627,7 +710,14 @@ def run_scan(keywords: list[str] | None = None, limit: int | None = None,
                 job["is_priority_company"] = True
                 job["alignment_score"] = score_job(job)
 
-                jid = job_id(job["title"], job.get("company", ""), job.get("location", ""))
+                jid = job_id(
+                    job["title"],
+                    job.get("company", ""),
+                    job.get("location", ""),
+                    source=job.get("source", ""),
+                    url=job.get("url", ""),
+                    posted_date=job.get("posted_date", ""),
+                )
                 if jid not in seen_ids:
                     seen_ids.add(jid)
                     all_jobs.append(job)
@@ -893,12 +983,31 @@ def update_cumulative_index(result: dict, date_str: str) -> dict:
     returning_jobs = []
 
     for job in result["jobs"]:
-        jid = job_id(job["title"], job.get("company", ""), job.get("location", ""))
+        jid = job_id(
+            job["title"],
+            job.get("company", ""),
+            job.get("location", ""),
+            source=job.get("source", ""),
+            url=job.get("url", ""),
+            posted_date=job.get("posted_date", ""),
+        )
+        legacy_jid = legacy_job_id(job["title"], job.get("company", ""), job.get("location", ""))
+        existing_jid = jid if jid in cumulative["jobs"] else legacy_jid if legacy_jid in cumulative["jobs"] else None
 
-        if jid in cumulative["jobs"]:
-            # Seen before — update last_seen
-            cumulative["jobs"][jid]["last_seen"] = date_str
-            cumulative["jobs"][jid]["seen_count"] = cumulative["jobs"][jid].get("seen_count", 1) + 1
+        if existing_jid:
+            # Seen before — update last_seen and migrate legacy key if needed
+            record = cumulative["jobs"].pop(existing_jid)
+            record["title"] = job["title"]
+            record["company"] = job.get("company", "")
+            record["location"] = job.get("location", "")
+            record["source"] = job.get("source", "")
+            record["url"] = job.get("url", "")
+            record["posted_date"] = job.get("posted_date", "")
+            record["search_keyword"] = job.get("search_keyword", "")
+            record["alignment_score"] = job.get("alignment_score", 0)
+            record["last_seen"] = date_str
+            record["seen_count"] = record.get("seen_count", 1) + 1
+            cumulative["jobs"][jid] = record
             returning_jobs.append(job)
         else:
             # New job!
@@ -907,6 +1016,8 @@ def update_cumulative_index(result: dict, date_str: str) -> dict:
                 "company": job.get("company", ""),
                 "location": job.get("location", ""),
                 "source": job.get("source", ""),
+                "url": job.get("url", ""),
+                "posted_date": job.get("posted_date", ""),
                 "search_keyword": job.get("search_keyword", ""),
                 "alignment_score": job.get("alignment_score", 0),
                 "first_seen": date_str,
