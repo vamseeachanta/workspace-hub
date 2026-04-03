@@ -1,5 +1,5 @@
 status: failed
-processed_at: 2026-04-03T17:11:06Z
+processed_at: 2026-04-03T17:14:14Z
 solver: orcawave
 input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.4/OrcaWave v11.0 files/Hemisphere.owd
 description: "WAMIT validation L00 case 2.4 — hemisphere"
