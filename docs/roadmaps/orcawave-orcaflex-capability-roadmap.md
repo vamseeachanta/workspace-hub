@@ -1,5 +1,7 @@
 # OrcaWave / OrcaFlex — Domain Capability Roadmap
 
+Note: for current operator navigation across code, tests, issues, and machine boundaries, start with `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` (#1752). This roadmap remains useful for sequencing, but some implementation details may lag current repo state.
+
 Auto-generated: 2026-04-02. Related: GitHub issue #1572.
 
 ## Executive Summary
