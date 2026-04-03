@@ -13,6 +13,9 @@ from pathlib import Path
 import pytest
 import yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+QUEUE_HEALTH_SCRIPT = REPO_ROOT / "scripts" / "solver" / "queue-health.sh"
+
 
 # ---------------------------------------------------------------------------
 # Queue health reporting logic (mirrors queue-health.sh)
@@ -236,6 +239,19 @@ class TestLastCompletedTimestamp:
         """Empty queue has None for last completed."""
         health = get_queue_health(empty_queue)
         assert health["last_completed_at"] is None
+
+
+class TestScriptSafety:
+    """Test shell script avoids embedded Python source interpolation."""
+
+    def test_queue_health_avoids_python_c_fragments(self):
+        script = QUEUE_HEALTH_SCRIPT.read_text()
+        assert "python3 -c" not in script
+        assert "uv run --no-project python -c" not in script
+
+    def test_queue_health_uses_uv_run_for_python(self):
+        script = QUEUE_HEALTH_SCRIPT.read_text()
+        assert "uv run --no-project python -" in script
 
 
 class TestHealthReportFormat:

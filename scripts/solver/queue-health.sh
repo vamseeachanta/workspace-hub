@@ -16,37 +16,43 @@ if [[ "${1:-}" == "--json" ]]; then
     JSON_MODE=true
 fi
 
-# Count pending jobs (exclude .gitkeep)
 PENDING_COUNT=0
 if [[ -d "${PENDING_DIR}" ]]; then
     PENDING_COUNT=$(find "${PENDING_DIR}" -name "*.yaml" ! -name ".gitkeep" -type f 2>/dev/null | wc -l)
 fi
 
-# Count completed jobs
 COMPLETED_COUNT=0
 LAST_COMPLETED="N/A"
 if [[ -d "${COMPLETED_DIR}" ]]; then
-    for job_dir in "${COMPLETED_DIR}"/*/; do
-        [[ -d "${job_dir}" ]] || continue
-        [[ -f "${job_dir}result.yaml" ]] || continue
+    while IFS= read -r result_file; do
+        [[ -n "${result_file}" ]] || continue
         COMPLETED_COUNT=$((COMPLETED_COUNT + 1))
-        # Extract processed_at timestamp
-        local_ts=$(python3 -c "
-import yaml, sys
-with open('${job_dir}result.yaml') as f:
-    d = yaml.safe_load(f) or {}
-ts = d.get('processed_at', '')
-print(str(ts) if ts else '')
-" 2>/dev/null || true)
+        local_ts=$(uv run --no-project python - "${result_file}" <<'PY'
+import sys
+from pathlib import Path
+
+import yaml
+
+result_path = Path(sys.argv[1])
+try:
+    with result_path.open() as handle:
+        data = yaml.safe_load(handle) or {}
+except Exception:
+    print("")
+    raise SystemExit(0)
+
+ts = data.get("processed_at", "")
+print(str(ts) if ts else "")
+PY
+)
         if [[ -n "${local_ts}" ]]; then
             if [[ "${LAST_COMPLETED}" == "N/A" ]] || [[ "${local_ts}" > "${LAST_COMPLETED}" ]]; then
                 LAST_COMPLETED="${local_ts}"
             fi
         fi
-    done
+    done < <(find "${COMPLETED_DIR}" -mindepth 2 -maxdepth 2 -type f -name result.yaml 2>/dev/null | sort)
 fi
 
-# Count failed jobs
 FAILED_COUNT=0
 if [[ -d "${FAILED_DIR}" ]]; then
     FAILED_COUNT=$(find "${FAILED_DIR}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l)
@@ -54,7 +60,6 @@ fi
 
 TOTAL_PROCESSED=$((COMPLETED_COUNT + FAILED_COUNT))
 
-# Determine health status
 if [[ ${FAILED_COUNT} -gt 0 ]] && [[ ${PENDING_COUNT} -gt 5 ]]; then
     HEALTH="CRITICAL"
 elif [[ ${FAILED_COUNT} -gt 0 ]]; then
@@ -66,17 +71,21 @@ else
 fi
 
 if ${JSON_MODE}; then
-    python3 -c "
+    uv run --no-project python - "${HEALTH}" "${PENDING_COUNT}" "${COMPLETED_COUNT}" "${FAILED_COUNT}" "${TOTAL_PROCESSED}" "${LAST_COMPLETED}" <<'PY'
 import json
-print(json.dumps({
-    'health_status': '${HEALTH}',
-    'pending_count': ${PENDING_COUNT},
-    'completed_count': ${COMPLETED_COUNT},
-    'failed_count': ${FAILED_COUNT},
-    'total_processed': ${TOTAL_PROCESSED},
-    'last_completed_at': '${LAST_COMPLETED}' if '${LAST_COMPLETED}' != 'N/A' else None,
-}, indent=2))
-"
+import sys
+
+health, pending, completed, failed, total, last_completed = sys.argv[1:7]
+payload = {
+    "health_status": health,
+    "pending_count": int(pending),
+    "completed_count": int(completed),
+    "failed_count": int(failed),
+    "total_processed": int(total),
+    "last_completed_at": None if last_completed == "N/A" else last_completed,
+}
+print(json.dumps(payload, indent=2))
+PY
 else
     echo "=== Solver Queue Health ==="
     echo "Status:           ${HEALTH}"
