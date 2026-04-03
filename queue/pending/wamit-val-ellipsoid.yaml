@@ -1,0 +1,6 @@
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.8/OrcaWave v11.0 files/Ellipsoid.owd
+export_excel: true
+description: "WAMIT validation L00 case 2.8 — ellipsoid"
+submitted_by: licensed-win-1
+submitted_at: 2026-04-03T17:12:00Z
