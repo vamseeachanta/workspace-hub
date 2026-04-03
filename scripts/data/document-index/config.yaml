@@ -46,6 +46,14 @@ sources:
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
 
+  ace_conferences:
+    enabled: true
+    paths:
+      - /mnt/ace/docs/conferences
+    host: dev-primary
+    source_type: ace_conferences
+    extensions: [.pdf, .doc, .docx, .pptx, .txt]
+
   va_hdd_2:
     enabled: true
     paths:
@@ -164,6 +172,7 @@ deduplication:
   source_priority:
     - og_standards
     - ace_standards
+    - ace_conferences
     - ace_project
     - dde_project
     - va_hdd_2
