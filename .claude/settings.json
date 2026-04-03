@@ -121,6 +121,12 @@
             "type": "command",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-start.sh\" 2>/dev/null || true",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/daily-learning-tip.sh\" 2>/dev/null || true",
+            "timeout": 3,
+            "statusMessage": "Daily learning tip"
           }
         ]
       }
@@ -152,6 +158,29 @@
   },
   "plansDirectory": ".planning",
   "showThinkingSummaries": true,
+  "outputStyle": "Explanatory",
+  "effortLevel": "high",
+  "worktree": {
+    "symlinkDirectories": ["node_modules", ".cache", ".venv", "__pycache__"],
+    "sparsePaths": []
+  },
+  "spinnerVerbs": {
+    "mode": "append",
+    "verbs": ["Engineering", "Analyzing", "Modeling", "Simulating", "Calibrating"]
+  },
+  "spinnerTipsOverride": {
+    "tips": [
+      "Run /context to check your budget — /compact at 50%",
+      "Run /simplify after changes to catch duplication",
+      "Use /effort low for quick lookups, /effort high for planning",
+      "Say 'use subagents' to offload heavy work from main context",
+      "Run /diff to review your changes before committing",
+      "Use /branch before a risky approach — explore freely",
+      "Try /security-review before pushing a PR",
+      "uv run scripts/productivity/daily-learning.py for today's tips"
+    ],
+    "excludeDefault": false
+  },
   "deny": [
     "Bash(rm -rf /)",
     "Bash(rm -rf ~:*)",
