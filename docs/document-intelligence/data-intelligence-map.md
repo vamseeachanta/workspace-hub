@@ -145,6 +145,24 @@ cathodic_protection, geotechnical, hydrodynamics, naval_architecture, pipeline, 
 
 ---
 
+## 7. Mount Drive Knowledge Maps (2026-04-02)
+
+| What | Location | Notes |
+|------|----------|-------|
+| **Mount drive knowledge map** | `docs/document-intelligence/mount-drive-knowledge-map.md` | Complete catalog of all 4 mount points, 3.6M+ files, search guides |
+| **DDE remote drive catalog** | `docs/document-intelligence/dde-drive-catalog.md` | First inventory of DDE (2.8TB) — 18 missing standards orgs, MATLAB code, unique projects |
+| **Gap closure action plan** | `docs/document-intelligence/resource-intelligence-action-plan.md` | P0-P3 prioritized actions: conference indexing, DDE registration, standards migration |
+| **Undiscovered resources** | `docs/reports/ace-undiscovered-resources.md` | Top 20 unindexed resources ranked by value |
+| **Mounted source registry** | `data/document-index/mounted-source-registry.yaml` | 8 sources defined (DDE needs 3 more) |
+
+### Key Gaps Identified
+
+- **38,526 conference papers** in `/mnt/ace/docs/conferences/` — 0% indexed (OMAE, OTC, DOT, ISOPE)
+- **DDE remote drive** — not in pipeline, contains 18 standards orgs missing from /mnt/ace
+- **Standards ledger** — only 425 of 26,884 files on disk (1.6%)
+
+---
+
 ## Cross-References
 
 - **index.jsonl** `target_repos` field links documents → repos; `domain` links → engineering domains
@@ -154,3 +172,5 @@ cathodic_protection, geotechnical, hydrodynamics, naval_architecture, pipeline, 
 - **capability-map** links modules → standards they implement
 - Dark intelligence → public repos via 6-step workflow; document intelligence → via 7-phase pipeline
 - Both pipelines share `doc-intelligence-promotion` for post-processing
+- **mount-drive-knowledge-map.md** — "Where is...?" quick reference for all resource types
+- **dde-drive-catalog.md** — detailed DDE inventory with migration recommendations
