@@ -21,22 +21,43 @@ For future GTM, this matters because positioning should emphasize:
 
 ## Reconciled issues
 
-| Issue | Title | Reconciled status | Evidence | Recommended next action |
-|---|---|---|---|---|
-| #1572 | Domain-specific capability roadmaps | DOC/TRACKING | `docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` exists; now complemented by `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` | Keep open only if roadmap remains the umbrella tracking issue |
-| #1586 | Harden solver queue: batch submission, result watcher, auto post-processing | PARTIAL | `scripts/solver/submit-batch.sh`, `watch-results.sh`, `post-process-hook.py` exist | Re-scope issue from build to validation/hardening and operational proof |
-| #1595 | Solver queue batch submission and result watcher | PARTIAL | Same tooling exists in repo | De-duplicate or close into #1586 after validating real production use |
-| #1638 | DiffractionSpec reverse parser | PARTIAL | `hydrodynamics/diffraction/reverse_parsers.py` exists | Focus on tests, round-trip validation, and edge cases |
-| #1639 | OrcaWave test coverage uplift | PARTIAL | `tests/orcawave/`, `tests/hydrodynamics/diffraction/`, `tests/workflows/orcawave/` already exist | Measure current coverage and drive to explicit threshold |
-| #1652 | OrcaFlex reporting integration with real `.sim` fixture | REAL GAP | Reporting code and tests exist, but real fixture-backed validation still missing | Build minimal committable `.sim` fixture + snapshot test |
-| #1656 | OrcaFlex package maturity promotion | PARTIAL | `src/digitalmodel/orcaflex/` exists with substantial tests already | Convert issue into final maturity review with explicit checklist |
-| #1588 | Parametric spec.yml generator | PARTIAL | Strong infrastructure exists in `DiffractionSpec`, diffraction pipeline, hull library | Build the actual bridge artifact and validation harness |
-| #1592 | Automate OrcaWave -> OrcaFlex handoff | REAL GAP | Bridge-related modules exist but no canonical automated handoff | Implement one supported happy-path pipeline |
-| #1597 | RAO extractor and DB population pipeline | REAL GAP | RAO and DB infrastructure exists, but connection is not clearly productized | Implement extractor + DB writer + evidence fixture |
-| #1605 | OrcaWave-to-OrcaFlex integration test | REAL GAP | Export/import related code exists; no canonical integration validation | Add end-to-end validation suite with tolerances |
-| #1606 | OrcaWave damping-sweep test suite | PARTIAL | Related analytical modules are referenced as existing; tests need reconciliation and completion | Confirm exact modules and add missing tests |
-| #1264 | OrcaFlex frame analysis | REAL GAP | Broad OrcaFlex tooling exists, but the specific frame-analysis deliverable remains separate | Keep active as a GTM-relevant engineering demo candidate |
-| #1292 | OrcaFlex parachute deployment template | REAL GAP | Specific dynamic template still appears to be future work | Keep active as a differentiated validation/demo scenario |
+| Issue | Title | Reconciled status | Primary machine | Depends on | Evidence | Recommended next action |
+|---|---|---|---|---|---|---|
+| #1572 | Domain-specific capability roadmaps | DOC/TRACKING | dev-primary | none | `docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` exists; now complemented by `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` | Keep open only if roadmap remains the umbrella tracking issue |
+| #1586 | Harden solver queue: batch submission, result watcher, auto post-processing | PARTIAL | dev-primary for code; licensed-win-1 for live operational proof | none | `scripts/solver/submit-batch.sh`, `watch-results.sh`, `post-process-hook.py` exist | Re-scope issue from build to validation/hardening and operational proof |
+| #1595 | Solver queue batch submission and result watcher | PARTIAL | dev-primary for reconciliation; licensed-win-1 for live proof | #1586 | Same tooling exists in repo | De-duplicate or close into #1586 after validating real production use |
+| #1638 | DiffractionSpec reverse parser | PARTIAL | dev-primary | none | `hydrodynamics/diffraction/reverse_parsers.py` exists | Focus on tests, round-trip validation, and edge cases |
+| #1639 | OrcaWave test coverage uplift | PARTIAL | dev-primary | #1638 helpful but not strictly required | `tests/orcawave/`, `tests/hydrodynamics/diffraction/`, `tests/workflows/orcawave/` already exist | Measure current coverage and drive to explicit threshold |
+| #1652 | OrcaFlex reporting integration with real `.sim` fixture | REAL GAP | licensed-win-1 for fixture generation, then dev-primary for tests/snapshots | none | Reporting code and tests exist, but real fixture-backed validation still missing | Build minimal committable `.sim` fixture + snapshot test |
+| #1656 | OrcaFlex package maturity promotion | PARTIAL | dev-primary | #1652 materially strengthens closure evidence | `src/digitalmodel/orcaflex/` exists with substantial tests already | Convert issue into final maturity review with explicit checklist |
+| #1588 | Parametric spec.yml generator | PARTIAL | dev-primary | #1586 improves execution path; hull-library assumptions should be verified first | Strong infrastructure exists in `DiffractionSpec`, diffraction pipeline, hull library | Build the actual bridge artifact and validation harness |
+| #1592 | Automate OrcaWave -> OrcaFlex handoff | REAL GAP | split: dev-primary for pipeline code, licensed-win-1 for live `.owr` evidence | #1597 and #1605 | Bridge-related modules exist but no canonical automated handoff | Implement one supported happy-path pipeline |
+| #1597 | RAO extractor and DB population pipeline | REAL GAP | split: dev-primary for extractor code, licensed-win-1 for real result capture | #1588 helpful; live `.owr` inputs required for full proof | RAO and DB infrastructure exists, but connection is not clearly productized | Implement extractor + DB writer + evidence fixture |
+| #1605 | OrcaWave-to-OrcaFlex integration test | REAL GAP | split: dev-primary test harness + licensed-win-1 artifact generation | #1597 | Export/import related code exists; no canonical integration validation | Add end-to-end validation suite with tolerances |
+| #1606 | OrcaWave damping-sweep test suite | INVALID / STALE ISSUE BODY | none until re-scoped | none | Repo search found no `DampingSweep`, `MultiParameterDampingSweep`, `CriticalDampingCalculator`, `BilgeKeelDamping`, or `DampingPeriodAnalyzer` classes; only a simple OrcFxAPI run script exists | Close or rewrite issue from scratch based on actual code present |
+| #1264 | OrcaFlex frame analysis | REAL GAP | dev-primary for setup/code, licensed-win-1 for solver validation | none | Broad OrcaFlex tooling exists, but the specific frame-analysis deliverable remains separate | Keep active as a GTM-relevant engineering demo candidate |
+| #1292 | OrcaFlex parachute deployment template | REAL GAP | dev-primary for setup/code, licensed-win-1 for dynamic run validation | #1264 recommended first | Specific dynamic template still appears to be future work | Keep active as a differentiated validation/demo scenario |
+
+## Machine assignment summary
+
+### dev-primary only
+- #1572
+- #1638
+- #1639
+- most of #1656
+- most planning/reconciliation/doc tasks
+
+### dev-primary + licensed-win-1
+- #1586 / #1595 for operational proof
+- #1652
+- #1597
+- #1605
+- #1592
+- #1264
+- #1292
+
+### invalid or needs rewrite before assignment
+- #1606
 
 ## GTM interpretation
 
