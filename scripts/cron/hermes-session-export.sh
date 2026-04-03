@@ -16,6 +16,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HERMES_SESSIONS="${HOME}/.hermes/sessions"
 OUTPUT_DIR="${WORKSPACE_HUB}/logs/orchestrator/hermes"
+CORRECTIONS_DIR="${OUTPUT_DIR}/corrections"
 STATE_FILE="${OUTPUT_DIR}/.last-export-ts"
 
 DRY_RUN=false
@@ -27,7 +28,7 @@ for arg in "$@"; do
   esac
 done
 
-mkdir -p "$OUTPUT_DIR"
+mkdir -p "$OUTPUT_DIR" "$CORRECTIONS_DIR"
 
 if [[ ! -d "$HERMES_SESSIONS" ]]; then
   echo "No Hermes sessions directory at $HERMES_SESSIONS — skipping"
@@ -61,6 +62,7 @@ for session_file in "$HERMES_SESSIONS"/session_*.json; do
   [[ -z "$session_date" ]] && continue
 
   output_file="${OUTPUT_DIR}/session_${session_date}.jsonl"
+  corrections_file="${CORRECTIONS_DIR}/session_${session_date}.jsonl"
 
   if [[ "$DRY_RUN" == "true" ]]; then
     echo "[dry-run] Would export $basename -> session_${session_date}.jsonl"
@@ -155,10 +157,50 @@ for msg in messages:
             
             lines.append(json.dumps(entry, default=str))
 
+# Detect repeated file edits in this exported session and emit correction-style entries
+correction_lines = []
+recent_writes = []
+for raw in lines:
+    try:
+        entry = json.loads(raw)
+    except Exception:
+        continue
+    file_path = entry.get('file', '')
+    if entry.get('hermes_tool') not in {'write_file', 'patch'} or not file_path:
+        continue
+    basename = os.path.basename(file_path)
+    file_extension = os.path.splitext(basename)[1].lstrip('.') or 'none'
+    is_correction = any(prev == file_path for prev in recent_writes)
+    recent_writes.append(file_path)
+    if not is_correction:
+        continue
+    correction_entry = {
+        'timestamp': session_start,
+        'file': file_path,
+        'basename': basename,
+        'tool': entry.get('tool', 'Write'),
+        'correction_gap_seconds': 0,
+        'diff_stat': '',
+        'type': 'correction',
+        'file_extension': file_extension,
+        'edit_context': {
+            'old_string_preview': '',
+            'new_string_preview': '',
+        },
+        'chain_id': None,
+        'chain_position': len(recent_writes),
+        'chain_files': list(dict.fromkeys(recent_writes)),
+        'edit_sequence_id': len(recent_writes),
+    }
+    correction_lines.append(json.dumps(correction_entry, default=str))
+
 # Append to output file (multiple sessions can share a date)
 if lines:
     with open('$output_file', 'a') as f:
         f.write('\n'.join(lines) + '\n')
+if correction_lines:
+    with open('$corrections_file', 'a') as f:
+        f.write('\n'.join(correction_lines) + '\n')
 " 2>/dev/null && exported=$((exported + 1)) || true
 
 done
