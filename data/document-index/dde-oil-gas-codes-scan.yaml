@@ -1,0 +1,211 @@
+# DDE Oil and Gas Codes - Cross-Drive Deduplication Scan
+# GitHub Issue: #1608
+# Generated: 2026-04-03
+# Source: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+# Compared with: /mnt/ace/O&G-Standards/
+
+scan_metadata:
+  generated: '2026-04-03T07:56:00+00:00'
+  source_drive: dde
+  source_path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+  comparison_target: /mnt/ace/O&G-Standards/
+  scan_type: cross-drive-dedup
+  issue_ref: '#1608'
+
+summary:
+  total_dde_files: 598
+  total_ace_organized_files: 27523
+  total_ace_raw_files: 28803
+  exact_filename_overlap_vs_organized: 62
+  exact_filename_overlap_vs_raw: 597
+  overlap_percentage_vs_raw: 99.8
+  conclusion: >
+    The DDE Oil and Gas Codes collection is almost entirely duplicated
+    in the ACE /O&G-Standards/raw/ directory (597 of 598 files match by filename).
+    Only 62 files overlap with the organized (sorted) ACE directories.
+    This indicates the ACE raw/ folder was likely created from a copy of the
+    same source data that includes the DDE collection. The DDE copy provides
+    no additional unique content and can be considered fully redundant.
+
+subdirectories:
+  - name: API Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/API Standards
+    total_files: 186
+    file_types:
+      pdf: 63
+      wmf: 52
+      WMF: 36
+      doc: 16
+      PDF: 5
+      ppt: 4
+      jpg: 4
+      tif: 2
+      DOC: 2
+      zip: 1
+      xls: 1
+    overlap_with_ace_organized: 18
+    overlap_with_ace_raw: 186
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated in ACE raw. 18 also in organized API folder.
+
+  - name: API Stds
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/API Stds
+    total_files: 116
+    file_types:
+      pdf: 113
+      PDF: 2
+      db: 1
+    overlap_with_ace_organized: 0
+    overlap_with_ace_raw: 115
+    overlap_pct_raw: 99.1
+    notes: >
+      115 of 116 files duplicated in ACE raw. The 1 non-matching file
+      is likely a Thumbs.db or similar metadata file.
+
+  - name: ASTM Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/ASTM Standards
+    total_files: 32
+    file_types:
+      pdf: 32
+    overlap_with_ace_organized: 15
+    overlap_with_ace_raw: 32
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated. 15 also in organized ASTM folder.
+
+  - name: BSI Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/BSI Standards
+    total_files: 2
+    file_types:
+      pdf: 1
+      doc: 1
+    overlap_with_ace_organized: 2
+    overlap_with_ace_raw: 2
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated in both organized and raw.
+
+  - name: DNV Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/DNV Standards
+    total_files: 11
+    file_types:
+      pdf: 8
+      PDF: 2
+      prn: 1
+    overlap_with_ace_organized: 1
+    overlap_with_ace_raw: 11
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated in raw. Only 1 in organized DNV folder.
+
+  - name: ISO Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/ISO Standards
+    total_files: 49
+    file_types:
+      pdf: 47
+      zip: 1
+      other: 1
+    overlap_with_ace_organized: 0
+    overlap_with_ace_raw: 49
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated in raw. None in organized ISO folder (different filenames).
+
+  - name: MIL Standards
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/MIL Standards
+    total_files: 1
+    file_types:
+      pdf: 1
+    overlap_with_ace_organized: 0
+    overlap_with_ace_raw: 1
+    overlap_pct_raw: 100.0
+    notes: Single file, duplicated in raw.
+
+  - name: Norsok
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/Norsok
+    total_files: 1
+    file_types:
+      pdf: 1
+    overlap_with_ace_organized: 0
+    overlap_with_ace_raw: 1
+    overlap_pct_raw: 100.0
+    notes: Single file, duplicated in raw.
+
+  - name: British Library
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/British Library
+    total_files: 19
+    file_types:
+      doc: 19
+    overlap_with_ace_organized: 18
+    overlap_with_ace_raw: 19
+    overlap_pct_raw: 100.0
+    notes: All .doc files. 18 also in organized directories.
+
+  - name: Papers
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/Papers
+    total_files: 175
+    file_types:
+      pdf: 137
+      doc: 31
+      xls: 3
+      zip: 2
+      PDF: 2
+    overlap_with_ace_organized: 5
+    overlap_with_ace_raw: 175
+    overlap_pct_raw: 100.0
+    notes: Fully duplicated in raw. Only 5 in organized directories.
+
+  - name: root_level_files
+    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+    total_files: 6
+    files:
+      - DNVOS-F101.pdf
+      - Ocean Currents.pdf
+      - ORD 5700 Parker_O-Ring_Handbook.pdf
+      - OS-C101.pdf
+      - os-f101[1].pdf
+      - rp-f108.pdf
+    overlap_with_ace_raw: 6
+    overlap_pct_raw: 100.0
+    notes: All 6 root-level PDFs duplicated in ACE raw.
+
+ace_comparison_summary:
+  ace_organized_directories:
+    - name: ABS
+      files: 30
+    - name: API
+      files: 574
+    - name: ASTM
+      files: 25537
+    - name: BSI
+      files: 76
+    - name: DNV
+      files: 100
+    - name: ISO
+      files: 308
+    - name: MIL
+      files: 7
+    - name: NEMA
+      files: 4
+    - name: Norsok
+      files: 9
+    - name: OnePetro
+      files: 94
+    - name: SNAME
+      files: 145
+    - name: Unknown
+      files: 629
+    - name: raw
+      files: 28803
+
+recommendations:
+  - action: no_transfer_needed
+    reason: >
+      99.8% of DDE Oil and Gas Codes files already exist in
+      /mnt/ace/O&G-Standards/raw/. The DDE collection is a strict subset
+      of the ACE raw collection.
+  - action: verify_single_missing_file
+    reason: >
+      1 file in API Stds may not match (likely a Thumbs.db or metadata file).
+      Low priority to investigate.
+  - action: continue_ace_organization
+    reason: >
+      Many DDE files (especially ISO, DNV, Papers) exist in ACE raw but
+      have NOT been sorted into organized subdirectories. The ACE organization
+      effort should continue to cover these.

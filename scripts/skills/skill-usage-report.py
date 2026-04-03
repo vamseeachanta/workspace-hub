@@ -112,11 +112,10 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
             see_also = [see_also]
         see_also = [s.strip() for s in see_also if isinstance(s, str) and s.strip()]
 
-        # Extract $skill-name invocation references from body text
+        # Extract $skill-name invocation references and markdown links from body text
         body_refs: list[str] = []
         body_match = re.findall(r'\$([a-z][a-z0-9_-]{2,})', text)
         for ref in body_match:
-            # Filter out common shell variables
             if ref not in {"repo", "json", "file", "key", "message", "default",
                            "value", "output", "total", "path", "line", "dir",
                            "branch", "period", "input", "env", "count", "status",
@@ -133,6 +132,17 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
                            "video", "audio", "schema", "table", "column", "row",
                            "field", "record", "query", "param", "option", "flag"}:
                 body_refs.append(ref)
+        for _label, link_target in re.findall(r'\[([^\]]+)\]\(([^)]+SKILL\.md)\)', text, flags=re.IGNORECASE):
+            path_ref = Path(link_target)
+            target_name = path_ref.parent.name.replace('_', '-').lower()
+            if target_name:
+                body_refs.append(target_name)
+
+        child_skill_count = sum(
+            1
+            for child in skill_md.parent.rglob("SKILL.md")
+            if child != skill_md and not any(excluded in child.parts for excluded in {"_archive", "_core", "_internal"})
+        )
 
         canonical_name = str(fm.get("name", skill_name)).strip() or skill_name
         skills[full_rel] = {
@@ -143,6 +153,7 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
             "related_skills": related,
             "see_also": see_also,
             "body_refs": list(set(body_refs)),
+            "child_skill_count": child_skill_count,
         }
 
     return skills
@@ -216,18 +227,20 @@ def scan_git_log(repo_dir: Path, days: int = 90) -> set[str]:
 
 
 def match_skills_in_git_log(log_text: str, skill_short_names: set[str]) -> set[str]:
-    """Match skill names that appear in git log output."""
+    """Match skill names that appear in skill-scoped git log output."""
     mentioned: set[str] = set()
     if not log_text:
         return mentioned
 
-    log_lower = log_text.lower()
-    for name in skill_short_names:
-        # Must be at least 4 chars to avoid false positives
-        if len(name) < 4:
+    for line in log_text.lower().splitlines():
+        if "skill" not in line and "/skills/" not in line and ".claude/skills" not in line:
             continue
-        if name.lower() in log_lower:
-            mentioned.add(name)
+        for name in skill_short_names:
+            if len(name) < 4:
+                continue
+            pattern = rf'(?<![a-z0-9_-]){re.escape(name.lower())}(?![a-z0-9_-])'
+            if re.search(pattern, line):
+                mentioned.add(name)
     return mentioned
 
 
@@ -273,6 +286,8 @@ def classify_tiers(
     for full_rel, info in skills.items():
         short_name = info["short_name"]
         refs = ref_counts.get(short_name, 0)
+        child_skill_count = int(info.get("child_skill_count", 0) or 0)
+        effective_refs = max(refs, child_skill_count)
         in_git = short_name in git_mentioned
         framework_usage = short_name.startswith("gsd-")
 
@@ -280,17 +295,19 @@ def classify_tiers(
             "skill": short_name,
             "path": info["full_rel"],
             "reference_count": refs,
+            "child_skill_count": child_skill_count,
+            "effective_reference_count": effective_refs,
             "in_recent_commits": in_git,
             "framework_usage": framework_usage,
         }
 
-        if refs >= 5 or in_git:
+        if effective_refs >= 5 or in_git:
             entry["tier"] = "hot"
             tiers["hot"].append(entry)
-        elif refs >= 2 or framework_usage:
+        elif effective_refs >= 2 or framework_usage:
             entry["tier"] = "warm"
             tiers["warm"].append(entry)
-        elif refs == 1:
+        elif effective_refs == 1:
             entry["tier"] = "cold"
             tiers["cold"].append(entry)
         else:
@@ -321,8 +338,9 @@ def generate_skill_scores(
         for entry in entries:
             tier_lookup[entry["skill"]] = tier_name
 
-    # Compute baseline_usage_rate from reference counts
-    max_refs = max(ref_counts.values()) if ref_counts else 1
+    # Compute baseline_usage_rate from effective discoverability counts
+    effective_ref_values = [max(ref_counts.get(info["short_name"], 0), int(info.get("child_skill_count", 0) or 0)) for info in skills.values()]
+    max_refs = max(effective_ref_values) if effective_ref_values else 1
     if max_refs == 0:
         max_refs = 1
 
@@ -330,6 +348,8 @@ def generate_skill_scores(
     for full_rel, info in skills.items():
         short_name = info["short_name"]
         refs = ref_counts.get(short_name, 0)
+        child_skill_count = int(info.get("child_skill_count", 0) or 0)
+        effective_refs = max(refs, child_skill_count)
         tier = tier_lookup.get(short_name, "dead")
 
         # Merge with existing scores if available
@@ -337,9 +357,11 @@ def generate_skill_scores(
 
         framework_usage = short_name.startswith("gsd-")
         skills_data[short_name] = {
-            "baseline_usage_rate": round(refs / max_refs, 4) if max_refs > 0 else 0.0,
-            "calls_in_period": existing.get("calls_in_period", refs),
+            "baseline_usage_rate": round(effective_refs / max_refs, 4) if max_refs > 0 else 0.0,
+            "calls_in_period": existing.get("calls_in_period", effective_refs),
             "reference_count": refs,
+            "child_skill_count": child_skill_count,
+            "effective_reference_count": effective_refs,
             "framework_usage": framework_usage,
             "tier": tier,
             "path": info["full_rel"],

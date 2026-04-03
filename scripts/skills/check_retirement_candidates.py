@@ -73,6 +73,9 @@ def _parse_scores_simple(text: str) -> dict:
 
 def check_threshold(skill_name: str, entry: dict) -> str:
     """Return 'candidate', 'skip', or 'ok'."""
+    if entry.get("tier") and str(entry.get("tier")).lower() != "dead":
+        return "ok"
+
     rate = entry.get("baseline_usage_rate")
     calls = entry.get("calls_in_period")
 
