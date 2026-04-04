@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-03T13:02:34.932334+00:00",
+  "generated": "2026-04-03T16:23:50.603061+00:00",
   "pairs_compared": [
     {
       "ace_path": "/mnt/ace/docs/",
@@ -19,11 +19,2512 @@
   "summary": {
     "total_ace_files": 1267680,
     "total_dde_files": 968794,
-    "exact_duplicates": 0,
-    "name_size_matches": 0,
-    "unique_to_ace": 1267680,
-    "unique_to_dde": 0,
-    "dde_unique_size_bytes": 0
+    "exact_duplicates": 965365,
+    "name_size_matches": 965376,
+    "unique_to_ace": 302315,
+    "unique_to_dde": 3429,
+    "dde_unique_size_bytes": 40430217704
   },
-  "unique_to_dde": []
+  "unique_to_dde": [
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/STA PETROFAC ISP October 2015/INCLINOMETER ISSUES/VTS_04_1.VOB",
+      "size_bytes": 856588288,
+      "filename": "VTS_04_1.VOB"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev1/NearSurface/Empty - Slug-Rev1.sim",
+      "size_bytes": 537964341,
+      "filename": "Empty - Slug-Rev1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Slug/Empty -Slug.sim",
+      "size_bytes": 522480748,
+      "filename": "Empty -Slug.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev5.sim",
+      "size_bytes": 380225017,
+      "filename": "AR_WD_30m_Rev5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/AR_30deg_2.sim",
+      "size_bytes": 366087387,
+      "filename": "AR_30deg_2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/AR_WD_30m.sim",
+      "size_bytes": 366083589,
+      "filename": "AR_WD_30m.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/STA PETROFAC ISP October 2015/INCLINOMETER ISSUES/capture-1.trec",
+      "size_bytes": 308245527,
+      "filename": "capture-1.trec"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev8.sim",
+      "size_bytes": 304855186,
+      "filename": "AR_WD_30m_Rev8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev2.sim",
+      "size_bytes": 262465047,
+      "filename": "AR_WD_30m_Rev2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev4.sim",
+      "size_bytes": 238909101,
+      "filename": "AR_WD_30m_Rev4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/STA PETROFAC ISP October 2015/INCLINOMETER ISSUES/capture-11.trec",
+      "size_bytes": 210431927,
+      "filename": "capture-11.trec"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev6.sim",
+      "size_bytes": 193273240,
+      "filename": "AR_WD_30m_Rev6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev3.sim",
+      "size_bytes": 193273198,
+      "filename": "AR_WD_30m_Rev3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m.sim",
+      "size_bytes": 191811380,
+      "filename": "AR_WD_30m.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/Superseded/AR_WD_30m_Rev7.sim",
+      "size_bytes": 169544087,
+      "filename": "AR_WD_30m_Rev7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Bil 2014-10-26/EmptyPipeLift-Rev1-1.sim",
+      "size_bytes": 165331982,
+      "filename": "EmptyPipeLift-Rev1-1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev1/NearSurface/Flooded-500M.sim",
+      "size_bytes": 152608090,
+      "filename": "Flooded-500M.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Side Lift 07 no temp beams.sim",
+      "size_bytes": 139790006,
+      "filename": "Side Lift 07 no temp beams.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/Keystone/250_39_8 Amsteel Blue.sim",
+      "size_bytes": 121431497,
+      "filename": "250_39_8 Amsteel Blue.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/AR_30deg_1.sim",
+      "size_bytes": 118375680,
+      "filename": "AR_30deg_1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/A&R Winch/AR_WD_6m.sim",
+      "size_bytes": 118371974,
+      "filename": "AR_WD_6m.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Empty/EmptyPipeLiftLayTension500.sim",
+      "size_bytes": 116782577,
+      "filename": "EmptyPipeLiftLayTension500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Empty/EmptyPipeLiftLayTension500.sim",
+      "size_bytes": 116782449,
+      "filename": "EmptyPipeLiftLayTension500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Empty/EmptyPipeLiftLayTension1000.sim",
+      "size_bytes": 116782190,
+      "filename": "EmptyPipeLiftLayTension1000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Empty/EmptyPipeLiftLayTension.sim",
+      "size_bytes": 116782183,
+      "filename": "EmptyPipeLiftLayTension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Empty/EmptyPipeLiftLayTension2000.sim",
+      "size_bytes": 116781320,
+      "filename": "EmptyPipeLiftLayTension2000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Flooded/FloodedPipeLiftLayTension1500.sim",
+      "size_bytes": 116780793,
+      "filename": "FloodedPipeLiftLayTension1500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Empty/EmptyPipeLiftLayTension2000.sim",
+      "size_bytes": 116780737,
+      "filename": "EmptyPipeLiftLayTension2000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Flooded/FloodedPipeLiftLayTension1500.sim",
+      "size_bytes": 116780686,
+      "filename": "FloodedPipeLiftLayTension1500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Empty/EmptyPipeLiftLayTension1500.sim",
+      "size_bytes": 116780626,
+      "filename": "EmptyPipeLiftLayTension1500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Flooded/FloodedPipeLiftLayTension500.sim",
+      "size_bytes": 116780439,
+      "filename": "FloodedPipeLiftLayTension500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Flooded/FloodedPipeLiftLayTension2000.sim",
+      "size_bytes": 116780416,
+      "filename": "FloodedPipeLiftLayTension2000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Flooded/FloodedPipeLiftLayTension.sim",
+      "size_bytes": 116780249,
+      "filename": "FloodedPipeLiftLayTension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Flooded/FloodedPipeLiftLayTension1000.sim",
+      "size_bytes": 116780228,
+      "filename": "FloodedPipeLiftLayTension1000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Flooded/FloodedPipeLiftLayTension.sim",
+      "size_bytes": 116780096,
+      "filename": "FloodedPipeLiftLayTension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Flooded/FloodedPipeLiftLayTension1000.sim",
+      "size_bytes": 116780094,
+      "filename": "FloodedPipeLiftLayTension1000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Flooded/FloodedPipeLiftLayTension2000.sim",
+      "size_bytes": 116780053,
+      "filename": "FloodedPipeLiftLayTension2000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Empty/EmptyPipeLiftLayTension.sim",
+      "size_bytes": 116780040,
+      "filename": "EmptyPipeLiftLayTension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Empty/EmptyPipeLiftLayTension1000.sim",
+      "size_bytes": 116780038,
+      "filename": "EmptyPipeLiftLayTension1000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev2/Flooded/FloodedPipeLiftLayTension500.sim",
+      "size_bytes": 116779933,
+      "filename": "FloodedPipeLiftLayTension500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev3/Empty/EmptyPipeLiftLayTension1500.sim",
+      "size_bytes": 116779863,
+      "filename": "EmptyPipeLiftLayTension1500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev2/100_TT_1KM.sim",
+      "size_bytes": 93294719,
+      "filename": "100_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev2/200_TT_1KM.sim",
+      "size_bytes": 93294676,
+      "filename": "200_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev2/150_TT_1KM.sim",
+      "size_bytes": 93294623,
+      "filename": "150_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev2/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 93186156,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/With concrete stiffness/100_TT_1KM_RO.sim",
+      "size_bytes": 91803973,
+      "filename": "100_TT_1KM_RO.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/With concrete stiffness/100_TT_1KM.sim",
+      "size_bytes": 91803860,
+      "filename": "100_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.305%/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 91802714,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.25%/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 91802700,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev1/100_TT_1KM_RO.sim",
+      "size_bytes": 91802671,
+      "filename": "100_TT_1KM_RO.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev2/100_TT_1KM_RO.sim",
+      "size_bytes": 91802671,
+      "filename": "100_TT_1KM_RO.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev1/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 91802629,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev1/100_TT_1KM.sim",
+      "size_bytes": 91802571,
+      "filename": "100_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.25%/100_TT_1KM.sim",
+      "size_bytes": 91802571,
+      "filename": "100_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.305%/100_TT_1KM.sim",
+      "size_bytes": 91802571,
+      "filename": "100_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.25%/200_TT_1KM.sim",
+      "size_bytes": 91802449,
+      "filename": "200_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev1/200_TT_1KM.sim",
+      "size_bytes": 91802447,
+      "filename": "200_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.305%/200_TT_1KM.sim",
+      "size_bytes": 91802434,
+      "filename": "200_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/1 km pipe/Rev1/150_TT_1KM.sim",
+      "size_bytes": 91802383,
+      "filename": "150_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.25%/150_TT_1KM.sim",
+      "size_bytes": 91802383,
+      "filename": "150_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/DNV-OS-F101/Strain-0.305%/150_TT_1KM.sim",
+      "size_bytes": 91802383,
+      "filename": "150_TT_1KM.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF_Length53CentredWeights.sim",
+      "size_bytes": 90351021,
+      "filename": "Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF_Length53CentredWeights.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOFTension.sim",
+      "size_bytes": 90252359,
+      "filename": "Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOFTension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF.sim",
+      "size_bytes": 90252358,
+      "filename": "Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 9lTavaBuoysWillSlings.sim",
+      "size_bytes": 89942157,
+      "filename": "Case2-1 9lTavaBuoysWillSlings.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 9lsimpletransfer.sim",
+      "size_bytes": 89344968,
+      "filename": "Case2-1 9lsimpletransfer.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/Case2-1_AE654000_Coupled_1m_Airy_6s.sim",
+      "size_bytes": 89174467,
+      "filename": "Case2-1_AE654000_Coupled_1m_Airy_6s.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 SewolTavaOriginal.sim",
+      "size_bytes": 88571545,
+      "filename": "Case2-1 SewolTavaOriginal.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 9l.sim",
+      "size_bytes": 88571541,
+      "filename": "Case2-1 9l.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 9lsimpletransfer4balanceslings.sim",
+      "size_bytes": 88185668,
+      "filename": "Case2-1 9lsimpletransfer4balanceslings.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/forcedharmonicbase/Case2-1-10cm-6.sim",
+      "size_bytes": 85849569,
+      "filename": "Case2-1-10cm-6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1-10cm-5.sim",
+      "size_bytes": 85847802,
+      "filename": "Case2-1-10cm-5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/TransferWillto9/Case2-1 AE654000totransfer.sim",
+      "size_bytes": 85846698,
+      "filename": "Case2-1 AE654000totransfer.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1 AE654000.sim",
+      "size_bytes": 85846627,
+      "filename": "Case2-1 AE654000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/Keystone/Keystone5.mp4",
+      "size_bytes": 62094673,
+      "filename": "Keystone5.mp4"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Case2-1Coupled/Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF_Length53.sim",
+      "size_bytes": 60413762,
+      "filename": "Case2-1_AE654000_Coupled_1m_Airy_6s_ZPMC3DOF_Length53.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Parts/Sewol Salvage Rev007.sim",
+      "size_bytes": 59096866,
+      "filename": "Sewol Salvage Rev007.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Near Surface Installation Analysis/Rev1/NearSurface/Empty-500M.sim",
+      "size_bytes": 58787045,
+      "filename": "Empty-500M.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/CD Examples/A05 Steel Catenary Riser Systems.zip",
+      "size_bytes": 55686856,
+      "filename": "A05 Steel Catenary Riser Systems.zip"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Wated filled riser/Free Flooded_buoyancy.sim",
+      "size_bytes": 49188011,
+      "filename": "Free Flooded_buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_21.sim",
+      "size_bytes": 49177022,
+      "filename": "Wave_21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_17.sim",
+      "size_bytes": 49176979,
+      "filename": "Wave_17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_13.sim",
+      "size_bytes": 49176837,
+      "filename": "Wave_13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_15.sim",
+      "size_bytes": 49176741,
+      "filename": "Wave_15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_19.sim",
+      "size_bytes": 49176725,
+      "filename": "Wave_19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_17.sim",
+      "size_bytes": 49176713,
+      "filename": "Wave_30_24m_17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_13.sim",
+      "size_bytes": 49176630,
+      "filename": "Wave_30_24m_13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_14.sim",
+      "size_bytes": 49176605,
+      "filename": "Wave_14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_21.sim",
+      "size_bytes": 49176561,
+      "filename": "Wave_30_24m_21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_23.sim",
+      "size_bytes": 49176560,
+      "filename": "Wave_23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_18.sim",
+      "size_bytes": 49176403,
+      "filename": "Wave_18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_33.sim",
+      "size_bytes": 49176275,
+      "filename": "Wave_33.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_25.sim",
+      "size_bytes": 49176203,
+      "filename": "Wave_25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_21.sim",
+      "size_bytes": 49176174,
+      "filename": "Wave_30_18m_21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_29.sim",
+      "size_bytes": 49176163,
+      "filename": "Wave_29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_17.sim",
+      "size_bytes": 49176136,
+      "filename": "Wave_30_18m_17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_13.sim",
+      "size_bytes": 49176106,
+      "filename": "Wave_30_18m_13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_22.sim",
+      "size_bytes": 49176056,
+      "filename": "Wave_22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_14.sim",
+      "size_bytes": 49176002,
+      "filename": "Wave_30_24m_14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_31.sim",
+      "size_bytes": 49175977,
+      "filename": "Wave_31.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_16.sim",
+      "size_bytes": 49175929,
+      "filename": "Wave_16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_15.sim",
+      "size_bytes": 49175925,
+      "filename": "Wave_30_24m_15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_27.sim",
+      "size_bytes": 49175903,
+      "filename": "Wave_27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_24.sim",
+      "size_bytes": 49175842,
+      "filename": "Wave_24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_20.sim",
+      "size_bytes": 49175836,
+      "filename": "Wave_20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_19.sim",
+      "size_bytes": 49175825,
+      "filename": "Wave_30_24m_19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_33.sim",
+      "size_bytes": 49175818,
+      "filename": "Wave_45_24m_33.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_18.sim",
+      "size_bytes": 49175746,
+      "filename": "Wave_30_24m_18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_23.sim",
+      "size_bytes": 49175682,
+      "filename": "Wave_30_24m_23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_22.sim",
+      "size_bytes": 49175671,
+      "filename": "Wave_30_24m_22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_35.sim",
+      "size_bytes": 49175662,
+      "filename": "Wave_35.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_34.sim",
+      "size_bytes": 49175655,
+      "filename": "Wave_34.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_25.sim",
+      "size_bytes": 49175631,
+      "filename": "Wave_45_24m_25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_29.sim",
+      "size_bytes": 49175596,
+      "filename": "Wave_45_24m_29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_30.sim",
+      "size_bytes": 49175561,
+      "filename": "Wave_30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_15.sim",
+      "size_bytes": 49175420,
+      "filename": "Wave_30_18m_15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_29.sim",
+      "size_bytes": 49175376,
+      "filename": "Wave_45_18m_29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_26.sim",
+      "size_bytes": 49175376,
+      "filename": "Wave_45_24m_26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_26.sim",
+      "size_bytes": 49175370,
+      "filename": "Wave_26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_33.sim",
+      "size_bytes": 49175323,
+      "filename": "Wave_45_18m_33.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_25.sim",
+      "size_bytes": 49175294,
+      "filename": "Wave_45_18m_25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_30.sim",
+      "size_bytes": 49175290,
+      "filename": "Wave_45_24m_30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_19.sim",
+      "size_bytes": 49175265,
+      "filename": "Wave_30_18m_19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_23.sim",
+      "size_bytes": 49175245,
+      "filename": "Wave_30_18m_23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_16.sim",
+      "size_bytes": 49175198,
+      "filename": "Wave_30_24m_16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_28.sim",
+      "size_bytes": 49175129,
+      "filename": "Wave_28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_34.sim",
+      "size_bytes": 49175103,
+      "filename": "Wave_45_24m_34.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_24.sim",
+      "size_bytes": 49175068,
+      "filename": "Wave_30_24m_24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_36.sim",
+      "size_bytes": 49175066,
+      "filename": "Wave_36.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_30_24m_20.sim",
+      "size_bytes": 49175042,
+      "filename": "Wave_30_24m_20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_32.sim",
+      "size_bytes": 49175035,
+      "filename": "Wave_32.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_27.sim",
+      "size_bytes": 49175031,
+      "filename": "Wave_45_24m_27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_31.sim",
+      "size_bytes": 49175014,
+      "filename": "Wave_45_24m_31.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_22.sim",
+      "size_bytes": 49174929,
+      "filename": "Wave_30_18m_22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_16.sim",
+      "size_bytes": 49174912,
+      "filename": "Wave_30_18m_16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_20.sim",
+      "size_bytes": 49174794,
+      "filename": "Wave_30_18m_20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_35.sim",
+      "size_bytes": 49174708,
+      "filename": "Wave_45_24m_35.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_24.sim",
+      "size_bytes": 49174705,
+      "filename": "Wave_30_18m_24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_27.sim",
+      "size_bytes": 49174615,
+      "filename": "Wave_45_18m_27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_31.sim",
+      "size_bytes": 49174613,
+      "filename": "Wave_45_18m_31.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_14.sim",
+      "size_bytes": 49174579,
+      "filename": "Wave_30_18m_14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_35.sim",
+      "size_bytes": 49174441,
+      "filename": "Wave_45_18m_35.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_28.sim",
+      "size_bytes": 49174368,
+      "filename": "Wave_45_24m_28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_34.sim",
+      "size_bytes": 49174344,
+      "filename": "Wave_45_18m_34.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_36.sim",
+      "size_bytes": 49174267,
+      "filename": "Wave_45_24m_36.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_45_24m_32.sim",
+      "size_bytes": 49174222,
+      "filename": "Wave_45_24m_32.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_28.sim",
+      "size_bytes": 49174083,
+      "filename": "Wave_45_18m_28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_36.sim",
+      "size_bytes": 49174061,
+      "filename": "Wave_45_18m_36.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_26.sim",
+      "size_bytes": 49174054,
+      "filename": "Wave_45_18m_26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_30_18m_18.sim",
+      "size_bytes": 49174016,
+      "filename": "Wave_30_18m_18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_30.sim",
+      "size_bytes": 49173941,
+      "filename": "Wave_45_18m_30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_45_18m_32.sim",
+      "size_bytes": 49173936,
+      "filename": "Wave_45_18m_32.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_09.sim",
+      "size_bytes": 49172681,
+      "filename": "Wave_09.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_05.sim",
+      "size_bytes": 49172666,
+      "filename": "Wave_05.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_04.sim",
+      "size_bytes": 49172568,
+      "filename": "Wave_04.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_12.sim",
+      "size_bytes": 49172542,
+      "filename": "Wave_12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_08.sim",
+      "size_bytes": 49172525,
+      "filename": "Wave_08.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_01.sim",
+      "size_bytes": 49172430,
+      "filename": "Wave_01.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_10.sim",
+      "size_bytes": 49172225,
+      "filename": "Wave_10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_5.sim",
+      "size_bytes": 49172162,
+      "filename": "Wave_0_24m_5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_9.sim",
+      "size_bytes": 49172126,
+      "filename": "Wave_0_24m_9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_1.sim",
+      "size_bytes": 49172061,
+      "filename": "Wave_0_24m_1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_3.sim",
+      "size_bytes": 49172007,
+      "filename": "Wave_0_24m_3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/WD_30m_96mT_with buoyancy.sim",
+      "size_bytes": 49171987,
+      "filename": "WD_30m_96mT_with buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 meters water depth with buoyancy/WD_30m_96mT_with buoyancy.sim",
+      "size_bytes": 49171984,
+      "filename": "WD_30m_96mT_with buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_06.sim",
+      "size_bytes": 49171889,
+      "filename": "Wave_06.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_7.sim",
+      "size_bytes": 49171863,
+      "filename": "Wave_0_24m_7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_4.sim",
+      "size_bytes": 49171862,
+      "filename": "Wave_0_24m_4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_8.sim",
+      "size_bytes": 49171838,
+      "filename": "Wave_0_24m_8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_11.sim",
+      "size_bytes": 49171834,
+      "filename": "Wave_0_24m_11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_11.sim",
+      "size_bytes": 49171818,
+      "filename": "Wave_11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_12.sim",
+      "size_bytes": 49171798,
+      "filename": "Wave_0_24m_12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_5.sim",
+      "size_bytes": 49171732,
+      "filename": "Wave_0_18m_5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_9.sim",
+      "size_bytes": 49171635,
+      "filename": "Wave_0_18m_9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_07.sim",
+      "size_bytes": 49171603,
+      "filename": "Wave_07.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_02.sim",
+      "size_bytes": 49171591,
+      "filename": "Wave_02.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_1.sim",
+      "size_bytes": 49171578,
+      "filename": "Wave_0_18m_1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_3.sim",
+      "size_bytes": 49171543,
+      "filename": "Wave_0_18m_3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_4.sim",
+      "size_bytes": 49171506,
+      "filename": "Wave_0_18m_4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_7.sim",
+      "size_bytes": 49171489,
+      "filename": "Wave_0_18m_7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_11.sim",
+      "size_bytes": 49171484,
+      "filename": "Wave_0_18m_11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_8.sim",
+      "size_bytes": 49171420,
+      "filename": "Wave_0_18m_8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_12.sim",
+      "size_bytes": 49171368,
+      "filename": "Wave_0_18m_12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_10.sim",
+      "size_bytes": 49171247,
+      "filename": "Wave_0_24m_10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_6.sim",
+      "size_bytes": 49171178,
+      "filename": "Wave_0_24m_6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 & 24 m WD Static Analysis/24 m WD/WD_24m_96mT_Buoyancy.sim",
+      "size_bytes": 49171144,
+      "filename": "WD_24m_96mT_Buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/WD_24m_96mT_Buoyancy.sim",
+      "size_bytes": 49171140,
+      "filename": "WD_24m_96mT_Buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/24 m WD Wave Sensitivity with Buoyancy/Wave_0_24m_2.sim",
+      "size_bytes": 49171053,
+      "filename": "Wave_0_24m_2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/WD_18m_96mT_Buoyancy.sim",
+      "size_bytes": 49170829,
+      "filename": "WD_18m_96mT_Buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 & 24 m WD Static Analysis/18 m WD/WD_18m_96mT_Buoyancy.sim",
+      "size_bytes": 49170824,
+      "filename": "WD_18m_96mT_Buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_10.sim",
+      "size_bytes": 49170512,
+      "filename": "Wave_0_18m_10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/30 m WD Wave Sensitivity with Buoyancy/Wave_03.sim",
+      "size_bytes": 49170396,
+      "filename": "Wave_03.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_6.sim",
+      "size_bytes": 49170314,
+      "filename": "Wave_0_18m_6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/18 m WD Wave Sensitivity with Buoyancy/Wave_0_18m_2.sim",
+      "size_bytes": 49169933,
+      "filename": "Wave_0_18m_2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Pullin/WaveDir_30deg_2.sim",
+      "size_bytes": 49038877,
+      "filename": "WaveDir_30deg_2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Pullin/WD_6m_350m_6deg_Buoyancy.sim",
+      "size_bytes": 49034826,
+      "filename": "WD_6m_350m_6deg_Buoyancy.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/water depths/30 meters WD/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 47632577,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/water depths/18 meters WD/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 47589066,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/water depths/6 meters WD/300m_Radius_1KM_Pipe.sim",
+      "size_bytes": 47535365,
+      "filename": "300m_Radius_1KM_Pipe.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/STA Truston MultiBuoy Mooring/Resumes/SLI_Divers.zip",
+      "size_bytes": 47424200,
+      "filename": "SLI_Divers.zip"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/STA Truston MultiBuoy Mooring/OCIMF/OCIMF Guidelines for Purchasing and Testing of SPM Hawsers.pdf",
+      "size_bytes": 45598152,
+      "filename": "OCIMF Guidelines for Purchasing and Testing of SPM Hawsers.pdf"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Sewol Salvage Rev009.sim",
+      "size_bytes": 38784131,
+      "filename": "Sewol Salvage Rev009.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_750.sim",
+      "size_bytes": 35949688,
+      "filename": "300m_Radius_LT_750.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_1000.sim",
+      "size_bytes": 35949687,
+      "filename": "300m_Radius_LT_1000.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_250.sim",
+      "size_bytes": 35949687,
+      "filename": "300m_Radius_LT_250.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_1960.sim",
+      "size_bytes": 35949677,
+      "filename": "300m_Radius_LT_1960.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_500.sim",
+      "size_bytes": 35949674,
+      "filename": "300m_Radius_LT_500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_1500.sim",
+      "size_bytes": 35949673,
+      "filename": "300m_Radius_LT_1500.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_1250.sim",
+      "size_bytes": 35949672,
+      "filename": "300m_Radius_LT_1250.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius_LT_1750.sim",
+      "size_bytes": 35949672,
+      "filename": "300m_Radius_LT_1750.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Stability (23.10.2014)/300m_Radius.sim",
+      "size_bytes": 35949632,
+      "filename": "300m_Radius.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/CD Examples/A05 Steel Catenary Riser Systems/A05 Catenary with SemiSub.sim",
+      "size_bytes": 30664660,
+      "filename": "A05 Catenary with SemiSub.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case39.sim",
+      "size_bytes": 27443543,
+      "filename": "Case39.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case41.sim",
+      "size_bytes": 27443543,
+      "filename": "Case41.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case45.sim",
+      "size_bytes": 27443542,
+      "filename": "Case45.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case43.sim",
+      "size_bytes": 27443541,
+      "filename": "Case43.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case38.sim",
+      "size_bytes": 27443540,
+      "filename": "Case38.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case40.sim",
+      "size_bytes": 27443540,
+      "filename": "Case40.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case42.sim",
+      "size_bytes": 27443540,
+      "filename": "Case42.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case14.sim",
+      "size_bytes": 27443539,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case37.sim",
+      "size_bytes": 27443539,
+      "filename": "Case37.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case44.sim",
+      "size_bytes": 27443538,
+      "filename": "Case44.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case63.sim",
+      "size_bytes": 27443534,
+      "filename": "Case63.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case17.sim",
+      "size_bytes": 27443533,
+      "filename": "Case17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case48.sim",
+      "size_bytes": 27443533,
+      "filename": "Case48.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case53.sim",
+      "size_bytes": 27443533,
+      "filename": "Case53.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case50.sim",
+      "size_bytes": 27443532,
+      "filename": "Case50.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case47.sim",
+      "size_bytes": 27443531,
+      "filename": "Case47.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case49.sim",
+      "size_bytes": 27443531,
+      "filename": "Case49.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case60.sim",
+      "size_bytes": 27443531,
+      "filename": "Case60.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case46.sim",
+      "size_bytes": 27443530,
+      "filename": "Case46.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case52.sim",
+      "size_bytes": 27443530,
+      "filename": "Case52.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case61.sim",
+      "size_bytes": 27443530,
+      "filename": "Case61.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case54.sim",
+      "size_bytes": 27443530,
+      "filename": "Case54.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case51.sim",
+      "size_bytes": 27443529,
+      "filename": "Case51.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case57.sim",
+      "size_bytes": 27443529,
+      "filename": "Case57.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case55.sim",
+      "size_bytes": 27443528,
+      "filename": "Case55.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case56.sim",
+      "size_bytes": 27443528,
+      "filename": "Case56.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case59.sim",
+      "size_bytes": 27443528,
+      "filename": "Case59.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case62.sim",
+      "size_bytes": 27443528,
+      "filename": "Case62.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case58.sim",
+      "size_bytes": 27443527,
+      "filename": "Case58.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case20.sim",
+      "size_bytes": 27443526,
+      "filename": "Case20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case9.sim",
+      "size_bytes": 27443525,
+      "filename": "Case9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case84.sim",
+      "size_bytes": 27443502,
+      "filename": "Case84.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case83.sim",
+      "size_bytes": 27443496,
+      "filename": "Case83.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case82.sim",
+      "size_bytes": 27443495,
+      "filename": "Case82.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case86.sim",
+      "size_bytes": 27443494,
+      "filename": "Case86.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case89.sim",
+      "size_bytes": 27443494,
+      "filename": "Case89.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case85.sim",
+      "size_bytes": 27443492,
+      "filename": "Case85.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case12.sim",
+      "size_bytes": 27443491,
+      "filename": "Case12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case87.sim",
+      "size_bytes": 27443490,
+      "filename": "Case87.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case88.sim",
+      "size_bytes": 27443490,
+      "filename": "Case88.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case90.sim",
+      "size_bytes": 27443490,
+      "filename": "Case90.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case76.sim",
+      "size_bytes": 27443489,
+      "filename": "Case76.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case29.sim",
+      "size_bytes": 27443488,
+      "filename": "Case29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case65.sim",
+      "size_bytes": 27443488,
+      "filename": "Case65.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case75.sim",
+      "size_bytes": 27443488,
+      "filename": "Case75.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case70.sim",
+      "size_bytes": 27443487,
+      "filename": "Case70.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case81.sim",
+      "size_bytes": 27443486,
+      "filename": "Case81.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case72.sim",
+      "size_bytes": 27443485,
+      "filename": "Case72.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case68.sim",
+      "size_bytes": 27443484,
+      "filename": "Case68.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case78.sim",
+      "size_bytes": 27443482,
+      "filename": "Case78.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case73.sim",
+      "size_bytes": 27443481,
+      "filename": "Case73.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case71.sim",
+      "size_bytes": 27443480,
+      "filename": "Case71.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case74.sim",
+      "size_bytes": 27443480,
+      "filename": "Case74.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case64.sim",
+      "size_bytes": 27443479,
+      "filename": "Case64.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case69.sim",
+      "size_bytes": 27443479,
+      "filename": "Case69.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case23.sim",
+      "size_bytes": 27443478,
+      "filename": "Case23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case66.sim",
+      "size_bytes": 27443478,
+      "filename": "Case66.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case26.sim",
+      "size_bytes": 27443477,
+      "filename": "Case26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case77.sim",
+      "size_bytes": 27443477,
+      "filename": "Case77.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case79.sim",
+      "size_bytes": 27443477,
+      "filename": "Case79.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case80.sim",
+      "size_bytes": 27443476,
+      "filename": "Case80.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case67.sim",
+      "size_bytes": 27443475,
+      "filename": "Case67.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case26.sim",
+      "size_bytes": 27443463,
+      "filename": "Case26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case9.sim",
+      "size_bytes": 27443461,
+      "filename": "Case9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case2.sim",
+      "size_bytes": 27443460,
+      "filename": "Case2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case3.sim",
+      "size_bytes": 27443460,
+      "filename": "Case3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case6.sim",
+      "size_bytes": 27443460,
+      "filename": "Case6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case7.sim",
+      "size_bytes": 27443460,
+      "filename": "Case7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case24.sim",
+      "size_bytes": 27443460,
+      "filename": "Case24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case19.sim",
+      "size_bytes": 27443459,
+      "filename": "Case19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case21.sim",
+      "size_bytes": 27443459,
+      "filename": "Case21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case1.sim",
+      "size_bytes": 27443458,
+      "filename": "Case1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case2.sim",
+      "size_bytes": 27443457,
+      "filename": "Case2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case8.sim",
+      "size_bytes": 27443457,
+      "filename": "Case8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case4.sim",
+      "size_bytes": 27443456,
+      "filename": "Case4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case5.sim",
+      "size_bytes": 27443456,
+      "filename": "Case5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case25.sim",
+      "size_bytes": 27443454,
+      "filename": "Case25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case8.sim",
+      "size_bytes": 27443453,
+      "filename": "Case8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case3.sim",
+      "size_bytes": 27443453,
+      "filename": "Case3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case4.sim",
+      "size_bytes": 27443453,
+      "filename": "Case4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case27.sim",
+      "size_bytes": 27443453,
+      "filename": "Case27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case20.sim",
+      "size_bytes": 27443452,
+      "filename": "Case20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case23.sim",
+      "size_bytes": 27443452,
+      "filename": "Case23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case22.sim",
+      "size_bytes": 27443450,
+      "filename": "Case22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case6.sim",
+      "size_bytes": 27443450,
+      "filename": "Case6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case1.sim",
+      "size_bytes": 27443449,
+      "filename": "Case1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case9.sim",
+      "size_bytes": 27443449,
+      "filename": "Case9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case12.sim",
+      "size_bytes": 27443448,
+      "filename": "Case12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case15.sim",
+      "size_bytes": 27443447,
+      "filename": "Case15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case30.sim",
+      "size_bytes": 27443447,
+      "filename": "Case30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case12.sim",
+      "size_bytes": 27443446,
+      "filename": "Case12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case28.sim",
+      "size_bytes": 27443446,
+      "filename": "Case28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case32.sim",
+      "size_bytes": 27443446,
+      "filename": "Case32.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case13.sim",
+      "size_bytes": 27443445,
+      "filename": "Case13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case16.sim",
+      "size_bytes": 27443445,
+      "filename": "Case16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case34.sim",
+      "size_bytes": 27443445,
+      "filename": "Case34.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case36.sim",
+      "size_bytes": 27443445,
+      "filename": "Case36.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case11.sim",
+      "size_bytes": 27443444,
+      "filename": "Case11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case17.sim",
+      "size_bytes": 27443444,
+      "filename": "Case17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case29.sim",
+      "size_bytes": 27443444,
+      "filename": "Case29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case31.sim",
+      "size_bytes": 27443443,
+      "filename": "Case31.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case5.sim",
+      "size_bytes": 27443442,
+      "filename": "Case5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case10.sim",
+      "size_bytes": 27443442,
+      "filename": "Case10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case33.sim",
+      "size_bytes": 27443442,
+      "filename": "Case33.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case35.sim",
+      "size_bytes": 27443442,
+      "filename": "Case35.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case7.sim",
+      "size_bytes": 27443442,
+      "filename": "Case7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case8.sim",
+      "size_bytes": 27443442,
+      "filename": "Case8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case9.sim",
+      "size_bytes": 27443441,
+      "filename": "Case9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case1.sim",
+      "size_bytes": 27443441,
+      "filename": "Case1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case2.sim",
+      "size_bytes": 27443441,
+      "filename": "Case2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case14.sim",
+      "size_bytes": 27443441,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case5.sim",
+      "size_bytes": 27443441,
+      "filename": "Case5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case13.sim",
+      "size_bytes": 27443440,
+      "filename": "Case13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case16.sim",
+      "size_bytes": 27443440,
+      "filename": "Case16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case19.sim",
+      "size_bytes": 27443439,
+      "filename": "Case19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case11.sim",
+      "size_bytes": 27443439,
+      "filename": "Case11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case18.sim",
+      "size_bytes": 27443439,
+      "filename": "Case18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case2.sim",
+      "size_bytes": 27443439,
+      "filename": "Case2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case15.sim",
+      "size_bytes": 27443437,
+      "filename": "Case15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case6.sim",
+      "size_bytes": 27443436,
+      "filename": "Case6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case5.sim",
+      "size_bytes": 27443436,
+      "filename": "Case5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case17.sim",
+      "size_bytes": 27443436,
+      "filename": "Case17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case14.sim",
+      "size_bytes": 27443435,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case18.sim",
+      "size_bytes": 27443435,
+      "filename": "Case18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case10.sim",
+      "size_bytes": 27443434,
+      "filename": "Case10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/750KN/Case11.sim",
+      "size_bytes": 27443434,
+      "filename": "Case11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case6.sim",
+      "size_bytes": 27443432,
+      "filename": "Case6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case4.sim",
+      "size_bytes": 27443429,
+      "filename": "Case4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case13.sim",
+      "size_bytes": 27443418,
+      "filename": "Case13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case16.sim",
+      "size_bytes": 27443413,
+      "filename": "Case16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case22.sim",
+      "size_bytes": 27443408,
+      "filename": "Case22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case3.sim",
+      "size_bytes": 27443406,
+      "filename": "Case3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case10.sim",
+      "size_bytes": 27443403,
+      "filename": "Case10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case1.sim",
+      "size_bytes": 27443399,
+      "filename": "Case1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case26.sim",
+      "size_bytes": 27443392,
+      "filename": "Case26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case25.sim",
+      "size_bytes": 27443392,
+      "filename": "Case25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case80.sim",
+      "size_bytes": 27443392,
+      "filename": "Case80.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case28.sim",
+      "size_bytes": 27443391,
+      "filename": "Case28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case81.sim",
+      "size_bytes": 27443391,
+      "filename": "Case81.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case73.sim",
+      "size_bytes": 27443391,
+      "filename": "Case73.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case74.sim",
+      "size_bytes": 27443390,
+      "filename": "Case74.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case77.sim",
+      "size_bytes": 27443390,
+      "filename": "Case77.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case78.sim",
+      "size_bytes": 27443390,
+      "filename": "Case78.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case79.sim",
+      "size_bytes": 27443390,
+      "filename": "Case79.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case7.sim",
+      "size_bytes": 27443389,
+      "filename": "Case7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case75.sim",
+      "size_bytes": 27443389,
+      "filename": "Case75.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case76.sim",
+      "size_bytes": 27443389,
+      "filename": "Case76.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case90.sim",
+      "size_bytes": 27443389,
+      "filename": "Case90.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case84.sim",
+      "size_bytes": 27443387,
+      "filename": "Case84.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case86.sim",
+      "size_bytes": 27443387,
+      "filename": "Case86.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case87.sim",
+      "size_bytes": 27443387,
+      "filename": "Case87.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case89.sim",
+      "size_bytes": 27443386,
+      "filename": "Case89.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case82.sim",
+      "size_bytes": 27443385,
+      "filename": "Case82.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case83.sim",
+      "size_bytes": 27443385,
+      "filename": "Case83.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case29.sim",
+      "size_bytes": 27443384,
+      "filename": "Case29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case4.sim",
+      "size_bytes": 27443384,
+      "filename": "Case4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case85.sim",
+      "size_bytes": 27443384,
+      "filename": "Case85.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case88.sim",
+      "size_bytes": 27443384,
+      "filename": "Case88.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case24.sim",
+      "size_bytes": 27443380,
+      "filename": "Case24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case71.sim",
+      "size_bytes": 27443374,
+      "filename": "Case71.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case64.sim",
+      "size_bytes": 27443371,
+      "filename": "Case64.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case23.sim",
+      "size_bytes": 27443370,
+      "filename": "Case23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case66.sim",
+      "size_bytes": 27443370,
+      "filename": "Case66.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case67.sim",
+      "size_bytes": 27443370,
+      "filename": "Case67.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case65.sim",
+      "size_bytes": 27443369,
+      "filename": "Case65.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case68.sim",
+      "size_bytes": 27443369,
+      "filename": "Case68.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case69.sim",
+      "size_bytes": 27443369,
+      "filename": "Case69.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case42.sim",
+      "size_bytes": 27443368,
+      "filename": "Case42.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case45.sim",
+      "size_bytes": 27443368,
+      "filename": "Case45.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case72.sim",
+      "size_bytes": 27443368,
+      "filename": "Case72.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case70.sim",
+      "size_bytes": 27443368,
+      "filename": "Case70.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case38.sim",
+      "size_bytes": 27443365,
+      "filename": "Case38.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case44.sim",
+      "size_bytes": 27443365,
+      "filename": "Case44.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case43.sim",
+      "size_bytes": 27443361,
+      "filename": "Case43.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case14.sim",
+      "size_bytes": 27443360,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case3.sim",
+      "size_bytes": 27443360,
+      "filename": "Case3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case39.sim",
+      "size_bytes": 27443360,
+      "filename": "Case39.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case37.sim",
+      "size_bytes": 27443359,
+      "filename": "Case37.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case40.sim",
+      "size_bytes": 27443359,
+      "filename": "Case40.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case41.sim",
+      "size_bytes": 27443359,
+      "filename": "Case41.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case18.sim",
+      "size_bytes": 27443354,
+      "filename": "Case18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case36.sim",
+      "size_bytes": 27443346,
+      "filename": "Case36.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case33.sim",
+      "size_bytes": 27443344,
+      "filename": "Case33.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case28.sim",
+      "size_bytes": 27443343,
+      "filename": "Case28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case20.sim",
+      "size_bytes": 27443342,
+      "filename": "Case20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case31.sim",
+      "size_bytes": 27443342,
+      "filename": "Case31.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case25.sim",
+      "size_bytes": 27443341,
+      "filename": "Case25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case32.sim",
+      "size_bytes": 27443341,
+      "filename": "Case32.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case23.sim",
+      "size_bytes": 27443340,
+      "filename": "Case23.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case34.sim",
+      "size_bytes": 27443340,
+      "filename": "Case34.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case35.sim",
+      "size_bytes": 27443340,
+      "filename": "Case35.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case11.sim",
+      "size_bytes": 27443339,
+      "filename": "Case11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case30.sim",
+      "size_bytes": 27443339,
+      "filename": "Case30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case12.sim",
+      "size_bytes": 27443338,
+      "filename": "Case12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case8.sim",
+      "size_bytes": 27443338,
+      "filename": "Case8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case26.sim",
+      "size_bytes": 27443338,
+      "filename": "Case26.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case19.sim",
+      "size_bytes": 27443337,
+      "filename": "Case19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case29.sim",
+      "size_bytes": 27443337,
+      "filename": "Case29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case27.sim",
+      "size_bytes": 27443337,
+      "filename": "Case27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case21.sim",
+      "size_bytes": 27443336,
+      "filename": "Case21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case24.sim",
+      "size_bytes": 27443336,
+      "filename": "Case24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case22.sim",
+      "size_bytes": 27443335,
+      "filename": "Case22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case19.sim",
+      "size_bytes": 27443328,
+      "filename": "Case19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case50.sim",
+      "size_bytes": 27443328,
+      "filename": "Case50.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case53.sim",
+      "size_bytes": 27443328,
+      "filename": "Case53.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case17.sim",
+      "size_bytes": 27443327,
+      "filename": "Case17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case52.sim",
+      "size_bytes": 27443327,
+      "filename": "Case52.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case47.sim",
+      "size_bytes": 27443326,
+      "filename": "Case47.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case48.sim",
+      "size_bytes": 27443326,
+      "filename": "Case48.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case49.sim",
+      "size_bytes": 27443326,
+      "filename": "Case49.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case51.sim",
+      "size_bytes": 27443326,
+      "filename": "Case51.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case54.sim",
+      "size_bytes": 27443326,
+      "filename": "Case54.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case22.sim",
+      "size_bytes": 27443325,
+      "filename": "Case22.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case27.sim",
+      "size_bytes": 27443325,
+      "filename": "Case27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case46.sim",
+      "size_bytes": 27443325,
+      "filename": "Case46.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case55.sim",
+      "size_bytes": 27443325,
+      "filename": "Case55.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case57.sim",
+      "size_bytes": 27443325,
+      "filename": "Case57.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case58.sim",
+      "size_bytes": 27443325,
+      "filename": "Case58.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case59.sim",
+      "size_bytes": 27443325,
+      "filename": "Case59.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case62.sim",
+      "size_bytes": 27443325,
+      "filename": "Case62.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case20.sim",
+      "size_bytes": 27443324,
+      "filename": "Case20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case7.sim",
+      "size_bytes": 27443324,
+      "filename": "Case7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case61.sim",
+      "size_bytes": 27443324,
+      "filename": "Case61.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case56.sim",
+      "size_bytes": 27443323,
+      "filename": "Case56.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case60.sim",
+      "size_bytes": 27443323,
+      "filename": "Case60.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/LayTension/1500KN/Case63.sim",
+      "size_bytes": 27443323,
+      "filename": "Case63.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case18.sim",
+      "size_bytes": 27443308,
+      "filename": "Case18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case25.sim",
+      "size_bytes": 27443306,
+      "filename": "Case25.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case15.sim",
+      "size_bytes": 27443306,
+      "filename": "Case15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case16.sim",
+      "size_bytes": 27443304,
+      "filename": "Case16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case30.sim",
+      "size_bytes": 27443297,
+      "filename": "Case30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case13.sim",
+      "size_bytes": 27443294,
+      "filename": "Case13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case28.sim",
+      "size_bytes": 27443288,
+      "filename": "Case28.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/Case21.sim",
+      "size_bytes": 27443285,
+      "filename": "Case21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case24.sim",
+      "size_bytes": 27443283,
+      "filename": "Case24.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case10.sim",
+      "size_bytes": 27443281,
+      "filename": "Case10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case21.sim",
+      "size_bytes": 27443250,
+      "filename": "Case21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case15.sim",
+      "size_bytes": 27443197,
+      "filename": "Case15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case27.sim",
+      "size_bytes": 27443185,
+      "filename": "Case27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/1500KN/Case30.sim",
+      "size_bytes": 27443098,
+      "filename": "Case30.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/With Tether/Dynamics/750KN/S-Lay_Tether_750.sim",
+      "size_bytes": 27442706,
+      "filename": "S-Lay_Tether_750.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Reference/Kartik Models/Step 2-Initiation-past the stinger_Hdg0.sim",
+      "size_bytes": 26992656,
+      "filename": "Step 2-Initiation-past the stinger_Hdg0.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/614 SEWOL/Parts/Vessel.sim",
+      "size_bytes": 26971282,
+      "filename": "Vessel.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Reference/Karthik Models/Step 2-Initiation-past the stinger_Hdg0.sim",
+      "size_bytes": 26731036,
+      "filename": "Step 2-Initiation-past the stinger_Hdg0.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/500 meters pipe/100Tones_Tension.sim",
+      "size_bytes": 25120427,
+      "filename": "100Tones_Tension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/500 meters pipe/150Tones_Tension.sim",
+      "size_bytes": 25120401,
+      "filename": "150Tones_Tension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/500 meters pipe/300m_Radius_VA.sim",
+      "size_bytes": 25120364,
+      "filename": "300m_Radius_VA.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/500 meters pipe/200Tones_Tension.sim",
+      "size_bytes": 25119989,
+      "filename": "200Tones_Tension.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Superseded/RAO Check Rev1/Quentzal.sim",
+      "size_bytes": 24955736,
+      "filename": "Quentzal.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Superseded/RAO Check Rev4/Quentzal.sim",
+      "size_bytes": 24955736,
+      "filename": "Quentzal.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Superseded/RAO Check Rev5/Quentzal.sim",
+      "size_bytes": 24955736,
+      "filename": "Quentzal.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Quetzal/Superseded/RAO Check Rev6/Quentzal.sim",
+      "size_bytes": 24955736,
+      "filename": "Quentzal.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/Latest Analysis (Kp 1.0 to Kp 0.0)/500 meters pipe/300m_Radius_MP.sim",
+      "size_bytes": 24456141,
+      "filename": "300m_Radius_MP.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Dynamics)/300m Fixed/Long Length/Case14.sim",
+      "size_bytes": 24429015,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L1.sim",
+      "size_bytes": 24428986,
+      "filename": "L1.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L6.sim",
+      "size_bytes": 24428986,
+      "filename": "L6.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L17.sim",
+      "size_bytes": 24428985,
+      "filename": "L17.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L18.sim",
+      "size_bytes": 24428985,
+      "filename": "L18.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L5.sim",
+      "size_bytes": 24428985,
+      "filename": "L5.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L10.sim",
+      "size_bytes": 24428984,
+      "filename": "L10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L11.sim",
+      "size_bytes": 24428984,
+      "filename": "L11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L13.sim",
+      "size_bytes": 24428984,
+      "filename": "L13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L20.sim",
+      "size_bytes": 24428984,
+      "filename": "L20.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L3.sim",
+      "size_bytes": 24428984,
+      "filename": "L3.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L9.sim",
+      "size_bytes": 24428984,
+      "filename": "L9.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L12.sim",
+      "size_bytes": 24428983,
+      "filename": "L12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L14.sim",
+      "size_bytes": 24428983,
+      "filename": "L14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L15.sim",
+      "size_bytes": 24428983,
+      "filename": "L15.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L2.sim",
+      "size_bytes": 24428983,
+      "filename": "L2.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L4.sim",
+      "size_bytes": 24428983,
+      "filename": "L4.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L7.sim",
+      "size_bytes": 24428983,
+      "filename": "L7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L16.sim",
+      "size_bytes": 24428982,
+      "filename": "L16.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L19.sim",
+      "size_bytes": 24428982,
+      "filename": "L19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/L8.sim",
+      "size_bytes": 24428982,
+      "filename": "L8.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Dynamic Analysis/300 Radius/Free End Models/Long Length/Slay_Stringer_300mRadiusL.sim",
+      "size_bytes": 24428980,
+      "filename": "Slay_Stringer_300mRadiusL.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Statics)/300m fixed/Long Length/Case27.sim",
+      "size_bytes": 24428407,
+      "filename": "Case27.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Statics)/300m fixed/Long Length/Case29.sim",
+      "size_bytes": 24428387,
+      "filename": "Case29.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Statics)/300m fixed/Long Length/Case21.sim",
+      "size_bytes": 24428292,
+      "filename": "Case21.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Statics)/300m fixed/Long Length/Case13.sim",
+      "size_bytes": 24428287,
+      "filename": "Case13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Varying Distances (Statics)/300m fixed/Long Length/Case14.sim",
+      "size_bytes": 24428197,
+      "filename": "Case14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L10.sim",
+      "size_bytes": 24428154,
+      "filename": "L10.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L12.sim",
+      "size_bytes": 24428154,
+      "filename": "L12.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L11.sim",
+      "size_bytes": 24428152,
+      "filename": "L11.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L7.sim",
+      "size_bytes": 24428144,
+      "filename": "L7.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L13.sim",
+      "size_bytes": 24428142,
+      "filename": "L13.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L14.sim",
+      "size_bytes": 24428142,
+      "filename": "L14.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L19.sim",
+      "size_bytes": 24428141,
+      "filename": "L19.sim"
+    },
+    {
+      "path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/Superseded/20.10.2014/Static Analysis/With Lay Tension/300 Radius/Free End Models/Long Length/L20.sim",
+      "size_bytes": 24428140,
+      "filename": "L20.sim"
+    }
+  ]
 }
