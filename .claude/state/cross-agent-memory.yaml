@@ -1,0 +1,118 @@
+# cross-agent-memory.yaml — Unified cross-agent memory index
+# DO NOT EDIT — this file is overwritten on each sync
+# Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
+
+metadata:
+  generated: "2026-04-03T07:00:11Z"
+  source_hash: "7477eb2b85a6146b4a053a9bd2095ebc"
+  agents:
+    hermes:
+      memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
+      user_file: "/home/vamsee/.hermes/memories/USER.md"
+      entry_count: 14
+    claude:
+      project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
+      memory_file_count: 38
+
+hermes_insights:
+  environment_facts:
+    - "ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount."
+  conventions:
+    - "Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this."
+  project_knowledge:
+    - "Workspace-hub repo ecosystem uses AI providers in descending volume: Claude, then OpenAI, then Gemini."
+    - "aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospects, conf-prep, scorecard. Scanner: scripts/gtm/job-market-scanner.py Mon cron. #1669-1671."
+    - "Hermes ecosystem integration (#1712,#1719): external_dirs covers 5 repos (691 total skills). Session export→logs/orchestrator/hermes/. Memory sync→hermes-insights.yaml. Skill patches tracked via post-commit hook. Nightly cron runs export+sync+drift. EXCLUDED_SKILL_DIRS patch in config/agents/hermes/patches/."
+    - "workspace-hub data pipeline: .planning/archive/online-resources/catalog.yaml has malformed YAML (unquoted colons in values, e.g. line 1309). Use safe_yaml_load() fallback in scripts/data/build-online-resource-registry.py as a pattern. Also: 7 catalog formats exist with different schemas — unified registry at data/document-index/online-resource-registry.yaml (247 entries). Domain views at docs/resources/<domain>-resources.md (14 pages)."
+    - "digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root."
+    - "OrcaWave/OrcaFlex domain: operator map at docs/maps/, reconciliation + engineering assessment at docs/reports/. Hermes skill: workspace-hub/digitalmodel-orcawave-orcaflex-workflow. OrcaFlex API=TESTED (#1656 closed). OrcaWave coverage=40.6% (#1639 open). Reverse parser done (#1638 closed). Spec bridge feasible 2-3d (#1588 open). #1606 closed stale. loguru NOT a test blocker. Solver queue: scripts/solver/ git-based dispatch to licensed-win-1. Parachute: #1264 STATIC, #1292 DYNAMIC."
+  user_preferences:
+    - "User wants to maximize weekly usage across multiple AI subscriptions with different quotas while keeping all machines ready for git repos and AI harness parity."
+    - "User's current AI subscriptions are Claude Max at USD 200, two separate Codex/OpenAI logins at USD 20 each, and one Gemini Google AI Pro account at USD 19.99."
+    - "Plan and work artifacts should undergo adversarial cross-review by ALL available agents: Claude, Codex, and Gemini — not just a single reviewer."
+    - "User thinks in overnight batch execution — wants 3 self-contained agent prompts (one per terminal) with zero git contention, no user interaction needed, and a clear \"what you'll have by morning\" summary. Always include a git contention avoidance map showing which terminal writes which files."
+    - "Adversarial review at BOTH stages: plan review AND code/artifact review before closing."
+    - "Vamsee runs ACE Engineer (aceengineer.com) consulting business. Target: $120K/yr retainers, 3-5 clients = $360-600K ARR. Strategy repo: aceengineer-strategy/ (nested in workspace-hub). P.E., 23yr exp. Core: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation. GTM: offshore firms 10-50 engineers."
+
+claude_memory_index:
+  files:
+    - file: "feedback_dark_intelligence_excel.md"
+      topic: "dark intelligence excel"
+    - file: "project_auto_sync_risk.md"
+      topic: "auto sync risk"
+    - file: "ai-orchestration.md"
+      topic: "ai-orchestration"
+    - file: "project_github_workflow.md"
+      topic: "github workflow"
+    - file: "working-style.md"
+      topic: "working-style"
+    - file: "feedback_repo_scope.md"
+      topic: "repo scope"
+    - file: "project_gsd_migration.md"
+      topic: "gsd migration"
+    - file: "feedback_skill_before_code.md"
+      topic: "skill before code"
+    - file: "project_ai_harness_evaluations.md"
+      topic: "ai harness evaluations"
+    - file: "feedback_gh_issue_comment.md"
+      topic: "gh issue comment"
+    - file: "feedback_specs_plans_location.md"
+      topic: "specs plans location"
+    - file: "feedback_queue_git_tracked.md"
+      topic: "queue git tracked"
+    - file: "shell-git-patterns.md"
+      topic: "shell-git-patterns"
+    - file: "feedback_no_jargon.md"
+      topic: "no jargon"
+    - file: "project_solver_queue_architecture.md"
+      topic: "solver queue architecture"
+    - file: "project_cross_review_policy.md"
+      topic: "cross review policy"
+    - file: "engineering-modules.md"
+      topic: "engineering-modules"
+    - file: "feedback_no_reserved_wrk_ids.md"
+      topic: "no reserved wrk ids"
+    - file: "project_cfd_openfoam_storage.md"
+      topic: "cfd openfoam storage"
+    - file: "data_format_guidelines.md"
+      topic: "data format guidelines"
+    - file: "MEMORY.md"
+      topic: "MEMORY"
+    - file: "project_2025_taxes.md"
+      topic: "2025 taxes"
+    - file: "project_mooring_failures_knowledge.md"
+      topic: "mooring failures knowledge"
+    - file: "user_voice_prompt_tips.md"
+      topic: "user voice prompt tips"
+    - file: "feedback_no_shortcuts_knowledge.md"
+      topic: "no shortcuts knowledge"
+    - file: "feedback_cross_machine_execution.md"
+      topic: "cross machine execution"
+    - file: "project_overnight_batch_runs.md"
+      topic: "overnight batch runs"
+    - file: "feedback_check_parallel_work.md"
+      topic: "check parallel work"
+    - file: "feedback_uv_run_isolation.md"
+      topic: "uv run isolation"
+    - file: "project_hermes_installation.md"
+      topic: "hermes installation"
+    - file: "feedback_research_skill_sources.md"
+      topic: "research skill sources"
+    - file: "project_nightly_researchers.md"
+      topic: "nightly researchers"
+    - file: "network_machines.md"
+      topic: "network machines"
+    - file: "project_workflow_tips_today.md"
+      topic: "workflow tips today"
+    - file: "reference_google_cli_paid.md"
+      topic: "google cli paid"
+    - file: "feedback_html_refresh.md"
+      topic: "html refresh"
+    - file: "project_ecosystem_theme.md"
+      topic: "ecosystem theme"
+    - file: "reference_achantas_data.md"
+      topic: "achantas data"
+
+shared_conventions:
+  # These conventions from Hermes should be honored by all agents
+  - "Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this."

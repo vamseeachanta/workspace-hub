@@ -1,0 +1,141 @@
+{
+  "extraction_date": "2026-02-03T11:00:16Z",
+  "source_file": null,
+  "total_commits": 109,
+  "repos_analyzed": 3,
+  "commit_patterns": {
+    "by_type": {
+      "chore": null,
+      "other": null,
+      "feat": null,
+      "fix": null,
+      "refactor": null,
+      "docs": null,
+      "test": null,
+      "perf": null
+    },
+    "corrections": 2,
+    "correction_rate": 2
+  },
+  "repo_patterns": {
+    "by_activity": [
+      {
+        "repo": "aceengineer-website",
+        "commits": 74
+      },
+      {
+        "repo": "aceengineer-admin",
+        "commits": 27
+      },
+      {
+        "repo": "OGManufacturing",
+        "commits": 8
+      }
+    ],
+    "active_repos": 3,
+    "most_active": "aceengineer-website"
+  },
+  "file_patterns": {
+    "total_files_changed": 1212,
+    "total_insertions": 78152,
+    "total_deletions": 148206,
+    "avg_files_per_commit": 11,
+    "large_commits": 15
+  },
+  "author_patterns": {
+    "by_author": [
+      {
+        "author": "Vamsee Achanta",
+        "commits": 109
+      }
+    ],
+    "unique_authors": 1
+  },
+  "cross_repo_patterns": [
+    {
+      "message": "Update: Batch commit from repository_sync",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 6
+    },
+    {
+      "message": "chore: Synchronize repository state with batch operations",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 4
+    },
+    {
+      "message": "chore: Add on-demand skills framework for context optimization",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "chore: Sync with workspace-hub consolidation updates",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "refactor: Migrate CLAUDE.md to inheritance model",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "Add 4 reusable skills: quantification-metrics, workspace-hub-compliance, technology-stack-modernization, modular-architecture-documentation",
+      "repos": [
+        "aceengineer-admin"
+      ],
+      "count": 2
+    },
+    {
+      "message": "Add Product Documentation Modernization skill",
+      "repos": [
+        "aceengineer-admin"
+      ],
+      "count": 2
+    },
+    {
+      "message": "chore: add compound engineering command symlink",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin"
+      ],
+      "count": 2
+    },
+    {
+      "message": "chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 2
+    }
+  ],
+  "workflow_indicators": {
+    "conventional_commits_rate": 65,
+    "has_scoped_commits": true,
+    "batch_operations": 12
+  }
+}

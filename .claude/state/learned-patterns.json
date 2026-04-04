@@ -1,0 +1,505 @@
+{
+  "patterns": [
+    {
+      "session_id": "4dcdc762-bc73-4c25-819e-43600cc5c4da",
+      "timestamp": "2026-02-24T06:00:17Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4dcdc762-bc73-4c25-819e-43600cc5c4da",
+      "timestamp": "2026-02-24T05:37:29Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4dcdc762-bc73-4c25-819e-43600cc5c4da",
+      "timestamp": "2026-02-24T04:01:35Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4dcdc762-bc73-4c25-819e-43600cc5c4da",
+      "timestamp": "2026-02-24T03:51:26Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "95696042-facf-4289-a75b-e69638b1363e",
+      "timestamp": "2026-02-24T01:05:42Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "95696042-facf-4289-a75b-e69638b1363e",
+      "timestamp": "2026-02-24T00:49:13Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "95696042-facf-4289-a75b-e69638b1363e",
+      "timestamp": "2026-02-24T00:31:41Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "95696042-facf-4289-a75b-e69638b1363e",
+      "timestamp": "2026-02-23T21:54:20Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T21:07:05Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "dbe5bf8f-0fa0-4140-a73c-f3a9ff4c610f",
+      "timestamp": "2026-02-23T20:00:16Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "dbe5bf8f-0fa0-4140-a73c-f3a9ff4c610f",
+      "timestamp": "2026-02-23T19:59:23Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "dbe5bf8f-0fa0-4140-a73c-f3a9ff4c610f",
+      "timestamp": "2026-02-23T19:58:13Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "dbe5bf8f-0fa0-4140-a73c-f3a9ff4c610f",
+      "timestamp": "2026-02-23T19:57:16Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:48:28Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "80286d81-1dd6-4dce-b256-73236d79ed7f",
+      "timestamp": "2026-02-23T19:45:21Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "80286d81-1dd6-4dce-b256-73236d79ed7f",
+      "timestamp": "2026-02-23T19:44:25Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "80286d81-1dd6-4dce-b256-73236d79ed7f",
+      "timestamp": "2026-02-23T19:42:35Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "dbe5bf8f-0fa0-4140-a73c-f3a9ff4c610f",
+      "timestamp": "2026-02-23T19:40:22Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "80286d81-1dd6-4dce-b256-73236d79ed7f",
+      "timestamp": "2026-02-23T19:38:07Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:37:12Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:34:27Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:33:24Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:29:15Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T19:27:22Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T18:38:34Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:20:11Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:19:20Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:18:29Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:17:36Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:16:45Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:15:40Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T17:09:00Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4463df00-a01e-44d9-8436-dcf11ed1e348",
+      "timestamp": "2026-02-23T16:43:45Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4463df00-a01e-44d9-8436-dcf11ed1e348",
+      "timestamp": "2026-02-23T16:33:42Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T16:28:44Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T16:25:11Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4463df00-a01e-44d9-8436-dcf11ed1e348",
+      "timestamp": "2026-02-23T16:23:38Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "fa0849a9-6c99-4c36-b548-172b3c18c67f",
+      "timestamp": "2026-02-23T16:22:27Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "be496e13-485e-4704-aa02-f6900e8aaa1b",
+      "timestamp": "2026-02-23T16:20:54Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "fa0849a9-6c99-4c36-b548-172b3c18c67f",
+      "timestamp": "2026-02-23T16:17:16Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "b82082d6-65b2-48f4-b809-32bef7c11ea1",
+      "timestamp": "2026-02-23T16:07:50Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "811cb486-d7b6-4610-9721-871a9f4d26b6",
+      "timestamp": "2026-02-23T16:07:07Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "38b22cb9-c3bd-418b-8296-419098e89c23",
+      "timestamp": "2026-02-23T16:06:28Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "811cb486-d7b6-4610-9721-871a9f4d26b6",
+      "timestamp": "2026-02-23T16:01:55Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4463df00-a01e-44d9-8436-dcf11ed1e348",
+      "timestamp": "2026-02-23T15:59:06Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "38b22cb9-c3bd-418b-8296-419098e89c23",
+      "timestamp": "2026-02-23T15:58:32Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "38b22cb9-c3bd-418b-8296-419098e89c23",
+      "timestamp": "2026-02-23T15:48:28Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "38b22cb9-c3bd-418b-8296-419098e89c23",
+      "timestamp": "2026-02-23T15:40:40Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "b82082d6-65b2-48f4-b809-32bef7c11ea1",
+      "timestamp": "2026-02-23T14:26:09Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    },
+    {
+      "session_id": "4463df00-a01e-44d9-8436-dcf11ed1e348",
+      "timestamp": "2026-02-23T14:21:30Z",
+      "insights": {
+        "delegation_score": "unknown",
+        "tool_patterns": [],
+        "error_patterns": []
+      },
+      "recommendations": []
+    }
+  ],
+  "last_updated": "2026-02-24T06:00:17Z"
+}

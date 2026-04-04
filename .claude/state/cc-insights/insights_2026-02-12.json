@@ -1,0 +1,10 @@
+{
+  "extraction_date": "2026-02-12T09:36:16-06:00",
+  "cc_version_installed": "2.1.39",
+  "last_reviewed_version": "2.1.39",
+  "insights": {
+    "general_ai_community": ["Claude Opus 4.6 model launch (2.1.32) — new frontier model available in Claude Code","Agent Teams research preview (2.1.32) — multi-agent collaboration, requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1","Automatic memory system (2.1.32) — Claude records and recalls memories across sessions","Fast mode for Opus 4.6 (2.1.36) — same model, faster output, toggle with /fast","Permission resolution improved — content-level ask now overrides tool-level allow (security fix)","PR session linking — sessions auto-link to PRs via gh pr create, --from-pr flag added","Sandbox bypass vulnerability fixed (2.1.34) — excludedCommands could bypass Bash ask rule","Sandbox write-protection for .claude/skills/ (2.1.38)"],
+    "specific_workflows": ["Subagent MCP fix (2.1.30) — Task-spawned agents now receive SDK-provided MCP tools","Task tool metrics (2.1.30) — token count, tool uses, duration now reported back to orchestrator","Agent memory frontmatter (2.1.33) — agents can declare persistent memory with user/project/local scope","Task(agent_type) restriction (2.1.33) — agent tools frontmatter can restrict spawnable sub-agents","TeammateIdle and TaskCompleted hook events (2.1.33) — for multi-agent workflows","PDF pages parameter (2.1.30) — Read tool accepts pages: 1-5 for targeted reading","Prompt cache fix (2.1.30) — cache invalidates on schema changes, not just tool name changes","Heredoc template literal fix (2.1.32) — no more Bad substitution for ${...} in bash heredocs","Session resume memory usage reduced 68% (2.1.30) — stat-based loading","Skill character budget scales with context window (2.1.32) — 2% of context","Use --from-pr to resume work on existing PRs — matches orchestrator workflow well","CLI remains most stable interface — ripgrep timeout errors now reported instead of silent empty results"]
+  },
+  "source": "user_insights"
+}

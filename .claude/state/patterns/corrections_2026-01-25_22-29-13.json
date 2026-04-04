@@ -1,0 +1,127 @@
+{
+  "extraction_date": "2026-01-26T04:29:14Z",
+  "days_analyzed": 7,
+  "total_corrections": 56,
+  "correction_patterns": [
+    {
+      "file": "/home/vamsee/.claude/settings.json",
+      "basename": "settings.json",
+      "correction_count": 2,
+      "avg_gap_seconds": 266,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/settings.json",
+      "basename": "settings.json",
+      "correction_count": 2,
+      "avg_gap_seconds": 233,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/analyze-conversations.sh",
+      "basename": "analyze-conversations.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 70,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh",
+      "basename": "daily-reflect.sh",
+      "correction_count": 21,
+      "avg_gap_seconds": 12,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/development/verification-loop/SKILL.md",
+      "basename": "SKILL.md",
+      "correction_count": 2,
+      "avg_gap_seconds": 22,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts/analyze-sessions.sh",
+      "basename": "analyze-sessions.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 102,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts/daily-reflect.sh",
+      "basename": "daily-reflect.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 5,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/docs/README.md",
+      "basename": "README.md",
+      "correction_count": 3,
+      "avg_gap_seconds": 9,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/scripts/audit/rule-compliance.sh",
+      "basename": "rule-compliance.sh",
+      "correction_count": 4,
+      "avg_gap_seconds": 79,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/scripts/development/ai-review/post-commit-hook-gemini",
+      "basename": "post-commit-hook-gemini",
+      "correction_count": 3,
+      "avg_gap_seconds": 5,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/specs/modules/parsed-rolling-starlight.md",
+      "basename": "parsed-rolling-starlight.md",
+      "correction_count": 3,
+      "avg_gap_seconds": 137,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    }
+  ],
+  "learnings": [
+    {
+      "area": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts",
+      "file_type": "sh",
+      "correction_frequency": 23,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts",
+      "file_type": "sh",
+      "correction_frequency": 6,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/scripts/audit",
+      "file_type": "sh",
+      "correction_frequency": 4,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/specs/modules",
+      "file_type": "md",
+      "correction_frequency": 4,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/docs",
+      "file_type": "md",
+      "correction_frequency": 3,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    }
+  ]
+}

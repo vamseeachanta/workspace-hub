@@ -1,0 +1,168 @@
+{
+  "analysis_date": "2026-01-30T17:44:56-06:00",
+  "window_days": 30,
+  "repos_analyzed": 3,
+  "total_commits": 82,
+  "commits": [
+    {"repo":"OGManufacturing","hash":"a7fd3b14508de9ffbd3444a5b9134dc69e53a395","short_hash":"a7fd3b1","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:39-06:00","timestamp":"1769531919","files_changed":1,"insertions":1,"deletions":101}
+,
+    {"repo":"OGManufacturing","hash":"92df614f89489b058503a48f4082246d6ad82024","short_hash":"92df614","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:46-06:00","timestamp":"1769377426","files_changed":2,"insertions":2,"deletions":3}
+,
+,
+    {"repo":"OGManufacturing","hash":"37d8e11bb4f589f4490c86694343651b1b1e7516","short_hash":"37d8e11","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:12-06:00","timestamp":"1769083872","files_changed":10,"insertions":0,"deletions":0}
+,
+    {"repo":"OGManufacturing","hash":"4bda100a85ca94b048e858feb56540a990e8dd81","short_hash":"4bda100","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:33-06:00","timestamp":"1768879293","files_changed":1,"insertions":24,"deletions":712}
+,
+    {"repo":"OGManufacturing","hash":"4e3d9a45535b5b19e4e56d5d2677e1db150d7bc9","short_hash":"4e3d9a4","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:44:03-06:00","timestamp":"1768455843","files_changed":15,"insertions":2333,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"0d34f379debf800bfc0bb84c6abfb54f7eb81475","short_hash":"0d34f37","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:03-06:00","timestamp":"1769531823","files_changed":1,"insertions":1,"deletions":101}
+,
+    {"repo":"aceengineer-admin","hash":"28ded0d7f8ea68292a60e21f500dd15da0bafcfd","short_hash":"28ded0d","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":505}
+,
+    {"repo":"aceengineer-admin","hash":"7608d795baf05b0dfbfd4ea8ad4e4268631a0fb3","short_hash":"7608d79","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":2,"insertions":2,"deletions":3}
+,
+,
+    {"repo":"aceengineer-admin","hash":"a7117f03560a34b0ad8819dfc99292e17fe741e5","short_hash":"a7117f0","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:07-06:00","timestamp":"1769083867","files_changed":26,"insertions":0,"deletions":89}
+,
+    {"repo":"aceengineer-admin","hash":"6a40533c4cbf79f10412cd2b8e9dd6e6d74723d2","short_hash":"6a40533","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:38-06:00","timestamp":"1768879298","files_changed":1,"insertions":30,"deletions":710}
+,
+    {"repo":"aceengineer-admin","hash":"f684f28cdf99a995f63a388bc2dead9043ccc805","short_hash":"f684f28","message":"chore: Add on-demand skills framework for context optimization","author":"Vamsee Achanta","date":"2026-01-14T22:35:47-06:00","timestamp":"1768451747","files_changed":14,"insertions":2295,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"11c2232a669aaccc79c3f6c4f9364473b66598f1","short_hash":"11c2232","message":"chore: Synchronize repository state with batch operations","author":"Vamsee Achanta","date":"2026-01-12T22:46:29-06:00","timestamp":"1768279589","files_changed":1,"insertions":0,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"b25c4456138274dd8b5c938cd49e9af0aa610539","short_hash":"b25c445","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:44:24-06:00","timestamp":"1768196664","files_changed":4,"insertions":1138,"deletions":136}
+,
+    {"repo":"aceengineer-admin","hash":"a27a41c76275ce277e07dcd4e973b8e97e55ba3f","short_hash":"a27a41c","message":"Add 4 reusable skills: quantification-metrics, workspace-hub-compliance, technology-stack-modernization, modular-architecture-documentation","author":"Vamsee Achanta","date":"2026-01-08T20:47:02-06:00","timestamp":"1767926822","files_changed":4,"insertions":2673,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"563bf3cee2a2c72ecdf92c7329b81beb15660e41","short_hash":"563bf3c","message":"Add Product Documentation Modernization skill","author":"Vamsee Achanta","date":"2026-01-08T20:01:47-06:00","timestamp":"1767924107","files_changed":1,"insertions":346,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"c8aaca21b76aa3ba821ee9f432982c7f0d5bdce0","short_hash":"c8aaca2","message":"Update revenue forecast spreadsheet","author":"Vamsee Achanta","date":"2026-01-01T13:18:20-06:00","timestamp":"1767295100","files_changed":1,"insertions":0,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"d3a37f2c0c485d2275042f5ead38a446380abd21","short_hash":"d3a37f2","message":"chore: daily update 2026-01-30","author":"Vamsee Achanta","date":"2026-01-30T06:00:03-06:00","timestamp":"1769774403","files_changed":3,"insertions":333,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"3293b69807180d7c063f41d41debdc65f7a2ed9f","short_hash":"3293b69","message":"fix(cron): gitignore logs/ to prevent git pull rebase failures","author":"Vamsee Achanta","date":"2026-01-29T11:03:24-06:00","timestamp":"1769706204","files_changed":2,"insertions":3,"deletions":350}
+,
+    {"repo":"aceengineer-website","hash":"b7154c4874964c285ed23b91987cee8cb37e326e","short_hash":"b7154c4","message":"chore: daily update 2026-01-29","author":"Vamsee Achanta","date":"2026-01-29T06:00:04-06:00","timestamp":"1769688004","files_changed":4,"insertions":444,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"b34208c1dd8a2d906b9ba622fb74922e483d6c47","short_hash":"b34208c","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-28T21:49:32-06:00","timestamp":"1769658572","files_changed":1,"insertions":9,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"06e4c771a2190567d1647681fe310a8ebbfdfd4a","short_hash":"06e4c77","message":"chore: daily update 2026-01-28","author":"Vamsee Achanta","date":"2026-01-28T06:00:03-06:00","timestamp":"1769601603","files_changed":4,"insertions":444,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"9b430e579d7dfd2038c5b415c7070908a3ea00bd","short_hash":"9b430e5","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:03-06:00","timestamp":"1769531823","files_changed":1,"insertions":10,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"e5b701b6d7bb40de2ba8ff7b0bd8f99d41818253","short_hash":"e5b701b","message":"chore: daily update 2026-01-27","author":"Vamsee Achanta","date":"2026-01-27T06:00:04-06:00","timestamp":"1769515204","files_changed":4,"insertions":445,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"f92f4d380ac24f1e28a0e47c653d02745c23b3cc","short_hash":"f92f4d3","message":"chore: daily update 2026-01-26","author":"Vamsee Achanta","date":"2026-01-26T16:14:45-06:00","timestamp":"1769465685","files_changed":15,"insertions":5978,"deletions":80}
+,
+    {"repo":"aceengineer-website","hash":"5ec603a2e9ea3577a37d17525c4ca52c10bf9be4","short_hash":"5ec603a","message":"feat: add aceengineer-website-update skill","author":"Vamsee Achanta","date":"2026-01-26T15:27:31-06:00","timestamp":"1769462851","files_changed":11,"insertions":1551,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"a1ba6f2c215f2a7b7f6a9531498877792502456c","short_hash":"a1ba6f2","message":"fix: remove posthtml-cli to resolve vulnerabilities","author":"Vamsee Achanta","date":"2026-01-26T15:04:54-06:00","timestamp":"1769461494","files_changed":2,"insertions":126,"deletions":2168}
+,
+    {"repo":"aceengineer-website","hash":"06f38714977cd3404414a6c6e2ea5ae9cedb8212","short_hash":"06f3871","message":"refactor: transform to static site with PostHTML partials","author":"Vamsee Achanta","date":"2026-01-26T14:58:49-06:00","timestamp":"1769461129","files_changed":629,"insertions":12706,"deletions":106380}
+,
+    {"repo":"aceengineer-website","hash":"4607f76938e16602718090baa1641fee71817cc9","short_hash":"4607f76","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":505}
+,
+    {"repo":"aceengineer-website","hash":"d4204a09fc8e6debd38163362a8c6f4eea531521","short_hash":"d4204a0","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":3,"insertions":3,"deletions":4}
+,
+,
+    {"repo":"aceengineer-website","hash":"a7a3b3c4ccabf103af93ef29b5444b760ee008fa","short_hash":"a7a3b3c","message":"chore: Consolidate legacy hidden folders","author":"Vamsee Achanta","date":"2026-01-20T23:35:38-06:00","timestamp":"1768973738","files_changed":53,"insertions":0,"deletions":21344}
+,
+    {"repo":"aceengineer-website","hash":"d16177978e8a8628f1026951a9c724b6d3d3b89e","short_hash":"d161779","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:37-06:00","timestamp":"1768879297","files_changed":1,"insertions":23,"deletions":712}
+,
+    {"repo":"aceengineer-website","hash":"6356273cdf5b266aa37892494c65fe6a547cdad4","short_hash":"6356273","message":"chore: Add on-demand skills framework for context optimization","author":"Vamsee Achanta","date":"2026-01-14T22:35:49-06:00","timestamp":"1768451749","files_changed":14,"insertions":2299,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"8143f608d81c5d4603b93f283374d9080561a656","short_hash":"8143f60","message":"feat: add interactive S-N curve fatigue calculator","author":"Vamsee Achanta","date":"2026-01-14T09:48:34-06:00","timestamp":"1768405714","files_changed":3,"insertions":747,"deletions":9}
+,
+    {"repo":"aceengineer-website","hash":"36873b5f030bfb8f0360477288aff7e09bbd6390","short_hash":"36873b5","message":"feat: update contact page with new marketing design","author":"Vamsee Achanta","date":"2026-01-14T05:07:32-06:00","timestamp":"1768388852","files_changed":1,"insertions":369,"deletions":137}
+,
+    {"repo":"aceengineer-website","hash":"17d076a572bfdcf0981faa47318d6b31f9f47fe3","short_hash":"17d076a","message":"feat: comprehensive marketing overhaul for client acquisition","author":"Vamsee Achanta","date":"2026-01-14T04:25:21-06:00","timestamp":"1768386321","files_changed":8,"insertions":2912,"deletions":234}
+,
+    {"repo":"aceengineer-website","hash":"060be6b25102f9c5bfbd6ede3e200a0e33eb886c","short_hash":"060be6b","message":"feat: add eighth blog post on CFD for offshore engineering","author":"Vamsee Achanta","date":"2026-01-14T03:13:12-06:00","timestamp":"1768381992","files_changed":3,"insertions":857,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"0e899319340d846281884699ff335474e78da309","short_hash":"0e89931","message":"feat: add seventh blog post on risk-based inspection planning","author":"Vamsee Achanta","date":"2026-01-14T02:47:20-06:00","timestamp":"1768380440","files_changed":3,"insertions":857,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"fb76c6680929fce433dc2f01fd899f6bade95e0f","short_hash":"fb76c66","message":"feat: add sixth blog post on digital twins for offshore assets","author":"Vamsee Achanta","date":"2026-01-14T02:38:20-06:00","timestamp":"1768379900","files_changed":3,"insertions":746,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"658dc69a1f62ec4faa36c62ac77d896328125b04","short_hash":"658dc69","message":"fix: remove coming-soon calculators from schema per Codex review","author":"Vamsee Achanta","date":"2026-01-13T22:09:56-06:00","timestamp":"1768363796","files_changed":1,"insertions":0,"deletions":42}
+,
+    {"repo":"aceengineer-website","hash":"8dfb4439fe99826f6879a4a879e6dc427e5dbfdf","short_hash":"8dfb443","message":"feat: add Phase 6 content - blog post, case study, and schema updates","author":"Vamsee Achanta","date":"2026-01-13T22:05:47-06:00","timestamp":"1768363547","files_changed":7,"insertions":1584,"deletions":17}
+,
+    {"repo":"aceengineer-website","hash":"0c1f4124c8a53ac1dc4915f672bb91ddb28de7fd","short_hash":"0c1f412","message":"fix: restore B1/B2 seawater intercepts per Codex review","author":"Vamsee Achanta","date":"2026-01-13T21:53:11-06:00","timestamp":"1768362791","files_changed":1,"insertions":4,"deletions":4}
+,
+    {"repo":"aceengineer-website","hash":"48ca87dbaa45baa4f775f44f23ed684ba5b8e0e3","short_hash":"48ca87d","message":"fix: B1/B2 seawater curves now use single slope per Codex review","author":"Vamsee Achanta","date":"2026-01-13T21:47:57-06:00","timestamp":"1768362477","files_changed":1,"insertions":6,"deletions":6}
+,
+    {"repo":"aceengineer-website","hash":"79bea572d5ee70ffb3978e9ee62b00a1965d8fab","short_hash":"79bea57","message":"fix: implement proper DNV seawater S-N curves per Codex review","author":"Vamsee Achanta","date":"2026-01-13T21:43:58-06:00","timestamp":"1768362238","files_changed":1,"insertions":144,"deletions":53}
+,
+    {"repo":"aceengineer-website","hash":"5d28ea37c2a58a98911067dc6c6bb6bb63f0182a","short_hash":"5d28ea3","message":"feat: add interactive S-N curve fatigue calculator","author":"Vamsee Achanta","date":"2026-01-13T21:35:04-06:00","timestamp":"1768361704","files_changed":3,"insertions":785,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"59b1a80407ad01e28a2b143db7416dd4c3839d3a","short_hash":"59b1a80","message":"fix: correct SVG logo proportions for mobile responsive scaling","author":"Vamsee Achanta","date":"2026-01-13T21:00:52-06:00","timestamp":"1768359652","files_changed":15,"insertions":85,"deletions":221}
+,
+    {"repo":"aceengineer-website","hash":"4d93ab94f18776d12fbe6661362c7feef378459e","short_hash":"4d93ab9","message":"feat: add subsea FEA automation case study","author":"Vamsee Achanta","date":"2026-01-13T20:54:54-06:00","timestamp":"1768359294","files_changed":3,"insertions":670,"deletions":14}
+,
+    {"repo":"aceengineer-website","hash":"f53731e196520588bac9015efa01d08df8ffe96f","short_hash":"f53731e","message":"feat(blog): add fourth technical blog post on open-source engineering tools","author":"Vamsee Achanta","date":"2026-01-13T20:54:47-06:00","timestamp":"1768359287","files_changed":3,"insertions":603,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"b7ef7ee3265ee3f3d5241d5b8589da91638dfc35","short_hash":"b7ef7ee","message":"feat: Add comprehensive mobile responsive design improvements","author":"Vamsee Achanta","date":"2026-01-13T18:32:36-06:00","timestamp":"1768350756","files_changed":13,"insertions":478,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"4b52e8c3c66ddc5fe3361d931cd96e08109e5803","short_hash":"4b52e8c","message":"fix: restore Google Workspace domain verification file","author":"Vamsee Achanta","date":"2026-01-13T17:54:45-06:00","timestamp":"1768348485","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"6b67503c7b063b9f3ddf1e09d05eec51efabfb08","short_hash":"6b67503","message":"fix: align reading time for fatigue article (10 min → 12 min)","author":"Vamsee Achanta","date":"2026-01-13T14:00:25-06:00","timestamp":"1768334425","files_changed":1,"insertions":1,"deletions":1}
+,
+    {"repo":"aceengineer-website","hash":"ea7710bd926d70a9966b34bbcd8d4b1817a9fd29","short_hash":"ea7710b","message":"feat: Add case studies section with first offshore platform case study","author":"Vamsee Achanta","date":"2026-01-12T22:59:37-06:00","timestamp":"1768280377","files_changed":3,"insertions":743,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"7f917fd589c90e0f6a7e144437c0768882011741","short_hash":"7f917fd","message":"feat: Add newsletter signup, third blog post on Python automation","author":"Vamsee Achanta","date":"2026-01-12T22:53:53-06:00","timestamp":"1768280033","files_changed":2,"insertions":693,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"15e3b3d34e1ef7f50610b825afcf949d149c5f22","short_hash":"15e3b3d","message":"chore: Synchronize repository state with batch operations","author":"Vamsee Achanta","date":"2026-01-12T22:51:54-06:00","timestamp":"1768279914","files_changed":1,"insertions":24,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"fb7aa7679fe6d0861fd16fe4ae5796fe3c818709","short_hash":"fb7aa76","message":"chore: Synchronize repository state with batch operations","author":"Vamsee Achanta","date":"2026-01-12T22:46:32-06:00","timestamp":"1768279592","files_changed":9,"insertions":661,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"165c21587273df90288b9a202eda4664a3576975","short_hash":"165c215","message":"feat: Add GA4 event tracking for contact form submissions","author":"Vamsee Achanta","date":"2026-01-12T22:34:10-06:00","timestamp":"1768278850","files_changed":1,"insertions":10,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"df442c85adb12c84d7cd643fbb6ec337502dbf4e","short_hash":"df442c8","message":"feat: Add Google Analytics GA4 tracking to all pages","author":"Vamsee Achanta","date":"2026-01-12T22:31:31-06:00","timestamp":"1768278691","files_changed":10,"insertions":609,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"ee9b932a8d4093408827d929f8255bf56e210ca8","short_hash":"ee9b932","message":"feat: Phase 6 Foundation - Blog system, GA4, GitHub org setup, case study template","author":"Vamsee Achanta","date":"2026-01-12T18:01:52-06:00","timestamp":"1768262512","files_changed":5,"insertions":2147,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"a45ce2a0e1bd8c2ab64663bce93974bca7659736","short_hash":"a45ce2a","message":"docs: Add comprehensive session summary and progress report","author":"Vamsee Achanta","date":"2026-01-12T16:13:25-06:00","timestamp":"1768256005","files_changed":1,"insertions":307,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"a2e33eec373445fd3dee5c6ee8515baa896c8475","short_hash":"a2e33ee","message":"docs: Add Phase 4 & 6 strategic planning documents","author":"Vamsee Achanta","date":"2026-01-12T16:10:23-06:00","timestamp":"1768255823","files_changed":2,"insertions":420,"deletions":1}
+,
+    {"repo":"aceengineer-website","hash":"8d1895233dbddc78f8c05dd4e0251b2fe27b4261","short_hash":"8d18952","message":"chore: Phase 1 cleanup - remove legacy Agent OS and Flask dependencies","author":"Vamsee Achanta","date":"2026-01-12T16:04:46-06:00","timestamp":"1768255486","files_changed":41,"insertions":0,"deletions":9119}
+,
+    {"repo":"aceengineer-website","hash":"88478c725204ab9d97395cb68bb0b6afc301c823","short_hash":"88478c7","message":"feat: restore redirect on contact form success","author":"Vamsee Achanta","date":"2026-01-12T15:07:00-06:00","timestamp":"1768252020","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"5a72f9e25ce90167dae84ba1fac0b51d5b0accf8","short_hash":"5a72f9e","message":"fix: simplify contact form to debug access key error","author":"Vamsee Achanta","date":"2026-01-12T14:59:49-06:00","timestamp":"1768251589","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"aceengineer-website","hash":"3a7ce57a988ef1e5e7f4290fb632f8e553879d25","short_hash":"3a7ce57","message":"feat: activate contact form with Web3Forms access key","author":"Vamsee Achanta","date":"2026-01-12T14:58:04-06:00","timestamp":"1768251484","files_changed":1,"insertions":2,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"2d09d77813f6efcccdfee4cae91b1b36c2c1eb4d","short_hash":"2d09d77","message":"chore: migrate from GitHub Pages to Vercel","author":"Vamsee Achanta","date":"2026-01-12T13:50:59-06:00","timestamp":"1768247459","files_changed":3,"insertions":381,"deletions":151}
+,
+    {"repo":"aceengineer-website","hash":"4ec619f863ded722cd83f115b089ddeda447db51","short_hash":"4ec619f","message":"chore: configure Vercel deployment","author":"Vamsee Achanta","date":"2026-01-12T00:15:10-06:00","timestamp":"1768198510","files_changed":2,"insertions":63,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"9693c7db0ea116a01bcaa4dfec30968c9f20c4d7","short_hash":"9693c7d","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:44:42-06:00","timestamp":"1768196682","files_changed":6,"insertions":561,"deletions":4}
+,
+    {"repo":"aceengineer-website","hash":"534034d3f4e7c28ae649e9cca41678944d8bbbc7","short_hash":"534034d","message":"Phase 4: Complete meta tag audit - all 6 pages verified","author":"Vamsee Achanta","date":"2026-01-09T11:25:45-06:00","timestamp":"1767979545","files_changed":1,"insertions":7,"deletions":7}
+,
+    {"repo":"aceengineer-website","hash":"1313fcc10749891d775c12c40bb61a5dc20b055f","short_hash":"1313fcc","message":"Phase 4: Add SEO foundation (sitemap, robots.txt, checklist)","author":"Vamsee Achanta","date":"2026-01-09T11:21:33-06:00","timestamp":"1767979293","files_changed":3,"insertions":394,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"62e23175398117616e0aff7d386365024674e116","short_hash":"62e2317","message":"Add comprehensive deployment completion guide","author":"Vamsee Achanta","date":"2026-01-09T06:57:02-06:00","timestamp":"1767963422","files_changed":1,"insertions":990,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"6e1588cd25fc80341799732785d030a2f0cee68e","short_hash":"6e1588c","message":"Phase 3: Add GitHub Pages deployment configuration","author":"Vamsee Achanta","date":"2026-01-09T06:44:26-06:00","timestamp":"1767962666","files_changed":6,"insertions":694,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"9f3b4ee039753ba7cf82e8f39d778aa72397e59f","short_hash":"9f3b4ee","message":"Add comprehensive technical skills documentation for Flask-to-static conversion","author":"Vamsee Achanta","date":"2026-01-08T22:25:21-06:00","timestamp":"1767932721","files_changed":1,"insertions":422,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"dd379065e9f1e0064b74c150e891314921387de3","short_hash":"dd37906","message":"Phase 1: Convert contact.html to static HTML with Web3Forms integration","author":"Vamsee Achanta","date":"2026-01-08T22:16:48-06:00","timestamp":"1767932208","files_changed":1,"insertions":122,"deletions":50}
+,
+    {"repo":"aceengineer-website","hash":"68495be902f4163b583d5718a9966e8767d0227e","short_hash":"68495be","message":"Phase 1: Convert faq.html to static HTML with SEO enhancement","author":"Vamsee Achanta","date":"2026-01-08T22:07:33-06:00","timestamp":"1767931653","files_changed":1,"insertions":80,"deletions":22}
+,
+    {"repo":"aceengineer-website","hash":"348a039bed7b05e7e4c79f897edfb79e73e82bfa","short_hash":"348a039","message":"Phase 1: Convert energy.html to static HTML with SEO enhancement","author":"Vamsee Achanta","date":"2026-01-08T21:52:45-06:00","timestamp":"1767930765","files_changed":1,"insertions":81,"deletions":22}
+,
+    {"repo":"aceengineer-website","hash":"81851455c2f09c4cb39aeb9153dfb9d9b5cae9fa","short_hash":"8185145","message":"Phase 1: Convert engineering.html to static HTML with SEO enhancement","author":"Vamsee Achanta","date":"2026-01-08T21:43:45-06:00","timestamp":"1767930225","files_changed":1,"insertions":83,"deletions":28}
+,
+    {"repo":"aceengineer-website","hash":"8fd1c53912c371747aef1ddea78177e9c0f792d6","short_hash":"8fd1c53","message":"Phase 1: Convert index.html to static HTML with SEO enhancement","author":"Vamsee Achanta","date":"2026-01-08T21:35:24-06:00","timestamp":"1767929724","files_changed":1,"insertions":78,"deletions":23}
+,
+    {"repo":"aceengineer-website","hash":"c8251e619c7da6e9364dc02d7a360ee10515795e","short_hash":"c8251e6","message":"Phase 1: Convert about.html to static HTML with SEO enhancement","author":"Vamsee Achanta","date":"2026-01-08T21:04:19-06:00","timestamp":"1767927859","files_changed":1,"insertions":80,"deletions":26}
+,
+    {"repo":"aceengineer-website","hash":"6e7814a15fd9b3d9341cf6533e5d1f5c6b32245d","short_hash":"6e7814a","message":"Phase 1: Remove Flask authentication pages","author":"Vamsee Achanta","date":"2026-01-08T20:45:00-06:00","timestamp":"1767926700","files_changed":1,"insertions":0,"deletions":139}
+,
+    {"repo":"aceengineer-website","hash":"b73f59f0ea550d3d542e01d90f62a72f89c53320","short_hash":"b73f59f","message":"Update product documentation for Phase 1 static conversion","author":"Vamsee Achanta","date":"2026-01-08T20:11:34-06:00","timestamp":"1767924694","files_changed":3,"insertions":434,"deletions":40}
+  ]
+}

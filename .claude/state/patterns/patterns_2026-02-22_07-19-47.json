@@ -1,0 +1,159 @@
+{
+  "extraction_date": "2026-02-22T13:19:47Z",
+  "source_file": null,
+  "total_commits": 106,
+  "repos_analyzed": 6,
+  "commit_patterns": {
+    "by_type": {
+      "chore": null,
+      "other": null,
+      "feat": null,
+      "fix": null,
+      "docs": null,
+      "test": null,
+      "refactor": null,
+      "perf": null
+    },
+    "corrections": 1,
+    "correction_rate": 1
+  },
+  "repo_patterns": {
+    "by_activity": [
+      {
+        "repo": "aceengineer-website",
+        "commits": 37
+      },
+      {
+        "repo": "aceengineer-admin",
+        "commits": 27
+      },
+      {
+        "repo": "achantas-data",
+        "commits": 14
+      },
+      {
+        "repo": "acma-projects",
+        "commits": 14
+      },
+      {
+        "repo": "OGManufacturing",
+        "commits": 8
+      },
+      {
+        "repo": "achantas-media",
+        "commits": 6
+      }
+    ],
+    "active_repos": 6,
+    "most_active": "aceengineer-website"
+  },
+  "file_patterns": {
+    "total_files_changed": 9156,
+    "total_insertions": 175053,
+    "total_deletions": 262945,
+    "avg_files_per_commit": 86,
+    "large_commits": 18
+  },
+  "author_patterns": {
+    "by_author": [
+      {
+        "author": "Vamsee Achanta",
+        "commits": 106
+      }
+    ],
+    "unique_authors": 1
+  },
+  "cross_repo_patterns": [
+    {
+      "message": "Update: Batch commit from repository_sync",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website",
+        "achantas-data",
+        "achantas-media"
+      ],
+      "count": 11
+    },
+    {
+      "message": "chore: centralize shared skills, add post-task-review hook",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website",
+        "achantas-data",
+        "acma-projects"
+      ],
+      "count": 5
+    },
+    {
+      "message": "chore: Remove claude-flow references from CLAUDE.md",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website",
+        "achantas-data"
+      ],
+      "count": 4
+    },
+    {
+      "message": "chore: add compound engineering command symlink",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "achantas-data",
+        "achantas-media"
+      ],
+      "count": 4
+    },
+    {
+      "message": "chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website",
+        "achantas-data",
+        "achantas-media"
+      ],
+      "count": 4
+    },
+    {
+      "message": "feat(reflect): complete RAG-to-skills feedback loop",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website",
+        "achantas-data",
+        "achantas-media"
+      ],
+      "count": 4
+    },
+    {
+      "message": "chore: remove claude-flow references from .gitignore",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "achantas-data"
+      ],
+      "count": 3
+    },
+    {
+      "message": "End of day auto-sync 2026-02-01",
+      "repos": [
+        "aceengineer-admin",
+        "achantas-data"
+      ],
+      "count": 2
+    },
+    {
+      "message": "Merge branch 'main' of https://github.com/vamseeachanta/aceengineer-admin",
+      "repos": [
+        "aceengineer-admin"
+      ],
+      "count": 2
+    }
+  ],
+  "workflow_indicators": {
+    "conventional_commits_rate": 50,
+    "has_scoped_commits": true,
+    "batch_operations": 15
+  }
+}

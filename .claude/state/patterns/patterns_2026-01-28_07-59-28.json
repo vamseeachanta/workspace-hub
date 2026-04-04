@@ -1,0 +1,140 @@
+{
+  "extraction_date": "2026-01-28T13:59:28Z",
+  "source_file": null,
+  "total_commits": 78,
+  "repos_analyzed": 3,
+  "commit_patterns": {
+    "by_type": {
+      "chore": null,
+      "feat": null,
+      "other": null,
+      "fix": null,
+      "refactor": null,
+      "docs": null
+    },
+    "corrections": 1,
+    "correction_rate": 1
+  },
+  "repo_patterns": {
+    "by_activity": [
+      {
+        "repo": "aceengineer-website",
+        "commits": 60
+      },
+      {
+        "repo": "aceengineer-admin",
+        "commits": 12
+      },
+      {
+        "repo": "OGManufacturing",
+        "commits": 6
+      }
+    ],
+    "active_repos": 3,
+    "most_active": "aceengineer-website"
+  },
+  "file_patterns": {
+    "total_files_changed": 1008,
+    "total_insertions": 53496,
+    "total_deletions": 144951,
+    "avg_files_per_commit": 13,
+    "large_commits": 11
+  },
+  "author_patterns": {
+    "by_author": [
+      {
+        "author": "Vamsee Achanta",
+        "commits": 78
+      }
+    ],
+    "unique_authors": 1
+  },
+  "cross_repo_patterns": [
+    {
+      "message": "Update: Batch commit from repository_sync",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "chore: Synchronize repository state with batch operations",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "refactor: Migrate CLAUDE.md to inheritance model",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "chore: Add on-demand skills framework for context optimization",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 2
+    },
+    {
+      "message": "chore: Sync and update configurations",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin"
+      ],
+      "count": 2
+    },
+    {
+      "message": "chore: Sync with workspace-hub consolidation updates",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 2
+    },
+    {
+      "message": "chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 2
+    },
+    {
+      "message": "feat(reflect): complete RAG-to-skills feedback loop",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 2
+    },
+    {
+      "message": "feat: add interactive S-N curve fatigue calculator",
+      "repos": [
+        "aceengineer-website"
+      ],
+      "count": 2
+    }
+  ],
+  "workflow_indicators": {
+    "conventional_commits_rate": 71,
+    "has_scoped_commits": true,
+    "batch_operations": 7
+  }
+}

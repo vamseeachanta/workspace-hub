@@ -1,0 +1,28 @@
+{
+  "analysis_date": "2026-01-25T22:43:47-06:00",
+  "window_days": 7,
+  "repos_analyzed": 3,
+  "total_commits": 12,
+  "commits": [
+    {"repo":"OGManufacturing","hash":"92df614f89489b058503a48f4082246d6ad82024","short_hash":"92df614","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:46-06:00","timestamp":"1769377426","files_changed":2,"insertions":2,"deletions":3}
+,
+,
+    {"repo":"OGManufacturing","hash":"37d8e11bb4f589f4490c86694343651b1b1e7516","short_hash":"37d8e11","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:12-06:00","timestamp":"1769083872","files_changed":10,"insertions":0,"deletions":0}
+,
+    {"repo":"OGManufacturing","hash":"4bda100a85ca94b048e858feb56540a990e8dd81","short_hash":"4bda100","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:33-06:00","timestamp":"1768879293","files_changed":1,"insertions":24,"deletions":712}
+,
+    {"repo":"aceengineer-admin","hash":"7608d795baf05b0dfbfd4ea8ad4e4268631a0fb3","short_hash":"7608d79","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":2,"insertions":2,"deletions":3}
+,
+,
+    {"repo":"aceengineer-admin","hash":"a7117f03560a34b0ad8819dfc99292e17fe741e5","short_hash":"a7117f0","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:07-06:00","timestamp":"1769083867","files_changed":26,"insertions":0,"deletions":89}
+,
+    {"repo":"aceengineer-admin","hash":"6a40533c4cbf79f10412cd2b8e9dd6e6d74723d2","short_hash":"6a40533","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:38-06:00","timestamp":"1768879298","files_changed":1,"insertions":30,"deletions":710}
+,
+    {"repo":"aceengineer-website","hash":"d4204a09fc8e6debd38163362a8c6f4eea531521","short_hash":"d4204a0","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":3,"insertions":3,"deletions":4}
+,
+,
+    {"repo":"aceengineer-website","hash":"a7a3b3c4ccabf103af93ef29b5444b760ee008fa","short_hash":"a7a3b3c","message":"chore: Consolidate legacy hidden folders","author":"Vamsee Achanta","date":"2026-01-20T23:35:38-06:00","timestamp":"1768973738","files_changed":53,"insertions":0,"deletions":21344}
+,
+    {"repo":"aceengineer-website","hash":"d16177978e8a8628f1026951a9c724b6d3d3b89e","short_hash":"d161779","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:37-06:00","timestamp":"1768879297","files_changed":1,"insertions":23,"deletions":712}
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "extraction_date": "2026-01-26T04:40:40Z",
+  "days_analyzed": 7,
+  "total_events": 1575,
+  "unique_sessions": 1127,
+  "tool_usage": {
+    "Bash": 459,
+    "Edit": 14,
+    "Glob": 40,
+    "Grep": 32,
+    "Read": 317,
+    "Task": 40,
+    "TaskCreate": 16,
+    "TaskList": 4,
+    "TaskOutput": 40,
+    "TaskUpdate": 42,
+    "WebFetch": 66,
+    "Write": 56,
+    "unknown": 449
+  },
+  "workflow_patterns": [],
+  "correction_workflows": [],
+  "repo_activity": [
+    {
+      "repo": "workspace-hub",
+      "actions": 511
+    },
+    {
+      "repo": ".claude",
+      "actions": 173
+    },
+    {
+      "repo": "aceengineer-admin",
+      "actions": 11
+    },
+    {
+      "repo": "energy",
+      "actions": 11
+    },
+    {
+      "repo": "achantas-media",
+      "actions": 10
+    },
+    {
+      "repo": "core",
+      "actions": 10
+    },
+    {
+      "repo": "scripts",
+      "actions": 10
+    },
+    {
+      "repo": "achantas-data",
+      "actions": 9
+    },
+    {
+      "repo": "acma-projects",
+      "actions": 9
+    },
+    {
+      "repo": "assetutilities",
+      "actions": 9
+    }
+  ],
+  "slow_tools": [
+    {
+      "tool": "Task",
+      "slow_calls": 1,
+      "avg_duration_ms": 149180,
+      "max_duration_ms": 149180
+    },
+    {
+      "tool": "Glob",
+      "slow_calls": 19,
+      "avg_duration_ms": 14198,
+      "max_duration_ms": 21374
+    },
+    {
+      "tool": "TaskOutput",
+      "slow_calls": 2,
+      "avg_duration_ms": 11092,
+      "max_duration_ms": 11606
+    },
+    {
+      "tool": "Bash",
+      "slow_calls": 81,
+      "avg_duration_ms": 7663,
+      "max_duration_ms": 121463
+    },
+    {
+      "tool": "Grep",
+      "slow_calls": 4,
+      "avg_duration_ms": 7563,
+      "max_duration_ms": 21057
+    },
+    {
+      "tool": "WebFetch",
+      "slow_calls": 29,
+      "avg_duration_ms": 4536,
+      "max_duration_ms": 13341
+    },
+    {
+      "tool": "Read",
+      "slow_calls": 46,
+      "avg_duration_ms": 1415,
+      "max_duration_ms": 2448
+    },
+    {
+      "tool": "Edit",
+      "slow_calls": 1,
+      "avg_duration_ms": 1218,
+      "max_duration_ms": 1218
+    }
+  ],
+  "file_patterns": [
+    {
+      "extension": "md",
+      "count": 335
+    },
+    {
+      "extension": "workspace-hub",
+      "count": 26
+    },
+    {
+      "extension": "sh",
+      "count": 22
+    },
+    {
+      "extension": "yaml",
+      "count": 18
+    },
+    {
+      "extension": "json",
+      "count": 17
+    },
+    {
+      "extension": "toml",
+      "count": 6
+    },
+    {
+      "extension": "claude",
+      "count": 4
+    },
+    {
+      "extension": "gitignore",
+      "count": 4
+    },
+    {
+      "extension": "skills",
+      "count": 3
+    },
+    {
+      "extension": "gitmodules",
+      "count": 2
+    }
+  ],
+  "script_activity": [
+    {
+      "file": "/mnt/github/workspace-hub/scripts/audit/rule-compliance.sh",
+      "type": "sh",
+      "edits": 6,
+      "sessions": 6
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/session-memory/pre-compact-save.sh",
+      "type": "sh",
+      "edits": 1,
+      "sessions": 1
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/session-memory/session-end-evaluate.sh",
+      "type": "sh",
+      "edits": 1,
+      "sessions": 1
+    }
+  ],
+  "script_executions": [
+    {
+      "script": "./scripts/audit/rule-compliance.sh --skip-coverage",
+      "count": 5,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "./scripts/audit/rule-compliance.sh 2>&1",
+      "count": 4,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "wc -l",
+      "count": 3,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "./scripts/audit/rule-compliance.sh --help",
+      "count": 2,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "bash -n",
+      "count": 2,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "chmod +x",
+      "count": 2,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "git stash",
+      "count": 2,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "git push",
+      "count": 1,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "grep -h",
+      "count": 1,
+      "repos": [
+        ""
+      ]
+    },
+    {
+      "script": "rm -rf",
+      "count": 1,
+      "repos": [
+        ""
+      ]
+    }
+  ],
+  "skill_worthy_patterns": [],
+  "insights": [
+    "Some tools running slowly - check for optimization opportunities",
+    "Active script development detected - review for skill extraction"
+  ]
+}

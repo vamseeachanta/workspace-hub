@@ -1,0 +1,681 @@
+{
+  "extraction_date": "2026-01-29T11:00:05Z",
+  "days_analyzed": 30,
+  "total_corrections": 320,
+  "correction_patterns": [
+    {
+      "file": "/home/vamsee/.claude/settings.json",
+      "basename": "settings.json",
+      "correction_count": 2,
+      "avg_gap_seconds": 266,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh",
+      "basename": "capture-corrections.sh",
+      "correction_count": 6,
+      "avg_gap_seconds": 96,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/settings.json",
+      "basename": "settings.json",
+      "correction_count": 2,
+      "avg_gap_seconds": 233,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/analyze-conversations.sh",
+      "basename": "analyze-conversations.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 70,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/create-skills.sh",
+      "basename": "create-skills.sh",
+      "correction_count": 14,
+      "avg_gap_seconds": 25,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh",
+      "basename": "daily-reflect.sh",
+      "correction_count": 76,
+      "avg_gap_seconds": 18,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/development/verification-loop/SKILL.md",
+      "basename": "SKILL.md",
+      "correction_count": 2,
+      "avg_gap_seconds": 22,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts/analyze-sessions.sh",
+      "basename": "analyze-sessions.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 102,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts/daily-reflect.sh",
+      "basename": "daily-reflect.sh",
+      "correction_count": 2,
+      "avg_gap_seconds": 5,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.github/workflows/baseline-check.yml",
+      "basename": "baseline-check.yml",
+      "correction_count": 2,
+      "avg_gap_seconds": 4,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/aqwa-tests.yml",
+      "basename": "aqwa-tests.yml",
+      "correction_count": 3,
+      "avg_gap_seconds": 184,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/diffraction-tests.yml",
+      "basename": "diffraction-tests.yml",
+      "correction_count": 3,
+      "avg_gap_seconds": 188,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/mooring-analysis-tests.yml",
+      "basename": "mooring-analysis-tests.yml",
+      "correction_count": 3,
+      "avg_gap_seconds": 193,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/structural-analysis-tests.yml",
+      "basename": "structural-analysis-tests.yml",
+      "correction_count": 3,
+      "avg_gap_seconds": 196,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/docs/README.md",
+      "basename": "README.md",
+      "correction_count": 3,
+      "avg_gap_seconds": 9,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/scripts/audit/rule-compliance.sh",
+      "basename": "rule-compliance.sh",
+      "correction_count": 4,
+      "avg_gap_seconds": 79,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/scripts/development/ai-review/post-commit-hook-gemini",
+      "basename": "post-commit-hook-gemini",
+      "correction_count": 3,
+      "avg_gap_seconds": 5,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/specs/modules/dazzling-hopping-puzzle.md",
+      "basename": "dazzling-hopping-puzzle.md",
+      "correction_count": 2,
+      "avg_gap_seconds": 48,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/specs/modules/parsed-rolling-starlight.md",
+      "basename": "parsed-rolling-starlight.md",
+      "correction_count": 3,
+      "avg_gap_seconds": 137,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/specs/modules/lively-dancing-reddy.md",
+      "basename": "lively-dancing-reddy.md",
+      "correction_count": 4,
+      "avg_gap_seconds": 173,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/cli/main.py",
+      "basename": "main.py",
+      "correction_count": 18,
+      "avg_gap_seconds": 17,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy/data_models_components.py",
+      "basename": "data_models_components.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 25,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy/ong_fd_components.py",
+      "basename": "ong_fd_components.py",
+      "correction_count": 4,
+      "avg_gap_seconds": 18,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy/ong_fd_components_refactored.py",
+      "basename": "ong_fd_components_refactored.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 209,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy/ong_fd_drilling.py",
+      "basename": "ong_fd_drilling.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 298,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy/ong_fd_geometry.py",
+      "basename": "ong_fd_geometry.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 13,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/bsee/data/refresh/data_refresh.py",
+      "basename": "data_refresh.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 33,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/landman/__init__.py",
+      "basename": "__init__.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 203,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/marine_safety/README.md",
+      "basename": "README.md",
+      "correction_count": 5,
+      "avg_gap_seconds": 36,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/marine_safety/cli.py",
+      "basename": "cli.py",
+      "correction_count": 6,
+      "avg_gap_seconds": 213,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/marine_safety/importers/noaa_importer.py",
+      "basename": "noaa_importer.py",
+      "correction_count": 7,
+      "avg_gap_seconds": 20,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/metocean/clients/__init__.py",
+      "basename": "__init__.py",
+      "correction_count": 4,
+      "avg_gap_seconds": 167,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/modules/metocean/constants.py",
+      "basename": "constants.py",
+      "correction_count": 3,
+      "avg_gap_seconds": 44,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/integration/core/test_engine_integration.py",
+      "basename": "test_engine_integration.py",
+      "correction_count": 8,
+      "avg_gap_seconds": 72,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/integration/test_bsee_real_execution.py",
+      "basename": "test_bsee_real_execution.py",
+      "correction_count": 17,
+      "avg_gap_seconds": 90,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/integration/test_production_api12_full.py",
+      "basename": "test_production_api12_full.py",
+      "correction_count": 6,
+      "avg_gap_seconds": 10,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/integration/test_production_with_correct_format.py",
+      "basename": "test_production_with_correct_format.py",
+      "correction_count": 12,
+      "avg_gap_seconds": 18,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/integration/workflows/test_end_to_end.py",
+      "basename": "test_end_to_end.py",
+      "correction_count": 6,
+      "avg_gap_seconds": 18,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/marine_safety/analysis/test_llm_classifier.py",
+      "basename": "test_llm_classifier.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 24,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/marine_safety/test_refresh_cli.py",
+      "basename": "test_refresh_cli.py",
+      "correction_count": 3,
+      "avg_gap_seconds": 118,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean/test_cli.py",
+      "basename": "test_cli.py",
+      "correction_count": 7,
+      "avg_gap_seconds": 67,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean/test_integration.py",
+      "basename": "test_integration.py",
+      "correction_count": 4,
+      "avg_gap_seconds": 10,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean/test_skill_data_fetcher.py",
+      "basename": "test_skill_data_fetcher.py",
+      "correction_count": 2,
+      "avg_gap_seconds": 21,
+      "pattern_type": "quick_fix",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean/test_skill_statistics.py",
+      "basename": "test_skill_statistics.py",
+      "correction_count": 10,
+      "avg_gap_seconds": 84,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    },
+    {
+      "file": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean/test_skill_visualizer.py",
+      "basename": "test_skill_visualizer.py",
+      "correction_count": 3,
+      "avg_gap_seconds": 206,
+      "pattern_type": "iterative_refinement",
+      "learning": "File frequently needs corrections - consider validation or clearer patterns"
+    }
+  ],
+  "file_type_patterns": [
+    {
+      "extension": "yml",
+      "correction_count": 16,
+      "avg_gap_seconds": 180,
+      "rank": 1
+    },
+    {
+      "extension": "sh",
+      "correction_count": 13,
+      "avg_gap_seconds": 12,
+      "rank": 2
+    },
+    {
+      "extension": "md",
+      "correction_count": 2,
+      "avg_gap_seconds": 48,
+      "rank": 3
+    }
+  ],
+  "chain_patterns": [
+    {
+      "chain_id": "20260128_269716be",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/mooring-analysis-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_2d909895",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/diffraction-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_532bfb68",
+      "length": 5,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/aqwa-tests.yml",
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/diffraction-tests.yml",
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/mooring-analysis-tests.yml"
+      ],
+      "chain_type": "cascade"
+    },
+    {
+      "chain_id": "20260128_7a45b795",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/aqwa-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_7fede8e9",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/mooring-analysis-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_9eb58d0d",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/.github/workflows/baseline-audit.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_a014d688",
+      "length": 3,
+      "files": [
+        "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_a77063b9",
+      "length": 2,
+      "files": [
+        "/mnt/github/workspace-hub/.github/workflows/baseline-check.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_aa5e6008",
+      "length": 2,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/structural-analysis-tests.yml",
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/workflow-automation-tests.yml"
+      ],
+      "chain_type": "ping_pong"
+    },
+    {
+      "chain_id": "20260128_af12414b",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/structural-analysis-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_c945053c",
+      "length": 2,
+      "files": [
+        "/mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_d9c071ff",
+      "length": 3,
+      "files": [
+        "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_e83a82da",
+      "length": 1,
+      "files": [
+        "/mnt/github/workspace-hub/digitalmodel/.github/workflows/structural-analysis-tests.yml"
+      ],
+      "chain_type": "single_file_iteration"
+    },
+    {
+      "chain_id": "20260128_f6ef535d",
+      "length": 7,
+      "files": [
+        "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh",
+        "/mnt/github/workspace-hub/specs/modules/dazzling-hopping-puzzle.md"
+      ],
+      "chain_type": "ping_pong"
+    }
+  ],
+  "context_patterns": [
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh",
+      "sample_edits": [
+        {
+          "old": " # Get git diff context if available DIFF_STAT=\"\" if command -v git &>/dev/null && git re",
+          "new": " # Get git diff context if available DIFF_STAT=\"\" if command -v git &>/dev/null && git re"
+        },
+        {
+          "old": "FILE_EXTENSION=\"${FILE_PATH##*.}\" [[ \"$FILE_EXTENSION\" == \"$FILE_BASENAME\" ]] && FILE_EXTENSION=\"non",
+          "new": "FILE_EXTENSION=\"${FILE_BASENAME##*.}\" [[ \"$FILE_EXTENSION\" == \"$FILE_BASENAME\" ]] && FILE_EXTENSION="
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh",
+      "sample_edits": [
+        {
+          "old": " if [[ -f \"$CORRECTION_FILE\" ]]; then CORRECTIONS_FOUND=$(jq -r '.total_corrections // 0'",
+          "new": " if [[ -f \"$CORRECTION_FILE\" ]]; then CORRECTIONS_FOUND=$(jq -r '.total_corrections // 0'"
+        },
+        {
+          "old": " corrections_detected: $CORRECTION_RATE checklist:",
+          "new": " corrections_detected: $CORRECTION_RATE correction_file_types: $CORRECTION_FILE_TYPES correctio"
+        },
+        {
+          "old": "echo \"║ ✓ ABSTRACT: $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts ║\"",
+          "new": "echo \"║ ✓ ABSTRACT: $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts ║\""
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.github/workflows/baseline-audit.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Download all audit artifacts uses: actions/download-artifact@v3",
+          "new": " - name: Download all audit artifacts uses: actions/download-artifact@v4"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.github/workflows/baseline-check.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Download baseline artifacts uses: actions/download-artifact@v3",
+          "new": " - name: Download baseline artifacts uses: actions/download-artifact@v4"
+        },
+        {
+          "old": " - name: Download all artifacts uses: actions/download-artifact@v3",
+          "new": " - name: Download all artifacts uses: actions/download-artifact@v4"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/aqwa-tests.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Install dependencies run: | uv pip install --system ruff black isort mypy",
+          "new": " - name: Create virtual environment run: uv venv - name: Install dependencies ru"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/diffraction-tests.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Install dependencies run: | uv pip install --system ruff black isort mypy",
+          "new": " - name: Create virtual environment run: uv venv - name: Install dependencies ru"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/mooring-analysis-tests.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Install dependencies run: | uv pip install --system ruff black isort mypy",
+          "new": " - name: Create virtual environment run: uv venv - name: Install dependencies ru"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/structural-analysis-tests.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Install dependencies run: | uv pip install --system ruff black isort mypy",
+          "new": " - name: Create virtual environment run: uv venv - name: Install dependencies ru"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        },
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies ru",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/digitalmodel/.github/workflows/workflow-automation-tests.yml",
+      "sample_edits": [
+        {
+          "old": " - name: Create virtual environment run: uv venv - name: Install dependencies",
+          "new": " - name: Create virtual environment run: | uv venv echo \"$PWD/.venv/bin\" >>"
+        }
+      ]
+    },
+    {
+      "file": "/mnt/github/workspace-hub/specs/modules/dazzling-hopping-puzzle.md",
+      "sample_edits": [
+        {
+          "old": "**Fix:** Remove the orphaned submodule reference from assetutilities: ``` git rm --cached src/assetu",
+          "new": "**Fix:** Remove the orphaned submodule reference from assetutilities: ``` git rm --cached src/assetu"
+        },
+        {
+          "old": "**Changes:** Add `uv venv` step before `uv pip install` commands in each workflow.",
+          "new": "**Changes:** Add `uv venv` step before `uv pip install` commands in **all 11** workflow files (confi"
+        }
+      ]
+    }
+  ],
+  "learnings": [
+    {
+      "area": "/mnt/github/workspace-hub/.claude/skills/coordination/workspace/claude-reflect/scripts",
+      "file_type": "sh",
+      "correction_frequency": 93,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/worldenergydata/tests/integration",
+      "file_type": "py",
+      "correction_frequency": 36,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/worldenergydata/tests/modules/metocean",
+      "file_type": "py",
+      "correction_frequency": 26,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/cli",
+      "file_type": "py",
+      "correction_frequency": 18,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    },
+    {
+      "area": "/mnt/github/workspace-hub/worldenergydata/src/worldenergydata/common/legacy",
+      "file_type": "py",
+      "correction_frequency": 14,
+      "recommendation": "This area may benefit from: better prompts, clearer requirements, or templates"
+    }
+  ]
+}

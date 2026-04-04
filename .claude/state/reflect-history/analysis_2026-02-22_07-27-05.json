@@ -1,0 +1,222 @@
+{
+  "analysis_date": "2026-02-22T07:27:14-06:00",
+  "window_days": 30,
+  "repos_analyzed": 6,
+  "total_commits": 106,
+  "repos_succeeded": 6,
+  "repos_failed": 0,
+  "repos_timed_out": 0,
+  "commits": [
+    {"repo":"OGManufacturing","hash":"7fcd469dc803e4c1e5ad23a454eac0738cbc7357","short_hash":"7fcd469","message":"Merge branch 'main' of https://github.com/vamseeachanta/OGManufacturing","author":"Vamsee Achanta","date":"2026-02-10T13:57:46-06:00","timestamp":"1770753466","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"OGManufacturing","hash":"ae7eca67eedbbcf4f2d9301a1b1737464b472136","short_hash":"ae7eca6","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:30-06:00","timestamp":"1770746370","files_changed":12,"insertions":15,"deletions":1864}
+,
+    {"repo":"OGManufacturing","hash":"5b4ba187647c8d33b036a222b3bfec576243d591","short_hash":"5b4ba18","message":"chore: remove claude-flow references from .gitignore","author":"Vamsee Achanta","date":"2026-02-10T07:36:46-06:00","timestamp":"1770730606","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"OGManufacturing","hash":"b3d1b42a030f6500ce5848789a454148345d9fd0","short_hash":"b3d1b42","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:18-06:00","timestamp":"1769841738","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"OGManufacturing","hash":"26ccf244025b50faaa9f0ee888f2be9038fadec0","short_hash":"26ccf24","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:57-06:00","timestamp":"1769816817","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"OGManufacturing","hash":"a7fd3b14508de9ffbd3444a5b9134dc69e53a395","short_hash":"a7fd3b1","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:39-06:00","timestamp":"1769531919","files_changed":1,"insertions":1,"deletions":101}
+,
+    {"repo":"OGManufacturing","hash":"92df614f89489b058503a48f4082246d6ad82024","short_hash":"92df614","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:46-06:00","timestamp":"1769377426","files_changed":2,"insertions":2,"deletions":3}
+,
+    {"repo":"OGManufacturing","hash":"302202e552dc51a3cb6d7d0f3dc3a88abcb4423f","short_hash":"302202e","message":"chore: Remove claude-flow references from CLAUDE.md","author":"Vamsee Achanta","date":"2026-01-24T14:55:27-06:00","timestamp":"1769288127","files_changed":1,"insertions":24,"deletions":628}
+,
+    {"repo":"aceengineer-admin","hash":"4f165038a89af452fe59a8de4de3b132775007d6","short_hash":"4f16503","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-02-17T13:56:23-06:00","timestamp":"1771358183","files_changed":2,"insertions":0,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"c4ce9d344277be71a1a2443af7d951bee4012cad","short_hash":"c4ce9d3","message":"test: improve coverage 87%→94%, add 69 tests (WRK-056)","author":"Vamsee Achanta","date":"2026-02-13T14:11:04-06:00","timestamp":"1771013464","files_changed":3,"insertions":1004,"deletions":47}
+,
+    {"repo":"aceengineer-admin","hash":"891f91d124775cd040b9549c69e14a20863e8323","short_hash":"891f91d","message":"Merge branch 'main' of https://github.com/vamseeachanta/aceengineer-admin","author":"Vamsee Achanta","date":"2026-02-13T08:24:23-06:00","timestamp":"1770992663","files_changed":7,"insertions":383,"deletions":37}
+,
+    {"repo":"aceengineer-admin","hash":"fff57be5fb8a4a5823d507a6174f34c8bc2a4861","short_hash":"fff57be","message":"chore(contracts): add OrcaFlex agreement directory and draft inquiry (WRK-037)","author":"Vamsee Achanta","date":"2026-02-13T08:23:46-06:00","timestamp":"1770992626","files_changed":2,"insertions":63,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"4a6727d3fb03d2316577204edce02b1c097659bf","short_hash":"4a6727d","message":"chore(admin): update OrcaFlex agreement PDF naming","author":"Vamsee Achanta","date":"2026-02-12T22:09:10-06:00","timestamp":"1770955750","files_changed":3,"insertions":0,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"5482fe7511964472040480d640bcec93e1934517","short_hash":"5482fe7","message":"docs(orcaflex): rewrite agreement as consultant access, not sublicense (WRK-133)","author":"Vamsee Achanta","date":"2026-02-12T15:46:46-06:00","timestamp":"1770932806","files_changed":4,"insertions":383,"deletions":37}
+,
+    {"repo":"aceengineer-admin","hash":"689dfce5ecd59dc99130c393fb245bb3baf0af90","short_hash":"689dfce","message":"Merge branch 'main' of https://github.com/vamseeachanta/aceengineer-admin","author":"Vamsee Achanta","date":"2026-02-10T13:56:19-06:00","timestamp":"1770753379","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"aceengineer-admin","hash":"ae5957258cf0d9170e61daf0a61f61bc067b3066","short_hash":"ae59572","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:03-06:00","timestamp":"1770746343","files_changed":12,"insertions":15,"deletions":1864}
+,
+    {"repo":"aceengineer-admin","hash":"d4f965012d4f70b02dcdef9cc537ff2e49169d92","short_hash":"d4f9650","message":"chore: remove claude-flow references from .gitignore","author":"Vamsee Achanta","date":"2026-02-10T07:36:46-06:00","timestamp":"1770730606","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"aceengineer-admin","hash":"b0a52b765e828212567ac78281fe523c965e20ab","short_hash":"b0a52b7","message":"chore: update invoice negotiation and add Nov 2025 invoices","author":"Vamsee Achanta","date":"2026-02-05T06:25:59-06:00","timestamp":"1770294359","files_changed":3,"insertions":27,"deletions":3}
+,
+    {"repo":"aceengineer-admin","hash":"e28a89feec969ed0b9954001211c56186afd5ac6","short_hash":"e28a89f","message":"feat(knowledge): implement Phase 1 knowledge index system","author":"Vamsee Achanta","date":"2026-02-03T20:37:09-06:00","timestamp":"1770172629","files_changed":44,"insertions":6645,"deletions":4457}
+,
+    {"repo":"aceengineer-admin","hash":"d52bb775fcf7be36cc464a011365465b01855655","short_hash":"d52bb77","message":"chore: remove .egg-info build artifacts","author":"Vamsee Achanta","date":"2026-02-02T20:40:16-06:00","timestamp":"1770086416","files_changed":6,"insertions":0,"deletions":155}
+,
+    {"repo":"aceengineer-admin","hash":"5c4bd5c78d6f810158a91dd342719a1737ab5b26","short_hash":"5c4bd5c","message":"End of day auto-sync 2026-02-01","author":"Vamsee Achanta","date":"2026-02-01T23:00:03-06:00","timestamp":"1770008403","files_changed":7,"insertions":328,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"a71a442f0ff76ad208e47c16cd4f8c5ad4f4791c","short_hash":"a71a442","message":"feat(knowledge): add code pattern extractor (Phase 2A)","author":"Vamsee Achanta","date":"2026-02-01T19:01:59-06:00","timestamp":"1769994119","files_changed":12,"insertions":1358,"deletions":25}
+,
+    {"repo":"aceengineer-admin","hash":"3d85938137a4db78f859016fe60ef6649627231c","short_hash":"3d85938","message":"fix(knowledge): add .ipynb_checkpoints to scan exclude patterns","author":"Vamsee Achanta","date":"2026-02-01T18:07:43-06:00","timestamp":"1769990863","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"06fc7a7d496cb87e146607173fd59e387fe58e4f","short_hash":"06fc7a7","message":"test(knowledge): add tests for remaining modules to reach 90%+ coverage","author":"Vamsee Achanta","date":"2026-02-01T17:49:58-06:00","timestamp":"1769989798","files_changed":5,"insertions":910,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"eaf676f6838e85cac4677c4cb0420930ac906c2d","short_hash":"eaf676f","message":"feat(knowledge): add ACE Knowledge Index system (Phase 1)","author":"Vamsee Achanta","date":"2026-02-01T15:42:58-06:00","timestamp":"1769982178","files_changed":32,"insertions":3152,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"ba7aba4820e2675d74ab2e423cbe03c64d606ecb","short_hash":"ba7aba4","message":"chore: gitignore build/test artifacts","author":"Vamsee Achanta","date":"2026-01-31T22:04:24-06:00","timestamp":"1769918664","files_changed":3,"insertions":9,"deletions":1398}
+,
+    {"repo":"aceengineer-admin","hash":"0b214fd0e8e790393b3358006aaa582a2c22c4df","short_hash":"0b214fd","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:18-06:00","timestamp":"1769841738","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"df462f467f702e7f72d5c289b7622ba85b96bce7","short_hash":"df462f4","message":"fix(build): add missing README.md and fix testpaths config","author":"Vamsee Achanta","date":"2026-01-31T00:38:42-06:00","timestamp":"1769841522","files_changed":2,"insertions":40,"deletions":2}
+,
+    {"repo":"aceengineer-admin","hash":"b73f90d78c46ae255edb929115aa485bfe3fecc2","short_hash":"b73f90d","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:33-06:00","timestamp":"1769816793","files_changed":2,"insertions":19,"deletions":0}
+,
+    {"repo":"aceengineer-admin","hash":"9d793d3adeaf69b4ff859eb1332e54838a8710c9","short_hash":"9d793d3","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:03-06:00","timestamp":"1769531823","files_changed":1,"insertions":1,"deletions":101}
+,
+    {"repo":"aceengineer-admin","hash":"5a71632a2911391b99ddceccfaa04cf9dab254c1","short_hash":"5a71632","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":505}
+,
+    {"repo":"aceengineer-admin","hash":"86a7021d34ff00738d7010f1b7a3a6deb824b783","short_hash":"86a7021","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":2,"insertions":2,"deletions":3}
+,
+    {"repo":"aceengineer-admin","hash":"20c8da931c62f45668c59eb4fe876362f436a38b","short_hash":"20c8da9","message":"chore: Remove claude-flow references from CLAUDE.md","author":"Vamsee Achanta","date":"2026-01-24T14:55:27-06:00","timestamp":"1769288127","files_changed":1,"insertions":53,"deletions":192}
+,
+    {"repo":"aceengineer-admin","hash":"1b492c4ee30e76e89ccfc90968296315b1fd8143","short_hash":"1b492c4","message":"refactor: Consolidate repository and rename package to aceengineer_admin","author":"Vamsee Achanta","date":"2026-01-24T18:13:41-06:00","timestamp":"1769300021","files_changed":47,"insertions":149,"deletions":252}
+,
+    {"repo":"aceengineer-admin","hash":"2443b46f4920152571acf95d1ea4486784ebe382","short_hash":"2443b46","message":"merge: Consolidate diverged branches (local 129 + origin 66 commits)","author":"Vamsee Achanta","date":"2026-01-24T16:00:09-06:00","timestamp":"1769292009","files_changed":1,"insertions":30,"deletions":710}
+,
+    {"repo":"aceengineer-website","hash":"66617d33591f33e56cbd1a27cbb21b492277fe76","short_hash":"66617d3","message":"feat(website): reposition from AI consultancy to engineering analytics firm (WRK-146)","author":"Vamsee Achanta","date":"2026-02-16T15:05:48-06:00","timestamp":"1771275948","files_changed":45,"insertions":6703,"deletions":9385}
+,
+    {"repo":"aceengineer-website","hash":"cfae4d126ad2d01bc865be393c46a95512842e92","short_hash":"cfae4d1","message":"feat(case-study): add marine safety cross-database correlation case study","author":"Vamsee Achanta","date":"2026-02-15T22:59:26-06:00","timestamp":"1771217966","files_changed":3,"insertions":595,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"8850fb7f6061d420498b9d5ce70d723cdeb4e51b","short_hash":"8850fb7","message":"feat(blog): add 4 energy data SEO blog posts","author":"Vamsee Achanta","date":"2026-02-13T23:07:23-06:00","timestamp":"1771045643","files_changed":5,"insertions":2948,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"247a94268afb1cc451e5564bad6c9217d382d806","short_hash":"247a942","message":"feat(case-studies): add marine safety incident correlation","author":"Vamsee Achanta","date":"2026-02-13T23:01:51-06:00","timestamp":"1771045311","files_changed":5,"insertions":2228,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"0b8805434bfe203f89b24327bd3fe70c481937d1","short_hash":"0b88054","message":"feat(calculators): add NPV field development calculator","author":"Vamsee Achanta","date":"2026-02-13T23:00:40-06:00","timestamp":"1771045240","files_changed":3,"insertions":747,"deletions":5}
+,
+    {"repo":"aceengineer-website","hash":"ad6741ffbb9e277ada0a94fae916a45a2b066826","short_hash":"ad6741f","message":"feat: add BSEE field economics case study (WRK-078)","author":"Vamsee Achanta","date":"2026-02-13T14:11:11-06:00","timestamp":"1771013471","files_changed":7,"insertions":887,"deletions":1}
+,
+    {"repo":"aceengineer-website","hash":"e666dd7ec05d3ed74a6ed32d1d530ffa2318d35e","short_hash":"e666dd7","message":"test(js): add Jest test coverage for build.js and navbar-toggle.js (WRK-055)","author":"Vamsee Achanta","date":"2026-02-13T08:23:40-06:00","timestamp":"1770992620","files_changed":5,"insertions":5612,"deletions":376}
+,
+    {"repo":"aceengineer-website","hash":"e9888bbd271b7964f2e9f9a029f97a2346b40cd7","short_hash":"e9888bb","message":"Merge branch 'main' of https://github.com/vamseeachanta/aceengineer-website","author":"Vamsee Achanta","date":"2026-02-10T13:56:24-06:00","timestamp":"1770753384","files_changed":1,"insertions":44,"deletions":10}
+,
+    {"repo":"aceengineer-website","hash":"54483ba45eef69d0606dc8973d61d402573a281d","short_hash":"54483ba","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:05-06:00","timestamp":"1770746345","files_changed":2,"insertions":15,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"bcd808fa03e0d602a248b8f3b0277cce8baa8308","short_hash":"bcd808f","message":"docs(marketing): add diffraction + dynacard capabilities to portfolio","author":"Vamsee Achanta","date":"2026-02-09T16:33:31-06:00","timestamp":"1770676411","files_changed":1,"insertions":44,"deletions":10}
+,
+    {"repo":"aceengineer-website","hash":"626ba672991d5fce802a562586d7efdb5bb0ddbf","short_hash":"626ba67","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-02-08T14:34:10-06:00","timestamp":"1770582850","files_changed":3,"insertions":333,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"cf253d1134b259a3fbff94b434a5fbc3b8713156","short_hash":"cf253d1","message":"chore: daily update 2026-02-04","author":"Vamsee Achanta","date":"2026-02-04T06:00:11-06:00","timestamp":"1770206411","files_changed":3,"insertions":334,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"24402d302385ef520b560c46f4edbf474fbccf78","short_hash":"24402d3","message":"chore: daily update 2026-02-03","author":"Vamsee Achanta","date":"2026-02-03T06:01:06-06:00","timestamp":"1770120066","files_changed":3,"insertions":334,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"ee8f8c0d6098442c21a3a4ac802f516b1bc91b0a","short_hash":"ee8f8c0","message":"feat(marketing): add energy data & analytics service pages (WRK-073)","author":"Vamsee Achanta","date":"2026-02-02T14:26:30-06:00","timestamp":"1770063990","files_changed":6,"insertions":567,"deletions":145}
+,
+    {"repo":"aceengineer-website","hash":"af9453a2ae4dc86d808dba779fa1eb2c9b3816b1","short_hash":"af9453a","message":"chore: daily update 2026-02-02","author":"Vamsee Achanta","date":"2026-02-02T06:00:06-06:00","timestamp":"1770033606","files_changed":3,"insertions":334,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"b1dccac2cdb0f7ae1c67a456830f63623f53a6fe","short_hash":"b1dccac","message":"docs: update Lighthouse findings with Round 2 self-hosting results","author":"Vamsee Achanta","date":"2026-02-01T19:14:25-06:00","timestamp":"1769994865","files_changed":1,"insertions":160,"deletions":52}
+,
+    {"repo":"aceengineer-website","hash":"5c79af4043a7ed58d763e6b2487f5adc887f3907","short_hash":"5c79af4","message":"perf: self-host all assets and eliminate CDN dependencies","author":"Vamsee Achanta","date":"2026-02-01T19:11:24-06:00","timestamp":"1769994684","files_changed":9,"insertions":7216,"deletions":20}
+,
+    {"repo":"aceengineer-website","hash":"720ce4b1c6f32960d94f41f2cf470e61ec962ca5","short_hash":"720ce4b","message":"docs: add Lighthouse audit findings and recommendations","author":"Vamsee Achanta","date":"2026-02-01T18:53:04-06:00","timestamp":"1769993584","files_changed":1,"insertions":235,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"01536bedefd53a0214f1eb8e3ac8ac8fdb676ba8","short_hash":"01536be","message":"fix(lighthouse): achieve 100 scores in accessibility, best practices, and SEO","author":"Vamsee Achanta","date":"2026-02-01T18:52:01-06:00","timestamp":"1769993521","files_changed":36,"insertions":149,"deletions":83}
+,
+    {"repo":"aceengineer-website","hash":"c45bbd1fa6505790a2796500f2a415f172a32d21","short_hash":"c45bbd1","message":"chore: daily update 2026-02-01","author":"Vamsee Achanta","date":"2026-02-01T06:00:12-06:00","timestamp":"1769947212","files_changed":6,"insertions":340,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"e2dc43d8a369ae0e0dc14f7b37ffb690383f1190","short_hash":"e2dc43d","message":"test: improve coverage to 97% and gitignore build artifacts","author":"Vamsee Achanta","date":"2026-01-31T22:04:27-06:00","timestamp":"1769918667","files_changed":4,"insertions":1339,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"fde54135c9f698b37fa35eb4644545ffaad5d30a","short_hash":"fde5413","message":"chore: daily update 2026-01-31","author":"Vamsee Achanta","date":"2026-01-31T06:00:08-06:00","timestamp":"1769860808","files_changed":4,"insertions":334,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"d7ca31ffe807cc2b472c87ad29a88835f326cffe","short_hash":"d7ca31f","message":"feat(tests): add Python test suite with 61 tests","author":"Vamsee Achanta","date":"2026-01-31T00:41:13-06:00","timestamp":"1769841673","files_changed":6,"insertions":742,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"d3a37f2c0c485d2275042f5ead38a446380abd21","short_hash":"d3a37f2","message":"chore: daily update 2026-01-30","author":"Vamsee Achanta","date":"2026-01-30T06:00:03-06:00","timestamp":"1769774403","files_changed":3,"insertions":333,"deletions":2}
+,
+    {"repo":"aceengineer-website","hash":"3293b69807180d7c063f41d41debdc65f7a2ed9f","short_hash":"3293b69","message":"fix(cron): gitignore logs/ to prevent git pull rebase failures","author":"Vamsee Achanta","date":"2026-01-29T11:03:24-06:00","timestamp":"1769706204","files_changed":2,"insertions":3,"deletions":350}
+,
+    {"repo":"aceengineer-website","hash":"b7154c4874964c285ed23b91987cee8cb37e326e","short_hash":"b7154c4","message":"chore: daily update 2026-01-29","author":"Vamsee Achanta","date":"2026-01-29T06:00:04-06:00","timestamp":"1769688004","files_changed":4,"insertions":444,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"b34208c1dd8a2d906b9ba622fb74922e483d6c47","short_hash":"b34208c","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-28T21:49:32-06:00","timestamp":"1769658572","files_changed":1,"insertions":9,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"06e4c771a2190567d1647681fe310a8ebbfdfd4a","short_hash":"06e4c77","message":"chore: daily update 2026-01-28","author":"Vamsee Achanta","date":"2026-01-28T06:00:03-06:00","timestamp":"1769601603","files_changed":4,"insertions":444,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"9b430e579d7dfd2038c5b415c7070908a3ea00bd","short_hash":"9b430e5","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:03-06:00","timestamp":"1769531823","files_changed":1,"insertions":10,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"e5b701b6d7bb40de2ba8ff7b0bd8f99d41818253","short_hash":"e5b701b","message":"chore: daily update 2026-01-27","author":"Vamsee Achanta","date":"2026-01-27T06:00:04-06:00","timestamp":"1769515204","files_changed":4,"insertions":445,"deletions":3}
+,
+    {"repo":"aceengineer-website","hash":"f92f4d380ac24f1e28a0e47c653d02745c23b3cc","short_hash":"f92f4d3","message":"chore: daily update 2026-01-26","author":"Vamsee Achanta","date":"2026-01-26T16:14:45-06:00","timestamp":"1769465685","files_changed":15,"insertions":5978,"deletions":80}
+,
+    {"repo":"aceengineer-website","hash":"5ec603a2e9ea3577a37d17525c4ca52c10bf9be4","short_hash":"5ec603a","message":"feat: add aceengineer-website-update skill","author":"Vamsee Achanta","date":"2026-01-26T15:27:31-06:00","timestamp":"1769462851","files_changed":11,"insertions":1551,"deletions":0}
+,
+    {"repo":"aceengineer-website","hash":"a1ba6f2c215f2a7b7f6a9531498877792502456c","short_hash":"a1ba6f2","message":"fix: remove posthtml-cli to resolve vulnerabilities","author":"Vamsee Achanta","date":"2026-01-26T15:04:54-06:00","timestamp":"1769461494","files_changed":2,"insertions":126,"deletions":2168}
+,
+    {"repo":"aceengineer-website","hash":"06f38714977cd3404414a6c6e2ea5ae9cedb8212","short_hash":"06f3871","message":"refactor: transform to static site with PostHTML partials","author":"Vamsee Achanta","date":"2026-01-26T14:58:49-06:00","timestamp":"1769461129","files_changed":629,"insertions":12706,"deletions":106380}
+,
+    {"repo":"aceengineer-website","hash":"4607f76938e16602718090baa1641fee71817cc9","short_hash":"4607f76","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":505}
+,
+    {"repo":"aceengineer-website","hash":"d4204a09fc8e6debd38163362a8c6f4eea531521","short_hash":"d4204a0","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":3,"insertions":3,"deletions":4}
+,
+    {"repo":"aceengineer-website","hash":"841d32e4566bb45d254bc2fcb37f80608f78fbe1","short_hash":"841d32e","message":"chore: Remove claude-flow references from CLAUDE.md","author":"Vamsee Achanta","date":"2026-01-24T14:55:27-06:00","timestamp":"1769288127","files_changed":1,"insertions":53,"deletions":192}
+,
+    {"repo":"achantas-data","hash":"4826962fb5972ba6ef3a8b0e742cf0dc46f9e0a8","short_hash":"4826962","message":"Merge branch 'main' of https://github.com/vamseeachanta/achantas-data","author":"Vamsee Achanta","date":"2026-02-10T13:56:30-06:00","timestamp":"1770753390","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"achantas-data","hash":"2b778f7b824228b3d6f02be3f245074648661f7a","short_hash":"2b778f7","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:07-06:00","timestamp":"1770746347","files_changed":12,"insertions":15,"deletions":1864}
+,
+    {"repo":"achantas-data","hash":"5cb440193401e6119ecd3593d8971e1e891cec7d","short_hash":"5cb4401","message":"chore: remove claude-flow references from .gitignore","author":"Vamsee Achanta","date":"2026-02-10T07:36:47-06:00","timestamp":"1770730607","files_changed":1,"insertions":0,"deletions":4}
+,
+    {"repo":"achantas-data","hash":"d5c35478d0c215f93420db190770a6525ba5a66b","short_hash":"d5c3547","message":"End of day auto-sync 2026-02-01","author":"Vamsee Achanta","date":"2026-02-01T23:00:04-06:00","timestamp":"1770008404","files_changed":1,"insertions":1116,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"819d40633a191b27f2b9910a7323425fc650bb8e","short_hash":"819d406","message":"docs: add printer setup notes for Epson ET-2800 and HP DeskJet 4200","author":"Vamsee Achanta","date":"2026-02-01T11:31:22-06:00","timestamp":"1769967082","files_changed":1,"insertions":42,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"51991e9f7b3d7197668ffb13afdb99054bc6eb4f","short_hash":"51991e9","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:42-06:00","timestamp":"1769841762","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"32ed112b074cf60ac62c7ba5869e398126e36a02","short_hash":"32ed112","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:33-06:00","timestamp":"1769816793","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"ddd2a585e66017d6de71f872e45295eb0032226d","short_hash":"ddd2a58","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:03-06:00","timestamp":"1769531823","files_changed":1,"insertions":2,"deletions":101}
+,
+    {"repo":"achantas-data","hash":"e8076a0da66d4b4e655f19188a4f1cd34ab45dd2","short_hash":"e8076a0","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":212}
+,
+    {"repo":"achantas-data","hash":"cd039c12973b16418be1608401558fd0c18708c4","short_hash":"cd039c1","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:36-06:00","timestamp":"1769377416","files_changed":3,"insertions":143,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"42d1251f170051c9cc131b3fb5950264a487fad6","short_hash":"42d1251","message":"feat: Add personal resources from energy repo migration","author":"Vamsee Achanta","date":"2026-01-24T16:08:48-06:00","timestamp":"1769292528","files_changed":5,"insertions":36,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"b0c66519dfa5342ada750f920339fd18185d78c6","short_hash":"b0c6651","message":"chore: Remove claude-flow references from CLAUDE.md","author":"Vamsee Achanta","date":"2026-01-24T14:55:27-06:00","timestamp":"1769288127","files_changed":1,"insertions":30,"deletions":462}
+,
+    {"repo":"achantas-data","hash":"8c44be20c04bf7c8929fbe787a15d46c549c5def","short_hash":"8c44be2","message":"Update finances and add 2024 locker inventories","author":"Vamsee Achanta","date":"2026-01-25T12:21:05-06:00","timestamp":"1769365265","files_changed":132,"insertions":66,"deletions":0}
+,
+    {"repo":"achantas-data","hash":"cf5ca9330a51d51014414123fd7e98f30acdee59","short_hash":"cf5ca93","message":"Fresh start: All current files with Git LFS","author":"Vamsee Achanta","date":"2026-01-24T19:12:43-06:00","timestamp":"1769303563","files_changed":3074,"insertions":87271,"deletions":0}
+,
+    {"repo":"achantas-media","hash":"dcb76483305ad12ee87fe5c046e8b00751d10617","short_hash":"dcb7648","message":"chore: remove deprecated .agent-os directory","author":"Vamsee Achanta","date":"2026-02-05T06:26:26-06:00","timestamp":"1770294386","files_changed":3872,"insertions":0,"deletions":93662}
+,
+    {"repo":"achantas-media","hash":"4f287fc53ae15429c8b7c0f6986231dd01542ac5","short_hash":"4f287fc","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:43-06:00","timestamp":"1769841763","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"achantas-media","hash":"834ca938a82c264cd3117aa946ccc63e9d8b7662","short_hash":"834ca93","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:34-06:00","timestamp":"1769816794","files_changed":1,"insertions":1,"deletions":0}
+,
+    {"repo":"achantas-media","hash":"2a6d24d16f914367059340c10f010e1358749ccd","short_hash":"2a6d24d","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:04-06:00","timestamp":"1769531824","files_changed":11,"insertions":1,"deletions":101}
+,
+    {"repo":"achantas-media","hash":"0239368d7207b1159f8abbb5e1f098287596bcef","short_hash":"0239368","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:37-06:00","timestamp":"1769453257","files_changed":1,"insertions":0,"deletions":644}
+,
+    {"repo":"achantas-media","hash":"999336a498ae4b9942523da8cce9f4b64d8e58da","short_hash":"999336a","message":"Initial commit: Achantas Media collection","author":"Vamsee Achanta","date":"2026-01-24T21:36:50-06:00","timestamp":"1769312210","files_changed":3881,"insertions":94404,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"59f86d53d7034e15f01ac3505ab48c6dec48e015","short_hash":"59f86d53","message":"chore(legal): add pre-commit legal scan hook (WRK-278)","author":"Vamsee Achanta","date":"2026-02-20T22:28:00-06:00","timestamp":"1771648080","files_changed":1,"insertions":11,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"4d88390d68609e866459c0f3e816e48db05916ae","short_hash":"4d88390d","message":"docs: add searchable content index — projects, CP files, codes & standards (WRK-275)","author":"Vamsee Achanta","date":"2026-02-20T22:09:14-06:00","timestamp":"1771646954","files_changed":1,"insertions":553,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"ee7a985aa5500095f5e7a08b2575cd1593211997","short_hash":"ee7a985a","message":"chore(admin): update OrcaFlex Orcina email format","author":"Vamsee Achanta","date":"2026-02-12T22:09:20-06:00","timestamp":"1770955760","files_changed":2,"insertions":0,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"437653aad861cebbb915643d432dca48cf60f39d","short_hash":"437653aa","message":"fix(admin): reorder mermaid decision flows (Yes left, No right)","author":"Vamsee Achanta","date":"2026-02-11T10:05:40-06:00","timestamp":"1770825940","files_changed":4,"insertions":103,"deletions":103}
+,
+    {"repo":"acma-projects","hash":"dff6292df2df83ea0c4e45b0021b80d104679e5b","short_hash":"dff6292d","message":"fix(admin): update OrcaFlex host from ACMA-ANSYS03 to licensed-win-1","author":"Vamsee Achanta","date":"2026-02-11T10:02:22-06:00","timestamp":"1770825742","files_changed":6,"insertions":89,"deletions":89}
+,
+    {"repo":"acma-projects","hash":"394d4305a31c217039e79609df66623b0fda522c","short_hash":"394d4305","message":"fix(admin): convert ASCII tables to markdown for proper PDF rendering","author":"Vamsee Achanta","date":"2026-02-11T09:58:21-06:00","timestamp":"1770825501","files_changed":5,"insertions":351,"deletions":501}
+,
+    {"repo":"acma-projects","hash":"fb9931fd395b6d1c27de338ae3ea55f7e3a2470f","short_hash":"fb9931fd","message":"fix(admin): remove plaintext passwords, add license usage docs","author":"Vamsee Achanta","date":"2026-02-11T09:48:30-06:00","timestamp":"1770824910","files_changed":9,"insertions":1245,"deletions":17}
+,
+    {"repo":"acma-projects","hash":"dc04dfb8e3e543f8f6335ab55ecfb95f7c2a04d4","short_hash":"dc04dfb8","message":"Merge branch 'main' of https://github.com/vamseeachanta/acma-projects","author":"Vamsee Achanta","date":"2026-02-10T13:56:38-06:00","timestamp":"1770753398","files_changed":7,"insertions":0,"deletions":15517}
+,
+    {"repo":"acma-projects","hash":"eb32b61842135b7b00e33503724e7236eb2c9903","short_hash":"eb32b618","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:11-06:00","timestamp":"1770746351","files_changed":12,"insertions":13,"deletions":1864}
+,
+    {"repo":"acma-projects","hash":"c89ed2c885a7c7ff79eb8308565764dcf99241e2","short_hash":"c89ed2c8","message":"chore: remove claude-flow references and artifacts","author":"Vamsee Achanta","date":"2026-02-10T07:36:24-06:00","timestamp":"1770730584","files_changed":7,"insertions":0,"deletions":15517}
+,
+    {"repo":"acma-projects","hash":"8b8230b44cc7b11485097b91d536cc967a953726","short_hash":"8b8230b4","message":"chore: Reorganize project folders with underscore prefix and add CFD, engineering, hulls resources","author":"Vamsee Achanta","date":"2026-02-08T20:18:18-06:00","timestamp":"1770603498","files_changed":97,"insertions":7497,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"025d3c1edb753655079e90c3ec3ffb79fb55d9f7","short_hash":"025d3c1e","message":"chore: batch sync","author":"Vamsee Achanta","date":"2026-02-08T14:34:36-06:00","timestamp":"1770582876","files_changed":2,"insertions":1,"deletions":86}
+,
+    {"repo":"acma-projects","hash":"f52db0fc29e1cbb7a0cae91369446f29510726ef","short_hash":"f52db0fc","message":"chore: Add B1912 project files and update admin notes","author":"Vamsee Achanta","date":"2026-02-02T18:18:52-06:00","timestamp":"1770077932","files_changed":4,"insertions":260,"deletions":0}
+,
+    {"repo":"acma-projects","hash":"23a08f901d0d031fb98ba9601035304f956f6981","short_hash":"23a08f90","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:09-06:00","timestamp":"1769386089","files_changed":2,"insertions":109,"deletions":1}
+  ]
+}

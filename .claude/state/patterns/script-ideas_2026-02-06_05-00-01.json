@@ -1,0 +1,913 @@
+{
+  "extraction_date": "2026-02-06T11:14:36Z",
+  "days_analyzed": "30",
+  "total_bash_commands": 233,
+  "unique_patterns": 20,
+  "script_ideas": [
+    {
+      "pattern": "ls -la /<PATH> 2>/<PATH> || echo \"<STRING>\"",
+      "examples": [
+        "ls -la /home/vamsee/.claude/ 2>/dev/null || echo \"Directory not found\"",
+        "ls -la /mnt/github/workspace-hub/.claude/ 2>/dev/null || echo \"Directory does not exist\"",
+        "ls -la /mnt/github/workspace-hub/.claude/docs/ 2>/dev/null || echo \"docs directory does not exist\""
+      ],
+      "count": 9,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.7,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "find /<PATH> -name \"<STRING>\" -type f | wc -l",
+      "examples": [
+        "find /mnt/github/workspace-hub/.claude/agent-library -name \"*.md\" -type f | wc -l",
+        "find /mnt/github/workspace-hub/.claude/commands -name \"*.md\" -type f | wc -l"
+      ],
+      "count": 4,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6000000000000001,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "ls -la /<PATH> 2>/<PATH> | head -20",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/.claude/agent-library/ 2>/dev/null | head -20",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/ 2>/dev/null | head -20",
+        "ls -la /mnt/github/workspace-hub/digitalmodel/.claude/skills 2>/dev/null | head -20"
+      ],
+      "count": 4,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6000000000000001,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "find /<PATH> -type d -maxdepth 1 | sort",
+      "examples": [
+        "find /mnt/github/workspace-hub/.claude/agent-library -type d -maxdepth 1 | sort",
+        "find /mnt/github/workspace-hub/.claude/commands -type d -maxdepth 1 | sort",
+        "find /mnt/github/workspace-hub/.claude/skills -type d -maxdepth 1 | sort"
+      ],
+      "count": 3,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6000000000000001,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "ls -la /<PATH>",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/",
+        "ls -la /mnt/github/workspace-hub/.claude/",
+        "ls -la /mnt/github/workspace-hub/.claude/agent-library/"
+      ],
+      "count": 29,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "ls -la /<PATH> | head -30",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/.claude/commands/ | head -30",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/ | head -30",
+        "ls -la /mnt/github/workspace-hub/assetutilities/ | head -30"
+      ],
+      "count": 5,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "mkdir -p /<PATH>",
+      "examples": [
+        "mkdir -p /mnt/github/workspace-hub/.claude/hooks/session-memory",
+        "mkdir -p /mnt/github/workspace-hub/.claude/rules",
+        "mkdir -p /mnt/github/workspace-hub/.claude/skills/development/verification-loop"
+      ],
+      "count": 5,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "wc -l /<PATH>",
+      "examples": [
+        "wc -l /mnt/github/workspace-hub/.claude/docs/agent-composition.md",
+        "wc -l /mnt/github/workspace-hub/.claude/skills/development/verification-loop/SKILL.md",
+        "wc -l /mnt/github/workspace-hub/scripts/audit/rule-compliance.sh"
+      ],
+      "count": 5,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.6,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "cat /<PATH>",
+      "examples": [
+        "cat /mnt/github/workspace-hub/.gitmodules",
+        "cat /tmp/claude/-mnt-github-workspace-hub/tasks/b6313e2.output",
+        "cat /tmp/claude/-mnt-github-workspace-hub/tasks/be3f85d.output"
+      ],
+      "count": 4,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "ls -la /<PATH> | head -40",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/ | head -40",
+        "ls -la /mnt/github/workspace-hub/.claude/commands/ | head -40",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/ | head -40"
+      ],
+      "count": 4,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "ls /<PATH>",
+      "examples": [
+        "ls /mnt/github/workspace-hub/.claude/agent-library/_archive/",
+        "ls /mnt/github/workspace-hub/.claude/agent-library/core/",
+        "ls /mnt/github/workspace-hub/.claude/skills/development/"
+      ],
+      "count": 4,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "git pull --rebase origin main",
+      "examples": [
+        "git pull --rebase origin main"
+      ],
+      "count": 3,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Git workflow automation"
+    },
+    {
+      "pattern": "head -50 /<PATH>",
+      "examples": [
+        "head -50 /mnt/github/workspace-hub/.claude/skills-index.yaml",
+        "head -50 /mnt/github/workspace-hub/.claude/skills/ai-prompting/langchain/SKILL.md",
+        "head -50 /mnt/github/workspace-hub/.claude/skills/automation/airflow/SKILL.md"
+      ],
+      "count": 3,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "ls -la /<PATH> 2>/<PATH>",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/.claude/commands/optimization/ 2>/dev/null",
+        "ls -la /mnt/github/workspace-hub/.claude/docs/ 2>/dev/null",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/meta/ 2>/dev/null"
+      ],
+      "count": 3,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "./<PATH> --skip-coverage 2>&1 || true",
+      "examples": [
+        "./scripts/audit/rule-compliance.sh --skip-coverage 2>&1 || true"
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "bash -n /<PATH> && echo \"<STRING>\"",
+      "examples": [
+        "bash -n /mnt/github/workspace-hub/.claude/hooks/session-memory/pre-compact-save.sh && echo \"pre-compact-save.sh syntax OK\"",
+        "bash -n /mnt/github/workspace-hub/.claude/hooks/session-memory/session-end-evaluate.sh && echo \"session-end-evaluate.sh syntax OK\""
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "find . -name \"<STRING>\" -exec grep -l \"<STRING>\" {} \\; 2>/<PATH>",
+      "examples": [
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "find . -name \"<STRING>\" -exec grep -l \"<STRING>\" {} \\; 2>/<PATH> | wc -l",
+      "examples": [
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.5,
+      "suggestion": "Pipeline automation script"
+    },
+    {
+      "pattern": "./<PATH> --help",
+      "examples": [
+        "./scripts/audit/rule-compliance.sh --help"
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.4,
+      "suggestion": "Utility script"
+    },
+    {
+      "pattern": "./<PATH> 2>&1 || true",
+      "examples": [
+        "./scripts/audit/rule-compliance.sh 2>&1 || true"
+      ],
+      "count": 2,
+      "repos": [
+        ""
+      ],
+      "cross_repo": false,
+      "score": 0.4,
+      "suggestion": "Pipeline automation script"
+    }
+  ],
+  "git_workflows": [
+    {
+      "command": "git status",
+      "count": 8
+    },
+    {
+      "command": "git branch",
+      "count": 6
+    },
+    {
+      "command": "git log",
+      "count": 4
+    },
+    {
+      "command": "git commit",
+      "count": 3
+    },
+    {
+      "command": "git diff",
+      "count": 3
+    },
+    {
+      "command": "git pull",
+      "count": 3
+    },
+    {
+      "command": "git add",
+      "count": 2
+    },
+    {
+      "command": "git ls-files",
+      "count": 2
+    },
+    {
+      "command": "git stash",
+      "count": 2
+    },
+    {
+      "command": "git -C",
+      "count": 1
+    }
+  ],
+  "complex_commands": [
+    {
+      "command": "git ls-files --cached 2>/dev/null | grep -E '\\.(py|js|ts|go|java|rb|sh)$' | grep -v -E '(node_modules|vendor|venv)' | wc -l",
+      "pipe_count": 11,
+      "repo": ""
+    },
+    {
+      "command": "find /mnt/github/workspace-hub/.claude/agent-library -maxdepth 1 -type d | sort | sed 's|.*/||' | grep -v \"^$\" | grep -v \"_archive\"",
+      "pipe_count": 7,
+      "repo": ""
+    },
+    {
+      "command": "grep -h \"python\\|version\\|requires-python\" /mnt/github/workspace-hub/*/pyproject.toml 2>/dev/null | grep \"requires-python\\|python =\" | sort | uniq -c | sort -rn",
+      "pipe_count": 7,
+      "repo": ""
+    },
+    {
+      "command": "git checkout -- energy 2>/dev/null || git restore energy 2>/dev/null || true; git status --short | grep -E \"^M|^D\" | head -5",
+      "pipe_count": 7,
+      "repo": ""
+    },
+    {
+      "command": "find /mnt/github/workspace-hub/.claude/agent-library/_archive -maxdepth 1 -type d | sort | sed 's|.*/||' | grep -v \"^$\"",
+      "pipe_count": 6,
+      "repo": ""
+    },
+    {
+      "pipe_count": 5,
+      "repo": ""
+    },
+    {
+      "command": "npm list -g --depth=0 2>&1 | head -20; ls ~/.npm/_npx 2>/dev/null | head -10 || echo \"No npx cache\"",
+      "pipe_count": 4,
+      "repo": ""
+    },
+    {
+      "command": "grep -r \"TODO\\|FIXME\\|deprecated\\|modernize\" /mnt/github/workspace-hub/CLAUDE.md /mnt/github/workspace-hub/.claude/docs/ 2>/dev/null | head -20",
+      "pipe_count": 4,
+      "repo": ""
+    },
+    {
+      "command": "git -C /mnt/github/workspace-hub log --oneline --all --grep=\"modernize\\|upgrade\\|refactor\\|deprecat\" --since=\"2024-01-01\" 2>/dev/null | head -20",
+      "pipe_count": 4,
+      "repo": ""
+    },
+    {
+      "command": "find /mnt/github/workspace-hub -maxdepth 3 -name \"*.md\" -type f -exec grep -l \"deprecated\\|legacy\\|old\\|v1\" {} \\; 2>/dev/null | head -15",
+      "pipe_count": 4,
+      "repo": ""
+    }
+  ],
+  "script_activity": [
+    {
+      "file": "/mnt/github/workspace-hub/scripts/audit/rule-compliance.sh",
+      "edits": 6,
+      "sessions": 6
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/session-memory/pre-compact-save.sh",
+      "edits": 1,
+      "sessions": 1
+    },
+    {
+      "file": "/mnt/github/workspace-hub/.claude/hooks/session-memory/session-end-evaluate.sh",
+      "edits": 1,
+      "sessions": 1
+    }
+  ],
+  "enhancement_suggestions": [
+    {
+      "script": "/mnt/github/workspace-hub/scripts/audit/rule-compliance.sh",
+      "edits": 6,
+      "sessions": 6,
+      "suggestion": "Frequently modified - consider stabilization"
+    }
+  ],
+  "skill_candidates": [
+    {
+      "pattern": "ls -la /<PATH> 2>/<PATH> || echo \"<STRING>\"",
+      "examples": [
+        "ls -la /home/vamsee/.claude/ 2>/dev/null || echo \"Directory not found\"",
+        "ls -la /mnt/github/workspace-hub/.claude/ 2>/dev/null || echo \"Directory does not exist\"",
+        "ls -la /mnt/github/workspace-hub/.claude/docs/ 2>/dev/null || echo \"docs directory does not exist\""
+      ],
+      "score": 0.7,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "ls-la-2-echo"
+    },
+    {
+      "pattern": "find /<PATH> -name \"<STRING>\" -type f | wc -l",
+      "examples": [
+        "find /mnt/github/workspace-hub/.claude/agent-library -name \"*.md\" -type f | wc -l",
+        "find /mnt/github/workspace-hub/.claude/commands -name \"*.md\" -type f | wc -l"
+      ],
+      "score": 0.6000000000000001,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "find-name-type-f-wc-l"
+    },
+    {
+      "pattern": "ls -la /<PATH> 2>/<PATH> | head -20",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/.claude/agent-library/ 2>/dev/null | head -20",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/ 2>/dev/null | head -20",
+        "ls -la /mnt/github/workspace-hub/digitalmodel/.claude/skills 2>/dev/null | head -20"
+      ],
+      "score": 0.6000000000000001,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "ls-la-2-head-20"
+    },
+    {
+      "pattern": "find /<PATH> -type d -maxdepth 1 | sort",
+      "examples": [
+        "find /mnt/github/workspace-hub/.claude/agent-library -type d -maxdepth 1 | sort",
+        "find /mnt/github/workspace-hub/.claude/commands -type d -maxdepth 1 | sort",
+        "find /mnt/github/workspace-hub/.claude/skills -type d -maxdepth 1 | sort"
+      ],
+      "score": 0.6000000000000001,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "find-type-d-maxdepth-1-sort"
+    },
+    {
+      "pattern": "ls -la /<PATH>",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/",
+        "ls -la /mnt/github/workspace-hub/.claude/",
+        "ls -la /mnt/github/workspace-hub/.claude/agent-library/"
+      ],
+      "score": 0.6,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "ls-la"
+    },
+    {
+      "pattern": "ls -la /<PATH> | head -30",
+      "examples": [
+        "ls -la /mnt/github/workspace-hub/.claude/commands/ | head -30",
+        "ls -la /mnt/github/workspace-hub/.claude/skills/ | head -30",
+        "ls -la /mnt/github/workspace-hub/assetutilities/ | head -30"
+      ],
+      "score": 0.6,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "ls-la-head-30"
+    },
+    {
+      "pattern": "mkdir -p /<PATH>",
+      "examples": [
+        "mkdir -p /mnt/github/workspace-hub/.claude/hooks/session-memory",
+        "mkdir -p /mnt/github/workspace-hub/.claude/rules",
+        "mkdir -p /mnt/github/workspace-hub/.claude/skills/development/verification-loop"
+      ],
+      "score": 0.6,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "mkdir-p"
+    },
+    {
+      "pattern": "wc -l /<PATH>",
+      "examples": [
+        "wc -l /mnt/github/workspace-hub/.claude/docs/agent-composition.md",
+        "wc -l /mnt/github/workspace-hub/.claude/skills/development/verification-loop/SKILL.md",
+        "wc -l /mnt/github/workspace-hub/scripts/audit/rule-compliance.sh"
+      ],
+      "score": 0.6,
+      "repos": [
+        ""
+      ],
+      "skill_type": "automation",
+      "suggested_name": "wc-l"
+    }
+  ],
+  "existing_scripts": [
+    "activate",
+    "activate-assetutils-global",
+    "agent_dispatcher",
+    "agent_orchestrator",
+    "aggregate-daily-summary",
+    "aggregate-learnings",
+    "aggregate_results",
+    "aliases",
+    "analyze_commit",
+    "analyze-conversations",
+    "analyze-history",
+    "analyze_incidents",
+    "analyze_patterns",
+    "analyze-sessions",
+    "analyze-trends",
+    "archive-item",
+    "assess-ai-tools",
+    "au_collate",
+    "au_collate_temp",
+    "au_conda_setupEnv_not_tested",
+    "audit_logger",
+    "au_git_clean_stale_local_branches",
+    "au_git_clean_stale_local_branches_all_repos",
+    "au_git_daily_commit",
+    "au_git_daily_commit_all_repos",
+    "au_git_reduce_git_change_size",
+    "au_git_resolve_branch_conflicts",
+    "au_git_scheduled_task",
+    "au_git_scheduled_task_all_repos",
+    "au_git_select_YYYYMM_branch",
+    "au_git_select_YYYYMM_branch_all_repos",
+    "au_poetry_create_environment",
+    "au_poetry_create_environment_developer",
+    "au_report_images",
+    "auto_embed",
+    "auto-fix-loop",
+    "autogen",
+    "auto-sync-usage",
+    "au_wlng_wsp_zip_fsts",
+    "au_wlng_wsp_zip_fsts_temp",
+    "au_zip_temp",
+    "baseline-auto-fix",
+    "baseline-quick-check",
+    "baseline-validation",
+    "bashrc",
+    "batch_commit_all",
+    "batch_commit_push",
+    "batch_commit_push_v2",
+    "batch_processing",
+    "batch_runner",
+    "benchmark_example",
+    "bulk_install",
+    "bulk_install_hooks",
+    "bulk_readiness_check",
+    "capture-corrections",
+    "centralize_commands_to_assetutilities",
+    "check_all_repos_status",
+    "check_all_status",
+    "check_claude_usage",
+    "checkpoint_hooks",
+    "checkpoint-manager",
+    "check_readiness",
+    "check_trunk_status",
+    "clang-format-all",
+    "claude-review",
+    "claude-review-manager",
+    "claude-with-logging",
+    "clean-py-caches",
+    "cleanup_duplicate_backups",
+    "codecov_io",
+    "codex-review",
+    "codex-review-manager",
+    "commit_all",
+    "commit_and_sync_all",
+    "common",
+    "compile_linux",
+    "compile_mac",
+    "completion",
+    "config",
+    "configure_repos",
+    "connect-workspace-linux",
+    "connect-workspace-tailscale",
+    "cost_optimizer",
+    "create_environment",
+    "create_environment_developer",
+    "create-files",
+    "create-skills",
+    "cron-repository-sync",
+    "cron-setup",
+    "cross-review",
+    "cross-review-loop",
+    "daily_context_analysis",
+    "daily_context_check",
+    "daily-reflect",
+    "daily-reflect-report",
+    "daily_repo_maintenance",
+    "daily_routine",
+    "daily_today",
+    "daily-update",
+    "deploy_agent_assignments",
+    "deploy_agent_learning",
+    "deploy_enhanced_agent",
+    "deploy-enhanced-agent-os",
+    "deploy-enhanced-create-specs",
+    "deploy-enhanced-execute-tasks",
+    "deploy_enhanced_execute_tasks",
+    "deploy_git_commands",
+    "deploy_orchestration_all_repos",
+    "deploy_parallel_instruction",
+    "deploy_prompt_enhancement",
+    "deploy_prompt_enhancement_complete",
+    "deploy_pytest_config",
+    "deploy_v3_1_conditional_phasing",
+    "deploy_v3_agent",
+    "dev-env",
+    "directory_processing_examples",
+    "distribute_commands",
+    "dm_6dof_single_thread",
+    "dm_aqwa_import",
+    "dm_fsts",
+    "dm_fsts_lngc",
+    "dm_iterator",
+    "dm_iterator_10x",
+    "dm_iterator_180km3_pb",
+    "dm_iterator_3x",
+    "dm_iterator_5x",
+    "dm_iterator_organized",
+    "dm_ofx_mooring",
+    "dm_post",
+    "dm_pretension_iteration",
+    "dm_pretension_iteration_organized",
+    "dm_pretension_iteration_temp",
+    "dm_temp",
+    "dm_temp1",
+    "dm_temp2",
+    "dm_temp_optimized",
+    "dm_temp_test",
+    "dm_temp_test_optimized",
+    "dm_tension_iteration",
+    "doc2context",
+    "docker-test",
+    "download_imo_quickstart",
+    "download_imo_year_by_year",
+    "download_osha_data",
+    "dwgadd_test",
+    "dxf-allcvt",
+    "dxf-roundtrip",
+    "dynapi_test_all",
+    "engineering_workflow",
+    "env-vars",
+    "example_usage",
+    "execute_consolidation",
+    "extract-cc-insights",
+    "extract-corrections",
+    "extract-patterns",
+    "extract-script-ideas",
+    "extract-session-for-rag",
+    "feedback",
+    "fix_filenames",
+    "fix_problem_repos",
+    "fix_remaining_repos",
+    "fsts_l015_180km3_pb_lwl_135",
+    "gate_pass_review",
+    "gemini-review",
+    "gemini-review-manager",
+    "gendocs",
+    "generate_marketing_pdfs",
+    "generate-report",
+    "generate-session-report",
+    "git_all_repos",
+    "git_all_repos_daily_commit",
+    "git_check_large_files",
+    "git_clean_stale_local_branches",
+    "git-commands",
+    "git_daily_commit",
+    "github-setup",
+    "git_select_year_month_branch",
+    "git_sync_all",
+    "git-sync-all-with-hooks",
+    "git_sync_integration",
+    "hardware-assess",
+    "improve_context",
+    "install-codex-hooks",
+    "install_compliance_hooks",
+    "install_factory_ai",
+    "install_factory_all_repos",
+    "install_factory_enhanced",
+    "install-gemini-hooks",
+    "install_hook",
+    "install-hooks",
+    "install_openfoam_v13",
+    "install_speckit_all_repos",
+    "install_to_repo",
+    "knowledge-advise",
+    "knowledge-capture",
+    "knowledge-index",
+    "knowledge-review",
+    "knowledge-search",
+    "knowledge-stats",
+    "legal-sanity-scan",
+    "llvmfuzz_standalone_data",
+    "llvmfuzz_standalone_tz",
+    "load-spark-env",
+    "logs-all",
+    "log-usage",
+    "manage_windows_registry",
+    "merge_and_cleanup_branches",
+    "mku",
+    "model_filter",
+    "mooring_analysis",
+    "next-id",
+    "npx-checkpoint-wrapper",
+    "optimize_context",
+    "optimize-mcp-context",
+    "optimize_weights",
+    "orchestrate",
+    "phase1-setup",
+    "post-commit",
+    "pre-compact-save",
+    "pre-task",
+    "primary-claude",
+    "propagate_all_skills",
+    "propagate_claude_rules",
+    "propagate_guidelines",
+    "propagate_interactive_mode",
+    "propagate_skill_references",
+    "propagate-slash-commands",
+    "provider_filter",
+    "provider_recommender",
+    "pull_all_repos",
+    "push_all_repos",
+    "python_analysis_workflow",
+    "queue-report",
+    "queue-status",
+    "quick_branch_check",
+    "quick-start",
+    "quick_start",
+    "quick_trunk_cleanup",
+    "recommender",
+    "refactor-analysis",
+    "refresh_all_data",
+    "refresh_bsee_hse",
+    "refresh_epa_tri",
+    "refresh_ntsb_marine",
+    "refresh_osha_data",
+    "refresh_production_data",
+    "refresh_uscg_misle",
+    "regenerate_optimized_reports",
+    "reinstall_chrome_beta_linux",
+    "reinstall_chrome_beta_mac",
+    "reinstall_chrome_stable_linux",
+    "reinstall_chrome_stable_mac",
+    "reinstall_msedge_beta_linux",
+    "reinstall_msedge_beta_mac",
+    "reinstall_msedge_dev_linux",
+    "reinstall_msedge_dev_mac",
+    "reinstall_msedge_stable_linux",
+    "reinstall_msedge_stable_mac",
+    "remove_assetutilities_submodule",
+    "removeEnv",
+    "repository_sync_enhanced",
+    "repo_sync_batch",
+    "resolve_repos",
+    "review-openai",
+    "rule-compliance",
+    "run_all_analyses",
+    "run_all_incident_analysis",
+    "run_all_tests",
+    "run_all_wells_analysis",
+    "run_benchmark_api",
+    "run_cross_repo_tests",
+    "run_lower_tertiary_analysis",
+    "run_orcawave",
+    "run_orchestrator",
+    "run_production",
+    "run-reflection",
+    "run_test",
+    "run-test-py",
+    "run-test-py_orcaflex",
+    "run_tests",
+    "runTests",
+    "run-test-yml",
+    "run_validation",
+    "run-workflow",
+    "session-end-evaluate",
+    "session-logger",
+    "setup",
+    "setup_agent_links",
+    "setup-claude-env",
+    "setup_claude_memory_all_repos",
+    "setup_compliance",
+    "setup_cron",
+    "setup_dev",
+    "setupEnv",
+    "setup-gitbash",
+    "setup-global-env",
+    "setupLocalInstall",
+    "setup_maintenance_cron",
+    "setup-mcp",
+    "setup_mcp_servers",
+    "setup-trunk-flow",
+    "setup_uv_env",
+    "setup_xrdp",
+    "simple_batch_commit",
+    "simple_reg_commands",
+    "slaves",
+    "smoke",
+    "spark-config",
+    "spark-daemon",
+    "spark-daemons",
+    "standard-checkpoint-hooks",
+    "standardize_repos_with_pyproject",
+    "start",
+    "start-all",
+    "start-history-server",
+    "start-master",
+    "start-mesos-dispatcher",
+    "start-mesos-shuffle-service",
+    "start-shuffle-service",
+    "start-slave",
+    "start-slaves",
+    "start-thriftserver",
+    "statusline-command",
+    "stop-all",
+    "stop-history-server",
+    "stop-master",
+    "stop-mesos-dispatcher",
+    "stop-mesos-shuffle-service",
+    "stop-shuffle-service",
+    "stop-slave",
+    "stop-slaves",
+    "stop-thriftserver",
+    "submit-to-codex",
+    "submit-to-gemini",
+    "suggest_model",
+    "sync_agent_configs",
+    "sync-all-repos",
+    "sync_all_repos",
+    "sync_and_commit_all",
+    "sync-knowledge-work-plugins",
+    "sync_orchestration_all_repos",
+    "sync_repos",
+    "sync_statusline",
+    "sync-tabby-linux",
+    "system-maintain",
+    "system-update",
+    "task_classifier",
+    "test_analysis",
+    "test-analyze-trends",
+    "test_backup_functionality",
+    "test_bashrc_modification",
+    "test-capture-corrections",
+    "test-dxf",
+    "test_execution",
+    "test-extract-corrections",
+    "test_n8n_webhook",
+    "test-runner",
+    "test_safe_modification",
+    "test_utils",
+    "thread_count",
+    "unit_testing_all",
+    "unknown",
+    "update_ai_agents_daily",
+    "update_create_spec_time",
+    "update_execute_tasks_parallel",
+    "update_v3_refresh_and_phasing",
+    "usage_checker",
+    "usage_tracker",
+    "uv_deploy",
+    "uv-install",
+    "uv_run",
+    "uv_setup",
+    "uv-setup-test",
+    "uv-update",
+    "validate_context",
+    "validate_cross_repo_standards",
+    "vendor_install",
+    "verification_hooks",
+    "verify_compliance",
+    "verify-deployment",
+    "verify_standardization",
+    "web_app_workflow",
+    "workflow",
+    "workflow-cli"
+  ],
+  "insights": [
+    "Many complex pipelines - good candidates for script extraction",
+    "High-value patterns identified - ready for skill creation"
+  ]
+}
