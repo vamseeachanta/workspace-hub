@@ -1,0 +1,11 @@
+User wants to maximize weekly usage across multiple AI subscriptions with different quotas while keeping all machines ready for git repos and AI harness parity.
+§
+User's current AI subscriptions are Claude Max at USD 200, two separate Codex/OpenAI logins at USD 20 each, and one Gemini Google AI Pro account at USD 19.99.
+§
+Plan and work artifacts should undergo adversarial cross-review by ALL available agents: Claude, Codex, and Gemini — not just a single reviewer.
+§
+User thinks in overnight batch execution — wants 3 self-contained agent prompts (one per terminal) with zero git contention, no user interaction needed, and a clear "what you'll have by morning" summary. Always include a git contention avoidance map showing which terminal writes which files.
+§
+Adversarial review at BOTH stages: plan review AND code/artifact review before closing.
+§
+Vamsee runs ACE Engineer (aceengineer.com) consulting business. Target: $120K/yr retainers, 3-5 clients = $360-600K ARR. Strategy repo: aceengineer-strategy/ (nested in workspace-hub). P.E., 23yr exp. Core: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation. GTM: offshore firms 10-50 engineers.

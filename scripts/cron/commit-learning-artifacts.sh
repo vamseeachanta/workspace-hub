@@ -32,6 +32,42 @@ if [[ -f "${WORKSPACE_HUB}/scripts/cron/lib/git-safe.sh" ]]; then
   git_safe_init "$WORKSPACE_HUB"
 fi
 
+# ── Snapshot agent memories ───────────────────────────────────────────
+log "Snapshotting agent memories..."
+
+# Hermes memories (#1777)
+if [[ -f "${HOME}/.hermes/memories/MEMORY.md" ]]; then
+  mkdir -p config/agents/hermes/memories
+  cp "${HOME}/.hermes/memories/MEMORY.md" config/agents/hermes/memories/MEMORY.md.snapshot
+  cp "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot 2>/dev/null || true
+fi
+
+# Claude Code project memory (#1779)
+CLAUDE_MEM="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
+if [[ -d "$CLAUDE_MEM" ]]; then
+  mkdir -p config/agents/claude/memory-snapshots
+  cp "$CLAUDE_MEM"/*.md config/agents/claude/memory-snapshots/ 2>/dev/null || true
+fi
+CLAUDE_MEM_WED="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub-worldenergydata/memory"
+if [[ -d "$CLAUDE_MEM_WED" ]]; then
+  cp "$CLAUDE_MEM_WED/MEMORY.md" config/agents/claude/memory-snapshots/worldenergydata-MEMORY.md 2>/dev/null || true
+fi
+
+# Codex state (#1781)
+if [[ -d "${HOME}/.codex" ]]; then
+  mkdir -p config/agents/codex/state-snapshots
+  cp "${HOME}/.codex/rules/default.rules" config/agents/codex/state-snapshots/ 2>/dev/null || true
+  cp "${HOME}/.codex/history.jsonl" config/agents/codex/state-snapshots/ 2>/dev/null || true
+  cp "${HOME}/.codex/session_index.jsonl" config/agents/codex/state-snapshots/ 2>/dev/null || true
+fi
+
+# Gemini state (#1781)
+if [[ -d "${HOME}/.gemini" ]]; then
+  mkdir -p config/agents/gemini/state-snapshots
+  cp "${HOME}/.gemini/state.json" config/agents/gemini/state-snapshots/ 2>/dev/null || true
+  cp "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/ 2>/dev/null || true
+fi
+
 # ── Stage learning artifacts ──────────────────────────────────────────
 log "Staging learning artifacts..."
 
@@ -78,6 +114,13 @@ done
 for orch_dir in logs/orchestrator/hermes logs/orchestrator/codex; do
   if [[ -d "$orch_dir" ]]; then
     git add "$orch_dir/" 2>/dev/null && ((staged++)) || true
+  fi
+done
+
+# Agent memory snapshots (#1777, #1779, #1781)
+for snap_dir in config/agents/hermes/memories config/agents/claude/memory-snapshots config/agents/codex/state-snapshots config/agents/gemini/state-snapshots; do
+  if [[ -d "$snap_dir" ]]; then
+    git add "$snap_dir/" 2>/dev/null && ((staged++)) || true
   fi
 done
 
