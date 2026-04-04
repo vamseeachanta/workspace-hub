@@ -93,7 +93,7 @@ class SpanNaturalFrequency:
         """
         inp = self._inp
         A_steel = math.pi / 4.0 * (inp.od_m**2 - self._id_m**2)
-        A_bore = math.pi / 4.0 * id_m_dummy_not_used = math.pi / 4.0 * self._id_m**2
+        A_bore = math.pi / 4.0 * self._id_m**2
         m_pipe = inp.steel_density_kgm3 * A_steel
         m_content = inp.content_density_kgm3 * (math.pi / 4.0 * self._id_m**2)
         e_over_D = inp.seabed_gap_m / inp.od_m
