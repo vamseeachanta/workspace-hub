@@ -1,0 +1,37 @@
+Frequency (rad/s),Period (s),DOF_i,DOF_j,Damping,Unit
+3.141593e+00,2.000000e+00,Surge,Surge,1.092889e+00,N.s/m
+3.141593e+00,2.000000e+00,Surge,Sway,-2.552961e-17,N.s/m
+3.141593e+00,2.000000e+00,Surge,Heave,5.731864e-18,N.s/m
+3.141593e+00,2.000000e+00,Surge,Roll,-7.074521e-18,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Surge,Pitch,1.696023e+00,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Surge,Yaw,7.082669e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Sway,Surge,6.898061e-18,N.s/m
+3.141593e+00,2.000000e+00,Sway,Sway,4.277285e+00,N.s/m
+3.141593e+00,2.000000e+00,Sway,Heave,-1.044530e-15,N.s/m
+3.141593e+00,2.000000e+00,Sway,Roll,-8.420799e-01,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Sway,Pitch,-6.001892e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Sway,Yaw,1.543744e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Heave,Surge,7.270047e-16,N.s/m
+3.141593e+00,2.000000e+00,Heave,Sway,-3.253698e-16,N.s/m
+3.141593e+00,2.000000e+00,Heave,Heave,5.756040e+00,N.s/m
+3.141593e+00,2.000000e+00,Heave,Roll,8.025674e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Heave,Pitch,-7.519173e-16,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Heave,Yaw,2.531640e-18,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Surge,2.998651e-19,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Sway,-8.420793e-01,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Heave,1.334774e-16,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Roll,1.657823e-01,N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Pitch,-1.081543e-17,N.m.s/rad
+3.141593e+00,2.000000e+00,Roll,Yaw,2.839318e-17,N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Surge,1.695850e+00,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Sway,3.014418e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Heave,6.188391e-16,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Roll,3.482626e-18,N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Pitch,2.632099e+00,N.m.s/rad
+3.141593e+00,2.000000e+00,Pitch,Yaw,8.685549e-17,N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Surge,-3.917868e-16,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Sway,-2.538067e-16,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Heave,6.433977e-17,N.s or N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Roll,8.871510e-17,N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Pitch,1.574017e-16,N.m.s/rad
+3.141593e+00,2.000000e+00,Yaw,Yaw,4.796252e-01,N.m.s/rad

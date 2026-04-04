@@ -1,0 +1,9 @@
+VesselType:
+  Name: Ellipsoid
+  WaterDepth: 100.0
+  DiffractionSource: OrcaWave
+  CreatedDate: '2026-04-04'
+  RAODataFile: Ellipsoid_raos.csv
+  AddedMassDataFile: Ellipsoid_added_mass.csv
+  DampingDataFile: Ellipsoid_damping.csv
+  Notes: Generated from OrcaWave analysis
