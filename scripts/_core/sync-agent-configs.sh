@@ -405,6 +405,103 @@ if [[ -f "$HERMES_SOUL_TEMPLATE" ]]; then
     sync_hermes_plain_file "$HERMES_SOUL_TEMPLATE" "$HERMES_SOUL_TARGET" "Hermes SOUL.md"
 fi
 
+# ── Restore agent memory snapshots on fresh machine ───────────────────
+echo
+echo "=== Restoring Agent Memory Snapshots ==="
+
+# Hermes memories (#1777)
+HERMES_MEM_SNAP="$WS_HUB/config/agents/hermes/memories"
+HERMES_MEM_TARGET="$HOME/.hermes/memories"
+if [[ -d "$HERMES_MEM_SNAP" && -d "$HOME/.hermes" ]]; then
+    if [[ ! -f "$HERMES_MEM_TARGET/MEMORY.md" ]] || [[ "$FORCE" == "true" ]]; then
+        mkdir -p "$HERMES_MEM_TARGET"
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Hermes memories -> $HERMES_MEM_TARGET (restore from snapshot)"
+        else
+            for f in "$HERMES_MEM_SNAP"/*.snapshot; do
+                [[ -f "$f" ]] || continue
+                basename="${f%.snapshot}"
+                basename="$(basename "$basename")"
+                cp "$f" "$HERMES_MEM_TARGET/$basename"
+            done
+            log_change "Hermes memories -> $HERMES_MEM_TARGET (restored)"
+        fi
+    else
+        log_skip "Hermes memories (already exist at $HERMES_MEM_TARGET)"
+    fi
+else
+    log_skip "Hermes memories (hermes not installed or no snapshots)"
+fi
+
+# Claude Code project memory (#1779)
+CLAUDE_MEM_SNAP="$WS_HUB/config/agents/claude/memory-snapshots"
+# Derive the encoded project path from WS_HUB
+WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
+CLAUDE_MEM_TARGET="$HOME/.claude/projects/-${WS_HUB_ENCODED}/memory"
+if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
+    EXISTING_COUNT=$(ls "$CLAUDE_MEM_TARGET"/*.md 2>/dev/null | wc -l || echo 0)
+    if [[ "$EXISTING_COUNT" -lt 5 ]] || [[ "$FORCE" == "true" ]]; then
+        mkdir -p "$CLAUDE_MEM_TARGET"
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Claude project memory -> $CLAUDE_MEM_TARGET (restore from snapshot)"
+        else
+            # Don't overwrite existing files — only copy missing ones
+            for f in "$CLAUDE_MEM_SNAP"/*.md; do
+                [[ -f "$f" ]] || continue
+                basename="$(basename "$f")"
+                # Skip worldenergydata snapshot — different project path
+                [[ "$basename" == worldenergydata-* ]] && continue
+                if [[ ! -f "$CLAUDE_MEM_TARGET/$basename" ]] || [[ "$FORCE" == "true" ]]; then
+                    cp "$f" "$CLAUDE_MEM_TARGET/$basename"
+                fi
+            done
+            log_change "Claude project memory -> $CLAUDE_MEM_TARGET (restored)"
+        fi
+    else
+        log_skip "Claude project memory (already has $EXISTING_COUNT files)"
+    fi
+else
+    log_skip "Claude project memory (claude not installed or no snapshots)"
+fi
+
+# Codex state (#1781)
+CODEX_STATE_SNAP="$WS_HUB/config/agents/codex/state-snapshots"
+if [[ -d "$CODEX_STATE_SNAP" && -d "$HOME/.codex" ]]; then
+    if [[ ! -f "$HOME/.codex/rules/default.rules" ]] || [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Codex state -> ~/.codex/ (restore from snapshot)"
+        else
+            mkdir -p "$HOME/.codex/rules"
+            cp "$CODEX_STATE_SNAP/default.rules" "$HOME/.codex/rules/" 2>/dev/null || true
+            cp "$CODEX_STATE_SNAP/history.jsonl" "$HOME/.codex/" 2>/dev/null || true
+            cp "$CODEX_STATE_SNAP/session_index.jsonl" "$HOME/.codex/" 2>/dev/null || true
+            log_change "Codex state -> ~/.codex/ (restored)"
+        fi
+    else
+        log_skip "Codex state (default.rules already exists)"
+    fi
+else
+    log_skip "Codex state (codex not installed or no snapshots)"
+fi
+
+# Gemini state (#1781)
+GEMINI_STATE_SNAP="$WS_HUB/config/agents/gemini/state-snapshots"
+if [[ -d "$GEMINI_STATE_SNAP" && -d "$HOME/.gemini" ]]; then
+    if [[ ! -f "$HOME/.gemini/state.json" ]] || [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Gemini state -> ~/.gemini/ (restore from snapshot)"
+        else
+            cp "$GEMINI_STATE_SNAP/state.json" "$HOME/.gemini/" 2>/dev/null || true
+            cp "$GEMINI_STATE_SNAP/projects.json" "$HOME/.gemini/" 2>/dev/null || true
+            log_change "Gemini state -> ~/.gemini/ (restored)"
+        fi
+    else
+        log_skip "Gemini state (state.json already exists)"
+    fi
+else
+    log_skip "Gemini state (gemini not installed or no snapshots)"
+fi
+
 echo
 echo "=== Summary ==="
 echo "Updated: $changed"
