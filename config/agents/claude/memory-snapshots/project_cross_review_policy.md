@@ -6,7 +6,7 @@ type: project
 
 Cross-AI adversarial review policy established by #1515, with enforcement progressively strengthened through 2026-04-02.
 
-**Policy:** Claude=orchestrator, Codex=default adversarial reviewer, Gemini=optional third. Two-provider minimum.
+**Policy:** Claude=orchestrator + adversarial reviewer, Codex=default adversarial reviewer, Gemini=default adversarial reviewer. ALL three agents review at BOTH plan and code/artifact stages. Three-provider default; two-provider minimum only when one is unavailable.
 
 **Enforcement layers (newest first):**
 1. **Pre-push review gate + daily audit cron** (#1668, commit `541c74c6`, 2026-04-02) — blocks pushes without review evidence, daily cron audits compliance

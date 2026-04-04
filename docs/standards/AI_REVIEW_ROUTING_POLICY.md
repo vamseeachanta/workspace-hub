@@ -14,7 +14,7 @@
 |----------|------|-------|
 | **Claude Code** | Default orchestrator | Task framing, planning, routing decisions, repo-facing workflow |
 | **Codex** | Default coding worker & adversarial reviewer | Bounded implementation, test writing, refactors, diff review |
-| **Gemini** | Narrow third-lane reviewer | Architecture review, large-context research, high-stakes synthesis |
+| **Gemini** | Default adversarial reviewer | Architecture review, large-context research, high-stakes synthesis, plan & code review |
 
 ## Review Defaults
 
@@ -22,8 +22,8 @@
 - **Claude remains the orchestrator**: Claude frames work, sequences execution, and synthesizes the combined review result.
 - **Codex remains the default implementation worker** for bounded coding, tests, and refactors.
 - **Gemini is no longer trigger-only** in this repository policy; it participates by default as the third adversarial reviewer because the user's stated preference is all-agent cross-review at both stages.
-- Plans get adversarial review by default for non-trivial work.
-- Code and deliverable artifacts get adversarial review before completion when the change is risky, architectural, cross-cutting, or hard to verify locally.
+- Plans get adversarial review by ALL agents by default.
+- Code and deliverable artifacts get adversarial review by ALL agents before completion by default.
 
 ## Optional Review Reduction Rules
 
@@ -74,7 +74,7 @@ This policy is enforced at **Level 3 — Hook** (strongest). Promotion history:
 ### How it works
 
 1. **On `gh pr create`**: The PreToolUse hook runs the routing gate against the current diff
-2. **Routing gate** analyzes the diff for Gemini trigger conditions (see above)
+2. **Routing gate** analyzes the diff and confirms all three agents (Claude, Codex, Gemini) are included in review
 3. **Block decision**: If no cross-review evidence exists, the hook blocks with a message including recommended reviewers
 4. **Pass-through**: If review evidence exists, the hook logs the routing recommendation to stderr for visibility
 
