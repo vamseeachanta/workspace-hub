@@ -25,6 +25,23 @@ GH_AUTH_ERROR=""
 
 mkdir -p "$LOG_DIR"
 
+# ── Auth Check ────────────────────────────────────────────────────────────────
+# Verify gh CLI authentication upfront so we fail fast.
+if command -v gh >/dev/null 2>&1; then
+    if gh auth status >/dev/null 2>&1; then
+        GH_AUTHENTICATED="true"
+        echo "gh auth: authenticated"
+    else
+        GH_AUTHENTICATED="false"
+        GH_AUTH_ERROR="gh CLI is not authenticated; cannot create or update review backlog issues"
+        echo "WARNING: gh CLI is not authenticated — issue creation will be skipped" >&2
+    fi
+else
+    GH_AUTHENTICATED="false"
+    GH_AUTH_ERROR="gh CLI is not installed"
+    echo "WARNING: gh CLI is not installed — issue creation will be skipped" >&2
+fi
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die() { echo "ERROR: $*" >&2; exit 1; }
 
@@ -171,14 +188,7 @@ fi
 
 UNREVIEWED_COUNT=${#UNREVIEWED_HASHES[@]}
 
-if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 && "$DRY_RUN" != "true" ]]; then
-    if gh auth status >/dev/null 2>&1; then
-        GH_AUTHENTICATED="true"
-    else
-        GH_AUTHENTICATED="false"
-        GH_AUTH_ERROR="gh CLI is not authenticated; cannot create or update review backlog issue"
-    fi
-fi
+# (gh auth already checked at script start)
 
 # ── Output ────────────────────────────────────────────────────────────────────
 echo "Summary:"
@@ -219,6 +229,7 @@ cat > "$JSON_OUTPUT" <<EOF
   "compliance_percent": $COMPLIANCE,
   "threshold_percent": $REVIEW_COMPLIANCE_THRESHOLD,
   "gh_authenticated": ${GH_AUTHENTICATED},
+  "gh_auth_error": "$(echo "$GH_AUTH_ERROR" | sed 's/"/\\"/g')",
   "pass": $([ "$COMPLIANCE" -ge "$REVIEW_COMPLIANCE_THRESHOLD" ] && echo "true" || echo "false"),
   "unreviewed": [
 $(for i in "${!UNREVIEWED_HASHES[@]}"; do
@@ -238,7 +249,7 @@ echo ""
 echo "JSON summary written to: $JSON_OUTPUT"
 
 # ── Create GitHub issue if compliance is below threshold ──────────────────────
-if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 && -z "$GH_AUTH_ERROR" ]]; then
+if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -gt 0 ]]; then
     ISSUE_TITLE="Review backlog: ${UNREVIEWED_COUNT} unreviewed commits from ${DATE}"
 
     # Build issue body
@@ -279,6 +290,9 @@ if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -g
         echo "  Labels: maintenance, review-backlog"
         echo ""
         echo "$ISSUE_BODY"
+    elif [[ -n "$GH_AUTH_ERROR" ]]; then
+        echo ""
+        echo "WARNING: Skipping GitHub issue creation — $GH_AUTH_ERROR" >&2
     else
         echo ""
         echo "Creating or updating GitHub issue for review backlog..."
@@ -286,10 +300,13 @@ if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -g
         # Check if labels exist, create if not
         gh label create "review-backlog" --description "Commits lacking review evidence" --color "FBCA04" 2>/dev/null || true
 
-        EXISTING_ISSUE_NUMBER="$(gh issue list --state open --label "review-backlog" --limit 1 --json number --jq '.[0].number' 2>/dev/null || true)"
+        # Search for existing open issue with matching title to avoid duplicates
+        EXISTING_ISSUE_NUMBER="$(gh issue list --state open --label "review-backlog" --search "Review backlog:" --json number,title --jq '.[0].number' 2>/dev/null || true)"
 
         if [[ -n "$EXISTING_ISSUE_NUMBER" && "$EXISTING_ISSUE_NUMBER" != "null" ]]; then
-            gh issue comment "$EXISTING_ISSUE_NUMBER" --body "$ISSUE_BODY" >/dev/null
+            gh issue comment "$EXISTING_ISSUE_NUMBER" --body "## Update — ${DATE}
+
+$ISSUE_BODY" >/dev/null
             echo "Updated existing review backlog issue: #$EXISTING_ISSUE_NUMBER"
         else
             ISSUE_URL="$(gh issue create \
@@ -307,10 +324,6 @@ if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -g
             fi
         fi
     fi
-fi
-
-if [[ -n "$GH_AUTH_ERROR" ]]; then
-    die "$GH_AUTH_ERROR"
 fi
 
 echo ""
