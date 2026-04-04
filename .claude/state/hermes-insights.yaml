@@ -3,11 +3,11 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-03T07:00:11Z"
-  source_hash: "7477eb2b85a6146b4a053a9bd2095ebc"
+  generated: "2026-04-04T07:00:26Z"
+  source_hash: "9c221637a05b6fc8e674c7af9ab92e5c"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
-  entry_count: 14
+  entry_count: 15
 
 environment_facts:
   - "ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount."
@@ -18,10 +18,11 @@ conventions:
 project_knowledge:
   - "Workspace-hub repo ecosystem uses AI providers in descending volume: Claude, then OpenAI, then Gemini."
   - "aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospects, conf-prep, scorecard. Scanner: scripts/gtm/job-market-scanner.py Mon cron. #1669-1671."
-  - "Hermes ecosystem integration (#1712,#1719): external_dirs covers 5 repos (691 total skills). Session export→logs/orchestrator/hermes/. Memory sync→hermes-insights.yaml. Skill patches tracked via post-commit hook. Nightly cron runs export+sync+drift. EXCLUDED_SKILL_DIRS patch in config/agents/hermes/patches/."
+  - "Hermes: external_dirs=5 repos (691 skills). Nightly cron: export+sync+drift. CC v2.1.90 native features to adopt (#1775 8-week cadence): /powerup /insights /stats /context /simplify /batch /debug /diff /security-review. Key frontmatter: skills context:fork paths effort model hooks. Ref: shanraisshan/claude-code-best-practice."
   - "workspace-hub data pipeline: .planning/archive/online-resources/catalog.yaml has malformed YAML (unquoted colons in values, e.g. line 1309). Use safe_yaml_load() fallback in scripts/data/build-online-resource-registry.py as a pattern. Also: 7 catalog formats exist with different schemas — unified registry at data/document-index/online-resource-registry.yaml (247 entries). Domain views at docs/resources/<domain>-resources.md (14 pages)."
   - "digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root."
-  - "OrcaWave/OrcaFlex domain: operator map at docs/maps/, reconciliation + engineering assessment at docs/reports/. Hermes skill: workspace-hub/digitalmodel-orcawave-orcaflex-workflow. OrcaFlex API=TESTED (#1656 closed). OrcaWave coverage=40.6% (#1639 open). Reverse parser done (#1638 closed). Spec bridge feasible 2-3d (#1588 open). #1606 closed stale. loguru NOT a test blocker. Solver queue: scripts/solver/ git-based dispatch to licensed-win-1. Parachute: #1264 STATIC, #1292 DYNAMIC."
+  - "Legal scan skill restored (coordination/legal-sanity-scan v2.0). .legal-deny-list.yaml has 15 client patterns. MANDATORY for all document-intelligence and resource work. --diff-only exclusion fix applied. Script: scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) are excluded from scanning since they legitimately reference client folder names."
+  - "licensed-win-1 has NO Hermes — use Claude/Codex/Gemini CLIs directly. Execution guide: docs/plans/licensed-win-1-execution-guide.md. Prompts: docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Use `python` not `uv run` on Windows."
 
 user_preferences:
   - "User wants to maximize weekly usage across multiple AI subscriptions with different quotas while keeping all machines ready for git repos and AI harness parity."

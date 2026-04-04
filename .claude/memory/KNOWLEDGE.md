@@ -87,7 +87,7 @@
 - Adaptive routing: EWMA alpha=0.3, seed=3.0, min_ratings=3, poor_threshold=2.5
 - Rate with model: `route.sh --rate 4 claude/sonnet-4-5` *stale: 2026-03-15*
 - Stats with EWMA: `route.sh --stats`
-- Optimizer: `scripts/coordination/routing/optimize_weights.sh`
+- Optimizer: `scripts/coordination/routing/optimize_weights.sh` *verified: 2026-04-04*
 
 ## Topic Files
 
