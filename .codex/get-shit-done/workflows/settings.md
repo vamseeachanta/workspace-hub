@@ -12,8 +12,8 @@ Read all files referenced by the invoking prompt's execution_context before star
 Ensure config exists and load current state:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-ensure-section
-INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" state load)
+node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-ensure-section
+INIT=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" state load)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 

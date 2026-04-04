@@ -20,11 +20,11 @@ Routes to the settings workflow which handles:
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/settings.md
+@D:/workspace-hub/.claude/get-shit-done/workflows/settings.md
 </execution_context>
 
 <process>
-**Follow the settings workflow** from `@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/settings.md`.
+**Follow the settings workflow** from `@D:/workspace-hub/.claude/get-shit-done/workflows/settings.md`.
 
 The workflow handles all logic including:
 1. Config file creation with defaults if missing

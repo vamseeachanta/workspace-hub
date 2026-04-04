@@ -64,7 +64,7 @@ elif [ -d "$HOME/.opencode/gsd-local-patches" ]; then
 elif [ -d "$HOME/.gemini/gsd-local-patches" ]; then
   PATCHES_DIR="$HOME/.gemini/gsd-local-patches"
 else
-  PATCHES_DIR="/mnt/local-analysis/workspace-hub/.codex/gsd-local-patches"
+  PATCHES_DIR="D:/workspace-hub/.codex/gsd-local-patches"
 fi
 # Local install fallback — check all runtime directories
 if [ ! -d "$PATCHES_DIR" ]; then

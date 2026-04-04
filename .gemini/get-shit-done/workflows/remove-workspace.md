@@ -13,7 +13,7 @@ Read all files referenced by the invoking prompt's execution_context before star
 Extract workspace name from $ARGUMENTS.
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init remove-workspace "$WORKSPACE_NAME")
+INIT=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init remove-workspace "$WORKSPACE_NAME")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 

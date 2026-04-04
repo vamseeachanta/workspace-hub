@@ -56,9 +56,9 @@ you could describe in one sentence and execute in under 2 minutes.
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/fast.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/fast.md
 </execution_context>
 
 <process>
-Execute the fast workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/fast.md end-to-end.
+Execute the fast workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/fast.md end-to-end.
 </process>

@@ -99,7 +99,7 @@ Create a new thread:
 
 1. Generate slug from description:
    ```bash
-   SLUG=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" generate-slug "{{GSD_ARGS}}")
+   SLUG=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" generate-slug "{{GSD_ARGS}}")
    ```
 
 2. Create the threads directory if needed:
@@ -138,7 +138,7 @@ Create a new thread:
 
 5. Commit:
    ```bash
-   node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "docs: create thread — ${ARGUMENTS}" --files ".planning/threads/${SLUG}.md"
+   node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "docs: create thread — ${ARGUMENTS}" --files ".planning/threads/${SLUG}.md"
    ```
 
 6. Report:

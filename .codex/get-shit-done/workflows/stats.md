@@ -12,7 +12,7 @@ Read all files referenced by the invoking prompt's execution_context before star
 Gather project statistics:
 
 ```bash
-STATS=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" stats json)
+STATS=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" stats json)
 if [[ "$STATS" == @file:* ]]; then STATS=$(cat "${STATS#@file:}"); fi
 ```
 

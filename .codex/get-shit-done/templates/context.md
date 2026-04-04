@@ -27,22 +27,6 @@ Template for `.planning/phases/XX-name/{phase_num}-CONTEXT.md` - captures implem
 
 </domain>
 
-[Optional — include only when --product flag was used during discuss-phase:]
-<product_validation>
-## Product Validation
-
-**Demand:** [Strong/Weak/Unverified] — [evidence summary from forcing questions]
-**Status quo:** [What users currently do to solve this problem]
-**Specificity:** [Named user/role or category-level only]
-**Wedge:** [Smallest version that delivers real value]
-
-### Premises
-1. [Confirmed premise that downstream agents should treat as ground truth]
-2. [Confirmed premise]
-
-</product_validation>
-[End optional section]
-
 <decisions>
 ## Implementation Decisions
 
@@ -352,11 +336,6 @@ The output should answer: "What does the researcher need to investigate? What ch
 - "Good user experience"
 - "Fast and responsive"
 - "Easy to use"
-
-**Product validation (optional):**
-- Only present when `--product` flag was used during discuss-phase
-- Captures demand evidence, status quo, user specificity, narrowest wedge
-- Downstream agents use this to understand WHY this phase exists, not just WHAT to build
 
 **After creation:**
 - File lives in phase directory: `.planning/phases/XX-name/{phase_num}-CONTEXT.md`

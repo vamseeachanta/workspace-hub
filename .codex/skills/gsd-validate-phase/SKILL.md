@@ -55,7 +55,7 @@ Output: updated VALIDATION.md + generated test files.
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/validate-phase.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/validate-phase.md
 </execution_context>
 
 <context>
@@ -63,6 +63,6 @@ Phase: {{GSD_ARGS}} — optional, defaults to last completed phase.
 </context>
 
 <process>
-Execute @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/validate-phase.md.
+Execute @D:/workspace-hub/.codex/get-shit-done/workflows/validate-phase.md.
 Preserve all workflow gates.
 </process>

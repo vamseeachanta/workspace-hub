@@ -65,14 +65,14 @@ Initialize a new project through unified flow: questioning → research (optiona
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/new-project.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/questioning.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/ui-brand.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/project.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/requirements.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/new-project.md
+@D:/workspace-hub/.codex/get-shit-done/references/questioning.md
+@D:/workspace-hub/.codex/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.codex/get-shit-done/templates/project.md
+@D:/workspace-hub/.codex/get-shit-done/templates/requirements.md
 </execution_context>
 
 <process>
-Execute the new-project workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/new-project.md end-to-end.
+Execute the new-project workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/new-project.md end-to-end.
 Preserve all workflow gates (validation, approvals, commits, routing).
 </process>

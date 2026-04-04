@@ -3,7 +3,7 @@ Retroactive 6-pillar visual audit of implemented frontend code. Standalone comma
 </purpose>
 
 <required_reading>
-@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.claude/get-shit-done/references/ui-brand.md
 </required_reading>
 
 <available_agent_types>
@@ -16,15 +16,15 @@ Valid GSD subagent types (use exact names — do not fall back to 'general-purpo
 ## 0. Initialize
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
+INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_UI_REVIEWER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-ui-reviewer 2>/dev/null)
+AGENT_SKILLS_UI_REVIEWER=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-ui-reviewer 2>/dev/null)
 ```
 
 Parse: `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `commit_docs`.
 
 ```bash
-UI_AUDITOR_MODEL=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" resolve-model gsd-ui-auditor --raw)
+UI_AUDITOR_MODEL=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" resolve-model gsd-ui-auditor --raw)
 ```
 
 Display banner:
@@ -71,7 +71,7 @@ Build file list for auditor:
 Build prompt:
 
 ```markdown
-Read /mnt/local-analysis/workspace-hub/.claude/agents/gsd-ui-auditor.md for instructions.
+Read D:/workspace-hub/.claude/agents/gsd-ui-auditor.md for instructions.
 
 <objective>
 Conduct 6-pillar visual audit of Phase {phase_number}: {phase_name}
@@ -149,7 +149,7 @@ Full review: {path to UI-REVIEW.md}
 ## 5. Commit (if configured)
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): UI audit review" --files "${PHASE_DIR}/${PADDED_PHASE}-UI-REVIEW.md"
+node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): UI audit review" --files "${PHASE_DIR}/${PADDED_PHASE}-UI-REVIEW.md"
 ```
 
 </process>

@@ -58,11 +58,11 @@ Routes to the update workflow which handles:
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/update.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/update.md
 </execution_context>
 
 <process>
-**Follow the update workflow** from `@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/update.md`.
+**Follow the update workflow** from `@D:/workspace-hub/.codex/get-shit-done/workflows/update.md`.
 
 The workflow handles all logic including:
 1. Installed version detection (local/global)

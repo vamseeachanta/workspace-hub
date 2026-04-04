@@ -54,9 +54,9 @@ changes that are irrelevant to code review.
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/pr-branch.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/pr-branch.md
 </execution_context>
 
 <process>
-Execute the pr-branch workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/pr-branch.md end-to-end.
+Execute the pr-branch workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/pr-branch.md end-to-end.
 </process>

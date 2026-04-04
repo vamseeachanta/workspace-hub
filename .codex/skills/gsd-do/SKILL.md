@@ -54,8 +54,8 @@ Use when you know what you want but don't know which `/gsd:*` command to run.
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/do.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/do.md
+@D:/workspace-hub/.codex/get-shit-done/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -63,6 +63,6 @@ Use when you know what you want but don't know which `/gsd:*` command to run.
 </context>
 
 <process>
-Execute the do workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/do.md end-to-end.
+Execute the do workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/do.md end-to-end.
 Route user intent to the best GSD command and invoke it.
 </process>

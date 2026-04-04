@@ -216,7 +216,7 @@ get-shit-done/
 
 **New Workflow:**
 - Implementation: `get-shit-done/workflows/{name}.md`
-- Usage: Reference from command with `@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/{name}.md`
+- Usage: Reference from command with `@D:/workspace-hub/.codex/get-shit-done/workflows/{name}.md`
 
 **New Reference Document:**
 - Implementation: `get-shit-done/references/{name}.md`
@@ -229,12 +229,12 @@ get-shit-done/
 ## Special Directories
 
 **get-shit-done/**
-- Purpose: Resources installed to /mnt/local-analysis/workspace-hub/.codex/
+- Purpose: Resources installed to D:/workspace-hub/.codex/
 - Source: Copied by bin/install.js during installation
 - Committed: Yes (source of truth)
 
 **commands/**
-- Purpose: Slash commands installed to /mnt/local-analysis/workspace-hub/.codex/commands/
+- Purpose: Slash commands installed to D:/workspace-hub/.codex/commands/
 - Source: Copied by bin/install.js during installation
 - Committed: Yes (source of truth)
 

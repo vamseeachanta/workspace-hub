@@ -53,7 +53,7 @@ Output: Forensic report saved to `.planning/forensics/`, presented inline, with 
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/forensics.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/forensics.md
 </execution_context>
 
 <context>
@@ -70,7 +70,7 @@ Output: Forensic report saved to `.planning/forensics/`, presented inline, with 
 </context>
 
 <process>
-Read and execute the forensics workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/forensics.md end-to-end.
+Read and execute the forensics workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/forensics.md end-to-end.
 </process>
 
 <success_criteria>

@@ -20,9 +20,9 @@ command -v claude >/dev/null 2>&1 && echo "claude:available" || echo "claude:mis
 command -v codex >/dev/null 2>&1 && echo "codex:available" || echo "codex:missing"
 ```
 
-Parse flags from `{{GSD_ARGS}}`:
+Parse flags from `$ARGUMENTS`:
 - `--gemini` → include Gemini
-- `--claude` → include the agent
+- `--claude` → include Claude
 - `--codex` → include Codex
 - `--all` → include all available
 - No flags → include all available
@@ -34,11 +34,11 @@ No external AI CLIs found. Install at least one:
 - codex: https://github.com/openai/codex
 - claude: https://github.com/anthropics/claude-code
 
-Then run $gsd-review again.
+Then run /gsd:review again.
 ```
 Exit.
 
-If only one CLI is the current runtime (e.g. running inside the agent), skip it for the review
+If only one CLI is the current runtime (e.g. running inside Claude), skip it for the review
 to ensure independence. At least one DIFFERENT CLI must be available.
 </step>
 
@@ -46,7 +46,7 @@ to ensure independence. At least one DIFFERENT CLI must be available.
 Collect phase artifacts for the review prompt:
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
+INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -114,77 +114,34 @@ Write to a temp file: `/tmp/gsd-review-prompt-{phase}.md`
 </step>
 
 <step name="invoke_reviewers">
-Determine review mode based on route tier. Read cross_modes from routing-config.yaml:
+For each selected CLI, invoke in sequence (not parallel — avoid rate limits):
 
+**Gemini:**
 ```bash
-# Determine if parallel review is enabled for this tier
-# Default to STANDARD if tier not specified
-REVIEW_TIER="${REVIEW_TIER:-STANDARD}"
-PARALLEL_REVIEW=$(python3 -c "
-import yaml
-with open('config/agents/routing-config.yaml') as f:
-    cfg = yaml.safe_load(f)
-print(cfg.get('cross_modes', {}).get('cross_review', {}).get('$REVIEW_TIER', 'true'))
-" 2>/dev/null || echo "true")
-```
-
-**If parallel review is enabled (Route B/C/REASONING — default):**
-
-Invoke all selected CLIs in parallel using bash `&` + `wait`. Per D-06, rate limits are independent across providers (Anthropic, OpenAI, Google APIs). Each process writes to its own temp file.
-
-```bash
-# Parallel invocation — providers write to independent temp files
-# Rate limits are independent per provider (D-06)
-REVIEW_TMPDIR=$(mktemp -d "/tmp/gsd-review-parallel-XXXXXX")
-trap 'rm -rf "$REVIEW_TMPDIR"' EXIT ERR INT TERM
-
-declare -A REVIEW_PIDS
-
-# Gemini
-gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > "$REVIEW_TMPDIR/gemini.md" &
-REVIEW_PIDS[gemini]=$!
-
-# Claude (separate session)
-claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > "$REVIEW_TMPDIR/claude.md" &
-REVIEW_PIDS[claude]=$!
-
-# Codex
-codex exec --skip-git-repo-check "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > "$REVIEW_TMPDIR/codex.md" &
-REVIEW_PIDS[codex]=$!
-
-# Wait for all — capture individual exit codes
-for provider in "${!REVIEW_PIDS[@]}"; do
-  if wait "${REVIEW_PIDS[$provider]}" 2>/dev/null; then
-    cp "$REVIEW_TMPDIR/${provider}.md" "/tmp/gsd-review-${provider}-{phase}.md"
-    echo -e "  ${GREEN}${provider} review completed${NC}"
-  else
-    echo -e "  ${YELLOW}${provider} review failed (exit $?)${NC}"
-  fi
-done
-```
-
-**If parallel review is disabled (Route A — SIMPLE):**
-
-Fall back to single-provider sequential invocation (existing behavior, cheapest provider only):
-
-```bash
-# Sequential invocation — single provider for Route A
 gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-gemini-{phase}.md
 ```
 
-Display progress for both modes:
+**Claude (separate session):**
+```bash
+claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > /tmp/gsd-review-claude-{phase}.md
+```
+
+**Codex:**
+```bash
+codex exec --skip-git-repo-check "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-codex-{phase}.md
+```
+
+If a CLI fails, log the error and continue with remaining CLIs.
+
+Display progress:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  GSD ► CROSS-AI REVIEW — Phase {N}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Mode: {parallel|sequential} (tier: {REVIEW_TIER})
-
-◆ Reviewing with {CLI}... done
-◆ Reviewing with {CLI}... done
+◆ Reviewing with {CLI}... done ✓
+◆ Reviewing with {CLI}... done ✓
 ```
-
-If a CLI fails in parallel mode, log the error and continue — same as current sequential behavior. The write_reviews step already handles missing provider outputs.
 </step>
 
 <step name="write_reviews">
@@ -206,7 +163,7 @@ plans_reviewed: [{list of PLAN.md files}]
 
 ---
 
-## the agent Review
+## Claude Review
 
 {claude review content}
 
@@ -234,7 +191,7 @@ plans_reviewed: [{list of PLAN.md files}]
 
 Commit:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "docs: cross-AI review for phase {N}" --files {phase_dir}/{padded_phase}-REVIEWS.md
+node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: cross-AI review for phase {N}" --files {phase_dir}/{padded_phase}-REVIEWS.md
 ```
 </step>
 
@@ -254,7 +211,7 @@ Consensus concerns:
 Full review: {padded_phase}-REVIEWS.md
 
 To incorporate feedback into planning:
-  $gsd-plan-phase {N} --reviews
+  /gsd:plan-phase {N} --reviews
 ```
 
 Clean up temp files.
@@ -267,5 +224,5 @@ Clean up temp files.
 - [ ] REVIEWS.md written with structured feedback
 - [ ] Consensus summary synthesized from multiple reviewers
 - [ ] Temp files cleaned up
-- [ ] User knows how to use feedback ($gsd-plan-phase --reviews)
+- [ ] User knows how to use feedback (/gsd:plan-phase --reviews)
 </success_criteria>

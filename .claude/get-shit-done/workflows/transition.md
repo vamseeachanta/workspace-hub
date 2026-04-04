@@ -163,7 +163,7 @@ If found, delete them — phase is complete, handoffs are stale.
 **Delegate ROADMAP.md and STATE.md updates to gsd-tools:**
 
 ```bash
-TRANSITION=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase complete "${current_phase}")
+TRANSITION=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase complete "${current_phase}")
 ```
 
 The CLI handles:
@@ -278,7 +278,7 @@ After (Phase 2 shipped JWT auth, discovered rate limiting needed):
 Verify the updates are correct by reading STATE.md. If the progress bar needs updating, use:
 
 ```bash
-PROGRESS=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" progress bar --raw)
+PROGRESS=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" progress bar --raw)
 ```
 
 Update the progress bar line in STATE.md with the result.
@@ -387,7 +387,7 @@ The `next_phase` and `next_phase_name` fields give you the next phase details.
 
 If you need additional context, use:
 ```bash
-ROADMAP=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap analyze)
+ROADMAP=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap analyze)
 ```
 
 This returns all phases with goals, disk status, and completion info.
@@ -406,7 +406,7 @@ In flat mode, go directly to **Route B**.
 ```bash
 # Only check if we're in workstream mode
 if [ -n "$GSD_WORKSTREAM" ]; then
-  WS_LIST=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" workstream list --raw)
+  WS_LIST=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" workstream list --raw)
 fi
 ```
 
@@ -526,7 +526,7 @@ to the next milestone — other workstreams are still working.
 **Clear auto-advance chain flag** — workstream boundary is the natural stopping point:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false
+node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false
 ```
 
 <if mode="yolo">
@@ -580,7 +580,7 @@ Do NOT auto-invoke any further slash commands.
 **Clear auto-advance chain flag** — milestone boundary is the natural stopping point:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false
+node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false
 ```
 
 <if mode="yolo">

@@ -52,10 +52,10 @@ Use when `.planning/phases/` has accumulated directories from past milestones.
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/cleanup.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/cleanup.md
 </execution_context>
 
 <process>
-Follow the cleanup workflow at @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/cleanup.md.
+Follow the cleanup workflow at @D:/workspace-hub/.codex/get-shit-done/workflows/cleanup.md.
 Identify completed milestones, show a dry-run summary, and archive on confirmation.
 </process>

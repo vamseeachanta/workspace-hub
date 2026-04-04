@@ -14,7 +14,7 @@ Read project state to determine current position:
 
 ```bash
 # Get state snapshot
-node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" state json 2>/dev/null || echo "{}"
+node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" state json 2>/dev/null || echo "{}"
 ```
 
 Also read:

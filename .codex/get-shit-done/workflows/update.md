@@ -221,7 +221,7 @@ Exit.
 - `agents/gsd-*` files will be replaced
 
 (Paths are relative to detected runtime install location:
-global: `/mnt/local-analysis/workspace-hub/.codex/`, `~/.config/opencode/`, `~/.opencode/`, `~/.gemini/`, or `~/.codex/`
+global: `D:/workspace-hub/.codex/`, `~/.config/opencode/`, `~/.opencode/`, `~/.gemini/`, or `~/.codex/`
 local: `./.codex/`, `./.config/opencode/`, `./.opencode/`, `./.gemini/`, or `./.codex/`)
 
 Your custom files in other locations are preserved:

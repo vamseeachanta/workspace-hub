@@ -49,8 +49,6 @@ Estimation heuristics:
 - Each plan file ≈ 2,000-5,000 tokens of agent context
 - Each summary file ≈ 1,000-2,000 tokens generated
 - Subagent spawns multiply by ~1.5x per agent type used
-
-**Actual cost data (preferred):** If `.planning/cost-events.jsonl` exists, use it instead of estimating. Run `scripts/gsd/cost-tracker.sh summarize_session <session_id>` to get precise token counts and costs. The JSONL file contains one event per agent spawn with input/output tokens, cached tokens, and cost in cents. When actual data is available, replace the "Estimated Resource Usage" section with an "Actual Resource Usage" table sourced from the cost tracker. Future work: automatic instrumentation of agent spawns and budget enforcement thresholds.
 </step>
 
 <step name="generate_report">

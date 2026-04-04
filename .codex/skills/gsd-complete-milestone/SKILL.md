@@ -55,8 +55,8 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
 <execution_context>
 **Load these files NOW (before proceeding):**
 
-- @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/complete-milestone.md (main workflow)
-- @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/milestone-archive.md (archive template)
+- @D:/workspace-hub/.codex/get-shit-done/workflows/complete-milestone.md (main workflow)
+- @D:/workspace-hub/.codex/get-shit-done/templates/milestone-archive.md (archive template)
   </execution_context>
 
 <context>

@@ -47,4 +47,4 @@ Result parsing:
 
 Show the following output to the user verbatim, with no extra commentary:
 
-!`node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set-model-profile {{GSD_ARGS}} --raw`
+!`node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set-model-profile {{GSD_ARGS}} --raw`

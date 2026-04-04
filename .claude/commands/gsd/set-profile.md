@@ -9,4 +9,4 @@ allowed-tools:
 
 Show the following output to the user verbatim, with no extra commentary:
 
-!`node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set-model-profile $ARGUMENTS --raw`
+!`node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set-model-profile $ARGUMENTS --raw`

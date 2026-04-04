@@ -53,7 +53,9 @@ ENTRY=$(jq -cn \
 if [ ! -s "$LOG_FILE" ]; then
     PARAMS_SCRIPT="${WS}/scripts/ai/session-params.py"
     if [ -f "$PARAMS_SCRIPT" ]; then
-        PARAMS=$(uv run --no-project python "$PARAMS_SCRIPT" 2>/dev/null) || PARAMS=""
+        # Use uv python find to get absolute Python path (avoids uv run --no-project hang on Windows)
+        _UV_PY=$(uv python find 2>/dev/null) || _UV_PY=""
+        PARAMS=$([ -n "$_UV_PY" ] && "$_UV_PY" "$PARAMS_SCRIPT" 2>/dev/null) || PARAMS=""
         if [ -n "$PARAMS" ]; then
             echo "$PARAMS" >> "$LOG_FILE" 2>/dev/null || true
         fi

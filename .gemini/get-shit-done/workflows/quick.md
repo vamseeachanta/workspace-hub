@@ -116,12 +116,12 @@ If `$FULL_MODE` only:
 **Step 2: Initialize**
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init quick "$DESCRIPTION")
+INIT=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init quick "$DESCRIPTION")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_EXECUTOR=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-executor 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
-AGENT_SKILLS_VERIFIER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-verifier 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_EXECUTOR=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-executor 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
+AGENT_SKILLS_VERIFIER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-verifier 2>/dev/null)
 ```
 
 Parse JSON for: `planner_model`, `executor_model`, `checker_model`, `verifier_model`, `commit_docs`, `branch_name`, `quick_id`, `slug`, `date`, `timestamp`, `quick_dir`, `task_dir`, `roadmap_exists`, `planning_exists`.
@@ -692,7 +692,7 @@ Build file list:
 - If `$FULL_MODE` and verification file exists: `${QUICK_DIR}/${quick_id}-VERIFICATION.md`
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" commit "docs(quick-${quick_id}): ${DESCRIPTION}" --files ${file_list}
+node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" commit "docs(quick-${quick_id}): ${DESCRIPTION}" --files ${file_list}
 ```
 
 Get final commit hash:

@@ -54,8 +54,8 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/plan-phase.md
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/plan-phase.md
+@D:/workspace-hub/.codex/get-shit-done/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -74,6 +74,6 @@ Normalize phase input in step 2 before any directory lookups.
 </context>
 
 <process>
-Execute the plan-phase workflow from @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/plan-phase.md end-to-end.
+Execute the plan-phase workflow from @D:/workspace-hub/.codex/get-shit-done/workflows/plan-phase.md end-to-end.
 Preserve all workflow gates (validation, research, planning, verification loop, routing).
 </process>

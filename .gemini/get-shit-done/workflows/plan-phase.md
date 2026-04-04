@@ -5,7 +5,7 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 <required_reading>
 Read all files referenced by the invoking prompt's execution_context before starting.
 
-@/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.gemini/get-shit-done/references/ui-brand.md
 </required_reading>
 
 <available_agent_types>
@@ -22,11 +22,11 @@ Valid GSD subagent types (use exact names — do not fall back to 'general-purpo
 Load all context in one call (paths only to minimize orchestrator context):
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
+INIT=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_RESEARCHER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
-AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
+AGENT_SKILLS_RESEARCHER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `nyquist_validation_enabled`, `commit_docs`, `text_mode`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_reviews`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `phase_req_ids`.
@@ -73,7 +73,7 @@ Exit workflow.
 ## 3. Validate Phase
 
 ```bash
-PHASE_INFO=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}")
+PHASE_INFO=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}")
 ```
 
 **If `found` is false:** Error with available phases. **If `found` is true:** Extract `phase_number`, `phase_name`, `goal` from JSON.
@@ -175,7 +175,7 @@ Use full relative paths. Group by topic area.]
 
 5. Commit:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): generate context from PRD" --files "${phase_dir}/${padded_phase}-CONTEXT.md"
+node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): generate context from PRD" --files "${phase_dir}/${padded_phase}-CONTEXT.md"
 ```
 
 6. Set `context_content` to the generated CONTEXT.md content and continue to step 5 (Handle Research).
@@ -194,7 +194,7 @@ If `context_path` is not null, display: `Using phase context from: ${context_pat
 
 Read discuss mode for context gate label:
 ```bash
-DISCUSS_MODE=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.discuss_mode 2>/dev/null || echo "discuss")
+DISCUSS_MODE=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.discuss_mode 2>/dev/null || echo "discuss")
 ```
 
 If `TEXT_MODE` is true, present as a plain-text numbered list:
@@ -284,7 +284,7 @@ Display banner:
 ### Spawn gsd-phase-researcher
 
 ```bash
-PHASE_DESC=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" --pick section)
+PHASE_DESC=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" --pick section)
 ```
 
 Research prompt:
@@ -348,7 +348,7 @@ grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null ||
 ```
 
 **If found:**
-1. Read template: `/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/templates/VALIDATION.md`
+1. Read template: `D:/workspace-hub/.gemini/get-shit-done/templates/VALIDATION.md`
 2. Write to `${PHASE_DIR}/${PADDED_PHASE}-VALIDATION.md` (use Write tool)
 3. Fill frontmatter: `{N}` → phase number, `{phase-slug}` → slug, `{date}` → current date
 4. Verify:
@@ -365,8 +365,8 @@ test -f "${PHASE_DIR}/${PADDED_PHASE}-VALIDATION.md" && echo "VALIDATION_CREATED
 > Skip if `workflow.ui_phase` is explicitly `false` AND `workflow.ui_safety_gate` is explicitly `false` in `.planning/config.json`. If keys are absent, treat as enabled.
 
 ```bash
-UI_PHASE_CFG=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_phase 2>/dev/null || echo "true")
-UI_GATE_CFG=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_safety_gate 2>/dev/null || echo "true")
+UI_PHASE_CFG=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_phase 2>/dev/null || echo "true")
+UI_GATE_CFG=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_safety_gate 2>/dev/null || echo "true")
 ```
 
 **If both are `false`:** Skip to step 6.
@@ -374,7 +374,7 @@ UI_GATE_CFG=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/
 Check if phase has frontend indicators:
 
 ```bash
-PHASE_SECTION=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" 2>/dev/null)
+PHASE_SECTION=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" 2>/dev/null)
 echo "$PHASE_SECTION" | grep -iE "UI|interface|frontend|component|layout|page|screen|view|form|dashboard|widget" > /dev/null 2>&1
 HAS_UI=$?
 ```
@@ -455,7 +455,7 @@ VALIDATION_EXISTS=$(ls "${PHASE_DIR}"/*-VALIDATION.md 2>/dev/null | head -1)
 If missing and Nyquist is still enabled/applicable — ask user:
 1. Re-run: `/gsd:plan-phase {PHASE} --research ${GSD_WS}`
 2. Disable Nyquist with the exact command:
-   `node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-set workflow.nyquist_validation false`
+   `node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-set workflow.nyquist_validation false`
 3. Continue anyway (plans fail Dimension 8)
 
 Proceed to Step 8 only if user selects 2 or 3.
@@ -729,13 +729,13 @@ Check for auto-advance trigger:
 2. **Sync chain flag with intent** — if user invoked manually (no `--auto`), clear the ephemeral chain flag from any previous interrupted `--auto` chain. This does NOT touch `workflow.auto_advance` (the user's persistent settings preference):
    ```bash
    if [[ ! "$ARGUMENTS" =~ --auto ]]; then
-     node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
+     node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
    fi
    ```
 3. Read both the chain flag and user preference:
    ```bash
-   AUTO_CHAIN=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-   AUTO_CFG=$(node "/mnt/local-analysis/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+   AUTO_CHAIN=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+   AUTO_CFG=$(node "D:/workspace-hub/.gemini/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
 **If `--auto` flag present OR `AUTO_CHAIN` is true OR `AUTO_CFG` is true:**

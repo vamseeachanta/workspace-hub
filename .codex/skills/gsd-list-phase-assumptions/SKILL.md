@@ -53,7 +53,7 @@ Output: Conversational output only (no file creation) - ends with "What do you t
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/list-phase-assumptions.md
+@D:/workspace-hub/.codex/get-shit-done/workflows/list-phase-assumptions.md
 </execution_context>
 
 <context>

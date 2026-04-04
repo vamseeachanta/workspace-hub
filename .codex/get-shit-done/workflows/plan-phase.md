@@ -5,7 +5,7 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 <required_reading>
 Read all files referenced by the invoking prompt's execution_context before starting.
 
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.codex/get-shit-done/references/ui-brand.md
 </required_reading>
 
 <available_agent_types>
@@ -22,11 +22,11 @@ Valid GSD subagent types (use exact names — do not fall back to 'general-purpo
 Load all context in one call (paths only to minimize orchestrator context):
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
+INIT=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init plan-phase "$PHASE")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_RESEARCHER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
-AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
+AGENT_SKILLS_RESEARCHER=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-researcher 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `nyquist_validation_enabled`, `commit_docs`, `text_mode`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_reviews`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `phase_req_ids`.
@@ -37,10 +37,7 @@ Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_
 
 ## 2. Parse and Normalize Arguments
 
-Extract from {{GSD_ARGS}}: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`, `--prd <filepath>`, `--reviews`, `--text`, `--cross-plan`, `--tier <TIER>`).
-
-- `--cross-plan` → forces cross-plan mode regardless of tier (set `CROSS_PLAN_FORCED=true`)
-- `--tier TIER` → override auto-detected tier (SIMPLE, STANDARD, COMPLEX, REASONING); set `TIER_OVERRIDE`
+Extract from {{GSD_ARGS}}: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`, `--prd <filepath>`, `--reviews`, `--text`).
 
 Set `TEXT_MODE=true` if `--text` is present in {{GSD_ARGS}} OR `text_mode` from init JSON is `true`. When `TEXT_MODE` is active, replace every `AskUserQuestion` call with a plain-text numbered list and ask the user to type their choice number. This is required for Claude Code remote sessions (`/rc` mode) where TUI menus don't work through the the agent App.
 
@@ -76,7 +73,7 @@ Exit workflow.
 ## 3. Validate Phase
 
 ```bash
-PHASE_INFO=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}")
+PHASE_INFO=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}")
 ```
 
 **If `found` is false:** Error with available phases. **If `found` is true:** Extract `phase_number`, `phase_name`, `goal` from JSON.
@@ -178,7 +175,7 @@ Use full relative paths. Group by topic area.]
 
 5. Commit:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): generate context from PRD" --files "${phase_dir}/${padded_phase}-CONTEXT.md"
+node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): generate context from PRD" --files "${phase_dir}/${padded_phase}-CONTEXT.md"
 ```
 
 6. Set `context_content` to the generated CONTEXT.md content and continue to step 5 (Handle Research).
@@ -197,7 +194,7 @@ If `context_path` is not null, display: `Using phase context from: ${context_pat
 
 Read discuss mode for context gate label:
 ```bash
-DISCUSS_MODE=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.discuss_mode 2>/dev/null || echo "discuss")
+DISCUSS_MODE=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.discuss_mode 2>/dev/null || echo "discuss")
 ```
 
 If `TEXT_MODE` is true, present as a plain-text numbered list:
@@ -287,7 +284,7 @@ Display banner:
 ### Spawn gsd-phase-researcher
 
 ```bash
-PHASE_DESC=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" --pick section)
+PHASE_DESC=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" --pick section)
 ```
 
 Research prompt:
@@ -351,7 +348,7 @@ grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null ||
 ```
 
 **If found:**
-1. Read template: `/mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/VALIDATION.md`
+1. Read template: `D:/workspace-hub/.codex/get-shit-done/templates/VALIDATION.md`
 2. Write to `${PHASE_DIR}/${PADDED_PHASE}-VALIDATION.md` (use Write tool)
 3. Fill frontmatter: `{N}` → phase number, `{phase-slug}` → slug, `{date}` → current date
 4. Verify:
@@ -368,8 +365,8 @@ test -f "${PHASE_DIR}/${PADDED_PHASE}-VALIDATION.md" && echo "VALIDATION_CREATED
 > Skip if `workflow.ui_phase` is explicitly `false` AND `workflow.ui_safety_gate` is explicitly `false` in `.planning/config.json`. If keys are absent, treat as enabled.
 
 ```bash
-UI_PHASE_CFG=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_phase 2>/dev/null || echo "true")
-UI_GATE_CFG=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_safety_gate 2>/dev/null || echo "true")
+UI_PHASE_CFG=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_phase 2>/dev/null || echo "true")
+UI_GATE_CFG=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_safety_gate 2>/dev/null || echo "true")
 ```
 
 **If both are `false`:** Skip to step 6.
@@ -377,7 +374,7 @@ UI_GATE_CFG=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/g
 Check if phase has frontend indicators:
 
 ```bash
-PHASE_SECTION=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" 2>/dev/null)
+PHASE_SECTION=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}" 2>/dev/null)
 echo "$PHASE_SECTION" | grep -iE "UI|interface|frontend|component|layout|page|screen|view|form|dashboard|widget" > /dev/null 2>&1
 HAS_UI=$?
 ```
@@ -458,97 +455,10 @@ VALIDATION_EXISTS=$(ls "${PHASE_DIR}"/*-VALIDATION.md 2>/dev/null | head -1)
 If missing and Nyquist is still enabled/applicable — ask user:
 1. Re-run: `$gsd-plan-phase {PHASE} --research ${GSD_WS}`
 2. Disable Nyquist with the exact command:
-   `node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set workflow.nyquist_validation false`
+   `node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set workflow.nyquist_validation false`
 3. Continue anyway (plans fail Dimension 8)
 
 Proceed to Step 8 only if user selects 2 or 3.
-
-## 7.6. Check Cross-Plan Mode (check_cross_plan_mode)
-
-Determine if cross-plan mode is enabled for this phase. Cross-plan mode dispatches 3 AI CLIs (Claude, Codex, Gemini) to independently create plans, then merges them via structured diff (per D-03, D-04, D-05). It activates based on route tier from routing-config.yaml, or can be forced with `--cross-plan` flag.
-
-**Step 1: Check for --cross-plan flag**
-
-```bash
-CROSS_PLAN_FORCED=false
-if [[ "{{GSD_ARGS}}" =~ --cross-plan ]]; then
-  CROSS_PLAN_FORCED=true
-fi
-```
-
-**Step 2: Determine route tier**
-
-Heuristic: phases with 3+ plans = COMPLEX, 1-2 = STANDARD. Can be overridden by `--tier` flag.
-
-```bash
-if [ -n "$TIER_OVERRIDE" ]; then
-  PLAN_TIER="$TIER_OVERRIDE"
-elif [ "${plan_count:-0}" -ge 3 ]; then
-  PLAN_TIER="COMPLEX"
-else
-  PLAN_TIER="STANDARD"
-fi
-```
-
-**Step 3: Read cross_modes.cross_plan from routing-config.yaml**
-
-```bash
-CROSS_PLAN_ENABLED=$(python3 -c "
-import yaml
-with open('config/agents/routing-config.yaml') as f:
-    cfg = yaml.safe_load(f)
-print(cfg.get('cross_modes', {}).get('cross_plan', {}).get('$PLAN_TIER', 'false'))
-" 2>/dev/null || echo "false")
-```
-
-**Step 4: Override if --cross-plan flag was used**
-
-```bash
-if [ "$CROSS_PLAN_FORCED" = "true" ]; then
-  CROSS_PLAN_ENABLED="true"
-fi
-```
-
-**Step 5: If cross-plan enabled, dispatch cross-plan.sh**
-
-```bash
-if [ "$CROSS_PLAN_ENABLED" = "true" ]; then
-  echo -e "Cross-plan mode: enabled (tier: $PLAN_TIER)"
-
-  # Build the planning prompt (same prompt that would be sent to the single planner)
-  # Write prompt to temp file
-  cat > "/tmp/gsd-plan-prompt-${padded_phase}.md" <<PROMPT_EOF
-Phase ${phase_number}: ${phase_name}
-Goal: ${goal}
-
-Context: ${context_path}
-Research: ${research_path}
-Requirements: ${requirements_path}
-PROMPT_EOF
-
-  # Invoke cross-plan.sh
-  bash "$(git rev-parse --show-toplevel)/scripts/development/ai-plan/cross-plan.sh" \
-    --phase "$padded_phase" \
-    --prompt "/tmp/gsd-plan-prompt-${padded_phase}.md" \
-    --output "${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md" \
-    --tier "$PLAN_TIER" \
-    --verbose
-
-  # Check output
-  if [ -s "${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md" ]; then
-    CROSS_PLAN_INPUT="${phase_dir}/${padded_phase}-CROSS-PLAN-MERGED.md"
-    echo -e "Cross-plan merge complete: ${CROSS_PLAN_INPUT}"
-  else
-    echo -e "Cross-plan output empty or missing — falling back to single-planner mode"
-    CROSS_PLAN_INPUT=""
-  fi
-else
-  echo -e "Cross-plan mode: disabled (tier: $PLAN_TIER)"
-  CROSS_PLAN_INPUT=""
-fi
-```
-
-**Step 6: If cross-plan is disabled, skip entirely — existing single-planner flow continues unchanged.**
 
 ## 8. Spawn gsd-planner Agent
 
@@ -578,14 +488,11 @@ Planner prompt:
 - {uat_path} (UAT Gaps - if --gaps)
 - {reviews_path} (Cross-AI Review Feedback - if --reviews)
 - {UI_SPEC_PATH} (UI Design Contract — visual/interaction specs, if exists)
-- {CROSS_PLAN_INPUT} (Cross-plan merged output — multi-AI consensus reference, if exists)
 </files_to_read>
 
 ${AGENT_SKILLS_PLANNER}
 
 **Phase requirement IDs (every ID MUST appear in a plan's `requirements` field):** {phase_req_ids}
-
-**Cross-plan reference:** If CROSS_PLAN_INPUT is provided, use it as a reference for plan structure and content. The cross-plan output represents merged consensus from 3 independent AI planners.
 
 **Project instructions:** Read ./AGENTS.md if exists — follow project-specific guidelines
 **Project skills:** Check .claude/skills/ or .agents/skills/ directory (if either exists) — read SKILL.md files, plans should account for project skill rules
@@ -822,13 +729,13 @@ Check for auto-advance trigger:
 2. **Sync chain flag with intent** — if user invoked manually (no `--auto`), clear the ephemeral chain flag from any previous interrupted `--auto` chain. This does NOT touch `workflow.auto_advance` (the user's persistent settings preference):
    ```bash
    if [[ ! "{{GSD_ARGS}}" =~ --auto ]]; then
-     node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
+     node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
    fi
    ```
 3. Read both the chain flag and user preference:
    ```bash
-   AUTO_CHAIN=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-   AUTO_CFG=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+   AUTO_CHAIN=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+   AUTO_CFG=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
 **If `--auto` flag present OR `AUTO_CHAIN` is true OR `AUTO_CFG` is true:**
@@ -943,8 +850,6 @@ $gsd-plan-phase N --skip-research
 - [ ] Research completed (unless --skip-research or --gaps or exists)
 - [ ] gsd-phase-researcher spawned with CONTEXT.md
 - [ ] Existing plans checked
-- [ ] Cross-plan mode checked if routing-config.yaml enables it for detected tier
-- [ ] Cross-plan output (if generated) used as planner input reference
 - [ ] gsd-planner spawned with CONTEXT.md + RESEARCH.md
 - [ ] Plans created (PLANNING COMPLETE or CHECKPOINT handled)
 - [ ] gsd-plan-checker spawned with CONTEXT.md

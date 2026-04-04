@@ -67,7 +67,10 @@ for line in sys.stdin:
 PYEOF
 
 # Process all files in a single python invocation to avoid uv overhead per-file
-BAD_REPORT=$(echo "$FILES" | uv run --no-project --quiet python "$PY_SCRIPT" "$REPO_ROOT")
+# Use uv python find to get absolute Python path (avoids uv run --no-project hang on Windows)
+_UV_PY=$(uv python find 2>/dev/null) || _UV_PY=""
+[[ -z "$_UV_PY" ]] && { echo "check-encoding: python not found via uv"; exit 1; }
+BAD_REPORT=$(echo "$FILES" | "$_UV_PY" "$PY_SCRIPT" "$REPO_ROOT")
 
 [[ -z "$BAD_REPORT" ]] && exit 0
 

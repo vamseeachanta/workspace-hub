@@ -21,7 +21,7 @@ No Pass/Fail buttons. No severity questions. Just: "Here's what should happen. D
 </philosophy>
 
 <template>
-@/mnt/local-analysis/workspace-hub/.codex/get-shit-done/templates/UAT.md
+@D:/workspace-hub/.codex/get-shit-done/templates/UAT.md
 </template>
 
 <process>
@@ -30,10 +30,10 @@ No Pass/Fail buttons. No severity questions. Just: "Here's what should happen. D
 If {{GSD_ARGS}} contains a phase number, load context:
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init verify-work "${PHASE_ARG}")
+INIT=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" init verify-work "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `planner_model`, `checker_model`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `has_verification`, `uat_path`.
@@ -197,7 +197,7 @@ Proceed to `present_test`.
 Render the checkpoint from the structured UAT file instead of composing it freehand:
 
 ```bash
-CHECKPOINT=$(node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" uat render-checkpoint --file "$uat_path" --raw)
+CHECKPOINT=$(node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" uat render-checkpoint --file "$uat_path" --raw)
 if [[ "$CHECKPOINT" == @file:* ]]; then CHECKPOINT=$(cat "${CHECKPOINT#@file:}"); fi
 ```
 
@@ -353,7 +353,7 @@ Clear Current Test section:
 
 Commit the UAT file:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "test({phase_num}): complete UAT - {passed} passed, {issues} issues" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
+node "D:/workspace-hub/.codex/get-shit-done/bin/gsd-tools.cjs" commit "test({phase_num}): complete UAT - {passed} passed, {issues} issues" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
 ```
 
 Present summary:
@@ -396,7 +396,7 @@ Spawning parallel debug agents to investigate each issue.
 ```
 
 - Load diagnose-issues workflow
-- Follow @/mnt/local-analysis/workspace-hub/.codex/get-shit-done/workflows/diagnose-issues.md
+- Follow @D:/workspace-hub/.codex/get-shit-done/workflows/diagnose-issues.md
 - Spawn parallel debug agents for each issue
 - Collect root causes
 - Update UAT.md with root causes

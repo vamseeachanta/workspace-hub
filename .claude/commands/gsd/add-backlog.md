@@ -23,13 +23,13 @@ the normal phase sequence and accumulate context over time.
 
 2. **Find next backlog number:**
    ```bash
-   NEXT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase next-decimal 999 --raw)
+   NEXT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase next-decimal 999 --raw)
    ```
    If no 999.x phases exist, start at 999.1.
 
 3. **Create the phase directory:**
    ```bash
-   SLUG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" generate-slug "$ARGUMENTS")
+   SLUG=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" generate-slug "$ARGUMENTS")
    mkdir -p ".planning/phases/${NEXT}-${SLUG}"
    touch ".planning/phases/${NEXT}-${SLUG}/.gitkeep"
    ```
@@ -51,7 +51,7 @@ the normal phase sequence and accumulate context over time.
 
 5. **Commit:**
    ```bash
-   node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: add backlog item ${NEXT} — ${ARGUMENTS}" --files .planning/ROADMAP.md ".planning/phases/${NEXT}-${SLUG}/.gitkeep"
+   node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: add backlog item ${NEXT} — ${ARGUMENTS}" --files .planning/ROADMAP.md ".planning/phases/${NEXT}-${SLUG}/.gitkeep"
    ```
 
 6. **Report:**
