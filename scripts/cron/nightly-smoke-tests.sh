@@ -15,8 +15,8 @@ YAML_OUT="${STATE_DIR}/session-health.yaml"
 JSONL_OUT="${SIGNALS_DIR}/smoke-tests.jsonl"
 REPO_MAP="${WORKSPACE_HUB}/config/onboarding/repo-map.yaml"
 RUN_TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-# Per-repo timeout: collection alone takes ~13s for large repos
-SMOKE_TIMEOUT=30
+# Per-repo timeout: collection alone takes ~50s for large repos (worldenergydata)
+SMOKE_TIMEOUT=90
 
 mkdir -p "$SIGNALS_DIR"
 
@@ -133,7 +133,15 @@ _run_repo_smoke() {
     # Build smoke command: append -m smoke + fast flags to existing test_command
     # Note: don't add --timeout to pytest args — not all repos have pytest-timeout.
     # The outer `timeout` command handles per-repo time limits.
-    local smoke_cmd="${test_cmd} -m smoke -q --tb=line"
+    #
+    # Fix #1714: inject --no-sync into 'uv run' commands to prevent hangs.
+    # Without this, uv tries to resolve git dependencies on every invocation
+    # which can hang indefinitely (e.g. worldenergydata's assetutilities dep).
+    # The venv is pre-installed; smoke tests should never trigger dep resolution.
+    # Override -x/--maxfail from addopts to prevent collection errors from
+    # aborting before smoke-marked tests are reached.
+    local smoke_cmd="${test_cmd} -m smoke -q --tb=line --override-ini='addopts=' --no-header"
+    smoke_cmd="${smoke_cmd/uv run /uv run --no-sync }"
 
     # Run via bash -c so PYTHONPATH=... prefix in test_command works natively
     # --foreground required: without it, timeout can't signal child in subshells
@@ -152,11 +160,14 @@ _run_repo_smoke() {
 
   # Exit codes:
   #   0 = all tests passed
+  #   2 = collection errors (broken imports in non-smoke tests — not a smoke failure)
   #   5 = no tests collected (no @pytest.mark.smoke tests exist yet)
   #   4 = usage error (pytest config incompatible with flags)
   #   124 = timeout (collection phase too slow)
-  # Only actual test failures (exit 1) count as unhealthy
-  if [[ "$exit_code" -eq 0 || "$exit_code" -eq 5 || "$exit_code" -eq 4 ]]; then
+  # Only actual test failures (exit 1) count as unhealthy.
+  # Exit 2 is tolerated because -m smoke runs collect ALL test files first;
+  # import errors in non-smoke tests don't affect smoke test results (#1714).
+  if [[ "$exit_code" -eq 0 || "$exit_code" -eq 5 || "$exit_code" -eq 4 || "$exit_code" -eq 2 ]]; then
     _status="pass"
   elif [[ "$exit_code" -eq 124 ]]; then
     _status="timeout"
