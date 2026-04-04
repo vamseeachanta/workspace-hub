@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+# commit-learning-artifacts.sh — Git-add + commit all learning state that gitignore allows
+#
+# Called at the end of comprehensive-learning-nightly.sh to ensure
+# corrections, patterns, insights, and cross-agent state survive machine loss.
+#
+# Usage: bash scripts/cron/commit-learning-artifacts.sh [--dry-run]
+# Cron:  Called by comprehensive-learning-nightly.sh (last step)
+#
+# Safety: runs legal-sanity-scan --diff-only before committing.
+# If legal scan finds violations, skips commit and logs warning.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$WORKSPACE_HUB"
+
+DRY_RUN=false
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true ;;
+  esac
+done
+
+log() { echo "[commit-learning-artifacts] $*"; }
+
+# Source git-safe if available (for coordinated git access)
+GIT_SAFE_LOG_PREFIX="[commit-learning]"
+if [[ -f "${WORKSPACE_HUB}/scripts/cron/lib/git-safe.sh" ]]; then
+  source "${WORKSPACE_HUB}/scripts/cron/lib/git-safe.sh"
+  git_safe_init "$WORKSPACE_HUB"
+fi
+
+# ── Stage learning artifacts ──────────────────────────────────────────
+log "Staging learning artifacts..."
+
+# .claude/state/ directories (already excepted in .gitignore)
+STATE_DIRS=(
+  .claude/state/corrections/
+  .claude/state/patterns/
+  .claude/state/reflect-history/
+  .claude/state/cc-insights/
+  .claude/state/candidates/
+  .claude/state/trends/
+  .claude/state/session-signals/
+  .claude/state/skill-eval-results/
+)
+
+STATE_FILES=(
+  .claude/state/learned-patterns.json
+  .claude/state/skill-scores.yaml
+  .claude/state/cc-user-insights.yaml
+  .claude/state/hermes-insights.yaml
+  .claude/state/cross-agent-memory.yaml
+  .claude/state/drift-summary.yaml
+  .claude/state/portfolio-signals.yaml
+  .claude/state/readiness-issues.md
+  .claude/state/session-health.yaml
+  .claude/state/correction-trend-meta.json
+)
+
+staged=0
+
+for dir in "${STATE_DIRS[@]}"; do
+  if [[ -d "$dir" ]]; then
+    git add "$dir" 2>/dev/null && ((staged++)) || true
+  fi
+done
+
+for file in "${STATE_FILES[@]}"; do
+  if [[ -f "$file" ]]; then
+    git add "$file" 2>/dev/null && ((staged++)) || true
+  fi
+done
+
+# logs/orchestrator/ exports (Hermes + Codex session JSONL)
+for orch_dir in logs/orchestrator/hermes logs/orchestrator/codex; do
+  if [[ -d "$orch_dir" ]]; then
+    git add "$orch_dir/" 2>/dev/null && ((staged++)) || true
+  fi
+done
+
+# .gitignore itself (in case we just added exceptions)
+git add .gitignore 2>/dev/null || true
+
+log "Staged $staged artifact sources"
+
+# ── Check if anything changed ─────────────────────────────────────────
+if git diff --cached --quiet 2>/dev/null; then
+  log "No changes to commit"
+  exit 0
+fi
+
+# Show what would be committed
+CHANGED=$(git diff --cached --stat 2>/dev/null | tail -1)
+log "Changes: $CHANGED"
+
+if $DRY_RUN; then
+  log "[dry-run] Would commit the above changes"
+  git diff --cached --name-only
+  git reset HEAD -- . >/dev/null 2>&1 || true
+  exit 0
+fi
+
+# ── Legal scan gate ───────────────────────────────────────────────────
+LEGAL_SCAN="scripts/legal/legal-sanity-scan.sh"
+if [[ -x "$LEGAL_SCAN" ]]; then
+  log "Running legal scan on staged changes..."
+  if ! bash "$LEGAL_SCAN" --diff-only 2>&1; then
+    log "WARNING: Legal scan found violations — skipping commit"
+    log "Run 'bash $LEGAL_SCAN --diff-only' manually to review"
+    git reset HEAD -- . >/dev/null 2>&1 || true
+    exit 1
+  fi
+fi
+
+# ── Commit and push ──────────────────────────────────────────────────
+DATE_STAMP=$(date +%Y-%m-%d)
+
+if type -t git_safe_commit >/dev/null 2>&1; then
+  git_safe_commit "chore(nightly): commit learning artifacts ${DATE_STAMP}"
+  git_safe_push
+else
+  git commit -m "chore(nightly): commit learning artifacts ${DATE_STAMP}"
+  git push 2>/dev/null || log "WARNING: git push failed — changes committed locally"
+fi
+
+log "Learning artifacts committed and pushed (${DATE_STAMP})"

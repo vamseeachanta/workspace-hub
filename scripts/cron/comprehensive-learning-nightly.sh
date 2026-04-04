@@ -146,6 +146,12 @@ fi
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
+
+# Step 10: commit all learning artifacts to git (best-effort — #1780)
+echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/cron/commit-learning-artifacts.sh 2>&1 || \
+  echo "WARNING: learning artifact commit failed — changes remain local"
+
 bash scripts/notify.sh cron nightly-learning \
   "$([ "${_nightly_exit}" -eq 0 ] && echo pass || echo fail)" \
   "exit_code=${_nightly_exit}" || true

@@ -93,6 +93,8 @@ logs/*
 !logs/orchestrator/
 logs/orchestrator/*
 !logs/orchestrator/README.md
+!logs/orchestrator/hermes/
+!logs/orchestrator/codex/
 !logs/audit/
 logs/audit/*.jsonl
 logs/audit/*.jsonl.gz
@@ -149,14 +151,15 @@ coverage.xml
 !.claude/memory/
 # Work queue - tracked for cross-machine/user portability
 !.claude/work-queue/
+# State directory — un-ignore parent so child exceptions work (see below)
+!.claude/state/
 
 # Machine-local Claude directories (never synced)
 .claude/settings.local.json
-.claude/state/
+.claude/state/*
 .claude/checkpoints/
 .claude/outputs/
 .claude/plans/
-
 # State sub-directories committed for cross-machine comprehensive-learning analysis
 # Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
 /docs/strategy/gtm/job-market-scan/archive/
@@ -170,6 +173,14 @@ coverage.xml
 !.claude/state/learned-patterns.json
 !.claude/state/skill-scores.yaml
 !.claude/state/cc-user-insights.yaml
+!.claude/state/hermes-insights.yaml
+!.claude/state/cross-agent-memory.yaml
+!.claude/state/drift-summary.yaml
+!.claude/state/portfolio-signals.yaml
+!.claude/state/readiness-issues.md
+!.claude/state/session-health.yaml
+!.claude/state/skill-eval-results/
+!.claude/state/correction-trend-meta.json
 
 # Claude-flow runtime (never synced)
 .hive-mind/
