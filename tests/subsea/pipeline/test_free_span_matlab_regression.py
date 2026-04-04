@@ -52,12 +52,7 @@ from digitalmodel.subsea.pipeline.free_span.weibull_current import (
     extrapolate_current,
 )
 
-# Guard for tests that require digitalmodel.structural (S-N curves)
-try:
-    from digitalmodel.structural.fatigue.sn_curves import get_dnv_curve  # noqa: F401
-    _HAS_STRUCTURAL = True
-except ImportError:
-    _HAS_STRUCTURAL = False
+
 
 
 # ---------------------------------------------------------------------------
@@ -334,10 +329,6 @@ class TestJumperVIVAmplitude:
 class TestJumperFatigue:
     """Fatigue using MATLAB example S-N curve: A1=5.808e11, k1=3."""
 
-    @pytest.mark.skipif(
-        not _HAS_STRUCTURAL,
-        reason="digitalmodel.structural not installed",
-    )
     def test_fatigue_life_positive(self, jumper_input):
         """At 1.0 m/s, stress should produce finite fatigue life."""
         freq = SpanNaturalFrequency(jumper_input).compute()
@@ -364,7 +355,6 @@ class TestJumperFatigue:
 class TestJumperIntegration:
     """End-to-end assessment using MATLAB example 6" jumper inputs."""
 
-    @pytest.mark.skipif(not _HAS_STRUCTURAL, reason="digitalmodel.structural not installed")
     def test_assess_returns_valid_result(self, jumper_input):
         """Full assessment should complete without errors."""
         facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
@@ -374,7 +364,6 @@ class TestJumperIntegration:
         assert result.Ks > 0
         assert result.allowable_span_m > 0
 
-    @pytest.mark.skipif(not _HAS_STRUCTURAL, reason="digitalmodel.structural not installed")
     def test_utilization_ratio(self, jumper_input):
         """Utilization = span_length / allowable_span."""
         facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
@@ -391,7 +380,6 @@ class TestJumperIntegration:
         assert jumper_input.gamma_on_CF == 1.3
         assert jumper_input.gamma_k == 1.0
 
-    @pytest.mark.skipif(not _HAS_STRUCTURAL, reason="digitalmodel.structural not installed")
     def test_current_probability_driven_damage(self, jumper_input):
         """Compare damage at max current (1.0 m/s) vs low current (0.04 m/s).
 

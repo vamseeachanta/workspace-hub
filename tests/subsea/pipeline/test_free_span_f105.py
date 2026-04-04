@@ -301,13 +301,26 @@ class TestSpanFatigueDamage:
         return SpanFatigueDamage(inp, fn, stress_mpa)
 
     def test_zero_damage_below_fatigue_limit(self, ref_input):
-        """Stress below S-N fatigue limit → zero annual damage."""
-        fat = self._build_with_stress(ref_input, stress_mpa=10.0)
+        """Stress below S-N fatigue limit → zero annual damage.
+
+        Note: seawater_cp has no fatigue limit per DNV-RP-C203 Sec 2.4.4,
+        so this test uses the IN_AIR environment where CAFL = 36.84 MPa
+        for F-class curves.
+        """
+        from dataclasses import replace
+        inp_air = replace(ref_input, environment=EnvironmentType.IN_AIR)
+        fat = self._build_with_stress(inp_air, stress_mpa=10.0)
         assert fat.damage_per_year() == 0.0
 
     def test_infinite_life_below_fatigue_limit(self, ref_input):
-        """Stress < fatigue limit → fatigue life = infinity."""
-        fat = self._build_with_stress(ref_input, stress_mpa=10.0)
+        """Stress < fatigue limit → fatigue life = infinity.
+
+        Uses IN_AIR environment (CAFL = 36.84 MPa for F-class).
+        Seawater_cp has no fatigue limit per DNV-RP-C203.
+        """
+        from dataclasses import replace
+        inp_air = replace(ref_input, environment=EnvironmentType.IN_AIR)
+        fat = self._build_with_stress(inp_air, stress_mpa=10.0)
         assert math.isinf(fat.fatigue_life_years())
 
     def test_finite_damage_above_fatigue_limit(self, ref_input):
