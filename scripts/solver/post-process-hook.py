@@ -22,6 +22,7 @@ except ImportError:
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 LOG_PATH = REPO_ROOT / "data" / "solver-results-log.jsonl"
+RAO_DB_PATH = REPO_ROOT / "data" / "rao_database.parquet"
 
 
 def parse_yaml_simple(path: Path) -> dict:
@@ -71,6 +72,69 @@ def append_to_jsonl(log_path: Path, entry: dict) -> None:
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with open(log_path, "a") as f:
         f.write(json.dumps(entry, default=str) + "\n")
+
+
+def try_rao_database_population(result_data: dict, job_dir: Path) -> None:
+    """Populate RAODatabase from completed OrcaWave job xlsx sidecar.
+
+    Extracts RAO data from the xlsx file and stores it in the Parquet-backed
+    RAODatabase at data/rao_database.parquet. Each entry is keyed by
+    job directory name as the variation_id.
+    """
+    if result_data.get("solver", "").lower() != "orcawave":
+        return
+    if result_data.get("status", "") != "completed":
+        return
+
+    xlsx_files = list(job_dir.glob("*.xlsx"))
+    if not xlsx_files:
+        return
+
+    try:
+        from digitalmodel.hydrodynamics.hull_library.rao_extractor import (
+            populate_database_from_xlsx,
+        )
+        from digitalmodel.hydrodynamics.hull_library.rao_database import (
+            RAODatabase,
+        )
+    except ImportError:
+        return
+
+    db = RAODatabase()
+    if RAO_DB_PATH.exists():
+        try:
+            db.load_from_disk(RAO_DB_PATH)
+        except Exception:
+            pass  # start fresh if corrupted
+
+    for xlsx_path in xlsx_files:
+        variation_id = f"{job_dir.name}_{xlsx_path.stem}"
+        metadata = {
+            "solver": result_data.get("solver", ""),
+            "description": str(result_data.get("description", "")),
+            "processed_at": str(result_data.get("processed_at", "")),
+            "elapsed_seconds": result_data.get("elapsed_seconds", 0.0),
+            "input_file": str(result_data.get("input_file", "")),
+            "source_file": str(xlsx_path),
+        }
+        try:
+            populate_database_from_xlsx(
+                db=db,
+                xlsx_path=xlsx_path,
+                variation_id=variation_id,
+                hull_params={},  # no parametric hull info from queue jobs
+                metadata=metadata,
+            )
+            print(f"  RAO DB: stored {variation_id}")
+        except Exception as exc:
+            print(f"  RAO DB: FAILED for {xlsx_path.name}: {exc}")
+
+    try:
+        db.save_to_disk(RAO_DB_PATH)
+        entries = list(db.query({}))
+        print(f"  RAO DB: {len(entries)} entries → {RAO_DB_PATH}")
+    except Exception as exc:
+        print(f"  RAO DB: save FAILED: {exc}")
 
 
 def try_orcaflex_handoff(result_data: dict, job_dir: Path) -> None:
@@ -131,6 +195,9 @@ def main() -> int:
     solver = metrics["solver"]
     elapsed = metrics["elapsed_seconds"]
     print(f"Logged: {status} | {solver} | {elapsed}s → {LOG_PATH}")
+
+    # Auto-populate RAODatabase from OrcaWave results
+    try_rao_database_population(data, result_path.parent)
 
     # Auto-convert OrcaWave results to OrcaFlex format
     try_orcaflex_handoff(data, result_path.parent)
