@@ -73,6 +73,43 @@ def append_to_jsonl(log_path: Path, entry: dict) -> None:
         f.write(json.dumps(entry, default=str) + "\n")
 
 
+def try_orcaflex_handoff(result_data: dict, job_dir: Path) -> None:
+    """Attempt OrcaWave → OrcaFlex conversion if an xlsx sidecar exists.
+
+    Called automatically for completed OrcaWave jobs. Generates OrcaFlex
+    vessel type YAML + CSV in {job_dir}/orcaflex/ if the digitalmodel
+    pipeline is available and an xlsx file is present.
+    """
+    if result_data.get("solver", "").lower() != "orcawave":
+        return
+    if result_data.get("status", "") != "completed":
+        return
+
+    # Look for xlsx sidecar in the job directory
+    xlsx_files = list(job_dir.glob("*.xlsx"))
+    if not xlsx_files:
+        return
+
+    try:
+        from digitalmodel.hydrodynamics.diffraction.orcawave_to_orcaflex import (
+            convert_orcawave_xlsx_to_orcaflex,
+        )
+    except ImportError:
+        # digitalmodel package not installed — skip handoff
+        return
+
+    for xlsx_path in xlsx_files:
+        output_dir = job_dir / "orcaflex"
+        try:
+            outputs = convert_orcawave_xlsx_to_orcaflex(
+                xlsx_path=xlsx_path,
+                output_dir=output_dir,
+            )
+            print(f"  OrcaFlex handoff: {len(outputs)} files → {output_dir}")
+        except Exception as exc:
+            print(f"  OrcaFlex handoff FAILED for {xlsx_path.name}: {exc}")
+
+
 def main() -> int:
     if len(sys.argv) < 2:
         print("Usage: post-process-hook.py <result.yaml>", file=sys.stderr)
@@ -94,6 +131,10 @@ def main() -> int:
     solver = metrics["solver"]
     elapsed = metrics["elapsed_seconds"]
     print(f"Logged: {status} | {solver} | {elapsed}s → {LOG_PATH}")
+
+    # Auto-convert OrcaWave results to OrcaFlex format
+    try_orcaflex_handoff(data, result_path.parent)
+
     return 0
 
 

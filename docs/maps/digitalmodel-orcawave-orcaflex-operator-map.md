@@ -45,10 +45,12 @@ This map supersedes older narrower views that focused only on the small reportin
    - supporting mooring workflows and generation helpers
 
 ### Cross-domain bridge
-1. `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/orcaflex_exporter.py`
-2. `digitalmodel/src/digitalmodel/marine_ops/marine_analysis/unified_rao_reader.py`
-3. `digitalmodel/src/digitalmodel/hydrodynamics/bemrosetta/converters/to_orcaflex.py`
-4. `digitalmodel/src/digitalmodel/solvers/orcawave/diffraction/scripts/convert_to_orcaflex.py`
+1. `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/orcawave_to_orcaflex.py` — **canonical single-command pipeline** (xlsx → RAOData → DiffractionResults → OrcaFlex YAML/CSV)
+2. `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/orcaflex_exporter.py` — export engine (DiffractionResults → OrcaFlex files)
+3. `digitalmodel/src/digitalmodel/hydrodynamics/hull_library/rao_extractor.py` — xlsx → RAOData + HydroCoefficients extraction
+4. `digitalmodel/src/digitalmodel/marine_ops/marine_analysis/unified_rao_reader.py`
+5. `digitalmodel/src/digitalmodel/hydrodynamics/bemrosetta/converters/to_orcaflex.py`
+6. `digitalmodel/src/digitalmodel/solvers/orcawave/diffraction/scripts/convert_to_orcaflex.py` (legacy parallel implementation)
 
 ### Solver queue / machine handoff
 1. `scripts/solver/process-queue.py`
