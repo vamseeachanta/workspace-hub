@@ -222,19 +222,19 @@ tasks:
     is_claude_task: false
     description: Daily 3AM analysis of previous day's session signals; produces skill scores and gap reports.
 
-  - id: claude-memory-backup
-    label: Claude memory backup to ace-linux-2
+  - id: agent-memory-backup
+    label: All-agent memory backup to ace-linux-2
     schedule: "0 5 * * *"
     machines: [dev-primary, ace-linux-1]
     requires: [bash]
     prefer: dev-primary
     command: >-
-      rsync -a --delete ~/.claude/projects/
-      ace-linux-2:~/workspace-hub-backup/claude-projects/
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/memory-backup.sh
       >> $WORKSPACE_HUB/logs/maintenance/claude-memory-backup-$(date +\%Y\%m\%d).log 2>&1
     log: logs/maintenance/claude-memory-backup-*.log
     is_claude_task: false
-    description: Daily backup of claude auto-memory to ace-linux-2.
+    description: Daily backup of all agent state (Claude, Hermes, Codex, Gemini) to ace-linux-2. Covers project memory, sessions, rules, and state files.
 
   - id: cron-health
     label: Cron job health check
