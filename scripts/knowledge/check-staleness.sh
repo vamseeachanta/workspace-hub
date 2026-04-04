@@ -20,7 +20,7 @@ done
 date_to_epoch() {
   date -d "$1" +%s 2>/dev/null \
     || date -j -f "%Y-%m-%d" "$1" +%s 2>/dev/null \
-    || python3 -c "import datetime; print(int(datetime.datetime.strptime('$1','%Y-%m-%d').timestamp()))"
+    || uv run --no-project python -c "import datetime,sys; print(int(datetime.datetime.strptime(sys.argv[1],'%Y-%m-%d').timestamp()))" "$1"
 }
 
 TODAY=$(date +%Y-%m-%d); TODAY_EPOCH=$(date_to_epoch "$TODAY")
@@ -38,12 +38,13 @@ extract_ttl() {
 }
 
 # Parse index.json into tab-separated lines
-ENTRIES=$(python3 -c "
-import json
-with open('$INDEX') as f: data = json.load(f)
+ENTRIES=$(uv run --no-project python - "$INDEX" <<'PY'
+import json, sys
+with open(sys.argv[1]) as f: data = json.load(f)
 for e in data['entries']:
     print('\t'.join([e['id'], e['type'], e['title'], e.get('last_validated',''), e.get('status','active'), e.get('file','')]))
-")
+PY
+)
 
 STALE_COUNT=0; TABLE_LINES=(); JSON_ITEMS=()
 
@@ -64,7 +65,7 @@ while IFS=$'\t' read -r id etype title validated status file; do
   # Truncate title for display
   short="${title:0:40}"; [[ ${#title} -gt 40 ]] && short="${short:0:37}..."
   TABLE_LINES+=("$(printf "%-9s %-9s %-40s %-12s %4d %4d  %s" "$id" "$etype" "$short" "$validated" "$ttl" "$age" "$label")")
-  jtitle=$(python3 -c "import json,sys;print(json.dumps(sys.argv[1]))" "$title")
+  jtitle=$(uv run --no-project python -c "import json,sys;print(json.dumps(sys.argv[1]))" "$title")
   JSON_ITEMS+=("{\"id\":\"$id\",\"type\":\"$etype\",\"title\":$jtitle,\"last_validated\":\"$validated\",\"ttl_days\":$ttl,\"age_days\":$age,\"status\":\"$label\"}")
   # --fix: prompt to revalidate stale entries
   if $FIX && [[ "$label" == "STALE" ]]; then
@@ -72,13 +73,14 @@ while IFS=$'\t' read -r id etype title validated status file; do
     if [[ "$ans" =~ ^[Yy]$ ]]; then
       sed -i.bak "s/last_validated:.*/last_validated: \"$TODAY\"/" "$REPO_ROOT/$file"
       rm -f "$REPO_ROOT/$file.bak"
-      python3 -c "
-import json
-with open('$INDEX') as f: data = json.load(f)
+      uv run --no-project python - "$INDEX" "$id" "$TODAY" <<'PY'
+import json, sys
+index_path, entry_id, today = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(index_path) as f: data = json.load(f)
 for e in data['entries']:
-    if e['id'] == '$id': e['last_validated'] = '$TODAY'
-with open('$INDEX', 'w') as f: json.dump(data, f, indent=2); f.write('\n')
-"
+    if e['id'] == entry_id: e['last_validated'] = today
+with open(index_path, 'w') as f: json.dump(data, f, indent=2); f.write('\n')
+PY
       echo "  -> $id revalidated to $TODAY"
     fi
   fi

@@ -55,7 +55,7 @@ generate_priorities() {
                   --state open --limit 3 --json number,title 2>/dev/null || echo '[]'
               gh issue list --assignee @me --label "P1" \
                   --state open --limit 3 --json number,title 2>/dev/null || echo '[]'
-            } | python3 -c "
+            } | uv run --no-project python -c "
 import json,sys
 seen,out=set(),[]
 for line in sys.stdin:

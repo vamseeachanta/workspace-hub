@@ -234,7 +234,7 @@ if [[ -f "$JSONL_FILE" ]]; then
   # Each line should be valid JSON (check first line)
   first_line=$(head -1 "$JSONL_FILE")
   total_count=$((total_count + 1))
-  if echo "$first_line" | python3 -c "import json,sys; json.load(sys.stdin)" 2>/dev/null; then
+  if echo "$first_line" | uv run --no-project python -c "import json,sys; json.load(sys.stdin)" 2>/dev/null; then
     echo "  PASS  first JSONL line is valid JSON"
     pass_count=$((pass_count + 1))
   else

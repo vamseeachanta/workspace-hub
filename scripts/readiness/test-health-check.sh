@@ -28,7 +28,7 @@ warn() { echo "[test-health] WARN: $*" >&2; }
 _json_str() {
   if command -v python3 &>/dev/null; then
     printf '%s' "$1" \
-      | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read())[1:-1])' \
+      | uv run --no-project python -c 'import json,sys; print(json.dumps(sys.stdin.read())[1:-1])' \
       2>/dev/null || printf '%s' "$1" \
         | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\000-\037'
   else

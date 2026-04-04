@@ -116,7 +116,7 @@ fi
 # Test 4: Diff truncation notice present for large diffs
 echo "Test 4: Diff truncation at 300 lines"
 # Create a fixture with a large diff by injecting GIT_DIFF_OVERRIDE
-LARGE_DIFF="$(python3 -c "print('+'+'x'*80 + '\n', end='') * 400" 2>/dev/null || \
+LARGE_DIFF="$(uv run --no-project python -c "print('+'+'x'*80 + '\n', end='') * 400" 2>/dev/null || \
     awk 'BEGIN{for(i=1;i<=400;i++) print "+x"}')"
 EXPECTED_OUT3="${RESULTS_DIR}/wrk-9999-phase-3-review-input.md"
 rm -f "$EXPECTED_OUT3"

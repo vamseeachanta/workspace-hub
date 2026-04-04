@@ -57,7 +57,7 @@ fi
 rm "${TMP}/my-skill/README.md"
 
 # T3: Word count > 5000 = violation
-python3 -c "
+uv run --no-project python -c "
 fm = '---\nname: big\ndescription: short\n---\n'
 print(fm + ' '.join(['word'] * 5001))
 " > "${TMP}/my-skill/SKILL.md"

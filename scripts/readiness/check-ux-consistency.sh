@@ -42,14 +42,15 @@ if [[ ! -f "$KEYBINDINGS_FILE" ]]; then
 else
   # Validate submitPrompt value
   if command -v python3 &>/dev/null; then
-    submit_key=$(python3 -c "
+    submit_key=$(uv run --no-project python - "${KEYBINDINGS_FILE}" <<'PY' 2>/dev/null || echo ""
 import json, sys
 try:
-    d = json.load(open('${KEYBINDINGS_FILE}'))
+    d = json.load(open(sys.argv[1]))
     print(d.get('submitPrompt', ''))
 except Exception as e:
     print('')
-" 2>/dev/null || echo "")
+PY
+)
     if [[ "$submit_key" == "ctrl+enter" ]]; then
       _pass "keybindings.json present: submitPrompt=ctrl+enter"
     elif [[ -z "$submit_key" ]]; then
@@ -142,11 +143,12 @@ else
   # Find and read manifest for version
   MANIFEST=$(find "$CHROME_EXT_BASE" -name "manifest.json" 2>/dev/null | head -1 || true)
   if [[ -n "$MANIFEST" ]] && command -v python3 &>/dev/null; then
-    EXT_VERSION=$(python3 -c "
-import json, pathlib
-d = json.loads(pathlib.Path('${MANIFEST}').read_text())
+    EXT_VERSION=$(uv run --no-project python - "${MANIFEST}" <<'PY' 2>/dev/null || echo "unknown"
+import json, pathlib, sys
+d = json.loads(pathlib.Path(sys.argv[1]).read_text())
 print(d.get('version', 'unknown'))
-" 2>/dev/null || echo "unknown")
+PY
+)
     _pass "Chrome Claude extension installed: version ${EXT_VERSION}"
   else
     _pass "Chrome Claude extension directory present: ${CHROME_EXT_BASE}"

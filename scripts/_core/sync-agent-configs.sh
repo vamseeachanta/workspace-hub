@@ -220,10 +220,10 @@ resolve_ws_hub_path() {
     local ws_path=""
 
     if [[ -f "$config" ]] && command -v python3 >/dev/null 2>&1; then
-        ws_path=$(python3 -c "
-import yaml, socket
+        ws_path=$(uv run --no-project python - "$config" <<'PY' 2>/dev/null || true
+import yaml, socket, sys
 hostname = socket.gethostname().split('.')[0]
-with open('$config') as f:
+with open(sys.argv[1]) as f:
     cfg = yaml.safe_load(f)
 for name, ws in (cfg.get('workstations') or {}).items():
     ws_path = ws.get('ws_hub_path') or ''
@@ -231,7 +231,8 @@ for name, ws in (cfg.get('workstations') or {}).items():
     if ws_path and hostname.lower() in name.lower():
         print(ws_path)
         break
-" 2>/dev/null || true)
+PY
+)
     fi
 
     # Fallback: use the workspace-hub we're running from
@@ -272,11 +273,11 @@ sync_hermes_yaml_config() {
     if command -v python3 >/dev/null 2>&1; then
         local merged
         merged="$(mktemp)"
-        python3 -c "
+        uv run --no-project python - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
 import yaml, sys
 
 def deep_merge(base, overlay):
-    \"\"\"Merge overlay into base. Overlay wins for scalars; recurse for dicts.\"\"\"
+    """Merge overlay into base. Overlay wins for scalars; recurse for dicts."""
     result = dict(base)
     for k, v in overlay.items():
         if k in result and isinstance(result[k], dict) and isinstance(v, dict):
@@ -285,16 +286,17 @@ def deep_merge(base, overlay):
             result[k] = v
     return result
 
-with open('$target') as f:
+target_path, template_path, merged_path = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(target_path) as f:
     existing = yaml.safe_load(f) or {}
-with open('$resolved_template') as f:
+with open(template_path) as f:
     template = yaml.safe_load(f) or {}
 
 merged = deep_merge(existing, template)
 
-with open('$merged', 'w') as f:
+with open(merged_path, 'w') as f:
     yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
-" 2>/dev/null
+PY
 
         if [[ -s "$merged" ]]; then
             if cmp -s "$merged" "$target"; then

@@ -24,14 +24,15 @@ mkdir -p "${HOME}/.claude"
 if [ -f "${CLAUDE_SETTINGS}" ]; then
     # Update existing settings — preserve other keys
     if command -v python3 &>/dev/null; then
-        python3 -c "
+        uv run --no-project python - "${CLAUDE_SETTINGS}" <<'PY'
 import json, sys
-with open('${CLAUDE_SETTINGS}') as f:
+settings_path = sys.argv[1]
+with open(settings_path) as f:
     s = json.load(f)
 s['theme'] = 'dark-ansi'
-with open('${CLAUDE_SETTINGS}', 'w') as f:
+with open(settings_path, 'w') as f:
     json.dump(s, f, indent=2)
-"
+PY
     else
         echo '{"theme": "dark-ansi"}' > "${CLAUDE_SETTINGS}"
     fi
@@ -46,7 +47,11 @@ if command -v dconf &>/dev/null; then
     BG=$(dconf read /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color 2>/dev/null || echo "unknown")
     echo "  Terminal BG: ${BG}"
 fi
-echo "  Claude theme: $(python3 -c "import json; print(json.load(open('${CLAUDE_SETTINGS}'))['theme'])" 2>/dev/null || echo 'check manually')"
+echo "  Claude theme: $(uv run --no-project python - "${CLAUDE_SETTINGS}" <<'PY' 2>/dev/null || echo 'check manually'
+import json, sys
+print(json.load(open(sys.argv[1]))['theme'])
+PY
+)"
 
 echo ""
 echo "Done. Restart terminal to see changes."

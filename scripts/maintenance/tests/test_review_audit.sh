@@ -120,9 +120,9 @@ assert_not_contains "$OUTPUT" "Would create GitHub issue" "no issue created"
 JSON_FILE="$(find logs/maintenance -name 'review-audit-*.json' | head -1)"
 if [[ -n "$JSON_FILE" && -f "$JSON_FILE" ]]; then
     # Validate JSON structure (basic check without jq)
-    if python3 -c "import json; json.load(open('$JSON_FILE'))" 2>/dev/null; then
+    if uv run --no-project python -c "import json,sys; json.load(open(sys.argv[1]))" "$JSON_FILE" 2>/dev/null; then
         pass "JSON output is valid"
-    elif python3 -c "import json,sys; json.load(sys.stdin)" < "$JSON_FILE" 2>/dev/null; then
+    elif uv run --no-project python -c "import json,sys; json.load(sys.stdin)" < "$JSON_FILE" 2>/dev/null; then
         pass "JSON output is valid (stdin)"
     else
         fail "JSON output is valid" "JSON parse error in $JSON_FILE"
@@ -245,9 +245,9 @@ AUDIT_HOURS=1 DRY_RUN=true bash scripts/maintenance/review-audit.sh > /dev/null 
 JSON_FILE="$(find logs/maintenance -name 'review-audit-*.json' | head -1)"
 if [[ -n "$JSON_FILE" && -f "$JSON_FILE" ]]; then
     # Validate JSON with Python
-    if python3 -c "
+    if uv run --no-project python - "$JSON_FILE" <<'PY' 2>&1; then
 import json, sys
-with open('$JSON_FILE') as f:
+with open(sys.argv[1]) as f:
     data = json.load(f)
 # Check required fields
 required = ['date', 'audit_hours', 'total_commits', 'feature_fix_commits',
@@ -263,22 +263,24 @@ assert isinstance(data['compliance_percent'], int), 'compliance_percent not int'
 assert isinstance(data['pass'], bool), 'pass not bool'
 assert isinstance(data['unreviewed'], list), 'unreviewed not list'
 print('All fields present and valid')
-" 2>&1; then
+PY
+then
         pass "JSON has all required fields with correct types"
     else
         fail "JSON has all required fields with correct types" "validation failed"
     fi
 
     # Check unreviewed entries have hash and message
-    if python3 -c "
-import json
-with open('$JSON_FILE') as f:
+    if uv run --no-project python - "$JSON_FILE" <<'PY' 2>&1; then
+import json, sys
+with open(sys.argv[1]) as f:
     data = json.load(f)
 for entry in data.get('unreviewed', []):
     assert 'hash' in entry, f'missing hash in {entry}'
     assert 'message' in entry, f'missing message in {entry}'
 print('Unreviewed entries valid')
-" 2>&1; then
+PY
+then
         pass "JSON unreviewed entries have hash and message"
     else
         fail "JSON unreviewed entries have hash and message"

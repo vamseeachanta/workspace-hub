@@ -72,11 +72,11 @@ MISSION="$(awk '/^## Mission/{found=1; next} found && /^##/{exit} found{print}' 
 PATTERNS_JSON="[]"
 RI_YAML="${WORK_QUEUE_DIR}/assets/${WRK_ID}/evidence/resource-intelligence.yaml"
 if [[ -f "${RI_YAML}" ]]; then
-    if python3 -c "import yaml" 2>/dev/null; then
-        PATTERNS_JSON="$(uv run --no-project python3 - <<PYEOF 2>/dev/null || echo '[]'
+    if uv run --no-project python -c "import yaml" 2>/dev/null; then
+        PATTERNS_JSON="$(uv run --no-project python - "${RI_YAML}" <<'PYEOF' 2>/dev/null || echo '[]'
 import yaml, json, sys
 try:
-    with open("${RI_YAML}") as f:
+    with open(sys.argv[1]) as f:
         data = yaml.safe_load(f)
     gaps = data.get("top_p2_gaps", []) or []
     constraints = data.get("constraints", []) or []
@@ -93,10 +93,10 @@ fi
 FOLLOW_ONS_JSON="[]"
 FW_YAML="${WORK_QUEUE_DIR}/assets/${WRK_ID}/evidence/future-work.yaml"
 if [[ -f "${FW_YAML}" ]]; then
-    FOLLOW_ONS_JSON="$(uv run --no-project python3 - <<PYEOF 2>/dev/null || echo '[]'
-import yaml, json
+    FOLLOW_ONS_JSON="$(uv run --no-project python - "${FW_YAML}" <<'PYEOF' 2>/dev/null || echo '[]'
+import yaml, json, sys
 try:
-    with open("${FW_YAML}") as f:
+    with open(sys.argv[1]) as f:
         data = yaml.safe_load(f)
     recs = data.get("recommendations", []) or []
     ids = [r.get("id","") for r in recs if r.get("id")]
@@ -108,19 +108,22 @@ PYEOF
 fi
 
 # Build JSON entry
-ENTRY="$(uv run --no-project python3 - <<PYEOF
-import json
+ENTRY="$(uv run --no-project python - \
+    "${WRK_ID}" "${CATEGORY}" "${SUBCATEGORY}" "${TITLE}" \
+    "${ARCHIVED_AT}" "${MISSION}" "${PATTERNS_JSON}" "${FOLLOW_ONS_JSON}" <<'PYEOF'
+import json, sys
+wrk_id, category, subcategory, title, archived_at, mission, patterns_json, follow_ons_json = sys.argv[1:9]
 print(json.dumps({
-    "id": "${WRK_ID}",
+    "id": wrk_id,
     "type": "wrk",
-    "category": "${CATEGORY}",
-    "subcategory": "${SUBCATEGORY}",
-    "title": "${TITLE}",
-    "archived_at": "${ARCHIVED_AT}",
+    "category": category,
+    "subcategory": subcategory,
+    "title": title,
+    "archived_at": archived_at,
     "source": "capture-wrk-summary",
-    "mission": "${MISSION}",
-    "patterns": ${PATTERNS_JSON},
-    "follow_ons": ${FOLLOW_ONS_JSON},
+    "mission": mission,
+    "patterns": json.loads(patterns_json),
+    "follow_ons": json.loads(follow_ons_json),
 }))
 PYEOF
 )"

@@ -20,14 +20,15 @@ die() { echo "ERROR: $*" >&2; exit 1; }
 
 echo "[$DATE] Starting Claude plugin audit..."
 
-INSTALLED_PLUGINS=$(python3 -c "
+INSTALLED_PLUGINS=$(uv run --no-project python - "$PLUGINS_JSON" <<'PY' 2>/dev/null
 import json, sys
-with open('$PLUGINS_JSON') as f:
+with open(sys.argv[1]) as f:
     data = json.load(f)
 for name, entries in sorted(data.get('plugins', {}).items()):
     for e in entries:
-        print(f\"{name}|{e.get('version','unknown')}|{e.get('scope','unknown')}|{e.get('gitCommitSha','unknown')[:8]}|{e.get('lastUpdated','unknown')[:10]}\")
-" 2>/dev/null) || die "Failed to parse installed_plugins.json"
+        print(f"{name}|{e.get('version','unknown')}|{e.get('scope','unknown')}|{e.get('gitCommitSha','unknown')[:8]}|{e.get('lastUpdated','unknown')[:10]}")
+PY
+) || die "Failed to parse installed_plugins.json"
 
 # ── Collect marketplace data ───────────────────────────────────────────────
 

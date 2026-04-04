@@ -110,13 +110,14 @@ health_check_hermes() {
   # External skills dir reachable
   if [[ -f "$hermes_config" ]] && command -v python3 >/dev/null 2>&1; then
     local ext_dirs
-    ext_dirs=$(python3 -c "
-import yaml
-with open('$hermes_config') as f:
+    ext_dirs=$(uv run --no-project python - "$hermes_config" <<'PY' 2>/dev/null || true
+import yaml, sys
+with open(sys.argv[1]) as f:
     cfg = yaml.safe_load(f) or {}
 for d in (cfg.get('skills') or {}).get('external_dirs') or []:
     print(d)
-" 2>/dev/null || true)
+PY
+)
     if [[ -n "$ext_dirs" ]]; then
       while IFS= read -r d; do
         if [[ ! -d "$d" ]]; then

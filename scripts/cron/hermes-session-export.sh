@@ -71,8 +71,10 @@ for session_file in "$HERMES_SESSIONS"/session_*.json; do
   fi
 
   # Convert Hermes session JSON to orchestrator JSONL
-  python3 -c "
+  uv run --no-project python - "$session_file" "$output_file" "$corrections_file" <<'PY' 2>/dev/null && exported=$((exported + 1)) || true
 import json, sys, os
+
+session_file, output_file, corrections_file = sys.argv[1], sys.argv[2], sys.argv[3]
 
 # Tool name mapping: Hermes -> Claude orchestrator convention
 TOOL_MAP = {
@@ -102,7 +104,7 @@ TOOL_MAP = {
 }
 
 try:
-    with open('$session_file') as f:
+    with open(session_file) as f:
         session = json.load(f)
 except Exception:
     sys.exit(0)
@@ -196,12 +198,12 @@ for raw in lines:
 
 # Append to output file (multiple sessions can share a date)
 if lines:
-    with open('$output_file', 'a') as f:
+    with open(output_file, 'a') as f:
         f.write('\n'.join(lines) + '\n')
 if correction_lines:
-    with open('$corrections_file', 'a') as f:
+    with open(corrections_file, 'a') as f:
         f.write('\n'.join(correction_lines) + '\n')
-" 2>/dev/null && exported=$((exported + 1)) || true
+PY
 
 done
 
