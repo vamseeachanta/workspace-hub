@@ -1,0 +1,45 @@
+# user-profile.yaml — Single source of truth for user identity
+# All agents (Claude, Codex, Hermes, Gemini) read this file.
+# Replaces scattered identity in Hermes USER.md, Claude project memory, AGENTS.md.
+# See: https://github.com/vamseeachanta/workspace-hub/issues/1747
+
+identity:
+  name: Vamsee Achanta
+  company: ACE Engineer (aceengineer.com)
+  role: Principal Engineer, P.E.
+  experience: 23 years
+
+core_expertise:
+  - OrcaFlex
+  - mooring/riser design
+  - FEA
+  - cathodic protection
+  - API 579
+  - Python automation
+
+business:
+  target_market: offshore engineering firms 10-50 engineers
+  business_model: $120K/yr retainers, 3-5 clients
+
+machines:
+  - ace-linux-1
+  - ace-linux-2
+  - licensed-win-1
+  - licensed-win-2
+
+ai_subscriptions:
+  claude:
+    plan: Max
+    cost: 200
+  openai:
+    plan: Plus
+    logins: 2
+    cost_each: 20
+  gemini:
+    plan: Pro
+    cost: 19.99
+
+preferences:
+  python_runner: uv run
+  review_policy: adversarial cross-review by ALL agents
+  execution_style: overnight batch, 3 terminals, zero interaction
