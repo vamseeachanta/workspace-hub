@@ -3395,3 +3395,21 @@ entries:
   relevance_score: 1
   source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
   notes: Comprehensive OECD oil supply/demand data; requires paid subscription for full access
+- id: github_affaan_m_everything_claude_code_a1b2c3
+  url: https://github.com/affaan-m/everything-claude-code
+  name: Everything Claude Code — Performance Optimization System for AI Agent Harnesses
+  type: github_repo
+  domain: general
+  local_backup_path: ''
+  download_status: not_started
+  last_checked: '2026-04-03'
+  relevance_score: 3
+  source_catalog: manual
+  notes: >-
+    50K-star Claude Code plugin/config system. 38 agents, 156 skills, 72 commands, 30 hooks.
+    Cherry-pick items: (1) security guide with CVE analysis and supply chain framing for skills,
+    (2) pre:config-protection hook preventing agents from weakening linter configs,
+    (3) batch-at-Stop pattern for format+typecheck, (4) context-budget token audit skill,
+    (5) autonomous-loops 6-pattern reference architecture, (6) continuous-learning-v2 instinct system.
+    MCP servers to evaluate: evalview, insaits, token-optimizer, omega-memory.
+    ~80% overlap with our 691 skills — adopt patterns not bulk content.
