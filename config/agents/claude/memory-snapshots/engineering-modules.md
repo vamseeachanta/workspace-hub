@@ -150,7 +150,7 @@ cfg = {"inputs": {"calculation_type": "DNV_RP_F103_2010",
 ### Route C items pending plan gate
 - **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `acma-projects/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`
 - **WRK-277**: ABS GN Offshore 2018 — PDF at `digitalmodel/docs/domains/cathodic_protection/codes/ABS cathodic-protection-offshore-gn-dec18.pdf`
-- Both require plan gate + adversarial cross-review by ALL agents (Claude, Codex, Gemini) before implementation
+- Both require plan gate + Codex cross-review before implementation
 
 ## Repo Routing Rule — Wind Energy Work
 
