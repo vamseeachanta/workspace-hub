@@ -68,6 +68,13 @@ if [[ -d "${HOME}/.gemini" ]]; then
   cp "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/ 2>/dev/null || true
 fi
 
+# ── Redact session-signals before staging ─────────────────────────────
+REDACT_SCRIPT="${WORKSPACE_HUB}/scripts/cron/redact-session-signals.sh"
+if [[ -x "$REDACT_SCRIPT" ]]; then
+  log "Redacting session-signals..."
+  bash "$REDACT_SCRIPT" 2>&1 || log "WARNING: session-signal redaction had errors"
+fi
+
 # ── Stage learning artifacts ──────────────────────────────────────────
 log "Staging learning artifacts..."
 
