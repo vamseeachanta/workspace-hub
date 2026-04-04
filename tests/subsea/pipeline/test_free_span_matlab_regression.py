@@ -477,6 +477,94 @@ class TestSafetyFactorConsistency:
 # Reduction factor tests (DNV-RP-F105 Sec 4.3.6)
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Multi-current probability-weighted damage (MATLAB approach)
+# ---------------------------------------------------------------------------
+
+class TestMultiCurrentDamage:
+    """Tests for assess_multi_current() — probability-weighted fatigue."""
+
+    @pytest.fixture
+    def matlab_bins(self):
+        """5-bin current profile from MATLAB sample input."""
+        return [
+            (0.04, 0.80),
+            (0.20, 0.10),
+            (0.40, 0.05),
+            (0.60, 0.04),
+            (1.00, 0.01),
+        ]
+
+    def test_returns_valid_result(self, jumper_input, matlab_bins):
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        result = facade.assess_multi_current(matlab_bins)
+        assert result.fn_IL_hz > 0
+        assert result.damage_per_year >= 0
+
+    def test_weighted_damage_less_than_peak_bin(self, jumper_input, matlab_bins):
+        """Weighted damage < damage at peak-response current speed.
+
+        VIV amplitude is piecewise — the worst bin is NOT necessarily the
+        max current.  For this jumper (fn≈0.4 Hz, D=0.1683 m), peak CF
+        response occurs around Ur≈7–8 (Uc≈0.5–0.6 m/s).  The weighted
+        damage should be less than 100% at the worst single bin.
+        """
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        r_weighted = facade.assess_multi_current(matlab_bins)
+        # Find worst single-bin damage
+        from dataclasses import replace
+        max_single = max(
+            FreespanVIVFatigue(
+                replace(jumper_input, current_velocity_ms=speed),
+                submerged_weight_N_m=850.0,
+            ).assess().damage_per_year
+            for speed, _ in matlab_bins
+        )
+        assert r_weighted.damage_per_year < max_single
+
+    def test_weighted_damage_greater_than_min(self, jumper_input, matlab_bins):
+        """Weighted damage > damage at min current (some bins have onset)."""
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        r_weighted = facade.assess_multi_current(matlab_bins)
+        from dataclasses import replace
+        inp_min = replace(jumper_input, current_velocity_ms=0.04)
+        r_min = FreespanVIVFatigue(inp_min, submerged_weight_N_m=850.0).assess()
+        assert r_weighted.damage_per_year >= r_min.damage_per_year
+
+    def test_single_bin_equals_single_assess(self, jumper_input):
+        """Single bin with prob=1.0 should match single assess()."""
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        r_single = facade.assess()
+        r_multi = facade.assess_multi_current([(jumper_input.current_velocity_ms, 1.0)])
+        assert abs(r_multi.damage_per_year - r_single.damage_per_year) < 1e-12
+
+    def test_weighted_life_longer_than_worst_bin(self, jumper_input, matlab_bins):
+        """Probability weighting → longer life than worst single bin."""
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        r_weighted = facade.assess_multi_current(matlab_bins)
+        from dataclasses import replace
+        # Find shortest life from any single bin
+        min_life = min(
+            FreespanVIVFatigue(
+                replace(jumper_input, current_velocity_ms=speed),
+                submerged_weight_N_m=850.0,
+            ).assess().fatigue_life_years
+            for speed, _ in matlab_bins
+        )
+        if math.isfinite(r_weighted.fatigue_life_years) and math.isfinite(min_life):
+            assert r_weighted.fatigue_life_years > min_life
+
+    def test_raises_on_empty_bins(self, jumper_input):
+        facade = FreespanVIVFatigue(jumper_input, submerged_weight_N_m=850.0)
+        with pytest.raises(ValueError, match="must not be empty"):
+            facade.assess_multi_current([])
+
+    def test_probabilities_sum_to_one(self, matlab_bins):
+        """Verify test fixture probabilities sum to 1.0."""
+        total = sum(p for _, p in matlab_bins)
+        assert abs(total - 1.0) < 1e-10
+
+
 class TestReductionFactors:
     """Turbulence intensity and flow angle reduction factors."""
 
