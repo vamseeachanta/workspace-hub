@@ -61,7 +61,7 @@
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
 - `.gitignore` blanket rules (e.g., `lib/`, `memory/`) override earlier whitelists — add negation AFTER the blanket rule *stale: 2026-04-03*
-- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *verified: 2026-04-03*
+- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-04-05*
 - Always verify new `lib/` directories: `git check-ignore <path>`
 
 ## Shell Script Portability

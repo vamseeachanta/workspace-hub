@@ -1,4 +1,4 @@
-Workspace-hub repo ecosystem uses AI providers in descending volume: Claude, then OpenAI, then Gemini.
+AI: $269/mo. Overnight: use Hermes subagents (CC OAuth expires, Codex CLI broken). Gemini CLI needs --yolo. delegation.model=sonnet. h-gemini h-opus h-sonnet h-gpt.
 §
 ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount.
 §
@@ -8,10 +8,12 @@ aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospec
 §
 Hermes: external_dirs=5 repos (691 skills). Nightly cron: export+sync+drift. CC v2.1.90 native features to adopt (#1775 8-week cadence): /powerup /insights /stats /context /simplify /batch /debug /diff /security-review. Key frontmatter: skills context:fork paths effort model hooks. Ref: shanraisshan/claude-code-best-practice.
 §
-workspace-hub data pipeline: .planning/archive/online-resources/catalog.yaml has malformed YAML (unquoted colons in values, e.g. line 1309). Use safe_yaml_load() fallback in scripts/data/build-online-resource-registry.py as a pattern. Also: 7 catalog formats exist with different schemas — unified registry at data/document-index/online-resource-registry.yaml (247 entries). Domain views at docs/resources/<domain>-resources.md (14 pages).
+workspace-hub data pipeline: catalog.yaml has malformed YAML — use safe_yaml_load(). 7 catalog formats, unified registry at data/document-index/online-resource-registry.yaml (247 entries).
 §
 digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root.
 §
 Legal scan skill restored (coordination/legal-sanity-scan v2.0). .legal-deny-list.yaml has 15 client patterns. MANDATORY for all document-intelligence and resource work. --diff-only exclusion fix applied. Script: scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) are excluded from scanning since they legitimately reference client folder names.
 §
 licensed-win-1 has NO Hermes — use Claude/Codex/Gemini CLIs directly. Execution guide: docs/plans/licensed-win-1-execution-guide.md. Prompts: docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Use `python` not `uv run` on Windows.
+§
+GTM demos: 5 demos at digitalmodel/examples/demos/gtm/. Template: report_template.py. Demo 2 done. --from-cache pattern (#1832). Master #1800, vessel data #1798/#1799, GIFs #1809, cache #1831/#1832.

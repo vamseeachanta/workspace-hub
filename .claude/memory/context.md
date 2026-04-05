@@ -29,7 +29,7 @@
 
 - MINGW64 bash: paths use `/d/workspace-hub/` (not `D:\workspace-hub`)
 - `core.symlinks=false` — git treats junctions as dirs; never commit symlinks cross-platform
-- Shell scripts: `#!/usr/bin/env bash`, LF line endings
+- Shell scripts: `#!/usr/bin/env bash`, LF line endings *stale: 2026-04-05*
 
 ## Memory Sync Model
 

@@ -26,12 +26,12 @@ echo "Test 1: append creates valid JSONL"
 
 "$TRACKER" append_event \
   --session "test-001" --phase "72" --agent "executor" \
-  --provider "anthropic" --model "claude-sonnet-4-20250514" \
+  --provider "anthropic" --model "claude-sonnet-4-5-20250929" \
   --input 12000 --output 3500 --cached 4000 --cost 8.25 >/dev/null
 
 "$TRACKER" append_event \
   --session "test-001" --phase "73" --agent "planner" \
-  --provider "anthropic" --model "claude-sonnet-4-20250514" \
+  --provider "anthropic" --model "claude-sonnet-4-5-20250929" \
   --input 8000 --output 2000 --cached 1000 --cost 5.50 >/dev/null
 
 # Check file exists and has 2 lines
