@@ -1,28 +1,8 @@
 # Claude Code Auto-Memory Snapshot
 
-> Git-tracked snapshot of Claude Code's auto-generated MEMORY.md.
+> Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
 > Last captured: 2026-04-05
-> Source: Claude Code session memory directory (~/.claude/projects/*/memory/)
->
-> This file exists because Claude Code's auto-memory (40+ topic files per project)
-> contains feedback, preferences, and project context that may not exist in Hermes
-# memory. The bridge captures it so all machines have the same baseline.
-
-## What This Is
-
-Claude Code automatically creates memory files for:
-- User feedback (e.g., "don't use local IDs", "use uv run")
-- Project context (e.g., "GSD migration completed", "new solver queue")
-- Working style preferences
-- Reference information
-
-These are captured here so machines WITHOUT Claude Code auto-memory (or different
-Claude sessions) can still access this context.
-
-## Claude Auto-Memory Index
-
-The source directory contains topic-specific .md files. See below for the
-full MEMORY.md index from Claude Code.
+> Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
 

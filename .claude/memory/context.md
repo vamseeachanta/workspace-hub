@@ -1,6 +1,6 @@
 # Cross-Machine Context
 
-> Git-tracked. Travels with the repo.
+> Git-tracked. Travels with the repo. Managed by scripts/memory/bridge-hermes-claude.sh
 > Source of truth for environment conventions on every machine that clones workspace-hub.
 
 ## Machines
@@ -37,17 +37,17 @@ Memory travels with the repo via git. No Hermes needed on Windows.
 
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
 2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory,
-   writes canonical entries into `.claude/memory/` files in this repo, commits and pushes
+   injects it into the `<!-- BRIDGE:START/END -->` section of `agents.md` via template,
+   mirrors Claude auto-memory topic files to `topics/`, commits and pushes.
 3. **Windows (licensed-win-1)**: `git pull` — gets updated `.claude/memory/` automatically.
-   Claude Code reads these files at session start.
-4. **Return enrichment**: Any new lessons learned on Windows go into `.claude/memory/KNOWLEDGE.md`
-   or topic files, committed and pushed. Next `git pull` on Linux picks them up.
+4. **Return enrichment**: New lessons learned on any machine go into `KNOWLEDGE.md`
+   or topic files, committed and pushed. Next `git pull` on any machine picks them up.
 
-There is no special sync tool. Git IS the sync mechanism.
+Git IS the sync mechanism.
 
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
 - Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
-- Catalogs (`dde-*`, `conference-*`) are excluded from scanning (they legitimately reference client folders)
+- Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work
