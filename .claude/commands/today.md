@@ -172,3 +172,20 @@ This script reads reflect-state.yaml and outputs the table in markdown format fo
 - `/today --eod` or `/today evening` - Force end-of-day
 - `/today --week` - Weekly review instead of daily
 - `/today --reflect` - Show ecosystem health report table from daily-reflect data
+
+## Ecosystem Quick Health Mode (`--health`)
+
+When invoked with `--health`, run the health check script and present results:
+
+```bash
+bash scripts/upkeep/health-check.sh
+```
+
+This is the single-command way to check:
+- Gateway alive? (if dead, cron jobs wont fire)
+- Cron job execution status
+- Memory bridge freshness (last run within 26h?)
+- Hermes memory within char limits
+- Disk space usage
+- All repos pushed and in sync
+- Claude auto-memory snapshot current
