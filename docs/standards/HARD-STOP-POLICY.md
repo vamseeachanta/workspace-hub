@@ -5,9 +5,27 @@
 
 ---
 
+## Scope
+
+This policy applies to **engineering-critical issues** — issues labeled `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, or `cat:data-pipeline`.
+
+These are the issues where incorrect implementation directly impacts:
+- GTM demo reports shipped to prospects
+- Client-facing calculations (OrcaFlex, DNV, API 579, cathodic protection)
+- Data pipelines that feed client deliverables
+
+All other issues (documentation, harness, infrastructure, career, ci, maintenance) proceed without these gates unless the user explicitly requests them.
+
+## Detection
+
+An issue is engineering-critical if ANY of these are true:
+1. Label includes `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, or `cat:data-pipeline`
+2. The issue touches engineering calculation code (`digitalmodel/`, `worldenergydata/`, `assetutilities/`)
+3. The issue involves offshore engineering standards (DNV, API, ABS, ISO)
+
 ## The Rule
 
-Every GitHub issue that gets implemented MUST pass through these gates in order:
+Engineering-critical issues MUST pass through these gates in order:
 
 ```
 1. ISSUE SELECTED
@@ -77,12 +95,22 @@ A plan can be:
 - User approval can be implicit ("yes", "go", "do it") AFTER seeing the plan
 - Cross-review can be waived for trivial changes (docs, config, formatting)
 
-## Bypasses
+## Non-Critical Issues
+
+For issues WITHOUT engineering-critical labels:
+
+- No mandatory plan review required
+- No mandatory cross-review required
+- Agent may proceed directly to implementation
+- TDD mandatory — tests before implementation
+- User can request review gates by comment
+
+## Bypasses (Engineering-Critical)
 
 The only legitimate bypasses:
-1. **Emergency fix**: production is broken, fix now, review later (must log bypass)
+1. **Emergency fix**: client impact is active, fix now, review later (must log bypass)
 2. **User explicitly waives**: "skip the plan, just implement" (logged)
-3. **Pure docs/chore**: no functional code changes (auto-detected by commit prefix)
+3. **Pure configuration change**: no engineering logic changes (auto-detected)
 
 All bypasses are logged to `logs/hooks/plan-gate-bypass.jsonl`.
 

@@ -3,17 +3,18 @@
 ## Retrieval
 - Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates
-1. Plan before acting — explicit plan + user approval before implementation. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
+1. Plan before acting — user approval for engineering-critical issues. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
 2. TDD mandatory — tests before implementation; no exceptions
-3. Gate order: Issue → Plan → **USER APPROVES PLAN** → Implement → Cross-review → Close
+3. Gate order (engineering-critical): Issue → Plan → USER APPROVES → Implement → Cross-review → Close
+## Engineering-Critical Labels
+`cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, `cat:data-pipeline`
 ## Workflow
-- GSD framework: `/gsd:help` for commands, `/gsd:new-project` to initialize
-- Tasks tracked as GitHub issues — no local work-queue
+- GSD framework: `/gsd:help` for commands, `/gsd:new-project` to initialize; tasks as GitHub issues
 ## Commands
 - Python: `uv run` always — never bare `python3`
-- Git: commit to `main` + push immediately; branch only for multi-session work
+- Git: commit to `main` + push; branch only for multi-session work
 ## Policies
-- Reviews: verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
-- Review routing: [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates; Claude, Codex, and Gemini all provide adversarial review for plan-stage and code/artifact-stage work by default
-- Subagent isolation: execution stages use fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
+- Reviews: APPROVE|MINOR|MAJOR; resolve MAJOR; default 3-agent adversarial review
+- Routing: [AI Review Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates
+- Subagent isolation: fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
 - Secrets: never hardcode API keys/tokens — use environment variables
