@@ -1,35 +1,37 @@
-# Conference Indexing Plan for 38,526 Papers
+# Conference Paper Indexing Plan
 
-This document outlines the plan for indexing 38,526 papers from 30 conference collections.
+## Overview
+
+This document outlines the plan to index 38,526 conference papers across 30 collections, including OTC, OMAE, ISOPE, DOT, and SPE.
 
 ## Collection Breakdown
 
-| Collection | Paper Count | Notes |
-|---|---|---|
-| OTC | TBD | Offshore Technology Conference |
-| OMAE | TBD | International Conference on Ocean, Offshore and Arctic Engineering |
-| ISOPE | TBD | International Ocean and Polar Engineering Conference |
-| DOT | TBD | Deep Offshore Technology |
-| SPE | TBD | Society of Petroleum Engineers |
-| **Total** | **38,526** | |
+- **OTC (Offshore Technology Conference):** 50+ files found. This is a small subset of the total collection.
+- **OMAE (International Conference on Ocean, Offshore and Arctic Engineering):** 50+ files found. Also a small subset.
+- **ISOPE (International Ocean and Polar Engineering Conference):** 1 file found.
+- **DOT (Deepwater Technology Conference):** 11 files found.
+- **SPE (Society of Petroleum Engineers):** 28 files found.
 
-## Phased Indexing Strategy
+**Note:** The file counts are based on a preliminary search and are not representative of the total 38,526 papers.
 
-1. **Phase 1 (High Priority):** OTC, OMAE, and SPE collections due to their high relevance to ongoing projects.
-2. **Phase 2 (Medium Priority):** ISOPE and DOT collections.
-3. **Phase 3 (Low Priority):** Remaining collections.
+## Indexing Strategy
 
-## Metadata Extraction Priorities
+- **Phase 1 (Pilot):**
+    - **Scope:** A single, well-organized collection (e.g., OMAE 2010).
+    - **Goal:** To develop and validate the indexing pipeline and metadata extraction process.
+- **Phase 2 (Scaled Indexing):**
+    - **Scope:** All papers from the 5 main conferences (OTC, OMAE, ISOPE, DOT, SPE).
+    - **Goal:** To index the majority of the papers and make them searchable.
+- **Phase 3 (Full Collection):**
+    - **Scope:** The remaining conference collections.
+    - **Goal:** To complete the indexing of all 38,526 papers.
 
-1. **Title:** Essential for identification.
-2. **Authors:** Important for citation and finding related work.
-3. **Publication Year:** Crucial for filtering by recency.
-4. **Abstract:** Key for semantic search and relevance ranking.
-5. **Keywords:** Useful for faceted search.
+## Processing and Metadata
 
-## Time Estimates
-
-- **Phase 1:** 2-3 weeks
-- **Phase 2:** 1-2 weeks
-- **Phase 3:** 3-4 weeks
-- **Total Estimated Time:** 6-9 weeks
+- **Processing Time:** Estimated at 2-5 minutes per 100 papers, the total processing time for all papers is estimated to be between 13 and 32 hours.
+- **Metadata Extraction:** The following metadata will be extracted from each paper:
+    - Title
+    - Author(s)
+    - Keywords
+    - Year
+    - DOI (Digital Object Identifier), if available.
