@@ -2,172 +2,124 @@
 # bridge-hermes-claude.sh — Sync Hermes memory into .claude/memory/ (git-tracked)
 #
 # Architecture: Memory travels with the repository via git.
-#   Hermes (Linux) writes memory → .hermes/memories/  → this script extracts
-#   canonical facts → .claude/memory/agents.md + context.md → git commit + push
-#   Windows clones/pulls → gets same context automatically.
+#   Hermes (Linux) writes memory → ~/.hermes/memories/  → this script extracts
+#   canonical facts → .claude/memory/  → git commit + push
+#   Any machine doing git pull gets the same context automatically.
 #
-# Usage:  cd /path/to/workspace-hub && bash scripts/memory/bridge-hermes-claude.sh
-# Run on ace-linux-1 (the machine with Hermes). Safe to run on any machine —
-# just skips Hermes source if not found.
+# Usage:
+#   bash scripts/memory/bridge-hermes-claude.sh           # dry-run (no commit)
+#   bash scripts/memory/bridge-hermes-claude.sh --commit  # commit if changed
+#
+# Issues: #1886 (initial), #1890 (cron), #1892 (dedup), #1893 (topic mirror)
 
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo ".")"
 MEMORY_DIR="${REPO_ROOT}/.claude/memory"
+TEMPLATE_DIR="${MEMORY_DIR}/templates"
+TOPICS_DIR="${MEMORY_DIR}/topics"
 HERMES_MEM_DIR="${HOME}/.hermes/memories"
+CLAUDE_MEM_DIR="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
 TIMESTAMP="$(date +%Y-%m-%d)"
-CHANGES=0
+COMMIT_MODE="${1:-}"
 
-mkdir -p "${MEMORY_DIR}"
+# Colours
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
+
+mkdir -p "${MEMORY_DIR}" "${TOPICS_DIR}"
+
+echo "[bridge] Starting memory bridge — ${TIMESTAMP}"
 
 # ---------------------------------------------------------------------------
-# 1. Read Hermes MEMORY.md and extract machine/context facts
+# 1. Read Hermes memory sources
 # ---------------------------------------------------------------------------
 HERMES_MEMORY=""
 HERMES_USER=""
+HAS_HERMES=false
+
 if [[ -f "${HERMES_MEM_DIR}/MEMORY.md" ]]; then
-    HERMES_MEMORY="$(cat "${HERMES_MEM_DIR}/MEMORY.md" 2>/dev/null || true)"
+    HERMES_MEMORY="$(cat "${HERMES_MEM_DIR}/MEMORY.md")"
+    HAS_HERMES=true
 fi
 if [[ -f "${HERMES_MEM_DIR}/USER.md" ]]; then
-    HERMES_USER="$(cat "${HERMES_MEM_DIR}/USER.md" 2>/dev/null || true)"
+    HERMES_USER="$(cat "${HERMES_MEM_DIR}/USER.md")"
+    HAS_HERMES=true
 fi
 
-has_hermes=false
-if [[ -n "${HERMES_MEMORY}" || -n "${HERMES_USER}" ]]; then
-    has_hermes=true
-    echo "[bridge] Found Hermes memory at ${HERMES_MEM_DIR}"
+if [[ "${HAS_HERMES}" = true ]]; then
+    echo "[bridge] Hermes memory found at ${HERMES_MEM_DIR}"
+else
+    echo "[bridge] No Hermes memory found — proceeding with Claude auto-memory only"
 fi
 
 # ---------------------------------------------------------------------------
-# 2. Read Claude Code auto-memory (per-session memory files)
+# 2. Build the BRIDGE section content (injected between markers in agents.md)
 # ---------------------------------------------------------------------------
-CLAUDE_AUTO_MEMORY=""
-# Find Claude auto-memory — try common locations
-for pattern in \
-    "${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md" \
-    "${REPO_ROOT}/.claude/MEMORY.md" \
-    "${HOME}/.claude/projects/*/memory/MEMORY.md"
-do
-    # Expand the glob
-    for f in ${pattern}; do
-        if [[ -f "$f" ]]; then
-            echo "[bridge] Found Claude auto-memory: $f"
-            CLAUDE_AUTO_MEMORY="$(cat "$f" 2>/dev/null || true)"
-            if [[ -n "${CLAUDE_AUTO_MEMORY}" ]]; then
-                break 2
-            fi
-        fi
-    done
-done
+BRIDGE_CONTENT=""
 
-# ---------------------------------------------------------------------------
-# 3. Generate .claude/memory/agents.md
-# ---------------------------------------------------------------------------
-AGENTS_FILE="${MEMORY_DIR}/agents.md"
-AGENTS_EXISTS=false
-if [[ -f "${AGENTS_FILE}" ]]; then
-    AGENTS_EXISTS=true
-    AGENTS_EXISTING="$(cat "${AGENTS_FILE}")"
+if [[ "${HAS_HERMES}" = true ]]; then
+    BRIDGE_CONTENT+=$'\n'"## Synced from Hermes Memory (${TIMESTAMP})"$'\n\n'
+
+    if [[ -n "${HERMES_MEMORY}" ]]; then
+        BRIDGE_CONTENT+="### Environment Facts"$'\n\n'
+        while IFS= read -r line; do
+            [[ -z "${line}" || "${line}" == "§" ]] && continue
+            BRIDGE_CONTENT+="- ${line}"$'\n'
+        done < <(tr '§' '\n' <<< "${HERMES_MEMORY}")
+        BRIDGE_CONTENT+=$'\n'
+    fi
+
+    if [[ -n "${HERMES_USER}" ]]; then
+        BRIDGE_CONTENT+="### User Profile"$'\n\n'
+        while IFS= read -r line; do
+            [[ -z "${line}" || "${line}" == "§" ]] && continue
+            BRIDGE_CONTENT+="- ${line}"$'\n'
+        done < <(tr '§' '\n' <<< "${HERMES_USER}")
+        BRIDGE_CONTENT+=$'\n'
+    fi
 fi
 
-cat > "${AGENTS_FILE}" << 'AGENTS_HEADER'
-# Agent Workflow Facts
+# ---------------------------------------------------------------------------
+# 3. Generate agents.md from template, injecting BRIDGE section
+# ---------------------------------------------------------------------------
+TEMPLATE="${TEMPLATE_DIR}/agents-template.md"
+AGENTS_OUT="${MEMORY_DIR}/agents.md"
 
-> Git-tracked. Applies to all AI agents working in this repo on any machine.
-# Auto-generated by scripts/memory/bridge-hermes-claude.sh
-
-AGENTS_HEADER
-
-if [[ -n "${HERMES_MEMORY}" && "${has_hermes}" = true ]]; then
+if [[ -f "${TEMPLATE}" ]]; then
+    # Replace content between <!-- BRIDGE:START --> and <!-- BRIDGE:END -->
+    # using awk for reliable multi-line replacement
+    awk -v bridge="${BRIDGE_CONTENT}" '
+        /<!-- BRIDGE:START/{
+            print
+            print bridge
+            in_bridge=1
+            next
+        }
+        /<!-- BRIDGE:END/{
+            in_bridge=0
+        }
+        !in_bridge { print }
+    ' "${TEMPLATE}" > "${AGENTS_OUT}"
+    echo "[bridge] agents.md generated from template with injected bridge section"
+else
+    # Fallback: no template, write raw bridge content
     {
-        echo "## Extracted from Hermes Memory (${TIMESTAMP})"
+        echo "# Agent Workflow Facts"
         echo ""
-        # Copy non-empty sections verbatim as bullet points
-        echo "${HERMES_MEMORY}" | while IFS= read -r line; do
-            [[ -z "${line}" ]] && continue
-            [[ "${line}" == "§" ]] && echo "" && continue
-            echo "- ${line}"
-        done
+        echo "> Git-tracked. No template found — raw bridge output. Create ${TEMPLATE} to manage baseline."
         echo ""
-    } >> "${AGENTS_FILE}"
+        echo "${BRIDGE_CONTENT}"
+    } > "${AGENTS_OUT}"
+    echo "[bridge] agents.md written (no template — raw fallback)"
 fi
-
-if [[ -n "${HERMES_USER}" ]]; then
-    {
-        echo "## Extracted from Hermes User Profile (${TIMESTAMP})"
-        echo ""
-        echo "${HERMES_USER}" | while IFS= read -r line; do
-            [[ -z "${line}" ]] && continue
-            [[ "${line}" == "§" ]] && echo "" && continue
-            echo "- ${line}"
-        done
-        echo ""
-    } >> "${AGENTS_FILE}"
-fi
-
-cat >> "${AGENTS_FILE}" << 'AGENTS_FOOTER'
----
-
-## User
-
-Vamsee Achanta — Professional Engineer (P.E.), 23 years experience.
-Runs ACE Engineer consulting (aceengineer.com).
-Target: $120K/yr retainers, 3-5 clients = $360-600K ARR.
-GTM: offshore engineering firms with 10-50 engineers.
-Core expertise: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation.
-
-## AI Subscriptions (budget context)
-
-| Agent | Cost | Notes |
-|-------|------|-------|
-| Claude Max | $200/mo | Primary; Claude Code CLI |
-| Codex / OpenAI #1 | $20/mo | Cross-review, overnight batch |
-| Codex / OpenAI #2 | $20/mo | Parallel overnight runs |
-| Gemini Google AI Pro | $19.99/mo | Cross-review; needs `--yolo` flag |
-| **Total** | **$269/mo** | Maximize all — no unused slots |
-
-Context parity = compute parity. Zero waste everywhere.
-
-## Workflow Rules
-
-- **Overnight batch**: 3 self-contained prompts, one per terminal, zero git contention.
-  Always include a git contention avoidance map (which terminal writes which files).
-- **Adversarial review**: BOTH stages — plan review AND code/artifact review.
-  Minimum: Claude + Codex + Gemini all review.
-- **Context parity**: Corrections made in one agent must propagate to all others.
-- **No local task IDs**: Use GitHub issues directly (`gh issue list`).
-- **Issue comments**: Always post a summary comment on every implemented GitHub issue.
-- **Parallel work check**: Scan for in-flight sessions before starting GSD work.
-
-## GSD Workflow
-
-GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo
-- Long-duration plans live in `docs/plans/`
-- Use `/gsd:*` commands for task management
-
-## Skill System (Hermes)
-
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
-On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
-
-## ACE Engineer GTM Context
-
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
-- 20+ prospects identified; ICP: offshore firms 10-50 engineers
-- Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
-- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
-AGENTS_FOOTER
-
-CHANGES=1
 
 # ---------------------------------------------------------------------------
-# 4. Generate .claude/memory/context.md
+# 4. Regenerate context.md (always authoritative)
 # ---------------------------------------------------------------------------
 cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 # Cross-Machine Context
 
-> Git-tracked. Travels with the repo.
+> Git-tracked. Travels with the repo. Managed by scripts/memory/bridge-hermes-claude.sh
 > Source of truth for environment conventions on every machine that clones workspace-hub.
 
 ## Machines
@@ -204,89 +156,103 @@ Memory travels with the repo via git. No Hermes needed on Windows.
 
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
 2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory,
-   writes canonical entries into `.claude/memory/` files in this repo, commits and pushes
+   injects it into the `<!-- BRIDGE:START/END -->` section of `agents.md` via template,
+   mirrors Claude auto-memory topic files to `topics/`, commits and pushes.
 3. **Windows (licensed-win-1)**: `git pull` — gets updated `.claude/memory/` automatically.
-   Claude Code reads these files at session start.
-4. **Return enrichment**: Any new lessons learned on Windows go into `.claude/memory/KNOWLEDGE.md`
-   or topic files, committed and pushed. Next `git pull` on Linux picks them up.
+4. **Return enrichment**: New lessons learned on any machine go into `KNOWLEDGE.md`
+   or topic files, committed and pushed. Next `git pull` on any machine picks them up.
 
-There is no special sync tool. Git IS the sync mechanism.
+Git IS the sync mechanism.
 
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
 - Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
-- Catalogs (`dde-*`, `conference-*`) are excluded from scanning (they legitimately reference client folders)
+- Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work
 CONTEXT_EOF
 
-CHANGES=1
+echo "[bridge] context.md regenerated"
 
 # ---------------------------------------------------------------------------
-# 5. Generate .claude/memory/claude-auto-memory.md (snapshot of Claude's memory)
+# 5. Snapshot Claude auto-memory MEMORY.md index
 # ---------------------------------------------------------------------------
-if [[ -n "${CLAUDE_AUTO_MEMORY}" ]]; then
-    cat > "${MEMORY_DIR}/claude-auto-memory.md" << CLAUDE_HEADER
-# Claude Code Auto-Memory Snapshot
+CLAUDE_AUTO="${CLAUDE_MEM_DIR}/MEMORY.md"
+SNAPSHOT_OUT="${MEMORY_DIR}/claude-auto-memory.md"
 
-> Git-tracked snapshot of Claude Code's auto-generated MEMORY.md.
-> Last captured: ${TIMESTAMP}
-> Source: Claude Code session memory directory (~/.claude/projects/*/memory/)
->
-> This file exists because Claude Code's auto-memory (40+ topic files per project)
-> contains feedback, preferences, and project context that may not exist in Hermes
-# memory. The bridge captures it so all machines have the same baseline.
-
-## What This Is
-
-Claude Code automatically creates memory files for:
-- User feedback (e.g., "don't use local IDs", "use uv run")
-- Project context (e.g., "GSD migration completed", "new solver queue")
-- Working style preferences
-- Reference information
-
-These are captured here so machines WITHOUT Claude Code auto-memory (or different
-Claude sessions) can still access this context.
-
-## Claude Auto-Memory Index
-
-The source directory contains topic-specific .md files. See below for the
-full MEMORY.md index from Claude Code.
-
-CLAUDE_HEADER
-    echo "${CLAUDE_AUTO_MEMORY}" >> "${MEMORY_DIR}/claude-auto-memory.md"
-    CHANGES=1
-else
-    echo "[bridge] No Claude auto-memory found — skipping snapshot"
+if [[ -f "${CLAUDE_AUTO}" ]]; then
+    {
+        echo "# Claude Code Auto-Memory Snapshot"
+        echo ""
+        echo "> Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index."
+        echo "> Last captured: ${TIMESTAMP}"
+        echo "> Source: ${CLAUDE_AUTO}"
+        echo ""
+        cat "${CLAUDE_AUTO}"
+    } > "${SNAPSHOT_OUT}"
+    echo "[bridge] claude-auto-memory.md snapshot updated"
 fi
 
 # ---------------------------------------------------------------------------
-# 6. Report
+# 6. Mirror Claude auto-memory topic files → .claude/memory/topics/
+#    Includes only non-sensitive feedback/preference files
+# ---------------------------------------------------------------------------
+MIRROR_PATTERNS=("feedback_*.md" "working-style.md" "ai-orchestration.md"
+                 "shell-git-patterns.md" "data_format_guidelines.md"
+                 "network_machines.md")
+MIRRORED=0
+
+if [[ -d "${CLAUDE_MEM_DIR}" ]]; then
+    for pattern in "${MIRROR_PATTERNS[@]}"; do
+        for src in ${CLAUDE_MEM_DIR}/${pattern}; do
+            [[ -f "${src}" ]] || continue
+            fname="$(basename "${src}")"
+            dest="${TOPICS_DIR}/${fname}"
+            {
+                echo "> Git-tracked snapshot from Claude auto-memory. Captured: ${TIMESTAMP}"
+                echo "> Source: ${src}"
+                echo ""
+                cat "${src}"
+            } > "${dest}"
+            MIRRORED=$((MIRRORED + 1))
+        done
+    done
+    echo "[bridge] Mirrored ${MIRRORED} topic files to .claude/memory/topics/"
+fi
+
+# ---------------------------------------------------------------------------
+# 7. Report
 # ---------------------------------------------------------------------------
 echo ""
-echo "[bridge] Files updated in ${MEMORY_DIR}:"
+echo -e "${GREEN}[bridge] Files updated:${NC}"
 for file in agents.md context.md claude-auto-memory.md; do
-    if [[ -f "${MEMORY_DIR}/${file}" ]]; then
-        lines=$(wc -l < "${MEMORY_DIR}/${file}")
-        echo "  ✅ ${file} (${lines} lines)"
-    fi
+    fp="${MEMORY_DIR}/${file}"
+    [[ -f "${fp}" ]] && printf "  ✅ %-30s (%d lines)\n" "${file}" "$(wc -l < "${fp}")"
 done
+[[ ${MIRRORED} -gt 0 ]] && echo "  ✅ topics/ (${MIRRORED} files mirrored)"
 echo ""
 
 # ---------------------------------------------------------------------------
-# 7. Commit if there are changes (only run if --commit flag passed)
+# 8. Commit (only if --commit flag and changes exist)
 # ---------------------------------------------------------------------------
-if [[ "${1:-}" == "--commit" ]]; then
+if [[ "${COMMIT_MODE}" == "--commit" ]]; then
     cd "${REPO_ROOT}"
-    if git diff --quiet -- .claude/memory/; then
-        echo "[bridge] No changes detected — nothing to commit"
-    else
-        echo "[bridge] Staging and committing changes..."
-        git add .claude/memory/
-        git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})"
-        echo "[bridge] Committed. Run 'git push' to sync to remote."
+    # Diff-aware: only commit if something actually changed
+    git add .claude/memory/
+    if git diff --cached --quiet; then
+        echo "[bridge] No changes to commit — .claude/memory/ is already up to date"
+        exit 0
     fi
+
+    # Conflict-safe: pull --rebase before pushing
+    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})"
+    echo "[bridge] Committed. Pulling with rebase before push..."
+    if ! git pull --rebase; then
+        echo "[bridge] ERROR: rebase conflict — resolve manually, then git push"
+        exit 1
+    fi
+    git push
+    echo -e "${GREEN}[bridge] Done — committed and pushed.${NC}"
 else
-    echo "[bridge] Review above. Run with --commit to auto-commit."
-    echo "[bridge] Or manually: git add .claude/memory/ && git commit -m '...'"
+    echo -e "${YELLOW}[bridge] Dry-run complete. Add --commit to commit and push.${NC}"
 fi
