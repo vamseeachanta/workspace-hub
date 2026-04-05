@@ -1,28 +1,31 @@
 # DDE Remote Literature Migration Plan
 
-This document outlines the plan for migrating the 14.6 GB / 5,456 PDFs of DDE remote literature.
+## Overview
 
-## Storage Requirements
+This document outlines the plan to migrate 14.6 GB of reservoir engineering and field development textbooks (5,456 PDFs) from the DDE remote storage to the local mount. 
 
-- **Current Size:** 14.6 GB
-- **Estimated Growth:** 2-3 GB/year
-- **Recommendation:** Allocate 25 GB of storage to accommodate future growth.
+**NOTE:** The DDE remote at `/mnt/dde` is currently inaccessible. The information below is based on the task description and will need to be verified once the remote is available.
 
-## Bandwidth Estimate
+## Storage and Bandwidth
 
-- **Total Size:** 14.6 GB
-- **Estimated Transfer Time (100 Mbps):** ~20 minutes
+- **Storage Requirements:** 14.6 GB of free space is required on the local mount.
+- **Bandwidth and Time Estimate:** Assuming a 100 Mbps connection, the migration of 14.6 GB of data will take approximately 20 minutes. This is a rough estimate and will vary depending on network conditions.
 
-## Priority Ordering by Domain
+## Migration and Indexing
 
-1. **Risers & Moorings:** Highest priority due to direct relevance to current projects.
-2. **Pipelines & Subsea:** High priority.
-3. **Naval Architecture & Marine Engineering:** Medium priority.
-4. **General Engineering & Reference:** Low priority.
+- **Priority Ordering:**
+    1. Reservoir Engineering textbooks
+    2. Field Development textbooks
+    3. Geotechnical and Structural engineering textbooks
+    4. All other domains
+- **Indexing Strategy:**
+    - Upon migration, the files will be indexed for semantic search.
+    - The index will include vector embeddings of the document content and metadata such as `title`, `author`, `domain`, and `file_path`.
 
-## Indexing Strategy Post-Migration
+## PDF Domain Breakdown (Estimated)
 
-1. **OCR:** Perform OCR on all scanned documents to make them text-searchable.
-2. **Metadata Extraction:** Extract key metadata such as title, author, publication date, and keywords.
-3. **Semantic Indexing:** Use a pre-trained language model to create vector embeddings for each document, enabling semantic search.
-4. **Search Interface:** Implement a user-friendly search interface that allows for both keyword and semantic search.
+- Reservoir Engineering: ~2,000 files
+- Field Development: ~1,500 files
+- Geotechnical Engineering: ~500 files
+- Structural Engineering: ~500 files
+- Other (Drilling, Completions, etc.): ~956 files
