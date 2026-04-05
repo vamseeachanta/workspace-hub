@@ -1,0 +1,153 @@
+total_indexed_files: 22069
+total_size_mb: 22253.8
+per_conference:
+- name: OMAE
+  priority: high
+  file_count: 7292
+  pdf_count: 7292
+  size_mb: 7335.35
+- name: OTC
+  priority: high
+  file_count: 5448
+  pdf_count: 5432
+  size_mb: 6842.18
+- name: ISOPE
+  priority: high
+  file_count: 4074
+  pdf_count: 4074
+  size_mb: 2928.72
+- name: UK Conference Folder
+  priority: high
+  file_count: 2317
+  pdf_count: 2316
+  size_mb: 1711.61
+- name: DOT
+  priority: high
+  file_count: 1462
+  pdf_count: 1456
+  size_mb: 1261.82
+- name: NACE
+  priority: high
+  file_count: 436
+  pdf_count: 436
+  size_mb: 646.72
+- name: Flow Induced Vibration
+  priority: high
+  file_count: 168
+  pdf_count: 168
+  size_mb: 96.49
+- name: SPE
+  priority: medium
+  file_count: 124
+  pdf_count: 124
+  size_mb: 111.07
+- name: Offshore West Africa
+  priority: medium
+  file_count: 118
+  pdf_count: 92
+  size_mb: 210.19
+- name: Arctic Technology Conference
+  priority: medium
+  file_count: 110
+  pdf_count: 110
+  size_mb: 137.09
+- name: SNAME
+  priority: high
+  file_count: 95
+  pdf_count: 84
+  size_mb: 145.18
+- name: Rio Oil & Gas
+  priority: medium
+  file_count: 66
+  pdf_count: 66
+  size_mb: 31.29
+- name: TO SORT
+  priority: medium
+  file_count: 66
+  pdf_count: 66
+  size_mb: 71.19
+- name: Coiled Tubing & Well Intervention Conference 2011
+  priority: low
+  file_count: 64
+  pdf_count: 64
+  size_mb: 109.21
+- name: DeepGulf
+  priority: high
+  file_count: 43
+  pdf_count: 42
+  size_mb: 111.91
+- name: ISO 9001
+  priority: low
+  file_count: 35
+  pdf_count: 35
+  size_mb: 60.78
+- name: Robert Restore
+  priority: medium
+  file_count: 23
+  pdf_count: 21
+  size_mb: 67.84
+- name: EUCI
+  priority: low
+  file_count: 20
+  pdf_count: 20
+  size_mb: 23.02
+- name: IMarEST Offshore Oil and Gas Conference
+  priority: medium
+  file_count: 20
+  pdf_count: 20
+  size_mb: 45.4
+- name: Unlocking Deepwater Potential - Mumbai
+  priority: medium
+  file_count: 19
+  pdf_count: 19
+  size_mb: 35.98
+- name: IADC International Deepwater Drilling
+  priority: medium
+  file_count: 15
+  pdf_count: 15
+  size_mb: 19.29
+- name: Euroforum Offshore Risers
+  priority: medium
+  file_count: 11
+  pdf_count: 7
+  size_mb: 14.27
+- name: Subsea Tieback
+  priority: high
+  file_count: 11
+  pdf_count: 11
+  size_mb: 77.95
+- name: Subsea Survey IMMR
+  priority: medium
+  file_count: 9
+  pdf_count: 9
+  size_mb: 67.67
+- name: TOD
+  priority: low
+  file_count: 8
+  pdf_count: 6
+  size_mb: 4.53
+- name: Pipeline Pigging & Integrity Management Feb 2009
+  priority: medium
+  file_count: 5
+  pdf_count: 5
+  size_mb: 66.19
+- name: Subsea Houston
+  priority: medium
+  file_count: 5
+  pdf_count: 3
+  size_mb: 14.66
+- name: Dry Tree Forum
+  priority: medium
+  file_count: 3
+  pdf_count: 1
+  size_mb: 1.94
+- name: JPT
+  priority: medium
+  file_count: 1
+  pdf_count: 1
+  size_mb: 0.83
+- name: SUT
+  priority: low
+  file_count: 1
+  pdf_count: 1
+  size_mb: 3.46
