@@ -84,3 +84,29 @@ cross_modes:
     STANDARD: true      # Route B: 2-of-3 cross-review
     COMPLEX: true       # Route C: full 3-of-3 with synthesis
     REASONING: true     # Full 3-of-3 cross-review
+
+agents:
+  hermes:
+    display_name: "Hermes Agent"
+    provider: copilot
+    models:
+      primary: claude-sonnet-4.6
+      strong: claude-opus-4-6
+    roles:
+      - docs
+      - data-analysis
+      - skills
+      - delegation
+      - overnight-batch
+    strengths:
+      - documentation and report generation
+      - data analysis and structured transformations
+      - skill management and memory-driven maintenance
+      - parallel delegation and orchestration workflows
+      - overnight batch task planning and execution
+    cost_tier: medium
+    context_window: 200000
+    notes: >
+      Hermes is the documentation, data-analysis, skill, and delegation specialist.
+      Preferred for overnight batch work due to its delegation toolchain and
+      self-contained prompt generation capabilities.
