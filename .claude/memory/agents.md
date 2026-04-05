@@ -10,25 +10,21 @@
 
 ### Environment Facts
 
-- AI: $269/mo. Overnight: use Hermes subagents (CC OAuth expires, Codex CLI broken). Gemini CLI needs --yolo. delegation.model=sonnet. h-gemini h-opus h-sonnet h-gpt.
-- ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount.
-- Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this.
-- aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospects, conf-prep, scorecard. Scanner: scripts/gtm/job-market-scanner.py Mon cron. #1669-1671.
-- Hermes: external_dirs=5 repos (691 skills). Nightly cron: export+sync+drift. CC v2.1.90 native features to adopt (#1775 8-week cadence): /powerup /insights /stats /context /simplify /batch /debug /diff /security-review. Key frontmatter: skills context:fork paths effort model hooks. Ref: shanraisshan/claude-code-best-practice.
-- workspace-hub data pipeline: catalog.yaml has malformed YAML — use safe_yaml_load(). 7 catalog formats, unified registry at data/document-index/online-resource-registry.yaml (247 entries).
-- digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root.
-- Legal scan skill restored (coordination/legal-sanity-scan v2.0). .legal-deny-list.yaml has 15 client patterns. MANDATORY for all document-intelligence and resource work. --diff-only exclusion fix applied. Script: scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) are excluded from scanning since they legitimately reference client folder names.
-- licensed-win-1 has NO Hermes — use Claude/Codex/Gemini CLIs directly. Execution guide: docs/plans/licensed-win-1-execution-guide.md. Prompts: docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Use `python` not `uv run` on Windows.
-- GTM demos: 5 demos at digitalmodel/examples/demos/gtm/. Template: report_template.py. Demo 2 done. --from-cache pattern (#1832). Master #1800, vessel data #1798/#1799, GIFs #1809, cache #1831/#1832.
+- AI: $269/mo. Claude Max $200, 2x Codex $20 each, Gemini Pro $20. Overnight: use Hermes subagents. Gemini needs --yolo.
+- ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move.
+- Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`.
+- digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root.
+- Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded.
+- aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp.
+- Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Key frontmatter: skills context:fork paths effort model hooks.
+- OCR punted by user (#1643, #1772). Skip image-based PDFs in Phase B.
 
 ### User Profile
 
-- Maximizes AI subscriptions — no unused slots = wasted money. Rolls 1-week work queue per agent. CONTEXT PARITY MANDATORY: corrections in one agent must sync to all others. Licensed-win-1 gets same baseline. Context parity = compute parity: zero waste everywhere.
-- User's current AI subscriptions are Claude Max at USD 200, two separate Codex/OpenAI logins at USD 20 each, and one Gemini Google AI Pro account at USD 19.99.
-- Plan and work artifacts should undergo adversarial cross-review by ALL available agents: Claude, Codex, and Gemini — not just a single reviewer.
-- User thinks in overnight batch execution — wants 3 self-contained agent prompts (one per terminal) with zero git contention, no user interaction needed, and a clear "what you'll have by morning" summary. Always include a git contention avoidance map showing which terminal writes which files.
-- Adversarial review at BOTH stages: plan review AND code/artifact review before closing.
-- Vamsee runs ACE Engineer (aceengineer.com) consulting business. Target: $120K/yr retainers, 3-5 clients = $360-600K ARR. Strategy repo: aceengineer-strategy/ (nested in workspace-hub). P.E., 23yr exp. Core: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation. GTM: offshore firms 10-50 engineers.
+- Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total).
+- Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included.
+- Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
+- Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers.
 
 
 <!-- BRIDGE:END -->
