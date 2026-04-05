@@ -1,0 +1,21 @@
+function_name,file_path,function_summary,applicable_standard,standard_section,section_title,confidence_high_med_low,notes
+store_matrix,digitalmodel/src/digitalmodel/hydrodynamics/coefficient_database.py,Store hydrodynamic coefficient matrix,DNV-RP-H103,Section 2.3.6,Hydrodynamic coefficients,high,Stores 6x6 added mass or damping matrices.
+get_matrix,digitalmodel/src/digitalmodel/hydrodynamics/coefficient_database.py,Retrieve hydrodynamic coefficient matrix,DNV-RP-H103,Section 2.3.6,Hydrodynamic coefficients,high,"Retrieves 6x6 added mass or damping matrices, with optional interpolation."
+wave_spectra,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Spectral wave energy distribution,DNV-RP-C205,Section 3.2,Wave Spectra Description,high,Direct implementation of Pierson-Moskowitz and JONSWAP spectra per DNV
+jonswap,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Generate JONSWAP wave spectrum,DNV-RP-C205,Section 3.5.2,The JONSWAP Spectrum,high,
+pierson_moskowitz,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Generate Pierson-Moskowitz wave spectrum,DNV-RP-C205,Section 3.5.1,The Pierson-Moskowitz Spectrum,high,
+bretschneider,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Generate Bretschneider two-parameter wave spectrum,DNV-RP-C205,Section 3.5.1,The Pierson-Moskowitz Spectrum,medium,Bretschneider is a generalization of Pierson-Moskowitz.
+issc,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Generate ISSC modified Pierson-Moskowitz spectrum,ITTC,Procedure 7.5-02-01-01,Wave Spectra,medium,
+spectral_moment,digitalmodel/src/digitalmodel/hydrodynamics/wave_spectra.py,Calculate n-th spectral moment,DNV-RP-C205,Section 3.4,Spectral Moments,high,
+wind_load,digitalmodel/src/digitalmodel/hydrodynamics/ocimf_loading.py,Calculate wind loads on vessel,OCIMF MEG4,Section 3.3,Wind Loads,high,Implements OCIMF wind load calculations.
+current_load,digitalmodel/src/digitalmodel/hydrodynamics/ocimf_loading.py,Calculate current loads on vessel,OCIMF MEG4,Section 3.2,Current Loads,high,Implements OCIMF current load calculations.
+soding_forces,digitalmodel/src/digitalmodel/hydrodynamics/propeller_rudder.py,Söding/Brix propeller-rudder interaction forces,Gap,,,low,"Empirical method, no direct standard."
+actuator_disk_velocity,digitalmodel/src/digitalmodel/hydrodynamics/propeller_rudder.py,Axial velocity at rudder plane from actuator-disk theory,Gap,,,low,"Theoretical model, no direct standard."
+flat_plate_rudder_cl,digitalmodel/src/digitalmodel/hydrodynamics/propeller_rudder.py,Lift coefficient for a flat-plate / thin-airfoil rudder,Gap,,,low,"Theoretical model, no direct standard."
+compute_rao,digitalmodel/src/digitalmodel/hydrodynamics/capytaine/rao.py,Compute RAOs from BEM hydrodynamic coefficients,DNV-RP-C205,Section 7.2.5,Frequency domain analysis,high,Solves the equation of motion in the frequency domain.
+compute_rao_manual,digitalmodel/src/digitalmodel/hydrodynamics/capytaine/rao.py,Compute RAOs manually from provided mass/stiffness matrices,DNV-RP-C205,Section 7.2.5,Frequency domain analysis,high,Solves the equation of motion in the frequency domain.
+plot_all,digitalmodel/src/digitalmodel/hydrodynamics/diffraction/rao_plotter.py,Plot all RAO components,Gap,,,low,Plotting utility.
+generate_single,digitalmodel/src/digitalmodel/hydrodynamics/diffraction/orcawave_backend.py,Generate a single OrcaWave .yml project file,OrcaWave Manual,Chapter 4,YAML file format,high,Creates input file for OrcaWave software.
+generate_modular,digitalmodel/src/digitalmodel/hydrodynamics/diffraction/orcawave_backend.py,Generate modular OrcaWave .yml files,OrcaWave Manual,Chapter 4,YAML file format,high,Creates input files for OrcaWave software.
+integrate,digitalmodel/src/digitalmodel/hydrodynamics/planing_hull/solver.py,Integrate coupled heave-pitch EOMs via RK4,Gap,,,medium,Numerical integration scheme.
+compute_rao,digitalmodel/src/digitalmodel/hydrodynamics/planing_hull/solver.py,Compute heave and pitch RAOs for a planing hull,Gap,,,medium,"Uses an internal solver, not a recognized standard for RAO computation."
