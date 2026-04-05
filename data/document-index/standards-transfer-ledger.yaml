@@ -1095,16 +1095,21 @@ standards:
 - id: API-RP-2GEO-1ST-EDITION-ADDEND
   title: API_RP_2GEO_1st_Edition_Addendum_1,_Oct_2014
   org: API
-  domain: structural
+  domain: geotechnical
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: implemented
   wrk_id: null
-  repo: OGManufacturing
-  modules: []
-  implemented_at: null
-  notes: 'This recommended practice specifies requirements and provides recommendations for geotechnical and foundation design
-    of '
+  repo: digitalmodel
+  modules:
+  - digitalmodel.geotechnical.piles
+  - digitalmodel.geotechnical.pile_capacity
+  implemented_at: '2026-04-04'
+  implementation_path: src/digitalmodel/geotechnical/pile_capacity.py
+  test_path: tests/geotechnical/test_pile_capacity_dark_intel.py
+  notes: 'Alpha method (Sec 7.3) for pile axial capacity in clay implemented. Includes
+    skin_friction_clay, axial_capacity (piles.py), alpha_method_capacity, alpha_method_capacity_multilayer
+    (pile_capacity.py). Dark-intel assertions wired. Input range validation added. Issue #1814.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
