@@ -76,8 +76,10 @@ conferences:
   - ID 174 PAPER.pdf
   - mirahelp.pdf
   year_range: 2001-2013
-  indexing_status: not_indexed
+  indexing_status: phase_a_complete
   priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 1456
 - name: Dry Tree Forum
   path: /mnt/ace/docs/conferences/Dry Tree Forum
   total_files: 5
@@ -282,8 +284,10 @@ conferences:
   - OMAE2002 Fatigue of 28-inch Titanium Riser.pdf
   - OMAE2002-Improvements.pdf
   year_range: 1998-2014
-  indexing_status: not_indexed
+  indexing_status: phase_a_complete
   priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 7291
 - name: OTC
   path: /mnt/ace/docs/conferences/OTC
   total_files: 8500
@@ -302,8 +306,10 @@ conferences:
   - 10OTC_committee.pdf
   - 10OTC_TOC.pdf
   year_range: 1988-2017
-  indexing_status: not_indexed
+  indexing_status: phase_a_complete
   priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 5423
 - name: Pipeline Pigging & Integrity Management Feb 2009
   path: /mnt/ace/docs/conferences/Pipeline Pigging & Integrity Management Feb 2009
   total_files: 5
@@ -315,7 +321,8 @@ conferences:
   sample_files:
   - PPIM 2009 Proceedings.pdf
   - PPIM 2009 Proceedings Supplement.pdf
-  - Factors affecting the design and selection of pigging tools for multi-diameter pipelines.pdf
+  - Factors affecting the design and selection of pigging tools for multi-diameter
+    pipelines.pdf
   year_range: '2009'
   indexing_status: not_indexed
   priority: medium
