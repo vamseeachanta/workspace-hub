@@ -1,46 +1,39 @@
 # GTM Job Market Scan Strategy
 
-This document outlines the strategy for scanning job boards to identify potential clients and market trends in the offshore engineering sector.
+## Overview
 
-## Job Board Sources
+This document outlines a strategy for scanning the US job market to identify consulting opportunities for ACE Engineer in the offshore and marine engineering sectors.
 
-- **Primary:**
-    - LinkedIn Jobs
-    - Indeed
-    - Rigzone
-- **Secondary:**
-    - Glassdoor
-    - Company career pages
+## Data Sources
 
-## Keywords for Offshore Engineering
+The following job boards will be monitored:
 
-- "offshore engineering"
-- "subsea engineer"
-- "riser analysis"
-- "mooring design"
-- "SURF"
-- "naval architect"
-- "OrcaFlex"
+- LinkedIn Jobs
+- Indeed
+- Rigzone
+- Oilandgasjobsearch
 
-## Data Fields to Extract
+## Keywords
 
-- Company Name
-- Job Title
-- Location
-- Job Description
-- Required Skills/Experience
-- Date Posted
+- **Primary:** "offshore engineering", "marine engineering", "subsea engineering", "naval architecture", "drilling riser", "mooring analysis", "SURF", "floating production systems"
+- **Secondary:** "OrcaFlex", "AQWA", "MOSES", "riser analysis", "VIV analysis", "pipeline design", "offshore wind"
 
-## Mapping to ACE Services
+## Data Extraction
 
-- **Riser/Mooring Analysis:** Match with jobs requiring these specific skills.
-- **OrcaFlex Expertise:** Target companies seeking OrcaFlex proficiency.
-- **General Offshore Engineering:** Identify companies with a need for broad offshore engineering consulting.
+The following data fields will be extracted from each relevant job posting:
 
-## Automation Approach
+- **Company:** The name of the hiring company.
+- **Location:** City and state.
+- **Role:** The job title.
+- **Required Skills:** A list of skills and qualifications.
+- **Budget:** Salary range or project budget, if available.
 
-1. **Web Scraping:** Develop or utilize a web scraping tool to automatically gather job postings from the specified sources.
-2. **Data-extraction:** Use NLP to extract the relevant data fields from each job description.
-3. **Database Storage:** Store the extracted data in a structured database (e.g., PostgreSQL, a CSV file, or a Google Sheet) for analysis.
-4. **Recurring Scans:** Schedule the scraper to run weekly to gather new postings and identify trends.
-5. **Reporting:** Create a dashboard or regular report to summarize the findings and highlight potential leads.
+## Mapping to Service Offerings
+
+A framework will be developed to map the required skills from job postings to ACE Engineer's service offerings. This will allow for the identification of opportunities that are a good fit for the company's expertise.
+
+## Automation
+
+- **Web Scraping:** A web scraping tool will be developed to automatically collect job postings from the specified data sources.
+- **Natural Language Processing (NLP):** NLP will be used to extract the required data fields and classify job postings based on their relevance.
+- **Recurring Scans:** The scan will be run on a weekly basis to ensure that new opportunities are identified in a timely manner.
