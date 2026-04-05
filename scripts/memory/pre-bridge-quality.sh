@@ -25,6 +25,7 @@ CRITICALS=()
 MODE="${1:-}"
 
 log() { printf "[%s] %s\n" "$(date +%H:%M:%S)" "$1" | tee -a "${LOG_FILE}"; }
+logc() { printf "[%s] %b\n" "$(date +%H:%M:%S)" "$1" | tee -a "${LOG_FILE}"; }
 
 # ---------------------------------------------------------------------------
 # Check 1: Memory files exist and are non-empty
@@ -225,46 +226,46 @@ fix_compact() {
 # MAIN
 # ============================================================================
 log ""
-log -e "${CYAN}=== Memory Quality Gate ===${NC}"
+logc "${CYAN}=== Memory Quality Gate ===${NC}"
 log "Memory root: ${MEMORY_DIR}"
 log "Time: ${TIMESTAMP}"
 log ""
 
 # Run checks
-log -e "${CYAN}[1/5] File existence:${NC}"
+logc "${CYAN}[1/5] File existence:${NC}"
 check_files_exist "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
 check_files_exist "${MEMORY_DIR}/USER.md" "USER.md"
 
-log -e "\n${CYAN}[2/5] Char limits:${NC}"
+logc "\n${CYAN}[2/5] Char limits:${NC}"
 check_char_limits "${MEMORY_DIR}/MEMORY.md" "MEMORY.md" 2200
 check_char_limits "${MEMORY_DIR}/USER.md" "USER.md" 1375
 
-log -e "\n${CYAN}[3/5] Stale entries:${NC}"
+logc "\n${CYAN}[3/5] Stale entries:${NC}"
 check_stale_entries "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
 check_stale_entries "${MEMORY_DIR}/USER.md" "USER.md"
 
-log -e "\n${CYAN}[4/5] Duplicate detection:${NC}"
+logc "\n${CYAN}[4/5] Duplicate detection:${NC}"
 check_duplicates "${MEMORY_DIR}/MEMORY.md" "${MEMORY_DIR}/USER.md"
 
-log -e "\n${CYAN}[5/5] Content richness:${NC}"
+logc "\n${CYAN}[5/5] Content richness:${NC}"
 check_content_richness "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
 
 # ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------
 log ""
-log -e "${CYAN}=== Quality Report ===${NC}"
+logc "${CYAN}=== Quality Report ===${NC}"
 log "Score: ${SCORE}/100"
 
 if [[ ${#WARNINGS[@]} -gt 0 ]]; then
-    log -e "\n${YELLOW}Warnings:${NC}"
+    logc "\n${YELLOW}Warnings:${NC}"
     for w in "${WARNINGS[@]}"; do
         log "  ⚠️  ${w}"
     done
 fi
 
 if [[ ${#CRITICALS[@]} -gt 0 ]]; then
-    log -e "\n${RED}Critical failures:${NC}"
+    logc "\n${RED}Critical failures:${NC}"
     for c in "${CRITICALS[@]}"; do
         log "  ❌ ${c}"
     done
@@ -274,13 +275,13 @@ fi
 # Decision
 # ---------------------------------------------------------------------------
 if [[ "${MODE}" == "--force" ]]; then
-    log -e "\n${YELLOW}--force: bypassing quality gate${NC}"
+    logc "\n${YELLOW}--force: bypassing quality gate${NC}"
 elif [[ ${SCORE} -lt 50 ]]; then
-    log -e "\n${RED}FAIL: Quality score ${SCORE} — DO NOT run bridge. Critical issues must be resolved.${NC}"
+    logc "\n${RED}FAIL: Quality score ${SCORE} — DO NOT run bridge. Critical issues must be resolved.${NC}"
     exit 1
 elif [[ ${SCORE} -lt 70 ]]; then
     if [[ "${MODE}" == "--fix" ]]; then
-        log -e "\n${YELLOW}Low score (${SCORE}) but --fix mode enabled — fixing then bridging...${NC}"
+        logc "\n${YELLOW}Low score (${SCORE}) but --fix mode enabled — fixing then bridging...${NC}"
 
         # Fix phase
         fix_compact "${MEMORY_DIR}/MEMORY.md" "MEMORY.md" 2200
@@ -290,21 +291,21 @@ elif [[ ${SCORE} -lt 70 ]]; then
         SCORE=$((SCORE + 10))  # Compaction typically adds 10 points
 
         if [[ ${SCORE} -ge 70 ]]; then
-            log -e "\n${GREEN}Quality improved to ${SCORE} after fixes — proceeding to bridge...${NC}"
+            logc "\n${GREEN}Quality improved to ${SCORE} after fixes — proceeding to bridge...${NC}"
             bash "${REPO_ROOT}/scripts/memory/bridge-hermes-claude.sh" --commit
             exit 0
         else
-            log -e "\n${RED}Fixes insufficient (${SCORE}). Manual curation needed.${NC}"
+            logc "\n${RED}Fixes insufficient (${SCORE}). Manual curation needed.${NC}"
             exit 1
         fi
     else
-        log -e "\n${YELLOW}WARNING: Quality score ${SCORE} — bridge will run but memory may be degraded.${NC}"
-        log -e "${YELLOW}Suggested: run with --fix to auto-compact before bridging${NC}"
+        logc "\n${YELLOW}WARNING: Quality score ${SCORE} — bridge will run but memory may be degraded.${NC}"
+        logc "${YELLOW}Suggested: run with --fix to auto-compact before bridging${NC}"
         bash "${REPO_ROOT}/scripts/memory/bridge-hermes-claude.sh" --commit
         exit 0
     fi
 else
-    log -e "\n${GREEN}PASS: Quality score ${SCORE} — proceeding to bridge${NC}"
+    logc "\n${GREEN}PASS: Quality score ${SCORE} — proceeding to bridge${NC}"
     if [[ "${MODE}" == "--fix" ]]; then
         # Even if quality is good, still compact if approaching limits
         fix_compact "${MEMORY_DIR}/MEMORY.md" "MEMORY.md" 2200
