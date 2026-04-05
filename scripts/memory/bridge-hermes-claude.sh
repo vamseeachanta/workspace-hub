@@ -10,7 +10,7 @@
 #   bash scripts/memory/bridge-hermes-claude.sh           # dry-run (no commit)
 #   bash scripts/memory/bridge-hermes-claude.sh --commit  # commit if changed
 #
-# Issues: #1886 (initial), #1890 (cron), #1892 (dedup), #1893 (topic mirror)
+# Issues: #1886 (initial), #1890 (cron), #1892 (dedup), #1893 (topic mirror), #1901 (cron fix)
 
 set -euo pipefail
 
@@ -244,15 +244,36 @@ if [[ "${COMMIT_MODE}" == "--commit" ]]; then
         exit 0
     fi
 
-    # Conflict-safe: pull --rebase before pushing
+    # Stash any unrelated uncommitted changes so pull --rebase works
+    HAS_STASH=false
+    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+        echo "[bridge] Uncommitted changes detected — stashing before pull..."
+        git stash push -m "pre-bridge-stash"
+        HAS_STASH=true
+    fi
+
     git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})"
     echo "[bridge] Committed. Pulling with rebase before push..."
-    if ! git pull --rebase; then
-        echo "[bridge] ERROR: rebase conflict — resolve manually, then git push"
+
+    # Pull with rebase — abort if conflicts
+    if ! git pull --rebase --autostash 2>&1; then
+        echo "[bridge] ERROR: rebase conflict during pull — resolve manually, then git push"
+        # Restore stashed changes if we stashed
+        if [[ "${HAS_STASH}" = true ]]; then
+            echo "[bridge] Restoring previously stashed changes..."
+            git stash pop --index 2>/dev/null || true
+        fi
         exit 1
     fi
+
     git push
     echo -e "${GREEN}[bridge] Done — committed and pushed.${NC}"
+
+    # Restore stashed changes if we stashed
+    if [[ "${HAS_STASH}" = true ]]; then
+        echo "[bridge] Restoring previously stashed changes..."
+        git stash pop 2>/dev/null || echo "[bridge] WARNING: stash pop failed — run 'git stash pop' manually"
+    fi
 else
     echo -e "${YELLOW}[bridge] Dry-run complete. Add --commit to commit and push.${NC}"
 fi
