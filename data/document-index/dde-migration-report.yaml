@@ -1,0 +1,127 @@
+migration_date: '2026-04-05T04:10:52.905221+00:00'
+target_directory: /mnt/ace/docs/literature/dde
+files_migrated: 5655
+bytes_migrated: 5794710147
+gigabytes_migrated: 5.4
+files_by_type:
+  .pdf: 3303
+  .dwg: 649
+  .zip: 344
+  .lst: 327
+  .xls: 292
+  .htm: 105
+  .wmf: 88
+  .doc: 87
+  .gif: 73
+  .js: 35
+  .gz: 34
+  .shx: 34
+  .dll: 25
+  .log: 23
+  .ppt: 22
+  .pfb: 16
+  .pfm: 16
+  .asp: 15
+  .xml: 13
+  .api: 11
+  .rar: 10
+  .jpg: 10
+  .cat: 6
+  .txt: 5
+  .exe: 5
+  .ini: 5
+  .abt: 5
+  .inc: 5
+  .ask: 5
+  .cab: 4
+  .ico: 4
+  .bat: 4
+  .rm: 3
+  .hdr: 3
+  .html: 3
+  .no_extension: 3
+  .tif: 3
+  .css: 3
+  '.inf': 2
+  .dat: 2
+  .awe: 2
+  .stp: 2
+  .mmm: 2
+  .pdd: 2
+  .ddd: 2
+  .wld: 2
+  .did: 2
+  .raghui: 1
+  .igs: 1
+  .ex_: 1
+  .tag: 1
+  .ins: 1
+  .bin: 1
+  .lid: 1
+  .fon: 1
+  .cmp: 1
+  .thd: 1
+  .std: 1
+  .syx: 1
+  .lic: 1
+  .lng: 1
+  .rsd: 1
+  .stc: 1
+  .rst: 1
+  .syd: 1
+  .tlb: 1
+  .ocx: 1
+  .pdx: 1
+  .plc: 1
+  .trn: 1
+  .prn: 1
+  .tar: 1
+  .djvu: 1
+  .hhdd5i: 1
+  .asa: 1
+  .dot: 1
+  .jar: 1
+  .skn: 1
+  .mt1: 1
+  .mt3: 1
+  .idx: 1
+  .prp: 1
+  .mt2: 1
+  .kmb: 1
+  .db: 1
+  .docx: 1
+source_comparison:
+  source_catalog_found: true
+  missing_files:
+  - '[DIRECTORY] 2006-07 Geotech Conference/'
+  - '[DIRECTORY] Annual Reports/'
+  - '[DIRECTORY] Chemistry/'
+  - '[DIRECTORY] Codes-ASME/'
+  - '[DIRECTORY] FFT/'
+  - '[DIRECTORY] Fluent-Gambit/'
+  - '[DIRECTORY] Friction/'
+  - '[DIRECTORY] Heat Transfer and Fluids/'
+  - '[DIRECTORY] IBM Report/'
+  - '[DIRECTORY] Khori/BOOKS/'
+  - '[DIRECTORY] Khori/SPREADSHEET/'
+  - '[DIRECTORY] Khori/STRESS CONCENTRATION FACTOR/'
+  - '[DIRECTORY] Khori/STRUCTURAL BOOK/'
+  - '[DIRECTORY] Machinerys Handbook/'
+  - '[DIRECTORY] Matlab/'
+  - '[DIRECTORY] Mechanical/'
+  - '[DIRECTORY] O&G Flowassurance/'
+  - '[DIRECTORY] O&G/'
+  - '[DIRECTORY] OGF/'
+  - '[DIRECTORY] OS/'
+  - '[DIRECTORY] OTC2004/'
+  - '[DIRECTORY] Oil and Gas Codes/'
+  - '[DIRECTORY] PE Civil/'
+  - '[DIRECTORY] PeakOil/'
+  - '[DIRECTORY] Physics/'
+  - '[DIRECTORY] Riser Engineering/'
+  - '[DIRECTORY] Soil/'
+  - '[DIRECTORY] Structural/'
+  - '[DIRECTORY] handbook of micro and nano tribology/'
+  - '[DIRECTORY] open channel flow/'
+  source_file_count: 87
+  migrated_file_count_from_source_list: 57
