@@ -72,8 +72,7 @@ def process_pdf(file_path: str, conference: str):
                 # This is complex with pypdf, so we'll do a simpler text extraction for now
                 first_page_text = pdf_reader.pages[0].extract_text(extraction_mode="layout", line_gap=0)
                 # A simple heuristic: first non-empty line
-                lines = [line.strip() for line in first_page_text.split('
-') if line.strip()]
+                lines = [line.strip() for line in first_page_text.split('\\n') if line.strip()]
                 if lines:
                     title = clean_text(lines[0])
             except Exception:
@@ -206,8 +205,7 @@ def main():
         if len(results_batch) >= args.batch_size:
             with open(args.output, 'a') as f:
                 for res in results_batch:
-                    f.write(json.dumps(res) + '
-')
+                    f.write(json.dumps(res) + '\\n')
             
             save_checkpoint(processed_paths, args.output)
             print(f"Processed {len(processed_paths)} / {total_to_process}... (checkpoint saved)")
@@ -217,8 +215,7 @@ def main():
     if results_batch:
         with open(args.output, 'a') as f:
             for res in results_batch:
-                f.write(json.dumps(res) + '
-')
+                f.write(json.dumps(res) + '\\n')
     
     save_checkpoint(processed_paths, args.output)
     print(f"Finished processing. Total processed: {len(processed_paths)} / {total_to_process}.")
