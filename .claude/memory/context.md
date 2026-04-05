@@ -1,6 +1,6 @@
 # Cross-Machine Context
 
-> Git-tracked. Travels with the repo. Last updated: 2026-04-05 (issue #1886).
+> Git-tracked. Travels with the repo.
 > Source of truth for environment conventions on every machine that clones workspace-hub.
 
 ## Machines

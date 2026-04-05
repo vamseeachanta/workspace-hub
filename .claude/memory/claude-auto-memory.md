@@ -1,0 +1,59 @@
+# Claude Code Auto-Memory Snapshot
+
+> Git-tracked snapshot of Claude Code's auto-generated MEMORY.md.
+> Last captured: 2026-04-05
+> Source: Claude Code session memory directory (~/.claude/projects/*/memory/)
+>
+> This file exists because Claude Code's auto-memory (40+ topic files per project)
+> contains feedback, preferences, and project context that may not exist in Hermes
+# memory. The bridge captures it so all machines have the same baseline.
+
+## What This Is
+
+Claude Code automatically creates memory files for:
+- User feedback (e.g., "don't use local IDs", "use uv run")
+- Project context (e.g., "GSD migration completed", "new solver queue")
+- Working style preferences
+- Reference information
+
+These are captured here so machines WITHOUT Claude Code auto-memory (or different
+Claude sessions) can still access this context.
+
+## Claude Auto-Memory Index
+
+The source directory contains topic-specific .md files. See below for the
+full MEMORY.md index from Claude Code.
+
+# Workspace Hub Memory
+
+## User Preferences & Feedback
+> feedback_html_refresh, feedback_skill_before_code, feedback_no_shortcuts_knowledge,
+> feedback_dark_intelligence_excel, feedback_repo_scope, feedback_research_skill_sources,
+> feedback_specs_plans_location, feedback_uv_run_isolation, data_format_guidelines,
+> feedback_cross_machine_execution, feedback_no_jargon
+> See also: working-style.md, shell-git-patterns.md, engineering-modules.md
+- [No local task IDs](feedback_no_reserved_wrk_ids.md) — use GitHub issues directly, no local numbering
+- [Check parallel work](feedback_check_parallel_work.md) — scan for in-flight sessions before starting GSD work
+- [Comment on issues](feedback_gh_issue_comment.md) — always post summary comment on every implemented GitHub issue
+- [Queue git-tracked files](feedback_queue_git_tracked.md) — verify input files are in git before submitting queue jobs
+
+## Project Context
+> project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md,
+> project_cfd_openfoam_storage.md, project_auto_sync_risk.md (resolved)
+- [GSD Migration](project_gsd_migration.md) — old 20-stage pipeline removed 2026-03-25, GSD is sole workflow
+- [Cross-review policy](project_cross_review_policy.md) — multi-layer enforcement: gate scripts, pre-push hook, daily audit cron
+- [Mooring failures knowledge](project_mooring_failures_knowledge.md) — 40-entry seed at knowledge/seeds/
+- [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating domains Mon-Fri, outputs to .planning/research/
+- [AI harness evaluations](project_ai_harness_evaluations.md) — GStack, Hermes, Paperclip, Superpowers audit (#1466-1470)
+- [Hermes installation](project_hermes_installation.md) — v0.4.0 installed, venv ready, blocked on API key config
+- [Workflow tips in /today](project_workflow_tips_today.md) — tip-of-the-day feature, hybrid YAML catalog, brainstorming
+- [Solver queue](project_solver_queue_architecture.md) — PRODUCTION: batch manifests, retry, results dashboard, watch-results cron
+- [Overnight batch runs](project_overnight_batch_runs.md) — 5 parallel terminals dispatched nightly with pre-planned prompts
+
+## User Tips & Workflow
+- [Voice Prompt Curation Tips](user_voice_prompt_tips.md) — Linux shortcuts for editing voice-dictated prompts
+
+## References
+> ai-orchestration.md, network_machines.md
+- [achantas-data repo](reference_achantas_data.md) — personal/family data + travel plans as GitHub issues
+- [Google CLI paid account](reference_google_cli_paid.md) — paid Google Workspace API access available for GWS
