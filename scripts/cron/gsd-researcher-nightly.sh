@@ -252,9 +252,11 @@ validate_output() {
         grep -qi "cross-domain connections" "$file"  || missing+=("Cross-Domain Connections")
         grep -qi "detailed action items" "$file"     || missing+=("Detailed Action Items")
     else
-        grep -qi "key findings" "$file"        || missing+=("Key Findings")
-        grep -qi "relevance" "$file"           || missing+=("Relevance")
-        grep -qi "recommended actions" "$file" || missing+=("Recommended Actions")
+        grep -qi "key findings" "$file"          || missing+=("Key Findings")
+        # BUG FIX I-3: "relevance" is too loose — matches any occurrence of the word.
+        # Match the actual heading "## Relevance to Project" to avoid false positives.
+        grep -qiP "^#+\s.*relevance" "$file"   || missing+=("Relevance to Project")
+        grep -qi "recommended actions" "$file"  || missing+=("Recommended Actions")
     fi
 
     if [[ ${#missing[@]} -gt 0 ]]; then
@@ -315,9 +317,16 @@ trim_to_heading "$OUTPUT_FILE"
 
 # Validate output structure (D-12)
 MISSING=$(validate_output "$OUTPUT_FILE" "$DOMAIN") || {
-    log "WARNING: output missing sections: ${MISSING} — retrying once with reduced context"
+    log "WARNING: output missing sections: ${MISSING} — retrying with explicit section guidance"
+    # BUG FIX I-4: Don't send identical prompt on retry — add explicit guidance
+    # about which sections were missing so the retry is more likely to succeed.
     REDUCED_CONTEXT=$(build_reduced_context "$CONTEXT")
+    ORIG_PROMPT="$PROMPT"
+    PROMPT="IMPORTANT: Your previous response was missing these required sections: ${MISSING}. Make sure to include ALL of them this time.
+
+${PROMPT}"
     RESULT=$(run_claude "$REDUCED_CONTEXT") || RESULT=""
+    PROMPT="$ORIG_PROMPT"  # restore original prompt
     if [[ -z "$RESULT" ]]; then
         log "ERROR: retry claude call failed"
         bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "retry failed for domain=${DOMAIN}" || true

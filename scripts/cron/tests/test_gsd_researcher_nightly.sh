@@ -137,11 +137,28 @@ EOF
 
   cat > "$bindir/flock" <<'EOF'
 #!/usr/bin/env bash
-set -euo pipefail
-if [[ "${1:-}" == "-w" ]]; then
-  shift 2
+# BUG FIX I-2: Mock flock must handle BOTH patterns used by the real code:
+#   fd-based:      flock --timeout 120 9        (git-safe.sh uses this)
+#   command-based: flock -w 120 /path cmd args  (legacy pattern)
+# For fd-based: args are [--timeout N fd] — just succeed (lock acquired)
+# For command-based: args are [-w N lockfile cmd...] — exec the command
+
+# Handle --timeout (fd-based locking — git-safe.sh pattern)
+if [[ "${1:-}" == "--timeout" ]]; then
+  # flock --timeout SECONDS FD — just succeed, fd is already open by caller
+  exit 0
 fi
-exec "$@"
+# Handle -u (unlock fd) — just succeed
+if [[ "${1:-}" == "-u" ]]; then
+  exit 0
+fi
+# Handle -w (command-based locking — legacy pattern)
+if [[ "${1:-}" == "-w" ]]; then
+  shift 3  # skip -w, timeout, lockfile
+  exec "$@"
+fi
+# Fallback — just succeed
+exit 0
 EOF
   chmod +x "$bindir/flock"
 
@@ -234,16 +251,28 @@ run_script() {
 echo "--- Test 1: Script exists ---"
 assert_file_exists "source script exists" "$SOURCE_SCRIPT"
 
-echo "--- Test 2: Weekend skip does not invoke Claude ---"
+echo "--- Test 2: Weekend skip does not invoke Claude (Sunday = day 7) ---"
+WS=$(setup_workspace)
+: > "$TMP_ROOT/git.log"
+rm -f "$TMP_ROOT/claude.count"
+# BUG FIX I-1: Script skips day 7 (Sunday), NOT day 6 (Saturday).
+# Day 6 = Saturday = skill-design domain (runs normally).
+# Must test day 7 to verify the weekend skip path.
+OUTPUT=$(MOCK_DAY_NUM=7 MOCK_DATE=2026-04-06 run_script "$WS" 2>&1)
+assert_eq "sunday skip exit code" "0" "$?"
+CLAUDE_CALLS=$(cat "$TMP_ROOT/claude.count" 2>/dev/null || echo "0")
+assert_eq "sunday claude calls" "0" "$CLAUDE_CALLS"
+assert_not_exists "sunday output file not written" "$WS/.planning/research/2026-04-06-synthesis.md"
+
+echo "--- Test 2b: Saturday (day 6) DOES run skill-design domain ---"
 WS=$(setup_workspace)
 : > "$TMP_ROOT/git.log"
 rm -f "$TMP_ROOT/claude.count"
 OUTPUT=$(MOCK_DAY_NUM=6 MOCK_DATE=2026-04-05 run_script "$WS" 2>&1)
-assert_eq "weekend exit code" "0" "$?"
-assert_contains "weekend output empty or minimal" "" "$OUTPUT"
+assert_eq "saturday exit code" "0" "$?"
 CLAUDE_CALLS=$(cat "$TMP_ROOT/claude.count" 2>/dev/null || echo "0")
-assert_eq "weekend claude calls" "0" "$CLAUDE_CALLS"
-assert_not_exists "weekend output file not written" "$WS/.planning/research/2026-04-05-synthesis.md"
+assert_eq "saturday claude calls" "1" "$CLAUDE_CALLS"
+assert_file_exists "saturday skill-design output written" "$WS/.planning/research/2026-04-05-skill-design.md"
 
 echo "--- Test 3: Claude failure retries with reduced path to success ---"
 WS=$(setup_workspace)
