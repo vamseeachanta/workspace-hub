@@ -1,68 +1,37 @@
 # Mount Drive Resource Audit
 
-> **Generated:** 2026-04-05
-> **Task:** #1776 - Mount Drive Resource Audit
+## 1. Local vs. Remote Resources
 
----
+Based on the `dde-lit-migration-plan.md`, there is a significant collection of 14.6 GB of literature (5,456 PDFs) that is currently remote and planned for migration.
 
-## 1. Resource Landscape: Local vs. Remote
+**Local Resources:**
 
-Our engineering knowledge base is spread across two primary locations: a local, well-structured drive (`/mnt/ace`) and a remote, legacy drive (`/mnt/remote/ace-linux-2/dde`).
+*   The local `workspace-hub` repository contains planning documents, schemas, and indexing artifacts. It does not appear to contain the primary source documents themselves.
 
-### 1.1. Local Drive (`/mnt/ace`)
+**Remote Resources:**
 
-- **Description:** The primary, actively managed storage for engineering data.
-- **Contents:**
-    - **`/mnt/ace/O&G-Standards/`**: Main standards library with 26,884 files, semantic search capabilities, and active OCR/indexing.
-    - **`/mnt/ace/docs/`**: Over 119 project archives and a massive collection of 38,526 conference papers.
-    - **Client Repos:** Active project work for clients like 2H, Doris, and Saipem.
-    - **Open-Source Repos:** Clones of key engineering tools like `Capytaine`, `OpenFAST`, and `WEC-Sim`.
-- **Status:** Partially indexed by the workspace-hub pipeline (1,033,933 documents). Well-documented in `mount-drive-knowledge-map.md`.
+*   A remote drive contains 14.6 GB of PDF documents, which are the primary target for the document intelligence pipeline.
 
-### 1.2. Remote Drive (`/mnt/remote/ace-linux-2/dde`)
+## 2. Resource Gaps
 
-- **Description:** A legacy SSHFS mount from `ace-linux-2` containing historical data.
-- **Contents:**
-    - **`0000 O&G/`**: A legacy standards collection containing critical organizations (**ASME, AWS, NACE, ASCE, IEC**) not found on the local `/mnt/ace` drive.
-    - **`documents/`**: Over 99 historical project folders, with partial overlap with the local drive.
-    - **`Literature/`**: A large collection of engineering textbooks and industry papers.
-    - **`Orcaflex/`**: Unique OrcaFlex models for projects like drilling riser development.
-    - **`FreeSpanVIVFatigue/`**: 13 proprietary MATLAB scripts for pipeline VIV fatigue analysis, a candidate for clean-room porting.
-- **Status:** **CRITICAL GAP.** This drive is not indexed, not registered in the `mounted-source-registry.yaml`, and its contents are largely invisible to our data intelligence pipelines.
-
----
-
-## 2. Identified Gaps
-
-Based on the `mount-drive-knowledge-map.md` and `dde-drive-catalog.md`, the following critical gaps have been identified:
-
-1.  **DDE Drive Invisibility:** The entire 2.8 TB remote DDE drive is a black spot. Its unique standards, project files, and literature are not searchable or usable by our automated systems.
-2.  **Conference Paper Indexing:** 38,526 high-value conference papers (OMAE, OTC, DOT) on the local drive are not indexed, representing a massive untapped resource of domain knowledge.
-3.  **Standards Consolidation:** Critical engineering standards (ASME, NACE, AWS) exist only on the remote DDE drive, creating a fractured and incomplete standards library.
-4.  **Cross-Drive Redundancy:** There is a known but unquantified overlap between the project archives on the local and remote drives. A deduplication audit is required to identify unique, valuable files on the DDE drive.
-
----
+*   **Centralized Document Store:** The primary gap is the lack of a centralized, locally accessible repository for the main corpus of 5,456 PDF documents. They are currently on a remote mount, which introduces access, performance, and pipeline complexities.
+*   **Direct Database Access:** There is no direct access to a structured database containing document metadata, classifications, or extracted entities. All information appears to be stored in flat files (`.jsonl`, `.yaml`).
 
 ## 3. Legal Scan Status
 
-- **Policy:** The `MEMORY.md` file confirms a mandatory policy for legal scans on all document intelligence work, with a specific exclusion for catalogs.
-- **Execution:** A search for `legal` across the workspace returns numerous files, including configuration and log files, but **no consolidated legal scan audit report was found.**
-- **Assessment:** While the tooling and policy exist, the status of a comprehensive legal scan across the mount drives is **unverified**. It is unclear if a full scan has been performed on `/mnt/ace` or the remote DDE drive. Given the presence of proprietary MATLAB code (`FreeSpanVIVFatigue`) and extensive third-party standards, this is a significant risk.
+A search for "legal" reveals several potentially relevant files:
 
----
+*   `knowledge/seeds/maritime-law-cases.yaml`: Suggests some level of legal case data is available as seed knowledge.
+*   `docs/governance/TRUST-ARCHITECTURE.md`: May contain high-level principles regarding data handling and legal constraints.
+*   Various files under `assets/WRK-*`: These appear to be outputs from specific work items that may have involved legal considerations.
+
+**Conclusion:** There is no evidence of a systematic, comprehensive legal scan across the entire 32,00 a document corpus. The existing legal-related files seem to be specific to certain datasets or high-level architectural documents. A dedicated legal review of the source documents is a major gap.
 
 ## 4. Bridging Recommendations
 
-To bridge these gaps and integrate our disparate knowledge sources, the following actions are recommended, aligning with the `resource-intelligence-action-plan.md`:
-
-1.  **Register DDE Drive (Immediate):** Add the `dde_standards_remote`, `dde_literature_remote`, and `dde_engineering_remote` sources to `data/document-index/mounted-source-registry.yaml`. This is the first step to making the drive's contents discoverable. (Completed under #1756).
-
-2.  **Migrate Critical Standards (High Priority):** `rsync` the essential standards organizations (ASME, AWS, NACE, ASCE, HSE, IEC) from the remote DDE drive to `/mnt/ace/O&G-Standards/`. This will consolidate our standards library into a single, searchable location. (Completed under #1758).
-
-3.  **Index Conference Papers (High Priority):** Execute the Phase A indexing pipeline on the `/mnt/ace/docs/conferences/` directory to bring all 38,526 papers into the master document index.
-
-4.  **Perform Cross-Drive Deduplication Audit (Medium Priority):** Run a SHA-256 hash-based audit to compare files between `/mnt/ace/docs/` and `/mnt/remote/ace-linux-2/dde/documents/`. The goal is to identify the unique project files on the DDE drive that need to be indexed.
-
-5.  **Conduct Full Legal Sanity Scan (Medium Priority):** Execute the `legal-sanity-scan.sh` script across both `/mnt/ace` and `/mnt/remote/ace-linux-2/dde` and generate a formal audit report. This is crucial to identify and isolate proprietary or legally constrained content *before* it is processed by the indexing pipelines.
-
-6.  **Index Unique DDE Content (Medium Priority):** Once the deduplication audit is complete, run the Phase A indexing pipeline on the list of unique, high-value files and directories on the DDE drive.
+1.  **Prioritize Migration:** Execute the migration of the 14.6 GB of remote literature as outlined in `dde-lit-migration-plan.md`. This is the most critical step to enable a robust document intelligence pipeline.
+2.  **Implement a Two-Tier Storage System:**
+    *   **Tier 1 (Hot):** An indexed, searchable database (e.g., Elasticsearch, PostgreSQL with pgvector) for metadata, extracted text, and vector embeddings.
+    *   **Tier 2 (Cold):** A file storage solution (like the planned migrated location) for the original PDF documents.
+3.  **Initiate a Corpus-Wide Legal & Compliance Scan:** Before beginning large-scale processing, a systematic legal review of the 32,000 documents is necessary to identify IP, copyright, and data privacy constraints. This should be a formal, tracked process.
+4.  **Develop a Centralized Schema:** Create a canonical JSON schema that defines the structure for all extracted metadata, including legal/compliance flags, document source, and classification details.
