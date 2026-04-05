@@ -1,157 +1,180 @@
-generated: "2026-02-28T00:00:00Z"
-version: "1.0.0"
-schema_version: "1.0.0"
+generated: '2026-02-28T00:00:00Z'
+version: 1.0.0
+schema_version: 1.0.0
 source_roots:
-  - source_id: workspace_hub_local
-    document_intelligence_bucket: workspace_spec
-    mount_root: /mnt/local-analysis/workspace-hub
-    local_or_remote: local
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: in-repo canonical source
-    provenance_rule: repo-native, no external download required
-    dedup_rule: prefer in-repo canonical path over copied exports
-    availability_check_ref: local filesystem presence
-  - source_id: ace_standards_local
-    document_intelligence_bucket: ace_standards
-    mount_root: /mnt/ace/docs/_standards
-    local_or_remote: local
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: mounted standards library, reference in place
-    provenance_rule: mounted source of truth unless superseded locally
-    dedup_rule: prefer mounted canonical path unless legal or retention rules require local mirror
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-  - source_id: og_standards_local
-    document_intelligence_bucket: og_standards
-    mount_root: /mnt/ace/0000 O&G
-    local_or_remote: local
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: mounted standards/reference library
-    provenance_rule: mounted source with document-intelligence indexing
-    dedup_rule: prefer mounted source over copied local duplicates
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-  - source_id: ace_project_local
-    document_intelligence_bucket: ace_project
-    mount_root: /mnt/ace/docs
-    local_or_remote: local
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: mounted project-document source
-    provenance_rule: mounted project path should stay authoritative
-    dedup_rule: prefer canonical mounted project path
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-  - source_id: research_literature_local
-    document_intelligence_bucket: research_literature
-    mount_root: /mnt/ace-data/digitalmodel/docs/domains
-    symlink_note: "/mnt/ace-data is a symlink to /mnt/ace (local drive /dev/sda1)"
-    local_or_remote: local
-    canonical_storage_policy: downloaded research literature organized by engineering domain (rw NFS to ace-linux-2)
-    provenance_rule: each domain folder contains a download-literature.sh script with source URLs
-    dedup_rule: prefer this location over ad-hoc downloads; check before re-downloading
-    availability_check_ref: local filesystem presence
-    structure: |
-      <domain>/literature/
-        <subtopic>/
-          <author-year-title>.pdf
-      Domains: cathodic_protection, geotechnical, hydrodynamics,
-               naval_architecture, pipeline, structural, subsea
-  - source_id: riser_eng_job_local
-    document_intelligence_bucket: riser_eng_job
-    mount_root: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job
-    local_or_remote: local
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: riser engineering project archives (4 projects, 93G)
-    provenance_rule: mounted source of truth for riser engineering literature
-    dedup_rule: prefer this location; domain-index.yaml provides classification
-    availability_check_ref: local filesystem presence
-    domain_index_ref: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/domain-index-full.yaml
-    structure: |
-      <project-code>/
-        <doc-type>-<number>-<rev>.<ext>
-      Projects: 2100-blk31-slor-design (53G), 3824-containment-riser (30G),
-                3836-hp1-riser (7.4G), 3837-cdp2-fsr (3.7G)
-      Literature: 15,449 PDF/DOC/DOCX files
-      Domains: risers, riser_analysis, viv, structural, fatigue, mooring,
-               fem, catenary, connections, installation, metocean, pipe, subsea
-  - source_id: dde_project_remote
-    document_intelligence_bucket: dde_project
-    mount_root: ""
-    mount_root_env_var: DDE_PROJECT_REMOTE_ROOT
-    mount_root_example: /mnt/remote/<workstation>/dde
-    environment_specific: true
-    local_or_remote: remote
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: remote mounted project-document source
-    provenance_rule: remote mounted path is authoritative unless explicitly mirrored
-    dedup_rule: prefer remote mounted path over detached copies
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-    auth_posture: inherited mount credentials
-    auth_mechanism: workstation-managed remote mount session
-    credential_reference: workstation mount/session state
-    fallback_posture: use indexed metadata and prior cached summaries when remote mount is unavailable
-    cached_evidence_ttl: 7d
-    degradation_rule: do not download blind duplicates; record source status as source_unavailable in resources.yaml and continue with indexed evidence only
-  - source_id: dde_standards_remote
-    document_intelligence_bucket: dde_standards
-    mount_root: /mnt/remote/ace-linux-2/dde/0000 O&G
-    local_or_remote: remote
-    canonical_storage_policy: legacy standards collection with unique orgs (ASME, AWS, NACE, ASCE, HSE, IEC, etc.) not present in /mnt/ace/O&G-Standards
-    provenance_rule: source of truth for 18 orgs not present in /mnt/ace/O&G-Standards; prefer /mnt/ace for overlapping orgs
-    dedup_rule: check /mnt/ace/O&G-Standards first; DDE is authoritative for missing orgs only
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-    fallback_posture: use indexed metadata when remote mount is unavailable
-    cached_evidence_ttl: 7d
-    structure: |
-      <org>/
-        <standard-file>.pdf
-      36 org dirs including 18 NOT in /mnt/ace: ASME, ASCE, AWS, NACE,
-      HSE, IEC, AISC, AMJIG, AMS, ANSI, AS, ASNT, AWHEM, CFR, FAA,
-      GLND, IADC-TPC, NFPA
-      Also has: Codes & Standards Database.xls (master index)
-  - source_id: dde_literature_remote
-    document_intelligence_bucket: dde_literature
-    mount_root: /mnt/remote/ace-linux-2/dde/Literature
-    local_or_remote: remote
-    canonical_storage_policy: historical literature collection (engineering, O&G, business, career)
-    provenance_rule: reference in place; prefer domain-organized copies in digitalmodel/docs/domains when available
-    dedup_rule: check digitalmodel/docs/domains literature first for engineering content
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-    fallback_posture: use indexed metadata when remote mount is unavailable
-    cached_evidence_ttl: 7d
-    structure: |
-      33 topic directories including:
-      Engineering/ - 50+ textbooks (heat transfer, reservoir eng, environmental)
-      Oil and Gas/ - 80+ O&G literature (reservoir eng, peak oil, pipeline)
-      Also: BookSummaries, Career, Finance, HBR, MBA, Safety Reviews, Software
-  - source_id: dde_engineering_remote
-    document_intelligence_bucket: dde_engineering
-    mount_root: /mnt/remote/ace-linux-2/dde
-    local_or_remote: remote
-    canonical_storage_policy: legacy engineering work archive (OrcaFlex models, MATLAB code, project backups)
-    provenance_rule: reference only; active work migrated to /mnt/ace repos
-    dedup_rule: check /mnt/ace project folders first; DDE is fallback for unmigrated content
-    availability_check_ref: scripts/readiness/check-network-mounts.sh
-    fallback_posture: use indexed metadata when remote mount is unavailable
-    cached_evidence_ttl: 7d
-    note: Includes FreeSpanVIVFatigue/ (13 MATLAB VIV scripts), o-drive/017 ODA (drilling analytics), o-drive/018 FFS (fitness for service), Orcaflex/ (drilling riser models), dropbox_contents/Engineering/ (project backups)
-    structure: |
-      documents/ - 99 project folders (0063-0200+)
-      Orcaflex/ - OrcaFlex .dat model files
-      FreeSpanVIVFatigue/ - 13 MATLAB scripts (2H VIV methodology)
-      o-drive/ - OneDrive archive (FFS, ODA, manuals)
-      dropbox_contents/ - Dropbox project backups
-      g-drive/ - Google Drive export (financials, doc register)
-  - source_id: api_metadata_virtual
-    document_intelligence_bucket: api_metadata
-    mount_root: api://worldenergydata
-    local_or_remote: api
-    index_artifact_ref: data/document-index/index.jsonl
-    registry_ref: data/document-index/registry.yaml
-    canonical_storage_policy: API-backed metadata source
-    provenance_rule: API origin must be recorded in resources.yaml
-    dedup_rule: prefer API canonical identifier over exported snapshots
-    availability_check_ref: scripts/readiness/query-docs.sh
+- source_id: workspace_hub_local
+  document_intelligence_bucket: workspace_spec
+  mount_root: /mnt/local-analysis/workspace-hub
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: in-repo canonical source
+  provenance_rule: repo-native, no external download required
+  dedup_rule: prefer in-repo canonical path over copied exports
+  availability_check_ref: local filesystem presence
+- source_id: ace_standards_local
+  document_intelligence_bucket: ace_standards
+  mount_root: /mnt/ace/docs/_standards
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: mounted standards library, reference in place
+  provenance_rule: mounted source of truth unless superseded locally
+  dedup_rule: prefer mounted canonical path unless legal or retention rules require
+    local mirror
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+- source_id: og_standards_local
+  document_intelligence_bucket: og_standards
+  mount_root: /mnt/ace/0000 O&G
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: mounted standards/reference library
+  provenance_rule: mounted source with document-intelligence indexing
+  dedup_rule: prefer mounted source over copied local duplicates
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+- source_id: ace_project_local
+  document_intelligence_bucket: ace_project
+  mount_root: /mnt/ace/docs
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: mounted project-document source
+  provenance_rule: mounted project path should stay authoritative
+  dedup_rule: prefer canonical mounted project path
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+- source_id: research_literature_local
+  document_intelligence_bucket: research_literature
+  mount_root: /mnt/ace-data/digitalmodel/docs/domains
+  symlink_note: /mnt/ace-data is a symlink to /mnt/ace (local drive /dev/sda1)
+  local_or_remote: local
+  canonical_storage_policy: downloaded research literature organized by engineering
+    domain (rw NFS to ace-linux-2)
+  provenance_rule: each domain folder contains a download-literature.sh script with
+    source URLs
+  dedup_rule: prefer this location over ad-hoc downloads; check before re-downloading
+  availability_check_ref: local filesystem presence
+  structure: "<domain>/literature/\n  <subtopic>/\n    <author-year-title>.pdf\nDomains:\
+    \ cathodic_protection, geotechnical, hydrodynamics,\n         naval_architecture,\
+    \ pipeline, structural, subsea\n"
+- source_id: riser_eng_job_local
+  document_intelligence_bucket: riser_eng_job
+  mount_root: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: riser engineering project archives (4 projects, 93G)
+  provenance_rule: mounted source of truth for riser engineering literature
+  dedup_rule: prefer this location; domain-index.yaml provides classification
+  availability_check_ref: local filesystem presence
+  domain_index_ref: /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/domain-index-full.yaml
+  structure: "<project-code>/\n  <doc-type>-<number>-<rev>.<ext>\nProjects: 2100-blk31-slor-design\
+    \ (53G), 3824-containment-riser (30G),\n          3836-hp1-riser (7.4G), 3837-cdp2-fsr\
+    \ (3.7G)\nLiterature: 15,449 PDF/DOC/DOCX files\nDomains: risers, riser_analysis,\
+    \ viv, structural, fatigue, mooring,\n         fem, catenary, connections, installation,\
+    \ metocean, pipe, subsea\n"
+- source_id: dde_project_remote
+  document_intelligence_bucket: dde_project
+  mount_root: ''
+  mount_root_env_var: DDE_PROJECT_REMOTE_ROOT
+  mount_root_example: /mnt/remote/<workstation>/dde
+  environment_specific: true
+  local_or_remote: remote
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: remote mounted project-document source
+  provenance_rule: remote mounted path is authoritative unless explicitly mirrored
+  dedup_rule: prefer remote mounted path over detached copies
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+  auth_posture: inherited mount credentials
+  auth_mechanism: workstation-managed remote mount session
+  credential_reference: workstation mount/session state
+  fallback_posture: use indexed metadata and prior cached summaries when remote mount
+    is unavailable
+  cached_evidence_ttl: 7d
+  degradation_rule: do not download blind duplicates; record source status as source_unavailable
+    in resources.yaml and continue with indexed evidence only
+- source_id: dde_standards_remote
+  document_intelligence_bucket: dde_standards
+  mount_root: /mnt/remote/ace-linux-2/dde/0000 O&G
+  local_or_remote: remote
+  canonical_storage_policy: legacy standards collection with unique orgs (ASME, AWS,
+    NACE, ASCE, HSE, IEC, etc.) not present in /mnt/ace/O&G-Standards
+  provenance_rule: source of truth for 18 orgs not present in /mnt/ace/O&G-Standards;
+    prefer /mnt/ace for overlapping orgs
+  dedup_rule: check /mnt/ace/O&G-Standards first; DDE is authoritative for missing
+    orgs only
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+  fallback_posture: use indexed metadata when remote mount is unavailable
+  cached_evidence_ttl: 7d
+  structure: "<org>/\n  <standard-file>.pdf\n36 org dirs including 18 NOT in /mnt/ace:\
+    \ ASME, ASCE, AWS, NACE,\nHSE, IEC, AISC, AMJIG, AMS, ANSI, AS, ASNT, AWHEM, CFR,\
+    \ FAA,\nGLND, IADC-TPC, NFPA\nAlso has: Codes & Standards Database.xls (master\
+    \ index)\n"
+- source_id: dde_literature_remote
+  document_intelligence_bucket: dde_literature
+  mount_root: /mnt/remote/ace-linux-2/dde/Literature
+  local_or_remote: remote
+  canonical_storage_policy: historical literature collection (engineering, O&G, business,
+    career)
+  provenance_rule: reference in place; prefer domain-organized copies in digitalmodel/docs/domains
+    when available
+  dedup_rule: check digitalmodel/docs/domains literature first for engineering content
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+  fallback_posture: use indexed metadata when remote mount is unavailable
+  cached_evidence_ttl: 7d
+  structure: '33 topic directories including:
+
+    Engineering/ - 50+ textbooks (heat transfer, reservoir eng, environmental)
+
+    Oil and Gas/ - 80+ O&G literature (reservoir eng, peak oil, pipeline)
+
+    Also: BookSummaries, Career, Finance, HBR, MBA, Safety Reviews, Software
+
+    '
+- source_id: dde_engineering_remote
+  document_intelligence_bucket: dde_engineering
+  mount_root: /mnt/remote/ace-linux-2/dde
+  local_or_remote: remote
+  canonical_storage_policy: legacy engineering work archive (OrcaFlex models, MATLAB
+    code, project backups)
+  provenance_rule: reference only; active work migrated to /mnt/ace repos
+  dedup_rule: check /mnt/ace project folders first; DDE is fallback for unmigrated
+    content
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
+  fallback_posture: use indexed metadata when remote mount is unavailable
+  cached_evidence_ttl: 7d
+  note: Includes FreeSpanVIVFatigue/ (13 MATLAB VIV scripts), o-drive/017 ODA (drilling
+    analytics), o-drive/018 FFS (fitness for service), Orcaflex/ (drilling riser models),
+    dropbox_contents/Engineering/ (project backups)
+  structure: 'documents/ - 99 project folders (0063-0200+)
+
+    Orcaflex/ - OrcaFlex .dat model files
+
+    FreeSpanVIVFatigue/ - 13 MATLAB scripts (2H VIV methodology)
+
+    o-drive/ - OneDrive archive (FFS, ODA, manuals)
+
+    dropbox_contents/ - Dropbox project backups
+
+    g-drive/ - Google Drive export (financials, doc register)
+
+    '
+- source_id: api_metadata_virtual
+  document_intelligence_bucket: api_metadata
+  mount_root: api://worldenergydata
+  local_or_remote: api
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: API-backed metadata source
+  provenance_rule: API origin must be recorded in resources.yaml
+  dedup_rule: prefer API canonical identifier over exported snapshots
+  availability_check_ref: scripts/readiness/query-docs.sh
+- source_id: dde_literature_local
+  document_intelligence_bucket: dde_literature
+  mount_root: /mnt/ace/docs/literature/dde
+  local_or_remote: local
+  canonical_storage_policy: migrated from DDE remote drive
+  provenance_rule: local copy of /mnt/remote/ace-linux-2/dde/Literature
+  dedup_rule: prefer local copy, DDE remote is archival
+  migration_date: '2026-04-05'
