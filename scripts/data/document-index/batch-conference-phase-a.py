@@ -205,7 +205,7 @@ def main():
         if len(results_batch) >= args.batch_size:
             with open(args.output, 'a') as f:
                 for res in results_batch:
-                    f.write(json.dumps(res) + '\\n')
+                    f.write(json.dumps(res) + '\n')
             
             save_checkpoint(processed_paths, args.output)
             print(f"Processed {len(processed_paths)} / {total_to_process}... (checkpoint saved)")
@@ -215,7 +215,7 @@ def main():
     if results_batch:
         with open(args.output, 'a') as f:
             for res in results_batch:
-                f.write(json.dumps(res) + '\\n')
+                f.write(json.dumps(res) + '\n')
     
     save_checkpoint(processed_paths, args.output)
     print(f"Finished processing. Total processed: {len(processed_paths)} / {total_to_process}.")
