@@ -3,8 +3,9 @@
 ## Retrieval
 - Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates
-1. Plan before acting — explicit plan + user approval before implementation
+1. Plan before acting — explicit plan + user approval before implementation. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
 2. TDD mandatory — tests before implementation; no exceptions
+3. Gate order: Issue → Plan → **USER APPROVES PLAN** → Implement → Cross-review → Close
 ## Workflow
 - GSD framework: `/gsd:help` for commands, `/gsd:new-project` to initialize
 - Tasks tracked as GitHub issues — no local work-queue
