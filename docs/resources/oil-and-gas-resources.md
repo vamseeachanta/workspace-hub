@@ -9,7 +9,7 @@
 | Online Resources | 29 |
 | Standards | 0 |
 | Local Documents | 0 |
-| GitHub Repositories | 7 |
+| GitHub Repositories | 8 |
 | Undownloaded Resources | 29 |
 | Standard Gaps | 0 |
 
@@ -70,6 +70,8 @@
 - [ResInsight](https://github.com/OPM/ResInsight) — Python API (rips module) for scripted post-processing. Can read Eclipse EGRID/INIT/UNRST files. Embeddable in analysis pipelines alongside worldenergydata data extraction.
 
 - [Whitson+](https://github.com/whitson-org) — Python-native where available. Check individual repo licenses before integration. PVT calculations can feed into assetutilities fluid property modules.
+
+- [Open-Source-Petrophysics](https://github.com/Philliec459/Open-Source-Petrophysics) — Comprehensive petrophysics toolkit (78 stars, 479 commits, active Apr 2026). Bakken well log merging (LAS files, depth shifting, PetroSuite/Geolog integration), carbonate Rosetta Stone data interrogation, Costa Field carbonate workflow, clastic poro-perm from thin sections, Gaussian/Clerke capillary pressure, Klinkenberg corrections, NMR T2 inversion, relative permeability, Thomeer Pc curves, upscaled BVocc/perm. Colab-ready Jupyter notebooks. Key subdir for field dev: [petro_suite_merge_Geolog3_Statoil-Github](https://github.com/Philliec459/Open-Source-Petrophysics/tree/main/Bakken_Merged_las_sent_to_GitHub/petro_suite_merge_Geolog3_Statoil-Github) — PetroSuite apps, petrocore modules, interactive Vsh/CBW/Pickett plots.
 
 
 ## Gap Analysis
