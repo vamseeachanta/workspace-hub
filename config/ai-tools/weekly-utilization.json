@@ -1,0 +1,212 @@
+{
+  "generated_at": "2026-04-05T02:18:09.584486Z",
+  "report_weeks": 5,
+  "current_week": "2026-W14",
+  "subscriptions": {
+    "claude": {
+      "cost_monthly": 200.0,
+      "plan": "Claude Max $200/mo"
+    },
+    "codex": {
+      "cost_monthly": 40.0,
+      "plan": "OpenAI x2 ($20/mo each)"
+    },
+    "gemini": {
+      "cost_monthly": 20.0,
+      "plan": "Google AI Pro $20/mo"
+    },
+    "copilot": {
+      "cost_monthly": 9.0,
+      "plan": "GitHub Copilot $9/mo (annual)"
+    }
+  },
+  "total_monthly_spend": 269.0,
+  "weekly_data": {
+    "2026-W09": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 70,
+        "input_tokens": 280000,
+        "output_tokens": 14000,
+        "total_tokens": 294000,
+        "records": 70,
+        "utilization_pct": 46.7
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 2,
+        "messages": 98,
+        "utilization_pct": 4.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W10": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 195,
+        "input_tokens": 4088000,
+        "output_tokens": 204400,
+        "total_tokens": 4292400,
+        "records": 1022,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 13,
+        "messages": 507,
+        "utilization_pct": 26.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W11": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 809,
+        "input_tokens": 14820000,
+        "output_tokens": 741000,
+        "total_tokens": 15561000,
+        "records": 3705,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 1,
+        "messages": 1,
+        "utilization_pct": 2.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W12": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 1280,
+        "input_tokens": 34652000,
+        "output_tokens": 1732600,
+        "total_tokens": 36384600,
+        "records": 8663,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 5,
+        "messages": 31,
+        "utilization_pct": 10.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W13": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 24664,
+        "input_tokens": 335648000,
+        "output_tokens": 16782400,
+        "total_tokens": 352430400,
+        "records": 83912,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 11,
+        "messages": 84,
+        "utilization_pct": 22.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W14": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 24716,
+        "input_tokens": 591528000,
+        "output_tokens": 29576400,
+        "total_tokens": 621104400,
+        "records": 147882,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 13,
+        "messages": 72,
+        "utilization_pct": 26.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "messages": 0,
+        "utilization_pct": 0.0,
+        "data_source": "none",
+        "manual_entry_required": true,
+        "note": "No automated Gemini tracking yet. Usage via h-gemini alias or Copilot proxy is untracked."
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "messages": 0,
+        "utilization_pct": 0.0,
+        "data_source": "hermes_delegation_logs",
+        "manual_entry_required": true,
+        "note": "Copilot usage via Hermes delegation (provider=copilot). Tracking TBD."
+      }
+    }
+  },
+  "underutilization_alerts": [
+    {
+      "provider": "gemini",
+      "utilization_pct": 0.0,
+      "threshold_pct": 15.0,
+      "message": "gemini at 0.0% utilization (threshold: 15.0%)",
+      "subscription_cost": 20.0
+    },
+    {
+      "provider": "copilot",
+      "utilization_pct": 0.0,
+      "threshold_pct": 15.0,
+      "message": "copilot at 0.0% utilization (threshold: 15.0%)",
+      "subscription_cost": 9.0
+    }
+  ]
+}
