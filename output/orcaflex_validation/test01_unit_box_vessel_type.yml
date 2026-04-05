@@ -1,0 +1,9 @@
+VesselType:
+  Name: test01_unit_box
+  WaterDepth: 100.0
+  DiffractionSource: OrcaWave
+  CreatedDate: '2026-04-03'
+  RAODataFile: test01_unit_box_raos.csv
+  AddedMassDataFile: test01_unit_box_added_mass.csv
+  DampingDataFile: test01_unit_box_damping.csv
+  Notes: Generated from OrcaWave analysis

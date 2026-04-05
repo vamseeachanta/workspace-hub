@@ -1,0 +1,244 @@
+# Review by Claude
+# Source: orcaflex_plans_for_review.md
+# Type: plan
+# Date: 20260211T201847Z
+
+[Claude review requires interactive session or API call]
+## Content to Review
+```
+---
+id: WRK-110
+title: "Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes"
+status: pending
+priority: medium
+complexity: complex
+created_at: 2026-02-10T00:00:00Z
+updated_at: 2026-02-10T00:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+plan: inline
+related:
+  - WRK-109
+blocked_by: []
+synced_to: []
+---
+
+# WRK-110: Expand hull size library with FST, LNGC, and benchmark shapes
+
+## Description
+
+Build out the hull geometry library with standard shapes from three sources:
+a) FST (Floating Storage Terminal) hull forms — barge-type and ship-type variants
+b) LNGC (LNG Carrier) hull forms — conventional, Q-Flex, Q-Max size classes
+c) OrcaFlex benchmark shapes — adopt existing benchmark geometries (barge, ship, spar, semi) as standard library entries
+
+## Context
+
+- Current hull shapes are ad-hoc per benchmark (L02 barge, L03 ship, L04 spar)
+- No centralized hull library with standard dimensions and mesh files
+- FSTs and LNGCs are critical for offshore LNG mooring and motion analysis
+- OrcaFlex examples provide well-validated simple shapes that serve as good baselines
+
+## Scope
+
+### a) FST Hull Forms
+1. Research standard FST dimensions (length, beam, depth, draft) for typical storage capacities
+2. Create parametric hull definitions (box barge, ship-shaped FSO/FST)
+3. Generate panel meshes suitable for OrcaWave (target 2000-5000 panels)
+
+### b) LNGC Hull Forms
+1. Catalogue standard LNGC size classes with principal dimensions:
+   - Conventional: ~138k m3, ~270m LOA
+   - Q-Flex: ~210k m3, ~315m LOA
+   - Q-Max: ~266k m3, ~345m LOA
+2. Create hull definitions with standard block coefficients
+3. Generate panel meshes for diffraction analysis
+
+### c) OrcaFlex Benchmark Shapes as Standard Library
+1. Formalize existing benchmark meshes (barge, ship, spar) as library entries
+2. Add principal dimensions, displacement, and hydrostatic metadata
+3. Ensure consistent naming and directory structure
+
+## Key Files
+
+- Existing meshes: `docs/modules/orcawave/` (per benchmark)
+- Target library location: `data/hulls/` or `docs/modules/hull_library/`
+- Mesh generation: gmsh-meshing skill or FreeCAD parametric
+- OrcaFlex examples: `docs/modules/orcaflex/examples/`
+
+## Acceptance Criteria
+
+- [ ] Hull library directory structure established with consistent naming
+- [ ] At least 2 FST hull forms catalogued with dimensions and meshes
+- [ ] At least 3 LNGC hull forms catalogued (conventional, Q-Flex, Q-Max)
+- [ ] OrcaFlex benchmark shapes (barge, ship, spar) added as standard library entries
+- [ ] Each hull entry includes: principal dimensions, displacement, mesh file, metadata
+- [ ] Meshes validated for OrcaWave compatibility (panel count, normals, watertightness)
+- [ ] Index file or manifest listing all available hulls
+
+## Plan
+
+**Target**: `data/hull_library/panels/` (extend existing library) + `data/hull_library/catalog/hull_panel_catalog.yaml`
+
+### Existing Assets (reuse)
+- `data/hull_library/panels/` — 14 GDF meshes across 7 categories (barges, FPSO, LNGC, primitives, semi_subs, ships, spars)
+- `data/hull_library/catalog/hull_panel_catalog.yaml` — 23 entries with dimensions, panel counts, symmetry
+- Benchmark meshes: barge (WRK-100 r4), ship (r1), spar (r1) — validated against AQWA + OrcaWave
+- `src/.../diffraction_spec/mesh_converter.py` — GDF ↔ other format conversion
+- Hull panel generator (WRK-106) — parametric mesh creation from line definitions
+
+### Phase 1 — Research Hull Dimensions
+**FST forms**:
+- Barge-type FST: 250m × 46m × 14m draft (typical 300k bbl storage)
+- Ship-type FSO: 330m × 60m × 22m draft (typical converted VLCC)
+- Sources: DNV class records, operator fleet pages, public project EIAs
+
+**LNGC forms**:
+- Conventional (138k m3): 270m × 43m × 11.5m draft, Cb=0.76
+- Q-Flex (210k m3): 315m × 50m × 12.0m draft, Cb=0.78
+- Q-Max (266k m3): 345m × 55m × 12.0m draft, Cb=0.80
+- Sources: Samsung/DSME public specs, IGC Code dimensions, ABS/LR class guidance
+
+### Phase 2 — Generate Panel Meshes
+- Use hull panel generator (WRK-106) or gmsh with parametric scripts
+- Target panel density: 2000-5000 panels per hull (convergence-suitable)
+- FST barge: box barge geometry with rounded bilge
+- FST ship-type: ship-form with fine bow, parallel midbody, cruiser stern
+- LNGC: prismatic hull with Cb-consistent sections
+- Output format: GDF (OrcaWave/Wamit compatible)
+
+### Phase 3 — Formalize Benchmark Shapes
+- Copy existing benchmark meshes to canonical library locations:
+  - `data/hull_library/panels/barges/benchmark_barge.gdf`
+  - `data/hull_library/panels/ships/benchmark_ship.gdf`
+  - `data/hull_library/panels/spars/benchmark_spar.gdf`
+- Add metadata: principal dimensions, displacement, draft, hydrostatic coefficients
+- Cross-reference to benchmark reports (r4 barge, r1 ship, r1 spar)
+
+### Phase 4 — Catalog Integration
+- Add all new entries to `hull_panel_catalog.yaml`
+- Fields per entry: name, category, LOA, beam, draft, displacement, panel_count, symmetry, mesh_file, source
+- Update catalog report (HTML) with new entries
+- Validate: each mesh loads in OrcaWave/AQWA without errors
+
+---
+*Source: User request — centralize hull geometry library for FST/LNGC and standard shapes*
+---
+id: WRK-115
+title: "Link RAO data to hull shapes in hull library catalog"
+status: pending
+priority: medium
+complexity: medium
+compound: false
+created_at: 2026-02-10T22:00:00Z
+target_repos:
+  - digitalmodel
+commit:
+spec_ref:
+related: [WRK-114, WRK-031, WRK-043]
+blocked_by: []
+synced_to: []
+plan: inline
+plan_reviewed: false
+plan_approved: false
+percent_complete: 0
+brochure_status:
+tags: [hull-library, raos, diffraction, hydrodynamics, data-linking]
+---
+
+# Link RAO Data to Hull Shapes in Hull Library Catalog
+
+## What
+Add RAO (Response Amplitude Operator) linkage to hull shapes in the hull library catalog. Each hull entry should be able to reference associated RAO datasets that accumulate over time as diffraction analyses are performed. When a new diffraction analysis produces RAOs for a cataloged hull, the link is established automatically.
+
+## Why
+Hull panel meshes (WRK-114) and diffraction solver results (RAOs) are currently disconnected. Linking them creates a growing knowledge base: each hull gains a history of RAO results across different analysis conditions (wave headings, drafts, solver types). This enables rapid lookup of existing RAOs before re-running expensive diffraction analyses, and feeds into the parametric hull pipeline (WRK-043) and solver benchmarking (WRK-031).
+
+## Acceptance Criteria
+- [ ] PanelCatalogEntry schema extended with RAO reference field(s)
+- [ ] RAO registry/index that maps hull_id → list of RAO datasets (solver, draft, date, file path)
+- [ ] Hook or utility to register new RAO results against a hull after diffraction analysis
+- [ ] Catalog YAML/CSV updated to include RAO link metadata
+- [ ] HTML report updated to show RAO availability per hull
+- [ ] Tests covering RAO linking, lookup, and catalog round-trip
+
+## Plan
+
+**Target**: `data/hull_library/catalog/hull_panel_catalog.yaml` (extend) + `data/hull_library/raos/` (new)
+
+### Existing Assets (reuse)
+- `data/hull_library/catalog/hull_panel_catalog.yaml` — 23 entries, PanelCatalogEntry schema
+- Benchmark RAO data: `benchmark_output/barge_benchmark/r4/`, `benchmark_output/ship_benchmark/r1/`, `benchmark_output/spar_benchmark/r1/`
+- `src/.../diffraction_spec/` — DiffractionSpec, OrcaWave/AQWA backends
+- `run_3way_benchmark.py` — produces RAO comparison data as JSON
+
+### Phase 1 — Schema Extension
+- Extend `PanelCatalogEntry` with optional `raos: list[RaoReference]` field
+- `RaoReference` schema: `solver` (AQWA/OrcaWave/BEMRosetta), `draft_m`, `headings_deg: list`, `date`, `file_path`, `benchmark_revision`
+- Backward compatible: existing entries without `raos` field remain valid
+
+### Phase 2 — RAO Registry
+- `data/hull_library/raos/` directory structure: `raos/{hull_id}/{solver}_{draft}m_{date}.json`
+- Registry index: `data/hull_library/raos/registry.yaml` — maps hull_id → list of RAO datasets
+- Each RAO dataset JSON: frequencies, headings, 6-DOF RAO amplitude + phase arrays
+- Populate with existing benchmark data (barge r4, ship r1, spar r1)
+
+### Phase 3 — Auto-Linking Hook
+- Post-diffraction hook in `run_3way_benchmark.py`: after analysis completes, auto-register RAO results
+- Function: `register_rao(hull_id, solver, draft, headings, rao_data, output_dir)`
+- Updates both registry.yaml and catalog entry
+- Idempotent: re-running same analysis overwrites previous entry for same hull+solver+draft
+
+### Phase 4 — Catalog & Report Updates
+- Update catalog YAML with RAO references for benchmarked hulls
+- Extend HTML report: per-hull row shows RAO availability (checkmarks per solver)
+- Add lookup utility: `get_raos(hull_id, solver=None, draft=None)` → returns matching RAO datasets
+- Tests: registration, lookup, catalog round-trip, backward compatibility
+
+---
+*Source: "add to hull shapes a link to the RAOs over time. Link the raos as diffraction analysis is performed."*
+---
+id: WRK-116
+title: "Scale hull panel meshes to target principal dimensions for hydrodynamic analysis"
+status: pending
+priority: medium
+complexity: medium
+compound: false
+```
+## Review Prompt
+# Plan Review Prompt
+
+You are reviewing a technical plan/specification for a software engineering project. Evaluate the following aspects:
+
+## Review Criteria
+
+1. **Completeness**: Are all requirements addressed? Are there missing acceptance criteria?
+2. **Feasibility**: Is the proposed approach technically sound? Are there hidden complexities?
+3. **Dependencies**: Are all dependencies identified? Are there circular or missing dependencies?
+4. **Risk**: What are the top 3 risks? Are mitigation strategies adequate?
+5. **Scope**: Is the scope well-defined? Is there scope creep risk?
+6. **Testing**: Is the test strategy adequate? Are edge cases considered?
+
+## Output Format
+
+Provide your review as:
+
+### Verdict: APPROVE | REQUEST_CHANGES | REJECT
+
+### Summary
+[1-3 sentence overall assessment]
+
+### Issues Found
+- [P1] Critical: [issue description]
+- [P2] Important: [issue description]
+- [P3] Minor: [issue description]
+
+### Suggestions
+- [suggestion 1]
+- [suggestion 2]
+
+### Questions for Author
+- [question 1]
+- [question 2]
