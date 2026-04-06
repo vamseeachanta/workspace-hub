@@ -11,6 +11,7 @@ license = {text = "MIT"}
 dependencies = [
     "beautifulsoup4>=4.14.3",
     "pdf2image>=1.17.0",
+    "pdfplumber>=0.11.9",
     "pillow>=12.1.1",
     "pytesseract>=0.3.13",
     "pyyaml>=6.0",

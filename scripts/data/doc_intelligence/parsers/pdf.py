@@ -119,7 +119,7 @@ class PdfParser(BaseParser):
 
         if pdfplumber is None:
             errors.append("pdfplumber is not installed")
-            return DocumentManifest(metadata=meta, sections=sections, tables=tables, figure_refs=figure_refs, errors=errors)
+            return DocumentManifest(version="1.0.0", tool="extract-document/1.0.0", domain=domain, metadata=meta, sections=sections, tables=tables, figure_refs=figure_refs, errors=errors)
 
         try:
             with pdfplumber.open(filepath) as pdf:
