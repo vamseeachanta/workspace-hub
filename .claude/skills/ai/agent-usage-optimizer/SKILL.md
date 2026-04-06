@@ -51,27 +51,49 @@ gh issue edit <issue-number> --remove-label "agent:gemini" --add-label "agent:cl
 
 Group 5-6 related research/planning tasks into ONE Gemini session. Each task produces a file + commit.
 
+### Working Methods
+
+**Option A — OpenRouter (recommended for non-interactive/overnight):**
 ```bash
-h-router-gemini -t terminal,file,web -q "
+hermes chat --provider openrouter --model google/gemini-2.5-pro --quiet -q "
 You are the ACE Engineer advance scout. Working directory: /mnt/local-analysis/workspace-hub.
-Execute ALL 5 tasks. Commit after each. Do NOT push. Close each issue.
-
-TASK 1: <description>
-- Use search_files or terminal to gather data
-- Create: <output file path>
-- Commit: git add <file> && git commit -m '...'
-- Close: gh issue close <number>
-
-TASK 2-5: same pattern...
-
-RULES: Commit after each task, do NOT push. Close each issue.
-All paths under /mnt/local-analysis/workspace-hub/
+<task description>
 "
 ```
+This works reliably for one-shot/overnight execution. Costs OpenRouter credits but avoids 403 errors.
 
-Key parameters: 
-- `-t terminal,file,web` — enables file system writes and web search
-- One session per batch, ~2 min per session, ~$0.00 consumed
+**Option B — Interactive session (Copilot provider):**
+```bash
+hermes chat --provider copilot --model gemini-2.5-pro -q "task"
+```
+Only works in interactive mode with --yolo flag for unattended runs.
+
+### BROKEN: Do NOT Use
+- `h-router-gemini -q` — alias does not work for one-shot
+- `hermes chat --provider copilot --model gemini-2.5-pro --quiet -q` — returns HTTP 403
+- `hermes chat --provider copilot --model gemini-2.5-pro -q` (interactive) — returns HTTP 403
+- Copilot/ GitHub's Gemini API blocks non-interactive CLI calls entirely
+
+### Verified Working Gemini Providers
+| Provider | Model | Interactive | One-shot (-q) | Notes |
+|----------|-------|-------------|---------------|-------|
+| openrouter | google/gemini-2.5-pro | Yes | Yes | Recommended for batches |
+| copilot | gemini-2.5-pro | Yes (with --yolo) | No (403) | Only for interactive sessions |
+
+### Overnight Gemini Pattern
+For overnight batches, use openrouter provider or delegate to subagents (which run on current model):
+```bash
+# Per-task Gemini execution:
+hermes chat --provider openrouter --model google/gemini-2.5-pro --quiet -q "<self-contained-prompt>"
+
+# Or use subagent (runs on current model, NOT Gemini):
+# delegate_task(goal="research task", toolsets=["terminal", "file"])
+```
+
+Key parameters:
+- `--quiet` — suppresses banners for programmatic use
+- `--provider openrouter --model google/gemini-2.5-pro` — working Gemini path
+- One session per batch, ~2 min per session
 - Gemini handles web_search, file reads, file writes, git commits natively
 
 ## Claude/Codex Implementation Pattern
