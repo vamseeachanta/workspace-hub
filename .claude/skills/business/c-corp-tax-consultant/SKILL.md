@@ -251,7 +251,51 @@ If the C-Corp is funded by a related-party loan (e.g., from parent company or sh
 
 ---
 
-## Phase 6: Texas Franchise Tax
+## Phase 5: 1099-MISC Reconciliation for NNN Properties
+
+### The Pass-Through Pattern (Critical Insight)
+
+For NNN properties, **1099-MISC Box 1 commonly includes property tax proration** that the landlord pays to the county and the tenant reimburses. This is a **pass-through with net zero tax impact**:
+
+- Tax reimbursement → income (included in gross rents on Form 1120 Line 5)
+- Property tax paid → expense (deducted on Schedule A Line 5)
+- **Net effect: $0 on taxable income**
+
+This means even if the 1099 "over-reports" by including tax proration, **filing can proceed while awaiting payer confirmation**. The discrepancy is cosmetic, not financial.
+
+### Reconciliation Workflow
+
+1. Get 1099-MISC from payer
+2. List all known payments: rent months, insurance reimb, HOA reimb, tax reimb
+3. Calculate expected total = rent + reimbursements received in calendar year
+4. Compare gap to property tax proration: total_tax / 12 × months_owned
+5. If gap matches tax prorate → it's a pass-through, net zero impact
+6. Email payer for itemized breakdown (good practice, NOT blocking)
+7. File with 1099 amount (simplest) or actual income with explanatory statement
+
+**Real-World Example: SKEstates Inc (sabithaandkrishnaestates)**
+1099: $50,085.60 | Expected rent: $30,425.01 | Gap: ~$9,732 = ~4mo tax prorate ($29,195/12 × 4). Net zero impact. Filing proceeded while awaiting FD confirmation.
+
+## Phase 6: Form 1120 Filing Plan Structure
+
+When creating a filing plan doc for a C-Corp NNN property:
+
+1. Entity Snapshot (EIN, address, incorporation, NAICS, bank)
+2. Property Details (address, tenant, lease, rent, tax accounts)
+3. Cost Basis (purchase + closing costs + §164(d) adj; land/building split)
+4. Income (all calendar year receipts)
+5. Deductions (Schedule A line-by-line)
+6. Depreciation (Form 4562: cost seg vs standard, bonus rate)
+7. Expected Tax Result (income - deductions; NOL projection)
+8. Required Forms (1120, 8825, 4562, K, M-1)
+9. E-Filing Options (service comparison with costs)
+10. Filing Checklist (pre-filing through post-filing)
+11. Key Dates (deadlines, reminders)
+12. References (all supporting docs)
+
+Save to `docs/tax/YEAR-filing-plan.md` in the entity repo.
+
+## Phase 7: Texas Franchise Tax
 
 ### Overview
 
