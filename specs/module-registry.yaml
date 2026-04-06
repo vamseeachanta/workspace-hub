@@ -1,0 +1,158 @@
+# Module Registry — digitalmodel/field_development
+# Tracks all public modules, classes, and functions in the field_development package.
+# Generated: 2026-04-05 | Issue: #1843
+
+modules:
+  - path: digitalmodel.field_development
+    file: digitalmodel/src/digitalmodel/field_development/__init__.py
+    description: Top-level package exposing all field development sub-modules.
+    wrk_refs: [WRK-192, "#1843"]
+    exports:
+      - generate_field_schematic
+      - SOLVEIG_PHASE2_CONFIG
+      - HostType
+      - ConceptOption
+      - ConceptSelectionResult
+      - concept_selection
+      - CAPEXEstimate
+      - estimate_capex
+      - OPEXEstimate
+      - estimate_opex
+
+  - path: digitalmodel.field_development.concept_selection
+    file: digitalmodel/src/digitalmodel/field_development/concept_selection.py
+    description: >
+      Ranks offshore host facility types (TLP, Spar, Semi, FPSO, Subsea Tieback)
+      using a weighted scoring model calibrated against 10 GoM reference fields.
+    wrk_refs: ["#1843"]
+    status: active
+    classes:
+      - name: HostType
+        type: Enum
+        description: Enumeration of offshore host facility types.
+        values: [TLP, Spar, Semi, FPSO, Subsea_Tieback]
+
+      - name: ConceptOption
+        type: dataclass
+        description: Single ranked host option with score, CAPEX range, and rationale.
+        fields:
+          - host_type: HostType
+          - score: float (0-100)
+          - capex_estimate_usd_bn: tuple[float, float] (low, high)
+          - rationale: str
+
+      - name: ConceptSelectionResult
+        type: dataclass
+        description: Full ranked result from concept_selection().
+        fields:
+          - ranked_options: list[ConceptOption] (descending score)
+          - selected_host: HostType
+          - summary: str
+
+    functions:
+      - name: concept_selection
+        signature: >
+          concept_selection(water_depth: float, reservoir_size_mmbbl: float,
+                            distance_to_infra_km: Optional[float],
+                            fluid_type: str) -> ConceptSelectionResult
+        description: >
+          Ranks host facility types for a deepwater field development using GoM
+          benchmarks. Primary driver is water depth; tiebreakers include
+          reservoir size, distance to infrastructure, and fluid type.
+        gom_analogues:
+          - Perdido (Spar, 2438 m)
+          - Mars (TLP, 896 m)
+          - Atlantis (Semi, 2150 m)
+          - Thunder Horse (Semi, 1844 m)
+          - Appomattox (Semi, 2250 m)
+          - Whale (Spar, 2100 m)
+          - Mad Dog (Semi, 1480 m)
+          - Stones (ETLP, 2900 m)
+          - Lucius (ETLP, 2270 m)
+          - Ursa (TLP, 1067 m)
+        tests: digitalmodel/tests/field_development/test_concept_selection.py
+
+  - path: digitalmodel.field_development.capex_estimator
+    file: digitalmodel/src/digitalmodel/field_development/capex_estimator.py
+    description: >
+      Estimates capital expenditure (CAPEX) for offshore host facilities using
+      GoM benchmark data. Applies capacity scaling (0.6 power law) and depth
+      scaling relative to reference conditions (100k bopd, 1500 m).
+    wrk_refs: ["#1843"]
+    status: active
+    classes:
+      - name: CAPEXEstimate
+        type: dataclass
+        description: CAPEX estimate with low/base/high range in USD billions.
+        fields:
+          - host_type: HostType
+          - low_usd_bn: float
+          - base_usd_bn: float
+          - high_usd_bn: float
+          - basis: str
+    functions:
+      - name: estimate_capex
+        signature: >
+          estimate_capex(host_type: HostType, production_capacity_bopd: float,
+                         water_depth: float,
+                         tieback_distance_km: Optional[float] = None) -> CAPEXEstimate
+        description: >
+          Returns low/base/high CAPEX estimate scaled from GoM benchmarks.
+          Subsea tiebacks require tieback_distance_km parameter.
+        benchmarks:
+          TLP:   "$2-6B (Mars, Ursa)"
+          Spar:  "$3-7B (Perdido, Whale)"
+          Semi:  "$4-10B (Appomattox, Thunder Horse)"
+          FPSO:  "$5-12B (Brazil pre-salt analogue)"
+          Tieback_near: "$200-500M (<10 km)"
+          Tieback_far:  "$500M-1.2B (>20 km)"
+        tests: digitalmodel/tests/field_development/test_capex_estimator.py
+
+  - path: digitalmodel.field_development.opex_estimator
+    file: digitalmodel/src/digitalmodel/field_development/opex_estimator.py
+    description: >
+      Estimates annual operating expenditure (OPEX) for offshore host facilities.
+      Scales from GoM benchmarks using production capacity (0.7 power law) and
+      field age factor (2.5%/yr compound growth from year 5 onward).
+    wrk_refs: ["#1843"]
+    status: active
+    classes:
+      - name: OPEXEstimate
+        type: dataclass
+        description: Annual OPEX estimate with low/base/high range and $/bbl metric.
+        fields:
+          - host_type: HostType
+          - low_usd_mm_per_yr: float
+          - base_usd_mm_per_yr: float
+          - high_usd_mm_per_yr: float
+          - opex_per_bbl_usd: float
+          - basis: str
+    functions:
+      - name: estimate_opex
+        signature: >
+          estimate_opex(host_type: HostType, production_capacity_bopd: float,
+                        field_age_years: int) -> OPEXEstimate
+        description: >
+          Returns low/base/high annual OPEX and $/bbl metric. Benchmarked
+          against GoM deepwater operators (BSEE/EIA data). Typical GoM range
+          is $15-50/bbl for producing deepwater fields.
+        benchmarks:
+          TLP:      "$80-260M/yr at 100k bopd"
+          Spar:     "$90-290M/yr at 100k bopd"
+          Semi:     "$110-360M/yr at 100k bopd"
+          FPSO:     "$140-480M/yr at 100k bopd"
+          Tieback:  "$20-90M/yr incremental"
+        tests: digitalmodel/tests/field_development/test_opex_estimator.py
+
+  - path: digitalmodel.field_development.schematic_generator
+    file: digitalmodel/src/digitalmodel/field_development/schematic_generator.py
+    description: Field development layout schematics generator (WRK-192).
+    wrk_refs: [WRK-192]
+    status: active
+    functions:
+      - name: generate_field_schematic
+        signature: "generate_field_schematic(config: dict) -> str"
+        description: >
+          Routes a field config dict to the appropriate schematic renderer
+          (platform, subsea tieback, or FPSO spread) and writes SVG/PNG to disk.
+    tests: digitalmodel/tests/field_development/test_field_development.py
