@@ -73,13 +73,41 @@ If the task is: **gather data from terminal/files** → use execute_code
 If the task is: **reason, synthesize, interpret** → use delegate_task (accept summary is brief)
 If the task is: **both** → gather data with execute_code, THEN delegate_task for interpretation
 
-## Workspace-hub specific notes
+## Repo architecture audit pattern (2026-04-06)
 
-- workspace-hub repo: /mnt/local-analysis/workspace-hub
-- digitalmodel repo: /mnt/local-analysis/workspace-hub/digitalmodel (SEPARATE git repo)
-- Always `cd` into the correct repo for git commands
-- digitalmodel has its own venv and pyproject.toml — use `cd digitalmodel && uv run pytest`
-- ~32K files bytecode-compile on every pytest run (~20s overhead) — expected behavior
+When auditing multiple repos for architecture/health metrics:
+
+1. **DO NOT use delegate_task** — the 99% summary compression loses all findings
+2. **Use execute_code** with a single script that gathers all metrics and writes a consolidated report
+3. Script runs in ~150s for 3 repos (vs 48 min with delegate_task for nothing useful)
+4. Write report to `analysis/` directory in workspace-hub
+
+### Multi-repo audit script template
+```python
+from hermes_tools import terminal, write_file
+repos = {"name": {"path": "/mnt/..."}, ...}
+for name, cfg in repos.items():
+    # 1. directory structure
+    # 2. test collection  
+    # 3. oversized files (find wc -l > 400)
+    # 4. orphan detection (grep -r imports)
+    # 5. contract compliance check
+    # 6. skill catalog
+    # 7. open issues (gh issue list)
+    # 8. cross-repo imports (grep consumers)
+write_file("analysis/audit-report.md", consolidated_report)
+```
+
+### Adversarial review via delegate_task — still useful with caveat
+
+delegate_task IS useful for adversarial review because the output is reasoning/analysis, not raw data. But:
+- The summary is still compressed — the agent must do its own adversarial reasoning during the call
+- Use it to GET the review verdict back in the main agent's context, then write the review file yourself
+- Don't expect the subagent to persist any files
+
+### Claude Code auth self-service
+
+If `claude auth status` shows logged out, use browser tools to complete `claude auth login` OAuth flow. NEVER use `ANTHROPIC_API_KEY` without explicit user permission — subscription mode only.
 
 ## Gemini via CLI — 2026-04-06 Update
 

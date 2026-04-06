@@ -24,7 +24,7 @@ Wait for response before continuing.
 **Check if project exists.**
 
 ```bash
-INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load 2>/dev/null)
+INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load 2>/dev/null)
 ```
 
 Track whether `.planning/` exists — some routes require it, others don't.
@@ -37,31 +37,31 @@ Evaluate `$ARGUMENTS` against these routing rules. Apply the **first matching** 
 
 | If the text describes... | Route to | Why |
 |--------------------------|----------|-----|
-| Starting a new project, "set up", "initialize" | `/gsd:new-project` | Needs full project initialization |
-| Mapping or analyzing an existing codebase | `/gsd:map-codebase` | Codebase discovery |
-| A bug, error, crash, failure, or something broken | `/gsd:debug` | Needs systematic investigation |
-| Exploring, researching, comparing, or "how does X work" | `/gsd:research-phase` | Domain research before planning |
-| Discussing vision, "how should X look", brainstorming | `/gsd:discuss-phase` | Needs context gathering |
-| A complex task: refactoring, migration, multi-file architecture, system redesign | `/gsd:add-phase` | Needs a full phase with plan/build cycle |
-| Planning a specific phase or "plan phase N" | `/gsd:plan-phase` | Direct planning request |
-| Executing a phase or "build phase N", "run phase N" | `/gsd:execute-phase` | Direct execution request |
-| Running all remaining phases automatically | `/gsd:autonomous` | Full autonomous execution |
-| A review or quality concern about existing work | `/gsd:verify-work` | Needs verification |
-| Checking progress, status, "where am I" | `/gsd:progress` | Status check |
-| Resuming work, "pick up where I left off" | `/gsd:resume-work` | Session restoration |
-| A note, idea, or "remember to..." | `/gsd:add-todo` | Capture for later |
-| Adding tests, "write tests", "test coverage" | `/gsd:add-tests` | Test generation |
-| Completing a milestone, shipping, releasing | `/gsd:complete-milestone` | Milestone lifecycle |
-| A specific, actionable, small task (add feature, fix typo, update config) | `/gsd:quick` | Self-contained, single executor |
+| Starting a new project, "set up", "initialize" | `/gsd-new-project` | Needs full project initialization |
+| Mapping or analyzing an existing codebase | `/gsd-map-codebase` | Codebase discovery |
+| A bug, error, crash, failure, or something broken | `/gsd-debug` | Needs systematic investigation |
+| Exploring, researching, comparing, or "how does X work" | `/gsd-research-phase` | Domain research before planning |
+| Discussing vision, "how should X look", brainstorming | `/gsd-discuss-phase` | Needs context gathering |
+| A complex task: refactoring, migration, multi-file architecture, system redesign | `/gsd-add-phase` | Needs a full phase with plan/build cycle |
+| Planning a specific phase or "plan phase N" | `/gsd-plan-phase` | Direct planning request |
+| Executing a phase or "build phase N", "run phase N" | `/gsd-execute-phase` | Direct execution request |
+| Running all remaining phases automatically | `/gsd-autonomous` | Full autonomous execution |
+| A review or quality concern about existing work | `/gsd-verify-work` | Needs verification |
+| Checking progress, status, "where am I" | `/gsd-progress` | Status check |
+| Resuming work, "pick up where I left off" | `/gsd-resume-work` | Session restoration |
+| A note, idea, or "remember to..." | `/gsd-add-todo` | Capture for later |
+| Adding tests, "write tests", "test coverage" | `/gsd-add-tests` | Test generation |
+| Completing a milestone, shipping, releasing | `/gsd-complete-milestone` | Milestone lifecycle |
+| A specific, actionable, small task (add feature, fix typo, update config) | `/gsd-quick` | Self-contained, single executor |
 
-**Requires `.planning/` directory:** All routes except `/gsd:new-project`, `/gsd:map-codebase`, `/gsd:help`, and `/gsd:join-discord`. If the project doesn't exist and the route requires it, suggest `/gsd:new-project` first.
+**Requires `.planning/` directory:** All routes except `/gsd-new-project`, `/gsd-map-codebase`, `/gsd-help`, and `/gsd-join-discord`. If the project doesn't exist and the route requires it, suggest `/gsd-new-project` first.
 
 **Ambiguity handling:** If the text could reasonably match multiple routes, ask the user via AskUserQuestion with the top 2-3 options. For example:
 
 ```
 "Refactor the authentication system" could be:
-1. /gsd:add-phase — Full planning cycle (recommended for multi-file refactors)
-2. /gsd:quick — Quick execution (if scope is small and clear)
+1. /gsd-add-phase — Full planning cycle (recommended for multi-file refactors)
+2. /gsd-quick — Quick execution (if scope is small and clear)
 
 Which approach fits better?
 ```
@@ -84,7 +84,7 @@ Which approach fits better?
 <step name="dispatch">
 **Invoke the chosen command.**
 
-Run the selected `/gsd:*` command, passing `$ARGUMENTS` as args.
+Run the selected `/gsd-*` command, passing `$ARGUMENTS` as args.
 
 If the chosen command expects a phase number and one wasn't provided in the text, extract it from context or ask via AskUserQuestion.
 

@@ -12,8 +12,8 @@ Read all files referenced by the invoking prompt's execution_context before star
 Ensure config exists and load current state:
 
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-ensure-section
-INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load)
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-ensure-section
+INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -31,9 +31,10 @@ Parse current values (default to `true` if not present):
 - `workflow.verifier` — spawn verifier during execute-phase
 - `workflow.nyquist_validation` — validation architecture research during plan-phase (default: true if absent)
 - `workflow.ui_phase` — generate UI-SPEC.md design contracts for frontend phases (default: true if absent)
-- `workflow.ui_safety_gate` — prompt to run /gsd:ui-phase before planning frontend phases (default: true if absent)
+- `workflow.ui_safety_gate` — prompt to run /gsd-ui-phase before planning frontend phases (default: true if absent)
 - `model_profile` — which model each agent uses (default: `balanced`)
 - `git.branching_strategy` — branching approach (default: `"none"`)
+- `workflow.use_worktrees` — whether parallel executor agents run in worktree isolation (default: `true`)
 </step>
 
 <step name="present_settings">
@@ -109,11 +110,11 @@ AskUserQuestion([
     ]
   },
   {
-    question: "Enable UI Safety Gate? (prompts to run /gsd:ui-phase before planning frontend phases)",
+    question: "Enable UI Safety Gate? (prompts to run /gsd-ui-phase before planning frontend phases)",
     header: "UI Gate",
     multiSelect: false,
     options: [
-      { label: "Yes (Recommended)", description: "plan-phase asks to run /gsd:ui-phase first when frontend indicators detected." },
+      { label: "Yes (Recommended)", description: "plan-phase asks to run /gsd-ui-phase first when frontend indicators detected." },
       { label: "No", description: "No prompt — plan-phase proceeds without UI-SPEC check." }
     ]
   },
@@ -151,7 +152,16 @@ AskUserQuestion([
     multiSelect: false,
     options: [
       { label: "No (Recommended)", description: "Run smart discuss before each phase — surfaces gray areas and captures decisions." },
-      { label: "Yes", description: "Skip discuss in /gsd:autonomous — chain directly to plan. Best for backend/pipeline work where phase descriptions are the spec." }
+      { label: "Yes", description: "Skip discuss in /gsd-autonomous — chain directly to plan. Best for backend/pipeline work where phase descriptions are the spec." }
+    ]
+  },
+  {
+    question: "Use git worktrees for parallel agent isolation?",
+    header: "Worktrees",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Each parallel executor runs in its own worktree branch — no conflicts between agents." },
+      { label: "No", description: "Disable worktree isolation. Use on platforms where EnterWorktree is broken (e.g. Windows with feature branches). Agents run sequentially on the main working tree." }
     ]
   }
 ])
@@ -164,7 +174,7 @@ Merge new settings into existing config.json:
 ```json
 {
   ...existing_config,
-  "model_profile": "quality" | "balanced" | "budget" | "inherit",
+  "model_profile": "quality" | "balanced" | "budget" | "adaptive" | "inherit",
   "workflow": {
     "research": true/false,
     "plan_check": true/false,
@@ -176,7 +186,8 @@ Merge new settings into existing config.json:
     "text_mode": true/false,
     "research_before_questions": true/false,
     "discuss_mode": "discuss" | "assumptions",
-    "skip_discuss": true/false
+    "skip_discuss": true/false,
+    "use_worktrees": true/false
   },
   "git": {
     "branching_strategy": "none" | "phase" | "milestone",
@@ -262,13 +273,13 @@ Display:
 | Context Warnings     | {On/Off} |
 | Saved as Defaults    | {Yes/No} |
 
-These settings apply to future /gsd:plan-phase and /gsd:execute-phase runs.
+These settings apply to future /gsd-plan-phase and /gsd-execute-phase runs.
 
 Quick commands:
-- /gsd:set-profile <profile> — switch model profile
-- /gsd:plan-phase --research — force research
-- /gsd:plan-phase --skip-research — skip research
-- /gsd:plan-phase --skip-verify — skip plan check
+- /gsd-set-profile <profile> — switch model profile
+- /gsd-plan-phase --research — force research
+- /gsd-plan-phase --skip-research — skip research
+- /gsd-plan-phase --skip-verify — skip plan check
 ```
 </step>
 

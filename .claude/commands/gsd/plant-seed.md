@@ -16,13 +16,13 @@ milestone arrives. Seeds solve context rot: instead of a one-liner in Deferred t
 reads, a seed preserves the full WHY, WHEN to surface, and breadcrumbs to details.
 
 Creates: .planning/seeds/SEED-NNN-slug.md
-Consumed by: /gsd:new-milestone (scans seeds and presents matches)
+Consumed by: /gsd-new-milestone (scans seeds and presents matches)
 </objective>
 
 <execution_context>
-@D:/workspace-hub/.claude/get-shit-done/workflows/plant-seed.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/plant-seed.md
 </execution_context>
 
 <process>
-Execute the plant-seed workflow from @D:/workspace-hub/.claude/get-shit-done/workflows/plant-seed.md end-to-end.
+Execute the plant-seed workflow from @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/plant-seed.md end-to-end.
 </process>

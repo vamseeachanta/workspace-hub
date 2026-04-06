@@ -12,12 +12,12 @@ Analyze freeform natural language input and dispatch to the most appropriate GSD
 
 Acts as a smart dispatcher — never does the work itself. Matches intent to the best GSD command using routing rules, confirms the match, then hands off.
 
-Use when you know what you want but don't know which `/gsd:*` command to run.
+Use when you know what you want but don't know which `/gsd-*` command to run.
 </objective>
 
 <execution_context>
-@D:/workspace-hub/.claude/get-shit-done/workflows/do.md
-@D:/workspace-hub/.claude/get-shit-done/references/ui-brand.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/do.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -25,6 +25,6 @@ $ARGUMENTS
 </context>
 
 <process>
-Execute the do workflow from @D:/workspace-hub/.claude/get-shit-done/workflows/do.md end-to-end.
+Execute the do workflow from @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/do.md end-to-end.
 Route user intent to the best GSD command and invoke it.
 </process>

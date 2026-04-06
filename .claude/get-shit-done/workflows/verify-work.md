@@ -1,5 +1,5 @@
 <purpose>
-Validate built features through conversational testing with persistent state. Creates UAT.md that tracks test progress, survives /clear, and feeds gaps into /gsd:plan-phase --gaps.
+Validate built features through conversational testing with persistent state. Creates UAT.md that tracks test progress, survives /clear, and feeds gaps into /gsd-plan-phase --gaps.
 
 User tests, Claude records. One test at a time. Plain text responses.
 </purpose>
@@ -21,7 +21,7 @@ No Pass/Fail buttons. No severity questions. Just: "Here's what should happen. D
 </philosophy>
 
 <template>
-@D:/workspace-hub/.claude/get-shit-done/templates/UAT.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/templates/UAT.md
 </template>
 
 <process>
@@ -30,10 +30,10 @@ No Pass/Fail buttons. No severity questions. Just: "Here's what should happen. D
 If $ARGUMENTS contains a phase number, load context:
 
 ```bash
-INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init verify-work "${PHASE_ARG}")
+INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init verify-work "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_PLANNER=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
-AGENT_SKILLS_CHECKER=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
+AGENT_SKILLS_PLANNER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-planner 2>/dev/null)
+AGENT_SKILLS_CHECKER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-checker 2>/dev/null)
 ```
 
 Parse JSON for: `planner_model`, `checker_model`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `has_verification`, `uat_path`.
@@ -78,12 +78,48 @@ If no, continue to `create_uat_file`.
 ```
 No active UAT sessions.
 
-Provide a phase number to start testing (e.g., /gsd:verify-work 4)
+Provide a phase number to start testing (e.g., /gsd-verify-work 4)
 ```
 
 **If no active sessions AND $ARGUMENTS provided:**
 
 Continue to `create_uat_file`.
+</step>
+
+<step name="automated_ui_verification">
+**Automated UI Verification (when Playwright-MCP is available)**
+
+Before running manual UAT, check whether this phase has a UI component and whether
+`mcp__playwright__*` or `mcp__puppeteer__*` tools are available in the current session.
+
+```
+UI_PHASE_FLAG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.ui_phase --raw 2>/dev/null || echo "true")
+UI_SPEC_FILE=$(ls "${PHASE_DIR}"/*-UI-SPEC.md 2>/dev/null | head -1)
+```
+
+**If Playwright-MCP tools are available in this session (`mcp__playwright__*` tools
+respond to tool calls) AND (`UI_PHASE_FLAG` is `true` OR `UI_SPEC_FILE` is non-empty):**
+
+For each UI checkpoint listed in the phase's UI-SPEC.md (or inferred from SUMMARY.md):
+
+1. Use `mcp__playwright__navigate` (or equivalent) to open the component's URL.
+2. Use `mcp__playwright__screenshot` to capture a screenshot.
+3. Compare the screenshot visually against the spec's stated requirements
+   (dimensions, color, layout, spacing).
+4. Automatically mark checkpoints as **passed** or **needs review** based on the
+   visual comparison — no manual question required for items that clearly match.
+5. Flag items that require human judgment (subjective aesthetics, content accuracy)
+   and present only those as manual UAT questions.
+
+If automated verification is not available, fall back to the standard manual
+checkpoint questions defined in this workflow unchanged. This step is entirely
+conditional: if Playwright-MCP is not configured, behavior is unchanged from today.
+
+**Display summary line before proceeding:**
+```
+UI checkpoints: {N} auto-verified, {M} queued for manual review
+```
+
 </step>
 
 <step name="find_summaries">
@@ -197,7 +233,7 @@ Proceed to `present_test`.
 Render the checkpoint from the structured UAT file instead of composing it freehand:
 
 ```bash
-CHECKPOINT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" uat render-checkpoint --file "$uat_path" --raw)
+CHECKPOINT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" uat render-checkpoint --file "$uat_path" --raw)
 if [[ "$CHECKPOINT" == @file:* ]]; then CHECKPOINT=$(cat "${CHECKPOINT#@file:}"); fi
 ```
 
@@ -353,7 +389,7 @@ Clear Current Test section:
 
 Commit the UAT file:
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "test({phase_num}): complete UAT - {passed} passed, {issues} issues" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "test({phase_num}): complete UAT - {passed} passed, {issues} issues" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
 ```
 
 Present summary:
@@ -375,12 +411,39 @@ Present summary:
 **If issues > 0:** Proceed to `diagnose_issues`
 
 **If issues == 0:**
+
+```bash
+SECURITY_CFG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.security_enforcement --raw 2>/dev/null || echo "true")
+SECURITY_FILE=$(ls "${PHASE_DIR}"/*-SECURITY.md 2>/dev/null | head -1)
+```
+
+If `SECURITY_CFG` is `true` AND `SECURITY_FILE` is empty:
+```
+⚠ Security enforcement enabled — /gsd-secure-phase {phase} has not run.
+Run before advancing to the next phase.
+
+All tests passed. Ready to continue.
+
+- `/gsd-secure-phase {phase}` — security review (required before advancing)
+- `/gsd-plan-phase {next}` — Plan next phase
+- `/gsd-execute-phase {next}` — Execute next phase
+- `/gsd-ui-review {phase}` — visual quality audit (if frontend files were modified)
+```
+
+If `SECURITY_CFG` is `true` AND `SECURITY_FILE` exists: check frontmatter `threats_open`. If > 0:
+```
+⚠ Security gate: {threats_open} threats open
+  /gsd-secure-phase {phase} — resolve before advancing
+```
+
+If `SECURITY_CFG` is `false` OR (`SECURITY_FILE` exists AND `threats_open` is `0`):
 ```
 All tests passed. Ready to continue.
 
-- `/gsd:plan-phase {next}` — Plan next phase
-- `/gsd:execute-phase {next}` — Execute next phase
-- `/gsd:ui-review {phase}` — visual quality audit (if frontend files were modified)
+- `/gsd-plan-phase {next}` — Plan next phase
+- `/gsd-execute-phase {next}` — Execute next phase
+- `/gsd-secure-phase {phase}` — security review
+- `/gsd-ui-review {phase}` — visual quality audit (if frontend files were modified)
 ```
 </step>
 
@@ -396,7 +459,7 @@ Spawning parallel debug agents to investigate each issue.
 ```
 
 - Load diagnose-issues workflow
-- Follow @D:/workspace-hub/.claude/get-shit-done/workflows/diagnose-issues.md
+- Follow @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/diagnose-issues.md
 - Spawn parallel debug agents for each issue
 - Collect root causes
 - Update UAT.md with root causes
@@ -438,7 +501,7 @@ ${AGENT_SKILLS_PLANNER}
 </planning_context>
 
 <downstream_consumer>
-Output consumed by /gsd:execute-phase
+Output consumed by /gsd-execute-phase
 Plans must be executable prompts.
 </downstream_consumer>
 """,
@@ -551,7 +614,7 @@ Display: `Max iterations reached. {N} issues remain.`
 Offer options:
 1. Force proceed (execute despite issues)
 2. Provide guidance (user gives direction, retry)
-3. Abandon (exit, user runs /gsd:plan-phase manually)
+3. Abandon (exit, user runs /gsd-plan-phase manually)
 
 Wait for user response.
 </step>
@@ -579,7 +642,7 @@ Plans verified and ready for execution.
 
 **Execute fixes** — run fix plans
 
-`/clear` then `/gsd:execute-phase {phase} --gaps-only`
+`/clear` then `/gsd-execute-phase {phase} --gaps-only`
 
 ───────────────────────────────────────────────────────────────
 ```
@@ -633,5 +696,5 @@ Default to **major** if unclear. User can correct if needed.
 - [ ] If issues: gsd-planner creates fix plans (gap_closure mode)
 - [ ] If issues: gsd-plan-checker verifies fix plans
 - [ ] If issues: revision loop until plans pass (max 3 iterations)
-- [ ] Ready for `/gsd:execute-phase --gaps-only` when complete
+- [ ] Ready for `/gsd-execute-phase --gaps-only` when complete
 </success_criteria>

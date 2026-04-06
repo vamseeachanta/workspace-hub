@@ -78,7 +78,7 @@ function cmdWorkstreamCreate(cwd, name, options, raw) {
 
   const baseDir = planningRoot(cwd);
   if (!fs.existsSync(baseDir)) {
-    error('.planning/ directory not found — run /gsd:new-project first');
+    error('.planning/ directory not found — run /gsd-new-project first');
   }
 
   const wsRoot = path.join(baseDir, 'workstreams');
@@ -339,9 +339,13 @@ function cmdWorkstreamComplete(cwd, name, options, raw) {
 // ─── Active Workstream Commands ──────────────────────────────────────────────
 
 function cmdWorkstreamSet(cwd, name, raw) {
-  if (!name) {
+  if (!name || name === '--clear') {
+    if (name !== '--clear') {
+      error('Workstream name required. Usage: workstream set <name> (or workstream set --clear to unset)');
+    }
+    const previous = getActiveWorkstream(cwd);
     setActiveWorkstream(cwd, null);
-    output({ active: null, cleared: true }, raw);
+    output({ active: null, cleared: true, previous: previous || null }, raw);
     return;
   }
 

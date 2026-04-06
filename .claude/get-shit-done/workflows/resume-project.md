@@ -11,7 +11,7 @@ Instantly restore full project context so "Where were we?" has an immediate, com
 </purpose>
 
 <required_reading>
-@D:/workspace-hub/.claude/get-shit-done/references/continuation-format.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/continuation-format.md
 </required_reading>
 
 <process>
@@ -20,7 +20,7 @@ Instantly restore full project context so "Where were we?" has an immediate, com
 Load all context in one call:
 
 ```bash
-INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init resume)
+INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init resume)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -28,7 +28,7 @@ Parse JSON for: `state_exists`, `roadmap_exists`, `project_exists`, `planning_ex
 
 **If `state_exists` is true:** Proceed to load_state
 **If `state_exists` is false but `roadmap_exists` or `project_exists` is true:** Offer to reconstruct STATE.md
-**If `planning_exists` is false:** This is a new project - route to /gsd:new-project
+**If `planning_exists` is false:** This is a new project - route to /gsd-new-project
 </step>
 
 <step name="load_state">
@@ -84,7 +84,7 @@ fi
 
 **If HANDOFF.json exists:**
 
-- This is the primary resumption source — structured data from `/gsd:pause-work`
+- This is the primary resumption source — structured data from `/gsd-pause-work`
 - Parse `status`, `phase`, `plan`, `task`, `total_tasks`, `next_action`
 - Check `blockers` and `human_actions_pending` — surface these immediately
 - Check `completed_tasks` for `in_progress` items — these need attention first
@@ -140,7 +140,7 @@ Present complete project status to user:
     Resume with: Task tool (resume parameter with agent ID)
 
 [If pending todos exist:]
-📋 [N] pending todos — /gsd:check-todos to review
+📋 [N] pending todos — /gsd-check-todos to review
 
 [If blockers exist:]
 ⚠️  Carried concerns:
@@ -149,26 +149,6 @@ Present complete project status to user:
 
 [If alignment is not ✓:]
 ⚠️  Brief alignment: [status] - [assessment]
-
-[If data intelligence available for current phase domain:]
-📊 Data Intelligence ({domain}): {N} standards, {M} worked examples, {K} test vectors
-   Run: data-intelligence-context.sh --domain {domain} for details
-```
-
-**Data intelligence lookup (optional, non-blocking):**
-```bash
-# Attempt to resolve domain from current phase name for data intelligence enrichment
-PHASE_NAME_LOWER=$(echo "${current_phase_name}" | tr '[:upper:]' '[:lower:]')
-for kw in marine pipeline structural materials cathodic-protection installation drilling process cad regulatory; do
-  if echo "${PHASE_NAME_LOWER}" | grep -q "$kw"; then
-    INTEL=$(uv run --no-project python "/mnt/local-analysis/workspace-hub/scripts/session/data-intelligence-context.py" --domain "$kw" 2>/dev/null || true)
-    if [[ -n "$INTEL" ]]; then
-      echo ""
-      echo "$INTEL"
-    fi
-    break
-  fi
-done
 ```
 
 </step>
@@ -220,11 +200,11 @@ What would you like to do?
 [Primary action based on state - e.g.:]
 1. Resume interrupted agent [if interrupted agent found]
    OR
-1. Execute phase (/gsd:execute-phase {phase} ${GSD_WS})
+1. Execute phase (/gsd-execute-phase {phase} ${GSD_WS})
    OR
-1. Discuss Phase 3 context (/gsd:discuss-phase 3 ${GSD_WS}) [if CONTEXT.md missing]
+1. Discuss Phase 3 context (/gsd-discuss-phase 3 ${GSD_WS}) [if CONTEXT.md missing]
    OR
-1. Plan Phase 3 (/gsd:plan-phase 3 ${GSD_WS}) [if CONTEXT.md exists or discuss option declined]
+1. Plan Phase 3 (/gsd-plan-phase 3 ${GSD_WS}) [if CONTEXT.md exists or discuss option declined]
 
 [Secondary options:]
 2. Review current phase status
@@ -255,9 +235,9 @@ Based on user selection, route to appropriate workflow:
 
   **{phase}-{plan}: [Plan Name]** — [objective from PLAN.md]
 
-  `/gsd:execute-phase {phase} ${GSD_WS}`
+  `/clear` then:
 
-  <sub>`/clear` first → fresh context window</sub>
+  `/gsd-execute-phase {phase} ${GSD_WS}`
 
   ---
   ```
@@ -269,15 +249,15 @@ Based on user selection, route to appropriate workflow:
 
   **Phase [N]: [Name]** — [Goal from ROADMAP.md]
 
-  `/gsd:plan-phase [phase-number] ${GSD_WS}`
+  `/clear` then:
 
-  <sub>`/clear` first → fresh context window</sub>
+  `/gsd-plan-phase [phase-number] ${GSD_WS}`
 
   ---
 
   **Also available:**
-  - `/gsd:discuss-phase [N] ${GSD_WS}` — gather context first
-  - `/gsd:research-phase [N] ${GSD_WS}` — investigate unknowns
+  - `/gsd-discuss-phase [N] ${GSD_WS}` — gather context first
+  - `/gsd-research-phase [N] ${GSD_WS}` — investigate unknowns
 
   ---
   ```

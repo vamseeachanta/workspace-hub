@@ -8,6 +8,7 @@ allowed-tools:
   - Glob
   - Grep
   - AskUserQuestion
+  - Skill
   - Task
 ---
 <objective>
@@ -23,8 +24,8 @@ Designed for power users who want to parallelize work across phases from one ter
 </objective>
 
 <execution_context>
-@D:/workspace-hub/.claude/get-shit-done/workflows/manager.md
-@D:/workspace-hub/.claude/get-shit-done/references/ui-brand.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/manager.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -34,6 +35,6 @@ Project context, phase list, dependencies, and recommendations are resolved insi
 </context>
 
 <process>
-Execute the manager workflow from @D:/workspace-hub/.claude/get-shit-done/workflows/manager.md end-to-end.
+Execute the manager workflow from @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/manager.md end-to-end.
 Maintain the dashboard refresh loop until the user exits or all phases complete.
 </process>

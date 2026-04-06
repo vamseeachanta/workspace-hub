@@ -12,7 +12,7 @@ Read all files referenced by the invoking prompt's execution_context before star
 Parse arguments and load project state:
 
 ```bash
-INIT=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
+INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -20,10 +20,19 @@ Parse from init JSON: `phase_found`, `phase_dir`, `phase_number`, `phase_name`, 
 
 Also load config for branching strategy:
 ```bash
-CONFIG=$(node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load)
+CONFIG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load)
 ```
 
 Extract: `branching_strategy`, `branch_name`.
+
+Detect base branch for PRs and merges:
+```bash
+BASE_BRANCH=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get git.base_branch 2>/dev/null || echo "")
+if [ -z "$BASE_BRANCH" ] || [ "$BASE_BRANCH" = "null" ]; then
+  BASE_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|^refs/remotes/origin/||')
+  BASE_BRANCH="${BASE_BRANCH:-main}"
+fi
+```
 </step>
 
 <step name="preflight_checks">
@@ -46,7 +55,7 @@ Verify the work is ready to ship:
    ```bash
    CURRENT_BRANCH=$(git branch --show-current)
    ```
-   If on `main`/`master`: warn — should be on a feature branch.
+   If on `${BASE_BRANCH}`: warn — should be on a feature branch.
    If branching_strategy is `none`: offer to create a branch now.
 
 4. **Remote configured?**
@@ -74,7 +83,7 @@ If push fails (e.g., no upstream): set upstream:
 git push --set-upstream origin ${CURRENT_BRANCH} 2>&1
 ```
 
-Report: "Pushed `{branch}` to origin ({commit_count} commits ahead of main)"
+Report: "Pushed `{branch}` to origin ({commit_count} commits ahead of ${BASE_BRANCH})"
 </step>
 
 <step name="generate_pr_body">
@@ -141,7 +150,7 @@ Create the PR using the generated body:
 gh pr create \
   --title "Phase ${PHASE_NUMBER}: ${PHASE_NAME}" \
   --body "${PR_BODY}" \
-  --base main
+  --base ${BASE_BRANCH}
 ```
 
 If `--draft` flag was passed: add `--draft`.
@@ -177,13 +186,13 @@ Report the PR URL and suggest: "Review the diff at {url}/files"
 Update STATE.md to reflect the shipping action:
 
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state update "Last Activity" "$(date +%Y-%m-%d)"
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state update "Status" "Phase ${PHASE_NUMBER} shipped — PR #${PR_NUMBER}"
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state update "Last Activity" "$(date +%Y-%m-%d)"
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state update "Status" "Phase ${PHASE_NUMBER} shipped — PR #${PR_NUMBER}"
 ```
 
 If `commit_docs` is true:
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): ship phase ${PHASE_NUMBER} — PR #${PR_NUMBER}" --files .planning/STATE.md
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): ship phase ${PHASE_NUMBER} — PR #${PR_NUMBER}" --files .planning/STATE.md
 ```
 </step>
 
@@ -194,7 +203,7 @@ node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${p
 ## ✓ Phase {X}: {Name} — Shipped
 
 PR: #{number} ({url})
-Branch: {branch} → main
+Branch: {branch} → ${BASE_BRANCH}
 Commits: {count}
 Verification: ✓ Passed
 Requirements: {N} REQ-IDs addressed
@@ -202,8 +211,8 @@ Requirements: {N} REQ-IDs addressed
 Next steps:
 - Review/approve PR
 - Merge when CI passes
-- /gsd:complete-milestone (if last phase in milestone)
-- /gsd:progress (to see what's next)
+- /gsd-complete-milestone (if last phase in milestone)
+- /gsd-progress (to see what's next)
 
 ───────────────────────────────────────────────────────────────
 ```
@@ -214,9 +223,9 @@ Next steps:
 <offer_next>
 After shipping:
 
-- /gsd:complete-milestone — if all phases in milestone are done
-- /gsd:progress — see overall project state
-- /gsd:execute-phase {next} — continue to next phase
+- /gsd-complete-milestone — if all phases in milestone are done
+- /gsd-progress — see overall project state
+- /gsd-execute-phase {next} — continue to next phase
 </offer_next>
 
 <success_criteria>

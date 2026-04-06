@@ -10,15 +10,15 @@ allowed-tools:
   - AskUserQuestion
 ---
 <objective>
-Create all phases necessary to close gaps identified by `/gsd:audit-milestone`.
+Create all phases necessary to close gaps identified by `/gsd-audit-milestone`.
 
 Reads MILESTONE-AUDIT.md, groups gaps into logical phases, creates phase entries in ROADMAP.md, and offers to plan each phase.
 
-One command creates all fix phases — no manual `/gsd:add-phase` per gap.
+One command creates all fix phases — no manual `/gsd-add-phase` per gap.
 </objective>
 
 <execution_context>
-@D:/workspace-hub/.claude/get-shit-done/workflows/plan-milestone-gaps.md
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/plan-milestone-gaps.md
 </execution_context>
 
 <context>
@@ -29,6 +29,6 @@ Original intent and current planning state are loaded on demand inside the workf
 </context>
 
 <process>
-Execute the plan-milestone-gaps workflow from @D:/workspace-hub/.claude/get-shit-done/workflows/plan-milestone-gaps.md end-to-end.
+Execute the plan-milestone-gaps workflow from @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/plan-milestone-gaps.md end-to-end.
 Preserve all workflow gates (audit loading, prioritization, phase grouping, user confirmation, roadmap updates).
 </process>

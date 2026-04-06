@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { output, error, planningRoot } = require('./core.cjs');
+const { output, error, planningRoot, CONFIG_DEFAULTS } = require('./core.cjs');
 const {
   VALID_PROFILES,
   getAgentToModelMapForProfile,
@@ -22,9 +22,20 @@ const VALID_CONFIG_KEYS = new Set([
   'workflow.discuss_mode',
   'workflow.skip_discuss',
   'workflow._auto_chain_active',
-  'git.branching_strategy', 'git.phase_branch_template', 'git.milestone_branch_template', 'git.quick_branch_template',
+  'workflow.use_worktrees',
+  'workflow.code_review',
+  'workflow.code_review_depth',
+  'git.branching_strategy', 'git.base_branch', 'git.phase_branch_template', 'git.milestone_branch_template', 'git.quick_branch_template',
   'planning.commit_docs', 'planning.search_gitignored',
+  'workflow.subagent_timeout',
   'hooks.context_warnings',
+  'features.thinking_partner',
+  'context',
+  'features.global_learnings',
+  'learnings.max_inject',
+  'project_code', 'phase_naming',
+  'manager.flags.discuss', 'manager.flags.plan', 'manager.flags.execute',
+  'response_language',
 ]);
 
 /**
@@ -36,6 +47,10 @@ function isValidConfigKey(keyPath) {
   if (VALID_CONFIG_KEYS.has(keyPath)) return true;
   // Allow agent_skills.<agent-type> with any agent type string
   if (/^agent_skills\.[a-zA-Z0-9_-]+$/.test(keyPath)) return true;
+  // Allow features.<feature_name> — dynamic namespace for feature flags.
+  // Intentionally open-ended so new flags (e.g., features.global_learnings) work
+  // without updating VALID_CONFIG_KEYS each time.
+  if (/^features\.[a-zA-Z0-9_]+$/.test(keyPath)) return true;
   return false;
 }
 
@@ -45,6 +60,10 @@ const CONFIG_KEY_SUGGESTIONS = {
   'nyquist.validation_enabled': 'workflow.nyquist_validation',
   'hooks.research_questions': 'workflow.research_before_questions',
   'workflow.research_questions': 'workflow.research_before_questions',
+  'workflow.codereview': 'workflow.code_review',
+  'workflow.review': 'workflow.code_review',
+  'workflow.code_review_level': 'workflow.code_review_depth',
+  'workflow.review_depth': 'workflow.code_review_depth',
 };
 
 function validateKnownConfigKeyPath(keyPath) {
@@ -60,7 +79,7 @@ function validateKnownConfigKeyPath(keyPath) {
  * Merges (increasing priority):
  *   1. Hardcoded defaults — every key that loadConfig() resolves, plus mode/granularity
  *   2. User-level defaults from ~/.gsd/defaults.json (if present)
- *   3. userChoices — the settings the user explicitly selected during /gsd:new-project
+ *   3. userChoices — the settings the user explicitly selected during /gsd-new-project
  *
  * Uses the canonical `git` namespace for branching keys (consistent with VALID_CONFIG_KEYS
  * and the settings workflow). loadConfig() handles both flat and nested formats, so this
@@ -101,18 +120,18 @@ function buildNewProjectConfig(userChoices) {
   }
 
   const hardcoded = {
-    model_profile: 'balanced',
-    commit_docs: true,
-    parallelization: true,
-    search_gitignored: false,
+    model_profile: CONFIG_DEFAULTS.model_profile,
+    commit_docs: CONFIG_DEFAULTS.commit_docs,
+    parallelization: CONFIG_DEFAULTS.parallelization,
+    search_gitignored: CONFIG_DEFAULTS.search_gitignored,
     brave_search: hasBraveSearch,
     firecrawl: hasFirecrawl,
     exa_search: hasExaSearch,
     git: {
-      branching_strategy: 'none',
-      phase_branch_template: 'gsd/phase-{phase}-{slug}',
-      milestone_branch_template: 'gsd/{milestone}-{slug}',
-      quick_branch_template: null,
+      branching_strategy: CONFIG_DEFAULTS.branching_strategy,
+      phase_branch_template: CONFIG_DEFAULTS.phase_branch_template,
+      milestone_branch_template: CONFIG_DEFAULTS.milestone_branch_template,
+      quick_branch_template: CONFIG_DEFAULTS.quick_branch_template,
     },
     workflow: {
       research: true,
@@ -128,10 +147,14 @@ function buildNewProjectConfig(userChoices) {
       research_before_questions: false,
       discuss_mode: 'discuss',
       skip_discuss: false,
+      code_review: true,
+      code_review_depth: 'standard',
     },
     hooks: {
       context_warnings: true,
     },
+    project_code: null,
+    phase_naming: 'sequential',
     agent_skills: {},
   };
 
@@ -167,7 +190,7 @@ function buildNewProjectConfig(userChoices) {
  * Command: create a fully-materialized .planning/config.json for a new project.
  *
  * Accepts user-chosen settings as a JSON string (the keys the user explicitly
- * configured during /gsd:new-project). All remaining keys are filled from
+ * configured during /gsd-new-project). All remaining keys are filled from
  * hardcoded defaults and optional ~/.gsd/defaults.json.
  *
  * Idempotent: if config.json already exists, returns { created: false }.
@@ -317,7 +340,7 @@ function cmdConfigSet(cwd, keyPath, value, raw) {
   validateKnownConfigKeyPath(keyPath);
 
   if (!isValidConfigKey(keyPath)) {
-    error(`Unknown config key: "${keyPath}". Valid keys: ${[...VALID_CONFIG_KEYS].sort().join(', ')}, agent_skills.<agent-type>`);
+    error(`Unknown config key: "${keyPath}". Valid keys: ${[...VALID_CONFIG_KEYS].sort().join(', ')}, agent_skills.<agent-type>, features.<feature_name>`);
   }
 
   // Parse value (handle booleans, numbers, and JSON arrays/objects)
@@ -327,6 +350,11 @@ function cmdConfigSet(cwd, keyPath, value, raw) {
   else if (!isNaN(value) && value !== '') parsedValue = Number(value);
   else if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
     try { parsedValue = JSON.parse(value); } catch { /* keep as string */ }
+  }
+
+  const VALID_CONTEXT_VALUES = ['dev', 'research', 'review'];
+  if (keyPath === 'context' && !VALID_CONTEXT_VALUES.includes(String(parsedValue))) {
+    error(`Invalid context value '${value}'. Valid values: ${VALID_CONTEXT_VALUES.join(', ')}`);
   }
 
   const setConfigValueResult = setConfigValue(cwd, keyPath, parsedValue);
@@ -434,6 +462,7 @@ function getCmdConfigSetModelProfileResultMessage(
 }
 
 module.exports = {
+  VALID_CONFIG_KEYS,
   cmdConfigEnsureSection,
   cmdConfigSet,
   cmdConfigGet,

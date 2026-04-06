@@ -38,6 +38,36 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/gsd-read-guard.js",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/gsd-workflow-guard.js",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/gsd-validate-commit.sh",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -67,6 +97,16 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/tool-call-ceiling.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/gsd-phase-boundary.sh",
             "timeout": 5
           }
         ]
@@ -129,6 +169,14 @@
             "statusMessage": "Daily learning tip"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/gsd-session-state.sh"
+          }
+        ]
       }
     ]
   },
@@ -161,12 +209,23 @@
   "outputStyle": "Explanatory",
   "effortLevel": "high",
   "worktree": {
-    "symlinkDirectories": ["node_modules", ".cache", ".venv", "__pycache__"],
+    "symlinkDirectories": [
+      "node_modules",
+      ".cache",
+      ".venv",
+      "__pycache__"
+    ],
     "sparsePaths": []
   },
   "spinnerVerbs": {
     "mode": "append",
-    "verbs": ["Engineering", "Analyzing", "Modeling", "Simulating", "Calibrating"]
+    "verbs": [
+      "Engineering",
+      "Analyzing",
+      "Modeling",
+      "Simulating",
+      "Calibrating"
+    ]
   },
   "spinnerTipsOverride": {
     "tips": [

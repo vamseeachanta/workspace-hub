@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// gsd-hook-version: 1.30.0
+// gsd-hook-version: 1.34.1
 // Check for GSD updates in background, write result to cache
 // Called by SessionStart hook - runs once per session
 
@@ -11,7 +11,7 @@ const { spawn } = require('child_process');
 const homeDir = os.homedir();
 const cwd = process.cwd();
 
-// Detect runtime config directory (supports Claude, OpenCode, Gemini)
+// Detect runtime config directory (supports Claude, OpenCode, Kilo, Gemini)
 // Respects CLAUDE_CONFIG_DIR for custom config directory setups
 function detectConfigDir(baseDir) {
   // Check env override first (supports multi-account setups)
@@ -19,7 +19,7 @@ function detectConfigDir(baseDir) {
   if (envDir && fs.existsSync(path.join(envDir, 'get-shit-done', 'VERSION'))) {
     return envDir;
   }
-  for (const dir of ['.config/opencode', '.opencode', '.gemini', '.claude']) {
+  for (const dir of ['.claude', '.gemini', '.config/kilo', '.kilo', '.config/opencode', '.opencode']) {
     if (fs.existsSync(path.join(baseDir, dir, 'get-shit-done', 'VERSION'))) {
       return path.join(baseDir, dir);
     }
@@ -29,7 +29,10 @@ function detectConfigDir(baseDir) {
 
 const globalConfigDir = detectConfigDir(homeDir);
 const projectConfigDir = detectConfigDir(cwd);
-const cacheDir = path.join(globalConfigDir, 'cache');
+// Use a shared, tool-agnostic cache directory to avoid multi-runtime
+// resolution mismatches where check-update writes to one runtime's cache
+// but statusline reads from another (#1421).
+const cacheDir = path.join(homeDir, '.cache', 'gsd');
 const cacheFile = path.join(cacheDir, 'gsd-update-check.json');
 
 // VERSION file locations (check project first, then global)
@@ -46,6 +49,18 @@ const child = spawn(process.execPath, ['-e', `
   const fs = require('fs');
   const path = require('path');
   const { execSync } = require('child_process');
+
+  // Compare semver: true if a > b (a is strictly newer than b)
+  // Strips pre-release suffixes (e.g. '3-beta.1' → '3') to avoid NaN from Number()
+  function isNewer(a, b) {
+    const pa = (a || '').split('.').map(s => Number(s.replace(/-.*/, '')) || 0);
+    const pb = (b || '').split('.').map(s => Number(s.replace(/-.*/, '')) || 0);
+    for (let i = 0; i < 3; i++) {
+      if (pa[i] > pb[i]) return true;
+      if (pa[i] < pb[i]) return false;
+    }
+    return false;
+  }
 
   const cacheFile = ${JSON.stringify(cacheFile)};
   const projectVersionFile = ${JSON.stringify(projectVersionFile)};
@@ -65,20 +80,30 @@ const child = spawn(process.execPath, ['-e', `
   } catch (e) {}
 
   // Check for stale hooks — compare hook version headers against installed VERSION
-  // Hooks live inside get-shit-done/hooks/, not configDir/hooks/
+  // Hooks are installed at configDir/hooks/ (e.g. ~/.claude/hooks/) (#1421)
+  // Only check hooks that GSD currently ships — orphaned files from removed features
+  // (e.g., gsd-intel-*.js) must be ignored to avoid permanent stale warnings (#1750)
+  const MANAGED_HOOKS = [
+    'gsd-check-update.js',
+    'gsd-context-monitor.js',
+    'gsd-prompt-guard.js',
+    'gsd-read-guard.js',
+    'gsd-statusline.js',
+    'gsd-workflow-guard.js',
+  ];
   let staleHooks = [];
   if (configDir) {
-    const hooksDir = path.join(configDir, 'get-shit-done', 'hooks');
+    const hooksDir = path.join(configDir, 'hooks');
     try {
       if (fs.existsSync(hooksDir)) {
-        const hookFiles = fs.readdirSync(hooksDir).filter(f => f.startsWith('gsd-') && f.endsWith('.js'));
+        const hookFiles = fs.readdirSync(hooksDir).filter(f => MANAGED_HOOKS.includes(f));
         for (const hookFile of hookFiles) {
           try {
             const content = fs.readFileSync(path.join(hooksDir, hookFile), 'utf8');
             const versionMatch = content.match(/\\/\\/ gsd-hook-version:\\s*(.+)/);
             if (versionMatch) {
               const hookVersion = versionMatch[1].trim();
-              if (hookVersion !== installed && !hookVersion.includes('{{')) {
+              if (isNewer(installed, hookVersion) && !hookVersion.includes('{{')) {
                 staleHooks.push({ file: hookFile, hookVersion, installedVersion: installed });
               }
             } else {
@@ -97,7 +122,7 @@ const child = spawn(process.execPath, ['-e', `
   } catch (e) {}
 
   const result = {
-    update_available: latest && installed !== latest,
+    update_available: latest && isNewer(latest, installed),
     installed,
     latest: latest || 'unknown',
     checked: Math.floor(Date.now() / 1000),

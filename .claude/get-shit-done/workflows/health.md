@@ -25,7 +25,7 @@ fi
 **Run health validation:**
 
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" validate health $REPAIR_FLAG
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" validate health $REPAIR_FLAG
 ```
 
 Parse JSON output:
@@ -62,10 +62,10 @@ Errors: N | Warnings: N | Info: N
 ## Errors
 
 - [E001] config.json: JSON parse error at line 5
-  Fix: Run /gsd:health --repair to reset to defaults
+  Fix: Run /gsd-health --repair to reset to defaults
 
 - [E002] PROJECT.md not found
-  Fix: Run /gsd:new-project to create
+  Fix: Run /gsd-new-project to create
 ```
 
 **If warnings exist:**
@@ -90,7 +90,7 @@ Errors: N | Warnings: N | Info: N
 **Footer (if repairable issues exist and --repair was NOT used):**
 ```
 ---
-N issues can be auto-repaired. Run: /gsd:health --repair
+N issues can be auto-repaired. Run: /gsd-health --repair
 ```
 </step>
 
@@ -100,7 +100,7 @@ N issues can be auto-repaired. Run: /gsd:health --repair
 Ask user if they want to run repairs:
 
 ```
-Would you like to run /gsd:health --repair to fix N issues automatically?
+Would you like to run /gsd-health --repair to fix N issues automatically?
 ```
 
 If yes, re-run with --repair flag and display results.
@@ -112,7 +112,7 @@ If yes, re-run with --repair flag and display results.
 Re-run health check without --repair to confirm issues are resolved:
 
 ```bash
-node "D:/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" validate health
+node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" validate health
 ```
 
 Report final status.
@@ -166,13 +166,13 @@ When `--repair` is active, detect and clean up:
 
 ```bash
 # Check for stale task directories (older than 24 hours)
-TASKS_DIR="D:/workspace-hub/.claude/tasks"
+TASKS_DIR="/mnt/local-analysis/workspace-hub/.claude/tasks"
 if [ -d "$TASKS_DIR" ]; then
   STALE_COUNT=$( (find "$TASKS_DIR" -maxdepth 1 -type d -mtime +1 2>/dev/null || true) | wc -l )
   if [ "$STALE_COUNT" -gt 0 ]; then
-    echo "⚠️  Found $STALE_COUNT stale task directories in D:/workspace-hub/.claude/tasks/"
+    echo "⚠️  Found $STALE_COUNT stale task directories in /mnt/local-analysis/workspace-hub/.claude/tasks/"
     echo "   These are leftover from crashed subagent sessions."
-    echo "   Run: rm -rf D:/workspace-hub/.claude/tasks/*  (safe — only affects dead sessions)"
+    echo "   Run: rm -rf /mnt/local-analysis/workspace-hub/.claude/tasks/*  (safe — only affects dead sessions)"
   fi
 fi
 ```
