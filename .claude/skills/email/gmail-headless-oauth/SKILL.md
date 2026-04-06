@@ -185,3 +185,19 @@ When authorizing multiple accounts in one session:
 5. **Some Google accounts can't generate App Passwords** — Workspace accounts without 2FA admin control, or accounts with Advanced Protection. OAuth still works for these.
 6. **himalaya config v1.2.0 breaks on duplicate keys** — `backend.auth.type = "password"` and `backend.auth.type = "cmd"` on separate lines causes TOML parse error. Use only the password type with `.cmd` for the command.
 7. **Scopes are per-authorization** — if you need Drive access later, you must re-authorize with additional scopes. Gmail-only scopes won't give Drive access.
+8. **himalaya v1.2.0 `-a` flag position** — the account flag goes on the SUBCOMMAND, not global: `himalaya envelope list -a ace` NOT `himalaya -a ace envelope list` or `himalaya --account ace envelope list`.
+9. **Token refresh returns NO new refresh_token** — the response only has access_token. Always `saved.update(new_tokens)` to preserve the original refresh_token.
+10. **OOB redirect deprecated but still works** — Google deprecated `urn:ietf:wg:oauth:2.0:oob` for new apps in 2022, but it still functions for Desktop App type credentials. If it stops working, switch to localhost redirect with a background HTTP server.
+11. **GitGuardian will detect secrets in local git history** even if GitHub push protection blocks the push. Always amend the commit to remove secrets before they enter any git history.
+
+## Verified Working Setup (2026-04-06)
+
+Three accounts fully authorized on ace-linux-1:
+- ace: OAuth2 + himalaya App Password
+- personal: OAuth2 + himalaya App Password
+- skestates: OAuth2 only (App Passwords unavailable — Workspace account limitation)
+
+GCP Project: hermes-gmail-automation
+Credential paths: ~/.gmail-{ace,personal,skestates}/credentials.json
+Shared config: ~/.gmail-mcp/oauth-env.json (client_id + client_secret)
+Digest script: scripts/email/gmail-digest.py (stdlib only, zero pip deps)
