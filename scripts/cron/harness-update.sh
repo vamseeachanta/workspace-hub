@@ -338,6 +338,22 @@ update_hermes() {
   check_drift "$hermes_dir" "Hermes"
 }
 
+backfill_hermes_skills() {
+  local backfill_script="${WORKSPACE_HUB}/scripts/hermes/backfill-skills-to-repo.sh"
+  if [[ ! -x "$backfill_script" ]]; then
+    # Not installed yet — best-effort log
+    log "WARN: backfill-skills-to-repo.sh not found at $backfill_script"
+    return
+  fi
+  log "Backfilling Hermes skills to repo .claude/skills/..."
+  # Best-effort: don't fail the whole pipeline if backfill errors
+  if bash "$backfill_script" --commit >> "$LOG_FILE" 2>&1; then
+    log "Skills backfill: OK"
+  else
+    log "WARN: Skills backfill exited non-zero — see log for details"
+  fi
+}
+
 update_superpowers() {
   if ! command -v claude &>/dev/null; then
     log "Superpowers: claude CLI not installed — skipping"; record "Superpowers" "-" "-" "not-installed"; return
@@ -495,6 +511,7 @@ log "Runtime: node=$(node --version 2>/dev/null || echo N/A) npm=$(npm --version
 
 update_gstack
 update_hermes
+backfill_hermes_skills
 update_superpowers
 update_gsd
 update_claude_code
