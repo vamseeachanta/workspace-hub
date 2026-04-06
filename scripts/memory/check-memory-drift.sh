@@ -62,6 +62,26 @@ if [[ ! -f "${AGENTS_FILE}" ]]; then
     exit 1
 fi
 
+# ── Drift staleness check (#1920) ──────────────────────────────────────────
+agents_age_hours=0
+if [[ -f "${AGENTS_FILE}" ]]; then
+    agents_mtime=$(stat -c %Y "${AGENTS_FILE}" 2>/dev/null || echo 0)
+    now=$(date +%s)
+    agents_age_hours=$(( (now - agents_mtime) / 3600 ))
+fi
+
+if [[ ${agents_age_hours} -gt 48 ]]; then
+    echo -e "${RED}⚠️  STALE: agents.md is ${agents_age_hours}h old (threshold: 48h)${NC}"
+    echo "  Last modified: $(date -d @${agents_mtime} 2>/dev/null || date -r ${agents_mtime} 2>/dev/null || echo unknown)"
+    echo "  Fix: bash scripts/memory/bridge-hermes-claude.sh --commit && git push"
+    # If notify.sh exists, send alert
+    if [[ -x "${REPO_ROOT}/scripts/notify.sh" ]]; then
+        bash "${REPO_ROOT}/scripts/notify.sh" cron memory-drift "warn" "agents.md stale ${agents_age_hours}h" 2>/dev/null || true
+    fi
+    echo ""
+    # Continue to drift check below — still report any content differences
+fi
+
 if [[ ! -f "${HERMES_MEM}" && ! -f "${HERMES_USER}" ]]; then
     echo -e "${YELLOW}Hermes memory not found (not on a Hermes machine). Nothing to check.${NC}"
     exit 0

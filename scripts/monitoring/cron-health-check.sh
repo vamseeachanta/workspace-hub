@@ -12,6 +12,9 @@
 
 set -uo pipefail
 
+# ── Ensure uv is in PATH (cron environment may not have .local/bin) ──────────
+export PATH="$HOME/.local/bin:$PATH"
+
 # ── Parse arguments ──────────────────────────────────────────────────────────
 WS_HUB=""
 while [[ $# -gt 0 ]]; do

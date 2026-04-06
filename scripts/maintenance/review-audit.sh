@@ -6,6 +6,9 @@
 
 set -uo pipefail
 
+# ── Ensure PATH for cron environment ────────────────────────────────────────
+export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+
 # ── Configuration ─────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)" || {
@@ -297,16 +300,15 @@ if [[ "$COMPLIANCE" -lt "$REVIEW_COMPLIANCE_THRESHOLD" && "$UNREVIEWED_COUNT" -g
         echo ""
         echo "Creating or updating GitHub issue for review backlog..."
 
-        # Check if labels exist, create if not
+        # Ensure required labels exist (idempotent: ignore if already present)
+        gh label create "maintenance" --description "Maintenance & housekeeping" --color "0052CC" 2>/dev/null || true
         gh label create "review-backlog" --description "Commits lacking review evidence" --color "FBCA04" 2>/dev/null || true
 
         # Search for existing open issue with matching title to avoid duplicates
         EXISTING_ISSUE_NUMBER="$(gh issue list --state open --label "review-backlog" --search "Review backlog:" --json number,title --jq '.[0].number' 2>/dev/null || true)"
 
         if [[ -n "$EXISTING_ISSUE_NUMBER" && "$EXISTING_ISSUE_NUMBER" != "null" ]]; then
-            gh issue comment "$EXISTING_ISSUE_NUMBER" --body "## Update — ${DATE}
-
-$ISSUE_BODY" >/dev/null
+            gh issue comment "$EXISTING_ISSUE_NUMBER" --body "## Update — ${DATE}\n\n$ISSUE_BODY" >/dev/null
             echo "Updated existing review backlog issue: #$EXISTING_ISSUE_NUMBER"
         else
             ISSUE_URL="$(gh issue create \

@@ -148,3 +148,9 @@
 {"ts":"2026-04-06T07:02:21Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.38","message":"version 2.1.38 ok; expected model claude-sonnet-4-6"}
 {"ts":"2026-04-06T07:02:21Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"","message":"CLI not found in PATH"}
 {"ts":"2026-04-06T07:02:21Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-04-06T15:07:12Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.92","message":"version 2.1.92 ok; expected model claude-sonnet-4-6"}
+{"ts":"2026-04-06T15:07:12Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.118.0","message":"version 0.118.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-04-06T15:07:12Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.36.0","message":"version 0.36.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-04-06T15:08:18Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.92","message":"version 2.1.92 ok; expected model claude-sonnet-4-6"}
+{"ts":"2026-04-06T15:08:18Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.118.0","message":"version 0.118.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-04-06T15:08:18Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.36.0","message":"version 0.36.0 below minimum 1.0.0 — run update"}

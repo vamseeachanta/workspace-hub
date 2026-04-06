@@ -45,11 +45,30 @@ Use execute_code with write_file, patch, and terminal tools directly. These oper
 - digitalmodel has its own venv and pyproject.toml — use `cd digitalmodel && uv run pytest`
 - ~32K files bytecode-compile on every pytest run (~20s overhead) — expected behavior
 
-## Gemini via CLI
+## Gemini via CLI — 2026-04-06 Update
 
-Copilot provider (gemini-2.5-pro) returns HTTP 403 for non-interactive CLI calls:
-```
-hermes chat --provider copilot --model gemini-2.5-pro --quiet -q '...'
-```
-This is blocked by GitHub Copilot's API. Interactive Gemini works fine.
-For research tasks needing Gemini's large context, run interactively or use available alternative models.
+All three Gemini providers tested — behavior varies by request size:
+
+| Provider | Small request (5 tokens) | Large request (65K tokens) |
+|----------|-------------------------|--------------------------|
+| openrouter (google/gemini-2.5-pro) | Works | HTTP 402 — credits exhausted |
+| copilot (gemini-2.5-pro) | Works | HTTP 403 — programmatic access blocked |
+| huggingface (google/gemini-2.5-pro) | Works | HTTP 401 — credentials expired |
+
+Gemini is effectively unusable for non-trivial research tasks via CLI.
+Quota is tracked in `hermes insights` — check token usage before launching large Gemini sessions (5M tokens typical monthly cap across 22 sessions).
+
+## delegate_task file write persistence is UNRELIABLE
+
+Testing on 2026-04-06 showed inconsistent behavior:
+
+- **Subagents 1-2**: wrote files that did NOT persist (gyradius, conference indexing — zero output)
+- **Subagent 3+**: wrote files that DID persist (subsea_bridge.py 17KB, index-conferences-lightweight.py 485 lines)
+
+Pattern observed: earlier subagents in a batch tend to lose writes; later ones persist.
+This may be a sandbox lifecycle timing issue.
+
+**Practical rule**: If you MUST delegate implementation (not just research):
+1. Send only ONE implementation subagent at a time
+2. Always verify the output immediately: `ls -la <expected_file>`
+3. Have a fallback path to implement directly if subagent fails

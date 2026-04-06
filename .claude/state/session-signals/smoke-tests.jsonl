@@ -143,3 +143,5 @@
 {"event":"smoke_test","ts":"2026-04-06T07:02:34Z","repo":"worldenergydata","status":"pass","passed":0,"failed":0,"duration_s":96}
 {"event":"smoke_test","ts":"2026-04-06T07:02:34Z","repo":"assethold","status":"pass","passed":0,"failed":0,"duration_s":3}
 {"event":"smoke_test","ts":"2026-04-06T07:02:34Z","repo":"OGManufacturing","status":"pass","passed":0,"failed":0,"duration_s":0}
+{"event":"smoke_test","ts":"2026-04-06T15:08:31Z","repo":"assetutilities","status":"pass","passed":0,"failed":0,"duration_s":1}
+{"event":"smoke_test","ts":"2026-04-06T15:08:31Z","repo":"digitalmodel","status":"pass","passed":0,"failed":0,"duration_s":2}

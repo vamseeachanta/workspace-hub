@@ -314,11 +314,27 @@ Check status: `hermes status` or parse `~/.hermes/auth.json` credential_pool.
 **For overnight batches:** Assign analysis tasks to sonnet (cheaper, Anthropic quota)
 and implementation tasks to gpt-5.4 (OpenAI quota) — different rate limit pools.
 
-## Write-Back Rules (Issues #1941-#1944, ALL CLOSED)
+## Write-Back Rules (Issues #1941-1952, ALL CLOSED)
 
 **Repo .claude/skills/ is the single source of truth.** ~/.hermes/skills/ is empty
-(9 MB cleaned). external_dirs wiring means both Hermes AND Claude Code see everything
-written there. No dual-write, no sync drift, no symlinks.
+(9 MB cleaned, 0 SKILL.md files local). external_dirs wiring means both Hermes AND
+Claude Code see everything written there. No dual-write, no sync drift.
+
+**Verified skill counts (active, no _archive):**
+  workspace-hub: 696 | CAD-DEVELOPMENTS: 218 | digitalmodel: 31
+  worldenergydata: 21 | achantas-data: 13 | assetutilities: 3
+  Total unique: ~1156 across 6 repos
+
+**All 4 agents access same skill library:**
+  - Claude Code: reads .claude/skills/ directly (on-demand via slash commands)
+  - Codex CLI: .codex/skills → symlink → ../.claude/skills
+  - Gemini CLI: .gemini/skills → symlink → ../.claude/skills
+  - Hermes: external_dirs (6 paths in config.yaml, reads all repos)
+
+**Per-repo .codex/.gemini symlink pattern:**
+  - workspace-hub: `.codex/skills -> ../.claude/skills`
+  - sub-repos (CAD-DEVELOPMENTS, etc.): `.codex/skills -> ../../.claude/skills`
+  - If symlink broken (real directory with stale files): delete real dir, create symlink
 
 ### Rule 1: Skills Go to .claude/skills/ Directly
 When creating a new skill, write SKILL.md to

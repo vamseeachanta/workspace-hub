@@ -19,3 +19,5 @@ shown:
     tips: [gsd-fast, eco-session-memory]
   - date: 2026-04-06
     tips: [gsd-thread, bp-shell-dynamic]
+  - date: 2026-04-06
+    tips: [bp-challenge-claude, cc-add-dir]
