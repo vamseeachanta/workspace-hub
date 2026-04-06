@@ -10,7 +10,7 @@ auto_execute: false
 
 # Gemini Batch Execution
 
-Execute Gemini research tasks in efficient batches to maximize the $20/month subscription. Each session costs ~1-2 queries of the monthly quota — minimize sessions, maximize tasks per session.
+Execute Gemini research tasks in efficient batches to maximize the $20/month subscription. Two execution modes exist — pick based on task type.
 
 ## When to Use
 
@@ -18,6 +18,59 @@ Execute Gemini research tasks in efficient batches to maximize the $20/month sub
 - Literature gathering and textbook acquisition
 - Competitive intelligence or market scanning
 - Any read-heavy, write-output task that benefits from Gemini's 1M context and web access
+
+## MODE 1: Direct Local Execution (PREFERRED for repo work)
+
+For tasks that touch the local filesystem (cataloging, indexing, running scripts, closing GitHub issues), use `execute_code` + `delegate_task` subagents instead of `h-router-gemini`. This is 5-10x faster with NO sandbox isolation issues.
+
+### Why: Lessons from Overnight Batch (33 issues in one session)
+
+- `delegate_task` with up to 3 parallel subagents runs independent filesystem work concurrently
+- Subagents have direct repo access — no git commit failures, no -2 duplicate files, no sandbox state conflicts
+- `gh issue close` + `gh issue comment` for cleanup without shell alias escaping issues
+- One Hermes CLI session can close 30+ issues by doing lightweight filesystem ops directly
+
+### Pattern: Filesystem Triage + Parallel Subagents
+
+```python
+# Step 1: List all gemini-assigned open issues
+gh issue list --label "agent:gemini" --state open --json number,title,labels
+
+# Step 2: Categorize by priority and batch (HIGH/MED/LOW)
+
+# Step 3: For independent filesystem tasks, dispatch parallel subagents
+delegate_task(tasks=[
+    {"goal": "Scan and catalog <source_dir>...", "toolsets": ["terminal", "file"]},
+    {"goal": "Triage /path/to/archive/...", "toolsets": ["terminal", "file"]},
+    {"goal": "Catalog /path/to/refs/...", "toolsets": ["terminal", "file"]},
+])
+
+# Step 4: For tasks executable via existing scripts, run directly
+uv run python scripts/document-intelligence/batch-process-standards.py --domain materials
+
+# Step 5: Close issues with results
+gh issue close <num> -c "Result summary here."
+gh issue comment <num> -b "Detailed findings..."
+```
+
+### What NOT to do in local mode:
+- Don't run LLM web research — delegate_task subagents can't do web_search
+- Don't run tasks needing Gemini's 1M context window — subagents inherit your model, not Gemini
+- Don't parallelize tasks that touch the same files — use separate subagents for separate dirs
+
+### When to use Mode 1 vs Mode 2:
+| Task Type | Mode |
+|-----------|------|
+| Filesystem scan/catalog | Mode 1 (direct) |
+| Run existing scripts | Mode 1 (direct) |
+| Close/update GitHub issues | Mode 1 (direct) |
+| Web research, standards lookup | Mode 2 (h-router-gemini) |
+| Large doc ingestion (1M context) | Mode 2 (h-router-gemini) |
+| Literature gathering with ISBNs | Mode 2 (h-router-gemini) |
+
+## MODE 2: h-router-gemini CLI (for web research)
+
+Execute tasks via the Hermes router for tasks needing web access or Gemini's 1M context. Each session costs ~1-2 queries of the monthly quota — minimize sessions, maximize tasks per session.
 
 ## Working Command
 

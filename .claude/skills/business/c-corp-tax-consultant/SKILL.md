@@ -304,30 +304,41 @@ If e-filing is not available or cost-prohibitive:
 
 ## Phase 8: 1099-MISC Reconciliation Protocol
 
-When 1099-MISC amount differs from expected:
+### 1099-MISC Reconciliation Step-by-Step
 
-1. **Request itemized payment breakdown from payer**
-   - All payments with dates, amounts, and descriptions
-   - Email to payer's lease accounting/finance department
+**Step 1: Calculate expected income** — List what you know:
+- Rent months × monthly rent = expected rent
+- Reimbursements actually received in calendar year (insurance, HOA, etc.)
+- Only payments **received in calendar year** count for that year's 1099
 
-2. **Cross-reference with bank statements**
-   - Match each payment from payer against actual deposits
-   - Identify timing differences (check date vs deposit date)
-   - Only payments **received in calendar year** count for that year's 1099
+**Step 2: Calculate the gap** — 1099 Box 1 minus expected = gap.
 
-3. **Categorize each payment**
-   - Rent vs reimbursement vs other
-   - Track what goes on 1099 vs what doesn't
+**Step 3: Test common fillers for the gap:**
+- Property tax proration (total annual tax ÷ 12 × months owned)
+- Insurance reimbursement (full Crown/FDIC premium, not just property portion)
+- HOA reimbursement
+- Prior-year reimbursements included in same check
 
-4. **Determine if corrected 1099 is needed**
-   - If payer over-reported: request corrected 1099-MISC
-   - If payer under-reported: you still report actual income
-   - If discrepancy is small: document and report actual income with statement
+**Step 4: If gap matches a pass-through item, filing is NOT blocked.**
+Property tax reimbursement is income AND expense — they offset. Same for any NNN cost you pay and get reimbursed for. Net taxable impact is $0.
 
-5. **If unresolvable by filing deadline:**
-   - File with actual income (not 1099 amount)
-   - Attach statement explaining discrepancy
-   - Keep all correspondence on file (audit defense)
+**Step 5: Send clarification email to payer** (email template below) for official confirmation, but do not wait for a reply to file.
+
+**Step 6: If gap is still unexplained and significant by filing deadline:**
+- File with actual income (not 1099 amount)
+- Attach statement explaining discrepancy
+- Keep all correspondence on file
+
+### Quick Gap Formula for NNN Mid-Year Acquisition
+
+```
+Expected 1099 = (Months of rent × monthly rent)
+              + Insurance reimbursement received in calendar year
+              + HOA reimbursement (if received)
+              + Property tax proration (annual tax ÷ 12 × months owned)
+```
+
+If the reconstructed total is within ~$20 of the 1099, it's rounding. Move on.
 
 ### NNN Property Acquisition: Common Gap Explainer
 
