@@ -1,6 +1,6 @@
 ---
 name: hermes-ecosystem-integration
-version: 2.1.0
+version: 3.0.0
 category: devops
 description: "Wire Hermes into workspace-hub ecosystem — multi-repo skills, config sync, session export to learning pipeline, memory cross-pollination, skill patch tracking, and cross-machine health checks."
 tags: [hermes, harness, skills, sync, multi-machine, learning-pipeline]
@@ -39,14 +39,19 @@ workspace-hub/
 
 ```
 INBOUND (Hermes consumes):
-  6 repos .claude/skills/ ──→ external_dirs ──→ 865+ skills in system prompt
-    workspace-hub (579), CAD-DEVELOPMENTS (218), worldenergydata (21),
-    achantas-data (13), assetutilities (3), digitalmodel (31), + 86 local = 951+
+  6 repos .claude/skills/ ──→ external_dirs ──→ 973+ active skills in system prompt
+    workspace-hub (387), CAD-DEVELOPMENTS (182), digitalmodel (31),
+    worldenergydata (20), achantas-data (13), assetutilities (3)
+  ~/.hermes/skills/ is EMPTY — all skills served from repo via external_dirs
+    (9 MB of local duplicates cleaned in #1944)
+  mlops nested: some skills under mlops/cloud/, mlops/training/, mlops/inference/ etc.
 
 OUTBOUND (Hermes feeds back):
   ~/.hermes/sessions/*.json ──→ hermes-session-export.sh ──→ logs/orchestrator/hermes/*.jsonl
   ~/.hermes/memories/*.md   ──→ sync-agent-memories.sh   ──→ .claude/state/hermes-insights.yaml
-  git commit (.claude/skills) ──→ track-skill-patches.sh ──→ skill-patches.jsonl
+  NEW skills/scripts/rules  ──→ write DIRECTLY to .claude/skills/ (not ~/.hermes/)
+  .claude/skills/ changes   ──→ track-skill-patches.sh   ──→ skill-patches.jsonl
+  Local→repo drift          ──→ backfill-skills-to-repo.sh (auto via harness-update)
   All above ──→ comprehensive-learning Phase 1 signal sources
 ```
 
@@ -193,6 +198,11 @@ Install: already appended to `.git/hooks/post-commit` in workspace-hub.
 
 ### Nightly Cron Steps Added
 
+In `harness-update.sh` (runs nightly):
+- After `update_hermes`: `backfill_hermes_skills()` calls
+  `scripts/hermes/backfill-skills-to-repo.sh --commit`
+  Detects and auto-commits any new skills in ~/.hermes/skills/
+
 In `comprehensive-learning-nightly.sh`:
 - Step 2b: `hermes-session-export.sh` (best-effort)
 - Step 2b2: `codex-session-export.sh` (best-effort — #194)
@@ -304,36 +314,54 @@ Check status: `hermes status` or parse `~/.hermes/auth.json` credential_pool.
 **For overnight batches:** Assign analysis tasks to sonnet (cheaper, Anthropic quota)
 and implementation tasks to gpt-5.4 (OpenAI quota) — different rate limit pools.
 
-## Write-Back Rules (Issue #1941)
+## Write-Back Rules (Issues #1941-#1944, ALL CLOSED)
 
-Hermes MUST dual-write to the repo so Claude Code sessions stay in sync.
+**Repo .claude/skills/ is the single source of truth.** ~/.hermes/skills/ is empty
+(9 MB cleaned). external_dirs wiring means both Hermes AND Claude Code see everything
+written there. No dual-write, no sync drift, no symlinks.
 
-### Rule: Skill Dual-Write
-When `skill_manage(create|edit|patch)` runs:
-1. Write SKILL.md to `~/.hermes/skills/` (automatic)
-2. ALSO write to `.claude/skills/<category>/<name>/SKILL.md` in the repo
-3. `git add .claude/skills/ && git commit -m "hermes: write-back skill — <name>"`
+### Rule 1: Skills Go to .claude/skills/ Directly
+When creating a new skill, write SKILL.md to
+`workspace-hub/.claude/skills/<category>/<name>/SKILL.md`.
+Then: `git add .claude/skills/ && git commit -m "hermes: new skill — <name>"`.
 
-### Rule: Script Persistence
-When creating reusable scripts (data collectors, cron helpers, utilities):
-- Write to `scripts/` in the repo, NOT `/tmp/`
-- If part of a skill, use `skill_manage(action='write_file')` to `scripts/` subdir
+### Rule 2: Script Persistence
+Reusable scripts → `scripts/` in repo. If part of a skill → skill's `scripts/` subdir.
 
-### Rule: Hook/Rule Generation
-When discovering workflow enforcement needs:
-- Write `.claude/rules/<rule-name>.md` (CC frontmatter: `---\ntrigger: ...\nglob: ...\n---`)
-- Write `.claude/hooks/<hook-name>.sh` for automated checks
-- These activate in the next CC session automatically
+### Rule 3: Hook/Rule Generation
+- Rules: `.claude/rules/<name>.md` (CC frontmatter with trigger/glob)
+- Hooks: `.claude/hooks/<name>.sh` (POSIX shell, auto-fires on CC sessions)
 
-### Rule: Commit All .claude/ Writes
+### Rule 4: Commit Immediately
+All `.claude/` writes get `git add + commit + push` with clear provenance.
+
+### Automatic Drift Guard (Issues #1943, #1948)
+`scripts/hermes/backfill-skills-to-repo.sh` — wired into `harness-update.sh`
+(runs after `update_hermes`, via `backfill_hermes_skills()` function).
+Detects any skills in ~/.hermes/skills/ that aren't in any repo and copies
+them over with per-repo routing (see below).
+
+Usage: `backfill-skills-to-repo.sh [--dry-run] [--commit]`
+
+**Per-Repo Routing (#1948):**
+The backfill script routes skills to the correct repo automatically:
+1. Scans all 6 external_dirs repos for existing category matches
+2. Routes by exact category name match (e.g., "engineering" → CAD-DEVELOPMENTS)
+3. Falls back to substring match
+4. Defaults to workspace-hub
+5. Per-repo git commit + push (digitalmodel commits in digitalmodel/ etc.)
+
+**Testing pattern:** Create dummy skill in ~/.hermes/skills/ → run --dry-run
+to verify routing → run --commit for full pipeline → clean up dummy, revert commit.
+
+**Skill count verification:**
 ```bash
-git add .claude/skills/ .claude/rules/ .claude/hooks/ .claude/commands/
-git commit -m "hermes: write-back <type> — <name>"
-git push
+# Total active across all repos:
+find /mnt/local-analysis/workspace-hub/{.claude,CAD-DEVELOPMENTS/.claude,\
+  worldenergydata/.claude,achantas-data/.claude,assetutilities/.claude,\
+  digitalmodel/.claude}/skills \
+  -name SKILL.md -not -path "*/_archive/*" | wc -l
 ```
-
-### Rule: AGENTS.md Amendments
-When learning hard rules that apply to ALL agents, append to AGENTS.md or CLAUDE.md.
 
 ## Pitfalls
 
