@@ -23,6 +23,27 @@ Three Gmail accounts managed from CLI via himalaya. Each account has distinct pu
 | `personal` | achantav@gmail.com | Personal, networking, subscriptions | aceengineer-admin |
 | `skestates` | skestatesinc@gmail.com | Real estate LLC, tenant/vendor | sabithaandkrishnaestates |
 
+## Architecture Decision (April 2026)
+
+**Primary: gmail-mcp-multiauth (npm)** — purpose-built multi-account Gmail MCP
+- Each account gets named MCP server (gmail-ace, gmail-personal, gmail-skestates)
+- OAuth2 per-account, one GCP project
+- 381K downloads/mo base (GongRzhe fork), token refresh fix
+- Install: `npm install -g gmail-mcp-multiauth`
+
+**Fallback: himalaya CLI** — for cron jobs and shell scripts
+- App Password auth (simpler, no OAuth dance)
+- Multi-account via --account flag
+- Install: `curl -sSL .../install.sh | PREFIX=~/.local sh`
+
+**NOT chosen:**
+- himalaya-mcp wrapper: too many layers (Rust CLI + npm MCP + TOML config)
+- workspace-mcp (taylorwilsdon): overkill (full Workspace suite, 2K stars but heavy)
+- @gongrzhe/server-gmail-autoauth-mcp: single-account only
+- DIY google-workspace OAuth script: high maintenance
+
+**Unsubscribe note:** No MCP server has native List-Unsubscribe support. Must parse raw headers via Gmail API or custom tool.
+
 ## Setup
 
 ### Step 1: Install himalaya
