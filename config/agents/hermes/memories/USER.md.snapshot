@@ -1,11 +1,7 @@
-Maximizes AI subscriptions — no unused slots = wasted money. Rolls 1-week work queue per agent. CONTEXT PARITY MANDATORY: corrections in one agent must sync to all others. Licensed-win-1 gets same baseline. Context parity = compute parity: zero waste everywhere.
+Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total).
 §
-User's current AI subscriptions are Claude Max at USD 200, two separate Codex/OpenAI logins at USD 20 each, and one Gemini Google AI Pro account at USD 19.99.
+Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included.
 §
-Plan and work artifacts should undergo adversarial cross-review by ALL available agents: Claude, Codex, and Gemini — not just a single reviewer.
+Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
 §
-User thinks in overnight batch execution — wants 3 self-contained agent prompts (one per terminal) with zero git contention, no user interaction needed, and a clear "what you'll have by morning" summary. Always include a git contention avoidance map showing which terminal writes which files.
-§
-Adversarial review at BOTH stages: plan review AND code/artifact review before closing.
-§
-Vamsee runs ACE Engineer (aceengineer.com) consulting business. Target: $120K/yr retainers, 3-5 clients = $360-600K ARR. Strategy repo: aceengineer-strategy/ (nested in workspace-hub). P.E., 23yr exp. Core: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation. GTM: offshore firms 10-50 engineers.
+Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers.

@@ -1,19 +1,19 @@
-AI: $269/mo. Overnight: use Hermes subagents (CC OAuth expires, Codex CLI broken). Gemini CLI needs --yolo. delegation.model=sonnet. h-gemini h-opus h-sonnet h-gpt.
+AI: $269/mo. Claude Max $200, 2x Codex $20 each, Gemini Pro $20. Overnight: use Hermes subagents. Gemini needs --yolo.
 §
-ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount.
+ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move.
 §
-Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this.
+Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`.
 §
-aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospects, conf-prep, scorecard. Scanner: scripts/gtm/job-market-scanner.py Mon cron. #1669-1671.
+digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root.
 §
-Hermes: external_dirs=5 repos (691 skills). Nightly cron: export+sync+drift. CC v2.1.90 native features to adopt (#1775 8-week cadence): /powerup /insights /stats /context /simplify /batch /debug /diff /security-review. Key frontmatter: skills context:fork paths effort model hooks. Ref: shanraisshan/claude-code-best-practice.
+Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded.
 §
-workspace-hub data pipeline: catalog.yaml has malformed YAML — use safe_yaml_load(). 7 catalog formats, unified registry at data/document-index/online-resource-registry.yaml (247 entries).
+aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp.
 §
-digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root.
+Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Key frontmatter: skills context:fork paths effort model hooks.
 §
-Legal scan skill restored (coordination/legal-sanity-scan v2.0). .legal-deny-list.yaml has 15 client patterns. MANDATORY for all document-intelligence and resource work. --diff-only exclusion fix applied. Script: scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) are excluded from scanning since they legitimately reference client folder names.
+Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643).
 §
-licensed-win-1 has NO Hermes — use Claude/Codex/Gemini CLIs directly. Execution guide: docs/plans/licensed-win-1-execution-guide.md. Prompts: docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Use `python` not `uv run` on Windows.
+SKEstates Inc. business: sabithaandkrishnaestates repo at /mnt/local-analysis/workspace-hub/sabithaandkrishnaestates. Owns Family Dollar store #30150 (15645 Westpark Dr, Houston TX 77082), acquired 9/22/2025 from Addicks Westpark LLC. Modified NNN lease, $10,141.67/month. Tenant contact: TX_Rents@familydollar.com. Business email: skestatesinc@gmail.com. Key docs: docs/tax/2025-family-dollar-1099-reconciliation.md (1099 discrepancy: $50,085.60 reported, expected ~$30-40K rent). "Cowork" = Claude Desktop sandboxed mode with MCP — NOT available from Hermes CLI. For Gmail from CLI: use himalaya with App Password or setup google-workspace skill with OAuth.
 §
-GTM demos: 5 demos at digitalmodel/examples/demos/gtm/. Template: report_template.py. Demo 2 done. --from-cache pattern (#1832). Master #1800, vessel data #1798/#1799, GIFs #1809, cache #1831/#1832.
+WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately.

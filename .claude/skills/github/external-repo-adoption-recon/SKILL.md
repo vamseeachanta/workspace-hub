@@ -1,11 +1,21 @@
 ---
 name: external-repo-adoption-recon
-description: "Clone and analyze an external open-source repo (best practices, frameworks, workflow toolkits) to produce a gap analysis against our ecosystem and an adoption cadence plan. Use when a user shares a GitHub URL of a methodology/tooling repo and wants to extract what's useful."
+description: Clone and analyze an external open-source repo (best practices, frameworks,
+  workflow toolkits) to produce a gap analysis against our ecosystem and an adoption
+  cadence plan. Use when a user shares a GitHub URL of a methodology/tooling repo
+  and wants to extract what's useful.
 version: 1.0.0
 category: github
 type: skill
-tags: [recon, adoption, gap-analysis, best-practice, external-repo]
-related_skills: [engineering-solver-domain-recon, repo-capability-map, codebase-inspection]
+tags:
+- recon
+- adoption
+- gap-analysis
+- best-practice
+- external-repo
+related_skills:
+- engineering-solver-domain-recon
+- codebase-inspection
 ---
 
 # External Repo Adoption Reconnaissance

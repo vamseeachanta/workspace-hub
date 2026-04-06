@@ -1,12 +1,25 @@
 ---
 name: domain-gap-to-issue-roadmap
-description: Deep multi-repo ecosystem audit → domain gap matrix → structured GitHub issue roadmap with epics. Use when the user wants to assess capabilities across repos and create a backlog of work items covering code, data, and documentation gaps.
+description: "Deep multi-repo ecosystem audit \u2192 domain gap matrix \u2192 structured\
+  \ GitHub issue roadmap with epics. Use when the user wants to assess capabilities\
+  \ across repos and create a backlog of work items covering code, data, and documentation\
+  \ gaps."
 version: 1.0.0
 category: github
 type: skill
 trigger: manual
-related_skills: [repo-capability-map, issue-portfolio-triage, dark-intelligence-workflow, research-literature]
-tags: [ecosystem-audit, issue-creation, gap-analysis, roadmap, field-development, naval-architecture, geotechnical]
+related_skills:
+- issue-portfolio-triage
+- dark-intelligence-workflow
+- research-literature
+tags:
+- ecosystem-audit
+- issue-creation
+- gap-analysis
+- roadmap
+- field-development
+- naval-architecture
+- geotechnical
 ---
 
 # Domain Gap → Issue Roadmap

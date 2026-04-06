@@ -3,38 +3,37 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-05T07:00:29Z"
-  source_hash: "ded9a106d5f4b9375d5a48d39a93fd0b"
+  generated: "2026-04-06T07:00:29Z"
+  source_hash: "fabbea9ce6f59b5cf54c8a3cf4821f62"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 16
+      entry_count: 14
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
       memory_file_count: 38
 
 hermes_insights:
   environment_facts:
-    - "AI: $269/mo. Overnight: use Hermes subagents (CC OAuth expires, Codex CLI broken). Gemini CLI needs --yolo. delegation.model=sonnet. h-gemini h-opus h-sonnet h-gpt."
-    - "ace-linux-1: real workspace-hub is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay. write_file/patch hit overlay — write to /tmp/ then run via terminal to hit real mount."
+    - "AI: $269/mo. Claude Max $200, 2x Codex $20 each, Gemini Pro $20. Overnight: use Hermes subagents. Gemini needs --yolo."
+    - "ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move."
+    - "Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`."
+    - "SKEstates Inc. business: sabithaandkrishnaestates repo at /mnt/local-analysis/workspace-hub/sabithaandkrishnaestates. Owns Family Dollar store #30150 (15645 Westpark Dr, Houston TX 77082), acquired 9/22/2025 from Addicks Westpark LLC. Modified NNN lease, $10,141.67/month. Tenant contact: TX_Rents@familydollar.com. Business email: skestatesinc@gmail.com. Key docs: docs/tax/2025-family-dollar-1099-reconciliation.md (1099 discrepancy: $50,085.60 reported, expected ~$30-40K rent). \"Cowork\" = Claude Desktop sandboxed mode with MCP — NOT available from Hermes CLI. For Gmail from CLI: use himalaya with App Password or setup google-workspace skill with OAuth."
   conventions:
-    - "Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this."
+    []
   project_knowledge:
-    - "aceengineer-strategy/ nested private repo: GTM, $120K retainer, ICP, 20+ prospects, conf-prep, scorecard. Scanner: scripts/gtm/job-market-scanner.py Mon cron. #1669-1671."
-    - "Hermes: external_dirs=5 repos (691 skills). Nightly cron: export+sync+drift. CC v2.1.90 native features to adopt (#1775 8-week cadence): /powerup /insights /stats /context /simplify /batch /debug /diff /security-review. Key frontmatter: skills context:fork paths effort model hooks. Ref: shanraisshan/claude-code-best-practice."
-    - "workspace-hub data pipeline: catalog.yaml has malformed YAML — use safe_yaml_load(). 7 catalog formats, unified registry at data/document-index/online-resource-registry.yaml (247 entries)."
-    - "digitalmodel/ is a separate git repo (vamseeachanta/digitalmodel.git) nested inside workspace-hub and gitignored. Commits must be made from within digitalmodel/ dir, not workspace-hub root."
-    - "Legal scan skill restored (coordination/legal-sanity-scan v2.0). .legal-deny-list.yaml has 15 client patterns. MANDATORY for all document-intelligence and resource work. --diff-only exclusion fix applied. Script: scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) are excluded from scanning since they legitimately reference client folder names."
-    - "licensed-win-1 has NO Hermes — use Claude/Codex/Gemini CLIs directly. Execution guide: docs/plans/licensed-win-1-execution-guide.md. Prompts: docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Use `python` not `uv run` on Windows."
-    - "GTM demos: 5 demos at digitalmodel/examples/demos/gtm/. Template: report_template.py. Demo 2 done. --from-cache pattern (#1832). Master #1800, vessel data #1798/#1799, GIFs #1809, cache #1831/#1832."
+    - "digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root."
+    - "Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded."
+    - "aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp."
+    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Key frontmatter: skills context:fork paths effort model hooks."
+    - "Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643)."
+    - "WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately."
   user_preferences:
-    - "Maximizes AI subscriptions — no unused slots = wasted money. Rolls 1-week work queue per agent. CONTEXT PARITY MANDATORY: corrections in one agent must sync to all others. Licensed-win-1 gets same baseline. Context parity = compute parity: zero waste everywhere."
-    - "User's current AI subscriptions are Claude Max at USD 200, two separate Codex/OpenAI logins at USD 20 each, and one Gemini Google AI Pro account at USD 19.99."
-    - "Plan and work artifacts should undergo adversarial cross-review by ALL available agents: Claude, Codex, and Gemini — not just a single reviewer."
-    - "User thinks in overnight batch execution — wants 3 self-contained agent prompts (one per terminal) with zero git contention, no user interaction needed, and a clear \"what you'll have by morning\" summary. Always include a git contention avoidance map showing which terminal writes which files."
-    - "Adversarial review at BOTH stages: plan review AND code/artifact review before closing."
-    - "Vamsee runs ACE Engineer (aceengineer.com) consulting business. Target: $120K/yr retainers, 3-5 clients = $360-600K ARR. Strategy repo: aceengineer-strategy/ (nested in workspace-hub). P.E., 23yr exp. Core: OrcaFlex, mooring/riser, FEA, cathodic protection, API 579, Python automation. GTM: offshore firms 10-50 engineers."
+    - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
+    - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."
+    - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
+    - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
 
 claude_memory_index:
   files:
@@ -117,4 +116,4 @@ claude_memory_index:
 
 shared_conventions:
   # These conventions from Hermes should be honored by all agents
-  - "Always use `uv run` for Python — never bare `python3` or `pip`. The user has corrected this."
+  []

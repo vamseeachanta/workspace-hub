@@ -1,21 +1,23 @@
 ---
 name: cc-best-practice-adoption
-description: "Use when onboarding new Claude Code features, reviewing external best-practice repos, or expanding the daily learning catalog. Covers: gap analysis against native CC capabilities, tips catalog expansion, daily-learning script, native .claude/ structure (agents, commands, settings)."
+description: 'Use when onboarding new Claude Code features, reviewing external best-practice
+  repos, or expanding the daily learning catalog. Covers: gap analysis against native
+  CC capabilities, tips catalog expansion, daily-learning script, native .claude/
+  structure (agents, commands, settings).'
 version: 1.0.0
 updated: 2026-04-03
 category: workspace-hub
 type: skill
 tags:
-  - learning
-  - onboarding
-  - claude-code
-  - best-practice
-  - daily-cadence
+- learning
+- onboarding
+- claude-code
+- best-practice
+- daily-cadence
 related_skills:
-  - comprehensive-learning
-  - session-start-routine
+- comprehensive-learning
 platforms:
-  - linux
+- linux
 ---
 
 # CC Best Practice Adoption
