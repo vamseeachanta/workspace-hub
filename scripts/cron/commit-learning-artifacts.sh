@@ -117,12 +117,9 @@ for file in "${STATE_FILES[@]}"; do
   fi
 done
 
-# logs/orchestrator/ exports (Hermes + Codex session JSONL)
-for orch_dir in logs/orchestrator/hermes logs/orchestrator/codex; do
-  if [[ -d "$orch_dir" ]]; then
-    git add "$orch_dir/" 2>/dev/null && ((staged++)) || true
-  fi
-done
+# logs/orchestrator/ exports are raw session dumps with client names in commands —
+# NOT learning artifacts. Skip staging them; they trigger legal deny-list (client references)
+# and serve no purpose in the repo. (#1985)
 
 # Agent memory snapshots (#1777, #1779, #1781)
 for snap_dir in config/agents/hermes/memories config/agents/claude/memory-snapshots config/agents/codex/state-snapshots config/agents/gemini/state-snapshots; do

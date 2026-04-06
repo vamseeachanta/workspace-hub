@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-05T02:18:09.584486Z",
-  "report_weeks": 5,
-  "current_week": "2026-W14",
+  "generated_at": "2026-04-06T15:44:14.124761Z",
+  "report_weeks": 4,
+  "current_week": "2026-W15",
   "subscriptions": {
     "claude": {
       "cost_monthly": 200.0,
@@ -22,68 +22,14 @@
   },
   "total_monthly_spend": 269.0,
   "weekly_data": {
-    "2026-W09": {
-      "claude": {
-        "provider": "claude",
-        "sessions": 70,
-        "input_tokens": 280000,
-        "output_tokens": 14000,
-        "total_tokens": 294000,
-        "records": 70,
-        "utilization_pct": 46.7
-      },
-      "codex": {
-        "provider": "codex",
-        "sessions": 2,
-        "messages": 98,
-        "utilization_pct": 4.0
-      },
-      "gemini": {
-        "provider": "gemini",
-        "sessions": 0,
-        "utilization_pct": 0.0
-      },
-      "copilot": {
-        "provider": "copilot",
-        "sessions": 0,
-        "utilization_pct": 0.0
-      }
-    },
-    "2026-W10": {
-      "claude": {
-        "provider": "claude",
-        "sessions": 195,
-        "input_tokens": 4088000,
-        "output_tokens": 204400,
-        "total_tokens": 4292400,
-        "records": 1022,
-        "utilization_pct": 100.0
-      },
-      "codex": {
-        "provider": "codex",
-        "sessions": 13,
-        "messages": 507,
-        "utilization_pct": 26.0
-      },
-      "gemini": {
-        "provider": "gemini",
-        "sessions": 0,
-        "utilization_pct": 0.0
-      },
-      "copilot": {
-        "provider": "copilot",
-        "sessions": 0,
-        "utilization_pct": 0.0
-      }
-    },
     "2026-W11": {
       "claude": {
         "provider": "claude",
-        "sessions": 809,
-        "input_tokens": 14820000,
-        "output_tokens": 741000,
-        "total_tokens": 15561000,
-        "records": 3705,
+        "sessions": 802,
+        "input_tokens": 13860000,
+        "output_tokens": 693000,
+        "total_tokens": 14553000,
+        "records": 3465,
         "utilization_pct": 100.0
       },
       "codex": {
@@ -107,10 +53,10 @@
       "claude": {
         "provider": "claude",
         "sessions": 1280,
-        "input_tokens": 34652000,
-        "output_tokens": 1732600,
-        "total_tokens": 36384600,
-        "records": 8663,
+        "input_tokens": 34708000,
+        "output_tokens": 1735400,
+        "total_tokens": 36443400,
+        "records": 8677,
         "utilization_pct": 100.0
       },
       "codex": {
@@ -134,10 +80,10 @@
       "claude": {
         "provider": "claude",
         "sessions": 24664,
-        "input_tokens": 335648000,
-        "output_tokens": 16782400,
-        "total_tokens": 352430400,
-        "records": 83912,
+        "input_tokens": 335720000,
+        "output_tokens": 16786000,
+        "total_tokens": 352506000,
+        "records": 83930,
         "utilization_pct": 100.0
       },
       "codex": {
@@ -160,11 +106,11 @@
     "2026-W14": {
       "claude": {
         "provider": "claude",
-        "sessions": 24716,
-        "input_tokens": 591528000,
-        "output_tokens": 29576400,
-        "total_tokens": 621104400,
-        "records": 147882,
+        "sessions": 24718,
+        "input_tokens": 690104000,
+        "output_tokens": 34505200,
+        "total_tokens": 724609200,
+        "records": 172526,
         "utilization_pct": 100.0
       },
       "codex": {
@@ -172,6 +118,32 @@
         "sessions": 13,
         "messages": 72,
         "utilization_pct": 26.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W15": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 24594,
+        "input_tokens": 98376000,
+        "output_tokens": 4918800,
+        "total_tokens": 103294800,
+        "records": 24594,
+        "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 0,
+        "utilization_pct": 0.0
       },
       "gemini": {
         "provider": "gemini",
@@ -194,6 +166,13 @@
     }
   },
   "underutilization_alerts": [
+    {
+      "provider": "codex",
+      "utilization_pct": 0.0,
+      "threshold_pct": 15.0,
+      "message": "codex at 0.0% utilization (threshold: 15.0%)",
+      "subscription_cost": 40.0
+    },
     {
       "provider": "gemini",
       "utilization_pct": 0.0,

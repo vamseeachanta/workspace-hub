@@ -37,6 +37,42 @@ This was discovered during overnight batch execution on 2026-04-06 when multiple
 
 Use execute_code with write_file, patch, and terminal tools directly. These operate in the real filesystem and produce real commits.
 
+## delegate_task SUMMARIES ARE SEVERELY COMPRESSED — ~99% DATA LOSS
+
+When delegate_task subagents run, the returned "summary" field is a 1-2 sentence compression of everything the subagent did. **The detailed work is LOST.** Observed 2026-04-06:
+
+| Subagent | Input tokens | Tool calls | Duration | Summary returned |
+|----------|-------------|------------|----------|-----------------|
+| digitalmodel audit | 859K | 18 | 12 min | "Now I have enough information to write the comprehensive audit report." |
+| assetutilities audit | 1.9M | 30 | 16 min | "The grep commands are timing out due to large repos. Let me use search_files instead." |
+| worldenergydata audit | 2.0M | 30 | 7 min | "I'll perform a comprehensive architecture audit..." |
+| Codex adversarial review | 344K | 19 | 9 min | "I'll perform a thorough adversarial review..." |
+| Gemini adversarial review | 235K | 18 | 4 min | "I'll perform a thorough adversarial architectural review..." |
+
+**Total wasted: ~5.3M input tokens, 115 tool calls, 48 minutes → 5 trivial summary sentences.**
+
+### Correct approach for read-only analysis
+
+Use `execute_code` with terminal/search_files/read_file/write_file. This runs in the real filesystem, produces persistent output, and gives full control:
+
+```python
+# Good: execute_code for analysis
+terminal(command="find src/ -name '*.py' | xargs wc -l")
+write_file("/tmp/audit-report.md", report)  # Persists to real filesystem
+```
+
+### When delegate_task IS still worth it
+
+- Tasks that require LLM reasoning (not just scraping/reporting)
+- When the subagent's output is genuinely novel analysis, not raw data collection
+- When you need parallel LLM thinking (not parallel data gathering)
+
+### Quick decision rule
+
+If the task is: **gather data from terminal/files** → use execute_code
+If the task is: **reason, synthesize, interpret** → use delegate_task (accept summary is brief)
+If the task is: **both** → gather data with execute_code, THEN delegate_task for interpretation
+
 ## Workspace-hub specific notes
 
 - workspace-hub repo: /mnt/local-analysis/workspace-hub
@@ -47,28 +83,44 @@ Use execute_code with write_file, patch, and terminal tools directly. These oper
 
 ## Gemini via CLI — 2026-04-06 Update
 
-All three Gemini providers tested — behavior varies by request size:
+All three Gemini providers tested — behavior varies by request size and auth state:
 
-| Provider | Small request (5 tokens) | Large request (65K tokens) |
-|----------|-------------------------|--------------------------|
-| openrouter (google/gemini-2.5-pro) | Works | HTTP 402 — credits exhausted |
-| copilot (gemini-2.5-pro) | Works | HTTP 403 — programmatic access blocked |
-| huggingface (google/gemini-2.5-pro) | Works | HTTP 401 — credentials expired |
+| Provider | Small request (hello) | Large request (research doc) |
+|----------|----------------------|------------------------------|
+| openrouter (google/gemini-2.5-pro) | Works | HTTP 402 — credits exhausted (54K tokens remaining, need 65K+) |
+| copilot (gemini-2.5-pro) | Works (sometimes) | HTTP 403 — programmatic access blocked intermittently |
+| huggingface (google/gemini-2.5-pro) | Works | HTTP 401 — credentials expired (may need re-auth) |
 
-Gemini is effectively unusable for non-trivial research tasks via CLI.
-Quota is tracked in `hermes insights` — check token usage before launching large Gemini sessions (5M tokens typical monthly cap across 22 sessions).
+**Takeaway**: Gemini is effectively unusable for large research tasks via CLI right now.
+- Use `hermes insights` to check token usage before launching large Gemini sessions
+- Monthly cap observed: ~5M tokens across 22 sessions for Gemini 2.5-pro
+- For small verification queries ("hello"), all 3 providers respond OK
+- For research/docs/analysis (65K+ token requests): all 3 providers fail with different errors
 
-## delegate_task file write persistence is UNRELIABLE
+## delegate_task file write persistence is INCONSISTENT
 
-Testing on 2026-04-06 showed inconsistent behavior:
+Testing on 2026-04-06 revealed inconsistent behavior per subagent:
 
-- **Subagents 1-2**: wrote files that did NOT persist (gyradius, conference indexing — zero output)
-- **Subagent 3+**: wrote files that DID persist (subsea_bridge.py 17KB, index-conferences-lightweight.py 485 lines)
+- **First subagent (concept_selection #1843)**: WROTE successfully — 3 modules, 94 tests, committed
+- **Second subagent (gyradius #1851)**: ZERO output — files created but NOT persisted to repo
+- **Third subagent (SubseaIQ bridge #1861)**: WROTE successfully — 17KB module, tests persisted
+- **Fourth subagent (conference indexing #1862)**: WROTE successfully — rewrote script, committed
 
-Pattern observed: earlier subagents in a batch tend to lose writes; later ones persist.
-This may be a sandbox lifecycle timing issue.
+**Pattern**: No clear pattern by position — success is stochastic. ~50% success rate for implementation tasks.
 
-**Practical rule**: If you MUST delegate implementation (not just research):
-1. Send only ONE implementation subagent at a time
-2. Always verify the output immediately: `ls -la <expected_file>`
-3. Have a fallback path to implement directly if subagent fails
+**Why some succeed and others fail**: Likely depends on sandbox lifecycle timing, file system sync, and whether the subagent exits cleanly before the container is torn down. Subagents that spend more time reading before writing may have higher failure rates.
+
+### Success rate by task type (observed)
+
+| Task Type | Attempts | Successes | Notes |
+|-----------|----------|-----------|-------|
+| Research/markdown generation | 3 | 0 | All lost — only read operations |
+| Module implementation | 3 | 2 | ~67% success |
+| Test writing | 2 | 1 | ~50% success |
+
+### Mitigation strategies
+
+1. For critical implementation: use execute_code + write_file directly (100% reliable)
+2. If using delegate_task for implementation: verify immediately after return with `ls -la <expected_file>`
+3. Always have a fallback to implement directly within 60 seconds
+4. Consider sending multiple subagents for the SAME critical task and race them — first to persist wins

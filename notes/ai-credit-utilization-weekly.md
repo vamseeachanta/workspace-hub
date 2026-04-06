@@ -1,7 +1,7 @@
 # AI Credit Utilization Report
 
-Generated: 2026-04-05T02:18:09.584486Z
-Current week: 2026-W14
+Generated: 2026-04-06T15:44:14.124761Z
+Current week: 2026-W15
 Total monthly spend: $269.0/mo (fixed subscriptions)
 
 ## Subscriptions
@@ -16,14 +16,23 @@ Total monthly spend: $269.0/mo (fixed subscriptions)
 
 ## Weekly Utilization
 
-### 2026-W14 **(current)**
+### 2026-W15 **(current)**
 
 | Provider | Sessions | Utilization | Notes |
 |----------|----------|-------------|-------|
-| claude | 24716 | ██████████ 100.0% |  |
-| codex | 13 | ██░░░░░░░░ 26.0% |  |
+| claude | 24594 | ██████████ 100.0% |  |
+| codex | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
 | gemini | 0 | ░░░░░░░░░░ 0.0% ⚠️ | No automated Gemini tracking yet. Usage via h-gemini alias or Copilot proxy is untracked. |
 | copilot | 0 | ░░░░░░░░░░ 0.0% ⚠️ | Copilot usage via Hermes delegation (provider=copilot). Tracking TBD. |
+
+### 2026-W14
+
+| Provider | Sessions | Utilization | Notes |
+|----------|----------|-------------|-------|
+| claude | 24718 | ██████████ 100.0% |  |
+| codex | 13 | ██░░░░░░░░ 26.0% |  |
+| gemini | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
+| copilot | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
 
 ### 2026-W13
 
@@ -47,30 +56,13 @@ Total monthly spend: $269.0/mo (fixed subscriptions)
 
 | Provider | Sessions | Utilization | Notes |
 |----------|----------|-------------|-------|
-| claude | 809 | ██████████ 100.0% |  |
+| claude | 802 | ██████████ 100.0% |  |
 | codex | 1 | ░░░░░░░░░░ 2.0% ⚠️ |  |
-| gemini | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
-| copilot | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
-
-### 2026-W10
-
-| Provider | Sessions | Utilization | Notes |
-|----------|----------|-------------|-------|
-| claude | 195 | ██████████ 100.0% |  |
-| codex | 13 | ██░░░░░░░░ 26.0% |  |
-| gemini | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
-| copilot | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
-
-### 2026-W09
-
-| Provider | Sessions | Utilization | Notes |
-|----------|----------|-------------|-------|
-| claude | 70 | ████░░░░░░ 46.7% |  |
-| codex | 2 | ░░░░░░░░░░ 4.0% ⚠️ |  |
 | gemini | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
 | copilot | 0 | ░░░░░░░░░░ 0.0% ⚠️ |  |
 
 ## ⚠️ Underutilization Alerts
 
+- **codex**: codex at 0.0% utilization (threshold: 15.0%) — $40.0/mo at risk
 - **gemini**: gemini at 0.0% utilization (threshold: 15.0%) — $20.0/mo at risk
 - **copilot**: copilot at 0.0% utilization (threshold: 15.0%) — $9.0/mo at risk

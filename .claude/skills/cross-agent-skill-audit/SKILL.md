@@ -127,9 +127,20 @@ Then run: `scripts/_core/sync-agent-configs.sh`
 ### Fix 4: Skills in ~/.hermes/skills/ not migrated to repo
 
 ```bash
-# Use the backfill script
+# Preferred: use the backfill script (handles per-repo routing, legal scan, commit, push)
 bash scripts/hermes/backfill-skills-to-repo.sh --commit
-# Manually: copy skill to repo .claude/skills/ then delete local copy
+
+# Manual alternative: copy skill to repo .claude/skills/ then delete local copy
+cp -r ~/.hermes/skills/CAT/NAME/ .claude/skills/CAT/NAME/
+git add .claude/skills/CAT/NAME/
+git commit -m "feat(skills): migrate CAT/NAME from ~/.hermes/skills/"
+rm -rf ~/.hermes/skills/CAT/
+```
+
+Note: after migration, ~/.hermes/skills/ should end up with 0 SKILL.md files.
+Empty category dirs can be cleaned with:
+```bash
+find ~/.hermes/skills -mindepth 1 -maxdepth 1 -type d -empty -delete
 ```
 
 ## Pitfalls

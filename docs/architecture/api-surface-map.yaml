@@ -1,26 +1,93 @@
 summary:
   total_packages: 31
-  total_modules: 1590
-  total_classes: 2089
-  total_functions: 1957
-  total_loc: 331750
-  public_api_classes: 1940
-  public_api_functions: 1335
+  total_modules: 1655
+  total_classes: 2371
+  total_functions: 2222
+  total_loc: 355823
+  public_api_classes: 2221
+  public_api_functions: 1556
 packages:
 - name: ansys
-  modules: 5
-  classes: 8
+  modules: 15
+  classes: 75
   functions: 0
-  loc: 429
+  loc: 4563
   public_classes:
+  - APDLGenerator
   - APDLMaterial
   - APDLReader
+  - APDLScriptConfig
   - APDLSection
+  - ASMEStressLimits
+  - ASMEThicknessCalc
+  - BatchConfig
+  - BatchLoadConfig
+  - BatchResultEntry
+  - BatchResults
+  - BatchRun
+  - BatchRunner
+  - BoltAnalysisGenerator
+  - BoltCircleConfig
+  - BoltConfig
+  - BoundaryCondition
+  - BoundaryConditionSummary
+  - ComparisonRow
+  - ContactAnalysisGenerator
+  - ContactPairConfig
+  - ContactResults
+  - ConvectionBC
+  - ConvergenceInfo
+  - ConvergenceRecord
+  - DesignConditions
   - DesignPoint
   - DesignPointReader
+  - DisplacementSummary
+  - ElementResult
+  - ElementTypeConfig
+  - FatigueConfig
+  - FatigueLoadCase
+  - FatiguePostprocessor
+  - FatigueResult
+  - FlangeConfig
+  - GasketConfig
+  - HeatFluxBC
+  - HotspotConfig
+  - InterferenceFitConfig
+  - LinearizedStress
+  - LoadCase
+  - MaterialConfig
+  - MeshConfig
+  - MeshMetrics
+  - ModelInfo
+  - NodalResult
+  - NozzleConfig
+  - NozzleLoad
+  - ParameterSweep
   - ParametricStudy
+  - PostProcessConfig
+  - PressureVesselGenerator
+  - RadiationBC
+  - ReportConfig
+  - ReportGenerator
+  - ResultEntry
+  - ResultSummary
+  - ResultsExtractor
+  - RunStatus
+  - SNcurve
+  - SealConfig
+  - SolutionConfig
+  - StressClassificationLine
+  - StressSummary
+  - ThermalAnalysisConfig
+  - ThermalAnalysisGenerator
+  - ThermalMaterialConfig
+  - TransientConfig
+  - VesselGeometry
   - WBJNJournal
   - WBJNReader
+  - WeldAssessmentGenerator
+  - WeldGeometry
+  - WindSeismicLoad
   public_functions: []
   has_all: true
   has_tests: true
@@ -28,7 +95,7 @@ packages:
   modules: 52
   classes: 49
   functions: 63
-  loc: 8726
+  loc: 8763
   public_classes:
   - API579_components
   - API_RP_16Q
@@ -151,17 +218,73 @@ packages:
   has_all: false
   has_tests: true
 - name: cathodic_protection
-  modules: 5
-  classes: 4
-  functions: 30
-  loc: 857
+  modules: 17
+  classes: 58
+  functions: 74
+  loc: 4405
   public_classes:
+  - AlarmThresholds
+  - AnodeBedResult
+  - AnodeBedType
+  - AnodeMaterial
+  - AnodeSizingInput
+  - AnodeSizingResult
+  - AnodeSpacingResult
+  - AnodeStatus
+  - AnodeType
+  - AttenuationResult
+  - CISAnalysisResult
+  - CISSurveyPoint
+  - CO2CorrosionInput
+  - CO2CorrosionResult
+  - CPAssessmentReport
+  - ClimateRegion
+  - CoatingBreakdownResult
+  - CoatingCategory
+  - CoatingLifeResult
   - CoatingType
+  - ComplianceCheck
+  - ComplianceStatus
+  - CriteriaResult
+  - DCVGIndication
+  - DepletionProfile
+  - DepletionResult
+  - ExposureZone
   - FuelPipeSegment
+  - GalvanicCorrosionInput
+  - GalvanicCorrosionResult
   - ImpressedCurrentGroundBed
+  - InspectionRecommendation
+  - InterferenceType
+  - MarineCPInput
+  - MarineCPResult
+  - MitigationDesign
+  - MitigationType
+  - MonitoringEnvironment
+  - MonitoringSystemSpec
+  - PipelineCPInput
+  - PipelineCPResult
+  - PipelineDesignResult
+  - PipelineEnvironment
+  - Recommendation
+  - RecommendationPriority
   - RectifierOutput
+  - RectifierSizingInput
+  - RectifierSizingResult
+  - ReferenceElectrodeRecommendation
+  - ReferenceElectrodeType
+  - RemainingLifeSummary
+  - RetrofitAssessment
+  - StrayCurrentInput
+  - StrayCurrentResult
+  - StructuralZone
+  - Zone
+  - ZoneType
   public_functions:
+  - analyze_cis_survey
+  - anode_bed_design
   - anode_current_output
+  - anode_distribution
   - anode_driving_voltage
   - anode_life_years
   - anode_mass_requirement
@@ -169,22 +292,60 @@ packages:
   - anode_resistance
   - anode_resistance_slender_standoff
   - anode_resistance_vertical_rod
+  - anode_spacing
+  - assess_stray_current
+  - attenuation_analysis
+  - cable_sizing
+  - calculate_anode_mass
+  - calculate_anode_resistance
+  - calculate_anode_spacing
+  - calculate_current_demand
+  - calculate_pipeline_current_demand
+  - calculate_remaining_life
+  - calculate_zone_demand
+  - check_potential_criteria
   - check_protection
   - check_protection_potential
+  - classify_dcvg_indication
   - coating_breakdown_factor
+  - coating_breakdown_factors
+  - coating_life_estimate
+  - compliance_check_potential
   - current_demand
   - current_demand_segment
   - current_per_anode
+  - de_waard_milliams_co2
+  - design_cp_system
+  - design_drainage_bond
   - design_ground_bed
+  - design_marine_cp
+  - design_monitoring_system
+  - design_pipeline_cp
   - design_rectifier
   - effective_bare_area
+  - effective_bare_area_coated
   - equivalent_radius_from_mass
   - flush_anode_resistance
+  - galvanic_corrosion
+  - generate_assessment_report
+  - generate_depletion_profile
+  - get_seawater_current_density
+  - holiday_detection_voltage
   - initial_current_density
+  - marine_structure_current_demand
+  - norsok_m506_co2
   - number_of_anodes
   - pipe_surface_area
   - pipeline_current_demand
+  - pitting_rate_estimate
   - protected_length
+  - recommend_inspection_interval
+  - rectifier_sizing
+  - remaining_life_summary
+  - retrofit_assessment
+  - select_reference_electrode
+  - set_alarm_thresholds
+  - soil_resistivity_correction
   - total_current_demand
   has_all: true
   has_tests: true
@@ -309,38 +470,113 @@ packages:
   has_all: true
   has_tests: true
 - name: fatigue
-  modules: 7
-  classes: 0
-  functions: 21
-  loc: 940
-  public_classes: []
+  modules: 16
+  classes: 22
+  functions: 88
+  loc: 4209
+  public_classes:
+  - ClassificationResult
+  - ComparisonData
+  - CurveInfo
+  - Environment
+  - EnvironmentInput
+  - EnvironmentResult
+  - FatigueCheckLocation
+  - FatigueReport
+  - HotspotInput
+  - HotspotResult
+  - MultiaxialResult
+  - PlateGeometry
+  - SCFResult
+  - SNCatalog
+  - SNCurve
+  - SNCurveRecord
+  - SpectralFatigueResult
+  - SpectralMoments
+  - StressState
+  - ThroughThicknessResult
+  - TubularJointGeometry
+  - WeldDetail
   public_functions:
+  - apply_environment_to_sn
+  - benasciutti_tovo_damage
+  - calculate_endurance
+  - classify_weld_detail
+  - compare_curves
+  - compute_spectral_moments
   - crack_growth_curve_plot
+  - curve_count
+  - damage_barchart_data
   - design_curve
   - design_life_check
+  - dirlik_damage
+  - efthymiou_k_axial
+  - efthymiou_ty_axial
+  - efthymiou_ty_ipb
+  - efthymiou_ty_opb
+  - environment_correction
+  - extrapolate_hotspot
+  - extrapolate_hotspot_linear
+  - extrapolate_hotspot_quadratic
   - fatigue_life
+  - findley_critical_plane
   - fit_woehler_curve
+  - generate_report
   - generate_test_data
+  - get_catalog
+  - get_curve
+  - get_library_curve
   - get_sn_curve
   - inspection_interval
+  - inspection_recommendations
+  - list_curves
+  - list_dnv_detail_categories
+  - list_standards
   - miner_damage
+  - multiaxial_damage_interaction
+  - narrow_band_damage
   - paris_law_life
   - plot_damage_histogram
   - plot_sn_curve
+  - principal_stress_range
   - rainflow_count
+  - recommended_readout_distances
+  - report_to_dict
+  - report_to_markdown
+  - scf_butt_weld_misalignment
+  - scf_circumferential_groove
+  - scf_cruciform_joint
+  - scf_fillet_weld_toe
+  - scf_shoulder_fillet
+  - search_curves
+  - shear_stress_correction
   - stress_histogram
   - stress_intensity_factor
+  - summary_table
+  - temperature_derating_factor
   - thickness_correction
+  - through_thickness_linearisation
+  - von_mises_equivalent
+  - wirsching_light_damage
+  - zone_factor
   has_all: true
   has_tests: true
 - name: field_development
-  modules: 11
-  classes: 3
-  functions: 15
-  loc: 1391
+  modules: 15
+  classes: 11
+  functions: 30
+  loc: 2554
   public_classes:
+  - AnalogueMatch
+  - CAPEXEstimate
+  - ConceptOption
+  - ConceptSelectionResult
   - FpsoSpreadSchematic
+  - GoMField
+  - HostType
+  - OPEXEstimate
   - PlatformSchematic
+  - SubseaFieldCatalog
   - SubseaTiebackSchematic
   public_functions:
   - add_depth_label
@@ -348,7 +584,10 @@ packages:
   - add_north_arrow
   - add_scale_bar
   - compute_water_column_height
+  - concept_selection
   - draw_seabed_line
+  - estimate_capex
+  - estimate_opex
   - generate_field_schematic
   - make_fpso_patch
   - make_platform_patch
@@ -358,16 +597,17 @@ packages:
   has_all: true
   has_tests: true
 - name: geotechnical
-  modules: 5
-  classes: 13
-  functions: 18
-  loc: 768
+  modules: 6
+  classes: 14
+  functions: 21
+  loc: 944
   public_classes:
   - AxialCapacityResult
   - DragAnchorResult
   - EndBearingResult
   - HydrodynamicLoadResult
   - MonopileScourResult
+  - PileCapacityResult
   - PipelineScourResult
   - RockArmourResult
   - SkinFrictionClayResult
@@ -377,6 +617,8 @@ packages:
   - SuctionAnchorResult
   - VerticalStabilityResult
   public_functions:
+  - alpha_method_capacity
+  - alpha_method_capacity_multilayer
   - axial_capacity
   - check_lateral_stability
   - check_vertical_stability
@@ -395,6 +637,7 @@ packages:
   - skin_friction_sand
   - submerged_weight
   - suction_anchor_capacity
+  - validate_pile_inputs
   has_all: false
   has_tests: true
 - name: gis
@@ -435,10 +678,10 @@ packages:
   has_all: true
   has_tests: true
 - name: hydrodynamics
-  modules: 173
-  classes: 291
-  functions: 382
-  loc: 43160
+  modules: 176
+  classes: 296
+  functions: 396
+  loc: 44285
   public_classes:
   - AH1ParseResult
   - AQWAAnalysisType
@@ -580,6 +823,7 @@ packages:
   - HullSurfaceInterpolator
   - HullType
   - HullVariation
+  - HydroCoefficients
   - HydrodynamicMatrix
   - HydrodynamicRanges
   - HydrostaticComparison
@@ -621,6 +865,7 @@ packages:
   - MorisonElementSpec
   - MotionResponse
   - MultiSolverComparator
+  - NativeXlsxReader
   - OCIMFLoading
   - OrcaFlexConverter
   - OrcaFlexExporter
@@ -657,6 +902,7 @@ packages:
   - PassingShipSweepConfig
   - PassingShipSweepEntry
   - PassingTrack
+  - PipelineXlsxReader
   - PlaningHullGeometry
   - PlaningMotionSolver
   - PlaningRAO
@@ -700,6 +946,7 @@ packages:
   - SolverPrecision
   - SolverType
   - SpecConverter
+  - SpecGeneratorConfig
   - StationOffset
   - SweepConfig
   - SweepResultEntry
@@ -723,6 +970,7 @@ packages:
   - WaveParameters
   - WaveSpectra
   - WaveSpectrumType
+  - XlsxFormatDetector
   - YAMLConfigParser
   public_functions:
   - Fatigue_plotRAODirection
@@ -783,6 +1031,7 @@ packages:
   - convert_mesh_cmd
   - convert_orcawave
   - convert_orcawave_results
+  - convert_orcawave_xlsx_to_orcaflex
   - convert_spec
   - convert_to_orcaflex
   - correct_rao_for_speed
@@ -801,6 +1050,9 @@ packages:
   - ds1_dx
   - ds2_dx
   - encounter_frequency
+  - estimate_cog
+  - estimate_mass
+  - estimate_radii_of_gyration
   - excitation_force_table
   - export_batch_results
   - export_gdf
@@ -827,12 +1079,16 @@ packages:
   - finite_depth_correction
   - flat_plate_rudder_cl
   - g_kernel
+  - generate_batch_diffraction_specs
+  - generate_batch_specs
   - generate_benchmark_report
   - generate_diffraction_report
+  - generate_diffraction_spec
   - generate_dof_observations
   - generate_executive_warnings
   - generate_mesh_family
   - generate_report_from_owr
+  - generate_spec_yaml
   - generate_time_history
   - get_heading_indices
   - get_hull_form
@@ -885,6 +1141,7 @@ packages:
   - plot_phase_overlay
   - plot_rao
   - plot_raos_cmd
+  - populate_database_from_xlsx
   - process_batch
   - process_batch_from_config_file
   - process_single
@@ -894,6 +1151,7 @@ packages:
   - rad_per_s_to_period_s
   - radians_to_degrees
   - rao_comparison_grid
+  - rao_data_to_diffraction_results
   - refine_mesh
   - remesh_coarsen
   - render_6x6_matrix
@@ -942,6 +1200,8 @@ packages:
   - validate_spec
   - wave_number
   - x_axis_label
+  - xlsx_to_hydro_coefficients
+  - xlsx_to_rao_data
   - ymlInput
   has_all: true
   has_tests: true
@@ -949,7 +1209,7 @@ packages:
   modules: 165
   classes: 141
   functions: 96
-  loc: 30820
+  loc: 31520
   public_classes:
   - AnalysisSolver
   - AnalysisSolverProtocol
@@ -1149,10 +1409,10 @@ packages:
   has_all: false
   has_tests: true
 - name: marine_ops
-  modules: 117
-  classes: 210
-  functions: 177
-  loc: 31106
+  modules: 120
+  classes: 227
+  functions: 209
+  loc: 32920
   public_classes:
   - AQWADataExtractor
   - AQWAEnhancedParser
@@ -1165,9 +1425,11 @@ packages:
   - AQWASection
   - AccelerationRAO
   - AnalysisResults
+  - BarePipeProperties
   - BaseCalculator
   - BenchmarkResult
   - BenchmarkRunner
+  - BuoyancyModuleProperties
   - CPIPAnalysis
   - CTHydraulics
   - CalculationParameters
@@ -1180,20 +1442,26 @@ packages:
   - CatenarySolver
   - ChainGrade
   - ChainProperties
+  - ClampProperties
   - ClassifierBackend
   - ClaudeVisionClassifier
   - CoefficientDatabase
   - ComponentDatabase
   - ConfigurationError
+  - ConnectorProperties
   - ConvergenceError
   - CoordMapper
   - CoreAnalysis
   - CornerDetector
+  - CraneConfig
   - CraneCurve
   - CraneTipConfig
   - CriteriaExceedance
+  - CriterionResult
+  - CriterionState
   - DOFData
   - DataLoadError
+  - DecisionState
   - DiagnosticAnnotator
   - DiagnosticResult
   - DisplacementRAO
@@ -1215,6 +1483,7 @@ packages:
   - GalleryRenderer
   - GearBoxLoadingAnalysis
   - GearBoxLoadingCalculator
+  - GoNoGoDecision
   - GoNoGoState
   - HydrodynamicCoefficientExtractor
   - HydrodynamicPlotter
@@ -1226,6 +1495,9 @@ packages:
   - InstallationPhase
   - InstallationStateMachine
   - IntegrationChartGenerator
+  - JumperConfig
+  - KitWeight
+  - KitWeightInsulated
   - KramersKronigValidator
   - LazyWaveConfiguration
   - LazyWaveResults
@@ -1267,6 +1539,9 @@ packages:
   - PhaseCheckResult
   - PhaseConvention
   - PhysicsError
+  - PipeSectionLengths
+  - PipelineConfig
+  - PipelineOutput
   - PowerConsumptionAnalysis
   - PowerConsumptionCalculator
   - ProductionAnalysis
@@ -1293,6 +1568,7 @@ packages:
   - ReservoirModel
   - ReservoirProperties
   - ReservoirSimulation
+  - RiggingProperties
   - RockProperties
   - RodBucklingAnalysis
   - RodBucklingCalculator
@@ -1305,6 +1581,7 @@ packages:
   - SimplifiedCatenarySolver
   - SourceFormat
   - SplashZoneResult
+  - StrakeProperties
   - StratigraphicAnalysis
   - StratigraphicLayer
   - Structure
@@ -1370,8 +1647,26 @@ packages:
   - catenaryForces
   - catenary_parameter
   - cli
+  - compute_bare_pipe
+  - compute_buoyancy
+  - compute_cog_insulated
+  - compute_cog_uninsulated
+  - compute_connector_buoy_totals
+  - compute_crane_configs
+  - compute_crane_utilisation
+  - compute_estimated_pipe_weight
   - compute_fatigue_life
   - compute_operability
+  - compute_orcaflex_sections
+  - compute_pipe_geometry
+  - compute_pipe_lengths_for_weight_estimate
+  - compute_rigging_sling_lengths
+  - compute_sling_geometry
+  - compute_sling_stiffness
+  - compute_spreader_bar
+  - compute_strake
+  - compute_weight_check
+  - compute_weight_check_uninsulated
   - convert_legacy_to_modern
   - crane_tip_raos
   - crane_tip_significant_motion
@@ -1388,6 +1683,7 @@ packages:
   - estimate_initial_tension
   - estimate_neutral_point
   - estimate_optimal_counterbalance
+  - evaluate_go_no_go
   - example_1_basic_extraction
   - example_2_custom_visualizations
   - example_3_analyze_specific_frequency
@@ -1413,6 +1709,7 @@ packages:
   - generate_gas_lock_card
   - generate_ideal_card
   - generate_normal_card
+  - generate_orcaflex_line_sections_yaml
   - generate_paraffin_restriction_card
   - generate_plotly_gallery
   - generate_plunger_undertravel_card
@@ -1438,9 +1735,11 @@ packages:
   - invalid_value_error
   - load_data
   - load_from_json_file
+  - load_spec
   - main
   - migrate_legacy_stratigraphic_plot
   - missing_data_error
+  - parse_jumper_config
   - parse_legacy_json
   - perform_well_troubleshooting
   - plot_3d_surface
@@ -1448,12 +1747,16 @@ packages:
   - plot_heatmaps
   - plot_polar_diagrams
   - plot_vector_field
+  - print_decision
   - read_rao_file
   - render_all_individual_cards
   - render_single_card
+  - run_all
   - run_benchmark
   - run_command
+  - run_jumper_analysis
   - run_p1_calculations
+  - run_pipeline
   - safe_cosh
   - safe_sinh
   - screen_vessels
@@ -1461,6 +1764,11 @@ packages:
   - solve_catenary_dict
   - solve_wave_equation_fd
   - splash_zone_assessment
+  - stage_1_load_spec
+  - stage_2_calculate
+  - stage_3_go_no_go
+  - stage_4_generate_yaml
+  - stage_5_write_outputs
   - svg_arc_path
   - svg_circle
   - svg_footer
@@ -1482,12 +1790,17 @@ packages:
   has_all: false
   has_tests: true
 - name: naval_architecture
-  modules: 21
-  classes: 1
-  functions: 114
-  loc: 24485
+  modules: 23
+  classes: 6
+  functions: 123
+  loc: 24942
   public_classes:
   - FourQuadrantPropeller
+  - GyradiusResult
+  - PlatformType
+  - StabilityCriteria
+  - StabilityResult
+  - WindHeelResult
   public_functions:
   - advance_angle
   - angle_of_max_gz
@@ -1500,6 +1813,7 @@ packages:
   - check_draft_depth_ratio
   - check_imo_intact
   - check_imo_intact_stability
+  - check_intact_stability
   - check_length_beam_ratio
   - check_max_trim
   - check_min_freeboard
@@ -1515,6 +1829,10 @@ packages:
   - coeff_c4
   - coeff_c5
   - coeff_c7
+  - compute_area_under_gz
+  - compute_gm
+  - compute_gz_curve
+  - compute_wind_heel
   - correlation_allowance
   - cq_star_from_kq
   - ct_star_from_kt
@@ -1527,6 +1845,7 @@ packages:
   - drift_angle
   - effective_power
   - encounter_frequency
+  - estimate_inertia_from_gyradius
   - exponent_m1
   - find_module
   - find_ship_data
@@ -1542,6 +1861,8 @@ packages:
   - get_curves_of_form
   - get_ship
   - gm_from_inclining_experiment
+  - gyradius_for_platform_type
+  - gyradius_from_inertia
   - gz_area_under_curve
   - gz_from_cross_curves
   - gz_with_tcg_correction
@@ -1607,53 +1928,175 @@ packages:
   has_all: false
   has_tests: true
 - name: orcaflex
-  modules: 14
-  classes: 11
-  functions: 16
-  loc: 645
+  modules: 25
+  classes: 85
+  functions: 37
+  loc: 4053
   public_classes:
+  - APIRP2RDInput
+  - APIRP2RDResult
+  - APIRP2SKInput
+  - BeamProperties
+  - BoundaryCondition
+  - Buoy6DConfig
+  - CaseResult
+  - CatenaryResult
   - CodeCheckConfig
+  - CodeStandard
+  - CurrentProfile
+  - CurrentProfilePoint
+  - CurrentProfileType
+  - DAFInput
+  - DNVOSF201Input
+  - DNVOSF201Result
+  - EnvironmentalLoadCase
+  - EnvironmentalMatrix
+  - ExtremeValueResult
+  - JLayConfig
+  - LayMethod
+  - LayOperability
+  - LazyWaveDesignInput
+  - LiftPhase
+  - LineConfig
+  - LineEndCondition
+  - LineSection
+  - LineSectionProperties
+  - LineType
+  - LoadCondition
   - ModalAnalysisConfig
   - ModelSummaryConfig
+  - MooringCodeCheckResult
+  - MooringLineDesign
+  - MooringLineSegment
   - MooringLoadsConfig
+  - MooringMaterialProperties
+  - MooringPattern
+  - MultiSeedSummary
+  - ObjectType
+  - OperabilityInput
+  - OperabilityTable
   - OrcaFlexReportBuilder
+  - ParameterSweep
+  - ParametricResultsSummary
+  - ParametricStudy
+  - PersistenceResult
+  - PipeEndCondition
+  - PipeGrade
+  - PipelayPipeProperties
   - QASummaryConfig
+  - RangeGraphData
   - RangeGraphsConfig
   - ReportConfig
+  - RiserPipeProperties
+  - RiserType
+  - SCRDesignInput
+  - SLayConfig
+  - SafetyClass
+  - ScatterDiagram
+  - SeasonalOperability
   - SectionConfig
+  - SegmentMaterial
+  - SlingConfig
+  - SplashZoneInput
+  - SpreadMooringConfig
   - StaticConfigSectionConfig
+  - TTRDesignInput
   - TimeSeriesConfig
+  - TimeSeriesStats
+  - TurretMooringConfig
+  - UtilisationEnvelope
+  - VIVDirection
+  - VIVScreeningInput
+  - VIVScreeningResult
+  - VesselConfig
+  - VesselRAO
+  - VesselType
+  - WaveSpectrumParams
+  - WaveSpectrumType
+  - WeightItem
+  - WeightManagement
+  - WindProfile
+  - WindProfileType
+  - WoWEstimate
   public_functions:
+  - analyse_persistence
   - build_code_check
+  - build_lazy_wave_model
   - build_modal_analysis
   - build_model_summary
+  - build_mooring_line
   - build_mooring_loads
   - build_qa_summary
   - build_range_graphs
+  - build_scr_model
   - build_static_config
   - build_time_series
+  - calculate_pretension
+  - calculate_stinger_radius
+  - calculate_weight_in_water
+  - check_api_rp_2rd
+  - check_dnv_os_f201
+  - check_mooring_api_2sk
+  - compute_time_series_stats
+  - estimate_line_length
+  - estimate_response_amplitude
+  - estimate_scr_hang_off_angle
+  - fit_gumbel
+  - fit_weibull
   - generate_orcaflex_report
+  - generate_range_graph
+  - process_multi_seed
   - run_orcaflex_qa
+  - solve_catenary
+  - strouhal_number
+  - viv_screening
   has_all: true
   has_tests: true
 - name: orcawave
-  modules: 13
-  classes: 11
-  functions: 22
-  loc: 863
+  modules: 20
+  classes: 36
+  functions: 67
+  loc: 2962
   public_classes:
+  - DriftForceResult
+  - ExcitationForceVector
+  - GDFMesh
+  - HydroCoefficients
   - HydroMatricesConfig
+  - HydroMatrix6x6
+  - LongTermResult
+  - MSIResult
+  - MeanDriftCoefficients
   - MeanDriftConfig
+  - MeshQualityMetrics
+  - MeshSummary
   - ModelSummaryConfig
   - MultiBodyConfig
   - OrcaWaveReportBuilder
   - PanelPressuresConfig
+  - PanelQuad
+  - ParametricHull
   - QASummaryConfig
   - QTFHeatmapConfig
+  - QTFMatrix
+  - RAOComparisonResult
+  - RAOEntry
   - RAOPlotsConfig
+  - RAOTable
   - ReportConfig
+  - ResponseSpectrum
+  - ScatterCell
   - SectionConfig
+  - ShortTermStatistics
+  - SpectralMoments
+  - SpectrumParameters
+  - SpectrumResult
+  - VesselParameters
+  - VesselRAOSet
+  - WindCurrentDrift
   public_functions:
+  - amplitude_phase_to_complex
+  - bretschneider
   - build_hydro_matrices
   - build_mean_drift
   - build_model_summary
@@ -1662,8 +2105,49 @@ packages:
   - build_qa_summary
   - build_qtf_heatmap
   - build_rao_plots
+  - combine_raos_multi_body
+  - compare_raos
+  - complex_to_amplitude_phase
+  - compute_displaced_volume
+  - compute_mean_drift_force
+  - compute_mesh_summary
+  - compute_panel_quality
+  - compute_response_spectrum
+  - compute_spectral_moments
+  - compute_waterplane_area
+  - compute_wind_current_drift
+  - create_hydrostatic_restoring
+  - from_wamit_added_mass
+  - full_qtf_slowly_varying
   - generate_orcawave_report
-  has_all: false
+  - generate_parametric_hull
+  - generate_spectrum
+  - get_representative_raos
+  - get_vessel
+  - get_vessels_by_type
+  - interpolate_excitation_at_frequency
+  - interpolate_matrix_at_frequency
+  - interpolate_rao
+  - issc_spectrum
+  - jonswap
+  - list_vessels
+  - long_term_extreme
+  - motion_sickness_incidence
+  - newman_approximation
+  - ochi_hubble
+  - pierson_moskowitz
+  - rao_table_to_csv
+  - rayleigh_exceedance
+  - rayleigh_quantile
+  - read_gdf
+  - read_rao_csv
+  - short_term_statistics
+  - spectral_periods
+  - to_wamit_added_mass
+  - to_wamit_damping
+  - torsethaugen
+  - write_gdf
+  has_all: true
   has_tests: true
 - name: power
   modules: 19
@@ -1766,10 +2250,15 @@ packages:
 - name: reservoir
   modules: 2
   classes: 0
-  functions: 0
-  loc: 129
+  functions: 6
+  loc: 307
   public_classes: []
-  public_functions: []
+  public_functions:
+  - create_cross_section
+  - plot_facies_track
+  - plot_gr_track
+  - plot_rhob_nphi_track
+  - plot_rt_track
   has_all: false
   has_tests: true
 - name: signal_processing
@@ -2883,13 +3372,15 @@ packages:
   has_all: false
   has_tests: true
 - name: subsea
-  modules: 65
-  classes: 76
-  functions: 129
-  loc: 12722
+  modules: 68
+  classes: 80
+  functions: 138
+  loc: 13562
   public_classes:
   - APISTD2RDCalculations
   - AnchorProperties
+  - BilinearSNCurve
+  - BilinearSNCurveParams
   - BoundaryCondition
   - BoundaryConditionF105
   - BuoyancyModule
@@ -2961,6 +3452,8 @@ packages:
   - VortexSheddingAnalyzer
   - VortexSheddingResult
   - WallThicknessSizingWorkflow
+  - WaveVelocityResult
+  - WeibullFitResult
   public_functions:
   - AnalysisData
   - BendingConnectionStiffness
@@ -3003,6 +3496,7 @@ packages:
   - catenary_riser
   - cli
   - codeChecks
+  - compute_wave_velocity
   - current
   - design_verification
   - dnv_burst_resistance
@@ -3020,7 +3514,9 @@ packages:
   - equivalentPipe
   - extractData
   - extractPlotData
+  - extrapolate_current
   - fileList
+  - fit_weibull_current
   - general
   - generalized_stability_check
   - generate_orcaflex_model
@@ -3028,10 +3524,13 @@ packages:
   - getFatigueData
   - get_fluid
   - get_material
+  - get_sn_curve
   - gethorizontalDistanceHangofftoTDPrange
   - groups
   - hydrodynamic_force_per_meter
   - insulationSectionProperties
+  - jonswap_gamma
+  - jonswap_spectrum
   - lazyWaveCatenaryEquation
   - lazyWavePlot
   - lazy_wave_analysis
@@ -3063,11 +3562,14 @@ packages:
   - slay_bending_check
   - slay_overbend_bending_strain
   - slay_sagbend_bending_strain
+  - solve_dispersion
+  - spectral_moments
   - steelSectionProperties
   - submerged_weight_per_meter
   - supportTypes
   - textdata
   - validate_pipe_geometry
+  - velocity_transfer
   - vertical_riser
   - vesselTypes
   - vessels
@@ -3250,7 +3752,7 @@ packages:
   modules: 69
   classes: 37
   functions: 104
-  loc: 2690
+  loc: 3815
   public_classes:
   - AppIndex
   - GoMFieldsCharts

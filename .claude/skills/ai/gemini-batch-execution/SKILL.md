@@ -206,6 +206,18 @@ gh issue close <num> -c "<brief result summary>"
 ./scripts/refresh-agent-work-queue.sh
 ```
 
+## Critical Pitfall: `uv run` suppresses stdout in sandbox subprocesses
+
+When running scripts via `uv run python script.py`, ALL stdout output from the script is swallowed by the sandbox layer. Print statements, progress messages — all disappear. This causes "silent failures" that appear to succeed.
+
+**Workarounds:**
+1. Write progress/results to a log file (NOT stdout) and read it back with `read_file`
+2. Use `process()` with `background=true` and `follow_output=true` for long-running tasks
+3. Write to a file at each step, then `read_file` to check progress
+4. Use `terminal("... > /tmp/log.log 2>&1; cat /tmp/log.log")` to force output via cat
+
+**DO NOT:** rely on print() output from `uv run` scripts — it will vanish.
+
 ## Expected Efficiency
 
 - 5-6 research tasks per session

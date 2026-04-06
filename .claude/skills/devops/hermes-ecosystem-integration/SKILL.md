@@ -218,6 +218,24 @@ In `comprehensive-learning-nightly.sh`:
 - Phase 1b drift detection: `hermes` provider row added
 - Cross-Machine Data Flow: Hermes included
 
+### Memory Health-Check Cron (#1916, #1920)
+
+Two monitoring additions:
+
+1. **Daily memory quality scan (05:50 UTC)**:
+   Added to `config/scheduled-tasks/schedule-tasks.yaml`:
+   ```yaml
+   - id: memory-health-check
+     command: uv run --no-project python scripts/memory/eval-memory-quality.py --memory-root .claude/memory/ --format md --check-paths
+     log: logs/quality/memory-health-*.md
+   ```
+   Checks: signal_density, pct_stale_paths, headroom, dedup_candidates.
+   Complements agent-memory-backup (05:00) with quality verification.
+
+2. **48h staleness alert in check-memory-drift.sh**:
+   If `.claude/memory/agents.md` hasn't been modified in 48+ hours,
+   the script prints a RED warning and attempts notification via `scripts/notify.sh`.
+
 ## Per-Repo Agent/Command Ecosystem (3,000+ files Hermes can't see)
 
 Hermes only reads `SKILL.md` files. But the real knowledge lives in Claude Code

@@ -220,6 +220,27 @@ To perform a comprehensive cron health review:
 - `scripts/cron/comprehensive-learning-nightly.sh`
 - `scripts/monitoring/cron-health-check.sh`
 
+## YAML Date Escaping Gotcha
+
+The `%` character in crontab date format strings must be escaped as `\%`. In `schedule-tasks.yaml`, the YAML `>-` block scalar strips trailing newlines but also adds an extra layer of backslash handling through the `setup-cron.sh` Python rendering pipeline. This creates a quadruple-escape trap:
+
+- Correct in schedule-tasks.yaml: `$(date +\\\\%Y\\\\%m\\\\%d)` (4 backslashes in YAML → `\%Y\%m\%d` in crontab → `%Y%m%d` for date)
+- Broken: `$(date +\\\\\\\\%Y\\\\\\\\%m\\\\\\\\%d)` (too many escapes)
+- Also broken: `$(date +\\\\%Y\\\\%m\\\\%d)` with only 2 (becomes `%Y%m%d` with single backslash which also fails)
+
+If a cron log shows date format errors or the log file has literal backslash names, check the YAML escaping level. Use `sed -n '/id: my-job/,/^[^ ]/p' config/scheduled-tasks/schedule-tasks.yaml` to inspect.
+
+## Mandatory: schedule Field
+
+Every task in schedule-tasks.yaml MUST have either a `schedule:` field or a `schedule_by_machine:` field. The `cron-health` entry (#1512) was declared in YAML without either, so `setup-cron.sh` silently skipped it -- the Python parser got an empty schedule string and `continue`d. The cron-health-check.py could not find the crontab entry because it was never installed.
+
+After adding or editing a task, always verify:
+```bash
+bash scripts/cron/setup-cron.sh --dry-run | grep task_id
+bash scripts/cron/setup-cron.sh --replace
+crontab -l | grep task_id
+```
+
 ## Rule of Thumb
 
 If a cron task is important enough to debug twice, it is important enough to have:
