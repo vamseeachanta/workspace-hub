@@ -1,0 +1,113 @@
+{
+  "report_type": "Field Development Intelligence",
+  "generated_by": "overnight-gemini-research",
+  "source": "public-domain knowledge synthesis",
+  "gom_fields": [
+    {
+      "name": "Perdido",
+      "operator": "Shell",
+      "water_depth_m": 2438,
+      "host": "Spar",
+      "year": 2010,
+      "capacity_bopd": 100000
+    },
+    {
+      "name": "Appomattox",
+      "operator": "Shell",
+      "water_depth_m": 2250,
+      "host": "Semi-submersible",
+      "year": 2019,
+      "capacity_bopd": 125000
+    },
+    {
+      "name": "Whale",
+      "operator": "Shell",
+      "water_depth_m": 2100,
+      "host": "Spar",
+      "year": 2024,
+      "capacity_bopd": 45000
+    },
+    {
+      "name": "Atlantis",
+      "operator": "BP",
+      "water_depth_m": 2150,
+      "host": "Semi-submersible",
+      "year": 2007,
+      "capacity_bopd": 200000
+    },
+    {
+      "name": "Thunder Horse",
+      "operator": "BP",
+      "water_depth_m": 1844,
+      "host": "Semi-submersible",
+      "year": 2008,
+      "capacity_bopd": 250000
+    },
+    {
+      "name": "Mars",
+      "operator": "Shell",
+      "water_depth_m": 896,
+      "host": "TLP",
+      "year": 1996,
+      "capacity_bopd": 100000
+    },
+    {
+      "name": "Mad Dog",
+      "operator": "BP",
+      "water_depth_m": 1480,
+      "host": "Semi-submersible",
+      "year": 2022,
+      "capacity_bopd": 140000
+    },
+    {
+      "name": "Stones",
+      "operator": "Shell",
+      "water_depth_m": 2900,
+      "host": "ETLP",
+      "year": 2016,
+      "capacity_bopd": 20000
+    },
+    {
+      "name": "Lucius",
+      "operator": "LLOG",
+      "water_depth_m": 2270,
+      "host": "ETLP",
+      "year": 2016,
+      "capacity_bopd": 80000
+    },
+    {
+      "name": "Ursa",
+      "operator": "Shell",
+      "water_depth_m": 1067,
+      "host": "TLP",
+      "year": 1999,
+      "capacity_bopd": 150000
+    }
+  ],
+  "host_type_selection": {
+    "fixed": {
+      "max_depth_m": 300,
+      "capex_usd_range": "500M-2B"
+    },
+    "compliant_tower": {
+      "max_depth_m": 500,
+      "capex_usd_range": "1B-3B"
+    },
+    "tlp": {
+      "max_depth_m": 1800,
+      "capex_usd_range": "2B-6B"
+    },
+    "spar": {
+      "max_depth_m": 3000,
+      "capex_usd_range": "3B-7B"
+    },
+    "semisubmersible": {
+      "max_depth_m": 2500,
+      "capex_usd_range": "4B-10B"
+    },
+    "fpso": {
+      "max_depth_m": 3000,
+      "capex_usd_range": "5B-12B"
+    }
+  }
+}
