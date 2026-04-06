@@ -32,6 +32,35 @@ When corrections, context, or patterns learned in one agent (Hermes, Claude Code
 | Codex | Session-only (no persistent memory) | Must re-inject via prompt |
 | Gemini | Session-only (no persistent memory) | Must re-inject via prompt |
 
+## Skill Accessibility Across All Agents
+
+Each agent accesses skills differently. A skill in `.claude/skills/` must also be
+visible through each agent's mechanism. This was verified in #1949 (Codex symlink fix).
+
+| Agent | Skill Source | Count (workspace-hub) | Verification Command |
+|-------|-------------|----------------------|---------------------|
+| Claude Code | `.claude/skills/` (native) | 696 | `find -L .claude/skills -name SKILL.md -not -path '*/_archive/*' \| wc -l` |
+| Hermes | `~/.hermes/config.yaml` → `external_dirs` (6 repos) | 974 total | Python: check external_dirs paths exist and contain SKILL.md files |
+| Codex | `.codex/skills/` → symlink to `../.claude/skills/` | 696 | `find -L .codex/skills -name SKILL.md -not -path '*/_archive/*' \| wc -l` |
+| Gemini | `.gemini/skills/` → symlink to `../.claude/skills/` | 696 | `find -L .gemini/skills -name SKILL.md -not -path '*/_archive/*' \| wc -l` |
+
+**CRITICAL VERIFICATION:** Run this after any skill changes to confirm all agents can see skills:
+
+```bash
+echo "=== Agent Skill Accessibility ==="
+echo "CC:    $(find -L .claude/skills -name 'SKILL.md' -not -path '*/_archive/*' | wc -l)"
+echo "Codex: $(find -L .codex/skills -name 'SKILL.md' -not -path '*/_archive/*' | wc -l)"
+echo "Gemini: $(find -L .gemini/skills -name 'SKILL.md' -not -path '*/_archive/*' | wc -l)"
+```
+
+**Key Pitfall:** `.codex/skills/` should be a symlink to `../.claude/skills/` but was
+accidentally a real directory with only 57 GSD skills (out of 696+). Always verify
+it's a symlink: `ls -la .codex/skills` should show `-> ../.claude/skills`, not a directory.
+
+**Sub-repo Behavior:** When working in sub-repos (CAD-DEVELOPMENTS/, digitalmodel/, etc.),
+each agent sees that repo's local `.claude/skills/` (31-261 skills) PLUS the workspace-hub
+skills (696) depending on working directory context. See #1951 for sub-repo skill visibility gap.
+
 ## Bridging Hermes → Claude Code
 
 1. Hermes memory is always available in the system context — extract the consolidated facts
