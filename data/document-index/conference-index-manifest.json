@@ -1,0 +1,53 @@
+{
+  "generated": "2026-04-06T12:14:51.182006+00:00",
+  "run_start": "2026-04-06T12:14:50.562341+00:00",
+  "dry_run": false,
+  "jsonl_path": "/mnt/local-analysis/workspace-hub/data/document-index/conference-index.jsonl",
+  "conf_root": "/mnt/ace/docs/conferences",
+  "totals": {
+    "records_before": 27735,
+    "new_records_this_run": 0,
+    "total_records_after": 27735
+  },
+  "new_size_bytes": 0,
+  "new_size_mb": 0.0,
+  "collections_scanned": [
+    "Arctic Technology Conference",
+    "Coiled Tubing & Well Intervention Conference 2011",
+    "DOT",
+    "DeepGulf",
+    "Dry Tree Forum",
+    "EUCI",
+    "Euroforum Offshore Risers",
+    "Flow Induced Vibration",
+    "IADC International Deepwater Drilling",
+    "IMarEST Offshore Oil and Gas Conference",
+    "ISO 9001",
+    "ISOPE",
+    "JPT",
+    "NACE",
+    "OMAE",
+    "OTC",
+    "Offshore West Africa",
+    "Pipeline Pigging & Integrity Management Feb 2009",
+    "Rio Oil & Gas",
+    "Robert Restore",
+    "SNAME",
+    "SPE",
+    "SUT",
+    "Subsea Houston",
+    "Subsea Survey IMMR",
+    "Subsea Tieback",
+    "TO SORT",
+    "TOD",
+    "UK Conference Folder",
+    "Unlocking Deepwarter Potential- Mumbai"
+  ],
+  "collections_skipped": [],
+  "per_collection": {},
+  "per_domain": {},
+  "target_extensions": [
+    ".pdf",
+    ".txt"
+  ]
+}
