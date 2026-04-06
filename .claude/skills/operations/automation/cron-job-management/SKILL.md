@@ -144,6 +144,56 @@ tail -n 100 logs/path/to/job.log
 - task declared in YAML but not installed on machine
 - cron entry exists but script path changed
 
+## MANDATORY: Cron Script Prologue
+
+Every cron wrapper script MUST start with PATH injection. Cron's environment is minimal and does not include `$HOME/.local/bin` where `uv`, `node`, etc. live. A script that runs fine in your shell but breaks silently in cron is almost always a PATH issue.
+
+```bash
+#!/usr/bin/env bash
+set -uo pipefail
+
+# ── Ensure PATH for cron environment ────────────────────────────────────────
+export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+```
+
+The cron-health-check script had `uv: command not found` for 5 consecutive days because of this exact issue. The schedule-tasks.yaml command lines include PATH overrides, but wrapper scripts called from those commands do not inherit them in subshells.
+
+## Health Monitoring Realities
+
+### False-Positive Awareness
+The cron-health-check reports STALE for weekly jobs (Sunday/Monday) when viewed on Tuesday. Day-of-week schedules (`0 3 * * 0`, `0 4 * * 1`) naturally exceed the 25h default staleness threshold. When doing a health review:
+- Weekly jobs scheduled for yesterday or today = EXPECTED, not stale
+- Weekly jobs scheduled for 3+ days ago = ACTUALLY stale and needs attention
+- Daily jobs > 25h old = genuinely stale
+
+### Log Path Gotchas
+- `log: null` in YAML means the health checker cannot monitor the task -- this produces a MISS on glob matching. Every task should have a `log:` field with a valid glob pattern.
+- The glob pattern is expanded relative to `$WORKSPACE_HUB`, so `logs/quality/thing-*.log` resolves to `/mnt/local-analysis/workspace-hub/logs/quality/thing-*.log`.
+
+### Pre-Create GitHub Labels
+Any script that creates issues with `gh issue create --label "X"` must pre-create the label:
+```bash
+gh label create "X" --description "..." --color "..." 2>/dev/null || true
+```
+Without this, `gh issue create` fails with `could not add label: 'X' not found` and the issue is silently not created.
+
+### Legal Scan vs Learning Pipeline
+The comprehensive-learning pipeline can be blocked by legal-sanity-scan when session JSONL logs contain client names that match deny-list patterns. Session logs are append-only operational data, not source code. Watch for this pattern:
+- `RESULT: FAIL — N block violation(s) found` in learning logs
+- `WARNING: learning artifact commit failed — changes remain local`
+- Changes accumulate uncommitted across multiple runs
+
+Either exclude the log directory from the legal scan, or use `--diff-only` for the learning pipeline's commit path.
+
+## Health Review Workflow
+
+To perform a comprehensive cron health review:
+1. Run `cron-health-check.sh` manually -- this is your first pass
+2. Check the cron log directory: `tail -10 logs/research/2026-04-*.log` for research, etc.
+3. Cross-reference with `crontab -l` vs `config/scheduled-tasks/schedule-tasks.yaml`
+4. Verify the `/today` daily report at `logs/daily/YYYY-MM-DD.md` is fresh
+5. If reports exist but health-check is broken, fix the script first, then rerun
+
 ## Troubleshooting Guidance
 
 ### Missing job on machine

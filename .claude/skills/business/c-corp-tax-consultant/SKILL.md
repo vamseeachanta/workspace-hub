@@ -101,13 +101,27 @@ Before preparing Form 1120, verify:
 ### Self-Prepared Study Approach
 
 For simple single-tenant retail/warehouse properties:
-1. Use published IRS component percentages (conservative: ≤30% reclassification)
+1. Use published IRS component percentages (conservative: ≤30% total reclassification)
 2. Document methodology with IRS references
 3. Keep study file with tax records
 
-**IRS References:**
+IRS references:
 - Rev. Proc. 87-56 (asset class lives)
-- §1.168(i)-1 (component classification)
+- IRS Cost Segregation Audit Techniques Guide
+
+### Real-World Example: SKEstates Inc (Family Dollar, Houston TX)
+
+Building basis $1,089,534, placed in service Sept 2025 (month 9):
+
+| Component | Allocation | Basis | Bonus 40% | Regular Y1 | Total Y1 |
+|-----------|-----------|-------|-----------|-----------|----------|
+| Structure (75%) | 39-year | $817,151 | $0 | $6,120 | $6,120 |
+| Land improvements (15%) | 15-year | $163,430 | $65,372 | $3,258 | $68,630 |
+| Personal property (10%) | 5-year | $108,953 | $43,581 | $10,901 | $54,482 |
+| **Total** | | **$1,089,534** | **$108,953** | **$20,279** | **$129,232** |
+
+vs Standard: $8,161 — additional deduction of $121,071 creating NOL of ~$119,784.
+This shields ~$96K of 2026 income and ~$42K of 2027 income.
 - IRS Cost Segregation Audit Techniques Guide
 
 ### Example Calculation
