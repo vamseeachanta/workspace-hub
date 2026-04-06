@@ -236,9 +236,25 @@ tasks:
     is_claude_task: false
     description: Daily backup of all agent state (Claude, Hermes, Codex, Gemini) to ace-linux-2. Covers project memory, sessions, rules, and state files.
 
+  - id: memory-health-check
+    label: Memory quality health check + drift alert
+    schedule: "50 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      uv run --no-project python scripts/memory/eval-memory-quality.py
+      --memory-root .claude/memory/ --format md
+      --check-paths
+      >> $WORKSPACE_HUB/logs/quality/memory-health-$(date +\\%Y\\%m\\%d).md 2>&1
+    log: logs/quality/memory-health-*.md
+    is_claude_task: false
+    description: Daily memory quality scan — checks signal density, stale paths, dedup candidates, and headroom. Fails if quality drops below threshold. Complements agent-memory-backup with quality verification.
+
+
   - id: cron-health
-    label: Cron job health check
-    schedule: "45 5 * * *"
+    label: Cron health check
     machines: [dev-primary, ace-linux-1]
     requires: [bash, python3, uv]
     command: >-
