@@ -9,6 +9,7 @@ description = "Hub implementation package: config, solvers, models, database, ut
 requires-python = ">=3.11"
 license = {text = "MIT"}
 dependencies = [
+    "beautifulsoup4>=4.14.3",
     "pyyaml>=6.0",
     "sqlalchemy>=2.0",
 ]

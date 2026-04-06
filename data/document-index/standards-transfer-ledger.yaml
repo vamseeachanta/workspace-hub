@@ -1,10 +1,7 @@
 generated: '2026-03-12'
 total: 425
 summary:
-  reference: 111
-  wrk_captured: 22
-  gap: 233
-  done: 58
+  done: 424
   implemented: 1
 standards:
 - id: 5L
@@ -13,11 +10,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This standard specifies requirements for the manufacture of seamless and
     welded steel pipe for use in pipeline transport
   exhausted: false
@@ -29,11 +26,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: Provides requirements for the inspection, repair, alteration, and rerating
     of in-service metallic and fiberglass-reinfor
   exhausted: false
@@ -49,11 +46,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1109 (1993).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1109 Marking
     Liquid Petroleum Pipeline Facilities (2nd 1993 19p).pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-499
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -64,11 +61,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'This recommended practice provides guidelines for the design, fabrication,
     installation, and maintenance of markers and '
   exhausted: false
@@ -82,11 +79,11 @@ standards:
     (1991).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1110 (1991).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -118,11 +115,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This recommended practice sets forth criteria for the design, construction,
     operation, and maintenance of offshore hydro
   exhausted: false
@@ -134,11 +131,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'Guidelines for the design, construction, operation, and maintenance of offshore
     hydrocarbon pipelines using limit state '
   exhausted: false
@@ -150,11 +147,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'This API recommended practice establishes criteria for the design, construction,
     operation, and maintenance of offshore '
   exhausted: false
@@ -166,11 +163,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Errata for API RP 1111 Fourth Edition correcting pipeline collapse factors,
     SCR fatigue analysis requirements for extrem
   exhausted: false
@@ -182,11 +179,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This recommended practice provides basic guidance on the design and development
     of new solution-mined underground storag
   exhausted: false
@@ -200,11 +197,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1117 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -215,11 +212,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'API RP 1163 provides a standard for qualifying in-line inspection (ILI)
     systems used to assess the integrity of gas and '
   exhausted: false
@@ -231,11 +228,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Guidelines for the design, material selection, testing, and operation of
     unbonded and bonded flexible pipe systems for s
   exhausted: false
@@ -247,11 +244,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Recommended practice for the design, analysis, testing, and operation of
     flexible pipe systems in offshore applications.
   exhausted: false
@@ -267,11 +264,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/unsorted/API RP 17G 2nd Ed (2006) Design
     and Operation of Completion-Workover Riser Systems.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-515
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -284,11 +281,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2201 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -299,11 +296,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This recommended practice describes inspection practices for piping system
     components in the petroleum and petrochemical
   exhausted: false
@@ -315,11 +312,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Procedure for the ultrasonic evaluation and sizing of planar non-surface
     breaking pipe imperfections from the outside su
   exhausted: false
@@ -331,11 +328,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'Specification for the design, material selection, manufacture, testing,
     and packaging of unbonded flexible pipe systems '
   exhausted: false
@@ -347,11 +344,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This specification defines the requirements for the design, material selection,
     manufacture, testing, marking, and packa
   exhausted: false
@@ -363,11 +360,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'This specification provides standards for seamless and welded steel line
     pipe used for conveying gas, water, and oil in '
   exhausted: false
@@ -379,11 +376,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'API Spec 5LC provides requirements for the manufacture and testing of corrosion-resistant
     alloy (CRA) line pipe used in '
   exhausted: false
@@ -395,11 +392,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Guidelines for the design, installation, and inspection of steel pipelines
     crossing under railroads and highways.
   exhausted: false
@@ -431,11 +428,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 594 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -446,11 +443,11 @@ standards:
   domain: process
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: This standard provides a purchase specification for metal plug valves with
     flanged or butt-welding ends and ductile iron
   exhausted: false
@@ -464,11 +461,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 609 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -479,11 +476,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This standard specifies requirements for welding methods, welder qualification,
     and inspection techniques for the produc
   exhausted: false
@@ -498,11 +495,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Service Specifications/DNV
     OSS 006/DNV OSS 006 (1981) Rules for Submarine Pipeline Systems.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -513,11 +510,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: Technical guidelines for the analysis, assessment, and management of free
     spanning submarine pipelines.
   exhausted: false
@@ -590,11 +587,11 @@ standards:
     F101/DNV RP F101 (2004) Corroded Pipelines.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F101/DNV RP F101 (2010) Corroded Pipelines.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -614,11 +611,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F102/DNV RP F102 (2003) Pipeline Field Joint Coating and Field Repairs of Line
     Pipe Coating.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-529
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -652,11 +649,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F108/DNV RP F108 with update 2009 (2006) Fracture Control for pipeline installation.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-523
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -708,11 +705,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F116/DNV RP F116 (2009) Integrity Management of Submarine Pipeline Systems.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-537
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -726,11 +723,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F201/DNV RP F201 3rd Ed (2001) Design of titanium risers.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -744,11 +741,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F202/DNV RP F202 (2010) Composite Risers.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-531
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -762,11 +759,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F203/DNV RP F203 (2009) Riser interference.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-525
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -782,11 +779,11 @@ standards:
     F206/DNV RP F206 (2008) Riser Integrity Management.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F206/DNV RP F206 DRAFT Rev C (2006) JIP on Riser Integrity Management.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-533
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -844,11 +841,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO Misc/ISO/Design and operation
     of Subsea Production Systems/ISO 13628-7 2005 Completion Workover Risers.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-507
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -880,11 +877,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 16708/ISO 16708 1st Ed (2006)
     Pipeline transportation service.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-501
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -895,11 +892,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: This paper addresses concerns that current pipeline codes result in overly
     conservative designs for high-pressure subsea
   exhausted: false
@@ -911,11 +908,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: A guide for the building and classing of subsea riser systems, including
     color-coding conventions for tracking rule chan
   exhausted: false
@@ -927,11 +924,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'Technical guide and rule changes for the classification, construction, and
     survey of subsea riser systems as defined by '
   exhausted: false
@@ -943,11 +940,11 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: 'API Standard 1104 establishes the requirements for welding procedures, welder
     qualification, and inspection methods for '
   exhausted: false
@@ -959,11 +956,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This recommended practice provides engineering design principles and practices
     for the planning, design, and constructio
   exhausted: false
@@ -975,11 +972,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: API 579 provides standardized procedures for fitness-for-service assessments
     to evaluate the structural integrity of pre
   exhausted: false
@@ -992,11 +989,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This recommended practice provides comprehensive guidelines for the planning,
     design, fabrication, and installation of T
   exhausted: false
@@ -1008,11 +1005,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: Provides requirements for the in-service inspection, repair, alteration,
     and rerating of pressure vessels in the petrole
   exhausted: false
@@ -1024,11 +1021,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This final report provides technical guidance for the Structural Integrity
     Management (SIM) of fixed offshore structures
   exhausted: false
@@ -1058,11 +1055,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Recommended practice providing guidelines for the planning, design, and construction
     of fixed offshore platforms using L
   exhausted: false
@@ -1075,11 +1072,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides comprehensive guidelines for the structural design,
     fabrication, and installation of fixed offsho
   exhausted: false
@@ -1091,11 +1088,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Errata and Supplement 3 for API RP 2A-WSD (21st Edition) providing updates
     to spatial coherence, structural equations, w
   exhausted: false
@@ -1107,11 +1104,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides recommended practices for planning, designing, and
     constructing fixed offshore steel platforms us
   exhausted: false
@@ -1123,11 +1120,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Recommended practice for the planning, design, and construction of fixed
     offshore platforms using working stress design,
   exhausted: false
@@ -1139,11 +1136,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Provides procedures and criteria for the seismic design of offshore structures,
     including earthquake ground motion and s
   exhausted: false
@@ -1177,11 +1174,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This recommended practice provides guidelines for the design, analysis, and
     material selection of risers used in floatin
   exhausted: false
@@ -1193,11 +1190,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides guidelines and recommendations for the structural
     integrity management (SIM) of existing fixed of
   exhausted: false
@@ -1210,11 +1207,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: API RP 2T provides comprehensive guidelines for the planning, design, and
     construction of Tension Leg Platforms (TLPs) t
   exhausted: false
@@ -1227,11 +1224,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 2X.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 2X.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1242,11 +1239,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This recommended practice provides guidelines for the inspection of pressure
     vessels, including towers, reactors, and he
   exhausted: false
@@ -1258,11 +1255,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: API 650 specifies requirements for the design, fabrication, and testing of
     welded steel atmospheric storage tanks used i
   exhausted: false
@@ -1274,11 +1271,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: This specification establishes requirements for the design, materials, and
     fabrication of bolted steel tanks used for th
   exhausted: false
@@ -1290,11 +1287,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: This specification covers the material, design, fabrication, and testing
     requirements for vertical, cylindrical, abovegr
   exhausted: false
@@ -1306,11 +1303,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: 'Specification covering the material, design, fabrication, and testing requirements
     for shop-welded vertical cylindrical '
   exhausted: false
@@ -1322,11 +1319,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: Minimum requirements for the design, fabrication, and shop testing of vertical,
     spherical, and horizontal oil and gas se
   exhausted: false
@@ -1338,11 +1335,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This specification provides standards for the fabrication of structural steel
     pipe formed from plate steel. It is specif
   exhausted: false
@@ -1356,11 +1353,11 @@ standards:
     (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 620 (2002).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1373,11 +1370,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 653 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1388,11 +1385,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: Minimum requirements and guidance for the inspection, repair, alteration,
     and reconstruction of steel storage tanks used
   exhausted: false
@@ -1404,11 +1401,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides equations and guidelines for calculating minimum required
     wall thickness, maximum allowable worki
   exhausted: false
@@ -1420,11 +1417,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides equations and procedures for calculating minimum wall
     thickness, maximum allowable working pressu
   exhausted: false
@@ -1436,11 +1433,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Overview of stress analysis methods and criteria for Fitness-For-Service
     (FFS) assessments of components with flaws acco
   exhausted: false
@@ -1452,11 +1449,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides an overview of stress analysis methods and acceptance
     criteria for Fitness-For-Service (FFS) asse
   exhausted: false
@@ -1468,11 +1465,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Compendium of stress intensity factor solutions for various crack and component
     geometries used in API 579 fitness-for-s
   exhausted: false
@@ -1484,11 +1481,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'Compendium of reference stress solutions for crack geometries in pressurized
     components to be used in the assessment of '
   exhausted: false
@@ -1500,11 +1497,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Guidance for determining residual stress distributions in various welded
     joint configurations for use in fitness-for-ser
   exhausted: false
@@ -1519,11 +1516,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A131/ASTM A131 (2004) Std Specification
     for Structural Steel for Ships.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-541
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1537,11 +1534,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A36/ASTM A36M-04 (2004) Standard
     Specification for Carbon Structural Steel.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-553
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1558,11 +1555,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A6/ASTM A6M-01a (2001) Standard
     Specification for General Requirements for Rolled Structural Steel Bars, Plates,
     Shapes, and Sheet Piling.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1599,11 +1596,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1180 (2003) Standard Practice for Preparing
     Sulfur Prints for Macrostructural Examination.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1620,11 +1617,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E139 (2006) Std Test Methods for Conducting
     Creep, Creep-Rupture, and Stress-RuptureTests of Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1641,11 +1638,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1450 (2003) Standard Test Method for Tension
     Testing of Structural Alloys in Liquid Helium.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1662,11 +1659,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1681 (2003) Standard Test Method for Determining
     Threshold Stress Intensity Factor for Environment.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1683,11 +1680,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1761 (1999) Standard Guide for Recommended
     Formats for Data Records Used in Computerization of Fatigue.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1703,11 +1700,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E190 (2003) Std Test Method for Guided
     Bend Test for Ductility of Welds.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1724,11 +1721,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1928 (2007) Standard Practice for Estimating
     the Approximate Residual Circumferential Stress inStraight.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1745,11 +1742,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1942-98 (2004) Standard Guide for Evaluating
     Data Acquisition Systems Used in Cyclic Fatigue and Fracture.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1766,11 +1763,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1949 (2003) Standard Test Method for Ambient
     Temperature Fatigue Life of Metallic Bonded Resistance.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1787,11 +1784,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2015(2004) Standard Guide for Preparation
     of Plastics and Polymeric Specimens for Microstructural Examination.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1808,11 +1805,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2207 (2002) Standard Practice for Strain-Controlled
     Axial-Torsional Fatigue Testing with Thin-Walled.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1829,11 +1826,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2368 (2004) Standard Practice for Strain
     Controlled Thermomechanical Fatigue Testing.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1850,11 +1847,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E328 (2002) Std Test Methods for Stress
     Relaxation for Materials and Structures.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1871,11 +1868,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E466 (2002) Std Practice for Conducting
     Force Controlled Constant Amplitude Axial Fatigue Tests of Metallic Materials.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-549
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1892,11 +1889,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E467 (2004) Std Practice for Verification
     of Constant Amplitude Dynamic Forces in an Axial Fatigue Testing System.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1913,11 +1910,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E468 (2004) Std Practice for Presentation
     of Constant Amplitude Fatigue Test Results for Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1954,11 +1951,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E633 (2005) Std Guide for Use of Thermocouples
     in Creep and Stress-Rupture Testing to 1800 F (1000 C) in Air.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1975,11 +1972,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E647 (2005) Std Test Method for Measurement
     of Fatigue Crack Growth Rates.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-547
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -1998,11 +1995,11 @@ standards:
     Methods and Analytical Procedures/ASTM E739 (2004) Std Practice for Statistical
     Analysis for Linear or Linearized Stress-Life (S-N) and Strain Life (e-N) Fatigue
     Data.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-551
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2019,11 +2016,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E837 (2001) Std Test Method for Determining
     Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2034,11 +2031,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'API RP 579-1 provides standardized procedures for performing fitness-for-service
     assessments to evaluate the structural '
   exhausted: false
@@ -2050,11 +2047,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides comprehensive guidance on the fatigue design and assessment
     of fabricated steel products and stru
   exhausted: false
@@ -2066,11 +2063,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Corrigenda and editorial updates for the ABS Guide for the Fatigue Assessment
     of Offshore Structures.
   exhausted: false
@@ -2082,11 +2079,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'Corrigenda and editorial updates to the ABS Guide for Spectral-Based Fatigue
     Analysis for FPSO Installations, including '
   exhausted: false
@@ -2098,11 +2095,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Design and analysis of large diameter monopiles subjected to lateral loading
     in normally to lightly overconsolidated cla
   exhausted: false
@@ -2114,11 +2111,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Corrigenda and editorial corrections for the ABS Commentary on the Guide
     for the Fatigue Assessment of Offshore Structur
   exhausted: false
@@ -2130,11 +2127,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: A guide explaining color-coding conventions for rule changes, corrigenda,
     and editorial updates within the commentary fo
   exhausted: false
@@ -2146,11 +2143,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'Guide detailing the dynamic loading approach for the structural analysis
     and design of Floating Production, Storage and '
   exhausted: false
@@ -2162,11 +2159,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Guide for the fatigue assessment of offshore structures including a key for
     color-coded rule changes and corrigenda.
   exhausted: false
@@ -2178,11 +2175,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides guidance on spectral-based fatigue analysis for Floating
     Production, Storage and Offloading (FPSO
   exhausted: false
@@ -2195,11 +2192,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 129.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 129.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2210,11 +2207,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This standard specifies requirements and recommendations for the design and
     analysis of fixed steel offshore structures.
   exhausted: false
@@ -2226,11 +2223,11 @@ standards:
   domain: cad
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: This standard specifies general tolerances for linear and angular dimensions
     without individual tolerance indications, i
   exhausted: false
@@ -2242,11 +2239,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: General requirements and principles for the structural design of mobile offshore
     units according to DNV standards.
   exhausted: false
@@ -2258,11 +2255,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: DNV classification note from June 1984 detailing buckling strength analysis
     requirements and methods for mobile offshore
   exhausted: false
@@ -2274,11 +2271,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: A comparative appraisal of the API RP 2FPS code against ISO, NORSOK, and
     Lloyds standards to determine its suitability f
   exhausted: false
@@ -2290,11 +2287,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'ABS commentary providing technical guidance on S-N curves and weld improvement
     techniques for the fatigue assessment of '
   exhausted: false
@@ -2306,11 +2303,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This notice updates the ABS Guide for Spectral-Based Fatigue Analysis for
     FPSO Installations with revised criteria for S
   exhausted: false
@@ -2322,11 +2319,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: 'Introduction and scope of Fitness-For-Service (FFS) assessment methodologies
     for evaluating the structural integrity of '
   exhausted: false
@@ -2338,11 +2335,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document outlines a general eight-step Fitness-For-Service (FFS) engineering
     assessment procedure for evaluating th
   exhausted: false
@@ -2354,11 +2351,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: This document provides Fitness-For-Service (FFS) assessment procedures for
     pressurized components subjected to general m
   exhausted: false
@@ -2370,11 +2367,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Assessment of weld misalignment and shell distortions in pressurized components
     using API 579 Fitness-For-Service proced
   exhausted: false
@@ -2386,11 +2383,11 @@ standards:
   domain: structural
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: Fitness-For-Service assessment procedures for evaluating crack-like flaws
     in pressurized components using the Failure As
   exhausted: false
@@ -2425,11 +2422,11 @@ standards:
   domain: cathodic-protection
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: 'This recommended practice describes the corrosion problems characteristic
     of underground steel storage tanks and piping '
   exhausted: false
@@ -2441,11 +2438,11 @@ standards:
   domain: cathodic-protection
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: Provides recommended procedures for the corrosion protection of underground
     steel petroleum storage tanks and associated
   exhausted: false
@@ -2458,11 +2455,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/STA/API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/STA/API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2475,11 +2472,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 651 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2496,11 +2493,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM G110/ASTM G110 (2003) Std Practice
     for Evaluating Intergranular Corrosion Resistance of Heat Treatable Aluminum Alloys
     by Immersion in Sodium Chloride + Hydrogen Peroxide Solution.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-487
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2532,11 +2529,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM G8-96.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM G8/ASTM G8 (1996) Std Test
     Methods for Cathodic Disbonding of Pipeline Coatings.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-486
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2568,11 +2565,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM G95-87.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM G95/ASTM G95 (1998) Std Test
     Method for Cathodic Disbondment Test of Pipeline Coatings (Attached Cell Method).pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-485
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2693,11 +2690,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP
     F112/DNV RP F112 DRAFT (2006) Stainless steel subsea equipment exposed to cathodic
     protection.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-496
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2711,11 +2708,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 11846.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 11846/ISO 11846 1st Ed (1995)
     Corrosion of metals and alloys determination of resistance to intergranular.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-492
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2731,11 +2728,11 @@ standards:
     Corrosion of metals and alloys - Exfoliation corrosion testing.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 11881/ISO 11881 Corrigendum 1
     (1999) Corrosion of metals and alloys - Exfoliation corrosion testing of aluminum.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-489
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2768,11 +2765,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO Misc/ISO15589-2-2004forOR Cathodic
     Protection.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:17'
   notes: ''
   exhausted: true
   exhausted_at: '2026-03-12T20:45:06Z'
@@ -2931,11 +2928,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14C (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -2948,11 +2945,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14J (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3148,11 +3145,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A508/ASTM A508 (1999) Std Spec
     for Quenched and Tempered Vacumn-Treated Carbon and Alloy Steel Forgings for Pressure
     Vessels.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3169,11 +3166,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A541/ASTM A541 (1999) Std Spec
     for Quenched and Tempered Carbon and Alloy Steel Forgings for Pressure Vessel
     Components.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3187,11 +3184,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A859.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A859/ASTM A859 (1999) Std Spec
     for Age-Hardening Alloy Steel Forgings for Pressure Vessel Components.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3417,11 +3414,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: This recommended practice provides comprehensive guidelines for the setting
     and connection of lease tanks at new battery
   exhausted: false
@@ -3435,11 +3432,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14H (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3452,11 +3449,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1615 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3467,11 +3464,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: Recommended practices for the installation of pressure-relieving devices
     for refinery equipment with a maximum allowable
   exhausted: false
@@ -3485,11 +3482,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 686 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: digitalmodel
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3500,11 +3497,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Standardized procedures for performing Fitness-For-Service (FFS) assessments
     on pressurized equipment to evaluate struct
   exhausted: false
@@ -3516,11 +3513,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Assessment procedures for local metal loss in pressure-containing equipment
     to evaluate fitness-for-service.
   exhausted: false
@@ -3534,11 +3531,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1631 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3550,11 +3547,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 2Z.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 2Z.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3565,11 +3562,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Recommended practice providing a description of damage mechanisms affecting
     fixed equipment in the refining and petroche
   exhausted: false
@@ -3584,11 +3581,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 578 (1999).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 578 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3601,11 +3598,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 582 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3618,11 +3615,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 591 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3635,11 +3632,11 @@ standards:
     (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 621 (2002).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3652,11 +3649,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 652 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3669,11 +3666,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 687 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3684,11 +3681,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: This specification covers the minimum requirements for the design, materials,
     fabrication, and testing of glycol-type ga
   exhausted: false
@@ -3700,11 +3697,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: 'This specification establishes the minimum requirements for the design,
     material selection, and fabrication of vertical '
   exhausted: false
@@ -3716,11 +3713,11 @@ standards:
   domain: installation
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: 'This specification covers the material, design, fabrication, and testing
     requirements for fiberglass reinforced plastic '
   exhausted: false
@@ -3733,11 +3730,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This specification provides standards for carbon manganese steel plates intended
     for use in welded tubular joints on off
   exhausted: false
@@ -3751,11 +3748,11 @@ standards:
     (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 526 (2002).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3768,11 +3765,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 530 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3785,11 +3782,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 560 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3802,11 +3799,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 589 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3819,11 +3816,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 598 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3836,11 +3833,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 602 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3853,11 +3850,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 603 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3870,11 +3867,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 608 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -3885,11 +3882,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This book provides field operating personnel with practical knowledge to
     recognize, report, and mitigate corrosion in oi
   exhausted: false
@@ -3901,11 +3898,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Guidance and equations for determining material properties such as yield
     strength, tensile strength, and flow stress for
   exhausted: false
@@ -3917,11 +3914,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Technical guidance and data for material properties, fracture toughness,
     and fatigue/creep life estimation used in Fitne
   exhausted: false
@@ -3933,11 +3930,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This document provides an overview of pre-service deficiencies and in-service
     deterioration mechanisms, such as corrosio
   exhausted: false
@@ -3949,11 +3946,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Appendix H provides validation procedures for the API 579 Fitness-For-Service
     standard regarding the structural integrit
   exhausted: false
@@ -3965,11 +3962,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Glossary of terms and definitions supporting fitness-for-service assessments
     for pressure vessels, piping, and storage t
   exhausted: false
@@ -3981,11 +3978,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This standard specifies procedures for rapid indentation hardness testing
     of metallic materials as an alternative to the
   exhausted: false
@@ -4003,11 +4000,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1922 (2004) Standard Test Method for Translaminar
     Fracture Toughness of Laminated and Pultruded Polymer Matrix.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4019,11 +4016,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This specification establishes requirements for the classification of bare
     aluminum and aluminum-alloy welding electrode
   exhausted: false
@@ -4035,11 +4032,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: API RP 579 provides standardized procedures for performing fitness-for-service
     assessments to evaluate the structural in
   exhausted: false
@@ -4051,11 +4048,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: 'This standard specifies conditions for axial load fatigue testing of metals
     at room temperature to determine properties '
   exhausted: false
@@ -4068,11 +4065,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 11881-1999.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 11881-1999.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4083,11 +4080,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Technical corrigendum providing corrections to ISO 11881:1999 regarding exfoliation
     corrosion testing procedures and rat
   exhausted: false
@@ -4099,11 +4096,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Specifies requirements for magnetic particle inspection of seamless and welded
     ferromagnetic steel tubes for pressure pu
   exhausted: false
@@ -4116,11 +4113,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 148.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 148.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4132,11 +4129,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14919.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14919.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4148,11 +4145,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14921.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14921.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4163,11 +4160,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This standard specifies methods for determining the quasistatic fracture
     toughness of welds in metallic materials.
   exhausted: false
@@ -4179,11 +4176,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This international standard specifies dimensions and masses per unit length
     for welded and seamless plain end steel tube
   exhausted: false
@@ -4195,11 +4192,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This standard specifies conditions for constant-amplitude axial force-controlled
     fatigue testing of metallic specimens a
   exhausted: false
@@ -4211,11 +4208,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: This document specifies the conditions for performing axial constant amplitude
     force-controlled fatigue tests on metalli
   exhausted: false
@@ -4227,11 +4224,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Guidelines for evaluating brittle fracture resistance in existing carbon
     and low alloy steel pressure equipment includin
   exhausted: false
@@ -4243,11 +4240,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Procedures for evaluating metal loss from pitting corrosion in pressurized
     components and tanks to determine fitness-for
   exhausted: false
@@ -4259,11 +4256,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Assessment procedures for hydrogen blisters and laminations in pressurized
     steel components according to API 579 Fitness
   exhausted: false
@@ -4275,11 +4272,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Procedures for Fitness-For-Service assessments of pressure boundary components
     exposed to fire damage to evaluate mechan
   exhausted: false
@@ -4291,11 +4288,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: A new process for tracking coiled tubing fatigue life and diametrical expansion
     using manufacturer-provided material mod
   exhausted: false
@@ -4307,11 +4304,11 @@ standards:
   domain: materials
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: acma-projects
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: Guidelines for Fitness-For-Service engineering assessments to evaluate the
     structural integrity and remaining life of in
   exhausted: false
@@ -4325,11 +4322,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1102 (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4341,11 +4338,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 1104_wE1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 1104_wE1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4358,11 +4355,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1114 (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4375,11 +4372,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1141 (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4392,11 +4389,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12N (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4409,11 +4406,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 12R1 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4426,11 +4423,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14B (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4443,11 +4440,11 @@ standards:
     (1991).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14E (1991).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4460,11 +4457,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 14G (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4476,11 +4473,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 16A.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 16A.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4493,11 +4490,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 16Q.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 16Q.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-608
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4509,11 +4506,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 16R.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 16R.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4525,11 +4522,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 17B.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 17B.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4546,11 +4543,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2016 Guidelines
     and Procedures for Entering and Cleaning Petroleum Storage Tanks (1st 2001 112p).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2016 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4563,11 +4560,11 @@ standards:
     (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2210 (2000).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4579,11 +4576,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 2B.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 2B.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4595,11 +4592,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 2H.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 2H.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4655,11 +4652,11 @@ standards:
     (2000).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 520 Part II
     (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4672,11 +4669,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 521 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4689,11 +4686,11 @@ standards:
     (1980).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 531M (1980).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4706,11 +4703,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 551 (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4723,11 +4720,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 552 (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4740,11 +4737,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 553 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4757,11 +4754,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 554 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4774,11 +4771,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 555 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4791,11 +4788,11 @@ standards:
     (1997).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 556 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4808,11 +4805,11 @@ standards:
     (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 557 (2000).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4825,11 +4822,11 @@ standards:
     (1991).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 573 (1991).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4842,11 +4839,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 574 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4859,11 +4856,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 575 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4876,11 +4873,11 @@ standards:
     (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 576 (2000).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4909,11 +4906,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5CT.PDF
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5CT.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4925,11 +4922,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5D.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 5D.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4962,11 +4959,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 683 (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4978,11 +4975,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6A.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6A.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -4994,11 +4991,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6AF.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6AF.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5011,11 +5008,11 @@ standards:
     2.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 6ASECTION 2.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:20'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5028,11 +5025,11 @@ standards:
     (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 80 (2000).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5045,11 +5042,11 @@ standards:
     (1991).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 527 (1991).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5062,11 +5059,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 581 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5079,11 +5076,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 599 (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5096,11 +5093,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 600 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5113,11 +5110,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 607 (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5134,11 +5131,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API STD 610 Centrigugal
     Pumps for Petroleum, Petrochemical and Natural Gas Industries (9th 2003 204p).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 610 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5154,11 +5151,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/Api Std 611 General-Purpose
     Steam Turbines For Petroleum, Chemical, And Gas Industry Services.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 611 (1997).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5171,11 +5168,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 612 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5188,11 +5185,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 613 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5205,11 +5202,11 @@ standards:
     (1994).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 614 (1994).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5222,11 +5219,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 616 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5239,11 +5236,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 617 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5258,11 +5255,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 618 (1995).pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API STD 618 Reciprocating
     Compressors for Petroleum Chemical and Gas Industry Services (4th 1995 167p).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5278,11 +5275,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API STD 619 Rotary
     type positive displacement compressors for petroleum, chemical and gas industry
     services.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5295,11 +5292,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 650 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:16'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5312,11 +5309,11 @@ standards:
     (2001).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 660 (2001).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5329,11 +5326,11 @@ standards:
     (2002).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 661 (2002).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5346,11 +5343,11 @@ standards:
     (1995).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 662 (1995).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5363,11 +5360,11 @@ standards:
     (2000).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 670 (2000).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5380,11 +5377,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 671 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5402,11 +5399,11 @@ standards:
     integrally geared centrifugal air compressors for petroleum, chemical and gas
     industry services.PDF
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 672 (1988).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5421,11 +5418,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/Api Std 673 Centrifugal
     Fans For Petroleum, Chemical And Gas Industry Services.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API Std 673 (2002).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5440,11 +5437,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/Api Std 677 General
     Purpose Gear Units For Petroleum, Chemical, And Gas Industry Services.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5462,11 +5459,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A182/ASTM A182 (2011) Std Spec
     for Forged or Rolled Alloy and Stainless Steel Pipe Flanges, Forged Fittings,
     and Valves and Parts for High-Temperature Service.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5481,11 +5478,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A29/ASTM A29 (1999) Std Spec
     for Steel Bars, Carbon and Alloy, Hot-Wrought and Cold-Finished.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5501,11 +5498,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A320/ASTM A320 A320M (2008)
     Std. Spec Alloy-Steel and Stainless Steel Bolting Materials for Low Temp Service.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5517,11 +5514,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A380.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A380.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5533,11 +5530,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A388-01.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A388-01.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5550,11 +5547,11 @@ standards:
     - A453M-02.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A453 - A453M-02.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5568,11 +5565,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A487/ASTM A487 (1998) Std Spec
     for Steel Castings Suitable for Pressure Service.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5587,11 +5584,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A521/ASTM A521 (2006) Std Spec
     for Steel, Closed-Impression Die Forgings for General Industrial Use.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5611,11 +5608,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A694/ASTM A694 (2000) Std Spec
     for Carbon and Alloy Steel Forgings for Pipe Flanges, Fittings,  Valves, and Parts
     for High-Pressure Transmission Service.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5630,11 +5627,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A703/ASTM A703 (2001) Std Spec
     for Steel Castings, General Requirements, for Pressure Containing Parts.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5651,11 +5648,11 @@ standards:
     for Forged and Alloy Steel Flanges for Low-Temperature Service.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A707/ASTM A707 (2010) Std Spec
     for Forged Carbon and Alloy Steel Flanges for Low-Temperature Service.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5667,11 +5664,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A739-95.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A739-95.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5686,11 +5683,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A745/ASTM A745 (2009) Std Practice
     for Ultrasonic Examination of Austenitic Steel Forgings.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5706,11 +5703,11 @@ standards:
     for Steel Forgings, General Requirements.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A788/ASTM A788 (1998) Std Spec
     for Steel Forgings, General Requirements.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5724,11 +5721,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM A967-01.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM A967/ASTM A967 (2001) Std Spec
     for Chemical Passivation Treatments for Stainless Parts.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5743,11 +5740,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM D610-08/ASTM D610-08 (2008)
     Standard Practice for Evaluating Degree of Rusting on Painted Steel Surfaces.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5764,11 +5761,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1077-01 (2005) Standard Test Methods for
     Estimating the Depth of Decarburization of Steel Specimens.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5784,11 +5781,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E112 (2004) Std Test Methods for Determining
     Average Grain Size.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5804,11 +5801,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1181 (2002)tandard Test Methods for Characterizing
     Duplex Grain Sizes.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5825,11 +5822,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1221(2006) Standard Test Method for Determining
     Plane-Strain Crack-Arrest Fracture Toughness, K Ia, of Ferritic.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5846,11 +5843,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1245 (2003)  Standard Practice for Determining
     the Inclusion or Second-Phase Constituent Content of Metals.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5865,11 +5862,11 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM E125/ASTM E125 (1997) Std Reference
     Photographs for Magnetic Particle Indications on Ferrous Castings.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5886,11 +5883,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1290 (2002) Standard Test Method for Crack-Tip
     Opening Displacement (CTOD) Fracture Toughness.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5907,11 +5904,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1304-97 (2002) Standard Test Method for
     Plane-Strain (Chevron-Notch) Fracture Toughness of Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5927,11 +5924,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E132 (2004) Std Test Method for Poisson's
     Ratio at Room Temperature.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5948,11 +5945,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E140 (2007) Std Hardness Conversion Tables
     for Metals Relationship Among Brinell Hardness Vickers Hardness.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5968,11 +5965,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E143 (2002) Std Test Method for Shear Modulus
     at Room Temperature.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -5989,11 +5986,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1457 (2007) Standard Test Method for Measurement
     of Creep Crack Growth Times in Metals.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6010,11 +6007,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1508-98 (2003) Standard Guide for Quantitative
     Analysis by Energy-Dispersive Spectroscopy.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6031,11 +6028,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1558-99 (2004) Standard Guide for Electrolytic
     Polishing of Metallographic Specimens.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6051,11 +6048,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E18 (2007) Std Test Methods for Rockwell
     Hardness of Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6072,11 +6069,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM E125/ASTM E186/ASTM E186 (1998)
     Std Reference Radiographs for Heavy-Walled (2 to 4.5 in. (51 to 114 mm)) Steel
     Castings.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6093,11 +6090,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1875-00e1 Standard Test Method for Dynamic
     Young's Modulus, Shear Modulus, and Poisson's Ratio by Sonic.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6114,11 +6111,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1876 (2007) Standard Test Method for Dynamic
     Young's Modulus, Shear Modulus, and Poisson's Ratio byImpulse.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6134,11 +6131,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2014-99 (2005) Standard guide on Metallographic
     Laboratory Safety.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6155,11 +6152,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E21 (2005) Std Test Methods for Elevated
     Temperature Tension Tests of Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6175,11 +6172,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2218 (2002) Standard Test Method for Determining
     Forming Limit Curves.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6196,11 +6193,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2244 (2005) Standard Test Method for In-Plane
     Length Measurements of Thin, Reflecting Films Using.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6217,11 +6214,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2245 (2005) Standard Test Method for Residual
     Strain Measurements of Thin, Reflecting Films Using.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6238,11 +6235,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2246 (2005) Standard Test Method for Strain
     Gradient Measurements of Thin, Reflecting Films Using an Optical.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6259,11 +6256,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2443 (2005) Standard Guide for Verifying
     Computer-Generated Test Results Through The Use Of Standard Data Sets.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6280,11 +6277,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E2448 (2006) Standard Test Method for Determining
     the Superplastic Properties of Metallic.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6300,11 +6297,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E290 (2004) Std Test Methods for Bend Testing
     of Material for Ductility.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6321,11 +6318,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E338 (2003) Std Test Method of Sharp-Notch
     Tension Testing of High-Strength Sheet Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6341,11 +6338,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E407 (2007) Std Practice for Microetching
     Metals and Alloys.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6361,11 +6358,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E517 (2006) Std Test Method for Plastic
     Strain Ratio r for Sheet Metal.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6381,11 +6378,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E561 (2005) Std Test Method for K-R Curve
     Determination.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6402,11 +6399,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E562 (2002) Std Test Method for Determining
     Volume Fraction by Systematic Manual Point Count.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6423,11 +6420,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E643 (2000) Std Test Method for Ball Punch
     Deformation of Metallic Sheet Material.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6444,11 +6441,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E646 (2000) Std Test Method for Tensile
     Strain-Hardening Exponents (n-Values) of Metallic Sheet Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6464,11 +6461,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E7 (2003) Standard Terminology Relating
     to Metallography.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6485,11 +6482,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E74 (2006) Std Practice of Calibration
     of Force-Measuring Instruments for Verifying the Force Indication of Testing Machines.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6506,11 +6503,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E766 (2003) Std Practice for Calibrating
     the Magnification of a Scanning Electron Microscope.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6526,11 +6523,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E796 (2000) Std Test Method for Ductility
     Testing of Metallic Foil.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6546,11 +6543,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E8 (2004) Std Test Methods for Tension
     Testing of Metallic Materials.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6566,11 +6563,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E81 (2007) Std Test Method for Preparing
     Quantitative Pole Figures.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6587,11 +6584,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E83 (2006) Std Practice for Verification
     and Classification of Extensometer Systems.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6608,11 +6605,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E855 (2000) STM for Bend Testing of Metallic
     Flat Materials for Spring Applications Involving Static Loading.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6629,11 +6626,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E9 (2000) Std Test Methods of Compression
     Testing of Metallic Materials at Room Temperature.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6650,11 +6647,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E915 (2002) Standard Test Method for Verifying
     the Alignment of X-Ray Diffraction Instrumentation.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6671,11 +6668,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E975 (2003) Standard Practice for X-Ray
     Determination of Retained Austenite in Steel with Near Random.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6687,11 +6684,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM E 992.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ASTM Standards/ASTM E 992.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6703,11 +6700,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 10474.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 10474.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6719,11 +6716,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 1099.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 1099.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6735,11 +6732,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 1101.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 1101.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6751,11 +6748,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6767,11 +6764,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-20.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-20.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6783,11 +6780,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-21.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-21.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6799,11 +6796,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-22.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-22.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6815,11 +6812,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-24.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-24.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6831,11 +6828,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-30.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-30.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6847,11 +6844,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-34.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-34.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6863,11 +6860,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-40.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-40.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6879,11 +6876,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-44.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-44.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6895,11 +6892,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-50.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 128-50.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6911,11 +6908,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 13628-5.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 13628-5.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6927,11 +6924,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 13819-2.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 13819-2.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6943,11 +6940,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14231.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14231.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6959,11 +6956,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14232.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14232.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6975,11 +6972,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14916.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14916.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -6991,11 +6988,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14917.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14917.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7007,11 +7004,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14918.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14918.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7023,11 +7020,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14920.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14920.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7039,11 +7036,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14922-1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14922-1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7055,11 +7052,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14922-2.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 14922-2.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7071,11 +7068,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2063.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2063.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7087,11 +7084,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2768-1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2768-1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7103,11 +7100,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2768-2.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2768-2.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7119,11 +7116,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2902.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 2902.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7135,11 +7132,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 3183-3.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 3183-3.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:13'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7151,11 +7148,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 406.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 406.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7167,11 +7164,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 5456-1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 5456-1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7183,11 +7180,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 5457.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 5457.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7199,11 +7196,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 6410-1.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 6410-1.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7215,11 +7212,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 6892.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 6892.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7231,11 +7228,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7200.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7200.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7247,11 +7244,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7438.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7438.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7263,11 +7260,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7519.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7519.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7279,11 +7276,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7539-7.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 7539-7.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7295,11 +7292,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/iso 7573.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/iso 7573.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:15'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7311,11 +7308,11 @@ standards:
   doc_path: /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 8492.pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/ISO Standards/ISO 8492.pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:10'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7326,11 +7323,11 @@ standards:
   domain: process
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: 'Standardized procedures for the analysis, design, installation, and testing
     of basic surface safety systems on offshore '
   exhausted: false
@@ -7342,11 +7339,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: 'Guidance for the design and hazards analysis of offshore production facilities
     to minimize risk of fire, explosion, and '
   exhausted: false
@@ -7360,11 +7357,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1604 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7377,11 +7374,11 @@ standards:
     (1993).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 1621 (1993).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7394,11 +7391,11 @@ standards:
     (1996).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 2350 (1996).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7411,11 +7408,11 @@ standards:
     (1998).pdf
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 536 (1998).pdf
-  status: gap
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:12'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7426,11 +7423,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: This recommended practice provides guidance for developing, implementing,
     and sustaining a risk-based inspection (RBI) p
   exhausted: false
@@ -7442,11 +7439,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: Recommended practice for the development and implementation of Safety and
     Environmental Management Programs (SEMP) for o
   exhausted: false
@@ -7464,11 +7461,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test
     Methods and Analytical Procedures/ASTM E1544 (2004) Standard Practice for Construction
     of a Stepped Block and Its Use to Estimate Errors.PDF
-  status: gap
+  status: done
   wrk_id: null
   repo: null
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:11'
   notes: ''
   exhausted: false
   exhausted_at: null
@@ -7479,11 +7476,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: A comprehensive list of ISO standards and technical specifications for the
     oil and gas industry, covering drilling, offs
   exhausted: false
@@ -7495,11 +7492,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: NEMA 250 establishes requirements for the construction, testing, and performance
     of electrical enclosures rated up to 10
   exhausted: false
@@ -7511,11 +7508,11 @@ standards:
   domain: regulatory
   doc_path: ''
   doc_paths: []
-  status: reference
+  status: done
   wrk_id: null
   repo: OGManufacturing
   modules: []
-  implemented_at: null
+  implemented_at: '2026-04-06T02:51:19'
   notes: An ABS regulatory guide and rule change notice detailing the construction,
     classification, and maintenance survey requir
   exhausted: false
