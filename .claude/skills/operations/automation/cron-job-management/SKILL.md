@@ -241,6 +241,30 @@ bash scripts/cron/setup-cron.sh --replace
 crontab -l | grep task_id
 ```
 
+## requires: Capability Validation Gotcha
+
+The `requires:` list in schedule-tasks.yaml is validated against the flattened capabilities in `config/workstations/registry.yaml`. The validator (`scripts/cron/validate-schedule.py`) merges all values from `agent_clis`, `languages`, and `tools` lists for the host machine.
+
+**Rule**: Any tool name in `requires:` must appear in the machine's capabilities. Adding `requires: [gh]` or `requires: [npm]` will FAIL validation unless `gh` / `npm` are also added to the `tools:` list in registry.yaml for the target machine.
+
+```yaml
+# WRONG — validation fails with "unknown capability 'gh'":
+- id: my-new-job
+  requires: [python3, uv, gh]
+
+# CORRECT — first add gh to registry.yaml:
+#   dev-primary capabilities:
+#     tools: [uv, git, gh]  # ← add here
+# Then in schedule-tasks.yaml:
+- id: my-new-job
+  requires: [python3, uv, gh]
+```
+
+After adding new capabilities to registry.yaml, verify:
+```bash
+uv run --no-project python scripts/cron/validate-schedule.py
+```
+
 ## Rule of Thumb
 
 If a cron task is important enough to debug twice, it is important enough to have:
