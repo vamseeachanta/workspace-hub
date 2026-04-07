@@ -16,7 +16,7 @@ machines:
     capabilities:
       agent_clis: [claude, gemini]
       languages: [python3, bash]
-      tools: [uv, git]
+      tools: [uv, git, gh, npm]
       gpu: false
     storage:
       local: /mnt/local-analysis          # ext4, primary work partition
