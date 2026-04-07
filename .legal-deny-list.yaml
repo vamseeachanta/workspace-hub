@@ -117,6 +117,15 @@ exclusions:
   - "data/document-index/mounted-source-registry.yaml"
   - "data/document-index/cross-drive-dedup-report.json"
   - "scripts/legal/"
+  # logs/orchestrator/ contains raw agent operational JSONL dumps (hermes-session-export.sh,
+  # codex-session-export.sh). These files legitimately record tool-call logs that mention
+  # client project filenames (e.g. "Lakach BoD DRAFT 06252024_VA.xlsx" in GitHub issue
+  # close comments). They are INTERNAL operational data — not public code, docs, or exports.
+  # The legal gate for client names in these files is access control on the git remote,
+  # not pattern scanning. Excluding them here prevents nightly learning pipeline commits
+  # from being blocked while keeping the scan effective for actual code and documentation.
+  # See: scripts/cron/commit-learning-artifacts.sh, issue #1985.
+  - "logs/orchestrator/"
   - "*.sim"
   - "*.dat"
 

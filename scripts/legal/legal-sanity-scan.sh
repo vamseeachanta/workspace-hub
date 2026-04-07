@@ -194,7 +194,14 @@ scan_directory() {
         case "$f" in
           $ep|*/$ep) excluded=true; break ;;
         esac
-        # Also match directory prefixes (e.g. "docs/document-intelligence/*.md")
+        # Match trailing-slash directory prefixes (e.g. "logs/orchestrator/", "scripts/legal/")
+        if [[ "$ep" == */ ]]; then
+          local ep_dir="${ep%/}"
+          if [[ "$f" == ${ep_dir}/* || "$f" == ${ep_dir} ]]; then
+            excluded=true; break
+          fi
+        fi
+        # Also match wildcard directory globs (e.g. "docs/document-intelligence/*.md")
         if [[ "$ep" == *"*"* ]]; then
           local ep_dir="${ep%/*}"
           local ep_glob="${ep##*/}"
