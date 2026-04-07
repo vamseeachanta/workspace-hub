@@ -265,6 +265,58 @@ After adding new capabilities to registry.yaml, verify:
 uv run --no-project python scripts/cron/validate-schedule.py
 ```
 
+## Hermes Gateway Cron Scheduler
+
+Hermes has its OWN cron scheduler inside the Gateway process (separate from system crontab). Jobs managed via the `hermes cron` CLI (gmail-daily-digest, memory-bridge-daily, etc.) require the Gateway to be running.
+
+**Starting the Gateway:**
+```bash
+# Use the systemd service directly — the hermes CLI wrapper
+# requires sudo which may not resolve hermes in root PATH
+systemctl --hermes-gateway
+# Equivalent: sudo systemctl start hermes-gateway
+```
+
+**Diagnosing a dead Hermes cron job:**
+```bash
+sudo systemctl status hermes-gateway   # if not active, no Hermes cron fires
+hermes cron list                        # check job next_run_at dates — stale dates mean gateway has been dead
+```
+
+**Warning "No messaging platforms enabled"** is non-fatal — the cron ticker still runs. 'local' delivery works fine. Only 'origin'/platform deliveries may be affected.
+
+## uv PEP 723 Inline Metadata in Cron
+
+Scripts with `# /// script\n# dependencies = ["pyyaml"]\n# ///` blocks are PEP 723 inline-metadata scripts. uv treats them as self-contained scripts and auto-installs dependencies.
+
+**CRITICAL**: Do NOT use `python` between `uv run` and the script path:
+```bash
+# WRONG — bypasses PEP 723 metadata, dependencies NOT installed:
+uv run --no-project python scripts/ai/my-script.py
+# RIGHT — uv recognizes the script's inline metadata block:
+uv run --no-project scripts/ai/my-script.py
+```
+This bug caused agent-radar to fail for days with "Install PyYAML: uv add pyyaml" even though the script's metadata block declares pyyaml as a dependency.
+
+## False-Positive Counting in Daily Reports
+
+When investigating alerts like "13 CVE references", "42 ERROR/FAIL", etc., always verify the raw count against unique root causes. Common traps:
+- `grep -ci "CVE"` counts "0 blocking CVEs" in daily summary lines — false alarm
+- Error counts across rolling windows of multi-day logs inflate perceived severity
+- Benchmark regressions on sub-millisecond tests are often run-to-run noise, not code issues
+
+## Absolute Paths in Cron Shell Context
+
+Cron's minimal environment may not have `$HOME` set when PATH is expanded at parse time. Use hardcoded absolute paths rather than `$HOME` expansions in shell scripts:
+```bash
+# UNRELIABLE in cron:
+export PATH="$HOME/.local/bin:$PATH"
+# RELIABLE:
+export PATH="/home/vamsee/.local/bin:$PATH"
+# BEST: use absolute path for specific commands:
+/home/vamsee/.local/bin/uv run --no-project ...
+```
+
 ## Rule of Thumb
 
 If a cron task is important enough to debug twice, it is important enough to have:
