@@ -9,16 +9,18 @@ Usage:
     uv run scripts/knowledge/llm_wiki.py query "<question>" --wiki <domain>
     uv run scripts/knowledge/llm_wiki.py lint --wiki <domain>
     uv run scripts/knowledge/llm_wiki.py status --wiki <domain>
+    uv run scripts/knowledge/llm_wiki.py batch-ingest <metadata_file> --wiki <domain> [--batch-size N] [--dry-run]
 """
 
 import argparse
+import json
 import os
 import re
 import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]  # workspace-hub root
@@ -711,6 +713,7 @@ def _check_log_format(wiki_root: Path, issues: list) -> int:
 
 MD_LINK_RE = re.compile(r'\]\(')
 
+
 def _check_link_density(wiki_root: Path, issues: list) -> float:
     """Average number of markdown links per wiki page."""
     wiki_dir = wiki_root / "wiki"
@@ -736,6 +739,422 @@ def _check_link_density(wiki_root: Path, issues: list) -> float:
         })
 
     return avg
+
+
+# ──────────────────────────────────────────────────────
+# Batch-Ingest: bulk create wiki pages from a metadata file
+# ──────────────────────────────────────────────────────
+
+
+def _load_metadata_file(path: Path) -> List[Dict[str, Any]]:
+    """Load records from a JSONL, JSON array, or YAML file.
+
+    Returns a list of dicts.  Raises ValueError with a clear message on
+    unrecognised format / parse errors.
+    """
+    ext = path.suffix.lower()
+
+    if ext == ".jsonl":
+        records = []
+        with path.open("r", encoding="utf-8") as fh:
+            for lineno, raw in enumerate(fh, 1):
+                raw = raw.strip()
+                if not raw:
+                    continue
+                try:
+                    records.append(json.loads(raw))
+                except json.JSONDecodeError as exc:
+                    raise ValueError(f"JSONL parse error on line {lineno}: {exc}") from exc
+        return records
+
+    if ext == ".json":
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"JSON parse error: {exc}") from exc
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            # Could be {"records": [...]} or similar wrapper
+            for key in ("records", "documents", "items", "data"):
+                if key in data and isinstance(data[key], list):
+                    return data[key]
+            # Fall back to single-item list
+            return [data]
+        raise ValueError(f"JSON file must contain an array or object, got {type(data)}")
+
+    if ext in (".yaml", ".yml"):
+        try:
+            import yaml  # type: ignore
+        except ImportError:
+            raise ValueError(
+                "PyYAML is required for YAML files.  Install with: pip install pyyaml"
+            )
+        try:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        except yaml.YAMLError as exc:
+            raise ValueError(f"YAML parse error: {exc}") from exc
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            for key in ("records", "documents", "items", "data"):
+                if key in data and isinstance(data[key], list):
+                    return data[key]
+            return [data]
+        raise ValueError(f"YAML file must contain a list or mapping, got {type(data)}")
+
+    raise ValueError(
+        f"Unsupported metadata file format '{ext}'.  Use .jsonl, .json, .yaml, or .yml"
+    )
+
+
+def _record_to_slug(record: Dict[str, Any], index: int) -> str:
+    """Derive a filesystem-safe slug from a metadata record.
+
+    Priority: 'slug' key > 'title' key > 'filename' stem > 'id' > record index.
+    """
+    if "slug" in record and record["slug"]:
+        raw = str(record["slug"])
+    elif "title" in record and record["title"]:
+        raw = str(record["title"])
+    elif "filename" in record and record["filename"]:
+        raw = Path(str(record["filename"])).stem
+    elif "id" in record and record["id"]:
+        raw = str(record["id"])
+    else:
+        raw = f"record-{index}"
+
+    # Normalise: lowercase, replace non-alphanumeric runs with hyphens, strip edges
+    slug = re.sub(r"[^a-z0-9]+", "-", raw.lower()).strip("-")
+    # Truncate to a sane filesystem length
+    return slug[:80] or f"record-{index}"
+
+
+def _build_source_page(record: Dict[str, Any], slug: str, domain: str, now: str) -> str:
+    """Render a wiki/sources/<slug>.md page from a metadata record.
+
+    The page has a YAML frontmatter block, a summary section, and a metadata
+    table.  No PDF content is extracted — this is metadata-only.
+    """
+    title = record.get("title") or record.get("filename") or slug
+    summary = record.get("summary") or record.get("abstract") or record.get("description") or ""
+    # Truncate very long summaries to a paragraph for readability
+    if len(summary) > 600:
+        summary = summary[:600].rstrip() + " ..."
+
+    # Build the frontmatter
+    tags_raw = record.get("tags") or record.get("keywords") or []
+    if isinstance(tags_raw, str):
+        tags_raw = [t.strip() for t in tags_raw.split(",") if t.strip()]
+    tags_yaml = ", ".join(f'"{t}"' for t in tags_raw[:10])
+
+    frontmatter = f"""---
+title: "{title}"
+slug: {slug}
+domain: {domain}
+ingested: {now}
+tags: [{tags_yaml}]
+---"""
+
+    # Collect interesting metadata fields for a table
+    exclude = {
+        "title", "summary", "abstract", "description", "slug", "tags", "keywords",
+    }
+    meta_rows = []
+    for key, val in record.items():
+        if key in exclude:
+            continue
+        if val is None or val == "":
+            continue
+        # Render lists as comma-separated
+        if isinstance(val, list):
+            val = ", ".join(str(v) for v in val[:20])
+        meta_rows.append((key, str(val)[:200]))
+
+    meta_table = ""
+    if meta_rows:
+        meta_table = "\n## Metadata\n\n| Field | Value |\n|-------|-------|\n"
+        for k, v in meta_rows:
+            # Escape pipe chars in values
+            meta_table += f"| {k} | {v.replace('|', chr(9474))} |\n"
+
+    summary_section = f"\n## Summary\n\n{summary}\n" if summary else ""
+
+    return f"""{frontmatter}
+
+# {title}
+
+> Source page auto-created by `llm-wiki batch-ingest` on {now}
+> Domain: {domain}
+{summary_section}{meta_table}"""
+
+
+def _read_checkpoint(checkpoint_path: Path) -> set:
+    """Return the set of slugs already processed from the checkpoint file."""
+    if not checkpoint_path.exists():
+        return set()
+    done = set()
+    with checkpoint_path.open("r", encoding="utf-8") as fh:
+        for raw in fh:
+            raw = raw.strip()
+            if not raw:
+                continue
+            try:
+                entry = json.loads(raw)
+                done.add(entry["slug"])
+            except (json.JSONDecodeError, KeyError):
+                pass
+    return done
+
+
+def _append_checkpoint(checkpoint_path: Path, slug: str, record: Dict[str, Any]) -> None:
+    """Append a completed record to the checkpoint file."""
+    entry = {"slug": slug, "ts": datetime.utcnow().isoformat(), "title": record.get("title", "")}
+    with checkpoint_path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def _update_index_md(
+    index_path: Path,
+    new_entries: List[Dict[str, str]],
+    domain: str,
+    now_date: str,
+) -> None:
+    """Append new source entries to wiki/index.md and update frontmatter counters."""
+    text = index_path.read_text(encoding="utf-8")
+
+    # --- Update frontmatter counts ---
+    # Count total source pages on disk after update
+    sources_dir = index_path.parent / "sources"
+    source_count = len(list(sources_dir.glob("*.md"))) if sources_dir.exists() else 0
+
+    # Count total non-index, non-log wiki pages
+    page_count = 0
+    wiki_dir = index_path.parent
+    for sub in ["entities", "concepts", "sources", "comparisons"]:
+        subdir = wiki_dir / sub
+        if subdir.exists():
+            page_count += len(list(subdir.glob("*.md")))
+
+    # Replace frontmatter fields
+    def _set_fm(text: str, key: str, value: str) -> str:
+        return re.sub(
+            rf"^{key}:.*$",
+            f"{key}: {value}",
+            text,
+            flags=re.MULTILINE,
+        )
+
+    text = _set_fm(text, "last_updated", now_date)
+    text = _set_fm(text, "page_count", str(page_count))
+    text = _set_fm(text, "source_count", str(source_count))
+
+    # --- Append to ## Sources section ---
+    sources_header = "## Sources"
+    new_rows = ""
+    for e in new_entries:
+        title = e["title"].replace("|", chr(9474))
+        summary = e.get("summary", "").replace("|", chr(9474))
+        if len(summary) > 100:
+            summary = summary[:100].rstrip() + "..."
+        slug = e["slug"]
+        new_rows += f"| [[{title}]](sources/{slug}.md) | {summary} | {now_date} |\n"
+
+    if sources_header in text:
+        # Insert after the table header row if already there, else after the heading
+        # Find the sources section; append before the next ## heading or EOF
+        pattern = re.compile(
+            r"(## Sources\n(?:.*\n)*?)(\n## |\Z)",
+            re.DOTALL,
+        )
+        match = pattern.search(text)
+        if match:
+            existing_block = match.group(1)
+            # If there's already a table, append rows; otherwise add header + rows
+            if "| Page |" in existing_block or "|---" in existing_block:
+                insertion = existing_block.rstrip("\n") + "\n" + new_rows
+            else:
+                insertion = (
+                    existing_block.rstrip("\n")
+                    + "\n\n| Page | Summary | Last Updated |\n"
+                    + "|------|---------|-------------|\n"
+                    + new_rows
+                )
+            text = text[: match.start(1)] + insertion + "\n" + text[match.end(1):]
+        else:
+            # Sources heading exists but no following section captured — just append
+            text = text.rstrip("\n") + f"\n\n{new_rows}"
+    else:
+        # Append a brand new ## Sources section
+        text = (
+            text.rstrip("\n")
+            + f"\n\n## Sources\n\n| Page | Summary | Last Updated |\n"
+            + "|------|---------|-------------|\n"
+            + new_rows
+        )
+
+    index_path.write_text(text, encoding="utf-8")
+
+
+def _append_log_entry(log_path: Path, domain: str, batch_num: int, entries: List[Dict[str, str]], now: str) -> None:
+    """Append a batch-ingest log entry to wiki/log.md."""
+    date_str = now.split(" ")[0]
+    titles = ", ".join(e["title"][:40] for e in entries[:5])
+    if len(entries) > 5:
+        titles += f" ... (+{len(entries) - 5} more)"
+
+    log_entry = (
+        f"\n## [{now}] batch-ingest | Batch {batch_num} ({len(entries)} records)\n"
+        f"- Domain: {domain}\n"
+        f"- Records: {len(entries)}\n"
+        f"- Titles (sample): {titles}\n"
+        f"- Pages created: wiki/sources/<slug>.md for each record\n"
+        f"- Index updated: wiki/index.md\n"
+    )
+    with log_path.open("a", encoding="utf-8") as fh:
+        fh.write(log_entry)
+
+
+def cmd_batch_ingest(args: argparse.Namespace) -> int:
+    """Bulk-create wiki/source pages from a metadata file (JSONL/JSON/YAML).
+
+    This command does NOT extract PDF content.  It creates structured source
+    pages from document metadata, updates wiki/index.md and wiki/log.md after
+    each batch, and writes a .checkpoint.jsonl so the run is resume-able.
+    """
+    metadata_file = Path(args.metadata_file)
+    domain = args.wiki
+    batch_size: int = args.batch_size
+    dry_run: bool = args.dry_run
+
+    wiki_root = WIKIS_DIR / domain
+
+    # Validate inputs --------------------------------------------------------
+    if not wiki_root.exists():
+        print(f"[ERROR] Wiki not found: {domain}")
+        print(f"Create it first: llm-wiki init {domain}")
+        return 1
+
+    if not metadata_file.exists():
+        print(f"[ERROR] Metadata file not found: {metadata_file}")
+        return 1
+
+    if batch_size < 1:
+        print(f"[ERROR] --batch-size must be >= 1, got {batch_size}")
+        return 1
+
+    # Load records ------------------------------------------------------------
+    print(f"[batch-ingest] Loading metadata from: {metadata_file}")
+    try:
+        records = _load_metadata_file(metadata_file)
+    except ValueError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+
+    if not records:
+        print("[WARN] Metadata file contains no records.  Nothing to do.")
+        return 0
+
+    print(f"[batch-ingest] Loaded {len(records)} records")
+    if dry_run:
+        print("[batch-ingest] DRY-RUN mode — no files will be written\n")
+
+    # Resolve paths -----------------------------------------------------------
+    sources_dir = wiki_root / "wiki" / "sources"
+    index_path = wiki_root / "wiki" / "index.md"
+    log_path = wiki_root / "wiki" / "log.md"
+    checkpoint_path = wiki_root / ".checkpoint.jsonl"
+
+    sources_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load checkpoint (for resume) -------------------------------------------
+    done_slugs = _read_checkpoint(checkpoint_path)
+    if done_slugs:
+        print(f"[batch-ingest] Resuming — {len(done_slugs)} records already processed")
+
+    # Process in batches ------------------------------------------------------
+    total = len(records)
+    created = 0
+    skipped = 0
+    errors = 0
+    batch_num = 0
+    batch_entries: List[Dict[str, str]] = []
+
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    now_date = datetime.utcnow().strftime("%Y-%m-%d")
+
+    def _flush_batch(batch_entries: List[Dict[str, str]], batch_num: int) -> None:
+        """Write index + log updates for a completed batch."""
+        if not batch_entries:
+            return
+        if not dry_run:
+            _update_index_md(index_path, batch_entries, domain, now_date)
+            _append_log_entry(log_path, domain, batch_num, batch_entries, now)
+        print(
+            f"  [batch {batch_num}] Wrote {len(batch_entries)} entries "
+            f"to index.md and log.md"
+            + (" (dry-run)" if dry_run else "")
+        )
+
+    for i, record in enumerate(records, 1):
+        slug = _record_to_slug(record, i)
+
+        # Skip already processed
+        if slug in done_slugs:
+            skipped += 1
+            continue
+
+        title = record.get("title") or record.get("filename") or slug
+        summary = record.get("summary") or record.get("abstract") or record.get("description") or ""
+
+        page_path = sources_dir / f"{slug}.md"
+
+        if dry_run:
+            # Preview only
+            print(f"  [DRY-RUN] Would create: wiki/sources/{slug}.md — {title[:60]}")
+            created += 1
+            batch_entries.append({"slug": slug, "title": str(title), "summary": str(summary)})
+        else:
+            # Write the source page
+            try:
+                page_content = _build_source_page(record, slug, domain, now)
+                page_path.write_text(page_content, encoding="utf-8")
+                _append_checkpoint(checkpoint_path, slug, record)
+                created += 1
+                batch_entries.append({"slug": slug, "title": str(title), "summary": str(summary)})
+            except Exception as exc:
+                print(f"  [ERROR] Failed to write {slug}: {exc}")
+                errors += 1
+
+        # Flush after each batch
+        if len(batch_entries) >= batch_size:
+            batch_num += 1
+            _flush_batch(batch_entries, batch_num)
+            batch_entries = []
+
+        # Progress report every 100 records
+        if i % 100 == 0 or i == total:
+            pct = 100 * i / total
+            print(f"  Progress: {i}/{total} ({pct:.0f}%) — created={created} skipped={skipped} errors={errors}")
+
+    # Flush any remaining records in last partial batch
+    if batch_entries:
+        batch_num += 1
+        _flush_batch(batch_entries, batch_num)
+
+    # Final summary -----------------------------------------------------------
+    print()
+    print(f"[batch-ingest] Complete" + (" (DRY-RUN)" if dry_run else ""))
+    print(f"  Total records:    {total}")
+    print(f"  Created:          {created}")
+    print(f"  Skipped (done):   {skipped}")
+    print(f"  Errors:           {errors}")
+    print(f"  Batches flushed:  {batch_num}")
+    if not dry_run:
+        print(f"  Checkpoint file:  {checkpoint_path.relative_to(REPO_ROOT)}")
+        print(f"  Sources dir:      {sources_dir.relative_to(REPO_ROOT)}")
+
+    return 0 if errors == 0 else 1
 
 
 # ──────────────────────────────────────────────────────
@@ -775,6 +1194,29 @@ def main():
     lint_p = subparsers.add_parser("lint", help="Health-check the wiki")
     lint_p.add_argument("--wiki", "-w", required=True, help="Wiki domain name")
 
+    # batch-ingest
+    batch_p = subparsers.add_parser(
+        "batch-ingest",
+        help="Bulk-create wiki source pages from a metadata file (JSONL/JSON/YAML)",
+    )
+    batch_p.add_argument(
+        "metadata_file",
+        help="Path to metadata file (.jsonl, .json, .yaml, or .yml)",
+    )
+    batch_p.add_argument("--wiki", "-w", required=True, help="Wiki domain name")
+    batch_p.add_argument(
+        "--batch-size",
+        type=int,
+        default=50,
+        metavar="N",
+        help="Number of records per batch (default: 50)",
+    )
+    batch_p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Preview what would be created without writing any files",
+    )
+
     args = parser.parse_args()
 
     if not args.command:
@@ -787,6 +1229,7 @@ def main():
         "ingest": cmd_ingest,
         "query": cmd_query,
         "lint": cmd_lint,
+        "batch-ingest": cmd_batch_ingest,
     }
 
     handler = commands.get(args.command)
