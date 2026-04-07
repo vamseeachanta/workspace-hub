@@ -157,9 +157,35 @@ Do NOT push to remote after commits.
 
 7. **Sequential only**: Multiple Gemini sessions can't commit simultaneously. Run sessions sequentially, not in parallel.
 
-## Overnight Batch Execution via Cron Jobs
+## Nightly Cron Automation (IMPLEMENTED — #1961)
 
-Cron jobs can run Gemini tasks overnight using the same model/provider config:
+A nightly cron job auto-processes `agent:gemini` issues. No manual batching needed for triage-level work.
+
+### Scripts
+- `scripts/cron/gemini-nightly-batch.py` — Python processor (queries issues, classifies, processes/queues)
+- `scripts/cron/gemini-nightly-batch.sh` — Bash wrapper (git-safe, workstation guard, state commit)
+- Schedule: `0 23 * * *` (23:00 UTC) — declared in `config/scheduled-tasks/schedule-tasks.yaml`
+
+### How the classifier works
+- Labels containing `cat:research`, `cat:document-intelligence`, `dark-intelligence`, `domain:marine`, `domain:standards` → Mode 2 (router)
+- Everything else → Mode 1 (local triage)
+- Self-referencing meta issues (like #1961 itself) are auto-excluded
+- Issues sorted by priority label (high → medium → low)
+- Capped at 10 issues per run (safety)
+
+### Reports
+- JSON batch reports written to `.claude/state/gemini-batch/batch-YYYY-MM-DD.json`
+- Reports are gitignored (ephemeral state), but auto-committed by the bash wrapper if not ignored
+
+### Stale tracking issues
+When reviewing pending Gemini work, always check if referenced sub-issues are already CLOSED before processing. The #1976 tracking issue listed 4 pending tasks — all were already done. Check with:
+```bash
+for i in <issue_numbers>; do gh issue view $i --json state --jq '.state'; done
+```
+
+## Manual Overnight Batch Execution via Hermes Cron
+
+For tasks that genuinely need Gemini's 1M context or web research (Mode 2), use Hermes cron jobs:
 
 ```
 cronjob create \
