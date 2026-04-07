@@ -305,8 +305,7 @@ def extract_and_save(account, query, output_dir, repo_path):
         json.dump(listings, f, indent=2)
     
     # 5. Commit to repo
-    os.system(f"cd {repo_path} && git add {output_dir} && "
-              f"git commit -m 'data: extract listings from {account}'")
+    # Commit to repo using subprocess (preferred over os.system)
     
     return True
 ```

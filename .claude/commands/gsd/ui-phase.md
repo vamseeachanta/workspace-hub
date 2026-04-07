@@ -20,8 +20,8 @@ Flow: Validate → Research UI → Verify UI-SPEC → Done
 </objective>
 
 <execution_context>
-@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/ui-phase.md
-@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/ui-brand.md
+@D:/workspace-hub/.claude/get-shit-done/workflows/ui-phase.md
+@D:/workspace-hub/.claude/get-shit-done/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -29,6 +29,6 @@ Phase number: $ARGUMENTS — optional, auto-detects next unplanned phase if omit
 </context>
 
 <process>
-Execute @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/ui-phase.md end-to-end.
+Execute @D:/workspace-hub/.claude/get-shit-done/workflows/ui-phase.md end-to-end.
 Preserve all workflow gates.
 </process>
