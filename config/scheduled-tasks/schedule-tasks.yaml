@@ -425,6 +425,25 @@ tasks:
     is_claude_task: false
     description: Windows Task Scheduler — daily commit of session-end state.
 
+  - id: gemini-nightly-batch
+    label: Gemini nightly batch processor
+    schedule: "0 23 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/gemini-nightly-batch.sh
+      >> $WORKSPACE_HUB/logs/gemini/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/gemini/*.log
+    is_claude_task: false
+    description: >-
+      Nightly 23:00 UTC — queries open agent:gemini issues, classifies by
+      execution mode (local vs router), processes filesystem tasks directly,
+      queues web-research tasks for Gemini router. Posts triage comments,
+      writes batch reports to .claude/state/gemini-batch/. Issue #1961.
+
   - id: ai-credit-utilization-weekly
     label: Weekly AI credit utilization report
     schedule: "0 23 * * 0"
