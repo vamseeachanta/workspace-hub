@@ -1,0 +1,103 @@
+# Email Routing Rules
+# Used by scripts/email/gmail-archive-extract.py
+# Routes each sender to the correct /mnt/ace/<repo>/ location
+#
+# Actions:
+#   <repo-path>       → extract to docs/email/ in that repo
+#   DELETE            → delete from inbox, do not archive
+#   REVIEW            → flag for manual review, do not auto-delete
+
+rules:
+  # ---- DELETE (spam/noise) ----
+  "collide.io":                     DELETE
+  "skylineseven.ccsend.com":        DELETE
+  "promote.weebly.com":             DELETE
+  "e.swimoutlet.com":               DELETE
+  "email.myflighthub.com":          DELETE
+  "mail.urbanairparks.com":         DELETE
+  "e.stantonoptical.com":           DELETE
+  "lists.wikimedia.org":            DELETE
+  "jongordon.com":                  DELETE
+  "atticbuddies.com":               DELETE
+  "email.theparkingspot.com":       DELETE
+  "academia-mail.com":              DELETE
+  "accounts.google.com":            DELETE
+  "suzeorman.com":                  DELETE
+  "marketing.goindigo.in":          DELETE
+  "deeplearning.ai":                DELETE
+  "gamemail.com":                   DELETE
+
+  # ---- REVIEW (decide before deleting) ----
+  "substack.com":                   REVIEW
+  "info.marineinsight.com":         REVIEW
+  "indianstarllc.ccsend.com":       REVIEW
+  "rigzonemail.com":                REVIEW
+  "m.learn.coursera.org":           REVIEW
+  "irctc.co.in":                    REVIEW
+  "info.dpam.com":                  REVIEW
+  "blueskysfund.com":               REVIEW
+  "cincsystems.net":                REVIEW
+
+  # ==== SKEstates Real Estate ====
+  "familydollar.com":               "sabithaandkrishnaestates/docs/email/tenant"
+  "dollartree.com":                 "sabithaandkrishnaestates/docs/email/tenant"
+  "marsh.com":                      "sabithaandkrishnaestates/docs/email/insurance"
+  "independencetitle.com":          "sabithaandkrishnaestates/docs/email/title"
+  "fsresidential.com":              "sabithaandkrishnaestates/docs/email/hoa"
+  "phfmservices.com":               "sabithaandkrishnaestates/docs/email/vendor"
+  "clhelt.com":                     "sabithaandkrishnaestates/docs/email/vendor"
+  "firstbilling.com":               "sabithaandkrishnaestates/docs/email/finance"
+  "crowninsuranceagency.net":       "sabithaandkrishnaestates/docs/email/insurance"
+  "insureon.com":                   "sabithaandkrishnaestates/docs/email/insurance"
+  "gdsincorporated.com":            "sabithaandkrishnaestates/docs/email/vendor"
+
+  # ==== ACE Engineering / Consulting ====
+  "aceengineer.com":                "aceengineer-admin/docs/email/internal"
+  "dorisgroup.com":                 "doris/docs/email"
+  "mcdermott.com":                  "aceengineer-admin/docs/email/client-mcdermott"
+  "ril.com":                        "aceengineer-admin/docs/email/client-ril"
+  "shell.com":                      "aceengineer-admin/docs/email/client-shell"
+  "bp.com":                         "aceengineer-admin/docs/email/client-bp"
+  "kbr.com":                        "aceengineer-admin/docs/email/client-kbr"
+  "technipfmc.com":                 "aceengineer-admin/docs/email/client-technip"
+  "technip.com":                    "aceengineer-admin/docs/email/client-technip"
+  "subsea7.com":                    "aceengineer-admin/docs/email/client-subsea7"
+  "frontierdeepwater.com":          "frontierdeepwater/docs/email"
+  "engineeredcustomsolutions.com":  "aceengineer-admin/docs/email/client-ecs"
+  "rockoilfield.com":               "aceengineer-admin/docs/email/recruiter"
+  "stepstoprogress.com":            "aceengineer-admin/docs/email/recruiter"
+  "disys.com":                      "aceengineer-admin/docs/email/recruiter"
+  "nov.com":                        "aceengineer-admin/docs/email/client-nov"
+  "aker.com":                       "aceengineer-admin/docs/email/client-aker"
+  "vulcanoffshore.com":             "aceengineer-admin/docs/email/client-vulcan"
+  "boptechnologies.com":            "aceengineer-admin/docs/email/client-boptec"
+  "awilcodrilling.com":             "aceengineer-admin/docs/email/client-awilco"
+  "eagle.org":                      "aceengineer-admin/docs/email/client-american-bureau"
+  "ansys.com":                      "aceengineer-admin/docs/email/vendor-ansys"
+  "dnvgl.com":                      "aceengineer-admin/docs/email/vendor-dnv"
+  "engys.com":                      "aceengineer-admin/docs/email/vendor-engys"
+  "km.kongsberg.com":               "aceengineer-admin/docs/email/client-kongsberg"
+  "2hoffshoreinc.com":              "aceengineer-admin/docs/email/client-2h"
+  "2hoffshore.com":                 "aceengineer-admin/docs/email/client-2h"
+  "prospricing.com":                "aceengineer-admin/docs/email/colleague-prospricing"
+  "partneresi.com":                 "sabithaandkrishnaestates/docs/email/vendor"
+
+  # ==== CRE Market Data (Ace inbox) ====
+  "sandsig.com":                    "assethold/data/sandsig-cre-listings/email"
+  "marcusmillichap.com":            "assethold/data/cre-listings/email"
+  "partnersrealestate.com":         "assethold/data/cre-listings/email"
+  "email.loopnet.com":              "assethold/data/cre-listings/email"
+  "ten-x.ccsend.com":               "assethold/data/cre-listings/email"
+  "c.costarmail.com":               "assethold/data/cre-listings/email"
+
+  # ==== Personal ====
+  "linkedin.com":                   "achantas-data/docs/email/career-networking"
+  "parentsquare.com":               "achantas-data/docs/email/school"
+  "vercel.com":                     "digitalmodel/docs/email/dev-notifications"
+  "ogj@news.ogj.com":               "achantas-data/docs/email/industry"
+  "em1.turbotax.intuit.com":        "achantas-data/docs/email/tax"
+  "github.com":                     "achantas-data/docs/email/dev-notifications"
+  "openrouter.ai":                  "achantas-data/docs/email/ai-platform"
+
+  # ==== Default (everything else) ====
+  "default":                        "achantas-data/docs/email/other"

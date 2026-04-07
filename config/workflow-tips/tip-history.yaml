@@ -21,3 +21,5 @@ shown:
     tips: [gsd-thread, bp-shell-dynamic]
   - date: 2026-04-06
     tips: [bp-challenge-claude, cc-add-dir]
+  - date: 2026-04-07
+    tips: [gsd-review, eco-reflect]
