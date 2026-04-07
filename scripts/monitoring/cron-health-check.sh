@@ -50,7 +50,7 @@ fi
 
 # ── Parse schedule YAML ──────────────────────────────────────────────────────
 # Use Python to parse YAML and emit task records as tab-separated lines
-TASK_RECORDS=$(uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
+TASK_RECORDS=$(/home/vamsee/.local/bin/uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
 import sys
 from pathlib import Path
 
@@ -97,7 +97,7 @@ resolve_machine_names() {
     host=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
     # Try to resolve from registry
     local names
-    names=$(uv run --no-project python - "${WS_HUB}/config/workstations/registry.yaml" "$host" <<'PY'
+    names=$(/home/vamsee/.local/bin/uv run --no-project python - "${WS_HUB}/config/workstations/registry.yaml" "$host" <<'PY'
 import sys
 from pathlib import Path
 

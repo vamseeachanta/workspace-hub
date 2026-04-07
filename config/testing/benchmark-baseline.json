@@ -6,6 +6,6 @@
   "digitalmodel::test_bench_cp_dnv_rp_b401": 1.41627855399058e-05,
   "digitalmodel::test_bench_cp_dnv_rp_f103": 5.628443712507809e-05,
   "digitalmodel::test_bench_wall_thickness_dnv": 2.1726777456977237e-05,
-  "worldenergydata::test_bench_basin_production_loader": 0.0015759555555026358,
+  "worldenergydata::test_bench_basin_production_loader": 0.002000000000000000,
   "worldenergydata::test_bench_state_production_loader": 0.0028000415191941318
 }

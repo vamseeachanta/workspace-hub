@@ -125,8 +125,7 @@ tasks:
     machines: [dev-primary, ace-linux-1]
     requires: [python3, uv]
     command: >-
-      PATH=$HOME/.local/bin:$PATH;
-      uv run --no-project python $WORKSPACE_HUB/scripts/ai/generate-agent-radar.py
+      /home/vamsee/.local/bin/uv run --no-project $WORKSPACE_HUB/scripts/ai/generate-agent-radar.py
       >> $WORKSPACE_HUB/logs/quality/agent-radar-$(date +\%Y\%m\%d).log 2>&1
     log: logs/quality/agent-radar-*.log
     is_claude_task: false
