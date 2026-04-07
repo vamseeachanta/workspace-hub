@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-06T07:00:29Z"
-  source_hash: "fabbea9ce6f59b5cf54c8a3cf4821f62"
+  generated: "2026-04-07T07:00:25Z"
+  source_hash: "b380b2e05bcbb83c384c6bb525cbe3c5"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -16,18 +16,17 @@ metadata:
 
 hermes_insights:
   environment_facts:
-    - "AI: $269/mo. Claude Max $200, 2x Codex $20 each, Gemini Pro $20. Overnight: use Hermes subagents. Gemini needs --yolo."
     - "ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move."
     - "Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`."
-    - "SKEstates Inc. business: sabithaandkrishnaestates repo at /mnt/local-analysis/workspace-hub/sabithaandkrishnaestates. Owns Family Dollar store #30150 (15645 Westpark Dr, Houston TX 77082), acquired 9/22/2025 from Addicks Westpark LLC. Modified NNN lease, $10,141.67/month. Tenant contact: TX_Rents@familydollar.com. Business email: skestatesinc@gmail.com. Key docs: docs/tax/2025-family-dollar-1099-reconciliation.md (1099 discrepancy: $50,085.60 reported, expected ~$30-40K rent). \"Cowork\" = Claude Desktop sandboxed mode with MCP — NOT available from Hermes CLI. For Gmail from CLI: use himalaya with App Password or setup google-workspace skill with OAuth."
   conventions:
-    []
+    - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
   project_knowledge:
     - "digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root."
     - "Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded."
     - "aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp."
-    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Key frontmatter: skills context:fork paths effort model hooks."
+    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv)."
     - "Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643)."
+    - "Gmail 3-account setup LIVE (2026-04-06): OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json, secrets in ~/.gmail-mcp/oauth-env.json. Himalaya CLI for ace+personal (App Passwords). skestates has no App Password (account limitation). GCP project: hermes-gmail-automation. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT (job 908c4afa32cf). Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25)."
     - "WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately."
   user_preferences:
     - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
@@ -116,4 +115,4 @@ claude_memory_index:
 
 shared_conventions:
   # These conventions from Hermes should be honored by all agents
-  []
+  - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."

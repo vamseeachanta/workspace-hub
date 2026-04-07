@@ -1,6 +1,6 @@
 ---
 name: Hermes Agent installation state
-description: Hermes v0.4.0 installed at ~/.hermes/ with venv deps, blocked on API key config — part of #1545 agentic progression
+description: Hermes v0.4.0 installed at ~/.hermes/ with venv deps and API keys configured — shebang reverts are a recurring issue
 type: project
 ---
 
@@ -14,12 +14,16 @@ Hermes Agent v0.4.0 (Nous Research) is installed on dev-primary (ace-linux-1) as
 - State DB: `~/.hermes/state.db`, memory: `~/.hermes/memories/`, sessions: `~/.hermes/sessions/`
 - Daily updates: `scripts/cron/harness-update.sh` runs `hermes update` at 01:15 UTC (#1470)
 
-**Current blocker:** No API key configured. `~/.hermes/.env` does not exist. Hermes needs at least one of `OPENROUTER_API_KEY`, `OPENAI_API_KEY`, or `ANTHROPIC_API_KEY` to connect to an LLM provider. User was asked which provider to use but deferred the decision.
+**API keys:** Configured in `~/.hermes/.env` (created 2026-04-04, 4 keys). No longer a blocker.
 
-**Launcher note:** The `~/.local/bin/hermes` shebang was changed to point at the venv Python during the 2026-04-01 session, but was later reverted (externally or by linter) back to `#!/usr/bin/env python3`. The launcher may need the venv shebang restored or a PATH/activation wrapper for deps to resolve.
+**Recurring issue — launcher shebang reverts:** The `~/.local/bin/hermes` shebang must be `#!/home/vamsee/.hermes/hermes-agent/.venv/bin/python` (not `#!/usr/bin/env python3`). It has reverted at least twice:
+- 2026-04-01: Fixed during initial setup, later reverted (likely by `hermes update` or external edit)
+- 2026-04-06: Fixed again after `ModuleNotFoundError: No module named 'dotenv'` crash
 
-**Governance:** #1545 is the umbrella issue for agentic feature progression under GSD. #1546 is the Phase 0 enabler (expand work-item machine targeting). Hermes is one candidate sidecar — GSD remains the control plane. Decision from #1467: EXTRACT useful patterns, don't adopt Hermes wholesale.
+**Why this keeps happening:** `hermes update` or pip reinstall likely regenerates the launcher with a generic shebang. The venv Python is needed because `python-dotenv` and other deps are only in the venv, not the system/miniforge Python.
 
-**Why:** User is evaluating whether Hermes can perform work on repos (e.g., digitalmodel) as an agentic sidecar. Getting it to a runnable state is Phase 2 of #1545.
+**Mitigation idea:** A post-update hook or wrapper script could pin the shebang after each `hermes update`.
 
-**How to apply:** Before using `hermes` CLI, verify the launcher shebang points to the venv Python (`~/.hermes/hermes-agent/.venv/bin/python3`) and that `~/.hermes/.env` has a valid API key.
+**Governance:** #1545 is the umbrella issue for agentic feature progression under GSD. #1546 is the Phase 0 enabler (machine targeting in work-item template). Hermes is one candidate sidecar — GSD remains the control plane. Decision from #1467: EXTRACT useful patterns, don't adopt Hermes wholesale.
+
+**How to apply:** If hermes crashes with `ModuleNotFoundError`, check the shebang first. Skills backfill from Hermes to repo `.claude/skills/` is in progress.

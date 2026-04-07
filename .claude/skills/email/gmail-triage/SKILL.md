@@ -103,6 +103,142 @@ This skill is designed to run as a cron job:
 
 Deliver to: Telegram or CLI local file at `~/.hermes/email-digests/`
 
+## Gmail API Direct Usage Pattern (no dependencies)
+
+For headless server automation, use the Gmail REST API directly with urllib (no pip deps):
+
+```python
+import json, os, urllib.request, urllib.parse, base64
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# OAuth config (shared file, never hardcoded)
+cfg_path = os.path.expanduser("~/.gmail-mcp/oauth-env.json")
+with open(cfg_path) as f:
+    cfg = json.load(f)
+
+def refresh_token(acct):
+    """Refresh access token using stored refresh token"""
+    cred_path = os.path.expanduser(f"~/.gmail-{acct}/credentials.json")
+    with open(cred_path) as f:
+        saved = json.load(f)
+    data = urllib.parse.urlencode({
+        "client_id": cfg["client_id"],
+        "client_secret": cfg["client_secret"],
+        "refresh_token": saved["refresh_token"],
+        "grant_type": "refresh_token",
+    }).encode("utf-8")
+    req = urllib.request.Request("https://oauth2.googleapis.com/token", data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        tokens = json.loads(resp.read().decode())
+    saved.update(tokens)
+    with open(cred_path, "w") as f:
+        json.dump(saved, f, indent=2)
+    return tokens["access_token"]
+
+def gmail_get(endpoint, token):
+    req = urllib.request.Request(
+        f"https://gmail.googleapis.com/gmail/v1/{endpoint}",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.loads(resp.read().decode())
+
+def gmail_post(endpoint, token, body):
+    data = json.dumps(body).encode("utf-8")
+    req = urllib.request.Request(
+        f"https://gmail.googleapis.com/gmail/v1/{endpoint}",
+        data=data,
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        method="POST"
+    )
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.loads(resp.read().decode())
+
+# Usage:
+token = refresh_token("ace")
+profile = gmail_get("users/me/profile", token)
+messages = gmail_get(f"users/me/messages?maxResults=25&q=is:unread", token)
+```
+
+### Creating a Draft in an Existing Thread
+
+To reply within an existing email chain (not create a new thread):
+
+```python
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# 1. Get the original thread's last message Message-ID
+detail = gmail_get(f"users/me/threads/{thread_id}", token)
+last_msg = detail["messages"][-1]
+last_hdrs = {h["name"]: h["value"] for h in last_msg["payload"]["headers"]}
+last_message_id = last_hdrs.get("Message-ID", "")
+
+# 2. Build email with threading headers
+msg = MIMEMultipart("alternative")
+msg["To"] = "recipient@example.com"
+msg["Subject"] = last_hdrs["Subject"]  # EXACT same subject
+msg["In-Reply-To"] = last_message_id
+msg["References"] = " ".join(all_message_ids_in_thread)  # all Message-IDs from thread
+msg.attach(MIMEText(text_body, "plain"))
+msg.attach(MIMEText(html_body, "html"))
+
+# 3. Create draft WITH threadId
+raw_b64 = base64.urlsafe_b64encode(msg.as_bytes()).decode("utf-8")
+gmail_post("users/me/drafts", token, {"message": {"threadId": thread_id, "raw": raw_b64}})
+```
+
+### Extracting Structured Data from Email Subjects
+
+Common CRE/business email patterns:
+
+```python
+import re
+
+# Cap rate: "9.75% CAP", "7.00% CAP"
+cap_match = re.search(r'(\d+\.?\d*)\s*%?\s*CAP', subject, re.IGNORECASE)
+
+# Price: "$800K", "$3.2M", "$500,000"
+price_match = re.search(r'\$(\d+(?:,\d+)*(?:\.\d+)?[KMB]?)', subject)
+
+# Building SF: "62,225 SF", "18,265 SF"
+sf_match = re.search(r'([\d,]+)\s*SF', subject, re.IGNORECASE)
+
+# Lease years: "15 Years Remaining", "10 Yr NNN"
+years_match = re.search(r'(\d+)\s*(?:Years?|Yr)(?:\s+Remaining)?', subject, re.IGNORECASE)
+
+# Vehicles per day: "72,000+ VPD"
+vpd_match = re.search(r'([\d,]+)\s*VPD', subject, re.IGNORECASE)
+
+# State: "| FL |", "- TX"
+state_match = re.search(r'\|\s*([A-Z]{2})\s*\|', subject)
+```
+
+### Legal Scan Before Committing Email Data
+
+Always scan extracted email content before committing to git repos:
+
+```python
+import yaml
+
+# Load deny list
+with open("/path/to/workspace-hub/.legal-deny-list.yaml") as f:
+    deny = yaml.safe_load(f)
+
+# Scan all extracted text
+all_text = " ".join(extracted_data).lower()
+for item in deny.get("client_references", []):
+    pattern = item["pattern"]
+    case_sensitive = item.get("case_sensitive", False)
+    searchable = all_text if not case_sensitive else " ".join(extracted_data)
+    if (pattern.lower() if not case_sensitive else pattern) in searchable:
+        # BLOCK — do not commit, flag for review
+        raise ValueError(f"Protected client reference found: {pattern}")
+
+# If no matches, safe to commit
+```
+
 ## Pitfalls
 
 1. himalaya JSON output can be large — use `--page-size` to limit

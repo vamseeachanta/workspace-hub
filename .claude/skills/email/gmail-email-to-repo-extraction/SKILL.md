@@ -1,14 +1,29 @@
 ---
 name: gmail-email-to-repo-extraction
-description: Extract structured data from Gmail inbox emails, enrich with domain-specific classification, legal-scan against deny list, commit to appropriate repo, then optionally delete originals.
+description: Extract structured data from Gmail inbox emails, enrich with domain-specific
+  classification, legal-scan against deny list, commit to appropriate repo, then optionally
+  delete originals.
 version: 1.0.0
 author: vamsee
-tags: [email, gmail, data-extraction, repo-commit, legal-scan, cleanup]
-related_skills: [gmail-multi-account, gmail-digest, legal-sanity-scan]
+tags:
+- email
+- gmail
+- data-extraction
+- repo-commit
+- legal-scan
+- cleanup
+related_skills:
+- gmail-multi-account
+- legal-sanity-scan
 metadata:
   hermes:
-    tags: [email, gmail, data-extraction, legal-scan]
-    related_skills: [gmail-multi-account]
+    tags:
+    - email
+    - gmail
+    - data-extraction
+    - legal-scan
+    related_skills:
+    - gmail-multi-account
 ---
 
 # Gmail Email → Repo Extraction

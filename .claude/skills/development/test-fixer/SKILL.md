@@ -1,0 +1,145 @@
+---
+name: test-fixer
+category: development
+description: Safe workflow for fixing bulk test assertion failures in existing test suites — collection errors mask deeper problems, replace_all corrupts, fix source first then tests
+---
+
+# Test Fixer — Bulk Test Failure Resolution
+
+## When to Use
+
+- 5+ failing tests in an existing test suite
+- Collection errors masking real test failures
+- Assertion mismatches between tests and evolved source code
+- Async test framework misconfiguration
+
+## Critical: Fix Collection Errors FIRST
+
+Collection errors (ImportError, ModuleNotFoundError) cause pytest to stop collecting and skip subsequent test files. The "2 errors" you see initially may mask 50+ real failures.
+
+**Workflow:**
+1. Run `pytest --collect-only -q` to see only collection errors
+2. Fix import paths, missing dependencies, pytest.ini markers one at a time
+3. Re-run `pytest -q --tb=line | grep FAILED` to reveal the FULL failure count
+
+```bash
+# Step 1: Check collection, then full run
+uv run python -m pytest tests/ --collect-only -q 2>&1 | grep -E "^ERROR"
+# Fix each one
+uv run python -m pytest tests/ -q --tb=line 2>&1 | grep "^FAILED"
+```
+
+## Strategy: Categorize Before Fixing
+
+Group failures by root cause, then fix each category:
+1. **Async/framework config** — 1-2 file changes fix many tests (install pytest-asyncio, add markers)
+2. **Import paths** — hardcoded /mnt/github/github/... to /mnt/local-analysis/... (1 fix per file)
+3. **Assertion mismatches** — output text changed, method names changed (1+ fix per assertion)
+4. **Missing methods** — tests call APIs that no longer exist (requires source change or test deletion)
+5. **Mock failures** — exception types don't match what source catches
+
+**Fix ordering:** categories 1→2 fix many at once, then 3→5 per-file.
+
+## Safe Patching Patterns
+
+### NEVER use replace_all=True with short strings
+
+```python
+# CATASTROPHIC: replaces ALL occurrences including in unrelated methods
+patch(mode="replace", old_string='    assert "25%" in output', replace_all=True)
+```
+
+### DO include 3+ lines of surrounding context
+
+```python
+# SAFE: context makes it unique
+patch(mode="replace", old_string="""        progress.update_percentage(25)
+            output = mock_stdout.getvalue()
+        
+        assert "25%" in output""", new_string="""...""")
+```
+
+### Use write_file for complex multi-fix scripts
+
+When `patch()` fails due to string escaping (multiline with quotes, braces), write a fix script:
+
+```python
+# Write to file, then execute
+write_file("/tmp/fix_tests.py", fix_script_content)
+terminal(command="python3 /tmp/fix_tests.py")
+```
+
+**WARNING:** Python f-strings break when the script content contains `{}`. Use `r"""..."""` raw strings for the script content to avoid this.
+
+### Alternative: sed on line numbers
+
+```bash
+sed -i '124old_line/new_line/' tests/agent_os/commands/test_file.py
+```
+
+## Common Failure Patterns and Fixes
+
+### Async tests: "async def functions are not natively supported"
+- **Fix**: `uv pip install pytest-asyncio`, add `asyncio_mode = auto` to pytest.ini, ensure `pytest.mark.asyncio` marker exists
+
+### ModuleNotFoundError with hardcoded paths
+- **Fix**: Convert hardcoded paths to relative using `os.path.join(os.path.dirname(__file__), '...')`
+
+### Assertion mismatches (expected X, got Y)
+- **Probe actual API first**: `uv run python3 -c "from module import Class; c = Class(); print(repr(c.method()))"`
+- **Then update test** to match actual behavior — don't guess
+
+### AttributeError: object has no attribute
+- Source API evolved; method removed. Either restore it in source or delete/skip the test.
+
+### execute() crashes: "unhashable type: 'slice'"
+- Root cause: source `execute(args: List[str])` called `parser.parse(args)` which does `args[1:]`, but tests pass `dict`.
+- **Fix source** to accept both: `if isinstance(args, dict): parsed = dict_to_args(args); else: parsed = self.parser.parse(args)`
+
+## Subagent Gotchas for Test Fixing
+
+### delegate_task IS viable for test fixing — with caveats
+
+The subagent's `patch`/`terminal` calls **DO execute on the real filesystem** (not a sandbox). However:
+
+1. **Subagent summaries are USELESS** — 1-2 sentences despite consuming M of tokens. Always `git diff` or re-run tests after.
+2. **Subagents OVERREACH** — they modify unrelated files (result ymls, agent configs). Always `git diff --stat` and `git checkout -- <unrelated>`.
+3. **Max iterations kill progress** — always check how many failures remain when a subagent exits.
+
+### Subagent delegate_task vs execute_code for test fixing
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **execute_code + write_file patch script** | Full control, no summary loss, single call | Script file writing needed, f-string escaping traps |
+| **delegate_task** | Subagent can reason about test/source alignment | 99% summary loss, may overreach, max iterations |
+| **Direct patch() calls** | Precise, safe | Tedious for many fixes, escaping issues with multiline |
+
+**Recommendation for >20 fixes**: delegate_task to do initial work, then `git diff --stat` to verify, then direct patches for remaining.
+
+## The replace_all Anti-Pattern (SEVERE)
+
+`replace_all=True` with generic substrings like `'assert "25%"'` corrupts UNRELATED test methods. Real incident: replacing `"25%"` in a 645-line test file broke 6 additional tests. If you MUST use `replace_all`, verify every changed line in `git diff` before committing.
+
+## Indentation Corruption Gotcha
+
+Partial patch replacements inside `with`, `if`, `for`, or `try` blocks can corrupt indentation.
+
+**After every patch**, run:
+```bash
+python3 -c "import py_compile; py_compile.compile('tests/test_file.py', doraise=True)"
+```
+
+Common corruption: a `replace` inside a `with` block changes only the first line of a multi-line call, leaving subsequent lines at the wrong indent.
+
+## GitHub Issues
+
+`gh issue create --label "phase:2"` silently fails (prints warning, still creates issue) if label doesn't exist. Always use existing labels: `gh label list | grep -E "priority|cat:"`.
+
+## Verification
+
+After each batch of fixes:
+```bash
+uv run python -m pytest tests/ -q --tb=line 2>&1 | tail -5
+# Should show: X failed, Y passed, Z skipped in Ns
+# Track: failures should be monotonically decreasing
+```
