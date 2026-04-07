@@ -1,0 +1,23 @@
+---
+title: "T1S1O1-lee.pdf"
+slug: t1s1o1-lee
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# T1S1O1-lee.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | T1S1O1-lee.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2011 (New Orleans)/T1S1O1-lee.pdf |
+| extension | .pdf |
+| size_bytes | 425314 |
+| relative_path | DOT/DOT2011 (New Orleans)/T1S1O1-lee.pdf |

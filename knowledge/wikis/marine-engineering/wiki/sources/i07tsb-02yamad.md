@@ -1,0 +1,23 @@
+---
+title: "I07TSB-02Yamad.pdf"
+slug: i07tsb-02yamad
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07TSB-02Yamad.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07TSB-02Yamad.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07TSB-02Yamad.pdf |
+| extension | .pdf |
+| size_bytes | 468345 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07TSB-02Yamad.pdf |

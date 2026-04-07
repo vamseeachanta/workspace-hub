@@ -1,0 +1,23 @@
+---
+title: "I07LKC-02Lee.pdf"
+slug: i07lkc-02lee
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07LKC-02Lee.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07LKC-02Lee.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07LKC-02Lee.pdf |
+| extension | .pdf |
+| size_bytes | 245122 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07LKC-02Lee.pdf |

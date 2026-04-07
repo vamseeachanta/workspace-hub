@@ -1,0 +1,23 @@
+---
+title: "13SQY-02Fernandez.pdf"
+slug: 13sqy-02fernandez
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 13SQY-02Fernandez.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 13SQY-02Fernandez.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2013/vol3/13SQY-02Fernandez.pdf |
+| extension | .pdf |
+| size_bytes | 479420 |
+| relative_path | ISOPE/ISOPE2013/vol3/13SQY-02Fernandez.pdf |

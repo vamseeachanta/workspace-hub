@@ -1,0 +1,23 @@
+---
+title: "I07JSC-409kuba.pdf"
+slug: i07jsc-409kuba
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07JSC-409kuba.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07JSC-409kuba.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07JSC-409kuba.pdf |
+| extension | .pdf |
+| size_bytes | 297278 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07JSC-409kuba.pdf |

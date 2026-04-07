@@ -1,0 +1,24 @@
+---
+title: "aboutomae.pdf"
+slug: aboutomae
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# aboutomae.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OMAE |
+| filename | aboutomae.pdf |
+| path | /mnt/ace/docs/conferences/OMAE/OMAE 2003/OMAE 03/pdfs/aboutomae.pdf |
+| extension | .pdf |
+| size_bytes | 19041 |
+| year | 2003 |
+| relative_path | OMAE/OMAE 2003/OMAE 03/pdfs/aboutomae.pdf |

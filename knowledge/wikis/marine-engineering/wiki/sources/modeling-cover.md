@@ -1,0 +1,23 @@
+---
+title: "Modeling Cover.pdf"
+slug: modeling-cover
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# Modeling Cover.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Offshore West Africa |
+| filename | Modeling Cover.pdf |
+| path | /mnt/ace/docs/conferences/Offshore West Africa/OWA2002/papers/sess2/pap56/Modeling Cover.pdf |
+| extension | .pdf |
+| size_bytes | 96616 |
+| relative_path | Offshore West Africa/OWA2002/papers/sess2/pap56/Modeling Cover.pdf |

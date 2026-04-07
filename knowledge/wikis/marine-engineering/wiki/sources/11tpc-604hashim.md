@@ -1,0 +1,23 @@
+---
+title: "11TPC-604Hashim.pdf"
+slug: 11tpc-604hashim
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 11TPC-604Hashim.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 11TPC-604Hashim.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2011/data/papers/11TPC-604Hashim.pdf |
+| extension | .pdf |
+| size_bytes | 879781 |
+| relative_path | ISOPE/ISOPE2011/data/papers/11TPC-604Hashim.pdf |

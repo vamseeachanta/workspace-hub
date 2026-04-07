@@ -1,0 +1,23 @@
+---
+title: "ID 72 Abstract.pdf"
+slug: id-72-abstract
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# ID 72 Abstract.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | ID 72 Abstract.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2008/files/ID 72 Abstract.pdf |
+| extension | .pdf |
+| size_bytes | 20160 |
+| relative_path | DOT/DOT2008/files/ID 72 Abstract.pdf |

@@ -1,0 +1,24 @@
+---
+title: "spon.pdf"
+slug: spon
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# spon.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Arctic Technology Conference |
+| filename | spon.pdf |
+| path | /mnt/ace/docs/conferences/Arctic Technology Conference/2011/data/spon.pdf |
+| extension | .pdf |
+| size_bytes | 635848 |
+| year | 2011 |
+| relative_path | Arctic Technology Conference/2011/data/spon.pdf |

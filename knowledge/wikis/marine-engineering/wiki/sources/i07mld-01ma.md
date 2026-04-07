@@ -1,0 +1,23 @@
+---
+title: "I07MLD-01ma.pdf"
+slug: i07mld-01ma
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07MLD-01ma.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07MLD-01ma.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07MLD-01ma.pdf |
+| extension | .pdf |
+| size_bytes | 133820 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07MLD-01ma.pdf |

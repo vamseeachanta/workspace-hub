@@ -1,0 +1,24 @@
+---
+title: "2012-DCW-12Zhang.pdf"
+slug: 2012-dcw-12zhang
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 2012-DCW-12Zhang.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 2012-DCW-12Zhang.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2012/papers/vol3/2012-DCW-12Zhang.pdf |
+| extension | .pdf |
+| size_bytes | 256818 |
+| year | 2012 |
+| relative_path | ISOPE/ISOPE2012/papers/vol3/2012-DCW-12Zhang.pdf |

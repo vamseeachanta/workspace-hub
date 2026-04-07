@@ -1,0 +1,24 @@
+---
+title: "read0600win_ENUyhoo0010.pdf"
+slug: read0600win-enuyhoo0010
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# read0600win_ENUyhoo0010.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | UK Conference Folder |
+| filename | read0600win_ENUyhoo0010.pdf |
+| path | /mnt/ace/docs/conferences/UK Conference Folder/OTC 2006/2006OTC (D)/Reader/Messages/ENU/read0600win_ENUyhoo0010.pdf |
+| extension | .pdf |
+| size_bytes | 17005 |
+| year | 2006 |
+| relative_path | UK Conference Folder/OTC 2006/2006OTC (D)/Reader/Messages/ENU/read0600win_ENUyhoo0010.pdf |

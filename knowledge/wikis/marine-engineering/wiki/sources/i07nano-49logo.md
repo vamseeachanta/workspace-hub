@@ -1,0 +1,23 @@
+---
+title: "I07Nano-49logo.pdf"
+slug: i07nano-49logo
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07Nano-49logo.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07Nano-49logo.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07Nano-49logo.pdf |
+| extension | .pdf |
+| size_bytes | 506234 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07Nano-49logo.pdf |

@@ -1,0 +1,24 @@
+---
+title: "aboutcd.pdf"
+slug: aboutcd
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# aboutcd.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OMAE |
+| filename | aboutcd.pdf |
+| path | /mnt/ace/docs/conferences/OMAE/OMAE 2003/OMAE 03/pdfs/aboutcd.pdf |
+| extension | .pdf |
+| size_bytes | 53866 |
+| year | 2003 |
+| relative_path | OMAE/OMAE 2003/OMAE 03/pdfs/aboutcd.pdf |

@@ -1,0 +1,24 @@
+---
+title: "ISO-113-Ritterbeck-New Aerospace Counterfeit Part Standard.pdf"
+slug: iso-113-ritterbeck-new-aerospace-counterfeit-part-standard
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# ISO-113-Ritterbeck-New Aerospace Counterfeit Part Standard.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISO 9001 |
+| filename | ISO-113-Ritterbeck-New Aerospace Counterfeit Part Standard.pdf |
+| path | /mnt/ace/docs/conferences/ISO 9001/2014/ISO-113-Ritterbeck-New Aerospace Counterfeit Part Standard.pdf |
+| extension | .pdf |
+| size_bytes | 491017 |
+| year | 2014 |
+| relative_path | ISO 9001/2014/ISO-113-Ritterbeck-New Aerospace Counterfeit Part Standard.pdf |

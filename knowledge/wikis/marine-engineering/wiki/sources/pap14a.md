@@ -1,0 +1,23 @@
+---
+title: "pap14a.pdf"
+slug: pap14a
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# pap14a.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Offshore West Africa |
+| filename | pap14a.pdf |
+| path | /mnt/ace/docs/conferences/Offshore West Africa/OWA2002/papers/sess9/pap14/pap14a.pdf |
+| extension | .pdf |
+| size_bytes | 369526 |
+| relative_path | Offshore West Africa/OWA2002/papers/sess9/pap14/pap14a.pdf |

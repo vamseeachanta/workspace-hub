@@ -1,0 +1,23 @@
+---
+title: "publicat.pdf"
+slug: publicat
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# publicat.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | publicat.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2003/publicat.pdf |
+| extension | .pdf |
+| size_bytes | 254740 |
+| relative_path | ISOPE/ISOPE2003/publicat.pdf |

@@ -1,0 +1,23 @@
+---
+title: "stolt-dot2002.pdf"
+slug: stolt-dot2002
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# stolt-dot2002.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | stolt-dot2002.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2002/PDF Copies of Papers/stolt-dot2002.pdf |
+| extension | .pdf |
+| size_bytes | 1201749 |
+| relative_path | DOT/DOT2002/PDF Copies of Papers/stolt-dot2002.pdf |

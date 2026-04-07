@@ -1,0 +1,24 @@
+---
+title: "ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf"
+slug: iso-012-edgar-innovation-mobilizing-creativity-rev1
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISO 9001 |
+| filename | ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf |
+| path | /mnt/ace/docs/conferences/ISO 9001/2014/ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf |
+| extension | .pdf |
+| size_bytes | 6076300 |
+| year | 2014 |
+| relative_path | ISO 9001/2014/ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf |

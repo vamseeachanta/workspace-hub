@@ -1,0 +1,23 @@
+---
+title: "sonsub-intergrated-managemen.pdf"
+slug: sonsub-intergrated-managemen
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# sonsub-intergrated-managemen.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | sonsub-intergrated-managemen.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/sonsub-intergrated-managemen.pdf |
+| extension | .pdf |
+| size_bytes | 9607 |
+| relative_path | DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/sonsub-intergrated-managemen.pdf |

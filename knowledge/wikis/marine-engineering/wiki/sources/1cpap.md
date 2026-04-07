@@ -1,0 +1,23 @@
+---
+title: "1cpap.pdf"
+slug: 1cpap
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 1cpap.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | 1cpap.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2003/files/1cpap.pdf |
+| extension | .pdf |
+| size_bytes | 2208531 |
+| relative_path | DOT/DOT2003/files/1cpap.pdf |

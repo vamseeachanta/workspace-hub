@@ -1,0 +1,23 @@
+---
+title: "10OTC_committee.pdf"
+slug: 10otc-committee
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 10OTC_committee.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OTC |
+| filename | 10OTC_committee.pdf |
+| path | /mnt/ace/docs/conferences/OTC/OTC2010/10OTC_committee.pdf |
+| extension | .pdf |
+| size_bytes | 747593 |
+| relative_path | OTC/OTC2010/10OTC_committee.pdf |

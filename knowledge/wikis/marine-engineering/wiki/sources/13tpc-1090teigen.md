@@ -1,0 +1,23 @@
+---
+title: "13TPC-1090Teigen.pdf"
+slug: 13tpc-1090teigen
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 13TPC-1090Teigen.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 13TPC-1090Teigen.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2013/vol4/13TPC-1090Teigen.pdf |
+| extension | .pdf |
+| size_bytes | 413090 |
+| relative_path | ISOPE/ISOPE2013/vol4/13TPC-1090Teigen.pdf |

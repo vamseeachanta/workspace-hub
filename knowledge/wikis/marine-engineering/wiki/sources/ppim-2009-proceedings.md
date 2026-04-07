@@ -1,0 +1,24 @@
+---
+title: "PPIM 2009 Proceedings.pdf"
+slug: ppim-2009-proceedings
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# PPIM 2009 Proceedings.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Pipeline Pigging & Integrity Management Feb 2009 |
+| filename | PPIM 2009 Proceedings.pdf |
+| path | /mnt/ace/docs/conferences/Pipeline Pigging & Integrity Management Feb 2009/PPIM 2009 Proceedings.pdf |
+| extension | .pdf |
+| size_bytes | 9170564 |
+| year | 2009 |
+| relative_path | Pipeline Pigging & Integrity Management Feb 2009/PPIM 2009 Proceedings.pdf |

@@ -1,0 +1,23 @@
+---
+title: "11TAF-02Vorpahl.pdf"
+slug: 11taf-02vorpahl
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 11TAF-02Vorpahl.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 11TAF-02Vorpahl.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2011/data/papers/11TAF-02Vorpahl.pdf |
+| extension | .pdf |
+| size_bytes | 205957 |
+| relative_path | ISOPE/ISOPE2011/data/papers/11TAF-02Vorpahl.pdf |

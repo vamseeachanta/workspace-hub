@@ -1,0 +1,23 @@
+---
+title: "13TPC-333Yan.pdf"
+slug: 13tpc-333yan
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 13TPC-333Yan.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 13TPC-333Yan.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2013/vol4/13TPC-333Yan.pdf |
+| extension | .pdf |
+| size_bytes | 520643 |
+| relative_path | ISOPE/ISOPE2013/vol4/13TPC-333Yan.pdf |

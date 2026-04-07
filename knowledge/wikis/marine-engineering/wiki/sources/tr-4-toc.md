@@ -1,0 +1,24 @@
+---
+title: "tr-4-toc.pdf"
+slug: tr-4-toc
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# tr-4-toc.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OMAE |
+| filename | tr-4-toc.pdf |
+| path | /mnt/ace/docs/conferences/OMAE/OMAE 2006/pdfs/tr-4/tr-4-toc.pdf |
+| extension | .pdf |
+| size_bytes | 79893 |
+| year | 2006 |
+| relative_path | OMAE/OMAE 2006/pdfs/tr-4/tr-4-toc.pdf |

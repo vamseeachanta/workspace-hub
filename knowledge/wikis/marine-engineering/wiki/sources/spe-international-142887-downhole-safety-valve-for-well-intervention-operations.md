@@ -1,0 +1,24 @@
+---
+title: "SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf"
+slug: spe-international-142887-downhole-safety-valve-for-well-intervention-operations
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Coiled Tubing & Well Intervention Conference 2011 |
+| filename | SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf |
+| path | /mnt/ace/docs/conferences/Coiled Tubing & Well Intervention Conference 2011/pdfs/SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf |
+| extension | .pdf |
+| size_bytes | 2322752 |
+| year | 2011 |
+| relative_path | Coiled Tubing & Well Intervention Conference 2011/pdfs/SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf |

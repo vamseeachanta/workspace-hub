@@ -1,0 +1,23 @@
+---
+title: "13OTC_TOC.pdf"
+slug: 13otc-toc
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 13OTC_TOC.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OTC |
+| filename | 13OTC_TOC.pdf |
+| path | /mnt/ace/docs/conferences/OTC/OTC2013/13OTC_TOC.pdf |
+| extension | .pdf |
+| size_bytes | 8097855 |
+| relative_path | OTC/OTC2013/13OTC_TOC.pdf |

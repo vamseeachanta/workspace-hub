@@ -1,0 +1,24 @@
+---
+title: "VIVW_Isherwood_Orcina.pdf"
+slug: vivw-isherwood-orcina
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# VIVW_Isherwood_Orcina.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | UK Conference Folder |
+| filename | VIVW_Isherwood_Orcina.pdf |
+| path | /mnt/ace/docs/conferences/UK Conference Folder/Workshop on VIV, Norway 2004/VIVW_Isherwood_Orcina.pdf |
+| extension | .pdf |
+| size_bytes | 414451 |
+| year | 2004 |
+| relative_path | UK Conference Folder/Workshop on VIV, Norway 2004/VIVW_Isherwood_Orcina.pdf |

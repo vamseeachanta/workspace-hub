@@ -1,0 +1,23 @@
+---
+title: "ID 261 Abstract.pdf"
+slug: id-261-abstract
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# ID 261 Abstract.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | ID 261 Abstract.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2008/files/ID 261 Abstract.pdf |
+| extension | .pdf |
+| size_bytes | 16170 |
+| relative_path | DOT/DOT2008/files/ID 261 Abstract.pdf |

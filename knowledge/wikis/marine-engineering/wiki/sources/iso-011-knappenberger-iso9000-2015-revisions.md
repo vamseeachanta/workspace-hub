@@ -1,0 +1,24 @@
+---
+title: "ISO-011-Knappenberger ISO9000-2015 Revisions.pdf"
+slug: iso-011-knappenberger-iso9000-2015-revisions
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# ISO-011-Knappenberger ISO9000-2015 Revisions.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISO 9001 |
+| filename | ISO-011-Knappenberger ISO9000-2015 Revisions.pdf |
+| path | /mnt/ace/docs/conferences/ISO 9001/2014/ISO-011-Knappenberger ISO9000-2015 Revisions.pdf |
+| extension | .pdf |
+| size_bytes | 1506979 |
+| year | 2014 |
+| relative_path | ISO 9001/2014/ISO-011-Knappenberger ISO9000-2015 Revisions.pdf |

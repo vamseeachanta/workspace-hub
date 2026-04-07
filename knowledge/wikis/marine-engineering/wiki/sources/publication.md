@@ -1,0 +1,23 @@
+---
+title: "publication.pdf"
+slug: publication
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# publication.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | publication.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2004/publication.pdf |
+| extension | .pdf |
+| size_bytes | 179820 |
+| relative_path | ISOPE/ISOPE2004/publication.pdf |

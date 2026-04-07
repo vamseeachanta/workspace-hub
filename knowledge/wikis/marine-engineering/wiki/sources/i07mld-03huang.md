@@ -1,0 +1,23 @@
+---
+title: "I07MLD-03huang.pdf"
+slug: i07mld-03huang
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07MLD-03huang.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07MLD-03huang.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07MLD-03huang.pdf |
+| extension | .pdf |
+| size_bytes | 300225 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07MLD-03huang.pdf |

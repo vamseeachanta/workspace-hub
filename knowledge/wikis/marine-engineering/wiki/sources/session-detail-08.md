@@ -1,0 +1,23 @@
+---
+title: "Session Detail 08.pdf"
+slug: session-detail-08
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# Session Detail 08.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | Session Detail 08.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2004/Files/Session Detail 08.pdf |
+| extension | .pdf |
+| size_bytes | 105651 |
+| relative_path | DOT/DOT2004/Files/Session Detail 08.pdf |

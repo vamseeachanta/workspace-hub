@@ -1,0 +1,23 @@
+---
+title: "OTC 6891-Analysis and Design of Anti-Recoil System.pdf"
+slug: otc-6891-analysis-and-design-of-anti-recoil-system
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# OTC 6891-Analysis and Design of Anti-Recoil System.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OTC |
+| filename | OTC 6891-Analysis and Design of Anti-Recoil System.pdf |
+| path | /mnt/ace/docs/conferences/OTC/OTC1992/OTC 6891-Analysis and Design of Anti-Recoil System.pdf |
+| extension | .pdf |
+| size_bytes | 1127279 |
+| relative_path | OTC/OTC1992/OTC 6891-Analysis and Design of Anti-Recoil System.pdf |

@@ -1,0 +1,23 @@
+---
+title: "I07HGW-01okupu.pdf"
+slug: i07hgw-01okupu
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# I07HGW-01okupu.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | I07HGW-01okupu.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE 07/data/papers/I07HGW-01okupu.pdf |
+| extension | .pdf |
+| size_bytes | 1281864 |
+| relative_path | ISOPE/ISOPE 07/data/papers/I07HGW-01okupu.pdf |

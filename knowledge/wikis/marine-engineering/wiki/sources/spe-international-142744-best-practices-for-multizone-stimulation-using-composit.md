@@ -1,0 +1,24 @@
+---
+title: "SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf"
+slug: spe-international-142744-best-practices-for-multizone-stimulation-using-composit
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Coiled Tubing & Well Intervention Conference 2011 |
+| filename | SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf |
+| path | /mnt/ace/docs/conferences/Coiled Tubing & Well Intervention Conference 2011/pdfs/SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf |
+| extension | .pdf |
+| size_bytes | 592211 |
+| year | 2011 |
+| relative_path | Coiled Tubing & Well Intervention Conference 2011/pdfs/SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf |

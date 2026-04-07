@@ -1,0 +1,23 @@
+---
+title: "14bpap.pdf"
+slug: 14bpap
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 14bpap.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | 14bpap.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2003/files/14bpap.pdf |
+| extension | .pdf |
+| size_bytes | 301424 |
+| relative_path | DOT/DOT2003/files/14bpap.pdf |

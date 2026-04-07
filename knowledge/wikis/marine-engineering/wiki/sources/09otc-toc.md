@@ -1,0 +1,23 @@
+---
+title: "09OTC_TOC.pdf"
+slug: 09otc-toc
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 09OTC_TOC.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OTC |
+| filename | 09OTC_TOC.pdf |
+| path | /mnt/ace/docs/conferences/OTC/OTC2009/09OTC_TOC.pdf |
+| extension | .pdf |
+| size_bytes | 6971761 |
+| relative_path | OTC/OTC2009/09OTC_TOC.pdf |

@@ -1,0 +1,24 @@
+---
+title: "PL1.pdf"
+slug: pl1
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# PL1.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Flow Induced Vibration |
+| filename | PL1.pdf |
+| path | /mnt/ace/docs/conferences/Flow Induced Vibration/2004/HTML/pdf/PL1.pdf |
+| extension | .pdf |
+| size_bytes | 372346 |
+| year | 2004 |
+| relative_path | Flow Induced Vibration/2004/HTML/pdf/PL1.pdf |

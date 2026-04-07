@@ -1,0 +1,23 @@
+---
+title: "T1S5O4-mallinson.pdf"
+slug: t1s5o4-mallinson
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# T1S5O4-mallinson.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | T1S5O4-mallinson.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2011 (New Orleans)/T1S5O4-mallinson.pdf |
+| extension | .pdf |
+| size_bytes | 512125 |
+| relative_path | DOT/DOT2011 (New Orleans)/T1S5O4-mallinson.pdf |

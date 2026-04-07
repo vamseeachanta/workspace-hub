@@ -1,0 +1,24 @@
+---
+title: "org.pdf"
+slug: org
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# org.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | Arctic Technology Conference |
+| filename | org.pdf |
+| path | /mnt/ace/docs/conferences/Arctic Technology Conference/2011/data/org.pdf |
+| extension | .pdf |
+| size_bytes | 1127852 |
+| year | 2011 |
+| relative_path | Arctic Technology Conference/2011/data/org.pdf |

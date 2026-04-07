@@ -1,0 +1,23 @@
+---
+title: "13TPC-672Liang.pdf"
+slug: 13tpc-672liang
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 13TPC-672Liang.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 13TPC-672Liang.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2013/vol3/13TPC-672Liang.pdf |
+| extension | .pdf |
+| size_bytes | 262812 |
+| relative_path | ISOPE/ISOPE2013/vol3/13TPC-672Liang.pdf |

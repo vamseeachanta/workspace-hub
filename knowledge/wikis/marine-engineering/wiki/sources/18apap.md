@@ -1,0 +1,23 @@
+---
+title: "18apap.pdf"
+slug: 18apap
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 18apap.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | 18apap.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2003/files/18apap.pdf |
+| extension | .pdf |
+| size_bytes | 371273 |
+| relative_path | DOT/DOT2003/files/18apap.pdf |

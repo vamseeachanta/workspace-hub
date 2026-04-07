@@ -1,0 +1,23 @@
+---
+title: "23dpap.pdf"
+slug: 23dpap
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 23dpap.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | 23dpap.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2003/files/23dpap.pdf |
+| extension | .pdf |
+| size_bytes | 860331 |
+| relative_path | DOT/DOT2003/files/23dpap.pdf |

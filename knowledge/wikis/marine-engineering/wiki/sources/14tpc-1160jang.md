@@ -1,0 +1,23 @@
+---
+title: "14TPC-1160Jang.pdf"
+slug: 14tpc-1160jang
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# 14TPC-1160Jang.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | ISOPE |
+| filename | 14TPC-1160Jang.pdf |
+| path | /mnt/ace/docs/conferences/ISOPE/ISOPE2014/papers/vol2/14TPC-1160Jang.pdf |
+| extension | .pdf |
+| size_bytes | 897879 |
+| relative_path | ISOPE/ISOPE2014/papers/vol2/14TPC-1160Jang.pdf |

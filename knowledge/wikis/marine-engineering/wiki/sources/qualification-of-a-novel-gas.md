@@ -1,0 +1,23 @@
+---
+title: "qualification-of-a-novel-gas.pdf"
+slug: qualification-of-a-novel-gas
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# qualification-of-a-novel-gas.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | qualification-of-a-novel-gas.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/qualification-of-a-novel-gas.pdf |
+| extension | .pdf |
+| size_bytes | 1856494 |
+| relative_path | DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/qualification-of-a-novel-gas.pdf |

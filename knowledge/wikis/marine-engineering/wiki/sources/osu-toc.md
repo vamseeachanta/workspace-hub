@@ -1,0 +1,24 @@
+---
+title: "OSU-TOC.PDF"
+slug: osu-toc
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# OSU-TOC.PDF
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | OMAE |
+| filename | OSU-TOC.PDF |
+| path | /mnt/ace/docs/conferences/OMAE/OMAE 1999/PDFS/OSU/OSU-TOC.PDF |
+| extension | .pdf |
+| size_bytes | 24272 |
+| year | 1999 |
+| relative_path | OMAE/OMAE 1999/PDFS/OSU/OSU-TOC.PDF |

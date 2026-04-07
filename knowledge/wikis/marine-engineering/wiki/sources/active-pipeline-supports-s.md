@@ -1,0 +1,23 @@
+---
+title: "active-pipeline-supports-–-s.pdf"
+slug: active-pipeline-supports-s
+domain: marine-engineering
+ingested: 2026-04-07 10:31 UTC
+tags: []
+---
+
+# active-pipeline-supports-–-s.pdf
+
+> Source page auto-created by `llm-wiki batch-ingest` on 2026-04-07 10:31 UTC
+> Domain: marine-engineering
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| collection | DOT |
+| filename | active-pipeline-supports-–-s.pdf |
+| path | /mnt/ace/docs/conferences/DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/active-pipeline-supports-–-s.pdf |
+| extension | .pdf |
+| size_bytes | 11254 |
+| relative_path | DOT/DOT2009 (Monaco)/Xtras/Resources/Documents/Papers/active-pipeline-supports-–-s.pdf |

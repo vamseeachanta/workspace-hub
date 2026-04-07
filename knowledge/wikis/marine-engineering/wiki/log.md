@@ -48,3 +48,2180 @@
 - Orphan pages: 0 (all new pages linked from index.md)
 - Empty pages: 0 (all pages substantive)
 - Cross-references: Updated between long-period-swell-resonance, mooring-line-failure, lng-carrier-mooring
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 1 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): org.pdf, pc.pdf, spon.pdf, 22035.pdf, 22036.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 2 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 22093.pdf, 22094.pdf, 22095.pdf, 22097.pdf, 22098.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 3 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 22156.pdf, 22157.pdf, 22158.pdf, 22159.pdf, 22160.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 4 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): spe143307.pdf, spe143310.pdf, spe143313.pdf, spe143315.pdf, spe143317.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 5 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): ID 21 Abstract.pdf, ID 212 PAPER.pdf, ID 218 Abstract.pdf, ID 219 Abstract.pdf, ID 22 PAPER.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 6 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): ID 7.pdf, ID 70 Abstract.pdf, ID 71 Abstract.pdf, ID 72 Abstract.pdf, ID 73 PAPER.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 7 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): sess13.pdf, sess14.pdf, sess15.pdf, sess16.pdf, sess17.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 8 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): sorry.pdf, pap85.pdf, pap85a.pdf, pap65.pdf, sorry.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 9 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): pap11.pdf, pap28.pdf, sorry.pdf, pap10.pdf, pap100.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 10 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 03A-2.pdf, 03A-3.pdf, 03B-1.pdf, 03B-3.pdf, 03C-1.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 11 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 08B-1.pdf, 08B-2.pdf, 08C-1.pdf, 08C-3.pdf, 08C-4.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 12 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Paper 08-1.pdf, Paper 08-2 - Jan Gunnar.pdf, Paper 08-3 - Stephane Taxy.pdf, Paper 08-4.pdf, Paper 09-1 - Sanjar Jatar.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 13 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Paper 21-4.pdf, Paper 22-1 - Jeroen Remery.pdf, Paper 22-2.pdf, Paper 23-1 - Goulart.pdf, Paper 23-2 - F Valliet.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 14 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Session Detail 23.pdf, Session Detail 24.pdf, Session Detail 25.pdf, Session Detail 26.pdf, Session Detail 27.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 15 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T3S6O0-harris.pdf, T3S6O3-green.pdf, a-flow-assurance-approach-to.pdf, a-non-intrusive-solution-for.pdf, a-present-day-requirement-fo.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 16 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): optimization-of-the-producti.pdf, p53-turret---the-world’s-lar.pdf, pipeline-+-flow-assurance-us.pdf, pipewatch--a-cost-effective.pdf, prepare-the-unknown---the-ne.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 17 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Kim Mork_86.pdf, Loic Delebecque_109.pdf, Lothar Burk_106.pdf, Mason Wu_18.pdf, Mateusz Podskarbi_84.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 18 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 022b.pdf, 022c.pdf, 022d.pdf, 023a.pdf, 023b.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 19 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 062b.pdf, 062c.pdf, 062d.pdf, 062e.pdf, 064a.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 20 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 103b.pdf, 103c.pdf, 103d.pdf, 108a.pdf, 108b.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 21 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 153d.pdf, 159a.pdf, 165a.pdf, 165b.pdf, 165c.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 22 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 208b.pdf, 208c.pdf, 210a.pdf, 210b.pdf, 210c.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 23 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 260a.pdf, 260b.pdf, 261a.pdf, 273a.pdf, 273b.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 24 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 17bpap.pdf, 17cpap.pdf, 17dpap.pdf, 17epap.pdf, 18apap.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 25 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 30dpap.pdf, 3cpap.pdf, 3dpap.pdf, 4apap.pdf, 4bpap.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 26 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 01C-2.pdf, 01C-3.pdf, 01C-4.pdf, 02A-1.pdf, 02A-2.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 27 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 07A-4.pdf, 07B-1.pdf, 07B-2.pdf, 07B-3.pdf, 07B-4.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 28 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T2S6O2-slides.pdf, T2S6O3-slides.pdf, T2S6O4-slides.pdf, T2S1O2-paper.pdf, T2S1O3-paper.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 29 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T1S2O4-paper.pdf, T1S2O5-paper.pdf, T1S3O2-paper.pdf, T1S3O3-paper.pdf, T1S3O4-paper.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 30 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T3S4O5-paper.pdf, T3S5O2-paper.pdf, T3S5O3-paper.pdf, T3S5O4-paper.pdf, T3S5O5-paper.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 31 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T2S5O5-slides.pdf, T2S6O2-slides.pdf, T2S6O3-slides.pdf, T2S6O4-slides.pdf, T3S1O2-slides.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 32 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): T2S3O2-paper.pdf, T2S3O3-paper.pdf, T2S3O4-paper.pdf, T2S4O2-paper.pdf, T2S4O3-paper.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 33 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Mme_4.pdf, No_Paper_Submitted.pdf, Ong_1.pdf, Perez_6.pdf, Petruska_7.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 34 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): Operator Needs in Ultra Deep Wells (Nexe, Retrofittable Stress Measurements for De, StatoilHydro Merger - Implications for G, Technical Challenges Confronting Deepwat, Technical Challenges Confronting Deepwat ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 35 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 021es.pdf, 023ty.pdf, 024ss.pdf, 026es.pdf, 027ns.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 36 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 093ts.pdf, 094ng.pdf, 095rs.pdf, 098em.pdf, 099ls.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 37 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 161es.pdf, 163ls.pdf, 164ms.pdf, 165ns.pdf, 167er.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 38 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): PL2.pdf, PL3.pdf, PL4.pdf, D-Kolnsberg-Ensco-RCMA-Presentation-IADC, D-Rabun-IADC-RIO-FINAL-TEXT-VERSION.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 39 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): ISO-072-Quinn-Real Strategy Execution.pd, ISO-081-Christensen-Where is QMS Going i, ISO-082-Dror-Demystifying ISO 9001 in ho, ISO-091-Houser-Sustaining and Improving., ISO-092-Ponnudurai-Ensuring Quality From ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 40 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-jsc-161.pdf, 2004-jsc-168.pdf, 2004-jsc-170.pdf, 2004-jsc-176.pdf, 2004-jsc-178.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 41 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-jsc-422.pdf, 2004-jsc-424.pdf, 2004-jsc-427.pdf, 2004-jsc-430.pdf, 2004-jsc-449.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 42 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-fsw-14.pdf, 2004-fsw-2.pdf, 2004-fsw-3.pdf, 2004-fsw-4.pdf, 2004-fsw-5.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 43 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-jsc-310.pdf, 2004-jsc-311.pdf, 2004-jsc-320.pdf, 2004-jsc-333.pdf, 2004-jsc-361.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 44 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-hsc-01.pdf, 2004-hsc-09.pdf, 2004-il-01.pdf, 2004-jp-01.pdf, 2004-jsc-110.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 45 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-jsc-367.pdf, 2004-jsc-369.pdf, 2004-jsc-377.pdf, 2004-jsc-380.pdf, 2004-jsc-381.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 46 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-pt-02.pdf, 2004-pt-04.pdf, 2004-rsp-02.pdf, 2004-rsp-09.pdf, 2004-rsp-12.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 47 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-jsc-183.pdf, 2004-jsc-188.pdf, 2004-jsc-189.pdf, 2004-jsc-193.pdf, 2004-jsc-196.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 48 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2004-mcl-003.pdf, 2004-mhk-02.pdf, 2004-mp-02.pdf, 2004-mp-03.pdf, 2004-mp-04.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 49 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07AS-01saulni.pdf, I07AS-02mendes.pdf, I07AS-03gillot.pdf, I07ATB-01yakun.pdf, I07ATB-03belle.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 50 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07HGW-01okupu.pdf, I07HIP-02park.pdf, I07HIP-03hong.pdf, I07HIP-04Nam.pdf, I07HM-01satend.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 51 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-136krup.pdf, I07JSC-138song.pdf, I07JSC-140vale.pdf, I07JSC-141zuba.pdf, I07JSC-142Yan.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 52 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-213lie.pdf, I07JSC-214joha.pdf, I07JSC-215pesc.pdf, I07JSC-216pole.pdf, I07JSC-217kim.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 53 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-286lee.pdf, I07JSC-287isek.pdf, I07JSC-288kwon.pdf, I07JSC-289sasa.pdf, I07JSC-292stap.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 54 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-365bene.pdf, I07JSC-368stua.pdf, I07JSC-369jan.pdf, I07JSC-370shin.pdf, I07JSC-373won.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 55 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-447Ghot.pdf, I07JSC-448Liu.pdf, I07JSC-449mour.pdf, I07JSC-451wata.pdf, I07JSC-452arai.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 56 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JSC-529whea.pdf, I07JSC-535coli.pdf, I07JSC-538kawa.pdf, I07JSC-539sawa.pdf, I07JSC-541Rous.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 57 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07JWC-01Chen.pdf, I07JWC-02hu.pdf, I07JWC-03wu.pdf, I07JWC-04ku.pdf, I07JWC-05chien.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 58 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07NM-02shimad.pdf, I07NM-03muraka.pdf, I07NM-04yauchi.pdf, I07NM-05kioka.pdf, I07Nano-05doya.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 59 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07SBD-23shige.pdf, I07SBD-24tsuru.pdf, I07SBD-25tsuru.pdf, I07SBD-26shino.pdf, I07SBD-27minam.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 60 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): I07TSB-02Yamad.pdf, I07TSB-04Kawan.pdf, I07TU-01nagata.pdf, I07TY-01osawa.pdf, I07WK-01nakamu.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 61 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-1104Brand.pdf, 2012-TPC-1106Ostby.pdf, 2012-TPC-1107Ostby.pdf, 2012-TPC-1108Olden.pdf, 2012-TPC-1109Shino.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 62 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-551Hayas.pdf, 2012-TPC-558Shibu.pdf, 2012-TPC-565Dulne.pdf, 2012-TPC-566Mao.pdf, 2012-TPC-567Minat.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 63 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-982ElMal.pdf, 2012-TPC-984Burro.pdf, 2012-TPC-985DuToit.pdf, 2012-TPC-988Shita.pdf, 2012-TPC-989Chen.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 64 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TAK-02Komai.pdf, 2012-TAK-04Kakumot.pdf, 2012-TAK-05Miyazak.pdf, 2012-TAK-06Miyazak.pdf, 2012-TAK-07Park.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 65 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-296Souki.pdf, 2012-TPC-298Zacha.pdf, 2012-TPC-327Popko.pdf, 2012-TPC-330Liu.pdf, 2012-TPC-331Yamam.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 66 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-561Lutje.pdf, 2012-TPC-562Carst.pdf, 2012-TPC-564Belov.pdf, 2012-TPC-580Ro.pdf, 2012-TPC-594Ferri.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 67 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-882Li.pdf, 2012-TPC-890Kim.pdf, 2012-TPC-896Bhind.pdf, 2012-TPC-903Tryas.pdf, 2012-TPC-927Yang.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 68 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-196Ragaz.pdf, 2012-TPC-209Shi.pdf, 2012-TPC-210Zhan.pdf, 2012-TPC-217Lee.pdf, 2012-TPC-219Santh.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 69 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-530Slesa.pdf, 2012-TPC-534Kawab.pdf, 2012-TPC-563Baldy.pdf, 2012-TPC-570Ahtch.pdf, 2012-TPC-572Onur.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 70 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-DCW-07Shen.pdf, 2012-DCW-10Shan.pdf, 2012-DCW-11Xu.pdf, 2012-DCW-12Zhang.pdf, 2012-DCW-15Xu.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 71 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-SQY-02Zhu.pdf, 2012-STI-01Didenku.pdf, 2012-STI-02Sakella.pdf, 2012-STI-03Kind.pdf, 2012-TPC-1003Baudi.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 72 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-303Chang.pdf, 2012-TPC-305Yukse.pdf, 2012-TPC-315MohdA.pdf, 2012-TPC-316Zhou.pdf, 2012-TPC-323You.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 73 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-614Bandy.pdf, 2012-TPC-616Loent.pdf, 2012-TPC-619Liu.pdf, 2012-TPC-643Galle.pdf, 2012-TPC-649Yamam.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 74 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012-TPC-911Ozel.pdf, 2012-TPC-931Irtem.pdf, 2012-TPC-935Spent.pdf, 2012-TPC-945Fedel.pdf, 2012-TPC-948Bulia.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 75 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0387Dong.pdf, 14TPC-0388Sun.pdf, 14TPC-0394Shen.pdf, 14TPC-0396Tang.pdf, 14TPC-0398Kumar.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 76 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0852Seo.pdf, 14TPC-0856Tang.pdf, 14TPC-0863Shibue.pdf, 14TPC-0870Mandal.pdf, 14TPC-0874Park.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 77 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-1097Pan.pdf, 14TPC-1105Nonami.pdf, 14TPC-1108Nishizu.pdf, 14TPC-1111Shimada.pdf, 14TPC-1113Kawabata.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 78 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0228Wang.pdf, 14TPC-0235Ma.pdf, 14TPC-0255Sazonov.pdf, 14TPC-0270Magee.pdf, 14TPC-0275Yu.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 79 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0512Li.pdf, 14TPC-0525Ryu.pdf, 14TPC-0542Uno.pdf, 14TPC-0545Hirose.pdf, 14TPC-0549Seo.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 80 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0860Shin.pdf, 14TPC-0867Theodoridi.pdf, 14TPC-0872Copple.pdf, 14TPC-0873Jin.pdf, 14TPC-0877Hao.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 81 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14HA-01Arslan.pdf, 14HA-02Ahmed.pdf, 14RYY-03Hsu.pdf, 14RYY-07Chien.pdf, 14TPC-0104Bokane.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 82 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0429Shin.pdf, 14TPC-0431Cho.pdf, 14TPC-0436Huo.pdf, 14TPC-0455Wei.pdf, 14TPC-0464Orynyak.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 83 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-1003Shiri.pdf, 14TPC-1004Lervik.pdf, 14TPC-1005Huang.pdf, 14TPC-1010Ye.pdf, 14TPC-1013Zhao.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 84 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14SYH-21Tiphine.pdf, 14SYH-29Southall.pdf, 14TPC-0120Kurian.pdf, 14TPC-0122Tong.pdf, 14TPC-0126Chuang.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 85 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0433Joga.pdf, 14TPC-0437Sanitwong.pdf, 14TPC-0452Okabe.pdf, 14TPC-0459Li.pdf, 14TPC-0460Liu.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 86 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 14TPC-0869Behruzi.pdf, 14TPC-0892Soon.pdf, 14TPC-0911Wang.pdf, 14TPC-0927Nishida.pdf, 14TPC-0928Okada.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 87 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2014p098.pdf, 2015p105.pdf, 2016p113.pdf, 2017p120.pdf, 2018p127.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 88 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2064p440.pdf, 2065p445.pdf, 2066p453.pdf, 2067p460.pdf, 2068p466.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 89 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2114p770.pdf, 2115p780.pdf, 2116p788.pdf, 2117p793.pdf, 4001p001.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 90 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 4047p318.pdf, 4048p326.pdf, 4049p334.pdf, 4050p344.pdf, 4051p357.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 91 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 1015p093.pdf, 1016p100.pdf, 1017p106.pdf, 1018p113.pdf, 1019p121.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 92 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 1065p435.pdf, 1066p439.pdf, 1067p445.pdf, 1068p453.pdf, 1069p461.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 93 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 3033p220.pdf, 3034p227.pdf, 3035p233.pdf, 3036p241.pdf, 3037p248.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 94 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 3083p566.pdf, 3084p571.pdf, 3085p578.pdf, 3086p585.pdf, 3087p593.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 95 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 2012.pdf, foreword.pdf, general.pdf, pubs.pdf, 10TPC-1217Mannu.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 96 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11JWC-04Feng.pdf, 11JWC-05Lee.pdf, 11JZ-03Gu.pdf, 11LKC-01Lee.pdf, 11LKC-03Chuang.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 97 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-1034Bae.pdf, 11TPC-1035Fathi.pdf, 11TPC-1036Lele.pdf, 11TPC-1037Nair.pdf, 11TPC-1038Kibey.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 98 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-1124Nam.pdf, 11TPC-1126Ostby.pdf, 11TPC-1127Ostby.pdf, 11TPC-1128Ding.pdf, 11TPC-1129Nelso.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 99 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-1242Osuki.pdf, 11TPC-1243Shive.pdf, 11TPC-1247Yang.pdf, 11TPC-1250Wang.pdf, 11TPC-1252Tomit.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 100 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-228Prinse.pdf, 11TPC-229Xie.pdf, 11TPC-232Zueck.pdf, 11TPC-237Wang.pdf, 11TPC-240Mingue.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 101 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-323Liu.pdf, 11TPC-325Liu.pdf, 11TPC-326Lee.pdf, 11TPC-327Koo.pdf, 11TPC-328Rineha.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 102 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-412Liang.pdf, 11TPC-414Peng.pdf, 11TPC-416Kawai.pdf, 11TPC-419Ganesa.pdf, 11TPC-420Otani.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 103 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-507Kodair.pdf, 11TPC-512Kim.pdf, 11TPC-514Yu.pdf, 11TPC-516Liu.pdf, 11TPC-519Oh.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 104 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-615Lin.pdf, 11TPC-616An.pdf, 11TPC-620Huang.pdf, 11TPC-621Lee.pdf, 11TPC-622Nakash.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 105 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-745Grilli.pdf, 11TPC-747Ahmed.pdf, 11TPC-749Kida.pdf, 11TPC-752Dawoto.pdf, 11TPC-756Jennin.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 106 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-845Froyd.pdf, 11TPC-846Larsen.pdf, 11TPC-847Wang.pdf, 11TPC-853Huang.pdf, 11TPC-854Hetman.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 107 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 11TPC-941Liu.pdf, 11TPC-943Lozows.pdf, 11TPC-944Kumar.pdf, 11TPC-945Wakats.pdf, 11TPC-946Hara.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 108 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13MK-03Tammer.pdf, 13MK-05Zou.pdf, 13MK-06VanderHorst.pdf, 13MK-08Caldwell.pdf, 13RYY-04Lin.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 109 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-267Bruschi-.pdf, 13TPC-277Wittkower.pdf, 13TPC-288Kim.pdf, 13TPC-295Sutton.pdf, 13TPC-296Harksen.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 110 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-754Brauer.pdf, 13TPC-755Hoehler.pdf, 13TPC-757Akhtar.pdf, 13TPC-787Belov.pdf, 13TPC-800Pisarski.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 111 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TF-01Kaufer.pdf, 13TF-02King.pdf, 13TPC-0767Hindman.pdf, 13TPC-1013Stahlmann.pdf, 13TPC-1015Hyun.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 112 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-285Supartono.pdf, 13TPC-286Kim.pdf, 13TPC-287Wang.pdf, 13TPC-292Huang.pdf, 13TPC-304Zueck-.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 113 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-648Jones.pdf, 13TPC-650Masciola.pdf, 13TPC-661Yan.pdf, 13TPC-682Kim.pdf, 13TPC-684Vire.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 114 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-910Pogorelova.pdf, 13TPC-911Lee.pdf, 13TPC-916Zubakin.pdf, 13TPC-919Sohn.pdf, 13TPC-920Henry.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 115 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-240Lee.pdf, 13TPC-245Xu.pdf, 13TPC-254Kim.pdf, 13TPC-256Feng.pdf, 13TPC-257Takahashi.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 116 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-540Tonai.pdf, 13TPC-553Kim.pdf, 13TPC-559Kimura.pdf, 13TPC-572Su.pdf, 13TPC-574Shogaki.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 117 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13FD-02Dematteo.pdf, 13FD-07Razzak.pdf, 13FD-08Loysel.pdf, 13FD-09Ghidaglia-.pdf, 13FD-12Karimi.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 118 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-192Baeten.pdf, 13TPC-193Baeten.pdf, 13TPC-196Vogler.pdf, 13TPC-197Shih.pdf, 13TPC-200Li.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 119 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-426Hsu.pdf, 13TPC-435Kim.pdf, 13TPC-442Bihs.pdf, 13TPC-458Sabeur.pdf, 13TPC-459Kamath.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 120 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 13TPC-760Li.pdf, 13TPC-761Kang.pdf, 13TPC-766Ma.pdf, 13TPC-768Loewe.pdf, 13TPC-776Shiotani.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 121 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 003.PDF, 004.PDF, 005.PDF, 007.PDF, 008.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 122 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 080.PDF, 082.PDF, 083.PDF, 084.PDF, 085.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 123 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 150.PDF, 151.PDF, 154.PDF, 155.PDF, 156.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 124 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 239.PDF, 240.PDF, 241.PDF, 244.PDF, 245.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 125 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 315.PDF, 316.PDF, 317.PDF, 319.PDF, 320.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 126 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 389.PDF, 390.PDF, 391.PDF, 392.PDF, 394.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 127 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 462.PDF, 464.PDF, 468.PDF, 469.PDF, 470.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 128 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 545.PDF, 546.PDF, 548.PDF, 550.PDF, 551.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 129 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): 633.PDF, 634.PDF, 635.PDF, 636.PDF, 637.PDF ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 130 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57448.pdf, OMAE2008-57451.pdf, OMAE2008-57452.pdf, OMAE2008-57502.pdf, OMAE2008-57503.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 131 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57365.pdf, OMAE2008-57371.pdf, OMAE2008-57373.pdf, OMAE2008-57377.pdf, OMAE2008-57378.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 132 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57293.pdf, OMAE2008-57319.pdf, OMAE2008-57331.pdf, OMAE2008-57595.pdf, OMAE2008-57666.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 133 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57405.pdf, OMAE2008-57409.pdf, OMAE2008-57410.pdf, OMAE2008-57427.pdf, OMAE2008-57438.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 134 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57879.pdf, OMAE2008-57922.pdf, OMAE2008-57937.pdf, OMAE2008-57938.pdf, OMAE2008-57943.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 135 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57330.pdf, OMAE2008-57338.pdf, OMAE2008-57344.pdf, OMAE2008-57346.pdf, OMAE2008-57361.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 136 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57205.pdf, OMAE2008-57206.pdf, OMAE2008-57246.pdf, OMAE2008-57275.pdf, OMAE2008-57279.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 137 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57197.pdf, OMAE2008-57219.pdf, OMAE2008-57223.pdf, OMAE2008-57248.pdf, OMAE2008-57256.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 138 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57730.pdf, OMAE2008-57734.pdf, OMAE2008-57740.pdf, OMAE2008-57743.pdf, OMAE2008-57745.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 139 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57160.pdf, OMAE2008-57163.pdf, OMAE2008-57337.pdf, OMAE2008-57379.pdf, OMAE2008-57478.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 140 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57233.pdf, OMAE2008-57235.pdf, OMAE2008-57253.pdf, OMAE2008-57349.pdf, OMAE2008-57415.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 141 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57270.pdf, OMAE2008-57295.pdf, OMAE2008-57340.pdf, OMAE2008-57345.pdf, OMAE2008-57355.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 142 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2008-57850.pdf, OMAE2008-57861.pdf, OMAE2008-57881.pdf, OMAE2008-57901.pdf, OMAE2008-57925.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 143 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-80178.pdf, OMAE2009-80190.pdf, OMAE2009-80203.pdf, OMAE2009-80210.pdf, OMAE2009-80220.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 144 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79505.pdf, OMAE2009-79507.pdf, OMAE2009-79518.pdf, OMAE2009-79519.pdf, OMAE2009-79520.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 145 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-80182.pdf, OMAE2009-80213.pdf, OMAE2009-79113.pdf, OMAE2009-79139.pdf, OMAE2009-79140.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 146 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79253.pdf, OMAE2009-79270.pdf, OMAE2009-79271.pdf, OMAE2009-79287.pdf, OMAE2009-79289.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 147 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79806.pdf, OMAE2009-79807.pdf, OMAE2009-79829.pdf, OMAE2009-79847.pdf, OMAE2009-79851.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 148 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79793.pdf, OMAE2009-79817.pdf, OMAE2009-79867.pdf, OMAE2009-79909.pdf, OMAE2009-79920.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 149 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79399.pdf, OMAE2009-79425.pdf, OMAE2009-79442.pdf, OMAE2009-79443.pdf, OMAE2009-79444.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 150 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79197.pdf, OMAE2009-79224.pdf, OMAE2009-79282.pdf, OMAE2009-79285.pdf, OMAE2009-79388.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 151 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79144.pdf, OMAE2009-79149.pdf, OMAE2009-79183.pdf, OMAE2009-79219.pdf, OMAE2009-79235.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 152 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79846.pdf, OMAE2009-79849.pdf, OMAE2009-79855.pdf, OMAE2009-79871.pdf, OMAE2009-79876.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 153 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79170.pdf, OMAE2009-79207.pdf, OMAE2009-79209.pdf, OMAE2009-79211.pdf, OMAE2009-79212.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 154 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-80192.pdf, OMAE2009-80193.pdf, OMAE2009-80195.pdf, OMAE2009-80196.pdf, OMAE2009-80206.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 155 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79437.pdf, OMAE2009-79457.pdf, OMAE2009-79467.pdf, OMAE2009-79599.pdf, OMAE2009-79660.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 156 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2009-79556.pdf, OMAE2009-79595.pdf, OMAE2009-79604.pdf, OMAE2009-79605.pdf, OMAE2009-79613.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 157 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10119.pdf, OMAE2013-10216.pdf, OMAE2013-10234.pdf, OMAE2013-10252.pdf, OMAE2013-10272.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 158 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10054.pdf, OMAE2013-10056.pdf, OMAE2013-10057.pdf, OMAE2013-10069.pdf, OMAE2013-10070.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 159 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10668.pdf, OMAE2013-10681.pdf, OMAE2013-10728.pdf, OMAE2013-10750.pdf, OMAE2013-10758.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 160 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-11384.pdf, OMAE2013-11394.pdf, OMAE2013-11395.pdf, OMAE2013-11417.pdf, OMAE2013-11421.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 161 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10034.pdf, OMAE2013-10041.pdf, OMAE2013-10047.pdf, OMAE2013-10052.pdf, OMAE2013-10071.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 162 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10920.pdf, OMAE2013-10922.pdf, OMAE2013-10932.pdf, OMAE2013-10973.pdf, OMAE2013-10988.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 163 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10223.pdf, OMAE2013-10230.pdf, OMAE2013-10254.pdf, OMAE2013-10265.pdf, OMAE2013-10281.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 164 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10350.pdf, OMAE2013-10357.pdf, OMAE2013-10359.pdf, OMAE2013-10363.pdf, OMAE2013-10366.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 165 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-11296.pdf, OMAE2013-11335.pdf, OMAE2013-11342.pdf, OMAE2013-11345.pdf, OMAE2013-11362.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 166 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10463.pdf, OMAE2013-10527.pdf, OMAE2013-10537.pdf, OMAE2013-10566.pdf, OMAE2013-10618.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 167 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-11200.pdf, OMAE2013-11204.pdf, OMAE2013-11213.pdf, OMAE2013-11247.pdf, OMAE2013-11259.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 168 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10213.pdf, OMAE2013-10226.pdf, OMAE2013-10263.pdf, OMAE2013-10271.pdf, OMAE2013-10287.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 169 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10905.pdf, OMAE2013-10907.pdf, OMAE2013-10914.pdf, OMAE2013-10917.pdf, OMAE2013-10934.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 170 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-11630.pdf, OMAE2013-11633.pdf, OMAE2013-11634.pdf, OMAE2013-11636.pdf, OMAE2013-11638.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 171 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-11198.pdf, OMAE2013-11222.pdf, OMAE2013-11227.pdf, OMAE2013-11297.pdf, OMAE2013-11313.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 172 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10642.pdf, OMAE2013-10846.pdf, OMAE2013-10916.pdf, OMAE2013-10954.pdf, OMAE2013-11027.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 173 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10255.pdf, OMAE2013-10257.pdf, OMAE2013-10268.pdf, OMAE2013-10277.pdf, OMAE2013-10286.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 174 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2013-10903.pdf, OMAE2013-10940.pdf, OMAE2013-10944.pdf, OMAE2013-10959.pdf, OMAE2013-10990.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 175 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23538.pdf, OMAE2014-23542.pdf, OMAE2014-23643.pdf, OMAE2014-23674.pdf, OMAE2014-23676.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 176 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23331.pdf, OMAE2014-23351.pdf, OMAE2014-23366.pdf, OMAE2014-23373.pdf, OMAE2014-23403.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 177 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24048.pdf, OMAE2014-24062.pdf, OMAE2014-24069.pdf, OMAE2014-24072.pdf, OMAE2014-24081.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 178 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24607.pdf, OMAE2014-24608.pdf, OMAE2014-24624.pdf, OMAE2014-24638.pdf, OMAE2014-24639.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 179 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24029.pdf, OMAE2014-24036.pdf, OMAE2014-24038.pdf, OMAE2014-24043.pdf, OMAE2014-24128.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 180 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23462.pdf, OMAE2014-23472.pdf, OMAE2014-23489.pdf, OMAE2014-23491.pdf, OMAE2014-23492.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 181 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24286.pdf, OMAE2014-24300.pdf, OMAE2014-24303.pdf, OMAE2014-24305.pdf, OMAE2014-24319.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 182 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23898.pdf, OMAE2014-23925.pdf, OMAE2014-23990.pdf, OMAE2014-24183.pdf, OMAE2014-24192.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 183 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23515.pdf, OMAE2014-23516.pdf, OMAE2014-23529.pdf, OMAE2014-23584.pdf, OMAE2014-23588.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 184 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24478.pdf, OMAE2014-24488.pdf, OMAE2014-24516.pdf, OMAE2014-24522.pdf, OMAE2014-24526.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 185 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23560.pdf, OMAE2014-23587.pdf, OMAE2014-23621.pdf, OMAE2014-23639.pdf, OMAE2014-23667.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 186 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24166.pdf, OMAE2014-24172.pdf, OMAE2014-24175.pdf, OMAE2014-24215.pdf, OMAE2014-24227.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 187 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23157.pdf, OMAE2014-23166.pdf, OMAE2014-23175.pdf, OMAE2014-23198.pdf, OMAE2014-23210.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 188 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-23790.pdf, OMAE2014-23795.pdf, OMAE2014-23803.pdf, OMAE2014-23807.pdf, OMAE2014-23811.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 189 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24587.pdf, OMAE2014-24589.pdf, OMAE2014-24611.pdf, OMAE2014-24612.pdf, OMAE2014-24613.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 190 (50 records)
+- Domain: marine-engineering
+- Records: 50
+- Titles (sample): OMAE2014-24707.pdf, OMAE2014-23141.pdf, OMAE2014-23231.pdf, OMAE2014-23263.pdf, OMAE2014-23302.pdf ... (+45 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 1 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2014-24498.pdf, OMAE2014-24545.pdf, OMAE2014-24596.pdf, OMAE2014-24597.pdf, OMAE2014-24618.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 2 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2014-23993.pdf, OMAE2014-23994.pdf, OMAE2014-23997.pdf, OMAE2014-24006.pdf, OMAE2014-24014.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 3 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-20058.pdf, OMAE2010-20060.pdf, OMAE2010-20065.pdf, OMAE2010-20066.pdf, OMAE2010-20068.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 4 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-20982.pdf, OMAE2010-20988.pdf, OMAE2010-20990.pdf, OMAE2010-21010.pdf, OMAE2010-21012.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 5 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-21066.pdf, OMAE2010-21112.pdf, OMAE2010-21143.pdf, OMAE2010-21156.pdf, OMAE2010-21177.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 6 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-21138.pdf, OMAE2010-21147.pdf, OMAE2010-21166.pdf, OMAE2010-21181.pdf, OMAE2010-20030.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 7 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-20771.pdf, OMAE2010-20778.pdf, OMAE2010-20788.pdf, OMAE2010-20796.pdf, OMAE2010-20811.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 8 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-20522.pdf, OMAE2010-20558.pdf, OMAE2010-20565.pdf, OMAE2010-20595.pdf, OMAE2010-20613.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 9 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2010-21132.pdf, OMAE2010-21150.pdf, OMAE2010-21152.pdf, OMAE2010-21174.pdf, OMAE2010-21176.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 10 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-49254.pdf, OMAE2011-49257.pdf, OMAE2011-49267.pdf, OMAE2011-49270.pdf, OMAE2011-49276.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 11 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-49482.pdf, OMAE2011-49499.pdf, OMAE2011-49663.pdf, OMAE2011-50028.pdf, OMAE2011-50064.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 12 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-50303.pdf, OMAE2011-50304.pdf, OMAE2011-50327.pdf, OMAE2011-50342.pdf, OMAE2011-49037.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 13 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-49820.pdf, OMAE2011-49821.pdf, OMAE2011-49869.pdf, OMAE2011-49893.pdf, OMAE2011-49966.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 14 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-50118.pdf, OMAE2011-50147.pdf, OMAE2011-50175.pdf, OMAE2011-50228.pdf, OMAE2011-50264.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 15 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-49980.pdf, OMAE2011-49982.pdf, OMAE2011-50014.pdf, OMAE2011-50030.pdf, OMAE2011-50053.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 16 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-50233.pdf, OMAE2011-50253.pdf, OMAE2011-49024.pdf, OMAE2011-49029.pdf, OMAE2011-49053.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 17 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2011-50156.pdf, OMAE2011-50219.pdf, OMAE2011-50248.pdf, OMAE2011-50249.pdf, OMAE2011-50263.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 18 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2006-92087.pdf, OMAE2006-92088.pdf, OMAE2006-92091.pdf, OMAE2006-92096.pdf, OMAE2006-92108.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 19 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2006-92290.pdf, OMAE2006-92292.pdf, OMAE2006-92308.pdf, OMAE2006-92321.pdf, OMAE2006-92325.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 20 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2006-92218.pdf, OMAE2006-92229.pdf, OMAE2006-92238.pdf, OMAE2006-92248.pdf, OMAE2006-92252.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 21 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2006-92465.pdf, OMAE2006-92470.pdf, OMAE2006-92520.pdf, OMAE2006-92604.pdf, OMAE2006-92635.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 22 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 1135.PDF, 1136.PDF, 1137.PDF, 1138.PDF, 1141.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 23 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 4182.PDF, 4183.PDF, 4190.PDF, 4191.PDF, 4192.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 24 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 2551.PDF, 2552.PDF, 2560.PDF, 2561.PDF, 2564.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 25 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2007-29661.pdf, OMAE2007-29703.pdf, OMAE2007-29720.pdf, OMAE2007-29048.pdf, OMAE2007-29071.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 26 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2007-29321.pdf, OMAE2007-29383.pdf, OMAE2007-29464.pdf, OMAE2007-29479.pdf, OMAE2007-29589.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 27 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2007-29313.pdf, OMAE2007-29326.pdf, OMAE2007-29337.pdf, OMAE2007-29377.pdf, OMAE2007-29381.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 28 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2007-29466.pdf, OMAE2007-29467.pdf, OMAE2007-29478.pdf, OMAE2007-29492.pdf, OMAE2007-29518.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 29 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83461.pdf, OMAE2012-83465.pdf, OMAE2012-83469.pdf, OMAE2012-83555.pdf, OMAE2012-83644.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 30 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83764.pdf, OMAE2012-83816.pdf, OMAE2012-83818.pdf, OMAE2012-83829.pdf, OMAE2012-83833.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 31 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83409.pdf, OMAE2012-83437.pdf, OMAE2012-83458.pdf, OMAE2012-83464.pdf, OMAE2012-83471.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 32 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83294.pdf, OMAE2012-83307.pdf, OMAE2012-83316.pdf, OMAE2012-83326.pdf, OMAE2012-83327.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 33 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83035.pdf, OMAE2012-83060.pdf, OMAE2012-83073.pdf, OMAE2012-83076.pdf, OMAE2012-83078.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 34 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-83279.pdf, OMAE2012-83310.pdf, OMAE2012-83319.pdf, OMAE2012-83343.pdf, OMAE2012-83344.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 35 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OMAE2012-84211.pdf, OMAE2012-84213.pdf, OMAE2012-84214.pdf, OMAE2012-84219.pdf, OMAE2012-84222.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 36 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 37143.pdf, 37146.pdf, 37147.pdf, 37148.pdf, 37151.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 37 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 37057.pdf, 37065.pdf, 37078.pdf, 37080.pdf, 37100.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 38 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 37170.pdf, 37211.pdf, 37215.pdf, 37229.pdf, 37264.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 39 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 4331.PDF, 4332.PDF, 4333.PDF, 4334.PDF, 4335.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 40 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 1440.PDF, 1441.PDF, 1442.PDF, 1444.PDF, 1445.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 41 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 0418.PDF, 0419.PDF, 0420.PDF, 0422.PDF, 0423.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 42 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 1462.PDF, 1465.PDF, 1487.PDF, 3092.PDF, 3901.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 43 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc20371.pdf, otc20372.pdf, otc20379.pdf, otc20385.pdf, otc20389.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 44 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc20630.pdf, otc20631.pdf, otc20633.pdf, otc20635.pdf, otc20636.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 45 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc20858.pdf, otc20860.pdf, otc20861.pdf, otc20862.pdf, otc20863.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 46 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): volume2.pdf, volume3.pdf, welcome.pdf, OTC10730.PDF, OTC10755.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 47 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc10808.pdf, otc10809.pdf, otc10810.pdf, otc10811.pdf, otc10812.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 48 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc10932.pdf, otc10933.pdf, otc10934.pdf, otc10937.pdf, otc10939.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 49 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 12OTC_sponsors.pdf, otc22860.pdf, otc22882.pdf, otc22883.pdf, otc22884.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 50 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc23180.pdf, otc23181.pdf, otc23183.pdf, otc23184.pdf, otc23185.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 51 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc23458.pdf, otc23459.pdf, otc23461.pdf, otc23462.pdf, otc23463.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 52 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25086-MS.pdf, OTC-25087-MS.pdf, OTC-25088-MS.pdf, OTC-25089-MS.pdf, OTC-25091-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 53 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25203-MS.pdf, OTC-25204-MS.pdf, OTC-25206-MS.pdf, OTC-25207-MS.pdf, OTC-25208-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 54 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25324-MS.pdf, OTC-25325-MS.pdf, OTC-25326-MS.pdf, OTC-25327-MS.pdf, OTC-25328-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 55 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): ResourceCenter.pdf, committee.pdf, organizations.pdf, OTC13990.pdf, OTC13991.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 56 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC14101.pdf, OTC14102.pdf, OTC14103.pdf, OTC14106.pdf, OTC14108.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 57 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC14219.pdf, OTC14220.pdf, OTC14221.pdf, OTC14222.pdf, OTC14223.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 58 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17055.pdf, otc17057.pdf, otc17058.pdf, otc17060.pdf, otc17061.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 59 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17338.pdf, otc17345.pdf, otc17353.pdf, otc17355.pdf, otc17357.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 60 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17614.pdf, otc17615.pdf, otc17619.pdf, otc17620.pdf, otc17622.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 61 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC12970.PDF, OTC12971.PDF, OTC12972.PDF, OTC12974.PDF, OTC12975.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 62 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC13100.PDF, OTC13102.PDF, OTC13103.PDF, OTC13104.PDF, OTC13107.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 63 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC13230.PDF, OTC13231.PDF, OTC13233.PDF, OTC13234.PDF, OTC13235.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 64 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc21285.pdf, otc21291.pdf, otc21292.pdf, otc21294.pdf, otc21300.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 65 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc21610.pdf, otc21611.pdf, otc21615.pdf, otc21616.pdf, otc21617.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 66 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc21919.pdf, otc21922.pdf, otc21925.pdf, otc21934.pdf, otc21937.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 67 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25695-MS.pdf, OTC-25697-MS.pdf, OTC-25698-MS.pdf, OTC-25699-MS.pdf, OTC-25700-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 68 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25824-MS.pdf, OTC-25825-MS.pdf, OTC-25826-MS.pdf, OTC-25827-MS.pdf, OTC-25828-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 69 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC-25953-MS.pdf, OTC-25955-MS.pdf, OTC-25956-MS.pdf, OTC-25957-MS.pdf, OTC-25959-MS.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 70 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): 17otctoc_VA_Signed.pdf, OASIS - Notification System.pdf, CCF01292017.pdf, 07OTC_TOC.pdf, 07OTC_committees.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 71 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18561.pdf, otc18563.pdf, otc18576.pdf, otc18578.pdf, otc18584.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 72 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18822.pdf, otc18823.pdf, otc18824.pdf, otc18829.pdf, otc18830.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 73 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc19067.pdf, otc19068.pdf, otc19069.pdf, otc19071.pdf, otc19072.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 74 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC8660.pdf, OTC8661.pdf, OTC8662.pdf, OTC8664.pdf, OTC8665.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 75 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC8788.pdf, OTC8789.pdf, OTC8791.pdf, OTC8792.pdf, OTC8793.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 76 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc19784.pdf, otc19785.pdf, otc19787.pdf, otc19795.pdf, otc19797.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 77 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc20005.pdf, otc20006.pdf, otc20008.pdf, otc20012.pdf, otc20013.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 78 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc20192.pdf, otc20197.pdf, otc20201.pdf, otc20202.pdf, otc20204.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 79 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16038.pdf, otc16048.pdf, otc16049.pdf, otc16051.pdf, otc16058.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 80 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16560.pdf, otc16561.pdf, otc16563.pdf, otc16564.pdf, otc16565.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 81 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16729.pdf, otc16730.pdf, otc16731.pdf, otc16740.pdf, otc16741.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 82 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc19207.pdf, otc19210.pdf, otc19213.pdf, otc19217.pdf, otc19218.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 83 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc19379.pdf, otc19382.pdf, otc19383.pdf, otc19386.pdf, otc19389.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 84 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc19569.pdf, otc19572.pdf, otc19573.pdf, otc19575.pdf, otc19576.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 85 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15075.pdf, otc15076.pdf, otc15078.pdf, otc15079.pdf, otc15080.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 86 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15183.pdf, otc15184.pdf, otc15185.pdf, otc15186.pdf, otc15188.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 87 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15302.pdf, otc15303.pdf, otc15304.pdf, otc15306.pdf, otc15307.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 88 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc23942.pdf, otc23943.pdf, otc23944.pdf, otc23945.pdf, otc23947.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 89 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc24054.pdf, otc24055.pdf, otc24057.pdf, otc24059.pdf, otc24060.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 90 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc24183.pdf, otc24184.pdf, otc24185.pdf, otc24186.pdf, otc24187.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 91 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC11907.PDF, OTC11908.PDF, OTC11910.PDF, OTC11912.PDF, OTC11914.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 92 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC12033.PDF, OTC12034.PDF, OTC12036.PDF, OTC12037.PDF, OTC12038.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 93 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC12154.PDF, OTC12155.PDF, OTC12156.PDF, OTC12157.PDF, OTC12158.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 94 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17789.pdf, otc17790.pdf, otc17795.pdf, otc17796.pdf, otc17798.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 95 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18056.pdf, otc18061.pdf, otc18063.pdf, otc18064.pdf, otc18065.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 96 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18339.pdf, otc18340.pdf, otc18342.pdf, otc18345.pdf, otc18347.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 97 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): Conversion of Toluene to Benzene & Mixed, Do Sealless Pumps Belong in Hydrocarbon , Marine Pipe & Cable Survey with the TSS , Mixing in Static Mixers at High Differen, Real-Time Operations Intelligence from t ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 98 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): SNAME_OS18_14.pdf, SNAME_OS18_15.pdf, SNAME_OS18_16.pdf, SNAME_OS18_18.pdf, SNAME_OS18_19.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 99 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): spe128190.pdf, spe128191.pdf, spe128192.pdf, spe128193.pdf, spe128194.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 100 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): Don Ross - Petrobras America.pdf, LBO.pdf, Lockheed Martin.pdf, Mike Haney - Douglas-Westwood.pdf, Southwest Electronic Energy Group.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 101 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC14000.pdf, OTC14001.pdf, OTC14002.pdf, OTC14003.pdf, OTC14004.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 102 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC14118.pdf, OTC14119.pdf, OTC14120.pdf, OTC14121.pdf, OTC14122.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 103 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC14232.pdf, OTC14233.pdf, OTC14234.pdf, OTC14235.pdf, OTC14236.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 104 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17109.pdf, otc17110.pdf, otc17111.pdf, otc17112.pdf, otc17113.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 105 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17389.pdf, otc17392.pdf, otc17397.pdf, otc17398.pdf, otc17399.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 106 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17644.pdf, otc17646.pdf, otc17647.pdf, otc17649.pdf, otc17650.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 107 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC12988.PDF, OTC12989.PDF, OTC12990.PDF, OTC12991.PDF, OTC12992.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 108 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC13118.PDF, OTC13119.PDF, OTC13120.PDF, OTC13121.PDF, OTC13122.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 109 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC13247.PDF, OTC13248.PDF, OTC13250.PDF, OTC13251.PDF, OTC13252.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 110 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16207.pdf, otc16208.pdf, otc16222.pdf, otc16228.pdf, otc16243.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 111 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16610.pdf, otc16611.pdf, otc16612.pdf, otc16613.pdf, otc16621.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 112 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc16921.pdf, otc16922.pdf, otc16923.pdf, otc16925.pdf, otc16926.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 113 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15117.pdf, otc15118.pdf, otc15119.pdf, otc15120.pdf, otc15123.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 114 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15228.pdf, otc15229.pdf, otc15230.pdf, otc15231.pdf, otc15232.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 115 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc15363.pdf, otc15364.pdf, otc15366.pdf, otc15367.pdf, otc15368.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 116 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc17845.pdf, otc17853.pdf, otc17857.pdf, otc17860.pdf, otc17861.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 117 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18114.pdf, otc18117.pdf, otc18118.pdf, otc18119.pdf, otc18121.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 118 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): otc18374.pdf, otc18375.pdf, otc18376.pdf, otc18378.pdf, otc18381.pdf ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 119 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC11956.PDF, OTC11957.PDF, OTC11958.PDF, OTC11961.PDF, OTC11963.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 120 (100 records)
+- Domain: marine-engineering
+- Records: 100
+- Titles (sample): OTC12086.PDF, OTC12087.PDF, OTC12089.PDF, OTC12090.PDF, OTC12091.PDF ... (+95 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-07 10:31 UTC] batch-ingest | Batch 121 (23 records)
+- Domain: marine-engineering
+- Records: 23
+- Titles (sample): OTC12207.PDF, OTC12208.PDF, OTC12209.PDF, Hahn G. D., Shanks J. M. and Mason C. (2, Session 6_Francesco Maccagni_Saipem[1].p ... (+18 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
