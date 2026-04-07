@@ -139,9 +139,9 @@ cleaned = phase_d_data_sources.sanitize_text(raw_text, deny_patterns)
 
 1. **Empty deny list = silent pass** — the scanner passes with exit 0 when no
    patterns exist. Always verify patterns exist before trusting a PASS result.
-2. **--diff-only + exclusions bug (FIXED 2026-04-03)** — in --diff-only mode, ripgrep
-   receives explicit file paths, which BYPASS --glob exclusion flags. The fix adds
-   bash glob matching to filter the file list BEFORE passing to ripgrep.
+2. **--diff-only + exclusions trailing-slash dir bug (FIXED 2026-04-07, commit 482105ffa)** — in --diff-only mode, directory exclusion patterns ending in `/` (e.g. `logs/orchestrator/`, `scripts/legal/`, `.git/`, `node_modules/`) were NOT being matched because only exact-filename and wildcard-glob patterns had matching logic. This caused the comprehensive-learning nightly pipeline to be blocked for 5 days (Apr 2-7) because orchestrator JSONL logs containing client filenames in tool-call output triggered false positives. The fix adds a directory prefix check before the wildcard-glob branch.
+   - If `$ep` ends in `/`, strip the slash and check if file path starts with `ep_dir/`
+   - This also retroactively fixed the previously-silent broken exclusions: `scripts/legal/`, `node_modules/`, `.git/`
 3. **Conference paper filenames** are the highest-risk surface — they often contain
    client names, field names, and operator names embedded in the filename itself.
 4. **DDE drive paths** contain project numbers and client dirs that leak through
@@ -151,6 +151,12 @@ cleaned = phase_d_data_sources.sanitize_text(raw_text, deny_patterns)
    are excluded because they legitimately reference client folder names for navigation.
 6. **Full workspace scan can timeout** — scanning 500K+ files takes >60s. Use
    --diff-only for interactive use, full scan only in CI or overnight.
+7. **Orchestrator session logs** (logs/orchestrator/*.jsonl) now excluded
+   (added 2026-04-07). These raw JSONL dumps record agent tool-call output
+   that legitimately contains client filenames (e.g. in GitHub issue close
+   comments). The legal gate for this data is git remote access control,
+   not pattern scanning. If you see Lakach/other client names in learning pipeline
+   commit failures, this exclusion should resolve it.
 7. **GitHub issue bodies are public** — deny-list patterns contain the actual names
    but issue text must NOT. Alias all identifiable names in issues/PRs with generic
    terms like "original engineering firm", "branded tool", "published standard".
