@@ -30,6 +30,8 @@ People use Hermes for software development, research, system administration, dat
 
 **Docs:** https://hermes-agent.nousresearch.com/docs/
 
+**Windows install:** For setting up Hermes in a repo-centric workspace on Windows, load the `hermes-windows-setup` skill. It covers prerequisites (git, Python, uv, gh), workspace structure, skills system, memory bridge, multi-agent coordination, and Windows-specific pitfalls.
+
 ## Quick Start
 
 ```bash
