@@ -1,9 +1,12 @@
 ---
 name: gmail-extract-archive
-description: Extract Gmail data into a structured archive repo, parse attachments, legal scan, then delete from inbox. Single source of truth for all email data across 3 accounts.
-version: 1.0.0
+description: "DEPRECATED — superseded by gmail-extract-and-act. Extract Gmail data into archive repo, parse attachments, legal scan, then delete. Uses archive-everything model."
+version: 2.0.0
+status: deprecated
+superseded_by: gmail-extract-and-act
+deprecation_reason: "Archives raw email bodies to repos. Per #2017, the new model extracts only structured data and deletes emails when topics complete (queue model, not archive model). See #2019 for consolidation plan."
 author: vamsee
-tags: [email, gmail, extraction, archive, cleanup, gmail-archive]
+tags: [email, gmail, extraction, archive, cleanup, gmail-archive, DEPRECATED]
 related_skills: [gmail-multi-account, gmail-triage, contact-manager, legal-sanity-scan]
 metadata:
   hermes:

@@ -1,10 +1,13 @@
 ---
 name: gmail-extract-and-clean
-description: Extract emails from Gmail to /mnt/ace/<repo>/, archive to appropriate workspace-hub external repos, commit, then delete from inbox. Uses email-routing.yaml for sender→repo routing.
-version: 1.0.0
+description: "DEPRECATED — superseded by gmail-extract-and-act. Extract emails from Gmail to /mnt/ace/<repo>/, archive to repos, commit, then delete. Uses archive-everything model."
+version: 2.0.0
+status: deprecated
+superseded_by: gmail-extract-and-act
+deprecation_reason: "Archives raw email bodies to repos. Per #2017, the new model extracts only structured data and deletes emails when topics complete (queue model, not archive model). See #2019 for consolidation plan."
 author: vamsee
-tags: [email, gmail, extraction, cleanup, archive, routing]
-related_skills: [gmail-multi-account, contact-manager]
+tags: [email, gmail, extraction, cleanup, archive, routing, DEPRECATED]
+related_skills: [gmail-multi-account, contact-manager, gmail-extract-and-act]
 metadata:
   hermes:
     tags: [email, gmail, extraction, cleanup]
