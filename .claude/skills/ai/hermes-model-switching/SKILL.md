@@ -24,7 +24,7 @@ Installed in `~/.bash_aliases` (2026-04-04).
 h              # hermes chat (default = Claude Opus)
 h-opus         # claude-opus-4-6 via Anthropic
 h-sonnet       # claude-sonnet-4-6 via Anthropic
-h-gpt          # gpt-4.1 via OpenAI
+h-gpt          # gpt-5.4 via OpenAI (frontier agentic coding model)
 h-o3           # o3 via OpenAI
 h-copilot      # claude-sonnet-4.6 via Copilot ($0 extra)
 h-copilot-gemini # gemini-2.5-pro via Copilot ($0 extra)
@@ -93,7 +93,7 @@ Valid `--provider` values: `auto, openrouter, nous, openai-codex, copilot-acp, c
 
 | Task Type | Primary | Fallback | Rationale |
 |-----------|---------|----------|-----------|
-| Code implementation | Claude (h-opus) | Codex (h-gpt) | Deepest context, best code quality |
+| Code implementation | Claude (h-opus) | Codex gpt-5.4 (h-gpt) | Deepest context, best code quality |
 | Code review (adversarial) | Codex + Gemini | Claude | Independent eyes, cheaper |
 | Research & literature | Gemini (h-gemini) | Claude | 1M+ context window, web grounding |
 | Large document analysis | Gemini (h-gemini) | Claude | Long-context advantage |
@@ -125,41 +125,50 @@ When asked about utilization, check these sources in order:
 
 **Critical gap**: No automated Codex or Gemini spend tracking. No cron job refreshes any quota data. See #1855.
 
-## Hermes Config (recommended state as of 2026-04-04)
+## Hermes Config (updated 2026-04-08 — Codex GPT-5.4 as default)
+
+REASON: copilot (claude-sonnet-4.6) kept falling back to codex mid-session, breaking
+context and wasting time. Codex GPT-5.4 is now primary: 2 OAuth creds, round_robin, stable.
+
+### Available Codex Models (as of 2026-04-08)
+| Model | Description | Use Case |
+|-------|-------------|----------|
+| gpt-5.4 | Latest frontier agentic coding model | Default — general coding, implementation |
+| gpt-5.4-mini | Smaller frontier agentic coding model | Quick tasks, cost-conscious |
+| gpt-5.3-codex | Frontier Codex-optimized agentic coding model | Deep code generation, Codex-native tasks |
+| gpt-5.2 | Optimized for professional work and long-running agents | Overnight batch, long context |
 
 ```yaml
 model:
-  default: claude-opus-4-6
-  provider: anthropic
-fallback_providers:
-  - provider: copilot
-    model: claude-sonnet-4.6
-  - provider: openai-codex
-    model: gpt-5.4
+  default: gpt-5.4
+  provider: openai-codex
+fallback_providers: []
+fallback_model:
+  provider: copilot
+  model: claude-sonnet-4.6
 credential_pool_strategies:
   openai-codex: round_robin
   anthropic: fallback
 smart_model_routing:
   enabled: true
   cheap_model:
-    provider: copilot
-    model: gemini-2.5-pro
+    provider: gemini
+    model: gemini-2.5-flash
 delegation:
-  model: claude-sonnet-4.6
-  provider: copilot        # routes subagents through $9/mo Copilot, not $200 Claude OAuth
+  model: gpt-5.4
+  provider: openai-codex
 ```
 
-### Routing Tiers (fallback chain — as of 2026-04-04)
+### Routing Tiers (fallback chain — as of 2026-04-08)
 ```
-DEFAULT:  anthropic/claude-opus-4-6    (Anthropic OAuth #1 -> #2 fallback)
-Tier 2:   anthropic/claude-sonnet-4-6  (downgrade model, same $200/mo sub)
-Tier 3:   copilot/claude-sonnet-4.6    (save Copilot for batch/subagents)
-Tier 4:   openai-codex/gpt-5.4         (2 accounts round-robin)
-Tier 5:   openrouter/qwen3.6-plus:free (zero cost last resort)
+DEFAULT:  openai-codex/gpt-5.4     (2 OAuth creds, round_robin — primary workhorse)
+Fallback: copilot/claude-sonnet-4.6 (if codex exhausted)
+Cheap:    gemini/gemini-2.5-flash   (smart_model_routing short queries)
+delegation/subagents -> openai-codex/gpt-5.4 (consistent with default)
+```
 
-smart_model_routing short queries -> copilot/gemini-2.5-flash (was openrouter/qwen, :free deprecated Apr 2026)
-delegation/subagents             -> copilot/sonnet  (intentional)
-```
+To use Claude explicitly: h-opus, h-sonnet, h-copilot
+To use Gemini explicitly: h-copilot-gemini, h-gemini, h-router-gemini
 
 ### Credential Pool (as of 2026-04-04)
 ```
@@ -392,7 +401,7 @@ Known error patterns:
 - cost-tracking.jsonl is the richest data source but Claude-only; you have zero visibility into Codex/Gemini spend
 - agent-usage-optimizer sub-skills are all archived — the skill is effectively documentation-only
 - Anthropic may start billing Hermes as "extra usage" — monitor errors.log for new error types
-- OpenAI Codex provider doesn't support gpt-4.1, o4-mini, or gpt-4o via ChatGPT account — use gpt-5.4 or gpt-5.3-codex
+- OpenAI Codex provider only supports: gpt-5.4, gpt-5.4-mini, gpt-5.3-codex, gpt-5.2 — older models (gpt-4.1, o4-mini, gpt-4o) are no longer available via ChatGPT account
 - GitHub Copilot provider accesses Claude/Gemini/GPT through GitHub auth — different auth path from direct Anthropic OAuth, useful as a hedge
 - Nous Portal login has aggressive bot detection — cannot sign up or get API keys via headless browser; must use regular browser at https://portal.nousresearch.com/
 - Related GitHub issues: #1838 (credit governance), #1839 (workflow hard-stops), #1855 (utilization tracker), #1856 (model switching), #1857 (rolling agent queue)

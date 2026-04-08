@@ -1,10 +1,3 @@
-2026-04-08T11:13:21-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/entities/llm-wiki-tool.md|15971
-2026-04-08T11:13:30-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/entities/compliance-dashboard.md|15972
-2026-04-08T11:13:32-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/concepts/pipeline-integrity-assessment.md|15973
-2026-04-08T11:13:34-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/entities/orcaflex-solver.md|15974
-2026-04-08T11:13:44-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/sources/compound-engineering-methodology.md|15975
-2026-04-08T11:13:51-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/sources/ai-agent-guidelines-doc.md|15976
-2026-04-08T11:13:55-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/entities/aqwa-solver.md|15977
 2026-04-08T11:13:57-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/sources/agent-equivalence-architecture-doc.md|15978
 2026-04-08T11:14:02-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/sources/baseline-testing-standards-doc.md|15979
 2026-04-08T11:14:05-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/entities/bemrosetta-tool.md|15980
@@ -48,3 +41,10 @@
 2026-04-08T11:20:50-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/SOURCE_INVENTORY.md|16018
 2026-04-08T11:21:55-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/SCHEMA.md|16019
 2026-04-08T11:22:14-05:00|/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/CLAUDE.md|16020
+2026-04-08T15:09:23-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/ai/hermes-model-switching/SKILL.md|16021
+2026-04-08T15:09:39-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/ai/hermes-model-switching/SKILL.md|16022
+2026-04-08T15:09:45-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/ai/hermes-model-switching/SKILL.md|16023
+2026-04-08T15:18:57-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/ai/hermes-model-switching/SKILL.md|16024
+2026-04-08T15:19:36-05:00|/home/vamsee/.hermes/config.yaml|16025
+2026-04-08T15:19:41-05:00|/home/vamsee/.hermes/config.yaml|16026
+2026-04-08T15:19:54-05:00|/home/vamsee/.bash_aliases|16027

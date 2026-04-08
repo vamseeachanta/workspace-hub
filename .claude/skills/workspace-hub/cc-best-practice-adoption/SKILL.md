@@ -175,6 +175,17 @@ uv run scripts/productivity/daily-learning.py --categories  # browse all tips
 - https://github.com/affaan-m/everything-claude-code (50K stars, MIT)
   - Cherry-pick: security guide, pre:config-protection hook, batch-at-Stop pattern,
     context-budget skill, autonomous-loops (6 patterns), continuous-learning-v2 instincts
+  - Implemented pattern: add a dedicated Claude Code `PreToolUse` hook entry in `.claude/settings.json`
+    for `Write|Edit|MultiEdit`, then delegate the decision to a reusable shell checker
+    (example: `.claude/hooks/config-protection-pretooluse.sh` -> `scripts/enforcement/check-config-protection.sh`).
+    This keeps policy logic testable outside the hook wrapper.
+  - Practical allowlist learned in implementation: permit non-tooling metadata edits in `pyproject.toml`
+    and other low-risk config touches, but block broad weakening patterns like `ignore`,
+    `extend-ignore`, `per-file-ignores`, `disable`, `skip`, `off`, and block removal of
+    core safety-gate text from `CLAUDE.md` / `AGENTS.md` unless an explicit env bypass is set.
+  - Testing pattern: write focused pytest coverage for the hook wrapper behavior before implementation,
+    including non-protected file pass-through, allowlisted metadata edits, blocked risky config edits,
+    blocked safety-gate removal, and explicit bypass env (`CONFIG_PROTECTION_APPROVED=1`).
   - MCP servers to evaluate: evalview, insaits, token-optimizer, omega-memory
   - ~80% overlap with our 691 skills — adopt patterns not bulk content
 
