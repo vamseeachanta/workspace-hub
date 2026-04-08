@@ -20,6 +20,27 @@ Scan all 3 Gmail accounts, classify emails, cross-reference contacts, and produc
 - himalaya configured with 3 accounts (see `gmail-multi-account` skill)
 - Contact CSVs available in respective repos
 
+## Core Principle: Email is a QUEUE, Not an ARCHIVE
+
+Do NOT save all emails to repos. The workflow is:
+
+```
+INBOUND → TRIAGE → EXTRACT DATA → ACT → DELETE
+                                      ↓
+                          Topic completed? → DELETE email
+                          Awaiting reply?  → KEEP (live)
+                          New reply arrives → RE-ACTIVATE
+```
+
+Key rules:
+1. Extract only structured DATA/information needed (not raw email bodies)
+2. Delete the email when the topic is completed
+3. Keep email alive when awaiting response from other party
+4. When client/other party responds, the topic is live again
+5. Learn from patterns — extraction and routing improve over time
+
+See GitHub issue #2017 for the full workflow design.
+
 ## Triage Workflow
 
 ### Step 1: Scan all inboxes
@@ -246,3 +267,5 @@ for item in deny.get("client_references", []):
 3. Don't auto-act on emails — digest is READ-ONLY, actions need user approval
 4. Rate limit Gmail IMAP — space requests 1-2 seconds apart
 5. Some emails have no From header — skip gracefully
+6. Do NOT archive entire email bodies to repos — extract structured data only (#2017)
+7. Old skills (gmail-extract-and-clean, gmail-extract-archive) use the deprecated archive-everything model — use the queue model instead

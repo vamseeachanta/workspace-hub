@@ -1,12 +1,12 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki — build and maintain a persistent, interlinked markdown knowledge base. Ingest sources, query compiled knowledge, and lint for consistency."
-version: 2.0.0
+version: 3.0.0
 author: Hermes Agent
 license: MIT
 metadata:
   hermes:
-    tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative]
+    tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative, batch-ingest]
     category: research
     related_skills: [obsidian, arxiv, agentic-research-ideas]
     config:
@@ -36,6 +36,7 @@ Use this skill when the user:
 - Asks a question and an existing wiki is present at the configured path
 - Asks to lint, audit, or health-check their wiki
 - References their wiki, knowledge base, or "notes" in a research context
+- Wants to batch-ingest hundreds/thousands of documents into wiki format
 
 ## Wiki Location
 
@@ -55,34 +56,90 @@ skill loads — check the `[Skill config: ...]` block above for the active value
 The wiki is just a directory of markdown files — open it in Obsidian, VS Code, or
 any editor. No database, no special tooling required.
 
-## Architecture: Three Layers
+## CLI Tool (workspace-hub)
+
+The `llm-wiki` CLI at `scripts/knowledge/llm_wiki.py` provides 6 commands for
+operating wikis programmatically. All commands use the pattern:
+
+```bash
+uv run scripts/knowledge/llm_wiki.py <command> --wiki <domain>
+```
+
+| Command | Purpose |
+|---------|---------|
+| `init <domain>` | Scaffold a new domain wiki under `knowledge/wikis/<domain>/` |
+| `status --wiki <d>` | Report page counts, source counts, link density |
+| `ingest <file> --wiki <d>` | Copy source file + generate LLM processing instructions |
+| `query "..." --wiki <d>` | Keyword search across wiki pages with relevance ranking |
+| `lint --wiki <d>` | Health checks (orphans, empty pages, index consistency, link density) |
+| `batch-ingest <file> --wiki <d> --batch-size N` | Bulk-create source pages from metadata JSONL/JSON/YAML |
+
+**batch-ingest** is designed for scale:
+- Checkpoint-based resume (`.checkpoint.jsonl` in wiki root)
+- `--dry-run` for preview
+- Progress reporting every batch
+- Skips already-processed records
+- Used to ingest 22K conference papers → 12K source pages in one run
+- Proven: 100 records/batch, ~400 records per 10 seconds
+
+Location: `knowledge/wikis/<domain>/` (not `~/wiki`). This is a multi-wiki
+ecosystem — multiple domain wikis coexist under `knowledge/wikis/`. Force-add
+to git despite `.gitignore` since wiki content is the compounding artifact.
+
+## Architecture
+
+### Multi-Wiki Pattern
+
+In workspace-hub, wikis are organized as a multi-domain ecosystem under
+`knowledge/wikis/<domain>/`, not a single `~/wiki`. Each domain
+(marine-engineering, maritime-law, naval-architecture) has its own
+complete three-layer structure. Cross-wiki linking connects related topics
+across domains.
+
+### Three Layers (per domain wiki)
 
 ```
-wiki/
-├── SCHEMA.md           # Conventions, structure rules, domain config
-├── index.md            # Sectioned content catalog with one-line summaries
-├── log.md              # Chronological action log (append-only, rotated yearly)
-├── raw/                # Layer 1: Immutable source material
-│   ├── articles/       # Web articles, clippings
-│   ├── papers/         # PDFs, arxiv papers
-│   ├── transcripts/    # Meeting notes, interviews
-│   └── assets/         # Images, diagrams referenced by sources
-├── entities/           # Layer 2: Entity pages (people, orgs, products, models)
-├── concepts/           # Layer 2: Concept/topic pages
-├── comparisons/        # Layer 2: Side-by-side analyses
-└── queries/            # Layer 2: Filed query results worth keeping
+knowledge/wikis/<domain>/
+├── CLAUDE.md             # Schema: conventions, structure rules, domain config
+├── raw/                  # Layer 1: Immutable source material
+│   ├── papers/           # PDFs, standards, papers
+│   ├── standards/        # Standards documents
+│   ├── articles/         # Web articles, clippings
+│   └── assets/           # Images, diagrams
+└── wiki/                 # Layer 2: The LLM-maintained wiki
+    ├── index.md          # Content catalog with sectioned entries
+    ├── log.md            # Chronological action log (append-only)
+    ├── overview.md       # Domain synthesis summary
+    ├── entities/         # Entity pages (things: equipment, orgs, vessels)
+    ├── concepts/         # Concept pages (ideas: methods, principles)
+    ├── sources/          # Source summary pages (one per ingested document)
+    ├── comparisons/      # Filed query outputs
+    └── visualizations/   # matplotlib plots, Marp slide decks
 ```
 
 **Layer 1 — Raw Sources:** Immutable. The agent reads but never modifies these.
 **Layer 2 — The Wiki:** Agent-owned markdown files. Created, updated, and
 cross-referenced by the agent.
-**Layer 3 — The Schema:** `SCHEMA.md` defines structure, conventions, and tag taxonomy.
+**Layer 3 — The Schema:** `CLAUDE.md` defines structure, conventions, and tag taxonomy.
+
+### Scaling Pattern (learned from 12K+ source ingestion)
+
+- **Metadata-first approach**: Don't extract PDF content (hits 5-min timeouts on
+  large files). Instead, read structured metadata (titles, topics, sizes) and
+  create wiki source pages.
+- **Proven at scale**: 22K conference metadata records → 12K unique source pages,
+  skipping 10K+ duplicates via checkpoint file.
+- **Batch size**: 100 records per batch, progress reported every batch.
+- **Checkpoint resume**: `.checkpoint.jsonl` tracks processed records by unique ID.
+- **Index management**: Updates index.md after each batch, not after every record.
+- **Git considerations**: Wiki pages must be force-added (`git add -f`) even if
+  `.gitignore` excludes the wikis directory. Wiki content is the compounding artifact.
 
 ## Resuming an Existing Wiki (CRITICAL — do this every session)
 
 When the user has an existing wiki, **always orient yourself before doing anything**:
 
-① **Read `SCHEMA.md`** — understand the domain, conventions, and tag taxonomy.
+① **Read `CLAUDE.md`** (or `SCHEMA.md`) — understand the domain, conventions, and tag taxonomy.
 ② **Read `index.md`** — learn what pages exist and their summaries.
 ③ **Scan recent `log.md`** — read the last 20-30 entries to understand recent activity.
 
@@ -103,135 +160,20 @@ Only after orientation should you ingest, query, or lint. This prevents:
 For large wikis (100+ pages), also run a quick `search_files` for the topic
 at hand before creating anything new.
 
-## Initializing a New Wiki
+## Initializing a New Wiki (via CLI)
 
-When the user asks to create or start a wiki:
-
-1. Determine the wiki path (from config, env var, or ask the user; default `~/wiki`)
-2. Create the directory structure above
-3. Ask the user what domain the wiki covers — be specific
-4. Write `SCHEMA.md` customized to the domain (see template below)
-5. Write initial `index.md` with sectioned header
-6. Write initial `log.md` with creation entry
-7. Confirm the wiki is ready and suggest first sources to ingest
-
-### SCHEMA.md Template
-
-Adapt to the user's domain. The schema constrains agent behavior and ensures consistency:
-
-```markdown
-# Wiki Schema
-
-## Domain
-[What this wiki covers — e.g., "AI/ML research", "personal health", "startup intelligence"]
-
-## Conventions
-- File names: lowercase, hyphens, no spaces (e.g., `transformer-architecture.md`)
-- Every wiki page starts with YAML frontmatter (see below)
-- Use `[[wikilinks]]` to link between pages (minimum 2 outbound links per page)
-- When updating a page, always bump the `updated` date
-- Every new page must be added to `index.md` under the correct section
-- Every action must be appended to `log.md`
-
-## Frontmatter
-  ```yaml
-  ---
-  title: Page Title
-  created: YYYY-MM-DD
-  updated: YYYY-MM-DD
-  type: entity | concept | comparison | query | summary
-  tags: [from taxonomy below]
-  sources: [raw/articles/source-name.md]
-  ---
-  ```
-
-## Tag Taxonomy
-[Define 10-20 top-level tags for the domain. Add new tags here BEFORE using them.]
-
-Example for AI/ML:
-- Models: model, architecture, benchmark, training
-- People/Orgs: person, company, lab, open-source
-- Techniques: optimization, fine-tuning, inference, alignment, data
-- Meta: comparison, timeline, controversy, prediction
-
-Rule: every tag on a page must appear in this taxonomy. If a new tag is needed,
-add it here first, then use it. This prevents tag sprawl.
-
-## Page Thresholds
-- **Create a page** when an entity/concept appears in 2+ sources OR is central to one source
-- **Add to existing page** when a source mentions something already covered
-- **DON'T create a page** for passing mentions, minor details, or things outside the domain
-- **Split a page** when it exceeds ~200 lines — break into sub-topics with cross-links
-- **Archive a page** when its content is fully superseded — move to `_archive/`, remove from index
-
-## Entity Pages
-One page per notable entity. Include:
-- Overview / what it is
-- Key facts and dates
-- Relationships to other entities ([[wikilinks]])
-- Source references
-
-## Concept Pages
-One page per concept or topic. Include:
-- Definition / explanation
-- Current state of knowledge
-- Open questions or debates
-- Related concepts ([[wikilinks]])
-
-## Comparison Pages
-Side-by-side analyses. Include:
-- What is being compared and why
-- Dimensions of comparison (table format preferred)
-- Verdict or synthesis
-- Sources
-
-## Update Policy
-When new information conflicts with existing content:
-1. Check the dates — newer sources generally supersede older ones
-2. If genuinely contradictory, note both positions with dates and sources
-3. Mark the contradiction in frontmatter: `contradictions: [page-name]`
-4. Flag for user review in the lint report
+```bash
+uv run scripts/knowledge/llm_wiki.py init <domain>
 ```
 
-### index.md Template
+This scaffolds the full three-layer structure, creates `CLAUDE.md` with
+domain-specific schema, initializes `index.md` and `log.md`, and creates
+the `raw/` and `wiki/` subdirectories.
 
-The index is sectioned by type. Each entry is one line: wikilink + summary.
-
-```markdown
-# Wiki Index
-
-> Content catalog. Every wiki page listed under its type with a one-line summary.
-> Read this first to find relevant pages for any query.
-> Last updated: YYYY-MM-DD | Total pages: N
-
-## Entities
-<!-- Alphabetical within section -->
-
-## Concepts
-
-## Comparisons
-
-## Queries
-```
-
-**Scaling rule:** When any section exceeds 50 entries, split it into sub-sections
-by first letter or sub-domain. When the index exceeds 200 entries total, create
-a `_meta/topic-map.md` that groups pages by theme for faster navigation.
-
-### log.md Template
-
-```markdown
-# Wiki Log
-
-> Chronological record of all wiki actions. Append-only.
-> Format: `## [YYYY-MM-DD] action | subject`
-> Actions: ingest, update, query, lint, create, archive, delete
-> When this file exceeds 500 entries, rotate: rename to log-YYYY.md, start fresh.
-
-## [YYYY-MM-DD] create | Wiki initialized
-- Domain: [domain]
-- Structure created with SCHEMA.md, index.md, log.md
-```
+After scaffolding:
+1. Add some sources: `ingest <file> --wiki <domain>`
+2. For bulk: `batch-ingest metadata.jsonl --wiki <domain> --batch-size 100`
+3. Check health: `lint --wiki <domain>`
 
 ## Core Operations
 
@@ -294,9 +236,6 @@ When the user asks to lint, health-check, or audit the wiki:
 ① **Orphan pages:** Find pages with no inbound `[[wikilinks]]` from other pages.
 ```python
 # Use execute_code for this — programmatic scan across all wiki pages
-import os, re
-from collections import defaultdict
-wiki = "<WIKI_PATH>"
 # Scan all .md files in entities/, concepts/, comparisons/, queries/
 # Extract all [[wikilinks]] — build inbound link map
 # Pages with zero inbound links are orphans
@@ -327,6 +266,39 @@ wiki = "<WIKI_PATH>"
 
 ⑪ **Append to log.md:** `## [YYYY-MM-DD] lint | N issues found`
 
+### 4. Bulk Ingest (CLI-based)
+
+For large-scale ingestion (100+ sources), use the `llm-wiki batch-ingest` CLI:
+
+```bash
+# Dry-run first to preview
+uv run scripts/knowledge/llm_wiki.py batch-ingest metadata.jsonl --wiki <domain> --batch-size 100 --dry-run
+
+# Then run for real (resume-safe via .checkpoint.jsonl)
+uv run scripts/knowledge/llm_wiki.py batch-ingest metadata.jsonl --wiki <domain> --batch-size 100
+```
+
+The CLI handles:
+- ✅ Checkpoint-based resume (safe to interrupt/restart)
+- ✅ Progress reporting every batch — 100 records per batch at ~400 records per 10s
+- ✅ Skip already-processed records (10K+ duplicates in a 22K run)
+- ✅ Batch index.md/log.md updates (efficient)
+- ✅ `--dry-run` mode to preview filenames and counts
+
+### 5. Seed Migration (YAML → Wiki)
+
+For structured YAML knowledge seeds in `knowledge/seeds/`:
+
+1. Parse the YAML to extract entries
+2. Group entries by domain/category
+3. For each entry: create entity/concept/source page
+4. Cross-link with existing wiki pages
+5. Update index.md with all migrated entries
+6. Append structured entries to log.md
+
+Proven pattern: 18 mooring failure entries → 4 wiki pages (source + 2 concepts + 1 entity)
+                10 law cases + 6 conventions → 20 wiki pages with cross-references
+
 ## Working with the Wiki
 
 ### Searching
@@ -345,26 +317,27 @@ search_files "tags:.*alignment" path="$WIKI" file_glob="*.md"
 read_file "$WIKI/log.md" offset=<last 20 lines>
 ```
 
-### Bulk Ingest
+### Seed Migration Pattern
 
-When ingesting multiple sources at once, batch the updates:
-1. Read all sources first
-2. Identify all entities and concepts across all sources
-3. Check existing pages for all of them (one search pass, not N)
-4. Create/update pages in one pass (avoids redundant updates)
-5. Update index.md once at the end
-6. Write a single log entry covering the batch
+For structured YAML seeds (like `knowledge/seeds/naval-architecture-resources.yaml`):
 
-### Archiving
+1. **Parse YAML categories** (textbooks, hydrostatics, portals, ship plans, etc.)
+2. **Create concept pages** for each major topic domain (5-6 pages)
+3. **Create source pages** for each individual resource (17-36 pages per seed)
+4. **Update index.md** with structured tables
+5. **Update log.md** with migration entry
 
-When content is fully superseded or the domain scope changes:
-1. Create `_archive/` directory if it doesn't exist
-2. Move the page to `_archive/` with its original path (e.g., `_archive/entities/old-page.md`)
-3. Remove from `index.md`
-4. Update any pages that linked to it — replace wikilink with plain text + "(archived)"
-5. Log the archive action
+This approach is much faster than full PDF extraction and creates structured
+wiki pages that can be enhanced later with LLM content.
 
-### Obsidian Integration
+### Cross-Wiki Linking
+
+When managing multiple domain wikis, look for natural connections:
+- Deepwater Horizon → marine-engineering (lng-carrier-mooring) + maritime-law (OPA 90)
+- Mooring failures → marine-eng + naval-arch stability concepts
+- Classification rules → naval-arch + maritime-law liability conventions
+
+## Obsidian Integration
 
 The wiki directory works as an Obsidian vault out of the box:
 - `[[wikilinks]]` render as clickable links
@@ -376,65 +349,6 @@ For best results:
 - Set Obsidian's attachment folder to `raw/assets/`
 - Enable "Wikilinks" in Obsidian settings (usually on by default)
 - Install Dataview plugin for queries like `TABLE tags FROM "entities" WHERE contains(tags, "company")`
-
-If using the Obsidian skill alongside this one, set `OBSIDIAN_VAULT_PATH` to the
-same directory as the wiki path.
-
-### Obsidian Headless (servers and headless machines)
-
-On machines without a display, use `obsidian-headless` instead of the desktop app.
-It syncs vaults via Obsidian Sync without a GUI — perfect for agents running on
-servers that write to the wiki while Obsidian desktop reads it on another device.
-
-**Setup:**
-```bash
-# Requires Node.js 22+
-npm install -g obsidian-headless
-
-# Login (requires Obsidian account with Sync subscription)
-ob login --email <email> --password '<password>'
-
-# Create a remote vault for the wiki
-ob sync-create-remote --name "LLM Wiki"
-
-# Connect the wiki directory to the vault
-cd ~/wiki
-ob sync-setup --vault "<vault-id>"
-
-# Initial sync
-ob sync
-
-# Continuous sync (foreground — use systemd for background)
-ob sync --continuous
-```
-
-**Continuous background sync via systemd:**
-```ini
-# ~/.config/systemd/user/obsidian-wiki-sync.service
-[Unit]
-Description=Obsidian LLM Wiki Sync
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-ExecStart=/path/to/ob sync --continuous
-WorkingDirectory=/home/user/wiki
-Restart=on-failure
-RestartSec=10
-
-[Install]
-WantedBy=default.target
-```
-
-```bash
-systemctl --user daemon-reload
-systemctl --user enable --now obsidian-wiki-sync
-# Enable linger so sync survives logout:
-sudo loginctl enable-linger $USER
-```
-
-This lets the agent write to `~/wiki` on a server while you browse the same
-vault in Obsidian on your laptop/phone — changes appear within seconds.
 
 ## Pitfalls
 
@@ -458,3 +372,13 @@ vault in Obsidian on your laptop/phone — changes appear within seconds.
   The agent should check log size during lint.
 - **Handle contradictions explicitly** — don't silently overwrite. Note both claims with dates,
   mark in frontmatter, flag for user review.
+- **PDF extraction timeout** — Large PDFs hit 5-min sandbox timeouts. Use metadata-first
+  approach for speed. Full extraction = enhancement when async workers exist.
+- **Git force-add required** — Wiki dirs may be in `.gitignore`. Use `git add -f` to commit
+  content. Wiki content is the compounding artifact and must be tracked.
+- **Batch size trade-off** — 100 records/batch balances speed with index update frequency.
+  Smaller = more frequent updates, slower. Larger = fewer index commits, risk more on crash.
+- **Low link density early** — Newly created wikis naturally have low link density.
+  This resolves as cross-references grow during normal ingest operations.
+- **YAML seed migration is fast** — Converting structured YAML to wiki pages is 10x faster
+  than PDF extraction. Use this pattern whenever seeds exist.

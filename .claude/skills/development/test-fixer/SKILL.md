@@ -135,6 +135,48 @@ Common corruption: a `replace` inside a `with` block changes only the first line
 
 `gh issue create --label "phase:2"` silently fails (prints warning, still creates issue) if label doesn't exist. Always use existing labels: `gh label list | grep -E "priority|cat:"`.
 
+## Windows Line Ending Trap (\r\n)
+
+Files originating from Windows (e.g., `agents/`, `*_integration.py` with `\r\n`) cause the `patch` tool to produce massive spurious diffs — 700+ line diffs from a 10-line change. The patch tool doesn't handle CR/LF gracefully.
+
+**Detection:** `cat -A filename.py` — if lines end with `^M$`, it has `\r\n`.
+
+**Fix:** Always use Python/`sed` for these files instead of `patch`:
+```python
+# Read, modify, write with explicit newline handling
+with open(path, 'r') as f:
+    content = f.read()
+content = content.replace(old_block, new_block, 1)
+with open(path, 'w') as f:
+    f.write(content)
+```
+Or use `sed -i` for single-line fixes.
+
+## __init__ vs execute() Timing Trap
+
+When tests pass config via dict args to `execute()` (e.g., `agents_base_dir`), but the class initializes components (generators, loaders) in `__init__` with default paths, the override will be ignored.
+
+**Pattern to fix:**
+```python
+def execute(self, args):
+    if isinstance(args, dict):
+        base_dir = args.get("agents_base_dir")
+        if base_dir:
+            self.base_dir = Path(base_dir)
+            self.agents_dir = self.base_dir / "agents"
+            # CRITICAL: reinitialize ALL components that depend on the path
+            self.structure_generator = AgentStructureGenerator(self.agents_dir)
+```
+
+**Better fix:** Pass `base_dir` to the constructor in tests instead of the dict workaround.
+
+## pytest.ini norecursedirs for Broken Test Dirs
+
+When `_archive/`, `legacy/`, date-based dirs (e.g., `2025-08-*`), or project dirs contain broken tests:
+- Add them to `norecursedirs` in pytest.ini — but use glob patterns like `legacy*` (not just `legacy_`) to catch plain `legacy/` dirs
+- `--noconftest` disables `collect_ignore_glob` in conftest.py, so use `--ignore=` in addopts for single-file exclusions
+- Scan ALL errors at once with `pytest --collect-only 2>&1 | grep "ERROR collecting"` before iteratively adding — the iterative approach wastes tokens
+
 ## Verification
 
 After each batch of fixes:

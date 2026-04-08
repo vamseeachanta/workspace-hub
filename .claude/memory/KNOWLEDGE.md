@@ -74,7 +74,7 @@
 ## Git Credential & Auth
 
 - Submodules: commit INSIDE submodule first, then `git add <submodule>` at workspace-hub level
-- Push blocked by `workflow` scope: OAuth token needs `workflow` scope to push commits touching `.github/workflows/`
+- Push blocked by `workflow` scope: OAuth token needs `workflow` scope to push commits touching `.github/workflows/` *verified: 2026-04-08*
 - **Credential mismatch**: `gh auth setup-git` reconfigures git to use `gh` token (fixes stale cached credentials)
 - `pre-commit` hook requires virtualenv: bypass with `git -c core.hooksPath=/dev/null commit` *stale: 2026-03-11*
 

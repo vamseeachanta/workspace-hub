@@ -3,15 +3,16 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-07T07:00:25Z"
-  source_hash: "b380b2e05bcbb83c384c6bb525cbe3c5"
+  generated: "2026-04-08T07:00:32Z"
+  source_hash: "7d7cb157301c6e723fb521dc3216eb78"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
-  entry_count: 14
+  entry_count: 15
 
 environment_facts:
   - "ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move."
   - "Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`."
+  - "BSEE data (~300MB) backed up at /mnt/ace/worldenergydata/data/modules/bsee — NOT in git. Excluded from test collection via norecursedirs. scripts/refresh_bsee_all.py fetches it."
 
 conventions:
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
@@ -22,7 +23,7 @@ project_knowledge:
   - "aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp."
   - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv)."
   - "Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643)."
-  - "Gmail 3-account setup LIVE (2026-04-06): OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json, secrets in ~/.gmail-mcp/oauth-env.json. Himalaya CLI for ace+personal (App Passwords). skestates has no App Password (account limitation). GCP project: hermes-gmail-automation. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT (job 908c4afa32cf). Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25)."
+  - "Gmail 3-account LIVE: OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json. Himalaya CLI for ace+personal. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT. Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25)."
   - "WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately."
 
 user_preferences:

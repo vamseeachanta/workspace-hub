@@ -14,6 +14,8 @@ Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Sheb
 §
 Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643).
 §
-Gmail 3-account setup LIVE (2026-04-06): OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json, secrets in ~/.gmail-mcp/oauth-env.json. Himalaya CLI for ace+personal (App Passwords). skestates has no App Password (account limitation). GCP project: hermes-gmail-automation. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT (job 908c4afa32cf). Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25).
+Gmail 3-account LIVE: OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json. Himalaya CLI for ace+personal. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT. Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25).
+§
+BSEE data (~300MB) backed up at /mnt/ace/worldenergydata/data/modules/bsee — NOT in git. Excluded from test collection via norecursedirs. scripts/refresh_bsee_all.py fetches it.
 §
 WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately.
