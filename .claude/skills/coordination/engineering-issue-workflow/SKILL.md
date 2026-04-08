@@ -172,10 +172,11 @@ After implementation passes all tests:
 ## Non-Critical Issues
 
 Issues WITHOUT engineering-critical labels:
-- Skip Steps 2-4 (resource intelligence, plan approval, hard stop)
+- **Do NOT skip planning.** `issue-planning-mode` applies to ALL issues going forward.
+- Run the same planning sequence: Issue Intake → Resource Intelligence → Draft Plan → Adversarial Review → User Approval
+- After approval, implementation may use a lighter execution workflow if the issue is not engineering-critical
 - **TDD is still mandatory** — tests before implementation, always
-- Implement → commit → close
-- User can request the full workflow by asking for it
+- Implement → review as appropriate → commit → close
 
 ---
 
