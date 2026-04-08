@@ -469,4 +469,6 @@ data/document-index/index.jsonl.pre-merge-bak
 # Oversized generated test files (>10MB)
 knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_cc-23-6h-flowback-calculator-4.py
 
-/knowledge/wikis/
+# Ignore large domain wikis but track small engineering wiki
+/knowledge/wikis/*
+!/knowledge/wikis/engineering/

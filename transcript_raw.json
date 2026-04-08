@@ -1,0 +1,1242 @@
+[
+  {
+    "start": 0.16,
+    "duration": 5.119,
+    "text": "Hermes AI plus carpathy LLM wiki is"
+  },
+  {
+    "start": 2.8,
+    "duration": 4.479,
+    "text": "insane. You've been using AI wrong."
+  },
+  {
+    "start": 5.279,
+    "duration": 4.161,
+    "text": "You've been asking it questions, getting"
+  },
+  {
+    "start": 7.279,
+    "duration": 3.921,
+    "text": "answers, and then losing all of it every"
+  },
+  {
+    "start": 9.44,
+    "duration": 3.92,
+    "text": "single session. Gone. You start from"
+  },
+  {
+    "start": 11.2,
+    "duration": 4.16,
+    "text": "zero every time. All that research, all"
+  },
+  {
+    "start": 13.36,
+    "duration": 4.16,
+    "text": "those insights wasted. There's a better"
+  },
+  {
+    "start": 15.36,
+    "duration": 4.16,
+    "text": "way. And it just landed. Hey, I'm the"
+  },
+  {
+    "start": 17.52,
+    "duration": 3.36,
+    "text": "digital avatar of Julian Goldie, and"
+  },
+  {
+    "start": 19.52,
+    "duration": 3.2,
+    "text": "today I'm walking you through something"
+  },
+  {
+    "start": 20.88,
+    "duration": 4.0,
+    "text": "that dropped just days ago that"
+  },
+  {
+    "start": 22.72,
+    "duration": 4.0,
+    "text": "genuinely stopped me in my tracks. Two"
+  },
+  {
+    "start": 24.88,
+    "duration": 4.0,
+    "text": "tools just came together in a way nobody"
+  },
+  {
+    "start": 26.72,
+    "duration": 4.959,
+    "text": "was expecting. Hermes agent from Noose"
+  },
+  {
+    "start": 28.88,
+    "duration": 4.16,
+    "text": "Research and Andre Carpathy's LLM wiki."
+  },
+  {
+    "start": 31.679,
+    "duration": 3.201,
+    "text": "By the end of this video, you'll"
+  },
+  {
+    "start": 33.04,
+    "duration": 3.679,
+    "text": "understand exactly what this is, why it"
+  },
+  {
+    "start": 34.88,
+    "duration": 3.76,
+    "text": "matters, and how to use it to build a"
+  },
+  {
+    "start": 36.719,
+    "duration": 4.481,
+    "text": "knowledge base that gets smarter over"
+  },
+  {
+    "start": 38.64,
+    "duration": 4.4,
+    "text": "time. Let's get into it. So, first, what"
+  },
+  {
+    "start": 41.2,
+    "duration": 3.28,
+    "text": "problem are we actually solving? Most"
+  },
+  {
+    "start": 43.04,
+    "duration": 3.039,
+    "text": "people's experience with AI and"
+  },
+  {
+    "start": 44.48,
+    "duration": 3.84,
+    "text": "documents looks like this. You upload"
+  },
+  {
+    "start": 46.079,
+    "duration": 4.48,
+    "text": "files, ask questions, the AI stitches"
+  },
+  {
+    "start": 48.32,
+    "duration": 3.919,
+    "text": "together an answer. That's rag. And it"
+  },
+  {
+    "start": 50.559,
+    "duration": 3.601,
+    "text": "works. But every single time you ask a"
+  },
+  {
+    "start": 52.239,
+    "duration": 3.761,
+    "text": "question, the AI starts from scratch."
+  },
+  {
+    "start": 54.16,
+    "duration": 3.6,
+    "text": "It's rediscovering the same information"
+  },
+  {
+    "start": 56.0,
+    "duration": 4.079,
+    "text": "over and over. No memory, no"
+  },
+  {
+    "start": 57.76,
+    "duration": 4.479,
+    "text": "accumulation, no compounding, nothing is"
+  },
+  {
+    "start": 60.079,
+    "duration": 4.321,
+    "text": "being built up. Andre Kapathy, one of"
+  },
+  {
+    "start": 62.239,
+    "duration": 4.081,
+    "text": "the most respected names in AI, a"
+  },
+  {
+    "start": 64.4,
+    "duration": 3.84,
+    "text": "founding team member of OpenAI and"
+  },
+  {
+    "start": 66.32,
+    "duration": 4.0,
+    "text": "former director of AI at Tesla,"
+  },
+  {
+    "start": 68.24,
+    "duration": 5.919,
+    "text": "published a document just days ago on"
+  },
+  {
+    "start": 70.32,
+    "duration": 6.4,
+    "text": "April 4th, 2026. It got over 5,000 stars"
+  },
+  {
+    "start": 74.159,
+    "duration": 4.481,
+    "text": "on GitHub in under 48 hours. And the"
+  },
+  {
+    "start": 76.72,
+    "duration": 4.399,
+    "text": "idea in it is deceptively simple. He"
+  },
+  {
+    "start": 78.64,
+    "duration": 4.479,
+    "text": "calls it LLM wiki. Instead of retrieving"
+  },
+  {
+    "start": 81.119,
+    "duration": 4.161,
+    "text": "from raw documents every time, you let"
+  },
+  {
+    "start": 83.119,
+    "duration": 4.561,
+    "text": "the AI build and maintain a persistent"
+  },
+  {
+    "start": 85.28,
+    "duration": 4.72,
+    "text": "wiki, a structured interlin collection"
+  },
+  {
+    "start": 87.68,
+    "duration": 4.479,
+    "text": "of markdown files that sits between you"
+  },
+  {
+    "start": 90.0,
+    "duration": 4.4,
+    "text": "and your raw sources. When you add a new"
+  },
+  {
+    "start": 92.159,
+    "duration": 4.561,
+    "text": "source, the AI doesn't just index it. It"
+  },
+  {
+    "start": 94.4,
+    "duration": 4.16,
+    "text": "reads it, extracts the key information,"
+  },
+  {
+    "start": 96.72,
+    "duration": 4.32,
+    "text": "and integrates it into the existing"
+  },
+  {
+    "start": 98.56,
+    "duration": 4.0,
+    "text": "wiki. It updates pages. It revises"
+  },
+  {
+    "start": 101.04,
+    "duration": 3.759,
+    "text": "summaries. It notes where new"
+  },
+  {
+    "start": 102.56,
+    "duration": 3.839,
+    "text": "information contradicts old claims. The"
+  },
+  {
+    "start": 104.799,
+    "duration": 3.68,
+    "text": "knowledge gets compiled once and kept"
+  },
+  {
+    "start": 106.399,
+    "duration": 4.241,
+    "text": "current, not rediscovered every single"
+  },
+  {
+    "start": 108.479,
+    "duration": 3.68,
+    "text": "time. The wiki is a persistent"
+  },
+  {
+    "start": 110.64,
+    "duration": 3.28,
+    "text": "compounding artifact. The cross"
+  },
+  {
+    "start": 112.159,
+    "duration": 3.521,
+    "text": "references are already there. The"
+  },
+  {
+    "start": 113.92,
+    "duration": 3.519,
+    "text": "contradictions already flagged and it"
+  },
+  {
+    "start": 115.68,
+    "duration": 3.6,
+    "text": "keeps getting richer with every source"
+  },
+  {
+    "start": 117.439,
+    "duration": 3.841,
+    "text": "you add. You never write it yourself."
+  },
+  {
+    "start": 119.28,
+    "duration": 3.92,
+    "text": "You source and ask good questions. The"
+  },
+  {
+    "start": 121.28,
+    "duration": 4.0,
+    "text": "AI does everything else. Carpathy"
+  },
+  {
+    "start": 123.2,
+    "duration": 4.4,
+    "text": "describes it as the LLM on one side,"
+  },
+  {
+    "start": 125.28,
+    "duration": 3.839,
+    "text": "Obsidian Open on the other. The LLM is"
+  },
+  {
+    "start": 127.6,
+    "duration": 3.92,
+    "text": "the programmer. The wiki is the"
+  },
+  {
+    "start": 129.119,
+    "duration": 4.001,
+    "text": "codebase. Now, here's where Hermes Agent"
+  },
+  {
+    "start": 131.52,
+    "duration": 3.52,
+    "text": "comes in. And this is where it gets"
+  },
+  {
+    "start": 133.12,
+    "duration": 4.4,
+    "text": "really interesting. Hermes Agent is an"
+  },
+  {
+    "start": 135.04,
+    "duration": 4.96,
+    "text": "open-source AI agent built by Noose"
+  },
+  {
+    "start": 137.52,
+    "duration": 4.16,
+    "text": "Research. The tagline on the GitHub repo"
+  },
+  {
+    "start": 140.0,
+    "duration": 3.36,
+    "text": "is simple, the agent that grows with"
+  },
+  {
+    "start": 141.68,
+    "duration": 3.52,
+    "text": "you. And that's not marketing. What"
+  },
+  {
+    "start": 143.36,
+    "duration": 3.84,
+    "text": "makes Hermes different from most agents"
+  },
+  {
+    "start": 145.2,
+    "duration": 4.399,
+    "text": "is that it has a built-in learning loop."
+  },
+  {
+    "start": 147.2,
+    "duration": 4.399,
+    "text": "It creates skills from experience,"
+  },
+  {
+    "start": 149.599,
+    "duration": 4.321,
+    "text": "improves them as you use it, and builds"
+  },
+  {
+    "start": 151.599,
+    "duration": 4.961,
+    "text": "a deeper model of who you are across"
+  },
+  {
+    "start": 153.92,
+    "duration": 5.2,
+    "text": "sessions. It has over 26,000 stars on"
+  },
+  {
+    "start": 156.56,
+    "duration": 4.48,
+    "text": "GitHub. It's on a $5 VPS or a GPU"
+  },
+  {
+    "start": 159.12,
+    "duration": 3.839,
+    "text": "cluster. Supports over 200 models"
+  },
+  {
+    "start": 161.04,
+    "duration": 3.6,
+    "text": "through open router. Switch with one"
+  },
+  {
+    "start": 162.959,
+    "duration": 3.36,
+    "text": "command, no lockin, connects to"
+  },
+  {
+    "start": 164.64,
+    "duration": 3.92,
+    "text": "Telegram, Discord, Slack, WhatsApp, and"
+  },
+  {
+    "start": 166.319,
+    "duration": 3.761,
+    "text": "Signal. And it has a skill system, a"
+  },
+  {
+    "start": 168.56,
+    "duration": 3.44,
+    "text": "library of procedures it learns and"
+  },
+  {
+    "start": 170.08,
+    "duration": 3.68,
+    "text": "improves over time. Now, here's the part"
+  },
+  {
+    "start": 172.0,
+    "duration": 4.0,
+    "text": "that's getting people excited. The"
+  },
+  {
+    "start": 173.76,
+    "duration": 5.44,
+    "text": "latest update to Hermes agent now comes"
+  },
+  {
+    "start": 176.0,
+    "duration": 5.599,
+    "text": "packaged with Carpathy's LLM wiki as a"
+  },
+  {
+    "start": 179.2,
+    "duration": 5.039,
+    "text": "built-in skill. You run Hermes update,"
+  },
+  {
+    "start": 181.599,
+    "duration": 4.72,
+    "text": "then use the slash command OM wiki"
+  },
+  {
+    "start": 184.239,
+    "duration": 4.241,
+    "text": "followed by your research topic and it"
+  },
+  {
+    "start": 186.319,
+    "duration": 3.92,
+    "text": "starts building. The news research team"
+  },
+  {
+    "start": 188.48,
+    "duration": 4.08,
+    "text": "showed this off by using it to study"
+  },
+  {
+    "start": 190.239,
+    "duration": 4.481,
+    "text": "their own projects, web sources, code,"
+  },
+  {
+    "start": 192.56,
+    "duration": 4.0,
+    "text": "research papers. Hermes read through all"
+  },
+  {
+    "start": 194.72,
+    "duration": 3.92,
+    "text": "of it and built a structured knowledge"
+  },
+  {
+    "start": 196.56,
+    "duration": 4.0,
+    "text": "base across everything. Noose research"
+  },
+  {
+    "start": 198.64,
+    "duration": 3.519,
+    "text": "has been building a large body of"
+  },
+  {
+    "start": 200.56,
+    "duration": 3.84,
+    "text": "research work created in a short amount"
+  },
+  {
+    "start": 202.159,
+    "duration": 4.16,
+    "text": "of time. That's the kind of output that"
+  },
+  {
+    "start": 204.4,
+    "duration": 3.36,
+    "text": "used to take weeks of manual effort."
+  },
+  {
+    "start": 206.319,
+    "duration": 3.2,
+    "text": "When I first started working with"
+  },
+  {
+    "start": 207.76,
+    "duration": 4.16,
+    "text": "knowledge management tools, I was"
+  },
+  {
+    "start": 209.519,
+    "duration": 4.481,
+    "text": "overwhelmed. Too many options, too many"
+  },
+  {
+    "start": 211.92,
+    "duration": 3.92,
+    "text": "workflows, and I kept losing track of"
+  },
+  {
+    "start": 214.0,
+    "duration": 3.599,
+    "text": "what actually worked. That's when I"
+  },
+  {
+    "start": 215.84,
+    "duration": 4.08,
+    "text": "created a community called AI Profit"
+  },
+  {
+    "start": 217.599,
+    "duration": 4.64,
+    "text": "Boardroom. We have over 2,000 members,"
+  },
+  {
+    "start": 219.92,
+    "duration": 4.399,
+    "text": "all focused on learning AI together and"
+  },
+  {
+    "start": 222.239,
+    "duration": 4.161,
+    "text": "sharing what actually works. It's where"
+  },
+  {
+    "start": 224.319,
+    "duration": 3.84,
+    "text": "I test new workflows like this one"
+  },
+  {
+    "start": 226.4,
+    "duration": 3.68,
+    "text": "before I make a video about it. The"
+  },
+  {
+    "start": 228.159,
+    "duration": 3.841,
+    "text": "community shares real use cases and"
+  },
+  {
+    "start": 230.08,
+    "duration": 3.92,
+    "text": "practical implementations. If you're"
+  },
+  {
+    "start": 232.0,
+    "duration": 4.239,
+    "text": "serious about using AI to improve your"
+  },
+  {
+    "start": 234.0,
+    "duration": 4.4,
+    "text": "work and skills, check it out. Link in"
+  },
+  {
+    "start": 236.239,
+    "duration": 4.481,
+    "text": "the description. Let me break down how"
+  },
+  {
+    "start": 238.4,
+    "duration": 4.0,
+    "text": "LLM wiki actually works so you"
+  },
+  {
+    "start": 240.72,
+    "duration": 3.439,
+    "text": "understand what's happening. There are"
+  },
+  {
+    "start": 242.4,
+    "duration": 3.68,
+    "text": "three layers. The first is your raw"
+  },
+  {
+    "start": 244.159,
+    "duration": 4.401,
+    "text": "sources, documents, articles, papers,"
+  },
+  {
+    "start": 246.08,
+    "duration": 4.56,
+    "text": "data files. These are immutable. The AI"
+  },
+  {
+    "start": 248.56,
+    "duration": 4.0,
+    "text": "reads from them but never changes them."
+  },
+  {
+    "start": 250.64,
+    "duration": 4.48,
+    "text": "Your source of truth. The second is the"
+  },
+  {
+    "start": 252.56,
+    "duration": 5.44,
+    "text": "wiki itself. A folder of AI generated"
+  },
+  {
+    "start": 255.12,
+    "duration": 5.519,
+    "text": "markdown files, summaries, entity pages,"
+  },
+  {
+    "start": 258.0,
+    "duration": 4.8,
+    "text": "concept pages, comparisons, a synthesis."
+  },
+  {
+    "start": 260.639,
+    "duration": 4.401,
+    "text": "The AI owns this layer. It creates"
+  },
+  {
+    "start": 262.8,
+    "duration": 4.56,
+    "text": "pages, updates them when new sources"
+  },
+  {
+    "start": 265.04,
+    "duration": 4.24,
+    "text": "arrive, maintains cross references, and"
+  },
+  {
+    "start": 267.36,
+    "duration": 4.08,
+    "text": "keeps everything consistent. You read"
+  },
+  {
+    "start": 269.28,
+    "duration": 4.24,
+    "text": "it, the AI writes it. The third is the"
+  },
+  {
+    "start": 271.44,
+    "duration": 4.56,
+    "text": "schema, a configuration document that"
+  },
+  {
+    "start": 273.52,
+    "duration": 4.48,
+    "text": "tells the AI how the wiki is structured,"
+  },
+  {
+    "start": 276.0,
+    "duration": 3.6,
+    "text": "what the conventions are, and what to do"
+  },
+  {
+    "start": 278.0,
+    "duration": 4.16,
+    "text": "when you add new sources or ask"
+  },
+  {
+    "start": 279.6,
+    "duration": 4.72,
+    "text": "questions. This is what makes the AI a"
+  },
+  {
+    "start": 282.16,
+    "duration": 4.319,
+    "text": "disciplined knowledge organizer rather"
+  },
+  {
+    "start": 284.32,
+    "duration": 4.319,
+    "text": "than just a generic chatbot. You and the"
+  },
+  {
+    "start": 286.479,
+    "duration": 4.481,
+    "text": "agent evolve this together over time."
+  },
+  {
+    "start": 288.639,
+    "duration": 4.081,
+    "text": "There are three core operations. Ingest,"
+  },
+  {
+    "start": 290.96,
+    "duration": 3.679,
+    "text": "you drop a new source in and tell the AI"
+  },
+  {
+    "start": 292.72,
+    "duration": 3.84,
+    "text": "to process it. It reads the document,"
+  },
+  {
+    "start": 294.639,
+    "duration": 4.241,
+    "text": "pulls out key takeaways, writes a"
+  },
+  {
+    "start": 296.56,
+    "duration": 4.72,
+    "text": "summary page, updates the index, and"
+  },
+  {
+    "start": 298.88,
+    "duration": 4.96,
+    "text": "touches any relevant pages across the"
+  },
+  {
+    "start": 301.28,
+    "duration": 4.88,
+    "text": "wiki. A single source might update 10 to"
+  },
+  {
+    "start": 303.84,
+    "duration": 4.24,
+    "text": "15 different pages. That's where the"
+  },
+  {
+    "start": 306.16,
+    "duration": 4.08,
+    "text": "compounding starts. Query, you ask"
+  },
+  {
+    "start": 308.08,
+    "duration": 4.32,
+    "text": "questions. The AI searches relevant"
+  },
+  {
+    "start": 310.24,
+    "duration": 4.239,
+    "text": "pages and gives you a synthesized answer"
+  },
+  {
+    "start": 312.4,
+    "duration": 4.16,
+    "text": "with citations. Here's a smart insight"
+  },
+  {
+    "start": 314.479,
+    "duration": 4.321,
+    "text": "from Karpathy's document. Good answers"
+  },
+  {
+    "start": 316.56,
+    "duration": 4.639,
+    "text": "can be filed back into the wiki as new"
+  },
+  {
+    "start": 318.8,
+    "duration": 4.72,
+    "text": "pages. A comparison you asked for an"
+  },
+  {
+    "start": 321.199,
+    "duration": 3.761,
+    "text": "analysis a connection you discovered."
+  },
+  {
+    "start": 323.52,
+    "duration": 3.44,
+    "text": "These shouldn't disappear into chat"
+  },
+  {
+    "start": 324.96,
+    "duration": 4.72,
+    "text": "history. Your explorations compound just"
+  },
+  {
+    "start": 326.96,
+    "duration": 4.64,
+    "text": "like ingested sources do. Lint, you ask"
+  },
+  {
+    "start": 329.68,
+    "duration": 4.0,
+    "text": "the AI to health check the wiki, look"
+  },
+  {
+    "start": 331.6,
+    "duration": 4.64,
+    "text": "for contradictions, stale information,"
+  },
+  {
+    "start": 333.68,
+    "duration": 3.92,
+    "text": "orphan pages, missing connections. It"
+  },
+  {
+    "start": 336.24,
+    "duration": 3.519,
+    "text": "also suggests new questions to"
+  },
+  {
+    "start": 337.6,
+    "duration": 4.4,
+    "text": "investigate and new sources to find."
+  },
+  {
+    "start": 339.759,
+    "duration": 3.601,
+    "text": "This keeps the wiki healthy as it grows."
+  },
+  {
+    "start": 342.0,
+    "duration": 3.12,
+    "text": "Now, let's talk about who should"
+  },
+  {
+    "start": 343.36,
+    "duration": 3.76,
+    "text": "actually care about this and what it"
+  },
+  {
+    "start": 345.12,
+    "duration": 3.6,
+    "text": "looks like in practice. Research is"
+  },
+  {
+    "start": 347.12,
+    "duration": 3.44,
+    "text": "going deep on a topic over weeks or"
+  },
+  {
+    "start": 348.72,
+    "duration": 3.84,
+    "text": "months. Every paper you read gets"
+  },
+  {
+    "start": 350.56,
+    "duration": 4.16,
+    "text": "integrated into what you already know."
+  },
+  {
+    "start": 352.56,
+    "duration": 4.4,
+    "text": "One structured wiki instead of scattered"
+  },
+  {
+    "start": 354.72,
+    "duration": 4.319,
+    "text": "notes. Content creators researching for"
+  },
+  {
+    "start": 356.96,
+    "duration": 4.0,
+    "text": "videos or articles. A research vault"
+  },
+  {
+    "start": 359.039,
+    "duration": 4.561,
+    "text": "that compounds over time instead of"
+  },
+  {
+    "start": 360.96,
+    "duration": 4.799,
+    "text": "starting fresh every topic. Developers."
+  },
+  {
+    "start": 363.6,
+    "duration": 4.4,
+    "text": "Hermes can read your codebase, docs, and"
+  },
+  {
+    "start": 365.759,
+    "duration": 4.961,
+    "text": "papers and keep everything organized."
+  },
+  {
+    "start": 368.0,
+    "duration": 4.8,
+    "text": "Business teams feed Slack threads,"
+  },
+  {
+    "start": 370.72,
+    "duration": 4.88,
+    "text": "meeting transcripts, and customer calls"
+  },
+  {
+    "start": 372.8,
+    "duration": 4.64,
+    "text": "into a wiki the AI keeps current without"
+  },
+  {
+    "start": 375.6,
+    "duration": 4.0,
+    "text": "anyone on the team having to do the"
+  },
+  {
+    "start": 377.44,
+    "duration": 4.16,
+    "text": "maintenance. Karpathy makes a point here"
+  },
+  {
+    "start": 379.6,
+    "duration": 3.599,
+    "text": "that's really underrated. The tedious"
+  },
+  {
+    "start": 381.6,
+    "duration": 3.92,
+    "text": "part of maintaining a knowledge base"
+  },
+  {
+    "start": 383.199,
+    "duration": 4.72,
+    "text": "isn't the reading or thinking. It's the"
+  },
+  {
+    "start": 385.52,
+    "duration": 4.239,
+    "text": "bookkeeping, updating cross references,"
+  },
+  {
+    "start": 387.919,
+    "duration": 3.681,
+    "text": "keeping summaries current. Humans"
+  },
+  {
+    "start": 389.759,
+    "duration": 4.321,
+    "text": "abandon wikis because the maintenance"
+  },
+  {
+    "start": 391.6,
+    "duration": 4.319,
+    "text": "burden grows faster than the value. An"
+  },
+  {
+    "start": 394.08,
+    "duration": 3.839,
+    "text": "AI agent doesn't get bored, doesn't"
+  },
+  {
+    "start": 395.919,
+    "duration": 4.56,
+    "text": "forget a cross reference, and can touch"
+  },
+  {
+    "start": 397.919,
+    "duration": 4.56,
+    "text": "15 files in one pass. A few practical"
+  },
+  {
+    "start": 400.479,
+    "duration": 4.241,
+    "text": "tips for using this. Install Hermes"
+  },
+  {
+    "start": 402.479,
+    "duration": 5.28,
+    "text": "agent with one command on Linux, Mac OS,"
+  },
+  {
+    "start": 404.72,
+    "duration": 5.36,
+    "text": "or WSL2. Then run Hermes update to get"
+  },
+  {
+    "start": 407.759,
+    "duration": 4.481,
+    "text": "the latest version with the LLM wiki"
+  },
+  {
+    "start": 410.08,
+    "duration": 4.32,
+    "text": "skill included. To start a wiki on any"
+  },
+  {
+    "start": 412.24,
+    "duration": 4.32,
+    "text": "topic, type well in wiki followed by"
+  },
+  {
+    "start": 414.4,
+    "duration": 4.56,
+    "text": "your research topic. Use Obsidian as"
+  },
+  {
+    "start": 416.56,
+    "duration": 4.72,
+    "text": "your viewer. It's free. The graph view"
+  },
+  {
+    "start": 418.96,
+    "duration": 4.639,
+    "text": "shows how all your pages connect. What's"
+  },
+  {
+    "start": 421.28,
+    "duration": 4.72,
+    "text": "a hub? What's an orphan? What needs more"
+  },
+  {
+    "start": 423.599,
+    "duration": 4.561,
+    "text": "links? Use the Obsidian Web Clipper"
+  },
+  {
+    "start": 426.0,
+    "duration": 4.0,
+    "text": "browser extension to grab articles as"
+  },
+  {
+    "start": 428.16,
+    "duration": 3.759,
+    "text": "markdown. Drop them into your raw"
+  },
+  {
+    "start": 430.0,
+    "duration": 4.08,
+    "text": "sources folder and tell the agent to"
+  },
+  {
+    "start": 431.919,
+    "duration": 4.72,
+    "text": "ingest. Two files help you navigate as"
+  },
+  {
+    "start": 434.08,
+    "duration": 4.72,
+    "text": "the wiki grows. The index is a catalog"
+  },
+  {
+    "start": 436.639,
+    "duration": 4.641,
+    "text": "of everything with oneline summaries per"
+  },
+  {
+    "start": 438.8,
+    "duration": 4.48,
+    "text": "page. The log is a chronological record"
+  },
+  {
+    "start": 441.28,
+    "duration": 4.4,
+    "text": "of what the agent has done. The agent"
+  },
+  {
+    "start": 443.28,
+    "duration": 4.72,
+    "text": "reads the index first before answering"
+  },
+  {
+    "start": 445.68,
+    "duration": 3.76,
+    "text": "any question. At smaller scales, you"
+  },
+  {
+    "start": 448.0,
+    "duration": 3.36,
+    "text": "don't need complex search"
+  },
+  {
+    "start": 449.44,
+    "duration": 4.159,
+    "text": "infrastructure. The schema is worth"
+  },
+  {
+    "start": 451.36,
+    "duration": 4.239,
+    "text": "investing time in. It's the rulebook for"
+  },
+  {
+    "start": 453.599,
+    "duration": 3.44,
+    "text": "how the AI maintains the wiki. The"
+  },
+  {
+    "start": 455.599,
+    "duration": 4.081,
+    "text": "better your schema, the better your"
+  },
+  {
+    "start": 457.039,
+    "duration": 6.16,
+    "text": "wiki. One last thing, Karpathy connects"
+  },
+  {
+    "start": 459.68,
+    "duration": 4.959,
+    "text": "this to Vanavar Bush's MX from 1945, a"
+  },
+  {
+    "start": 463.199,
+    "duration": 4.0,
+    "text": "personal knowledge store with"
+  },
+  {
+    "start": 464.639,
+    "duration": 5.28,
+    "text": "associative trails between documents."
+  },
+  {
+    "start": 467.199,
+    "duration": 4.321,
+    "text": "Private, actively curated. The part Bush"
+  },
+  {
+    "start": 469.919,
+    "duration": 4.0,
+    "text": "couldn't solve was who does the"
+  },
+  {
+    "start": 471.52,
+    "duration": 4.399,
+    "text": "maintenance. Now we have the answer. If"
+  },
+  {
+    "start": 473.919,
+    "duration": 3.521,
+    "text": "you're looking to dive deeper into AI"
+  },
+  {
+    "start": 475.919,
+    "duration": 3.521,
+    "text": "tools and actually implement them in"
+  },
+  {
+    "start": 477.44,
+    "duration": 4.4,
+    "text": "your work, I recommend AI Profit"
+  },
+  {
+    "start": 479.44,
+    "duration": 4.64,
+    "text": "Boardroom. Over 2,000 people learning"
+  },
+  {
+    "start": 481.84,
+    "duration": 4.56,
+    "text": "how to use AI effectively. Everyone"
+  },
+  {
+    "start": 484.08,
+    "duration": 4.16,
+    "text": "shares real experiences. What's working?"
+  },
+  {
+    "start": 486.4,
+    "duration": 4.72,
+    "text": "What's not, which tools are worth your"
+  },
+  {
+    "start": 488.24,
+    "duration": 4.959,
+    "text": "time, which ones to skip, no hype, just"
+  },
+  {
+    "start": 491.12,
+    "duration": 4.079,
+    "text": "solid information and practical guidance"
+  },
+  {
+    "start": 493.199,
+    "duration": 3.84,
+    "text": "from people doing the work. It's helped"
+  },
+  {
+    "start": 495.199,
+    "duration": 3.761,
+    "text": "me stay on top of updates and figure out"
+  },
+  {
+    "start": 497.039,
+    "duration": 3.6,
+    "text": "how to actually apply them. Link in"
+  },
+  {
+    "start": 498.96,
+    "duration": 4.0,
+    "text": "description if you want to check it out."
+  },
+  {
+    "start": 500.639,
+    "duration": 4.801,
+    "text": "And if you want the full process, SOPs,"
+  },
+  {
+    "start": 502.96,
+    "duration": 5.04,
+    "text": "and over 100 AI use cases like this one,"
+  },
+  {
+    "start": 505.44,
+    "duration": 4.4,
+    "text": "join the AI success lab. Links in the"
+  },
+  {
+    "start": 508.0,
+    "duration": 3.759,
+    "text": "comments and description. You'll get all"
+  },
+  {
+    "start": 509.84,
+    "duration": 4.4,
+    "text": "the video notes from there, plus access"
+  },
+  {
+    "start": 511.759,
+    "duration": 4.481,
+    "text": "to our community of 58,000 members who"
+  },
+  {
+    "start": 514.24,
+    "duration": 4.479,
+    "text": "are crushing it with AI. If this video"
+  },
+  {
+    "start": 516.24,
+    "duration": 4.479,
+    "text": "was useful, hit subscribe. New AI tools"
+  },
+  {
+    "start": 518.719,
+    "duration": 4.56,
+    "text": "and workflows every week. See you in the"
+  },
+  {
+    "start": 520.719,
+    "duration": 2.56,
+    "text": "next one."
+  }
+]

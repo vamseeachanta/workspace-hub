@@ -6,12 +6,17 @@ triggers:
   - When a GitHub issue with cat:engineering, cat:engineering-calculations, cat:engineering-methodology, or cat:data-pipeline is mentioned or assigned
   - When the user asks to implement any engineering calculation, offshore standard, metocean, OrcaFlex, or data-pipeline work
   - When any commit touches digitalmodel/, worldenergydata/, or assetutilities/
-version: 1.1.0
+version: 1.2.0
 ---
 
 # Engineering Issue Workflow
 
 **MANDATORY** for all engineering-critical issues.
+
+> **Planning Steps delegated to `issue-planning-mode` skill.**
+> Steps 1-5 of this workflow (Triage → Resource Intelligence → Plan → Adversarial Review → User Approval)
+> are now fully defined in `.claude/skills/coordination/issue-planning-mode/SKILL.md`.
+> Load that skill for all planning work. This skill picks up at STEP 6 (Implement).
 
 ## Scope
 
@@ -25,13 +30,14 @@ Reference: `docs/standards/HARD-STOP-POLICY.md`
 ## The Workflow (7 Steps)
 
 ```
-STEP 1: Triage (first turn — classify issue)
-STEP 2: Resource Intelligence (automated — search standards, repo, documents)
-STEP 3: Write Plan (document what, how, tests, risks)
-STEP 4: ◆ HARD STOP — USER APPROVES PLAN ◆ (DO NOT SKIP)
-STEP 5: Implement (TDD: tests first, then code)
-STEP 6: Cross-Review (Codex + Gemini review implementation against approved plan)
-STEP 7: Close (commit, push, close issue with summary)
+STEP 1: Triage              — classify issue, announce  \
+STEP 2: Resource Intel      — search all knowledge sources, map artifact locations  | issue-planning-mode
+STEP 3: Draft Plan          — pseudocode, file map, tests, acceptance criteria      |
+STEP 4: Adversarial Review  — Claude + Codex + Gemini review the plan              |
+STEP 5: ◆ HARD STOP ◆       — post to GitHub, label, wait for user approval        /
+STEP 6: Implement           — TDD: tests first, then code
+STEP 7: Cross-Review        — Codex + Gemini review implementation vs approved plan
+STEP 8: Close               — commit, push, close issue with summary
 ```
 
 ### STEP 1: Triage
