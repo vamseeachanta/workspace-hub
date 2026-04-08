@@ -29,7 +29,7 @@ h-o3           # o3 via OpenAI
 h-copilot      # claude-sonnet-4.6 via Copilot ($0 extra)
 h-copilot-gemini # gemini-2.5-pro via Copilot ($0 extra)
 h-copilot-gpt  # gpt-5.4 via Copilot ($0 extra)
-h-router       # qwen/qwen3.6-plus:free via OpenRouter (FREE — replaces h-deepseek)
+h-router       # qwen/qwen3.6-plus via OpenRouter (PAID — :free suffix deprecated Apr 2026)
 h-qwen         # same as h-router
 h-nemotron     # nvidia/nemotron-3-super-120b-a12b:free via OpenRouter (heavy reasoning, FREE)
 # NOTE: DeepSeek API key (DEEPSEEK_API_KEY) is exhausted 402 — pay-per-token, ran out of credits
@@ -157,7 +157,7 @@ Tier 3:   copilot/claude-sonnet-4.6    (save Copilot for batch/subagents)
 Tier 4:   openai-codex/gpt-5.4         (2 accounts round-robin)
 Tier 5:   openrouter/qwen3.6-plus:free (zero cost last resort)
 
-smart_model_routing short queries -> openrouter/qwen free (NOT Copilot)
+smart_model_routing short queries -> copilot/gemini-2.5-flash (was openrouter/qwen, :free deprecated Apr 2026)
 delegation/subagents             -> copilot/sonnet  (intentional)
 ```
 
