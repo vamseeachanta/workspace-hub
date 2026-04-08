@@ -108,7 +108,8 @@ Before drafting the plan, explicitly decide WHERE every output artifact will liv
 
 ## STEP 3 — Draft the Plan
 
-Save to `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`. Format:
+Copy `docs/plans/_template-issue-plan.md` to `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`
+and fill in every section. Format:
 
 ```markdown
 ## Plan for #NNN: Issue Title
