@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-04-05
+> Last captured: 2026-04-08
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -25,7 +25,7 @@
 - [Mooring failures knowledge](project_mooring_failures_knowledge.md) — 40-entry seed at knowledge/seeds/
 - [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating domains Mon-Fri, outputs to .planning/research/
 - [AI harness evaluations](project_ai_harness_evaluations.md) — GStack, Hermes, Paperclip, Superpowers audit (#1466-1470)
-- [Hermes installation](project_hermes_installation.md) — v0.4.0 installed, venv ready, blocked on API key config
+- [Hermes installation](project_hermes_installation.md) — v0.4.0 installed, API keys configured; shebang reverts are recurring
 - [Workflow tips in /today](project_workflow_tips_today.md) — tip-of-the-day feature, hybrid YAML catalog, brainstorming
 - [Solver queue](project_solver_queue_architecture.md) — PRODUCTION: batch manifests, retry, results dashboard, watch-results cron
 - [Overnight batch runs](project_overnight_batch_runs.md) — 5 parallel terminals dispatched nightly with pre-planned prompts
