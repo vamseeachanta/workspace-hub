@@ -3,11 +3,17 @@
 Repo: /mnt/local-analysis/workspace-hub
 Rules: use `uv run` for Python, TDD first when code changes are made, commit to `main`, `git pull origin main` before every push, do not branch, do not ask the user questions.
 
+Status note:
+- A prior run encountered permissions that limited the session to analysis instead of implementation.
+- Preserve that read-only outcome in the audit trail.
+- If write access is still unavailable, switch immediately to analysis-only mode instead of repeatedly attempting implementation.
+
 First inspect current state:
 1. Read GH issues #1857 and #1839.
 2. Inspect:
    - `notes/agent-work-queue.md`
    - `scripts/refresh-agent-work-queue.sh`
+   - `scripts/refresh-agent-work-queue.py`
    - `scripts/ai/review_routing_gate.py`
    - `scripts/ai/review-routing-gate.sh`
    - relevant files under `docs/governance/` and `docs/standards/`
@@ -28,41 +34,38 @@ Only write to:
 - `docs/governance/`
 - `docs/reports/session-governance/`
 
-Task 1: issue #1857
-Harden the rolling agent work queue so it is deterministic, refreshable, and auditable.
+Execution mode decision:
+1. First, verify whether the allowed write paths are actually writable.
+2. If writes succeed, proceed with the bounded implementation tasks below.
+3. If writes are denied or the workspace is effectively read-only:
+   - do not claim implementation completion
+   - do not keep retrying failed writes
+   - produce analysis-only patch guidance under `/tmp/terminal-4-analysis.md`
+   - include exact files, exact proposed edits, and verification commands to run once write access is restored
+
+Task 1: issue #1857 (implementation if writable, otherwise analysis-only patch plan)
 
 Minimum deliverables:
-1. Strengthen `scripts/refresh-agent-work-queue.sh` or add `scripts/refresh-agent-work-queue.py` with a thin shell wrapper.
-2. Add/update at least one targeted test under `tests/work-queue/`.
+1. Strengthen `scripts/refresh-agent-work-queue.sh` or `scripts/refresh-agent-work-queue.py` only for still-missing deterministic refresh/parity work.
+2. Add/update at least one targeted test under `tests/work-queue/` if code changes are made.
 3. Update `notes/agent-work-queue.md` only if regeneration is part of the flow.
 
-Task 2: issue #1839
-Implement one bounded, auditable slice of workflow hard-stop governance.
-
-Good options:
-- a session-governor scaffold under `scripts/workflow/`
-- a machine-readable hard-stop checkpoint config plus validation utility
-- a small checker that verifies required gates exist in workflow artifacts
+Task 2: issue #1839 (implementation if writable, otherwise analysis-only patch plan)
 
 Minimum deliverables:
-1. One concrete governance artifact or utility under `scripts/workflow/`.
-2. One targeted test if code is added.
-3. One concise doc/report under `docs/governance/` or `docs/reports/session-governance/` describing what was implemented and what remains.
+1. Implement one concrete runtime-enforcement or hard-stop-governance delta, not just another broad scaffold.
+2. Add one targeted test if code is added.
+3. Add one concise doc/report under `docs/governance/` or `docs/reports/session-governance/` describing what was implemented or what exact patch is proposed.
 
 Verification:
-- targeted pytest for touched tests
-- one direct refresh/script invocation if applicable
+- if writable: targeted pytest for touched tests and one direct refresh/script invocation if applicable
+- if read-only: verify by inspection only and record the exact commands that should be run later once write access is restored
 
-Commit messages:
-- `feat(queue): harden rolling agent work queue refresh path (#1857)`
-- `feat(workflow): add first-pass hard-stop governance scaffolding (#1839)`
-
-Mandatory review after each push:
-1. `git show --stat --patch HEAD > /tmp/terminal-4-impl.diff`
-2. Write `/tmp/terminal-4-review.md` with issue context, changed files, governance/operational risks, verification result, and exact diff.
-3. Run Codex review:
-   - `codex exec "$(cat /tmp/terminal-4-review.md)" | tee /tmp/terminal-4-codex-review.txt`
-4. If Gemini CLI is available, run Gemini too:
-   - `gemini exec "$(cat /tmp/terminal-4-review.md)" | tee /tmp/terminal-4-gemini-review.txt`
-5. If reviewers find MAJOR/HIGH issues, fix once, commit, push, rerun only the reviewer(s) that found them.
-6. Post brief GH issue comments on #1857 and/or #1839 with implementation summary, verification, and final verdicts.
+Mandatory closeout:
+1. If implementation succeeds, capture `/tmp/terminal-4-impl.diff`, `/tmp/terminal-4-review.md`, and reviewer outputs.
+2. If the session is analysis-only, write `/tmp/terminal-4-analysis.md` with:
+   - blocked write paths or permission symptoms
+   - exact proposed changes by file
+   - test/verification commands to run later
+   - whether issue #1857, #1839, or both were analyzed
+3. Keep the audit trail explicit about analysis-only versus implemented work.

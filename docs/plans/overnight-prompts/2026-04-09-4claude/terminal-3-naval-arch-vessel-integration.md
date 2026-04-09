@@ -3,11 +3,15 @@
 Repo: /mnt/local-analysis/workspace-hub
 Rules: use `uv run` for Python, TDD first, commit to `main`, `git pull origin main` before every push, do not branch, do not ask the user questions.
 
+Status note:
+- This first-pass stream is already implemented and verified.
+- If reused, this prompt is for second-pass audit/hardening only, not for first-pass implementation.
+
 First inspect current state:
 1. Read GH issue #1859.
 2. Inspect `digitalmodel/src/digitalmodel/naval_architecture/` and existing tests.
-3. Inspect vessel-fleet / hull-model data sources in `worldenergydata`.
-4. Implement only the missing delta.
+3. Inspect prior review output or issue comments if available.
+4. Implement only a concrete missing delta if one is found.
 
 Do NOT write to:
 - `digitalmodel/src/digitalmodel/field_development/`
@@ -27,27 +31,19 @@ Only write to:
 - `digitalmodel/tests/naval_architecture/`
 
 Task:
-Build a bounded first-pass vessel/hull integration layer that makes `worldenergydata` vessel records usable by digitalmodel naval_architecture modules.
+Run a bounded second-pass audit on the existing vessel/hull integration layer and only fix concrete residual issues.
 
 Minimum deliverables:
-1. Add/extend an adapter that converts vessel records into principal dimensions expected by naval_architecture modules.
-2. Add tests for record normalization, missing/partial dimensions, and one integration path into a hydrostatics/stability-facing function.
-3. Add a small helper in `integration.py` or `ship_data.py` only if needed.
-4. If `curves_of_form.py` needs a hook, keep it narrow and backward-compatible.
-5. No full 3D hull-geometry ingestion.
+1. Inspect existing implementation, tests, and prior review outputs first.
+2. Only make changes for a specific defect, schema mismatch, or missing regression test.
+3. Keep any follow-up backward-compatible and narrow.
+4. Do not expand into broader hull-geometry or workflow work.
 
 Verification:
 - `uv run pytest digitalmodel/tests/naval_architecture -k 'ship or vessel or dimension or stability' -v`
+- if a stateful/order-dependent test issue is suspected, verify with an additional targeted combined run
 
-Commit message:
-- `feat(naval-arch): wire vessel fleet dimensions into naval architecture adapters (#1859)`
-
-Mandatory review after push:
-1. `git show --stat --patch HEAD > /tmp/terminal-3-impl.diff`
-2. Write `/tmp/terminal-3-review.md` with issue context, changed files, compatibility risks, verification result, and exact diff.
-3. Run Codex review:
-   - `codex exec "$(cat /tmp/terminal-3-review.md)" | tee /tmp/terminal-3-codex-review.txt`
-4. If Gemini CLI is available, run Gemini too:
-   - `gemini exec "$(cat /tmp/terminal-3-review.md)" | tee /tmp/terminal-3-gemini-review.txt`
-5. If reviewers find MAJOR/HIGH issues, fix once, commit, push, rerun only the reviewer(s) that found them.
-6. Post a brief GH issue comment on #1859 with implementation summary, test result, and final verdicts.
+Mandatory closeout:
+1. If code changed, capture `/tmp/terminal-3-impl.diff`, `/tmp/terminal-3-review.md`, and reviewer outputs.
+2. If no changes were needed, write `/tmp/terminal-3-audit.md` with audit scope, verification result, and `no further delta required`.
+3. External review is useful, but do not block closeout solely on Gemini availability or capacity issues.

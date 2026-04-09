@@ -21,10 +21,11 @@ related_skills: [multi-machine-ai-readiness-and-issue-triage, writing-plans, iss
    - **Important**: Output can be 80KB+ for large repos. Save to file first, then process with a Python heredoc via `terminal("python3 << 'PYEOF' ... PYEOF")`. Do NOT try to parse inside `execute_code` — the `read_file` line-join and terminal output cap both corrupt large JSON.
 2. Categorize by label: priority (high/medium/low), category (engineering, doc-intel, automation), domain, machine
 3. **Review previous batch results first**: Check `docs/plans/overnight-prompts/` for prior runs, read session-handoff docs, and `git log --oneline -20` to understand what was already completed. Avoid assigning work that was done in the last batch.
-4. For repos with enforced plan gates (for example workspace-hub), check whether target issues are actually implementation-ready (`status:plan-approved` or repo-equivalent). If none are ready, either (a) stop and surface the gating gap, or (b) generate a clearly-labeled "prepared execution pack" that is NOT yet hard-stop compliant until labels/status are updated.
-5. Group into non-overlapping workstreams by file/directory ownership
-6. Assign workstreams to terminals by provider strength (see allocation table)
-7. Verify zero file overlap before writing prompts
+4. For repos with enforced plan gates (for example workspace-hub), check whether target issues are actually implementation-ready (`status:plan-approved` or repo-equivalent). If none are ready, either (a) stop and surface the gating gap, or (b) generate a clearly-labeled planning-only execution pack that produces implementation-ready dossiers/prompts instead of code changes.
+5. For 6+ parallel sessions, strongly prefer planning-only or audit-only streams unless you have a large pool of already-approved, file-disjoint implementation issues. At 10 sessions, default to one unique result artifact per terminal to avoid git collisions.
+6. Group into non-overlapping workstreams by file/directory ownership
+7. Assign workstreams to terminals by provider strength (see allocation table)
+8. Verify zero file overlap before writing prompts
 
 ## Selection Criteria for Overnight Tasks
 

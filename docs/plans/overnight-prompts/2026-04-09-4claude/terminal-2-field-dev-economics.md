@@ -3,11 +3,25 @@
 Repo: /mnt/local-analysis/workspace-hub
 Rules: use `uv run` for Python, TDD first, commit to `main`, `git pull origin main` before every push, do not branch, do not ask the user questions.
 
+Status note:
+- A prior launch of this stream produced no reliable execution artifact.
+- Current evidence suggests `economics.py`, `__init__.py`, and `test_economics.py` already exist in `digitalmodel`.
+- On this run, do not remain silent. Start by printing:
+  - issue read: yes/no
+  - files inspected: list
+  - first implementation step: one sentence
+
+Launch requirement:
+- For unattended runs, pass this prompt as a command argument and close stdin with `</dev/null>`.
+- If you cannot read the issue, target files, or adapters, stop and report the exact blocker immediately.
+- Do not end without either implementation artifacts or an explicit blocker artifact.
+
 First inspect current state:
 1. Read GH issue #1858.
 2. Inspect economics-related modules under `digitalmodel/src/digitalmodel/field_development/`.
 3. Inspect relevant `worldenergydata` economics / FDAS interfaces.
-4. Implement only the missing delta.
+4. Inspect whether broader workflow integration is still missing.
+5. Implement only the missing delta.
 
 Do NOT write to:
 - `digitalmodel/src/digitalmodel/field_development/benchmarks.py`
@@ -26,26 +40,26 @@ Only write to:
 - `digitalmodel/src/digitalmodel/field_development/economics.py`
 - `digitalmodel/src/digitalmodel/field_development/__init__.py`
 - `digitalmodel/tests/field_development/test_economics.py`
+- `digitalmodel/src/digitalmodel/field_development/workflow.py` only if it does not exist and is required for the still-missing delta
 
 Task:
-Create a bounded economics facade that wires existing `worldenergydata` capabilities into digitalmodel.
+Create or finish the bounded economics facade work that wires existing `worldenergydata` capabilities into digitalmodel, focusing only on the still-missing delta.
 
 Minimum deliverables:
-1. `economics.py` facade API for input normalization, CAPEX/OPEX/ABEX estimate retrieval via adapters, and one NPV/IRR/MIRR-style evaluation entry point.
-2. `__init__.py` exports the new public surface cleanly.
-3. `test_economics.py` covering facade construction, adapter delegation via mocks/fakes, and unsupported fiscal regime / missing-field handling.
-4. Keep scope local to this module; do not build a broader workflow engine.
+1. Confirm the current state of `economics.py`, `__init__.py`, and `test_economics.py` before editing anything.
+2. Implement only the remaining bounded facade/API or workflow-integration work.
+3. Add or update targeted tests for adapter delegation, validation, and unsupported/missing inputs.
+4. If the facade is already substantially present, switch to second-pass defect finding and regression-test completion instead of re-implementing it.
 
 Verification:
 - `uv run pytest digitalmodel/tests/field_development/test_economics.py -v`
+- plus any one additional targeted test or command needed to prove the missing delta is now addressed
 
-Commit message:
-- `feat(field-dev): add economics facade over worldenergydata backends (#1858)`
-
-Mandatory review after push:
-1. `git show --stat --patch HEAD > /tmp/terminal-2-impl.diff`
-2. Write `/tmp/terminal-2-review.md` with issue context, changed files, verification result, and exact diff.
-3. Run Codex review:
-   - `codex exec "$(cat /tmp/terminal-2-review.md)" | tee /tmp/terminal-2-codex-review.txt`
-4. If Codex finds MAJOR/HIGH issues, fix once, commit, push, rerun review.
-5. Post a brief GH issue comment on #1858 with implementation summary, test result, and final verdict.
+Mandatory closeout:
+1. If implementation succeeds, capture `/tmp/terminal-2-impl.diff`, `/tmp/terminal-2-review.md`, and reviewer output.
+2. If blocked or if the run degrades into a no-op, write `/tmp/terminal-2-blocker.md` with:
+   - what was attempted
+   - whether the prompt was passed as an argument with stdin closed
+   - last successful observable action
+   - exact blocker or failure mode
+3. Post a brief GH issue comment only if new implementation or a concrete blocker was found.
