@@ -295,3 +295,104 @@ class TestCheckSessionLimits:
         config = load_checkpoints(data)
         results = check_session_limits(config, tool_call_count=999)
         assert results == []
+
+
+# ── Hook integration tests (Phase 2b) ────────────────────────────
+
+
+class TestHookIntegration:
+    """Tests for the session-governor-check.sh hook wiring behavior.
+
+    These tests verify:
+    - The hook script exists and is executable
+    - The governor produces correct exit codes for hook consumption
+    - The counter-based fast-path logic aligns with governor thresholds
+    - The JSON block protocol matches repo convention
+    """
+
+    def test_hook_script_exists_and_executable(self):
+        """The hook script must exist at the expected path and be executable."""
+        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "session-governor-check.sh")
+        assert os.path.isfile(hook_path), f"Hook not found: {hook_path}"
+        assert os.access(hook_path, os.X_OK), f"Hook not executable: {hook_path}"
+
+    def test_hook_registered_in_settings(self):
+        """The hook must be registered in .claude/settings.json PreToolUse."""
+        import json
+        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
+        with open(settings_path) as f:
+            settings = json.load(f)
+        pre_tool_hooks = settings.get("hooks", {}).get("PreToolUse", [])
+        found = any(
+            "session-governor-check.sh" in h.get("command", "")
+            for entry in pre_tool_hooks
+            for h in entry.get("hooks", [])
+        )
+        assert found, "session-governor-check.sh not found in PreToolUse hooks"
+
+    def test_governor_exit_code_continue(self, runtime_config: CheckpointConfig):
+        """Governor exit 0 (CONTINUE) when well below thresholds."""
+        results = check_session_limits(runtime_config, tool_call_count=50, consecutive_error_count=0)
+        verdict = session_limits_verdict(results)
+        assert verdict == SessionVerdict.CONTINUE
+        # Hook maps exit 0 → silent allow
+        assert verdict.value == "CONTINUE"
+
+    def test_governor_exit_code_pause(self, runtime_config: CheckpointConfig):
+        """Governor exit 1 (PAUSE) at 80-99% of threshold."""
+        results = check_session_limits(runtime_config, tool_call_count=170, consecutive_error_count=0)
+        verdict = session_limits_verdict(results)
+        assert verdict == SessionVerdict.PAUSE
+        # Hook maps exit 1 → warn on stderr, allow tool call
+
+    def test_governor_exit_code_stop(self, runtime_config: CheckpointConfig):
+        """Governor exit 2 (STOP) at threshold — hook should emit block decision."""
+        results = check_session_limits(runtime_config, tool_call_count=200, consecutive_error_count=0)
+        verdict = session_limits_verdict(results)
+        assert verdict == SessionVerdict.STOP
+        # Hook maps exit 2 → {"decision":"block"} on stdout
+
+    def test_fast_path_ceiling_aligns_with_threshold(self, runtime_config: CheckpointConfig):
+        """Hook fast-path ceiling (160) should be 80% of the 200-call threshold."""
+        ceiling_cp = next(
+            c for c in runtime_config.checkpoints if c.id == "tool-call-ceiling"
+        )
+        fast_path = int(ceiling_cp.threshold * 0.8)
+        assert fast_path == 160, f"Expected 160, got {fast_path}"
+
+    def test_block_json_format(self, runtime_config: CheckpointConfig):
+        """format_limits_report produces valid JSON consumable by hooks."""
+        from session_governor import format_limits_report
+        results = check_session_limits(runtime_config, tool_call_count=200)
+        report = format_limits_report(results)
+        import json
+        parsed = json.loads(report)
+        assert parsed["verdict"] == "STOP"
+        assert isinstance(parsed["checks"], list)
+        assert len(parsed["checks"]) > 0
+
+    def test_governor_cli_exit_codes(self):
+        """Verify the CLI returns correct exit codes for hook consumption."""
+        import subprocess
+        governor = os.path.join(REPO_ROOT, "scripts", "workflow", "session_governor.py")
+
+        # CONTINUE (exit 0)
+        result = subprocess.run(
+            ["uv", "run", governor, "--check-limits", "--tool-calls", "50"],
+            capture_output=True, text=True, timeout=30,
+        )
+        assert result.returncode == 0, f"Expected 0, got {result.returncode}"
+
+        # PAUSE (exit 1)
+        result = subprocess.run(
+            ["uv", "run", governor, "--check-limits", "--tool-calls", "170"],
+            capture_output=True, text=True, timeout=30,
+        )
+        assert result.returncode == 1, f"Expected 1, got {result.returncode}"
+
+        # STOP (exit 2)
+        result = subprocess.run(
+            ["uv", "run", governor, "--check-limits", "--tool-calls", "200"],
+            capture_output=True, text=True, timeout=30,
+        )
+        assert result.returncode == 2, f"Expected 2, got {result.returncode}"

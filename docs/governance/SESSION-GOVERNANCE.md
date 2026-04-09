@@ -76,13 +76,39 @@ Tests: 11 new tests in `tests/work-queue/test_session_governor.py` (25 total).
 
 Tests: 7 new tests in `tests/work-queue/test_queue_refresh.py` (23 total).
 
-## What Remains (Phases 2b-4)
+## What Was Implemented (Phase 2b) — 2026-04-09
 
-### Phase 2b: Hook Wiring
-- Wire `check_session_limits` into Claude Code PreToolUse hook (auto-pause at 200 calls)
-- Wire `error-loop-breaker` into session signal analysis pipeline
-- Promote `session-close` to enforced after testing
-- Promote `pre-push-review` to strict mode (currently warning)
+### Hook Integration: `session-governor-check.sh`
+
+**File**: `.claude/hooks/session-governor-check.sh`
+
+A PreToolUse hook that wires `check_session_limits()` into the Claude Code session lifecycle.
+Registered in `.claude/settings.json` as the first PreToolUse hook, matching all tool types.
+
+**Architecture:**
+- Maintains a per-day tool call counter in `.claude/state/session-governor/tool-call-count`
+- **Fast path** (< 160 calls): pure bash counter increment, exits silently (~0ms overhead)
+- **Warning zone** (160-199 calls): delegates to `session_governor.py --check-limits`, emits stderr warning
+- **Ceiling** (>= 200 calls): delegates to governor, emits `{"decision":"block"}` on stdout to block further tool calls
+
+**Protocol:** follows the repo convention from `cross-review-gate.sh` — stdout JSON for Claude context, stderr for user terminal. Always exits 0; blocking is via `{"decision":"block"}`.
+
+**Tests:** 8 new tests in `tests/work-queue/test_session_governor.py` (33 total), covering:
+- Hook file existence and executable bit
+- Hook registration in settings.json
+- Governor exit code mapping (0=CONTINUE, 1=PAUSE, 2=STOP)
+- Fast-path threshold alignment with governance config
+- CLI exit code verification via subprocess
+
+### Known Gaps (documented, not blocked)
+
+| Gap | Status | Resolution Path |
+|-----|--------|-----------------|
+| Consecutive error tracking | Passes 0 to governor | Wire into session signal pipeline (Phase 3) |
+| Counter resets daily, not per-session | No reliable session ID in hook env | Awaits Claude Code session ID exposure |
+| Existing `tool-call-ceiling.sh` (PostToolUse) uses 500 ceiling | Redundant safety net | Consider aligning to 200 or removing |
+
+## What Remains (Phases 3-4)
 
 ### Phase 3: Restore Lost Infrastructure
 - Rebuild `session-start-routine` skill
