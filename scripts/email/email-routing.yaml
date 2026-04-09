@@ -83,12 +83,14 @@ rules:
   "partneresi.com":                 "sabithaandkrishnaestates/docs/email/vendor"
 
   # ==== CRE Market Data (Ace inbox) ====
-  "sandsig.com":                    "assethold/data/sandsig-cre-listings/email"
-  "marcusmillichap.com":            "assethold/data/cre-listings/email"
-  "partnersrealestate.com":         "assethold/data/cre-listings/email"
-  "email.loopnet.com":              "assethold/data/cre-listings/email"
-  "ten-x.ccsend.com":               "assethold/data/cre-listings/email"
-  "c.costarmail.com":               "assethold/data/cre-listings/email"
+  # KEEP these — extract structured CRE listing data (per #1991, #2017)
+  # Do NOT unsubscribe or delete; data feeds assethold CRE market analysis
+  "sandsig.com":                    "assethold/data/cre-listings"
+  "marcusmillichap.com":            "assethold/data/cre-listings"
+  "partnersrealestate.com":         "assethold/data/cre-listings"
+  "email.loopnet.com":              "assethold/data/cre-listings"
+  "ten-x.ccsend.com":               "assethold/data/cre-listings"
+  "c.costarmail.com":               "assethold/data/cre-listings"
 
   # ==== Personal ====
   "linkedin.com":                   "achantas-data/docs/email/career-networking"

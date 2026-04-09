@@ -1,0 +1,106 @@
+# ACE Account — Noise Domains
+# Domains that should be unsubscribed and/or deleted from the ace inbox.
+# These are confirmed non-business senders flooding the ace engineering mailbox.
+#
+# Referenced by: scripts/email/batch-unsubscribe.sh
+# Related: scripts/email/email-routing.yaml (DELETE rules)
+# Issue: #1991
+
+# Action key:
+#   UNSUBSCRIBE  — execute List-Unsubscribe header, then delete historical messages
+#   DELETE_ONLY  — no unsubscribe header expected; just delete and filter
+#   ALREADY_DONE — previously unsubscribed; kept here for reference
+
+domains:
+  # --- Marketing / newsletters (confirmed noise, safe to remove) ---
+  - domain: collide.io
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Newsletter/marketing blasts"
+
+  - domain: skylineseven.ccsend.com
+    action: UNSUBSCRIBE
+    category: cre-marketing
+    notes: "CRE listings via Constant Contact — not relevant to engineering"
+
+  - domain: promote.weebly.com
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Website builder promotions"
+
+  - domain: e.swimoutlet.com
+    action: UNSUBSCRIBE
+    category: retail
+    notes: "Retail promotions"
+
+  - domain: email.myflighthub.com
+    action: UNSUBSCRIBE
+    category: travel
+    notes: "Travel deal promotions"
+
+  - domain: mail.urbanairparks.com
+    action: UNSUBSCRIBE
+    category: entertainment
+    notes: "Entertainment venue promotions"
+
+  - domain: e.stantonoptical.com
+    action: UNSUBSCRIBE
+    category: retail
+    notes: "Optical retail promotions"
+
+  - domain: lists.wikimedia.org
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "Wikipedia mailing list"
+
+  - domain: jongordon.com
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "Author newsletter"
+
+  - domain: atticbuddies.com
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Service provider marketing"
+
+  - domain: email.theparkingspot.com
+    action: UNSUBSCRIBE
+    category: travel
+    notes: "Parking loyalty/promotions"
+
+  - domain: academia-mail.com
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "Academic paper notifications"
+
+  - domain: suzeorman.com
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "Financial advice newsletter"
+
+  - domain: marketing.goindigo.in
+    action: UNSUBSCRIBE
+    category: travel
+    notes: "Airline marketing (India)"
+
+  - domain: deeplearning.ai
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "AI course marketing"
+
+  - domain: gamemail.com
+    action: UNSUBSCRIBE
+    category: gaming
+    notes: "Gaming promotions"
+
+  # --- System notifications (delete, no unsubscribe needed) ---
+  - domain: accounts.google.com
+    action: DELETE_ONLY
+    category: system
+    notes: "Google account notifications — already have separate alerts"
+
+# --- EXPLICITLY NOT NOISE (do NOT add these) ---
+# sandsig.com      — KEEP for CRE data extraction (per #1991 updated direction)
+# marcusmillichap.com — KEEP for CRE data extraction
+# email.loopnet.com   — KEEP for CRE data extraction
+# partnersrealestate.com — KEEP for CRE data extraction

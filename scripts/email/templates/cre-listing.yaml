@@ -1,0 +1,159 @@
+# CRE Listing Extraction Template
+# Extracts structured commercial real estate listing data from email subjects/bodies.
+#
+# Used by: scripts/email/gmail-extract-and-act.py (planned)
+# Senders: sandsig.com, marcusmillichap.com, email.loopnet.com, partnersrealestate.com
+# Destination: assethold/data/cre-listings/
+# Issues: #1991, #2025
+
+template:
+  name: cre-listing
+  version: "1.0"
+  description: "Extract structured CRE property listing data from broker emails"
+
+  # Fields to extract from subject line and body
+  fields:
+    - name: property_name
+      source: subject
+      required: true
+      description: "Property/tenant name (e.g., 'Dollar General NNN', 'Chipotle & Americas Best')"
+
+    - name: tenant
+      source: [subject, body]
+      required: false
+      description: "Primary tenant name"
+      patterns:
+        - '(?:Tenant|Lessee)[:\s]+(.+?)(?:\n|$|\|)'
+        - '^(?:NEW LISTING[!]?\s*)?(.+?)(?:\s*[-|])'
+
+    - name: address
+      source: body
+      required: false
+      description: "Property street address"
+      patterns:
+        - '(?:Address|Location)[:\s]+(.+?)(?:\n|$)'
+        - '(\d+\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+(?:St|Ave|Blvd|Dr|Rd|Ln|Way|Ct|Pkwy|Hwy)\.?)'
+
+    - name: city
+      source: [subject, body]
+      required: false
+      description: "City name"
+
+    - name: state
+      source: [subject, body]
+      required: false
+      description: "State abbreviation (2 letters)"
+      patterns:
+        - '\b([A-Z]{2})\b(?:\s*\||\s*$)'
+        - '(?:State)[:\s]+([A-Z]{2})'
+
+    - name: price
+      source: body
+      required: false
+      description: "Listing price in USD"
+      patterns:
+        - '(?:Price|List Price|Asking)[:\s]*\$?([\d,]+(?:\.\d{2})?)'
+        - '\$([\d,]+(?:\.\d{2})?)\s*(?:USD)?'
+      transform: "remove_commas_to_float"
+
+    - name: cap_rate
+      source: [subject, body]
+      required: false
+      description: "Capitalization rate as percentage"
+      patterns:
+        - '([\d.]+)%?\s*(?:CAP|Cap Rate|cap rate)'
+        - '(?:CAP|Cap Rate)[:\s]*([\d.]+)%?'
+      transform: "to_float"
+
+    - name: building_sf
+      source: body
+      required: false
+      description: "Building square footage"
+      patterns:
+        - '([\d,]+)\s*(?:SF|sq\.?\s*ft|square feet)'
+        - '(?:Size|Building)[:\s]*([\d,]+)\s*(?:SF|sq\.?\s*ft)'
+      transform: "remove_commas_to_int"
+
+    - name: land_sf
+      source: body
+      required: false
+      description: "Land/lot size in square feet or acres"
+      patterns:
+        - '(?:Land|Lot)[:\s]*([\d,.]+)\s*(?:SF|Acres|acres|AC)'
+
+    - name: lease_years
+      source: body
+      required: false
+      description: "Remaining lease term in years"
+      patterns:
+        - '([\d.]+)\s*(?:Years? Remaining|Year Lease|Yr)'
+        - '(?:Lease Term|Remaining)[:\s]*([\d.]+)\s*(?:Years?|Yrs?)'
+      transform: "to_float"
+
+    - name: annual_rent
+      source: body
+      required: false
+      description: "Annual rent / NOI in USD"
+      patterns:
+        - '(?:Annual Rent|NOI|Net Operating Income)[:\s]*\$?([\d,]+)'
+      transform: "remove_commas_to_float"
+
+    - name: rent_increases
+      source: body
+      required: false
+      description: "Rent escalation terms (e.g., '2% Annual')"
+      patterns:
+        - '([\d.]+%\s*(?:Annual|Yearly)\s*(?:Increases?|Escalations?|Bumps?))'
+
+    - name: lease_type
+      source: [subject, body]
+      required: false
+      description: "Lease structure (NNN, NN, Absolute NNN, Ground Lease, etc.)"
+      patterns:
+        - '\b((?:Absolute\s+)?NNN|NN|Ground Lease|Modified Gross|Gross Lease)\b'
+
+    - name: broker
+      source: body
+      required: false
+      description: "Broker name or company"
+      default_by_domain:
+        sandsig.com: "Sands Investment Group"
+        marcusmillichap.com: "Marcus & Millichap"
+        partnersrealestate.com: "Partners Real Estate"
+
+    - name: broker_agent
+      source: headers
+      required: false
+      description: "Individual broker agent from the From header"
+      header_field: "From"
+
+    - name: listing_date
+      source: headers
+      required: false
+      description: "Date the listing email was sent"
+      header_field: "Date"
+
+    - name: vehicles_per_day
+      source: body
+      required: false
+      description: "Traffic count — vehicles per day"
+      patterns:
+        - '([\d,]+)\s*(?:VPD|vehicles per day|cars per day|traffic count)'
+      transform: "remove_commas_to_int"
+
+  # Output format for extracted data
+  output:
+    format: yaml
+    filename_pattern: "{tenant}_{state}_{listing_date:%Y%m%d}.yaml"
+    destination: "assethold/data/cre-listings/"
+
+  # Validation rules
+  validation:
+    min_fields: 2
+    required_one_of: [property_name, tenant]
+    warn_if_missing: [price, cap_rate, state]
+
+  # Legal scan requirement
+  legal_scan:
+    required: true
+    script: "scripts/legal/legal-sanity-scan.sh"

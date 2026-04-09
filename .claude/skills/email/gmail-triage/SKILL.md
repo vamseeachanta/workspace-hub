@@ -116,7 +116,13 @@ See `config/email/README.md` for full usage guide. Reference: #1986.
 ### ace
 - VIP: anyone in GTM prospect list, active clients
 - URGENT: anything from @ril.com, @dorisgroup.com, @mcdermott.com (known clients)
+- EXTRACT (not noise): CRE listing senders — sandsig.com, marcusmillichap.com, loopnet.com,
+  partnersrealestate.com, ten-x.ccsend.com, c.costarmail.com. These feed structured data
+  extraction to assethold/data/cre-listings/ via the cre-listing template (#1991).
+  Do NOT classify as NEWSLETTER or recommend unsubscribe.
 - NEWSLETTER: LinkedIn notifications, industry digests (keep subscribed but low priority)
+- NOISE: confirmed noise domains listed in config/email-filters/ace-noise-domains.yaml —
+  safe to delete and unsubscribe (collide.io, skylineseven.ccsend.com, etc.)
 
 ### personal
 - VIP: family (achanta*, @gmail.com family addresses)
