@@ -460,3 +460,92 @@ tasks:
       Weekly Sunday 23:00 UTC — generate AI credit utilization report across
       all providers (Claude, Codex, Gemini, Copilot). Alerts on underutilization.
       Issue #1855.
+
+  - id: queue-refresh-weekly
+    label: Weekly agent work queue refresh
+    schedule: "30 22 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/queue-refresh-weekly.sh
+      >> $WORKSPACE_HUB/logs/queue-refresh/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/queue-refresh/*.log
+    is_claude_task: false
+    description: >-
+      Weekly Sunday 22:30 UTC — regenerate notes/agent-work-queue.md from
+      live GitHub label queries. Auto-commits and pushes so Monday's overnight
+      batch has a fresh queue. Staggered 30 min before ai-credit-utilization
+      and gemini-nightly-batch to avoid contention. Issue #2049.
+
+  - id: daily-compliance-check
+    label: Daily compliance monitoring with alert thresholds
+    schedule: "45 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/daily-compliance-check.sh
+      >> $WORKSPACE_HUB/logs/compliance/daily-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/compliance/daily-*.log
+    is_claude_task: false
+    description: >-
+      Daily 06:45 UTC — runs compliance dashboard, logs results, auto-creates
+      GitHub issues when compliance < 50% (priority:high) or < 30% (priority:critical).
+      Deduplicates against open compliance issues. Issue #2031.
+
+  - id: weekly-compliance-report
+    label: Weekly compliance trend report
+    schedule: "0 7 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/weekly-compliance-report.sh
+      >> $WORKSPACE_HUB/logs/compliance/weekly-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/compliance/weekly-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 07:00 UTC — aggregates daily compliance logs from past 7 days,
+      computes week-over-week trend (improving/declining/stable), lists top unreviewed
+      commits, generates docs/reports/compliance-weekly-YYYY-WNN.md. Issue #2031.
+
+  # ── Compliance Monitoring (#2031) ──────────────────────────────────────────
+
+  - id: compliance-daily
+    label: Daily compliance monitoring with alerts
+    schedule: "0 6 * * *"
+    machines: [ace-linux-1]
+    requires: [bash, git, gh]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/enforcement/compliance-cron.sh
+      >> $WORKSPACE_HUB/logs/compliance/daily-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/compliance/daily-*.log
+    is_claude_task: false
+    description: >-
+      Daily 06:00 UTC — runs compliance-dashboard.sh, parses compliance rate,
+      creates GitHub issues when below thresholds (50% high, 30% critical).
+      Deduplicates alerts per ISO week. Issue #2031.
+
+  - id: compliance-weekly-report
+    label: Weekly compliance summary report
+    schedule: "0 7 * * 1"
+    machines: [ace-linux-1]
+    requires: [bash, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/enforcement/compliance-weekly-report.sh
+      >> $WORKSPACE_HUB/logs/compliance/weekly-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/compliance/weekly-*.log
+    is_claude_task: false
+    description: >-
+      Monday 07:00 UTC — aggregates 7 days of daily compliance logs, calculates
+      week-over-week trend, lists top unreviewed commits, writes markdown report
+      to docs/reports/compliance-weekly-YYYYMMDD.md. Issue #2031.
