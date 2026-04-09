@@ -78,6 +78,49 @@ def normalize_file_path(path):
 - `phase-a-baseline.md` — markdown report with all tables
 - `phase-a-data/` — CSV/JSON intermediate files for downstream use
 
+## Prompt-Focused Analysis Addendum
+
+When the task is specifically about **Claude session prompts** rather than general session frequency, add this focused pass before Phase B.
+
+### Prompt Inventory
+
+From Claude JSONL logs, filter `hook == "post"` and `tool == "Read"`, then classify prompt-like paths into:
+- `stage_prompt` — `.claude/work-queue/assets/<WRK>/stage-N-prompt.md`
+- `planning_template` — `scripts/planning/prompts/*.md`
+- `review_template` — `scripts/review/prompts/*.md`
+- `plugin_prompt` — plugin cache prompt assets (for example subagent prompt files)
+- `other_prompt_like` — other files with `prompt` in the path
+
+Useful metrics:
+1. Count prompt-like reads by class
+2. Sessions containing prompt reads
+3. Stage-number frequency (`stage-2`, `stage-4`, `stage-10`, etc.)
+4. Top neighboring reads/commands within ±8 to ±12 post-hook records in the same session
+
+### What prompt adjacency usually reveals
+
+Prompt reads are most useful when interpreted together with nearby artifacts. Common supporting reads/calls to look for:
+- work item markdown under `.claude/work-queue/working/` or `pending/`
+- plan artifacts such as `plan.md` or `plan_claude.md`
+- evidence files under `.claude/work-queue/assets/<WRK>/evidence/`
+- checkpoint / routing yaml files
+- stage exit / verification scripts such as `exit_stage.py`, `verify-gate-evidence.py`, `generate-html-review.py`
+- skill reads under `.claude/skills/.../SKILL.md`
+
+Interpretation pattern:
+- prompt + evidence + exit script => prompts are acting as workflow contracts, not free-form instructions
+- heavy Stage 2 / Stage 4 concentration => planning and resource-intelligence dominate the workflow
+- cross-provider prompt templates (`claude-*`, `codex-*`, `gemini-*`) => model-role specialization is deliberate and should be preserved
+
+### Reconstructing stage meaning when prompt files are gone
+
+A recurring real-world issue: historical session logs often reference prompt packages or builders that are no longer present in the current checkout. When that happens:
+- use tests mentioning `stage-N-prompt.md` to recover generation behavior
+- use stage-evidence tests/fixtures to map stage numbers to stage names
+- use docs that describe the repo workflow contract (`user_prompt -> YAML -> pseudocode -> TDD -> implementation`)
+
+Do NOT assume missing prompt files mean the workflow was unimportant; often they were generated artifacts or existed in an earlier repo state.
+
 ## Phase B: Skill Gap Detection
 
 ### 1. Multi-Step Workflow Extraction
