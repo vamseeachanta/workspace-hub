@@ -3,7 +3,7 @@
 ## Retrieval
 - Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates
-1. Plan ALL issues: Issue → Plan (skill: `issue-planning-mode`) → label `status:plan-review` → USER APPROVES → label `status:plan-approved` → Implement → Close. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
+1. Plan ALL issues: Issue → Resource Intel → Plan (`docs/plans/_template-issue-plan.md`) → Adversarial Review → `status:plan-review` → USER APPROVES → `status:plan-approved` → Implement (TDD) → Close. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
 2. TDD mandatory — tests before implementation; no exceptions
 3. Gate order: Issue → Plan → USER APPROVES → Implement → Cross-review → Close
 ## Engineering-Critical Labels
