@@ -71,6 +71,12 @@ SOURCE_FILES=(
 # ── Scan for modified sources ────────────────────────────────────────────────
 MODIFIED_SOURCES=()
 
+# Ensure marker file exists for find -newer (first-run fallback)
+if [[ ! -f "${MARKER_FILE}" ]]; then
+  log "First run detected — creating epoch marker file"
+  touch -t 197001010000 "${MARKER_FILE}"
+fi
+
 for dir in "${SOURCE_DIRS[@]}"; do
   if [[ ! -d "${dir}" ]]; then
     log "SKIP: directory not found: ${dir}"
@@ -148,7 +154,7 @@ fi
 # ── Count pages after ingest ─────────────────────────────────────────────────
 PAGE_COUNT_AFTER=$(find "${WIKI_PAGES_DIR}" -name '*.md' 2>/dev/null | wc -l)
 DELTA=$((PAGE_COUNT_AFTER - PAGE_COUNT_BEFORE))
-log "Page count after: ${PAGE_COUNT_AFTER} (delta: ${DELTA:+${DELTA}}${DELTA})"
+log "Page count after: ${PAGE_COUNT_AFTER} (delta: ${DELTA})"
 
 # ── Page count drop detection (deletion alert) ──────────────────────────────
 if [[ ${DELTA} -lt 0 ]]; then
