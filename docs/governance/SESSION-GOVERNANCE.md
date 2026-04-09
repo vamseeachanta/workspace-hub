@@ -317,6 +317,78 @@ pre-push:
   -> require-review-on-push.sh (blocks without review evidence)
 ```
 
+## What Was Implemented (Phase 4) — 2026-04-09
+
+### Artifact Verification + Knowledge Propagation (#2020)
+
+Completes the orchestrator/worker context enforcement gap identified in #2020.
+Phase 1 (plan gate enforcement) was done by #2047. This phase adds the remaining
+two pieces: verification of worker outputs and propagation of worker discoveries.
+
+#### 4a. Artifact Verification Skill
+
+**File**: `.claude/skills/coordination/artifact-verification/SKILL.md`
+
+A structured checklist for orchestrators to verify worker outputs against the
+approved plan before accepting artifacts. Covers:
+
+1. **Scope alignment** — files changed match plan's "Files to Change"
+2. **Acceptance criteria** — each AC from the plan is satisfied with evidence
+3. **Test coverage** — tests match the plan's TDD test list
+4. **Artifact completeness** — all deliverables present
+5. **No unplanned side effects** — no unrelated changes
+
+**Verification markers**: After verification, the orchestrator creates a marker
+in `.planning/verified/<issue>.md` with verdict (PASS/PARTIAL/FAIL), checklist
+results, and notes. The `.planning/verified/` directory is now git-tracked.
+
+**FAIL feedback protocol**: On rejection, the orchestrator provides specific
+per-item feedback referencing the exact plan section, not generic rejection.
+The worker is re-dispatched with targeted feedback.
+
+**Integration point**: Fits between implementation and cross-review in the
+issue-planning-mode workflow:
+```
+Plan Approved -> Worker Implements -> ARTIFACT VERIFICATION -> Cross-Review -> Close
+```
+
+#### 4b. Worker Discovery Protocol
+
+**File**: `.claude/skills/coordination/worker-discovery-protocol/SKILL.md`
+
+Defines how workers capture discoveries and how orchestrators propagate them.
+
+**Worker side**: During execution, workers append JSONL entries to
+`.planning/discoveries/YYYY-MM-DD-worker.jsonl` with structured fields:
+timestamp, issue, category, summary, detail, severity, source.
+
+Discovery categories: `bug`, `convention`, `dependency`, `quirk`, `performance`,
+`security`, `pattern`.
+
+At session end, workers include a `## Worker Discoveries` summary block.
+
+**Orchestrator side**: After worker returns, the orchestrator triages each
+discovery and routes to the appropriate target:
+
+| Discovery type | Primary target | Action |
+|---------------|---------------|--------|
+| Bug | GitHub issue | `gh issue create` |
+| Convention | Relevant SKILL.md | Edit skill |
+| Dependency | Module docstring | Update docs |
+| Quirk | KNOWLEDGE.md | Append entry |
+| Performance | KNOWLEDGE.md | Append entry |
+| Security | GitHub issue (priority:high) | `gh issue create` |
+| Pattern | SKILL.md (new or existing) | Create/edit skill |
+
+**Integration**: Discovery JSONL files are compatible with the comprehensive-learning
+pipeline and are processed during nightly knowledge harvesting.
+
+#### 4c. Planning Directory Structure
+
+New git-tracked directories:
+- `.planning/verified/` — verification markers from artifact verification
+- `.planning/discoveries/` — worker discovery JSONL logs
+
 ## What Remains (Phase 5)
 
 ### Phase 5: Hermes Orchestration
@@ -327,7 +399,7 @@ pre-push:
 
 ## References
 
-- Issue: #1839, #2027, #2028 (CI enforcement)
+- Issue: #1839, #2020, #2027, #2028 (CI enforcement)
 - Trust Architecture: `docs/governance/TRUST-ARCHITECTURE.md`
 - Review Routing Policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 - Session failures analysis: `docs/reports/session-failures-and-refactor-review.md`

@@ -232,10 +232,32 @@ Current enforcement:
 | Tool call ceiling | `.claude/hooks/session-governor-check.sh` | Sessions pause at 200 tool calls (prevents runaway workers) |
 | TDD pairing | `scripts/enforcement/require-tdd-pairing.sh` | Warns when code changes lack paired tests |
 | Review on push | `scripts/enforcement/require-review-on-push.sh` | Blocks push without review evidence (REVIEW_GATE_STRICT=1) |
+| Artifact verification | `.claude/skills/coordination/artifact-verification/SKILL.md` | Orchestrator verifies worker outputs against plan before accepting |
+| Discovery protocol | `.claude/skills/coordination/worker-discovery-protocol/SKILL.md` | Workers log discoveries; orchestrator triages and propagates |
 
 These are registered in `.claude/settings.json` as PreToolUse hooks, so they fire
 automatically on every tool call. No agent can bypass them by choosing a different
 command path.
+
+### Post-Execution Verification
+
+After a worker returns results, the orchestrator runs the **artifact verification**
+checklist (`.claude/skills/coordination/artifact-verification/SKILL.md`):
+1. Scope alignment -- files changed match the plan
+2. Acceptance criteria -- each AC satisfied with evidence
+3. Test coverage -- tests match the plan's TDD test list
+4. Artifact completeness -- all deliverables present
+5. No unplanned side effects -- no unrelated changes
+
+Verification markers are written to `.planning/verified/<issue>.md` with
+PASS/PARTIAL/FAIL verdict.
+
+### Knowledge Propagation
+
+Workers log discoveries to `.planning/discoveries/YYYY-MM-DD-worker.jsonl` during
+execution. At session end, the orchestrator triages each discovery and routes it to
+the appropriate target (GitHub issue, SKILL.md, KNOWLEDGE.md, or discard). See
+`.claude/skills/coordination/worker-discovery-protocol/SKILL.md` for details.
 
 ---
 
@@ -292,5 +314,7 @@ AI workflow we run uses some variant of this pattern.
 - [enforcement-over-instruction.md](enforcement-over-instruction.md) -- Why enforcement prevents boundary erosion
 - [cross-review.md](cross-review.md) -- Independent review as a form of context isolation
 - `.claude/skills/software-development/overnight-parallel-agent-prompts/SKILL.md` -- The production skill
+- `.claude/skills/coordination/artifact-verification/SKILL.md` -- Orchestrator verification checklist (#2020)
+- `.claude/skills/coordination/worker-discovery-protocol/SKILL.md` -- Worker knowledge propagation (#2020)
 - `docs/governance/SESSION-GOVERNANCE.md` -- Session lifecycle checkpoints
 - `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` -- Formal subagent isolation convention
