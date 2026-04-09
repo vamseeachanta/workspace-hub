@@ -1,0 +1,56 @@
+# mooring_config.yaml — Representative spread mooring for animation pipeline
+# Source: typical LNG terminal berth (public domain / API RP 2SK examples)
+# Used by: scripts/animations/scenes/mooring_layout.py
+
+vessel:
+  type: "LNG Carrier"
+  length_m: 280
+  beam_m: 46
+  draft_m: 12
+  displacement_t: 100000
+  heading_deg: 0  # 0 = north
+
+site:
+  water_depth_m: 50
+  seabed: "soft clay"
+  location: "Representative LNG terminal berth"
+
+mooring_lines:
+  # 8-line symmetric spread: 45-degree spacing
+  # Typical 76mm R4 studless chain
+  chain:
+    type: "76mm R4 studless"
+    mbl_kn: 3000
+    submerged_weight_n_per_m: 150
+    proof_load_kn: 2400
+
+  arrangement:
+    - { id: 1, azimuth_deg: 0,   anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 2, azimuth_deg: 45,  anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 3, azimuth_deg: 90,  anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 4, azimuth_deg: 135, anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 5, azimuth_deg: 180, anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 6, azimuth_deg: 225, anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 7, azimuth_deg: 270, anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+    - { id: 8, azimuth_deg: 315, anchor_radius_m: 800, length_m: 900, pretension_kn: 200 }
+
+environment:
+  # Representative operational loading cases
+  load_cases:
+    - id: "operational"
+      label: "Operational (1-yr return)"
+      force_x_kn: 500
+      force_y_kn: 300
+      moment_z_knm: 0
+    - id: "extreme"
+      label: "Extreme (100-yr return)"
+      force_x_kn: 1200
+      force_y_kn: 800
+      moment_z_knm: 0
+
+design_criteria:
+  # Per API RP 2SK / DNV-OS-E301
+  safety_factor_intact: 1.67
+  safety_factor_damaged: 1.25
+  max_excursion_pct_depth: 10  # % of water depth
+  code_reference: "API RP 2SK / DNV-OS-E301"

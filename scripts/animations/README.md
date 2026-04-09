@@ -5,7 +5,8 @@ Manim-based animated explainers for GTM demos, README collateral, and client out
 ## Quick Start
 
 ```bash
-# Render the catenary riser explainer (low quality, fast preview)
+# --- Catenary Riser Explainer ---
+# Render (low quality, fast preview)
 mamba run -n manim-env manim -ql --media_dir scripts/animations/media \
   scripts/animations/scenes/catenary_riser.py CatenaryRiserExplainer
 
@@ -21,6 +22,24 @@ mamba run -n manim-env manim -ql --media_dir scripts/animations/media -s \
 ffmpeg -y -i scripts/animations/media/videos/catenary_riser/480p15/CatenaryRiserExplainer.mp4 \
   -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" \
   scripts/animations/media/catenary_riser_explainer.gif
+
+# --- Mooring Layout Explainer ---
+# Render (low quality, fast preview)
+mamba run -n manim-env manim -ql --media_dir scripts/animations/media \
+  scripts/animations/scenes/mooring_layout.py MooringLayoutExplainer
+
+# Render at 720p (production quality)
+mamba run -n manim-env manim -qm --media_dir scripts/animations/media \
+  scripts/animations/scenes/mooring_layout.py MooringLayoutExplainer
+
+# Render static thumbnail
+mamba run -n manim-env manim -ql --media_dir scripts/animations/media -s \
+  scripts/animations/scenes/mooring_layout.py MooringLayoutThumbnail
+
+# Create GIF
+ffmpeg -y -i scripts/animations/media/videos/mooring_layout/480p15/MooringLayoutExplainer.mp4 \
+  -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" \
+  scripts/animations/media/mooring_layout_explainer.gif
 ```
 
 ## Directory Layout
@@ -30,11 +49,14 @@ scripts/animations/
 ├── README.md                  # this file
 ├── __init__.py
 ├── catenary_math.py           # reusable catenary riser calculations
+├── mooring_math.py            # mooring layout geometry + force calcs
 ├── scenes/
 │   ├── catenary_riser.py      # SCR geometry + fatigue explainer
+│   ├── mooring_layout.py      # spread mooring force + excursion explainer
 │   └── template.py            # copy-and-customize template
-├── data/                      # engineering input data (YAML fixtures)
-└── media/                     # rendered outputs (gitignored)
+├── data/
+│   └── mooring_config.yaml    # representative 8-line spread mooring fixture
+└── media/                     # rendered outputs (gitignored except GIFs)
     ├── videos/                # MP4 renders at various qualities
     ├── images/                # static thumbnails (PNG)
     └── *.gif                  # optimised GIFs for web embedding
@@ -70,13 +92,13 @@ Requires: ffmpeg (system), conda/mamba. LaTeX optional (for MathTex).
 
 ## Candidate Future Animations
 
-| Priority | Scenario | Data Source |
-|----------|----------|-------------|
-| Done | Catenary riser geometry + fatigue | fatigue-scr-touchdown.yaml |
-| Next | Mooring layout / force explainer | mooring-failures-lng-terminals.yaml |
-| Next | Installation sequence / operability | vessel data (#1798, #1799) |
-| Later | Wall thickness code comparison | Demo 2 data |
-| Later | VIV response / fatigue coupling | Demo 1 data |
+| Priority | Scenario | Data Source | Issue |
+|----------|----------|-------------|-------|
+| Done | Catenary riser geometry + fatigue | fatigue-scr-touchdown.yaml | #2035 |
+| Done | Mooring layout / force explainer | mooring_config.yaml + mooring-failures knowledge | #2037, #2043 |
+| Next | Installation sequence / operability | vessel data (#1798, #1799) | #2038 |
+| Later | Wall thickness code comparison | Demo 2 data | — |
+| Later | VIV response / fatigue coupling | Demo 1 data | — |
 
 ## GTM Integration
 
