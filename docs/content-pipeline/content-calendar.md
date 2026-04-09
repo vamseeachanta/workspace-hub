@@ -15,6 +15,7 @@ These pages target keywords with strong professional search volume and low compe
 | 3 | Mooring Line Failure Physics | `/knowledge/engineering/mooring-line-failure-physics` | mooring line failure, HMPE rope failure, snap-back mooring | Unique content -- incident analysis not available elsewhere |
 | 4 | Pipeline Integrity Assessment | `/knowledge/engineering/pipeline-integrity-assessment` | pipeline integrity, DNV-RP-F101, fitness for service | Active market -- pipeline operators need ongoing FFS assessments |
 | 5 | OrcaFlex Solver | `/knowledge/engineering/orcaflex-solver` | OrcaFlex analysis, OrcaFlex modeling, OrcFxAPI | Tool-specific searchers are high-intent prospects |
+| 5a | S-N Curve Fatigue Definitions | `/knowledge/engineering/sn-curve-fatigue-definitions` | S-N curve, fatigue design, Miner's rule, DFF | Core fatigue design reference -- bookmarkable for repeat visits |
 
 ### Wave 2: Week 2 -- Standards Reference Pages
 
@@ -67,6 +68,8 @@ Differentiation content showing how ACE Engineer operates.
 | 27 | OpenFOAM CFD | `/knowledge/engineering/openfoam-cfd` | OpenFOAM offshore, OpenFOAM wave |
 | 28 | DNV-OS-E301 Position Mooring | `/knowledge/standards/dnv-os-e301` | position mooring, DNV-OS-E301 |
 | 29 | Diffraction Analysis System | `/knowledge/engineering/diffraction-analysis-system` | diffraction analysis, AQWA, BEMRosetta |
+| 30 | Field Development Economics | `/knowledge/engineering/field-development-economics` | field development, NPV, IRR, fiscal regime, CAPEX |
+| 31 | Standards Update Tracking | `/knowledge/engineering/standards-update-tracking` | DNV 2024 update, API 579 Part 16, ABS consolidation |
 
 ## Cross-Linking Strategy
 

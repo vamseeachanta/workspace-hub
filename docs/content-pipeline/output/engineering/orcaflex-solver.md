@@ -31,7 +31,7 @@ These conventions are critical when comparing OrcaFlex output to other solvers (
 | `.frequencies` | Returns **Hz** (not rad/s) | Convert to rad/s: `ω = 2π × f` |
 | Frequency order | **Descending** | Highest frequency first — reverse before comparing to AQWA |
 | `displacementRAOs` shape | `(nheading, nfreq, 6)` | Complex-valued array; 6 DOF per frequency per heading |
-| Rotational RAOs | **radians/m** | Convert with `np.degrees()` for deg/m output |
+| Rotational RAOs | **radians/m** | Convert with `np.degrees` for deg/m output |
 
 ## Common Use Cases
 

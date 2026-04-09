@@ -75,7 +75,9 @@ ACE Engineer provides expert engineering consulting across offshore, marine, and
 
 # Patterns to strip from content
 INTERNAL_PATTERNS: list[tuple[re.Pattern[str], str]] = [
-    # GitHub issue references: #1234, issue #1234, Issue #2022
+    # GitHub issue references with optional context: (#1234, closed 2026-04-04)
+    (re.compile(r"\((?:issue\s*)?#\d{3,5},?\s*(?:closed\s+\d{4}-\d{2}-\d{2})?\s*\)\.?", re.IGNORECASE), ""),
+    # Standalone issue refs: #1234, issue #1234
     (re.compile(r"(?:issue\s*)?#\d{3,5}", re.IGNORECASE), ""),
     # Internal file paths: `scripts/foo/bar.sh`, `docs/methodology/...`
     (re.compile(r"`(?:scripts|docs|\.claude|knowledge)/[^`]+`"), ""),
@@ -97,6 +99,8 @@ INTERNAL_PATTERNS: list[tuple[re.Pattern[str], str]] = [
 
 # Additional cleanup patterns applied after stripping
 CLEANUP_PATTERNS: list[tuple[re.Pattern[str], str]] = [
+    # Empty parentheses left after issue stripping: (, closed 2026-04-04) or ()
+    (re.compile(r"\s*\(,?\s*(?:closed\s+\d{4}-\d{2}-\d{2})?\s*\)\.?"), ""),
     # Multiple blank lines -> double
     (re.compile(r"\n{3,}"), "\n\n"),
     # Empty cross-references section
@@ -201,7 +205,10 @@ def build_page_meta(source_path: Path, domain_key: str) -> PageMeta:
     meta, body = extract_frontmatter(content)
     title = extract_title(meta, body)
     tags = extract_tags(meta)
-    description = generate_description(title, body)
+    # Strip internal references before generating the description
+    clean_body = strip_internal_references(body)
+    clean_body = cleanup_whitespace(clean_body)
+    description = generate_description(title, clean_body)
     slug = generate_url_slug(source_path, domain_key)
 
     # Determine category from path
@@ -319,7 +326,7 @@ HIGH_VALUE_PAGES: list[str] = [
     # Offshore engineering -- high search volume topics
     "knowledge/wikis/engineering/wiki/concepts/cathodic-protection-design.md",
     "knowledge/wikis/engineering/wiki/concepts/mooring-line-failure-physics.md",
-    "knowledge/wikis/engineering/wiki/concepts/fatigue-analysis-offshore.md",
+    "knowledge/wikis/engineering/wiki/concepts/sn-curve-fatigue-definitions.md",
     "knowledge/wikis/engineering/wiki/concepts/fea-structural-analysis.md",
     "knowledge/wikis/engineering/wiki/concepts/hydrodynamic-analysis.md",
     "knowledge/wikis/engineering/wiki/concepts/cfd-offshore-hydrodynamics.md",
@@ -328,8 +335,8 @@ HIGH_VALUE_PAGES: list[str] = [
     "knowledge/wikis/engineering/wiki/concepts/free-span-viv-fatigue.md",
     "knowledge/wikis/engineering/wiki/concepts/pile-capacity-alpha-method.md",
     "knowledge/wikis/engineering/wiki/concepts/structural-analysis-offshore.md",
-    "knowledge/wikis/engineering/wiki/concepts/wave-theory-offshore.md",
-    "knowledge/wikis/engineering/wiki/concepts/seakeeping-6dof.md",
+    "knowledge/wikis/engineering/wiki/concepts/field-development-economics.md",
+    "knowledge/wikis/engineering/wiki/concepts/standards-update-tracking.md",
     "knowledge/wikis/engineering/wiki/concepts/energy-field-economics.md",
     # Standards -- professionals search for these
     "knowledge/wikis/engineering/wiki/standards/dnv-rp-c203.md",

@@ -12,7 +12,7 @@ domain: "engineering"
 
 *By [ACE Engineer](https://aceengineer.com) -- Expert Offshore and Marine Engineering Consulting*
 
-DNV Recommended Practice for free spanning pipeline assessment, covering VIV screening, fatigue damage, and structural response. Implemented as a clean-room Python module in digitalmodel ().
+DNV Recommended Practice for free spanning pipeline assessment, covering VIV screening, fatigue damage, and structural response. Implemented as a clean-room Python module in digitalmodel
 
 ## Scope
 
@@ -27,7 +27,7 @@ DNV Recommended Practice for free spanning pipeline assessment, covering VIV scr
 
 ## Clean-Room Implementation
 
-The digitalmodel implementation (, closed 2026-04-04) was built entirely from the DNV-RP-F105 standard text due to copyright constraints on legacy MATLAB scripts. Independent variable names, function structure, and test vectors were used.
+The digitalmodel implementation  was built entirely from the DNV-RP-F105 standard text due to copyright constraints on legacy MATLAB scripts. Independent variable names, function structure, and test vectors were used.
 
 ### Module Structure
 
@@ -40,7 +40,7 @@ The digitalmodel implementation (, closed 2026-04-04) was built entirely from th
 | `safety_factors` | Table 4-1 |
 | `mode_shapes` | Sec 6 |
 
-### Probability-Weighted Damage ()
+### Probability-Weighted Damage
 
 Extended with multi-current bin damage summation: `D_total = sum(D_i * prob_i)` for current speed bins with occurrence probabilities. This matches the methodology from real pipeline assessment practice.
 

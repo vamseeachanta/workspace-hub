@@ -37,7 +37,7 @@ This automates what was previously a manual multi-step process involving separat
 
 - Frequencies reported in **Hz descending** — must convert to rad/s and reverse sort for comparison with AQWA
 - Phase convention: **Orcina lag** — differs from AQWA ISO lead convention
-- Rotational RAOs in **radians/m** — convert with `np.degrees()` for deg/m output
+- Rotational RAOs in **radians/m** — convert with `np.degrees` for deg/m output
 
 ## Cross-References
 

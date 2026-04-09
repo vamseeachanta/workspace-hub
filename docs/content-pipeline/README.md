@@ -93,9 +93,17 @@ Generate a single page:
 uv run scripts/content/wiki-to-website.py --page knowledge/wikis/engineering/wiki/concepts/cathodic-protection-design.md
 ```
 
+## Current State
+
+- **32 pages generated** across engineering concepts, standards, tool references, and incident analyses
+- **0 internal references** remaining in output (issue numbers, file paths, cross-wiki links stripped)
+- **SEO frontmatter** on every page: title, description, keywords, canonical URL, author
+- **CTA block** appended to every page linking to aceengineer.com/contact
+- See `content-calendar.md` for publication priority and schedule (5 waves, weeks 1-5)
+
 ## Related
 
-- Issue #2022 -- publish repo knowledge bases as aceengineer.com content
+- Issue #2022 -- knowledge-to-website content pipeline
 - Issue #2030 -- methodology docs published (completed)
 - `docs/methodology/published/` -- already-published methodology pages
 - `docs/methodology/knowledge-to-website-pipeline.md` -- earlier pipeline design doc

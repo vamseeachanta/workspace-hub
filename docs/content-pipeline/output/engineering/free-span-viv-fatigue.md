@@ -1,6 +1,6 @@
 ---
 title: "Free-Span VIV Fatigue Assessment"
-description: "Pipeline free-span VIV fatigue methodology per DNV-RP-F105, implemented clean-room in digitalmodel (#1773, closed 2026-04-04). Extended with..."
+description: "Pipeline free-span VIV fatigue methodology per DNV-RP-F105, implemented clean-room in digitalmodel  Extended with probability-weighted multi-current damage..."
 keywords: "free-span, pipeline, viv, fatigue, dnv-rp-f105, weibull, miner"
 author: "ACE Engineer"
 url: "/knowledge/engineering/free-span-viv-fatigue"
@@ -12,7 +12,7 @@ domain: "engineering"
 
 *By [ACE Engineer](https://aceengineer.com) -- Expert Offshore and Marine Engineering Consulting*
 
-Pipeline free-span VIV fatigue methodology per DNV-RP-F105, implemented clean-room in digitalmodel (, closed 2026-04-04). Extended with probability-weighted multi-current damage summation ().
+Pipeline free-span VIV fatigue methodology per DNV-RP-F105, implemented clean-room in digitalmodel  Extended with probability-weighted multi-current damage summation
 
 ## Methodology
 
