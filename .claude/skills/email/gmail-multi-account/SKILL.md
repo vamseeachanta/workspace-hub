@@ -4,7 +4,7 @@ description: Multi-account Gmail management via himalaya CLI. Three accounts (ac
 version: 1.0.0
 author: vamsee
 tags: [email, gmail, himalaya, multi-account, triage]
-related_skills: [himalaya, google-workspace, gmail-triage, gmail-unsubscribe, gmail-touchbase]
+related_skills: [himalaya, google-workspace, gmail-triage, gmail-outreach, gmail-extract-and-act]
 metadata:
   hermes:
     tags: [email, gmail, himalaya, multi-account]

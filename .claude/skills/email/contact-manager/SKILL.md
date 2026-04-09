@@ -4,7 +4,7 @@ description: Normalize, classify, and manage contact databases across 3 Gmail ac
 version: 1.0.0
 author: vamsee
 tags: [email, contacts, CRM, classification, data-cleanup]
-related_skills: [gmail-multi-account, gmail-triage, gmail-touchbase, gmail-unsubscribe]
+related_skills: [gmail-multi-account, gmail-triage, gmail-outreach]
 metadata:
   hermes:
     tags: [email, contacts, CRM, classification]

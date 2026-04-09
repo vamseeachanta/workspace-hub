@@ -4,7 +4,7 @@ description: Download attachments from Gmail threads, parse their content (Excel
 version: 1.0.0
 author: vamsee
 tags: [email, gmail, attachments, excel, pdf, data-extraction]
-related_skills: [gmail-multi-account, gmail-email-to-repo-extraction, excel-workbook-to-python-cowork]
+related_skills: [gmail-multi-account, gmail-extract-and-act, excel-workbook-to-python-cowork]
 metadata:
   hermes:
     tags: [email, gmail, attachments, excel, pdf]
