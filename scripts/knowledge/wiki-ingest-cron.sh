@@ -1,233 +1,337 @@
 #!/usr/bin/env bash
-# wiki-ingest-cron.sh — Nightly incremental ingest for the engineering wiki.
-# Detects new/modified sources since last run, triggers ingest, runs lint,
-# auto-commits changes, and logs results.
+# wiki-ingest-cron.sh — Nightly incremental ingest for the engineering wiki
 #
-# Usage:
-#   bash scripts/knowledge/wiki-ingest-cron.sh [--dry-run]
+# Scans source class directories for files modified since last run,
+# triggers ingest via llm_wiki.py, runs lint, auto-commits changes.
 #
+# Usage: bash scripts/knowledge/wiki-ingest-cron.sh [--dry-run]
 # Issue: #2036
-set -euo pipefail
+set -uo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-WIKI_DOMAIN="engineering"
-WIKI_DIR="${REPO_ROOT}/knowledge/wikis/${WIKI_DOMAIN}"
-WIKI_PAGES_DIR="${WIKI_DIR}/wiki"
-LOG_DIR="${REPO_ROOT}/logs/wiki-ingest"
-MARKER_FILE="${WIKI_DIR}/.last-ingest-run"
-DATE_TAG="$(date +%Y%m%d)"
-DATE_ISO="$(date +%Y-%m-%d)"
-LOG_FILE="${LOG_DIR}/ingest-${DATE_TAG}.log"
+export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+DATE=$(date -u +%Y-%m-%d)
 DRY_RUN=false
+
 for arg in "$@"; do
-  [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
+    [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
 done
 
-# ── Ensure log directory exists ──────────────────────────────────────────────
-mkdir -p "${LOG_DIR}"
+# ── Directories and paths ────────────────────────────────────────────────────
+WIKI_ROOT="${REPO_ROOT}/knowledge/wikis/engineering"
+LOG_DIR="${REPO_ROOT}/logs/wiki-ingest"
+LOG_FILE="${LOG_DIR}/ingest-${DATE}.log"
+MARKER_FILE="${WIKI_ROOT}/.last-ingest-timestamp"
 
-# ── Logging helper ───────────────────────────────────────────────────────────
-log() {
-  local msg="[$(date +%Y-%m-%dT%H:%M:%S)] $*"
-  echo "$msg" | tee -a "${LOG_FILE}"
-}
+mkdir -p "$LOG_DIR"
 
-log "=== Wiki incremental ingest started ==="
-log "Domain: ${WIKI_DOMAIN}"
+log() { echo "[wiki-ingest] $(date -u +%H:%M:%S) $*" | tee -a "$LOG_FILE"; }
+
+WIKI_PAGES_DIR="${WIKI_ROOT}/wiki"
+DATE_TAG="$(date +%Y%m%d)"
+
+log "=== Engineering wiki incremental ingest: ${DATE} ==="
 log "Dry run: ${DRY_RUN}"
 
-# ── Count pages before ingest ────────────────────────────────────────────────
-PAGE_COUNT_BEFORE=$(find "${WIKI_PAGES_DIR}" -name '*.md' 2>/dev/null | wc -l)
-log "Page count before: ${PAGE_COUNT_BEFORE}"
+# ── Hostname guard ───────────────────────────────────────────────────────────
+source "${REPO_ROOT}/scripts/lib/workstation-lib.sh"
+if ! ws_is "full"; then
+    log "SKIP: not a full-variant machine (hostname=$(hostname -s), variant=$(ws_variant))"
+    exit 0
+fi
+
+# ── Git helpers ──────────────────────────────────────────────────────────────
+GIT_SAFE_LOG_PREFIX="[wiki-ingest]"
+source "${REPO_ROOT}/scripts/cron/lib/git-safe.sh"
+git_safe_init "$REPO_ROOT" 2>>"$LOG_FILE"
+
+# ── Git pull ─────────────────────────────────────────────────────────────────
+log "Pulling latest changes"
+cd "$REPO_ROOT" || { log "ERROR: cannot cd to ${REPO_ROOT}"; exit 1; }
+git_safe_pull 2>>"$LOG_FILE" || {
+    log "WARNING: git pull failed — continuing with local state"
+}
 
 # ── Determine last-run timestamp ─────────────────────────────────────────────
-if [[ -f "${MARKER_FILE}" ]]; then
-  LAST_RUN=$(cat "${MARKER_FILE}")
-  log "Last ingest run: ${LAST_RUN}"
+if [[ -f "$MARKER_FILE" ]]; then
+    LAST_RUN=$(cat "$MARKER_FILE")
+    log "Last ingest run: ${LAST_RUN}"
 else
-  # First run — use epoch (scan everything)
-  LAST_RUN="1970-01-01T00:00:00"
-  log "No previous run marker found — scanning all sources"
+    # First run: use epoch 0 so everything qualifies
+    LAST_RUN="1970-01-01T00:00:00"
+    log "First run — no marker file found, scanning all sources"
 fi
 
-# ── Source class directories to scan for new/modified files ──────────────────
-# Maps to SOURCE_INVENTORY.md classes 1-8
-SOURCE_DIRS=(
-  "${REPO_ROOT}/docs/methodology"
-  "${REPO_ROOT}/docs/modules"
-  "${REPO_ROOT}/.claude/memory/topics"
-  "${REPO_ROOT}/docs/architecture"
-  "${REPO_ROOT}/knowledge/seeds"
-  "${REPO_ROOT}/knowledge/dark-intelligence"
-  "${REPO_ROOT}/knowledge/wikis/${WIKI_DOMAIN}/raw"
+# ── Source class directories to scan ─────────────────────────────────────────
+# These align with SOURCE_INVENTORY.md classes 1-8.
+SOURCE_LABELS=(
+    "methodology"
+    "modules"
+    "session-learnings"
+    "architecture"
+    "knowledge-seeds"
+    "dark-intelligence"
+    "session-memory"
+)
+SOURCE_PATHS=(
+    "docs/methodology"
+    "docs/modules"
+    ".claude/memory/topics"
+    "docs/architecture"
+    "knowledge/seeds"
+    "knowledge/dark-intelligence"
+    ".claude/memory/KNOWLEDGE.md"
 )
 
-# Single files to check (Class 8)
-SOURCE_FILES=(
-  "${REPO_ROOT}/.claude/memory/KNOWLEDGE.md"
-)
+# ── Scan for new/modified source files ───────────────────────────────────────
+NEW_FILES=()
+MODIFIED_FILES=()
+TOTAL_CANDIDATES=0
 
-# ── Scan for modified sources ────────────────────────────────────────────────
-MODIFIED_SOURCES=()
+for i in "${!SOURCE_LABELS[@]}"; do
+    class_label="${SOURCE_LABELS[$i]}"
+    src_rel="${SOURCE_PATHS[$i]}"
+    src_path="${REPO_ROOT}/${src_rel}"
 
-# Ensure marker file exists for find -newer (first-run fallback)
-if [[ ! -f "${MARKER_FILE}" ]]; then
-  log "First run detected — creating epoch marker file"
-  touch -t 197001010000 "${MARKER_FILE}"
-fi
-
-for dir in "${SOURCE_DIRS[@]}"; do
-  if [[ ! -d "${dir}" ]]; then
-    log "SKIP: directory not found: ${dir}"
-    continue
-  fi
-  while IFS= read -r file; do
-    [[ -n "${file}" ]] && MODIFIED_SOURCES+=("${file}")
-  done < <(find "${dir}" -type f \( -name '*.md' -o -name '*.yaml' -o -name '*.yml' -o -name '*.json' \) -newer "${MARKER_FILE}" 2>/dev/null || true)
-done
-
-for file in "${SOURCE_FILES[@]}"; do
-  if [[ -f "${file}" ]]; then
-    if [[ ! -f "${MARKER_FILE}" ]] || [[ "${file}" -nt "${MARKER_FILE}" ]]; then
-      MODIFIED_SOURCES+=("${file}")
+    if [[ ! -e "$src_path" ]]; then
+        log "  [${class_label}] path not found: ${src_rel} — skipping"
+        continue
     fi
-  fi
+
+    if [[ -f "$src_path" ]]; then
+        # Single file source (e.g., KNOWLEDGE.md)
+        TOTAL_CANDIDATES=$((TOTAL_CANDIDATES + 1))
+        if [[ ! -f "$MARKER_FILE" ]]; then
+            NEW_FILES+=("${src_path}")
+            log "  [${class_label}] new: $(basename "$src_path")"
+        elif [[ "$src_path" -nt "$MARKER_FILE" ]]; then
+            MODIFIED_FILES+=("${src_path}")
+            log "  [${class_label}] modified: $(basename "$src_path")"
+        fi
+    elif [[ -d "$src_path" ]]; then
+        # Directory source — find files newer than marker
+        while IFS= read -r -d '' file; do
+            # Skip hidden files and non-content files
+            bname="$(basename "$file")"
+            [[ "$bname" == .* ]] && continue
+            TOTAL_CANDIDATES=$((TOTAL_CANDIDATES + 1))
+
+            if [[ ! -f "$MARKER_FILE" ]]; then
+                NEW_FILES+=("$file")
+                log "  [${class_label}] new: ${bname}"
+            elif [[ "$file" -nt "$MARKER_FILE" ]]; then
+                MODIFIED_FILES+=("$file")
+                log "  [${class_label}] modified: ${bname}"
+            fi
+        done < <(find "$src_path" -type f \( -name '*.md' -o -name '*.yaml' -o -name '*.yml' -o -name '*.json' -o -name '*.jsonl' -o -name '*.txt' \) -print0 2>/dev/null)
+    fi
 done
 
-log "Modified sources found: ${#MODIFIED_SOURCES[@]}"
+CHANGED_COUNT=$(( ${#NEW_FILES[@]} + ${#MODIFIED_FILES[@]} ))
+log "Scan complete: ${CHANGED_COUNT} changed file(s) out of ${TOTAL_CANDIDATES} total"
 
-if [[ ${#MODIFIED_SOURCES[@]} -eq 0 ]]; then
-  log "No new/modified sources detected — skipping ingest"
-  # Update marker even if nothing to ingest (so next run only scans from now)
-  if [[ "${DRY_RUN}" == "false" ]]; then
-    date -u +%Y-%m-%dT%H:%M:%S > "${MARKER_FILE}"
-  fi
-  log "=== Wiki incremental ingest completed (no changes) ==="
-  exit 0
+# ── Lint function ────────────────────────────────────────────────────────────
+_run_lint() {
+    log "Running wiki lint..."
+    local lint_output
+    local lint_exit=0
+
+    lint_output=$(cd "$REPO_ROOT" && uv run scripts/knowledge/llm_wiki.py lint --wiki engineering 2>&1) || lint_exit=$?
+
+    echo "$lint_output" >> "$LOG_FILE"
+
+    if [[ $lint_exit -ne 0 ]]; then
+        log "WARNING: lint found issues (exit code ${lint_exit})"
+        local issue_count
+        issue_count=$(echo "$lint_output" | grep -c '^\s*\[' 2>/dev/null || echo "0")
+        log "  Lint issues found: ${issue_count}"
+        return 1
+    else
+        log "Lint passed — wiki is healthy"
+        return 0
+    fi
+}
+
+# ── Count wiki pages ─────────────────────────────────────────────────────────
+_count_wiki_pages() {
+    local count=0
+    for subdir in entities concepts sources standards workflows comparisons; do
+        local dir="${WIKI_ROOT}/wiki/${subdir}"
+        if [[ -d "$dir" ]]; then
+            count=$((count + $(find "$dir" -name '*.md' -type f 2>/dev/null | wc -l)))
+        fi
+    done
+    echo "$count"
+}
+
+# ── Count pages before ingest ────────────────────────────────────────────────
+PAGE_COUNT_BEFORE=$(_count_wiki_pages)
+log "Page count before: ${PAGE_COUNT_BEFORE}"
+
+# ── Handle no-changes case ───────────────────────────────────────────────────
+if [[ "$CHANGED_COUNT" -eq 0 ]]; then
+    log "No new or modified sources — nothing to ingest"
+    log "Running lint check on existing wiki..."
+    _run_lint || true
+    if [[ "$DRY_RUN" == "false" ]]; then
+        date -u +%Y-%m-%dT%H:%M:%S > "$MARKER_FILE"
+    fi
+    log "=== Done (no changes) ==="
+    exit 0
 fi
 
-# ── Log each modified source ─────────────────────────────────────────────────
-for src in "${MODIFIED_SOURCES[@]}"; do
-  log "  Modified: ${src#${REPO_ROOT}/}"
+# ── Run ingest for each changed file ─────────────────────────────────────────
+INGEST_COUNT=0
+INGEST_ERRORS=0
+INGESTED_FILES=()
+
+run_ingest() {
+    local file="$1"
+    local rel_path
+    rel_path=$(realpath --relative-to="$REPO_ROOT" "$file" 2>/dev/null || echo "$file")
+
+    log "  Ingesting: ${rel_path}"
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log "    [dry-run] would run: uv run scripts/knowledge/llm_wiki.py ingest ${rel_path} --wiki engineering"
+        INGEST_COUNT=$((INGEST_COUNT + 1))
+        INGESTED_FILES+=("$rel_path")
+        return 0
+    fi
+
+    local ingest_output
+    if ingest_output=$(cd "$REPO_ROOT" && uv run scripts/knowledge/llm_wiki.py ingest "$file" --wiki engineering 2>&1); then
+        INGEST_COUNT=$((INGEST_COUNT + 1))
+        INGESTED_FILES+=("$rel_path")
+        log "    OK"
+    else
+        INGEST_ERRORS=$((INGEST_ERRORS + 1))
+        log "    ERROR: ingest failed for ${rel_path}"
+        log "    Output: ${ingest_output}"
+    fi
+}
+
+# Process new files first, then modified files
+for file in "${NEW_FILES[@]}"; do
+    run_ingest "$file"
 done
 
-# ── Run ingest for each modified source ──────────────────────────────────────
-INGEST_OK=0
-INGEST_FAIL=0
-
-for src in "${MODIFIED_SOURCES[@]}"; do
-  rel_path="${src#${REPO_ROOT}/}"
-  log "Ingesting: ${rel_path}"
-
-  if [[ "${DRY_RUN}" == "true" ]]; then
-    log "  [dry-run] Would run: uv run scripts/knowledge/llm_wiki.py ingest ${rel_path} --wiki ${WIKI_DOMAIN}"
-    INGEST_OK=$((INGEST_OK + 1))
-    continue
-  fi
-
-  if cd "${REPO_ROOT}" && uv run scripts/knowledge/llm_wiki.py ingest "${src}" --wiki "${WIKI_DOMAIN}" >> "${LOG_FILE}" 2>&1; then
-    log "  OK: ${rel_path}"
-    INGEST_OK=$((INGEST_OK + 1))
-  else
-    log "  FAIL: ${rel_path} (exit code $?)"
-    INGEST_FAIL=$((INGEST_FAIL + 1))
-  fi
+for file in "${MODIFIED_FILES[@]}"; do
+    run_ingest "$file"
 done
 
-log "Ingest results: ${INGEST_OK} OK, ${INGEST_FAIL} failed"
+log "Ingest complete: ${INGEST_COUNT} processed, ${INGEST_ERRORS} error(s)"
 
 # ── Run lint ─────────────────────────────────────────────────────────────────
-log "Running lint..."
-LINT_EXIT=0
-if [[ "${DRY_RUN}" == "false" ]]; then
-  if cd "${REPO_ROOT}" && uv run scripts/knowledge/llm_wiki.py lint --wiki "${WIKI_DOMAIN}" >> "${LOG_FILE}" 2>&1; then
-    log "Lint: PASS"
-  else
-    LINT_EXIT=$?
-    log "Lint: FAIL (exit code ${LINT_EXIT})"
-  fi
-else
-  log "[dry-run] Would run: uv run scripts/knowledge/llm_wiki.py lint --wiki ${WIKI_DOMAIN}"
-fi
+LINT_OK=true
+_run_lint || LINT_OK=false
 
-# ── Count pages after ingest ─────────────────────────────────────────────────
-PAGE_COUNT_AFTER=$(find "${WIKI_PAGES_DIR}" -name '*.md' 2>/dev/null | wc -l)
+# ── Page count and delta detection ───────────────────────────────────────────
+PAGE_COUNT_AFTER=$(_count_wiki_pages)
 DELTA=$((PAGE_COUNT_AFTER - PAGE_COUNT_BEFORE))
 log "Page count after: ${PAGE_COUNT_AFTER} (delta: ${DELTA})"
 
-# ── Page count drop detection (deletion alert) ──────────────────────────────
+# ── Page count drop alert ────────────────────────────────────────────────────
 if [[ ${DELTA} -lt 0 ]]; then
-  log "WARNING: Page count dropped by ${DELTA#-} pages — possible accidental deletion"
-  if [[ "${DRY_RUN}" == "false" ]]; then
-    # Create a GitHub issue to alert about page count drop
-    EXISTING_ISSUE=$(cd "${REPO_ROOT}" && gh issue list --label "wiki-alert" --state open --json number --jq '.[0].number' 2>/dev/null || true)
-    if [[ -z "${EXISTING_ISSUE}" ]]; then
-      cd "${REPO_ROOT}" && gh issue create \
-        --title "Wiki alert: page count dropped (${PAGE_COUNT_BEFORE} -> ${PAGE_COUNT_AFTER})" \
-        --body "The nightly wiki ingest detected a page count drop in the **${WIKI_DOMAIN}** wiki.
+    log "WARNING: Page count dropped by ${DELTA#-} pages — possible accidental deletion"
+    if [[ "$DRY_RUN" == "false" ]]; then
+        EXISTING_ISSUE=$(cd "$REPO_ROOT" && gh issue list --label "wiki-alert" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+        if [[ -z "$EXISTING_ISSUE" ]]; then
+            cd "$REPO_ROOT" && gh issue create \
+                --title "Wiki alert: page count dropped (${PAGE_COUNT_BEFORE} -> ${PAGE_COUNT_AFTER})" \
+                --body "The nightly wiki ingest detected a page count drop in the **engineering** wiki.
 
 - Before: ${PAGE_COUNT_BEFORE} pages
 - After: ${PAGE_COUNT_AFTER} pages
 - Delta: ${DELTA}
-- Date: ${DATE_ISO}
-- Log: \`logs/wiki-ingest/ingest-${DATE_TAG}.log\`
+- Date: ${DATE}
+- Log: \`logs/wiki-ingest/ingest-${DATE}.log\`
 
 Please investigate whether pages were accidentally deleted." \
-        --label "wiki-alert,priority:high" 2>> "${LOG_FILE}" || log "WARN: Failed to create GitHub issue for page drop"
-    else
-      log "Open wiki-alert issue already exists (#${EXISTING_ISSUE}) — skipping duplicate"
+                --label "wiki-alert,priority:high" 2>>"$LOG_FILE" || log "WARN: Failed to create GitHub issue for page drop"
+        else
+            log "Open wiki-alert issue already exists (#${EXISTING_ISSUE}) — skipping duplicate"
+        fi
     fi
-  fi
 fi
 
 # ── Lint failure alert ───────────────────────────────────────────────────────
-if [[ ${LINT_EXIT} -ne 0 ]]; then
-  log "WARNING: Lint failed — wiki quality issues detected"
-  if [[ "${DRY_RUN}" == "false" ]]; then
-    EXISTING_LINT_ISSUE=$(cd "${REPO_ROOT}" && gh issue list --label "wiki-lint" --state open --json number --jq '.[0].number' 2>/dev/null || true)
-    if [[ -z "${EXISTING_LINT_ISSUE}" ]]; then
-      cd "${REPO_ROOT}" && gh issue create \
-        --title "Wiki lint failure: ${WIKI_DOMAIN} (${DATE_ISO})" \
-        --body "The nightly wiki ingest lint check failed for the **${WIKI_DOMAIN}** wiki.
+if [[ "$LINT_OK" == "false" ]]; then
+    log "WARNING: Lint failed — wiki quality issues detected"
+    if [[ "$DRY_RUN" == "false" ]]; then
+        EXISTING_LINT_ISSUE=$(cd "$REPO_ROOT" && gh issue list --label "wiki-lint" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+        if [[ -z "$EXISTING_LINT_ISSUE" ]]; then
+            cd "$REPO_ROOT" && gh issue create \
+                --title "Wiki lint failure: engineering (${DATE})" \
+                --body "The nightly wiki ingest lint check failed for the **engineering** wiki.
 
-- Date: ${DATE_ISO}
-- Log: \`logs/wiki-ingest/ingest-${DATE_TAG}.log\`
-- Ingest results: ${INGEST_OK} OK, ${INGEST_FAIL} failed
+- Date: ${DATE}
+- Log: \`logs/wiki-ingest/ingest-${DATE}.log\`
+- Ingest results: ${INGEST_COUNT} OK, ${INGEST_ERRORS} failed
 
-Run \`uv run scripts/knowledge/llm_wiki.py lint --wiki ${WIKI_DOMAIN}\` to see details." \
-        --label "wiki-lint" 2>> "${LOG_FILE}" || log "WARN: Failed to create GitHub issue for lint failure"
-    else
-      log "Open wiki-lint issue already exists (#${EXISTING_LINT_ISSUE}) — skipping duplicate"
+Run \`uv run scripts/knowledge/llm_wiki.py lint --wiki engineering\` to see details." \
+                --label "wiki-lint" 2>>"$LOG_FILE" || log "WARN: Failed to create GitHub issue for lint failure"
+        else
+            log "Open wiki-lint issue already exists (#${EXISTING_LINT_ISSUE}) — skipping duplicate"
+        fi
     fi
-  fi
 fi
 
-# ── Auto-commit if pages changed ────────────────────────────────────────────
-if [[ "${DRY_RUN}" == "false" ]]; then
-  cd "${REPO_ROOT}"
-  if git diff --quiet "knowledge/wikis/${WIKI_DOMAIN}/" 2>/dev/null && \
-     [[ -z "$(git ls-files --others --exclude-standard "knowledge/wikis/${WIKI_DOMAIN}/")" ]]; then
-    log "No wiki file changes to commit"
-  else
-    git add "knowledge/wikis/${WIKI_DOMAIN}/"
-    git commit -m "chore(wiki): incremental ingest ${DATE_ISO} (#2036)
+# ── Update timestamp marker ──────────────────────────────────────────────────
+if [[ "$DRY_RUN" == "false" ]]; then
+    date -u +%Y-%m-%dT%H:%M:%S > "$MARKER_FILE"
+    log "Updated marker file: ${MARKER_FILE}"
+fi
 
-Sources processed: ${INGEST_OK} OK, ${INGEST_FAIL} failed
-Page delta: ${DELTA} (${PAGE_COUNT_BEFORE} -> ${PAGE_COUNT_AFTER})" || log "WARN: git commit failed (maybe nothing staged)"
-    log "Committed wiki changes"
-  fi
+# ── Auto-commit changes ─────────────────────────────────────────────────────
+if [[ "$DRY_RUN" == "false" ]]; then
+    cd "$REPO_ROOT" || exit 1
+    if ! git diff --quiet knowledge/wikis/engineering/ 2>/dev/null || \
+       ! git diff --cached --quiet knowledge/wikis/engineering/ 2>/dev/null || \
+       [[ -n "$(git ls-files --others --exclude-standard knowledge/wikis/engineering/ 2>/dev/null)" ]]; then
 
-  # Update marker file
-  date -u +%Y-%m-%dT%H:%M:%S > "${MARKER_FILE}"
-  log "Updated last-run marker: $(cat "${MARKER_FILE}")"
+        log "Committing wiki changes..."
+
+        COMMIT_MSG="chore(wiki): incremental ingest ${DATE} — ${INGEST_COUNT} file(s) (#2036)"
+        if [[ ${#INGESTED_FILES[@]} -le 5 ]]; then
+            COMMIT_MSG="${COMMIT_MSG}
+
+Files ingested:
+$(printf '  - %s\n' "${INGESTED_FILES[@]}")"
+        fi
+
+        git_safe_commit "$COMMIT_MSG" \
+            "knowledge/wikis/engineering/" \
+            "$MARKER_FILE"
+        git_safe_push 2>>"$LOG_FILE" || {
+            log "WARNING: push failed — changes remain local"
+        }
+
+        log "Changes committed and pushed"
+    else
+        log "No wiki file changes to commit"
+        # Still commit updated marker
+        git add "$MARKER_FILE" 2>/dev/null || true
+        git_safe_commit "chore(wiki): update ingest marker ${DATE}" "$MARKER_FILE" 2>/dev/null || true
+    fi
 fi
 
 # ── Summary ──────────────────────────────────────────────────────────────────
-log "=== Wiki incremental ingest completed ==="
-log "Summary: sources=${#MODIFIED_SOURCES[@]} ingested_ok=${INGEST_OK} ingested_fail=${INGEST_FAIL} lint_exit=${LINT_EXIT} pages_before=${PAGE_COUNT_BEFORE} pages_after=${PAGE_COUNT_AFTER} delta=${DELTA}"
+log ""
+log "=== Ingest Summary ==="
+log "  Date:            ${DATE}"
+log "  Files scanned:   ${TOTAL_CANDIDATES}"
+log "  Files ingested:  ${INGEST_COUNT}"
+log "  Ingest errors:   ${INGEST_ERRORS}"
+log "  Lint passed:     ${LINT_OK}"
+log "  Wiki pages:      ${PAGE_COUNT_AFTER}"
+log "  Page delta:      ${DELTA}"
+log "  Dry run:         ${DRY_RUN}"
+log "=== Done ==="
 
 # Exit non-zero if there were failures
-if [[ ${INGEST_FAIL} -gt 0 ]] || [[ ${LINT_EXIT} -ne 0 ]]; then
-  exit 1
+if [[ ${INGEST_ERRORS} -gt 0 ]] || [[ "$LINT_OK" == "false" ]]; then
+    exit 1
 fi
