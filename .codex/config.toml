@@ -6,6 +6,7 @@ model_reasoning_effort = "medium"
 
 
 
+
 # Codex workspace configuration
 # Adopts Codex 0.102.0 native multi-agent role definitions
 # WRK-238: implemented 2026-02-24

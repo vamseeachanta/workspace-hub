@@ -3,32 +3,24 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-08T07:00:32Z"
-  source_hash: "7d7cb157301c6e723fb521dc3216eb78"
+  generated: "2026-04-09T07:00:29Z"
+  source_hash: "d191140dd806c87e3e98bff66e4c7198"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 15
+      entry_count: 7
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
       memory_file_count: 38
 
 hermes_insights:
   environment_facts:
-    - "ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move."
-    - "Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`."
-    - "BSEE data (~300MB) backed up at /mnt/ace/worldenergydata/data/modules/bsee — NOT in git. Excluded from test collection via norecursedirs. scripts/refresh_bsee_all.py fetches it."
+    - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
   project_knowledge:
-    - "digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root."
-    - "Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded."
-    - "aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp."
-    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv)."
-    - "Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643)."
-    - "Gmail 3-account LIVE: OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json. Himalaya CLI for ace+personal. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT. Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25)."
-    - "WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately."
+    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv). DEFAULT MODEL (2026-04-08): gpt-4.1/openai-codex (2 OAuth creds, round_robin). Fallback: copilot/claude-sonnet-4.6. Delegation: openai-codex/gpt-4.1. Reason: copilot kept falling back mid-session breaking context. Use h-opus/h-copilot for Claude."
   user_preferences:
     - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
     - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."

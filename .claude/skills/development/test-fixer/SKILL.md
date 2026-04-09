@@ -170,6 +170,54 @@ def execute(self, args):
 
 **Better fix:** Pass `base_dir` to the constructor in tests instead of the dict workaround.
 
+## SQLAlchemy PostgreSQL Models vs SQLite in CI
+
+Tests using `PgEnum` (PostgreSQL-specific enum types) or schema-qualified columns ALWAYS fail under SQLite in-memory DB. Symptoms:
+- `TypeError: 'name' is an invalid keyword argument for Model` — fixture uses old field name; model has evolved (e.g. `name` -> `company_name`)
+- `RuntimeError: dictionary changed size during iteration` — source bug in code under test (fix source, not test)
+- `AssertionError: assert None is not None` — computed field (IRR, etc.) returns None for test data; relax assertion or fix dataset
+- `AttributeError: 'dict' object has no attribute 'data'` — API returns dict, test expects object; update assertion
+
+**Fix strategy for PostgreSQL-only tests:**
+- Skip entire test classes (not individual tests) with clear reason:
+
+```python
+@pytest.mark.skip(
+    reason="PostgreSQL-specific ENUM types (PgEnum) are incompatible with SQLite in-memory DB. "
+           "Run with --database marker against a real PostgreSQL instance."
+)
+class TestSomeModel:
+    ...
+```
+
+- Always skip the WHOLE class — individual test skips miss fixture errors that trigger before the test body
+
+**Check actual model field names FIRST before patching fixtures:**
+```bash
+grep -n 'Mapped\[' src/worldenergydata/module/database/models.py
+```
+Then update fixtures to match canonical field names (e.g. `company_name=`, `country_of_registration=`).
+
+## Legacy Namespace Compat (worldenergydata._compat pattern)
+
+When tests import from `worldenergydata.modules.X.Y.Z` but the canonical layout is `worldenergydata.X.Y.Z`:
+- `_compat.py` handles top-level redirect (`worldenergydata.modules.bsee` -> `worldenergydata.bsee`) but NOT deep nested subpackages
+- Fix deep nesting via symlink: `ln -s ../../modules/bsee/analysis/type_curves src/worldenergydata/bsee/analysis/type_curves`
+- For test files with wrong prefixes (e.g. `src.worldenergydata.modules.fdas`, `sodir_module.*`), fix the test imports directly to canonical paths
+
+**Wrong prefix patterns seen in practice:**
+```python
+# BAD — src. prefix invalid when package is installed
+from src.worldenergydata.modules.fdas.analysis.cashflow import CashflowEngine
+
+# BAD — stale module name no longer exists  
+from sodir_module.analysis import SodirAnalyzer
+
+# GOOD — canonical path
+from worldenergydata.fdas.analysis.cashflow import CashflowEngine
+from worldenergydata.sodir.analysis import SodirAnalyzer
+```
+
 ## pytest.ini norecursedirs for Broken Test Dirs
 
 When `_archive/`, `legacy/`, date-based dirs (e.g., `2025-08-*`), or project dirs contain broken tests:
