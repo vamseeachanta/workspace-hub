@@ -3,9 +3,9 @@
 ## Retrieval
 - Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates
-1. Plan before acting — user approval for engineering-critical issues. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
+1. Plan ALL issues: Issue → Plan (skill: `issue-planning-mode`) → label `status:plan-review` → USER APPROVES → label `status:plan-approved` → Implement → Close. See [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
 2. TDD mandatory — tests before implementation; no exceptions
-3. Gate order (engineering-critical): Issue → Plan → USER APPROVES → Implement → Cross-review → Close
+3. Gate order: Issue → Plan → USER APPROVES → Implement → Cross-review → Close
 ## Engineering-Critical Labels
 `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, `cat:data-pipeline`
 ## Workflow
