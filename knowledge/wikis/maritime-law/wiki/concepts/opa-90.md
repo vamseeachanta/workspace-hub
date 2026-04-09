@@ -30,3 +30,4 @@ Deepwater Horizon
 
 - **Source**: [Maritime Liability Conventions](../sources/maritime-liability-conventions.md)
 - **Related cases**: [Maritime Law Cases](../sources/maritime-law-cases.md)
+- **Cross-wiki (engineering)**: [Energy Field Economics](../../../engineering/wiki/concepts/energy-field-economics.md) — unlimited gross-negligence liability impacts deepwater project risk assessment and insurance costs

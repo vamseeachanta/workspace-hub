@@ -35,3 +35,5 @@ The legal framework for holding parties accountable for marine pollution inciden
 
 - **Cases**: [[torrey-canyon-1967]], [[amoco-cadiz-1978]], [[mv-erika-1999]], [[mv-prestige-2002]], [[deepwater-horizon-2010]], [[mv-wakashio-2020]]
 - **Conventions**: [[clc-1992]], [[bunker-convention-2001]], [[hns-convention-2010]], [[opa-90]]
+- **Cross-wiki (engineering)**: [Pipeline Integrity Assessment](../../../engineering/wiki/concepts/pipeline-integrity-assessment.md) — pipeline failure leading to spills triggers environmental liability
+- **Cross-wiki (engineering)**: [Energy Field Economics](../../../engineering/wiki/concepts/energy-field-economics.md) — environmental liability exposure as material risk in field development economics

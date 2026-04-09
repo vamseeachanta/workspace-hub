@@ -43,6 +43,14 @@
 - Pages updated: index.md, overview.md, cross-references updated
 - Notes: Seed migration (#2000). 18 mooring failure incidents compiled from Woodside, MAIB, NOPSEMA, TSB Canada, Gard. Key finding: 50mm swell can part mooring lines via resonance. Covers 10+ terminal incidents and 3 technical papers.
 
+## [2026-04-09] seed-ingest | Career Learnings — engineering entries
+- Source: knowledge/seeds/career-learnings.yaml (11 entries, 7 engineering)
+- Entities created: pipeline-integrity, orcaflex-viv-analysis, fea-structural-analysis, cfd-offshore, energy-economics, ai-dwop
+- Entities skipped: cathodic-protection (already exists as concept)
+- Cross-references added to existing concepts: cathodic-protection-system, corrosion-control
+- Pages updated: index.md
+- Notes: Seed migration (#2010). 6 new entity pages from career domain expertise spanning pipeline integrity, VIV, FEA, CFD, energy economics, and AI in DWOP.
+
 ## [2026-04-07 02:35 UTC] lint | First health check
 - Status: Healthy
 - Orphan pages: 0 (all new pages linked from index.md)

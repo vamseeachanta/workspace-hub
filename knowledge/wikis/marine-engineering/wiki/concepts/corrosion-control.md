@@ -36,3 +36,5 @@ and process environments.
 - **Related entity**: [[anode]]
 - **Related concept**: [[cathodic-protection-system]]
 - **Related concept**: [[coating-breakdown]]
+- **Cross-wiki (engineering)**: [Cathodic Protection Design](../../../engineering/wiki/concepts/cathodic-protection-design.md) — detailed anode sizing, current density tables, and design routes per DNV-RP-B401
+- **Cross-wiki (engineering)**: [Pipeline Integrity Assessment](../../../engineering/wiki/concepts/pipeline-integrity-assessment.md) — corrosion-driven metal loss assessment via DNV-RP-F101 and API 579

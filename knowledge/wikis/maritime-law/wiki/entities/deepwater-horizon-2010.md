@@ -27,3 +27,4 @@ This entry was migrated from `knowledge/seeds/maritime-law-cases.yaml`.
 - **Source**: [Maritime Law Cases](../sources/maritime-law-cases.md)
 - **Related conventions**: See [Maritime Liability Conventions](../sources/maritime-liability-conventions.md)
 - See also: [[clc-1992]], [[opa-90]], [[environmental-liability]]
+- **Cross-wiki (marine-engineering)**: [Process Safety](../../../marine-engineering/wiki/concepts/process-safety.md) — Deepwater Horizon as a landmark process safety failure (blowout, BOP failure, inadequate barriers)

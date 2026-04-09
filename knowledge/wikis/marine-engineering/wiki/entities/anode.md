@@ -39,3 +39,4 @@ and coating breakdown factor over the design period.
 - **Related concept**: [[cathodic-protection-system]]
 - **Related concept**: [[corrosion-control]]
 - **Related concept**: [[coating-breakdown]]
+- **Cross-wiki (engineering)**: [Cathodic Protection Design](../../../engineering/wiki/concepts/cathodic-protection-design.md) — anode sizing equations, material selection (Al vs Zn vs Mg), and utilisation factors

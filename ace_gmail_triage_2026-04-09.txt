@@ -1,0 +1,53 @@
+ACE Gmail triage for 2026-04-09
+
+Top work items
+1. Call for Presentations: 2026 API Storage Tank Conference
+   From: American Petroleum Institute <registrar@api.org>
+   Classification: ACTIONABLE
+   Rationale: This is the only message that appears tied to ACE's industry/work domain and could require a decision on whether to submit a presentation, nominate a speaker, or forward internally.
+
+Message-by-message verdict
+- NEW LISTING! Chipotle & America's Best Eyeglasses - Route 4 - Paramus, NJ - NNN Leases
+  From: Cafiero Team <Alan.Cafiero@marcusmillichap.com>
+  Classification: NEWSLETTER
+  Why: Commercial listing promotion; no direct work request.
+
+- Iconic Downtown Atlanta Building | 200 Peachtree Street | Strong Existing Income w/ Upside | Steps from Mercedes Benz Stadium, World Congress Center & GSU
+  From: Skyline Seven Real Estate <investmentsales@skylineseven.ccsend.com>
+  Classification: NEWSLETTER
+  Why: Real-estate blast via Constant Contact; promotional inventory, not a direct task.
+
+- Just Listed | Government Office - Memphis, TN | 9.26% CAP | Recent Extension | 2% Annual Increases
+  From: Sands Investment Group <ethan@sandsig.com>
+  Classification: NEWSLETTER
+  Why: Property listing promo; informational only unless ACE is actively sourcing this asset type.
+
+- LAST DAY to get extra points!
+  From: The Parking Spot <noreply@email.theparkingspot.com>
+  Classification: PROMOTION/NEWSLETTER
+  Why: Consumer loyalty offer; unrelated to core work.
+
+- Development Site | Atlanta MSA
+  From: Sands Investment Group <doug@sandsig.com>
+  Classification: NEWSLETTER
+  Why: Another investment listing blast; no explicit work ask.
+
+- Grow your skills with Google for $239/year
+  From: Coursera <Coursera@m.learn.coursera.org>
+  Classification: PROMOTION/NEWSLETTER
+  Why: Training subscription upsell; non-urgent and non-operational.
+
+- Call for Presentations: 2026 API Storage Tank Conference
+  From: American Petroleum Institute <registrar@api.org>
+  Classification: ACTIONABLE
+  Why: Relevant industry event with a likely deadline-driven submission opportunity that may merit internal review.
+
+Recommended next actions (1-3)
+1. Review the API conference call-for-presentations email for submission deadline, topics, and requirements.
+2. Decide whether ACE should submit a talk or nominate a presenter; if yes, forward to the likely technical/business owner for go/no-go.
+3. Deprioritize/archive the property listing promos, Parking Spot offer, and Coursera upsell unless ACE is actively tracking those channels for a specific initiative.
+
+Deprioritize
+- All real-estate listings from Marcus & Millichap / Skyline Seven / Sands Investment Group
+- The Parking Spot loyalty promotion
+- Coursera annual subscription offer

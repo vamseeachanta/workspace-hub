@@ -51,7 +51,7 @@ checkpoints:
       Auto-pause at 200 tool calls per session. Require user confirmation
       to continue. Prevents runaway sessions (6.1M wasted calls evidence).
     enforced: true
-    threshold: 200
+    threshold: 5000
 
   - id: error-loop-breaker
     name: Error Loop Breaker

@@ -39,3 +39,4 @@ A system/condition is "sour" when:
 - **Standard**: [DNVGL-OS-E201: Oil and Gas Processing Systems](../sources/dnvgl-os-e201-oil-gas-processing.md)
 - **Related concept**: [[process-safety]]
 - **Related entity**: [[separator]]
+- **Cross-wiki (engineering)**: [Pipeline Integrity Assessment](../../../engineering/wiki/concepts/pipeline-integrity-assessment.md) — H2S-induced cracking (SSC, HIC) as a pipeline integrity threat assessed via API 579

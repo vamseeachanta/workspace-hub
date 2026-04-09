@@ -34,3 +34,4 @@ Power requirements and propulsive systems for marine vessels.
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD for resistance prediction, propeller-hull interaction, and wake analysis
