@@ -75,3 +75,5 @@ The LIS output file contains results in formatted text blocks. Key parsing rules
 - **Related entity**: [BEMRosetta Tool](../entities/bemrosetta-tool.md)
 - **Related entity**: [Solver Queue](../entities/solver-queue.md)
 - **Related workflow**: [Solver Debugging Protocol](../workflows/solver-debugging-protocol.md)
+- **Cross-wiki (naval-architecture)**: [Seakeeping and Ship Motions](../../../naval-architecture/wiki/concepts/seakeeping.md) — AQWA computes vessel RAOs and motion responses used in seakeeping assessment
+- **Cross-wiki (naval-architecture)**: [Ship Hydrostatics](../../../naval-architecture/wiki/concepts/hydrostatics.md) — AQWA uses hydrostatic properties (displacement, waterplane area) as fundamental inputs

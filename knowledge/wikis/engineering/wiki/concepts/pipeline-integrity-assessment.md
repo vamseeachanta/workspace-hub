@@ -79,4 +79,7 @@ Every assessment requires these inputs regardless of framework:
 - **Related concept**: [[fea-structural-analysis]] — Level 3 FFS assessments require FEA
 - **Related concept**: [[cathodic-protection-design]] — CP effectiveness directly affects corrosion rate
 - **Related concept**: [[cfd-offshore-hydrodynamics]] — scour and hydrodynamic loads on pipeline spans
+- **Cross-wiki (marine-engineering)**: [Corrosion Control](../../../marine-engineering/wiki/concepts/corrosion-control.md) — corrosion control strategies that determine pipeline degradation rate
+- **Cross-wiki (marine-engineering)**: [Sour Service](../../../marine-engineering/wiki/concepts/sour-service.md) — H2S-induced cracking (SSC, HIC) as a pipeline integrity threat beyond metal loss
+- **Cross-wiki (maritime-law)**: [Environmental Liability](../../../maritime-law/wiki/concepts/environmental-liability.md) — pipeline failure leading to spills triggers strict liability under CLC/OPA 90
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

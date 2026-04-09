@@ -113,3 +113,4 @@ where:
 - [FEA Structural Analysis](../concepts/fea-structural-analysis.md) -- finite element methods for hot-spot stress extraction
 - [VIV Riser Fatigue](../concepts/viv-riser-fatigue.md) -- fatigue from vortex-induced vibrations in risers
 - [DNV-RP-C205: Environmental Conditions and Loads](dnv-rp-c205.md) -- wave and current loading that drives fatigue
+- **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) — S-N curve fatigue methodology applies to ship hull structural details under classification rules

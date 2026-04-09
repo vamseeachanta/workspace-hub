@@ -98,5 +98,7 @@ For riser fatigue analysis:
 
 - **Related concept**: [VIV Riser Fatigue](../concepts/viv-riser-fatigue.md)
 - **Related entity**: [OrcaFlex Solver](../entities/orcaflex-solver.md)
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — wire rope mooring fatigue assessed using S-N curve methodology
+- **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) — ship hull fatigue under cyclic wave loading uses S-N curves per classification rules
 - **Source**: [Dark Intelligence Extractions](../sources/dark-intelligence-extractions.md)
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

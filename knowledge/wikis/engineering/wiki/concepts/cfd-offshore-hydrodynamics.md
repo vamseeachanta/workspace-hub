@@ -127,4 +127,8 @@ Scour protection design (rock dump, mattresses, frond mats) must account for the
 - **Related concept**: [[viv-riser-fatigue]] — VIV loads computed by CFD as input to fatigue analysis
 - **Related concept**: [[fea-structural-analysis]] — CFD pressure fields mapped to FEA structural models
 - **Related concept**: [[pipeline-integrity-assessment]] — hydrodynamic loads on free-spanning pipelines
+- **Cross-wiki (marine-engineering)**: [Long-Period Swell & Resonance](../../../marine-engineering/wiki/concepts/long-period-swell-resonance.md) — CFD and diffraction methods for modelling resonant vessel response to long-period waves
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — hydrodynamic loads on moored vessels driving mooring line forces
+- **Cross-wiki (naval-architecture)**: [Seakeeping and Ship Motions](../../../naval-architecture/wiki/concepts/seakeeping.md) — CFD for vessel RAO computation and seakeeping optimization
+- **Cross-wiki (naval-architecture)**: [Ship Resistance and Propulsion](../../../naval-architecture/wiki/concepts/resistance-propulsion.md) — CFD for resistance prediction and propeller-hull interaction
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

@@ -116,4 +116,5 @@ Point loads, sharp re-entrant corners, and crack tips produce **mathematically i
 - **Related concept**: [[viv-riser-fatigue]] — fatigue S-N curves and hot-spot stress for riser girth welds
 - **Related concept**: [[pipeline-integrity-assessment]] — FEA-based Level 3 fitness-for-service
 - **Related concept**: [[cfd-offshore-hydrodynamics]] — CFD loads as input to structural FEA
+- **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) — FEA for hull girder strength, plate buckling, and fatigue of ship structures
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

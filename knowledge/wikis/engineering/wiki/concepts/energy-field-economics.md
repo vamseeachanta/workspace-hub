@@ -143,4 +143,7 @@ Run 10,000+ iterations to get stable P10/P50/P90 NPV estimates. Plot the cumulat
 - **Related concept**: [[pipeline-integrity-assessment]] — integrity management costs are a significant opex line item
 - **Related concept**: [[cathodic-protection-design]] — CP lifecycle cost feeds into opex modeling
 - **Related concept**: [[ai-drill-well-on-paper]] — well planning optimization directly affects drilling capex
+- **Cross-wiki (marine-engineering)**: [Process Safety](../../../marine-engineering/wiki/concepts/process-safety.md) — safety systems (SIS, relief, deluge) are significant capex and opex items in field development
+- **Cross-wiki (maritime-law)**: [Environmental Liability](../../../maritime-law/wiki/concepts/environmental-liability.md) — environmental liability exposure (CLC, OPA 90) is a material risk in field development economics
+- **Cross-wiki (maritime-law)**: [OPA 90](../../../maritime-law/wiki/concepts/opa-90.md) — unlimited gross-negligence liability impacts deepwater project risk assessment and insurance costs
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

@@ -101,4 +101,5 @@ The TDP and buried sections of an SCR are typically classified as not inspectabl
 - **Related concept**: [[fea-structural-analysis]] — local stress analysis at hot-spot weld details
 - **Related concept**: [[cfd-offshore-hydrodynamics]] — CFD validation of VIV loads and Morison coefficients
 - **Related concept**: [[pipeline-integrity-assessment]] — fatigue-corrosion interaction at girth welds
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — wire rope mooring lines also subject to fatigue from cyclic loading
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

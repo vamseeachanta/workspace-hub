@@ -148,3 +148,5 @@ Wind profiles follow a logarithmic or power-law variation with height.
 - [CFD Offshore Hydrodynamics](../concepts/cfd-offshore-hydrodynamics.md) -- computational methods for complex flow problems beyond Morison
 - [DNV-RP-C203: Fatigue Design](dnv-rp-c203.md) -- fatigue damage driven by wave loading from this RP
 - [Pipeline Integrity Assessment](../concepts/pipeline-integrity-assessment.md) -- subsea pipeline loading from waves and currents
+- **Cross-wiki (marine-engineering)**: [Long-Period Swell & Resonance](../../../marine-engineering/wiki/concepts/long-period-swell-resonance.md) — wave spectra and second-order drift forces relevant to long-period swell-induced mooring loads
+- **Cross-wiki (naval-architecture)**: [Seakeeping and Ship Motions](../../../naval-architecture/wiki/concepts/seakeeping.md) — wave spectra (JONSWAP, Pierson-Moskowitz) and RAO computation for vessel motions

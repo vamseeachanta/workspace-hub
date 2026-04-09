@@ -138,4 +138,8 @@ For subsea structures, ROV-mounted reference electrodes measure anode and struct
 - **Related concept**: [[pipeline-integrity-assessment]] — corrosion rate depends on CP effectiveness
 - **Related concept**: [[cfd-offshore-hydrodynamics]] — current flow affects CP current distribution
 - **Related concept**: [[energy-field-economics]] — CP system cost is a significant opex item over field life
+- **Cross-wiki (marine-engineering)**: [Cathodic Protection System](../../../marine-engineering/wiki/concepts/cathodic-protection-system.md) — complementary coverage of galvanic vs ICCP design per DNV-RP-B401
+- **Cross-wiki (marine-engineering)**: [Corrosion Control](../../../marine-engineering/wiki/concepts/corrosion-control.md) — CP as one of five corrosion control strategies
+- **Cross-wiki (marine-engineering)**: [Coating Breakdown Factor](../../../marine-engineering/wiki/concepts/coating-breakdown.md) — zone-specific breakdown tables driving CP current demand
+- **Cross-wiki (marine-engineering)**: [Anode](../../../marine-engineering/wiki/entities/anode.md) — sacrificial anode materials, design parameters, and design life
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)

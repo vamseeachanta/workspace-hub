@@ -53,3 +53,5 @@ When correlating OrcaFlex results with other hydrodynamic solvers:
 - **Related entity**: [AQWA Solver](../entities/aqwa-solver.md)
 - **Related entity**: [Solver Queue](../entities/solver-queue.md)
 - **Related workflow**: [Solver Debugging Protocol](../workflows/solver-debugging-protocol.md)
+- **Cross-wiki (marine-engineering)**: [LNG Carrier Mooring](../../../marine-engineering/wiki/entities/lng-carrier-mooring.md) — OrcaFlex used for mooring analysis of LNG carriers at terminals
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — OrcaFlex models dynamic mooring loads that drive line failure assessment
