@@ -1,11 +1,12 @@
 """
-Tests for session-governor.py — hard-stop checkpoint verification.
+Tests for session-governor.py — hard-stop checkpoint verification and runtime enforcement.
 
 Covers:
   - Checkpoint config loading and schema validation
   - Gate verification logic (present/missing gates)
   - Report generation structure
   - Edge cases: empty config, unknown gate types
+  - Runtime enforcement: tool-call ceiling, error-loop breaker verdicts
 
 Run: uv run --no-project python -m pytest tests/work-queue/test_session_governor.py -v
 """
@@ -28,7 +29,11 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "scripts", "workflow"))
 from session_governor import (
     CheckpointConfig,
     GateStatus,
+    LimitResult,
+    SessionVerdict,
+    check_session_limits,
     load_checkpoints,
+    session_limits_verdict,
     verify_gates,
 )
 
@@ -186,3 +191,107 @@ class TestEdgeCases:
                         "tdd-red", "tool-call-ceiling", "nonexistent-gate"}
         results = verify_gates(sample_config, passed_gates)
         assert len(results) == 5  # only config-defined gates reported
+
+
+# ── Runtime enforcement tests (Phase 2) ────────────────────────────────
+
+
+RUNTIME_CONFIG_YAML = textwrap.dedent("""\
+    version: 1
+    checkpoints:
+      - id: tool-call-ceiling
+        name: Tool Call Ceiling
+        stage: runtime
+        type: auto-gate
+        description: Auto-pause at 200 tool calls.
+        enforced: true
+        threshold: 200
+
+      - id: error-loop-breaker
+        name: Error Loop Breaker
+        stage: runtime
+        type: auto-gate
+        description: If same error repeats 3x, hard stop.
+        enforced: true
+        threshold: 3
+
+      - id: plan-approval
+        name: Plan Approval
+        stage: pre-implement
+        type: hard-stop
+        description: User must approve plan.
+        enforced: true
+""")
+
+
+@pytest.fixture
+def runtime_config() -> CheckpointConfig:
+    data = yaml.safe_load(RUNTIME_CONFIG_YAML)
+    return load_checkpoints(data)
+
+
+class TestCheckSessionLimits:
+    """check_session_limits evaluates live metrics against thresholds."""
+
+    def test_low_counts_continue(self, runtime_config: CheckpointConfig):
+        """Well below thresholds → all CONTINUE."""
+        results = check_session_limits(runtime_config, tool_call_count=50, consecutive_error_count=0)
+        assert all(r.verdict == SessionVerdict.CONTINUE for r in results)
+
+    def test_tool_calls_at_threshold_stops(self, runtime_config: CheckpointConfig):
+        """Exactly at threshold → STOP."""
+        results = check_session_limits(runtime_config, tool_call_count=200)
+        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
+        assert tc.verdict == SessionVerdict.STOP
+
+    def test_tool_calls_over_threshold_stops(self, runtime_config: CheckpointConfig):
+        """Over threshold → STOP."""
+        results = check_session_limits(runtime_config, tool_call_count=300)
+        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
+        assert tc.verdict == SessionVerdict.STOP
+
+    def test_tool_calls_warning_zone_pauses(self, runtime_config: CheckpointConfig):
+        """80-99% of threshold → PAUSE."""
+        results = check_session_limits(runtime_config, tool_call_count=170)
+        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
+        assert tc.verdict == SessionVerdict.PAUSE
+
+    def test_error_loop_at_threshold_stops(self, runtime_config: CheckpointConfig):
+        """3 consecutive errors → STOP."""
+        results = check_session_limits(runtime_config, consecutive_error_count=3)
+        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
+        assert el.verdict == SessionVerdict.STOP
+
+    def test_error_loop_below_continues(self, runtime_config: CheckpointConfig):
+        """1 error → CONTINUE (below 80% of 3)."""
+        results = check_session_limits(runtime_config, consecutive_error_count=1)
+        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
+        assert el.verdict == SessionVerdict.CONTINUE
+
+    def test_only_runtime_gates_checked(self, runtime_config: CheckpointConfig):
+        """Hard-stop gates without thresholds are not in results."""
+        results = check_session_limits(runtime_config, tool_call_count=50)
+        ids = {r.checkpoint_id for r in results}
+        assert "plan-approval" not in ids
+
+    def test_overall_verdict_stop_wins(self, runtime_config: CheckpointConfig):
+        """If any check is STOP, overall is STOP."""
+        results = check_session_limits(runtime_config, tool_call_count=200, consecutive_error_count=0)
+        assert session_limits_verdict(results) == SessionVerdict.STOP
+
+    def test_overall_verdict_pause_if_no_stop(self, runtime_config: CheckpointConfig):
+        """If worst is PAUSE, overall is PAUSE."""
+        results = check_session_limits(runtime_config, tool_call_count=165, consecutive_error_count=0)
+        assert session_limits_verdict(results) == SessionVerdict.PAUSE
+
+    def test_overall_verdict_continue_when_clear(self, runtime_config: CheckpointConfig):
+        """All clear → CONTINUE."""
+        results = check_session_limits(runtime_config, tool_call_count=10, consecutive_error_count=0)
+        assert session_limits_verdict(results) == SessionVerdict.CONTINUE
+
+    def test_empty_config_returns_empty(self):
+        """Config with no runtime gates → empty results."""
+        data = {"version": 1, "checkpoints": []}
+        config = load_checkpoints(data)
+        results = check_session_limits(config, tool_call_count=999)
+        assert results == []

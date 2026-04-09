@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 """
-Session Governor — hard-stop checkpoint verification utility.
+Session Governor — hard-stop checkpoint verification and runtime enforcement.
 
 Loads governance-checkpoints.yaml and verifies which required gates
 have been satisfied in the current session. Reports PASS/FAIL/WARN
 per gate plus an overall session verdict.
 
+Phase 2 addition: check_session_limits() evaluates live session metrics
+(tool calls, error loops) against thresholds and returns CONTINUE/PAUSE/STOP.
+
 Usage:
     uv run scripts/workflow/session_governor.py                          # check all gates
     uv run scripts/workflow/session_governor.py --passed plan-approval   # mark gates as passed
     uv run scripts/workflow/session_governor.py --list                   # list all checkpoints
+    uv run scripts/workflow/session_governor.py --check-limits --tool-calls 150
+    uv run scripts/workflow/session_governor.py --check-limits --tool-calls 250 --consecutive-errors 4
 """
 
 from __future__ import annotations
 
 import argparse
 import enum
+import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -159,6 +165,111 @@ def format_report(results: list[GateResult]) -> str:
     return "\n".join(lines)
 
 
+# ── Runtime enforcement (Phase 2) ──────────────────────────────────────
+
+
+class SessionVerdict(enum.Enum):
+    CONTINUE = "CONTINUE"
+    PAUSE = "PAUSE"
+    STOP = "STOP"
+
+
+@dataclass
+class LimitResult:
+    checkpoint_id: str
+    name: str
+    verdict: SessionVerdict
+    current_value: int
+    threshold: int
+    message: str
+
+
+def check_session_limits(
+    config: CheckpointConfig,
+    tool_call_count: int = 0,
+    consecutive_error_count: int = 0,
+) -> list[LimitResult]:
+    """Evaluate live session metrics against runtime gate thresholds.
+
+    Checks each runtime auto-gate with a threshold against the provided
+    session metrics. Returns a LimitResult per runtime gate.
+
+    Verdicts:
+      - CONTINUE: metric is below 80% of threshold
+      - PAUSE: metric is at 80-99% of threshold (warning zone)
+      - STOP: metric has reached or exceeded threshold
+    """
+    results: list[LimitResult] = []
+
+    metric_map = {
+        "tool-call-ceiling": tool_call_count,
+        "error-loop-breaker": consecutive_error_count,
+    }
+
+    for cp in config.checkpoints:
+        if cp.threshold is None or cp.type != "auto-gate":
+            continue
+
+        current = metric_map.get(cp.id)
+        if current is None:
+            continue
+
+        if current >= cp.threshold:
+            verdict = SessionVerdict.STOP
+            msg = (
+                f"HARD STOP: {cp.name} — {current}/{cp.threshold} reached. "
+                f"Session must pause for user review."
+            )
+        elif current >= int(cp.threshold * 0.8):
+            verdict = SessionVerdict.PAUSE
+            msg = (
+                f"WARNING: {cp.name} — {current}/{cp.threshold} "
+                f"({int(current / cp.threshold * 100)}%). Approaching limit."
+            )
+        else:
+            verdict = SessionVerdict.CONTINUE
+            msg = f"OK: {cp.name} — {current}/{cp.threshold}."
+
+        results.append(LimitResult(
+            checkpoint_id=cp.id,
+            name=cp.name,
+            verdict=verdict,
+            current_value=current,
+            threshold=cp.threshold,
+            message=msg,
+        ))
+
+    return results
+
+
+def session_limits_verdict(results: list[LimitResult]) -> SessionVerdict:
+    """Return the most severe verdict from a list of limit results."""
+    if any(r.verdict == SessionVerdict.STOP for r in results):
+        return SessionVerdict.STOP
+    if any(r.verdict == SessionVerdict.PAUSE for r in results):
+        return SessionVerdict.PAUSE
+    return SessionVerdict.CONTINUE
+
+
+def format_limits_report(results: list[LimitResult]) -> str:
+    """Format limit check results as JSON for hook consumption."""
+    overall = session_limits_verdict(results)
+    return json.dumps({
+        "verdict": overall.value,
+        "checks": [
+            {
+                "id": r.checkpoint_id,
+                "name": r.name,
+                "verdict": r.verdict.value,
+                "current": r.current_value,
+                "threshold": r.threshold,
+                "message": r.message,
+            }
+            for r in results
+        ],
+    }, indent=2)
+
+
 def list_checkpoints(config: CheckpointConfig) -> str:
     """List all configured checkpoints."""
     lines = ["# Configured Checkpoints", ""]
@@ -194,6 +305,23 @@ def main() -> int:
         dest="list_gates",
         help="List all configured checkpoints",
     )
+    parser.add_argument(
+        "--check-limits",
+        action="store_true",
+        help="Check session metrics against runtime gate thresholds",
+    )
+    parser.add_argument(
+        "--tool-calls",
+        type=int,
+        default=0,
+        help="Current tool call count (used with --check-limits)",
+    )
+    parser.add_argument(
+        "--consecutive-errors",
+        type=int,
+        default=0,
+        help="Current consecutive identical error count (used with --check-limits)",
+    )
     args = parser.parse_args()
 
     config = load_config_from_file(args.config)
@@ -201,6 +329,16 @@ def main() -> int:
     if args.list_gates:
         print(list_checkpoints(config))
         return 0
+
+    if args.check_limits:
+        results = check_session_limits(
+            config,
+            tool_call_count=args.tool_calls,
+            consecutive_error_count=args.consecutive_errors,
+        )
+        print(format_limits_report(results))
+        verdict = session_limits_verdict(results)
+        return 2 if verdict == SessionVerdict.STOP else (1 if verdict == SessionVerdict.PAUSE else 0)
 
     results = verify_gates(config, set(args.passed))
     print(format_report(results))

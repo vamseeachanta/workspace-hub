@@ -7,6 +7,8 @@ Covers:
   - Priority breakdown: high/medium/low separated per agent
   - Timestamp present and ISO-formatted
   - Empty agent queues handled gracefully
+  - Staleness detection: fresh vs stale vs missing file
+  - Parity check: file counts vs live GitHub counts
 
 Run: uv run --no-project python -m pytest tests/work-queue/test_queue_refresh.py -v
 """
@@ -218,3 +220,132 @@ class TestEdgeCases:
         # Issue titles containing special chars should be safe in markdown tables
         # Our test data has "→" and "—" which should pass through
         assert "→" in queue_output or "—" in queue_output
+
+
+# ── Staleness detection tests ──────────────────────────────────────────
+
+
+class TestStalenessDetection:
+    """check_staleness reports whether the queue file is outdated."""
+
+    @pytest.fixture(autouse=True)
+    def _load_module(self, tmp_path):
+        sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+        try:
+            import importlib
+            self.mod = importlib.import_module("refresh-agent-work-queue")
+        finally:
+            sys.path.pop(0)
+        self.tmp_path = tmp_path
+
+    def _write_queue(self, timestamp_str: str) -> Path:
+        p = self.tmp_path / "agent-work-queue.md"
+        p.write_text(f"# Queue\n\n*Last refresh: {timestamp_str}*\n")
+        return p
+
+    def test_fresh_file_not_stale(self):
+        from datetime import datetime, timezone, timedelta
+        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
+        ts = (now - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        qf = self._write_queue(ts)
+        result = self.mod.check_staleness(queue_file=qf, now=now)
+        assert result["stale"] is False
+        assert result["age_days"] == 2.0
+
+    def test_old_file_is_stale(self):
+        from datetime import datetime, timezone, timedelta
+        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
+        ts = (now - timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        qf = self._write_queue(ts)
+        result = self.mod.check_staleness(queue_file=qf, now=now)
+        assert result["stale"] is True
+        assert result["age_days"] == 10.0
+
+    def test_missing_file_is_stale(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
+        qf = self.tmp_path / "nonexistent.md"
+        result = self.mod.check_staleness(queue_file=qf, now=now)
+        assert result["stale"] is True
+        assert "not found" in result["message"]
+
+    def test_no_timestamp_is_stale(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
+        qf = self.tmp_path / "no-ts.md"
+        qf.write_text("# Queue\nNo timestamp here.\n")
+        result = self.mod.check_staleness(queue_file=qf, now=now)
+        assert result["stale"] is True
+        assert "No timestamp" in result["message"]
+
+
+# ── Parity check tests ────────────────────────────────────────────────
+
+
+class TestParityCheck:
+    """parity_check compares file issue counts against live query results."""
+
+    @pytest.fixture(autouse=True)
+    def _load_module(self, tmp_path):
+        sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+        try:
+            import importlib
+            self.mod = importlib.import_module("refresh-agent-work-queue")
+        finally:
+            sys.path.pop(0)
+        self.tmp_path = tmp_path
+
+    def _write_summary_table(self, gemini: int, claude: int, codex: int) -> Path:
+        p = self.tmp_path / "agent-work-queue.md"
+        lines = [
+            "# Agent Work Queue",
+            "",
+            "## Queue Summary",
+            "",
+            "| Agent | High | Medium | Low | Total |",
+            "|-------|------|--------|-----|-------|",
+            f"| **GEMINI** | {gemini} | 0 | 0 | {gemini} |",
+            f"| **CLAUDE** | {claude} | 0 | 0 | {claude} |",
+            f"| **CODEX** | {codex} | 0 | 0 | {codex} |",
+        ]
+        p.write_text("\n".join(lines))
+        return p
+
+    def test_parity_when_counts_match(self):
+        qf = self._write_summary_table(2, 3, 1)
+
+        def mock_query(labels):
+            counts = {
+                "agent:gemini,priority:high": 2,
+                "agent:claude,priority:high": 3,
+                "agent:codex,priority:high": 1,
+            }
+            n = counts.get(labels, 0)
+            return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
+
+        result = self.mod.parity_check(queue_file=qf, query_fn=mock_query)
+        assert result["parity"] is True
+
+    def test_drift_detected_when_counts_differ(self):
+        qf = self._write_summary_table(2, 3, 1)
+
+        def mock_query(labels):
+            # Claude has 5 live issues instead of 3
+            counts = {
+                "agent:gemini,priority:high": 2,
+                "agent:claude,priority:high": 5,
+                "agent:codex,priority:high": 1,
+            }
+            n = counts.get(labels, 0)
+            return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
+
+        result = self.mod.parity_check(queue_file=qf, query_fn=mock_query)
+        assert result["parity"] is False
+        assert len(result["drifted_agents"]) == 1
+        assert result["drifted_agents"][0]["agent"] == "CLAUDE"
+        assert result["drifted_agents"][0]["delta"] == 2
+
+    def test_missing_file_fails_parity(self):
+        qf = self.tmp_path / "nonexistent.md"
+        result = self.mod.parity_check(queue_file=qf, query_fn=lambda l: [])
+        assert result["parity"] is False

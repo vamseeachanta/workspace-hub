@@ -1,0 +1,680 @@
+diff --git a/scripts/refresh-agent-work-queue.py b/scripts/refresh-agent-work-queue.py
+index 51346f423..5298038eb 100644
+--- a/scripts/refresh-agent-work-queue.py
++++ b/scripts/refresh-agent-work-queue.py
+@@ -8,12 +8,15 @@ Issues are sorted by number ascending within each priority tier.
+ Usage:
+     uv run scripts/refresh-agent-work-queue.py             # write to notes/agent-work-queue.md
+     uv run scripts/refresh-agent-work-queue.py --dry-run   # print to stdout only
++    uv run scripts/refresh-agent-work-queue.py --check-staleness   # check if queue file is stale
++    uv run scripts/refresh-agent-work-queue.py --parity-check      # compare file vs live GitHub counts
+ """
+ 
+ from __future__ import annotations
+ 
+ import argparse
+ import json
++import re
+ import subprocess
+ import sys
+ from datetime import datetime, timezone
+@@ -190,6 +193,127 @@ def generate_queue_markdown(
+     return "\n".join(lines)
+ 
+ 
++STALENESS_THRESHOLD_DAYS = 7
++
++
++def check_staleness(
++    queue_file: Path | None = None,
++    now: datetime | None = None,
++) -> dict:
++    """Check whether the queue file is stale (older than STALENESS_THRESHOLD_DAYS).
++
++    Returns:
++        dict with keys: stale (bool), age_days (float|None), last_refresh (str|None),
++        threshold_days (int), message (str).
++    """
++    queue_file = queue_file or QUEUE_FILE
++    if now is None:
++        now = datetime.now(timezone.utc)
++
++    result = {
++        "stale": True,
++        "age_days": None,
++        "last_refresh": None,
++        "threshold_days": STALENESS_THRESHOLD_DAYS,
++        "message": "",
++    }
++
++    if not queue_file.exists():
++        result["message"] = f"Queue file not found: {queue_file}"
++        return result
++
++    content = queue_file.read_text()
++    # Extract timestamp from footer: "Last refresh: 2026-04-04T20:45:00Z"
++    match = re.search(r"Last refresh:\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?)", content)
++    if not match:
++        result["message"] = "No timestamp found in queue file."
++        return result
++
++    ts_str = match.group(1)
++    if not ts_str.endswith("Z"):
++        ts_str += "Z"
++    last_refresh = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
++    age = now - last_refresh
++    age_days = age.total_seconds() / 86400
++
++    result["last_refresh"] = ts_str
++    result["age_days"] = round(age_days, 1)
++    result["stale"] = age_days > STALENESS_THRESHOLD_DAYS
++    if result["stale"]:
++        result["message"] = (
++            f"STALE: Queue is {result['age_days']} days old "
++            f"(threshold: {STALENESS_THRESHOLD_DAYS} days). Run refresh."
++        )
++    else:
++        result["message"] = (
++            f"OK: Queue is {result['age_days']} days old "
++            f"(threshold: {STALENESS_THRESHOLD_DAYS} days)."
++        )
++    return result
++
++
++def parity_check(
++    queue_file: Path | None = None,
++    query_fn: callable | None = None,
++) -> dict:
++    """Compare issue counts in the existing queue file against live GitHub.
++
++    Returns:
++        dict with keys: parity (bool), drifted_agents (list[dict]), message (str).
++    """
++    queue_file = queue_file or QUEUE_FILE
++    if query_fn is None:
++        query_fn = gh_query_issues
++
++    result = {"parity": True, "drifted_agents": [], "message": ""}
++
++    if not queue_file.exists():
++        result["parity"] = False
++        result["message"] = f"Queue file not found: {queue_file}"
++        return result
++
++    content = queue_file.read_text()
++
++    # Parse existing counts from summary table
++    file_counts: dict[str, int] = {}
++    for line in content.splitlines():
++        for agent in AGENTS:
++            if f"**{agent['key']}**" in line:
++                # Last number in the row is the total
++                nums = re.findall(r"\d+", line)
++                if nums:
++                    file_counts[agent["key"]] = int(nums[-1])
++
++    # Query live counts
++    for agent in AGENTS:
++        live_total = 0
++        for pri in PRIORITIES:
++            labels = f"{agent['label']},priority:{pri}"
++            issues = query_fn(labels)
++            live_total += len(issues)
++
++        file_total = file_counts.get(agent["key"], 0)
++        if live_total != file_total:
++            result["parity"] = False
++            result["drifted_agents"].append({
++                "agent": agent["key"],
++                "file_count": file_total,
++                "live_count": live_total,
++                "delta": live_total - file_total,
++            })
++
++    if result["parity"]:
++        result["message"] = "PARITY OK: File counts match live GitHub."
++    else:
++        drifts = ", ".join(
++            f"{d['agent']}({d['file_count']}→{d['live_count']})"
++            for d in result["drifted_agents"]
++        )
++        result["message"] = f"DRIFT DETECTED: {drifts}. Run refresh to fix."
++
++    return result
++
++
+ def main() -> None:
+     parser = argparse.ArgumentParser(description="Refresh agent work queue")
+     parser.add_argument(
+@@ -197,8 +321,28 @@ def main() -> None:
+         action="store_true",
+         help="Print to stdout instead of writing to file",
+     )
++    parser.add_argument(
++        "--check-staleness",
++        action="store_true",
++        help="Check if queue file is stale (>7 days old)",
++    )
++    parser.add_argument(
++        "--parity-check",
++        action="store_true",
++        help="Compare file issue counts against live GitHub",
++    )
+     args = parser.parse_args()
+ 
++    if args.check_staleness:
++        result = check_staleness()
++        print(json.dumps(result, indent=2))
++        sys.exit(0 if not result["stale"] else 1)
++
++    if args.parity_check:
++        result = parity_check()
++        print(json.dumps(result, indent=2))
++        sys.exit(0 if result["parity"] else 1)
++
+     content = generate_queue_markdown()
+ 
+     if args.dry_run:
+diff --git a/scripts/refresh-agent-work-queue.sh b/scripts/refresh-agent-work-queue.sh
+index e3a1e0434..c9f4d6b22 100644
+--- a/scripts/refresh-agent-work-queue.sh
++++ b/scripts/refresh-agent-work-queue.sh
+@@ -3,15 +3,22 @@
+ # Run weekly on Sunday, regenerates notes/agent-work-queue.md.
+ #
+ # Usage:
+-#   ./scripts/refresh-agent-work-queue.sh            # write to file
+-#   ./scripts/refresh-agent-work-queue.sh --dry-run   # print to stdout
++#   ./scripts/refresh-agent-work-queue.sh                  # write to file
++#   ./scripts/refresh-agent-work-queue.sh --dry-run        # print to stdout
++#   ./scripts/refresh-agent-work-queue.sh --check-staleness  # check if >7 days old
++#   ./scripts/refresh-agent-work-queue.sh --parity-check     # compare file vs live GitHub
+ set -e
+ REPO_ROOT="$(git rev-parse --show-toplevel)"
+ cd "$REPO_ROOT"
+ 
+ uv run scripts/refresh-agent-work-queue.py "$@"
+ 
+-if [ "$1" != "--dry-run" ]; then
+-  git add notes/agent-work-queue.md 2>/dev/null || true
+-  echo "Queue file staged for commit."
+-fi
++# Only stage file on a normal refresh (not dry-run or check modes)
++case "$1" in
++  --dry-run|--check-staleness|--parity-check)
++    ;;
++  *)
++    git add notes/agent-work-queue.md 2>/dev/null || true
++    echo "Queue file staged for commit."
++    ;;
++esac
+diff --git a/scripts/workflow/session_governor.py b/scripts/workflow/session_governor.py
+index 512afc1ca..99a2a95ec 100644
+--- a/scripts/workflow/session_governor.py
++++ b/scripts/workflow/session_governor.py
+@@ -1,21 +1,27 @@
+ #!/usr/bin/env python3
+ """
+-Session Governor — hard-stop checkpoint verification utility.
++Session Governor — hard-stop checkpoint verification and runtime enforcement.
+ 
+ Loads governance-checkpoints.yaml and verifies which required gates
+ have been satisfied in the current session. Reports PASS/FAIL/WARN
+ per gate plus an overall session verdict.
+ 
++Phase 2 addition: check_session_limits() evaluates live session metrics
++(tool calls, error loops) against thresholds and returns CONTINUE/PAUSE/STOP.
++
+ Usage:
+     uv run scripts/workflow/session_governor.py                          # check all gates
+     uv run scripts/workflow/session_governor.py --passed plan-approval   # mark gates as passed
+     uv run scripts/workflow/session_governor.py --list                   # list all checkpoints
++    uv run scripts/workflow/session_governor.py --check-limits --tool-calls 150
++    uv run scripts/workflow/session_governor.py --check-limits --tool-calls 250 --consecutive-errors 4
+ """
+ 
+ from __future__ import annotations
+ 
+ import argparse
+ import enum
++import json
+ import sys
+ from dataclasses import dataclass, field
+ from pathlib import Path
+@@ -159,6 +165,111 @@ def format_report(results: list[GateResult]) -> str:
+     return "\n".join(lines)
+ 
+ 
++# ── Runtime enforcement (Phase 2) ──────────────────────────────────────
++
++
++class SessionVerdict(enum.Enum):
++    CONTINUE = "CONTINUE"
++    PAUSE = "PAUSE"
++    STOP = "STOP"
++
++
++@dataclass
++class LimitResult:
++    checkpoint_id: str
++    name: str
++    verdict: SessionVerdict
++    current_value: int
++    threshold: int
++    message: str
++
++
++def check_session_limits(
++    config: CheckpointConfig,
++    tool_call_count: int = 0,
++    consecutive_error_count: int = 0,
++) -> list[LimitResult]:
++    """Evaluate live session metrics against runtime gate thresholds.
++
++    Checks each runtime auto-gate with a threshold against the provided
++    session metrics. Returns a LimitResult per runtime gate.
++
++    Verdicts:
++      - CONTINUE: metric is below 80% of threshold
++      - PAUSE: metric is at 80-99% of threshold (warning zone)
++      - STOP: metric has reached or exceeded threshold
++    """
++    results: list[LimitResult] = []
++
++    metric_map = {
++        "tool-call-ceiling": tool_call_count,
++        "error-loop-breaker": consecutive_error_count,
++    }
++
++    for cp in config.checkpoints:
++        if cp.threshold is None or cp.type != "auto-gate":
++            continue
++
++        current = metric_map.get(cp.id)
++        if current is None:
++            continue
++
++        if current >= cp.threshold:
++            verdict = SessionVerdict.STOP
++            msg = (
++                f"HARD STOP: {cp.name} — {current}/{cp.threshold} reached. "
++                f"Session must pause for user review."
++            )
++        elif current >= int(cp.threshold * 0.8):
++            verdict = SessionVerdict.PAUSE
++            msg = (
++                f"WARNING: {cp.name} — {current}/{cp.threshold} "
++                f"({int(current / cp.threshold * 100)}%). Approaching limit."
++            )
++        else:
++            verdict = SessionVerdict.CONTINUE
++            msg = f"OK: {cp.name} — {current}/{cp.threshold}."
++
++        results.append(LimitResult(
++            checkpoint_id=cp.id,
++            name=cp.name,
++            verdict=verdict,
++            current_value=current,
++            threshold=cp.threshold,
++            message=msg,
++        ))
++
++    return results
++
++
++def session_limits_verdict(results: list[LimitResult]) -> SessionVerdict:
++    """Return the most severe verdict from a list of limit results."""
++    if any(r.verdict == SessionVerdict.STOP for r in results):
++        return SessionVerdict.STOP
++    if any(r.verdict == SessionVerdict.PAUSE for r in results):
++        return SessionVerdict.PAUSE
++    return SessionVerdict.CONTINUE
++
++
++def format_limits_report(results: list[LimitResult]) -> str:
++    """Format limit check results as JSON for hook consumption."""
++    overall = session_limits_verdict(results)
++    return json.dumps({
++        "verdict": overall.value,
++        "checks": [
++            {
++                "id": r.checkpoint_id,
++                "name": r.name,
++                "verdict": r.verdict.value,
++                "current": r.current_value,
++                "threshold": r.threshold,
++                "message": r.message,
++            }
++            for r in results
++        ],
++    }, indent=2)
++
++
+ def list_checkpoints(config: CheckpointConfig) -> str:
+     """List all configured checkpoints."""
+     lines = ["# Configured Checkpoints", ""]
+@@ -194,6 +305,23 @@ def main() -> int:
+         dest="list_gates",
+         help="List all configured checkpoints",
+     )
++    parser.add_argument(
++        "--check-limits",
++        action="store_true",
++        help="Check session metrics against runtime gate thresholds",
++    )
++    parser.add_argument(
++        "--tool-calls",
++        type=int,
++        default=0,
++        help="Current tool call count (used with --check-limits)",
++    )
++    parser.add_argument(
++        "--consecutive-errors",
++        type=int,
++        default=0,
++        help="Current consecutive identical error count (used with --check-limits)",
++    )
+     args = parser.parse_args()
+ 
+     config = load_config_from_file(args.config)
+@@ -202,6 +330,16 @@ def main() -> int:
+         print(list_checkpoints(config))
+         return 0
+ 
++    if args.check_limits:
++        results = check_session_limits(
++            config,
++            tool_call_count=args.tool_calls,
++            consecutive_error_count=args.consecutive_errors,
++        )
++        print(format_limits_report(results))
++        verdict = session_limits_verdict(results)
++        return 2 if verdict == SessionVerdict.STOP else (1 if verdict == SessionVerdict.PAUSE else 0)
++
+     results = verify_gates(config, set(args.passed))
+     print(format_report(results))
+ 
+diff --git a/tests/work-queue/test_queue_refresh.py b/tests/work-queue/test_queue_refresh.py
+index e2abb1a20..9a4424f06 100644
+--- a/tests/work-queue/test_queue_refresh.py
++++ b/tests/work-queue/test_queue_refresh.py
+@@ -7,6 +7,8 @@ Covers:
+   - Priority breakdown: high/medium/low separated per agent
+   - Timestamp present and ISO-formatted
+   - Empty agent queues handled gracefully
++  - Staleness detection: fresh vs stale vs missing file
++  - Parity check: file counts vs live GitHub counts
+ 
+ Run: uv run --no-project python -m pytest tests/work-queue/test_queue_refresh.py -v
+ """
+@@ -218,3 +220,132 @@ class TestEdgeCases:
+         # Issue titles containing special chars should be safe in markdown tables
+         # Our test data has "→" and "—" which should pass through
+         assert "→" in queue_output or "—" in queue_output
++
++
++# ── Staleness detection tests ──────────────────────────────────────────
++
++
++class TestStalenessDetection:
++    """check_staleness reports whether the queue file is outdated."""
++
++    @pytest.fixture(autouse=True)
++    def _load_module(self, tmp_path):
++        sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
++        try:
++            import importlib
++            self.mod = importlib.import_module("refresh-agent-work-queue")
++        finally:
++            sys.path.pop(0)
++        self.tmp_path = tmp_path
++
++    def _write_queue(self, timestamp_str: str) -> Path:
++        p = self.tmp_path / "agent-work-queue.md"
++        p.write_text(f"# Queue\n\n*Last refresh: {timestamp_str}*\n")
++        return p
++
++    def test_fresh_file_not_stale(self):
++        from datetime import datetime, timezone, timedelta
++        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
++        ts = (now - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
++        qf = self._write_queue(ts)
++        result = self.mod.check_staleness(queue_file=qf, now=now)
++        assert result["stale"] is False
++        assert result["age_days"] == 2.0
++
++    def test_old_file_is_stale(self):
++        from datetime import datetime, timezone, timedelta
++        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
++        ts = (now - timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
++        qf = self._write_queue(ts)
++        result = self.mod.check_staleness(queue_file=qf, now=now)
++        assert result["stale"] is True
++        assert result["age_days"] == 10.0
++
++    def test_missing_file_is_stale(self):
++        from datetime import datetime, timezone
++        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
++        qf = self.tmp_path / "nonexistent.md"
++        result = self.mod.check_staleness(queue_file=qf, now=now)
++        assert result["stale"] is True
++        assert "not found" in result["message"]
++
++    def test_no_timestamp_is_stale(self):
++        from datetime import datetime, timezone
++        now = datetime(2026, 4, 9, 12, 0, 0, tzinfo=timezone.utc)
++        qf = self.tmp_path / "no-ts.md"
++        qf.write_text("# Queue\nNo timestamp here.\n")
++        result = self.mod.check_staleness(queue_file=qf, now=now)
++        assert result["stale"] is True
++        assert "No timestamp" in result["message"]
++
++
++# ── Parity check tests ────────────────────────────────────────────────
++
++
++class TestParityCheck:
++    """parity_check compares file issue counts against live query results."""
++
++    @pytest.fixture(autouse=True)
++    def _load_module(self, tmp_path):
++        sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
++        try:
++            import importlib
++            self.mod = importlib.import_module("refresh-agent-work-queue")
++        finally:
++            sys.path.pop(0)
++        self.tmp_path = tmp_path
++
++    def _write_summary_table(self, gemini: int, claude: int, codex: int) -> Path:
++        p = self.tmp_path / "agent-work-queue.md"
++        lines = [
++            "# Agent Work Queue",
++            "",
++            "## Queue Summary",
++            "",
++            "| Agent | High | Medium | Low | Total |",
++            "|-------|------|--------|-----|-------|",
++            f"| **GEMINI** | {gemini} | 0 | 0 | {gemini} |",
++            f"| **CLAUDE** | {claude} | 0 | 0 | {claude} |",
++            f"| **CODEX** | {codex} | 0 | 0 | {codex} |",
++        ]
++        p.write_text("\n".join(lines))
++        return p
++
++    def test_parity_when_counts_match(self):
++        qf = self._write_summary_table(2, 3, 1)
++
++        def mock_query(labels):
++            counts = {
++                "agent:gemini,priority:high": 2,
++                "agent:claude,priority:high": 3,
++                "agent:codex,priority:high": 1,
++            }
++            n = counts.get(labels, 0)
++            return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
++
++        result = self.mod.parity_check(queue_file=qf, query_fn=mock_query)
++        assert result["parity"] is True
++
++    def test_drift_detected_when_counts_differ(self):
++        qf = self._write_summary_table(2, 3, 1)
++
++        def mock_query(labels):
++            # Claude has 5 live issues instead of 3
++            counts = {
++                "agent:gemini,priority:high": 2,
++                "agent:claude,priority:high": 5,
++                "agent:codex,priority:high": 1,
++            }
++            n = counts.get(labels, 0)
++            return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
++
++        result = self.mod.parity_check(queue_file=qf, query_fn=mock_query)
++        assert result["parity"] is False
++        assert len(result["drifted_agents"]) == 1
++        assert result["drifted_agents"][0]["agent"] == "CLAUDE"
++        assert result["drifted_agents"][0]["delta"] == 2
++
++    def test_missing_file_fails_parity(self):
++        qf = self.tmp_path / "nonexistent.md"
++        result = self.mod.parity_check(queue_file=qf, query_fn=lambda l: [])
++        assert result["parity"] is False
+diff --git a/tests/work-queue/test_session_governor.py b/tests/work-queue/test_session_governor.py
+index d9ba3d32d..4942fbadb 100644
+--- a/tests/work-queue/test_session_governor.py
++++ b/tests/work-queue/test_session_governor.py
+@@ -1,11 +1,12 @@
+ """
+-Tests for session-governor.py — hard-stop checkpoint verification.
++Tests for session-governor.py — hard-stop checkpoint verification and runtime enforcement.
+ 
+ Covers:
+   - Checkpoint config loading and schema validation
+   - Gate verification logic (present/missing gates)
+   - Report generation structure
+   - Edge cases: empty config, unknown gate types
++  - Runtime enforcement: tool-call ceiling, error-loop breaker verdicts
+ 
+ Run: uv run --no-project python -m pytest tests/work-queue/test_session_governor.py -v
+ """
+@@ -28,7 +29,11 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "scripts", "workflow"))
+ from session_governor import (
+     CheckpointConfig,
+     GateStatus,
++    LimitResult,
++    SessionVerdict,
++    check_session_limits,
+     load_checkpoints,
++    session_limits_verdict,
+     verify_gates,
+ )
+ 
+@@ -186,3 +191,107 @@ class TestEdgeCases:
+                         "tdd-red", "tool-call-ceiling", "nonexistent-gate"}
+         results = verify_gates(sample_config, passed_gates)
+         assert len(results) == 5  # only config-defined gates reported
++
++
++# ── Runtime enforcement tests (Phase 2) ────────────────────────────────
++
++
++RUNTIME_CONFIG_YAML = textwrap.dedent("""\
++    version: 1
++    checkpoints:
++      - id: tool-call-ceiling
++        name: Tool Call Ceiling
++        stage: runtime
++        type: auto-gate
++        description: Auto-pause at 200 tool calls.
++        enforced: true
++        threshold: 200
++
++      - id: error-loop-breaker
++        name: Error Loop Breaker
++        stage: runtime
++        type: auto-gate
++        description: If same error repeats 3x, hard stop.
++        enforced: true
++        threshold: 3
++
++      - id: plan-approval
++        name: Plan Approval
++        stage: pre-implement
++        type: hard-stop
++        description: User must approve plan.
++        enforced: true
++""")
++
++
++@pytest.fixture
++def runtime_config() -> CheckpointConfig:
++    data = yaml.safe_load(RUNTIME_CONFIG_YAML)
++    return load_checkpoints(data)
++
++
++class TestCheckSessionLimits:
++    """check_session_limits evaluates live metrics against thresholds."""
++
++    def test_low_counts_continue(self, runtime_config: CheckpointConfig):
++        """Well below thresholds → all CONTINUE."""
++        results = check_session_limits(runtime_config, tool_call_count=50, consecutive_error_count=0)
++        assert all(r.verdict == SessionVerdict.CONTINUE for r in results)
++
++    def test_tool_calls_at_threshold_stops(self, runtime_config: CheckpointConfig):
++        """Exactly at threshold → STOP."""
++        results = check_session_limits(runtime_config, tool_call_count=200)
++        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
++        assert tc.verdict == SessionVerdict.STOP
++
++    def test_tool_calls_over_threshold_stops(self, runtime_config: CheckpointConfig):
++        """Over threshold → STOP."""
++        results = check_session_limits(runtime_config, tool_call_count=300)
++        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
++        assert tc.verdict == SessionVerdict.STOP
++
++    def test_tool_calls_warning_zone_pauses(self, runtime_config: CheckpointConfig):
++        """80-99% of threshold → PAUSE."""
++        results = check_session_limits(runtime_config, tool_call_count=170)
++        tc = next(r for r in results if r.checkpoint_id == "tool-call-ceiling")
++        assert tc.verdict == SessionVerdict.PAUSE
++
++    def test_error_loop_at_threshold_stops(self, runtime_config: CheckpointConfig):
++        """3 consecutive errors → STOP."""
++        results = check_session_limits(runtime_config, consecutive_error_count=3)
++        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
++        assert el.verdict == SessionVerdict.STOP
++
++    def test_error_loop_below_continues(self, runtime_config: CheckpointConfig):
++        """1 error → CONTINUE (below 80% of 3)."""
++        results = check_session_limits(runtime_config, consecutive_error_count=1)
++        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
++        assert el.verdict == SessionVerdict.CONTINUE
++
++    def test_only_runtime_gates_checked(self, runtime_config: CheckpointConfig):
++        """Hard-stop gates without thresholds are not in results."""
++        results = check_session_limits(runtime_config, tool_call_count=50)
++        ids = {r.checkpoint_id for r in results}
++        assert "plan-approval" not in ids
++
++    def test_overall_verdict_stop_wins(self, runtime_config: CheckpointConfig):
++        """If any check is STOP, overall is STOP."""
++        results = check_session_limits(runtime_config, tool_call_count=200, consecutive_error_count=0)
++        assert session_limits_verdict(results) == SessionVerdict.STOP
++
++    def test_overall_verdict_pause_if_no_stop(self, runtime_config: CheckpointConfig):
++        """If worst is PAUSE, overall is PAUSE."""
++        results = check_session_limits(runtime_config, tool_call_count=165, consecutive_error_count=0)
++        assert session_limits_verdict(results) == SessionVerdict.PAUSE
++
++    def test_overall_verdict_continue_when_clear(self, runtime_config: CheckpointConfig):
++        """All clear → CONTINUE."""
++        results = check_session_limits(runtime_config, tool_call_count=10, consecutive_error_count=0)
++        assert session_limits_verdict(results) == SessionVerdict.CONTINUE
++
++    def test_empty_config_returns_empty(self):
++        """Config with no runtime gates → empty results."""
++        data = {"version": 1, "checkpoints": []}
++        config = load_checkpoints(data)
++        results = check_session_limits(config, tool_call_count=999)
++        assert results == []

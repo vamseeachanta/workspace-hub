@@ -49,11 +49,38 @@ Exit code: `0` = all enforced gates pass, `1` = at least one enforced gate fails
 | error-loop-breaker | Error Loop Breaker (3x) | auto-gate | Yes | runtime |
 | pre-push-review | Pre-Push Review Gate | auto-gate | No (migration) | pre-push |
 
-## What Remains (Phases 2-4)
+## What Was Implemented (Phase 2) — 2026-04-09
 
-### Phase 2: Runtime Enforcement
-- Wire `tool-call-ceiling` into Claude Code hooks (auto-pause at 200 calls)
-- Wire `error-loop-breaker` into session signal analysis
+### Runtime Enforcement via `check_session_limits()`
+
+**File**: `scripts/workflow/session_governor.py`
+
+The session governor now supports runtime enforcement — checking live session metrics
+against governance thresholds. Three-tier verdict system:
+- **CONTINUE** (exit 0): below 80% of threshold
+- **PAUSE** (exit 1): 80-99% of threshold — warning zone
+- **STOP** (exit 2): at or above threshold — hard stop required
+
+```bash
+uv run scripts/workflow/session_governor.py --check-limits --tool-calls 170 --consecutive-errors 2
+```
+
+Tests: 11 new tests in `tests/work-queue/test_session_governor.py` (25 total).
+
+### Queue Staleness + Parity Check
+
+**File**: `scripts/refresh-agent-work-queue.py`
+
+- `--check-staleness`: reports if queue file is >7 days old
+- `--parity-check`: compares file issue counts vs live GitHub
+
+Tests: 7 new tests in `tests/work-queue/test_queue_refresh.py` (23 total).
+
+## What Remains (Phases 2b-4)
+
+### Phase 2b: Hook Wiring
+- Wire `check_session_limits` into Claude Code PreToolUse hook (auto-pause at 200 calls)
+- Wire `error-loop-breaker` into session signal analysis pipeline
 - Promote `session-close` to enforced after testing
 - Promote `pre-push-review` to strict mode (currently warning)
 

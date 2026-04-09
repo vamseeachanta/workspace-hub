@@ -8,12 +8,15 @@ Issues are sorted by number ascending within each priority tier.
 Usage:
     uv run scripts/refresh-agent-work-queue.py             # write to notes/agent-work-queue.md
     uv run scripts/refresh-agent-work-queue.py --dry-run   # print to stdout only
+    uv run scripts/refresh-agent-work-queue.py --check-staleness   # check if queue file is stale
+    uv run scripts/refresh-agent-work-queue.py --parity-check      # compare file vs live GitHub counts
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -190,6 +193,127 @@ def generate_queue_markdown(
     return "\n".join(lines)
 
 
+STALENESS_THRESHOLD_DAYS = 7
+
+
+def check_staleness(
+    queue_file: Path | None = None,
+    now: datetime | None = None,
+) -> dict:
+    """Check whether the queue file is stale (older than STALENESS_THRESHOLD_DAYS).
+
+    Returns:
+        dict with keys: stale (bool), age_days (float|None), last_refresh (str|None),
+        threshold_days (int), message (str).
+    """
+    queue_file = queue_file or QUEUE_FILE
+    if now is None:
+        now = datetime.now(timezone.utc)
+
+    result = {
+        "stale": True,
+        "age_days": None,
+        "last_refresh": None,
+        "threshold_days": STALENESS_THRESHOLD_DAYS,
+        "message": "",
+    }
+
+    if not queue_file.exists():
+        result["message"] = f"Queue file not found: {queue_file}"
+        return result
+
+    content = queue_file.read_text()
+    # Extract timestamp from footer: "Last refresh: 2026-04-04T20:45:00Z"
+    match = re.search(r"Last refresh:\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?)", content)
+    if not match:
+        result["message"] = "No timestamp found in queue file."
+        return result
+
+    ts_str = match.group(1)
+    if not ts_str.endswith("Z"):
+        ts_str += "Z"
+    last_refresh = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+    age = now - last_refresh
+    age_days = age.total_seconds() / 86400
+
+    result["last_refresh"] = ts_str
+    result["age_days"] = round(age_days, 1)
+    result["stale"] = age_days > STALENESS_THRESHOLD_DAYS
+    if result["stale"]:
+        result["message"] = (
+            f"STALE: Queue is {result['age_days']} days old "
+            f"(threshold: {STALENESS_THRESHOLD_DAYS} days). Run refresh."
+        )
+    else:
+        result["message"] = (
+            f"OK: Queue is {result['age_days']} days old "
+            f"(threshold: {STALENESS_THRESHOLD_DAYS} days)."
+        )
+    return result
+
+
+def parity_check(
+    queue_file: Path | None = None,
+    query_fn: callable | None = None,
+) -> dict:
+    """Compare issue counts in the existing queue file against live GitHub.
+
+    Returns:
+        dict with keys: parity (bool), drifted_agents (list[dict]), message (str).
+    """
+    queue_file = queue_file or QUEUE_FILE
+    if query_fn is None:
+        query_fn = gh_query_issues
+
+    result = {"parity": True, "drifted_agents": [], "message": ""}
+
+    if not queue_file.exists():
+        result["parity"] = False
+        result["message"] = f"Queue file not found: {queue_file}"
+        return result
+
+    content = queue_file.read_text()
+
+    # Parse existing counts from summary table
+    file_counts: dict[str, int] = {}
+    for line in content.splitlines():
+        for agent in AGENTS:
+            if f"**{agent['key']}**" in line:
+                # Last number in the row is the total
+                nums = re.findall(r"\d+", line)
+                if nums:
+                    file_counts[agent["key"]] = int(nums[-1])
+
+    # Query live counts
+    for agent in AGENTS:
+        live_total = 0
+        for pri in PRIORITIES:
+            labels = f"{agent['label']},priority:{pri}"
+            issues = query_fn(labels)
+            live_total += len(issues)
+
+        file_total = file_counts.get(agent["key"], 0)
+        if live_total != file_total:
+            result["parity"] = False
+            result["drifted_agents"].append({
+                "agent": agent["key"],
+                "file_count": file_total,
+                "live_count": live_total,
+                "delta": live_total - file_total,
+            })
+
+    if result["parity"]:
+        result["message"] = "PARITY OK: File counts match live GitHub."
+    else:
+        drifts = ", ".join(
+            f"{d['agent']}({d['file_count']}→{d['live_count']})"
+            for d in result["drifted_agents"]
+        )
+        result["message"] = f"DRIFT DETECTED: {drifts}. Run refresh to fix."
+
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Refresh agent work queue")
     parser.add_argument(
@@ -197,7 +321,27 @@ def main() -> None:
         action="store_true",
         help="Print to stdout instead of writing to file",
     )
+    parser.add_argument(
+        "--check-staleness",
+        action="store_true",
+        help="Check if queue file is stale (>7 days old)",
+    )
+    parser.add_argument(
+        "--parity-check",
+        action="store_true",
+        help="Compare file issue counts against live GitHub",
+    )
     args = parser.parse_args()
+
+    if args.check_staleness:
+        result = check_staleness()
+        print(json.dumps(result, indent=2))
+        sys.exit(0 if not result["stale"] else 1)
+
+    if args.parity_check:
+        result = parity_check()
+        print(json.dumps(result, indent=2))
+        sys.exit(0 if result["parity"] else 1)
 
     content = generate_queue_markdown()
 
