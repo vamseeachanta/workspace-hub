@@ -27,28 +27,60 @@ fi
 
 has_approval() {
   if [[ -d "$APPROVAL_DIR" ]]; then
-    local found
-    found=$(find "$APPROVAL_DIR" -name '*.md' -type f 2>/dev/null | head -1)
-    [[ -n "$found" ]]
+    local markers
+    markers=$(find "$APPROVAL_DIR" -name '*.md' -type f 2>/dev/null)
+    [[ -z "$markers" ]] && return 1
+    # Check each marker — accept if ANY one is legitimate (#2047)
+    while IFS= read -r marker; do
+      [[ -z "$marker" ]] && continue
+      if ! is_self_approved "$marker"; then
+        return 0  # found a legitimate (non-self-approved) marker
+      fi
+    done <<< "$markers"
+    # All markers were self-approved
+    echo "[plan-gate] WARN: All approval markers appear self-created." >&2
+    return 1
   else
     return 1
   fi
 }
 
+is_self_approved() {
+  local marker="$1"
+  # Check 1: marker contains "Worker session" or "Authority: Worker" (auto-created)
+  if grep -qiE '(Worker session|auto-approved|self-approved)' "$marker" 2>/dev/null; then
+    return 0  # is self-approved
+  fi
+  # Check 2: marker was created very recently (within 120s) AND is in git staging
+  # This catches the pattern where an agent creates a marker then immediately writes code
+  local marker_age_s
+  marker_age_s=$(( $(date +%s) - $(stat -c %Y "$marker" 2>/dev/null || echo 0) ))
+  if [[ "$marker_age_s" -lt 120 ]]; then
+    # If the marker is uncommitted (still in working tree), it was likely just created by this session
+    local rel_path="${marker#"$WS"/}"
+    if ! git -C "$WS" log --oneline -1 -- "$rel_path" 2>/dev/null | grep -q .; then
+      return 0  # is self-approved (new file, never committed)
+    fi
+  fi
+  return 1  # not self-approved
+}
+
 is_safe_path() {
   local p="$1"
   local rel="${p##*/}"
+  # Planning artifacts, governance docs, and harness infrastructure — always allowed
   case "$p" in
     */.planning/*|*/docs/plans/*|*/docs/governance/*|*/docs/reports/*|*/docs/standards/*) return 0 ;;
-    */tests/*|*/.claude/*|*/scripts/workflow/*|*/scripts/enforcement/*) return 0 ;;
-    */docs/handoffs/*|*/notes/*|*/knowledge/*) return 0 ;;
+    */docs/handoffs/*|*/notes/*) return 0 ;;
+    */.claude/*|*/.git/hooks/*) return 0 ;;
+    */scripts/workflow/*|*/scripts/enforcement/*) return 0 ;;
   esac
+  # Harness config files — always allowed
   case "$rel" in
     CLAUDE.md|AGENTS.md|MEMORY.md|GEMINI.md) return 0 ;;
   esac
-  case "$p" in
-    *.md) return 0 ;;
-  esac
+  # NOTE: *.md catch-all REMOVED (#2047) — was allowing all implementation to bypass gate
+  # NOTE: tests/*, scripts/ (general), knowledge/* REMOVED (#2047) — too broad
   return 1
 }
 
@@ -59,7 +91,7 @@ if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" || "$TOOL_NAME" == "Mult
 
   echo "[plan-gate] BLOCKED: No plan-approval marker found." >&2
   echo "[plan-gate] Create: .planning/plan-approved/<issue>.md after user approves plan." >&2
-  printf '{"decision":"block","reason":"Plan approval required before implementation. No marker in .planning/plan-approved/. Safe paths (.planning/, docs/, tests/, .claude/) are not blocked."}\n'
+  printf '{"decision":"block","reason":"Plan approval required before implementation. No marker in .planning/plan-approved/. Safe paths: .planning/, docs/plans/, docs/governance/, .claude/, scripts/enforcement/."}\n'
   exit 0
 fi
 

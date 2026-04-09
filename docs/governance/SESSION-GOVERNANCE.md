@@ -151,14 +151,77 @@ sole active ceiling mechanism. The script file remains for reference but is no l
 - Strict review gate env var, YAML enforcement flag, script default
 - Old ceiling hook removal verification
 
-## What Remains (Phases 3-4)
+## What Was Implemented (Phase 3) — 2026-04-09
 
-### Phase 3: Restore Lost Infrastructure
-- Wire consecutive-error tracking into session-governor-check.sh
-- Rebuild `session-start-routine` skill
-- Create `session-corpus-audit` skill
-- Promote `comprehensive-learning` into skills tree
-- Create `cross-review-policy`, `dev-workflow` skills
+### Stronger Planning Workflow Enforcement (#2047)
+
+Triggered by compliance audit (#2046) which found **0% compliance** with the strict planning
+workflow. The audit revealed 5 failure modes: workflow was DOA, governance work self-exempted,
+safe-path exemptions negated enforcement, label workflow was ceremonial, and only Claude Code
+was gated.
+
+#### 3a. Narrowed Safe-Path Exemptions
+
+**File**: `.claude/hooks/plan-approval-gate.sh`
+
+The `is_safe_path()` function was narrowed significantly:
+
+| Before (#2045) | After (#2047) | Rationale |
+|---|---|---|
+| `*.md` (all markdown) | Removed | Was allowing all implementation docs to bypass |
+| `tests/*` | Removed | Test changes should require plan approval |
+| `.claude/*` | Kept | Harness infrastructure, not implementation |
+| `scripts/*` (all) | Only `scripts/workflow/`, `scripts/enforcement/` | General scripts are implementation code |
+| `knowledge/*` | Removed | Knowledge changes should follow planning |
+| `docs/*` (all) | Only `docs/plans/`, `docs/governance/`, `docs/reports/`, `docs/standards/`, `docs/handoffs/` | Targeted governance paths only |
+
+New safe paths added: `.git/hooks/*` (hook maintenance).
+
+#### 3b. Self-Approval Detection
+
+**File**: `.claude/hooks/plan-approval-gate.sh`
+
+New `is_self_approved()` function detects approval markers that were created by the implementing
+agent rather than by a human operator:
+
+- **Content check**: rejects markers containing "Worker session", "auto-approved", "self-approved"
+- **Freshness check**: rejects markers created within 120 seconds that have never been committed to git
+- **Iteration**: `has_approval()` now checks ALL markers in `.planning/plan-approved/`, accepting
+  if ANY one passes the self-approval test (prevents one bad marker from blocking all work)
+
+#### 3c. Pre-Commit Hook Integration
+
+**File**: `.git/hooks/pre-commit`
+
+The plan-approval gate is now wired into the git pre-commit hook via
+`scripts/enforcement/require-plan-approval.sh --strict`. This fires for ALL git commits
+regardless of which tool makes them (Claude Code, Codex CLI, Gemini CLI, manual `git commit`).
+
+**Bypass**: `FORCE_PLAN_GATE=1 git commit` (logged by the script).
+
+This addresses the audit finding that only Claude Code was gated (Failure Mode 5).
+
+#### 3d. Fixed `issue-planning-mode` Skill
+
+**File**: `.claude/skills/coordination/issue-planning-mode/SKILL.md`
+
+The skill was a deprecated stub pointing to nonexistent `gh-work-planning`. It has been
+replaced with a functional skill containing the full 5-step planning workflow:
+1. Create plan file from template
+2. Apply `status:plan-review` label
+3. Get adversarial review
+4. Get user approval (creates marker)
+5. Implement (gate enforced)
+
+### Remaining Gaps (Phase 3)
+
+| Gap | Status | Resolution Path |
+|-----|--------|-----------------|
+| Consecutive error tracking | Not yet wired | Wire into session-governor-check.sh |
+| GitHub label checking in hooks | Not implemented | Would require `gh` API calls in hooks (slow) |
+| Cross-agent memory bridge | Partial | See `compound-extended` skill |
+
+## What Remains (Phase 4)
 
 ### Phase 4: Hermes Orchestration
 - Hermes manages gate transitions and hard-stop enforcement
