@@ -250,15 +250,17 @@ main() {
   echo ""
   echo "[review-gate] To bypass: SKIP_REVIEW_GATE=1 git push"
 
-  # Strict mode blocks the push
-  if [[ "${REVIEW_GATE_STRICT:-}" == "1" ]]; then
+  # Strict mode (default as of 2026-04-09, #1839) blocks the push
+  # Override with REVIEW_GATE_STRICT=0 to revert to warn mode
+  if [[ "${REVIEW_GATE_STRICT:-1}" != "0" ]]; then
     echo ""
-    echo "[review-gate] BLOCKED: REVIEW_GATE_STRICT=1 — push rejected."
+    echo "[review-gate] BLOCKED: strict mode (default) — push rejected."
+    echo "[review-gate] Override: REVIEW_GATE_STRICT=0 git push"
     log_latency "blocked"
     exit 1
   fi
 
-  # Default warn mode — allow push
+  # Explicit warn mode — allow push (REVIEW_GATE_STRICT=0)
   log_latency "warn"
   exit 0
 }

@@ -68,6 +68,6 @@ checkpoints:
     stage: pre-push
     type: auto-gate
     description: >
-      Review gate must pass before pushing to remote. Currently defaults
-      to warning mode — this config documents the target state (strict).
-    enforced: false  # warning mode until review gate migration complete
+      Review gate must pass before pushing to remote. Strict mode enabled
+      by default via REVIEW_GATE_STRICT=1 in .claude/settings.json env.
+    enforced: true  # strict mode as of 2026-04-09 (#1839)

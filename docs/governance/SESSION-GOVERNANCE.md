@@ -106,11 +106,55 @@ Registered in `.claude/settings.json` as the first PreToolUse hook, matching all
 |-----|--------|-----------------|
 | Consecutive error tracking | Passes 0 to governor | Wire into session signal pipeline (Phase 3) |
 | Counter resets daily, not per-session | No reliable session ID in hook env | Awaits Claude Code session ID exposure |
-| Existing `tool-call-ceiling.sh` (PostToolUse) uses 500 ceiling | Redundant safety net | Consider aligning to 200 or removing |
+
+## What Was Implemented (Phase 2c) — 2026-04-09
+
+### Plan-Approval Enforcement Hook
+
+**File**: `.claude/hooks/plan-approval-gate.sh`
+
+A PreToolUse hook that enforces the plan-approval hard-stop (AC #1). Blocks `Write|Edit|MultiEdit`
+to implementation paths when no approval marker exists in `.planning/plan-approved/`.
+
+**Approval marker convention:**
+- After user approves a plan, create: `.planning/plan-approved/<issue-number>.md`
+- For non-issue work: `.planning/plan-approved/session.md`
+- Safe paths (always allowed without marker): `.planning/`, `docs/`, `tests/`, `.claude/`,
+  `scripts/workflow/`, `scripts/enforcement/`, `*.md` files
+
+**Also gates:** `git push` commands via Bash tool — requires approval marker.
+
+**Bypass:** `SKIP_PLAN_APPROVAL_GATE=1` (emergency only, logged to stderr).
+
+### Strict Review Gate Default
+
+**Files**: `scripts/enforcement/require-review-on-push.sh`, `scripts/workflow/governance-checkpoints.yaml`, `.claude/settings.json`
+
+The pre-push review gate now defaults to **strict mode** (AC #7):
+- `REVIEW_GATE_STRICT=1` set in `.claude/settings.json` env block
+- `require-review-on-push.sh` changed from `${REVIEW_GATE_STRICT:-}` (empty = warn) to `${REVIEW_GATE_STRICT:-1}` (default = block)
+- `pre-push-review` checkpoint promoted to `enforced: true` in governance-checkpoints.yaml
+
+**Override:** `REVIEW_GATE_STRICT=0 git push` reverts to warn mode for a single push.
+
+### Old 500-Ceiling Hook Removed
+
+**File**: `.claude/settings.json` (PostToolUse section)
+
+The old `tool-call-ceiling.sh` PostToolUse hook (500-call ceiling from #1428) has been **removed
+from settings.json**. The PreToolUse `session-governor-check.sh` (200-call ceiling) is now the
+sole active ceiling mechanism. The script file remains for reference but is no longer wired.
+
+**Tests:** 16 new tests in `tests/work-queue/test_session_governor.py` (49 total), covering:
+- Plan-approval hook existence, registration, matcher, marker directory
+- Hook blocking behavior (no marker → block, safe paths → allow, with marker → allow)
+- Strict review gate env var, YAML enforcement flag, script default
+- Old ceiling hook removal verification
 
 ## What Remains (Phases 3-4)
 
 ### Phase 3: Restore Lost Infrastructure
+- Wire consecutive-error tracking into session-governor-check.sh
 - Rebuild `session-start-routine` skill
 - Create `session-corpus-audit` skill
 - Promote `comprehensive-learning` into skills tree

@@ -2,7 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 90,
   "env": {
-    "MAX_TEAMMATES": "10"
+    "MAX_TEAMMATES": "10",
+    "REVIEW_GATE_STRICT": "1"
   },
   "permissions": {
     "defaultMode": "auto"
@@ -16,6 +17,16 @@
             "type": "command",
             "command": "bash .claude/hooks/session-governor-check.sh",
             "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/plan-approval-gate.sh",
+            "timeout": 5
           }
         ]
       },
@@ -108,16 +119,6 @@
             "type": "command",
             "command": "node .claude/hooks/gsd-context-monitor.js",
             "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/tool-call-ceiling.sh",
-            "timeout": 5
           }
         ]
       },
@@ -249,12 +250,12 @@
   },
   "spinnerTipsOverride": {
     "tips": [
-      "Run /context to check your budget \u2014 /compact at 50%",
+      "Run /context to check your budget — /compact at 50%",
       "Run /simplify after changes to catch duplication",
       "Use /effort low for quick lookups, /effort high for planning",
       "Say 'use subagents' to offload heavy work from main context",
       "Run /diff to review your changes before committing",
-      "Use /branch before a risky approach \u2014 explore freely",
+      "Use /branch before a risky approach — explore freely",
       "Try /security-review before pushing a PR",
       "uv run scripts/productivity/daily-learning.py for today's tips"
     ],
