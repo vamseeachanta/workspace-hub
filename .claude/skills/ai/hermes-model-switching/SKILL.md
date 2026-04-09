@@ -18,33 +18,36 @@ related_skills: [agent-usage-optimizer, overnight-parallel-agent-prompts, multi-
 
 ## Quick Switch (Shell Aliases)
 
-Installed in `~/.bash_aliases` (2026-04-04).
+Installed in `~/.bash_aliases` (updated 2026-04-09).
 
 ```bash
-h              # hermes chat (default = Claude Opus)
-h-opus         # claude-opus-4-6 via Anthropic
-h-sonnet       # claude-sonnet-4-6 via Anthropic
-h-gpt          # gpt-5.4 via OpenAI (frontier agentic coding model)
+h              # hermes chat (default = config-driven; keep Codex-first)
+h-codex        # gpt-5.4 via openai-codex
+h-gpt          # same as h-codex
+h-mini         # gpt-5.4-mini via openai-codex
+h-batch        # gpt-5.2 via openai-codex
+
+h-opus         # claude-opus-4-6 via Anthropic (explicit use)
+h-sonnet       # claude-sonnet-4-6 via Anthropic (explicit use)
+
+h-gemini       # gemini-2.5-pro via Google AI Studio direct (explicit use)
+h-gemini-flash # gemini-2.5-flash via Google AI Studio direct (explicit use)
+h-router-gemini # google/gemini-2.5-pro via OpenRouter (explicit use)
+
+h-router       # qwen/qwen3.6-plus:free via OpenRouter (explicit use)
+h-qwen         # same as h-router
+h-nemotron     # nvidia/nemotron-3-super-120b-a12b:free via OpenRouter
+
+h-copilot      # claude-sonnet-4.6 via Copilot (explicit use)
+h-copilot-gemini # gemini-2.5-pro via Copilot (explicit use)
+h-copilot-gpt  # gpt-5.4 via Copilot (explicit use)
+
 h-o3           # o3 via OpenAI
-h-copilot      # claude-sonnet-4.6 via Copilot ($0 extra)
-h-copilot-gemini # gemini-2.5-pro via Copilot ($0 extra)
-h-copilot-gpt  # gpt-5.4 via Copilot ($0 extra)
-h-router       # qwen/qwen3.6-plus via OpenRouter (PAID — :free suffix deprecated Apr 2026)
-h-qwen         # same as h-router
-h-nemotron     # nvidia/nemotron-3-super-120b-a12b:free via OpenRouter (heavy reasoning, FREE)
-# NOTE: DeepSeek API key (DEEPSEEK_API_KEY) is exhausted 402 — pay-per-token, ran out of credits
-h-gemini       # gemini-2.5-pro via Google AI Studio direct (GEMINI_API_KEY, burns $20/mo sub)
-h-gemini-flash # gemini-2.5-flash via Google AI Studio direct (GEMINI_API_KEY)
-h-router       # qwen/qwen3.6-plus:free via OpenRouter (FREE, no credits needed)
-h-qwen         # same as h-router
-h-deepseek-reason # deepseek-reasoner via DeepSeek (free tier)
-h-gemini       # gemini-2.5-pro via Google AI Studio direct (GEMINI_API_KEY, burns $20/mo sub)
-h-gemini-flash # gemini-2.5-flash via Google AI Studio direct (GEMINI_API_KEY)
-h-router       # qwen/qwen3.6-plus:free via OpenRouter (FREE — no credits needed)
-h-qwen         # same as h-router
-h-router-gemini # google/gemini-2.5-pro via OpenRouter (requires credits in account)
-h-which        # show current model config
+h-which        # show current model block from ~/.hermes/config.yaml
+h-quick        # show quick_commands block from ~/.hermes/config.yaml
 ```
+
+Policy note: Gemini and Copilot remain available, but they are explicit-use only and should not be described or treated as automatic fallback/default routing.
 
 **NOTE**: `h-gemini` and `h-gemini-flash` aliases exist but use `--provider google` which is NOT a valid Hermes CLI provider. Use `h-copilot-gemini` for Gemini via Copilot quota, OR use the direct AI Studio path below to route through your $20/mo Gemini sub instead.
 
@@ -87,7 +90,7 @@ Valid `--provider` values: `auto, openrouter, nous, openai-codex, copilot-acp, c
 
 **DeepSeek was missing** from the hardcoded argparse choices in `hermes_cli/main.py` despite being in the auth registry. Patched on 2026-04-04 (line ~4041). If Hermes updates overwrite this, re-patch or use `/model deepseek:deepseek-chat` in-session instead.
 
-**Google/Gemini is NOT a valid CLI provider.** Use `copilot` provider with `gemini-2.5-pro` model instead.
+Gemini is now a valid Hermes CLI provider (`hermes chat --provider gemini ...`). However, observed on 2026-04-09 that direct Gemini calls returned HTTP 429 free-tier quota exhaustion (`generate_content_free_tier_requests`) and Hermes then auto-fell back to Copilot, which was also exhausted. So Gemini should not be used as Hermes automatic cheap/default routing until quota behavior is stabilized.
 
 ## Horses-for-Courses Task Routing
 
@@ -125,10 +128,9 @@ When asked about utilization, check these sources in order:
 
 **Critical gap**: No automated Codex or Gemini spend tracking. No cron job refreshes any quota data. See #1855.
 
-## Hermes Config (updated 2026-04-08 — Codex GPT-5.4 as default)
+## Hermes Config (updated 2026-04-09 — Codex-first, no automatic Gemini/Copilot routing)
 
-REASON: copilot (claude-sonnet-4.6) kept falling back to codex mid-session, breaking
-context and wasting time. Codex GPT-5.4 is now primary: 2 OAuth creds, round_robin, stable.
+REASON: repeated Gemini 429 quota exhaustion and Copilot fallback exhaustion caused retry waste and stale-session confusion. Current baseline is Codex-first with smart routing disabled and automatic fallback disabled.
 
 ### Available Codex Models (as of 2026-04-08)
 | Model | Description | Use Case |
@@ -142,30 +144,42 @@ context and wasting time. Codex GPT-5.4 is now primary: 2 OAuth creds, round_rob
 model:
   default: gpt-5.4
   provider: openai-codex
+  base_url: https://chatgpt.com/backend-api/codex
 fallback_providers: []
-fallback_model:
-  provider: copilot
-  model: claude-sonnet-4.6
+fallback_model: {}
 credential_pool_strategies:
   openai-codex: round_robin
   anthropic: fallback
 smart_model_routing:
-  enabled: true
+  enabled: false
   cheap_model:
-    provider: gemini
-    model: gemini-2.5-flash
+    provider: openai-codex
+    model: gpt-5.4-mini
+quick_commands:
+  research: { provider: openai-codex, model: gpt-5.4-mini }
+  code:     { provider: openai-codex, model: gpt-5.4 }
+  review:   { provider: openai-codex, model: gpt-5.4 }
+  quick:    { provider: openai-codex, model: gpt-5.4-mini }
+  data:     { provider: openai-codex, model: gpt-5.4-mini }
+  batch:    { provider: openai-codex, model: gpt-5.2 }
 delegation:
   model: gpt-5.4
   provider: openai-codex
 ```
 
-### Routing Tiers (fallback chain — as of 2026-04-08)
+### Routing Tiers (clean baseline — as of 2026-04-09)
 ```
-DEFAULT:  openai-codex/gpt-5.4     (2 OAuth creds, round_robin — primary workhorse)
-Fallback: copilot/claude-sonnet-4.6 (if codex exhausted)
-Cheap:    gemini/gemini-2.5-flash   (smart_model_routing short queries)
-delegation/subagents -> openai-codex/gpt-5.4 (consistent with default)
+DEFAULT:   openai-codex/gpt-5.4
+QUICK:     openai-codex/gpt-5.4-mini
+BATCH:     openai-codex/gpt-5.2
+FALLBACK:  disabled
+SMART ROUTING: disabled
 ```
+
+Important runtime nuance:
+- config edits do NOT repair an already-running session whose primary runtime was originally Gemini/Copilot
+- `run_agent.py` restores the original primary runtime at the start of each new turn in long-lived sessions
+- if logs show `Primary runtime restored for new turn: gemini...`, restart the long-lived Hermes process/session; config alone is not enough
 
 To use Claude explicitly: h-opus, h-sonnet, h-copilot
 To use Gemini explicitly: h-copilot-gemini, h-gemini, h-router-gemini
@@ -376,6 +390,30 @@ h-deepseek-reason='hermes chat --provider deepseek -m deepseek-reasoner'
 
 **Copilot is the best multi-model hedge**: $9/mo sub gives Claude+Gemini+GPT via GitHub auth, independent of Anthropic OAuth billing. GH_TOKEN auto-generated from `gh auth token`.
 
+## Launch Verification Pattern for Codex GPT-5.4
+
+When a session says the config is fixed, do not stop at `codex --version` or TOML inspection. Verify an actual model invocation.
+
+Use this exact smoke test:
+```bash
+codex exec --skip-git-repo-check --sandbox read-only -m gpt-5.4 \
+  'Reply with exactly CODEX_GPT54_OK and nothing else.'
+```
+
+Expected success signals:
+- output shows `model: gpt-5.4`
+- a session id is created
+- final assistant output is exactly `CODEX_GPT54_OK`
+
+Observed on 2026-04-09:
+- config loaded cleanly from `~/.codex/config.toml`
+- invocation succeeded
+- Codex printed `provider: openai` in the exec banner even though the subscription workflow is the Codex CLI path
+
+Important CLI gotcha:
+- `codex auth status` is NOT a valid subcommand in `codex-cli 0.118.0`
+- use `codex --help`, `codex login --help`, and especially the `codex exec ...` smoke test above instead of trying `status`
+
 ## Error Log Monitoring
 
 Check for billing/auth issues: `grep -i '401\|403\|429\|billing\|extra.usage\|rate.limit' ~/.hermes/logs/errors.log`
@@ -388,12 +426,18 @@ Known error patterns:
 
 ## Pitfalls
 
-- GEMINI_API_KEY in ~/.hermes/.env is NOT auto-detected by Hermes — no native google provider exists. Must use `--provider openrouter --api-key $GEMINI_API_KEY --base-url https://generativelanguage.googleapis.com/v1beta/openai/` to use the $20/mo Gemini sub directly. Running `hermes auth list` will never show a google/gemini entry even with key set.
+- GEMINI_API_KEY in ~/.hermes/.env is used only when you explicitly route to Gemini. Do NOT rely on Gemini as cheap/default automatic routing.
+- Validate `~/.hermes/.env` for bad overrides like `GEMINI_BASE_URL=h-which`. A malformed env base URL can leak into active model state and then into `config.yaml`.
+- As of 2026-04-09, Hermes was patched so `_model_flow_api_key_provider()` ignores invalid existing env base URLs and invalid typed base URL overrides unless they start with `http://` or `https://`.
+- After fixing `.env`, also inspect `~/.hermes/auth.json` credential_pool entries for stale provider `base_url` residue. We observed Gemini still carrying `base_url: h-which` in auth metadata even after `.env` was corrected.
+- If reviewing quota-hardening work, do not mistake the presence of `hermes_cli/codex_quota.py` for a complete solution. The critical check is whether `update_codex_credential_usage(...)` is actually called from live runtime paths. If it is not wired, `/quota` and startup warnings are mostly structural/stale.
+- When reviewing provider health summaries, verify they reuse the real provider credential resolution paths. A simple env-var check can miss live configs (example observed: Copilot health checking only `GITHUB_TOKEN` while the actual machine used `GH_TOKEN`).
 - OpenRouter key needs credits loaded to run paid models (Gemini, GPT, Claude via OR). Free-tier models like qwen/qwen3.6-plus:free work with zero balance.
-- h-gemini uses Google AI Studio endpoint directly (not OpenRouter credits) — free under $20/mo Gemini sub.
-- smart_model_routing cheap_model (copilot/gemini-2.5-pro) intercepts short -q queries — be aware it may route short prompts to Copilot even when specifying openrouter provider.
+- h-gemini uses Google AI Studio endpoint directly (not OpenRouter credits) — explicit use only under the Gemini subscription.
+- smart_model_routing should remain disabled on this setup. Re-enabling it with Gemini/Copilot cheap routes reintroduces the exact quota/fallback failure mode that was cleaned up.
 - Don't forget `source ~/.bash_aliases` in new terminals for aliases to take effect
-- Gemini/Google is NOT a native Hermes CLI provider at all — use `--provider copilot -m gemini-2.5-pro` instead
+- `hermes model` / command-window provider selection can prompt for `Base URL [...]`. If a nonsense token appears there, leave it blank; Hermes now ignores invalid values, but the safest operator habit is still blank unless you intend an advanced override.
+- If you see a `128k context` message for Codex, treat it as likely generic metadata fallback, not proof of the real Codex endpoint limit.
 - `deepseek` provider was missing from CLI argparse choices — patched in main.py; may need re-patching after Hermes updates
 - Running `--provider nous` without `-m` sends the default model (e.g. gpt-5.4) to Nous gateway, burning Nous credits — always specify both provider AND model
 - `hermes --h-deepseek` does NOT work — aliases are shell commands, type `h-deepseek` directly (no `hermes` prefix)

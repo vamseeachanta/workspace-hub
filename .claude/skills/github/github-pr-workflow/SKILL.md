@@ -14,6 +14,20 @@ metadata:
 
 Complete guide for managing the PR lifecycle. Each section shows the `gh` way first, then the `git` + `curl` fallback for machines without `gh`.
 
+## Routing note
+
+This skill is valid for PR-centric repositories, but it is NOT the default execution route for issue-first workflows governed by plan gating and direct issue closeout.
+There, the normal path is direct issue execution after approval, not branch-first PR flow.
+
+Use this skill only when one of these is true:
+- the user explicitly requests a PR workflow,
+- the repo/session is multi-session enough to require branch isolation, or
+- repository policy overrides the default direct-commit execution rule.
+
+Otherwise prefer:
+- `gh-work-planning` for planning
+- `gh-work-execution` for execution
+
 ## Prerequisites
 
 - Authenticated with GitHub (see `github-auth` skill)

@@ -21,9 +21,10 @@ related_skills: [multi-machine-ai-readiness-and-issue-triage, writing-plans, iss
    - **Important**: Output can be 80KB+ for large repos. Save to file first, then process with a Python heredoc via `terminal("python3 << 'PYEOF' ... PYEOF")`. Do NOT try to parse inside `execute_code` — the `read_file` line-join and terminal output cap both corrupt large JSON.
 2. Categorize by label: priority (high/medium/low), category (engineering, doc-intel, automation), domain, machine
 3. **Review previous batch results first**: Check `docs/plans/overnight-prompts/` for prior runs, read session-handoff docs, and `git log --oneline -20` to understand what was already completed. Avoid assigning work that was done in the last batch.
-4. Group into non-overlapping workstreams by file/directory ownership
-5. Assign workstreams to terminals by provider strength (see allocation table)
-6. Verify zero file overlap before writing prompts
+4. For repos with enforced plan gates (for example workspace-hub), check whether target issues are actually implementation-ready (`status:plan-approved` or repo-equivalent). If none are ready, either (a) stop and surface the gating gap, or (b) generate a clearly-labeled "prepared execution pack" that is NOT yet hard-stop compliant until labels/status are updated.
+5. Group into non-overlapping workstreams by file/directory ownership
+6. Assign workstreams to terminals by provider strength (see allocation table)
+7. Verify zero file overlap before writing prompts
 
 ## Selection Criteria for Overnight Tasks
 
@@ -46,6 +47,7 @@ Avoid overnight:
 We are in /path/to/repo. Execute these N tasks in order.
 Use uv run for all Python. Commit to main and push after each.
 Do not branch. TDD: write tests before implementation.
+Do NOT ask the user any questions.
 
 TASK 1: [Title] (GH issue #NNN)
 [Full self-contained description with exact file paths]
@@ -54,6 +56,14 @@ TASK 1: [Title] (GH issue #NNN)
 
 TASK 2: [Title] (GH issue #NNN)
 [...]
+
+IMPLEMENTATION CROSS-REVIEW (mandatory):
+- After the implementation commit is pushed, capture the committed diff (`git show --stat --patch HEAD`)
+- Write a self-contained adversarial review prompt that includes issue context, changed files, verification commands/results, and the exact diff
+- Run Codex review on the committed diff for EVERY implementation prompt
+- For architecture-heavy / policy-heavy / cross-module streams, also run Gemini review if available
+- If review returns MAJOR or clear HIGH-severity findings, fix once, recommit, push, and rerun the reviewer(s) that found them
+- Post a brief GH issue comment summarizing implementation, verification, and final review verdict(s)
 ```
 
 ## Provider Allocation Pattern
@@ -150,6 +160,7 @@ Add a table mapping every issue to its terminal for quick morning triage:
 - Each task: 30-90 minutes of agent work
 - Total per terminal: 2-4 hours max
 - Front-load the most important task in each terminal
+- If Claude quota is only partially available (for example ~50% remaining for the next 24h), prefer bounded 60-90 minute streams over ambitious all-night prompts. Make each terminal useful even if it stops after one implementation+review cycle.
 
 ## Common Task Types That Work Well Overnight
 

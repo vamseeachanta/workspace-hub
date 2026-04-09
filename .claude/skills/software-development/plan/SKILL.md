@@ -14,6 +14,12 @@ metadata:
 
 Use this skill when the user wants a plan instead of execution.
 
+## Workspace-hub routing note
+
+This is a generic local planning skill.
+Do NOT use it as the primary planning route for GitHub issue work in workspace-hub style repos.
+For GitHub issue planning there, prefer `issue-planning-mode`, which writes to `docs/plans/`, performs adversarial review, updates GitHub labels/comments, and enforces the approval gate.
+
 ## Core behavior
 
 For this turn, you are planning only.
