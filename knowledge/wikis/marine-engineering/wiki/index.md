@@ -1,8 +1,8 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-07
-page_count: 19164
+last_updated: 2026-04-09
+page_count: 19170
 source_count: 19149
 ---
 
@@ -14,13 +14,19 @@ source_count: 19149
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
+| [[AI in DWOP]](entities/ai-dwop.md) | GenAI for automated well planning — DWOP process automation | 2026-04-09 |
 | [[Anode]](entities/anode.md) | Sacrificial anodes — Al-Zn-In alloys for offshore CP design | 2026-04-07 |
+| [[CFD for Offshore]](entities/cfd-offshore.md) | CFD — scour, wave loading, Morison, hydrodynamics | 2026-04-09 |
 | [[Compressor]](entities/compressor.md) | Gas compression — centrifugal, reciprocating, screw types | 2026-04-07 |
+| [[Energy Economics]](entities/energy-economics.md) | Field development economics — NPV, Arps decline, fiscal regimes | 2026-04-09 |
+| [[FEA Structural Analysis]](entities/fea-structural-analysis.md) | FEA — meshing, boundary conditions, convergence, fatigue | 2026-04-09 |
 | [[Flange]](entities/flange.md) | Piping connector — WN, SO, blind, SW, threaded types | 2026-04-07 |
 | [[Float Collar]](entities/float-collar.md) | Cementing tool — check valve, aluminum construction, PDC drill-out | 2026-04-07 |
 | [[Float Shoe]](entities/float-shoe.md) | Bottom casing tool — guide + valve, rounded/wedge nose | 2026-04-07 |
 | [[Gasket]](entities/gasket.md) | Flange sealing element — RTJ, spiral wound, sheet types | 2026-04-07 |
 | [[LNG Carrier Mooring]](entities/lng-carrier-mooring.md) | LNG terminal mooring — KGP, South Hook, Prelude FLNG | 2026-04-07 |
+| [[OrcaFlex VIV Analysis]](entities/orcaflex-viv-analysis.md) | OrcaFlex VIV — riser fatigue, wake interference, S-N curves | 2026-04-09 |
+| [[Pipeline Integrity]](entities/pipeline-integrity.md) | Pipeline integrity — DNV RP-F101, API 579 fitness-for-service | 2026-04-09 |
 | [[Separator]](entities/separator.md) | Production separators — 2-phase and 3-phase vessel design | 2026-04-07 |
 
 ## Concepts
@@ -52,10 +58,16 @@ _No query outputs filed yet._
 ## Topics Covered
 
 - **Cathodic Protection**: anode sizing, current density, coating breakdown, galvanic vs ICCP
-- **Process Systems**: separators, compressors, process safety, sour service
-- **Well Equipment**: float collars, float shoes, well cementing
-- **Piping**: flanges, gaskets, fittings, pressure ratings
+- **CFD & Hydrodynamics**: scour, wave loading, Morison equation, turbulence modelling
+- **Drilling & AI**: DWOP process, GenAI automation, well planning
+- **Energy Economics**: NPV, Arps decline, fiscal regimes, Monte Carlo uncertainty
+- **FEA & Structural**: meshing, convergence, boundary conditions, fatigue hot-spot stress
 - **Mooring Engineering**: long-period swell resonance, HMPE failures, LNG terminal incidents
+- **Pipeline Integrity**: DNV RP-F101, API 579, corrosion assessment, fitness-for-service
+- **Piping**: flanges, gaskets, fittings, pressure ratings
+- **Process Systems**: separators, compressors, process safety, sour service
+- **VIV & Riser Fatigue**: OrcaFlex VIV, wake interference, S-N curves, design fatigue factors
+- **Well Equipment**: float collars, float shoes, well cementing
 | [[org.pdf]](sources/org.md) |  | 2026-04-07 |
 | [[pc.pdf]](sources/pc.md) |  | 2026-04-07 |
 | [[spon.pdf]](sources/spon.md) |  | 2026-04-07 |

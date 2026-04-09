@@ -51,5 +51,8 @@ Uses rectifiers to apply external DC current via inert anodes (mixed metal oxide
 
 - **Standard**: [DNV-RP-B401: Cathodic Protection Design](../sources/dnv-rp-b401-cathodic-protection.md)
 - **Related entity**: [[anode]]
+- **Related entity**: [[pipeline-integrity]] (CP design for pipeline corrosion mitigation)
 - **Related concept**: [[corrosion-control]]
 - **Related concept**: [[coating-breakdown]]
+- **Cross-wiki (engineering)**: [Cathodic Protection Design](../../../engineering/wiki/concepts/cathodic-protection-design.md) — detailed CP design with anode sizing equations, material selection, ICCP vs sacrificial comparison, and CIPS verification
+- **Career seed**: CAREER-engineering-cathodic-protection (DNV RP-F103, ABS rules, anode mass sizing)
