@@ -4,8 +4,8 @@
 # Called from .git/hooks/pre-push with LOCAL_OID and REMOTE_OID args
 #
 # Modes:
-#   Default (WARN):        prints warning for unreviewed commits, exits 0
-#   REVIEW_GATE_STRICT=1:  blocks push (exit 1) if unreviewed commits exist
+#   Default (STRICT):      blocks push (exit 1) if unreviewed commits exist
+#   REVIEW_GATE_STRICT=0:  prints warning for unreviewed commits, exits 0
 #   SKIP_REVIEW_GATE=1:    logs bypass and exits 0
 
 set -euo pipefail
