@@ -616,3 +616,119 @@ class TestOldCeilingRemoved:
             for h in entry.get("hooks", [])
         )
         assert found, "session-governor-check.sh must remain in PreToolUse"
+
+
+# ── Error loop breaker tests (#2056) ───────────────────────────────
+
+
+class TestErrorLoopBreaker:
+    """Tests for the error-loop-tracker.sh PostToolUse hook (#2056).
+
+    Verifies:
+    - Hook script exists and is executable
+    - Hook is registered in settings.json PostToolUse
+    - Hook matcher covers all tool types
+    - State files are created in session-governor directory
+    - Governor correctly evaluates consecutive error counts
+    - PreToolUse hook reads error count from state file
+    - Error loop at threshold triggers STOP verdict
+    """
+
+    def test_hook_exists_and_executable(self):
+        """error-loop-tracker.sh must exist and be executable."""
+        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "error-loop-tracker.sh")
+        assert os.path.isfile(hook_path), f"Hook not found: {hook_path}"
+        assert os.access(hook_path, os.X_OK), f"Hook not executable: {hook_path}"
+
+    def test_hook_registered_in_post_tool_use(self):
+        """error-loop-tracker.sh must be in PostToolUse hooks."""
+        import json
+        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
+        with open(settings_path) as f:
+            settings = json.load(f)
+        post_tool_hooks = settings.get("hooks", {}).get("PostToolUse", [])
+        found = any(
+            "error-loop-tracker.sh" in h.get("command", "")
+            for entry in post_tool_hooks
+            for h in entry.get("hooks", [])
+        )
+        assert found, "error-loop-tracker.sh not found in PostToolUse hooks"
+
+    def test_hook_matches_all_tools(self):
+        """Hook matcher must cover all major tool types."""
+        import json
+        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
+        with open(settings_path) as f:
+            settings = json.load(f)
+        post_tool_hooks = settings.get("hooks", {}).get("PostToolUse", [])
+        for entry in post_tool_hooks:
+            for h in entry.get("hooks", []):
+                if "error-loop-tracker.sh" in h.get("command", ""):
+                    matcher = entry.get("matcher", "")
+                    assert "Bash" in matcher, "Matcher must include Bash"
+                    assert "Write" in matcher, "Matcher must include Write"
+                    assert "Edit" in matcher, "Matcher must include Edit"
+                    assert "Read" in matcher, "Matcher must include Read"
+                    return
+        pytest.fail("error-loop-tracker.sh entry not found")
+
+    def test_state_directory_exists(self):
+        """The session-governor state directory must exist."""
+        state_dir = os.path.join(REPO_ROOT, ".claude", "state", "session-governor")
+        assert os.path.isdir(state_dir), f"Missing: {state_dir}"
+
+    def test_governor_error_loop_stop_at_3(self, runtime_config: CheckpointConfig):
+        """Governor returns STOP when consecutive errors reach 3 (threshold)."""
+        results = check_session_limits(
+            runtime_config, tool_call_count=50, consecutive_error_count=3
+        )
+        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
+        assert el.verdict == SessionVerdict.STOP
+
+    def test_governor_error_loop_continue_at_1(self, runtime_config: CheckpointConfig):
+        """Governor returns CONTINUE when consecutive errors are 1 (below 80% of 3)."""
+        results = check_session_limits(
+            runtime_config, tool_call_count=50, consecutive_error_count=1
+        )
+        el = next(r for r in results if r.checkpoint_id == "error-loop-breaker")
+        assert el.verdict == SessionVerdict.CONTINUE
+
+    def test_governor_error_loop_wins_over_tool_calls(self, runtime_config: CheckpointConfig):
+        """Error loop STOP takes priority even if tool calls are low."""
+        results = check_session_limits(
+            runtime_config, tool_call_count=10, consecutive_error_count=3
+        )
+        verdict = session_limits_verdict(results)
+        assert verdict == SessionVerdict.STOP
+
+    def test_pretooluse_hook_reads_error_count(self):
+        """session-governor-check.sh must read consecutive-error-count, not hardcode 0."""
+        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "session-governor-check.sh")
+        with open(hook_path) as f:
+            content = f.read()
+        # Must read from the state file, not pass hardcoded 0
+        assert "consecutive-error-count" in content, (
+            "Hook must read from consecutive-error-count state file"
+        )
+        assert '--consecutive-errors "$CONSEC_ERRORS"' in content, (
+            "Hook must pass $CONSEC_ERRORS to governor, not hardcoded 0"
+        )
+
+    def test_pretooluse_hook_no_hardcoded_zero(self):
+        """session-governor-check.sh must NOT hardcode --consecutive-errors 0."""
+        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "session-governor-check.sh")
+        with open(hook_path) as f:
+            content = f.read()
+        assert "--consecutive-errors 0" not in content, (
+            "Hook must not hardcode --consecutive-errors 0 (should use state file)"
+        )
+
+    def test_error_tracker_resets_on_success(self):
+        """error-loop-tracker.sh must reset counter on successful tool call."""
+        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "error-loop-tracker.sh")
+        with open(hook_path) as f:
+            content = f.read()
+        # Hook must write 0 to error count on non-error
+        assert '"0" > "$ERROR_COUNT_FILE"' in content or "'0' > " in content, (
+            "Hook must reset error count to 0 on successful tool call"
+        )

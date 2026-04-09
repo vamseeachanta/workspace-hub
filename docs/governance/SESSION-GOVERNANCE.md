@@ -100,11 +100,18 @@ Registered in `.claude/settings.json` as the first PreToolUse hook, matching all
 - Fast-path threshold alignment with governance config
 - CLI exit code verification via subprocess
 
+### Error Loop Tracking (wired in #2056)
+
+The consecutive error tracking gap from Phase 2b has been resolved. A PostToolUse hook
+(`error-loop-tracker.sh`) now tracks consecutive identical errors, and the PreToolUse
+hook (`session-governor-check.sh`) reads the count and passes it to the governor.
+
+See Phase 2d below for full details.
+
 ### Known Gaps (documented, not blocked)
 
 | Gap | Status | Resolution Path |
 |-----|--------|-----------------|
-| Consecutive error tracking | Passes 0 to governor | Wire into session signal pipeline (Phase 3) |
 | Counter resets daily, not per-session | No reliable session ID in hook env | Awaits Claude Code session ID exposure |
 
 ## What Was Implemented (Phase 2c) — 2026-04-09
@@ -150,6 +157,68 @@ sole active ceiling mechanism. The script file remains for reference but is no l
 - Hook blocking behavior (no marker → block, safe paths → allow, with marker → allow)
 - Strict review gate env var, YAML enforcement flag, script default
 - Old ceiling hook removal verification
+
+## What Was Implemented (Phase 2d) — 2026-04-09
+
+### Error Loop Breaker: Consecutive Error Tracking (#2056)
+
+Closes the last documented gap from Phase 2b: consecutive error tracking now
+passes real values to the session governor instead of hardcoded 0.
+
+#### PostToolUse Hook: `error-loop-tracker.sh`
+
+**File**: `.claude/hooks/error-loop-tracker.sh`
+
+A PostToolUse hook that detects errors in tool responses and tracks consecutive
+identical errors. Registered in `.claude/settings.json` as the first PostToolUse
+hook, matching all tool types.
+
+**Error Detection** (multi-layer):
+1. `tool_response.is_error` flag (most reliable, when available)
+2. `tool_response.exit_code` non-zero (Bash tool failures)
+3. Content pattern matching for common error signatures (Traceback, SyntaxError, etc.)
+
+**Deduplication**: Errors are hashed (md5 of tool name + error content preview).
+Only consecutive *identical* errors increment the counter. A different error or a
+successful tool call resets the counter to 0.
+
+**State files** (in `.claude/state/session-governor/`):
+- `consecutive-error-count` — current consecutive identical error count
+- `last-error-hash` — md5 hash of the last error signature
+- `error-date` — date guard for daily reset
+
+**Protocol**: Non-blocking PostToolUse hook. Never emits stdout JSON (no decision
+influence). Diagnostic output goes to stderr only.
+
+#### PreToolUse Integration
+
+**File**: `.claude/hooks/session-governor-check.sh`
+
+Updated to read `consecutive-error-count` from the state file and pass it to
+`session_governor.py --check-limits --consecutive-errors $CONSEC_ERRORS`.
+
+When the error loop breaker fires (3x consecutive identical error):
+- **STOP** verdict emits a targeted block message: "Do NOT retry. Escalate to user."
+- **PAUSE** at 2x emits a warning: "Consider a different approach before retrying."
+
+#### End-to-End Flow
+
+```
+Tool call fails (PostToolUse) → error-loop-tracker.sh detects error
+  → hashes error signature → compares with last-error-hash
+  → same hash: increment consecutive-error-count
+  → different hash: reset to 1, update hash
+  → success: reset to 0
+
+Next tool call (PreToolUse) → session-governor-check.sh
+  → reads consecutive-error-count from state file
+  → passes to session_governor.py --check-limits
+  → at 3x: STOP verdict → {"decision":"block"} on stdout
+```
+
+**Tests**: 10 new tests in `tests/work-queue/test_session_governor.py` (55+ total),
+covering hook existence, registration, matcher, state directory, governor verdicts,
+PreToolUse integration (reads state file, no hardcoded zero), and reset behavior.
 
 ## What Was Implemented (Phase 3) — 2026-04-09
 
@@ -217,7 +286,7 @@ replaced with a functional skill containing the full 5-step planning workflow:
 
 | Gap | Status | Resolution Path |
 |-----|--------|-----------------|
-| Consecutive error tracking | Not yet wired | Wire into session-governor-check.sh |
+| Consecutive error tracking | **Resolved** (Phase 2d) | Wired via `error-loop-tracker.sh` + `session-governor-check.sh` (#2056) |
 | GitHub label checking in hooks | Not implemented | Would require `gh` API calls in hooks (slow) |
 | Cross-agent memory bridge | Partial | See `compound-extended` skill |
 

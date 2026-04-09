@@ -103,6 +103,16 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/error-loop-tracker.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
