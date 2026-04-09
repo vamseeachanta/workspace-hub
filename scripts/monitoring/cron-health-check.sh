@@ -193,15 +193,23 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         fi
 
         # Determine expected interval from cron schedule
-        # Simple heuristic: if schedule has */N in hour field, interval = N hours
-        # Otherwise assume daily (24h)
+        # Heuristic: check day-of-week (field 5) and day-of-month (field 3)
+        # to distinguish daily, weekly, and sub-daily jobs.
         EXPECTED_INTERVAL_HOURS=25
-        if [[ "$schedule" == *"*/"* ]]; then
-            # Extract the interval from hour field (field 2, 0-indexed)
+        if [[ -n "$schedule" ]]; then
             hour_field=$(echo "$schedule" | awk '{print $2}')
+            dow_field=$(echo "$schedule" | awk '{print $5}')
+            dom_field=$(echo "$schedule" | awk '{print $3}')
+            # Sub-daily: */N in hour field
             if [[ "$hour_field" == "*/"* ]]; then
                 interval="${hour_field#*/}"
                 EXPECTED_INTERVAL_HOURS=$((interval + 1))
+            # Weekly: specific day-of-week (0-6)
+            elif [[ "$dow_field" =~ ^[0-6]$ ]]; then
+                EXPECTED_INTERVAL_HOURS=169  # 7 days + 1 hour buffer
+            # Monthly: specific day-of-month
+            elif [[ "$dom_field" =~ ^[0-9]+$ ]]; then
+                EXPECTED_INTERVAL_HOURS=745  # 31 days + 1 hour buffer
             fi
         fi
 

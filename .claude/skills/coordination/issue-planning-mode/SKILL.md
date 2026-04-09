@@ -1,83 +1,109 @@
 ---
 name: issue-planning-mode
-description: Enforce the strict issue planning workflow before implementation begins.
-version: 3.0.0
-author: Claude Code
+description: Mandatory planning workflow for ALL GitHub issues — plan, review, approve, then implement.
+version: 3.1.0
+author: Workspace Hub
 category: coordination
-tags: [planning, github, enforcement, workflow]
+tags: [planning, github, enforcement, workflow, onboarding]
+related_skills:
+  - engineering-issue-workflow
 ---
 
-# Issue Planning Mode
+# Issue Planning Mode — Mandatory for ALL Issues
 
-Load this skill before drafting or executing any plan for a GitHub issue.
+**ALL agents** (Claude, Codex, Gemini, Hermes) MUST follow this workflow for every GitHub issue.
+Load this skill before drafting or executing any plan.
 
-## Workflow Steps
+Full onboarding guide with step-by-step details: `docs/plans/README.md`
 
-### Step 1: Create plan file
+## Workflow Overview
 
-Copy the template and fill it in:
+```
+Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
+  → Label status:plan-review → USER APPROVES → Label status:plan-approved
+  → Implement (TDD) → Close
+```
+
+## Steps
+
+### Step 1: Intake and Resource Intelligence
+
+1. Read the full issue body — scope, acceptance criteria, references
+2. Classify complexity: T1 (trivial), T2 (standard), T3 (complex)
+3. Search existing code, standards, documents, and prior plans before writing
+
+### Step 2: Draft Plan
+
+Copy template and fill all sections:
 
 ```
 docs/plans/_template-issue-plan.md  -->  docs/plans/YYYY-MM-DD-issue-NNN-slug.md
 ```
 
-Required sections: Resource Intelligence, Artifact Map, Deliverable, Pseudocode, Files to Change, TDD Test List, Acceptance Criteria.
+Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pseudocode (T2/T3), Files to Change, TDD Test List, Acceptance Criteria, Risks.
 
-### Step 2: Apply `status:plan-review` label
+Update the index table in `docs/plans/README.md` with a new row.
 
-```bash
-gh issue edit NNN --add-label "status:plan-review"
-```
+### Step 3: Adversarial Review
 
-This signals the plan is ready for adversarial review. Do NOT proceed to implementation.
+Route the plan to 2+ AI providers for review. Each gives: APPROVE | MINOR | MAJOR.
+If any MAJOR: revise and re-review.
 
-### Step 3: Get adversarial review
+Post artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
 
-Run cross-review via at least one external AI agent (Codex, Gemini, or Hermes):
+### Step 4: Post and Label
 
-```bash
-/gsd:review --phase N --codex
-```
+1. Post the plan as a GitHub issue comment
+2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
+3. **STOP** — do NOT implement. Wait for user approval.
 
-Post review artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
+### Step 5: User Approval
 
-### Step 4: Get user approval
-
-The **user** (not the implementing agent) must approve the plan:
+The **user** (not the implementing agent) approves:
 
 ```bash
-gh issue edit NNN --add-label "status:plan-approved"
-```
-
-A human operator then creates the approval marker:
-
-```bash
+gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"
 mkdir -p .planning/plan-approved
 echo "Approved by: <user>" > .planning/plan-approved/NNN.md
 ```
 
 Self-approval by the implementing agent is blocked by the plan-approval gate.
 
-### Step 5: Implement
+### Step 6: Implement (TDD)
 
-Only after `status:plan-approved` label exists AND `.planning/plan-approved/NNN.md` marker exists may implementation begin. The `plan-approval-gate.sh` hook enforces this.
+Only after `status:plan-approved` label AND `.planning/plan-approved/NNN.md` marker exist:
+1. Tests FIRST — write tests, confirm they fail
+2. Implement minimum code to pass tests
+3. Run full test suite — confirm no regressions
+4. Self-review against approved plan
+
+### Step 7: Close
+
+- Commit with conventional message referencing the issue
+- Push, post summary comment, close issue
+
+## Batch / Overnight Sessions
+
+- Draft plans and label `status:plan-review` — do NOT implement
+- Only implement issues already labeled `status:plan-approved`
+
+## Engineering-Critical Issues
+
+Issues with `cat:engineering*` or `cat:data-pipeline` labels require the full
+`engineering-issue-workflow` skill (adds cross-review after implementation).
 
 ## Enforcement
 
-- **PreToolUse hook**: `.claude/hooks/plan-approval-gate.sh` blocks writes to implementation paths without an approval marker
-- **Pre-commit hook**: `scripts/enforcement/require-plan-approval.sh --strict` blocks commits of implementation files without plan approval evidence
-- **Self-approval check**: The gate verifies the approval marker was not created in the same session as the implementation work
+- **PreToolUse hook**: `.claude/hooks/plan-approval-gate.sh` blocks writes without approval marker
+- **Pre-commit hook**: `scripts/enforcement/require-plan-approval.sh --strict` blocks commits without approval
+- **Self-approval check**: gate verifies approval was not created in the same session
 
-## Safe paths (no approval needed)
+### Safe paths (no approval needed)
 
-These paths can always be written without an approval marker:
-- `.planning/` (plan creation)
-- `docs/plans/` (plan files)
-- `docs/governance/` and `docs/reports/` (governance artifacts)
-- `docs/standards/` (standards)
-- Top-level harness adapter files (the 4 agent markdown configs)
+`.planning/`, `docs/plans/`, `docs/governance/`, `docs/reports/`, `docs/standards/`,
+and the four top-level agent adapter markdown files
 
-## Emergency bypass
+### Emergency bypass
 
 ```bash
 SKIP_PLAN_APPROVAL_GATE=1  # for Claude Code hook
@@ -85,3 +111,10 @@ FORCE_PLAN_GATE=1 git commit  # for pre-commit hook
 ```
 
 All bypasses are logged.
+
+## References
+
+- Full guide: `docs/plans/README.md`
+- Template: `docs/plans/_template-issue-plan.md`
+- Hard-stop policy: `docs/standards/HARD-STOP-POLICY.md`
+- Engineering workflow: `.claude/skills/coordination/engineering-issue-workflow/SKILL.md`
