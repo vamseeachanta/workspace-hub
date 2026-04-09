@@ -250,9 +250,76 @@ see compliance status on every pull request to `main`.
 This closes the gap where changes pushed via bypass (`SKIP_REVIEW_GATE=1`) would still
 be flagged at the PR level before merge.
 
-## What Remains (Phase 4)
+## What Was Implemented (Phase 3d) — 2026-04-09
 
-### Phase 4: Hermes Orchestration
+### Enforcement Environment + End-to-End Hook Chain (#2027)
+
+Completes the enforcement wiring started in Phase 3 (#2047). Creates a git-tracked
+enforcement-env template and wires the full hook chain end-to-end.
+
+#### Enforcement Environment
+
+**File**: `scripts/enforcement/enforcement-env.sh` (git-tracked template)
+
+Central configuration for enforcement strictness. Controls all gates via environment variables:
+
+| Variable | Default | Effect |
+|----------|---------|--------|
+| `FORCE_PLAN_GATE_STRICT` | `1` | Plan gate blocks commits without approval |
+| `REVIEW_GATE_STRICT` | `1` | Review gate blocks pushes without review |
+| `DISABLE_ENFORCEMENT` | `0` | Master kill switch for all gates |
+
+Installed to `.git/hooks/enforcement-env` via `scripts/enforcement/install-hooks.sh`.
+
+#### Post-Commit Learning Pipeline
+
+**File**: `scripts/hooks/post-commit-learnings.sh`
+
+Fixed dead code in `.git/hooks/post-commit` where `track-skill-patches.sh` (#1719) and
+`extract-learnings.sh` were unreachable after `exit 0`. The post-commit hook now calls:
+
+1. Auto-push (background, existing)
+2. `post-commit-learnings.sh` which chains:
+   - `track-skill-patches.sh` — skill modification tracking (#1719)
+   - `extract-learnings.sh` — commit analysis and pattern detection (#1760 Phase 4)
+
+Both learning pipeline steps run with `|| true` guards — they never block commits.
+
+#### Hook Install Script
+
+**File**: `scripts/enforcement/install-hooks.sh`
+
+Idempotent installer that:
+1. Copies `enforcement-env.sh` to `.git/hooks/enforcement-env`
+2. Wires enforcement-env sourcing into pre-commit (after PATH export)
+3. Fixes post-commit dead code and wires learning pipeline
+
+Run: `bash scripts/enforcement/install-hooks.sh` (supports `--dry-run`).
+
+#### End-to-End Chain (Verified)
+
+```
+pre-commit:
+  source enforcement-env (FORCE_PLAN_GATE_STRICT=1, REVIEW_GATE_STRICT=1)
+  -> encoding check
+  -> claude-md-limits check
+  -> skill content scan
+  -> JS lockfile guard
+  -> require-plan-approval.sh --strict (blocks without plan approval)
+
+post-commit:
+  -> auto-push (background)
+  -> post-commit-learnings.sh
+     -> track-skill-patches.sh
+     -> extract-learnings.sh HEAD
+
+pre-push:
+  -> require-review-on-push.sh (blocks without review evidence)
+```
+
+## What Remains (Phase 5)
+
+### Phase 5: Hermes Orchestration
 - Hermes manages gate transitions and hard-stop enforcement
 - Hermes dispatches to Claude/Codex/Gemini per routing matrix
 - Hermes tracks session metrics and generates session reports
@@ -260,7 +327,7 @@ be flagged at the PR level before merge.
 
 ## References
 
-- Issue: #1839, #2028 (CI enforcement)
+- Issue: #1839, #2027, #2028 (CI enforcement)
 - Trust Architecture: `docs/governance/TRUST-ARCHITECTURE.md`
 - Review Routing Policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 - Session failures analysis: `docs/reports/session-failures-and-refactor-review.md`
