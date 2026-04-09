@@ -40,3 +40,7 @@ Structural integrity of marine vessels under operational loads.
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [FEA Structural Analysis](../../../engineering/wiki/concepts/fea-structural-analysis.md) — FEA methodology for hull girder analysis, plate buckling, and fatigue hot-spot stress
+- **Cross-wiki (engineering)**: [S-N Curve Fatigue Definitions](../../../engineering/wiki/concepts/sn-curve-fatigue-definitions.md) — S-N curve fatigue methodology (DNV-RP-C203) for ship structural details
+- **Cross-wiki (engineering)**: [DNV-RP-C203](../../../engineering/wiki/standards/dnv-rp-c203.md) — fatigue design standard covering weld categories and DFF for offshore and ship structures
+- **Cross-wiki (engineering)**: [Fatigue Analysis for Offshore Structures](../../../engineering/wiki/concepts/fatigue-analysis-offshore.md) — spectral fatigue methodology (rainflow counting, Miner's rule, Dirlik) applicable to ship hull fatigue

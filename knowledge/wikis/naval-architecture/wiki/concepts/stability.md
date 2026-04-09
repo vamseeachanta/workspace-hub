@@ -31,3 +31,5 @@ Hydrostatic stability of floating vessels — the ability to return to upright e
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [Seakeeping and 6-DOF Ship Dynamics](../../../engineering/wiki/concepts/seakeeping-6dof.md) — stability (GM, GZ) as fundamental constraint on vessel motion response in the 6-DOF framework
+- **Cross-wiki (engineering)**: [AQWA Solver](../../../engineering/wiki/entities/aqwa-solver.md) — AQWA computes hydrostatic restoring forces that determine vessel stability characteristics

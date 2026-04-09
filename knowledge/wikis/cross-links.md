@@ -2,7 +2,7 @@
 title: "Cross-Wiki Link Index"
 created: 2026-04-09
 last_updated: 2026-04-09
-total_cross_references: 25
+total_cross_references: 45
 ---
 
 # Cross-Wiki Link Index
@@ -28,70 +28,96 @@ Bidirectional cross-references discovered between the engineering wiki and the t
 | 13 | engineering | entities/orcaflex-solver | marine-engineering | concepts/mooring-line-failure | OrcaFlex for dynamic mooring load prediction |
 | 14 | engineering | standards/dnv-rp-c205 | marine-engineering | concepts/long-period-swell-resonance | Wave spectra and drift forces for swell loads |
 | 15 | marine-engineering | concepts/process-safety | maritime-law | entities/deepwater-horizon-2010 | DWH as process safety failure case |
+| 16 | engineering | concepts/fatigue-analysis-offshore | marine-engineering | concepts/mooring-line-failure | Fatigue methods (rainflow, Miner's rule) for mooring line assessment |
+| 17 | engineering | concepts/wave-theory-offshore | marine-engineering | concepts/long-period-swell-resonance | Wave spectra and long-period swell physics driving resonant mooring failures |
+| 18 | engineering | concepts/wave-theory-offshore | marine-engineering | entities/lng-carrier-mooring | Wave environment (swell, JONSWAP) as design driver for LNG moorings |
+| 19 | engineering | concepts/seakeeping-6dof | marine-engineering | concepts/long-period-swell-resonance | 6-DOF motion amplification from long-period swell |
+| 20 | marine-engineering | entities/cfd-offshore | engineering | concepts/cfd-offshore-hydrodynamics | Complementary CFD coverage (domain sizing, turbulence, mesh) |
+| 21 | marine-engineering | entities/fea-structural-analysis | engineering | concepts/fea-structural-analysis | Complementary FEA coverage (convergence, hot-spot stress) |
+| 22 | marine-engineering | entities/energy-economics | engineering | concepts/energy-field-economics | Complementary economics coverage (Monte Carlo, fiscal regimes) |
+| 23 | marine-engineering | entities/pipeline-integrity | engineering | concepts/pipeline-integrity-assessment | Complementary integrity assessment (DNV-RP-F101, API 579) |
+| 24 | marine-engineering | entities/orcaflex-viv-analysis | engineering | concepts/viv-riser-fatigue | Complementary VIV fatigue methodology |
+| 25 | marine-engineering | entities/orcaflex-viv-analysis | engineering | entities/orcaflex-solver | OrcFxAPI automation and solver conventions |
 
-## Engineering <-> Naval-Architecture (8 links)
+## Engineering <-> Naval-Architecture (15 links)
 
 | # | Source Wiki | Source Page | Target Wiki | Target Page | Link Type |
 |---|------------|------------|-------------|-------------|-----------|
-| 16 | engineering | concepts/cfd-offshore-hydrodynamics | naval-architecture | concepts/seakeeping | CFD for vessel RAO and seakeeping optimization |
-| 17 | engineering | concepts/cfd-offshore-hydrodynamics | naval-architecture | concepts/resistance-propulsion | CFD for resistance prediction |
-| 18 | engineering | concepts/fea-structural-analysis | naval-architecture | concepts/ship-structures | FEA for hull girder and ship structural analysis |
-| 19 | engineering | concepts/sn-curve-fatigue-definitions | naval-architecture | concepts/ship-structures | S-N curve fatigue for ship structures |
-| 20 | engineering | standards/dnv-rp-c203 | naval-architecture | concepts/ship-structures | Fatigue standard for ship structural details |
-| 21 | engineering | standards/dnv-rp-c205 | naval-architecture | concepts/seakeeping | Wave spectra and RAO computation methods |
-| 22 | engineering | entities/aqwa-solver | naval-architecture | concepts/seakeeping | AQWA for vessel motion RAOs |
-| 23 | engineering | entities/aqwa-solver | naval-architecture | concepts/hydrostatics | AQWA uses hydrostatic properties as inputs |
+| 26 | engineering | concepts/cfd-offshore-hydrodynamics | naval-architecture | concepts/seakeeping | CFD for vessel RAO and seakeeping optimization |
+| 27 | engineering | concepts/cfd-offshore-hydrodynamics | naval-architecture | concepts/resistance-propulsion | CFD for resistance prediction |
+| 28 | engineering | concepts/fea-structural-analysis | naval-architecture | concepts/ship-structures | FEA for hull girder and ship structural analysis |
+| 29 | engineering | concepts/sn-curve-fatigue-definitions | naval-architecture | concepts/ship-structures | S-N curve fatigue for ship structures |
+| 30 | engineering | standards/dnv-rp-c203 | naval-architecture | concepts/ship-structures | Fatigue standard for ship structural details |
+| 31 | engineering | standards/dnv-rp-c205 | naval-architecture | concepts/seakeeping | Wave spectra and RAO computation methods |
+| 32 | engineering | entities/aqwa-solver | naval-architecture | concepts/seakeeping | AQWA for vessel motion RAOs |
+| 33 | engineering | entities/aqwa-solver | naval-architecture | concepts/hydrostatics | AQWA uses hydrostatic properties as inputs |
+| 34 | engineering | concepts/fatigue-analysis-offshore | naval-architecture | concepts/ship-structures | Spectral fatigue for hull structural details |
+| 35 | engineering | concepts/wave-theory-offshore | naval-architecture | concepts/seakeeping | Wave spectra as input to seakeeping analysis |
+| 36 | engineering | concepts/seakeeping-6dof | naval-architecture | concepts/seakeeping | 6-DOF implementation in digitalmodel seakeeping module |
+| 37 | engineering | concepts/seakeeping-6dof | naval-architecture | concepts/hydrostatics | Hydrostatic stiffness for 6-DOF equations of motion |
+| 38 | engineering | concepts/seakeeping-6dof | naval-architecture | concepts/stability | Stability (GM, GZ) as constraint on vessel motions |
+| 39 | naval-architecture | concepts/stability | engineering | entities/aqwa-solver | AQWA hydrostatic restoring forces for stability |
+| 40 | engineering | concepts/fatigue-analysis-offshore | naval-architecture | concepts/ship-structures | Spectral fatigue methodology for ship hull fatigue |
 
 ## Engineering <-> Maritime-Law (4 links)
 
 | # | Source Wiki | Source Page | Target Wiki | Target Page | Link Type |
 |---|------------|------------|-------------|-------------|-----------|
-| 24 | engineering | concepts/pipeline-integrity-assessment | maritime-law | concepts/environmental-liability | Pipeline spills trigger strict liability |
-| 25 | engineering | concepts/energy-field-economics | maritime-law | concepts/environmental-liability | Environmental liability as field development risk |
-| 26 | engineering | concepts/energy-field-economics | maritime-law | concepts/opa-90 | OPA 90 unlimited liability impacts project economics |
-| 27 | maritime-law | entities/deepwater-horizon-2010 | marine-engineering | concepts/process-safety | DWH as landmark process safety failure |
+| 41 | engineering | concepts/pipeline-integrity-assessment | maritime-law | concepts/environmental-liability | Pipeline spills trigger strict liability |
+| 42 | engineering | concepts/energy-field-economics | maritime-law | concepts/environmental-liability | Environmental liability as field development risk |
+| 43 | engineering | concepts/energy-field-economics | maritime-law | concepts/opa-90 | OPA 90 unlimited liability impacts project economics |
+| 44 | maritime-law | entities/deepwater-horizon-2010 | marine-engineering | concepts/process-safety | DWH as landmark process safety failure |
 
 ## Summary
 
 | Wiki Pair | Cross-References | Direction |
 |-----------|-----------------|-----------|
-| engineering <-> marine-engineering | 15 | Bidirectional |
-| engineering <-> naval-architecture | 8 | Bidirectional |
+| engineering <-> marine-engineering | 25 | Bidirectional |
+| engineering <-> naval-architecture | 15 | Bidirectional |
 | engineering <-> maritime-law | 4 | Bidirectional |
 | marine-engineering <-> maritime-law | 2 | Bidirectional (via process-safety/DWH) |
-| **Total** | **27** | |
+| **Total** | **44** | |
 
 ## Pages Modified
 
-### Engineering Wiki (11 pages)
+### Engineering Wiki (14 pages)
 - `concepts/cathodic-protection-design.md` — +4 cross-wiki links
 - `concepts/cfd-offshore-hydrodynamics.md` — +4 cross-wiki links
 - `concepts/energy-field-economics.md` — +3 cross-wiki links
+- `concepts/fatigue-analysis-offshore.md` — +2 cross-wiki links (new)
 - `concepts/fea-structural-analysis.md` — +1 cross-wiki link
 - `concepts/pipeline-integrity-assessment.md` — +3 cross-wiki links
+- `concepts/seakeeping-6dof.md` — +4 cross-wiki links (new)
 - `concepts/sn-curve-fatigue-definitions.md` — +2 cross-wiki links
 - `concepts/viv-riser-fatigue.md` — +1 cross-wiki link
+- `concepts/wave-theory-offshore.md` — +3 cross-wiki links (new)
 - `entities/aqwa-solver.md` — +2 cross-wiki links
 - `entities/orcaflex-solver.md` — +2 cross-wiki links
 - `standards/dnv-rp-c203.md` — +1 cross-wiki link
 - `standards/dnv-rp-c205.md` — +2 cross-wiki links
 
-### Marine-Engineering Wiki (8 pages)
+### Marine-Engineering Wiki (14 pages)
 - `concepts/cathodic-protection-system.md` — +1 cross-wiki link
 - `concepts/coating-breakdown.md` — +1 cross-wiki link
 - `concepts/corrosion-control.md` — +2 cross-wiki links
-- `concepts/long-period-swell-resonance.md` — +2 cross-wiki links
-- `concepts/mooring-line-failure.md` — +4 cross-wiki links
+- `concepts/long-period-swell-resonance.md` — +4 cross-wiki links (+2 new)
+- `concepts/mooring-line-failure.md` — +5 cross-wiki links (+1 new)
 - `concepts/process-safety.md` — +2 cross-wiki links
 - `concepts/sour-service.md` — +1 cross-wiki link
 - `entities/anode.md` — +1 cross-wiki link
-- `entities/lng-carrier-mooring.md` — +1 cross-wiki link
+- `entities/cfd-offshore.md` — +1 cross-wiki link (new)
+- `entities/energy-economics.md` — +1 cross-wiki link (new)
+- `entities/fea-structural-analysis.md` — +1 cross-wiki link (new)
+- `entities/lng-carrier-mooring.md` — +2 cross-wiki links (+1 new)
+- `entities/orcaflex-viv-analysis.md` — +2 cross-wiki links (new)
+- `entities/pipeline-integrity.md` — +1 cross-wiki link (new)
 
-### Naval-Architecture Wiki (4 pages)
-- `concepts/hydrostatics.md` — +1 cross-wiki link
+### Naval-Architecture Wiki (5 pages)
+- `concepts/hydrostatics.md` — +2 cross-wiki links (+1 new)
 - `concepts/resistance-propulsion.md` — +1 cross-wiki link
-- `concepts/seakeeping.md` — +3 cross-wiki links
-- `concepts/ship-structures.md` — +3 cross-wiki links
+- `concepts/seakeeping.md` — +6 cross-wiki links (+3 new)
+- `concepts/ship-structures.md` — +4 cross-wiki links (+1 new)
+- `concepts/stability.md` — +2 cross-wiki links (new)
 
 ### Maritime-Law Wiki (3 pages)
 - `concepts/environmental-liability.md` — +2 cross-wiki links

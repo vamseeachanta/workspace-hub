@@ -44,3 +44,8 @@ Port Hedland (BHP): 35% reduction in mooring line failures via active monitoring
 - **Source**: [Mooring Failures at LNG Terminals](../sources/mooring-failures-lng-terminals.md)
 - **Related concept**: [[long-period-swell-resonance]]
 - **Related concept**: [[cathodic-protection-system]]
+- **Cross-wiki (engineering)**: [VIV Riser Fatigue](../../../engineering/wiki/concepts/viv-riser-fatigue.md) — fatigue analysis methodology (S-N curves, Miner's rule) applicable to wire rope mooring fatigue
+- **Cross-wiki (engineering)**: [S-N Curve Fatigue Definitions](../../../engineering/wiki/concepts/sn-curve-fatigue-definitions.md) — S-N curve methodology for cyclic fatigue assessment of mooring components
+- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD for computing hydrodynamic loads on moored vessels
+- **Cross-wiki (engineering)**: [OrcaFlex Solver](../../../engineering/wiki/entities/orcaflex-solver.md) — OrcaFlex for dynamic mooring analysis and line tension prediction
+- **Cross-wiki (engineering)**: [Fatigue Analysis for Offshore Structures](../../../engineering/wiki/concepts/fatigue-analysis-offshore.md) — fatigue methods (rainflow counting, Miner's rule, spectral fatigue) applicable to mooring line fatigue assessment

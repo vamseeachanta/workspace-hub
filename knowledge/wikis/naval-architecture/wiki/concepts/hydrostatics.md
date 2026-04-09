@@ -31,3 +31,5 @@ Geometric and hydrostatic properties of ship hulls at rest.
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [AQWA Solver](../../../engineering/wiki/entities/aqwa-solver.md) — AQWA uses hydrostatic properties (displacement, waterplane area, metacentric height) as fundamental inputs
+- **Cross-wiki (engineering)**: [Seakeeping and 6-DOF Ship Dynamics](../../../engineering/wiki/concepts/seakeeping-6dof.md) — hydrostatic stiffness (displacement, waterplane area, GM) as inputs to 6-DOF equations of motion

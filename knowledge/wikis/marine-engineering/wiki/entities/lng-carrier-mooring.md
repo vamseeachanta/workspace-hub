@@ -35,3 +35,5 @@ Mooring arrangements for LNG carriers at offshore jetties and onshore terminals.
 - **Related concept**: [[long-period-swell-resonance]]
 - **Related concept**: [[mooring-line-failure]]
 - **Related entity**: [[separator]] (LNG terminals include processing)
+- **Cross-wiki (engineering)**: [OrcaFlex Solver](../../../engineering/wiki/entities/orcaflex-solver.md) — OrcaFlex used for dynamic mooring analysis of LNG carriers at terminals
+- **Cross-wiki (engineering)**: [Wave Theory for Offshore Engineering](../../../engineering/wiki/concepts/wave-theory-offshore.md) — wave spectra and swell environment as primary design driver for LNG terminal moorings
