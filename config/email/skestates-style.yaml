@@ -1,0 +1,107 @@
+# SKEstates — Email Communication Style Profile
+# Account: skestatesinc@gmail.com
+# Derived from sent email analysis (~30 sent messages)
+# Reference: GitHub #1986
+
+account: skestates
+email: skestatesinc@gmail.com
+domain: gmail.com  # shared domain, identity is SKEstates Inc
+
+tone: business-formal-warm
+formality: high
+
+greeting:
+  default: "{FirstName},"
+
+closing:
+  default: |
+    Thank you very much,
+    Vamsee
+  formal: |
+    With best regards,
+    Vamsee
+  appreciation: |
+    Thank you very much,
+    Vamsee
+
+signature:
+  default: "Vamsee"
+  # Signs as individual but speaks on behalf of "the owners" / "SKEstates Inc"
+
+content:
+  length: medium  # 3-6 sentences typical
+  style: formal_but_warm  # acknowledges good work, shows appreciation
+  identity_references:
+    - "the owners"
+    - "SKEstates Inc"
+  subject_prefix: "FD30150 | "  # always includes store number in subject line
+  follow_up_style: "Following up on the {topic} plan and progress for the property."
+  appreciation_phrases:
+    - "deeply thank you"
+    - "made their week"
+    - "Keep up the good work"
+    - "We really appreciate your efforts"
+
+# Context-dependent adjustments:
+formality_rules:
+  - context: tenant_communication
+    formality: high
+    tone: professional
+    identity: "SKEstates Inc"  # formal entity when dealing with corporate tenants
+    subject_prefix: "FD30150 | "
+  - context: vendor_followup
+    formality: high
+    tone: warm
+    follow_up: persistent_polite  # "Following up on...", "Please kindly let me know the status"
+  - context: insurance_correspondence
+    formality: high
+    tone: professional
+    identity: "the owners"
+  - context: hoa_correspondence
+    formality: high
+    tone: professional
+    identity: "SKEstates Inc"
+  - context: family_property_matters
+    formality: medium
+    tone: warm
+    identity: personal  # less formal when discussing with family about the property
+
+# Example messages (for agent calibration):
+examples:
+  tenant_followup: |
+    Kevin,
+
+    Following up on the HVAC maintenance plan and progress for the property.
+    Please kindly let me know the current status and expected completion date.
+
+    Thank you very much,
+    Vamsee
+
+  vendor_appreciation: |
+    Angela,
+
+    Thank you for the prompt response on the pest control service. The owners
+    deeply appreciate your team's efforts. Keep up the good work.
+
+    Thank you very much,
+    Vamsee
+
+  insurance_inquiry: |
+    Ian,
+
+    We are reviewing the current policy coverage for the property at FD30150.
+    Could you please provide the updated premium schedule and any changes
+    to the coverage terms for the upcoming renewal?
+
+    With best regards,
+    Vamsee
+
+  formal_followup: |
+    Connie,
+
+    Following up on the 1099 filing matter we discussed. Please kindly let
+    me know if there are any outstanding items the owners need to address
+    before the deadline.
+
+    Thank you very much,
+    Vamsee

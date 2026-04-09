@@ -1,0 +1,82 @@
+# ACE — Email Communication Style Profile
+# Account: vamsee.achanta@aceengineer.com
+# Derived from sent email analysis (~30 sent messages)
+# Reference: GitHub #1986
+
+account: ace
+email: vamsee.achanta@aceengineer.com
+domain: aceengineer.com
+
+tone: professional-technical
+formality: medium  # formal with new contacts, relaxed with ongoing threads
+
+greeting:
+  default: "{FirstName},"
+  new_contact: "{FirstName},"
+  group: "Team," # when addressing multiple recipients
+
+closing:
+  default: |
+    Thank you,
+    Vamsee
+  formal: |
+    Thank you and Best regards,
+    Vamsee Achanta, P.E.
+
+signature:
+  casual: "Vamsee"
+  formal: "Vamsee Achanta, P.E."
+  # Use formal signature with new contacts or external clients
+  # Use casual signature in ongoing threads with known colleagues
+
+content:
+  length: concise  # 2-5 sentences typical
+  style: direct    # state the point early, minimize filler
+  technical_references: true  # ok to reference calculations, analysis results
+  deliverable_format: inline_links  # prefers GitHub hosted HTML report links over attachments
+  attachment_preference: links_over_attachments
+
+# When to use formal vs casual:
+formality_rules:
+  - context: new_client_contact
+    formality: high
+    signature: formal
+    closing: formal
+  - context: ongoing_technical_thread
+    formality: medium
+    signature: casual
+    closing: default
+  - context: internal_colleague
+    formality: low
+    signature: casual
+    closing: default
+
+# Example messages (for agent calibration):
+examples:
+  technical_reply: |
+    Howard,
+
+    The updated analysis results are posted here: {report_link}
+
+    Key findings: {summary}. Let me know if you need any adjustments to the load cases.
+
+    Thank you,
+    Vamsee
+
+  deliverable_handoff: |
+    Chau,
+
+    Calculation report is ready for review: {report_link}
+
+    The wave loading analysis covers the three scenarios we discussed. Section 3 has the governing load combination results.
+
+    Thank you,
+    Vamsee
+
+  brief_update: |
+    Justin,
+
+    Updated. The revised results are in the same report link.
+
+    Thank you,
+    Vamsee

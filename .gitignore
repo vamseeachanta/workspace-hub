@@ -258,6 +258,7 @@ db-config.json
 # Personal workspace configurations
 .personal/
 personal-*
+!config/email/personal-style.yaml
 private/
 private-*
 *-personal.*

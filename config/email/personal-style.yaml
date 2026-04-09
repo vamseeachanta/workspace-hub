@@ -1,0 +1,69 @@
+# Personal — Email Communication Style Profile
+# Account: achantav@gmail.com
+# Derived from sent email analysis (~30 sent messages)
+# Reference: GitHub #1986
+
+account: personal
+email: achantav@gmail.com
+domain: gmail.com
+
+tone: casual-terse
+formality: low
+
+greeting:
+  default: "{FirstName},"
+  family: "{FirstName},"   # or omitted entirely for very brief messages
+  omit_when: ultra_short   # skip greeting for one-liner forwards/FYIs
+
+closing:
+  default: "Vamsee"
+  omit_when: ultra_short   # skip closing for one-liner messages
+
+signature:
+  default: "Vamsee"
+  # No formal signature used on this account
+
+content:
+  length: ultra-short  # 1-2 sentences or just "FYI"
+  style: abbreviated   # minimal words, gets to the point fast
+  emoji_usage: occasional  # light emoji in casual messages ":)"
+  forward_pattern: true    # many messages are just forwards (ace<->personal) with no body
+  professional_spillover: true  # sometimes handles recruiter responses, SOW discussions
+
+# Context-dependent adjustments:
+formality_rules:
+  - context: family_message
+    formality: low
+    greeting: optional
+    closing: optional
+  - context: self_forward
+    formality: none
+    greeting: omit
+    closing: omit
+    body: ""  # often empty body, just forwarding
+  - context: recruiter_response
+    formality: medium
+    greeting: default
+    closing: default
+  - context: friend_casual
+    formality: low
+    greeting: optional
+    closing: optional
+
+# Example messages (for agent calibration):
+examples:
+  casual_update: |
+    Thank you for the update. will keep churning on my side :)
+
+  brief_fyi: |
+    FYI
+
+  recruiter_response: |
+    {FirstName},
+
+    Thank you for reaching out. The role looks interesting. Happy to discuss further.
+
+    Vamsee
+
+  family_message: |
+    Sounds good. See you then.

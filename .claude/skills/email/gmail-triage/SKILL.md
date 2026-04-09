@@ -96,6 +96,21 @@ Format:
 4. Add 2 unknown senders to contacts or block
 ```
 
+## Communication Style Profiles
+
+When drafting suggested responses in the digest, load the per-account style profile:
+
+```
+config/email/ace-style.yaml       — professional-technical, concise (2-5 sentences)
+config/email/personal-style.yaml  — casual-terse, ultra-short (1-2 sentences)
+config/email/skestates-style.yaml — business-formal-warm, medium (3-6 sentences)
+```
+
+Each profile defines greeting, closing, signature, tone, and formality rules.
+Match the profile to the sending account and check `formality_rules` for context-specific adjustments.
+
+See `config/email/README.md` for full usage guide. Reference: #1986.
+
 ## Account-Specific Classification Rules
 
 ### ace

@@ -82,13 +82,28 @@ Let's catch up when you get a chance.
 Vamsee
 ```
 
-### Per-Account Tone Profiles
+### Per-Account Style Profiles
+
+Load the full style profile for the sending account before drafting any message:
+
+```
+config/email/ace-style.yaml       — professional-technical, concise (2-5 sentences)
+config/email/personal-style.yaml  — casual-terse, ultra-short (1-2 sentences)
+config/email/skestates-style.yaml — business-formal-warm, medium (3-6 sentences)
+```
+
+Each profile defines greeting, closing, signature, tone, formality rules, and
+calibration examples. Check `formality_rules` to adjust for context (new client
+vs ongoing thread, vendor follow-up vs family matters). See `config/email/README.md`
+for the full usage guide. Reference: #1986.
+
+Quick reference (see YAML files for complete rules):
 
 | Account | Tone | Greeting | Closing | Signature |
 |---|---|---|---|---|
 | ace | Professional-technical | "{FirstName}," | "Thank you," | "Vamsee Achanta, P.E." (formal) / "Vamsee" (casual) |
 | personal | Casual/abbreviated | "{FirstName}," or none | "Vamsee" or none | "Vamsee" |
-| skestates | Business/formal | "{FirstName}," | "Best regards," | "SKEstates Team" |
+| skestates | Business-formal-warm | "{FirstName}," | "Thank you very much," | "Vamsee" (on behalf of "the owners" / "SKEstates Inc") |
 
 ### Execution
 
