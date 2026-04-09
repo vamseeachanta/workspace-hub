@@ -1,0 +1,125 @@
+name: Enforcement Gate
+
+# PR-level enforcement of review gate and plan approval.
+# Mirrors local pre-push/pre-commit gates in CI so reviewers see compliance status.
+# Issue: #2028 | Related: #1839 (governance), #2047 (strict mode)
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review-evidence:
+    name: Review Evidence Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history for commit range analysis
+
+      - name: Check review evidence for PR commits
+        env:
+          REVIEW_GATE_STRICT: "1"
+        run: |
+          echo "## Review Evidence Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          MERGE_BASE=$(git merge-base origin/main HEAD 2>/dev/null || echo "")
+          if [[ -z "$MERGE_BASE" ]]; then
+            echo "Could not determine merge base — checking last 10 commits"
+            MERGE_BASE=""
+          fi
+
+          # Use the existing review gate script logic
+          chmod +x scripts/enforcement/require-review-on-push.sh
+
+          # The review gate expects LOCAL_OID and REMOTE_OID
+          if scripts/enforcement/require-review-on-push.sh HEAD "$MERGE_BASE" 2>&1; then
+            echo "**Result:** PASS — review evidence found" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — no review evidence for feature/fix commits" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### How to fix" >> $GITHUB_STEP_SUMMARY
+            echo "Run an adversarial review before pushing:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo "scripts/review/cross-review.sh <file_or_diff> all --type implementation" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Or bypass locally with: \`SKIP_REVIEW_GATE=1 git push\`" >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
+  plan-approval:
+    name: Plan Approval Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check plan approval for implementation commits
+        run: |
+          echo "## Plan Approval Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          chmod +x scripts/enforcement/require-plan-approval.sh
+
+          if scripts/enforcement/require-plan-approval.sh --strict 2>&1; then
+            echo "**Result:** PASS — plan approval evidence found or no implementation changes" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — implementation changes without plan approval" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### How to fix" >> $GITHUB_STEP_SUMMARY
+            echo "1. Create a plan: \`/gsd:plan\`" >> $GITHUB_STEP_SUMMARY
+            echo "2. Get review: \`/gsd:review --phase N\`" >> $GITHUB_STEP_SUMMARY
+            echo "3. Approval creates marker in \`.planning/plan-approved/\`" >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
+  compliance-dashboard:
+    name: Compliance Dashboard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run compliance dashboard
+        continue-on-error: true  # advisory — does not block PRs
+        run: |
+          echo "## Compliance Dashboard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          chmod +x scripts/enforcement/compliance-dashboard.sh
+
+          # Run in 168h window (1 week) for broader context
+          COMPLIANCE_WINDOW_HOURS=168 scripts/enforcement/compliance-dashboard.sh 2>&1 | tee /tmp/compliance-report.txt || true
+
+          # Extract key metrics for summary
+          RATE=$(grep -oP 'Compliance rate:\s+\K\d+' /tmp/compliance-report.txt 2>/dev/null || echo "N/A")
+          VERDICT=$(grep -oP 'Verdict:\s+\K\w+' /tmp/compliance-report.txt 2>/dev/null || echo "N/A")
+
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Compliance Rate | ${RATE}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| Verdict | ${VERDICT} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<details><summary>Full Report</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/compliance-report.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY

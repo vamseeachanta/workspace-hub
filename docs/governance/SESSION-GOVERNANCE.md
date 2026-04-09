@@ -47,7 +47,7 @@ Exit code: `0` = all enforced gates pass, `1` = at least one enforced gate fails
 | tdd-red | TDD Red Phase | auto-gate | Yes | pre-implement |
 | tool-call-ceiling | Tool Call Ceiling (200) | auto-gate | Yes | runtime |
 | error-loop-breaker | Error Loop Breaker (3x) | auto-gate | Yes | runtime |
-| pre-push-review | Pre-Push Review Gate | auto-gate | No (migration) | pre-push |
+| pre-push-review | Pre-Push Review Gate | auto-gate | Yes (#2028) | pre-push |
 
 ## What Was Implemented (Phase 2) — 2026-04-09
 
@@ -221,6 +221,35 @@ replaced with a functional skill containing the full 5-step planning workflow:
 | GitHub label checking in hooks | Not implemented | Would require `gh` API calls in hooks (slow) |
 | Cross-agent memory bridge | Partial | See `compound-extended` skill |
 
+## What Was Implemented (Phase 3b) — 2026-04-09
+
+### GitHub Actions CI Enforcement (#2028)
+
+**File**: `.github/workflows/enforcement-gate.yml`
+
+PR-level enforcement that mirrors local pre-push/pre-commit gates in CI, so reviewers
+see compliance status on every pull request to `main`.
+
+#### Jobs
+
+| Job | Gate Type | Behavior |
+|-----|-----------|----------|
+| `review-evidence` | Blocking | Runs `require-review-on-push.sh` with `REVIEW_GATE_STRICT=1` against the PR commit range. Fails the PR if feature/fix commits lack review evidence. |
+| `plan-approval` | Blocking | Runs `require-plan-approval.sh --strict` against staged files. Fails if implementation changes lack plan approval markers. |
+| `compliance-dashboard` | Advisory | Runs `compliance-dashboard.sh` with a 168h window. Reports compliance rate in the PR summary but does not block merge (`continue-on-error: true`). |
+
+#### Enforcement Layers (Complete)
+
+| Layer | Mechanism | Scope | Blocking |
+|-------|-----------|-------|----------|
+| Pre-commit hook | `require-plan-approval.sh --strict` | All local commits | Yes |
+| PreToolUse hook | `plan-approval-gate.sh` | Claude Code sessions | Yes |
+| Pre-push hook | `require-review-on-push.sh` | All local pushes | Yes (strict default) |
+| GitHub Actions CI | `enforcement-gate.yml` | All PRs to main | Yes (review + plan) |
+
+This closes the gap where changes pushed via bypass (`SKIP_REVIEW_GATE=1`) would still
+be flagged at the PR level before merge.
+
 ## What Remains (Phase 4)
 
 ### Phase 4: Hermes Orchestration
@@ -231,7 +260,7 @@ replaced with a functional skill containing the full 5-step planning workflow:
 
 ## References
 
-- Issue: #1839
+- Issue: #1839, #2028 (CI enforcement)
 - Trust Architecture: `docs/governance/TRUST-ARCHITECTURE.md`
 - Review Routing Policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 - Session failures analysis: `docs/reports/session-failures-and-refactor-review.md`
