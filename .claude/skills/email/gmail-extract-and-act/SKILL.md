@@ -415,13 +415,13 @@ threads:
 - `scripts/email/email-routing.yaml` — Sender domain → extraction target mapping
 - `scripts/email/contact-normalizer.py` — Contact database maintenance
 
-## Deprecation Notice
+## Superseded Skills (archived per #2019)
 
-The following skills use the deprecated archive-everything model and will be retired per #2019:
-- `gmail-extract-and-clean` — archives raw email bodies, delete this skill
-- `gmail-extract-archive` — archives raw email bodies, delete this skill
-- `gmail-email-to-repo-extraction` — archives raw email bodies, merge into this skill
-- `gmail-data-extraction` — keep for code reference, but use the queue model for workflows
+The following skills used the deprecated archive-everything model and have been moved to `_archived/`:
+- `gmail-extract-and-clean` — archived (superseded by this skill)
+- `gmail-extract-archive` — archived (superseded by this skill)
+- `gmail-email-to-repo-extraction` — archived (merged into this skill)
+- `gmail-data-extraction` — archived (code patterns incorporated here)
 
 ## Pitfalls
 
