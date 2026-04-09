@@ -21,6 +21,25 @@
 - SOURCE_INVENTORY.md created with ingest conventions
 - Notes: Issue #2034 initial seed — methodology + module docs + architecture.
 
+## [2026-04-09] incremental-ingest | 4 new source classes (#2039)
+- Source class: skills-metadata (.claude/skills/engineering/) -> 4 entity pages + 5 concept pages
+  - entities: mooring-analysis-system, diffraction-analysis-system, naval-architecture-skill, openfoam-cfd, orcawave-solver
+  - concepts: wave-theory-offshore, seakeeping-6dof, structural-analysis-offshore, fatigue-analysis-offshore, hydrodynamic-analysis
+- Source class: mooring-failures-seed (knowledge/seeds/mooring-failures-lng-terminals.yaml) -> 4 entity pages + 1 concept page
+  - entities: nws-lng-mooring-investigation, hmpe-mooring-failures, prelude-flng-mooring, elba-island-mooring-incident
+  - concept: mooring-line-failure-physics
+- Source class: closed-issues (cat:engineering GitHub issues) -> 2 concept pages + 1 workflow page
+  - concepts: free-span-viv-fatigue, field-development-economics
+  - workflow: orcawave-to-orcaflex-pipeline
+- Source class: research-outputs (.planning/research/) -> 1 concept page
+  - concept: standards-update-tracking
+- Standards pages created: 3 (dnv-os-e301, dnv-rp-f105, ocimf-meg4)
+- Source summary pages created: 4 (skills-metadata, mooring-failures-seed, closed-engineering-issues, research-outputs)
+- Pages created this pass: 23
+- Total pages: 75 (31 concepts, 22 entities, 12 sources, 7 standards, 3 workflows)
+- Index, log, SOURCE_INVENTORY updated
+- Notes: Issue #2039 — ingested 4 remaining high-value source classes.
+
 ## [2026-04-08] seed-ingest-2 | Expanded seed from career-learnings, dark-intelligence, session-memory
 - Source class: career-learnings (knowledge/seeds/career-learnings.yaml) -> 7 concept pages
   - pipeline-integrity-assessment, viv-riser-fatigue, fea-structural-analysis, cfd-offshore-hydrodynamics

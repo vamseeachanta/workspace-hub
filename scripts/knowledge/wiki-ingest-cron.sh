@@ -224,6 +224,23 @@ done
 
 log "Ingest complete: ${INGEST_COUNT} processed, ${INGEST_ERRORS} error(s)"
 
+# ── Cross-wiki link discovery (post-ingest) ────────────────────────────────
+# Runs cross-link discovery after ingest to keep cross-links.md current.
+# Only applies when pages were actually ingested (skip on no-change runs).
+# Issue: #2011
+if [[ "$INGEST_COUNT" -gt 0 ]]; then
+    log "Running cross-wiki link discovery..."
+    if [[ "$DRY_RUN" == "true" ]]; then
+        cd "$REPO_ROOT" && uv run scripts/knowledge/wiki-cross-links.py --dry-run --quiet 2>>"$LOG_FILE" || \
+            log "WARNING: cross-link discovery (dry-run) failed"
+    else
+        cd "$REPO_ROOT" && uv run scripts/knowledge/wiki-cross-links.py --apply --quiet 2>>"$LOG_FILE" || \
+            log "WARNING: cross-link discovery failed"
+    fi
+else
+    log "Skipping cross-link discovery (no pages ingested)"
+fi
+
 # ── Run lint ─────────────────────────────────────────────────────────────────
 LINT_OK=true
 _run_lint || LINT_OK=false
