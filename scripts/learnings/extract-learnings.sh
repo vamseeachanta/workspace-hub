@@ -158,7 +158,7 @@ main() {
     if [[ -n "$repeated" ]]; then
       echo "[LEARNING] Repeated pattern: $repeated"
       # Log the repeated pattern
-      echo "{"timestamp":"$timestamp","pattern":"$repeated","commit":"$(git log -1 --format='%h' "$LATEST_COMMIT" 2>/dev/null)"}" >> "$LOGS_DIR/patterns.jsonl"
+      printf '{"timestamp":"%s","pattern":"%s","commit":"%s"}\n' "$timestamp" "$repeated" "$(git log -1 --format='%h' "$LATEST_COMMIT" 2>/dev/null)" >> "$LOGS_DIR/patterns.jsonl"
     fi
   done < <(analyze_commit "$LATEST_COMMIT"; extract_corrections)
   
@@ -198,7 +198,7 @@ main() {
     
     # Extract count if present
     local count
-    count="$(echo "$signal" | grep -oE '[0-9]+( files|[0-9]+' | head -1 | grep -oE '[0-9]+' || echo 0)"
+    count="$(echo "$signal" | grep -oE '[0-9]+( files|[0-9]+)' | head -1 | grep -oE '[0-9]+' || echo 0)"
     if [[ $count -gt 10 ]]; then
       score=$((score + 10))
     fi
