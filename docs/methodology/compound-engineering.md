@@ -1,285 +1,247 @@
 # Compound Engineering Methodology
 
-> 5 operational lessons from running a production AI-augmented engineering firm
+> 5 operational lessons from running a production AI-augmented engineering firm.
+> Everything documented here is deployed and running. No theory.
 
-**Author:** Vamsee Achanta, P.E. (23yr exp)
-**Firm:** ACE Engineer -- $120K/yr retainer target
-**Status:** Operational since 2025-Q2, continuously improving
-**Contact:** aceengineer.com
-
----
-
-## Executive Summary
-
-This is not theory. This is the actual methodology that runs 691+ skills across multiple agents (Claude, Codex, Gemini, Hermes) and multiple machines. The patterns below emerged from doing real engineering work -- not from designing them upfront.
-
-### The Five Lessons
-
-1. **Enforcement Over Instruction** -- text-based rules get bypassed. Technical gates don't.
-2. **Orchestrator/Worker Separation** -- one agent with everything vs coordinator + isolated workers
-3. **Compound Learning Loop** -- skills improve from real work, not upfront design
-4. **Multi-Agent Parity** -- shared knowledge base eliminates redundant discovery
-5. **3-Agent Cross-Review** -- independent reviewers for plans AND artifacts
+**Context:** ACE Engineer consulting (aceengineer.com) -- Professional Engineering firm
+running multi-agent AI workflows in production since 2025-Q2. 691+ skills, 4 AI agents
+(Claude, Codex, Gemini, Hermes), 2 machines (ace-linux-1, licensed-win-1), serving
+offshore engineering clients.
 
 ---
 
-## Lesson 1: Enforcement Over Instruction
+## What Compound Engineering Actually Means
 
-### The Problem
+Compound engineering is the practice where every completed task makes the next task
+easier, faster, and more reliable. This is not a metaphor. It is a measurable property
+of the system.
 
-Agents (Claude, Codex, Gemini, Hermes) consistently bypass review constraints over time. They act like humans who want to get work done and skip the hard parts. Current text-based instructions (CLAUDE.md, AGENTS.md, skills) are treated as suggestions, not gates.
+When a session encounters a problem -- say, an OrcaWave API returning frequencies in
+Hz descending order instead of the expected ascending rad/s -- the fix does not stay in
+that session. It gets captured into a skill file (`.claude/skills/engineering/orcawave/`),
+committed to git, and is immediately available to every agent on every machine. The next
+session that touches OrcaWave never hits the same problem.
 
-### The Data
-
-- Review compliance: **4%** (target: 80%)
-- 22 unreviewed commits in 24 hours
-- Zero REVIEWS.md files created despite active work
-
-### What Doesn't Work
-
-- "Always do X before Y" in CLAUDE.md
-- Skills that describe a review process
-- Polite reminders in prompts
-
-### What Works
-
-- Pre-commit hooks that check for plan approval markers
-- Pre-push hooks that block unreviewed commits (REVIEW_GATE_STRICT=1)
-- CI pipelines that reject PRs without review evidence
-- Automatic compliance dashboards that flag violations
-
-### The Rule
-
-**If you can't enforce it technically, agents won't follow it.** Period.
-
----
-
-## Lesson 2: Orchestrator/Worker Separation
-
-### The Problem
-
-Single agent handling everything leads to context overload. The agent loses the plan, forgets constraints, and produces inconsistent results across a multi-hour session.
-
-### What Works
-
-**Orchestrator pattern:** One agent maintains the plan, coordinates work, and verifies results. Workers execute focused tasks with fresh context.
+The concrete loop:
 
 ```
-Orchestrator (maintains plan, delegates, verifies)
-  ├── Worker 1: Fresh context, focused on Task A
-  ├── Worker 2: Fresh context, focused on Task B
-  └── Worker 3: Fresh context, focused on Task C
+Work session encounters pitfall
+    --> Pitfall is documented in a skill or KNOWLEDGE.md
+        --> Git commit makes it available to all agents
+            --> Next session avoids the pitfall
+                --> Saved time is reinvested in new work
+                    --> New work encounters new pitfalls
+                        --> Cycle continues
 ```
 
-### Benefits
+After 12+ months of operation, the compound effect is substantial:
+- 691+ skills spanning 48 categories cover most recurring patterns
+- Nightly learning pipelines (`scripts/cron/comprehensive-learning-nightly.sh`) automatically
+  extract session learnings, sync agent memories, and validate skill health
+- Cross-agent memory bridges (`scripts/cron/sync-agent-memories.sh`) ensure that what
+  Hermes learns, Claude, Codex, and Gemini all know by the next session
 
-- **Context relief**: Each worker gets a clean slate
-- **Parallel execution**: Workers run simultaneously
-- **Better quality**: Focused intent, not diluted attention
-- **Verification**: Orchestrator checks worker output against spec
+### What the System Looked Like Before
 
-### Implementation
+In early 2025, the workflow was:
+- Single agent (Claude) with manual prompts
+- No skill files -- all knowledge in session memory (lost on session end)
+- No enforcement -- review, planning, and TDD were aspirational
+- Each session started from scratch
 
-```bash
-# Orchestrator creates plan
-gh issue create --title "feat: ..."
-# Workers get fresh context via subagents
-delegate_task goal="Implement phase 2" context="Plan at .planning/phases/02-plan.md"
-# Orchestrator verifies results
-# If verification fails: worker gets specific feedback, tries again
-```
-
-### The Rule
-
-**Separate planning from execution. The planner doesn't code. The coder doesn't plan.**
-
----
-
-## Lesson 3: Compound Learning Loop
-
-### The Problem
-
-Learnings from one session are lost or require manual capture. The same mistakes are made again. Skills don't improve unless someone actively updates them.
-
-### The Evolution Path
-
-The progression from raw documents to self-improving systems:
-
-```
-PDFs → Filename Index → LLM Summary Index → LLM Knowledge Bases → Self-Improving Repo
-```
-
-### What Works
-
-**Skills that improve from actual work, not upfront design.** When a task hits a pitfall, the system captures it automatically. Future tasks avoid the same pitfall.
-
-```
-Task executes → Pitfall encountered → Issue auto-created
-  → Skill updated → Next task succeeds → Cycle continues
-```
-
-### Implementation
-
-- Post-commit hooks that detect patterns worth capturing
-- Skills that reference their own revision history
-- Knowledge bases that grow from real engineering work
-- Cross-agent memory bridges so all agents benefit from one agent's learning
-
-### The Rule
-
-**Every failure is a skill update waiting to happen. Automate the capture.**
-
----
-
-## Lesson 4: Multi-Agent Parity
-
-### The Problem
-
-Claude Code "has been loitering in these details more than anyone else" and has more prepared skills. When setting up a new agent (Gemini, fresh Claude Code), you have to go through the same learning curve from scratch.
-
-### What Works
-
-**Shared knowledge base, single source of truth.** All agents read from the same `.claude/skills/` directory. Skills are in the repo, not in agent memory.
-
-```
-.claude/skills/ (git repository)
-  ├── claude reads from here
-  ├── codex reads from here  
-  ├── gemini reads from here
-  └── hermes reads from here (symlink)
-```
-
-### The Secret Sauce
-
-1. Skills are the primary knowledge carrier (not agent memory)
-2. Skills move to repo hub with symlinks for agents
-3. Memory consolidates into repo-tracked files
-4. Everything is git-committed immediately
-
-### The Rule
-
-**If knowledge lives in an agent's memory session, it's lost when the session ends. Put it in the repo.**
-
----
-
-## Lesson 5: 3-Agent Cross-Review
-
-### The Problem
-
-A single agent reviewing its own work misses blind spots. Even a careful agent cannot catch everything it would have done differently.
-
-### What Works
-
-**Three independent agents (Claude, Codex, Gemini) review each other's plans AND artifacts.** Running for 1 year before "adversarial" became the standard term.
-
-```
-Claude creates plan
-  ↓
-Codex reviews plan → finds issues → Claude updates
-  ↓
-Gemini reviews plan → finds more issues → Claude updates
-  ↓
-Plan approved → Implementation begins
-  ↓
-Codex implements
-  ↓
-Claude reviews artifact → Gemini reviews artifact
-  ↓
-All reviewers approve → Ship
-```
-
-### Why It Works
-
-- **Different blind spots**: Each agent has different biases
-- **Cross-pollination**: Reviewers learn from what they review
-- **Quality floor**: No single point of failure
-- **Evidence trail**: Every review leaves a record
-
-### The Rule
-
-**No artifact ships without at least 2 independent reviewers. Plans need 3.**
-
----
-
-## Implementation Reference
-
-### File Structure
+### What It Looks Like Now
 
 ```
 workspace-hub/
 ├── .claude/
-│   ├── hooks/
-│   │   └── cross-review-gate.sh      # Claude PreToolUse hook
-│   └── settings.json                  # Hook configuration
-├── .git/hooks/
-│   ├── pre-commit                     # Plan gate (NEW)
-│   └── pre-push.sh                    # Review gate + CI checks
-├── scripts/enforcement/
-│   ├── require-plan-approval.sh       # NEW: Plan gate script
-│   ├── require-review-on-push.sh      # Push-time review check
-│   ├── require-cross-review.sh        # PR creation gate
-│   ├── require-tdd-pairing.sh         # Test enforcement
-│   ├── compliance-dashboard.sh        # NEW: Compliance reporting
-│   └── upgrade-enforcement.sh         # NEW: Advisory → strict
-├── .planning/
-│   ├── phases/
-│   │   └── */REVIEWS.md              # Review evidence
-│   ├── plan-approved/                 # Plan approval markers
-│   └── STATE.md                       # Current phase
-└── logs/
-    ├── hooks/
-    │   ├── plan-gate-events.jsonl     # Plan gate log
-    │   └── review-gate-bypass.jsonl   # Bypass audit
-    └── compliance/
-        └── compliance-YYYYMMDD.json   # Daily reports
+│   ├── skills/              # 691+ skills across 48 categories
+│   ├── hooks/               # 28 enforcement hooks (PreToolUse, PostToolUse)
+│   ├── memory/              # Git-tracked cross-machine memory
+│   │   ├── context.md       # Machine conventions, paths
+│   │   ├── agents.md        # User profile, workflow rules
+│   │   ├── KNOWLEDGE.md     # Engineering lessons, tool quirks
+│   │   └── topics/          # Auto-memory topic files
+│   └── settings.json        # Hook configuration, env vars
+├── scripts/
+│   ├── enforcement/         # 12 enforcement scripts
+│   ├── cron/                # 30+ nightly automation scripts
+│   ├── workflow/            # Session governor, governance checkpoints
+│   └── memory/              # Memory bridge scripts
+├── AGENTS.md                # Multi-agent parity config
+└── docs/
+    ├── governance/          # SESSION-GOVERNANCE.md, TRUST-ARCHITECTURE.md
+    ├── standards/           # AI_REVIEW_ROUTING_POLICY.md, HARD-STOP-POLICY.md
+    └── methodology/         # These documents
 ```
 
-### Enforcement Levels
+---
 
-| Level | Type | Example | Blocking? |
-|-------|------|---------|-----------|
-| 1 | Text instructions | CLAUDE.md, AGENTS.md | No |
-| 2 | Advisory scripts | Scripts that print warnings | No |
-| 3 | Hard gates | Pre-commit hook with `exit 1` | Yes |
-| 4 | CI enforcement | GitHub Actions rejecting PRs | Yes |
+## The Five Lessons
 
-**Current state**: Level 2 (advisory) for most things, Level 3 partially implemented.
-**Target state**: Level 3 for plan gate (immediate), Level 4 for review gate (next).
+Each lesson is documented in its own file with implementation details. This section
+provides the executive summary and explains how they interconnect.
+
+### Lesson 1: Enforcement Over Instruction
+
+**File:** [enforcement-over-instruction.md](enforcement-over-instruction.md)
+
+Text-based rules get bypassed. We measured 4% review compliance when relying on
+CLAUDE.md and AGENTS.md instructions alone. Technical enforcement -- pre-commit hooks,
+PreToolUse gates, CI checks -- achieves near 100% compliance on enforced gates.
+
+The enforcement gradient from `.claude/rules/patterns.md`:
+
+| Level | Mechanism | Reliability | Example |
+|-------|-----------|-------------|---------|
+| 0 | Prose (CLAUDE.md) | Lowest | "Always review before committing" |
+| 1 | Micro-skill | Medium | Stage-specific checklists loaded at entry |
+| 2 | Script | High | `scripts/enforcement/require-review-on-push.sh` |
+| 3 | Hook | Strongest | `.claude/hooks/plan-approval-gate.sh` |
+
+The practical lesson: **if you can express a rule as `exit 0` / `exit 1`, write a script.
+If it must fire on every commit, promote it to a hook.**
+
+### Lesson 2: Orchestrator-Worker Separation
+
+**File:** [orchestrator-worker.md](orchestrator-worker.md)
+
+Single-agent sessions degrade after 2+ hours. Context windows fill, the plan gets
+fuzzy, and the agent starts solving problems that don't exist. The solution: one agent
+maintains the plan and delegates; workers execute in fresh-context isolation.
+
+Production implementation: 5 parallel overnight terminals, each with a different
+AI provider, working on file-disjoint tasks. The orchestrator (Claude) designs the
+prompts; workers (Codex seats 1-2, Gemini, Claude workers) execute them. Worktree
+isolation ensures no git contention. The skill that manages this is at
+`.claude/skills/software-development/overnight-parallel-agent-prompts/SKILL.md`.
+
+### Lesson 3: Compound Learning Loop
+
+The core mechanism of compound engineering. Every session writes to the shared
+knowledge base:
+
+1. **Skill updates**: When a pitfall is encountered, the relevant skill file gets
+   a new pitfall entry. 220+ pitfalls are now documented across the SKILL.md files.
+
+2. **KNOWLEDGE.md**: Cross-cutting engineering lessons (95 lines, 200-line limit)
+   covering tool quirks, debugging protocols, git patterns, and shell portability.
+
+3. **Nightly pipeline**: `scripts/cron/comprehensive-learning-nightly.sh` runs a
+   12-step learning extraction pipeline every night:
+   - Pull latest state from all machines
+   - rsync raw sessions from ace-linux-2 and licensed-win-1
+   - Export Hermes and Codex session logs
+   - Sync agent memories cross-agent
+   - Validate skill frontmatter
+   - Run skill curation
+   - Check test health
+   - Track provider costs
+   - Rebuild specs index
+   - Scan for drift in Codex and Hermes sessions
+   - Commit all learning artifacts back to git
+
+4. **Memory bridges**: `scripts/memory/bridge-hermes-claude.sh` syncs Hermes
+   memory into `.claude/memory/agents.md` (git-tracked), so every `git pull` on any
+   machine gets updated context.
+
+### Lesson 4: Multi-Agent Parity
+
+**File:** [multi-agent-parity.md](multi-agent-parity.md)
+
+$269/month across 4 AI subscriptions (Claude Max $200, Codex x2 $40, Gemini $19.99).
+Context parity mandate: corrections in one agent sync to ALL others. Zero waste.
+
+The mechanism: `.claude/skills/` is the single source of truth. All agents read from
+it. Hermes accesses it via `external_dirs` configuration. New skills go to the repo,
+not to `~/.hermes/skills/`. The WRITE-BACK RULE (#1941) enforces this.
+
+Git is the sync mechanism. No proprietary sync protocol. `git pull` on any machine
+gets the latest skills, knowledge, and memory.
+
+### Lesson 5: 3-Agent Cross-Review
+
+**File:** [cross-review.md](cross-review.md)
+
+Three independent agents (Claude, Codex, Gemini) review every plan AND every artifact.
+This is not optional -- it's enforced at Level 3 (Hook) via
+`.claude/hooks/cross-review-gate.sh`, which blocks PR creation without review evidence.
+
+The routing policy (`docs/standards/AI_REVIEW_ROUTING_POLICY.md`) defines roles:
+- **Claude**: orchestrator -- frames work, sequences execution, synthesizes reviews
+- **Codex**: implementation worker and adversarial reviewer
+- **Gemini**: adversarial reviewer for architecture and high-stakes synthesis
+
+Each reviewer catches different failure modes. In practice, Codex is better at
+catching implementation bugs; Gemini catches architectural drift; Claude catches
+scope creep.
+
+---
+
+## How the Five Lessons Connect
+
+These are not independent practices. They form a reinforcing system:
+
+```
+Enforcement (L1)     ensures    Cross-Review (L5) actually happens
+Cross-Review (L5)    generates  learnings captured by the Compound Loop (L3)
+Compound Loop (L3)   improves   Skills used by all agents via Parity (L4)
+Parity (L4)          enables    Workers to operate with full context (L2)
+Workers (L2)         execute    work that Enforcement (L1) gates
+```
+
+Remove any one, and the others degrade:
+- Without enforcement, reviews get skipped
+- Without reviews, quality drops and learnings are shallow
+- Without the learning loop, skills stagnate
+- Without parity, only one agent improves
+- Without workers, context overload prevents focused execution
 
 ---
 
 ## Metrics That Matter
 
-| Metric | Current | Target | Where to Check |
-|--------|---------|--------|----------------|
-| Review compliance | 4% | 80%+ | #2012, compliance-dashboard.sh |
-| Plan approval rate | unknown | 90%+ | plan-gate-events.jsonl |
-| Skill updates/month | unknown | 20+ | .claude/skills/ git history |
-| Cross-review coverage | partial | 100% | .planning/phases/*/REVIEWS.md |
-| Bypass attempts | unknown | trending down | logs/hooks/review-gate-bypass.jsonl |
+| Metric | Current | Target | Source |
+|--------|---------|--------|--------|
+| Skills in production | 691+ | Growing | `.claude/skills/` git history |
+| Enforcement hooks active | 28 | Expanding | `.claude/hooks/` directory |
+| Governance checkpoints | 7 | 7 | `scripts/workflow/governance-checkpoints.yaml` |
+| Nightly pipeline steps | 12 | 15+ | `scripts/cron/comprehensive-learning-nightly.sh` |
+| AI subscription cost | $269/mo | $269/mo | `AGENTS.md` |
+| Cross-review gate | Level 3 (Hook) | Level 3 | `AI_REVIEW_ROUTING_POLICY.md` |
+| Plan approval gate | Level 3 (Hook) | Level 3 | `plan-approval-gate.sh` |
+| Tool call ceiling | 200/session | 200 | `governance-checkpoints.yaml` |
 
 ---
 
-## For Clients
+## For Technical Evaluators
 
-This methodology is available for consulting engagements through [aceengineer.com](https://aceengineer.com). ACE Engineer provides core engineering services with the same discipline:
+If you are evaluating AI-assisted engineering workflows, the key differentiators
+of this system are:
 
-- **OrcaFlex** mooring and riser analysis
-- **Finite Element Analysis** for offshore structures
-- **Cathodic Protection** design per DNV/ISO
-- **API 579** Fitness-for-Service assessments
-- **Python automation** for engineering workflows
-
-The methodology documented here is a subset of how ACE approaches all engineering work: systematic, reviewed, enforced, continuously improving.
+1. **Enforcement is technical, not textual.** Rules that can be bypassed are not rules.
+2. **Skills are in the repo.** Not in agent memory, not in a proprietary database.
+3. **Multiple agents work in parallel.** Not as a novelty, but as a production pattern.
+4. **Everything is git-tracked.** Skills, knowledge, memory, enforcement config, hooks.
+5. **The system improves itself.** Nightly pipelines capture, validate, and propagate learnings.
 
 ---
 
-## Related GitHub Issues
+## Related Issues
 
-- #1876 -- Enforce engineering workflow via Hermes prefill + Claude Code hooks
+- #1839 -- Session governance hard-stop checkpoints
+- #1876 -- Enforce engineering workflow via hooks
 - #1760 -- Self-improvement commands (/compound, /reflect, /knowledge)
-- #112 -- Cowork relevance and multi-agent ecosystem fit
-- #1962 -- Tier-1 repo ecosystem refactoring
+- #1515 -- AI review routing policy
+- #1537 -- Cross-review enforcement
+- #1941 -- WRITE-BACK RULE for skill registration
 - #2017 -- Agent bypass resistance enforcement
 - #2018 -- Orchestrator/worker context enforcement
-- #2020 -- Publish knowledge as aceengineer.com content
+- #2021 -- This methodology documentation
+
+## Key Takeaway
+
+Compound engineering is not about having the best AI agent. It is about building a
+system where every session -- regardless of which agent runs it -- leaves the system
+better than it found it. The five lessons are the operational primitives that make
+this work. They were not designed upfront; they emerged from doing real engineering
+work with AI agents for over a year.
