@@ -24,6 +24,7 @@ tools:
 related_skills:
 - improve
 - knowledge-management
+- session-corpus-audit
 capabilities:
 - session-learning
 - ecosystem-improvement
