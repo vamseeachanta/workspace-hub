@@ -74,16 +74,26 @@ fi
 
 # Check if cron output has recent entries
 CRON_OUTPUT="${HOME}/.hermes/cron/output"
-if [[ -f "${CRON_OUTPUT}" && -s "${CRON_OUTPUT}" ]]; then
+if [[ -d "${CRON_OUTPUT}" ]]; then
+    newest="$(find "${CRON_OUTPUT}" -type f -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
+    mod_epoch="${newest%%.*}"
+    mod_epoch="${mod_epoch:-0}"
+    hours_ago=$(( (TODAY_EPOCH - mod_epoch) / 3600 ))
+    if [[ ${hours_ago} -lt 26 ]]; then
+        pass "Cron output" "Last modified ${hours_ago}h ago"
+    else
+        warn "Cron output" "Stale — last modified ${hours_ago}h ago"
+    fi
+elif [[ -f "${CRON_OUTPUT}" && -s "${CRON_OUTPUT}" ]]; then
     mod_epoch="$(stat -c %Y "${CRON_OUTPUT}" 2>/dev/null || echo 0)"
     hours_ago=$(( (TODAY_EPOCH - mod_epoch) / 3600 ))
     if [[ ${hours_ago} -lt 26 ]]; then
-        pass "Cran output" "Last modified ${hours_ago}h ago"
+        pass "Cron output" "Last modified ${hours_ago}h ago"
     else
-        warn "Cran output" "Stale — last modified ${hours_ago}h ago"
+        warn "Cron output" "Stale — last modified ${hours_ago}h ago"
     fi
 else
-    warn "Cran output" "No output file — cron jobs may not be executing"
+    warn "Cron output" "No output file — cron jobs may not be executing"
 fi
 
 # =========================================================================

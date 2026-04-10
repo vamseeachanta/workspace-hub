@@ -31,9 +31,12 @@ if [[ -z "$STATE_FILE" ]]; then
 fi
 
 # Parse YAML values using grep/sed (no yq dependency)
+# Uses subshell to isolate pipefail — grep returns 1 when key is missing
 get_val() {
     local key="$1"
-    grep -E "^\s+${key}:" "$STATE_FILE" | head -1 | sed "s/.*${key}:\s*//" | tr -d '"' | xargs
+    local val
+    val="$(grep -E "^\s+${key}:" "$STATE_FILE" 2>/dev/null | head -1 | sed "s/.*${key}:\s*//" | tr -d '"' | xargs)" || true
+    echo "$val"
 }
 
 # Status symbol conversion
@@ -58,7 +61,7 @@ if [[ "$MODE" == "json" ]]; then
 fi
 
 # Extract all checklist values
-LAST_RUN=$(grep "^last_run:" "$STATE_FILE" | head -1 | sed 's/last_run:\s*//' | cut -dT -f1)
+LAST_RUN=$(grep "^last_run:" "$STATE_FILE" 2>/dev/null | head -1 | sed 's/last_run:\s*//' | cut -dT -f1) || true
 
 CROSS_REVIEW=$(get_val "cross_review")
 GEMINI_PENDING=$(get_val "gemini_pending")
@@ -158,8 +161,8 @@ COMMITS_FOUND=$(get_val "commits_found")
 PATTERNS=$(get_val "patterns_extracted")
 SESSIONS=$(get_val "sessions_analyzed")
 CONVERSATIONS=$(get_val "conversations_analyzed")
-LEARNINGS=$(grep -A5 "^actions_taken:" "$STATE_FILE" | head -6 | grep "learnings_stored:" | sed 's/.*learnings_stored:\s*//' | head -1)
-KNOWLEDGE_CAP=$(grep -A5 "^actions_taken:" "$STATE_FILE" | head -6 | grep "knowledge_captured:" | sed 's/.*knowledge_captured:\s*//' | head -1)
+LEARNINGS=$(grep -A5 "^actions_taken:" "$STATE_FILE" 2>/dev/null | head -6 | grep "learnings_stored:" | sed 's/.*learnings_stored:\s*//' | head -1) || true
+KNOWLEDGE_CAP=$(grep -A5 "^actions_taken:" "$STATE_FILE" 2>/dev/null | head -6 | grep "knowledge_captured:" | sed 's/.*knowledge_captured:\s*//' | head -1) || true
 
 if [[ "$MODE" == "compact" ]]; then
     # Count statuses
