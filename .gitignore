@@ -1,4 +1,5 @@
 # Individual Git Repositories - Exclude all subdirectory repos
+heavyequipemnt-rag/
 aceengineer-admin/
 aceengineer-strategy/
 aceengineer-website/
@@ -169,6 +170,7 @@ coverage.xml
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/
+.claude/state/session-signals/cost-tracking.jsonl
 !.claude/state/cc-insights/
 !.claude/state/learned-patterns.json
 !.claude/state/skill-scores.yaml
