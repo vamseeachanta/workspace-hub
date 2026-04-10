@@ -181,6 +181,54 @@ def test_build_report_with_base_ref_filters_to_new_drift(tmp_path: Path) -> None
     assert report["changed_paths"]["deleted"] == [".claude/work-queue/assets/WRK-9/stage-2-prompt.md"]
 
 
+def test_build_report_writes_blocked_work_item_stub_without_overwriting_existing_stub(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    logs_dir = repo_root / "logs"
+    logs_dir.mkdir()
+    log_file = logs_dir / "session_20260410.jsonl"
+    missing_prompt = repo_root / ".claude" / "work-queue" / "assets" / "WRK-5015" / "stage-0-prompt.md"
+    log_file.write_text(
+        json.dumps({"hook": "post", "tool": "Read", "file": str(missing_prompt), "repo": "workspace-hub"}),
+        encoding="utf-8",
+    )
+    work_item_record = repo_root / ".claude" / "work-queue" / "pending" / "WRK-5015.md"
+    work_item_record.parent.mkdir(parents=True, exist_ok=True)
+    work_item_record.write_text(
+        "---\n"
+        "id: WRK-5015\n"
+        "status: pending\n"
+        "---\n\n"
+        "## Session State\n"
+        "- Stage 0 blocked pending external approval\n",
+        encoding="utf-8",
+    )
+
+    report = module.build_report(logs_dir, repo_root, write_evidence_stubs=True)
+
+    stub_path = repo_root / ".claude" / "work-queue" / "assets" / "WRK-5015" / "evidence" / "stage-prompt-drift-summary.stub.md"
+    issue = {
+        "work_item": "WRK-5015",
+        "stages": [0],
+        "missing_prompt_files": [
+            {"path": ".claude/work-queue/assets/WRK-5015/stage-0-prompt.md", "reads": 1}
+        ],
+    }
+    assert report["issues_found"] == 1
+    assert report["issues"][0]["evidence_stub"]["created"] is True
+    assert report["issues"][0]["evidence_stub"]["path"] == ".claude/work-queue/assets/WRK-5015/evidence/stage-prompt-drift-summary.stub.md"
+    assert stub_path.exists()
+    assert "blocked work item" in stub_path.read_text(encoding="utf-8")
+
+    stub_path.write_text("existing stub\n", encoding="utf-8")
+
+    stub_info = module.create_evidence_stub_for_issue(issue, repo_root, "2026-04-10T00:00:00Z")
+
+    assert stub_info is not None
+    assert stub_info["created"] is False
+    assert stub_path.read_text(encoding="utf-8") == "existing stub\n"
+
+
 def test_cli_fail_on_issues_returns_nonzero(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     repo_root.mkdir()
