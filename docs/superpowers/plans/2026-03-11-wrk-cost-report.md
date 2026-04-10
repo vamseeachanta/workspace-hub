@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Enable per-WRK AI spend reporting by writing `scripts/ai/wrk-cost-report.py`, consolidating pricing into `config/ai-tools/pricing.yaml`, and integrating cost summary into `close-item.sh`.
+> **Goal:** Enable per-WRK AI spend reporting by writing `scripts/ai/wrk-cost-report.py`, consolidating pricing into `config/ai-tools/pricing.yaml`, and integrating cost summary into the current GitHub issue / `.planning/` close flow (the old `scripts/work-queue/close-item.sh` path is now legacy only).
 
 **Architecture:** The `cost-tracking.jsonl` already has full per-session, per-WRK cost records (`wrk` field confirmed). This plan builds the reporting layer on top: a standalone Python script that reads that JSONL, groups by WRK, and renders a cost table. Pricing lives in a dedicated YAML so it can be updated without touching the tracker script.
 
@@ -17,7 +17,7 @@
 | Create | `config/ai-tools/pricing.yaml` | Canonical per-model pricing (input/output $/1M tokens) |
 | Create | `scripts/ai/wrk-cost-report.py` | Read cost-tracking.jsonl, aggregate by WRK, render table |
 | Create | `scripts/ai/tests/test_wrk_cost_report.py` | TDD tests for aggregation and formatting logic |
-| Modify | `scripts/work-queue/close-item.sh` | Call wrk-cost-report.py at close and print summary |
+| Legacy target | `scripts/work-queue/close-item.sh` | Historical close hook only — replace with current GitHub issue / `.planning/` close flow |
 
 ---
 

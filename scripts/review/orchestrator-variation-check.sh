@@ -6,7 +6,7 @@
 #   bash scripts/review/orchestrator-variation-check.sh \
 #     --wrk WRK-1002 \
 #     --orchestrator claude \
-#     --scripts "scripts/work-queue/verify-gate-evidence.py WRK-1002" \
+#     --scripts "scripts/work-queue/verify-gate-evidence.py WRK-1002  # legacy compatibility wrapper" \
 #               "bash tests/work-queue/test-lifecycle-gates.sh" \
 #               "uv run --no-project python -m pytest tests/unit/test_circle.py -v"
 #

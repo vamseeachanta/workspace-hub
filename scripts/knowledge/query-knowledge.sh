@@ -21,7 +21,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-uv run --no-project python3 - <<PYEOF
+uv run --no-project --with pyyaml python - <<PYEOF
 import json, os, sys, re
 
 kb_dir = "${KNOWLEDGE_BASE_DIR}"

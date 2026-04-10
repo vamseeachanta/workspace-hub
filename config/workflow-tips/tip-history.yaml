@@ -27,3 +27,5 @@ shown:
     tips: [eco-knowledge, bp-scrap-restart]
   - date: 2026-04-09
     tips: [eco-repo-sync, cc-powerup]
+  - date: 2026-04-09
+    tips: [cc-permissions, gsd-forensics]

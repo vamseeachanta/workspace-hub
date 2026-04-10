@@ -120,7 +120,8 @@ HEADER
 | Log usage | `./scripts/ai/assessment/log-usage.sh` |
 | Legal scan | `./scripts/legal/legal-sanity-scan.sh --repo=<name>` |
 | Repo sync | `./scripts/repository_sync` |
-| Work queue index | `uv run --no-project python .claude/work-queue/scripts/generate-index.py` |
+| Work queue index (legacy compat) | `uv run --no-project python .claude/work-queue/scripts/generate-index.py` |
+| Canonical queue refresh | `uv run scripts/refresh-agent-work-queue.py` |
 | Resource index | `./scripts/generate-resource-index.sh` |
 QREF
 

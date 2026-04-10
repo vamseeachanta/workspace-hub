@@ -35,7 +35,7 @@ fi
 # ---------------------------------------------------------------------------
 latest_health=$(ls "${HEALTH_DIR}/"*.json 2>/dev/null | sort | tail -1)
 if [[ -n "$latest_health" ]]; then
-  health_data=$(uv run --no-project python3 -c "
+  health_data=$(uv run --no-project python -c "
 import json, sys
 try:
     d = json.load(open('$latest_health'))

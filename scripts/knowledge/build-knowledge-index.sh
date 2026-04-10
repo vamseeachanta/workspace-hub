@@ -16,7 +16,7 @@ mkdir -p "${KNOWLEDGE_BASE_DIR}"
 (
     flock -w 30 200 || { echo "[build-knowledge-index] Lock timeout — skip" >&2; exit 0; }
 
-    uv run --no-project python3 - <<PYEOF
+    uv run --no-project --with pyyaml python - <<PYEOF
 import json, os, sys
 
 kb_dir = "${KNOWLEDGE_BASE_DIR}"

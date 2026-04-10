@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # session-briefing.sh — Consolidated session-start briefing output.
-# Wraps snapshot-age.sh + quota-status.sh + whats-next.sh (--all).
+# Wraps snapshot-age.sh + quota-status.sh + legacy whats-next.sh compatibility wrapper (--all).
 # Non-blocking by design: each section runs independently; always exits 0.
 # Usage: session-briefing.sh [--category <name>]
 set -uo pipefail

@@ -29,7 +29,7 @@ if [[ ! -f "${MEMORY_FILE}" ]]; then
     exit 0
 fi
 
-uv run --no-project python3 - <<PYEOF
+uv run --no-project python - <<PYEOF
 import re, json, os, sys, shutil
 
 memory_file = "${MEMORY_FILE}"

@@ -42,7 +42,7 @@ echo "Noise file: $NOISE_FILE"
 echo ""
 
 # Extract domains with UNSUBSCRIBE action from the YAML file
-DOMAINS=$(uv run python3 -c "
+DOMAINS=$(uv run --with pyyaml python -c "
 import yaml, sys
 with open('${NOISE_FILE}') as f:
     data = yaml.safe_load(f)
@@ -70,7 +70,7 @@ if $DRY_RUN; then
 fi
 
 # Process each domain using the Gmail API via Python
-uv run python3 - "$ACCOUNT" "$DRY_RUN" <<'PYTHON_SCRIPT'
+uv run --with pyyaml python - "$ACCOUNT" "$DRY_RUN" <<'PYTHON_SCRIPT'
 import json, os, sys, urllib.request, urllib.parse, re
 from pathlib import Path
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # refresh-orchestrator-timeline.sh
-# Re-run verify-gate-evidence.py for a WRK-66x orchestrator run and append
+# Re-run the legacy verify-gate-evidence compatibility wrapper for a WRK-66x orchestrator run and append
 # a timestamped entry to assets/WRK-656/orchestrator-timeline.md.
 #
 # Usage:
@@ -52,7 +52,7 @@ echo "  Timestamp : ${TIMESTAMP}"
 echo "  Trigger   : ${TRIGGER}"
 [[ -n "$NOTES" ]] && echo "  Notes     : ${NOTES}"
 
-# Run gate evidence validator
+# Run legacy gate-evidence compatibility wrapper (fail-closed, informational only)
 VERIFY_OUTPUT="$(uv run --no-project python "${VERIFY_SCRIPT}" "${WRK_ID}" 2>&1)" || true
 VALIDATOR_RESULT="PASS"
 if echo "${VERIFY_OUTPUT}" | grep -q "MISSING\|incomplete"; then
