@@ -56,10 +56,11 @@ is_self_approved() {
   local marker_age_s
   marker_age_s=$(( $(date +%s) - $(stat -c %Y "$marker" 2>/dev/null || echo 0) ))
   if [[ "$marker_age_s" -lt 120 ]]; then
-    # If the marker is uncommitted (still in working tree), it was likely just created by this session
-    local rel_path="${marker#"$WS"/}"
-    if ! git -C "$WS" log --oneline -1 -- "$rel_path" 2>/dev/null | grep -q .; then
-      return 0  # is self-approved (new file, never committed)
+    if git -C "$WS" rev-parse --git-dir &>/dev/null 2>&1; then
+      local rel_path="${marker#"$WS"/}"
+      if ! git -C "$WS" log --oneline -1 -- "$rel_path" 2>/dev/null | grep -q .; then
+        return 0  # is self-approved (new file, never committed in this git repo)
+      fi
     fi
   fi
   return 1  # not self-approved
@@ -74,13 +75,15 @@ is_safe_path() {
     */docs/handoffs/*|*/notes/*) return 0 ;;
     */.claude/*|*/.git/hooks/*) return 0 ;;
     */scripts/workflow/*|*/scripts/enforcement/*) return 0 ;;
+    */tests/*|*/test_*) return 0 ;;
   esac
-  # Harness config files — always allowed
+  # Harness config files and standard root documentation — always allowed
   case "$rel" in
-    CLAUDE.md|AGENTS.md|MEMORY.md|GEMINI.md) return 0 ;;
+    CLAUDE.md|AGENTS.md|MEMORY.md|GEMINI.md|README.md|CHANGELOG.md|LICENSE) return 0 ;;
   esac
   # NOTE: *.md catch-all REMOVED (#2047) — was allowing all implementation to bypass gate
-  # NOTE: tests/*, scripts/ (general), knowledge/* REMOVED (#2047) — too broad
+  # NOTE: scripts/ (general), knowledge/* REMOVED (#2047) — too broad
+  # NOTE: tests/* RESTORED — TDD requires test writes before plan approval (#2056)
   return 1
 }
 
