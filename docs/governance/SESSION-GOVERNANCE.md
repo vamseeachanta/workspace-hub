@@ -386,6 +386,28 @@ pre-push:
   -> require-review-on-push.sh (blocks without review evidence)
 ```
 
+## What Was Implemented (Phase 3e) — 2026-04-09
+
+### Governance Skill Smoke Tests
+
+Adds regression tests that verify governance coordination skills remain structurally
+intact. Each test validates file existence, frontmatter presence, and key content markers.
+
+#### Test Coverage
+
+| Test file | Skill under test | Assertions |
+|-----------|-----------------|------------|
+| `test_session_start_routine_smoke.py` | `coordination/session-start-routine` | exists, frontmatter, body contains "pre-flight", "context", "environment" |
+| `test_session_corpus_audit_smoke.py` | `coordination/session-corpus-audit` | exists, frontmatter |
+| `test_comprehensive_learning_smoke.py` | `coordination/comprehensive-learning-wrapper` | wrapper exists, cron script `scripts/cron/comprehensive-learning-nightly.sh` exists |
+| `test_cross_review_policy_smoke.py` | `coordination/cross-review-policy` | exists, body contains `AI_REVIEW_ROUTING_POLICY` |
+
+Run: `uv run pytest tests/skills/test_*_smoke.py -v`
+
+These smoke tests act as canaries — if a skill file is accidentally deleted, renamed,
+or has its frontmatter corrupted during refactoring, CI catches it before session
+workflows silently break.
+
 ## What Was Implemented (Phase 4) — 2026-04-09
 
 ### Artifact Verification + Knowledge Propagation (#2020)

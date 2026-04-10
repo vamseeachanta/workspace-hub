@@ -211,6 +211,14 @@ Treat these as legacy or drift-prone unless they are explicitly refreshed to mat
 
 If live crontab and one of the legacy sources disagree, prefer YAML + `setup-cron.sh --dry-run`, not the legacy file.
 
+Important operational lesson:
+- `cron-health-check` can report a low or even zero issue count while the installed crontab is still drifted from YAML.
+- Never use the health report alone as proof that cron reconciliation succeeded.
+- Primary proof of success is:
+  1. fresh crontab header from `setup-cron.sh --replace`
+  2. exact parity between `crontab -l` and `bash scripts/cron/setup-cron.sh --dry-run`
+  3. at least one near-term canary job (for example `cron-health` at 05:45 or `daily-today` at 06:00) producing a fresh log after reconciliation.
+
 ## Troubleshooting Guidance
 
 ### Missing job on machine
@@ -362,15 +370,16 @@ Current canonical daily task pattern:
 - daily artifact path: `logs/daily/YYYY-MM-DD.md`
 - daily wrapper log: `logs/daily/cron.log`
 
-Important finding:
+Important findings:
 - `scripts/productivity/daily_today.sh` already supports `--week` and writes `logs/weekly/YYYY-Www.md`
 - if weekly reports are absent, first check whether a `weekly-today` task exists in `config/scheduled-tasks/schedule-tasks.yaml`
-- do not assume weekly reporting is broken just because `scripts/coordination/productivity/crontab.example` mentions it; that file may be stale
+- do not assume weekly reporting is broken just because `scripts/coordination/productivity/crontab.example` mentions it; that file may be stale or intentionally deprecated
+- preferred scheduling is 5 minutes after the daily run to avoid same-minute overlap with `daily-today`
 
-Minimal restoration pattern for weekly today:
+Preferred restoration pattern for weekly today:
 ```yaml
 - id: weekly-today
-  schedule: "0 6 * * 1"
+  schedule: "5 6 * * 1"
   machines: [dev-primary, ace-linux-1]
   requires: [python3, bash, git]
   command: >-
@@ -382,6 +391,9 @@ Minimal restoration pattern for weekly today:
 ```
 
 No script changes are needed for this pattern; only the YAML task and cron reinstall.
+
+Documentation cleanup rule:
+- if `scripts/coordination/productivity/crontab.example` still contains installable cron lines, consider converting it to deprecation-only guidance that points operators back to `config/scheduled-tasks/schedule-tasks.yaml` and `scripts/cron/setup-cron.sh`.
 
 ## Rule of Thumb
 

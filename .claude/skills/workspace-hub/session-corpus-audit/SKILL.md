@@ -107,6 +107,22 @@ Prompt reads are most useful when interpreted together with nearby artifacts. Co
 - stage exit / verification scripts such as `exit_stage.py`, `verify-gate-evidence.py`, `generate-html-review.py`
 - skill reads under `.claude/skills/.../SKILL.md`
 
+### Practical migration pattern discovered in historical Claude corpus
+
+When the corpus shows very hot reads of paths that no longer exist in the current checkout, do NOT immediately recreate the deleted files. First classify each hot path into one of four buckets:
+1. **Replaced by current docs/hooks/governance** — fix with a redirect/index document
+2. **Replaced by a renamed live script** — update docs/examples to the new path
+3. **Bootstrap-safe / intentionally minimal** — leave alone unless policy explicitly changes
+4. **Historical noise only** — document and ignore
+
+A high-leverage concrete output is a **legacy reference map** document that translates stale Claude-session paths to current repo surfaces. This is often better than compatibility shims because old workflow executables may have been intentionally removed.
+
+For command-policy drift (for example `python3` vs `uv run ... python`), separate targets into:
+- **active automation surfaces** — patch first
+- **agent-facing docs/templates** — patch second because they propagate bad examples
+- **bootstrap/setup scripts** — patch only if the repo explicitly wants to require the newer runtime tool there
+- **tests/fixtures/evidence** — do not rewrite unless the purpose of the file is not historical/audit preservation
+
 Interpretation pattern:
 - prompt + evidence + exit script => prompts are acting as workflow contracts, not free-form instructions
 - heavy Stage 2 / Stage 4 concentration => planning and resource-intelligence dominate the workflow
@@ -291,6 +307,10 @@ Subrepo CLAUDE.md files are NOT tracked in workspace-hub git — they live in th
 5. **Path normalization**: Strip `/mnt/local-analysis/workspace-hub/` prefix for clean display
 6. **Workflow window overlap**: Sliding windows produce massive candidate counts (82K+). Deduplicate by (tool_sequence, dir_prefix) and keep longest patterns.
 7. **Git push with unstaged changes**: `git pull --rebase` fails with unstaged changes. Commit first, then push. If remote rejects, stash → pull rebase → stash pop.
+8. **Historical-log metrics do NOT improve just because you patched the repo**: a refreshed audit over the same Claude session corpus will usually show the same missing-path counts and python3 counts, because those metrics are properties of historical logs. Use the audit to identify current remediation targets, then search the live repo for still-active references to those missing paths.
+9. **Best remediation for hot missing paths is often a compatibility redirect, not file resurrection**: when a legacy path is still referenced by current entrypoints, add a thin stub/wrapper that fails clearly or redirects to canonical docs/workflows. This reduces future agent confusion without reviving obsolete workflow semantics.
+
+9. **Git push with unstaged changes**: `git pull --rebase` fails with unstaged changes. Commit first, then push. If remote rejects, stash → pull rebase → stash pop.
 
 ## Phase E: Agent Routing Intelligence
 
@@ -381,7 +401,11 @@ When the task is specifically: "review Claude work session logs and strengthen t
    - external missing paths (`/tmp`, other mount points, plugin cache)
 4. Count prompt-like reads and missing stage-prompt assets
 5. Count Bash calls using bare `python3` vs `uv run ... python`
-6. Emit both machine-readable JSON and a markdown report
+6. Build a stage-prompt package index by work item from `.claude/work-queue/assets/<WRK>/` that records:
+   - stages referenced in historical logs
+   - prompt file paths and whether they still exist
+   - associated evidence files under `evidence/`
+7. Emit both machine-readable JSON and a markdown report
 
 Reference implementation added in this repo:
 - `scripts/analysis/claude_session_ecosystem_audit.py`
@@ -398,7 +422,12 @@ uv run python scripts/analysis/claude_session_ecosystem_audit.py \
 What this lightweight audit is good at surfacing:
 - hot legacy references after repo refactors (for example `scripts/work-queue/*` paths that no longer exist)
 - missing prompt/stage assets that were important in historical Claude workflow
+- which specific WRK/workspace-hub prompt packages have surviving evidence artifacts but missing prompt files
 - policy drift where Claude Bash calls still use bare `python3`
+
+Additional practical follow-through learned from implementation:
+- add the stage-prompt package index directly into the markdown report, not only JSON, so humans can triage missing prompt assets quickly
+- do not assume state artifacts are machine-local just because they live under `.claude/state/`; verify `.gitignore` and tracked-file status first. In this repo, `.claude/state/portfolio-signals.yaml` is intentionally tracked shared state and tests should assert tracked+not-ignored behavior rather than the opposite.
 
 Use this lightweight pass before the full Phase A/B/C/F/G process when the user wants fast ecosystem-strengthening recommendations rather than the full cross-agent program.
 

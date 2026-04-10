@@ -12,6 +12,7 @@ from typing import Iterable
 
 PROMPT_RE = re.compile(r"prompt", re.IGNORECASE)
 STAGE_PROMPT_RE = re.compile(r"stage-(\d+)-prompt\.md", re.IGNORECASE)
+WORK_ITEM_RE = re.compile(r"(WRK-\d+|workspace-hub-\d+)", re.IGNORECASE)
 
 
 def normalize_path(raw_path: str | None, repo_root: Path) -> tuple[str, bool, str]:
@@ -47,6 +48,66 @@ def top_items(counter: Counter, limit: int) -> list[dict]:
 
 def top_pairs(counter: Counter, limit: int, key_name: str = "value") -> list[dict]:
     return [{key_name: key, "count": value} for key, value in counter.most_common(limit)]
+
+
+def work_item_from_path(path: str) -> str | None:
+    match = WORK_ITEM_RE.search(path)
+    return match.group(1) if match else None
+
+
+def collect_stage_prompt_packages(repo_root: Path, prompt_reads: Counter[str]) -> list[dict]:
+    assets_root = repo_root / ".claude" / "work-queue" / "assets"
+    package_map: dict[str, dict] = {}
+
+    def ensure_package(work_item: str) -> dict:
+        return package_map.setdefault(
+            work_item,
+            {"work_item": work_item, "stages": set(), "prompt_files": {}, "evidence_files": set()},
+        )
+
+    for path, reads in prompt_reads.items():
+        work_item = work_item_from_path(path)
+        stage_match = STAGE_PROMPT_RE.search(path)
+        if not work_item or not stage_match:
+            continue
+        package = ensure_package(work_item)
+        stage = int(stage_match.group(1))
+        package["stages"].add(stage)
+        package["prompt_files"][path] = {
+            "path": path,
+            "exists": (repo_root / path).exists(),
+            "reads": reads,
+        }
+
+    if assets_root.exists():
+        for work_dir in sorted(p for p in assets_root.iterdir() if p.is_dir()):
+            work_item = work_dir.name
+            package = ensure_package(work_item)
+            for prompt_path in sorted(work_dir.glob("stage-*-prompt.md")):
+                rel = prompt_path.relative_to(repo_root).as_posix()
+                stage_match = STAGE_PROMPT_RE.search(rel)
+                if stage_match:
+                    package["stages"].add(int(stage_match.group(1)))
+                existing = package["prompt_files"].get(rel, {"path": rel, "exists": True, "reads": 0})
+                existing["exists"] = True
+                package["prompt_files"][rel] = existing
+            evidence_dir = work_dir / "evidence"
+            if evidence_dir.exists():
+                for evidence_path in sorted(p for p in evidence_dir.rglob("*") if p.is_file()):
+                    package["evidence_files"].add(evidence_path.relative_to(repo_root).as_posix())
+
+    rendered = []
+    for work_item in sorted(package_map):
+        package = package_map[work_item]
+        rendered.append(
+            {
+                "work_item": work_item,
+                "stages": sorted(package["stages"]),
+                "prompt_files": [package["prompt_files"][p] for p in sorted(package["prompt_files"])],
+                "evidence_files": sorted(package["evidence_files"]),
+            }
+        )
+    return rendered
 
 
 def build_summary(logs_dir: Path, repo_root: Path) -> dict:
@@ -86,12 +147,12 @@ def build_summary(logs_dir: Path, repo_root: Path) -> dict:
             prompt_reads[normalized] += 1
             if not exists:
                 missing_prompt_reads[normalized] += 1
-            stage_match = STAGE_PROMPT_RE.search(normalized)
-            if stage_match:
-                stage_counts[int(stage_match.group(1))] += 1
-                wrk_match = re.search(r"(WRK-\d+|workspace-hub-\d+)", normalized)
-                if wrk_match:
-                    wrk_counts[wrk_match.group(1)] += 1
+                stage_match = STAGE_PROMPT_RE.search(normalized)
+                if stage_match:
+                    stage_counts[int(stage_match.group(1))] += 1
+                    work_item = work_item_from_path(normalized)
+                    if work_item:
+                        wrk_counts[work_item] += 1
 
         if exists:
             continue
@@ -121,6 +182,7 @@ def build_summary(logs_dir: Path, repo_root: Path) -> dict:
         "stage_prompt_work_items": [
             {"work_item": wrk, "count": count} for wrk, count in wrk_counts.most_common(15)
         ],
+        "stage_prompt_packages": collect_stage_prompt_packages(repo_root, prompt_reads),
         "missing_repo_read_total": sum(missing_repo_reads.values()),
         "missing_external_read_total": sum(missing_external_reads.values()),
         "python3_bash_calls": python3_bash_calls,
@@ -164,6 +226,31 @@ def render_markdown(summary: dict) -> str:
     lines += lines_for_table("Missing prompt reads", summary["top_missing_prompt_reads"], "path")
     lines += lines_for_table("Stage prompt distribution", summary["stage_prompt_distribution"], "stage")
     lines += lines_for_table("Stage prompt work items", summary["stage_prompt_work_items"], "work_item")
+
+    lines.append("## Stage prompt package index")
+    stage_packages = summary.get("stage_prompt_packages", [])
+    if not stage_packages:
+        lines.append("- none")
+        lines.append("")
+    else:
+        for package in stage_packages:
+            stages = ", ".join(str(stage) for stage in package.get("stages", [])) or "none"
+            prompt_files = package.get("prompt_files", [])
+            evidence_files = package.get("evidence_files", [])
+            missing_count = sum(1 for item in prompt_files if not item.get("exists"))
+            lines.append(
+                f"- `{package['work_item']}` — stages: {stages} | prompt files: {len(prompt_files)} | missing prompt artifacts: {missing_count} | evidence files: {len(evidence_files)}"
+            )
+            for prompt in prompt_files:
+                status = "present" if prompt.get("exists") else "missing"
+                lines.append(
+                    f"  - prompt: `{prompt['path']}` ({status}, reads={prompt.get('reads', 0)})"
+                )
+            for evidence in evidence_files[:10]:
+                lines.append(f"  - evidence: `{evidence}`")
+            if len(evidence_files) > 10:
+                lines.append(f"  - evidence: ... {len(evidence_files) - 10} more")
+        lines.append("")
 
     lines += [
         "## Ecosystem strengthening recommendations",

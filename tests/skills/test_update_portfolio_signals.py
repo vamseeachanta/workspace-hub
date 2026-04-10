@@ -389,11 +389,21 @@ def test_nightly_step_labels_are_monotonic():
     assert idx_3a < idx_3b < idx_3c, f"Steps not monotonic: {step_labels}"
 
 
-# ── AC-6: gitignore ───────────────────────────────────────────────────────────
+# ── AC-6: shared state tracking policy ───────────────────────────────────────
 
-def test_gitignore_covers_signals():
-    result = subprocess.run(
-        ["git", "check-ignore", "-v", ".claude/state/portfolio-signals.yaml"],
-        cwd=REPO_ROOT, capture_output=True, text=True
+def test_portfolio_signals_is_shared_repo_state_not_gitignored():
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", ".claude/state/portfolio-signals.yaml"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
     )
-    assert result.returncode == 0, "portfolio-signals.yaml is NOT gitignored"
+    assert tracked.returncode == 0, "portfolio-signals.yaml should be tracked shared state"
+
+    ignored = subprocess.run(
+        ["git", "check-ignore", ".claude/state/portfolio-signals.yaml"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    assert ignored.returncode != 0, "portfolio-signals.yaml should not be gitignored"
