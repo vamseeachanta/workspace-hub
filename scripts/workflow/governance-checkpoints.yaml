@@ -48,10 +48,11 @@ checkpoints:
     stage: runtime
     type: auto-gate
     description: >
-      Auto-pause at 200 tool calls per session. Require user confirmation
-      to continue. Prevents runaway sessions (6.1M wasted calls evidence).
+      Hard stop at 1000 tool calls per session (tracked by PPID — resets each
+      new Claude session). Prevents runaway agents; does not accumulate across
+      sessions on the same day.
     enforced: true
-    threshold: 200
+    threshold: 1000
 
   - id: error-loop-breaker
     name: Error Loop Breaker

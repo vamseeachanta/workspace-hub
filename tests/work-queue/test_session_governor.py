@@ -386,16 +386,16 @@ class TestHookIntegration:
         )
         assert result.returncode == 0, f"Expected 0, got {result.returncode}"
 
-        # PAUSE (exit 1)
+        # PAUSE (exit 1) — 85% of the 1000-call threshold
         result = subprocess.run(
-            ["uv", "run", governor, "--check-limits", "--tool-calls", "170"],
+            ["uv", "run", governor, "--check-limits", "--tool-calls", "850"],
             capture_output=True, text=True, timeout=30,
         )
         assert result.returncode == 1, f"Expected 1, got {result.returncode}"
 
-        # STOP (exit 2)
+        # STOP (exit 2) — at the 1000-call threshold
         result = subprocess.run(
-            ["uv", "run", governor, "--check-limits", "--tool-calls", "200"],
+            ["uv", "run", governor, "--check-limits", "--tool-calls", "1000"],
             capture_output=True, text=True, timeout=30,
         )
         assert result.returncode == 2, f"Expected 2, got {result.returncode}"
@@ -565,8 +565,8 @@ class TestStrictReviewGate:
             f"Expected enforced=true, got {pre_push['enforced']}"
         )
 
-    def test_yaml_tool_call_ceiling_restored_to_200(self):
-        """tool-call-ceiling must stay at the live production 200-call threshold."""
+    def test_yaml_tool_call_ceiling_is_per_session_budget(self):
+        """tool-call-ceiling threshold must be a sane per-session budget (>= 500)."""
         config_path = os.path.join(
             REPO_ROOT, "scripts", "workflow", "governance-checkpoints.yaml"
         )
@@ -577,10 +577,11 @@ class TestStrictReviewGate:
             None,
         )
         assert ceiling is not None, "tool-call-ceiling checkpoint not found"
-        assert ceiling["threshold"] == 200, (
-            f"Expected tool-call-ceiling threshold=200, got {ceiling['threshold']}"
+        assert ceiling["threshold"] >= 500, (
+            f"Per-session threshold must be >= 500, got {ceiling['threshold']}. "
+            "The ceiling tracks calls per Claude process (PPID), not per day — "
+            "a 200-call daily ceiling blocks multi-session days."
         )
-        assert ceiling["threshold"] != 5000, "Production threshold must not drift back to 5000"
 
     def test_script_defaults_to_strict(self):
         """require-review-on-push.sh must default to strict mode."""

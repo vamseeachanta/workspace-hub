@@ -480,6 +480,37 @@ New git-tracked directories:
 - `.planning/verified/` — verification markers from artifact verification
 - `.planning/discoveries/` — worker discovery JSONL logs
 
+## What Was Implemented (Phase 3f) — 2026-04-10
+
+### Per-Session Tool-Call Counter
+
+**Problem**: The `session-governor-check.sh` hook maintained a single counter file
+(`tool-call-count`) reset only at midnight. On days with multiple Claude sessions,
+tool calls accumulated across all sessions toward the 200-call ceiling, causing HARD
+STOP blocks in session 2+ regardless of how many calls that individual session had made.
+
+**Fix**:
+
+| | Before | After |
+|--|--------|-------|
+| Counter file | `tool-call-count` (one per day) | `tool-call-count-$PPID` (one per Claude process) |
+| Reset trigger | Midnight | New Claude session (new OS process = new PPID) |
+| Threshold | 200 calls/day | 1000 calls/session |
+| Fast-path ceiling | 160 (80% of 200) | 800 (80% of 1000) |
+
+**Why `$PPID` works**: Every `claude` invocation is a new OS process. The bash hook's
+`$PPID` is the PID of the spawning Claude process — constant within a session,
+different across sessions. Old PID-based files are cleaned up after 7 days.
+
+**Files changed**:
+- `.claude/hooks/session-governor-check.sh` — PPID-based counter, updated messages
+- `scripts/workflow/governance-checkpoints.yaml` — threshold 1000
+- `tests/work-queue/test_session_governor.py` — test assertions aligned to new threshold
+
+**Follow-up issues**:
+- #2064 — fix pre-existing plan-approval-gate test path mismatches
+- #2065 — derive `FAST_PATH_CEILING` dynamically from YAML threshold
+
 ## What Remains (Phase 5)
 
 ### Phase 5: Hermes Orchestration

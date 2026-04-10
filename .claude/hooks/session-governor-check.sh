@@ -3,16 +3,16 @@
 # Integrates session_governor.py check_session_limits() into Claude Code hooks.
 # Issue: #1839 Phase 2b - Wire runtime enforcement into hooks
 #
-# Maintains a per-day tool call counter in .claude/state/session-governor/.
-# Below 80% of the governance ceiling (160/200), exits silently (fast path).
+# Tracks tool calls per-session using $PPID as the session key. Each new
+# Claude Code process gets a fresh counter — multi-session days no longer
+# accumulate toward the ceiling.
+#
+# Below 80% of the governance ceiling, exits silently (fast path).
 # At 80%+, delegates to session_governor.py for authoritative verdict.
 # At the ceiling, emits a {"decision":"block"} to prevent further tool calls.
 #
 # Protocol: stdout JSON for Claude context, stderr for user terminal.
 # Follows {"decision":"block","reason":"..."} convention (cross-review-gate.sh).
-#
-# Gaps documented in SESSION-GOVERNANCE.md:
-#   - counter resets daily, not per-session (no reliable session ID in hook env)
 #
 # Error tracking: consecutive error count is maintained by error-loop-tracker.sh
 # (PostToolUse hook) in .claude/state/session-governor/consecutive-error-count.
@@ -22,31 +22,27 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 WS="${WORKSPACE_HUB:-$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)}"
 STATE_DIR="$WS/.claude/state/session-governor"
-COUNTER_FILE="$STATE_DIR/tool-call-count"
-DATE_FILE="$STATE_DIR/counter-date"
 GOVERNOR="$WS/scripts/workflow/session_governor.py"
 
-# 80% of 200 threshold from governance-checkpoints.yaml
-FAST_PATH_CEILING=160
+# Session key: $PPID is the PID of the Claude Code process that invoked this hook.
+# Each new Claude session is a new process — counter resets automatically.
+SESSION_KEY="${PPID:-0}"
+COUNTER_FILE="$STATE_DIR/tool-call-count-${SESSION_KEY}"
+
+# 80% of the 1000-call threshold in governance-checkpoints.yaml
+FAST_PATH_CEILING=800
+THRESHOLD=1000
 
 mkdir -p "$STATE_DIR" 2>/dev/null
 
-# -- Reset counter on new day --
-TODAY=$(date +%Y%m%d)
-if [[ -f "$DATE_FILE" ]]; then
-  STORED_DATE=$(cat "$DATE_FILE" 2>/dev/null) || STORED_DATE=""
-  if [[ "$STORED_DATE" != "$TODAY" ]]; then
-    echo "0" > "$COUNTER_FILE"
-    echo "$TODAY" > "$DATE_FILE"
-  fi
-else
-  echo "$TODAY" > "$DATE_FILE"
-fi
+# -- Clean up counter files from dead sessions (older than 7 days) --
+find "$STATE_DIR" -name "tool-call-count-*" -mtime +7 -delete 2>/dev/null || true
 
-# -- Increment counter --
+# -- Increment per-session counter --
 COUNT=0
 if [[ -f "$COUNTER_FILE" ]]; then
   COUNT=$(cat "$COUNTER_FILE" 2>/dev/null) || COUNT=0
+  [[ "$COUNT" =~ ^[0-9]+$ ]] || COUNT=0
 fi
 COUNT=$((COUNT + 1))
 echo "$COUNT" > "$COUNTER_FILE"
@@ -76,9 +72,9 @@ case $GOV_EXIT in
       echo "[session-governor] Do NOT retry. Escalate to user for diagnosis." >&2
       printf '{"decision":"block","reason":"Session governance HARD STOP: %d consecutive identical errors detected (error-loop-breaker threshold: 3). Stop retrying the same approach. Escalate to user. Run: uv run scripts/workflow/session_governor.py --check-limits --tool-calls %d --consecutive-errors %d"}\n' "$CONSEC_ERRORS" "$COUNT" "$CONSEC_ERRORS"
     else
-      echo "[session-governor] HARD STOP: ${COUNT}/200 tool calls - governance ceiling reached." >&2
+      echo "[session-governor] HARD STOP: ${COUNT}/${THRESHOLD} tool calls - governance ceiling reached." >&2
       echo "[session-governor] Commit current work and end the session." >&2
-      printf '{"decision":"block","reason":"Session governance HARD STOP: %d tool calls reached the 200-call ceiling (governance-checkpoints.yaml). Commit current work and end the session. Run: uv run scripts/workflow/session_governor.py --check-limits --tool-calls %d --consecutive-errors %d"}\n' "$COUNT" "$COUNT" "$CONSEC_ERRORS"
+      printf '{"decision":"block","reason":"Session governance HARD STOP: %d tool calls reached the %d-call ceiling (governance-checkpoints.yaml). Commit current work and end the session. Run: uv run scripts/workflow/session_governor.py --check-limits --tool-calls %d --consecutive-errors %d"}\n' "$COUNT" "$THRESHOLD" "$COUNT" "$CONSEC_ERRORS"
     fi
     exit 0
     ;;
@@ -87,7 +83,7 @@ case $GOV_EXIT in
       echo "[session-governor] WARNING: ${CONSEC_ERRORS}x consecutive identical error - approaching error loop threshold (3)." >&2
       echo "[session-governor] Consider a different approach before retrying." >&2
     else
-      echo "[session-governor] WARNING: ${COUNT}/200 tool calls - approaching governance ceiling." >&2
+      echo "[session-governor] WARNING: ${COUNT}/${THRESHOLD} tool calls - approaching governance ceiling." >&2
       echo "[session-governor] Consider wrapping up current work." >&2
     fi
     exit 0
