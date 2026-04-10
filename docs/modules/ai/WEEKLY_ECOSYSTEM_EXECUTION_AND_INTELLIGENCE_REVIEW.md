@@ -134,3 +134,22 @@ The weekly review is broad enough that it should be split into focused follow-on
 - Intelligence Entry Points page + backlink test: #2137
 - Scheduled weekly review runner + task registration: #2138
 - Weekly review artifact schema + canonical output layout: #2139
+- Weekly review runner wrapper + CLI entrypoint: #2144
+- Weekly review schedule registration + cron installer wiring: #2145
+- Weekly review run-artifact schema spec: #2146
+- Weekly review artifact validator CLI + CI checks: #2147
+- Linux readiness evidence bundle writer: #2148
+- Seeded intelligence accessibility registry generator: #2149
+- Windows no-SSH readiness evidence writer + local drop path: #2150
+- Per-machine readiness evidence bundle schema + status vocabulary: #2151
+- Golden fixture corpus for weekly review run artifacts: #2152
+- Weekly review history index + latest manifest writer: #2153
+- Markdown/HTML publication layout renderer: #2154
+- Shared machine/path resolver library: #2155
+- Accessibility registry coherence validator: #2156
+- Native PowerShell probe collector for Windows readiness bundles: #2157
+- Git Bash launcher + path-normalization bridge for Windows evidence writer: #2158
+- Publication bundle assembler for weekly review outputs: #2159
+- Latest/history navigation + relative-link contract tests: #2160
+- Ingest provider-session ecosystem audit reads into seeded accessibility registry: #2161
+- Machine/path alias schema for seeded accessibility registry entries: #2162

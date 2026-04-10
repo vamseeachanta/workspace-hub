@@ -155,6 +155,46 @@ def test_build_provider_audit_prefers_raw_claude_logs_when_present(tmp_path: Pat
     assert audit["providers"]["claude"]["post_records"] == 1
 
 
+def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    gemini_dir = logs_root / "gemini"
+    gemini_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "gemini_tool": "run_shell_command",
+            "cmd": 'python3 -c "print(1)"',
+            "repo": "workspace-hub",
+            "session_id": "gem-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "gemini_tool": "read_file",
+            "file": "docs/keep.md",
+            "repo": "workspace-hub",
+            "session_id": "gem-1",
+        },
+    ]
+    target = repo_root / "docs" / "keep.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8")
+    (gemini_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["providers"]["gemini"]["source"] == "raw_logs"
+    assert audit["providers"]["gemini"]["sessions"] == 1
+    assert audit["providers"]["gemini"]["post_records"] == 2
+    assert audit["providers"]["gemini"]["python3_bash_calls"] == 1
+    assert audit["providers"]["gemini"]["unique_runtime_sessions"] == 1
+    assert audit["providers"]["gemini"]["top_reads"][0]["path"] == "docs/keep.md"
+
+
 def test_render_markdown_mentions_symbolic_reads() -> None:
     audit = {
         "generated_at": "2026-04-10T00:00:00Z",

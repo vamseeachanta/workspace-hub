@@ -30,6 +30,10 @@ done
 
 mkdir -p "$OUTPUT_DIR"
 
+if [[ "$EXPORT_ALL" == "true" && "$DRY_RUN" == "false" ]]; then
+  rm -f "$OUTPUT_DIR"/session_*.jsonl "$STATE_FILE"
+fi
+
 if [[ ! -d "$CODEX_SESSIONS" ]]; then
   echo "No Codex sessions directory at $CODEX_SESSIONS — skipping"
   exit 0

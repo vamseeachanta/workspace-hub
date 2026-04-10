@@ -72,8 +72,8 @@ TOOL_MAP = {
     "glob": "Grep",
     "google_web_search": "Browser",
     "write_todos": "Write",
-    "codebase_investigator": "Read",
-    "cli_help": "Read",
+    "codebase_investigator": "ToolSearch",
+    "cli_help": "ToolSearch",
 }
 
 

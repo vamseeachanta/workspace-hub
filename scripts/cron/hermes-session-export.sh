@@ -30,6 +30,10 @@ done
 
 mkdir -p "$OUTPUT_DIR" "$CORRECTIONS_DIR"
 
+if [[ "$EXPORT_ALL" == "true" && "$DRY_RUN" == "false" ]]; then
+  rm -f "$OUTPUT_DIR"/session_*.jsonl "$CORRECTIONS_DIR"/session_*.jsonl "$STATE_FILE"
+fi
+
 if [[ ! -d "$HERMES_SESSIONS" ]]; then
   echo "No Hermes sessions directory at $HERMES_SESSIONS — skipping"
   exit 0
@@ -85,7 +89,7 @@ TOOL_MAP = {
     'search_files': 'Grep',
     'skill_view': 'Read',
     'skill_manage': 'Write',
-    'skills_list': 'Read',
+    'skills_list': 'ToolSearch',
     'browser_navigate': 'Browser',
     'browser_click': 'Browser',
     'browser_snapshot': 'Browser',
@@ -94,7 +98,7 @@ TOOL_MAP = {
     'delegate_task': 'Task',
     'execute_code': 'Bash',
     'memory': 'Write',
-    'session_search': 'Read',
+    'session_search': 'Grep',
     'vision_analyze': 'Read',
     'todo': 'Write',
     'clarify': 'UserInput',
@@ -112,6 +116,7 @@ except Exception:
 session_start = session.get('session_start', '')
 messages = session.get('messages', [])
 model = session.get('model', 'unknown')
+session_id = session.get('session_id', '')
 
 lines = []
 for msg in messages:
@@ -138,13 +143,28 @@ for msg in messages:
                 'project': 'workspace-hub',
                 'repo': 'workspace-hub',
                 'model': model,
+                'session_id': session_id,
             }
             
             # Add context-specific fields
             if name == 'terminal':
                 entry['cmd'] = args.get('command', '')[:500]
-            elif name in ('read_file', 'search_files', 'skill_view'):
+            elif name in ('read_file', 'search_files'):
                 entry['file'] = args.get('path', args.get('name', args.get('pattern', '')))
+            elif name == 'skill_view':
+                entry['file'] = args.get('name', '')
+                entry['skill_name'] = args.get('name', '')
+            elif name == 'skills_list':
+                category = (args.get('category', '') or '').strip()
+                entry['file'] = category or '__all__'
+                entry['skill_category'] = category or '__all__'
+            elif name == 'session_search':
+                query = (args.get('query', '') or '').strip()
+                entry['file'] = '__session_history__'
+                entry['search_query'] = query or '__all__'
+                entry['role_filter'] = args.get('role_filter', '')
+                if 'limit' in args:
+                    entry['limit'] = args.get('limit')
             elif name in ('write_file', 'patch'):
                 entry['file'] = args.get('path', '')
             elif name == 'delegate_task':

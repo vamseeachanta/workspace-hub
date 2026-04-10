@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-10T16:54:04Z",
+  "generated_at": "2026-04-10T19:54:32Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -214,18 +214,18 @@
     },
     "codex": {
       "source": "raw_logs",
-      "sessions": 41,
+      "sessions": 42,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 400,
-      "post_records": 15589,
+      "unique_runtime_sessions": 402,
+      "post_records": 15662,
       "prompt_reads": 0,
       "blank_reads": 0,
       "python3_bash_calls": 319,
-      "uv_python_bash_calls": 392,
+      "uv_python_bash_calls": 395,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 15183
+          "count": 15256
         },
         {
           "tool": "update_plan",
@@ -259,7 +259,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 15589
+          "count": 15662
         }
       ],
       "top_reads": [],
@@ -267,7 +267,7 @@
       "top_missing_external_reads": [],
       "top_symbolic_reads": [],
       "special_counts": {
-        "exec_command": 12169,
+        "exec_command": 12242,
         "write_stdin": 3014,
         "update_plan": 375,
         "request_user_input": 5,
@@ -277,140 +277,140 @@
         "wait_agent": 1,
         "close_agent": 1
       },
-      "python3_per_1k_records": 20.46,
-      "uv_python_per_1k_records": 25.15
+      "python3_per_1k_records": 20.37,
+      "uv_python_per_1k_records": 25.22
     },
     "hermes": {
       "source": "raw_logs",
-      "sessions": 9,
-      "correction_sessions": 9,
-      "unique_runtime_sessions": 0,
-      "post_records": 69971,
-      "prompt_reads": 533,
-      "blank_reads": 639,
-      "python3_bash_calls": 1686,
-      "uv_python_bash_calls": 2188,
+      "sessions": 10,
+      "correction_sessions": 10,
+      "unique_runtime_sessions": 900,
+      "post_records": 58611,
+      "prompt_reads": 630,
+      "blank_reads": 0,
+      "python3_bash_calls": 1271,
+      "uv_python_bash_calls": 1695,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 38403
+          "count": 31008
         },
         {
           "tool": "Read",
-          "count": 10908
-        },
-        {
-          "tool": "Write",
-          "count": 7910
+          "count": 8944
         },
         {
           "tool": "Grep",
-          "count": 7807
+          "count": 7711
+        },
+        {
+          "tool": "Write",
+          "count": 6574
         },
         {
           "tool": "Edit",
-          "count": 3474
+          "count": 2886
         },
         {
           "tool": "Task",
-          "count": 807
+          "count": 699
         },
         {
           "tool": "Browser",
-          "count": 367
+          "count": 347
         },
         {
-          "tool": "UserInput",
-          "count": 144
+          "tool": "ToolSearch",
+          "count": 182
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 69971
+          "count": 58611
         }
       ],
       "top_reads": [
         {
           "path": "config/scheduled-tasks/schedule-tasks.yaml",
-          "count": 167
+          "count": 130
         },
         {
           "path": "scripts/cron/harness-update.sh",
-          "count": 112
+          "count": 73
         },
         {
           "path": "scripts/gtm/job-market-scanner.py",
-          "count": 89
-        },
-        {
-          "path": "docs/standards/AI_REVIEW_ROUTING_POLICY.md",
-          "count": 77
-        },
-        {
-          "path": "scripts/cron/gsd-researcher-nightly.sh",
-          "count": 72
+          "count": 67
         },
         {
           "path": "docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md",
-          "count": 65
+          "count": 49
         },
         {
-          "path": "scripts/monitoring/cron-health-check.sh",
-          "count": 53
+          "path": "docs/standards/AI_REVIEW_ROUTING_POLICY.md",
+          "count": 49
         },
         {
           "path": "assetutilities/src/assetutilities/agent_os/commands/create_module_agent.py",
           "count": 49
         },
         {
-          "path": "docs/work-queue-workflow.md",
+          "path": "scripts/cron/gsd-researcher-nightly.sh",
           "count": 47
         },
         {
-          "path": "docs/roadmaps/orcawave-orcaflex-capability-roadmap.md",
+          "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
           "count": 47
+        },
+        {
+          "path": "scripts/monitoring/cron-health-check.sh",
+          "count": 46
+        },
+        {
+          "path": "/tmp/ballymore_data.json",
+          "count": 43
         }
       ],
       "top_missing_repo_reads": [
         {
           "path": "client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py",
-          "count": 27
+          "count": 24
         },
         {
-          "path": "digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md",
-          "count": 9
-        },
-        {
-          "path": "digitalmodel/docs/assessments/hull-library-audit.md",
-          "count": 9
-        },
-        {
-          "path": "digitalmodel/specs/module-registry.yaml",
-          "count": 9
-        },
-        {
-          "path": "worldenergydata/.planning/quick/gemini-review.txt",
-          "count": 9
-        },
-        {
-          "path": ".planning/research/2026-04-01-python-ecosystem.md",
+          "path": "docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md",
           "count": 8
         },
         {
-          "path": ".planning/skills/evals/workflow-gatepass.yaml",
+          "path": "digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md",
+          "count": 7
+        },
+        {
+          "path": "digitalmodel/docs/assessments/hull-library-audit.md",
+          "count": 7
+        },
+        {
+          "path": "digitalmodel/specs/module-registry.yaml",
+          "count": 7
+        },
+        {
+          "path": "docs/handoffs/overnight-llm-wiki-stage1-source-map.md",
+          "count": 7
+        },
+        {
+          "path": "docs/handoffs/overnight-llm-wiki-stage2-skill-repo-map.md",
+          "count": 7
+        },
+        {
+          "path": "docs/handoffs/overnight-llm-wiki-stage3-architecture.md",
+          "count": 7
+        },
+        {
+          "path": "worldenergydata/.planning/quick/gemini-review.txt",
           "count": 6
         },
         {
-          "path": ".planning/skills/evals/work-queue.yaml",
-          "count": 6
-        },
-        {
-          "path": "scripts/quality/tests/test_doc_staleness_scanner.py",
-          "count": 6
-        },
-        {
-          "path": "config/cron/schedule-tasks.yaml",
+          "path": "scripts/hooks/pre-push.sh",
           "count": 6
         }
       ],
@@ -418,14 +418,6 @@
         {
           "path": "/home/vamsee/gmail-archive/config/accounts.yaml",
           "count": 4
-        },
-        {
-          "path": "/home/vamsee/workspace-hub/config/scheduled-tasks/schedule-tasks.yaml",
-          "count": 2
-        },
-        {
-          "path": "/home/vamsee/workspace-hub/.claude/settings.json",
-          "count": 2
         },
         {
           "path": "/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md",
@@ -454,113 +446,121 @@
         {
           "path": "/tmp/everything-claude-code/hooks/hooks.json",
           "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/mcp-configs/mcp-servers.json",
+          "count": 2
+        },
+        {
+          "path": "/home/vamsee/.hermes/skills/autonomous-ai-agents/hermes-agent/SKILL.md",
+          "count": 2
         }
       ],
       "top_symbolic_reads": [
         {
           "name": "github-issues",
-          "count": 112
+          "count": 82
         },
         {
           "name": "overnight-parallel-agent-prompts",
-          "count": 72
+          "count": 65
         },
         {
           "name": "gh-work-planning",
           "count": 50
         },
         {
-          "name": "writing-plans",
-          "count": 47
-        },
-        {
-          "name": "issue-portfolio-triage",
-          "count": 40
-        },
-        {
           "name": "gh-work-execution",
           "count": 37
         },
         {
-          "name": "gsd-operational-audit",
-          "count": 34
+          "name": "issue-portfolio-triage",
+          "count": 35
         },
         {
-          "name": "multi-provider-adversarial-review",
-          "count": 27
+          "name": "claude-code",
+          "count": 32
+        },
+        {
+          "name": "writing-plans",
+          "count": 30
         },
         {
           "name": "hermes-model-switching",
           "count": 27
         },
         {
-          "name": "claude-code",
-          "count": 27
+          "name": "workspace-hub-batch-issue-execution",
+          "count": 26
+        },
+        {
+          "name": "subagent-sandbox-limitations",
+          "count": 25
         }
       ],
       "special_counts": {
-        "memory_add": 279,
-        "memory_replace": 357,
-        "memory_remove": 60,
-        "skill_create": 207,
-        "skill_patch": 685,
+        "memory_add": 209,
+        "memory_replace": 260,
+        "memory_remove": 46,
+        "skill_create": 184,
+        "skill_patch": 589,
         "skill_view": 2,
         "skill_delete": 1,
-        "skill_edit": 21,
+        "skill_edit": 22,
         "skill_write_file": 4,
         "memory_list": 1
       },
-      "python3_per_1k_records": 24.1,
-      "uv_python_per_1k_records": 31.27
+      "python3_per_1k_records": 21.69,
+      "uv_python_per_1k_records": 28.92
     },
     "gemini": {
       "source": "raw_logs",
       "sessions": 36,
       "correction_sessions": 0,
       "unique_runtime_sessions": 282,
-      "post_records": 4585,
-      "prompt_reads": 16,
-      "blank_reads": 6,
-      "python3_bash_calls": 200,
-      "uv_python_bash_calls": 32,
+      "post_records": 5884,
+      "prompt_reads": 18,
+      "blank_reads": 0,
+      "python3_bash_calls": 290,
+      "uv_python_bash_calls": 39,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 1720
+          "count": 2266
         },
         {
           "tool": "Read",
-          "count": 1603
+          "count": 2023
         },
         {
           "tool": "Grep",
-          "count": 458
+          "count": 555
         },
         {
           "tool": "Write",
-          "count": 379
+          "count": 535
         },
         {
           "tool": "Edit",
-          "count": 324
+          "count": 394
         },
         {
           "tool": "Browser",
           "count": 96
         },
         {
-          "tool": "search_file_content",
-          "count": 4
+          "tool": "ToolSearch",
+          "count": 9
         },
         {
-          "tool": "ask_user",
-          "count": 1
+          "tool": "search_file_content",
+          "count": 5
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 4585
+          "count": 5884
         }
       ],
       "top_reads": [
@@ -569,82 +569,82 @@
           "count": 29
         },
         {
+          "path": "scripts/operations/compliance/migrate_specs_to_workspace.sh",
+          "count": 28
+        },
+        {
+          "path": ".",
+          "count": 22
+        },
+        {
+          "path": "CLAUDE.md",
+          "count": 21
+        },
+        {
+          "path": ".claude/work-queue",
+          "count": 17
+        },
+        {
           "path": ".claude/work-queue/WRK-149.md",
-          "count": 16
+          "count": 17
         },
         {
           "path": "digitalmodel/scripts/benchmark/validate_owd_vs_spec.py",
           "count": 16
         },
         {
-          "path": "CLAUDE.md",
+          "path": ".claude/work-queue/pending",
           "count": 15
         },
         {
-          "path": "scripts/operations/compliance/migrate_specs_to_workspace.sh",
-          "count": 14
-        },
-        {
-          "path": ".claude/work-queue/pending",
-          "count": 14
-        },
-        {
-          "path": ".",
-          "count": 13
-        },
-        {
-          "path": ".claude/work-queue",
-          "count": 13
-        },
-        {
-          "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
-          "count": 12
-        },
-        {
           "path": "digitalmodel/src/digitalmodel",
-          "count": 11
+          "count": 15
+        },
+        {
+          "path": ".gitignore",
+          "count": 12
         }
       ],
       "top_missing_repo_reads": [
         {
           "path": ".claude/work-queue/WRK-149.md",
-          "count": 16
+          "count": 17
         },
         {
           "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
           "count": 12
+        },
+        {
+          "path": "scripts/agents/lib/workflow-guards.sh",
+          "count": 11
         },
         {
           "path": ".claude/work-queue/working",
           "count": 11
         },
         {
-          "path": ".claude/work-queue/working/",
-          "count": 8
+          "path": "scripts/agents/execute.sh",
+          "count": 10
         },
         {
-          "path": "scripts/agents/lib/workflow-guards.sh",
-          "count": 7
+          "path": ".claude/work-queue/working/",
+          "count": 9
         },
         {
           "path": ".gitmodules",
-          "count": 6
+          "count": 9
+        },
+        {
+          "path": "scripts/agents/providers/claude.sh",
+          "count": 7
         },
         {
           "path": "scripts/agents/plan.sh",
+          "count": 7
+        },
+        {
+          "path": "specs/wrk/WRK-188/worldenergydata-wave1-migration.md",
           "count": 6
-        },
-        {
-          "path": "scripts/work-queue/generate-html-review.py",
-          "count": 6
-        },
-        {
-          "path": "scripts/agents/execute.sh",
-          "count": 5
-        },
-        {
-          "path": ".claude/hooks/post-task-review.sh",
-          "count": 5
         }
       ],
       "top_missing_external_reads": [
@@ -660,48 +660,48 @@
       "top_symbolic_reads": [
         {
           "name": "digitalmodel",
-          "count": 20
+          "count": 27
         },
         {
           "name": "worldenergydata",
-          "count": 10
+          "count": 13
         },
         {
           "name": "assethold",
-          "count": 6
+          "count": 8
         },
         {
           "name": "scripts",
-          "count": 6
+          "count": 8
         },
         {
           "name": "src",
-          "count": 5
+          "count": 7
         },
         {
           "name": "tests",
+          "count": 7
+        },
+        {
+          "name": "digitalmodel/scripts/python/digitalmodel/modules",
+          "count": 6
+        },
+        {
+          "name": "config",
+          "count": 5
+        },
+        {
+          "name": "assetutilities",
           "count": 5
         },
         {
           "name": "doris",
           "count": 5
-        },
-        {
-          "name": "assetutilities",
-          "count": 4
-        },
-        {
-          "name": "config",
-          "count": 3
-        },
-        {
-          "name": "digitalmodel/scripts/python/digitalmodel/modules",
-          "count": 3
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 43.62,
-      "uv_python_per_1k_records": 6.98
+      "python3_per_1k_records": 49.29,
+      "uv_python_per_1k_records": 6.63
     }
   }
 }

@@ -415,6 +415,9 @@ jscpd-report/
 .claude-flow/
 dryrun_debug.log
 
+# Generated prompt files — transient agent dispatch artifacts
+prompts/
+
 # Root artifact guardrails — prevent shell residue from being committed (#1534)
 *.btr
 --version.*

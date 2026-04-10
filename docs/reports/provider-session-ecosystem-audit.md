@@ -4,9 +4,9 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## Executive summary
 - `claude` — source=raw_logs | sessions=24 | post_records=73646 | python3/1k=8.62 | uv-python/1k=80.21
-- `codex` — source=raw_logs | sessions=41 | post_records=15589 | python3/1k=20.46 | uv-python/1k=25.15
-- `hermes` — source=raw_logs | sessions=9 | post_records=69971 | python3/1k=24.1 | uv-python/1k=31.27
-- `gemini` — source=raw_logs | sessions=36 | post_records=4585 | python3/1k=43.62 | uv-python/1k=6.98
+- `codex` — source=raw_logs | sessions=42 | post_records=15662 | python3/1k=20.37 | uv-python/1k=25.22
+- `hermes` — source=raw_logs | sessions=10 | post_records=58611 | python3/1k=21.69 | uv-python/1k=28.92
+- `gemini` — source=raw_logs | sessions=36 | post_records=5884 | python3/1k=49.29 | uv-python/1k=6.63
 
 ## claude
 - Source: raw_logs
@@ -80,17 +80,17 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## codex
 - Source: raw_logs
-- Sessions: 41
-- Post-hook records: 15589
+- Sessions: 42
+- Post-hook records: 15662
 - Correction sessions: 0
-- Unique runtime sessions: 400
+- Unique runtime sessions: 402
 - Prompt-like reads: 0
 - Blank read targets: 0
 - Bare python3 bash calls: 319
-- `uv run ... python` bash calls: 392
+- `uv run ... python` bash calls: 395
 
 ### codex top tools
-- `Bash` — 15183
+- `Bash` — 15256
 - `update_plan` — 375
 - `list_mcp_resources` — 14
 - `list_mcp_resource_templates` — 8
@@ -100,7 +100,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `close_agent` — 1
 
 ### codex top repos
-- `workspace-hub` — 15589
+- `workspace-hub` — 15662
 
 ### codex top reads
 - none
@@ -116,68 +116,66 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## hermes
 - Source: raw_logs
-- Sessions: 9
-- Post-hook records: 69971
-- Correction sessions: 9
-- Unique runtime sessions: 0
-- Prompt-like reads: 533
-- Blank read targets: 639
-- Bare python3 bash calls: 1686
-- `uv run ... python` bash calls: 2188
+- Sessions: 10
+- Post-hook records: 58611
+- Correction sessions: 10
+- Unique runtime sessions: 900
+- Prompt-like reads: 630
+- Blank read targets: 0
+- Bare python3 bash calls: 1271
+- `uv run ... python` bash calls: 1695
 
 ### hermes top tools
-- `Bash` — 38403
-- `Read` — 10908
-- `Write` — 7910
-- `Grep` — 7807
-- `Edit` — 3474
-- `Task` — 807
-- `Browser` — 367
-- `UserInput` — 144
+- `Bash` — 31008
+- `Read` — 8944
+- `Grep` — 7711
+- `Write` — 6574
+- `Edit` — 2886
+- `Task` — 699
+- `Browser` — 347
+- `ToolSearch` — 182
 
 ### hermes top repos
-- `workspace-hub` — 69971
+- `workspace-hub` — 58611
 
 ### hermes top reads
-- `config/scheduled-tasks/schedule-tasks.yaml` — 167
-- `scripts/cron/harness-update.sh` — 112
-- `scripts/gtm/job-market-scanner.py` — 89
-- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — 77
-- `scripts/cron/gsd-researcher-nightly.sh` — 72
-- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — 65
-- `scripts/monitoring/cron-health-check.sh` — 53
+- `config/scheduled-tasks/schedule-tasks.yaml` — 130
+- `scripts/cron/harness-update.sh` — 73
+- `scripts/gtm/job-market-scanner.py` — 67
+- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — 49
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — 49
 - `assetutilities/src/assetutilities/agent_os/commands/create_module_agent.py` — 49
-- `docs/work-queue-workflow.md` — 47
-- `docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` — 47
+- `scripts/cron/gsd-researcher-nightly.sh` — 47
+- `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` — 47
+- `scripts/monitoring/cron-health-check.sh` — 46
+- `/tmp/ballymore_data.json` — 43
 
 ### hermes top symbolic reads
-- `github-issues` — 112
-- `overnight-parallel-agent-prompts` — 72
+- `github-issues` — 82
+- `overnight-parallel-agent-prompts` — 65
 - `gh-work-planning` — 50
-- `writing-plans` — 47
-- `issue-portfolio-triage` — 40
 - `gh-work-execution` — 37
-- `gsd-operational-audit` — 34
-- `multi-provider-adversarial-review` — 27
+- `issue-portfolio-triage` — 35
+- `claude-code` — 32
+- `writing-plans` — 30
 - `hermes-model-switching` — 27
-- `claude-code` — 27
+- `workspace-hub-batch-issue-execution` — 26
+- `subagent-sandbox-limitations` — 25
 
 ### hermes top missing repo reads
-- `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 27
-- `digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` — 9
-- `digitalmodel/docs/assessments/hull-library-audit.md` — 9
-- `digitalmodel/specs/module-registry.yaml` — 9
-- `worldenergydata/.planning/quick/gemini-review.txt` — 9
-- `.planning/research/2026-04-01-python-ecosystem.md` — 8
-- `.planning/skills/evals/workflow-gatepass.yaml` — 6
-- `.planning/skills/evals/work-queue.yaml` — 6
-- `scripts/quality/tests/test_doc_staleness_scanner.py` — 6
-- `config/cron/schedule-tasks.yaml` — 6
+- `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 24
+- `docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md` — 8
+- `digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` — 7
+- `digitalmodel/docs/assessments/hull-library-audit.md` — 7
+- `digitalmodel/specs/module-registry.yaml` — 7
+- `docs/handoffs/overnight-llm-wiki-stage1-source-map.md` — 7
+- `docs/handoffs/overnight-llm-wiki-stage2-skill-repo-map.md` — 7
+- `docs/handoffs/overnight-llm-wiki-stage3-architecture.md` — 7
+- `worldenergydata/.planning/quick/gemini-review.txt` — 6
+- `scripts/hooks/pre-push.sh` — 6
 
 ### hermes top missing external reads
 - `/home/vamsee/gmail-archive/config/accounts.yaml` — 4
-- `/home/vamsee/workspace-hub/config/scheduled-tasks/schedule-tasks.yaml` — 2
-- `/home/vamsee/workspace-hub/.claude/settings.json` — 2
 - `/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md` — 2
 - `/tmp/everything-claude-code/README.md` — 2
 - `/tmp/everything-claude-code/the-longform-guide.md` — 2
@@ -185,66 +183,68 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `/tmp/everything-claude-code/the-security-guide.md` — 2
 - `/tmp/everything-claude-code/AGENTS.md` — 2
 - `/tmp/everything-claude-code/hooks/hooks.json` — 2
+- `/tmp/everything-claude-code/mcp-configs/mcp-servers.json` — 2
+- `/home/vamsee/.hermes/skills/autonomous-ai-agents/hermes-agent/SKILL.md` — 2
 
 ## gemini
 - Source: raw_logs
 - Sessions: 36
-- Post-hook records: 4585
+- Post-hook records: 5884
 - Correction sessions: 0
 - Unique runtime sessions: 282
-- Prompt-like reads: 16
-- Blank read targets: 6
-- Bare python3 bash calls: 200
-- `uv run ... python` bash calls: 32
+- Prompt-like reads: 18
+- Blank read targets: 0
+- Bare python3 bash calls: 290
+- `uv run ... python` bash calls: 39
 
 ### gemini top tools
-- `Bash` — 1720
-- `Read` — 1603
-- `Grep` — 458
-- `Write` — 379
-- `Edit` — 324
+- `Bash` — 2266
+- `Read` — 2023
+- `Grep` — 555
+- `Write` — 535
+- `Edit` — 394
 - `Browser` — 96
-- `search_file_content` — 4
-- `ask_user` — 1
+- `ToolSearch` — 9
+- `search_file_content` — 5
 
 ### gemini top repos
-- `workspace-hub` — 4585
+- `workspace-hub` — 5884
 
 ### gemini top reads
 - `.claude/work-queue/` — 29
-- `.claude/work-queue/WRK-149.md` — 16
+- `scripts/operations/compliance/migrate_specs_to_workspace.sh` — 28
+- `.` — 22
+- `CLAUDE.md` — 21
+- `.claude/work-queue` — 17
+- `.claude/work-queue/WRK-149.md` — 17
 - `digitalmodel/scripts/benchmark/validate_owd_vs_spec.py` — 16
-- `CLAUDE.md` — 15
-- `scripts/operations/compliance/migrate_specs_to_workspace.sh` — 14
-- `.claude/work-queue/pending` — 14
-- `.` — 13
-- `.claude/work-queue` — 13
-- `.claude/skills/coordination/workspace/work-queue/SKILL.md` — 12
-- `digitalmodel/src/digitalmodel` — 11
+- `.claude/work-queue/pending` — 15
+- `digitalmodel/src/digitalmodel` — 15
+- `.gitignore` — 12
 
 ### gemini top symbolic reads
-- `digitalmodel` — 20
-- `worldenergydata` — 10
-- `assethold` — 6
-- `scripts` — 6
-- `src` — 5
-- `tests` — 5
+- `digitalmodel` — 27
+- `worldenergydata` — 13
+- `assethold` — 8
+- `scripts` — 8
+- `src` — 7
+- `tests` — 7
+- `digitalmodel/scripts/python/digitalmodel/modules` — 6
+- `config` — 5
+- `assetutilities` — 5
 - `doris` — 5
-- `assetutilities` — 4
-- `config` — 3
-- `digitalmodel/scripts/python/digitalmodel/modules` — 3
 
 ### gemini top missing repo reads
-- `.claude/work-queue/WRK-149.md` — 16
+- `.claude/work-queue/WRK-149.md` — 17
 - `.claude/skills/coordination/workspace/work-queue/SKILL.md` — 12
+- `scripts/agents/lib/workflow-guards.sh` — 11
 - `.claude/work-queue/working` — 11
-- `.claude/work-queue/working/` — 8
-- `scripts/agents/lib/workflow-guards.sh` — 7
-- `.gitmodules` — 6
-- `scripts/agents/plan.sh` — 6
-- `scripts/work-queue/generate-html-review.py` — 6
-- `scripts/agents/execute.sh` — 5
-- `.claude/hooks/post-task-review.sh` — 5
+- `scripts/agents/execute.sh` — 10
+- `.claude/work-queue/working/` — 9
+- `.gitmodules` — 9
+- `scripts/agents/providers/claude.sh` — 7
+- `scripts/agents/plan.sh` — 7
+- `specs/wrk/WRK-188/worldenergydata-wave1-migration.md` — 6
 
 ### gemini top missing external reads
 - `/tmp/pending-queue-snapshot.txt` — 1
