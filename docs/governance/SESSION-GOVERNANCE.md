@@ -511,6 +511,26 @@ different across sessions. Old PID-based files are cleaned up after 7 days.
 - #2064 — fix pre-existing plan-approval-gate test path mismatches
 - #2065 — derive `FAST_PATH_CEILING` dynamically from YAML threshold
 
+## What Was Implemented (Phase 3g) — 2026-04-09
+
+### Session Infrastructure Skills Restoration (#2057)
+
+Restores four session skills lost during the GSD migration or never formalized as actionable
+skills. Driven by #1839's Phase 3 scope.
+
+| Skill | Path | Lines | Purpose |
+|-------|------|-------|---------|
+| session-start-routine | `.claude/skills/coordination/session-start-routine/SKILL.md` | 44 | Pre-flight checks at session start — load context, check prior state, validate env, check in-flight work |
+| session-corpus-audit | `.claude/skills/coordination/session-corpus-audit/SKILL.md` | 58 | Session quality trend analysis from `.claude/state/session-signals/` |
+| comprehensive-learning-wrapper | `.claude/skills/coordination/comprehensive-learning-wrapper/SKILL.md` | 143 | Skill-tree discoverability wrapper for the nightly learning pipeline cron |
+| cross-review-policy | `.claude/skills/coordination/cross-review-policy/SKILL.md` | 57 | Actionable three-agent review routing derived from `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+
+**Commits**: e582d7e70..ef8e7826b (overnight batch 2026-04-09)
+
+**Note**: `session-corpus-audit` also exists at `.claude/skills/workspace-hub/session-corpus-audit/SKILL.md`
+(434 lines, Hermes-authored, comprehensive). The coordination version is a slim reference copy.
+The workspace-hub version is canonical for detailed signal analysis.
+
 ## What Remains (Phase 5)
 
 ### Phase 5: Hermes Orchestration
