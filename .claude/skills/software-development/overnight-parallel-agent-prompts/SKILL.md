@@ -36,6 +36,34 @@ Each task MUST be:
 4. **Verifiable** — produces artifacts you can check in the morning
 5. **Git-collision-free** — each terminal writes to completely different files
 
+## Truth-first eligibility check for “directly executable” batches
+
+When the user asks for the “next N issues that can be directly executed in Claude Code,” do a live eligibility pass first. Do not trust historical plans, old prompt packs, or stale issue labels.
+
+Required live checks:
+1. Verify the issue is still **open**.
+2. Verify the issue still has the required gate label (for example `status:plan-approved`) if the repo policy requires it.
+3. Verify any local approval marker still exists (for example `.planning/plan-approved/<issue>.md`) when local hooks enforce marker-based gating.
+4. Verify the relevant repo/worktree is not already in a conflicting dirty state.
+5. Verify required local repos/data paths actually exist now.
+6. Re-read the latest issue body/comments if the issue may have become partially or fully completed.
+
+If fewer than N issues pass the live eligibility check, do **not** pretend you found N directly executable implementation issues. Instead, explicitly switch the batch into one of these modes:
+- **assessment-only pack**: each Claude session determines whether one candidate issue is directly executable now and writes a verdict + exact blocker + implementation prompt if eligible
+- **planning/execution-pack mode**: each Claude session writes an operator-ready implementation dossier for a candidate issue without changing code
+
+This is preferable to launching unsafe write-capable sessions against stale / blocked / already-completed issues.
+
+## Agent-team prompt pattern for single-Claude sessions
+
+If the user wants “agent teams” but you are launching plain `claude -p` sessions, encode an internal multi-role workflow inside each prompt. Ask Claude to reason as:
+- **Planner** — summarize scope, dependencies, and target files
+- **Reviewer** — challenge whether the issue is truly executable now
+- **Tester / Integrator** — inspect verification path, data/repo availability, and dirty-worktree risk
+- **Synthesizer** — produce the final verdict and the exact next action
+
+This gives you agent-team style outputs while still using standalone `claude -p` processes.
+
 Avoid overnight:
 - Tasks requiring RDP/SSH to other machines
 - Tasks that might need user judgment calls
