@@ -151,3 +151,22 @@ transformer.set_orcawave_origin(
 - [CLI Usage](cli-usage/SKILL.md)
 - [Pre-Export Validation](pre-export-validation/SKILL.md)
 - [Generated YAML Structure](generated-yaml-structure/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Results,DisplacementRAOs.md` -- RAO output for export
+- `Results,Addedmassanddamping.md` -- AMD matrices to transfer
+- `Results,LoadRAOs.md` -- load RAO data
+- `Theory,Coordinatesystems.md` -- coordinate system conventions
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Importinghydrodynamicdata,OrcaWave.md` -- OrcaWave import workflow in OrcaFlex
+- `Vesseltypes,RAOs.md` -- RAO data format in vessel types
+- `Vesseltypes,Stiffness,addedmassanddamping.md` -- AMD data in vessel types
+- `Vesseltheory,RAOsandphases.md` -- RAO/phase conventions
+- `Vesseltheory,Stiffness,addedmassanddamping.md` -- AMD theory
+
+Papers (`data/llm-wiki/papers/`):
+- `Generating-Spectral-RAOs.md` -- spectral RAO generation

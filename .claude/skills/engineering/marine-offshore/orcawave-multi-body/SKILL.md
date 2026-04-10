@@ -148,3 +148,21 @@ shielding.load_multibody_results("results/multibody.owr")
 - [Multi-Body Analysis Configuration (+1)](multi-body-analysis-configuration/SKILL.md)
 - [CLI Usage](cli-usage/SKILL.md)
 - [Export for Time-Domain](export-for-time-domain/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Data,Bodies.md` -- multi-body definition (multiple bodies per model)
+- `Data,Constraints.md` -- inter-body constraints
+- `Data,Springdampers.md` -- external stiffness/damping between bodies
+- `Theory,Dampinglid.md` -- damping lid for gap resonance suppression
+- `Results,Addedmassanddamping.md` -- coupled AMD matrices (NxN body DOFs)
+- `Data,Calculationandoutput.md` -- multi-body output control
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Vesseltypes,Multibodydata.md` -- multi-body vessel type data in OrcaFlex
+- `Vesseltheory,Impulseresponseandconvolution.md` -- coupled time-domain approach
+
+Papers (`data/llm-wiki/papers/`):
+- `Buoy-Vessel-Modelling.md` -- buoy-vessel interaction modelling
