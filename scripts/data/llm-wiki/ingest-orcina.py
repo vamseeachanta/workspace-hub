@@ -556,7 +556,9 @@ def main():
     parser.add_argument(
         "--output-dir",
         default="/mnt/local-analysis/workspace-hub/data/llm-wiki",
-        help="Root output directory (default: data/llm-wiki in repo)",
+        # Actual data lives on ace drive: /mnt/remote/ace-linux-1/ace/digitalmodel/llm-wiki/
+        # Local path is a symlink per data-placement policy (#1540, #2102)
+        help="Root output directory (default: data/llm-wiki symlink -> ace drive)",
     )
     parser.add_argument(
         "--products",
