@@ -39,7 +39,7 @@ see_also:
 
 - [repo-cleanup](../repo-cleanup/SKILL.md) - General repository cleanup
 - [module-based-refactor](../module-based-refactor/SKILL.md) - For source code restructuring
-- [session-start-routine](../session-start-routine/SKILL.md) - Session initialization
+- `coordination/session-start-routine/SKILL.md` - Session initialization
 
 ## References
 

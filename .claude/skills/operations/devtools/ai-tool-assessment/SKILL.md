@@ -174,7 +174,7 @@ Before generating report, ask:
 ## Related Skills
 
 - [background-service-manager](../background-service-manager/SKILL.md) - For running assessment scripts
-- [session-start-routine](../../meta/session-start-routine/SKILL.md) - Includes tool health checks
+- `coordination/session-start-routine/SKILL.md` - Includes tool health checks
 
 ---
 

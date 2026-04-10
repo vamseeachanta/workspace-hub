@@ -48,7 +48,7 @@ see_also:
 ## Related Skills
 
 - [module-based-refactor](../module-based-refactor/SKILL.md) - For restructuring after cleanup
-- [session-start-routine](../session-start-routine/SKILL.md) - Session initialization
+- `coordination/session-start-routine/SKILL.md` - Session initialization
 
 ## References
 

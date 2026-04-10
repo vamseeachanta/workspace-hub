@@ -138,4 +138,4 @@ uv run pytest tests/ -v && git status
 ## Related Skills
 
 - `../context-management/SKILL.md` — Managing context during large refactors
-- `../meta/session-start-routine/SKILL.md` — Session initialization
+- `coordination/session-start-routine/SKILL.md` — Session initialization

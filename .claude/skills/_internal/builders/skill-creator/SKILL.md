@@ -125,7 +125,7 @@ Target Tier A or B for new skills. See `config/skills/quality-tiers.yaml`.
 
 ## Related Skills
 
-- [session-start-routine](../../meta/session-start-routine/SKILL.md) - Skill library maintenance
+- `coordination/session-start-routine/SKILL.md` - Skill library maintenance
 - [sparc-workflow](../../development/sparc-workflow/SKILL.md) - Development methodology
 - [mcp-builder](../mcp-builder/SKILL.md) - MCP server creation
 
