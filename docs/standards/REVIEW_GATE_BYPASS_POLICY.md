@@ -7,8 +7,8 @@ Status: Active
 Document when `SKIP_REVIEW_GATE=1` is acceptable and when strict review enforcement should remain in place.
 
 ## Default policy
-- Default interactive behavior may remain warning-based unless `REVIEW_GATE_STRICT=1` is explicitly enabled.
-- Use strict mode for high-risk pushes, release preparation, and branches carrying production-impacting changes.
+- Default interactive behavior is strict: `REVIEW_GATE_STRICT` defaults to `1`, and pre-push review enforcement stays enabled unless a documented bypass is used.
+- Treat review bypass as an exception path, not a normal warning-only workflow.
 
 ## Acceptable bypass cases
 `SKIP_REVIEW_GATE=1` is acceptable only when one of the following is true:

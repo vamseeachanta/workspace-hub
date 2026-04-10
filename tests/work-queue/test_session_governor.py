@@ -565,6 +565,23 @@ class TestStrictReviewGate:
             f"Expected enforced=true, got {pre_push['enforced']}"
         )
 
+    def test_yaml_tool_call_ceiling_restored_to_200(self):
+        """tool-call-ceiling must stay at the live production 200-call threshold."""
+        config_path = os.path.join(
+            REPO_ROOT, "scripts", "workflow", "governance-checkpoints.yaml"
+        )
+        with open(config_path) as f:
+            data = yaml.safe_load(f)
+        ceiling = next(
+            (c for c in data["checkpoints"] if c["id"] == "tool-call-ceiling"),
+            None,
+        )
+        assert ceiling is not None, "tool-call-ceiling checkpoint not found"
+        assert ceiling["threshold"] == 200, (
+            f"Expected tool-call-ceiling threshold=200, got {ceiling['threshold']}"
+        )
+        assert ceiling["threshold"] != 5000, "Production threshold must not drift back to 5000"
+
     def test_script_defaults_to_strict(self):
         """require-review-on-push.sh must default to strict mode."""
         script_path = os.path.join(
