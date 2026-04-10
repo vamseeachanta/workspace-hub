@@ -116,6 +116,13 @@ This workspace includes automated code review workflows:
   - Documentation: [docs/modules/ai/CODEX_REVIEW_WORKFLOW.md](docs/modules/ai/CODEX_REVIEW_WORKFLOW.md)
   - Manager: `./scripts/ai-review/review-manager.sh list`
 
+## Operational Audits
+
+- **Provider Session Ecosystem Audit**: Cross-provider session-log health report for Claude, Codex, Hermes, and Gemini.
+  - Report: [docs/reports/provider-session-ecosystem-audit.md](docs/reports/provider-session-ecosystem-audit.md)
+  - Run: `uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py --stdout`
+  - Wrapper: `bash scripts/cron/provider-session-ecosystem-audit.sh`
+
 ## Setup & Maintenance
 
 ## 🤝 Contributing

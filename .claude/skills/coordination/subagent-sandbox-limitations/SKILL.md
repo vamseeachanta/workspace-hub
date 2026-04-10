@@ -40,6 +40,22 @@ This worked well for session-log ecosystem audits and policy-drift cleanup becau
 - sandbox persistence limitations did not matter for read-only work
 - the main agent kept control of actual repo modifications and verification
 
+### Strong pattern: delegate Claude for issue-tree expansion, create issues locally
+
+Another reliable use case is expanding an umbrella initiative into focused future GitHub issues.
+
+Pattern:
+1. Keep the main session responsible for the actual `gh issue create` calls and documentation edits.
+2. Split the analysis into 2-3 lanes with `delegate_task(..., acp_command='claude', acp_args=['--acp','--stdio'])` — e.g. machine-readiness gaps, intelligence-accessibility gaps, reporting/governance gaps.
+3. Ask each Claude subagent for only: proposed issue titles, rationale, and deliverables. Do **not** ask it to edit files or create issues.
+4. In the main session, convert the returned proposals into concrete issue bodies, create the GitHub issues, and update the parent doc/umbrella issue yourself.
+5. Comment on the parent issue with the new child-issue map so the decomposition is visible in GitHub history.
+
+Why this works:
+- the subagents contribute reasoning-heavy decomposition, which survives summary compression better than raw data gathering
+- the main session preserves control of numbering, labels, body wording, and doc updates
+- it is effective for turning broad recurring-maintenance initiatives into an actionable issue tree without risking sandbox write loss
+
 **DO NOT use delegate_task for:**
 - Creating or modifying source code files
 - Writing tests to disk

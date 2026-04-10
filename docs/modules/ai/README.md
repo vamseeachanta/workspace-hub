@@ -31,6 +31,8 @@ This directory contains all documentation related to AI agents, Claude configura
 | [MCP_SETUP_GUIDE.md](MCP_SETUP_GUIDE.md) | MCP server configuration guide |
 | [AI_development_tools.md](AI_development_tools.md) | AI tools, memberships, and platforms |
 | [AI_HELPER_EXAMPLES.md](AI_HELPER_EXAMPLES.md) | Example AI interactions |
+| [WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md](WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md) | Weekly operational review for settings, multi-machine execution readiness, and intelligence accessibility |
+| [../../reports/provider-session-ecosystem-audit.md](../../reports/provider-session-ecosystem-audit.md) | Latest cross-provider session-log audit covering Claude, Codex, Hermes, and Gemini |
 
 ### Review Routing
 

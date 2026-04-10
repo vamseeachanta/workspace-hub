@@ -185,6 +185,20 @@ tasks:
     is_claude_task: true
     description: Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
 
+  - id: provider-session-ecosystem-audit
+    label: Provider session ecosystem audit refresh
+    schedule: "15 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/provider-session-ecosystem-audit.sh
+    log: logs/quality/provider-session-ecosystem-audit-*.log
+    is_claude_task: false
+    description: Weekly refresh of cross-provider session audit artifacts (JSON + Markdown) after session exports.
+
   - id: claude-plugin-audit
     label: Claude plugin weekly audit
     schedule: "45 3 * * 0"

@@ -56,18 +56,37 @@ Each machine runs `comprehensive-learning` locally against its own `logs/orchest
 
 Raw logs in `logs/orchestrator/` are local-only (gitignored). Only derived state crosses machines.
 
-## Claude ecosystem drift audit
+## Provider session ecosystem audit
 
-Use the lightweight audit below to compare historical Claude session references against the current checkout and catch repo drift after refactors:
+Use the provider-wide audit below to compare Claude/Codex/Hermes/Gemini session artifacts against the current checkout and catch workflow drift after refactors:
 
 ```bash
-uv run python scripts/analysis/claude_session_ecosystem_audit.py \
-  --output-md docs/reports/claude-session-ecosystem-audit-$(date +%F).md \
-  --output-json analysis/claude-session-ecosystem-audit-$(date +%F).json
+uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py --stdout
 ```
 
+Native Gemini sessions should be exported with:
+
+```bash
+bash scripts/cron/gemini-session-export.sh
+```
+
+Canonical tracked outputs:
+- `analysis/provider-session-ecosystem-audit.json`
+- `docs/reports/provider-session-ecosystem-audit.md`
+
+Scheduled refresh:
+- task id: `provider-session-ecosystem-audit`
+- wrapper: `scripts/cron/provider-session-ecosystem-audit.sh`
+- log: `logs/quality/provider-session-ecosystem-audit-*.log`
+
 This report surfaces:
-- hottest missing repo-local reads (deleted or renamed scripts/skills still referenced in Claude work)
-- missing prompt/stage assets
-- bare `python3` usage inside Claude Bash calls vs `uv run ... python`
-- top tools/repos/files dominating the Claude corpus
+- provider-by-provider session volume and tool mix
+- hottest missing repo-local reads and symbolic skill/tool reads
+- bare `python3` usage inside Bash calls vs `uv run ... python`
+- cross-provider observability gaps (for example, missing `session_*.jsonl` inputs)
+
+Input expectations:
+- Claude: `logs/orchestrator/claude/session_*.jsonl`
+- Codex: `logs/orchestrator/codex/session_*.jsonl` (exported from native Codex sessions)
+- Hermes: `logs/orchestrator/hermes/session_*.jsonl`
+- Gemini: `logs/orchestrator/gemini/session_*.jsonl` once Gemini export is enabled; cross-review `.log` files alone are not enough for parity analysis

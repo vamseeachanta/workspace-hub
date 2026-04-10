@@ -6,21 +6,18 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-04-08)
+## Synced from Hermes Memory (2026-04-10)
 
 ### Environment Facts
 
 - `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
-- ace-linux-1: real workspace is /mnt/local-analysis/workspace-hub (git repo). ~/workspace-hub is sparse overlay — write to /tmp/ then move.
-- Always `uv run` for Python — never `python3` or `pip`. On Windows (licensed-win-1) use `python`.
-- digitalmodel/ is a separate git repo (gitignored). Commits must be from within digitalmodel/ dir, not workspace-hub root.
-- Legal scan: .legal-deny-list.yaml (15 client patterns). MANDATORY for doc-intelligence and resource work. scripts/legal/legal-sanity-scan.sh. Catalogs (dde-*, conference-*) excluded.
-- aceengineer-strategy/: GTM, $120K retainer target, 20+ prospects, scripts/gtm/job-market-scanner.py Mon cron. Aceengineer.com consulting, 23yr P.E. exp.
-- Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv).
-- Excel-to-code: Windows cowork > Linux openpyxl (18 vs 7 functions, 81 vs 53 tests, OrcaFlex sections, COG). Skill: excel-workbook-to-python-cowork. OCR punted (#1643).
-- Gmail 3-account LIVE: OAuth2 via ~/.gmail-{ace,personal,skestates}/credentials.json. Himalaya CLI for ace+personal. Digest: scripts/email/gmail-digest.py, cron daily 12PM CT. Contact CSVs: aceengineer_normalized.csv(1281), achantav_normalized.csv(994), skestates_contacts.csv(25).
-- BSEE data (~300MB) backed up at /mnt/ace/worldenergydata/data/modules/bsee — NOT in git. Excluded from test collection via norecursedirs. scripts/refresh_bsee_all.py fetches it.
-- WRITE-BACK RULE (#1941): NEW skills/scripts/hooks/rules go DIRECTLY to workspace-hub/.claude/skills/ (NOT ~/.hermes/skills/). Repo is source of truth. external_dirs includes .claude/skills/ so both Hermes and Claude Code see everything. Everything git-tracked. ~/.hermes/skills/ only for personal/offline-only stuff. All .claude/ writes git-committed immediately.
+- DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default.
+- workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis.
+- 2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot.
+- Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval.
+- Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only.
+- In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present.
+- digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment.
 
 ### User Profile
 
@@ -28,6 +25,9 @@
 - Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included.
 - Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
 - Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers.
+- Prefers choices/options to be numbered or lettered for easy selection.
+- Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible.
+- For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution.
 
 
 <!-- BRIDGE:END -->
@@ -82,4 +82,4 @@ On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent pr
 - `aceengineer-strategy/` — private nested repo with full GTM strategy
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
-- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron) *verified: 2026-04-10*
+- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)

@@ -1,0 +1,707 @@
+{
+  "generated_at": "2026-04-10T16:54:04Z",
+  "repo_root": "/mnt/local-analysis/workspace-hub",
+  "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
+  "providers": {
+    "claude": {
+      "source": "raw_logs",
+      "sessions": 24,
+      "correction_sessions": 0,
+      "unique_runtime_sessions": 0,
+      "post_records": 73646,
+      "prompt_reads": 64,
+      "blank_reads": 0,
+      "python3_bash_calls": 635,
+      "uv_python_bash_calls": 5907,
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 40093
+        },
+        {
+          "tool": "Read",
+          "count": 13811
+        },
+        {
+          "tool": "Edit",
+          "count": 6724
+        },
+        {
+          "tool": "Write",
+          "count": 6436
+        },
+        {
+          "tool": "Grep",
+          "count": 1758
+        },
+        {
+          "tool": "Agent",
+          "count": 730
+        },
+        {
+          "tool": "ToolSearch",
+          "count": 681
+        },
+        {
+          "tool": "TaskUpdate",
+          "count": 541
+        }
+      ],
+      "top_repos": [
+        {
+          "repo": "workspace-hub",
+          "count": 70303
+        },
+        {
+          "repo": "digitalmodel",
+          "count": 1900
+        },
+        {
+          "repo": "assetutilities",
+          "count": 535
+        },
+        {
+          "repo": "worldenergydata",
+          "count": 201
+        },
+        {
+          "repo": "agent-a597ec3f",
+          "count": 100
+        },
+        {
+          "repo": "aceengineer-admin",
+          "count": 87
+        },
+        {
+          "repo": "agent-a1fcef76",
+          "count": 58
+        },
+        {
+          "repo": "wrk-1132-standards-search",
+          "count": 55
+        }
+      ],
+      "top_reads": [
+        {
+          "path": "scripts/work-queue/verify-gate-evidence.py",
+          "count": 740
+        },
+        {
+          "path": "scripts/work-queue/generate-html-review.py",
+          "count": 249
+        },
+        {
+          "path": "scripts/work-queue/start_stage.py",
+          "count": 138
+        },
+        {
+          "path": "scripts/work-queue/exit_stage.py",
+          "count": 137
+        },
+        {
+          "path": ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+          "count": 123
+        },
+        {
+          "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
+          "count": 115
+        },
+        {
+          "path": "scripts/work-queue/close-item.sh",
+          "count": 94
+        },
+        {
+          "path": "scripts/work-queue/whats-next.sh",
+          "count": 70
+        },
+        {
+          "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+          "count": 66
+        },
+        {
+          "path": "scripts/work-queue/archive-item.sh",
+          "count": 62
+        }
+      ],
+      "top_missing_repo_reads": [
+        {
+          "path": "scripts/work-queue/generate-html-review.py",
+          "count": 249
+        },
+        {
+          "path": "scripts/work-queue/start_stage.py",
+          "count": 138
+        },
+        {
+          "path": "scripts/work-queue/exit_stage.py",
+          "count": 137
+        },
+        {
+          "path": ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+          "count": 123
+        },
+        {
+          "path": "scripts/work-queue/close-item.sh",
+          "count": 94
+        },
+        {
+          "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+          "count": 66
+        },
+        {
+          "path": "scripts/work-queue/archive-item.sh",
+          "count": 62
+        },
+        {
+          "path": "scripts/work-queue/claim-item.sh",
+          "count": 60
+        },
+        {
+          "path": "scripts/work-queue/verify_checklist.py",
+          "count": 43
+        },
+        {
+          "path": "scripts/work-queue/stages/stage-01-capture.yaml",
+          "count": 42
+        }
+      ],
+      "top_missing_external_reads": [
+        {
+          "path": "/tmp/tmp.4XN7Wckbxl/review-content.md",
+          "count": 18
+        },
+        {
+          "path": "/tmp/tmp.4fvalbgSpv/review-content.md",
+          "count": 10
+        },
+        {
+          "path": "/tmp/tmp.Y7GHawx2jw/review-content.md",
+          "count": 9
+        },
+        {
+          "path": "/tmp/tmp.sHUq6zx1JY/review-content.md",
+          "count": 6
+        },
+        {
+          "path": "/tmp/tmp.Y2upjk3JCH/review-content.md",
+          "count": 5
+        },
+        {
+          "path": "/tmp/tmp.SmqPbkghat/review-content.md",
+          "count": 5
+        },
+        {
+          "path": "/tmp/tmp.mIXvhD1xZj/review-content.md",
+          "count": 5
+        },
+        {
+          "path": "/tmp/tmp.xgxlrsu4AN/review-content.md",
+          "count": 5
+        },
+        {
+          "path": "/tmp/gt1r-frame/frame_preview.png",
+          "count": 5
+        },
+        {
+          "path": "/tmp/tmp.yX4KezaN1x/review-content.md",
+          "count": 4
+        }
+      ],
+      "top_symbolic_reads": [],
+      "special_counts": {},
+      "python3_per_1k_records": 8.62,
+      "uv_python_per_1k_records": 80.21
+    },
+    "codex": {
+      "source": "raw_logs",
+      "sessions": 41,
+      "correction_sessions": 0,
+      "unique_runtime_sessions": 400,
+      "post_records": 15589,
+      "prompt_reads": 0,
+      "blank_reads": 0,
+      "python3_bash_calls": 319,
+      "uv_python_bash_calls": 392,
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 15183
+        },
+        {
+          "tool": "update_plan",
+          "count": 375
+        },
+        {
+          "tool": "list_mcp_resources",
+          "count": 14
+        },
+        {
+          "tool": "list_mcp_resource_templates",
+          "count": 8
+        },
+        {
+          "tool": "request_user_input",
+          "count": 5
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 2
+        },
+        {
+          "tool": "wait_agent",
+          "count": 1
+        },
+        {
+          "tool": "close_agent",
+          "count": 1
+        }
+      ],
+      "top_repos": [
+        {
+          "repo": "workspace-hub",
+          "count": 15589
+        }
+      ],
+      "top_reads": [],
+      "top_missing_repo_reads": [],
+      "top_missing_external_reads": [],
+      "top_symbolic_reads": [],
+      "special_counts": {
+        "exec_command": 12169,
+        "write_stdin": 3014,
+        "update_plan": 375,
+        "request_user_input": 5,
+        "list_mcp_resources": 14,
+        "list_mcp_resource_templates": 8,
+        "spawn_agent": 2,
+        "wait_agent": 1,
+        "close_agent": 1
+      },
+      "python3_per_1k_records": 20.46,
+      "uv_python_per_1k_records": 25.15
+    },
+    "hermes": {
+      "source": "raw_logs",
+      "sessions": 9,
+      "correction_sessions": 9,
+      "unique_runtime_sessions": 0,
+      "post_records": 69971,
+      "prompt_reads": 533,
+      "blank_reads": 639,
+      "python3_bash_calls": 1686,
+      "uv_python_bash_calls": 2188,
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 38403
+        },
+        {
+          "tool": "Read",
+          "count": 10908
+        },
+        {
+          "tool": "Write",
+          "count": 7910
+        },
+        {
+          "tool": "Grep",
+          "count": 7807
+        },
+        {
+          "tool": "Edit",
+          "count": 3474
+        },
+        {
+          "tool": "Task",
+          "count": 807
+        },
+        {
+          "tool": "Browser",
+          "count": 367
+        },
+        {
+          "tool": "UserInput",
+          "count": 144
+        }
+      ],
+      "top_repos": [
+        {
+          "repo": "workspace-hub",
+          "count": 69971
+        }
+      ],
+      "top_reads": [
+        {
+          "path": "config/scheduled-tasks/schedule-tasks.yaml",
+          "count": 167
+        },
+        {
+          "path": "scripts/cron/harness-update.sh",
+          "count": 112
+        },
+        {
+          "path": "scripts/gtm/job-market-scanner.py",
+          "count": 89
+        },
+        {
+          "path": "docs/standards/AI_REVIEW_ROUTING_POLICY.md",
+          "count": 77
+        },
+        {
+          "path": "scripts/cron/gsd-researcher-nightly.sh",
+          "count": 72
+        },
+        {
+          "path": "docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md",
+          "count": 65
+        },
+        {
+          "path": "scripts/monitoring/cron-health-check.sh",
+          "count": 53
+        },
+        {
+          "path": "assetutilities/src/assetutilities/agent_os/commands/create_module_agent.py",
+          "count": 49
+        },
+        {
+          "path": "docs/work-queue-workflow.md",
+          "count": 47
+        },
+        {
+          "path": "docs/roadmaps/orcawave-orcaflex-capability-roadmap.md",
+          "count": 47
+        }
+      ],
+      "top_missing_repo_reads": [
+        {
+          "path": "client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py",
+          "count": 27
+        },
+        {
+          "path": "digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md",
+          "count": 9
+        },
+        {
+          "path": "digitalmodel/docs/assessments/hull-library-audit.md",
+          "count": 9
+        },
+        {
+          "path": "digitalmodel/specs/module-registry.yaml",
+          "count": 9
+        },
+        {
+          "path": "worldenergydata/.planning/quick/gemini-review.txt",
+          "count": 9
+        },
+        {
+          "path": ".planning/research/2026-04-01-python-ecosystem.md",
+          "count": 8
+        },
+        {
+          "path": ".planning/skills/evals/workflow-gatepass.yaml",
+          "count": 6
+        },
+        {
+          "path": ".planning/skills/evals/work-queue.yaml",
+          "count": 6
+        },
+        {
+          "path": "scripts/quality/tests/test_doc_staleness_scanner.py",
+          "count": 6
+        },
+        {
+          "path": "config/cron/schedule-tasks.yaml",
+          "count": 6
+        }
+      ],
+      "top_missing_external_reads": [
+        {
+          "path": "/home/vamsee/gmail-archive/config/accounts.yaml",
+          "count": 4
+        },
+        {
+          "path": "/home/vamsee/workspace-hub/config/scheduled-tasks/schedule-tasks.yaml",
+          "count": 2
+        },
+        {
+          "path": "/home/vamsee/workspace-hub/.claude/settings.json",
+          "count": 2
+        },
+        {
+          "path": "/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/README.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/the-longform-guide.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/the-shortform-guide.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/the-security-guide.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/AGENTS.md",
+          "count": 2
+        },
+        {
+          "path": "/tmp/everything-claude-code/hooks/hooks.json",
+          "count": 2
+        }
+      ],
+      "top_symbolic_reads": [
+        {
+          "name": "github-issues",
+          "count": 112
+        },
+        {
+          "name": "overnight-parallel-agent-prompts",
+          "count": 72
+        },
+        {
+          "name": "gh-work-planning",
+          "count": 50
+        },
+        {
+          "name": "writing-plans",
+          "count": 47
+        },
+        {
+          "name": "issue-portfolio-triage",
+          "count": 40
+        },
+        {
+          "name": "gh-work-execution",
+          "count": 37
+        },
+        {
+          "name": "gsd-operational-audit",
+          "count": 34
+        },
+        {
+          "name": "multi-provider-adversarial-review",
+          "count": 27
+        },
+        {
+          "name": "hermes-model-switching",
+          "count": 27
+        },
+        {
+          "name": "claude-code",
+          "count": 27
+        }
+      ],
+      "special_counts": {
+        "memory_add": 279,
+        "memory_replace": 357,
+        "memory_remove": 60,
+        "skill_create": 207,
+        "skill_patch": 685,
+        "skill_view": 2,
+        "skill_delete": 1,
+        "skill_edit": 21,
+        "skill_write_file": 4,
+        "memory_list": 1
+      },
+      "python3_per_1k_records": 24.1,
+      "uv_python_per_1k_records": 31.27
+    },
+    "gemini": {
+      "source": "raw_logs",
+      "sessions": 36,
+      "correction_sessions": 0,
+      "unique_runtime_sessions": 282,
+      "post_records": 4585,
+      "prompt_reads": 16,
+      "blank_reads": 6,
+      "python3_bash_calls": 200,
+      "uv_python_bash_calls": 32,
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 1720
+        },
+        {
+          "tool": "Read",
+          "count": 1603
+        },
+        {
+          "tool": "Grep",
+          "count": 458
+        },
+        {
+          "tool": "Write",
+          "count": 379
+        },
+        {
+          "tool": "Edit",
+          "count": 324
+        },
+        {
+          "tool": "Browser",
+          "count": 96
+        },
+        {
+          "tool": "search_file_content",
+          "count": 4
+        },
+        {
+          "tool": "ask_user",
+          "count": 1
+        }
+      ],
+      "top_repos": [
+        {
+          "repo": "workspace-hub",
+          "count": 4585
+        }
+      ],
+      "top_reads": [
+        {
+          "path": ".claude/work-queue/",
+          "count": 29
+        },
+        {
+          "path": ".claude/work-queue/WRK-149.md",
+          "count": 16
+        },
+        {
+          "path": "digitalmodel/scripts/benchmark/validate_owd_vs_spec.py",
+          "count": 16
+        },
+        {
+          "path": "CLAUDE.md",
+          "count": 15
+        },
+        {
+          "path": "scripts/operations/compliance/migrate_specs_to_workspace.sh",
+          "count": 14
+        },
+        {
+          "path": ".claude/work-queue/pending",
+          "count": 14
+        },
+        {
+          "path": ".",
+          "count": 13
+        },
+        {
+          "path": ".claude/work-queue",
+          "count": 13
+        },
+        {
+          "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+          "count": 12
+        },
+        {
+          "path": "digitalmodel/src/digitalmodel",
+          "count": 11
+        }
+      ],
+      "top_missing_repo_reads": [
+        {
+          "path": ".claude/work-queue/WRK-149.md",
+          "count": 16
+        },
+        {
+          "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+          "count": 12
+        },
+        {
+          "path": ".claude/work-queue/working",
+          "count": 11
+        },
+        {
+          "path": ".claude/work-queue/working/",
+          "count": 8
+        },
+        {
+          "path": "scripts/agents/lib/workflow-guards.sh",
+          "count": 7
+        },
+        {
+          "path": ".gitmodules",
+          "count": 6
+        },
+        {
+          "path": "scripts/agents/plan.sh",
+          "count": 6
+        },
+        {
+          "path": "scripts/work-queue/generate-html-review.py",
+          "count": 6
+        },
+        {
+          "path": "scripts/agents/execute.sh",
+          "count": 5
+        },
+        {
+          "path": ".claude/hooks/post-task-review.sh",
+          "count": 5
+        }
+      ],
+      "top_missing_external_reads": [
+        {
+          "path": "/tmp/pending-queue-snapshot.txt",
+          "count": 1
+        },
+        {
+          "path": "/tmp/test-output.md",
+          "count": 1
+        }
+      ],
+      "top_symbolic_reads": [
+        {
+          "name": "digitalmodel",
+          "count": 20
+        },
+        {
+          "name": "worldenergydata",
+          "count": 10
+        },
+        {
+          "name": "assethold",
+          "count": 6
+        },
+        {
+          "name": "scripts",
+          "count": 6
+        },
+        {
+          "name": "src",
+          "count": 5
+        },
+        {
+          "name": "tests",
+          "count": 5
+        },
+        {
+          "name": "doris",
+          "count": 5
+        },
+        {
+          "name": "assetutilities",
+          "count": 4
+        },
+        {
+          "name": "config",
+          "count": 3
+        },
+        {
+          "name": "digitalmodel/scripts/python/digitalmodel/modules",
+          "count": 3
+        }
+      ],
+      "special_counts": {},
+      "python3_per_1k_records": 43.62,
+      "uv_python_per_1k_records": 6.98
+    }
+  }
+}

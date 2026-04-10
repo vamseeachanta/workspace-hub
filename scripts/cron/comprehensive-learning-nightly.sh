@@ -48,6 +48,11 @@ echo "--- Codex session export $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/codex-session-export.sh 2>&1 || \
   echo "WARNING: Codex session export failed"
 
+# Step 2b3: export Gemini sessions to orchestrator JSONL (best-effort — provider parity)
+echo "--- Gemini session export $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/cron/gemini-session-export.sh 2>&1 || \
+  echo "WARNING: Gemini session export failed"
+
 # Step 2c: sync Hermes memory to Claude state (best-effort — #1719)
 echo "--- Agent memory sync $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/sync-agent-memories.sh 2>&1 || \

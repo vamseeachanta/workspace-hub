@@ -1,3 +1,12 @@
+---
+name: knowledge-source-recon
+description: Inventory authoritative knowledge registries and catalogs without rescanning the filesystem.
+version: 1.0.0
+author: Workspace Hub
+category: coordination
+tags: [knowledge, reconnaissance, inventory, catalogs, registries]
+---
+
 # Knowledge Source Reconnaissance
 
 ## When to Use
