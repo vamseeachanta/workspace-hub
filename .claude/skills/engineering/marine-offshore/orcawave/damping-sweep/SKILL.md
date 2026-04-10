@@ -158,3 +158,21 @@ analyzer.load_results("models/fpso.owr")
 - [CLI Usage](cli-usage/SKILL.md)
 - [Typical Values by Vessel Type (+1)](typical-values-by-vessel-type/SKILL.md)
 - [Damping-Related Properties](damping-related-properties/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Theory,Dampinglid.md` -- damping lid method for free-surface suppression
+- `Theory,Hydrodynamicdrag.md` -- linearized viscous drag in frequency domain
+- `Results,Rolldamping.md` -- roll damping results output
+- `Results,Addedmassanddamping.md` -- radiation damping vs frequency
+- `Data,Springdampers.md` -- external damping specification
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Vesseltypes,Otherdamping.md` -- additional damping in vessel types
+- `Vesseltheory,Otherdamping.md` -- damping theory beyond radiation
+
+Papers (`data/llm-wiki/papers/`):
+- `Structural-Damping.md` -- structural damping concepts
+- `Spar-Buoy-Equation-of-Motion.md` -- damping in spar buoy dynamics
