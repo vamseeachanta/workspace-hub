@@ -7,7 +7,8 @@
 # What it does:
 # 1. Copies enforcement-env.sh to .git/hooks/enforcement-env
 # 2. Wires enforcement-env sourcing into pre-commit (if not already present)
-# 3. Wires post-commit-learnings.sh into post-commit (fixes dead code after exit 0)
+# 3. Wires stage-prompt drift guard into pre-push (if not already present)
+# 4. Wires post-commit-learnings.sh into post-commit (fixes dead code after exit 0)
 #
 # Usage:
 #   bash scripts/enforcement/install-hooks.sh
@@ -67,7 +68,34 @@ else
   log "SKIP: pre-commit hook not found"
 fi
 
-# ── Step 3: Wire learning pipeline into post-commit ─────────────────────
+# ── Step 3: Wire stage prompt drift guard into pre-push ─────────────────
+PRE_PUSH="${REPO_ROOT}/.git/hooks/pre-push"
+
+if [[ -f "$PRE_PUSH" ]]; then
+  if grep -q "require-stage-prompt-drift.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: stage prompt drift guard already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire stage prompt drift guard into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
+
+# ── Stage prompt drift guard (installed by install-hooks.sh) ─────────────
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
+if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
+  bash "$STAGE_PROMPT_DRIFT_GATE" || exit $?
+fi
+EOF
+      chmod +x "$PRE_PUSH"
+      log "OK: Wired stage prompt drift guard into pre-push"
+    fi
+  fi
+else
+  log "SKIP: pre-push hook not found"
+fi
+
+# ── Step 4: Wire learning pipeline into post-commit ─────────────────────
 POST_COMMIT="${REPO_ROOT}/.git/hooks/post-commit"
 
 if [[ -f "$POST_COMMIT" ]]; then
@@ -123,6 +151,7 @@ fi
 log ""
 log "Enforcement hook chain:"
 log "  pre-commit -> enforcement-env -> plan-approval-gate"
+log "  pre-push -> review-gate -> stage-prompt-drift-gate -> repo/test gates"
 log "  post-commit -> auto-push -> learning pipeline -> extract-learnings"
 log ""
 if [[ "$DRY_RUN" == "1" ]]; then

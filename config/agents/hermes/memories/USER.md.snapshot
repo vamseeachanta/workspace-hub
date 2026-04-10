@@ -5,3 +5,9 @@ Overnight batch execution: 3 self-contained prompts, zero git contention, no use
 Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
 §
 Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers.
+§
+Prefers choices/options to be numbered or lettered for easy selection.
+§
+Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible.
+§
+For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution.

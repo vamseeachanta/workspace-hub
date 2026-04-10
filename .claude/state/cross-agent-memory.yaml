@@ -3,29 +3,37 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-09T07:00:29Z"
-  source_hash: "d191140dd806c87e3e98bff66e4c7198"
+  generated: "2026-04-10T07:00:50Z"
+  source_hash: "3696f7c29b4b3568ab96beb89aa85bce"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 7
+      entry_count: 14
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 38
+      memory_file_count: 39
 
 hermes_insights:
   environment_facts:
+    - "DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default."
     - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
+    - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
+    - "In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
+    - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
+    - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."
   project_knowledge:
-    - "Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv). DEFAULT MODEL (2026-04-08): gpt-4.1/openai-codex (2 OAuth creds, round_robin). Fallback: copilot/claude-sonnet-4.6. Delegation: openai-codex/gpt-4.1. Reason: copilot kept falling back mid-session breaking context. Use h-opus/h-copilot for Claude."
+    []
   user_preferences:
     - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
     - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."
     - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
     - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
+    - "Prefers choices/options to be numbered or lettered for easy selection."
+    - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
+    - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
 
 claude_memory_index:
   files:
@@ -59,6 +67,8 @@ claude_memory_index:
       topic: "no jargon"
     - file: "project_solver_queue_architecture.md"
       topic: "solver queue architecture"
+    - file: "project_hermes_codex_quota.md"
+      topic: "hermes codex quota"
     - file: "project_cross_review_policy.md"
       topic: "cross review policy"
     - file: "engineering-modules.md"
@@ -109,3 +119,5 @@ claude_memory_index:
 shared_conventions:
   # These conventions from Hermes should be honored by all agents
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
+  - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
+  - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."

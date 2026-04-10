@@ -1,6 +1,13 @@
 `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
 §
-Hermes: 5 external_dirs repos, 691 skills. Nightly cron: export+sync+drift. Shebang MUST be /home/vamsee/.hermes/hermes-agent/.venv/bin/python (not #!/usr/bin/env python3 — that resolves to miniforge3 which lacks hermes deps like python-dotenv).
-DEFAULT MODEL (2026-04-08): gpt-4.1/openai-codex (2 OAuth creds, round_robin). Fallback: copilot/claude-sonnet-4.6. Delegation: openai-codex/gpt-4.1. Reason: copilot kept falling back mid-session breaking context. Use h-opus/h-copilot for Claude.
+DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default.
 §
 workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis.
+§
+2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot.
+§
+Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval.
+§
+Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only.
+§
+In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present.

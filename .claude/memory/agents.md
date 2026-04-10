@@ -82,4 +82,4 @@ On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent pr
 - `aceengineer-strategy/` — private nested repo with full GTM strategy
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
-- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
+- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron) *verified: 2026-04-10*

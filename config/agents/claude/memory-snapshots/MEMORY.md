@@ -20,6 +20,7 @@
 - [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating domains Mon-Fri, outputs to .planning/research/
 - [AI harness evaluations](project_ai_harness_evaluations.md) — GStack, Hermes, Paperclip, Superpowers audit (#1466-1470)
 - [Hermes installation](project_hermes_installation.md) — v0.4.0, shebang reverts recurring (3x), config.yaml provider routing fixed
+- [Hermes Codex quota](project_hermes_codex_quota.md) — #6551 implemented 2026-04-09, local only, follow-ups #6564-6567
 - [Workflow tips in /today](project_workflow_tips_today.md) — tip-of-the-day feature, hybrid YAML catalog, brainstorming
 - [Solver queue](project_solver_queue_architecture.md) — PRODUCTION: batch manifests, retry, results dashboard, watch-results cron
 - [Overnight batch runs](project_overnight_batch_runs.md) — 5 parallel terminals dispatched nightly with pre-planned prompts

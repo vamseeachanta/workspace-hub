@@ -11,6 +11,46 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  stage-prompt-drift:
+    name: Stage Prompt Drift Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Check newly introduced stage prompt drift
+        run: |
+          echo "## Stage Prompt Drift Guard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          uv run python scripts/analysis/stage_prompt_drift_check.py \
+            --base-ref origin/main \
+            --head-ref HEAD \
+            --output-json /tmp/stage-prompt-drift.json \
+            --output-md /tmp/stage-prompt-drift.md \
+            --fail-on-issues
+
+      - name: Publish drift summary
+        if: always()
+        run: |
+          if [[ -f /tmp/stage-prompt-drift.md ]]; then
+            cat /tmp/stage-prompt-drift.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No stage prompt drift report produced." >> $GITHUB_STEP_SUMMARY
+          fi
+
   review-evidence:
     name: Review Evidence Check
     runs-on: ubuntu-latest
