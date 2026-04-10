@@ -77,11 +77,11 @@ done
 # Check for index file
 if [[ ! -f "$INDEX_FILE" ]]; then
     echo "ERROR: Specs index not found: $INDEX_FILE" >&2
-    echo "Run: python3 scripts/readiness/build-specs-index.py" >&2
+    echo "Run: uv run --no-project python scripts/readiness/build-specs-index.py" >&2
     exit 1
 fi
 
-python3 - "$INDEX_FILE" "$TAG" "$REPO" "$CATEGORY" "$WRK" "$SEARCH" \
+uv run --no-project python - "$INDEX_FILE" "$TAG" "$REPO" "$CATEGORY" "$WRK" "$SEARCH" \
            "$LIMIT" "$FORMAT" "$STATS" <<'PYEOF'
 import sys
 import yaml

@@ -75,12 +75,12 @@ done
 # Check for index
 if [[ ! -f "$INDEX_FILE" ]]; then
     echo "ERROR: Index not found: $INDEX_FILE" >&2
-    echo "Run Phase A first: python3 scripts/data/document-index/phase-a-index.py" >&2
+    echo "Run Phase A first: uv run --no-project python scripts/data/document-index/phase-a-index.py" >&2
     exit 1
 fi
 
 # Use Python for filtering (jq alone doesn't handle JSONL domain arrays well)
-python3 - "$INDEX_FILE" "$DOMAIN" "$REPO" "$SOURCE" "$KEYWORD" "$STATUS" "$LIMIT" "$FORMAT" "$CALC_ONLY" "$STANDARD" <<'PYEOF'
+uv run --no-project python - "$INDEX_FILE" "$DOMAIN" "$REPO" "$SOURCE" "$KEYWORD" "$STATUS" "$LIMIT" "$FORMAT" "$CALC_ONLY" "$STANDARD" <<'PYEOF'
 import sys
 import json
 

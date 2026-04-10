@@ -190,15 +190,51 @@ Either exclude the log directory from the legal scan, or use `--diff-only` for t
 To perform a comprehensive cron health review:
 1. Run `cron-health-check.sh` manually -- this is your first pass
 2. Check the cron log directory: `tail -10 logs/research/2026-04-*.log` for research, etc.
-3. Cross-reference with `crontab -l` vs `config/scheduled-tasks/schedule-tasks.yaml`
-4. Verify the `/today` daily report at `logs/daily/YYYY-MM-DD.md` is fresh
-5. If reports exist but health-check is broken, fix the script first, then rerun
+3. Cross-reference `crontab -l` vs `config/scheduled-tasks/schedule-tasks.yaml`
+4. Also compare against `bash scripts/cron/setup-cron.sh --dry-run` -- this is the most reliable rendered view for the current host
+5. Verify the `/today` daily report at `logs/daily/YYYY-MM-DD.md` is fresh
+6. If reports exist but health-check is broken, fix the script first, then rerun
+
+### Canonical vs Drift-Prone Sources
+When auditing cron drift in workspace-hub, treat these as canonical:
+- `config/scheduled-tasks/schedule-tasks.yaml`
+- `scripts/cron/setup-cron.sh`
+- `scripts/cron/validate-schedule.py`
+- `config/workstations/registry.yaml`
+
+Treat these as legacy or drift-prone unless they are explicitly refreshed to match YAML:
+- `scripts/coordination/context/setup_cron.sh`
+- `scripts/coordination/productivity/crontab.example`
+- `docs/ops/scheduled-tasks.md`
+- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`
+- `scripts/cron/crontab-template.sh`
+
+If live crontab and one of the legacy sources disagree, prefer YAML + `setup-cron.sh --dry-run`, not the legacy file.
 
 ## Troubleshooting Guidance
 
 ### Missing job on machine
 - compare `crontab -l` with `setup-cron.sh --dry-run`
-- reinstall with `--replace` if YAML is canonical
+- if YAML is canonical, reconcile with `bash scripts/cron/setup-cron.sh --replace`
+- do NOT use the default additive install mode for drift repair
+
+Recommended safe sequence:
+```bash
+cd /mnt/local-analysis/workspace-hub
+export WORKSPACE_HUB=/mnt/local-analysis/workspace-hub
+bash scripts/cron/setup-cron.sh --dry-run
+mkdir -p "$WORKSPACE_HUB/.ops/cron-backups"
+crontab -l > "$WORKSPACE_HUB/.ops/cron-backups/crontab.$(hostname -s).$(date +%Y%m%d-%H%M%S).bak"
+bash scripts/cron/setup-cron.sh --replace
+crontab -l
+bash scripts/monitoring/cron-health-check.sh --workspace "$WORKSPACE_HUB"
+```
+
+Why `--replace` matters:
+- additive/default mode can leave stale commands installed
+- additive/default mode can preserve duplicate inline jobs
+- one real example was a duplicated `notification-purge` cron line because append-mode dedupe did not recognize a non-script inline `find ... -delete` command
+- drift reviews should compare live crontab against dry-run output both before and after replacement
 
 ### Silent failure
 - add or inspect log redirection
@@ -316,6 +352,36 @@ export PATH="/home/vamsee/.local/bin:$PATH"
 # BEST: use absolute path for specific commands:
 /home/vamsee/.local/bin/uv run --no-project ...
 ```
+
+## Weekly Today Reports Pattern
+
+The daily productivity report is only healthy if you verify both the daily artifact and whether a weekly variant is actually scheduled.
+
+Current canonical daily task pattern:
+- YAML task uses `scripts/productivity/daily_today.sh`
+- daily artifact path: `logs/daily/YYYY-MM-DD.md`
+- daily wrapper log: `logs/daily/cron.log`
+
+Important finding:
+- `scripts/productivity/daily_today.sh` already supports `--week` and writes `logs/weekly/YYYY-Www.md`
+- if weekly reports are absent, first check whether a `weekly-today` task exists in `config/scheduled-tasks/schedule-tasks.yaml`
+- do not assume weekly reporting is broken just because `scripts/coordination/productivity/crontab.example` mentions it; that file may be stale
+
+Minimal restoration pattern for weekly today:
+```yaml
+- id: weekly-today
+  schedule: "0 6 * * 1"
+  machines: [dev-primary, ace-linux-1]
+  requires: [python3, bash, git]
+  command: >-
+    PATH=$HOME/.local/bin:$PATH;
+    cd $WORKSPACE_HUB &&
+    bash scripts/productivity/daily_today.sh --week
+    >> $WORKSPACE_HUB/logs/weekly/cron.log 2>&1
+  log: logs/weekly/cron.log
+```
+
+No script changes are needed for this pattern; only the YAML task and cron reinstall.
 
 ## Rule of Thumb
 

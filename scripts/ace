@@ -138,7 +138,7 @@ build_pythonpath() {
 # Test whether a Python module is importable (with workspace src paths active).
 require_python_module() {
     local module="$1"
-    if ! PYTHONPATH="$(build_pythonpath)" python3 -c "import $module" 2>/dev/null; then
+    if ! PYTHONPATH="$(build_pythonpath)" uv run --no-project python -c "import $module" 2>/dev/null; then
         die "Python module '$module' is not available. " \
             "Install it or ensure its src/ directory exists at ${HUB_ROOT}/${module}."
     fi
@@ -201,7 +201,7 @@ cmd_dm() {
         fi
     done
     require_python_module "digitalmodel"
-    PYTHONPATH="$(build_pythonpath)" exec python3 -m digitalmodel "$@"
+    PYTHONPATH="$(build_pythonpath)" exec uv run --no-project python -m digitalmodel "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -209,7 +209,7 @@ cmd_dm() {
 # ---------------------------------------------------------------------------
 cmd_we() {
     require_python_module "worldenergydata"
-    PYTHONPATH="$(build_pythonpath)" exec python3 -m worldenergydata "$@"
+    PYTHONPATH="$(build_pythonpath)" exec uv run --no-project python -m worldenergydata "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -224,7 +224,7 @@ cmd_au() {
         fi
     done
     require_python_module "assetutilities"
-    PYTHONPATH="$(build_pythonpath)" exec python3 -m assetutilities "$@"
+    PYTHONPATH="$(build_pythonpath)" exec uv run --no-project python -m assetutilities "$@"
 }
 
 # ---------------------------------------------------------------------------

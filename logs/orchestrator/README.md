@@ -55,3 +55,19 @@ Each machine runs `comprehensive-learning` locally against its own `logs/orchest
 4. **dev-primary Phase 10a** runs `git pull` to aggregate all machines, writes compilation report
 
 Raw logs in `logs/orchestrator/` are local-only (gitignored). Only derived state crosses machines.
+
+## Claude ecosystem drift audit
+
+Use the lightweight audit below to compare historical Claude session references against the current checkout and catch repo drift after refactors:
+
+```bash
+uv run python scripts/analysis/claude_session_ecosystem_audit.py \
+  --output-md docs/reports/claude-session-ecosystem-audit-$(date +%F).md \
+  --output-json analysis/claude-session-ecosystem-audit-$(date +%F).json
+```
+
+This report surfaces:
+- hottest missing repo-local reads (deleted or renamed scripts/skills still referenced in Claude work)
+- missing prompt/stage assets
+- bare `python3` usage inside Claude Bash calls vs `uv run ... python`
+- top tools/repos/files dominating the Claude corpus

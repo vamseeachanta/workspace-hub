@@ -1,0 +1,543 @@
+{
+  "generated_at": "2026-04-09T22:58:17Z",
+  "repo_root": "/mnt/local-analysis/workspace-hub",
+  "logs_dir": "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude",
+  "sessions_analyzed": 24,
+  "post_records": 73646,
+  "tool_distribution": [
+    {
+      "tool": "Bash",
+      "count": 40093
+    },
+    {
+      "tool": "Read",
+      "count": 13811
+    },
+    {
+      "tool": "Edit",
+      "count": 6724
+    },
+    {
+      "tool": "Write",
+      "count": 6436
+    },
+    {
+      "tool": "Grep",
+      "count": 1758
+    },
+    {
+      "tool": "Agent",
+      "count": 730
+    },
+    {
+      "tool": "ToolSearch",
+      "count": 681
+    },
+    {
+      "tool": "TaskUpdate",
+      "count": 541
+    },
+    {
+      "tool": "WebSearch",
+      "count": 519
+    },
+    {
+      "tool": "Glob",
+      "count": 392
+    }
+  ],
+  "repo_distribution": [
+    {
+      "repo": "workspace-hub",
+      "count": 70303
+    },
+    {
+      "repo": "digitalmodel",
+      "count": 1900
+    },
+    {
+      "repo": "assetutilities",
+      "count": 535
+    },
+    {
+      "repo": "worldenergydata",
+      "count": 201
+    },
+    {
+      "repo": "agent-a597ec3f",
+      "count": 100
+    },
+    {
+      "repo": "aceengineer-admin",
+      "count": 87
+    },
+    {
+      "repo": "agent-a1fcef76",
+      "count": 58
+    },
+    {
+      "repo": "wrk-1132-standards-search",
+      "count": 55
+    },
+    {
+      "repo": "agent-a4dd71d2",
+      "count": 39
+    },
+    {
+      "repo": "assethold",
+      "count": 38
+    }
+  ],
+  "top_reads": [
+    {
+      "path": "scripts/work-queue/verify-gate-evidence.py",
+      "count": 732
+    },
+    {
+      "path": "scripts/work-queue/generate-html-review.py",
+      "count": 249
+    },
+    {
+      "path": "scripts/work-queue/exit_stage.py",
+      "count": 137
+    },
+    {
+      "path": "scripts/work-queue/start_stage.py",
+      "count": 135
+    },
+    {
+      "path": ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+      "count": 120
+    },
+    {
+      "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
+      "count": 115
+    },
+    {
+      "path": "scripts/work-queue/close-item.sh",
+      "count": 94
+    },
+    {
+      "path": "scripts/work-queue/whats-next.sh",
+      "count": 70
+    },
+    {
+      "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+      "count": 66
+    },
+    {
+      "path": "scripts/work-queue/archive-item.sh",
+      "count": 61
+    },
+    {
+      "path": "scripts/work-queue/claim-item.sh",
+      "count": 60
+    },
+    {
+      "path": "scripts/quality/check-all.sh",
+      "count": 47
+    },
+    {
+      "path": "scripts/data/doc_intelligence/schema.py",
+      "count": 47
+    },
+    {
+      "path": ".claude/skills/development/skill-eval/scripts/eval-skills.py",
+      "count": 45
+    },
+    {
+      "path": "scripts/review/cross-review.sh",
+      "count": 43
+    }
+  ],
+  "top_missing_repo_reads": [
+    {
+      "path": "scripts/work-queue/verify-gate-evidence.py",
+      "count": 732
+    },
+    {
+      "path": "scripts/work-queue/generate-html-review.py",
+      "count": 249
+    },
+    {
+      "path": "scripts/work-queue/exit_stage.py",
+      "count": 137
+    },
+    {
+      "path": "scripts/work-queue/start_stage.py",
+      "count": 135
+    },
+    {
+      "path": ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+      "count": 120
+    },
+    {
+      "path": "scripts/work-queue/close-item.sh",
+      "count": 94
+    },
+    {
+      "path": "scripts/work-queue/whats-next.sh",
+      "count": 70
+    },
+    {
+      "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+      "count": 66
+    },
+    {
+      "path": "scripts/work-queue/archive-item.sh",
+      "count": 61
+    },
+    {
+      "path": "scripts/work-queue/claim-item.sh",
+      "count": 60
+    },
+    {
+      "path": "scripts/work-queue/verify_checklist.py",
+      "count": 43
+    },
+    {
+      "path": "scripts/work-queue/stages/stage-01-capture.yaml",
+      "count": 42
+    },
+    {
+      "path": ".claude/skills/workspace-hub/workflow-gatepass/SKILL.md",
+      "count": 37
+    },
+    {
+      "path": "scripts/work-queue/stages/stage-05-user-review-plan-draft.yaml",
+      "count": 35
+    },
+    {
+      "path": ".claude/work-queue/scripts/generate-index.py",
+      "count": 33
+    },
+    {
+      "path": ".claude/hooks/enforce-active-stage.sh",
+      "count": 33
+    },
+    {
+      "path": "scripts/work-queue/stage_exit_checks.py",
+      "count": 32
+    },
+    {
+      "path": ".claude/skills/workspace-hub/session-start/SKILL.md",
+      "count": 30
+    },
+    {
+      "path": "scripts/work-queue/stages/stage-10-work-execution.yaml",
+      "count": 29
+    },
+    {
+      "path": "scripts/work-queue/stages/stage-07-user-review-plan-final.yaml",
+      "count": 28
+    }
+  ],
+  "top_missing_external_reads": [
+    {
+      "path": "/tmp/tmp.4XN7Wckbxl/review-content.md",
+      "count": 18
+    },
+    {
+      "path": "/mnt/workspace-hub/.claude/work-queue/assets/WRK-5082/geometry-dimensions-WRK-1360.md",
+      "count": 13
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/solvers/gmsh_meshing/mesh_generator.py",
+      "count": 12
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/tests/solvers/calculix/test_fem_chain.py",
+      "count": 11
+    },
+    {
+      "path": "/tmp/tmp.4fvalbgSpv/review-content.md",
+      "count": 10
+    },
+    {
+      "path": "/mnt/workspace-hub/.claude/skills/engineering/cad/freecad-automation/SKILL.md",
+      "count": 10
+    },
+    {
+      "path": "/tmp/tmp.Y7GHawx2jw/review-content.md",
+      "count": 9
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/hydrodynamics/hull_library/profile_schema.py",
+      "count": 9
+    },
+    {
+      "path": "/mnt/workspace-hub/.claude/work-queue/working/WRK-1251.md",
+      "count": 8
+    },
+    {
+      "path": "/mnt/workspace-hub/scripts/work-queue/verify-gate-evidence.py",
+      "count": 8
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/solvers/calculix/inp_writer.py",
+      "count": 8
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/structural/parachute/__init__.py",
+      "count": 8
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/visualization/design_tools/freecad_integration.py",
+      "count": 7
+    },
+    {
+      "path": "/mnt/workspace-hub/digitalmodel/src/digitalmodel/structural/parachute/chute_assessment.py",
+      "count": 7
+    },
+    {
+      "path": "/mnt/workspace-hub/.claude/work-queue/assets/WRK-5082/plan-WRK-1360-3d-cad.md",
+      "count": 7
+    }
+  ],
+  "prompt_read_total": 64,
+  "prompt_read_unique": 52,
+  "top_prompt_reads": [
+    {
+      "path": ".claude/skills/ai/prompting/pandasai/SKILL.md",
+      "count": 7
+    },
+    {
+      "path": "scripts/review/prompts/plan-review.md",
+      "count": 3
+    },
+    {
+      "path": ".claude/skills/_diverged/digitalmodel/ai-prompting/pandasai/SKILL.md",
+      "count": 2
+    },
+    {
+      "path": "/home/vamsee/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development/implementer-prompt.md",
+      "count": 2
+    },
+    {
+      "path": ".claude/skills/ai/prompting/agenta/SKILL.md",
+      "count": 2
+    },
+    {
+      "path": "scripts/planning/prompts/gemini-plan-draft.md",
+      "count": 2
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1030/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": "scripts/planning/prompts/codex-architecture.md",
+      "count": 1
+    },
+    {
+      "path": "scripts/planning/prompts/gemini-risks.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1068/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1074/stage-13-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1075/stage-10-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1067/stage-6-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1064/stage-3-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1064/stage-4-prompt.md",
+      "count": 1
+    }
+  ],
+  "top_missing_prompt_reads": [
+    {
+      "path": ".claude/skills/_diverged/digitalmodel/ai-prompting/pandasai/SKILL.md",
+      "count": 2
+    },
+    {
+      "path": "/home/vamsee/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development/implementer-prompt.md",
+      "count": 2
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1030/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1068/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1074/stage-13-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1075/stage-10-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1067/stage-6-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1064/stage-3-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1064/stage-4-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-658/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1090/stage-10-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1091/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1097/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1071/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1010/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1016/stage-2-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1016/stage-3-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1059/stage-4-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1069/stage-4-prompt.md",
+      "count": 1
+    },
+    {
+      "path": ".claude/work-queue/assets/WRK-1112/stage-3-prompt.md",
+      "count": 1
+    }
+  ],
+  "stage_prompt_distribution": [
+    {
+      "stage": 2,
+      "count": 18
+    },
+    {
+      "stage": 4,
+      "count": 8
+    },
+    {
+      "stage": 10,
+      "count": 3
+    },
+    {
+      "stage": 6,
+      "count": 3
+    },
+    {
+      "stage": 3,
+      "count": 3
+    },
+    {
+      "stage": 8,
+      "count": 2
+    },
+    {
+      "stage": 13,
+      "count": 1
+    },
+    {
+      "stage": 18,
+      "count": 1
+    }
+  ],
+  "stage_prompt_work_items": [
+    {
+      "work_item": "workspace-hub-1405",
+      "count": 3
+    },
+    {
+      "work_item": "WRK-1064",
+      "count": 2
+    },
+    {
+      "work_item": "WRK-1016",
+      "count": 2
+    },
+    {
+      "work_item": "WRK-1112",
+      "count": 2
+    },
+    {
+      "work_item": "WRK-1156",
+      "count": 2
+    },
+    {
+      "work_item": "WRK-1030",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1068",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1074",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1075",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1067",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-658",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1090",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1091",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1097",
+      "count": 1
+    },
+    {
+      "work_item": "WRK-1071",
+      "count": 1
+    }
+  ],
+  "missing_repo_read_total": 8194,
+  "missing_external_read_total": 963,
+  "python3_bash_calls": 635,
+  "uv_python_bash_calls": 5898
+}

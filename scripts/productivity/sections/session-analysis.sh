@@ -73,7 +73,7 @@ echo ""
 echo "### Top Skills by Usage"
 echo ""
 if [[ -f "$SKILL_SCORES" ]]; then
-    python3 - "$SKILL_SCORES" <<'PYEOF'
+    uv run --no-project python - "$SKILL_SCORES" <<'PYEOF'
 import sys, re
 
 scores = {}

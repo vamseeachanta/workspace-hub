@@ -26,6 +26,8 @@ Older local queue surfaces such as:
 
 are retained only for compatibility with older hooks, reports, or historical artifacts. They are not the canonical source of truth for new work intake.
 
+For the highest-signal legacy path mappings from historical Claude sessions, see `docs/ops/legacy-claude-reference-map.md`.
+
 ## Current execution contract
 
 | Stage | Canonical location | Required outcome |
@@ -39,13 +41,9 @@ are retained only for compatibility with older hooks, reports, or historical art
 
 ## Legacy closure helper
 
-The local closure helper remains available for compatibility only:
+The old local closure helper path appears in historical artifacts, but the script is not present in the current checkout.
 
-```bash
-scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]
-```
-
-Do not treat it as the canonical completion path for new work unless a legacy workflow explicitly requires it.
+Do not invoke `scripts/work-queue/close-item.sh` as a live workflow step. For current completion flow, update evidence in `.planning/`, run required reviews, and close the GitHub issue as described above.
 
 ## Completion checklist for current workflow
 

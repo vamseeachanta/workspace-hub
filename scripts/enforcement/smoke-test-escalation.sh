@@ -31,7 +31,7 @@ if [[ ! -d "$SIGNAL_DIR" ]]; then
 fi
 
 # Extract smoke test results, group by repo, find streaks
-uv run python3 - "$SIGNAL_DIR" "$THRESHOLD" "$JSON_MODE" << 'PYTHON'
+uv run --no-project python - "$SIGNAL_DIR" "$THRESHOLD" "$JSON_MODE" <<'PYTHON'
 import sys, json, os, glob
 from collections import defaultdict
 from datetime import datetime

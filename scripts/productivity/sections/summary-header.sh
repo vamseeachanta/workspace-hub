@@ -14,7 +14,7 @@ echo ""
 echo "_$(date '+%A, %B %-d %Y  %-I:%M %p')_"
 echo ""
 
-python3 - "$WRK_DIR" "$USER_QUOTA_CACHE" "$WORKSPACE_QUOTA" "$WORKSPACE_ROOT" <<'PYEOF'
+uv run --no-project python - "$WRK_DIR" "$USER_QUOTA_CACHE" "$WORKSPACE_QUOTA" "$WORKSPACE_ROOT" <<'PYEOF'
 import glob, os, sys, json, time
 
 wrk_dir, user_quota, ws_quota, workspace = sys.argv[1:5]

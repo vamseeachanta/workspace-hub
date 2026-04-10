@@ -25,7 +25,7 @@ fi
 [[ -z "$quota_file" && -f "$WORKSPACE_QUOTA" ]] && quota_file="$WORKSPACE_QUOTA"
 
 if [[ -n "$quota_file" ]]; then
-    python3 - "$quota_file" <<'PYEOF'
+    uv run --no-project python - "$quota_file" <<'PYEOF'
 import json, sys, os, time
 
 with open(sys.argv[1]) as f:
@@ -148,7 +148,7 @@ echo ""
 # ── Active Provider Config ─────────────────────────────────────────────────────
 echo "### Active Provider Config"
 echo ""
-python3 - "$WORKSPACE_ROOT" <<'PYEOF'
+uv run --no-project python - "$WORKSPACE_ROOT" <<'PYEOF'
 import json, sys, re
 from pathlib import Path
 

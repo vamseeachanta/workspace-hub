@@ -18,10 +18,10 @@ git clone <url> workspace-hub
 cd workspace-hub
 
 # Python anywhere in the repository - context management works
-python -c "from context_manager import ContextManager; print(ContextManager())"
+uv run --no-project python -c "from context_manager import ContextManager; print(ContextManager())"
 
 # Or using discovery mechanism
-python -c "from discovery import add_tools_to_path; add_tools_to_path(); from context_manager import ContextManager"
+uv run --no-project python -c "from discovery import add_tools_to_path; add_tools_to_path(); from context_manager import ContextManager"
 ```
 
 ## Import Patterns
@@ -78,13 +78,13 @@ For scripts that don't need Python imports:
 
 ```bash
 # Check context health
-python workspace-hub/.claude/tools/context_manager.py status 50000
+uv run --no-project python workspace-hub/.claude/tools/context_manager.py status 50000
 
 # Create checkpoint
-python workspace-hub/.claude/tools/context_manager.py checkpoint "my-task" "complete"
+uv run --no-project python workspace-hub/.claude/tools/context_manager.py checkpoint "my-task" "complete"
 
 # Show trim guidelines
-python workspace-hub/.claude/tools/context_manager.py trim
+uv run --no-project python workspace-hub/.claude/tools/context_manager.py trim
 ```
 
 ## Per-Machine State Directories
@@ -292,14 +292,14 @@ from task_context_wrapper import TaskContextWrapper
 ```bash
 # Option 1: Ensure you're in workspace-hub
 cd workspace-hub
-python your_script.py
+uv run --no-project python your_script.py
 
 # Option 2: Use absolute path
-python /path/to/workspace-hub/your_script.py
+uv run --no-project python /path/to/workspace-hub/your_script.py
 
 # Option 3: Manually add path
 export PYTHONPATH="/path/to/workspace-hub/.claude/tools:$PYTHONPATH"
-python your_script.py
+uv run --no-project python your_script.py
 ```
 
 ### "No module named 'context_manager'"
@@ -312,7 +312,7 @@ python your_script.py
 ls -la workspace-hub/.claude/tools/__init__.py
 
 # Try discovery explicitly
-python -c "from discovery import add_tools_to_path; add_tools_to_path(); from context_manager import ContextManager"
+uv run --no-project python -c "from discovery import add_tools_to_path; add_tools_to_path(); from context_manager import ContextManager"
 ```
 
 ### State files not found in ~/.claude/
@@ -321,7 +321,7 @@ python -c "from discovery import add_tools_to_path; add_tools_to_path(); from co
 
 **Solution**: First call to ContextManager will auto-create directories:
 ```bash
-python -c "from context_manager import ContextManager; ContextManager()"
+uv run --no-project python -c "from context_manager import ContextManager; ContextManager()"
 ```
 
 Check with:
@@ -394,10 +394,10 @@ wrapper.after_task_execution(result, "completed", ["All phases complete"], "Depl
 
 ## Next Steps
 
-1. **Verify installation**: Run `python -c "from context_manager import ContextManager"`
+1. **Verify installation**: Run `uv run --no-project python -c "from context_manager import ContextManager"`
 2. **Check state directory**: `ls ~/.claude/state/`
 3. **Review CLAUDE.md**: Full context management rules at `<workspace-hub>/.claude/CLAUDE.md`
-4. **Try checkpoint creation**: `python .claude/tools/context_manager.py checkpoint "test" "complete"`
+4. **Try checkpoint creation**: `uv run --no-project python .claude/tools/context_manager.py checkpoint "test" "complete"`
 
 ## Support
 

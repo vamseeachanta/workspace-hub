@@ -206,7 +206,7 @@ pytest --reruns 3 -m flaky
 
 ### Parallel Execution
 
-Requires: `pip install pytest-xdist`
+Requires: `uv pip install pytest-xdist`
 
 ```bash
 # Auto-detect CPU count
@@ -255,28 +255,28 @@ coverage report
 
 ```bash
 # Core testing
-pip install pytest>=7.4.0
+uv pip install "pytest>=7.4.0"
 
 # Coverage reporting
-pip install pytest-cov>=4.1.0
+uv pip install "pytest-cov>=4.1.0"
 
 # Async test support
-pip install pytest-asyncio>=0.21.0
+uv pip install "pytest-asyncio>=0.21.0"
 
 # Mocking utilities
-pip install pytest-mock>=3.11.1
+uv pip install "pytest-mock>=3.11.1"
 
 # Parallel execution (optional)
-pip install pytest-xdist>=3.3.0
+uv pip install "pytest-xdist>=3.3.0"
 
 # Test timeouts
-pip install pytest-timeout>=2.1.0
+uv pip install "pytest-timeout>=2.1.0"
 
 # Performance benchmarking (optional)
-pip install pytest-benchmark>=4.0.0
+uv pip install "pytest-benchmark>=4.0.0"
 
 # Or install all at once
-pip install pytest pytest-cov pytest-asyncio pytest-mock pytest-xdist pytest-timeout pytest-benchmark
+uv pip install pytest pytest-cov pytest-asyncio pytest-mock pytest-xdist pytest-timeout pytest-benchmark
 ```
 
 ### 2. Create pytest.ini in Repository Root
@@ -389,8 +389,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
-        pip install pytest pytest-cov pytest-xdist pytest-timeout
+        uv pip install -r requirements.txt
+        uv pip install pytest pytest-cov pytest-xdist pytest-timeout
 
     - name: Run tests
       run: |
@@ -483,7 +483,7 @@ def test_something(clean_database):
 
 **Solution:** Install and configure
 ```bash
-pip install pytest-asyncio
+uv pip install pytest-asyncio
 ```
 
 ```ini

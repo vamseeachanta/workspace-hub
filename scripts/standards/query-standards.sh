@@ -47,7 +47,7 @@ STANDARDS_CODE="$CODE" \
 STANDARDS_INDEX_DIR="$INDEX_DIR" \
 STANDARDS_REPO_ROOT="$REPO_ROOT" \
 STANDARDS_LIMIT="$LIMIT" \
-uv run --no-project --with pymupdf --with rank_bm25 python3 - <<'PYEOF'
+uv run --no-project --with pymupdf --with rank_bm25 python - <<'PYEOF'
 import os, sys
 
 repo_root = os.environ["STANDARDS_REPO_ROOT"]

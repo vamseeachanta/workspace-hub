@@ -82,7 +82,7 @@ ROT_DIR=".claude/state/skill-rot-report"
 latest_rot=$(ls "${ROT_DIR}/"*.json 2>/dev/null | sort | tail -1)
 
 if [[ -n "$latest_rot" ]]; then
-  broken_file_paths_count=$(uv run --no-project python3 -c "
+  broken_file_paths_count=$(uv run --no-project python -c "
 import json, sys
 try:
     d = json.load(open('$latest_rot'))
@@ -93,7 +93,7 @@ try:
 except Exception:
     print(0)
 " 2>/dev/null || echo 0)
-  rot_skills_indexed=$(uv run --no-project python3 -c "
+  rot_skills_indexed=$(uv run --no-project python -c "
 import json
 try:
     d = json.load(open('$latest_rot'))
@@ -126,7 +126,7 @@ USAGE_DIR=".claude/state/skill-usage-report"
 latest_usage=$(ls "${USAGE_DIR}/"*.json 2>/dev/null | sort | tail -1)
 
 if [[ -n "$latest_usage" ]]; then
-  usage_data=$(uv run --no-project python3 -c "
+  usage_data=$(uv run --no-project python -c "
 import json, sys
 try:
     d = json.load(open('$latest_usage'))
@@ -158,7 +158,7 @@ fi
 # ---------------------------------------------------------------------------
 desc_violations=0
 desc_total=$total_skills
-desc_output=$(uv run --no-project python3 "${WS_HUB}/scripts/skills/audit-descriptions.py" 2>/dev/null || true)
+desc_output=$(uv run --no-project python "${WS_HUB}/scripts/skills/audit-descriptions.py" 2>/dev/null || true)
 if [[ -n "$desc_output" ]]; then
   # Parse "Total violations:" line from output
   desc_violations=$(echo "$desc_output" | grep -i "Total violations:" | grep -oP '\d+' | tail -1 || echo 0)
@@ -179,7 +179,7 @@ desc_detail="${desc_violations} violations"
 # ---------------------------------------------------------------------------
 # 6. Size Compliance: run find-oversized-skills.py, count oversized
 # ---------------------------------------------------------------------------
-oversized_output=$(uv run --no-project python3 "${WS_HUB}/scripts/skills/find-oversized-skills.py" 2>&1 || true)
+oversized_output=$(uv run --no-project python "${WS_HUB}/scripts/skills/find-oversized-skills.py" 2>&1 || true)
 # The stderr line: "N skills over 200 lines"
 oversized_count=$(echo "$oversized_output" | grep -oP '^\d+(?= skills over)' || echo 0)
 oversized_count=${oversized_count:-0}
@@ -226,7 +226,7 @@ uncovered=$(( total_skills - eval_count ))
 # ---------------------------------------------------------------------------
 # Write JSON report
 # ---------------------------------------------------------------------------
-uv run --no-project python3 -c "
+uv run --no-project python -c "
 import json, sys
 data = {
     'date': '$TODAY',
@@ -274,7 +274,7 @@ data = {
             'oversized': $oversized_count
         }
     },
-    'actions': $(printf '%s\n' "${actions[@]}" | uv run --no-project python3 -c "import json,sys; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))" 2>/dev/null || echo '[]')
+    'actions': $(printf '%s\n' "${actions[@]}" | uv run --no-project python -c "import json,sys; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))" 2>/dev/null || echo '[]')
 }
 with open('$OUTPUT_JSON', 'w') as f:
     json.dump(data, f, indent=2)

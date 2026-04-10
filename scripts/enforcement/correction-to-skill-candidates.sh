@@ -31,7 +31,7 @@ if [[ ! -d "$CORRECTIONS_DIR" ]]; then
   exit 0
 fi
 
-uv run python3 - "$CORRECTIONS_DIR" "$THRESHOLD" "$JSON_MODE" << 'PYTHON'
+uv run --no-project python - "$CORRECTIONS_DIR" "$THRESHOLD" "$JSON_MODE" <<'PYTHON'
 import sys, json, os, glob
 from collections import Counter, defaultdict
 from pathlib import Path

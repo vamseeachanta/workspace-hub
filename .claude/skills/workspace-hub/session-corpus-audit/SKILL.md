@@ -121,6 +121,28 @@ A recurring real-world issue: historical session logs often reference prompt pac
 
 Do NOT assume missing prompt files mean the workflow was unimportant; often they were generated artifacts or existed in an earlier repo state.
 
+### Ecosystem strengthening follow-through for Claude corpus audits
+
+When the analysis shows many hot reads to deleted workflow files, treat this as a repo-ecosystem drift problem, not just a historical curiosity.
+
+Common high-signal patterns:
+- repeated reads of deleted `scripts/work-queue/*` files
+- repeated reads of removed stage YAML contracts
+- repeated reads of removed skill paths like legacy work-queue or session-start skills
+- a substantial minority of Bash calls still using bare `python3` or `uv run ... python3`
+
+Recommended remediation sequence:
+1. **Build a legacy-reference map** — create a doc mapping hot deleted paths to current canonical workflow surfaces (for example `AGENTS.md`, `.planning/`, governance docs, hooks, `scripts/review/cross-review.sh`, queue refresh scripts).
+2. **Patch misleading docs first** — if current docs still claim deleted helpers exist, fix those before adding shims.
+3. **Prefer redirect/index docs over executable compatibility shims** for deleted stage/work-queue scripts unless there is evidence of a live integration still invoking them.
+4. **Patch active automation surfaces before templates** for runtime drift. Highest priority is agent-facing launchers, hooks, dashboards, and shell wrappers; only then fix broader docs/templates.
+5. **Separate active drift from intentional exceptions** — exclude Windows-specific prompts, drift-detection fixtures/tests, and historical evidence artifacts from `python3` cleanup.
+
+A good concrete output from this follow-through is:
+- one generated audit report (`docs/reports/...` + optional JSON)
+- one legacy-path redirect map in docs
+- a first patch wave on active shell automation replacing bare `python3` / `uv run ... python3` with `uv run ... python`
+
 ## Phase B: Skill Gap Detection
 
 ### 1. Multi-Step Workflow Extraction
@@ -347,6 +369,38 @@ Compare skills in nested repos (CAD-DEVELOPMENTS, worldenergydata, achantas-data
 10. **Parallel terminal sessions dirty worktree**: When running as Terminal 3 in an overnight batch, other terminals may create untracked files. Always stash before pull-rebase.
 11. **gh issue create with nonexistent labels**: `gh issue create --label "chore,skills"` will FAIL SILENTLY (no issue created) if those labels don't exist on the repo. Always create issues WITHOUT labels first, then add labels separately if needed: `gh issue create --title "..." --body "..."`.
 12. **CLAUDE.md merge conflicts**: Check ALL subrepo CLAUDE.md files for `<<<<<<<` markers. This is a recurring problem — auto-sync scripts create conflicts that go unresolved because the files are gitignored in workspace-hub.
+
+## Lightweight Claude-Only Drift Audit
+
+When the task is specifically: "review Claude work session logs and strengthen the repo ecosystem," a full multi-phase corpus audit may be overkill. Use the lightweight path first:
+
+1. Run a focused Claude-only audit against `logs/orchestrator/claude/session_*.jsonl`
+2. Compare `tool == Read` file paths against the current checkout
+3. Split missing reads into:
+   - repo-local missing paths (deleted/renamed scripts, skills, work-queue assets)
+   - external missing paths (`/tmp`, other mount points, plugin cache)
+4. Count prompt-like reads and missing stage-prompt assets
+5. Count Bash calls using bare `python3` vs `uv run ... python`
+6. Emit both machine-readable JSON and a markdown report
+
+Reference implementation added in this repo:
+- `scripts/analysis/claude_session_ecosystem_audit.py`
+- test: `tests/analysis/test_claude_session_ecosystem_audit.py`
+
+Recommended command:
+
+```bash
+uv run python scripts/analysis/claude_session_ecosystem_audit.py \
+  --output-md docs/reports/claude-session-ecosystem-audit-$(date +%F).md \
+  --output-json analysis/claude-session-ecosystem-audit-$(date +%F).json
+```
+
+What this lightweight audit is good at surfacing:
+- hot legacy references after repo refactors (for example `scripts/work-queue/*` paths that no longer exist)
+- missing prompt/stage assets that were important in historical Claude workflow
+- policy drift where Claude Bash calls still use bare `python3`
+
+Use this lightweight pass before the full Phase A/B/C/F/G process when the user wants fast ecosystem-strengthening recommendations rather than the full cross-agent program.
 
 ## Commit Convention
 

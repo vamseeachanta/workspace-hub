@@ -50,7 +50,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `propagate_claude_config.py` | Sync CLAUDE.md to all repos | `python3 ./scripts/compliance/propagate_claude_config.py` |
+| `propagate_claude_config.py` | Sync CLAUDE.md to all repos | `uv run --no-project python ./scripts/compliance/propagate_claude_config.py` |
 | `propagate_guidelines.sh` | Sync AI usage guidelines | `./scripts/compliance/propagate_guidelines.sh` |
 | `propagate_interactive_mode.sh` | Enable question-asking mode | `./scripts/compliance/propagate_interactive_mode.sh` |
 | `setup_compliance.sh` | Initial compliance setup | `./scripts/compliance/setup_compliance.sh` |

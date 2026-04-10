@@ -12,7 +12,7 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 TODAY="$(date +%Y-%m-%d)"
-START_MS="$(python3 - <<'PY'
+START_MS="$(uv run --no-project python - <<'PY'
 import time
 print(int(time.time() * 1000))
 PY
@@ -135,7 +135,7 @@ log_latency() {
   local latency_file="${latency_dir}/review-gate-latency.jsonl"
   mkdir -p "$latency_dir"
   local end_ms latency_ms branch timestamp
-  end_ms="$(python3 - <<'PY'
+  end_ms="$(uv run --no-project python - <<'PY'
 import time
 print(int(time.time() * 1000))
 PY

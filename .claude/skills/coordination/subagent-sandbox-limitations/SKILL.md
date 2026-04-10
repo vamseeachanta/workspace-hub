@@ -25,6 +25,20 @@ This was discovered during overnight batch execution on 2026-04-06 when multiple
 - Synthesis tasks (combining information from multiple sources)
 - Non-interactive brainstorm or planning
 - Tasks that produce output for the main agent to consume
+- Claude-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session
+
+### Strong pattern: delegate Claude for analysis, patch locally
+
+A reliable pattern is:
+1. Use `delegate_task(..., acp_command='claude', acp_args=['--acp','--stdio'])` for read-only analysis
+2. Ask the Claude subagent for exact replacement text, prioritization, and caveats
+3. Apply file edits yourself in the main session with `patch`/`write_file`
+4. Verify locally with shell/tests
+
+This worked well for session-log ecosystem audits and policy-drift cleanup because:
+- Claude was good at scanning many files and returning implementation-ready findings
+- sandbox persistence limitations did not matter for read-only work
+- the main agent kept control of actual repo modifications and verification
 
 **DO NOT use delegate_task for:**
 - Creating or modifying source code files

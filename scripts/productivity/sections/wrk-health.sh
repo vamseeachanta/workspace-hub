@@ -9,7 +9,7 @@ WRK_DIR="$WORKSPACE_ROOT/.claude/work-queue"
 echo "## Work Item Health"
 echo ""
 
-python3 - "$WRK_DIR" <<'PYEOF'
+uv run --no-project python - "$WRK_DIR" <<'PYEOF'
 import glob, os, sys
 
 wrk_dir = sys.argv[1]
