@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent Parity — ACE Engineer Methodology</title>
+    <meta name="description" content="ACE Engineer validates engineering workflows across multiple AI platforms. No single-vendor dependency means higher reliability and cross-verified results for your project.">
+    <meta property="og:title" content="Multi-Agent Parity — ACE Engineer Methodology">
+    <meta property="og:description" content="ACE Engineer validates workflows across multiple AI platforms. No single-vendor lock-in means higher reliability and cross-verified engineering results.">
+    <meta property="og:type" content="article">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a202c;
+            background: #f7fafc;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 64px 24px 48px;
+            text-align: center;
+        }
+        header .brand {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ed8936;
+            margin-bottom: 16px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        header .subtitle {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #bee3f8;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        main {
+            background: #fff;
+            padding: 48px 40px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        main h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        main h2:first-child { margin-top: 0; }
+        main h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin: 32px 0 12px;
+        }
+        main p { margin-bottom: 16px; }
+        main ul, main ol {
+            margin: 0 0 16px 24px;
+        }
+        main li { margin-bottom: 8px; }
+        main strong { color: #1a365d; }
+        .highlight-box {
+            background: #ebf8ff;
+            border-left: 4px solid #2c5282;
+            padding: 20px 24px;
+            border-radius: 0 6px 6px 0;
+            margin: 24px 0;
+        }
+        .highlight-box p { margin-bottom: 0; }
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid #ed8936;
+            padding: 20px 24px;
+            border-radius: 0 6px 6px 0;
+            margin: 24px 0;
+        }
+        .warning-box p { margin-bottom: 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+        thead th {
+            background: #1a365d;
+            color: #fff;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+        }
+        thead th:first-child { border-radius: 6px 0 0 0; }
+        thead th:last-child { border-radius: 0 6px 0 0; }
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        tbody tr:nth-child(even) { background: #f7fafc; }
+        tbody tr:hover { background: #ebf8ff; }
+        .parity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .parity-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+        }
+        .parity-card .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .parity-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 8px;
+        }
+        .parity-card p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin: 0;
+        }
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 24px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #2c5282;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cbd5e0, transparent);
+            margin: 48px 0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-primary { background: #c6f6d5; color: #276749; }
+        .status-secondary { background: #bee3f8; color: #2a4365; }
+        .status-review { background: #fefcbf; color: #975a16; }
+        .cta-section {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 0;
+        }
+        .cta-section h2 {
+            color: #fff;
+            border: none;
+            font-size: 1.75rem;
+            margin: 0 0 16px;
+        }
+        .cta-section p {
+            color: #bee3f8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ed8936;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 14px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .cta-button:hover { background: #dd6b20; }
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        footer .disclaimer {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+        @media print {
+            body { background: #fff; font-size: 11pt; }
+            header { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-section { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-button { background: #ed8936 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            main { box-shadow: none; }
+            .parity-grid { display: block; }
+            .parity-card { margin-bottom: 12px; border: 1px solid #ccc; }
+        }
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.75rem; }
+            main { padding: 32px 20px; }
+            .cta-section { padding: 32px 20px; }
+            .parity-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">ACE Engineer -- Engineering Intelligence</div>
+        <h1>Multi-Agent Parity</h1>
+        <p class="subtitle">Our AI-augmented workflow is not dependent on a single platform. We validate across tools so your deliverables are never hostage to one vendor's limitations.</p>
+    </header>
+
+    <main class="page-wrapper">
+        <h2>The Single-Platform Risk</h2>
+        <p>Many engineering teams adopt one AI tool and build their entire workflow around it. When that tool has a limitation -- a hallucination pattern, a calculation error mode, a context window constraint -- <strong>the entire workflow inherits that limitation</strong>.</p>
+        <p>This is the engineering equivalent of single-source procurement: it works until it does not, and when it fails, there is no fallback.</p>
+
+        <div class="warning-box">
+            <p><strong>The hidden risk:</strong> AI platforms update their models regularly. A workflow that produced correct results last month may produce different results this month after a model update. If you only use one platform, you have no way to detect this drift.</p>
+        </div>
+
+        <p>ACE Engineer maintains <strong>multi-agent parity</strong> -- the practice of validating engineering workflows across multiple AI platforms to ensure that results are robust, reproducible, and not dependent on any single tool's behavior.</p>
+
+        <div class="section-divider"></div>
+
+        <h2>What Multi-Agent Parity Means</h2>
+
+        <div class="parity-grid">
+            <div class="parity-card">
+                <div class="card-icon">&#x2694;</div>
+                <h4>Cross-Platform Validation</h4>
+                <p>Critical calculations are verified across at least two independent AI platforms before delivery</p>
+            </div>
+            <div class="parity-card">
+                <div class="card-icon">&#x1F6E1;</div>
+                <h4>Vendor Independence</h4>
+                <p>No single platform failure can halt project delivery -- workflows are portable across tools</p>
+            </div>
+            <div class="parity-card">
+                <div class="card-icon">&#x2696;</div>
+                <h4>Drift Detection</h4>
+                <p>Automated comparison across platforms catches model updates that change output behavior</p>
+            </div>
+        </div>
+
+        <h3>The Parity Principle</h3>
+        <p>If a workflow produces correct results on Platform A but fails on Platform B, one of three things is true:</p>
+        <ol>
+            <li><strong>Platform B has a limitation</strong> -- We document it and route around it.</li>
+            <li><strong>Platform A is producing a false positive</strong> -- We caught a silent error that single-platform testing would have missed.</li>
+            <li><strong>The workflow itself is fragile</strong> -- It depends on platform-specific behavior rather than robust engineering logic. We redesign it.</li>
+        </ol>
+        <p>In all three cases, <strong>the multi-agent comparison revealed information that single-platform testing would have missed</strong>.</p>
+
+        <div class="section-divider"></div>
+
+        <h2>How We Implement Parity</h2>
+
+        <h3>Tier 1: Cross-Review</h3>
+        <p>Every significant engineering plan and deliverable is reviewed by agents running on at least two different AI platforms. This is not the same agent reviewing twice -- <strong>it is architecturally different systems examining the same work</strong>.</p>
+        <p>Different platforms have different strengths and blind spots:</p>
+        <ul>
+            <li>One platform may excel at numerical reasoning but miss regulatory nuances</li>
+            <li>Another may catch documentation gaps but overlook calculation convergence issues</li>
+            <li>A third may identify constructability concerns that the others miss entirely</li>
+        </ul>
+        <p>Cross-review surfaces findings that no single platform would catch alone.</p>
+
+        <h3>Tier 2: Portable Workflows</h3>
+        <p>Our engineering workflows are defined as <strong>platform-independent specifications</strong>. The workflow describes <em>what</em> must happen (load case definition, code compliance check, sensitivity study) without coupling to any specific tool's API or capabilities.</p>
+        <p>This means:</p>
+        <ul>
+            <li>If a platform changes its behavior after an update, we can migrate affected workflows immediately</li>
+            <li>New platforms can be onboarded by implementing the same workflow specification</li>
+            <li>No proprietary lock-in -- our engineering knowledge lives in our workflow definitions, not in tool-specific configurations</li>
+        </ul>
+
+        <h3>Tier 3: Automated Divergence Detection</h3>
+        <p>For critical calculation types, we maintain automated test suites that run the same engineering problem across multiple platforms and flag divergences. This catches:</p>
+        <ul>
+            <li><strong>Model drift</strong> -- A platform update changes how it interprets a code clause</li>
+            <li><strong>Regression</strong> -- A previously working calculation produces different results</li>
+            <li><strong>Systematic bias</strong> -- One platform consistently produces more conservative or less conservative results</li>
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <h2>Platform Maturity Assessment</h2>
+        <p>We continuously evaluate AI platforms across engineering-relevant dimensions. This informs how we route work and where we apply extra verification.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Capability</th>
+                    <th>What We Test</th>
+                    <th>Why It Matters</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Numerical Accuracy</strong></td>
+                    <td>Known-answer engineering problems (beam bending, pipe stress, catenary equations)</td>
+                    <td>Incorrect numerical reasoning propagates through entire analyses</td>
+                </tr>
+                <tr>
+                    <td><strong>Code Interpretation</strong></td>
+                    <td>Ambiguous standard clauses with known regulatory interpretations</td>
+                    <td>Misapplied safety factors or wrong load combinations invalidate designs</td>
+                </tr>
+                <tr>
+                    <td><strong>Context Retention</strong></td>
+                    <td>Multi-step analyses where later steps depend on earlier results</td>
+                    <td>Lost context mid-analysis produces internally inconsistent deliverables</td>
+                </tr>
+                <tr>
+                    <td><strong>Failure Transparency</strong></td>
+                    <td>Does the platform flag when it is uncertain vs. generate confident-sounding wrong answers?</td>
+                    <td>Silent failures are more dangerous than visible errors</td>
+                </tr>
+                <tr>
+                    <td><strong>Reproducibility</strong></td>
+                    <td>Same input, same prompt, same results across runs</td>
+                    <td>Non-reproducible engineering calculations are not auditable</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <h2>What This Means for Your Project</h2>
+
+        <h3>Higher Confidence in AI-Augmented Results</h3>
+        <p>When we deliver a code compliance report that was generated with AI assistance, it has been <strong>validated across multiple platforms</strong>. If all platforms agree on a utilization ratio, your confidence in that number is significantly higher than if it came from a single source.</p>
+
+        <h3>No Vendor Lock-In for Your IP</h3>
+        <p>Your project data, analysis methodology, and engineering knowledge are captured in <strong>platform-independent formats</strong>. If you need to migrate to a different tool, audit with an independent platform, or reproduce results years later, the workflow definitions are portable.</p>
+
+        <h3>Resilience to Platform Changes</h3>
+        <p>AI platforms evolve rapidly. Models get updated, APIs change, capabilities shift. Because we maintain parity across multiple platforms, <strong>no single platform change can disrupt your project delivery</strong>. We detect issues through automated divergence testing and route around them.</p>
+
+        <div class="highlight-box">
+            <p><strong>The analogy:</strong> In offshore engineering, we do not design structures for a single environmental condition. We design for the full range of sea states, current profiles, and wind conditions. Multi-agent parity applies the same principle to our tools -- we do not build workflows for a single AI platform's best behavior. We validate across the full range of available platforms.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Practical Example: Pipeline Code Compliance</h2>
+        <p>A subsea pipeline design needs wall thickness verification per DNV-ST-F101 across 47 spans with varying temperature, pressure, and soil conditions.</p>
+
+        <ol>
+            <li><strong>Primary execution:</strong> Platform A processes all 47 spans, applying the pressure containment, local buckling, and propagation buckling criteria per Section 5.</li>
+            <li><strong>Cross-verification:</strong> Platform B independently calculates the 5 most critical spans (highest utilization) using the same inputs and code edition.</li>
+            <li><strong>Divergence check:</strong> Automated comparison finds that Platforms A and B agree within 0.5% on 4 spans. On span 23, there is a 3.2% divergence.</li>
+            <li><strong>Root cause:</strong> Investigation reveals Platform A applied the fabrication factor for seamless pipe while Platform B used the UOE factor. The design basis specifies UOE. Platform A's result is corrected.</li>
+            <li><strong>Knowledge capture:</strong> The fabrication factor divergence is logged. Future pipeline projects automatically flag this parameter for cross-platform verification.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <p><strong>Result:</strong> A 3.2% error in the fabrication factor would have produced a non-conservative wall thickness at the highest-utilized span. Multi-agent parity caught it before delivery. Single-platform execution would have delivered the error to the client.</p>
+        </div>
+    </main>
+
+    <section class="cta-section">
+        <h2>Apply This Methodology to Your Project</h2>
+        <p>Our AI-augmented workflow is not dependent on a single tool -- we validate across platforms for higher confidence in every deliverable.</p>
+        <a href="mailto:info@aceengineer.com?subject=Methodology Inquiry — Multi-Agent Parity" class="cta-button">
+            Start a Conversation &rarr;
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ACE Engineer &middot; aceengineer.com</p>
+        <p class="disclaimer">Multi-agent parity reflects ACE Engineer's internal quality assurance methodology. Specific platform selection and validation depth are tailored to each project's criticality and requirements.</p>
+    </footer>
+</body>
+</html>
