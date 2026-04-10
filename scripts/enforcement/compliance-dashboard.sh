@@ -15,6 +15,97 @@ mkdir -p "$REPORTS_DIR"
 WINDOW_HOURS="${COMPLIANCE_WINDOW_HOURS:-24}"
 THRESHOLD="${COMPLIANCE_THRESHOLD:-80}"  # percentage
 
+stage_prompt_drift_summary_json() {
+  local log_file="${LOGS_DIR}/stage-prompt-drift-events.jsonl"
+  python3 - "$log_file" <<'PY'
+import json
+import os
+import sys
+
+log_file = sys.argv[1]
+counts = {"pass": 0, "warning": 0, "fail": 0, "skip": 0, "unknown": 0}
+latest = None
+total = 0
+
+if os.path.exists(log_file):
+    with open(log_file, encoding="utf-8") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line:
+                continue
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                counts["unknown"] += 1
+                total += 1
+                latest = {
+                    "timestamp": None,
+                    "branch": None,
+                    "base_ref": None,
+                    "head_ref": None,
+                    "strict_mode": None,
+                    "verdict": "unknown",
+                    "detail": "invalid json line",
+                }
+                continue
+
+            verdict = str(event.get("verdict", "unknown")).lower()
+            if verdict not in counts:
+                verdict = "unknown"
+            counts[verdict] += 1
+            total += 1
+            latest = event
+
+summary = {
+    "log_file": log_file,
+    "present": os.path.exists(log_file),
+    "total_events": total,
+    "counts": counts,
+    "latest_event": latest,
+}
+print(json.dumps(summary, separators=(",", ":")))
+PY
+}
+
+print_stage_prompt_drift_summary() {
+  python3 - "$1" <<'PY'
+import json
+import sys
+
+summary = json.loads(sys.argv[1])
+counts = summary["counts"]
+print("Stage prompt drift events:")
+if not summary["present"]:
+    print("  Log file: missing")
+    print("  Total events: 0")
+    print("  Counts: pass=0, warning=0, fail=0, skip=0")
+    print("  Latest event: none recorded")
+    raise SystemExit(0)
+
+print(f"  Log file: {summary['log_file']}")
+print(f"  Total events: {summary['total_events']}")
+parts = [
+    f"pass={counts.get('pass', 0)}",
+    f"warning={counts.get('warning', 0)}",
+    f"fail={counts.get('fail', 0)}",
+    f"skip={counts.get('skip', 0)}",
+]
+if counts.get("unknown", 0):
+    parts.append(f"unknown={counts.get('unknown', 0)}")
+print(f"  Counts: {', '.join(parts)}")
+
+latest = summary.get("latest_event")
+if not latest:
+    print("  Latest event: none recorded")
+else:
+    timestamp = latest.get("timestamp") or "unknown-time"
+    verdict = latest.get("verdict") or "unknown"
+    branch = latest.get("branch") or "unknown-branch"
+    detail = latest.get("detail") or ""
+    print(f"  Latest event: {timestamp} [{verdict}] branch={branch} {detail}".rstrip())
+PY
+}
+
 # ── Count commits in window ─────────────────────────────────────────────
 get_recent_commits() {
   local since
@@ -68,46 +159,48 @@ check_commit_reviewed() {
 main() {
   local commits
   commits="$(get_recent_commits)"
-  
-  if [[ -z "$commits" ]]; then
-    echo "{\"window_hours\":$WINDOW_HOURS,\"total_commits\":0,\"message\":\"No commits in window\"}"
-    exit 0
-  fi
+  local stage_prompt_drift_json
+  stage_prompt_drift_json="$(stage_prompt_drift_summary_json)"
   
   local total=0 reviewed=0 unreviewed=0 skipped=0 engineering_total=0 engineering_reviewed=0
   local unreviewed_list=""
-  
-  while IFS= read -r line; do
-    [[ -z "$line" ]] && continue
-    local hash="${line%% *}"
-    local msg="${line#* }"
-    total=$((total + 1))
-    
-    local category
-    category="$(classify_commit "$msg")"
-    
-    case "$category" in
-      skip)
-        skipped=$((skipped + 1))
-        ;;
-      engineering|feature|needs-review)
-        if [[ "$category" == "engineering" ]]; then
-          engineering_total=$((engineering_total + 1))
-        fi
-        
-        if check_commit_reviewed "$hash"; then
-          reviewed=$((reviewed + 1))
+  local no_commits_message=""
+
+  if [[ -z "$commits" ]]; then
+    no_commits_message="No commits in window"
+  else
+    while IFS= read -r line; do
+      [[ -z "$line" ]] && continue
+      local hash="${line%% *}"
+      local msg="${line#* }"
+      total=$((total + 1))
+      
+      local category
+      category="$(classify_commit "$msg")"
+      
+      case "$category" in
+        skip)
+          skipped=$((skipped + 1))
+          ;;
+        engineering|feature|needs-review)
           if [[ "$category" == "engineering" ]]; then
-            engineering_reviewed=$((engineering_reviewed + 1))
+            engineering_total=$((engineering_total + 1))
           fi
-        else
-          unreviewed=$((unreviewed + 1))
-          local short="${hash:0:8}"
-          unreviewed_list="${unreviewed_list}  - ${short} ${msg}\n"
-        fi
-        ;;
-    esac
-  done <<< "$commits"
+          
+          if check_commit_reviewed "$hash"; then
+            reviewed=$((reviewed + 1))
+            if [[ "$category" == "engineering" ]]; then
+              engineering_reviewed=$((engineering_reviewed + 1))
+            fi
+          else
+            unreviewed=$((unreviewed + 1))
+            local short="${hash:0:8}"
+            unreviewed_list="${unreviewed_list}  - ${short} ${msg}\n"
+          fi
+          ;;
+      esac
+    done <<< "$commits"
+  fi
   
   # Calculate rates
   local reviewable=$((total - skipped))
@@ -123,7 +216,7 @@ main() {
   
   # Determine verdict
   local verdict="PASS"
-  if [[ $compliance_rate -lt $THRESHOLD ]]; then
+  if [[ $reviewable -gt 0 && $compliance_rate -lt $THRESHOLD ]]; then
     verdict="FAIL"
   fi
   
@@ -141,6 +234,9 @@ main() {
   echo "--------------------------------------------"
   echo "Compliance rate:    ${compliance_rate}% (threshold: ${THRESHOLD}%)"
   echo "Verdict:            $verdict"
+  if [[ -n "$no_commits_message" ]]; then
+    echo "Note:               $no_commits_message"
+  fi
   
   if [[ $engineering_total -gt 0 ]]; then
     echo ""
@@ -154,6 +250,9 @@ main() {
     echo "Unreviewed commits:"
     echo -e "$unreviewed_list"
   fi
+
+  echo ""
+  print_stage_prompt_drift_summary "$stage_prompt_drift_json"
   
   # ── Output: Machine-readable (JSON) ─────────────────────────────────
   local report_file="${REPORTS_DIR}/compliance-$(date +%Y%m%d).json"
@@ -169,6 +268,7 @@ EOF
   \"timestamp\": \"$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\",
   \"window_hours\": $WINDOW_HOURS,
   \"total_commits\": $total,
+  \"message\": \"$no_commits_message\",
   \"skipped\": $skipped,
   \"reviewable\": $reviewable,
   \"reviewed\": $reviewed,
@@ -178,7 +278,8 @@ EOF
   \"verdict\": \"$verdict\",
   \"engineering_total\": $engineering_total,
   \"engineering_reviewed\": $engineering_reviewed,
-  \"engineering_rate\": $engineering_rate
+  \"engineering_rate\": $engineering_rate,
+  \"stage_prompt_drift\": $stage_prompt_drift_json
 }"
   echo "$json"
   

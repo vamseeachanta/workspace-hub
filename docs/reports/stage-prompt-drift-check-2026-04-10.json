@@ -1,0 +1,577 @@
+{
+  "generated_at": "2026-04-10T09:06:34Z",
+  "repo_root": "/mnt/local-analysis/workspace-hub",
+  "logs_dir": "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude",
+  "base_ref": null,
+  "head_ref": "HEAD",
+  "write_evidence_stubs": true,
+  "packages_scanned": 34,
+  "issues_found": 33,
+  "issues": [
+    {
+      "work_item": "WRK-1010",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1010/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1016",
+      "stages": [
+        2,
+        3
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1016/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/WRK-1016/stage-3-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1030",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1030/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1059",
+      "stages": [
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1059/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1064",
+      "stages": [
+        3,
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1064/stage-3-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/WRK-1064/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1067",
+      "stages": [
+        6
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1067/stage-6-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1068",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1068/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1069",
+      "stages": [
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1069/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1071",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1071/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1074",
+      "stages": [
+        13
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1074/stage-13-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1075",
+      "stages": [
+        10
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1075/stage-10-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1090",
+      "stages": [
+        10
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1090/stage-10-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1091",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1091/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1097",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1097/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1112",
+      "stages": [
+        3,
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1112/stage-3-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/WRK-1112/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1155",
+      "stages": [
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1155/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1156",
+      "stages": [
+        2,
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1156/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/WRK-1156/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1183",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1183/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1295",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1295/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1321",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1321/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-1337",
+      "stages": [
+        8
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-1337/stage-8-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-5082",
+      "stages": [
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-5082/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-5097",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-5097/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-5106",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-5106/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-5107",
+      "stages": [
+        6
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-5107/stage-6-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-5110",
+      "stages": [
+        10
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-5110/stage-10-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "WRK-658",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/WRK-658/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-1291",
+      "stages": [
+        4
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1291/stage-4-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-1357",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1357/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-1363",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1363/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-1384",
+      "stages": [
+        2
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1384/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-1405",
+      "stages": [
+        2,
+        6,
+        8
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1405/stage-2-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1405/stage-6-prompt.md",
+          "exists": false,
+          "reads": 1
+        },
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-1405/stage-8-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    },
+    {
+      "work_item": "workspace-hub-225",
+      "stages": [
+        18
+      ],
+      "missing_prompt_files": [
+        {
+          "path": ".claude/work-queue/assets/workspace-hub-225/stage-18-prompt.md",
+          "exists": false,
+          "reads": 1
+        }
+      ],
+      "evidence_files": [],
+      "index_replacements": [],
+      "has_replacement": false
+    }
+  ],
+  "changed_paths": {}
+}
