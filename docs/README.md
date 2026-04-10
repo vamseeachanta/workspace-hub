@@ -83,6 +83,7 @@ docs/
 - 🚀 [Workspace Hub Capabilities](WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)
 - 📋 [Development Workflow](modules/workflow/DEVELOPMENT_WORKFLOW.md)
 - 🤖 [Claude Interaction Guide](modules/ai/CLAUDE_INTERACTION_GUIDE.md)
+- 🗓️ [Weekly Ecosystem Execution & Intelligence Review](modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md)
 - 📖 [Implementation Roadmap](modules/workflow/IMPLEMENTATION_ROADMAP.md)
 
 ### Standards & Compliance
@@ -160,6 +161,17 @@ Repository tier classification and assessment documentation.
 Additional AI-related documentation organized by topic:
 - [Agent Patterns](modules/ai/agent-patterns/) - Agent organization and skill conversion guides
 - [Skills](modules/ai/skills/) - Skill deployment, templates, and installation guides
+
+### 📐 [Compound Engineering Methodology](methodology/)
+Operational lessons from running production AI-augmented engineering workflows.
+
+- [Compound Engineering](methodology/compound-engineering.md) — 5 operational lessons from production AI-augmented engineering
+- [Enforcement Over Instruction](methodology/enforcement-over-instruction.md) — Why technical gates succeed where text-based rules fail
+- [Multi-Agent Parity](methodology/multi-agent-parity.md) — How 4 AI agents share knowledge without redundant discovery
+- [Orchestrator-Worker](methodology/orchestrator-worker.md) — Context isolation by separating planning from execution
+- [Compliance Dashboard](methodology/compliance-dashboard.md) — Monitoring and enforcing AI agent workflow compliance
+- [Cross-Review](methodology/cross-review.md) — Independent AI reviewers catching failures that self-review misses
+- [Knowledge-to-Website Pipeline](methodology/knowledge-to-website-pipeline.md) — Converting repo knowledge into client-facing web content
 
 ## Key Features
 
