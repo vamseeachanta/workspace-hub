@@ -63,6 +63,22 @@ def test_rewrite_workspace_path_normalizes_linux_and_windows_hosts(tmp_path: Pat
         resolver.rewrite_workspace_path("/d/workspace-hub/docs/report.md", current_repo_root=repo_root)
         == "docs/report.md"
     )
+    assert (
+        resolver.rewrite_workspace_path("/D/workspace-hub/docs/report.md", current_repo_root=repo_root)
+        == "docs/report.md"
+    )
+
+
+def test_rewrite_workspace_path_documents_current_non_anchored_matching(tmp_path: Path) -> None:
+    resolver = WorkstationPathResolver.from_registry_path(_write_registry(tmp_path))
+
+    assert (
+        resolver.rewrite_workspace_path(
+            "/mnt/workspace-hub/docs/report.md",
+            current_repo_root=tmp_path / "different-checkout-name",
+        )
+        == "docs/report.md"
+    )
 
 
 def test_rewrite_workspace_path_falls_back_for_unknown_hosts(tmp_path: Path) -> None:

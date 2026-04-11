@@ -77,6 +77,20 @@ def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) 
     assert exists is True
 
 
+def test_classify_read_target_normalizes_uppercase_msys_windows_workspace_path(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8")
+
+    normalized, scope, exists = module.classify_read_target(
+        "/D/workspace-hub/docs/report.md", tmp_path
+    )
+
+    assert normalized == "docs/report.md"
+    assert scope == "repo"
+    assert exists is True
+
+
 def test_normalize_cmd_decodes_codex_spaced_command() -> None:
     raw = " p y t h o n 3   - c   \" p r i n t ( 1 ) \" "
 
