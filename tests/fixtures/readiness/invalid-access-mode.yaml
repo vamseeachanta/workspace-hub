@@ -1,0 +1,21 @@
+schema_version: "1.0"
+machine:
+  id: licensed-win-1
+  hostname: licensed-win-1
+  os: windows
+collected_at: "2026-04-11T04:58:00Z"
+source_writer:
+  name: windows-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/windows_probe_writer.ps1
+access:
+  mode: rdp
+  reachable: true
+checks:
+  - id: git-bash
+    name: Git Bash available
+    status: pass
+    summary: Git Bash shell launched successfully.
+overall:
+  verdict: degraded
+  summary: Invalid because access mode is not normalized.

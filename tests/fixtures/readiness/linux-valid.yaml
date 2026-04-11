@@ -1,0 +1,39 @@
+schema_version: "1.0"
+machine:
+  id: dev-primary
+  hostname: ace-linux-1
+  os: linux
+  role: primary-dev
+  workspace_root: /mnt/local-analysis/workspace-hub
+collected_at: "2026-04-11T04:55:00Z"
+source_writer:
+  name: linux-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/linux_probe_writer.py
+access:
+  mode: ssh
+  reachable: true
+  detail: SSH probe completed from scheduler host.
+checks:
+  - id: ssh-connectivity
+    name: SSH connectivity
+    status: pass
+    summary: Remote shell handshake succeeded.
+    evidence:
+      latency_ms: 18
+  - id: workspace-root
+    name: Workspace root present
+    status: pass
+    summary: Workspace root exists and is writable.
+    evidence:
+      path: /mnt/local-analysis/workspace-hub
+overall:
+  verdict: ready
+  summary: Linux machine is reachable and ready for scheduled automation.
+  counts:
+    total: 2
+    pass: 2
+    warn: 0
+    fail: 0
+    error: 0
+    skip: 0
