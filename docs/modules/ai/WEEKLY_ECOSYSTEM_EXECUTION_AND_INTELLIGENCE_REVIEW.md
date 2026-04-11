@@ -77,6 +77,21 @@ Each weekly run should answer five questions:
 - [ ] Identify stale corpora, stale indexes, or missing refreshes
 
 ### D. Intelligence Accessibility
+
+#### D.1 Entry-Point Validation (#2104)
+- [ ] Verify `docs/README.md` contains a "Knowledge & Intelligence Ecosystem" section with links to intelligence landing page, wiki domains, and registry reference
+- [ ] Verify `docs/document-intelligence/README.md` exists, is non-empty, and links to architecture docs, knowledge assets, and maps
+- [ ] Verify all 5 wiki `CLAUDE.md` files contain a cross-reference to the parent operating model (#2205)
+- [ ] Verify `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` includes intelligence ecosystem section
+- [ ] Verify no `session-handoff-*` files remain under `docs/document-intelligence/` (handoffs belong in `docs/handoffs/`)
+
+#### D.2 Discoverability Regression (#2096)
+- [ ] From `docs/README.md`, can a reader reach `knowledge/wikis/` within 2 hops?
+- [ ] From `docs/README.md`, can a reader reach `docs/document-intelligence/` within 2 hops?
+- [ ] From a wiki domain's `CLAUDE.md`, can an agent reach the parent operating model?
+- [ ] Check `data/document-index/resource-intelligence-maturity.yaml` for last-updated date within 30 days
+
+#### D.3 General Accessibility
 - [ ] Check whether the key intelligence has canonical entry points
 - [ ] Check whether docs/skills reference the right locations
 - [ ] Check whether the intelligence is accessible from the machines that need it

@@ -159,6 +159,17 @@ See: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 
 ---
 
+## Knowledge & Intelligence Ecosystem
+
+The workspace-hub hosts a large-scale intelligence layer alongside its code and automation:
+
+- **LLM-Wikis:** 19,300+ pages across 5 domains (engineering, marine-engineering, maritime-law, naval-architecture, personal) under `knowledge/wikis/`
+- **Document-intelligence pipeline:** 1M+ indexed documents, 639K summaries, 425 tracked standards in `data/document-index/`
+- **Design code registry:** ~30 engineering codes (DNV, API, ISO, ASTM, BS) in `data/design-codes/code-registry.yaml`
+- **Knowledge seeds:** Domain seed files in `knowledge/seeds/` for wiki bootstrapping
+
+Architecture and navigation: [docs/document-intelligence/](document-intelligence/README.md)
+
 ## Version History
 
 ### v2.0.0 (2026-04-02)

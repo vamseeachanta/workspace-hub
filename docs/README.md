@@ -103,6 +103,20 @@ docs/
 - 🔄 [Repository Sync](modules/cli/REPOSITORY_SYNC.md)
 - 📦 [Script Organization](modules/cli/SCRIPT_ORGANIZATION.md)
 
+## Knowledge & Intelligence Ecosystem
+
+The workspace-hub contains a large-scale intelligence ecosystem spanning domain knowledge, document registries, and engineering documentation.
+
+| Asset | Location | Scale |
+|---|---|---|
+| **Intelligence landing page** | [document-intelligence/](document-intelligence/README.md) | Architecture, inventories, maps |
+| **LLM-Wikis** | [knowledge/wikis/](../knowledge/wikis/) | 19,300+ pages across 5 domains |
+| **Document registries** | [data-intelligence-map](document-intelligence/data-intelligence-map.md) | 1M+ indexed documents, 639K summaries |
+| **Design code registry** | [data/design-codes/code-registry.yaml](../data/design-codes/code-registry.yaml) | ~30 engineering codes |
+| **Weekly intelligence review** | [WEEKLY_ECOSYSTEM_...](modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md) | Operational health review |
+
+For architecture and reading order, start at the [intelligence landing page](document-intelligence/README.md).
+
 ## Core Modules
 
 ### 🧠 [AI-Native](modules/ai-native/)

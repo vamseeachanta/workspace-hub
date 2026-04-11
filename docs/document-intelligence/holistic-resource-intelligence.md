@@ -3,6 +3,11 @@
 > **Issue:** #1575
 > **Date:** 2026-04-05
 > **Status:** Plan
+>
+> **Superseded-by:** The parent architecture for the intelligence ecosystem is now governed by
+> [LLM-Wiki + Resource/Document Intelligence Operating Model](llm-wiki-resource-doc-intelligence-operating-model.md) (#2205).
+> This plan retains useful historical context on resource tracking architecture but is no longer
+> the governing document for intelligence ecosystem design.
 
 ## 1. Problem Statement
 

@@ -13,3 +13,7 @@ Maritime law and international conventions governing liability, compensation, an
 ### Sources
 - `knowledge/seeds/maritime-law-cases.yaml` — 10 landmark maritime cases (1967-2021)
 - `knowledge/seeds/maritime-liabilities.yaml` — 6 international liability conventions
+
+## Architecture Context
+
+Parent operating model: [LLM-Wiki + Resource/Document Intelligence Operating Model](../../docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md) (#2205)
