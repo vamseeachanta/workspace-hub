@@ -103,6 +103,10 @@ Each weekly run should answer five questions:
 - [ ] Verify all `canonical_path` entries in `data/document-index/intelligence-accessibility-registry.yaml` still resolve
 - [ ] Check for new intelligence assets created since last review that are not yet in the registry
 
+#### D.5 Retrieval Compliance Spot-Check (#2208)
+- [ ] Spot-check 2-3 recent plans in `docs/plans/`: does the Resource Intelligence Summary contain ≥3 specific sources?
+- [ ] Spot-check 1-2 recent close comments: do they include "Sources consumed" and "Promotion candidates" lines?
+
 ### E. Output and Follow-Through
 - [ ] Write a short weekly findings summary
 - [ ] Record machine-by-machine notes

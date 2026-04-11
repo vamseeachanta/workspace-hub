@@ -49,6 +49,8 @@ On first contact with an engineering issue:
 
 Before writing the plan, search ALL available sources. Don't skip this — past sessions that jumped straight to implementation produced wrong code because they didn't check what already existed.
 
+This step implements the **engineering issue-class retrieval bundle** per the retrieval contract (#2208). Engineering issues require the most thorough retrieval of any issue class.
+
 **Search in this order:**
 
 a) **Existing repo code** — is this already implemented?
@@ -60,18 +62,34 @@ b) **Standards coverage** — does the standard exist in the registry?
    - Read `data/document-index/standards-transfer-ledger.yaml`
    - Look for the standard number (e.g., DNV-RP-C212, API 579, ISO 19901-6)
    - Check if status is "done" or "gap"
+   - Read `data/design-codes/code-registry.yaml` for applicable design codes
 
 c) **Document intelligence** — are there relevant indexed documents?
    - Read `data/document-index/online-resource-registry.yaml`
    - Search for document name, topic, or standard
    - Check /mnt/ace/ for local PDFs (if mounted and accessible)
 
-d) **Engineering reference data** — what parameters/constants apply?
+d) **Domain wiki knowledge** — what does the ecosystem already know?
+   - Search relevant domain wiki under `knowledge/wikis/` (engineering, marine-engineering, naval-architecture)
+   - Check for existing wiki pages covering the calculation, standard, or methodology
+
+e) **Engineering reference data** — what parameters/constants apply?
    - `search_files(pattern="constants", path="digitalmodel/")`
    - `search_files(pattern="parameters", path="digitalmodel/")`
    - Read any relevant reference markdown in docs/
 
+f) **Prior plans and related issues** — what has been tried before?
+   - Check `docs/plans/` for related plans
+   - Check recent open/closed issues for overlap or conflict
+
 **CRITICAL GOTCHA:** The index.jsonl (647K records) has all records showing `content_type: "unknown"` and `summary_done: false`. The metadata was wiped or regenerated. Use `online-resource-registry.yaml` (247 entries, current) and `standards-transfer-ledger.yaml` (425 standards, 61.9% coverage) for lookups. These are reliable. The index.jsonl metadata is BROKEN.
+
+**Evidence requirements (per #2208 retrieval contract):**
+- ≥3 distinct sources must be consulted and recorded in the plan's Resource Intelligence Summary
+- Each source must cite a specific file path, standard number, issue number, or registry entry
+- Each source must state a concrete finding — not "searched the repo" but "found `digitalmodel/src/cathodic_protection.py` covering X"
+- The Gaps sub-section must list what must be built from scratch
+- For the full retrieval contract specification, see `docs/plans/2026-04-11-issue-2208-intelligence-retrieval-contract-for-github-issue-workflows.md`
 
 ### STEP 3: Write the Plan
 
@@ -81,10 +99,12 @@ Present the plan to the user. Format:
 ## Plan for #ISSUE: Title
 
 ### Resource Intelligence Summary
-- **Existing code found**: {file paths and what exists}
-- **Standards applicable**: {list with status: done/gap}
-- **Documents consulted**: {list from registry, /mnt/ace/, etc.}
-- **Gaps identified**: {what is missing from the repo}
+<!-- ≥3 distinct sources required. Cite specific paths and findings. -->
+- **Existing code found**: {file paths and what exists, or "no existing implementation"}
+- **Standards applicable**: {standard numbers with status from ledger: done/gap, or "not applicable"}
+- **Wiki pages consulted**: {wiki page paths with findings, or "no relevant wiki pages"}
+- **Documents consulted**: {prior plans, registries, online resources — with specific findings}
+- **Gaps identified**: {what must be built from scratch — each gap is a testable claim}
 
 ### Deliverable
 One sentence: what will be built or changed.
@@ -160,6 +180,8 @@ After implementation passes all tests:
 - Conventional commit message referencing the issue
 - Push
 - Close GitHub issue with summary: implementation done, test results, cross-review verdicts, follow-ups
+- **Sources consumed**: list intelligence assets that materially informed implementation (≥1 item, per #2208 contract)
+- **Promotion candidates**: note findings worth promoting from transient (L5) to durable knowledge (L3), or state "none" — ask: "Did this issue produce any finding that would help future issues or wiki readers?"
 
 ---
 

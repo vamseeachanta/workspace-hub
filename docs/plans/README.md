@@ -36,11 +36,34 @@ Both are required. Neither replaces the other.
 
 ### Step 2: Resource Intelligence
 
-Before writing anything, search all available sources:
-- **Existing code**: search relevant repos for prior implementations
-- **Standards**: `data/document-index/standards-transfer-ledger.yaml` (425 standards)
-- **Documents**: `data/document-index/online-resource-registry.yaml` (247 entries)
+Before writing anything, search all available sources. The retrieval contract (#2208) defines minimum requirements by issue class.
+
+**Universal minimum (ALL issues):**
 - **Prior plans**: `docs/plans/` directory and this index
+- **Existing code**: search relevant repos in affected paths for prior implementations
+- **Recent issues**: related open/closed issues that may overlap or conflict
+- **Intelligence entry points**: `docs/document-intelligence/README.md` (when available per #2104) or `docs/document-intelligence/data-intelligence-map.md`
+
+**Issue-class-specific additions:**
+
+| Issue class | Labels / triggers | Additional required sources |
+|---|---|---|
+| **General** | Default (no specific class match) | Universal minimum is sufficient |
+| **Engineering** | `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology` | `standards-transfer-ledger.yaml`, `code-registry.yaml`, relevant domain wiki under `knowledge/wikis/`, `online-resource-registry.yaml` |
+| **Data Pipeline** | `cat:data-pipeline` | `registry.yaml`, pipeline config, `resource-intelligence-maturity.yaml` |
+| **Documentation** | `cat:documentation` | Governance docs in target directory, `CONTROL_PLANE_CONTRACT.md`, durable-vs-transient boundary policy (#2209) |
+| **Harness/Infra** | `cat:harness` | `CONTROL_PLANE_CONTRACT.md`, `config/agents/` settings, `.claude/rules/` |
+| **Knowledge/Intelligence** | Issues under #2205 tree, or touching `knowledge/`, `docs/document-intelligence/` | Operating model (#2205), sibling contracts (#2207, #2209), accessibility map (#2096), accessibility registry (when available per #2136) |
+
+If classification is ambiguous or unlabeled, default to **General**. If an issue matches multiple classes, consult the **union** of all matching bundles.
+
+**Evidence requirements:**
+- ≥3 distinct sources must be listed in the plan's Resource Intelligence Summary (issue body counts as 1)
+- Each source must cite a specific file path, issue number, or registry entry
+- Each source must state a concrete finding — not vague claims like "searched the repo"
+- The Gaps sub-section must list what must be built from scratch
+
+Full retrieval contract specification: `docs/plans/2026-04-11-issue-2208-intelligence-retrieval-contract-for-github-issue-workflows.md`
 
 ### Step 3: Draft Plan
 
@@ -85,6 +108,22 @@ Only after `status:plan-approved` label exists:
 - Post summary comment on issue: what was done, test results, review verdicts
 - Close the issue
 
+**Retrieval evidence at closeout** (per #2208 contract):
+- The close comment must include a "Sources consumed" line listing intelligence assets that materially informed implementation (≥1 item)
+- The close comment should include a "Promotion candidates" line: "none" or specific findings worth promoting from transient (L5) to durable knowledge (L3) per #2209 Section 7
+
+### Retrieval Evidence at Review Time
+
+Adversarial review artifacts (`scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`) should include a Retrieval Adequacy assessment:
+
+| Check | What the reviewer verifies |
+|---|---|
+| Resource Intelligence Summary non-empty, ≥3 sources | Plan contains adequate evidence |
+| Issue-class-specific sources checked | Obvious sources for the issue class were not missed |
+| Evidence is specific | Plan cites file paths and concrete findings, not vague claims |
+
+Reviewers should note a retrieval verdict: `adequate` or `insufficient` with specific gaps.
+
 ## Batch / Overnight Sessions
 
 When the user is not present:
@@ -107,7 +146,7 @@ When the user is not present:
 
 Every plan file must include (see `_template-issue-plan.md` for full format):
 
-1. **Resource Intelligence Summary** — what exists, what is missing
+1. **Resource Intelligence Summary** — evidence contract: ≥3 sources with specific paths/findings, issue-class-appropriate sources, gaps identified (see template and #2208 contract)
 2. **Artifact Map** — paths to plan, tests, implementation, review files
 3. **Deliverable** — one sentence: what will exist after this issue is done
 4. **Pseudocode** — 5-15 lines per function (T2/T3); "trivial" note for T1
@@ -150,7 +189,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2104 | canonical-entry-points-for-ecosystem-intelligence | `docs/plans/2026-04-11-issue-2104-canonical-entry-points-for-ecosystem-intelligence.md` | 2026-04-11 | plan-review | T2 | Three-tier entry-point navigation for intelligence ecosystem; 1 new file + section additions to docs/README.md and 10+ existing files |
 | 2216 | acma-codes-llm-wiki-repo-intelligence-integration | `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` | 2026-04-11 | plan-review | T2 | Integrate /mnt/ace/acma-codes (OCIMF, API, CSA) into intelligence ecosystem; recommends 4-way follow-on split |
 | 2136 | intelligence-accessibility-registry-with-machine-reachability | `docs/plans/2026-04-11-issue-2136-intelligence-accessibility-registry-with-machine-reachability.md` | 2026-04-11 | plan-review | T2 | Machine-readable meta-registry of intelligence assets with reachability, query commands, and freshness metadata |
-| 2208 | intelligence-retrieval-contract-for-github-issue-workflows | `docs/plans/2026-04-11-issue-2208-intelligence-retrieval-contract-for-github-issue-workflows.md` | 2026-04-11 | plan-review | T2 | Retrieval contract defining minimum intelligence sources per workflow stage and issue class, evidence placement, and measurable checks |
+| 2208 | intelligence-retrieval-contract-for-github-issue-workflows | `docs/plans/2026-04-11-issue-2208-intelligence-retrieval-contract-for-github-issue-workflows.md` | 2026-04-11 | completed | T2 | Retrieval contract defining minimum intelligence sources per workflow stage and issue class, evidence placement, and measurable checks |
 
 ## Entry Format
 

@@ -10,32 +10,57 @@
 
 ## Resource Intelligence Summary
 
+<!-- RETRIEVAL CONTRACT (per #2208):
+     This section is an evidence contract, not a free-form narrative.
+     Requirements:
+     - ≥3 distinct sources must be consulted and listed (issue body counts as 1)
+     - Each source must cite a specific file path, issue number, or registry entry
+     - Each source must state a concrete finding ("Found X", "Confirmed no Y", "Standard Z has gap status")
+     - Vague claims ("searched the repo", "checked standards") are insufficient
+     - The Gaps sub-section must list what must be built from scratch
+     
+     Issue-class bundles — consult at minimum:
+     - ALL issues: prior plans (docs/plans/), existing code in affected paths, recent related issues,
+       intelligence entry points (docs/document-intelligence/README.md or data-intelligence-map.md)
+     - Engineering: + standards-transfer-ledger.yaml, code-registry.yaml, relevant domain wiki, online-resource-registry.yaml
+     - Data Pipeline: + registry.yaml, pipeline config, resource-intelligence-maturity.yaml
+     - Documentation: + governance docs in target dir, CONTROL_PLANE_CONTRACT.md, durable-vs-transient boundary (#2209)
+     - Harness/Infrastructure: + CONTROL_PLANE_CONTRACT.md, config/agents/ settings, .claude/rules/
+     - Knowledge/Intelligence: + operating model (#2205), sibling contracts, accessibility map (#2096), accessibility registry (when available)
+     
+     If issue class is ambiguous or unlabeled, default to General (universal minimum only).
+     If issue matches multiple classes, use the union of all matching bundles.
+-->
+
 ### Existing repo code
-<!-- What already exists relevant to this issue. File paths and function names. -->
+<!-- File paths checked and what was found. State "no existing implementation" if nothing relevant exists. -->
 - Found: `<repo>/src/path/to/existing_module.py` — `function_name()` covers X
 - Gap: Y is not implemented anywhere
 
 ### Standards
-<!-- Standards referenced in the issue and their coverage status. -->
+<!-- Standards checked against the ledger with status. State "not applicable" for non-engineering issues. -->
 | Standard | Status | Source |
 |---|---|---|
-| DNV-RP-XXXX | done / gap | standards-transfer-ledger.yaml |
+| DNV-RP-XXXX | done / gap | `data/document-index/standards-transfer-ledger.yaml` |
 
 ### LLM Wiki pages consulted
-<!-- Links to wiki pages checked. -->
-- knowledge/wikis/marine-engineering/wiki/concepts/xxx.md
-- knowledge/wikis/maritime-law/wiki/entities/xxx.md
+<!-- Wiki page paths checked with findings. State "no relevant wiki pages" if none apply. -->
+- `knowledge/wikis/marine-engineering/wiki/concepts/xxx.md` — covers Y
+- `knowledge/wikis/maritime-law/wiki/entities/xxx.md` — relevant to Z
 
 ### Documents consulted
-<!-- Prior plans, PDFs, online-resource-registry entries, session memory hits. -->
-- docs/plans/YYYY-MM-DD-related-plan.md
-- /mnt/ace/docs/xxx.pdf
-- session_search hit: "session title" — relevant context
+<!-- Prior plans, parent/sibling issues, registries, PDFs, online resources — with specific findings. -->
+- `docs/plans/YYYY-MM-DD-related-plan.md` — prior approach to X
+- `data/document-index/online-resource-registry.yaml` — entry for Y
+- Related issue #NNN — decided Z
 
 ### Gaps identified
-<!-- What must be built from scratch. Be specific. -->
+<!-- What must be built from scratch. Be specific — each gap is a testable claim. -->
 - No existing implementation of X
 - Standard Y is in the gap list — no coverage
+
+<!-- Verification: count distinct sources above (across all sub-sections).
+     Minimum 3 required (issue body + 2 others). Current count: ___ -->
 
 ---
 
