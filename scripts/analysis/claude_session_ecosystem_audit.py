@@ -9,16 +9,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from workspace_hub.workstations.resolver import WorkstationPathResolver
+
 
 PROMPT_RE = re.compile(r"prompt", re.IGNORECASE)
 STAGE_PROMPT_RE = re.compile(r"stage-(\d+)-prompt\.md", re.IGNORECASE)
 WORK_ITEM_RE = re.compile(r"(WRK-\d+|workspace-hub-\d+)", re.IGNORECASE)
+REPO_ROOT = Path(__file__).resolve().parents[2]
+WORKSTATION_RESOLVER = WorkstationPathResolver.for_repo(REPO_ROOT)
 
 
 def normalize_path(raw_path: str | None, repo_root: Path) -> tuple[str, bool, str]:
     if not raw_path:
         return "", False, "unknown"
-    raw = str(raw_path)
+    raw = WORKSTATION_RESOLVER.rewrite_workspace_path(str(raw_path), current_repo_root=repo_root)
     path = Path(raw)
     if path.is_absolute():
         try:
