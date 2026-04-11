@@ -39,11 +39,17 @@ class TestReadinessBundleSchemaContract:
             "checks",
             "overall",
         }
+        assert set(schema["properties"]["machine"]["required"]) >= {
+            "id",
+            "hostname",
+            "user",
+            "os",
+        }
 
     @pytest.mark.parametrize(
         ("field_path", "expected_enum"),
         [
-            (("properties", "access", "properties", "mode", "enum"), ["ssh", "local_gui"]),
+            (("properties", "access", "properties", "mode", "enum"), ["ssh", "local_no_ssh"]),
             (
                 ("properties", "checks", "items", "properties", "status", "enum"),
                 ["pass", "warn", "fail", "error", "skip"],
@@ -97,5 +103,27 @@ class TestReadinessBundleFixtures:
 
         assert linux_bundle["machine"]["os"] == "linux"
         assert linux_bundle["access"]["mode"] == "ssh"
+        assert linux_bundle["access"]["launcher"] == "ssh"
         assert windows_bundle["machine"]["os"] == "windows"
-        assert windows_bundle["access"]["mode"] == "local_gui"
+        assert windows_bundle["access"]["mode"] == "local_no_ssh"
+        assert windows_bundle["access"]["launcher"] == "scheduled_task"
+
+    def test_schema_requires_canonical_check_ids(self) -> None:
+        schema = yaml.safe_load(SCHEMA_PATH.read_text())
+        required_check_ids = {
+            rule["contains"]["properties"]["id"]["const"]
+            for rule in schema["properties"]["checks"]["allOf"]
+        }
+        assert required_check_ids == {
+            "workspace-root",
+            "access-mode",
+            "ai-cli",
+            "licensed-tools",
+        }
+
+    def test_valid_examples_allow_fractional_second_timestamps(self) -> None:
+        linux_bundle = yaml.safe_load((FIXTURES_DIR / "linux-valid.yaml").read_text())
+        windows_bundle = yaml.safe_load((FIXTURES_DIR / "windows-valid.yaml").read_text())
+
+        assert "." in linux_bundle["collected_at"]
+        assert "." in windows_bundle["collected_at"]
