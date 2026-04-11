@@ -70,6 +70,14 @@ sources:
     source_type: workspace_spec
     extensions: [.md, .yaml, .yml]
 
+  acma_codes:
+    enabled: true
+    paths:
+      - /mnt/ace/acma-codes
+    host: dev-primary
+    source_type: acma_codes
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
+
   api_metadata:
     enabled: true
     source_type: api_metadata
@@ -96,6 +104,9 @@ exclude_patterns:
   - "*/TECH Writing/*"
   - "*.pyc"
   - "*.tmp"
+  - "Thumbs.db"
+  - "desktop.ini"
+  - ".DS_Store"
   # ANSYS Workbench internal/scratch files (binary, not useful for indexing)
   - "*/dp0/*/MECH/*.dat"
   - "*/_ProjectScratch/*"
@@ -177,6 +188,7 @@ deduplication:
     - dde_project
     - va_hdd_2
     - workspace_spec
+    - acma_codes
     - api_metadata
 
 domains:

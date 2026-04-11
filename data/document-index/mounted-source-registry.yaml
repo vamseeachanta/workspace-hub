@@ -178,3 +178,14 @@ source_roots:
   provenance_rule: local copy of /mnt/remote/ace-linux-2/dde/Literature
   dedup_rule: prefer local copy, DDE remote is archival
   migration_date: '2026-04-05'
+- source_id: acma_codes_local
+  document_intelligence_bucket: acma_codes
+  mount_root: /mnt/ace/acma-codes
+  local_or_remote: local
+  index_artifact_ref: data/document-index/index.jsonl
+  registry_ref: data/document-index/registry.yaml
+  canonical_storage_policy: mixed staging area of standards assembled from unknown provenance
+  provenance_rule: staging source; dedup against og_standards and ace_standards first
+  dedup_rule: prefer /mnt/ace/0000 O&G for overlapping content (API duplicates); acma-codes
+    is authoritative only for content not found in higher-priority sources
+  availability_check_ref: scripts/readiness/check-network-mounts.sh
