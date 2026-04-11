@@ -15,6 +15,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.bash_command_prefixes import cleanup_bash_command, normalize_command_to_prefix
+from workspace_hub.workstations.resolver import WorkstationPathResolver
 LOGS_ROOT = REPO_ROOT / "logs" / "orchestrator"
 CLAUDE_PRECOMPUTED = REPO_ROOT / "analysis" / "claude-session-ecosystem-audit-2026-04-09.json"
 DEFAULT_MARKDOWN = REPO_ROOT / "docs" / "reports" / "provider-session-ecosystem-audit.md"
@@ -26,10 +27,7 @@ PROMPT_RE = re.compile(r"prompt", re.IGNORECASE)
 SYMBOLIC_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 SYMBOLIC_SLASH_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)+$")
 TILDE_PATH_RE = re.compile(r"^(~|~/)")
-REPO_ALIAS_HINTS = (
-    "/mnt/local-analysis/workspace-hub",
-    "/mnt/workspace-hub",
-)
+WORKSTATION_RESOLVER = WorkstationPathResolver.for_repo(REPO_ROOT)
 
 
 def safe_exists(path: Path) -> bool:
@@ -59,14 +57,7 @@ def normalize_cmd(provider: str, raw_cmd: str | None) -> str:
 
 
 def normalize_repo_alias(text: str, repo_root: Path) -> str:
-    repo_root_text = repo_root.as_posix().rstrip("/")
-    for alias in REPO_ALIAS_HINTS:
-        alias_prefix = alias.rstrip("/") + "/"
-        if text == alias.rstrip("/"):
-            return repo_root_text
-        if text.startswith(alias_prefix):
-            return repo_root_text + "/" + text[len(alias_prefix) :]
-    return text
+    return WORKSTATION_RESOLVER.rewrite_workspace_path(text, current_repo_root=repo_root)
 
 
 def classify_read_target(raw_path: str | None, repo_root: Path, record: dict | None = None) -> tuple[str, str, bool]:

@@ -37,6 +37,20 @@ def test_normalize_path_for_missing_external_file(tmp_path: Path) -> None:
     assert scope == "external"
 
 
+def test_normalize_path_for_windows_workspace_file(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    target = repo_root / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8")
+
+    normalized, exists, scope = module.normalize_path(r"D:\workspace-hub\docs\report.md", repo_root)
+
+    assert normalized == "docs/report.md"
+    assert exists is True
+    assert scope == "repo"
+
+
 def test_build_summary_counts_missing_repo_reads_and_prompts(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     repo_root.mkdir()
