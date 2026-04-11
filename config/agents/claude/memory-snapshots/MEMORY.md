@@ -1,34 +1,35 @@
 # Workspace Hub Memory
 
-## User Preferences & Feedback
-> feedback_html_refresh, feedback_skill_before_code, feedback_no_shortcuts_knowledge,
-> feedback_dark_intelligence_excel, feedback_repo_scope, feedback_research_skill_sources,
-> feedback_specs_plans_location, feedback_uv_run_isolation, data_format_guidelines,
-> feedback_cross_machine_execution, feedback_no_jargon
-> See also: working-style.md, shell-git-patterns.md, engineering-modules.md
-- [No local task IDs](feedback_no_reserved_wrk_ids.md) — use GitHub issues directly, no local numbering
-- [Check parallel work](feedback_check_parallel_work.md) — scan for in-flight sessions before starting GSD work
-- [Comment on issues](feedback_gh_issue_comment.md) — always post summary comment on every implemented GitHub issue
-- [Queue git-tracked files](feedback_queue_git_tracked.md) — verify input files are in git before submitting queue jobs
+## Feedback
+> working-style.md, shell-git-patterns.md, engineering-modules.md
+> feedback_*: html_refresh, skill_before_code, no_shortcuts_knowledge, dark_intelligence_excel
+> repo_scope, research_skill_sources, specs_plans_location, uv_run_isolation, no_jargon
+- [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
+- [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
+- [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
 
-## Project Context
-> project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md,
-> project_cfd_openfoam_storage.md, project_auto_sync_risk.md (resolved)
-- [GSD Migration](project_gsd_migration.md) — GSD sole workflow since 2026-03-25, now v1.34.1, Node.js 24+ required
-- [Cross-review policy](project_cross_review_policy.md) — multi-layer enforcement: gate scripts, pre-push hook, daily audit cron
-- [Mooring failures knowledge](project_mooring_failures_knowledge.md) — 40-entry seed at knowledge/seeds/
-- [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating domains Mon-Fri, outputs to .planning/research/
-- [AI harness evaluations](project_ai_harness_evaluations.md) — GStack, Hermes, Paperclip, Superpowers audit (#1466-1470)
-- [Hermes installation](project_hermes_installation.md) — v0.4.0, shebang reverts recurring (3x), config.yaml provider routing fixed
-- [Hermes Codex quota](project_hermes_codex_quota.md) — #6551 implemented 2026-04-09, local only, follow-ups #6564-6567
-- [Workflow tips in /today](project_workflow_tips_today.md) — tip-of-the-day feature, hybrid YAML catalog, brainstorming
-- [Solver queue](project_solver_queue_architecture.md) — PRODUCTION: batch manifests, retry, results dashboard, watch-results cron
-- [Overnight batch runs](project_overnight_batch_runs.md) — 5 parallel terminals dispatched nightly with pre-planned prompts
+## Project
+> project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
+> project_cfd_openfoam_storage.md
+- [GSD](project_gsd_migration.md) — sole workflow, v1.34.1, Node 24+
+- [Cross-review](project_cross_review_policy.md) — gate scripts + pre-push hook + audit cron
+- [Mooring knowledge](project_mooring_failures_knowledge.md) — 40 entries at knowledge/seeds/
+- [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating Mon-Fri
+- [Harness evals](project_ai_harness_evaluations.md) — #1466-1470
+- [Hermes](project_hermes_installation.md) — v0.4.0, shebang reverts (3x)
+- [Hermes Codex quota](project_hermes_codex_quota.md) — #6551, follow-ups #6564-6567
+- [/today tips](project_workflow_tips_today.md) — tip-of-the-day, YAML catalog
+- [Solver queue](project_solver_queue_architecture.md) — PRODUCTION, batch+retry+dashboard
+- [Overnight batch](project_overnight_batch_runs.md) — 5 parallel terminals nightly
+- [Tier-1 refactor](project_tier1_refactor.md) — Ph1 DONE; Ph2A/2B ready
+- [Field-dev econ](project_field_dev_economics.md) — DONE; follow-ups #2076,#2079,#2081
+- [Field-dev arch](project_field_dev_arch_patterns.md) — DONE; follow-ups #2082,#2084,#2086
 
-## User Tips & Workflow
-- [Voice Prompt Curation Tips](user_voice_prompt_tips.md) — Linux shortcuts for editing voice-dictated prompts
+## Tips
+- [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
 
 ## References
-> ai-orchestration.md (Copilot model list, Hermes routing table), network_machines.md
-- [achantas-data repo](reference_achantas_data.md) — personal/family data + travel plans as GitHub issues
-- [Google CLI paid account](reference_google_cli_paid.md) — paid Google Workspace API access available for GWS
+> ai-orchestration.md, network_machines.md
+- [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
+- [Google CLI](reference_google_cli_paid.md) — paid GWS API access

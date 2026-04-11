@@ -3,16 +3,16 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-10T07:00:50Z"
-  source_hash: "3696f7c29b4b3568ab96beb89aa85bce"
+  generated: "2026-04-11T07:00:41Z"
+  source_hash: "8b2d98f56b7747cc06e78715e289bf72"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 14
+      entry_count: 16
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 39
+      memory_file_count: 42
 
 hermes_insights:
   environment_facts:
@@ -20,6 +20,7 @@ hermes_insights:
     - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
     - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
     - "In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present."
+    - "digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
     - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
@@ -34,6 +35,7 @@ hermes_insights:
     - "Prefers choices/options to be numbered or lettered for easy selection."
     - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
     - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
+    - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
 
 claude_memory_index:
   files:
@@ -75,6 +77,8 @@ claude_memory_index:
       topic: "engineering-modules"
     - file: "feedback_no_reserved_wrk_ids.md"
       topic: "no reserved wrk ids"
+    - file: "project_tier1_refactor.md"
+      topic: "tier1 refactor"
     - file: "project_cfd_openfoam_storage.md"
       topic: "cfd openfoam storage"
     - file: "data_format_guidelines.md"
@@ -85,6 +89,8 @@ claude_memory_index:
       topic: "2025 taxes"
     - file: "project_mooring_failures_knowledge.md"
       topic: "mooring failures knowledge"
+    - file: "project_field_dev_arch_patterns.md"
+      topic: "field dev arch patterns"
     - file: "user_voice_prompt_tips.md"
       topic: "user voice prompt tips"
     - file: "feedback_no_shortcuts_knowledge.md"
@@ -93,6 +99,8 @@ claude_memory_index:
       topic: "cross machine execution"
     - file: "project_overnight_batch_runs.md"
       topic: "overnight batch runs"
+    - file: "project_field_dev_economics.md"
+      topic: "field dev economics"
     - file: "feedback_check_parallel_work.md"
       topic: "check parallel work"
     - file: "feedback_uv_run_isolation.md"

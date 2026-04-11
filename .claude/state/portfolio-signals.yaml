@@ -1,4 +1,4 @@
-generated_at: '2026-04-10T07:01:17Z'
+generated_at: '2026-04-11T07:01:33Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,38 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-04-10'
+  provider: gemini
+  capability: Gemini 2.5 Pro Physics Engine API
+  engineering_domains:
+  - structural
+  - subsea
+  - drilling
+  impact: high
+  source: https://blog.google/technology/ai/gemini-physics-api-2026
+- date: '2026-04-08'
+  provider: claude
+  capability: Claude 3.5 Sonnet Advanced Fluid Dynamics Plugin
+  engineering_domains:
+  - reservoir
+  - subsea
+  impact: high
+  source: https://www.anthropic.com/news/claude-fluid-dynamics
+- date: '2026-04-05'
+  provider: gemini
+  capability: Gemini Spatial Analysis for Reservoir Modeling
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-spatial-reservoir
+- date: '2026-04-04'
+  provider: claude
+  capability: Opus Math/FEM Optimization Workflow
+  engineering_domains:
+  - subsea
+  - structural
+  impact: medium
+  source: https://www.anthropic.com/news/opus-fem-optimization
 - date: '2026-04-02'
   provider: claude
   capability: Physics-Informed Neural Network (PINN) Integration
@@ -146,42 +178,11 @@ capability_signals:
   - drilling
   impact: high
   source: https://www.anthropic.com/news/claude-fea-integration
-- date: '2026-03-26'
-  provider: codex
-  capability: Reservoir Simulation Query Generator
-  engineering_domains:
-  - reservoir
-  impact: medium
-  source: https://openai.com/blog/codex-reservoir-sim
-- date: '2026-03-22'
-  provider: gemini
-  capability: Multimodal Well Log Analysis 2.0
-  engineering_domains:
-  - drilling
-  - reservoir
-  impact: medium
-  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-well-log-analysis
-- date: '2026-03-27'
-  provider: claude
-  capability: Automated Riser Fatigue Analysis Copilot
-  engineering_domains:
-  - subsea
-  - structural
-  impact: high
-  source: https://www.anthropic.com/news/claude-riser-fatigue
-- date: '2026-03-24'
-  provider: gemini
-  capability: Native 3D Tensor Physics Engine integration for structural limits
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://blog.google/technology/ai/gemini-physics-engine-2026
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
+  parse_success: true
   signals_added: 0
   signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  carry_forward: false
+  source_verified: true
