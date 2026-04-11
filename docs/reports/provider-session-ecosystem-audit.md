@@ -54,6 +54,16 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 ### claude top symbolic reads
 - none
 
+### claude top Bash command families
+- `ls` — 5804
+- `grep` — 5167
+- `uv run` — 5113
+- `cat` — 4291
+- `find` — 3117
+- `bash` — 2771
+- `sed` — 1315
+- `git add` — 983
+
 ### claude top missing repo reads
 - `scripts/work-queue/generate-html-review.py` — 249
 - `scripts/work-queue/start_stage.py` — 138
@@ -107,6 +117,16 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ### codex top symbolic reads
 - none
+
+### codex top Bash command families
+- `sed` — 3868
+- `rg` — 1739
+- `nl` — 1308
+- `ls` — 508
+- `bash` — 446
+- `find` — 423
+- `for` — 306
+- `git status` — 285
 
 ### codex top missing repo reads
 - none
@@ -162,6 +182,16 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `workspace-hub-batch-issue-execution` — 26
 - `subagent-sandbox-limitations` — 25
 
+### hermes top Bash command families
+- `gh` — 4778
+- `uv run` — 2662
+- `git add` — 1559
+- `find` — 1376
+- `ls` — 1328
+- `cat` — 1044
+- `git log` — 938
+- `echo` — 917
+
 ### hermes top missing repo reads
 - `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 24
 - `docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md` — 8
@@ -200,12 +230,12 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 ### gemini top tools
 - `Bash` — 2266
 - `Read` — 2023
-- `Grep` — 555
+- `Grep` — 560
 - `Write` — 535
 - `Edit` — 394
 - `Browser` — 96
 - `ToolSearch` — 9
-- `search_file_content` — 5
+- `ask_user` — 1
 
 ### gemini top repos
 - `workspace-hub` — 5884
@@ -233,6 +263,16 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `config` — 5
 - `assetutilities` — 5
 - `doris` — 5
+
+### gemini top Bash command families
+- `ls` — 463
+- `find` — 274
+- `cat` — 181
+- `python3` — 173
+- `grep` — 149
+- `git` — 120
+- `mkdir` — 78
+- `git status` — 72
 
 ### gemini top missing repo reads
 - `.claude/work-queue/WRK-149.md` — 17

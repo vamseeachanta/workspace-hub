@@ -70,6 +70,7 @@ TOOL_MAP = {
     "replace": "Edit",
     "grep_search": "Grep",
     "glob": "Grep",
+    "search_file_content": "Grep",
     "google_web_search": "Browser",
     "write_todos": "Write",
     "codebase_investigator": "ToolSearch",

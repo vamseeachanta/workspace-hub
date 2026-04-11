@@ -25,6 +25,38 @@ REPO_ALIAS_HINTS = (
     "/mnt/local-analysis/workspace-hub",
     "/mnt/workspace-hub",
 )
+_MULTI_WORD_PREFIXES: tuple[tuple[str, ...], ...] = (
+    ("git", "diff"),
+    ("git", "log"),
+    ("git", "add"),
+    ("git", "commit"),
+    ("git", "push"),
+    ("git", "pull"),
+    ("git", "fetch"),
+    ("git", "checkout"),
+    ("git", "status"),
+    ("git", "rebase"),
+    ("git", "merge"),
+    ("git", "stash"),
+    ("git", "show"),
+    ("git", "branch"),
+    ("git", "reset"),
+    ("git", "tag"),
+    ("git", "cherry-pick"),
+    ("git", "rev-parse"),
+    ("git", "rev-list"),
+    ("git", "hash-object"),
+    ("git", "update-index"),
+    ("git", "write-tree"),
+    ("git", "commit-tree"),
+    ("git", "update-ref"),
+    ("uv", "run"),
+    ("uv", "tool"),
+    ("uv", "add"),
+    ("uv", "sync"),
+    ("python", "-m"),
+    ("python3", "-m"),
+)
 
 
 def safe_exists(path: Path) -> bool:
@@ -119,6 +151,33 @@ def top_items(counter: Counter, limit: int, key_name: str) -> list[dict]:
     return [{key_name: key, "count": value} for key, value in counter.most_common(limit)]
 
 
+def cleanup_bash_command(command: str) -> str:
+    text = command.strip()
+    if not text:
+        return text
+    lines = [line.strip() for line in text.splitlines() if line.strip() and not line.strip().startswith("#")]
+    text = " ".join(lines).strip()
+    cd_match = re.match(r"^cd\s+[^&;|]+&&\s*(.+)$", text)
+    if cd_match:
+        return cd_match.group(1).strip()
+    return text
+
+
+def normalize_command_to_prefix(command: str) -> str:
+    command = cleanup_bash_command(command)
+    if not command:
+        return command
+    tokens = command.split()
+    first_token = tokens[0]
+    if first_token.startswith("./") or first_token.startswith("/"):
+        return first_token
+    for prefix_words in _MULTI_WORD_PREFIXES:
+        n = len(prefix_words)
+        if len(tokens) >= n and tuple(tokens[:n]) == prefix_words:
+            return " ".join(prefix_words)
+    return first_token
+
+
 def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> dict:
     sessions = sorted(logs_dir.glob("session_*.jsonl"))
     corrections_dir = logs_dir / "corrections"
@@ -137,6 +196,8 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
     python3_bash_calls = 0
     uv_python_bash_calls = 0
     prompt_reads = 0
+    bash_family_counts: Counter[str] = Counter()
+    bash_family_examples: dict[str, str] = {}
 
     for record in iter_post_records(logs_dir):
         post_records += 1
@@ -153,6 +214,11 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
             python3_bash_calls += 1
         if tool == "Bash" and "uvrun" in cmd.replace(" ", "") and "python" in cmd.replace(" ", ""):
             uv_python_bash_calls += 1
+        if tool == "Bash" and cmd.strip():
+            prefix = normalize_command_to_prefix(cmd)
+            if prefix:
+                bash_family_counts[prefix] += 1
+                bash_family_examples.setdefault(prefix, cmd)
 
         if provider == "codex":
             codex_tool = str(record.get("codex_tool", "") or "")
@@ -203,6 +269,15 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         "top_missing_repo_reads": top_items(missing_repo_reads, 10, "path"),
         "top_missing_external_reads": top_items(missing_external_reads, 10, "path"),
         "top_symbolic_reads": top_items(symbolic_reads, 10, "name"),
+        "top_bash_command_families": [
+            {
+                "prefix": prefix,
+                "count": count,
+                "share_of_bash_calls": round((count / tool_counts.get("Bash", 1)) * 100, 2),
+                "example_command": bash_family_examples[prefix],
+            }
+            for prefix, count in bash_family_counts.most_common(8)
+        ],
         "special_counts": dict(special_counts),
     }
     if post_records:
@@ -329,6 +404,7 @@ def render_markdown(audit: dict) -> str:
         emit_rows(f"{provider} top repos", summary.get("top_repos", []), "repo")
         emit_rows(f"{provider} top reads", summary.get("top_reads", []), "path")
         emit_rows(f"{provider} top symbolic reads", summary.get("top_symbolic_reads", []), "name")
+        emit_rows(f"{provider} top Bash command families", summary.get("top_bash_command_families", []), "prefix")
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
         emit_rows(f"{provider} top missing external reads", summary.get("top_missing_external_reads", []), "path")
 

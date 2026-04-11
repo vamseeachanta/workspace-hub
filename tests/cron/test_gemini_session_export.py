@@ -38,6 +38,7 @@ def test_gemini_export_reclassifies_help_and_investigation_tools() -> None:
 
     assert '"codebase_investigator": "ToolSearch"' in text
     assert '"cli_help": "ToolSearch"' in text
+    assert '"search_file_content": "Grep"' in text
 
 
 def test_nightly_workflow_invokes_gemini_export() -> None:

@@ -50,6 +50,8 @@ Pattern:
 3. Ask each Claude subagent for only: proposed issue titles, rationale, and deliverables. Do **not** ask it to edit files or create issues.
 4. In the main session, convert the returned proposals into concrete issue bodies, create the GitHub issues, and update the parent doc/umbrella issue yourself.
 5. Comment on the parent issue with the new child-issue map so the decomposition is visible in GitHub history.
+6. If the initiative is still too broad, repeat the process in waves: delegate another 2-3 Claude lanes focused on the newly created branches (for example Windows readiness, publication hardening, registry coherence), then create the next layer of child issues locally.
+7. Keep one canonical doc or issue-map file updated after each wave so the hierarchy remains navigable as the issue tree deepens.
 
 Why this works:
 - the subagents contribute reasoning-heavy decomposition, which survives summary compression better than raw data gathering

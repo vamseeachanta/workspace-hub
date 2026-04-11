@@ -75,6 +75,16 @@ def test_normalize_cmd_preserves_shell_separators_for_codex() -> None:
     assert module.normalize_cmd("codex", raw) == "git status && pwd | sed -n '1p' 2>/dev/null"
 
 
+def test_cleanup_bash_command_drops_comments_and_cd_wrapper() -> None:
+    raw = "# comment\ncd /tmp/repo && uv run --no-project python tool.py\n"
+
+    assert module.cleanup_bash_command(raw) == "uv run --no-project python tool.py"
+
+
+def test_normalize_command_to_prefix_uses_multiword_prefix() -> None:
+    assert module.normalize_command_to_prefix("cd /tmp/repo && uv run --no-project python tool.py") == "uv run"
+
+
 def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     logs_dir = repo_root / "logs" / "orchestrator" / "hermes"
@@ -193,6 +203,7 @@ def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> No
     assert audit["providers"]["gemini"]["python3_bash_calls"] == 1
     assert audit["providers"]["gemini"]["unique_runtime_sessions"] == 1
     assert audit["providers"]["gemini"]["top_reads"][0]["path"] == "docs/keep.md"
+    assert audit["providers"]["gemini"]["top_bash_command_families"][0]["prefix"] == "python3"
 
 
 def test_render_markdown_mentions_symbolic_reads() -> None:

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-10T19:54:32Z",
+  "generated_at": "2026-04-10T22:37:14Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -208,6 +208,56 @@
         }
       ],
       "top_symbolic_reads": [],
+      "top_bash_command_families": [
+        {
+          "prefix": "ls",
+          "count": 5804,
+          "share_of_bash_calls": 14.48,
+          "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
+        },
+        {
+          "prefix": "grep",
+          "count": 5167,
+          "share_of_bash_calls": 12.89,
+          "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
+        },
+        {
+          "prefix": "uv run",
+          "count": 5113,
+          "share_of_bash_calls": 12.75,
+          "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
+        },
+        {
+          "prefix": "cat",
+          "count": 4291,
+          "share_of_bash_calls": 10.7,
+          "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
+        },
+        {
+          "prefix": "find",
+          "count": 3117,
+          "share_of_bash_calls": 7.77,
+          "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
+        },
+        {
+          "prefix": "bash",
+          "count": 2771,
+          "share_of_bash_calls": 6.91,
+          "example_command": "bash tests/test_wrk687_lifecycle.sh 2>&1"
+        },
+        {
+          "prefix": "sed",
+          "count": 1315,
+          "share_of_bash_calls": 3.28,
+          "example_command": "sed -n '32p' logs/orchestrator/claude/session_20260302.jsonl | cat -v | head -c 300"
+        },
+        {
+          "prefix": "git add",
+          "count": 983,
+          "share_of_bash_calls": 2.45,
+          "example_command": "git add .gitignore \\\n        .claude/work-queue/done/WRK-683.md \\\n        .claude/work-queue/pending/WRK-687.md \\\n        .claude/work-queue/assets/WR"
+        }
+      ],
       "special_counts": {},
       "python3_per_1k_records": 8.62,
       "uv_python_per_1k_records": 80.21
@@ -266,6 +316,56 @@
       "top_missing_repo_reads": [],
       "top_missing_external_reads": [],
       "top_symbolic_reads": [],
+      "top_bash_command_families": [
+        {
+          "prefix": "sed",
+          "count": 3868,
+          "share_of_bash_calls": 25.35,
+          "example_command": "sed -n '230,340p' src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py"
+        },
+        {
+          "prefix": "rg",
+          "count": 1739,
+          "share_of_bash_calls": 11.4,
+          "example_command": "rg -n \"class ParquetStore|def save\\(\" -S src/worldenergydata/vessel_fleet -g '*.py'"
+        },
+        {
+          "prefix": "nl",
+          "count": 1308,
+          "share_of_bash_calls": 8.57,
+          "example_command": "nl -ba src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py | sed -n '270,300p'"
+        },
+        {
+          "prefix": "ls",
+          "count": 508,
+          "share_of_bash_calls": 3.33,
+          "example_command": "ls digitalmodel/artificial_lift/dynacard"
+        },
+        {
+          "prefix": "bash",
+          "count": 446,
+          "share_of_bash_calls": 2.92,
+          "example_command": "bash -n .claude/statusline-command.sh && echo OK"
+        },
+        {
+          "prefix": "find",
+          "count": 423,
+          "share_of_bash_calls": 2.77,
+          "example_command": "find worldenergydata/src/worldenergydata -maxdepth 1 -type f -name '*.py' | sed -n '1,20p'"
+        },
+        {
+          "prefix": "for",
+          "count": 306,
+          "share_of_bash_calls": 2.01,
+          "example_command": "for f in scripts/test/test-commit.sh scripts/test/test-task.sh scripts/test/test-session.sh scripts/test/lib/detect-repo.sh scripts/test/lib/map-tests.sh scripts/test/lib/invoke-pytest.sh scripts/test/lib/report.sh scripts/test/config/worldenergydata"
+        },
+        {
+          "prefix": "git status",
+          "count": 285,
+          "share_of_bash_calls": 1.87,
+          "example_command": "git status --short"
+        }
+      ],
       "special_counts": {
         "exec_command": 12242,
         "write_stdin": 3014,
@@ -498,6 +598,56 @@
           "count": 25
         }
       ],
+      "top_bash_command_families": [
+        {
+          "prefix": "gh",
+          "count": 4778,
+          "share_of_bash_calls": 15.41,
+          "example_command": "gh auth status"
+        },
+        {
+          "prefix": "uv run",
+          "count": 2662,
+          "share_of_bash_calls": 8.58,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && uv run --no-project python -c \"\nimport yaml\nwith open('data/document-index/standards-transfer-ledger.yaml', 'r') as f:\n    data = yaml.safe_load(f)\nfrom collections import Counter\ndomains = Counter(s.get('domain','MISSING') for s in data['standards'])\nfor d, c in sorted(domains.items(), key=lambda x: -x[1]):\n    print(f'{d}: {c}')\n\""
+        },
+        {
+          "prefix": "git add",
+          "count": 1559,
+          "share_of_bash_calls": 5.03,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && git add -A && git status --short | head -20"
+        },
+        {
+          "prefix": "find",
+          "count": 1376,
+          "share_of_bash_calls": 4.44,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && find . -name \"SKILL.md\" -not -path \"./_archive/*\" 2>/dev/null | head -60"
+        },
+        {
+          "prefix": "ls",
+          "count": 1328,
+          "share_of_bash_calls": 4.28,
+          "example_command": "cd /home/user && ls -d */ 2>/dev/null | head -30"
+        },
+        {
+          "prefix": "cat",
+          "count": 1044,
+          "share_of_bash_calls": 3.37,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && cat > /tmp/comment-1548.md << 'EOF'\n## #1548 Status Check \u2014 2026-04-01\n\n**Verdict: Not yet closable. Hardening deployed but not yet tested in real cron run.**\n\n### Evidence from real cron logs (logs/research/)\n\n| Date | Result | Notes |\n|------|--------|-------|\n| Mar 25 | FAIL | DRY RUN + empty claude result (setup day) |\n| Mar 26 | OK | Artifact written (49 lines), git push race (WARNING) |\n| Mar 27 | OK | Artifact written (45 lines), git push race (WARN"
+        },
+        {
+          "prefix": "git log",
+          "count": 938,
+          "share_of_bash_calls": 3.03,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && git log --oneline --all -- scripts/cron/gsd-researcher-nightly.sh | head -10"
+        },
+        {
+          "prefix": "echo",
+          "count": 917,
+          "share_of_bash_calls": 2.96,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && echo \"=== Research log summary ===\" && for f in logs/research/2026-03-*.log logs/research/2026-04-*.log; do echo \"--- $(basename $f) ---\"; grep -E 'ERROR|Done|written to|WARNING' \"$f\"; echo; done"
+        }
+      ],
       "special_counts": {
         "memory_add": 209,
         "memory_replace": 260,
@@ -534,7 +684,7 @@
         },
         {
           "tool": "Grep",
-          "count": 555
+          "count": 560
         },
         {
           "tool": "Write",
@@ -553,8 +703,8 @@
           "count": 9
         },
         {
-          "tool": "search_file_content",
-          "count": 5
+          "tool": "ask_user",
+          "count": 1
         }
       ],
       "top_repos": [
@@ -697,6 +847,56 @@
         {
           "name": "doris",
           "count": 5
+        }
+      ],
+      "top_bash_command_families": [
+        {
+          "prefix": "ls",
+          "count": 463,
+          "share_of_bash_calls": 20.43,
+          "example_command": "ls -l scripts/operations/compliance/"
+        },
+        {
+          "prefix": "find",
+          "count": 274,
+          "share_of_bash_calls": 12.09,
+          "example_command": "find digitalmodel/specs worldenergydata/specs -type f | wc -l"
+        },
+        {
+          "prefix": "cat",
+          "count": 181,
+          "share_of_bash_calls": 7.99,
+          "example_command": "cat scripts/test/lib/detect-repo.sh"
+        },
+        {
+          "prefix": "python3",
+          "count": 173,
+          "share_of_bash_calls": 7.63,
+          "example_command": "python3 - <<'PY'\nfrom pathlib import Path\ntargets = []\nfor p in Path(\"worldenergydata\").rglob(\"*\"):\n    if p.is_file() and \"/specs/\" in str(p).replace(\"\\\\\",\"/\"):\n        targets.append(str(p).replace(\"worldenergydata/\", \"specs/repos/worldenergydata/\", 1))\nseen = set()\ndups = set()\nfor t in targets:\n    if t in seen:\n        dups.add(t)\n    seen.add(t)\nPath(\"reports/compliance/wrk-188-worldenergydata-duplicate-targets.txt\").write_text(\"\\n\".join(sorted(dups)))\nraise SystemExit(1 if dups else 0)\nPY\n"
+        },
+        {
+          "prefix": "grep",
+          "count": 149,
+          "share_of_bash_calls": 6.58,
+          "example_command": "grep -h \"work_item:\" digitalmodel/specs/modules/*.md | head -n 100 | sort | uniq | wc -l"
+        },
+        {
+          "prefix": "git",
+          "count": 120,
+          "share_of_bash_calls": 5.3,
+          "example_command": "git -C worldenergydata status --porcelain"
+        },
+        {
+          "prefix": "mkdir",
+          "count": 78,
+          "share_of_bash_calls": 3.44,
+          "example_command": "mkdir -p scripts/operations/compliance/"
+        },
+        {
+          "prefix": "git status",
+          "count": 72,
+          "share_of_bash_calls": 3.18,
+          "example_command": "git status --porcelain specs/repos/worldenergydata/"
         }
       ],
       "special_counts": {},

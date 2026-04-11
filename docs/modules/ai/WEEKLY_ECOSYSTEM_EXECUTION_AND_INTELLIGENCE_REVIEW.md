@@ -153,3 +153,15 @@ The weekly review is broad enough that it should be split into focused follow-on
 - Latest/history navigation + relative-link contract tests: #2160
 - Ingest provider-session ecosystem audit reads into seeded accessibility registry: #2161
 - Machine/path alias schema for seeded accessibility registry entries: #2162
+- Windows Task Scheduler invocation harness for readiness evidence runs: #2163
+- Cygpath/native-path fixture suite for Windows launcher bridge: #2164
+- Publication asset/path integrity validator for assembled bundles: #2165
+- Renderer golden snapshots for weekly publication outputs: #2166
+- Session-read coherence golden fixture suite: #2167
+- Cross-registry coverage/drift report for accessibility registry + provider-session reads: #2168
+- Windows licensed-tool probe adapter contract: #2169
+- OrcaFlex/OrcaWave/ANSYS-AQWA Windows probe adapters: #2170
+- End-to-end weekly publication smoke scenarios: #2171
+- Weekly publication rerun/idempotence verification: #2172
+- Provider-session audit wiring into weekly registry build/publication bundle: #2173
+- Unresolved session-read triage report + historical alias-normalized backfill: #2174
