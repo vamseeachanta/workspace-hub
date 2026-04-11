@@ -260,38 +260,57 @@ def analyze_codex_logs() -> dict[str, Any]:
 def analyze_codex_live_skills() -> dict[str, Any]:
     dir_count = 0
     oversize_name_paths: list[str] = []
+    plugin_root = HOME / ".codex" / ".tmp" / "plugins" / "plugins"
+    invalid_default_prompt_paths: list[str] = []
     if not SKILLS_ROOT.exists():
-        return {
+        base = {
             "skills_tree_dirs_current": 0,
             "oversize_skill_names_current": 0,
             "oversize_skill_name_paths": [],
+            "invalid_plugin_default_prompts_current": 0,
+            "invalid_plugin_default_prompt_paths": [],
         }
-    for _ in SKILLS_ROOT.glob("**/"):
-        dir_count += 1
-    for skill in SKILLS_ROOT.glob("**/SKILL.md"):
-        try:
-            text = skill.read_text(encoding="utf-8", errors="replace")
-        except Exception:
-            continue
-        lines = text.splitlines()
-        if not lines or lines[0].strip() != "---":
-            continue
-        end = None
-        for i, line in enumerate(lines[1:], 1):
-            if line.strip() == "---":
-                end = i
-                break
-        if end is None:
-            continue
-        frontmatter = "\n".join(lines[1:end])
-        m = re.search(r"(?m)^name:\s*['\"]?([^'\"\n]+)", frontmatter)
-        if m and len(m.group(1).strip()) > 64:
-            oversize_name_paths.append(str(skill))
-    return {
-        "skills_tree_dirs_current": dir_count,
-        "oversize_skill_names_current": len(oversize_name_paths),
-        "oversize_skill_name_paths": oversize_name_paths[:10],
-    }
+    else:
+        for _ in SKILLS_ROOT.glob("**/"):
+            dir_count += 1
+        for skill in SKILLS_ROOT.glob("**/SKILL.md"):
+            try:
+                text = skill.read_text(encoding="utf-8", errors="replace")
+            except Exception:
+                continue
+            lines = text.splitlines()
+            if not lines or lines[0].strip() != "---":
+                continue
+            end = None
+            for i, line in enumerate(lines[1:], 1):
+                if line.strip() == "---":
+                    end = i
+                    break
+            if end is None:
+                continue
+            frontmatter = "\n".join(lines[1:end])
+            m = re.search(r"(?m)^name:\s*['\"]?([^'\"\n]+)", frontmatter)
+            if m and len(m.group(1).strip()) > 64:
+                oversize_name_paths.append(str(skill))
+        base = {
+            "skills_tree_dirs_current": dir_count,
+            "oversize_skill_names_current": len(oversize_name_paths),
+            "oversize_skill_name_paths": oversize_name_paths[:10],
+            "invalid_plugin_default_prompts_current": 0,
+            "invalid_plugin_default_prompt_paths": [],
+        }
+    if plugin_root.exists():
+        for plugin_json in plugin_root.glob("*/.codex-plugin/plugin.json"):
+            try:
+                obj = json.loads(plugin_json.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            prompt = ((obj.get("interface") or {}).get("defaultPrompt"))
+            if isinstance(prompt, str) and len(prompt) > 128:
+                invalid_default_prompt_paths.append(str(plugin_json))
+        base["invalid_plugin_default_prompts_current"] = len(invalid_default_prompt_paths)
+        base["invalid_plugin_default_prompt_paths"] = invalid_default_prompt_paths[:10]
+    return base
 
 
 def analyze_gemini() -> dict[str, Any]:
@@ -434,6 +453,13 @@ def codex_status(binary_available: bool, config_present: bool, log_metrics: dict
             "oversize skill names present",
             "Shorten current skill name fields to <=64 chars",
         )
+    if live_metrics["invalid_plugin_default_prompts_current"] > 0:
+        return (
+            "warn",
+            f"current plugin manifests still exceed defaultPrompt limit ({live_metrics['invalid_plugin_default_prompts_current']})",
+            "current plugin manifest hygiene issue",
+            "Trim overlong defaultPrompt fields in local Codex plugin cache",
+        )
     if log_metrics["skill_load_errors_7d"] >= 1:
         return (
             "warn",
@@ -442,15 +468,14 @@ def codex_status(binary_available: bool, config_present: bool, log_metrics: dict
             "Confirm a clean Codex session now that live blockers are removed",
         )
     if (
-        log_metrics["plugin_manager_warnings_30d"] >= 25
-        or log_metrics["plugin_manifest_warnings_30d"] >= 10
-        or log_metrics["shell_snapshot_warnings_30d"] >= 10
+        log_metrics["shell_snapshot_warnings_7d"] >= 3
+        or (log_metrics["plugin_manager_warnings_7d"] >= 25 and log_metrics["plugin_manager_days_30d"] >= 2)
     ):
         return (
             "warn",
-            "plugin/snapshot warnings detected",
-            f"plugin_manager={log_metrics['plugin_manager_warnings_30d']}, plugin_manifest={log_metrics['plugin_manifest_warnings_30d']}",
-            "Review Codex plugin cache noise; no active live skill blockers remain",
+            "recent plugin/snapshot warnings detected",
+            f"plugin_manager_7d={log_metrics['plugin_manager_warnings_7d']}, shell_snapshot_7d={log_metrics['shell_snapshot_warnings_7d']}",
+            "Review recent Codex plugin/snapshot warnings; no active live skill blockers remain",
         )
     return ("ok", "healthy", "none", "No action needed")
 

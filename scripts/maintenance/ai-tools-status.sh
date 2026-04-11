@@ -11,6 +11,7 @@ OUTPUT="$REPO_ROOT/config/ai_agents/ai-tools-status.yaml"
 PROVIDER_HEALTH_SCRIPT="$REPO_ROOT/scripts/maintenance/provider-health-check.py"
 PROVIDER_HEALTH_OUTPUT="$REPO_ROOT/config/ai_agents/provider-health.yaml"
 GEMINI_PRUNE_SCRIPT="$REPO_ROOT/scripts/maintenance/prune-gemini-tmp.py"
+CODEX_PLUGIN_CLEANUP_SCRIPT="$REPO_ROOT/scripts/maintenance/cleanup-codex-plugin-cache.py"
 NPM_PATH="\$HOME/.npm-global/bin:\$HOME/.local/bin:\$PATH"
 
 TOOLS=(uv python3 claude codex gemini gh git node)
@@ -221,6 +222,13 @@ fi
 } > "$OUTPUT" || die "Failed to write $OUTPUT"
 
 echo "✔ ai-tools-status.yaml written: $OUTPUT"
+if [[ -f "$CODEX_PLUGIN_CLEANUP_SCRIPT" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    uv run --no-project python "$CODEX_PLUGIN_CLEANUP_SCRIPT" >/dev/null 2>&1 || echo "WARN: Codex plugin cleanup failed" >&2
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 "$CODEX_PLUGIN_CLEANUP_SCRIPT" >/dev/null 2>&1 || echo "WARN: Codex plugin cleanup failed" >&2
+  fi
+fi
 if [[ -f "$GEMINI_PRUNE_SCRIPT" ]]; then
   if command -v uv >/dev/null 2>&1; then
     uv run --no-project python "$GEMINI_PRUNE_SCRIPT" >/dev/null 2>&1 || echo "WARN: Gemini tmp prune failed" >&2
